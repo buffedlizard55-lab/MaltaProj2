@@ -92,3 +92,10 @@ crowd percentage is displayed for context and is **never** part of any probabili
 python3 scripts/build_pickem_lines.py   # regenerates data/** and pickem/**
 python3 scripts/check_links.py          # verifies pickem/ has no broken local links
 ```
+
+
+---
+
+## Parallel root dashboard (session 898abb4f, corrected by arena/8c3d79a6 on 2026-10-13)
+
+The repository root (`index.html`, `lines.html`, `teams.html`, `methodology.html`, `hotspawn.html`, `flagged.html`) contains a separate originated-lines dashboard for the Thunderpick World Championship 2026 Malta Finals. It is **derived model output, not verified bookmaker pricing**. Re-verified 2026-10-13: groups/Oct 14 openers published (HLTV Oct 9/12), **Virtus.pro withdrew → Ninjas in Pyjamas replaced them** (previous VP lines superseded), all 28 pairwise + 8 outright lines regenerated from Valve VRS Oct 5. Current finalists (VRS Oct 5): Legacy #2 1931 (34.0% / 2.67), Falcons #6 1843 (31.1% / 2.92), FURIA #7 1829 (17.4% / 5.22), Aurora #9 1716 (7.5% / 12.16), BetBoom #11 1596 (3.8% / 23.74), 9z #17 1543 (3.5% / 26.34), NiP #18 1534 (1.5% / 60.22), PARIVISION #36 1411 (1.2% / 77.02). Bookmaker match odds in the root dashboard remain blank/unverified except the flagged Thunderpick reference observation in `docs/data/quotes.json` (reference only) and a secondary FreeTips outright table in `data/external_outrights_snapshot.json` (no attribution). IRREG-007…012 on the root Flagged page do not block merge. The `/pickem/` board (PR #11) and LineWatch `docs/` site are preserved untouched.

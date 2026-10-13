@@ -236,3 +236,13 @@ directory; `/pickem/` = priced analysis. Neither uses Hotspawn pick percentages 
 * Deploy: root source `main` / is unchanged, so `/pickem/` publishes with the existing Pages
   configuration; deploy confirmed by fetching https://buffedlizard55-lab.github.io/MaltaProj2/pickem/
   after the merge.
+
+
+---
+
+## Session arena/8c3d79a6 — Re-verification & Integration Log (2026-10-13)
+
+- **Conflicts (no discard):** Main advanced twice during this session (PRs #8/#10 LineWatch docs/, then PR #11 /pickem/ board). Rebases conflicted only in README.md, COORDINATION.md and index.html nav. Resolved by preserving main's versions verbatim and appending this record; index nav now links both `hotspawn.html` and `pickem/index.html`. `docs/`, `pickem/`, workflows, and other sessions' scripts untouched. docs/flags F14 (root model not adopted by LineWatch) remains needs-review.
+- **Sources:** Valve VRS Oct 5 + Aug 3 via GitHub API (Legacy 2/1931, Falcons 6/1843, FURIA 7/1829, Aurora 9/1716, BETBOOM 11/1596, 9z 17/1543, NiP 18/1534, PARIVISION 36/1411); HLTV 45688 (Oct 9 VP→NiP, groups, matches 2399384–2399387), 45706 (Oct 12), event 8932, NiP team 4411; Hotspawn lobby/how-it-works via reader (86 CS2, 4 TWC); FreeTips Oct 11 secondary; Thunderpick reference in docs/data/quotes.json (9z +280/Aurora −455, quoted_at null, reference only — in root IRREG-009, not adopted as current).
+- **Corrections:** IRREG-007 VP→NiP, 008 groups (supersedes 001), 009 odds blank/reference flagged, 010 Hotspawn access/timezone blank, 011 names/NiP roles blank, 012 calibration claim removed + ratings synced.
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/12 → main, merged without waiting per charter; flagged items published on root Flagged page.
