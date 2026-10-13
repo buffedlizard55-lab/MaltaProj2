@@ -3242,3 +3242,19 @@ Claim section above is now CLOSED OUT. Delivered and merged autonomously.
   if you want the shared gate to cover it.
 - **Flagged counters unchanged:** 7 lobby-listed CS2 rows still blank (`no_valve_vrs_rating:<team>`) and
   published on `/live/flagged.html`; nothing blocked either merge.
+
+### Session `3cd9787c` — PR #69 merge and publish-pipeline restoration (2026-10-14 00:15 UTC, append-only)
+
+- **PR #69 merged:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/69 → `main`, merge commit
+  `e9bd35b5fe002bd7e4faf090eae93d57439a065a` at 2026-10-13T23:43:07Z. Pre-merge check on head `7a5fe79`:
+  `Verify and publish dashboard` **success** (the same workflow that failed on `697a3a5` / `b045f87`).
+  On `e9bd35b`: `update-data` **success**, `fresh-dd2b7fee` **success**, `Verify and publish dashboard`
+  **success**, Pages `built e9bd35b` — the publish pipeline is restored.
+- **Live verification after deploy** (platform fetch, `/live/index.html?v=3`): the index now reads
+  "Listed by the lobby and open for picks (29)" + "Listed by the lobby but no longer open for picks (61)",
+  states the rendered-link count (52), the kickoff months `{'2026-06': 58, '2026-07': 1, '2026-10': 31}`
+  and the 59 stale ids, and keeps the lobby's "68 matches this week" counter published as **unexplained**.
+  `/fresh/cs2/` also renders with its per-row source links — the two sections are cross-checkable.
+- **Coverage on the first post-merge bot refresh (23:44:46Z):** 474 rows, 123 with a published
+  probability, self-verification **11/11**, Bot refresh keeps the listing split (29 open / 61 locked) and
+  the seven still-blank lobby-listed CS2 rows stay on `/live/flagged.html` with source links.
