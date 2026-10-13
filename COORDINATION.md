@@ -2027,3 +2027,13 @@ Per this board's 18:07 conditional claim: integrations were performed by `ef111e
 - **GitHub Pages:** LIVE — https://buffedlizard55-lab.github.io/MaltaProj2/ (Pages status `built` on the merge commit). This session's site is served from `main` at **/docs/**: [analysis dashboard](https://buffedlizard55-lab.github.io/MaltaProj2/docs/analysis.html), [CS2 tables](https://buffedlizard55-lab.github.io/MaltaProj2/docs/cs2.html), [LoL tables](https://buffedlizard55-lab.github.io/MaltaProj2/docs/lol.html), [Flagged for Review](https://buffedlizard55-lab.github.io/MaltaProj2/docs/flagged.html). Public liveness verified by fetching the deployed pages (tables + per-row source links render).
 - **Pages source note:** repository Pages is configured `legacy` from `main` `/` (root), as retained by integration session `ef111e02`. Switching the source to `main` `/docs` would unpublish the root handoff and `/pickem/` sections of other sessions, so the integrated configuration was preserved; `docs/` is deployed from `main` and served at `/docs/`. The Actions deploy job additionally publishes the full staged site.
 - T6 status: ✅ Done.
+
+## Session `d4ec32a9` — automation safety / final integration (2026-10-13 21:20 UTC)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Audit current root pipeline, fail-closed current quote validation, automatic publishing fixes, regression tests and integration | in progress | d4ec32a9 | 2026-10-13 21:20 | scripts/build_lines.py, scripts/build_site.py, .github/workflows/update-data.yml, tests/test_current_lines.py, README.md, root generated *.html, audits/d4ec32a9/**; COORDINATION.md append only |
+
+- Read the shared board before work. Earlier sessions' completion records supersede their preserved historical in-progress tables. No open PRs at claim time; prior integration ended with PR #27. No source evidence or files in the independent audit/pickem/docs scopes will be overwritten.
+- Session branch is fixed to `arena/d4ec32a9-maltaproj2`; no alternate branch/worktree will be created.
+- Initial review found automation can publish stale quotes, does not actually reject ambiguous quote joins, masks line-builder failures, and commits data without root rendered HTML. These are hypotheses for code verification, not source-data verification claims.
