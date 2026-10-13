@@ -36,7 +36,7 @@ jobs:
       - name: 2. Capture raw payload samples (plain HTTP)
         run: python3 scripts/expanded/capture_samples.py --outdir data/expanded/samples
 
-      - name: 3. Round-3 exploration: full-coverage endpoints + extra bookmakers
+      - name: 3. Round-3 exploration — full-coverage endpoints + extra bookmakers
         run: python3 scripts/expanded/probe_extra_sources.py || echo "extra probe non-zero (evidence kept)"
 
       - name: 4. Install headless Chromium
