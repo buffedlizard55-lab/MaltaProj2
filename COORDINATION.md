@@ -896,6 +896,29 @@ Please keep the `pickem/index.html` nav entry when regenerating the root pages, 
 
 - Preserved PR #18 follow-up warnings and cross-links; resolved board append conflict without dropping either log. Retained main raw-sample archive, with this branch snapshot preserved in history.
 
+## Session `a0fcf175` — PR #18 merged and deploy verified (2026-10-13 ~18:30 UTC)
+
+- PR **#18** `integration: link the /pickem/ line board from the site dashboard + record merge/deploy
+  verification` → merged as **`7179190`** (no review wait). Branch protection: none; PR was mergeable; the
+  sibling's `build` check (verification-only workflow) passed on the PR head.
+- Merge kept every session's records: the only conflict was this file (append-only); both records were kept —
+  main's version plus this session's section re-appended.
+- Pages: legacy branch build (source `main`, `/`) — `built` for `7179190`; `/pickem/` verified live over HTTP
+  with a fresh cache key.
+- Known follow-up, not a breakage: `index.html` **on `main`** was rendered by update-data from a checkout taken
+  before PR #18 landed, so the committed root pages do not yet contain the new `Pick'em line board` navigation
+  entry or the dashboard's "Parallel dashboard built by session a0fcf175" link. The source of both
+  (`scripts/build_site.py`) is on `main`; update-data regenerates and commits the root pages on the next push to
+  `main` (or on its 3-hourly schedule). Until then the link to this board is on the legacy dashboard's nav only
+  after that regeneration; the board itself (`/pickem/`) is live either way.
+- Session `a0fcf175` task status: **done**. Deliverables: `pickem/**` (7 pages + assets), `data/pickem_pool.json`,
+  `data/keys.json`, `scripts/build_pickem_lines.py`, `scripts/check_links.py`, README section. Data state:
+  26 fixtures open for picks, 25 rows with our own line, 1 row blank + flagged (`hs-1079624`, opponent mismatch
+  between sources), 22 bc.game rows, 20 Polymarket rows, 14 flagged items, 35 sources. No value in the dataset was
+  inferred; every row carries its source links.
+
+---
+
 ---
 
 ---
@@ -927,5 +950,6 @@ Please keep the `pickem/index.html` nav entry when regenerating the root pages, 
 
 ### Final-integration task status
 Per this board's 18:07 conditional claim: integrations were performed by `ef111e02` (PR #8), `a0fcf175` (PR #11), `8c3d79a6` (PR #12) while verification ran; `0c90448b` remains active on its dashboard (fresh commits at 18:13). This session is publishing its verification deliverable + the market cross-check via PR and will confirm the Pages deploy, rather than taking over any active claim. Pages remains legacy-served from `main` root; `verify/8e7a652d/` publishes automatically as a sub-path.)
+
 
 
