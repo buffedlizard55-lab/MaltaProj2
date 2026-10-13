@@ -199,6 +199,14 @@ def card(row, originated):
             badges.append('<span class="badge warn">single source</span>')
     if basis == "aggregator-fallback":
         badges.append('<span class="badge warn">aggregator, not a licensed bookmaker</span>')
+    for q in row["sources"]:
+        if q["source_key"] == "kalshi":
+            r = q.get("raw") or {}
+            spread = max(r.get("spread_a") or 0, r.get("spread_b") or 0)
+            volume = float(r.get("volume_a") or 0) + float(r.get("volume_b") or 0)
+            if spread >= 0.05 or volume == 0:
+                badges.append(f'<span class="badge warn">thin Kalshi book: spread {spread}, traded volume {volume:g}'
+                              ' — read the bid/ask below</span>')
     if row["stale"]:
         badges.append('<span class="badge bad">listing stale: kickoff already passed</span>')
     if row["rejected_quotes_flagged"]:
