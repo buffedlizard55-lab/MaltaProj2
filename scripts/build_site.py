@@ -75,6 +75,7 @@ NAV = [
     ("tournaments.html", "Tournaments"),
     ("flagged.html", "Flagged for review"),
     ("methodology.html", "Methodology &amp; sources"),
+    ("pickem/index.html", "Pick'em line board"),   # integration link: session a0fcf175's board
 ]
 
 
