@@ -46,3 +46,9 @@ crowd "picked %" is shown for reference and is never used as a probability input
 Sources, derivation rules and every rejection are recorded in `evidence/` so the numbers can be
 reproduced and audited. Nothing is inferred: a fixture without a confirmed external price renders
 blank and is listed on the Flagged for review page.
+
+## LineWatch audited snapshot and shared publication
+
+LineWatch remains available at https://buffedlizard55-lab.github.io/MaltaProj2/docs/ with the independent 86-record source audit, two dated Thunderpick reference markets, original fair-line arithmetic, row-level review flags, CSV/JSON and collection health. Current odds in this stricter snapshot remain blank where current-market joins and freshness are not verified. This does not imply no prices exist in the separate integrated root pipeline.
+
+The Pages workflow now stages all session-owned root HTML/assets/data/evidence/audits **plus** `docs/` and `pickem/`. It waits for the legacy build before deploying the combined artifact. This supersedes the earlier docs-only artifact that hid other sections and the subsequent verification-only workflow. No root or pickem source generator is replaced; their data provenance remains their own. Local navigation is checked across the complete artifact and live LineWatch content is checked after deployment with bounded CDN-propagation retries.
