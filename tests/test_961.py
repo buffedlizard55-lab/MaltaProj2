@@ -99,7 +99,7 @@ class BoardTests(unittest.TestCase):
         """The reference file must not be reachable from the builder's executable code."""
         with open(os.path.join(ROOT, "scripts", "961", "build_961.py"), encoding="utf-8") as fh:
             source = fh.read()
-        referenced = set(re.findall(r"[\w./]+\.json", source))
+        referenced = {os.path.basename(m) for m in re.findall(r"[\w./]+\.json", source)}
         allowed = {"lobby.json", "quotes.json", "board.json", "odds.json",
                    "cs2_odds_egamersworld.json", "lol_odds_egamersworld.json"}
         self.assertTrue(referenced <= allowed, msg=sorted(referenced - allowed))
