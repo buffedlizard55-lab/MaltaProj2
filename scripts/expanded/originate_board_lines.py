@@ -87,28 +87,39 @@ def list_vrs_snapshots() -> dict[str, str]:
 
 
 def fetch_vrs_file(region: str, date: str) -> tuple[str | None, dict]:
+    """Fetch one standings markdown file, trying raw then the contents API.
+
+    The contents API is asked for the raw media type, so its body is the markdown itself; some
+    proxies/allow-lists answer that request with the default JSON envelope instead, so both
+    shapes are accepted and the response is validated by actually parsing a table out of it.
+    """
     raw_url = f"https://raw.githubusercontent.com/{VRS_REPO}/{VRS_BRANCH}/{VRS_DIR_PATH}/standings_{region}_{date}.md"
-    meta = {"region": region, "snapshot": date, "raw_url": raw_url}
+    api_url = f"https://api.github.com/repos/{VRS_REPO}/contents/{VRS_DIR_PATH}/standings_{region}_{date}.md"
+    meta = {"region": region, "snapshot": date, "raw_url": raw_url, "api_url": api_url}
+    candidates: list[tuple[str, str]] = []
     body = http_get(raw_url)
     if body:
-        meta["fetched_via"] = "raw.githubusercontent.com"
-    else:
-        api_url = f"https://api.github.com/repos/{VRS_REPO}/contents/{VRS_DIR_PATH}/standings_{region}_{date}.md"
-        blob = http_get(api_url, raw_json=True)
-        if not blob:
-            meta["error"] = "not retrievable"
-            return None, meta
-        try:
-            body = base64.b64decode(json.loads(blob.decode("utf-8", "replace"))["content"])
-            meta["fetched_via"] = "api.github.com contents"
-        except Exception as exc:  # noqa: BLE001
-            meta["error"] = f"decode failed: {exc}"
-            return None, meta
-    text = body.decode("utf-8", "replace")
-    VRS_DIR.mkdir(parents=True, exist_ok=True)
-    (VRS_DIR / f"standings_{region}_{date}.md").write_text(text, encoding="utf-8")
-    meta["bytes"] = len(text)
-    return text, meta
+        candidates.append(("raw.githubusercontent.com", body.decode("utf-8", "replace")))
+    blob = http_get(api_url, raw_json=True)
+    if blob:
+        txt = blob.decode("utf-8", "replace")
+        if '"content"' in txt[:4000] and "base64" in txt[:4000]:
+            try:
+                candidates.append(("api.github.com contents (base64)",
+                                   base64.b64decode(json.loads(txt)["content"]).decode("utf-8", "replace")))
+            except Exception as exc:  # noqa: BLE001
+                meta["error_api"] = f"decode failed: {exc}"
+        else:
+            candidates.append(("api.github.com contents (raw)", txt))
+    for how, text in candidates:
+        if len(parse_standings(text)) > 0:
+            meta["fetched_via"] = how
+            meta["bytes"] = len(text)
+            VRS_DIR.mkdir(parents=True, exist_ok=True)
+            (VRS_DIR / f"standings_{region}_{date}.md").write_text(text, encoding="utf-8")
+            return text, meta
+    meta["error"] = meta.get("error_api") or "no readable standings table in any response"
+    return None, meta
 
 
 def parse_standings(text: str) -> list[dict]:

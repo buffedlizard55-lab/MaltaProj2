@@ -193,6 +193,7 @@ def table(rows: list[dict], show_game=True) -> str:
 
 def summary_cards(doc: dict) -> str:
     s = doc["summary"]
+    rows = doc.get("fixtures") or []
     cards = [
         (s["fixtures_total"], "fixtures in the lobby snapshot"),
         (s["fixtures_future"], "still to be played"),
