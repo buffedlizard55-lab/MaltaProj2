@@ -28,3 +28,7 @@ jobs:
         run: python -m unittest discover -s tests -p test_eb454aaa.py -v
       - name: Verify mobile and desktop pages in hosted Chrome
         run: python audits/eb454aaa/browser_smoke.py
+      - name: Verify actual deployed audit and dashboard
+        # PR #56 already published this dated report. This read-only check also
+        # runs on ordinary pushes; it never assumes workflow-dispatch permission.
+        run: python audits/eb454aaa/check_live.py
