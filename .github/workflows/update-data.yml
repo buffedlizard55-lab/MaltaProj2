@@ -26,6 +26,8 @@ jobs:
         run: python3 scripts/fetch_hotspawn.py
       - name: Collect external betting lines
         run: python3 scripts/collect_odds.py || echo "odds collector returned non-zero (evidence kept)"
+      - name: Explore external sources (evidence)
+        run: python3 scripts/explore_sources.py || echo "explore non-zero (evidence kept)"
       - name: Build static site
         run: python3 scripts/build_site.py
       - name: Commit refreshed data + site
@@ -37,7 +39,9 @@ jobs:
             echo "no changes to commit"
           else
             git commit -m "data: refresh pick'em fixtures, external lines and site [skip ci]"
-            git push
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push && break || sleep 5
+            done
           fi
       - uses: actions/upload-artifact@v4
         if: always()
