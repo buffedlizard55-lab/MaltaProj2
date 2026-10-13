@@ -29,6 +29,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -55,7 +56,9 @@ TIME_TOLERANCE_MIN = 90
 
 
 def norm(name: str) -> str:
-    s = str(name or "").strip().lower()
+    # Unicode-normalise first so that e.g. "Grêmio" and a bookmaker's ASCII "Gremio" compare equal.
+    s = unicodedata.normalize("NFKD", str(name or ""))
+    s = "".join(ch for ch in s if not unicodedata.combining(ch)).strip().lower()
     s = re.sub(r"[^a-z0-9]+", " ", s).strip()
     for suf in SUFFIXES:
         if s.endswith(suf.strip()):
