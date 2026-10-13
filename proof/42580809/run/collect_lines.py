@@ -6,19 +6,18 @@ Sources (all public, unauthenticated, no challenge is solved or bypassed):
   1. Pinnacle      - licensed bookmaker, public guest odds API (sport 12 "E Sports").
   2. Bovada        - licensed US-facing bookmaker, public coupon JSON.
   3. Kalshi        - CFTC-regulated US prediction exchange, public trade API
-                     (series KXCS2GAME = "Counter-Strike: <A> vs <B>" winner markets).
+                     (series KXCS2GAME = "<A> vs <B>" winner markets, per-market book).
   4. Polymarket    - public prediction market (Gamma API), CS2 match markets only.
-  5. Kambi tenants - licensed bookmakers on the Kambi platform (betriversus, betrivers,
-                     nordicbet, betsson, otonl, bethard), public offering API.
+  5. Kambi tenants - licensed bookmakers on the Kambi platform, public offering API.
 
 Every emitted quote keeps: the exact URL it came from, the source's own event/market ids,
 the retrieval timestamp (UTC), the price in the source's own format, and the market type.
 Nothing is interpreted, converted across market types, or filled in when a source is silent.
 
 Outputs:
-  evidence/lines.json          - every raw quote + provenance
-  evidence/lines_sources.json  - per-source status/statistics (incl. failures)
-  evidence/kalshi_compact.json - compact Kalshi CS2 event/market extract (evidence)
+  evidence/lines.json           - every raw quote + provenance
+  evidence/lines_sources.json   - per-source status/statistics (incl. failures)
+  evidence/kalshi_compact.json  - Kalshi market structure + two-sided book (evidence)
 """
 
 from __future__ import annotations
@@ -91,7 +90,8 @@ def collect_pinnacle(lines, stats):
     url = f"{PIN}/sports/12/matchups"
     st, body = get(url, PIN_HEADERS)
     data = jload(body)
-    stats["pinnacle"] = {"url": url, "status": st, "matchups": len(data) if isinstance(data, list) else None}
+    stats["pinnacle"] = {"url": url, "status": st,
+                         "matchups": len(data) if isinstance(data, list) else None}
     if not isinstance(data, list):
         return
     cs2 = [m for m in data if CS2_RE.search(str((m.get("league") or {}).get("name", "")))]
@@ -104,10 +104,8 @@ def collect_pinnacle(lines, stats):
         st2, body2 = get(murl, PIN_HEADERS)
         mkts = jload(body2)
         out = []
-        if not isinstance(mkts, list):
-            return out
         parts = m.get("participants") or []
-        if len(parts) != 2:
+        if not isinstance(mkts, list) or len(parts) != 2:
             return out
         for mk in mkts:
             if str(mk.get("type", "")).lower() != "moneyline" or mk.get("period") != 0:
@@ -156,15 +154,16 @@ def collect_bovada(lines, stats):
     url = "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
     st, body = get(url)
     data = jload(body)
-    stats["bovada"] = {"url": url, "status": st, "groups": len(data) if isinstance(data, list) else None}
+    stats["bovada"] = {"url": url, "status": st,
+                       "groups": len(data) if isinstance(data, list) else None}
     if not isinstance(data, list):
         return
-    n = skipped_non_cs2 = 0
+    n = skipped = 0
     for group in data:
         for ev in (group.get("events") or []):
             link = str(ev.get("link") or "")
             if "counter-strike" not in link and "cs2" not in link:
-                skipped_non_cs2 += 1
+                skipped += 1
                 continue
             comps = ev.get("competitors") or []
             if len(comps) != 2:
@@ -209,103 +208,101 @@ def collect_bovada(lines, stats):
                         "decimal_odds_derived": False,
                         "raw_outcome_names": [o.get("description") for o in outs],
                     })
-    stats["bovada"].update({"cs2_moneyline_quotes": n, "non_cs2_events_skipped": skipped_non_cs2})
+    stats["bovada"].update({"cs2_moneyline_quotes": n, "non_cs2_events_skipped": skipped})
 
 
 # --------------------------------------------------------------------------- Kalshi
 KALSHI_EVENTS = ("https://api.elections.kalshi.com/trade-api/v2/events"
                  "?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200")
-KALSHI_MARKETS = ("https://api.elections.kalshi.com/trade-api/v2/markets"
-                  "?series_ticker=KXCS2GAME&status=open&limit=1000")
+KALSHI_MARKET = "https://api.elections.kalshi.com/trade-api/v2/markets/{ticker}"
 
 
 def collect_kalshi(lines, stats):
+    """Kalshi (CFTC-regulated US exchange).
+
+    The events listing publishes the market structure without prices; each market's own
+    endpoint publishes the live two-sided book (yes_bid/yes_ask/no_bid/no_ask), the
+    scheduled occurrence time and settlement rules that name the exact match.
+    """
     st_e, body_e = get(KALSHI_EVENTS)
     events = jload(body_e)
-    st_m, body_m = get(KALSHI_MARKETS)
-    markets = jload(body_m)
-    stats["kalshi"] = {"events_url": KALSHI_EVENTS, "events_status": st_e,
-                       "markets_url": KALSHI_MARKETS, "markets_status": st_m}
-    if isinstance(events, dict):
-        stats["kalshi"]["events"] = len(events.get("events") or [])
-    if isinstance(markets, dict):
-        stats["kalshi"]["markets"] = len(markets.get("markets") or [])
+    stats["kalshi"] = {"events_url": KALSHI_EVENTS, "events_status": st_e}
+    if not isinstance(events, dict):
+        return
+    evs = events.get("events") or []
+    stats["kalshi"]["events"] = len(evs)
+    book = []
 
-    compact = {"retrieved_at_utc": now_iso(), "events_url": KALSHI_EVENTS,
-               "markets_url": KALSHI_MARKETS, "events": [], "markets": []}
+    def fetch_market(mk):
+        url = KALSHI_MARKET.format(ticker=mk.get("ticker"))
+        st, body = get(url)
+        return mk, url, st, jload(body)
 
-    def price_of(mk):
-        yb, ya = mk.get("yes_bid"), mk.get("yes_ask")
-        if yb is None and ya is None:
-            return None, None
-        yb = 0 if yb is None else yb
-        ya = 0 if ya is None else ya
-        return yb, ya
-
-    if isinstance(events, dict):
-        for ev in (events.get("events") or []):
-            row = {"event_ticker": ev.get("event_ticker"), "title": ev.get("title"),
-                   "sub_title": ev.get("sub_title"), "category": ev.get("category"),
-                   "mutually_exclusive": ev.get("mutually_exclusive"),
-                   "markets": []}
-            for mk in (ev.get("markets") or []):
-                keep = {k: mk.get(k) for k in
-                        ("ticker", "event_ticker", "title", "subtitle", "yes_sub_title",
-                         "no_sub_title", "status", "yes_bid", "yes_ask", "no_bid", "no_ask",
-                         "last_price", "previous_price", "volume", "volume_24h", "liquidity",
-                         "open_interest", "open_time", "close_time", "expiration_time",
-                         "rules_primary", "settlement_source_url", "market_type")
-                        if k in mk}
+    for ev in evs:
+        row = {"event_ticker": ev.get("event_ticker"), "title": ev.get("title"),
+               "sub_title": ev.get("sub_title"), "category": ev.get("category"),
+               "mutually_exclusive": ev.get("mutually_exclusive"), "markets": []}
+        with cf.ThreadPoolExecutor(max_workers=5) as pool:
+            for mk, url, st, detail in pool.map(fetch_market, ev.get("markets") or []):
+                m = (detail or {}).get("market") or {}
+                keep = {"_http_status": st, "_source_api_url": url}
+                for k in ("ticker", "event_ticker", "title", "yes_sub_title", "no_sub_title",
+                          "status", "yes_bid_dollars", "yes_ask_dollars", "no_bid_dollars",
+                          "no_ask_dollars", "last_price_dollars", "previous_price_dollars",
+                          "volume_fp", "volume_24h_fp", "open_interest_fp", "open_time",
+                          "close_time", "occurrence_datetime", "expected_expiration_time",
+                          "rules_primary", "market_type"):
+                    if k in m:
+                        keep[k] = m.get(k)
                 row["markets"].append(keep)
-                yb, ya = price_of(mk)
-                if yb is None and mk.get("last_price") in (None, 0):
-                    # no observable price on either side: record the listing only
+                if st != 200 or not m:
                     continue
+                yb = as_number(m.get("yes_bid_dollars"))
+                ya = as_number(m.get("yes_ask_dollars"))
+                nb = as_number(m.get("no_bid_dollars"))
+                na = as_number(m.get("no_ask_dollars"))
+                if not any(v for v in (yb, ya, nb, na) if v):
+                    continue  # listed but no observable price: nothing to publish
                 lines.append({
                     "source_key": "kalshi",
                     "source_name": "Kalshi",
                     "source_kind": "CFTC-regulated prediction exchange",
-                    "source_public_url": f"https://kalshi.com/markets/{str(ev.get('event_ticker','')).lower()}",
-                    "source_api_url": f"https://api.elections.kalshi.com/trade-api/v2/markets/{mk.get('ticker')}",
+                    "source_public_url": "https://kalshi.com/markets/" + str(ev.get("event_ticker", "")).lower(),
+                    "source_api_url": url,
                     "source_event_id": ev.get("event_ticker"),
-                    "source_market_id": mk.get("ticker"),
+                    "source_market_id": m.get("ticker"),
                     "source_league": ev.get("category"),
+                    "source_rules_primary": m.get("rules_primary"),
                     "market_type": "match winner (Kalshi binary 'wins' market)",
-                    "market_is_live": mk.get("status") == "active",
-                    "market_status": mk.get("status"),
+                    "market_is_live": m.get("status") == "active",
+                    "market_status": m.get("status"),
                     "retrieved_at_utc": now_iso(),
-                    "start_time_utc": None,          # close_time is the settlement time; no start time published
-                    "source_close_time_utc": mk.get("close_time"),
-                    "team_a_name": None,             # filled by the local matcher from title/subtitle
-                    "team_b_name": None,
-                    "outcome_name": mk.get("yes_sub_title") or mk.get("subtitle") or mk.get("title"),
+                    "start_time_utc": m.get("occurrence_datetime"),
+                    "source_close_time_utc": m.get("close_time"),
                     "event_title": ev.get("title"),
                     "event_sub_title": ev.get("sub_title"),
-                    "raw_price_format": "cents_0_100_implied_probability",
-                    "yes_bid_cents": mk.get("yes_bid"),
-                    "yes_ask_cents": mk.get("yes_ask"),
-                    "last_price_cents": mk.get("last_price"),
-                    "price_source": "book",
+                    "outcome_name": m.get("yes_sub_title") or m.get("title"),
+                    "raw_price_format": "usd_probability_0_1_two_sided_book",
+                    "yes_bid": yb, "yes_ask": ya, "no_bid": nb, "no_ask": na,
+                    "last_price": as_number(m.get("last_price_dollars")),
+                    "volume": m.get("volume_fp"), "open_interest": m.get("open_interest_fp"),
                 })
-            compact["events"].append(row)
-    if isinstance(markets, dict):
-        for mk in (markets.get("markets") or []):
-            compact["markets"].append({k: mk.get(k) for k in
-                                       ("ticker", "event_ticker", "title", "subtitle", "status",
-                                        "yes_bid", "yes_ask", "last_price", "volume", "liquidity",
-                                        "open_interest", "close_time", "open_time")})
+        book.append(row)
     with open(os.path.join(OUT, "kalshi_compact.json"), "w", encoding="utf-8") as fh:
-        json.dump(compact, fh, indent=1, ensure_ascii=False)
+        json.dump({"retrieved_at_utc": now_iso(), "events_url": KALSHI_EVENTS,
+                   "events": book}, fh, indent=1, ensure_ascii=False)
     stats["kalshi"]["quotes"] = len([l for l in lines if l["source_key"] == "kalshi"])
 
 
 # --------------------------------------------------------------------------- Polymarket
+PM_URLS = ["https://gamma-api.polymarket.com/events?closed=false&limit=100&tag_slug=counter-strike",
+           "https://gamma-api.polymarket.com/events?closed=false&limit=100&tag_slug=esports"]
+
+
 def collect_polymarket(lines, stats):
-    urls = ["https://gamma-api.polymarket.com/events?closed=false&limit=100&tag_slug=counter-strike",
-            "https://gamma-api.polymarket.com/events?closed=false&limit=100&tag_slug=esports"]
-    stats["polymarket"] = {"urls": urls, "quotes": 0, "events_with_cs2": 0}
+    stats["polymarket"] = {"urls": PM_URLS, "quotes": 0, "events_with_cs2": 0}
     seen = set()
-    for url in urls:
+    for url in PM_URLS:
         st, body = get(url)
         data = jload(body)
         stats["polymarket"][url] = {"status": st,
@@ -318,33 +315,33 @@ def collect_polymarket(lines, stats):
                 continue
             stats["polymarket"]["events_with_cs2"] += 1
             for mk in (ev.get("markets") or []):
-                prices = mk.get("outcomePrices")
                 outs = mk.get("outcomes")
-                if isinstance(prices, str):
-                    try:
-                        prices = json.loads(prices)
-                    except Exception:  # noqa: BLE001
-                        prices = None
-                if isinstance(outs, str):
-                    try:
-                        outs = json.loads(outs)
-                    except Exception:  # noqa: BLE001
-                        outs = None
-                if not prices or not outs:
+                prices = mk.get("outcomePrices")
+                for val, key in ((outs, "outcomes"), (prices, "prices")):
+                    if isinstance(val, str):
+                        try:
+                            if key == "outcomes":
+                                outs = json.loads(val)
+                            else:
+                                prices = json.loads(val)
+                        except Exception:  # noqa: BLE001
+                            pass
+                if not isinstance(outs, list) or not isinstance(prices, list) or not prices:
                     continue
                 key = (ev.get("slug"), mk.get("id"))
                 if key in seen:
                     continue
                 seen.add(key)
+                p = [as_number(x) for x in prices]
                 lines.append({
                     "source_key": "polymarket",
                     "source_name": "Polymarket",
                     "source_kind": "public prediction market",
                     "source_public_url": f"https://polymarket.com/event/{ev.get('slug')}",
-                    "source_api_url": "https://gamma-api.polymarket.com/events?closed=false&limit=100&tag_slug=esports",
+                    "source_api_url": url,
                     "source_event_id": str(ev.get("id")),
                     "source_market_id": str(mk.get("id")),
-                    "source_league": ev.get("title"),
+                    "source_league": title,
                     "market_type": "match winner (prediction market)",
                     "market_is_live": not bool(mk.get("closed")),
                     "market_status": "open" if not mk.get("closed") else "closed",
@@ -354,9 +351,6 @@ def collect_polymarket(lines, stats):
                     "team_b_name": outs[1] if len(outs) > 1 else None,
                     "raw_price_format": "probability_0_1",
                     "raw_prices": prices,
-                    "decimal_odds_a": round(1 / float(prices[0]), 6) if float(prices[0]) > 0 else None,
-                    "decimal_odds_b": round(1 / float(prices[1]), 6) if len(prices) > 1 and float(prices[1]) > 0 else None,
-                    "decimal_odds_derived": True,
                     "market_volume": mk.get("volume"),
                     "market_liquidity": mk.get("liquidity"),
                 })
@@ -365,7 +359,7 @@ def collect_polymarket(lines, stats):
 
 # --------------------------------------------------------------------------- Kambi tenants
 KAMBI_TENANTS = [("betriversus", "en_US", "US", "BetRivers"),
-                 ("betrivers", "en_US", "US", "BetRivers (2)"),
+                 ("betrivers", "en_US", "US", "BetRivers PA"),
                  ("nordicbet", "en_GB", "MT", "NordicBet"),
                  ("betsson", "en_GB", "MT", "Betsson"),
                  ("otonl", "nl_NL", "NL", "OTO"),
@@ -390,7 +384,7 @@ def collect_kambi(lines, stats):
         events = {e.get("id"): e for e in (data.get("events") or [])}
         n = 0
         for bo in (data.get("betOffers") or []):
-            ev = events.get((bo.get("eventId")))
+            ev = events.get(bo.get("eventId"))
             if not ev:
                 continue
             path = json.dumps(ev.get("path") or []) + json.dumps(ev.get("group") or "")
