@@ -4,7 +4,7 @@
 
 ## Finding
 
-The published `/market/cs2.html` snapshot contains **30 future CS2 rows**. In the input snapshot, **all 30** use `https://www.hotspawn.com/matches/<fixture_id>` for the HotSpawn match link. A live manual check of fixture **1079546** showed that this numeric-ID route loads HotSpawn's general `/matches` listing, not the Zomblers vs Overtake Sector match detail page.
+The refreshed `/market/cs2.html` snapshot (`data/expanded/lines.json`, generated **2026-10-13T23:08:46Z**) contains **30 future CS2 rows**. In the input snapshot, **all 30** use `https://www.hotspawn.com/matches/<fixture_id>` for the HotSpawn match link. A live manual check of fixture **1079546** showed that this numeric-ID route loads HotSpawn's general `/matches` listing, not the Zomblers vs Overtake Sector match detail page.
 
 The official HotSpawn lobby publishes the match-detail URL with a team/tournament slug. For the checked fixture, the source-published URL opens a page whose title names Zomblers vs Overtake Sector and fixture 1079546. A separate capture (`data/picks_fixtures.json`) records matching link kinds for the current 30-row set: 25 source-published per-match links and 5 official lobby-listing fallbacks. That capture is older than the market snapshot, so these are prior captured references, **not** 30 fresh reachability checks.
 
