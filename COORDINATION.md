@@ -332,3 +332,25 @@ request is recorded above verbatim and is **partially declined, with reasons**:
 7. `.github/workflows/pages.yml` was retargeted to verification-only because its artifact deploy would
    have raced the legacy branch Pages publisher (main `/`). The legacy build publishes the integrated
    root dashboard.
+
+## Final integration record (session `0c90448b`)
+
+- **Pull request:** [#15 — Integrate verified external betting lines + dashboard](https://github.com/buffedlizard55-lab/MaltaProj2/pull/15)
+  (base `main` ← head `arena/0c90448b-maltaproj2`).
+- **Merge result:** merged with a merge commit — `0eb15d6` ("Merge pull request #15 from
+  buffedlizard55-lab/arena/0c90448b-maltaproj2") — after the repository's own verification workflow
+  (`build`) reported **pass**. No conflicts remained at merge time; the earlier conflicts
+  (COORDINATION.md, README.md, generated pages, data files) were resolved by hand keeping both sessions'
+  content, as described above.
+- **CI after merge:** the `update-data` workflow ran on `main` and committed a refreshed collection
+  (`data: refresh pick'em fixtures, external lines and site [skip ci]`), which is the intended steady
+  state: fixtures, external lines, derived probabilities and the site rebuild automatically every 3 hours.
+- **Pages deploy:** the build for the merge commit reported `errored` (concurrent-build race), and the
+  immediately following build — for `1c2ffa4`, which contains the same site — reported **built**.
+  The published URL `https://buffedlizard55-lab.github.io/MaltaProj2/` was then read back and serves the
+  integrated dashboard: “Pick’em betting-line dashboard · 93 fixtures tracked · 11 with a verified external
+  line · 82 unverified (blank) · 2 sources quoted”, with per-row source links, derived no-vig
+  probabilities, overrounds and review flags. No workflow in the repository deploys a Pages artifact, so
+  the legacy branch build (`main`, `/`) remains the single publisher.
+- **Flagged items are published, not blocking:** see the site's *Flagged for review* page and the
+  irregularities list above. They are unchanged by the merge.
