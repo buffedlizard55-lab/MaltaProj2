@@ -1,33 +1,39 @@
-# Shared coordination board
+# Coordination
 
-Session: `1916f96c` • integration branch: `arena/1916f96c-maltaproj2`.
-Arena fixes this session to that branch; no additional session branch is created.
+Session: `ef111e02` (final integration session). This environment requires all work on `arena/ef111e02-maltaproj2`; the requested session branch naming is therefore not used.
 
-| Task | Status | Owner | File scope | Claimed (UTC) |
+| Task | Status | Owner | Claimed UTC | File scope |
 |---|---|---|---|---|
-| Independent official lobby and sportsbook evidence handoff | done | 1916f96c | audits/1916f96c/** | 2026-10-13 17:52 |
-| Dashboard and category pages | in progress | ef111e02 | docs/** | 2026-10-13 17:50 |
-| Final integration, CI, Pages, documentation | in progress | ef111e02 | .github/**, README.md, COORDINATION.md | 2026-10-13 17:50 |
+| Repository audit, source investigation, data pipeline, dashboard, tests and Pages integration | in progress | ef111e02 | 2026-10-13 17:50 | COORDINATION.md, README.md, docs/**, scripts/**, tests/**, .github/workflows/**, .gitignore |
 
-## Coordination rules
-Do not edit another session's claimed scope. Log cross-scope requests here. Claims with no commits for more than 60 minutes may be taken over with a logged handoff. Needs-review items are published on the site's Flagged for Review page and do not block integration. Pull/rebase before every push; resolve conflicts preserving both sessions' work.
+| Independent access/source audit and integration handoff | done | 1d4de836 | 2026-10-13 17:51 | audits/1d4de836/** (COORDINATION.md only for claim/log updates) |
 
-## Activity and evidence
-- Initial audit: repository contains only a 12-byte README and no task board, application, data, or tests. No other claims found.
-- Claims recorded before implementation. No match or odds values have yet been verified.
+## Integration requests
+- `1d4de836` → `ef111e02`: Please incorporate the independent audit under `audits/1d4de836/` into the Flagged for Review page. Your existing dashboard/pipeline/integration scope is respected; no edits to your claimed files. Session branch is fixed to `arena/1d4de836-maltaproj2`.
 
-## Handoff / scope correction
-- 2026-10-13 17:52 UTC: Discovered earlier task board on `arena/ef111e02-maltaproj2` (not present on main). Its 17:50 integration claim predates this session. Stop all overlapping implementation; independent evidence work ONLY in `audits/1916f96c/**`. `1d4de836` also has independent audit scope.
-- Integration request to `ef111e02`: incorporate `audits/1916f96c/**` evidence and calculations into the dashboard; do not integrate this branch's duplicate root board or `.github/workflows/source-probe.yml`. I will not merge a competing implementation.
-- GitHub issue comment handoff attempted on issue #1 but REST returned HTTP 403. This pushed board is the handoff channel.
-- Source-probe run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38442009573 succeeded. Artifact download is blocked by sandbox outbound host allowlist (Azure blob EOF), so no source values inferred from the artifact.
+## Log
+- Initial checkout contains only README.md (`# MaltaProj2`), no application, data, tests, or existing task board. No other task claims exist.
+- Official source verification is mandatory. Missing evidence will be published as unverified, not filled with invented matches or odds.
 
-- Timestamp correction: earlier scope-correction entries used an estimated 17:57 time; corrected to the observed execution window, 17:52 UTC. Evidence dates are kept without invented quote timestamps.
+- 2026-10-13 17:51 UTC, `1d4de836`: Read the active task board from remote branch `arena/ef111e02-maltaproj2` at `fda56d8`. Other session claim is fresh, so no takeover. Root initially only contains README.md. Direct HTTPS lobby request failed with curl exit 35; no match or odds values established.
 
-## Independent audit completion / final integration request
-- `audits/1916f96c/REPORT.md` and `observations.json` preserve 26 official lobby cards from all three research-tool chunks. All source links and display labels compared row by row. Unknown UTC/year/timezone values remain null; only the two opened official match-detail titles establish game values.
-- Two official external Match Winner pairs checked against explicit sportsbook labels, not lobby pick shares. Source links: https://thunderpick.io/esports/cs2-betting/thunderpick-world-championship-2026/11024/9z-team-vs-aurora/2796376 ; https://thunderpick.io/esports/cs2-betting/pulse-beat-iii/11173/astralis-vs-sashi/2767822 . Formula reference: https://help.smarkets.com/hc/en-gb/articles/214058369-How-to-calculate-implied-probability-in-betting .
-- Six independent tests pass; exact rational calculations verified. Neither pair promoted to current lobby probabilities due to quote time, market phase, timezone and event identity uncertainty. Flags provided as source-linked tables for publication. This dated transcription is not an automatic feed.
-- `ef111e02` integration request: copy ONLY `audits/1916f96c/**` from this branch into your build/review page. Do not replace root coordination or workflows. Source-probe workflow was an initial duplicate, not an integration dependency.
-- The integration owner's updated board confirms richer hosted-runner observations: 86 embedded public fixtures / 27 cards and exact source epoch times. Those are independent snapshots, not a retroactive change to this 26-card research-tool observation. Preserve separate provenance.
-- Root issue #3 published the first handoff; updating it and posting comments returned HTTP 403, so a separate ready-for-integration issue will carry completion notice. No competing site/merge attempted.
+- 2026-10-13 17:51 UTC, `1d4de836`: Discovered independent fresh overlapping integration claims from `1916f96c` after the first claim. Coordination escalation: https://github.com/buffedlizard55-lab/MaltaProj2/issues/1. Neither claim was taken over or edited by this session.
+- 2026-10-13 17:51 UTC, `1d4de836`: Audit completed in `audits/1d4de836/README.md`. Five direct HTTPS probes all failed with TLS EOF; raw timestamps/errors saved in `access-evidence.json`. All match counts, odds and probabilities remain null. Sources: https://play.hotspawn.com/lobby, https://www.hltv.org/matches, https://www.pinnacle.com/en/esports, https://betway.com/en/sports/esports, https://the-odds-api.com/liveapi/guides/v4/. These are candidate access URLs, NOT verified content or current market citations. Initial GitHub Pages configuration verified through https://api.github.com/repos/buffedlizard55-lab/MaltaProj2/pages and archived in `pages-api-evidence.json`. See handoff checklist for exact fixture matching, complete market de-vig assumptions, quote timestamps and stale-data behavior. Integration requested to publish access failures on Flagged for Review; needs-review items must not masquerade as an empty match schedule.
+
+- 2026-10-13, `1d4de836` follow-up: Independently reviewed official lobby HTML and headers archived by integration session at commit `c48b28e`, Actions run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38442030251. All 86 SSR fixture rows extracted into `audits/1d4de836/lobby-snapshot-audit.json`, each source-linked and checked against published `ng-state`. 60 scheduled timestamps precede response date, 26 do not; all source statuses are scheduled; all best_of/series_format fields are null; all rows are CS2 although tenant also enables LOL. HTTP age 3839 seconds. These are needs-review findings for the site's Flagged for Review page; no odds or probabilities obtained. Direct sandbox failures remain historical evidence, not a claim that the lobby is universally inaccessible.
+- Audit contribution PR: https://github.com/buffedlizard55-lab/MaltaProj2/pull/2. Final integration remains owned by the earlier session; this PR does not claim completion of the dashboard, full multi-sport coverage, or fresh external odds.
+
+- `1d4de836`: Reproducible verifier added only under owned audit scope (`audits/1d4de836/verify_snapshot.py`). Full 86-row check passes; five corruption/missing-evidence negative cases rejected. No application or integration file changed.
+
+## Session 1916f96c scoped evidence handoff
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Independent official lobby and sportsbook evidence handoff | done | 1916f96c | 2026-10-13 17:52 | audits/1916f96c/** (COORDINATION.md only for claim/log updates) |
+
+- Earlier integration owner ef111e02 is respected. Session 1916f96c discovered the earlier remote claim after an initial local-only overlapping claim, stopped all shared implementation and retained only independent evidence work. Historical board kept in `audits/1916f96c/COORDINATION-HISTORY.md`; its claims are historical, not active ownership.
+- Sources and verification: complete three-chunk official lobby research-tool response https://play.hotspawn.com/lobby, 26 cards transcribed row by row, actual View Match links retained. This snapshot is separate from the later 86-fixture hosted-runner capture and is not a fresh feed. All current odds/probability cells are null. Unknown timezone, year and quote time remain null.
+- Explicit external Match Winner pairs verified on official sportsbook pages: https://thunderpick.io/esports/cs2-betting/thunderpick-world-championship-2026/11024/9z-team-vs-aurora/2796376 (+280 / -455) and https://thunderpick.io/esports/cs2-betting/pulse-beat-iii/11173/astralis-vs-sashi/2767822 (-1250 / +530). Exact rational proportional no-vig reference calculations independently tested; 6 tests pass. Formula reference checked at https://help.smarkets.com/hc/en-gb/articles/214058369-How-to-calculate-implied-probability-in-betting . No crowd-pick values used.
+- Integration request: publish `audits/1916f96c/REPORT.md` findings on Sources / Flagged for Review, preserving dates and separate provenance. Official Hotspawn 9z detail https://www.hotspawn.com/matches/9z-vs-aurora-thunderpick-world-championship-2026-1080176 explicitly links heading 9z as 9z Team, resolving that name mapping alone (not the full market join). GG.BET regional response and Rivalry official closure notice are recorded with source links; missing coverage, quote freshness, market phase and time-label discrepancies remain flagged.
+- Handoff issues: https://github.com/buffedlizard55-lab/MaltaProj2/issues/3 and https://github.com/buffedlizard55-lab/MaltaProj2/issues/4. Issue creation succeeds; comments/updates were HTTP 403. No user input requested.
+- Integration merge of main into this session branch encountered one add/add COORDINATION.md conflict. Resolved by preserving main's entire authoritative board and appending this handoff; historical independent board preserved separately, so neither session's evidence was discarded. Removed this session's duplicate probe workflow before opening scoped contribution PR. No dashboard or source-pipeline files edited.
