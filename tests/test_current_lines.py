@@ -159,6 +159,49 @@ class CurrentLinesTests(unittest.TestCase):
             else:
                 self.assertIsNone(row['probability_b'])
 
+    def test_primary_quote_payloads_reproduce_current_numeric_lines(self):
+        evidence = json.loads((ROOT / 'evidence/odds_collection.json').read_text())
+        payloads = evidence.get('quote_payloads', [])
+        doc = json.loads((ROOT / 'data/lines.json').read_text())
+        for fixture in doc['fixtures']:
+            for line in fixture['bookmaker_lines']:
+                candidates = [p for p in payloads if p['source'] == line['source_key'] and
+                              p['retrieved_at_utc'] == line['retrieved_at_utc'] and
+                              p['url'] == line['source_api_url']]
+                self.assertEqual(len(candidates), 1, (fixture['fixture_id'], line['source_key']))
+                payload = candidates[0]
+                if line['source_key'] == 'pinnacle':
+                    matchup, market = payload['matchup'], payload['market']
+                    self.assertEqual(str(matchup['id']), line['source_event_id'])
+                    self.assertEqual(market['type'], 'moneyline')
+                    self.assertEqual(market['period'], 0)
+                    self.assertFalse(market['isAlternate'])
+                    self.assertEqual(parse_iso(matchup['startTime']), parse_iso(fixture['start_time_utc']))
+                    prices = {p['designation']: p['price'] for p in market['prices']}
+                    raw = [prices[p['alignment']] for p in matchup['participants']]
+                    decimals = [round(1 + 100 / abs(x) if x < 0 else 1 + x / 100, 4) for x in raw]
+                else:
+                    self.assertEqual(str(payload['event_id']), line['source_event_id'])
+                    outcomes = aligned_bovada_outcomes(payload['competitors'], payload['market']['outcomes'])
+                    self.assertIsNotNone(outcomes)
+                    decimals = [float(o['price']['decimal']) for o in outcomes]
+                    self.assertEqual(ms_iso(payload['startTime']), fixture['start_time_utc'])
+                if line['order_as_quoted'] == 'reversed':
+                    decimals.reverse()
+                self.assertEqual(decimals, [line['decimal_odds_a'], line['decimal_odds_b']])
+                shares = [1 / d for d in decimals]
+                self.assertEqual(round(shares[0] / sum(shares), 4), line['derived_probability_a'])
+
+    def test_every_current_generator_table_row_has_a_source_link(self):
+        from bs4 import BeautifulSoup
+        for path in ROOT.glob('*.html'):
+            # These preserved independent models are explicitly flagged, outside this generator's scope.
+            if path.name in {'lines.html', 'teams.html', 'hotspawn.html'}:
+                continue
+            soup = BeautifulSoup(path.read_text(), 'html.parser')
+            for row in soup.select('tbody tr'):
+                self.assertTrue(row.select('a[href^="https://"]'), (path.name, row.get_text()[:100]))
+
 
 if __name__ == '__main__':
     unittest.main()

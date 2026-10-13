@@ -218,9 +218,10 @@ def coverage_cards(summary, odds_doc, lines_doc):
     tier_rows = []
     for tier, data in sorted((summary.get("by_tier") or {}).items(), key=lambda kv: {"s": 0, "b": 1, "c": 2}.get(kv[0], 3)):
         tier_rows.append([tier_label(tier), data.get("total", 0), data.get("with_line", 0),
-                          data.get("total", 0) - data.get("with_line", 0)])
+                          data.get("total", 0) - data.get("with_line", 0),
+                          '<a href="https://play.hotspawn.com/lobby">official fixture inventory</a>'])
     return (html_cards,
-            table(["Tier", "Fixtures", "With external line", "Unverified"], tier_rows),
+            table(["Tier", "Fixtures", "With external line", "Unverified", "Source (counts derived)"], tier_rows),
             [{"key": k, "lines": v} for k, v in sorted((summary.get("by_source") or {}).items())])
 
 
@@ -229,14 +230,14 @@ def source_health_table(odds_evidence, probe_evidence):
     for row in (odds_evidence.get("candidate_sources") or []):
         status = row.get("status")
         ok = "reachable" if status == 200 else f"HTTP {status}" if status else "connection failed"
-        rows.append([esc(row.get("key")), esc(row.get("url")),
+        rows.append([esc(row.get("key")), f'<a href="{esc(row.get("url"))}" rel="noopener">{esc(row.get("url"))}</a>', 
                      f'<span class="{"ok" if status == 200 else "warn"}">{esc(ok)}</span>',
                      esc((row.get("preview") or "")[:120])])
     for row in (probe_evidence.get("probes") or []):
         status = row.get("http_status")
         ok = "reachable" if status == 200 else f"HTTP {status}" if status else "connection failed"
         cf = " · Cloudflare challenge" if row.get("cloudflare_mitigated") else ""
-        rows.append([esc(row.get("key")), esc(row.get("url")),
+        rows.append([esc(row.get("key")), f'<a href="{esc(row.get("url"))}" rel="noopener">{esc(row.get("url"))}</a>', 
                      f'<span class="{"ok" if status == 200 else "warn"}">{esc(ok + cf)}</span>',
                      esc((row.get("body_preview") or "")[:120])])
     seen, out = set(), []
@@ -377,11 +378,12 @@ unverified rather than estimated. {len(lol_fixtures)} LoL fixtures are listed fo
         has = len(with_lines.get(name, []))
         t_rows.append([f'<a href="tournament-{slug}.html">{esc(name)}</a>', len(group), has,
                        len(group) - has,
-                       " · ".join(sorted({tier_label(f.get("tier")) for f in group}))])
+                       " · ".join(sorted({tier_label(f.get("tier")) for f in group})),
+                       '<a href="https://play.hotspawn.com/lobby">official fixture inventory</a>'])
     tour_body = f"""
 <p>Fixtures are grouped by the tournament name reported by the lobby API. Each tournament page lists its
 fixtures with the same verification columns as the main table.</p>
-{table(["Tournament", "Fixtures", "With external line", "Unverified", "Tiers"], t_rows)}
+{table(["Tournament", "Fixtures", "With external line", "Unverified", "Tiers", "Source (counts derived)"], t_rows)}
 """
     write("tournaments.html", page("Tournaments", "Pick'em coverage per tournament.", tour_body,
                                    generated_at, active="tournaments.html"))
@@ -415,7 +417,8 @@ fixtures with the same verification columns as the main table.</p>
     stale = [f for f in fixtures if "fixture_start_time_in_the_past_or_stale_source_status" in (f.get("review_flags") or [])]
     stale_rows = [[esc(fmt_time(f.get("start_time_utc"))), esc(f.get("competition")), f'{esc(f.get("team_a"))} vs {esc(f.get("team_b"))}',
                    esc(f.get("source_reported_status")),
-                   '<span class="chip">scheduled in the past but the source still reports a pickable status</span>']
+                   '<span class="chip">past kickoff; raw source status is not proof the fixture is pickable</span>',
+                   f'<a href="{esc(f.get("hotspawn_match_url"))}" rel="noopener">official fixture</a>']
                   for f in stale[:80]]
     rejects_rows = [[esc(r.get("fixture_id")), esc(r.get("source")), esc(r.get("reason")),
                      esc(r.get("fixture") or r.get("event") or ""),
@@ -454,7 +457,7 @@ no value was inferred from HotSpawn or from any other source.</p>
 <h2>2. Stale fixtures ({len(stale)})</h2>
 <p>The lobby API still reports these as pickable while their scheduled start is in the past. The raw
 source status is preserved; we do not correct it.</p>
-{table(["Scheduled (UTC)", "Tournament", "Match", "Source-reported status", "Note"], stale_rows)}
+{table(["Scheduled (UTC)", "Tournament", "Match", "Source-reported status", "Note", "Source"], stale_rows)}
 
 <h2>3. Bookmaker lines that were deliberately not used ({len(unmatched_rows)})</h2>
 <p>Quotes for CS2 matches that are <em>not</em> in the current pick'em fixture list (for example the
@@ -734,7 +737,7 @@ STYLE = """
 --acc:#4da3ff;--ok:#3fb950;--warn:#d29922;--bad:#f85149}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-.wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+.wrap{overflow-wrap:anywhere;max-width:1180px;margin:0 auto;padding:0 18px}
 .topbar{background:linear-gradient(180deg,#111827,#0d1117);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
 .topbar .wrap{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:12px 18px}
 .brand{font-weight:600;display:flex;align-items:center;gap:8px}

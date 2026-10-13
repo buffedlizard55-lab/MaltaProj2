@@ -1,11 +1,12 @@
 """Hosted Chromium verifies the primary root dashboard (mobile and desktop)."""
 import subprocess
+import os
 from playwright.sync_api import sync_playwright
 
 server = subprocess.Popen(['python', '-m', 'http.server', '8766', '--bind', '0.0.0.0'])
 try:
     with sync_playwright() as p:
-        browser = p.chromium.launch(executable_path='/usr/bin/google-chrome', headless=True, args=['--no-sandbox'])
+        browser = p.chromium.launch(executable_path=os.environ.get('CHROME_BIN', '/usr/bin/google-chrome'), headless=True, args=['--no-sandbox'])
         page = browser.new_page()
         errors = []
         page.on('pageerror', lambda error: errors.append(str(error)))
