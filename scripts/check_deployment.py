@@ -5,7 +5,7 @@ import time
 import re
 from urllib.request import Request, urlopen
 
-base='https://buffedlizard55-lab.github.io/MaltaProj2/'
+base='https://buffedlizard55-lab.github.io/MaltaProj2/docs/'
 version=os.environ.get('GITHUB_SHA','verification')
 def get(path):
     with urlopen(Request(base+path+'?verification='+version,

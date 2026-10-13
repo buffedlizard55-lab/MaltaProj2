@@ -39,9 +39,11 @@ jobs:
         run: |
           pip install playwright==1.55.0
           python scripts/browser_smoke.py
+      - name: Stage all session-owned published sections
+        run: python scripts/stage_site.py
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: docs
+          path: out/site
   public-probe:
     if: github.ref == 'refs/heads/arena/ef111e02-maltaproj2'
     runs-on: ubuntu-24.04
