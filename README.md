@@ -1,71 +1,94 @@
-# MaltaProj2 — Hotspawn Pick'em → independent betting lines
+# LineWatch — Hotspawn pick’em source audit
 
-Reverse-engineering project for the **Hotspawn Play CS2 Pick'em lobby**
-(<https://play.hotspawn.com/lobby>): every fixture that is open for picks is
-enumerated, verified against independent esports data sources, priced from
-external betting markets, and converted into **our own de-margined probability**.
+**Dashboard:** https://buffedlizard55-lab.github.io/MaltaProj2/
 
-**Live site:** <https://buffedlizard55-lab.github.io/MaltaProj2/>
+An evidence-first static directory, external-odds reference analysis, and transparent review queue. Not affiliated with Hotspawn or a bookmaker.
 
-## Ground rules this repo enforces
+## What is implemented
 
-* **Hotspawn is never used as a probability.** The crowd "picked" percentage is
-  shown in its own column labelled *context only* and is excluded from every
-  calculation.
-* **Every row carries source links** to the official pages used for it.
-* **Nothing is inferred.** If a value could not be confirmed from a source, the
-  cell is left empty and the item is published on the *Flagged for review* page.
+- Automatic parsing of the public lobby's Angular `ng-state` fixture response; source IDs, explicit UTC timestamps, sport and per-row official links.
+- All 86 embedded records and 27 rendered cards in the preserved hosted-runner observation. This is not proof of complete cross-game coverage. Live runs may differ.
+- Searchable directory, visibility filter, CSV/JSON downloads, source-health report, methodology and row-level Flagged for Review page.
+- Two externally observed Thunderpick Match Winner markets, with our reproducible proportional no-vig reference calculations. **Not current predictions.**
+- Hourly GitHub Actions refresh attempts and Pages deployment, with fail-closed collection, retained previous snapshot, automated arithmetic/parser/provenance/link tests.
 
-## Layout
+## Deliberately not claimed
 
-| Path | What it is |
-|---|---|
-| `data/pickem_pool.json` | Canonical dataset: 26 open fixtures, captured prices, derived probabilities, sources, tournament pool counts, flagged items |
-| `data/keys.json` | Field-by-field description of the dataset |
-| `scripts/build.py` | Single source of truth: captured values + URLs + derivation + site generator |
-| `scripts/check_links.py` | Internal link/asset checker for the generated site |
-| `docs/` | Static GitHub Pages site (dashboard, all matches, by tournament, analysis, methodology, flagged for review, sources) |
-| `COORDINATION.md` | Shared task board for parallel agent sessions, with the verification log |
+A complete, up-to-date externally priced list has **not** been achieved. Bookmaker direct collection returned a Cloudflare 403. The two reference observations lack provider quote timestamps and validated cross-source event joins. Current odds/probability cells therefore stay blank for every fixture. Hotspawn crowd-pick percentages are never used by the model or imported into normalized data. A successful HTTP probe is not a validated odds adapter.
 
-## Pipeline
+The public source also contains stale records marked scheduled, cached responses, and a six-minute payload lock offset versus the five-minute help-page rule. These findings are published on the review page, not hidden.
 
-1. **Enumerate** — `play.hotspawn.com/lobby` + `/cs2-pickems` (three reads; the
-   open-for-picks list was stable, crowd percentages tick).
-2. **Verify** — HLTV match pages / event listings, plus bo3.gg where HLTV has no
-   per-match page yet.
-3. **Price** — external markets only: EGamersWorld's `Bets on <event> by bc.game`
-   odds modules and Polymarket CS2 markets.
-4. **De-margin** — `p_i = (1/o_i) / Σ(1/o_j)` for bookmaker odds;
-   `p_i = c_i / Σ c_j` for prediction-market cents.
-5. **Our line** — equal-weight average of the de-margined sources captured for
-   that fixture; fair odds = `1/p`. Rows with no captured two-sided price stay
-   blank and are flagged.
+## Reproduce
+
+```sh
+python -m venv .venv
+. .venv/bin/activate
+pip install -r scripts/requirements.txt
+python -m unittest discover -s tests -v
+python scripts/collect.py     # public network required; failures preserve snapshot
+python scripts/build.py
+python -m http.server 8000 --bind 0.0.0.0 --directory docs
+```
+
+Offline evidence replay: `python scripts/collect.py --fixture docs/evidence/probe/lobby.txt`.
+
+## Provenance
+
+- [Official lobby](https://play.hotspawn.com/lobby): public rendered cards and embedded `/api/v1/fixtures` body. The permalink map is read from the page, not requested from its admin-named URL. No login or private endpoint discovery is required.
+- [Official rules](https://play.hotspawn.com/how-it-works).
+- [9z Team / Aurora bookmaker market](https://thunderpick.io/esports/cs2-betting/thunderpick-world-championship-2026/11024/9z-team-vs-aurora/2796376).
+- [Astralis / Sashi bookmaker market](https://thunderpick.io/esports/cs2-betting/pulse-beat-iii/11173/astralis-vs-sashi/2767822).
+- [HLTV analytics](https://www.hltv.org/betting/analytics): inspected secondary source, not a verified pricing input.
+
+`docs/evidence` contains public HTML saved as inert `.txt`, selected-field extracts, and sanitized HTTP headers. No session cookies are needed. `docs/data` separates source fixture facts, quote observations and collection health. Reference quotes remain dated and are not overwritten by a new build. Deployed refreshes are artifacts, not automatic commits to main; the repository retains the reviewed baseline. Workflow run artifacts and the live JSON provide the latest generated snapshot.
+
+## Verification scope
+
+Tests verify source parsing, exact fixture values against preserved HTML, odds arithmetic, missing-data behavior, official links on every generated table row, and all local links/anchors. They do not certify every external URL is reachable or that a source is factually correct. No aliases, future years, market identities, live states or missing prices are inferred. See `COORDINATION.md` for integration and release history.
+
+## Parallel publication retained for review
+
+Another session merged PR #7 while this integration was active. Its root-level TWC model and datasets remain in Git, and its [original README is preserved](docs/evidence/parallel-898abb4f-readme.md). Those outputs are **not** source-verified inputs to LineWatch. They describe hypothetical pairings and unsupported claims of absent bookmaker lines that conflict with this session's observed explicit markets. See the LineWatch Flagged for Review page; do not mistake the parallel model for current verified pick’em pricing.
+
+---
+
+# Pick'em line reconstruction — priced board at `/pickem/` (session `a0fcf175`)
+
+Complementary deliverable to the audit dashboard above: the **26 fixtures that were open for picks** at
+snapshot time, each priced from **external markets only** and converted into our own de-margined line.
+
+* **Board:** https://buffedlizard55-lab.github.io/MaltaProj2/pickem/ (7 pages: dashboard, all matches,
+  by tournament, analysis, methodology, flagged for review, sources)
+* **Dataset:** `data/pickem_pool.json` (26 rows, per-row source links, captured prices, derived lines,
+  tournament pool counts, 14 flagged items) and `data/keys.json`
+* **Pipeline:** `scripts/build_pickem_lines.py` (captured values sit next to the URL they came from;
+  regenerates `data/**` and `pickem/**`), `scripts/check_links.py` (0 broken local links, 138 external
+  source links)
+
+## Method
+
+`p_i = (1/o_i) / Σ_j(1/o_j)` for bookmaker decimals, `p_i = c_i / Σ c_j` for prediction-market cents;
+our line = equal-weight average of the available de-margined sources; fair odds = `1/p`. Hotspawn's
+crowd percentage is displayed for context and is **never** part of any probability.
+
+## Coverage (2026-10-13 UTC snapshot)
+
+* 25/26 rows carry a line; `FORZE Reload vs LFO 10` is deliberately blank and flagged (no market pairs
+  those two teams).
+* 22 rows priced from EGamersWorld's `Bets on <event> by bc.game` modules, 20 from Polymarket CS2
+  markets, 17 from both.
+* Kickoffs are true UTC from the lobby payload's `scheduled_start` epoch (evidence:
+  `audits/1d4de836/lobby-snapshot-audit.json`, already in this repository), cross-checked against all
+  26 HLTV match pages. Hotspawn's rendered clock reads 4 h earlier (US Eastern); Polymarket's Elisa
+  clocks read 4 h earlier again — both are published on the Flagged page, not silently corrected.
+* Corrections logged on the Flagged page: the `RoundsGG vs Voca` price mapping was double-flipped in a
+  first build and is corrected; the two ESL Challenger League fixtures now carry their HLTV match pages
+  (2399204, 2399232); Elisa bc.game lines were completed on re-check (WBT–EAC refined to the page's own
+  1.989/1.722); the WROTBERRY/WBT alias gained direct evidence (EGamersWorld team URL slug `wrotberry`).
 
 ## Build
 
-```bash
-python3 scripts/build.py        # regenerates data/*.json and docs/**
-python3 scripts/check_links.py  # verifies no broken internal links
+```sh
+python3 scripts/build_pickem_lines.py   # regenerates data/** and pickem/**
+python3 scripts/check_links.py          # verifies pickem/ has no broken local links
 ```
-
-## Coverage (snapshot 2026-10-13, UTC)
-
-* 26 fixtures open for picks; 25 carry a line, 1 left blank and flagged.
-* 22 fixtures with a bc.game (via EGamersWorld) line, 20 with a Polymarket market, 17 with both.
-* Quality badges: 12 High, 8 Medium, 5 Low, 1 n/a (blank row).
-* 14 flagged items, each with the source link needed to resolve it.
-* Kickoffs are UTC, taken from the lobby payload's `scheduled_start` epoch and matched against HLTV
-  (the lobby's rendered clock reads 4 h earlier, US Eastern - see the Flagged page).
-
-Everything on the site is a point-in-time capture. Re-check the linked source
-before acting on any number.
-
-## Corrections made after the first pass (all logged on the Flagged page)
-
-* Kickoff times are UTC from the lobby payload epoch, not the rendered (US Eastern) labels.
-* `RoundsGG vs Voca` (hs-1080289) had its Polymarket prices double-flipped in the first build;
-  corrected to RoundsGG 47c / Voca 91c and re-verified against the market page and the HLTV slug.
-* The two ESL Challenger League fixtures now carry their HLTV match pages (2399204, 2399232, both bo3).
-* Elisa BreakOut bc.game lines were completed from the EGamersWorld event page (7 fixtures added), and
-  the WBT/EA Copenhagen pair refined to the page's own 1.989/1.722 figures.
-* The independent 86-row lobby audit committed here (`audits/1d4de836/`) is cited by the coverage flag.
