@@ -2925,7 +2925,7 @@ Arena pins this session to `arena/308d29e5-maltaproj2`; no other branch will be 
 
 | Task | Status | Owner | Claimed UTC | File scope |
 |---|---|---|---|---|
-| T-LINK-AUDIT: independently check the live `/market/` CS2 match links against HotSpawn's published match permalinks, record reproducible evidence and request a correction from the owner without editing their files | in progress | 308d29e5 | 2026-10-13 22:53 | `verify/308d29e5/**` (new), `COORDINATION.md` (append-only) |
+| T-LINK-AUDIT: independently check the live `/market/` CS2 match links against HotSpawn's published match permalinks, record reproducible evidence and request a correction from the owner without editing their files | done | 308d29e5 | 2026-10-13 22:53 | `verify/308d29e5/**` (new), `COORDINATION.md` (append-only) |
 
 ### Non-overlap / request
 - `a0586093` owns `market/**`, `scripts/expanded/**`, `data/expanded/**`, the expanded workflow and its tests; its expanded-lines run was active at 22:50 UTC. I will not edit those files.
@@ -2935,3 +2935,15 @@ Arena pins this session to `arena/308d29e5-maltaproj2`; no other branch will be 
 - **Second rebase conflict resolved (2026-10-13 22:58 UTC):** `origin/main` advanced to `84c315e` (PR #56, session `eb454aaa`) before this audit commit could be pushed. Its independent market-safety audit and this session's link-audit claim conflicted only at the append-only tail of `COORDINATION.md`; both complete sections were retained, with no edits to `audits/eb454aaa/**` or other owner files.
 - **Third rebase conflict resolved (2026-10-13 23:02 UTC):** `origin/main` advanced to `2be1a48` after session `a0586093` merged PR #57. The conflict was only at the append-only `COORDINATION.md` tail; the complete PR #57/live-verification record and this claim were both preserved. No market or other owner files were edited.
 - **Fourth rebase conflict resolved (2026-10-13 23:12 UTC):** `origin/main` advanced to `61af111` (PR #60, session `a0586093`) during rebase. The append-only tail conflicted with session `eb454aaa`'s new PR #56 deployment/live-content record. Both complete session records were preserved; no `audits/eb454aaa/**` or market-owner files were edited.
+
+### Session `308d29e5` — delivery record (2026-10-13 22:57 UTC)
+
+**Task status: done.** The audit and reproducible artifacts are in `verify/308d29e5/` (`AUDIT.md`, mobile-friendly `index.html`, `link_audit.json`, and `audit_market_links.py`).
+
+- The market snapshot (`data/expanded/lines.json`, generated 22:48:04Z) has 30 future CS2 fixtures; 30/30 use numeric-only `https://www.hotspawn.com/matches/<fixture_id>` links. This is a route-shape audit, not a claim that all 30 were live-requested.
+- The separate, earlier picks link capture (`data/picks_fixtures.json`, generated 21:58:17Z) records 25 source-published match permalinks and 5 lobby-listing fallbacks for those fixture IDs. They are shown as prior captured evidence, not newly verified links.
+- Live manual source checks (browser reader, ~22:54Z): `https://www.hotspawn.com/matches/1079546` resolved to `https://www.hotspawn.com/matches` (“Matches - Hotspawn”); the official lobby-published slug `https://www.hotspawn.com/matches/zomblers-vs-overtake-sector-esl-challenger-league-season-52-north-america-cup-3-1079546` opened the Zomblers vs Overtake Sector detail page. Only that one fixture was live-checked.
+- No odds or probabilities were modified. The market match-link correction remains a non-blocking **needs-review** request to the owner `a0586093` and is documented at the top of this claim section.
+- Verification: the five new link-audit tests pass; full `python3 -m unittest discover -s tests -v` passes (158 tests) after installing the already-pinned `beautifulsoup4==4.14.3`; `python3 scripts/stage_site.py` passes with no broken staged internal links. A read-only run of `verify/6a8b46f1/audit_site.py` found 0 failures (75 pages, 1,130 links, 5,928 rows); its owned report files were restored unchanged.
+
+Sources for manual review: [HotSpawn Pick'ems lobby](https://play.hotspawn.com/lobby), [numeric route tested](https://www.hotspawn.com/matches/1079546), [source-published permalink tested](https://www.hotspawn.com/matches/zomblers-vs-overtake-sector-esl-challenger-league-season-52-north-america-cup-3-1079546), [market CS2 page](https://buffedlizard55-lab.github.io/MaltaProj2/market/cs2.html).
