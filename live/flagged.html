@@ -18,13 +18,22 @@ so the numbers above can be challenged item by item.</div>
 <b>both</b> teams. Where a name in the standings merely looks similar, the mapping is <b>never</b> applied
 automatically — it is listed here for a human decision, because a wrong rating would silently corrupt a
 probability.</p>
-<function rating_candidates at 0x7fd8c4b86de0>
+<function rating_candidates at 0x7f30d7c5c680>
+<h2>Listing irregularities</h2>
+<p>The lobby page state carries fixture ids that are not all from the current week: months present
+{&#x27;2026-06&#x27;: 58, &#x27;2026-07&#x27;: 1, &#x27;2026-10&#x27;: 31}, of which
+59 have a
+kickoff more than 30 days before this week's window — while the rendered page shows
+52 match links. The lobby's own
+"matches this week" counter (68) is not
+reproduced by any candidate rule tried in the methodology page and stays published as unexplained rather
+than guessed. Stale ids are labelled and excluded from live coverage numbers.</p>
 <h2>Coverage gap against the lobby listing</h2>
 <p>Check C11 compares the fixture ids the lobby page itself carries against this board: if the lobby
 lists a match that is not in this board, it is reported here rather than dropped.</p>
 <pre style="white-space:pre-wrap;font-size:12.5px;color:#9aa4b2">{&quot;listed_ids&quot;: 90, &quot;missing_count&quot;: 0, &quot;missing&quot;: [], &quot;listing_flag_mismatches&quot;: []}</pre>
 <h2>Line-by-line verification of this build</h2><ul><li>PASS — C1 per-source probabilities re-derive from raw prices: {&quot;rows&quot;: 16, &quot;max_abs_delta&quot;: 0.0, &quot;failures&quot;: []}</li><li>PASS — C2 consensus equals the mean of its sources: {&quot;rows&quot;: 16, &quot;failures&quot;: []}</li><li>PASS — C3 published pick is the higher published probability: {&quot;picked_rows&quot;: 123, &quot;failures&quot;: []}</li><li>PASS — C4 every market source carries a link and a read time: {&quot;failures&quot;: []}</li><li>PASS — C5 estimates re-derive from the official Valve VRS table: {&quot;rows&quot;: 107, &quot;failures&quot;: []}</li><li>PASS — C6 unverified rows stay blank and flagged: {&quot;rows&quot;: 351, &quot;failures&quot;: []}</li><li>PASS — C7 HotSpawn crowd percentages are not an input: {&quot;rows_compared&quot;: 474, &quot;identical&quot;: true}</li><li>PASS — C8 board covers the fixture snapshot exactly once: {&quot;board&quot;: 474, &quot;snapshot&quot;: 474, &quot;duplicates&quot;: 0}</li><li>PASS — C9 no stale or in-play quote is published: {&quot;market_rows&quot;: 16, &quot;failures&quot;: []}</li><li>PASS — C10 probability arithmetic is in range and normalised: {&quot;failures&quot;: []}</li><li>PASS — C11 every lobby-listed fixture is present in the board: {&quot;listed_ids&quot;: 90, &quot;missing_count&quot;: 0, &quot;missing&quot;: [], &quot;listing_flag_mismatches&quot;: []}</li></ul></main>
-<footer>Generated 2026-10-13T23:34:25Z · Fixtures discovered from the HotSpawn Pick'ems lobby; all
+<footer>Generated 2026-10-13T23:38:39Z · Fixtures discovered from the HotSpawn Pick'ems lobby; all
 probabilities come from external bookmakers or a labelled originated estimate — never from HotSpawn's
 crowd pick percentage. Estimates are not guarantees. 18+; gamble responsibly. Not affiliated with
 HotSpawn or any bookmaker.</footer>

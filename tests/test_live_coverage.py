@@ -14,6 +14,7 @@ Run: python3 -m unittest tests.test_live_coverage -v
 from __future__ import annotations
 
 import json
+import re
 import sys
 import unittest
 from datetime import datetime, timedelta, timezone
@@ -431,6 +432,25 @@ class TestPublishedBoard(unittest.TestCase):
             self.skipTest("no samples in this checkout")
         stray = sorted(p.name for p in samples.glob("*.html"))
         self.assertEqual(stray, [], f"captured pages must be stored as .txt, found: {stray}")
+
+    def test_index_labels_stale_listing_ids_instead_of_counting_them_as_live(self):
+        """The lobby page state carries ids from months back; the index must split them off and say so."""
+        site = ROOT / "live"
+        if not site.is_dir():
+            self.skipTest("pages not rendered in this checkout")
+        profile = (self.board["window_analysis"].get("listed_profile")
+                   or self.board["window_analysis"].get("lobby_counters", {}).get("listing"))
+        self.assertTrue(profile, "listed profile missing from the board")
+        text = (site / "index.html").read_text()
+        listed = self.board["summary"]["lobby_listed_rows"]
+        open_m = re.search(r"open for picks \((\d+)\)</h2>", text)
+        closed_m = re.search(r"no longer open for picks \((\d+)\)</h2>", text)
+        self.assertIsNotNone(open_m, "no open-for-picks section on the index")
+        self.assertIsNotNone(closed_m, "no closed-listing section on the index")
+        self.assertEqual(int(open_m.group(1)) + int(closed_m.group(1)), listed)
+        self.assertIn("more than 30 days", text)
+        flagged = (site / "flagged.html").read_text()
+        self.assertIn("Listing irregularities", flagged)
 
     def test_probability_coverage_is_documented_not_assumed(self):
         summary = self.board["summary"]

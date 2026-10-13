@@ -12,8 +12,12 @@ if OUT.exists():
 OUT.mkdir(parents=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh'):
 # 'live' added by session 3cd9787c (T-COVER current-lobby coverage board), additive single entry.
+# 'fresh' added by session 3cd9787c as an integration unblock: the shared root NAV links
+# fresh/index.html (section dd2b7fee landed on main), so the artifact must carry the directory or
+# every root page fails the staged-link check and no site is published. Additive single entry.
+# dd2b7fee's own files are not modified here.
     source=ROOT/name
     if source.exists():
         shutil.copytree(source,OUT/name,ignore=shutil.ignore_patterns('__pycache__','*.pyc','.git'))

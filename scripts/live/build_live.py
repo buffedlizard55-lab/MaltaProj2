@@ -105,6 +105,27 @@ def window_analysis(fixtures: list[dict], counters: dict, now) -> dict:
         for name, info in out["candidates"].items():
             if info["by_tier"].get(tier) == value:
                 matches.append({"rule": name, "counter": f"tier_{tier}", "value": value})
+    # Profile of the lobby's own listing: the page state carries ids that are *not* all from the
+    # current week. Publishing that fact (rather than calling all 90 ids "this week's matches") is
+    # part of the line-by-line honesty of the board: every id is shown, but the stale ones are
+    # labelled and never counted as live coverage.
+    listing_rows = [f for f in fixtures if str(f.get("fixture_id")) in listing_set] if listing_set else []
+    months: dict[str, int] = {}
+    stale = 0
+    for f in listing_rows:
+        d = parse_iso(f.get("start_time_utc"))
+        if d is None:
+            continue
+        months[d.strftime("%Y-%m")] = months.get(d.strftime("%Y-%m"), 0) + 1
+        if d < start - timedelta(days=30):
+            stale += 1
+    out["listed_profile"] = {
+        "ids_carried_by_page_state": len(listing_set),
+        "present_in_this_board": len(listing_rows),
+        "kickoff_months": dict(sorted(months.items())),
+        "stale_kickoff_more_than_30d_before_this_week": stale,
+        "rendered_match_links": (counters.get("listing") or {}).get("match_links_rendered"),
+    }
     out["counter_reproductions"] = matches
     out["unexplained_counters"] = sorted({
         k for k, v in counters.items()
@@ -809,6 +830,8 @@ def render_index(board: dict, verification: dict) -> str:
         return (locked, order[r["published"]["basis"]], r["start_time_utc"] or "")
 
     listed = sorted([r for r in rows if r.get("listed_in_lobby") is True], key=sort_key)
+    open_listed = [r for r in listed if "picks_locked_or_past" not in r["flags"]]
+    closed_listed = [r for r in listed if "picks_locked_or_past" in r["flags"]]
     other = sorted([r for r in rows if r.get("listed_in_lobby") is not True], key=sort_key)
     s = board["summary"]
     kpis = f"""<div class="kpi">
@@ -829,13 +852,35 @@ Verification: {verification["passed"]}/{len(verification["checks"])} checks pass
     win_note = (f"""<div class="note"><b>Coverage check.</b> The lobby page itself prints """
                 f"""{esc(wc.get("matches_this_week"))} matches this week and All tiers {esc(wc.get("all_tiers"))} """
                 f"""(tiers {esc(wc.get("tier_counts"))}); its own page state carries """
-                f"""{esc(listing.get("listed_count"))} fixture ids, of which """
-                f"""{s["lobby_listed_rows"]} are in this board's window and """
-                f"""{s["lobby_listed_with_probability"]} have a published probability."""
+                f"""{esc(listing.get("listed_count"))} fixture ids; the rendered page shows """
+                f"""{esc((board["window_analysis"].get("listed_profile") or {}).get("rendered_match_links"))} """
+                f"""match links. This board holds all {s["lobby_listed_rows"]} of those ids """
+                f"""({len(open_listed)} still open for picks, {len(closed_listed)} with picks already """
+                f"""locked or past), and {s["lobby_listed_with_probability"]} of them carry a published """
+                f"""probability. Of the carried ids, """
+                f"""{esc((board["window_analysis"].get("listed_profile") or {}).get("stale_kickoff_more_than_30d_before_this_week"))} """
+                f"""have a kickoff more than 30 days before this week (months: """
+                f"""{esc((board["window_analysis"].get("listed_profile") or {}).get("kickoff_months"))}) — """
+                f"""the page state is not a "this week" list, so stale ids are labelled, never counted as """
+                f"""live coverage."""
                 + (f""" <b>Unreproduced counters: {esc(", ".join(board["window_analysis"]["unexplained_counters"]))}"""
                    f""" — published as unexplained rather than guessed.</b>"""
                    if board["window_analysis"].get("unexplained_counters") else "") + "</div>")
-    cards = "".join(row_card(r) for r in listed) or "<p>No fixtures in the lobby listing window.</p>"
+    cards = "".join(row_card(r) for r in open_listed) or "<p>No lobby-listed fixture is still open for picks.</p>"
+    closed_rows = "".join(
+        f'<tr><td>{esc(r["start_time_utc"])}</td><td>{esc(r["tier"])}</td>'
+        f'<td>{esc(r["competition"])}</td><td>{esc(r["team_a"])} vs {esc(r["team_b"])}</td>'
+        f'<td>{esc(r["published"]["basis"])}</td>'
+        f'<td>{esc("; ".join(r["flags"]))}</td>'
+        f'<td><a href="{esc(r["hotspawn_match_url"])}">fixture</a></td></tr>' for r in closed_listed)
+    closed_block = (
+        f'<h2>Listed by the lobby but no longer open for picks ({len(closed_listed)})</h2>'
+        f'<div class="note">Published so the listing coverage is complete and auditable. Rows here carry a '
+        f'kickoff or lock time in the past; a stale fixture the lobby page state still carries is shown, '
+        f'never silently dropped, and never counted as live coverage.</div>'
+        f'<div class="wrap"><table><thead><tr><th>Kickoff (UTC)</th><th>Tier</th><th>Tournament</th>'
+        f'<th>Match</th><th>Basis</th><th>Flags</th><th>Source</th></tr></thead>'
+        f'<tbody>{closed_rows}</tbody></table></div>') if closed_listed else ""
     other_block = ""
     if other:
         other_rows = "".join(
@@ -852,8 +897,8 @@ Verification: {verification["passed"]}/{len(verification["checks"])} checks pass
                        f'<th>Tournament</th><th>Match</th><th>Basis</th><th>Pick</th><th>Source</th>'
                        f'</tr></thead><tbody>{other_rows}</tbody></table></div></details>')
     return page("HotSpawn Pick'ems — live probability board", "index.html",
-                kpis + note + win_note + f'<h2>Listed in the lobby now ({len(listed)})</h2>'
-                f'<div class="cards">{cards}</div>' + other_block,
+                kpis + note + win_note + f'<h2>Listed by the lobby and open for picks ({len(open_listed)})</h2>'
+                f'<div class="cards">{cards}</div>' + closed_block + other_block,
                 board["generated_at_utc"])
 
 
@@ -927,6 +972,15 @@ so the numbers above can be challenged item by item.</div>
 automatically — it is listed here for a human decision, because a wrong rating would silently corrupt a
 probability.</p>
 {rating_candidates}
+<h2>Listing irregularities</h2>
+<p>The lobby page state carries fixture ids that are not all from the current week: months present
+{esc(((board.get("window_analysis") or {}).get("listed_profile") or {}).get("kickoff_months"))}, of which
+{esc(((board.get("window_analysis") or {}).get("listed_profile") or {}).get("stale_kickoff_more_than_30d_before_this_week"))} have a
+kickoff more than 30 days before this week's window — while the rendered page shows
+{esc(((board.get("window_analysis") or {}).get("listed_profile") or {}).get("rendered_match_links"))} match links. The lobby's own
+"matches this week" counter ({esc(((board.get("window_analysis") or {}).get("lobby_counters") or {}).get("matches_this_week"))}) is not
+reproduced by any candidate rule tried in the methodology page and stays published as unexplained rather
+than guessed. Stale ids are labelled and excluded from live coverage numbers.</p>
 <h2>Coverage gap against the lobby listing</h2>
 <p>Check C11 compares the fixture ids the lobby page itself carries against this board: if the lobby
 lists a match that is not in this board, it is reported here rather than dropped.</p>
