@@ -28,3 +28,6 @@ jobs:
         run: python -m unittest discover -s tests -p test_eb454aaa.py -v
       - name: Verify mobile and desktop pages in hosted Chrome
         run: python audits/eb454aaa/browser_smoke.py
+      - name: Verify actual deployed audit and dashboard
+        if: github.event_name == 'workflow_dispatch'
+        run: python audits/eb454aaa/check_live.py

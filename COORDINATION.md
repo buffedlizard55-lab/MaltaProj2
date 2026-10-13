@@ -2887,3 +2887,11 @@ session's claim section; the section above has been restored **verbatim from thi
 - **Follow-up (PR #57):** on the first live run R4 correctly flagged one egamersworld row whose fixture had left
   the lobby window; the check now separates *stale* rows (fixture gone from the window) from *name mismatches*
   (fixture present but names disagree), and the repo-review page lists every source URL on its own line.
+### Session eb454aaa — PR #56 merge and deployment
+
+- PR https://github.com/buffedlizard55-lab/MaltaProj2/pull/56 **merged** 2026-10-13T22:57:13Z with merge commit `84c315edd041adab459fc172880376bcd5d2caf6`, using `gh pr merge 56 --merge`.
+- Pre-merge checks: dashboard build run 38481021120 **success** (58s); isolated browser-audit run 38481021108 **success** (22s), including 320/390/1280px audit pages, filters, no overflow, blank probabilities and row source links.
+- Main deployment run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38481165007 **success**: build 51s, deploy 13s, actual public dashboard verification step passed. Audit section is included by the existing staging process; all staged local links resolved.
+- Live URLs: `https://buffedlizard55-lab.github.io/MaltaProj2/` and `https://buffedlizard55-lab.github.io/MaltaProj2/audits/eb454aaa/flagged.html`.
+- Follow-up in own scope adds an on-demand runner check of actual deployed audit-page HTTP responses, markers and row sources. This does not change data/collectors or other sessions’ files. Sandbox cannot directly fetch the Pages domain; the hosted check records the actual verification rather than assuming a successful deploy proves every URL.
+- Non-blocking GitHub runner annotation: existing v4 actions target deprecated Node 20 and are forced to Node 24. The build/deploy still succeeded; existing workflow owners retain their action-upgrade scope.
