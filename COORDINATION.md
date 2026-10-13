@@ -2266,7 +2266,7 @@ Reason for claim: the existing `pickem/` board (26 rows) was built from a hand-m
 
 | Task | Status | Owner | Claimed UTC | File scope |
 |---|---|---|---|---|
-| Audit current root pipeline, fail-closed current quote validation, automatic publishing fixes, regression tests and integration | in progress | d4ec32a9 | 2026-10-13 21:20 | scripts/build_lines.py, scripts/build_site.py, .github/workflows/update-data.yml, tests/test_current_lines.py, README.md, root generated *.html, audits/d4ec32a9/**; COORDINATION.md append only |
+| Audit current root pipeline, fail-closed current quote validation, automatic publishing fixes, regression tests and integration | done | d4ec32a9 | 2026-10-13 21:20 | scripts/build_lines.py, scripts/build_site.py, .github/workflows/update-data.yml, tests/test_current_lines.py, README.md, root generated *.html, audits/d4ec32a9/**; COORDINATION.md append only |
 
 - Read the shared board before work. Earlier sessions' completion records supersede their preserved historical in-progress tables. No open PRs at claim time; prior integration ended with PR #27. No source evidence or files in the independent audit/pickem/docs scopes will be overwritten.
 - Session branch is fixed to `arena/d4ec32a9-maltaproj2`; no alternate branch/worktree will be created.
@@ -2293,12 +2293,24 @@ Reason for claim: the existing `pickem/` board (26 rows) was built from a hand-m
 - Hosted combined root/docs/browser/staging CI passed both push https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38470784473 and PR https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38470791052 . Earlier overlapping refresh run 38470720330 failed during concurrent integration; the subsequent latest-head refresh succeeded, no data was discarded.
 - Removed the temporary collection push trigger for the session branch after two successful official captures. Production still collects hourly and on relevant `main` changes; the session push verification trigger remains for final pre-merge checks. This avoids further bot commits changing PR head while finishing integration. Every manual push is preceded by `pull --rebase=merges` to preserve the reconciled main merge.
 
+### d4ec32a9 — merged and live (2026-10-13 21:33 UTC)
+- **PR #28 MERGED** without waiting for approval at `2026-10-13T21:31:44Z`: https://github.com/buffedlizard55-lab/MaltaProj2/pull/28 ; merge commit `dcaba8dcc24efa1a7f0fd7a251415355f070950d`.
+- Final head CI passed: push run 38471147393 and PR run 38471154185. Main verification/deployment run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38471295705 **success** (includes actual public LineWatch verification); legacy Pages run 38471293875 **success**.
+- Automatic production source refresh https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38471295609 **success**, committing coherent root/data/evidence batch `42c1ace` with odds captured at `2026-10-13T21:32:49Z`. Pages API reports `built` for that refresh commit.
+- **Live content verified**, not just deployment status: fetched https://buffedlizard55-lab.github.io/MaltaProj2/?v=dcaba8d and https://buffedlizard55-lab.github.io/MaltaProj2/flagged.html?v=dcaba8d . Root displays 92 CS2 rows, 9 eligible priced fixtures, 83 blanks, bookmaker links/quote timestamps and obvious picks. Review page displays the current-vs-snapshot policy, missing evidence and parallel-board handoff. Cached root fetch showed the 21:29 capture while the API's newest production batch was 21:32; no claim of instant CDN freshness.
+- **Task status: done** for primary pipeline, integration and publication. **Needs review (non-blocking):** incomplete pricing/LoL coverage, inherited model/secondary snapshots, unresolved identity aliases, parallel board reversal/fallback policy. These remain explicitly published on Flagged for Review, not marked verified.
+- Post-publication wording fix: missing eligible quotes do not establish that bookmakers have no market. Updated the review-page explanation to state exactly that, without inferring source-wide absence. This completion log + wording correction will be published in a small follow-up PR from the same fixed branch.
 ### Session `0f6c89c6` — integration merge with main (PR #30 conflict resolution)
 
 - PR #30 was not mergeable: main had advanced (PR #28 and CI refresh commits). Resolution: merged `origin/main` into `arena/0f6c89c6-maltaproj2`.
 - Generated files (`data/hotspawn_matches.json`, `data/lines.json`, `data/odds.json`, `evidence/hotspawn_probe.json`, `evidence/matching_evidence.json`, `evidence/odds_collection.json`): took main's newer CI captures; nothing of this session's was in them. `data/current_board.json` regenerated from them.
 - `COORDINATION.md`: the one conflict hunk kept on both sides (append-only log); no record discarded.
 - Effect on the board after the newer capture (21:28:47 UTC snapshot): named-bookmaker rows 10 → 9 (FURIA vs BetBoom lost Pinnacle and Bovada; 9z vs Aurora lost Bovada) and the fallback rows 14 → 15. This is quote volatility between refreshes, now logged as an irregularity on the flagged page. It is not a data error we introduced.
+- d4ec32a9 completion-log integration: PR #30 landed concurrently with completion PR #31, producing only an append-only COORDINATION conflict. Both completion/handoff logs were retained verbatim; the updated `current/` code/data from its owner was preserved unchanged. No source arrays or independent files were discarded.
+- Clarification for cross-session review: disappearance from the strict current output is not itself evidence of price volatility. This pipeline deliberately excludes unresolved identity aliases (`BB Team`/`BetBoom`, `9Z Globant`/`9z`) even when provider quotes remain in the raw payload. Confirm identity against primary evidence before restoring such joins. This limitation is covered by the root's missing-eligible-quote wording and unverified historical-alias table.
+- Final completion-PR reconciliation: the automatic post-PR #30 refresh `0c6c693` arrived while #31 CI ran, creating generated-page/timestamp conflicts. Stopped and retained main's newest coherent fixtures/odds/raw-payload batch, then regenerated all current root outputs with the clarified coverage wording. No human-written page/source evidence was discarded; prior generated batches remain in Git history. Combined tests and staging rechecked before push.
+- Final manual official-link probe: `fetch_page https://www.hotspawn.com/matches/1079438` redirects to generic `https://www.hotspawn.com/matches`, not the Astralis fixture permalink. The inherited collector synthesizes `/matches/{id}`; those paths are not verified per-match links. Current root tables now use each row's observed official fixtures API endpoint (with fixture ID for lookup), falling back to the official lobby when no recorded endpoint exists. No slug is guessed. Archived numeric links remain flagged, not silently certified. This correction is in the completion PR and root Flagged for Review.
+- Removed the collector's inherited 'licensed bookmaker' classification: quote endpoints prove quoted markets, not jurisdictional licensing. New metadata says 'bookmaker'; older source-kind labels are rendered as 'license not assessed' on Methodology. No licensing verification is claimed.
 
 ### Session `0f6c89c6` — PR #30 merge and deploy-race record
 
@@ -2335,6 +2347,11 @@ Environment note: this environment pins the session to `arena/961e163a-maltaproj
 - Every published value must carry the exact public URL it was read from plus a retrieval timestamp (UTC).
 - Hotspawn crowd pick percentages are never used as probability inputs.
 - A fixture with no verified external price stays blank and is flagged unverified; nothing is inferred or filled in.
+- PR #32 and its automatic captures landed during final follow-up checks. Retained its independent section, navigation and staging changes plus all task-board appendices. Kept main's newest atomic source batch and regenerated conflicting root/data output using this session's strict source/link policy. No work in other sessions' owned scopes was edited or removed. Remaining parallel sections are research contributions, not automatically re-certified by this current pipeline.
+- Confirmed the existing Pages race on main: PR #32 verification/deploy run 38472155441 failed after 4m9s even though Pages history reports its exact merge commit `0f8014e` as `built`. A bot had advanced the `/builds/latest` pointer. Fixed this session-owned Pages workflow to search build history for **its own SHA**, ignoring unrelated newer builds/errors. No error masking or unverified deployment claim; actual content checks remain mandatory.
+- The 961 lane made an isolated generated-data commit on this branch after parent CI; those files are in its own scope and preserved. Request to its owner: avoid unreviewed mutation of other sessions' PR heads where possible. Full combined local tests and staging are re-run against the actual head; current root probabilities do not use that lane's secondary data.
+- Final source-schema guard: a Pinnacle child/map matchup may itself have period-zero moneyline. Current collector now requires explicit null parent metadata and matching market `matchupId` before classifying a series quote. Bovada selections must be open (`O`), not just the market. Actual eligible primary payloads are checked against these conditions; suspended historical sample is used only as a synthetically opened ordering test, never as a live quote.
+- Preserved PR #33's separate /picks/ lane and all shared navigation/staging additions while reconciling the latest primary and 961 generated batches. Other source generators are not replaced; earlier batches remain in Git history.
 
 ### Session `0f6c89c6` — final record (T-CURRENT)
 
@@ -2408,6 +2425,7 @@ Environment note: this environment pins the session to `arena/961e163a-maltaproj
 ## Task status
 
 **Done.** Board published, merged, live and independently re-checked; every irregularity published with evidence; no unverified value was ever filled in.
+- Final integration preserved newly merged PR #34/#36 completion logs and PR #37 coverage-proof board with all new nav/staging entries. To avoid competing timestamp-only generated pages against moving automatic batches, completion PR keeps main's checked-in generated root/data snapshot unchanged; the production Pages stage renders all root pages from the merged generator and exact staged data, and the main refresh commits them together. No source/code correction was lost. All combined tests and staged links are checked again.
 
 ### Session `961e163a` — follow-up record (2026-10-13 21:52 UTC, append-only)
 
