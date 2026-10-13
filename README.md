@@ -14,7 +14,7 @@ crowd "picked %" is shown for reference and is never used as a probability input
 | Page | Content |
 |---|---|
 | `index.html` | Coverage summary, method in short, matches with verified lines, timestamps |
-| `cs2.html` | All 87 CS2 pick'em fixtures: odds per source, derived no-vig probability, verification status, review flags |
+| `cs2.html` | Automatically observed CS2 fixture inventory: odds per source, derived no-vig probability, verification status, review flags |
 | `lol.html` | LoL fixtures from the same lobby (external line collection not yet run for LoL) |
 | `tournaments.html` + `tournament-*.html` | Coverage per tournament |
 | `flagged.html` | Unverified rows, stale fixtures, unused bookmaker lines, rejected matches, source reachability, discrepancies, aliases |
@@ -52,3 +52,31 @@ blank and is listed on the Flagged for review page.
 LineWatch remains available at https://buffedlizard55-lab.github.io/MaltaProj2/docs/ with the independent 86-record source audit, two dated Thunderpick reference markets, original fair-line arithmetic, row-level review flags, CSV/JSON and collection health. Current odds in this stricter snapshot remain blank where current-market joins and freshness are not verified. This does not imply no prices exist in the separate integrated root pipeline.
 
 The Pages workflow now stages all session-owned root HTML/assets/data/evidence/audits **plus** `docs/` and `pickem/`. It waits for the legacy build before deploying the combined artifact. This supersedes the earlier docs-only artifact that hid other sections and the subsequent verification-only workflow. No root or pickem source generator is replaced; their data provenance remains their own. Local navigation is checked across the complete artifact and live LineWatch content is checked after deployment with bounded CDN-propagation retries.
+
+## Current pipeline safety policy (2026-10-13, d4ec32a9)
+
+The current root **CS2** and **Probabilities** tables supersede the earlier combined
+snapshot for current picks. They use only source-linked Pinnacle/Bovada full-match
+moneylines with explicit CS2 identity, confirmed participant/outcome alignment,
+exact UTC kickoff, a unique fixture/source join, an open prematch market and an
+upcoming fixture whose pick lock has not passed. Quote and fixture observation age
+must each be at most **four hours**. There is no tournament-token fallback.
+
+Hourly GitHub Actions collection requires no user input. It publishes root HTML,
+assets, JSON and evidence in one commit; errors in computation or rendering block
+publication. Every Pages render also recalculates quote eligibility. Sources can
+still be unavailable, and missing evidence leaves probabilities **blank**.
+A higher no-vig probability is labeled as the pick; this is a model estimate, not
+an official forecast, guarantee, or independently validated predictive accuracy.
+
+- Current reproducible data: `data/current_probabilities.json`, `data/lines.json`.
+- Quote/participant/market payloads and failures: `evidence/odds_collection.json`.
+- Rejected joins: `evidence/matching_evidence.json`.
+- Current audit: [`audits/d4ec32a9/REPORT.md`](audits/d4ec32a9/REPORT.md).
+- Tests: `python -m unittest discover -s tests -v`.
+
+All prior third-party and model data, `docs/`, `pickem/` and independent audit
+sections are preserved as dated research. They do **not** enter current picks,
+and are not universally re-verified by this session. LoL inventory is retained,
+but current primary-bookmaker LoL probabilities remain blank in this CS2-focused
+pipeline. Full fixture coverage does not mean every match has a confirmed price.

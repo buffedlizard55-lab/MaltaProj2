@@ -1,325 +1,248 @@
 #!/usr/bin/env python3
+"""Fail-closed current CS2 moneylines from official external quote endpoints.
+
+No crowd percentages, historical model lines or third-party quotes enter this model.
+Probability = reciprocal decimal price / sum of both reciprocals (proportional
+no-vig assumption). This is an estimate, never an official forecast.
 """
-Match HotSpawn pick'em fixtures to external bookmaker lines and derive no-vig probabilities.
-
-Matching rules (deliberately strict — see the audit handoff in the repo):
-  1. BOTH participants must match after normalisation, in the same order or reversed
-     (a reversed fixture gets its prices reversed).
-  2. Only full-match / series-winner moneyline markets are used. Map-winner, handicap and
-     total markets are excluded upstream in collect_odds.py.
-  3. If both sides carry a start time, they must agree within 90 minutes. If the bookmaker
-     does not publish a start time, the tournament/league name must correspond to the
-     fixture's tournament — otherwise the candidate is rejected and logged.
-  4. One bookmaker line is assigned to at most one fixture; ambiguous candidates are
-     rejected and logged for manual review.
-
-Derived output (clearly labelled, never presented as verified fact):
-    q_i = 1 / decimal_odds_i                       (implied probability share)
-    p_i = q_i / (q_a + q_b)                        (proportional no-vig estimate)
-    overround = (q_a + q_b) - 1                    (bookmaker margin)
-Consensus = arithmetic mean of the per-source p_i when two or more sources quote the
-fixture; the source list and the rule are published with the numbers.
-
-Outputs: data/lines.json (site input), evidence/matching_evidence.json (decisions + rejects)
-"""
-
 from __future__ import annotations
-
 import json
+import math
 import os
 import re
 import sys
 import unicodedata
 from datetime import datetime, timezone
+from urllib.parse import urlsplit
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Documented aliases: source spelling -> HotSpawn spelling. Each alias is only used when the
-# candidate also agrees on tournament and/or start time (checked below), and every applied
-# alias is written to evidence/matching_evidence.json with both raw rows so it can be audited.
-ALIASES = {
-    "bb team": "betboom",
-    "pvision": "parivision",
-    "parivision": "parivision",
-    "9z globant": "9z",
-    "team aurora": "aurora",
-    "aurora": "aurora",
-    "sashi esport": "sashi",
-    "sashi": "sashi",
-    "furia esports": "furia",
-    "furia": "furia",
+MAX_AGE_SECONDS = 4 * 3600  # published policy, not a claim of real-time prices
+ALIASES = {}  # unresolved historical identity aliases are not current evidence
+SOURCE_HOSTS = {
+    "pinnacle": {"guest.api.arcadia.pinnacle.com", "www.pinnacle.com"},
+    "bovada": {"www.bovada.lv"},
 }
-
-SUFFIXES = (" esports", " esport", " e sports", " gaming", " club")
-PREFIXES = ("team ",)  # e.g. Bovada "Team Falcons" -> "falcons", "Team AURORA" -> "aurora"
-TIME_TOLERANCE_MIN = 90
+MARKETS = {"series/match winner (moneyline)", "match winner (moneyline, full match)"}
 
 
-def norm(name: str) -> str:
-    # Unicode-normalise first so that e.g. "Grêmio" and a bookmaker's ASCII "Gremio" compare equal.
-    s = unicodedata.normalize("NFKD", str(name or ""))
-    s = "".join(ch for ch in s if not unicodedata.combining(ch)).strip().lower()
-    s = re.sub(r"[^a-z0-9]+", " ", s).strip()
-    for suf in SUFFIXES:
-        if s.endswith(suf.strip()):
-            s = s[: -len(suf.strip())].strip()
-    for pre in PREFIXES:
-        if s.startswith(pre):
-            s = s[len(pre):].strip()
-    s = re.sub(r"\s+", " ", s)
-    return ALIASES.get(s, s)
+def norm(name):
+    text = unicodedata.normalize("NFKD", str(name or ""))
+    text = "".join(c for c in text if not unicodedata.combining(c)).lower()
+    text = re.sub(r"[^a-z0-9]+", " ", text).strip()
+    if text.startswith("team "):
+        text = text[5:]
+    for suffix in (" esports", " esport", " gaming", " club"):
+        if text.endswith(suffix):
+            text = text[:-len(suffix)].strip()
+    return ALIASES.get(text, text)
 
 
 def parse_iso(value):
-    if not value:
-        return None
     try:
-        return datetime.fromisoformat(str(value).replace("Z", "+00:00"))
-    except Exception:
+        dt = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        return dt.astimezone(timezone.utc) if dt.tzinfo is not None else None
+    except (ValueError, TypeError):
         return None
 
 
-def tournament_tokens(name: str):
-    stop = {"cs2", "the", "series", "cup", "season", "2026", "iii", "ii", "v", "play", "in",
-            "championship", "league", "open", "clash", "sa", "na", "south", "north", "america",
-            "europe", "american", "challenger", "challengers"}
-    toks = {t for t in re.split(r"[^a-z0-9]+", str(name or "").lower()) if t and t not in stop}
-    return toks
+def iso(dt):
+    return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def tournament_matches(book_league: str, fixture_tournament: str) -> bool:
-    a, b = tournament_tokens(book_league), tournament_tokens(fixture_tournament)
-    if not a or not b:
-        return False
-    return bool(a & b)
+def fresh(value, now):
+    dt = parse_iso(value)
+    return dt is not None and 0 <= (now - dt).total_seconds() <= MAX_AGE_SECONDS
 
 
-def main() -> int:
-    with open(os.path.join(ROOT, "data", "hotspawn_matches.json"), encoding="utf-8") as fh:
-        fixtures_doc = json.load(fh)
-    with open(os.path.join(ROOT, "data", "odds.json"), encoding="utf-8") as fh:
-        odds_doc = json.load(fh)
+def official_url(line):
+    for key in ("source_api_url", "source_public_url"):
+        parsed = urlsplit(str(line.get(key) or ""))
+        if parsed.scheme == "https" and parsed.hostname in SOURCE_HOSTS.get(line.get("source_key"), set()):
+            return line[key]
+    return None
 
-    fixtures = [m for m in fixtures_doc["matches"]
-                if m.get("sport") == "cs2" and m.get("status") != "cancelled"]
-    lines = odds_doc.get("lines", [])
 
-    used_lines = set()
-    decisions, rejects = [], []
-    matched = {}
+def pair_order(fixture, line):
+    a, b = norm(fixture.get("team_a")), norm(fixture.get("team_b"))
+    sa, sb = norm(line.get("team_a_name")), norm(line.get("team_b_name"))
+    if not a or not b or a == b:
+        return None
+    return "same" if (a, b) == (sa, sb) else "reversed" if (a, b) == (sb, sa) else None
 
-    for fx in fixtures:
-        fa, fb = norm(fx.get("team_a")), norm(fx.get("team_b"))
-        ft = parse_iso(fx.get("scheduled_start_time"))
-        found = []
-        for idx, ln in enumerate(lines):
-            if idx in used_lines:
-                continue
-            sa, sb = norm(ln.get("team_a_name")), norm(ln.get("team_b_name"))
-            order = None
-            if sa == fa and sb == fb:
-                order = "same"
-            elif sa == fb and sb == fa:
-                order = "reversed"
+
+def eligibility(fixture, quote, fixtures_time, now):
+    if not fresh(fixtures_time, now):
+        return "fixture_snapshot_stale_or_unverified_timestamp"
+    if not fresh(quote.get("retrieved_at_utc"), now):
+        return "quote_stale_or_unverified_timestamp"
+    if not official_url(quote):
+        return "official_bookmaker_source_not_confirmed"
+    if quote.get("sport") != "cs2":
+        return "quote_game_not_confirmed"
+    if quote.get("market_type") not in MARKETS:
+        return "full_match_moneyline_not_confirmed"
+    if quote.get("market_is_live") is not False:
+        return "live_or_unverified_market_state"
+    if quote.get("market_status") not in {"open", "O"}:
+        return "market_not_open"
+    if quote.get("outcome_alignment_verified") is not True:
+        return "outcome_participant_alignment_not_confirmed"
+    ft, qt = parse_iso(fixture.get("scheduled_start_time")), parse_iso(quote.get("start_time_utc"))
+    if ft is None or qt is None:
+        return "start_time_not_confirmed"
+    if ft != qt:
+        return "start_time_mismatch"
+    if ft <= now or str(fixture.get("status", "")).lower() not in {"scheduled", "upcoming", "open", "pending"}:
+        return "fixture_not_upcoming"
+    lock = parse_iso(fixture.get("lock_time"))
+    if lock is None or lock <= now:
+        return "pick_lock_passed_or_unverified"
+    for value in (quote.get("decimal_odds_a"), quote.get("decimal_odds_b")):
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value <= 1:
+            return "invalid_decimal_price"
+    return None
+
+
+def fixture_source_url(fixture):
+    # The inherited /matches/{id} path is synthesized, not an observed permalink.
+    # Use the actual official JSON endpoint recorded by fixture discovery instead.
+    api = (fixture.get("source") or {}).get("api")
+    known = "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
+    return api if api == known else "https://play.hotspawn.com/lobby"
+
+
+def build_document(fixtures_doc, odds_doc, now=None):
+    now = now or datetime.now(timezone.utc)
+    fixtures = [f for f in fixtures_doc["matches"] if f.get("sport") == "cs2"
+                and str(f.get("status", "")).lower() not in {"cancelled", "ended"}]
+    quotes = odds_doc.get("lines", [])
+    candidates, rejects, consumed = {}, [], set()
+    matched = {f["fixture_id"]: [] for f in fixtures}
+    flags_by_id = {f["fixture_id"]: set() for f in fixtures}
+    for index, quote in enumerate(quotes):
+        possible = []
+        for fx in fixtures:
+            order = pair_order(fx, quote)
             if not order:
                 continue
-            st = parse_iso(ln.get("start_time_utc"))
-            time_ok = bool(ft and st and abs((ft - st).total_seconds()) <= TIME_TOLERANCE_MIN * 60)
-            tour_ok = tournament_matches(ln.get("source_league"), fx.get("competition_name"))
-            if ft and st and not time_ok:
+            reason = eligibility(fx, quote, fixtures_doc.get("generated_at_utc"), now)
+            if reason:
+                flags_by_id[fx["fixture_id"]].add(reason)
                 rejects.append({"fixture_id": fx["fixture_id"], "fixture": f"{fx['team_a']} vs {fx['team_b']}",
-                                "source": ln["source_key"], "source_event_id": ln["source_event_id"],
-                                "reason": "start time mismatch",
-                                "fixture_start": fx.get("scheduled_start_time"),
-                                "source_start": ln.get("start_time_utc")})
-                continue
-            if not (ft and st) and not tour_ok:
+                                "source": quote.get("source_key"), "source_event_id": quote.get("source_event_id"),
+                                "source_url": official_url(quote) or quote.get("source_api_url"), "reason": reason})
+            else:
+                possible.append((fx, order))
+        if len(possible) > 1:
+            for fx, _ in possible:
+                flags_by_id[fx["fixture_id"]].add("ambiguous_fixture_join")
                 rejects.append({"fixture_id": fx["fixture_id"], "fixture": f"{fx['team_a']} vs {fx['team_b']}",
-                                "source": ln["source_key"], "source_event_id": ln["source_event_id"],
-                                "reason": "no start time on either side and tournament does not correspond",
-                                "source_league": ln.get("source_league")})
-                continue
-            decimals = [ln.get("decimal_odds_a"), ln.get("decimal_odds_b")]
-            if order == "reversed":
-                decimals = [decimals[1], decimals[0]]
-            if any(d is None or d <= 1.0 for d in decimals):
-                rejects.append({"fixture_id": fx["fixture_id"], "source": ln["source_key"],
-                                "reason": "invalid decimal price", "raw": decimals})
-                continue
-            q = [1.0 / d for d in decimals]
-            booksum = sum(q)
-            found.append({
-                "source_key": ln["source_key"],
-                "source_name": ln["source_name"],
-                "source_kind": ln["source_kind"],
-                "source_public_url": ln.get("source_public_url"),
-                "source_api_url": ln.get("source_api_url"),
-                "source_event_id": ln.get("source_event_id"),
-                "source_market_id": ln.get("source_market_id"),
-                "source_league": ln.get("source_league"),
-                "market_type": ln.get("market_type"),
-                "market_is_live": ln.get("market_is_live"),
-                "market_status": ln.get("market_status"),
-                "retrieved_at_utc": ln.get("retrieved_at_utc"),
-                "source_start_time_utc": ln.get("start_time_utc"),
-                "start_time_agrees_with_fixture": time_ok if (ft and st) else None,
-                "order_as_quoted": order,
-                "bookmaker_order": [ln.get("team_a_name"), ln.get("team_b_name")],
-                "raw_price_format": ln.get("raw_price_format"),
-                "raw_price_a": ln.get("raw_price_a"),
-                "raw_price_b": ln.get("raw_price_b"),
-                "decimal_odds_a": decimals[0],
-                "decimal_odds_b": decimals[1],
-                "decimal_odds_derived": ln.get("decimal_odds_derived", False),
-                "overround": round(booksum - 1, 5),
-                "derived_probability_a": round(q[0] / booksum, 4),
-                "derived_probability_b": round(q[1] / booksum, 4),
-                "derivation": "p_i = (1/odds_i) / sum(1/odds_j)  [proportional no-vig]",
-            })
-            used_lines.add(idx)
-
-        if found:
-            per_source = {}
-            for f in found:
-                per_source.setdefault(f["source_key"], f)
-            ps = [per_source[k]["derived_probability_a"] for k in sorted(per_source)]
-            consensus = {
-                "rule": "arithmetic mean of per-source proportional no-vig probabilities",
-                "sources": sorted(per_source),
-                "derived_probability_a_mean": round(sum(ps) / len(ps), 4),
-                "derived_probability_a_min": round(min(ps), 4),
-                "derived_probability_a_max": round(max(ps), 4),
-                "n_sources": len(ps),
-            }
-            consensus["derived_probability_b_mean"] = round(1 - consensus["derived_probability_a_mean"], 4)
-
-        matched[fx["fixture_id"]] = found
-        decisions.append({
-            "fixture_id": fx["fixture_id"],
-            "fixture": f"{fx['team_a']} vs {fx['team_b']}",
-            "competition": fx.get("competition_name"),
-            "start_time_utc": fx.get("scheduled_start_time"),
-            "lines_matched": len(found),
-            "sources": sorted({f["source_key"] for f in found}),
-            "aliases_applied": sorted({f"{f['bookmaker_order'][0]}->{fx['team_a']}" for f in found
-                                       if norm(f["bookmaker_order"][0]) != norm(fx["team_a"])} |
-                                      {f"{f['bookmaker_order'][1]}->{fx['team_b']}" for f in found
-                                       if norm(f["bookmaker_order"][1]) != norm(fx["team_b"])}),
-        })
-
-    # unmatched bookmaker lines (useful evidence: shows what we deliberately did not use)
-    unmatched = []
-    for idx, ln in enumerate(lines):
-        if idx in used_lines:
+                                "source": quote.get("source_key"), "source_url": official_url(quote),
+                                "reason": "ambiguous_fixture_join"})
+        elif possible:
+            fx, order = possible[0]
+            candidates.setdefault((fx["fixture_id"], quote["source_key"]), []).append((index, quote, order))
+    for (fixture_id, source), group in candidates.items():
+        if len(group) != 1:
+            flags_by_id[fixture_id].add("ambiguous_source_quotes")
+            for _, quote, _ in group:
+                rejects.append({"fixture_id": fixture_id, "source": source, "source_url": official_url(quote),
+                                "reason": "ambiguous_source_quotes"})
             continue
-        unmatched.append({"source": ln["source_key"], "event": f"{ln.get('team_a_name')} vs {ln.get('team_b_name')}",
-                          "start_time_utc": ln.get("start_time_utc"), "league": ln.get("source_league"),
-                          "reason": "not part of the current HotSpawn pick'em CS2 fixture list"})
-
-    out_fixtures = []
+        index, quote, order = group[0]
+        decimals = [quote["decimal_odds_a"], quote["decimal_odds_b"]]
+        if order == "reversed":
+            decimals.reverse()
+        shares = [1 / d for d in decimals]
+        total = sum(shares)
+        line = dict(quote)
+        line.update({"decimal_odds_a": decimals[0], "decimal_odds_b": decimals[1],
+                     "derived_probability_a": round(shares[0] / total, 4),
+                     "derived_probability_b": round(shares[1] / total, 4),
+                     "overround": round(total - 1, 5), "order_as_quoted": order,
+                     "bookmaker_order": [quote.get("team_a_name"), quote.get("team_b_name")],
+                     "source_start_time_utc": quote.get("start_time_utc"),
+                     "start_time_agrees_with_fixture": True,
+                     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"})
+        matched[fixture_id].append(line)
+        consumed.add(index)
+    output, decisions = [], []
+    summary = {"fixtures_total": len(fixtures), "fixtures_with_external_line": 0,
+               "fixtures_without_external_line": 0, "by_tier": {}, "by_source": {}}
     for fx in fixtures:
-        found = matched.get(fx["fixture_id"], [])
-        per_source = {}
-        for f in found:
-            per_source.setdefault(f["source_key"], f)
-        consensus = None
-        if per_source:
-            ps = [per_source[k]["derived_probability_a"] for k in sorted(per_source)]
-            consensus = {
-                "rule": "arithmetic mean of per-source proportional no-vig probabilities",
-                "sources": sorted(per_source),
-                "derived_probability_a_mean": round(sum(ps) / len(ps), 4),
-                "derived_probability_a_min": round(min(ps), 4),
-                "derived_probability_a_max": round(max(ps), 4),
-                "n_sources": len(ps),
-                "derived_probability_b_mean": round(1 - round(sum(ps) / len(ps), 4), 4),
-            }
-        flags = []
+        found = sorted(matched[fx["fixture_id"]], key=lambda x: x["source_key"])
+        flags = flags_by_id[fx["fixture_id"]]
         if not found:
-            flags.append("external_odds_not_found")
-        for f in found:
-            if f["start_time_agrees_with_fixture"] is None:
-                flags.append(f"start_time_not_published_by_{f['source_key']}")
-            if f["decimal_odds_derived"]:
-                flags.append(f"decimal_price_derived_from_{f['raw_price_format']}_{f['source_key']}")
-            if f["source_start_time_utc"] and fx.get("scheduled_start_time") and \
-                    f["source_start_time_utc"] != fx.get("scheduled_start_time"):
-                flags.append(f"start_time_minor_difference_{f['source_key']}")
-        if not fx.get("scheduled_start_time") or (fx.get("scheduled_start_time") or "") < "2026-10-13":
-            flags.append("fixture_start_time_in_the_past_or_stale_source_status")
-        out_fixtures.append({
-            "fixture_id": fx["fixture_id"],
-            "competition": fx.get("competition_name"),
-            "tier": fx.get("tier"),
-            "start_time_utc": fx.get("scheduled_start_time"),
-            "team_a": fx.get("team_a"),
-            "team_b": fx.get("team_b"),
-            "source_reported_status": fx.get("status"),
-            "hotspawn_match_url": fx["source"]["hotspawn_match_url"],
-            "hotspawn_pick_pct_reference_only": [fx.get("team_a_pick_pct"), fx.get("team_b_pick_pct")],
-            "bookmaker_lines": found,
-            "derived": {
-                "per_source": {k: {"derived_probability_a": v["derived_probability_a"],
-                                   "derived_probability_b": v["derived_probability_b"],
-                                   "overround": v["overround"]} for k, v in per_source.items()},
-                "consensus": consensus,
-            },
-            "verification": "verified_external_line" if found else "unverified_no_external_line_found",
-            "review_flags": flags,
-        })
-
-    # Upcoming/current fixtures first (a stale start time is a source-data quirk, not a ranking).
-    today = datetime.now(tz=timezone.utc).strftime("%Y-%m-%d")
-    out_fixtures.sort(key=lambda f: (0 if (f.get("start_time_utc") or "") >= today else 1,
-                                     f.get("start_time_utc") or "", f["fixture_id"]))
-    summary = {
-        "fixtures_total": len(out_fixtures),
-        "fixtures_with_external_line": sum(1 for f in out_fixtures if f["bookmaker_lines"]),
-        "fixtures_without_external_line": sum(1 for f in out_fixtures if not f["bookmaker_lines"]),
-        "by_tier": {},
-        "by_source": {},
-    }
-    for f in out_fixtures:
-        t = f.get("tier") or "none"
-        summary["by_tier"].setdefault(t, {"total": 0, "with_line": 0})
-        summary["by_tier"][t]["total"] += 1
-        if f["bookmaker_lines"]:
-            summary["by_tier"][t]["with_line"] += 1
-        for line in f["bookmaker_lines"]:
-            summary["by_source"][line["source_key"]] = summary["by_source"].get(line["source_key"], 0) + 1
-
-    doc = {
-        "generated_at_utc": datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "odds_collected_at_utc": odds_doc.get("generated_at_utc"),
-        "fixture_list_collected_at_utc": fixtures_doc.get("generated_at_utc"),
-        "method": {
-            "match_rule": "both teams normalised-equal (order-insensitive) + start time within 90 min "
-                          "or, when a bookmaker gives no start time, corresponding tournament name",
-            "probability_rule": "p_i = (1/decimal_odds_i) / sum_j(1/decimal_odds_j) — proportional no-vig",
-            "consensus_rule": "arithmetic mean over sources that quote the same fixture",
-            "note": "probabilities are DERIVED from quoted prices, not official forecasts",
-        },
-        "summary": summary,
-        "fixtures": out_fixtures,
-    }
-    write("data/lines.json", doc)
-    write("evidence/matching_evidence.json", {
-        "generated_at_utc": doc["generated_at_utc"],
-        "decisions": decisions,
-        "rejected_candidates": rejects,
-        "unmatched_bookmaker_lines": unmatched,
-        "summary": summary,
-    })
-    print("fixtures:", summary["fixtures_total"], "with external line:",
-          summary["fixtures_with_external_line"], "by source:", summary["by_source"])
-    return 0
+            flags.add("external_odds_not_found")
+        start = parse_iso(fx.get("scheduled_start_time"))
+        if start is None or start <= now:
+            flags.add("fixture_start_time_in_the_past_or_stale_source_status")
+        if not fresh(fixtures_doc.get("generated_at_utc"), now):
+            flags.add("fixture_snapshot_stale_or_unverified_timestamp")
+        consensus = None
+        if found:
+            ps = [q["derived_probability_a"] for q in found]
+            mean = round(sum(ps) / len(ps), 4)
+            consensus = {"rule": "arithmetic mean of per-source proportional no-vig probabilities",
+                         "sources": [q["source_key"] for q in found], "n_sources": len(ps),
+                         "derived_probability_a_mean": mean, "derived_probability_b_mean": round(1 - mean, 4),
+                         "derived_probability_a_min": min(ps), "derived_probability_a_max": max(ps)}
+        output.append({"fixture_id": fx["fixture_id"], "competition": fx.get("competition_name"),
+                       "tier": fx.get("tier"), "start_time_utc": fx.get("scheduled_start_time"),
+                       "team_a": fx.get("team_a"), "team_b": fx.get("team_b"),
+                       "source_reported_status": fx.get("status"),
+                       "hotspawn_match_url": fixture_source_url(fx),
+                       "bookmaker_lines": found,
+                       "derived": {"per_source": {q["source_key"]: {k: q[k] for k in
+                                    ("derived_probability_a", "derived_probability_b", "overround")} for q in found},
+                                   "consensus": consensus},
+                       "verification": "source_linked_current_quote" if found else "unverified_no_eligible_external_line",
+                       "review_flags": sorted(flags)})
+        decisions.append({"fixture_id": fx["fixture_id"], "fixture": f"{fx['team_a']} vs {fx['team_b']}",
+                          "lines_matched": len(found), "sources": [q["source_key"] for q in found]})
+        summary["fixtures_with_external_line" if found else "fixtures_without_external_line"] += 1
+        tier = summary["by_tier"].setdefault(fx.get("tier") or "none", {"total": 0, "with_line": 0})
+        tier["total"] += 1
+        tier["with_line"] += bool(found)
+        for q in found:
+            summary["by_source"][q["source_key"]] = summary["by_source"].get(q["source_key"], 0) + 1
+    output.sort(key=lambda f: (parse_iso(f.get("start_time_utc")) is None or parse_iso(f.get("start_time_utc")) <= now,
+                               f.get("start_time_utc") or "", f["fixture_id"]))
+    doc = {"generated_at_utc": iso(now), "odds_collected_at_utc": odds_doc.get("generated_at_utc"),
+           "fixture_list_collected_at_utc": fixtures_doc.get("generated_at_utc"),
+           "method": {"match_rule": "both teams, explicit CS2, exact UTC start, unique fixture and source quote",
+                      "max_age_seconds": MAX_AGE_SECONDS,
+                      "probability_rule": "proportional no-vig: (1/odds_i) / sum(1/odds_j)",
+                      "consensus_rule": "arithmetic mean of eligible bookmaker probabilities",
+                      "note": "Derived estimates, not verified win probabilities. Prematch and unlocked only."},
+           "summary": summary, "fixtures": output}
+    unmatched = [{"source": q.get("source_key"), "event": f"{q.get('team_a_name')} vs {q.get('team_b_name')}",
+                  "start_time_utc": q.get("start_time_utc"), "league": q.get("source_league"),
+                  "source_url": official_url(q) or q.get("source_api_url"),
+                  "reason": "no unique eligible current fixture join; see rejection log"}
+                 for i, q in enumerate(quotes) if i not in consumed]
+    evidence = {"generated_at_utc": iso(now), "decisions": decisions, "rejected_candidates": rejects,
+                "unmatched_bookmaker_lines": unmatched, "summary": summary}
+    return doc, evidence
 
 
 def write(rel, obj):
     path = os.path.join(ROOT, rel)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:
-        json.dump(obj, fh, indent=1, ensure_ascii=False)
+        json.dump(obj, fh, indent=1, ensure_ascii=False, allow_nan=False)
+
+
+def main():
+    with open(os.path.join(ROOT, "data/hotspawn_matches.json"), encoding="utf-8") as fh:
+        fixtures = json.load(fh)
+    with open(os.path.join(ROOT, "data/odds.json"), encoding="utf-8") as fh:
+        odds = json.load(fh)
+    doc, evidence = build_document(fixtures, odds)
+    write("data/lines.json", doc)
+    write("evidence/matching_evidence.json", evidence)
+    print("Current line coverage:", doc["summary"])
+    return 0
 
 
 if __name__ == "__main__":

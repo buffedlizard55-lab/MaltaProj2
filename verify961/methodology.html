@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methodology · Pick board verification (session 961e163a)</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar"><div class="wrap">
+  <div class="brand"><span class="dot"></span>HotSpawn pick&rsquo;em board · verified external lines</div>
+  <nav><a href="index.html">Dashboard</a><a href="cs2.html">CS2</a><a href="lol.html">LoL</a><a href="crosschecks.html">Cross-checks</a><a href="flagged.html">Flagged for review</a><a href="methodology.html" class="active">Methodology &amp; sources</a></nav>
+</div></header>
+<main class="wrap">
+<h1>Methodology &amp; sources</h1>
+<h2>What is measured</h2>
+<ol class="flags">
+<li>The fixture list (teams, tournament, tier, lock time, Hotspawn link) is read from the lobby's own
+public fixtures API behind <a href="https://play.hotspawn.com/lobby" rel="noopener">play.hotspawn.com/lobby</a>.</li>
+<li>Prices are read from external, independent sources only: Pinnacle's public guest odds API, Bovada's
+public coupon and egamersworld's public odds widget. HLTV is <strong>not</strong> a price source (see item 6).</li>
+<li>Per source the margin is removed: q = 1/decimal, p_a = q_a / (q_a + q_b). The published probability is
+the arithmetic mean of the per-source no-vig shares; the pick is the higher share.</li>
+<li><strong>Hotspawn's crowd pick percentage is never an input.</strong> It is stored separately in
+<code>data/961/hotspawn_reference.json</code> and is not read by the builder (enforced by a test).</li>
+<li>If no external price can be verified the row is blank and flagged <code>no_external_line</code>.</li>
+<li>Directional cross-checks: HLTV's own wording ("&lt;team&gt; is the bookmaker favorite with the best odds")
+is compared with the board pick on <a href="crosschecks.html">Cross-checks</a>. HLTV cannot be read by the
+automation runner (HTTP 403), so it is a manual cross-check only, never a price input.</li>
+</ol>
+<h2>Sources quoted in this build</h2>
+<div class="tablewrap"><table class="board"><tr><th>Source key</th><th>Rows using it</th></tr><tr><td>bovada</td><td>13</td></tr><tr><td>egamersworld</td><td>39</td></tr><tr><td>pinnacle</td><td>10</td></tr></table></div>
+<h2>Re-verification</h2>
+<p class="sub">Every quote is stored with its URL and read time in <code>data/961/quotes.json</code>; the join
+and the arithmetic can be recomputed with <code>python3 scripts/961/build_961.py</code>, re-checked independently
+(arithmetic, picks, source links, blank-unverified rule, page links) with
+<code>python3 scripts/961/recheck_961.py</code>, and unit-tested with
+<code>python3 -m unittest tests.test_961</code>. The GitHub Actions run
+<code>.github/workflows/961-collect.yml</code> re-reads every source on a schedule, runs the re-check and commits
+the evidence, so the board refreshes without manual input.</p>
+<p class="note">Known limitations: a bookmaker price is a snapshot that can be pulled at any time; some sources
+omit the event start time (join then rests on team names and is flagged); most LoL amateur-circuit fixtures have
+no external market anywhere reachable and stay blank. Published limitations and source contradictions are
+listed on <a href="flagged.html">Flagged for review</a>.</p>
+<footer class="wrap foot">
+<p class="mini">Session <code>961e163a</code> · fixture list from
+<a href="https://play.hotspawn.com/lobby" rel="noopener">play.hotspawn.com/lobby</a> (public fixtures API) ·
+external lines only · Hotspawn crowd pick percentages are never used as probabilities.</p>
+<p class="mini">Every value on this page carries the exact source URL and the UTC time it was read.
+Values that could not be verified against an official external source are blank and listed on
+<a href="flagged.html">Flagged for review</a>.</p>
+</footer>
+</body></html>

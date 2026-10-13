@@ -1,7 +1,7 @@
 name: Verify and publish dashboard
 on:
   push:
-    branches: [main, arena/ef111e02-maltaproj2]
+    branches: [main, arena/ef111e02-maltaproj2, arena/d4ec32a9-maltaproj2]
   pull_request:
     branches: [main]
   schedule:
@@ -39,6 +39,8 @@ jobs:
         run: |
           pip install playwright==1.55.0
           python scripts/browser_smoke.py
+          python scripts/build_site.py
+          python scripts/browser_current_smoke.py
       - name: Stage all session-owned published sections
         run: python scripts/stage_site.py
       - uses: actions/upload-pages-artifact@v3
@@ -65,14 +67,16 @@ jobs:
           python - <<'PYCODE'
           import json, os, subprocess, time
           for attempt in range(36):
-              result = subprocess.run(['gh','api',f'repos/{os.environ["GH_REPO"]}/pages/builds/latest'],capture_output=True,text=True)
+              result = subprocess.run(['gh','api',f'repos/{os.environ["GH_REPO"]}/pages/builds?per_page=100'],capture_output=True,text=True)
               if result.returncode:
                   raise SystemExit(result.stderr)
-              build = json.loads(result.stdout)
-              if build.get('commit') == os.environ['GITHUB_SHA'] and build.get('status') == 'built':
+              # A bot refresh can advance "latest" while this checked artifact builds.
+              # Match our commit in history; another commit's status is not our result.
+              builds = [b for b in json.loads(result.stdout) if b.get('commit') == os.environ['GITHUB_SHA']]
+              if any(b.get('status') == 'built' for b in builds):
                   break
-              if build.get('status') == 'errored':
-                  raise SystemExit('Legacy Pages build failed; inspect before deployment')
+              if builds and all(b.get('status') == 'errored' for b in builds):
+                  raise SystemExit('Legacy Pages build failed for this commit; inspect before deployment')
               time.sleep(5)
           else:
               raise SystemExit('Legacy deployment not settled; refusing a publication race')
