@@ -42,6 +42,12 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs
+  public-probe:
+    if: github.ref == 'refs/heads/arena/ef111e02-maltaproj2'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: python scripts/check_deployment.py
   deploy:
     if: github.ref == 'refs/heads/main'
     needs: build

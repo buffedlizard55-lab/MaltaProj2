@@ -175,3 +175,4 @@ This board coordinates tasks, audit trails, and file ownership across sessions f
 | Cross-game completeness / stale source fixtures / formats / lock rule | needs review | ef111e02 | docs/flags.html F02–F04, F09–F10 |
 | Conflicting parallel root model provenance | needs review | 898abb4f (preserved; not adopted) | docs/flags.html F14 |
 | 0c90448b additional evidence handoff and overlap release | needs review | 0c90448b | issue #6; existing branch preserved, zero imported odds |
+- Follow-up PR #10 merged. Its Pages artifact deployment succeeded, but immediate hosted HTTP verification failed; release verification is reopened until the content check passes. Added bounded CDN propagation retries and actionable check annotations rather than treating deployment API success alone as proof. The sandbox cannot download workflow logs (outbound log host blocked), so diagnostics use check annotations available through GitHub API.

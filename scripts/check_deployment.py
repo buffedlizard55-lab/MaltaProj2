@@ -1,6 +1,8 @@
 """Verify actual hosted Pages content (not a deployment API's success alone)."""
 import json
 import os
+import time
+import re
 from urllib.request import Request, urlopen
 
 base='https://buffedlizard55-lab.github.io/MaltaProj2/'
@@ -11,8 +13,19 @@ def get(path):
         assert r.status==200, (path,r.status)
         return r.read().decode('utf-8')
 for path in ('index.html','matches.html','odds.html','methodology.html','sources.html','flags.html'):
-    body=get(path)
-    assert 'LINEWATCH' in body and 'style.css' in body and 'app.js' in body, path
+    for attempt in range(12):
+        try:
+            body=get(path)
+            if 'LINEWATCH' in body and 'style.css' in body and 'app.js' in body:
+                break
+            title=re.search(r'<title>(.*?)</title>',body,re.S)
+            detail=f'{path}: unexpected published title {title.group(1) if title else body[:160]}'
+        except Exception as exc:
+            detail=f'{path}: {type(exc).__name__}: {exc}'
+        if attempt==11:
+            print('::error title=Public Pages content check::'+detail,flush=True)
+            raise RuntimeError(detail)
+        time.sleep(10)
     print('HTTP 200 / LineWatch marker:',path)
 for path in ('style.css','app.js'):
     assert get(path).strip(), path
