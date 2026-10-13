@@ -89,6 +89,10 @@ NAV = [
     ("picks/index.html", "Live picks board (ac475c09)"),
     # integration link requested by session 961e163a (VERIFY-961): verified pick board
     ("verify961/index.html", "Verified pick board (961e163a)"),
+    # integration link added by session dd2b7fee (FRESH-BOARD): mobile-first external-line
+    # pick board (landing + CS2 board + flagged-for-review + method) sourced from Bovada,
+    # Pinnacle and Kalshi only - Hotspawn crowd percentages never used
+    ("fresh/index.html", "Fresh pick board (dd2b7fee)"),
     # integration links added by session 0f71ea59 (final integration, documented in
     # COORDINATION.md): restore the Reconciled picks entry published by session 4e6dcd0d
     # (PR #44) that later conflict resolutions dropped from the NAV list, and link this
