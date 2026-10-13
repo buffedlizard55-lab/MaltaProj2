@@ -80,6 +80,19 @@ rows is derived with the standard conversion and marked <code>decimal_price_deri
 in the row flags. Polymarket publishes implied shares, converted with <code>1 / share</code>. Bovada publishes
 decimal prices directly. No other conversion is performed anywhere.</p>
 
+<h2>10. Parallel sessions' audit observations and data (attributed, not re-verified here)</h2>
+<p>Other sessions worked on this repository at the same time. Their published evidence is preserved and
+linked below; it was <strong>not</strong> re-verified by this pipeline and is not mixed into the numbers
+above. The independent price observations are reproduced verbatim from
+<code>audits/1916f96c/observations.json</code>.</p>
+<div class="tablewrap"><table class=""><thead><tr><th>Teams</th><th>Bookmaker / market</th><th>Quoted prices (American)</th><th>Their derived probability</th><th>Source (official)</th><th>Observed</th><th>Flags</th></tr></thead><tbody><tr><td>9z Team vs Aurora</td><td>Thunderpick · Match Winner · BO3</td><td>280 / -455</td><td>24.3% / 75.7%<div class="mini">their derived estimate, not independently verified true probability</div></td><td><a href="https://thunderpick.io/esports/cs2-betting/thunderpick-world-championship-2026/11024/9z-team-vs-aurora/2796376" rel="noopener">market page</a></td><td>2026-10-13</td><td><span class="chip">Market phase unverified: page includes Live label and calls this an upcoming match</span> <span class="chip">Source quote timestamp unavailable; date of access is not quote time</span> <span class="chip">Lobby/detail schedule labels differ; timezone must not be inferred</span> <span class="chip">Single bookmaker, not a multi-book consensus</span></td></tr><tr><td>Astralis vs Sashi</td><td>Thunderpick · Match Winner · BO3</td><td>-1250 / 530</td><td>85.4% / 14.6%<div class="mini">their derived estimate, not independently verified true probability</div></td><td><a href="https://thunderpick.io/esports/cs2-betting/pulse-beat-iii/11173/astralis-vs-sashi/2767822" rel="noopener">market page</a></td><td>2026-10-13</td><td><span class="chip">Market phase unverified: page includes Live label and calls this an upcoming match</span> <span class="chip">Source quote timestamp unavailable; date of access is not quote time</span> <span class="chip">Lobby/detail schedule labels differ; timezone must not be inferred</span> <span class="chip">Single bookmaker, not a multi-book consensus</span></td></tr></tbody></table></div>
+<ul>
+<li><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/audits/1d4de836/README.md" rel="noopener">Independent verification audit — session 1d4de836</a> (86-row lobby snapshot, access evidence, handoff requirements).</li>
+<li><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/audits/1916f96c/REPORT.md" rel="noopener">Independent official-source audit — session 1916f96c</a> (lobby observations, Thunderpick market reads, GG.BET/Rivalry access results).</li>
+<li><a href="docs/index.html">Parallel dashboard built by session ef111e02</a> (preserved unmodified under <code>docs/</code>; it also publishes BC.Game/Polymarket references and VRS-originated reference lines in <code>data/originated_matches.json</code>).</li>
+<li>Session 1916f96c also recorded that <strong>Rivalry has ceased operations</strong> and <strong>GG.BET rejected the request by region</strong>; both are therefore not usable sources here.</li>
+</ul>
+
 <h2>9. Known limitations</h2>
 <ul>
 <li>Only full-match / series-winner moneyline markets are used. Map markets, handicaps and totals are excluded.</li>
@@ -90,7 +103,7 @@ decimal prices directly. No other conversion is performed anywhere.</p>
 
 </main>
 <footer class="wrap">
-  <p>Page generated <strong>2026-10-13 18:11 UTC</strong>. Fixture list and every quoted price are read from the
+  <p>Page generated <strong>2026-10-13 18:12 UTC</strong>. Fixture list and every quoted price are read from the
   public sources linked on each row; HotSpawn is used for fixture discovery only and is never used as a
   probability source. Values that could not be confirmed against an external source are left blank and
   listed on the <a href="flagged.html">Flagged for review</a> page.</p>

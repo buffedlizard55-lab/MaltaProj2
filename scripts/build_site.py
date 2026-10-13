@@ -244,6 +244,7 @@ def main() -> int:
     probe_evidence = load("evidence/odds_probe.json")
     html_probe = load("evidence/html_source_probe.json")
     matching = load("evidence/matching_evidence.json")
+    audit_1916 = load("audits/1916f96c/observations.json")
 
     fixtures = lines_doc.get("fixtures") or []
     summary = lines_doc.get("summary") or {}
@@ -443,6 +444,20 @@ rows is derived with the standard conversion and marked <code>decimal_price_deri
 in the row flags. Polymarket publishes implied shares, converted with <code>1 / share</code>. Bovada publishes
 decimal prices directly. No other conversion is performed anywhere.</p>
 
+<h2>10. Parallel sessions' audit observations and data (attributed, not re-verified here)</h2>
+<p>Other sessions worked on this repository at the same time. Their published evidence is preserved and
+linked below; it was <strong>not</strong> re-verified by this pipeline and is not mixed into the numbers
+above. The independent price observations are reproduced verbatim from
+<code>audits/1916f96c/observations.json</code>.</p>
+{table(["Teams", "Bookmaker / market", "Quoted prices (American)", "Their derived probability", "Source (official)", "Observed", "Flags"],
+       audit_price_rows(audit_1916))}
+<ul>
+<li><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/audits/1d4de836/README.md" rel="noopener">Independent verification audit — session 1d4de836</a> (86-row lobby snapshot, access evidence, handoff requirements).</li>
+<li><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/audits/1916f96c/REPORT.md" rel="noopener">Independent official-source audit — session 1916f96c</a> (lobby observations, Thunderpick market reads, GG.BET/Rivalry access results).</li>
+<li><a href="docs/index.html">Parallel dashboard built by session ef111e02</a> (preserved unmodified under <code>docs/</code>; it also publishes BC.Game/Polymarket references and VRS-originated reference lines in <code>data/originated_matches.json</code>).</li>
+<li>Session 1916f96c also recorded that <strong>Rivalry has ceased operations</strong> and <strong>GG.BET rejected the request by region</strong>; both are therefore not usable sources here.</li>
+</ul>
+
 <h2>9. Known limitations</h2>
 <ul>
 <li>Only full-match / series-winner moneyline markets are used. Map markets, handicaps and totals are excluded.</li>
@@ -529,6 +544,27 @@ ALIAS_NOTE = {
     "FURIA Esports": "FURIA",
     "Team Falcons": "Falcons",
 }
+
+
+def audit_price_rows(audit):
+    rows = []
+    for obs in (audit.get("independent_official_price_observations") or []):
+        teams = obs.get("teams") or []
+        odds = obs.get("american_odds") or []
+        analysis = obs.get("analysis") or {}
+        probs = analysis.get("probability") or []
+        rows.append([
+            esc(" vs ".join(teams)),
+            esc(f'{obs.get("bookmaker", "")} · {obs.get("market", "")}' + (f' · {obs.get("best_of")}' if obs.get("best_of") else "")),
+            esc(" / ".join(str(o) for o in odds)) if odds else BLANK,
+            (esc(" / ".join(f"{p*100:.1f}%" for p in probs)) + '<div class="mini">their ' + esc(analysis.get("kind", "")) + '</div>') if probs else BLANK,
+            f'<a href="{esc(obs.get("source"))}" rel="noopener">market page</a>',
+            esc(obs.get("observed_date") or ""),
+            " ".join(f'<span class="chip">{esc(f)}</span>' for f in (obs.get("flags") or [])),
+        ])
+    if not rows:
+        rows.append([BLANK] * 7)
+    return rows
 
 
 def fixtures_note():

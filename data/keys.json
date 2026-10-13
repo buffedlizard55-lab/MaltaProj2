@@ -1,0 +1,14 @@
+{
+ "snapshot": "2026-10-13 (UTC); site re-verified 2026-10-13",
+ "pipeline": "Hotspawn lobby (entries) -> HLTV (fixture verification) -> EGamersWorld bc.game module + Polymarket (prices) -> de-margin -> consensus line",
+ "row_fields": {
+  "book_odds": "decimal odds as displayed, team A / team B (bc.game via EGamersWorld)",
+  "book_p_a/book_p_b": "de-margined probability from the bookmaker line",
+  "pm_prices": "Polymarket displayed cents for team A / team B",
+  "pm_p_a/pm_p_b": "normalised prediction-market probability",
+  "line_p_a/line_p_b": "our line: equal-weight average of available de-margined sources",
+  "line_fair_a/line_fair_b": "1 / line_p (fair decimal odds)",
+  "quality": "High/Medium/Low from captured spread and liquidity",
+  "verified": "true only when at least one external two-sided price was captured"
+ }
+}

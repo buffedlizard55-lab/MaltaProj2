@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Originated Match Lines (28) — TWC 2026 Malta Finals</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <meta name="description" content="All 28 pairwise originated head-to-head betting lines for Thunderpick World Championship 2026 CS2 Malta Finals.">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-badge">CS2 Analytics</span>
+        <span>Malta Finals 2026</span>
+      </a>
+      <nav class="main-nav">
+        <a href="index.html">Dashboard</a>
+        <a href="lines.html" class="active">Originated Lines (28)</a>
+        <a href="teams.html">Teams & Rosters</a>
+        <a href="methodology.html">Origination Methodology</a>
+        <a href="hotspawn.html">Hotspawn Reverse-Engineering</a>
+        <a href="flagged.html">Flagged for Review (12)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <div class="page-title-section">
+      <h1 class="page-title">
+        <span>Originated Betting Lines & Probabilities</span>
+        <span class="tag-badge info">All 28 Pairwise Fixtures</span>
+      </h1>
+      <p class="page-subtitle">
+        Independent line origination covering every possible match combination among the 8 qualified teams in the Hotspawn lobby.
+      </p>
+    </div>
+
+    <div class="callout success">
+      <div class="callout-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        <span>Complete Pick'em Coverage — Groups Now Published</span>
+      </div>
+      <p>
+        Groups were published Oct 9–12 2026 (Group A: Falcons, NiP, 9z, Aurora; Group B: Legacy, PARIVISION, FURIA, BETBOOM — HLTV links on Dashboard). We still originate all 28 pairwise BO3 lines because GSL winners'/elimination/decider matches and playoff pairings are not yet played/fixtured. Lines are derived model outputs (4.5% overround), not bookmaker quotes; bookmaker match odds are blank/unverified (IRREG-009).
+      </p>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="controls-bar">
+      <input type="text" id="filter-search" class="search-input" placeholder="Search team (e.g. Falcons, FURIA, Legacy)...">
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <button class="filter-btn active" data-filter="all">All 28 Fixtures</button>
+        <button class="filter-btn" data-filter="legacy">Legacy Matches</button>
+        <button class="filter-btn" data-filter="falcons">Falcons Matches</button>
+        <button class="filter-btn" data-filter="furia">FURIA Matches</button>
+      </div>
+    </div>
+
+    <!-- Matches Table -->
+    <div class="table-wrapper">
+      <table class="data-table" id="matches-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Matchup (BO3 Series)</th>
+            <th class="num-cell">Team A Win Prob</th>
+            <th class="num-cell">Team A Odds (Dec / Am)</th>
+            <th class="num-cell">Team B Win Prob</th>
+            <th class="num-cell">Team B Odds (Dec / Am)</th>
+            <th>Map Spread (-1.5 / +1.5)</th>
+            <th class="num-cell">Over 2.5 Maps</th>
+            <th>Source Verification</th>
+          </tr>
+        </thead>
+        <tbody id="matches-table-body">
+          <!-- Loaded dynamically via JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>TWC 2026 Malta Finals Dashboard</strong> — Originated betting line repository.
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Dashboard</a>
+        <a href="teams.html">Teams & Rosters</a>
+        <a href="methodology.html">Methodology</a>
+        <a href="flagged.html">Flagged for Review</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let matchesData = [];
+
+    async function loadMatches() {
+      try {
+        const res = await fetch('data/originated_matches.json');
+        matchesData = await res.json();
+        renderMatches(matchesData);
+      } catch (err) {
+        console.error("Failed to load match lines:", err);
+      }
+    }
+
+    function renderMatches(list) {
+      const tbody = document.getElementById("matches-table-body");
+      tbody.innerHTML = "";
+
+      list.forEach(m => {
+        const tr = document.createElement("tr");
+        const a = m.team_a;
+        const b = m.team_b;
+        const totals = m.totals_market;
+        
+        tr.setAttribute("data-teams", `${a.short_name.toLowerCase()} ${b.short_name.toLowerCase()}`);
+
+        const amA = a.american_odds > 0 ? `+${a.american_odds}` : `${a.american_odds}`;
+        const amB = b.american_odds > 0 ? `+${b.american_odds}` : `${b.american_odds}`;
+
+        tr.innerHTML = `
+          <td class="mono" style="color: var(--text-muted);">${m.match_id}</td>
+          <td>
+            <strong>${a.short_name}</strong> <span style="color: var(--text-muted);">vs</span> <strong>${b.short_name}</strong>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">VRS #${a.vrs_rank} vs #${b.vrs_rank}</div>
+          </td>
+          <td class="num-cell" style="font-weight: 700; color: var(--accent-cyan);">${a.fair_percentage}</td>
+          <td class="num-cell mono"><strong>${a.decimal_odds.toFixed(2)}</strong> <span style="color: var(--text-muted);">(${amA})</span></td>
+          <td class="num-cell" style="font-weight: 700; color: var(--accent-amber);">${b.fair_percentage}</td>
+          <td class="num-cell mono"><strong>${b.decimal_odds.toFixed(2)}</strong> <span style="color: var(--text-muted);">(${amB})</span></td>
+          <td class="mono" style="font-size: 0.85rem;">
+            ${a.short_name} ${a.spread_map_hcap} (${a.spread_decimal.toFixed(2)})
+          </td>
+          <td class="num-cell mono" style="color: var(--accent-green);">${(totals.over_probability * 100).toFixed(1)}%</td>
+          <td>
+            <a href="${m.verification_sources[0].url}" target="_blank" rel="noopener">Valve VRS</a> | 
+            <a href="${m.verification_sources[1].url}" target="_blank" rel="noopener">HLTV</a>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Search and Filters
+    document.getElementById("filter-search").addEventListener("input", (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      const rows = document.querySelectorAll("#matches-table-body tr");
+      rows.forEach(r => {
+        const text = r.getAttribute("data-teams") || "";
+        r.style.display = text.includes(q) ? "" : "none";
+      });
+    });
+
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const filter = btn.getAttribute("data-filter");
+        const rows = document.querySelectorAll("#matches-table-body tr");
+        rows.forEach(r => {
+          if (filter === "all") {
+            r.style.display = "";
+          } else {
+            const text = r.getAttribute("data-teams") || "";
+            r.style.display = text.includes(filter) ? "" : "none";
+          }
+        });
+      });
+    });
+
+    loadMatches();
+  </script>
+</body>
+</html>
