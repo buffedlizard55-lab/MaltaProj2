@@ -17,7 +17,7 @@ from urllib.parse import urlsplit
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MAX_AGE_SECONDS = 4 * 3600  # published policy, not a claim of real-time prices
-ALIASES = {"bb team": "betboom", "pvision": "parivision", "9z globant": "9z"}
+ALIASES = {}  # unresolved historical identity aliases are not current evidence
 SOURCE_HOSTS = {
     "pinnacle": {"guest.api.arcadia.pinnacle.com", "www.pinnacle.com"},
     "bovada": {"www.bovada.lv"},

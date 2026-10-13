@@ -425,7 +425,8 @@ fixtures with the same verification columns as the main table.</p>
                        esc(r.get("league")), esc(r.get("reason")),
                        f'<a href="{esc(r.get("source_url") or "https://play.hotspawn.com/lobby")}" rel="noopener">source</a>']
                       for r in (matching.get("unmatched_bookmaker_lines") or [])]
-    alias_rows = [[esc(k), esc(v)] for k, v in ALIAS_NOTE.items()]
+    alias_rows = [[esc(k), BLANK + ' <span class="warn">not independently verified</span>',
+                   '<a href="https://play.hotspawn.com/lobby">official inventory reference</a>'] for k, v in ALIAS_NOTE.items()]
 
     flagged_body = f"""
 <div class="banner warn"><strong>These items are published for review, not as verified facts.</strong>
@@ -478,10 +479,10 @@ are fixtures that are live/started or were added after that snapshot. Both numbe
 reconciled silently.</p>
 
 <h2>7. Team-name aliases used for matching</h2>
-<p>Matching requires both participants plus an agreeing start time (or a corresponding tournament name).
-Aliases are only applied to the spellings below and every applied alias is logged in
-<code>evidence/matching_evidence.json</code>.</p>
-{table(["Bookmaker spelling", "Pick'em spelling"], alias_rows)}
+<p>Historical spellings below are not independently verified identity evidence. Current matching requires
+both normalized participants and an exact UTC kickoff; no tournament-name fallback is used.
+Rejection reasons are published in <code>evidence/matching_evidence.json</code>.</p>
+{table(["Historical spelling rule", "Verification", "Source for review"], alias_rows)}
 
 <h2>8. Price-format derivations</h2>
 <p>Pinnacle's public API publishes match-winner prices in American format; the decimal column for Pinnacle
