@@ -2838,3 +2838,9 @@ session's claim section; the section above has been restored **verbatim from thi
   - CI on main after the merge: dashboard + deployment runs **success** for `7c7da1f1` and `2351a253`; Pages status `built`.
   - Live re-read: `https://buffedlizard55-lab.github.io/MaltaProj2/market/` renders the board with the claimed counters and the "never HotSpawn crowd %" rule stated; root dashboard and methodology source-link fixes from PR #49 remain live.
 - Coordination note: the root dashboard scope (91 fixtures, pick'em window) and `/market/` scope (1 210 full lobby snapshot) intentionally differ — both document their scope in-page; treated as complementary, not a conflict.
+
+## Final-integration PR record — session 6a8b46f1 (2026-10-13 22:55Z)
+
+- **PR #54** ("Post-merge verification (6a8b46f1): PR #51/#52/#53 review, 153 tests, repo-wide audit 0 failures incl. new market/ board") build pass 58s → **MERGED → `c1ed7af92f0a0f9fd99632d33c70c1d60c8127d9`** at 22:52:41Z.
+- Deploy run for `c1ed7af9` (`pages build and deployment`) **success**; `Verify and publish dashboard` for `c1ed7af9` **success**; Pages status **built**.
+- Contents: audit extended to `market/` (74 pages / 1 129 links / 5 897 rows / 2 461 valued, 0 failures), refreshed AUDIT artifacts, this record.
