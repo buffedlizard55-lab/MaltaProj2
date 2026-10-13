@@ -49,3 +49,53 @@ Tests verify source parsing, exact fixture values against preserved HTML, odds a
 ## Parallel publication retained for review
 
 Another session merged PR #7 while this integration was active. Its root-level TWC model and datasets remain in Git, and its [original README is preserved](docs/evidence/parallel-898abb4f-readme.md). Those outputs are **not** source-verified inputs to LineWatch. They describe hypothetical pairings and unsupported claims of absent bookmaker lines that conflict with this session's observed explicit markets. See the LineWatch Flagged for Review page; do not mistake the parallel model for current verified pick’em pricing.
+
+---
+
+# Pick'em line reconstruction — priced board at `/pickem/` (session `a0fcf175`)
+
+Complementary deliverable to the audit dashboard above: the **26 fixtures that were open for picks** at
+snapshot time, each priced from **external markets only** and converted into our own de-margined line.
+
+* **Board:** https://buffedlizard55-lab.github.io/MaltaProj2/pickem/ (7 pages: dashboard, all matches,
+  by tournament, analysis, methodology, flagged for review, sources)
+* **Dataset:** `data/pickem_pool.json` (26 rows, per-row source links, captured prices, derived lines,
+  tournament pool counts, 14 flagged items) and `data/keys.json`
+* **Pipeline:** `scripts/build_pickem_lines.py` (captured values sit next to the URL they came from;
+  regenerates `data/**` and `pickem/**`), `scripts/check_links.py` (0 broken local links, 138 external
+  source links)
+
+## Method
+
+`p_i = (1/o_i) / Σ_j(1/o_j)` for bookmaker decimals, `p_i = c_i / Σ c_j` for prediction-market cents;
+our line = equal-weight average of the available de-margined sources; fair odds = `1/p`. Hotspawn's
+crowd percentage is displayed for context and is **never** part of any probability.
+
+## Coverage (2026-10-13 UTC snapshot)
+
+* 25/26 rows carry a line; `FORZE Reload vs LFO 10` is deliberately blank and flagged (no market pairs
+  those two teams).
+* 22 rows priced from EGamersWorld's `Bets on <event> by bc.game` modules, 20 from Polymarket CS2
+  markets, 17 from both.
+* Kickoffs are true UTC from the lobby payload's `scheduled_start` epoch (evidence:
+  `audits/1d4de836/lobby-snapshot-audit.json`, already in this repository), cross-checked against all
+  26 HLTV match pages. Hotspawn's rendered clock reads 4 h earlier (US Eastern); Polymarket's Elisa
+  clocks read 4 h earlier again — both are published on the Flagged page, not silently corrected.
+* Corrections logged on the Flagged page: the `RoundsGG vs Voca` price mapping was double-flipped in a
+  first build and is corrected; the two ESL Challenger League fixtures now carry their HLTV match pages
+  (2399204, 2399232); Elisa bc.game lines were completed on re-check (WBT–EAC refined to the page's own
+  1.989/1.722); the WROTBERRY/WBT alias gained direct evidence (EGamersWorld team URL slug `wrotberry`).
+
+## Build
+
+```sh
+python3 scripts/build_pickem_lines.py   # regenerates data/** and pickem/**
+python3 scripts/check_links.py          # verifies pickem/ has no broken local links
+```
+
+
+---
+
+## Parallel root dashboard (session 898abb4f, corrected by arena/8c3d79a6 on 2026-10-13)
+
+The repository root (`index.html`, `lines.html`, `teams.html`, `methodology.html`, `hotspawn.html`, `flagged.html`) contains a separate originated-lines dashboard for the Thunderpick World Championship 2026 Malta Finals. It is **derived model output, not verified bookmaker pricing**. Re-verified 2026-10-13: groups/Oct 14 openers published (HLTV Oct 9/12), **Virtus.pro withdrew → Ninjas in Pyjamas replaced them** (previous VP lines superseded), all 28 pairwise + 8 outright lines regenerated from Valve VRS Oct 5. Current finalists (VRS Oct 5): Legacy #2 1931 (34.0% / 2.67), Falcons #6 1843 (31.1% / 2.92), FURIA #7 1829 (17.4% / 5.22), Aurora #9 1716 (7.5% / 12.16), BetBoom #11 1596 (3.8% / 23.74), 9z #17 1543 (3.5% / 26.34), NiP #18 1534 (1.5% / 60.22), PARIVISION #36 1411 (1.2% / 77.02). Bookmaker match odds in the root dashboard remain blank/unverified except the flagged Thunderpick reference observation in `docs/data/quotes.json` (reference only) and a secondary FreeTips outright table in `data/external_outrights_snapshot.json` (no attribution). IRREG-007…012 on the root Flagged page do not block merge. The `/pickem/` board (PR #11) and LineWatch `docs/` site are preserved untouched.
