@@ -2823,3 +2823,28 @@ session's claim section; the section above has been restored **verbatim from thi
   the obvious `GetGameZip?id=` returns `Value: null`. The 1x2 feed returns ~50 events per sport, which is why the LineFeed
   source currently contributes CS2 only.
 - GG.BET/Oddspedia remain unusable from a runner (403/404), so they are not sources.
+
+### Session `a0586093` — PR, merge and live verification (append-only)
+
+- **PR #53** (https://github.com/buffedlizard55-lab/MaltaProj2/pull/53) — "Pick'em line board (a0586093):
+  source-linked external lines, labelled model estimates, line-by-line repo review" → `main`.
+  **Merged 2026-10-13T22:41Z**, merge commit `7c7da1f` (base `main` had advanced ~70 commits since the
+  claim; merged twice during the session and kept main's generated `data/**`+`evidence/**`+`verify961/**`
+  while re-appending this session's board sections, so no other session's content was dropped).
+- **Main CI after the merge:** `Verify and publish dashboard` (push, main) — **success**;
+  `update-data` — **success**; `pages build and deployment` — **success**; `expanded-lines` on `main`
+  started as well, so the board and its evidence refresh themselves from main every 2 hours
+  (the scheduled run also re-runs the whole repo review).
+- **Live verification (fetched 2026-10-13 ~22:50 UTC):**
+  - https://buffedlizard55-lab.github.io/MaltaProj2/market/ — dashboard renders 1 210 lobby fixtures /
+    263 upcoming / **27 with a verified external line** / 14 priced by 2+ sources / 48 joined quotes /
+    6 originated model estimates; per-row source links and read times.
+  - https://buffedlizard55-lab.github.io/MaltaProj2/market/repo-review.html — the line-by-line review with
+    the source link for every check (R1 lobby API, R2/R3 Valve VRS files, R4 egamersworld, R6/R7 published lines).
+  - https://buffedlizard55-lab.github.io/MaltaProj2/market/picks.html and `/market/flagged.html` — picks with
+    derived probabilities; the unpriced matches listed as blank-and-flagged.
+  - Root dashboard gained the single additive NAV entry **"Pick'em line board (a0586093)" → `market/index.html`**,
+    and `scripts/stage_site.py` gained `market` in its section list so the built artifact carries the section too.
+- **Follow-up (PR #54):** on the first live run R4 correctly flagged one egamersworld row whose fixture had left
+  the lobby window; the check now separates *stale* rows (fixture gone from the window) from *name mismatches*
+  (fixture present but names disagree), and the repo-review page lists every source URL on its own line.

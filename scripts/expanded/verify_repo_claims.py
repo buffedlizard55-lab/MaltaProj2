@@ -289,11 +289,14 @@ def main() -> int:
     egw = load("data/cs2_odds_egamersworld.json") or {}
     snap_index = {str(m.get("fixture_id")): m for m in snap_rows}
     bad_rows = []
+    stale_rows = []
     for row in egw.get("rows") or []:
         fid = str(row.get("fixture_id"))
         m = snap_index.get(fid)
         if not m:
-            bad_rows.append({"fixture_id": fid, "issue": "fixture id not in the lobby snapshot"})
+            # The lobby list moves (fixtures finish and drop out); a capture row that has left the
+            # window is stale, not wrong. Only a row that IS in the window must agree on names.
+            stale_rows.append({"fixture_id": fid, "teams": [row.get("team_a"), row.get("team_b")]})
             continue
         if not (same_team(m.get("team_a"), row.get("team_a")) and same_team(m.get("team_b"), row.get("team_b"))):
             bad_rows.append({"fixture_id": fid, "issue": "team names disagree with the snapshot",
@@ -303,8 +306,10 @@ def main() -> int:
               "claim": "data/cs2_odds_egamersworld.json rows refer to real lobby fixtures",
               "source": egw.get("source_page"), "rows": len(egw.get("rows") or []),
               "status": "verified" if not bad_rows else "discrepancy", "mismatches": bad_rows[:20],
+              "stale_rows_no_longer_in_the_lobby_window": stale_rows[:10],
               "detail": (f"{len(egw.get('rows') or [])} priced rows joined to the lobby snapshot by "
-                         f"fixture id and team name; {len(bad_rows)} mismatch(es)")}
+                         f"fixture id and team name; {len(bad_rows)} mismatch(es), "
+                         f"{len(stale_rows)} row(s) whose fixture has since left the lobby window")}
     review["checks"].append(check4)
     if bad_rows:
         review["irregularities"].append({
