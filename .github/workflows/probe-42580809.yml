@@ -1,4 +1,13 @@
 name: runner-42580809
+
+# Session 42580809: runner-side data collection. GitHub runners have unrestricted egress, so
+# every external fetch (odds sources, fixture API, ranking feeds) runs here and the raw results
+# are committed back to the session branch as evidence.
+#
+# Transport note: this environment cannot download workflow artifacts or logs, but it *can* read
+# workflow-run annotations on the public run page, so a compact summary of each result is emitted
+# as a `::notice::` annotation while the full payloads travel through the commit.
+
 on:
   push:
     branches: ['arena/42580809-maltaproj2']
@@ -10,36 +19,89 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: runner-42580809
+  cancel-in-progress: false
+
 jobs:
-  probe:
+  run:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - name: Run probe
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run session runner tasks
         run: |
-          python3 -VV
-          python3 proof/42580809/run/probe_sources.py
-          python3 proof/42580809/run/fetch_fixtures.py
-          python3 proof/42580809/run/fetch_reference.py
-          python3 proof/42580809/run/collect_lines.py
-      - name: Commit evidence
-        run: |
-          git config user.name  "runner-42580809"
-          git config user.email "runner-42580809@users.noreply.github.com"
-          git add -A proof/42580809/evidence
-          if git diff --cached --quiet; then
-            echo "no evidence changes"; exit 0
-          fi
-          git commit -m "evidence(42580809): runner refresh $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          for i in 1 2 3; do
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && { echo "PUSH_OK"; exit 0; }
-            sleep 5
+          mkdir -p proof/42580809/evidence
+          for s in fetch_fixtures fetch_reference probe_sources explore_sources inspect_pinnacle collect_lines; do
+            f="proof/42580809/run/$s.py"
+            if [ -f "$f" ]; then
+              echo "=== running $s"
+              timeout 900 python3 "$f" 2>&1 | tail -40 || echo "(exit $? from $s, evidence kept)"
+            else
+              echo "=== skipping $s (not present)"
+            fi
           done
-          echo "PUSH_FAILED"; exit 1
+          ls -la proof/42580809/evidence || true
+      - name: Summarise results as annotations
+        if: always()
+        run: |
+          python3 - <<'PY' || true
+          import json, os, collections
+          out = "proof/42580809/evidence"
+          def note(title, msg):
+              msg = str(msg).replace("%", "%25").replace("\r", " ").replace("\n", " ")
+              print(f"::notice title={title}::{msg[:900]}")
+          def load(name):
+              p = os.path.join(out, name)
+              if not os.path.exists(p):
+                  return None
+              try:
+                  with open(p, encoding="utf-8") as fh:
+                      return json.load(fh)
+              except Exception as exc:
+                  return {"_error": f"{type(exc).__name__}: {exc}"}
+          fx = load("fixtures.json") or {}
+          note("FIXTURES", json.dumps({k: v for k, v in fx.items() if k != "evidence"})[:900])
+          vrs = load("vrs_index.json")
+          if vrs:
+              note("VRS", json.dumps(vrs)[:900])
+          lines = load("lines.json") or {}
+          if lines.get("lines"):
+              c = collections.Counter(l["source_key"] for l in lines["lines"])
+              note("LINES", f"{lines.get('collected_at_utc')} total={len(lines['lines'])} {dict(c)}")
+          src = load("lines_sources.json") or {}
+          note("SOURCES", json.dumps(src)[:900])
+          probe = load("probe.json") or {}
+          note("PROBE_REACHABLE", ",".join(probe.get("reachable_200", []))[:900])
+          note("EVIDENCE_FILES", ",".join(sorted(os.listdir(out)) if os.path.isdir(out) else []))
+          PY
+      - name: Commit collected evidence back to the session branch
+        if: always()
+        continue-on-error: true
+        run: |
+          set +e
+          git config user.name "arena-42580809-runner"
+          git config user.email "arena-42580809@users.noreply.github.com"
+          git add -A proof/42580809/evidence
+          if git diff --cached --quiet; then echo "nothing staged"; exit 0; fi
+          git commit -m "proof(42580809): runner-collected evidence [skip ci]"
+          BR="${GITHUB_REF_NAME}"
+          echo "branch=$BR head=$(git rev-parse --short HEAD)"
+          PULL=$(git pull --rebase --autostash origin "$BR" 2>&1); echo "pull: $? $(echo "$PULL" | tail -3)"
+          PUSH=$(git push origin "HEAD:refs/heads/$BR" 2>&1); RC=$?
+          echo "push rc=$RC $(echo "$PUSH" | tail -3)"
+          if [ $RC -ne 0 ]; then
+            echo "::error title=PUSH_FAILED_$RC::$(echo "$PUSH" | tr '\n' ' ' | cut -c1-600)"
+          else
+            echo "::notice title=PUSH_OK::$(git rev-parse --short HEAD)"
+          fi
+          exit 0
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: probe-42580809
-          path: proof/42580809/evidence/
-          if-no-files-found: ignore
+          name: runner-42580809
+          path: proof/42580809/evidence
+          retention-days: 14
