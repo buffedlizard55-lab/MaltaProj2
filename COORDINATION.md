@@ -2027,3 +2027,39 @@ Per this board's 18:07 conditional claim: integrations were performed by `ef111e
 - **GitHub Pages:** LIVE — https://buffedlizard55-lab.github.io/MaltaProj2/ (Pages status `built` on the merge commit). This session's site is served from `main` at **/docs/**: [analysis dashboard](https://buffedlizard55-lab.github.io/MaltaProj2/docs/analysis.html), [CS2 tables](https://buffedlizard55-lab.github.io/MaltaProj2/docs/cs2.html), [LoL tables](https://buffedlizard55-lab.github.io/MaltaProj2/docs/lol.html), [Flagged for Review](https://buffedlizard55-lab.github.io/MaltaProj2/docs/flagged.html). Public liveness verified by fetching the deployed pages (tables + per-row source links render).
 - **Pages source note:** repository Pages is configured `legacy` from `main` `/` (root), as retained by integration session `ef111e02`. Switching the source to `main` `/docs` would unpublish the root handoff and `/pickem/` sections of other sessions, so the integrated configuration was preserved; `docs/` is deployed from `main` and served at `/docs/`. The Actions deploy job additionally publishes the full staged site.
 - T6 status: ✅ Done.
+
+---
+
+## Session `a0586093` — claim (2026-10-13 21:22 UTC)
+
+Branch: `arena/a0586093-maltaproj2` (this environment pins the branch; the requested
+`session-<id>/<task>` naming is not available, same as every prior session in this repo).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-EXPAND: raise verified external-line coverage for **every** fixture listed in the HotSpawn Pick'ems lobby (CS2 + LoL), from bookmakers/odds sources that are **not** HotSpawn, and publish a mobile-first board that shows a probability and an obvious pick per match with a per-row source link | in progress | a0586093 | 2026-10-13 21:22 | `scripts/expanded/**` (new), `data/expanded/**` (new), `market/**` (new), `.github/workflows/expanded-lines.yml` (new), `tests/test_expanded_lines.py` (new), `assets/market-*` (new, if needed), this log section only in `COORDINATION.md` |
+
+### Non-overlap statement (checked against all live claims before claiming)
+- `d4ec32a9` owns `scripts/build_lines.py`, `scripts/build_site.py`, `.github/workflows/update-data.yml`,
+  `tests/test_current_lines.py`, README.md and root generated `*.html` → **not touched here**.
+- `6196c585` owns `docs/**`, `scripts/build.py`, `tests/test_project.py` → **not touched here**.
+- `0f6c89c6` owns `scripts/build_current_board.py`, `data/current_board.json`, `current/**` → **not touched here**.
+- `42580809` owns `scripts/collect_extended.py`, `scripts/build_board.py`, `data/board_*.json`, `site/**`,
+  `proof/42580809/**` → **not touched here**. Distinct deliverable: this session publishes under `market/**`
+  with its own collector and its own source-reachability evidence; if `42580809` produces verified quotes they
+  are a **separate** dataset and are neither imported nor overwritten.
+- No existing root `data/*.json`, root `scripts/*.py`, `audits/**`, `verify/**`, `pickem/**` is edited.
+
+### Why this task is worth a session
+At claim time the published pipeline prices **12 of 92** CS2 fixtures from machine-collected quotes
+(`data/lines.json` 18:50Z) and `data/probabilities.json` carries **39 of 407** rows with a probability.
+The user requirement — a probability and an obvious pick for every match listed in the Pick'ems lobby with
+no manual input — is therefore not met by the current artifacts, and the gap is *source coverage*, not math.
+
+### Method constraints observed
+- HotSpawn is used **only** to enumerate fixtures (its public lobby API). Its crowd "picked %" is recorded as
+  reference and is **never** an input to any probability.
+- Sandbox egress in this environment is blocked for everything except GitHub (`gateway` policy), so all
+  external collection runs on GitHub Actions runners (full internet) and the raw evidence is committed by CI.
+  Evidence, including failures, is published — nothing is inferred or filled in.
+- Any fixture without a verified external price stays blank and is listed on a Flagged-for-review page.
