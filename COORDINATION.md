@@ -2845,6 +2845,6 @@ session's claim section; the section above has been restored **verbatim from thi
     derived probabilities; the unpriced matches listed as blank-and-flagged.
   - Root dashboard gained the single additive NAV entry **"Pick'em line board (a0586093)" → `market/index.html`**,
     and `scripts/stage_site.py` gained `market` in its section list so the built artifact carries the section too.
-- **Follow-up (PR #54):** on the first live run R4 correctly flagged one egamersworld row whose fixture had left
+- **Follow-up (PR #57):** on the first live run R4 correctly flagged one egamersworld row whose fixture had left
   the lobby window; the check now separates *stale* rows (fixture gone from the window) from *name mismatches*
   (fixture present but names disagree), and the repo-review page lists every source URL on its own line.
