@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'scripts/explore_pinnacle.py'
+      - 'scripts/dump_raw_samples.py'
       - '.github/workflows/explore-pinnacle.yml'
 
 permissions:
@@ -15,22 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Explore Pinnacle guest API (esports CS2)
-        run: python3 scripts/explore_pinnacle.py
-      - name: Commit evidence + matchup dump
+      - name: Dump raw source samples
+        run: python3 scripts/dump_raw_samples.py
+      - name: Commit evidence
         run: |
           git config user.name "malta-data-bot"
           git config user.email "malta-data-bot@users.noreply.github.com"
-          git add -A evidence data
+          git add -A evidence
           if git diff --cached --quiet; then echo "no changes"; else
-            git commit -m "evidence: pinnacle probe + matchup dump [skip ci]"
-            git push
+            git commit -m "evidence: raw source structure samples [skip ci]"
+            for i in 1 2 3; do git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push && break || sleep 5; done
           fi
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: pinnacle-out
-          path: |
-            evidence/pinnacle_probe.json
-            data/pinnacle_matchups.json
-          retention-days: 7
