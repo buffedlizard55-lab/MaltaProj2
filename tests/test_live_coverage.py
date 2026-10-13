@@ -26,8 +26,9 @@ from build_live import (  # noqa: E402
     build_board, check_page_links, join_quote_to_fixture, verify_board, window_analysis,
 )
 from live_core import (  # noqa: E402
-    american_to_decimal, canon_team, consensus, html_to_text, no_vig_two_way, parse_lobby_counters,
-    parse_ms, pct, same_team, vrs_estimate, vrs_markdown_rows, week_window,
+    american_to_decimal, canon_team, consensus, extract_lobby_listing, html_to_text,
+    no_vig_two_way, parse_lobby_counters, parse_ms, pct, same_team, vrs_estimate,
+    vrs_markdown_rows, week_window,
 )
 
 DATA = ROOT / "data" / "live"
@@ -131,6 +132,22 @@ class TestHotSpawnParsing(unittest.TestCase):
         self.assertEqual(c["all_tiers"], 90)
         self.assertEqual(c["tier_counts"], {"b": 26, "c": 60, "s": 4})
         self.assertEqual(html_to_text("<p>a</p><script>x</script><p>b</p>").split(), ["a", "b"])
+
+    def test_lobby_listing_ids_are_read_from_the_embedded_state(self):
+        import json as _json
+        state = {"fixtures": [
+            {"id": "1079621", "participants0_name": "Gothic", "participants1_name": "Lavked",
+             "scheduled_start_time": "1767custom",
+             "nested": {"id": "1079622", "participants0_name": "A", "participants1_name": "B",
+                        "scheduled_start_time": "1"}}]}
+        html = ('<html><script id="ng-state" type="application/json">'
+                + _json.dumps(state).replace("<", "\\u003c") + '</script>'
+                + '<a href="https://www.hotspawn.com/matches/1079621">card</a></html>')
+        listing = extract_lobby_listing(html)
+        self.assertTrue(listing["found"])
+        self.assertEqual(listing["listed_ids"], ["1079621", "1079622"])
+        self.assertEqual(listing["match_links_rendered"], 1)
+        self.assertFalse(extract_lobby_listing("<html><body>no state</body></html>")["found"])
 
     def test_week_window_is_monday_to_monday_utc(self):
         start, end = week_window(NOW)

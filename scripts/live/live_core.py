@@ -16,6 +16,7 @@ Rules that the project requires and this module enforces:
 """
 from __future__ import annotations
 
+import html as html_module
 import json
 import math
 import re
@@ -346,7 +347,7 @@ INLINE_JSON_RE = re.compile(r'<script[^>]*type="application/json"[^>]*>(.*?)</sc
 MATCH_LINK_RE = re.compile(r"hotspawn\.com/matches/", re.I)
 
 
-def extract_lobby_listing(html: str) -> dict:
+def extract_lobby_listing(page_html: str) -> dict:
     """Read the fixture ids the lobby page itself carries (Angular `ng-state` / inline JSON).
 
     The lobby is an Angular app whose server-rendered state embeds the fixture payload, so the ids
@@ -354,13 +355,13 @@ def extract_lobby_listing(html: str) -> dict:
     listing as unknown — never as empty.
     """
     out: dict = {"found": False, "listed_ids": [], "listed_count": 0, "source": None,
-                 "match_links_rendered": len(MATCH_LINK_RE.findall(html))}
+                 "match_links_rendered": len(MATCH_LINK_RE.findall(page_html))}
     blobs: list[tuple[str, str]] = []
-    m = LOBBY_STATE_RE.search(html)
+    m = LOBBY_STATE_RE.search(page_html)
     if m:
-        blobs.append(("ng-state", html.unescape(m.group(1))))
-    for i, mm in enumerate(INLINE_JSON_RE.finditer(html)):
-        blobs.append((f"inline-json-{i}", html.unescape(mm.group(1))))
+        blobs.append(("ng-state", html_module.unescape(m.group(1))))
+    for i, mm in enumerate(INLINE_JSON_RE.finditer(page_html)):
+        blobs.append((f"inline-json-{i}", html_module.unescape(mm.group(1))))
     for name, raw in blobs:
         try:
             state = json.loads(raw)
