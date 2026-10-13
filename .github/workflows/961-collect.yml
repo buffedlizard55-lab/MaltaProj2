@@ -1,0 +1,58 @@
+name: 961 collect + verify
+
+# Session 961e163a lane only: refreshes the raw external-quote evidence and the verified
+# pick board. It never touches another session's data files, collectors or pages.
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/961/**'
+      - '.github/workflows/961-collect.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: 961-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Collect external quotes (raw evidence)
+        run: python3 scripts/961/collect_961.py
+      - name: Build board (de-vig + consensus)
+        run: python3 scripts/961/build_961.py
+      - name: Build mobile-first pages
+        run: python3 scripts/961/build_pages_961.py
+      - name: Verify board line by line
+        run: python3 -m unittest tests.test_961 -v
+      - name: Commit refreshed evidence, board and pages
+        run: |
+          git config user.name "malta-961-bot"
+          git config user.email "malta-961-bot@users.noreply.github.com"
+          git add data/961 verify961 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "data(961): refresh external quotes, board and pages [skip ci]"
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push && break || sleep 5
+            done
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 961-output
+          path: |
+            data/961/
+            verify961/
+          retention-days: 7
