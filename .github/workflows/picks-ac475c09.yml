@@ -1,0 +1,91 @@
+name: picks-data (ac475c09)
+
+# Session ac475c09 / task T-LIVE.
+# Refreshes the externally-sourced "live picks" dataset used by the /picks/ dashboard.
+# Scope guard: this workflow only commits files owned by this session
+#   data/picks_*.json, evidence/picks/**, picks/**  — it never rewrites another session's files.
+
+on:
+  push:
+    branches: ['arena/ac475c09-maltaproj2']
+    paths:
+      - 'scripts/picks_collect.py'
+      - 'scripts/picks_build.py'
+      - '.github/workflows/picks-ac475c09.yml'
+  schedule:
+    - cron: '23 */3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: picks-data-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect lobby fixtures and external bookmaker quotes
+        run: |
+          mkdir -p evidence/picks
+          python3 scripts/picks_collect.py 2>&1 | tee /tmp/collect.log
+          echo "collect_exit=${PIPESTATUS[0]}" >> /tmp/collect.log
+
+      - name: Build the /picks/ dashboard from the collected data
+        run: |
+          if [ -f scripts/picks_build.py ]; then
+            python3 scripts/picks_build.py 2>&1 | tee /tmp/build.log
+            echo "build_exit=${PIPESTATUS[0]}" >> /tmp/build.log
+          else
+            echo "no builder yet" > /tmp/build.log
+          fi
+
+      - name: Upload raw evidence for inspection
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: picks-evidence
+          path: |
+            data/picks_*.json
+            evidence/picks/
+          retention-days: 7
+          if-no-files-found: warn
+
+      - name: Commit refreshed data, evidence and dashboard
+        run: |
+          {
+            echo "== picks-data run ${GITHUB_RUN_ID} for ${GITHUB_SHA} at $(date -u +%FT%TZ)"
+            echo "== collect log (tail)"; tail -c 12000 /tmp/collect.log 2>/dev/null || true
+            echo "== build log (tail)"; tail -c 8000 /tmp/build.log 2>/dev/null || true
+          } > evidence/picks/workflow_log.txt
+          git config user.name "malta-picks-bot"
+          git config user.email "malta-picks-bot@users.noreply.github.com"
+          # Add each path separately: `git add` aborts for ALL paths if one is missing.
+          for p in data/picks_fixtures.json data/picks_quotes.json data/picks_board.json picks evidence/picks; do
+            [ -e "$p" ] && git add -A "$p" || true
+          done
+          git add -A evidence/picks/workflow_log.txt
+          git commit -m "data: refresh live picks board (lobby fixtures + external lines) [skip ci]" || true
+          # Another workflow (update-data) commits data/evidence on the same branch, so a plain
+          # push can lose the race. On a race, take the newest tip and regenerate our own files on
+          # top of it instead of resolving conflicts by hand — the two workflows own the same files.
+          for i in 1 2 3; do
+            git fetch origin "${GITHUB_REF_NAME}"
+            if git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              echo "pushed on attempt $i"; break
+            fi
+            echo "push raced (attempt $i); regenerating on the newest tip"
+            git reset --hard "origin/${GITHUB_REF_NAME}"
+            python3 scripts/picks_collect.py >/dev/null 2>&1 || true
+            [ -f scripts/picks_build.py ] && { python3 scripts/picks_build.py >/dev/null 2>&1 || true; }
+            for p in data/picks_fixtures.json data/picks_quotes.json data/picks_board.json picks evidence/picks; do
+              [ -e "$p" ] && git add -A "$p" || true
+            done
+            git commit -m "data: refresh live picks board (lobby fixtures + external lines) [skip ci]" || true
+            sleep 10
+          done
+          git log --oneline -3
