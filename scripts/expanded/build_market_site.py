@@ -288,13 +288,14 @@ def render_repo_review(doc: dict, generated: str) -> None:
         for c in review.get("checks") or []:
             status = str(c.get("status") or "unverified")
             cls = "ok" if status == "verified" else ("chip" if status == "discrepancy" else "chip")
-            src = c.get("source") or ", ".join(c.get("sources") or []) or "—"
-            if src and not src.startswith("http"):
-                src_link = esc(src)
-            elif src:
-                src_link = f'<a href="{esc(src)}" rel="noopener">{esc(src[:70])}</a>'
-            else:
-                src_link = "—"
+            raw_sources = [c["source"]] if c.get("source") else list(c.get("sources") or [])
+            parts = []
+            for src in raw_sources:
+                if str(src).startswith("http"):
+                    parts.append(f'<a href="{esc(src)}" rel="noopener">{esc(str(src)[:64])}</a>')
+                else:
+                    parts.append(esc(str(src)))
+            src_link = "<br>".join(parts) if parts else "—"
             detail = c.get("detail") or (f'{c.get("teams_checked", "")} teams checked; '
                                           f'{len(c.get("mismatches") or [])} mismatch(es)')
             rows.append(f'<tr><td>{esc(c.get("id"))}</td><td>{esc(c.get("claim"))}</td>'
