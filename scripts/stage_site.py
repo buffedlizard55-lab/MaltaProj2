@@ -16,6 +16,13 @@ for name in ('assets','data','docs','pickem','evidence','audits'):
     source=ROOT/name
     if source.exists():
         shutil.copytree(source,OUT/name,ignore=shutil.ignore_patterns('__pycache__','*.pyc','.git'))
+# Render the root handoff from the exact data batch staged above. The upstream
+# refresh workflow commits JSON but not all generated root HTML. Rendering only
+# inside staging avoids stale page/data disagreement without editing its sources.
+import build_site
+build_site.ROOT=str(OUT)
+if build_site.main() != 0:
+    raise SystemExit('Root handoff generator failed in staging')
 (OUT/'.nojekyll').touch()
 assert (OUT/'docs/index.html').is_file()
 print('Staged root contributions, LineWatch at /docs/, and separate /pickem/ board')
