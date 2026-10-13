@@ -3,7 +3,7 @@
 External betting-line collector (raw quotes only).
 
 Sources:
-  * Pinnacle  — licensed bookmaker, public guest odds API. Sport id 12 = "E Sports".
+  * Pinnacle  — bookmaker, public guest odds API. Sport id 12 = "E Sports".
   * Bovada    — US-facing bookmaker, public coupon JSON.
   * Polymarket— public prediction market API (included; stale CS2 match markets filtered out).
 
@@ -116,6 +116,10 @@ def collect_pinnacle(lines, evidence):
     evidence["pinnacle_cs2_matchups"] = len(cs2)
     evidence["pinnacle_cs2_leagues"] = sorted({(m.get("league") or {}).get("name") for m in cs2})
     for m in cs2:
+        # Child/map matchups can also have their own period-zero moneyline.
+        # Explicit parent-null metadata is required for the series event.
+        if "parent" not in m or "parentId" not in m or m["parent"] is not None or m["parentId"] is not None:
+            continue
         parts = m.get("participants") or []
         if len(parts) != 2:
             continue
@@ -128,6 +132,7 @@ def collect_pinnacle(lines, evidence):
         # Main series/match moneyline = type moneyline, period 0, not alternate, 2 prices.
         cands = [mk for mk in markets
                  if str(mk.get("type", "")).lower() == "moneyline"
+                 and mk.get("matchupId") == mid
                  and mk.get("period") == 0 and not mk.get("isAlternate")
                  and isinstance(mk.get("prices"), list) and len(mk.get("prices") or []) == 2
                  and all(p.get("price") is not None for p in mk.get("prices") or [])]
@@ -142,7 +147,7 @@ def collect_pinnacle(lines, evidence):
             lines.append({
                 "source_key": "pinnacle",
                 "source_name": "Pinnacle",
-                "source_kind": "licensed bookmaker",
+                "source_kind": "bookmaker",
                 # Pinnacle's browser pages are region-restricted; the guest API on the
                 # pinnacle.com domain is the exact public source of the quote below.
                 "source_public_url": None,
@@ -205,7 +210,7 @@ def collect_bovada(lines, evidence):
                     if len(outs) != 2:
                         continue
                     outs = aligned_bovada_outcomes(comps, outs)
-                    if outs is None:
+                    if outs is None or any(o.get("status") != "O" for o in outs):
                         evidence.setdefault("rejected_alignment", []).append({"source": "bovada", "event_id": ev.get("id"), "market_id": mk.get("id")})
                         continue
                     prices = [((o.get("price") or {}).get("decimal")) for o in outs]
@@ -216,7 +221,7 @@ def collect_bovada(lines, evidence):
                     lines.append({
                         "source_key": "bovada",
                         "source_name": "Bovada",
-                        "source_kind": "licensed bookmaker",
+                        "source_kind": "bookmaker",
                         "source_public_url": "https://www.bovada.lv" + link,
                         "source_api_url": url,
                         "source_event_id": str(ev.get("id")),

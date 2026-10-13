@@ -64,9 +64,10 @@ jobs:
           } > evidence/picks/workflow_log.txt
           git config user.name "malta-picks-bot"
           git config user.email "malta-picks-bot@users.noreply.github.com"
-          # Add each path separately: `git add` aborts for ALL paths if one is missing.
-          for p in data/picks_fixtures.json data/picks_quotes.json data/picks_board.json picks evidence/picks; do
-            [ -e "$p" ] && git add -A "$p" || true
+          # Add each path separately: `git add` aborts for ALL paths if one pathspec is missing,
+          # which is how an earlier revision silently committed nothing.
+          for p in data/picks_fixtures.json data/picks_quotes.json data/picks_board.json data/picks_permalinks.json picks evidence/picks; do
+            if [ -e "$p" ]; then git add -A "$p"; else echo "skip (not produced): $p"; fi
           done
           git add -A evidence/picks/workflow_log.txt
           git commit -m "data: refresh live picks board (lobby fixtures + external lines) [skip ci]" || true
@@ -82,8 +83,8 @@ jobs:
             git reset --hard "origin/${GITHUB_REF_NAME}"
             python3 scripts/picks_collect.py >/dev/null 2>&1 || true
             [ -f scripts/picks_build.py ] && { python3 scripts/picks_build.py >/dev/null 2>&1 || true; }
-            for p in data/picks_fixtures.json data/picks_quotes.json data/picks_board.json picks evidence/picks; do
-              [ -e "$p" ] && git add -A "$p" || true
+            for p in data/picks_fixtures.json data/picks_quotes.json data/picks_board.json data/picks_permalinks.json picks evidence/picks; do
+              if [ -e "$p" ]; then git add -A "$p"; fi
             done
             git commit -m "data: refresh live picks board (lobby fixtures + external lines) [skip ci]" || true
             sleep 10

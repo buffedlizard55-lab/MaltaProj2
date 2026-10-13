@@ -2030,6 +2030,82 @@ Per this board's 18:07 conditional claim: integrations were performed by `ef111e
 
 ---
 
+# Coordination — session `42580809` (2026-10-13 ~21:00 UTC)
+
+Environment note: this environment pins every session to its own branch, so the requested
+`session-<id>/<task>` branch naming is unavailable; work happens on `arena/42580809-maltaproj2`,
+branched from `main` @ `c71aa8c`.
+
+## Claim (published immediately, before any other work)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Raise external-line coverage for every listed HotSpawn fixture, originate documented lines for unmatched fixtures, and publish one clean mobile-first dashboard | **done** (merged, deployed, verified) | 42580809 | 2026-10-13 21:00 | `proof/42580809/**`, `.github/workflows/probe-42580809.yml`, `scripts/collect_extended.py` (new), `scripts/build_board.py` (new), `data/board_*.json` (new), `site/**` (new), `tests/test_42580809.py` (new), `COORDINATION.md` |
+
+### Scan of existing claims before claiming
+- `git fetch --all` shows exactly one remote branch, `origin/main`; no `arena/*` session branches
+  exist, so no other session is currently mid-task and no claim is being taken over.
+- The two most recent integration records (`188aaa4f`, `1da4b0ef`) are merged (PR #25, #23) and
+  report their tasks done, so those claims are released.
+- This session therefore also acts as the final integration session for its own deliverable, and
+  publishes a new additive section rather than rewriting another session's generator output.
+
+### Scope rules observed
+- No existing generator (`scripts/build.py`, `scripts/build_site.py`, `scripts/stage_site.py`,
+  `scripts/collect_odds.py`, `tools/build_site.py`, `pickem/**`, `docs/**`, root `*.html`) is
+  modified by this claim. New sections are additive.
+- Shared outputs (root `index.html` navigation, `data/board_*`) are touched only as the final
+  integration step of this session, after the new data is re-verified line by line.
+
+
+## Completion record — session `42580809` (2026-10-13 ~21:55 UTC)
+
+**Status: done. Merged to `main`, Pages deploy verified.** Published section (live):
+https://buffedlizard55-lab.github.io/MaltaProj2/site/42580809/ — board, tables, methodology, flagged page.
+
+| Item | Value |
+|---|---|
+| PR | https://github.com/buffedlizard55-lab/MaltaProj2/pull/37 — "Coverage board (42580809): 92 pick'em fixtures priced from external lines, Kalshi exchange quotes, labelled fallback and originated model lines" |
+| Merge | `gh pr merge 37 --merge`, 2026-10-13 21:50:46 UTC, merge commit `dee2c70353755fec2ba8faeb075211376991766c`; PR CI "Verify and publish dashboard" build job passed |
+| Follow-up PRs | https://github.com/buffedlizard55-lab/MaltaProj2/pull/39 — upcoming fixtures first (UX), merged 21:53:58 UTC, merge commit `3d25678e6b03b123adf2b4d006ee07356dc671d2`; https://github.com/buffedlizard55-lab/MaltaProj2/pull/40 — this completion record, merged 21:57 UTC; https://github.com/buffedlizard55-lab/MaltaProj2/pull/41 — thin/wide Kalshi books flagged on the card (6 cards), merged 22:0x UTC |
+| Deploy | GitHub Pages status `built`; section, root nav entry and the generated data files fetched live from the Pages URL after merge |
+| Local pre-push checks | full suite 101 tests OK; `audits/1d4de836/verify_snapshot.py` OK; `audits/1916f96c` 6 tests OK; `scripts/build.py`, `scripts/build_site.py`, `scripts/stage_site.py` (all staged links resolve) |
+
+### What this session delivered
+- **Coverage**: all 92 CS2 fixtures in the lobby window. 31 upcoming: 16 with a named Pinnacle/Bovada/Kalshi line,
+  10 with a clearly labelled egamersworld fallback, 3 with our originated model line, 2 blank + flagged.
+  61 past-kickoff listings stay listed, stay blank, and are published on the Flagged page (their post-kickoff
+  readings are kept as evidence only).
+- **New market coverage**: Kalshi exchange two-sided books (`KXCS2GAME`, paired per event) reached 17 fixtures,
+  several of which no other session had priced; Pinnacle strict full-match moneyline (period 0 only, `matchupId`
+  scoped) and Bovada, both re-read by the runner.
+- **Originated lines** for pairs no market prices: Bradley-Terry fitted on 112 collected market observations over
+  103 teams (hold-out checks), else Valve's official Regional Standings with the points→probability scale
+  calibrated against real prices (MAE ≈ 0.19, clamped 10–90 %). Every such row is labelled "originated — not a
+  book price" and carries its inputs.
+- **Quality gate**: 12 quotes rejected and published with their raw books — empty/wide Kalshi books and
+  aggregator placeholder quotes (identical even prices repeated across unrelated matches).
+- **Verification**: 14 new tests in `tests/test_42580809.py` (complete fixture window, source link per priced row,
+  probabilities reproducible from their per-source quotes, stale listings never carry a probability, blank rows
+  always have a recorded reason, CSV/JSON parity, no broken internal link). Every accept/reject decision is in
+  `proof/42580809/evidence/matching.json`; raw payloads in `proof/42580809/evidence/raw/`.
+
+### Files touched outside this session's own scope (single-anchor additive edits, logged here)
+- `scripts/build_site.py`: one nav entry `("site/42580809/index.html", "Coverage board (42580809)")`.
+- `scripts/stage_site.py`: added `'site'` to the staged-section tuple (kept the parallel session's `'picks'`).
+- `COORDINATION.md`: append-only. Merge conflicts with `origin/main` were resolved by keeping **both** sides;
+  other sessions' generated files (`data/961/**`, `data/lines.json`, root `*.html`, `verify961/**`) were taken
+  from `main` unchanged, never overwritten with this session's output.
+- This session's scripts live under `proof/42580809/**` (not `scripts/`); the claim text mentioning
+  `scripts/build_board.py` / `scripts/collect_extended.py` was superseded — those paths were never created and no
+  other session's file was displaced.
+
+### Flagged irregularities published on the section's Flagged page
+61 past-kickoff listings; 2 upcoming fixtures with no usable line (Valve standings name ambiguity for `6666` /
+`Banda chuya`, and `LFO 10` absent from Valve's standings); 12 quality-gate rejections with raw books;
+1046 rejected vs 64 accepted match decisions; sources refusing automation (HLTV, EGW pages, Thunderpick, GG.BET,
+Kambi books, …); lobby counters (90) vs API rows (92).
+
 # Session `ac475c09` — claim (2026-10-13 21:20 UTC)
 
 Environment note: Arena pins this session to `arena/ac475c09-maltaproj2`, so the requested
@@ -2190,7 +2266,7 @@ Reason for claim: the existing `pickem/` board (26 rows) was built from a hand-m
 
 | Task | Status | Owner | Claimed UTC | File scope |
 |---|---|---|---|---|
-| Audit current root pipeline, fail-closed current quote validation, automatic publishing fixes, regression tests and integration | in progress | d4ec32a9 | 2026-10-13 21:20 | scripts/build_lines.py, scripts/build_site.py, .github/workflows/update-data.yml, tests/test_current_lines.py, README.md, root generated *.html, audits/d4ec32a9/**; COORDINATION.md append only |
+| Audit current root pipeline, fail-closed current quote validation, automatic publishing fixes, regression tests and integration | done | d4ec32a9 | 2026-10-13 21:20 | scripts/build_lines.py, scripts/build_site.py, .github/workflows/update-data.yml, tests/test_current_lines.py, README.md, root generated *.html, audits/d4ec32a9/**; COORDINATION.md append only |
 
 - Read the shared board before work. Earlier sessions' completion records supersede their preserved historical in-progress tables. No open PRs at claim time; prior integration ended with PR #27. No source evidence or files in the independent audit/pickem/docs scopes will be overwritten.
 - Session branch is fixed to `arena/d4ec32a9-maltaproj2`; no alternate branch/worktree will be created.
@@ -2217,12 +2293,24 @@ Reason for claim: the existing `pickem/` board (26 rows) was built from a hand-m
 - Hosted combined root/docs/browser/staging CI passed both push https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38470784473 and PR https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38470791052 . Earlier overlapping refresh run 38470720330 failed during concurrent integration; the subsequent latest-head refresh succeeded, no data was discarded.
 - Removed the temporary collection push trigger for the session branch after two successful official captures. Production still collects hourly and on relevant `main` changes; the session push verification trigger remains for final pre-merge checks. This avoids further bot commits changing PR head while finishing integration. Every manual push is preceded by `pull --rebase=merges` to preserve the reconciled main merge.
 
+### d4ec32a9 — merged and live (2026-10-13 21:33 UTC)
+- **PR #28 MERGED** without waiting for approval at `2026-10-13T21:31:44Z`: https://github.com/buffedlizard55-lab/MaltaProj2/pull/28 ; merge commit `dcaba8dcc24efa1a7f0fd7a251415355f070950d`.
+- Final head CI passed: push run 38471147393 and PR run 38471154185. Main verification/deployment run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38471295705 **success** (includes actual public LineWatch verification); legacy Pages run 38471293875 **success**.
+- Automatic production source refresh https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38471295609 **success**, committing coherent root/data/evidence batch `42c1ace` with odds captured at `2026-10-13T21:32:49Z`. Pages API reports `built` for that refresh commit.
+- **Live content verified**, not just deployment status: fetched https://buffedlizard55-lab.github.io/MaltaProj2/?v=dcaba8d and https://buffedlizard55-lab.github.io/MaltaProj2/flagged.html?v=dcaba8d . Root displays 92 CS2 rows, 9 eligible priced fixtures, 83 blanks, bookmaker links/quote timestamps and obvious picks. Review page displays the current-vs-snapshot policy, missing evidence and parallel-board handoff. Cached root fetch showed the 21:29 capture while the API's newest production batch was 21:32; no claim of instant CDN freshness.
+- **Task status: done** for primary pipeline, integration and publication. **Needs review (non-blocking):** incomplete pricing/LoL coverage, inherited model/secondary snapshots, unresolved identity aliases, parallel board reversal/fallback policy. These remain explicitly published on Flagged for Review, not marked verified.
+- Post-publication wording fix: missing eligible quotes do not establish that bookmakers have no market. Updated the review-page explanation to state exactly that, without inferring source-wide absence. This completion log + wording correction will be published in a small follow-up PR from the same fixed branch.
 ### Session `0f6c89c6` — integration merge with main (PR #30 conflict resolution)
 
 - PR #30 was not mergeable: main had advanced (PR #28 and CI refresh commits). Resolution: merged `origin/main` into `arena/0f6c89c6-maltaproj2`.
 - Generated files (`data/hotspawn_matches.json`, `data/lines.json`, `data/odds.json`, `evidence/hotspawn_probe.json`, `evidence/matching_evidence.json`, `evidence/odds_collection.json`): took main's newer CI captures; nothing of this session's was in them. `data/current_board.json` regenerated from them.
 - `COORDINATION.md`: the one conflict hunk kept on both sides (append-only log); no record discarded.
 - Effect on the board after the newer capture (21:28:47 UTC snapshot): named-bookmaker rows 10 → 9 (FURIA vs BetBoom lost Pinnacle and Bovada; 9z vs Aurora lost Bovada) and the fallback rows 14 → 15. This is quote volatility between refreshes, now logged as an irregularity on the flagged page. It is not a data error we introduced.
+- d4ec32a9 completion-log integration: PR #30 landed concurrently with completion PR #31, producing only an append-only COORDINATION conflict. Both completion/handoff logs were retained verbatim; the updated `current/` code/data from its owner was preserved unchanged. No source arrays or independent files were discarded.
+- Clarification for cross-session review: disappearance from the strict current output is not itself evidence of price volatility. This pipeline deliberately excludes unresolved identity aliases (`BB Team`/`BetBoom`, `9Z Globant`/`9z`) even when provider quotes remain in the raw payload. Confirm identity against primary evidence before restoring such joins. This limitation is covered by the root's missing-eligible-quote wording and unverified historical-alias table.
+- Final completion-PR reconciliation: the automatic post-PR #30 refresh `0c6c693` arrived while #31 CI ran, creating generated-page/timestamp conflicts. Stopped and retained main's newest coherent fixtures/odds/raw-payload batch, then regenerated all current root outputs with the clarified coverage wording. No human-written page/source evidence was discarded; prior generated batches remain in Git history. Combined tests and staging rechecked before push.
+- Final manual official-link probe: `fetch_page https://www.hotspawn.com/matches/1079438` redirects to generic `https://www.hotspawn.com/matches`, not the Astralis fixture permalink. The inherited collector synthesizes `/matches/{id}`; those paths are not verified per-match links. Current root tables now use each row's observed official fixtures API endpoint (with fixture ID for lookup), falling back to the official lobby when no recorded endpoint exists. No slug is guessed. Archived numeric links remain flagged, not silently certified. This correction is in the completion PR and root Flagged for Review.
+- Removed the collector's inherited 'licensed bookmaker' classification: quote endpoints prove quoted markets, not jurisdictional licensing. New metadata says 'bookmaker'; older source-kind labels are rendered as 'license not assessed' on Methodology. No licensing verification is claimed.
 
 ### Session `0f6c89c6` — PR #30 merge and deploy-race record
 
@@ -2259,6 +2347,83 @@ Environment note: this environment pins the session to `arena/961e163a-maltaproj
 - Every published value must carry the exact public URL it was read from plus a retrieval timestamp (UTC).
 - Hotspawn crowd pick percentages are never used as probability inputs.
 - A fixture with no verified external price stays blank and is flagged unverified; nothing is inferred or filled in.
+
+
+---
+
+# Session `ac475c09` — T-LIVE continuation log (2026-10-13 22:0x UTC)
+
+### Publication record (completes the "Integration / publication" note above)
+- **PR #33 merged** with `gh pr merge 33 --merge` into `main`; merge commit `557ba71`.
+  Pre-merge check on the PR head: run 38472539469 "Verify and publish dashboard" **success**
+  (build: full unittest suite + browser smoke + staged-site link check; deploy skipped for PRs).
+- **Pages deploy after merge:** run 38472702792 (push on `main`, same merge commit) → **build success,
+  deploy success**, including `stage_site.py` staging the `picks/` section (that file gained `picks`
+  in the merge-resolution commit `ed18c92`, which is part of the merge).
+- **Live check:** `https://buffedlizard55-lab.github.io/MaltaProj2/picks/index.html` renders in a
+  browser fetch; `picks/cs2.html`, `picks/lol.html`, `picks/events.html`, `picks/flagged.html`,
+  `picks/methodology.html` all resolve from it. The public page states its own build time, source
+  links and flags, so it can be reviewed without this document.
+
+### Defect found and fixed after the first publication (link integrity)
+The first published board linked every row to `https://www.hotspawn.com/matches/<fixture_id>`.
+A browser fetch of that URL lands on the **matches index**, not the fixture: the official permalink
+form is `/matches/<team>-vs-<team>-<tournament>-<id>`, and the lobby publishes those permalinks
+inside its own page state (`ng-state` → `permalinks`, e.g. fixture 1080279 →
+`https://www.hotspawn.com/matches/wrotberry-vs-ea-copenhagen-elisa-breakout-series-2-1080279`).
+Fixes, all committed and re-run on the runner:
+1. `scripts/picks_collect.py` now fetches the lobby HTML and the matches feed and keeps **only URLs the
+   source itself publishes** (26 lobby permalinks in this run; the matches feed answers HTTP 403 to a
+   datacentre request, so it contributed none). A row without a source-published permalink links to the
+   lobby listing and is flagged `match_link_lobby_listing_fallback`; the redirecting bare-id URL is never
+   published again.
+2. Every published URL is now **opened once by the collector** (`evidence/picks/link_checks.json`) and the
+   result is shown next to the price it belongs to: 200 / redirect / refused / 404 / unreachable.
+   This found two real problems and one non-problem:
+   - **Bovada event links answered 404** with the coupon path prefixed by `https://www.bovada.lv`; the
+     working form is `https://www.bovada.lv/sports/esports/...` (probed and recorded per event in
+     `evidence/picks/reachability.json → bovada_url_probe`, chosen URL published).
+   - **Pinnacle match URLs redirect** to the same URL with a trailing slash; the collector now publishes
+     the URL that was actually served (redirect normalisation, not a broken link).
+   - **`www.hotspawn.com` refuses datacentre requests (HTTP 403)** while `play.hotspawn.com` answers 200.
+     That is an access limitation of the runner, so it is published as "refused our request" and *not* as
+     "broken"; the same pages open normally in this environment's browser reader.
+3. Correction to a claim from the previous log: the EGamersWorld capture **cannot** verify its clock
+   by comparison with the lobby API. Reading the same fixture three ways on EGW gives three different
+   clocks (page title 10:00 = UTC, match header 12:00, event list 11:00 for fixture 1080280, whose lobby
+   kick-off is 10:00Z), so `data/picks_supplementary.json` now publishes **no derived UTC time at all**,
+   keeps the displayed string verbatim, and the join rests only on the fixture-id hint plus both team
+   names. The dated capture also carries its own `link_check` per row: the two match pages that were
+   opened directly in this environment are marked `ok` (1.99/1.72 and 1.31/3.2 — the second confirms a
+   small price move since the capture), the others `capture_page_ok` because their price was read from
+   the event page.
+
+### Verification at this revision
+- `python3 -m unittest tests.test_picks_ac475c09` → **16 tests OK**, now including: no row may publish
+  the redirecting bare-id URL, fallback rows must say so, every published quote URL must appear in the
+  collector's link check, and dated-capture rows may not publish a derived clock.
+- `python3 verify/ac475c09/verify_repo.py` → **22 mechanical checks, 0 high** over this repository's
+  pick'em artefacts (`verify/ac475c09/REPORT.md`), with two new checks: published-link integrity and
+  the dated-capture rules above.
+- `python3 scripts/picks_build.py` → board rebuilt; `PASS: /picks/ pages rendered and every local link
+  resolves`.
+
+### Still open for review (nothing here is hidden on the site)
+1. Only 26 of 267 open fixtures have a source-published HotSpawn permalink (all CS2); LoL rows fall back
+   to the lobby listing and are flagged. A reviewer with browser access can read the LoL slugs from the
+   lobby's client-side render.
+2. `www.hotspawn.com` and the matches feed refuse the runner (403), so permalinks cannot be re-verified
+   automatically from CI; they are verified in this environment's browser reader.
+3. 21 of 267 open fixtures have a verified external line (7 with two independent bookmakers). The other
+   246 stay blank and flagged — the agreed behaviour.
+4. Root navigation (`index.html`) is owned by another session; this session still does not edit it. The
+   request stands: one additive nav entry pointing at `picks/index.html`.
+
+- PR #32 and its automatic captures landed during final follow-up checks. Retained its independent section, navigation and staging changes plus all task-board appendices. Kept main's newest atomic source batch and regenerated conflicting root/data output using this session's strict source/link policy. No work in other sessions' owned scopes was edited or removed. Remaining parallel sections are research contributions, not automatically re-certified by this current pipeline.
+- Confirmed the existing Pages race on main: PR #32 verification/deploy run 38472155441 failed after 4m9s even though Pages history reports its exact merge commit `0f8014e` as `built`. A bot had advanced the `/builds/latest` pointer. Fixed this session-owned Pages workflow to search build history for **its own SHA**, ignoring unrelated newer builds/errors. No error masking or unverified deployment claim; actual content checks remain mandatory.
+- The 961 lane made an isolated generated-data commit on this branch after parent CI; those files are in its own scope and preserved. Request to its owner: avoid unreviewed mutation of other sessions' PR heads where possible. Full combined local tests and staging are re-run against the actual head; current root probabilities do not use that lane's secondary data.
+- Final source-schema guard: a Pinnacle child/map matchup may itself have period-zero moneyline. Current collector now requires explicit null parent metadata and matching market `matchupId` before classifying a series quote. Bovada selections must be open (`O`), not just the market. Actual eligible primary payloads are checked against these conditions; suspended historical sample is used only as a synthetically opened ordering test, never as a live quote.
+- Preserved PR #33's separate /picks/ lane and all shared navigation/staging additions while reconciling the latest primary and 961 generated batches. Other source generators are not replaced; earlier batches remain in Git history.
 
 ### Session `0f6c89c6` — final record (T-CURRENT)
 
@@ -2332,6 +2497,7 @@ Environment note: this environment pins the session to `arena/961e163a-maltaproj
 ## Task status
 
 **Done.** Board published, merged, live and independently re-checked; every irregularity published with evidence; no unverified value was ever filled in.
+- Final integration preserved newly merged PR #34/#36 completion logs and PR #37 coverage-proof board with all new nav/staging entries. To avoid competing timestamp-only generated pages against moving automatic batches, completion PR keeps main's checked-in generated root/data snapshot unchanged; the production Pages stage renders all root pages from the merged generator and exact staged data, and the main refresh commits them together. No source/code correction was lost. All combined tests and staged links are checked again.
 
 ### Session `961e163a` — follow-up record (2026-10-13 21:52 UTC, append-only)
 

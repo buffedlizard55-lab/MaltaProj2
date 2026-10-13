@@ -253,6 +253,68 @@ def check_fixture_drift():
                 "API read whole-history dump", value=missing_in_fresh[:10])
 
 
+# ------------------------------------------------------------------ 8. published link integrity
+def check_published_links():
+    """No row may publish the bare /matches/<id> link, and every quote URL must be accounted for."""
+    board = load("data/picks_board.json")
+    rows = board.get("rows") or []
+    bare = 0
+    unknown_kind = 0
+    checked_quotes = 0
+    uncovered = 0
+    link_doc = load("evidence/picks/link_checks.json")
+    results = (link_doc.get("results") or {}) if isinstance(link_doc, dict) else {}
+    for row in rows:
+        url = row.get("hotspawn_match_url") or ""
+        kind = row.get("hotspawn_match_url_kind")
+        if url.startswith("https://www.hotspawn.com/matches/") and url.rsplit("/", 1)[-1].isdigit():
+            bare += 1
+        if kind not in ("lobby_published_permalink", "constructed_slug_verified_200", "lobby_listing_fallback"):
+            unknown_kind += 1
+        for quote in row.get("quotes") or []:
+            if quote.get("source_key") == "egamersworld_manual":
+                continue
+            if quote.get("source_url") in results:
+                checked_quotes += 1
+            else:
+                uncovered += 1
+    finding("published_links", "high" if bare else "info", "data/picks_board.json",
+            f"{bare} of {len(rows)} rows publish the bare /matches/<id> URL that redirects to the matches index"
+            if bare else f"none of {len(rows)} rows publish the redirecting bare /matches/<id> URL",
+            value=bare)
+    if unknown_kind:
+        finding("published_links", "medium", "data/picks_board.json",
+                f"{unknown_kind} rows state an unrecognised match-link kind", value=unknown_kind)
+    if results:
+        finding("published_links", "info" if not uncovered else "medium", "evidence/picks/link_checks.json",
+                f"{checked_quotes} published quote URLs were opened by the collector"
+                + (f"; {uncovered} were not" if uncovered else ""),
+                value=checked_quotes)
+    else:
+        finding("published_links", "low", "evidence/picks/link_checks.json",
+                "no link-check record in this revision", value=0)
+
+
+# ------------------------------------------------------------------ 9. dated captures
+def check_dated_capture():
+    doc = load("data/picks_supplementary.json")
+    rows = doc.get("rows") if isinstance(doc, dict) else None
+    if not rows:
+        finding("dated_capture", "info", "data/picks_supplementary.json", "no dated capture in this revision")
+        return
+    derived_clock = [r for r in rows if r.get("start_time_utc")]
+    unchecked = [r for r in rows if not r.get("link_check")]
+    finding("dated_capture", "info", "data/picks_supplementary.json",
+            f"{len(rows)} captured rows, each carrying its own URL and retrieval time", value=len(rows))
+    if derived_clock:
+        finding("dated_capture", "high", "data/picks_supplementary.json",
+                f"{len(derived_clock)} captured rows publish a clock derived from a source whose "
+                "rendering was measured to differ between elements of the same page", value=len(derived_clock))
+    if unchecked:
+        finding("dated_capture", "medium", "data/picks_supplementary.json",
+                f"{len(unchecked)} captured rows carry no link-check record", value=len(unchecked))
+
+
 def main() -> int:
     check_price_provenance()
     check_price_units()
@@ -261,6 +323,8 @@ def main() -> int:
     check_typed_quotes()
     check_cross_pipeline()
     check_fixture_drift()
+    check_published_links()
+    check_dated_capture()
 
     payload = {
         "generated_at_utc": datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
