@@ -6,12 +6,12 @@ after polymarket: 69
 {
  "fixtures_total": 1210,
  "fixtures_future": 263,
- "future_with_external_line": 25,
- "future_without_external_line": 238,
- "future_with_two_or_more_sources": 12,
+ "future_with_external_line": 27,
+ "future_without_external_line": 236,
+ "future_with_two_or_more_sources": 14,
  "quotes_total": 69,
- "quotes_joined": 44,
- "unused_quotes": 25,
+ "quotes_joined": 48,
+ "unused_quotes": 21,
  "by_source": {
   "bovada": 15,
   "linefeed_1xbet_platform": 39,
@@ -19,16 +19,13 @@ after polymarket: 69
  }
 }
 originated estimates: 6; without rating: 1; snapshots: {'americas': '2026_10_05', 'asia': '2026_10_05', 'europe': '2026_10_05', 'global': '2026_10_05'}
-Traceback (most recent call last):
-  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/verify_repo_claims.py", line 398, in <module>
-    raise SystemExit(main())
-                     ^^^^^^
-  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/verify_repo_claims.py", line 150, in main
-    window = [f for f in live
-             ^^^^^^^^^^^^^^^^
-  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/verify_repo_claims.py", line 153, in <listcomp>
-    and (window_start := parse_iso(f.get("scheduled_start_time"))) is not None
-                         ^^^^^^^^^
-NameError: name 'parse_iso' is not defined
-wrote market/ pages from /home/runner/work/MaltaProj2/MaltaProj2/data/expanded/lines.json (1210 fixtures, 25 priced)
-OK: 7 pages, no broken local links, 26 priced rows all source-linked
+R1 verified: data/hotspawn_matches.json matches the live lobby fixture list — 406 snapshot rows vs 275 live window rows; 0 live window fixture(s) missing from the snapshot, 0 snapshot row(
+R2 verified: data/originated_matches.json team VRS points and standings match Valve's official regional standings — 56 team records across 4 Valve VRS files (2026-10-05) checked; 0 mismatch(es)
+R3 verified: each data/originated_matches.json fair probability is what its own documented model produces from the ratings it records — 28 pairings recomputed from the ratings the file itself records; 0 mismatch(es); 21 pairing(s) carry documente
+R4 verified: data/cs2_odds_egamersworld.json rows refer to real lobby fixtures — 32 priced rows joined to the lobby snapshot by fixture id and team name; 0 mismatch(es)
+R5 verified: data/lines.json summary counters match its own row list — declared fixtures_total=92 vs 92 rows; fixtures_with_external_line=11
+R6 verified: every price published on the board carries a source link, a market label and a retrieval timestamp — 28 priced rows, 16 distinct source pages, 0 row(s) missing provenance; 1 link(s) answered automatically
+R7 verified: where two or more independent sources price the same fixture, their no-vig probabilities agree within 12 points — 14 fixture(s) priced by 2+ sources compared source by source; 0 with a spread wider than 12 points
+irregularities: 0 — wrote data/expanded/repo_review.json
+wrote market/ pages from /home/runner/work/MaltaProj2/MaltaProj2/data/expanded/lines.json (1210 fixtures, 27 priced)
+OK: 7 pages, no broken local links, 28 priced rows all source-linked
