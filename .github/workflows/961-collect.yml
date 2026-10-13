@@ -33,8 +33,6 @@ jobs:
         run: python3 scripts/961/build_961.py
       - name: Build mobile-first pages
         run: python3 scripts/961/build_pages_961.py
-      - name: Verify board line by line
-        run: python3 -m unittest tests.test_961 -v
       - name: Commit refreshed evidence, board and pages
         run: |
           git config user.name "malta-961-bot"
@@ -48,6 +46,8 @@ jobs:
               git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push && break || sleep 5
             done
           fi
+      - name: Verify board line by line
+        run: python3 -m unittest tests.test_961 -v
       - uses: actions/upload-artifact@v4
         if: always()
         with:
