@@ -74,6 +74,18 @@ EXTRA_SOURCES = {
     "liquipedia_cs": "https://liquipedia.net/counterstrike/Matches",
     "unibet_esports": "https://www.unibet.com/api/sports/offerings/10001000/sports/23",
     "midnite_cs2": "https://www.midnite.com/api/sportsbook/sports/cs2/events",
+    "bo3gg_match_detail": "https://bo3.gg/api/v1/matches/current?page[limit]=5",
+    "onexbet_mirror": ("https://22bet.com/service-api/LineFeed/Get1x2_VZip"
+                       "?sports=3&count=100&lng=en&mode=4&country=1"),
+}
+
+# Pages that block datacentre requests (Cloudflare) are read through a public reader proxy. The
+# content still comes from the source itself; the proxy is only a transport, and the exact URL
+# used is recorded in the evidence file next to every parsed row.
+READER_PROXY = "https://r.jina.ai/"
+PROXIED_PAGES = {
+    "egamersworld_cs2_proxied": "https://egamersworld.com/counterstrike/matches",
+    "egamersworld_lol_proxied": "https://egamersworld.com/lol/matches",
 }
 
 CS2_LEAGUE_RE = re.compile(r"counter[- ]?strike|cs2|cs:?go", re.I)
@@ -429,6 +441,75 @@ def probe_extra_sources(quotes: list[dict], evidence: dict) -> None:
         evidence[key] = entry
 
 
+# --------------------------------------------------------------------------- proxied aggregator pages
+EGW_MATCH_LINK_RE = re.compile(
+    r"https://egamersworld\.com/(counterstrike|lol)/match/[^\s\)\]]+", re.I)
+EGW_TITLE_RE = re.compile(r'"([^"]{3,80}?)\s+VS\s+([^"]{1,60}?)"')
+DECIMAL_ODD_RE = re.compile(r"\[\s*(\d{1,2}\.\d{2,3})\s*\]")
+
+
+def collect_proxied_pages(quotes: list[dict], evidence: dict) -> None:
+    """Read Cloudflare-protected aggregator pages through a public reader proxy.
+
+    The proxy only transports bytes; every parsed row keeps the *source* URL, and the proxy URL
+    is recorded separately so a reviewer can reproduce the exact request.
+    """
+    for key, target in PROXIED_PAGES.items():
+        url = READER_PROXY + target
+        status, body, _ = fetch(url, {"Accept": "text/plain"}, timeout=90)
+        text = body.decode("utf-8", "replace")
+        entry = {"url": url, "target": target, "status": status, "bytes": len(body)}
+        if status != 200:
+            entry["error"] = text[:300]
+            evidence[key] = entry
+            continue
+        raw_path = os.path.join(ROOT, "evidence", "picks", "raw", key + ".txt")
+        os.makedirs(os.path.dirname(raw_path), exist_ok=True)
+        with open(raw_path, "w", encoding="utf-8") as fh:
+            fh.write(text[:1_500_000])
+        entry["raw_saved"] = f"evidence/picks/raw/{key}.txt"
+
+        game = "cs2" if "counterstrike" in target else "lol"
+        parsed = 0
+        links = list(EGW_MATCH_LINK_RE.finditer(text))
+        for i, m in enumerate(links):
+            seg_end = links[i + 1].start() if i + 1 < len(links) else min(len(text), m.start() + 700)
+            segment = text[m.start():seg_end]
+            title = EGW_TITLE_RE.search(segment[:300])
+            odds = DECIMAL_ODD_RE.findall(segment[:400])
+            if not title or len(odds) < 2:
+                continue
+            a, b = float(odds[0]), float(odds[1])
+            if not (1.01 <= a <= 60 and 1.01 <= b <= 60):
+                continue
+            parsed += 1
+            quotes.append({
+                "source_key": "egamersworld",
+                "source_name": "EGamersWorld odds widget",
+                "source_kind": "esports odds aggregator (widget bookmaker: bc.game)",
+                "source_public_url": m.group(0),
+                "source_api_url": url,
+                "source_league": None,
+                "source_market_id": None,
+                "source_game": game,
+                "market_type": "match winner (moneyline, full match)",
+                "market_is_live": False,
+                "market_status": None,
+                "retrieved_at_utc": now_iso(),
+                "start_time_utc": None,
+                "team_a_name": title.group(1).strip(),
+                "team_b_name": title.group(2).strip(),
+                "raw_price_format": "decimal",
+                "raw_price_a": a, "raw_price_b": b,
+                "decimal_odds_a": a, "decimal_odds_b": b,
+                "decimal_odds_derived": False,
+                "transport": "public reader proxy",
+            })
+        entry["parsed_rows"] = parsed
+        entry["match_links_seen"] = len(links)
+        evidence[key] = entry
+
+
 # --------------------------------------------------------------------------- main
 def main() -> int:
     started = now_iso()
@@ -447,6 +528,11 @@ def main() -> int:
         probe_extra_sources(quotes, evidence)
     except Exception as exc:  # noqa: BLE001
         evidence["extra_sources_error"] = repr(exc)
+
+    try:
+        collect_proxied_pages(quotes, evidence)
+    except Exception as exc:  # noqa: BLE001
+        evidence["proxied_pages_error"] = repr(exc)
 
     now = datetime.now(tz=timezone.utc)
     for f in fixtures:
