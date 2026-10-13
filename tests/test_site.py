@@ -11,7 +11,7 @@ class TestSiteIntegrity(unittest.TestCase):
         self.assertTrue((ROOT / ".nojekyll").exists())
 
     def test_html_files_exist(self):
-        expected_files = ["index.html", "lines.html", "teams.html", "methodology.html", "flagged.html"]
+        expected_files = ["index.html", "lines.html", "teams.html", "methodology.html", "flagged.html", "hotspawn.html"]
         for f in expected_files:
             p = ROOT / f
             self.assertTrue(p.exists(), f"File {f} is missing")
@@ -72,14 +72,39 @@ class TestSiteIntegrity(unittest.TestCase):
         self.assertTrue(summary["standards_compliance"]["no_hallucinations"])
 
     def test_all_html_have_source_links(self):
-        for f in ["index.html", "lines.html", "teams.html", "methodology.html", "flagged.html"]:
+        for f in ["index.html", "lines.html", "teams.html", "methodology.html", "flagged.html", "hotspawn.html"]:
             content = (ROOT / f).read_text(encoding="utf-8")
             self.assertTrue(
                 "https://github.com/ValveSoftware/counter-strike_regional_standings" in content
                 or "data/teams_verified.json" in content
                 or "data/originated_matches.json" in content
                 or "data/flagged_irregularities.json" in content
+                or "data/fixtures_verified.json" in content
             )
+
+    def test_current_finalists_nip_not_virtuspro(self):
+        teams = json.loads((ROOT / "data" / "teams_verified.json").read_text())
+        ids = {t["id"] for t in teams}
+        self.assertEqual(len(teams), 8)
+        self.assertIn("nip", ids)
+        self.assertNotIn("virtuspro", ids)
+        withdrawn = json.loads((ROOT / "data" / "withdrawn_team.json").read_text())
+        self.assertEqual(withdrawn[0]["id"], "virtuspro")
+
+    def test_fixtures_verified(self):
+        fixtures = json.loads((ROOT / "data" / "fixtures_verified.json").read_text())
+        self.assertEqual(len(fixtures), 4)
+        self.assertEqual({f["group"] for f in fixtures}, {"A", "B"})
+        for f in fixtures:
+            self.assertIsNone(f["bookmaker_match_odds"])  # blank/unverified, never filled
+            self.assertIsNone(f["start_time_utc"])  # timezone unconfirmed
+            self.assertGreaterEqual(len(f["verification_sources"]), 3)
+
+    def test_external_snapshot_flagged(self):
+        ext = json.loads((ROOT / "data" / "external_outrights_snapshot.json").read_text())
+        self.assertEqual(ext["status"], "flagged_secondary_unverified_attribution")
+        self.assertIsNone(ext["bookmaker_attribution"])
+        self.assertEqual(len(ext["outrights_decimal_as_published"]), 8)
 
 if __name__ == "__main__":
     unittest.main()

@@ -67,8 +67,7 @@ def calculate_effective_rating(team: dict) -> float:
         momentum_bonus = 15.0
     elif team["id"] == "aurora":
         momentum_bonus = 10.0
-    elif team["id"] == "virtuspro":
-        momentum_bonus = -10.0
+    # Ninjas in Pyjamas: no momentum adjustment (no verified form signal used; 0.0)
         
     return weighted_vrs + momentum_bonus
 
@@ -80,7 +79,7 @@ def main():
     for t in teams:
         ratings[t["id"]] = calculate_effective_rating(t)
 
-    now_utc = "2026-10-13T18:00:00Z"
+    now_utc = "2026-10-13"  # re-verified 2026-10-13 (session 8c3d79a6); no precise time claimed
     
     # 1. Originate All 28 Head-to-Head Pairwise Lines (BO3 Series)
     matches = []
@@ -157,7 +156,7 @@ def main():
                     "rating_diff": round(r_a - r_b, 1),
                     "effective_rating_a": round(r_a, 1),
                     "effective_rating_b": round(r_b, 1),
-                    "origination_method": "VRS Oct 5 logistic Bradley-Terry model + Tier-1 LAN momentum adjustments + 4.5% overround vig"
+                    "origination_method": "Derived (not a bookmaker quote): Bradley-Terry logistic on blended Valve VRS (75% Oct 5 2026 + 25% Aug 3 2026) + documented momentum adjustments in scripts/originate_lines.py + 4.5% overround. Momentum adjustments are model assumptions, not verified facts."
                 },
                 "verification_sources": [
                     {
