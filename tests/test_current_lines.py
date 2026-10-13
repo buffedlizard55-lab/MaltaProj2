@@ -167,7 +167,8 @@ class CurrentLinesTests(unittest.TestCase):
             for line in fixture['bookmaker_lines']:
                 candidates = [p for p in payloads if p['source'] == line['source_key'] and
                               p['retrieved_at_utc'] == line['retrieved_at_utc'] and
-                              p['url'] == line['source_api_url']]
+                              p['url'] == line['source_api_url'] and
+                              str((p.get('matchup') or {}).get('id') if p['source'] == 'pinnacle' else p.get('event_id')) == line['source_event_id']]
                 self.assertEqual(len(candidates), 1, (fixture['fixture_id'], line['source_key']))
                 payload = candidates[0]
                 if line['source_key'] == 'pinnacle':
