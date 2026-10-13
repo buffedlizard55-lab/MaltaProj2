@@ -1,4 +1,4 @@
-name: Verify dashboard evidence and audits
+name: Verify and publish dashboard
 on:
   push:
     branches: [main, arena/ef111e02-maltaproj2]
@@ -39,3 +39,46 @@ jobs:
         run: |
           pip install playwright==1.55.0
           python scripts/browser_smoke.py
+      - name: Stage all session-owned published sections
+        run: python scripts/stage_site.py
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out/site
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Avoid race with existing legacy Pages build
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          python - <<'PYCODE'
+          import json, os, subprocess, time
+          for attempt in range(36):
+              result = subprocess.run(['gh','api',f'repos/{os.environ["GH_REPO"]}/pages/builds/latest'],capture_output=True,text=True)
+              if result.returncode:
+                  raise SystemExit(result.stderr)
+              build = json.loads(result.stdout)
+              if build.get('commit') == os.environ['GITHUB_SHA'] and build.get('status') == 'built':
+                  break
+              if build.get('status') == 'errored':
+                  raise SystemExit('Legacy Pages build failed; inspect before deployment')
+              time.sleep(5)
+          else:
+              raise SystemExit('Legacy deployment not settled; refusing a publication race')
+          PYCODE
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Verify actual public dashboard
+        run: python scripts/check_deployment.py
