@@ -252,6 +252,7 @@ def main() -> int:
         sources = sorted(per_source.values(), key=lambda s: s["source_key"])
         probs = [s["no_vig_probability_a"] for s in sources]
         prob_a = round(sum(probs) / len(probs), 5) if probs else None
+        status_l = str(fx.get("status") or "").lower()
         flags = []
         if not sources:
             flags.append("no_external_line")
@@ -259,8 +260,12 @@ def main() -> int:
             flags.append("single_source")
         if fx_start and fx_start < now:
             flags.append("scheduled_start_in_the_past_or_started")
-        if fx.get("status") and str(fx["status"]).lower() != "scheduled":
-            flags.append(f"hotspawn_status_{str(fx['status']).lower()}")
+        if status_l and status_l != "scheduled":
+            flags.append(f"hotspawn_status_{status_l}")
+        if status_l == "cancelled":
+            flags.append("fixture_cancelled")
+        if status_l == "started" and fx_start and fx_start > now:
+            flags.append("source_status_inconsistent_with_future_start")
         for s in sources:
             if s.get("market_is_live"):
                 flags.append("live_market_quote")
@@ -297,6 +302,7 @@ def main() -> int:
             "sources": sources,
             "flags": sorted(set(flags)),
             "verified": bool(sources),
+            "cancelled": status_l == "cancelled",
             "official_source_url_hotspawn": fx.get("source_url"),
             "hotspawn_match_url": fx.get("match_url"),
             "hotspawn_pick_pct_used": False,
@@ -305,7 +311,8 @@ def main() -> int:
     rows.sort(key=lambda r: (r.get("scheduled_start_time_utc") or "", r.get("game") or ""))
 
     open_rows = [r for r in rows
-                 if (parse_iso(r.get("lock_time_utc")) or parse_iso(r.get("scheduled_start_time_utc")) or now) >= now]
+                 if (parse_iso(r.get("lock_time_utc")) or parse_iso(r.get("scheduled_start_time_utc")) or now) >= now
+                 and "fixture_cancelled" not in r["flags"]]
     with_line = [r for r in rows if r["verified"]]
     open_with_line = [r for r in open_rows if r["verified"]]
 
@@ -327,6 +334,8 @@ def main() -> int:
             "fixtures_with_external_line": len(with_line),
             "open_fixtures_with_external_line": len(open_with_line),
             "fixtures_without_external_line": len(rows) - len(with_line),
+            "cancelled_fixtures": sum(1 for r in rows if r["cancelled"]),
+            "unverified_open": sum(1 for r in open_rows if not r["verified"]),
             "by_game": {g: {
                 "total": sum(1 for r in rows if r.get("game") == g),
                 "with_line": sum(1 for r in rows if r.get("game") == g and r["verified"]),

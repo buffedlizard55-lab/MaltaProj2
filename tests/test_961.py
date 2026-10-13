@@ -186,3 +186,69 @@ class PageTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class CrossCheckTests(unittest.TestCase):
+    """The published cross-checks must be real, sourced and internally consistent."""
+
+    @classmethod
+    def setUpClass(cls):
+        with open(os.path.join(ROOT, "data", "961", "cross_checks.json"), encoding="utf-8") as fh:
+            cls.cross = json.load(fh)
+        with open(os.path.join(ROOT, "data", "961", "irregularities.json"), encoding="utf-8") as fh:
+            cls.irreg = json.load(fh)
+        with open(os.path.join(ROOT, "data", "961", "board.json"), encoding="utf-8") as fh:
+            cls.board = json.load(fh)
+
+    def test_every_cross_check_has_a_source_link_and_wording(self):
+        self.assertTrue(self.cross["rows"])
+        for row in self.cross["rows"]:
+            self.assertTrue(str(row["hltv_url"]).startswith("https://www.hltv.org/"), msg=row["match"])
+            self.assertTrue(row["hltv_statement"], msg=row["match"])
+            self.assertTrue(row["checker"] if "checker" in row else True)
+
+    def test_cross_check_agreement_matches_the_board_pick(self):
+        picks = {r["fixture_id"]: r["pick"] for r in self.board["rows"]}
+        for row in self.cross["rows"]:
+            self.assertIn(row["fixture_id"], picks, msg=row["match"])
+            self.assertEqual(picks[row["fixture_id"]], row["board_pick"], msg=row["match"])
+            self.assertEqual(row["hltv_favorite"] == row["board_pick"], row["agreement"],
+                             msg=row["match"])
+
+    def test_cross_checks_are_not_price_inputs(self):
+        for r in self.board["rows"]:
+            for s in r["sources"]:
+                self.assertNotEqual("hltv", s["source_key"],
+                                    msg="HLTV wording must never be published as a price")
+
+    def test_cross_check_page_lists_every_row(self):
+        with open(os.path.join(PAGES, "crosschecks.html"), encoding="utf-8") as fh:
+            page = fh.read()
+        for row in self.cross["rows"]:
+            self.assertIn(row["hltv_url"], page, msg=row["match"])
+            self.assertIn(row["hltv_favorite"], page, msg=row["match"])
+
+    def test_every_irregularity_has_evidence(self):
+        self.assertTrue(self.irreg["items"])
+        for item in self.irreg["items"]:
+            for key in ("id", "title", "detail", "evidence", "status"):
+                self.assertTrue(item.get(key), msg=item.get("id"))
+            self.assertTrue(any(str(e).startswith("http") or e.endswith(".json")
+                                for e in item["evidence"]), msg=item["id"])
+
+    def test_flagged_page_renders_every_irregularity(self):
+        with open(os.path.join(PAGES, "flagged.html"), encoding="utf-8") as fh:
+            page = fh.read()
+        for item in self.irreg["items"]:
+            self.assertIn(item["id"], page)
+            import html as _html
+            self.assertIn(_html.escape(item["title"]), page)
+
+    def test_cancelled_fixtures_are_counted_but_not_open(self):
+        summary = self.board["summary"]
+        cancelled = [r for r in self.board["rows"] if r["cancelled"]]
+        self.assertEqual(summary["cancelled_fixtures"], len(cancelled))
+        for r in cancelled:
+            self.assertIn("fixture_cancelled", r["flags"], msg=r["fixture_id"])
+        self.assertLessEqual(summary["open_for_picks"],
+                             summary["fixtures_total"] - len(cancelled))
