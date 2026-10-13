@@ -2027,3 +2027,33 @@ Per this board's 18:07 conditional claim: integrations were performed by `ef111e
 - **GitHub Pages:** LIVE — https://buffedlizard55-lab.github.io/MaltaProj2/ (Pages status `built` on the merge commit). This session's site is served from `main` at **/docs/**: [analysis dashboard](https://buffedlizard55-lab.github.io/MaltaProj2/docs/analysis.html), [CS2 tables](https://buffedlizard55-lab.github.io/MaltaProj2/docs/cs2.html), [LoL tables](https://buffedlizard55-lab.github.io/MaltaProj2/docs/lol.html), [Flagged for Review](https://buffedlizard55-lab.github.io/MaltaProj2/docs/flagged.html). Public liveness verified by fetching the deployed pages (tables + per-row source links render).
 - **Pages source note:** repository Pages is configured `legacy` from `main` `/` (root), as retained by integration session `ef111e02`. Switching the source to `main` `/docs` would unpublish the root handoff and `/pickem/` sections of other sessions, so the integrated configuration was preserved; `docs/` is deployed from `main` and served at `/docs/`. The Actions deploy job additionally publishes the full staged site.
 - T6 status: ✅ Done.
+
+---
+
+# Coordination — session `42580809` (2026-10-13 ~21:00 UTC)
+
+Environment note: this environment pins every session to its own branch, so the requested
+`session-<id>/<task>` branch naming is unavailable; work happens on `arena/42580809-maltaproj2`,
+branched from `main` @ `c71aa8c`.
+
+## Claim (published immediately, before any other work)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Raise external-line coverage for every listed HotSpawn fixture, originate documented lines for unmatched fixtures, and publish one clean mobile-first dashboard | in progress | 42580809 | 2026-10-13 21:00 | `proof/42580809/**`, `.github/workflows/probe-42580809.yml`, `scripts/collect_extended.py` (new), `scripts/build_board.py` (new), `data/board_*.json` (new), `site/**` (new), `tests/test_42580809.py` (new), `COORDINATION.md` |
+
+### Scan of existing claims before claiming
+- `git fetch --all` shows exactly one remote branch, `origin/main`; no `arena/*` session branches
+  exist, so no other session is currently mid-task and no claim is being taken over.
+- The two most recent integration records (`188aaa4f`, `1da4b0ef`) are merged (PR #25, #23) and
+  report their tasks done, so those claims are released.
+- This session therefore also acts as the final integration session for its own deliverable, and
+  publishes a new additive section rather than rewriting another session's generator output.
+
+### Scope rules observed
+- No existing generator (`scripts/build.py`, `scripts/build_site.py`, `scripts/stage_site.py`,
+  `scripts/collect_odds.py`, `tools/build_site.py`, `pickem/**`, `docs/**`, root `*.html`) is
+  modified by this claim. New sections are additive.
+- Shared outputs (root `index.html` navigation, `data/board_*`) are touched only as the final
+  integration step of this session, after the new data is re-verified line by line.
+
