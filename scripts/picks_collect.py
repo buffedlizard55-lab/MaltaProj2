@@ -86,6 +86,8 @@ TRANSPORTS = {
     "direct": "{url}",
 }
 TRANSPORT_PAGES = {
+    "egamersworld_cs2": "https://egamersworld.com/counterstrike/matches",
+    "egamersworld_lol": "https://egamersworld.com/lol/matches",
     "hltv_matches": "https://www.hltv.org/matches",
 }
 
