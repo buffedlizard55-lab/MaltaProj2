@@ -1,0 +1,58 @@
+name: Verify and publish dashboard
+on:
+  push:
+    branches: [main, arena/ef111e02-maltaproj2]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: scripts/requirements.txt
+      - run: pip install -r scripts/requirements.txt
+      - name: Validate preserved evidence and arithmetic
+        run: python -m unittest discover -s tests -v
+      - name: Verify independent audit handoffs
+        run: |
+          python audits/1d4de836/verify_snapshot.py --html docs/evidence/probe/lobby.txt
+          python -m unittest discover -s audits/1916f96c -p 'test_*.py' -v
+      - name: Attempt public refresh (preserve snapshot on source failure)
+        if: github.ref == 'refs/heads/main'
+        run: python scripts/collect.py
+      - run: python scripts/build.py
+      - name: Recheck generated site and every source-linked row
+        run: python -m unittest discover -s tests -v
+      - name: Browser smoke tests
+        run: |
+          pip install playwright==1.55.0
+          python scripts/browser_smoke.py
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
