@@ -2086,7 +2086,7 @@ Reason for claim: the existing `pickem/` board (26 rows) was built from a hand-m
 
 | Task | Status | Owner | Claimed UTC | File scope |
 |---|---|---|---|---|
-| Audit current root pipeline, fail-closed current quote validation, automatic publishing fixes, regression tests and integration | in progress | d4ec32a9 | 2026-10-13 21:20 | scripts/build_lines.py, scripts/build_site.py, .github/workflows/update-data.yml, tests/test_current_lines.py, README.md, root generated *.html, audits/d4ec32a9/**; COORDINATION.md append only |
+| Audit current root pipeline, fail-closed current quote validation, automatic publishing fixes, regression tests and integration | done | d4ec32a9 | 2026-10-13 21:20 | scripts/build_lines.py, scripts/build_site.py, .github/workflows/update-data.yml, tests/test_current_lines.py, README.md, root generated *.html, audits/d4ec32a9/**; COORDINATION.md append only |
 
 - Read the shared board before work. Earlier sessions' completion records supersede their preserved historical in-progress tables. No open PRs at claim time; prior integration ended with PR #27. No source evidence or files in the independent audit/pickem/docs scopes will be overwritten.
 - Session branch is fixed to `arena/d4ec32a9-maltaproj2`; no alternate branch/worktree will be created.
