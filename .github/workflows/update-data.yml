@@ -3,7 +3,10 @@ name: update-data
 on:
   workflow_dispatch:
   push:
-    branches: ['arena/**', 'main']
+    # Only session branches trigger on push: pushing a refresh to `main` on every merge made
+    # every open pull request instantly stale. `main` is refreshed by the schedule below
+    # (and can be refreshed manually with workflow_dispatch).
+    branches: ['arena/**']
     paths:
       - 'scripts/**'
       - '.github/workflows/update-data.yml'
