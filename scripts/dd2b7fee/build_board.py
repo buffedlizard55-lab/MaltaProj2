@@ -306,7 +306,12 @@ def esc(x):
 
 
 def page(title, subtitle, body, active, depth):
-    pre = "../" * depth
+    # Integration fix by session 3cd9787c: `depth` is the page's directory depth in the published
+    # site (1 = the section landing, 2 = a subpage like cs2/). The section's own links need the
+    # prefix to the SECTION root, i.e. depth-1; the root-dashboard link adds one more "../" on top.
+    # The previous form emitted one "../" too many, so every nav link on the four fresh/ pages
+    # 404'd (and the shared staging link check failed, blocking the whole publish pipeline).
+    pre = "../" * max(depth - 1, 0)
     nav = f"""
 <nav>
  <a href="{pre}../index.html">⌂ root dashboard</a>
