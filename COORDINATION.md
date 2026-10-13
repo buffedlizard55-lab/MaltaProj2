@@ -2506,3 +2506,23 @@ Fixes, all committed and re-run on the runner:
 - **Deploy-race note (unchanged):** the two failed deploy jobs seen earlier (38471560741, 38472155441) were the documented "refusing a publication race" guard when `main` moved during the wait; later runs succeeded and no broken content was ever served.
 - **Follow-up correction in this session's own pages:** the methodology page previously listed HLTV among *price* sources, which contradicted this session's own rule that HLTV is never a price input. Corrected wording: Pinnacle + Bovada + egamersworld are the price sources; HLTV is a directional cross-check only. Re-check re-run: failures = 0.
 - **Still open (other owner):** the one-line root NAV entry to `verify961/index.html` remains a request to `d4ec32a9` (owner of `scripts/build_site.py` / root `*.html`); this session has not edited that file.
+
+### Publication record II (follow-up PR)
+- **PR #42 merged** with `gh pr merge 42 --merge`; pre-merge check run 38474939024 **build success**
+  (deploy skipped for pull requests).
+- **Deploy after merge:** the first post-merge deploy run on `main` (38475112442, head `27022575`) reported
+  `deploy: failure` — the `update-data` bot pushed a data commit to `main` seconds later, and the deploy
+  job's legacy-Pages gate refuses to publish in that race. The next run for the newer tip
+  (38475218820, head `f7ba6b90`) completed **build success + deploy success**, so nothing was left
+  unpublished. The failure is recorded here because the job's own log is not reachable from this
+  environment (results-receiver log download fails), only its job conclusions.
+- **Live check after this deploy** (`fetch_page` on `https://buffedlizard55-lab.github.io/MaltaProj2/picks/index.html`):
+  counters 267 open / 21 with verified lines / 246 blank+flagged / 292 listed / 23 with any external line;
+  row links now resolve to canonical permalinks (e.g. `.../matches/zomblers-vs-overtake-sector-esl-challenger-league-season-52-north-america-cup-3-1079546`),
+  Bovada links use the working `/sports/esports/...` form, Pinnacle links the served trailing-slash form,
+  and rows without a source-published permalink say so in the row and link to the lobby listing.
+
+### Integration note for the next session
+`main` is the deployment source (`pages.yml` deploys on push to `main`; `stage_site.py` stages the
+`picks/` section). This branch was merged twice (`557ba71`, PR #42) and re-synced with `main` afterwards;
+the only recurring conflict is `COORDINATION.md`, resolved by keeping both sessions' appended blocks.
