@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methodology &amp;amp; sources · HotSpawn Pick'ems betting-line analysis</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>HotSpawn Pick'ems · betting-line analysis</div>
+    <nav><a href="index.html">Dashboard</a>
+<a href="cs2.html">CS2 matches</a>
+<a href="lol.html">LoL matches</a>
+<a href="tournaments.html">Tournaments</a>
+<a href="flagged.html">Flagged for review</a>
+<a href="methodology.html" class="active">Methodology &amp; sources</a></nav>
+  </div>
+</header>
+<main class="wrap">
+  <h1>Methodology &amp;amp; sources</h1>
+  <p class="sub">How the fixture list, the quoted odds and the derived probabilities are produced.</p>
+  
+  
+<h2>1. Fixture discovery (HotSpawn)</h2>
+<p>The Pick'ems lobby is an Angular app backed by a public JSON API. The lobby page only server-renders the
+next ~27 fixtures, so the fixture list on this site comes from the API the page itself calls:
+<code>https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures</code>
+(plus <code>/tenants/slug/hotspawn</code> for tenant metadata). Fixtures with a cancelled or ended status are
+excluded; the rest are published with their raw source status, tier, tournament, lock time and the lobby's own
+crowd pick percentage (reference only). Evidence: <code>evidence/hotspawn_probe.json</code>.</p>
+
+<h2>2. External line sources</h2>
+<p>Only named bookmakers and public prediction markets are used. HotSpawn never contributes a probability.</p>
+<div class="tablewrap"><table class=""><thead><tr><th>Key</th><th>Source</th><th>Type</th><th>Public page</th><th>Quoted from</th></tr></thead><tbody><tr><td>bovada</td><td>Bovada</td><td>licensed bookmaker</td><td><a href="https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-the-last-resort-202610141000" rel="noopener">https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-the-last-resort-202610141000</a></td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">API</a></td></tr><tr><td>bovada</td><td>Bovada</td><td>licensed bookmaker</td><td><a href="https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/gremio-esports-los-ninos-202610131500" rel="noopener">https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/gremio-esports-los-ninos-202610131500</a></td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">API</a></td></tr><tr><td>bovada</td><td>Bovada</td><td>licensed bookmaker</td><td><a href="https://www.bovada.lv/esports/counter-strike-2/esl-challenger-league/south-america/ex-keyd-stars-galorys-202610131700" rel="noopener">https://www.bovada.lv/esports/counter-strike-2/esl-challenger-league/south-america/ex-keyd-stars-galorys-202610131700</a></td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">API</a></td></tr><tr><td>bovada</td><td>Bovada</td><td>licensed bookmaker</td><td><a href="https://www.bovada.lv/esports/counter-strike-2/european-pro-league/eac-extra-bread-eaters-esports-202610140630" rel="noopener">https://www.bovada.lv/esports/counter-strike-2/european-pro-league/eac-extra-bread-eaters-esports-202610140630</a></td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">API</a></td></tr><tr><td>bovada</td><td>Bovada</td><td>licensed bookmaker</td><td><a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600" rel="noopener">https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600</a></td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">API</a></td></tr><tr><td>bovada</td><td>Bovada</td><td>licensed bookmaker</td><td><a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/heroic-envy-202610150600" rel="noopener">https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/heroic-envy-202610150600</a></td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">API</a></td></tr><tr><td>bovada</td><td>Bovada</td><td>licensed bookmaker</td><td><a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/hotu-fnatic-202610140600" rel="noopener">https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/hotu-fnatic-202610140600</a></td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">API</a></td></tr><tr><td>bovada</td><td>Bovada</td><td>licensed bookmaker</td><td><a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-bc-game-202610150600" rel="noopener">https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-bc-game-202610150600</a></td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">API</a></td></tr><tr><td>bovada</td><td>Bovada</td><td>licensed bookmaker</td><td><a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/team-liquid-jijiehao-202610131245" rel="noopener">https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/team-liquid-jijiehao-202610131245</a></td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">API</a></td></tr><tr><td>bovada</td><td>Bovada</td><td>licensed bookmaker</td><td><a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/9z-globant-team-aurora-202610140430" rel="noopener">https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/9z-globant-team-aurora-202610140430</a></td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">API</a></td></tr><tr><td>bovada</td><td>Bovada</td><td>licensed bookmaker</td><td><a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-bb-team-202610141200" rel="noopener">https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-bb-team-202610141200</a></td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">API</a></td></tr><tr><td>bovada</td><td>Bovada</td><td>licensed bookmaker</td><td><a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610140930" rel="noopener">https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610140930</a></td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">API</a></td></tr><tr><td>bovada</td><td>Bovada</td><td>licensed bookmaker</td><td><a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-ninjas-in-pyjamas-202610140700" rel="noopener">https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-ninjas-in-pyjamas-202610140700</a></td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">API</a></td></tr><tr><td>pinnacle</td><td>Pinnacle</td><td>licensed bookmaker</td><td><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">https://www.pinnacle.com/en/esports/counter-strike/</a></td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148/markets/related/straight" rel="noopener">API</a></td></tr><tr><td>pinnacle</td><td>Pinnacle</td><td>licensed bookmaker</td><td><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">https://www.pinnacle.com/en/esports/counter-strike/</a></td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745/markets/related/straight" rel="noopener">API</a></td></tr><tr><td>pinnacle</td><td>Pinnacle</td><td>licensed bookmaker</td><td><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">https://www.pinnacle.com/en/esports/counter-strike/</a></td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637999450/markets/related/straight" rel="noopener">API</a></td></tr><tr><td>pinnacle</td><td>Pinnacle</td><td>licensed bookmaker</td><td><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">https://www.pinnacle.com/en/esports/counter-strike/</a></td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674/markets/related/straight" rel="noopener">API</a></td></tr><tr><td>pinnacle</td><td>Pinnacle</td><td>licensed bookmaker</td><td><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">https://www.pinnacle.com/en/esports/counter-strike/</a></td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight" rel="noopener">API</a></td></tr><tr><td>pinnacle</td><td>Pinnacle</td><td>licensed bookmaker</td><td><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">https://www.pinnacle.com/en/esports/counter-strike/</a></td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111786/markets/related/straight" rel="noopener">API</a></td></tr><tr><td>pinnacle</td><td>Pinnacle</td><td>licensed bookmaker</td><td><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">https://www.pinnacle.com/en/esports/counter-strike/</a></td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111787/markets/related/straight" rel="noopener">API</a></td></tr><tr><td>pinnacle</td><td>Pinnacle</td><td>licensed bookmaker</td><td><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">https://www.pinnacle.com/en/esports/counter-strike/</a></td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638276993/markets/related/straight" rel="noopener">API</a></td></tr><tr><td>pinnacle</td><td>Pinnacle</td><td>licensed bookmaker</td><td><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">https://www.pinnacle.com/en/esports/counter-strike/</a></td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638278447/markets/related/straight" rel="noopener">API</a></td></tr><tr><td>pinnacle</td><td>Pinnacle</td><td>licensed bookmaker</td><td><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">https://www.pinnacle.com/en/esports/counter-strike/</a></td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638279105/markets/related/straight" rel="noopener">API</a></td></tr><tr><td>pinnacle</td><td>Pinnacle</td><td>licensed bookmaker</td><td><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">https://www.pinnacle.com/en/esports/counter-strike/</a></td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638305917/markets/related/straight" rel="noopener">API</a></td></tr></tbody></table></div>
+
+<h2>3. What is collected per match</h2>
+<ul>
+<li>the source's own event and market identifiers,</li>
+<li>the raw quoted prices in the source's own format (and the format name),</li>
+<li>the retrieval timestamp in UTC,</li>
+<li>the market type — series/match winner only, no map markets,</li>
+<li>the source's reported start time and status,</li>
+<li>the public URL the quote was read from.</li>
+</ul>
+
+<h2>4. Derivation</h2>
+<p>Implied share <code>q<sub>i</sub> = 1 / decimal_odds<sub>i</sub></code>; bookmaker margin
+<code>overround = q<sub>a</sub> + q<sub>b</sub> − 1</code>; proportional no-vig probability
+<code>p<sub>i</sub> = q<sub>i</sub> / (q<sub>a</sub> + q<sub>b</sub>)</code>. With two or more sources the
+dashboard shows their arithmetic mean and the min–max range, and names the sources. These numbers are
+<strong>derived, not official forecasts</strong>.</p>
+
+<h2>5. Matching rule</h2>
+<p>Both participants must match after normalisation (order-insensitive; reversed pairs keep reversed prices),
+and either the start times agree within 90 minutes or — when a source publishes no start time — the
+tournament/league name must correspond to the fixture's tournament. One bookmaker line is used for at most one
+fixture. Every decision, alias and rejection is recorded in <code>evidence/matching_evidence.json</code>.</p>
+
+<h2>6. Refresh</h2>
+<p>A scheduled GitHub Actions job re-runs the collectors, re-derives the lines and rebuilds these pages.
+The collection attempt time and the successful data time are kept separate, and a failed source keeps its
+last verified quotes rather than inventing new ones.</p>
+<p class="note">Fixtures collected: <strong>2026-10-13T18:06:34Z</strong> · Odds collected: <strong>2026-10-13T18:07:17Z</strong> · Lines derived: <strong>2026-10-13T18:11:00Z</strong> · Raw quote rows: <strong>24</strong></p>
+
+</main>
+<footer class="wrap">
+  <p>Page generated <strong>2026-10-13 18:11 UTC</strong>. Fixture list and every quoted price are read from the
+  public sources linked on each row; HotSpawn is used for fixture discovery only and is never used as a
+  probability source. Values that could not be confirmed against an external source are left blank and
+  listed on the <a href="flagged.html">Flagged for review</a> page.</p>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

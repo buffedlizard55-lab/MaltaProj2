@@ -332,11 +332,15 @@ def probe_candidates(evidence):
 def main() -> int:
     started = now_iso()
     lines, evidence = [], {"collection_attempt_utc": started}
-    for fn in (collect_pinnacle, collect_bovada, collect_polymarket, probe_candidates):
+    for fn in (collect_pinnacle, collect_bovada, collect_polymarket):
         try:
             fn(lines, evidence)
         except Exception as exc:  # noqa: BLE001
             evidence.setdefault("errors", []).append({"source": fn.__name__, "error": str(exc)})
+    try:
+        probe_candidates(evidence)
+    except Exception as exc:  # noqa: BLE001
+        evidence.setdefault("errors", []).append({"source": "probe_candidates", "error": str(exc)})
     summary = {}
     for line in lines:
         summary[line["source_key"]] = summary.get(line["source_key"], 0) + 1
