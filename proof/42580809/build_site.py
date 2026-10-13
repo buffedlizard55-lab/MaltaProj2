@@ -362,10 +362,25 @@ more than 100 days), so no external market can exist and no probability is publi
     cv = orig_doc["method_a_cross_validation"]
     mv = orig_doc["method_b"]
     vf = mv["fit"]
+
+    def _src_links(fixture_id):
+        """Official source links for the market side of a methodology row (join on fixture_id)."""
+        parts = []
+        for r in matching.get("accepted", []):
+            if r.get("fixture_id") != fixture_id:
+                continue
+            url = r.get("source_url") or r.get("api_url")
+            if url:
+                label = esc(r.get("source_name") or r.get("source_key") or "source")
+                parts.append(f'<a href="{esc(url)}" target="_blank" rel="noopener">{label}</a>')
+        return " · ".join(parts) or '<span class="mut">source not captured — unverified</span>'
+
     cv_rows = "".join(f'<tr><td>{esc(r["match"])}</td><td>{pct(r["market_p"],1)}</td>'
-                      f'<td>{pct(r["model_p"],1)}</td><td>{r["abs_error"]}</td></tr>' for r in cv["rows"])
+                      f'<td>{pct(r["model_p"],1)}</td><td>{r["abs_error"]}</td>'
+                      f'<td>{_src_links(r["fixture_id"])}</td></tr>' for r in cv["rows"])
     vrs_rows = "".join(f'<tr><td>{esc(r["match"])}</td><td>{esc(r["points_difference"])}</td>'
-                       f'<td>{pct(r["market_p"],1)}</td><td>{pct(r["model_p"],1)}</td><td>{r["abs_error"]}</td></tr>'
+                       f'<td>{pct(r["market_p"],1)}</td><td>{pct(r["model_p"],1)}</td><td>{r["abs_error"]}</td>'
+                       f'<td>{_src_links(r["fixture_id"])}</td></tr>'
                        for r in vf.get("rows", []))
     meth = f"""<div class="note">Every number on this board is produced by the pipeline in this repository from a
 named public source. Nothing is typed in by hand, nothing is estimated silently, and HotSpawn is never used as a
@@ -432,9 +447,9 @@ MAE {vf.get('calibration_on_deeper_books', {}).get('mean_absolute_error')}). Bec
 model output is clamped to {vf.get('clamp')} and every row using it says "originated".</li>
 </ol>
 <h3>Market-graph hold-out checks</h3>
-<div class="tablewrap"><table><tr><th>Fixture</th><th>Market</th><th>Model (refit without it)</th><th>|error|</th></tr>{cv_rows}</table></div>
+<div class="tablewrap"><table><tr><th>Fixture</th><th>Market</th><th>Model (refit without it)</th><th>|error|</th><th>Market source</th></tr>{cv_rows}</table></div>
 <h3>VRS calibration against real prices</h3>
-<div class="tablewrap"><table><tr><th>Fixture</th><th>Points difference</th><th>Market</th><th>Model</th><th>|error|</th></tr>{vrs_rows}</table></div>
+<div class="tablewrap"><table><tr><th>Fixture</th><th>Points difference</th><th>Market</th><th>Model</th><th>|error|</th><th>Market source</th></tr>{vrs_rows}</table></div>
 
 <h2>6. Reproducing this board</h2>
 <ul>
@@ -466,11 +481,35 @@ sources; that is why the originated model exists and why some rows remain blank.
     for r in rejected:
         key = "quality gate: " + r["reason"].split(":")[0] if r.get("quality_gate") else r["reason"]
         by_reason[key] = by_reason.get(key, 0) + 1
-    reason_rows = "".join(f'<tr><td>{esc(k)}</td><td>{v}</td></tr>' for k, v in sorted(by_reason.items(), key=lambda kv: -kv[1]))
     gate = [r for r in rejected if r.get("quality_gate")]
+    # every quality-gate reason group keeps links to the official pages its quotes were read from,
+    # so even the aggregate count rows carry a source (requirement: one source link per table row)
+    gate_urls = {}
+    for r in gate:
+        key = "quality gate: " + r["reason"].split(":")[0]
+        url = r.get("source_url") or r.get("api_url")
+        if url and url not in gate_urls.setdefault(key, []):
+            gate_urls[key].append(url)
+    def _reason_cell(k, v):
+        links = gate_urls.get(k)
+        if links:
+            l = " · ".join(f'<a href="{esc(u)}" target="_blank" rel="noopener">source</a>'
+                           for u in links[:6])
+            return f'<td>{v}</td><td>{l}</td>'
+        return f'<td>{v}</td><td>—</td>'
+    reason_rows = "".join(f'<tr><td>{esc(k)}</td>{_reason_cell(k, v)}</tr>'
+                          for k, v in sorted(by_reason.items(), key=lambda kv: -kv[1]))
+    def _gate_src(r):
+        url = r.get("source_url") or r.get("api_url")
+        when = esc(str(r.get("retrieved_at_utc") or "")[:16])
+        if not url:
+            return '<span class="mut">no source URL captured — unverified</span>'
+        t = f' · read {when}Z' if when else ""
+        return f'<a href="{esc(url)}" target="_blank" rel="noopener">source</a>{t}'
     gate_rows = "".join(
         f'<tr><td>{esc(r["source_key"])}</td><td>{esc(r["raw_names"][0])} vs {esc(r["raw_names"][1])}</td>'
-        f'<td>{esc(r["start"])}</td><td>{esc(r["reason"])}</td><td><code>{esc(json.dumps(r.get("raw")))}</code></td></tr>'
+        f'<td>{esc(r["start"])}</td><td>{esc(r["reason"])}</td><td><code>{esc(json.dumps(r.get("raw")))}</code></td>'
+        f'<td>{_gate_src(r)}</td></tr>'
         for r in gate[:60])
     dup = matching.get("duplicate_reads", [])
     unverified_rows = "".join(
@@ -507,10 +546,10 @@ coverage for the originated model, so the probability cells stay blank.</p>
 across unrelated matches — the signature of a placeholder rather than a market. The raw book is shown so the
 rejection can be checked by hand. Fixtures whose only quotes were rejected carry the badge
 "source quote(s) rejected by the quality gate".</p>
-<div class="tablewrap"><table><tr><th>Source</th><th>Source teams</th><th>Source schedule (UTC)</th><th>Reason</th><th>Raw book</th></tr>{gate_rows or '<tr><td colspan="5">none</td></tr>'}</table></div>
+<div class="tablewrap"><table><tr><th>Source</th><th>Source teams</th><th>Source schedule (UTC)</th><th>Reason</th><th>Raw book</th><th>Read from</th></tr>{gate_rows or '<tr><td colspan="6">none</td></tr>'}</table></div>
 
 <h2>F4. Every match/reject decision ({len(matching['accepted'])} accepted, {len(rejected)} rejected)</h2>
-<div class="tablewrap"><table><tr><th>Decision</th><th>Count</th></tr>{reason_rows}</table></div>
+<div class="tablewrap"><table><tr><th>Decision</th><th>Count</th><th>Sources</th></tr>{reason_rows}</table></div>
 <p class="sub">The full lists (with raw quote rows and reasons) are in
 <code>proof/42580809/evidence/matching.json</code>. {len(dup)} further reads were duplicates of a market already
 recorded from another collected batch and were dropped after keeping the newest, not deleted from the evidence.</p>
