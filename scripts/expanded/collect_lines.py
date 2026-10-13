@@ -94,7 +94,39 @@ def collect_fixtures(log: dict) -> list[dict]:
     log["fixtures"] = {"url": url, "status": status, "error": err,
                        "count": len(data) if isinstance(data, list) else None}
     if not isinstance(data, list):
-        return []
+        # Fail-over: the repository's scheduled job refreshes this snapshot every 3 hours from
+        # the same lobby endpoint. Using it keeps the board building when the API hiccups; the
+        # fallback is recorded in the log so the snapshot age is always visible.
+        fallback = ROOT / "data" / "hotspawn_matches.json"
+        if fallback.exists():
+            snap = json.loads(fallback.read_text(encoding="utf-8"))
+            log["fixtures"]["fallback"] = {"file": str(fallback.relative_to(ROOT)),
+                                           "generated_at_utc": snap.get("generated_at_utc"),
+                                           "matches": len(snap.get("matches") or [])}
+            data = []
+            for m in snap.get("matches") or []:
+                data.append({
+                    "id": m.get("fixture_id"),
+                    "sport_alias": m.get("sport"),
+                    "competition_id": m.get("competition_id"),
+                    "competition_name": m.get("competition_name"),
+                    "tier": m.get("tier"),
+                    "stage": m.get("stage"),
+                    "best_of": m.get("best_of"),
+                    "status": m.get("status"),
+                    "scheduled_start_time": m.get("scheduled_start_time"),
+                    "lock_time": m.get("lock_time"),
+                    "offered_points": m.get("offered_points"),
+                    "participants0_id": m.get("team_a_id"),
+                    "participants0_name": m.get("team_a"),
+                    "participants0_picked_percent": m.get("team_a_pick_pct"),
+                    "participants1_id": m.get("team_b_id"),
+                    "participants1_name": m.get("team_b"),
+                    "participants1_picked_percent": m.get("team_b_pick_pct"),
+                    "total_picks": m.get("total_picks"),
+                })
+        else:
+            return []
     out = []
     for f in data:
         sport = str(f.get("sport_alias") or "").lower()
@@ -506,6 +538,19 @@ def build_lines(fixtures: list[dict], quotes: list[dict], log: dict) -> dict:
 
 
 def main() -> int:
+    try:
+        return run()
+    except Exception:  # noqa: BLE001
+        import traceback
+        tb = traceback.format_exc()
+        OUTDIR.mkdir(parents=True, exist_ok=True)
+        (OUTDIR / "collection_errors.json").write_text(json.dumps(
+            {"generated_at_utc": now_iso(), "error": tb}, indent=1), encoding="utf-8")
+        print("collector crashed; traceback:\n" + tb)
+        return 2
+
+
+def run() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--capture-out", default=str(OUTDIR / "lines.json"))
     ap.add_argument("--games", default="cs2,lol")

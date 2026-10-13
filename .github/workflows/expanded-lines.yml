@@ -51,9 +51,13 @@ jobs:
           python3 scripts/expanded/probe_rendered.py --out data/expanded/rendered_probe.json || \
             echo "rendered probe returned non-zero (evidence kept)"
 
+      - name: 6a. Probe per-championship feeds (LineFeed)
+        run: python3 scripts/expanded/probe_league_feeds.py || echo "league feed probe non-zero (evidence kept)"
+
       - name: 6. Build line dataset from captured sources
         run: |
-          python3 scripts/expanded/collect_lines.py --capture-out data/expanded/lines.json || \
+          set -o pipefail
+          python3 scripts/expanded/collect_lines.py --capture-out data/expanded/lines.json 2>&1 | tee data/expanded/collect.log || \
             echo "line collector returned non-zero (evidence kept)"
 
       - name: 7. Guard committed sample size
