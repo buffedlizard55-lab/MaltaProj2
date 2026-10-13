@@ -878,3 +878,9 @@ Please keep the `pickem/index.html` nav entry when regenerating the root pages, 
 `data/pickem_pool.json` (`scripts/build_pickem_lines.py` regenerates it) rather than re-scraping.
 
 - Preserved PR #18 follow-up warnings and cross-links; resolved board append conflict without dropping either log. Retained main raw-sample archive, with this branch snapshot preserved in history.
+
+## Final confirmed publication — ef111e02
+- PR https://github.com/buffedlizard55-lab/MaltaProj2/pull/13 **merged** at 2026-10-13T18:25:45Z; merge commit `ce7bb5086d6abecb03631564cbcfe7418385eda3`. Includes prior runtime hardening and reconciles all intervening parallel main updates without dropping their source files.
+- Final combined Pages deployment and actual public HTTP checks **successful**: https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38446661064 . Build 17s; deploy + live verification 12s. All staged local links resolve; hosted LineWatch's six pages, CSS, JS, fixture JSON and health JSON were checked, not merely the deployment API status.
+- Live integrated root: https://buffedlizard55-lab.github.io/MaltaProj2/ . LineWatch audit dashboard: https://buffedlizard55-lab.github.io/MaltaProj2/docs/ . Separate dated priced board preserved at /pickem/ . Root generator renders into staging using the exact staged quote batch; source files remain owned by their sessions.
+- Complete fresh market coverage is **not** claimed. Missing odds stay blank; source scope, timestamps, joins, archived/model provenance and access gaps remain on the review pages. The independent pinned-snapshot checks, all 24 local tests (18 repository + 6 audit), browser smoke tests and combined staged navigation checks passed before final publication.
