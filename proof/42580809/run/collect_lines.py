@@ -99,6 +99,14 @@ def collect_pinnacle(lines, stats):
     stats["pinnacle"]["cs2_leagues"] = sorted({(m.get("league") or {}).get("name") for m in cs2})
 
     def one(m):
+        """Only the matchup's own full-match moneyline, never a map or special market.
+
+        Pinnacle's /matchups/<id>/markets/related/straight payload contains the whole market
+        family (map winners, alternate lines, specials such as "Yes vs No"). A quote is kept
+        only when the market belongs to this matchup (`matchupId`), is a non-alternate
+        moneyline on period 0 with exactly two priced sides, and the matchup itself is a real
+        head-to-head (`type == "matchup"`).
+        """
         mid = m.get("id")
         murl = f"{PIN}/matchups/{mid}/markets/related/straight"
         st2, body2 = get(murl, PIN_HEADERS)
@@ -107,7 +115,12 @@ def collect_pinnacle(lines, stats):
         parts = m.get("participants") or []
         if not isinstance(mkts, list) or len(parts) != 2:
             return out
+        if str(m.get("type", "matchup")) != "matchup" or m.get("special"):
+            return out
+        cands = []
         for mk in mkts:
+            if mk.get("matchupId") != mid:
+                continue
             if str(mk.get("type", "")).lower() != "moneyline" or mk.get("period") != 0:
                 continue
             if mk.get("isAlternate"):
@@ -115,8 +128,13 @@ def collect_pinnacle(lines, stats):
             prices = mk.get("prices") or []
             if len(prices) != 2 or any(p.get("price") is None for p in prices):
                 continue
+            if {p.get("designation") for p in prices} != {"home", "away"}:
+                continue
+            cands.append(mk)
+        cands.sort(key=lambda mk: mk.get("id") or 0)
+        for mk in cands[:1]:
+            prices = mk["prices"]
             by_des = {p.get("designation"): p.get("price") for p in prices}
-            a_am, b_am = by_des.get("home"), by_des.get("away")
             out.append({
                 "source_key": "pinnacle",
                 "source_name": "Pinnacle",
@@ -125,6 +143,7 @@ def collect_pinnacle(lines, stats):
                 "source_api_url": murl,
                 "source_event_id": str(mid),
                 "source_market_id": str(mk.get("id")),
+                "source_market_candidates": len(cands),
                 "source_league": (m.get("league") or {}).get("name"),
                 "market_type": "series/match winner (moneyline, full match)",
                 "market_is_live": bool(mk.get("isLive")),
@@ -135,10 +154,10 @@ def collect_pinnacle(lines, stats):
                 "team_a_name": parts[0].get("name"),
                 "team_b_name": parts[1].get("name"),
                 "raw_price_format": "american",
-                "raw_price_a": a_am,
-                "raw_price_b": b_am,
-                "decimal_odds_a": american_to_decimal(a_am),
-                "decimal_odds_b": american_to_decimal(b_am),
+                "raw_price_a": by_des.get("home"),
+                "raw_price_b": by_des.get("away"),
+                "decimal_odds_a": american_to_decimal(by_des.get("home")),
+                "decimal_odds_b": american_to_decimal(by_des.get("away")),
                 "decimal_odds_derived": True,
             })
         return out
