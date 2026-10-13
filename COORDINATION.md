@@ -942,3 +942,5 @@ The original f3ec923 board pre-marked T2–T8 "done" as placeholders — the tru
 - CI auto-refresh commit `419aae8` ("data: refresh pick'em fixtures...") landed on this branch after a push;
   rebased over it without discarding either side.
 - Local environment lacked `bs4`; installed from `scripts/requirements.txt` (same set CI uses).
+- T7/T8: PR #25 created 2026-10-13 — https://github.com/buffedlizard55-lab/MaltaProj2/pull/25
+  (branch `arena/188aaa4f-maltaproj2` → `main`), merge result to be recorded here post-merge.
