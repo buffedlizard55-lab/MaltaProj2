@@ -141,7 +141,25 @@ def no_vig(decimal_a, decimal_b):
     return {"prob_a": qa / total, "prob_b": qb / total, "overround": total - 1}
 
 
-def build_board(fixtures, quotes):
+def link_checks():
+    """Status of every URL the collector published, opened once by the collector itself."""
+    data = load("evidence/picks/link_checks.json", {})
+    results = data.get("results") or {}
+    return data, results
+
+
+def link_state(results, url):
+    if not url or url not in results:
+        return "unchecked"
+    record = results[url]
+    if record.get("status") != 200:
+        return f"http_{record.get('status')}"
+    if record.get("final_url") not in (None, "", url):
+        return "redirected"
+    return "ok"
+
+
+def build_board(fixtures, quotes, link_results=None):
     by_id = {f["fixture_id"]: dict(f) for f in fixtures}
     for f in by_id.values():
         f.update({"quotes": [], "prob_a": None, "prob_b": None, "pick": None,
@@ -215,6 +233,7 @@ def build_board(fixtures, quotes):
             "retrieved_at_utc": q.get("retrieved_at_utc"),
             "join_rule": why,
             "side_reversed": reversed_side,
+            "link_state": link_state(link_results or {}, q.get("source_public_url") or q.get("source_api_url")),
         })
         accepted += 1
 
@@ -244,6 +263,13 @@ def build_board(fixtures, quotes):
             f["flags"].append("lock_time_unknown_in_source_api")
         if f.get("status") == "cancelled":
             f["flags"].append("source_status_cancelled")
+        # The fixture link must open the fixture, not the matches index: /matches/<id> alone was
+        # measured to redirect to /matches, so only a source-confirmed permalink is trusted.
+        kind = f.get("hotspawn_match_url_kind")
+        if kind and kind != "lobby_published_permalink":
+            f["flags"].append("match_link_" + kind)
+        if any(q.get("link_state") not in ("ok", "unchecked") for q in f["quotes"]):
+            f["flags"].append("quoted_source_link_not_200")
         f["sources_used"] = sorted({q["source_key"] for q in pre})
     return list(by_id.values()), rejections, accepted
 
@@ -327,10 +353,15 @@ def quote_cell(row):
     for q in row["quotes"]:
         label = SOURCE_LABELS.get(q["source_key"], (q["source_name"], "", ""))[0]
         live = " · live (excluded)" if q["is_live"] else ""
+        state = q.get("link_state", "unchecked")
+        mark = {"ok": "", "unchecked": " · link not re-checked",
+                "redirected": " · ⚠ link redirects elsewhere"}.get(
+                    state, f' · <span class="bad-text">⚠ link answered {esc(state.replace("http_", "HTTP "))}</span>')
         parts.append(
             f'<span class="quote"><b>{esc(label)}</b> '
             f'<a href="{esc(q["source_url"])}" rel="nofollow noopener">{q["decimal_a"]:.3g} / {q["decimal_b"]:.3g}</a>'
-            f'<span class="muted small"> ({q["prob_a"]*100:.1f}% / {q["prob_b"]*100:.1f}%){esc(live)}</span></span>')
+            f'<span class="muted small"> ({q["prob_a"]*100:.1f}% / {q["prob_b"]*100:.1f}%){esc(live)}</span>'
+            f'<span class="muted small">{mark}</span></span>')
     return "".join(parts)
 
 
@@ -360,6 +391,17 @@ def flags_cell(row):
                    for f in row["flags"])
 
 
+def match_link_note(row):
+    kind = row.get("hotspawn_match_url_kind")
+    if kind == "lobby_published_permalink":
+        return ""
+    if kind == "constructed_slug_verified_200":
+        return " · match URL rebuilt from the lobby's permalink pattern and confirmed 200"
+    if kind:
+        return " · ⚠ no source-confirmed match URL; this link opens the lobby listing"
+    return ""
+
+
 def row_html(row, show_game=False):
     """One table row. Every row links to its official HotSpawn fixture page."""
     cells = [
@@ -372,7 +414,8 @@ def row_html(row, show_game=False):
     cells += [
         f'<td class="match" data-label=""><a href="{esc(row.get("hotspawn_match_url"))}" rel="noopener">'
         f'<span class="team">{esc(row.get("team_a"))}</span> vs <span class="team">{esc(row.get("team_b"))}</span></a>'
-        f'<span class="muted small"> · fixture {esc(row.get("fixture_id"))}</span></td>',
+        f'<span class="muted small"> · fixture {esc(row.get("fixture_id"))}'
+        f'{esc(match_link_note(row))}</span></td>',
         f'<td data-label="Market lines">{quote_cell(row)}</td>',
         f'<td data-label="P(win)">{prob_cell(row)}</td>',
         f'<td data-label="Pick">{pick_cell(row)}</td>',
@@ -520,6 +563,32 @@ def render(board, rejections, meta):
                           f'<td data-label="Why">{esc(r.get("reason"))}'
                           f'{" " + esc(r.get("fixture_ids")) if r.get("fixture_ids") else ""}</td></tr>'
                           for r in rejections) + "</tbody></table></div>")
+    fl.append("<h2>Link checks (every published URL opened once, by the collector)</h2>")
+    if link_report:
+        not_ok = link_report.get("not_200") or {}
+        moved = link_report.get("redirected") or {}
+        fl.append(f'<p class="muted">{esc(link_report.get("checked"))} URLs were requested by the collector '
+                  f'at {esc(link_report.get("generated_at_utc"))}; {esc(link_report.get("ok"))} answered 200 '
+                  f'on the exact URL that is published here. A link that answers something else is listed '
+                  'below and marked next to the price it belongs to.</p>')
+        if not_ok:
+            fl.append('<div class="scroll"><table><thead><tr><th>Published URL</th><th>Answer</th>'
+                      '</tr></thead><tbody>' + "".join(
+                          f'<tr><td data-label="URL"><a href="{esc(u)}" rel="nofollow noopener">{esc(u)}</a></td>'
+                          f'<td data-label="Answer">{esc(v)}</td></tr>' for u, v in sorted(not_ok.items()))
+                      + "</tbody></table></div>")
+        if moved:
+            fl.append("<h3>URLs that redirect somewhere else</h3>")
+            fl.append('<div class="scroll"><table><thead><tr><th>Published URL</th><th>Where it lands</th>'
+                      '</tr></thead><tbody>' + "".join(
+                          f'<tr><td data-label="URL"><a href="{esc(u)}" rel="nofollow noopener">{esc(u)}</a></td>'
+                          f'<td data-label="Lands on">{esc(v)}</td></tr>' for u, v in sorted(moved.items()))
+                      + "</tbody></table></div>")
+        if not not_ok and not moved:
+            fl.append('<div class="notice">Every published link answered 200 on its own URL.</div>')
+    else:
+        fl.append('<p class="muted">The collector has not run a link check for this build yet.</p>')
+
     fl += review_notes()
     write_page("flagged.html", page("Flagged for review", "flagged.html", "\n".join(fl), meta))
 
@@ -726,7 +795,8 @@ def main() -> int:
               or (f.get("status") != "ended" and (f.get("start_time_utc") or "") >= recent_cut)
               or (f.get("status") == "scheduled" and not f.get("lock_time_utc")
                   and not f.get("start_time_utc") and f.get("competition") in open_comps)]
-    board, rejections, accepted = build_board(window, quotes)
+    link_report, link_results = link_checks()
+    board, rejections, accepted = build_board(window, quotes, link_results)
     meta = {
         "generated_at_utc": fixtures_doc.get("summary", {}).get("generated_at_utc"),
         "lobby_page": "https://play.hotspawn.com/lobby",
