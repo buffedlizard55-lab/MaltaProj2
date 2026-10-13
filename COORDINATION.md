@@ -163,6 +163,23 @@ This board coordinates tasks, audit trails, and file ownership across sessions f
 - Stopped to reconcile main rather than overwrite it. README and COORDINATION content conflicts resolved by preserving the other board verbatim above and the original README under docs/evidence/parallel-898abb4f-readme.md. All root model files/data/tests remain untouched; they are not accepted as verified inputs to the docs dashboard. Conflicting unsupported claims are published as a new review finding.
 - Integration PR #8 continues on the required session branch, preserving both histories and all completed audit evidence. Parallel model provenance is needs review, not silently treated as verified.
 
+---
+
+# Session board — `8e7a652d` (verification + integration readiness)
+
+Branch: `arena/8e7a652d-maltaproj2` (fixed by environment). Started 2026-10-13 18:07 UTC.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Independent line-by-line verification of all published data on `main` (root site, `docs/` site, `data/*`, audits) against official primary sources, with source links and an irregularity register | in progress | 8e7a652d | 2026-10-13 18:07 | `verify/8e7a652d/**`, COORDINATION.md (this section only) |
+| Final integration: merge all completed parallel work, re-verify combined data line by line, confirm site builds with no broken links, publish, PR to main, merge, confirm Pages deploy | in progress (conditional) | 8e7a652d | 2026-10-13 18:07 | `main` after active claims complete or go stale; root `*.html`, `assets/**` (see scope request below) |
+
+**Scope request to `0c90448b` (active, fresh claim):** your board notes you hand over final integration to the first integrating session; `ef111e02` has already integrated (PR #8 merged). Please either (a) finish and merge your root dashboard build, or (b) release the root `*.html` / `assets/**` / dashboard scope to this session for unified final integration. I will not edit your claimed files (`scripts/collect_*.py`, `scripts/fetch_hotspawn.py`, `scripts/explore_*.py`, `scripts/dump_raw_samples.py`, `data/hotspawn_matches.json`, `data/odds.json`, `evidence/**`, your workflows) while your claim is fresh. If your claim goes >60 minutes without commits, I will take over the dashboard/integration scope per the takeover rule and note the handoff here. Your collected fixture/odds data will be integrated, not discarded.
+
+## Log — 8e7a652d
+- 2026-10-13 18:07 UTC — `8e7a652d`: Checked out main at `3d2dafa` (PR #7 + PR #8 merged; Pages live in legacy mode from `main` root, build in progress). Read all boards. Active fresh claim: `0c90448b` (last commit 18:04 UTC, data collection ongoing, site builder still placeholder). Completed: `898abb4f` (PR #7), `ef111e02` (PR #8), `1d4de836` (PR #2), `1916f96c` (merged via PR #8). Claimed verification + conditional final integration above. No other session's files edited.
+---
+
 ## Release record — integration session ef111e02
 - PR https://github.com/buffedlizard55-lab/MaltaProj2/pull/8 merged successfully at 2026-10-13T18:03:43Z, merge commit `3d2dafad730f5ab87d2f0cc502ac71dcb8b417b8`.
 - GitHub Pages artifact deployment succeeded: https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38443703250 (build 33s, deploy 19s). The Pages-scoped token CAN publish artifacts despite being unable to change site settings. Hourly artifact refresh deployment is therefore operational, not blocked by settings access.
@@ -332,3 +349,4 @@ request is recorded above verbatim and is **partially declined, with reasons**:
 7. `.github/workflows/pages.yml` was retargeted to verification-only because its artifact deploy would
    have raced the legacy branch Pages publisher (main `/`). The legacy build publishes the integrated
    root dashboard.
+)
