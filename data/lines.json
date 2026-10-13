@@ -1,5 +1,5 @@
 {
- "generated_at_utc": "2026-10-13T18:21:30Z",
+ "generated_at_utc": "2026-10-13T18:23:07Z",
  "odds_collected_at_utc": "2026-10-13T18:20:40Z",
  "fixture_list_collected_at_utc": "2026-10-13T18:19:46Z",
  "method": {
@@ -10,8 +10,8 @@
  },
  "summary": {
   "fixtures_total": 93,
-  "fixtures_with_external_line": 11,
-  "fixtures_without_external_line": 82,
+  "fixtures_with_external_line": 12,
+  "fixtures_without_external_line": 81,
   "by_tier": {
    "b": {
     "total": 27,
@@ -19,7 +19,7 @@
    },
    "c": {
     "total": 62,
-    "with_line": 0
+    "with_line": 1
    },
    "s": {
     "total": 4,
@@ -27,8 +27,8 @@
    }
   },
   "by_source": {
-   "pinnacle": 9,
-   "bovada": 10
+   "pinnacle": 10,
+   "bovada": 11
   }
  },
  "fixtures": [
@@ -68,14 +68,100 @@
     0,
     0
    ],
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "source_kind": "licensed bookmaker",
+     "source_public_url": null,
+     "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638276993/markets/related/straight",
+     "source_event_id": "1638276993",
+     "source_market_id": "None",
+     "source_league": "CS2 - CCT South America Series",
+     "market_type": "series/match winner (moneyline)",
+     "market_is_live": false,
+     "market_status": "open",
+     "retrieved_at_utc": "2026-10-13T18:20:02Z",
+     "source_start_time_utc": null,
+     "start_time_agrees_with_fixture": null,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Gremio",
+      "LOS NINOS"
+     ],
+     "raw_price_format": "american",
+     "raw_price_a": -170,
+     "raw_price_b": 126,
+     "decimal_odds_a": 1.5882,
+     "decimal_odds_b": 2.26,
+     "decimal_odds_derived": true,
+     "overround": 0.07212,
+     "derived_probability_a": 0.5873,
+     "derived_probability_b": 0.4127,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j)  [proportional no-vig]"
+    },
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "licensed bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/gremio-esports-los-ninos-202610131500",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "32165790",
+     "source_market_id": "535328988",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_is_live": false,
+     "market_status": "O",
+     "retrieved_at_utc": "2026-10-13T18:20:30Z",
+     "source_start_time_utc": "2026-10-13T19:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Gremio Esports",
+      "Los Ninos"
+     ],
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.588235",
+     "raw_price_b": "2.300",
+     "decimal_odds_a": 1.588235,
+     "decimal_odds_b": 2.3,
+     "decimal_odds_derived": false,
+     "overround": 0.06441,
+     "derived_probability_a": 0.5915,
+     "derived_probability_b": 0.4085,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j)  [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "pinnacle": {
+      "derived_probability_a": 0.5873,
+      "derived_probability_b": 0.4127,
+      "overround": 0.07212
+     },
+     "bovada": {
+      "derived_probability_a": 0.5915,
+      "derived_probability_b": 0.4085,
+      "overround": 0.06441
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada",
+      "pinnacle"
+     ],
+     "derived_probability_a_mean": 0.5894,
+     "derived_probability_a_min": 0.5873,
+     "derived_probability_a_max": 0.5915,
+     "n_sources": 2,
+     "derived_probability_b_mean": 0.4106
+    }
    },
-   "verification": "unverified_no_external_line_found",
+   "verification": "verified_external_line",
    "review_flags": [
-    "external_odds_not_found"
+    "start_time_not_published_by_pinnacle",
+    "decimal_price_derived_from_american_pinnacle"
    ]
   },
   {
