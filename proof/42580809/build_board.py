@@ -511,6 +511,15 @@ def build():
             gate_rejected.append(dict(rec, rejection_reason=reason))
         else:
             usable.append(rec)
+    seen_gate, unique_gate = set(), []
+    for rec in gate_rejected:
+        key = (rec["source_key"], tuple(rec["source_quoted"][k] for k in ("team_a", "team_b")),
+               json.dumps(rec.get("raw", {}).get("odds")))
+        if key in seen_gate:
+            continue
+        seen_gate.add(key)
+        unique_gate.append(rec)
+    gate_rejected = unique_gate
     failed_fixtures = {r["fixture_id"] for r in gate_rejected}
     for rec in gate_rejected:
         rejected.append({"reason": rec["rejection_reason"], "source_key": rec["source_key"],

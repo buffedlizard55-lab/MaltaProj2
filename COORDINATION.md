@@ -2067,7 +2067,7 @@ https://buffedlizard55-lab.github.io/MaltaProj2/site/42580809/ — board, tables
 |---|---|
 | PR | https://github.com/buffedlizard55-lab/MaltaProj2/pull/37 — "Coverage board (42580809): 92 pick'em fixtures priced from external lines, Kalshi exchange quotes, labelled fallback and originated model lines" |
 | Merge | `gh pr merge 37 --merge`, 2026-10-13 21:50:46 UTC, merge commit `dee2c70353755fec2ba8faeb075211376991766c`; PR CI "Verify and publish dashboard" build job passed |
-| Follow-up PR | https://github.com/buffedlizard55-lab/MaltaProj2/pull/39 — upcoming fixtures first (UX), merged 21:53:58 UTC, merge commit `3d25678e6b03b123adf2b4d006ee07356dc671d2` |
+| Follow-up PRs | https://github.com/buffedlizard55-lab/MaltaProj2/pull/39 — upcoming fixtures first (UX), merged 21:53:58 UTC, merge commit `3d25678e6b03b123adf2b4d006ee07356dc671d2`; https://github.com/buffedlizard55-lab/MaltaProj2/pull/40 — this completion record, merged 21:57 UTC; https://github.com/buffedlizard55-lab/MaltaProj2/pull/41 — thin/wide Kalshi books flagged on the card (6 cards), merged 22:0x UTC |
 | Deploy | GitHub Pages status `built`; section, root nav entry and the generated data files fetched live from the Pages URL after merge |
 | Local pre-push checks | full suite 101 tests OK; `audits/1d4de836/verify_snapshot.py` OK; `audits/1916f96c` 6 tests OK; `scripts/build.py`, `scripts/build_site.py`, `scripts/stage_site.py` (all staged links resolve) |
 
