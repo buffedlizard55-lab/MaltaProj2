@@ -56,3 +56,12 @@ The generator writes only within `audits/eb454aaa/` and does not fetch any sourc
 The isolated read-only browser workflow verifies the audit overview, flagged page and row table at 320, 390 and 1280 pixels on GitHub runners. It checks row source links, deliberately empty probabilities, search filtering, no page overflow, successful local responses and no JavaScript errors.
 
 A complete repository line-by-line primary-source verification and a source-confirmed probability for every lobby match are **not achieved**. Existing coverage gaps and the findings above are exposed instead of invented or hidden.
+
+## Publication verified
+
+- [PR #56](https://github.com/buffedlizard55-lab/MaltaProj2/pull/56) merged 2026-10-13T22:57:13Z, merge commit `84c315edd041adab459fc172880376bcd5d2caf6`.
+- [Main Pages build and deploy](https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38481165007): success, including actual root-dashboard verification.
+- [Hosted browser and actual audit URL verification](https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38481367581): success. The runner fetched the live root page and all three audit pages, checked HTTP 200, eight review findings, all 264 rendered row-source links, and blank unconfirmed probabilities. Mobile checks passed at 320/390/1280px.
+- [Sanitized GitHub API proof](publication.json) records the merged PR, built Pages source and live-check job steps.
+
+F1–F8 remain published as needs review; verification of deployment is not a claim that those upstream source-policy issues are resolved.
