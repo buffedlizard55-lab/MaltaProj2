@@ -201,7 +201,8 @@ def main():
             "quality": quality, "basis": basis,
             "sources": used,
             "flags": flags,
-            "verified": bool(used),
+            "quote_captured": bool(used),
+            "verified_against_source_this_session": False,
         })
 
     # Board-level irregularities found during this session's verification
@@ -227,7 +228,7 @@ def main():
         "open_cs2_fixtures": len(rows),
         "with_named_bookmaker_line": sum(1 for r in rows if r["quality"] and r["quality"].startswith(("High", "Medium"))),
         "with_egw_fallback_only": sum(1 for r in rows if r["quality"] and r["quality"].startswith("Low")),
-        "without_any_line": sum(1 for r in rows if not r["verified"]),
+        "without_any_line": sum(1 for r in rows if not r["quote_captured"]),
     }
     doc = {
         "generated_at_utc": hs["generated_at_utc"],

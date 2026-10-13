@@ -89,7 +89,7 @@ def card(r):
     q = r["quality"] or ""
     qcls = "q-high" if q.startswith("High") else "q-med" if q.startswith("Medium") else "q-low" if q.startswith("Low") else "q-none"
     qlabel = q if q else "No external line"
-    if r["verified"]:
+    if r["quote_captured"]:
         pick_win = r["pick"]
         pick_html = (f'<div class="pick">PICK: <em>{esc(pick_win)}</em> &middot; '
                      f'{pct(r["pick_probability"])} &middot; {esc(r["pick_confidence"])}</div>')
@@ -105,12 +105,12 @@ def card(r):
             f'<div class="p">{pct(pb)}</div><div class="k">win probability</div></div></div>'
         )
     else:
-        pick_html = '<div class="pick none">PICK: <em>none — no verified external line</em></div>'
+        pick_html = '<div class="pick none">PICK: <em>none — no external line captured</em></div>'
         bar = ""
         sides = (
             f'<div class="sides">'
-            f'<div class="side"><div class="n">{esc(a)}</div><div class="p">—</div><div class="k">unverified</div></div>'
-            f'<div class="side"><div class="n">{esc(b)}</div><div class="p">—</div><div class="k">unverified</div></div></div>'
+            f'<div class="side"><div class="n">{esc(a)}</div><div class="p">—</div><div class="k">no line captured</div></div>'
+            f'<div class="side"><div class="n">{esc(b)}</div><div class="p">—</div><div class="k">no line captured</div></div></div>'
         )
     srcs = "".join(
         f'<li><a href="{esc(s["url"])}" target="_blank" rel="noopener">{esc(s["source"])}</a> '
@@ -159,7 +159,7 @@ def render(doc, out_dir):
         fh.write(page("CS2 pick'em: current picks", "index", body_index, gen))
 
     # flagged page
-    unv = [r for r in rows if not r["verified"]]
+    unv = [r for r in rows if not r["quote_captured"]]
     lowq = [r for r in rows if r["quality"] and r["quality"].startswith("Low")]
     irr = doc.get("irregularities", [])
     trs = "".join(
