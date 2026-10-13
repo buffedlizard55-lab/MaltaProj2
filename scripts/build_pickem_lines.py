@@ -24,7 +24,7 @@ from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "data")
-DOCS = os.path.join(ROOT, "docs")
+DOCS = os.path.join(ROOT, "pickem")   # published at /pickem/ (repo root is the Pages source)
 
 SNAPSHOT = "2026-10-13 (UTC); site re-verified 2026-10-13"
 HS_LOBBY = "https://play.hotspawn.com/lobby"

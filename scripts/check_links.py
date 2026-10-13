@@ -9,7 +9,7 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DOCS = os.path.join(ROOT, "docs")
+DOCS = os.path.join(ROOT, "pickem")
 
 ATTR = re.compile(r'(?:href|src)\s*=\s*"([^"]+)"', re.I)
 
