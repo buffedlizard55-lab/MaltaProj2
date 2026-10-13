@@ -116,6 +116,10 @@ def collect_pinnacle(lines, evidence):
     evidence["pinnacle_cs2_matchups"] = len(cs2)
     evidence["pinnacle_cs2_leagues"] = sorted({(m.get("league") or {}).get("name") for m in cs2})
     for m in cs2:
+        # Child/map matchups can also have their own period-zero moneyline.
+        # Explicit parent-null metadata is required for the series event.
+        if "parent" not in m or "parentId" not in m or m["parent"] is not None or m["parentId"] is not None:
+            continue
         parts = m.get("participants") or []
         if len(parts) != 2:
             continue
@@ -128,6 +132,7 @@ def collect_pinnacle(lines, evidence):
         # Main series/match moneyline = type moneyline, period 0, not alternate, 2 prices.
         cands = [mk for mk in markets
                  if str(mk.get("type", "")).lower() == "moneyline"
+                 and mk.get("matchupId") == mid
                  and mk.get("period") == 0 and not mk.get("isAlternate")
                  and isinstance(mk.get("prices"), list) and len(mk.get("prices") or []) == 2
                  and all(p.get("price") is not None for p in mk.get("prices") or [])]
@@ -205,7 +210,7 @@ def collect_bovada(lines, evidence):
                     if len(outs) != 2:
                         continue
                     outs = aligned_bovada_outcomes(comps, outs)
-                    if outs is None:
+                    if outs is None or any(o.get("status") != "O" for o in outs):
                         evidence.setdefault("rejected_alignment", []).append({"source": "bovada", "event_id": ev.get("id"), "market_id": mk.get("id")})
                         continue
                     prices = [((o.get("price") or {}).get("decimal")) for o in outs]

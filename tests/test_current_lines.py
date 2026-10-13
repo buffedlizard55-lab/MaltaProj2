@@ -128,6 +128,8 @@ class CurrentLinesTests(unittest.TestCase):
         ev['link'] = '/sports/esports/counter-strike/test'
         ev['displayGroups'][0]['markets'] = [copy.deepcopy(market)]
         ev['displayGroups'][0]['markets'][0]['outcomes'].reverse()
+        for outcome in ev['displayGroups'][0]['markets'][0]['outcomes']:
+            outcome['status'] = 'O' 
         with patch('collect_odds.get_json', return_value=(200, [{'events': [ev]}])):
             lines, evidence = [], {}
             collect_bovada(lines, evidence)
@@ -174,6 +176,9 @@ class CurrentLinesTests(unittest.TestCase):
                 if line['source_key'] == 'pinnacle':
                     matchup, market = payload['matchup'], payload['market']
                     self.assertEqual(str(matchup['id']), line['source_event_id'])
+                    self.assertIsNone(matchup['parent'])
+                    self.assertIsNone(matchup['parentId'])
+                    self.assertEqual(market['matchupId'], matchup['id'])
                     self.assertEqual(market['type'], 'moneyline')
                     self.assertEqual(market['period'], 0)
                     self.assertFalse(market['isAlternate'])
@@ -185,6 +190,7 @@ class CurrentLinesTests(unittest.TestCase):
                     self.assertEqual(str(payload['event_id']), line['source_event_id'])
                     outcomes = aligned_bovada_outcomes(payload['competitors'], payload['market']['outcomes'])
                     self.assertIsNotNone(outcomes)
+                    self.assertTrue(all(o['status'] == 'O' for o in outcomes))
                     decimals = [float(o['price']['decimal']) for o in outcomes]
                     self.assertEqual(ms_iso(payload['startTime']), fixture['start_time_utc'])
                 if line['order_as_quoted'] == 'reversed':
