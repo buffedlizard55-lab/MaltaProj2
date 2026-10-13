@@ -2119,3 +2119,10 @@ Reason for claim: the existing `pickem/` board (26 rows) was built from a hand-m
 - Generated files (`data/hotspawn_matches.json`, `data/lines.json`, `data/odds.json`, `evidence/hotspawn_probe.json`, `evidence/matching_evidence.json`, `evidence/odds_collection.json`): took main's newer CI captures; nothing of this session's was in them. `data/current_board.json` regenerated from them.
 - `COORDINATION.md`: the one conflict hunk kept on both sides (append-only log); no record discarded.
 - Effect on the board after the newer capture (21:28:47 UTC snapshot): named-bookmaker rows 10 → 9 (FURIA vs BetBoom lost Pinnacle and Bovada; 9z vs Aurora lost Bovada) and the fallback rows 14 → 15. This is quote volatility between refreshes, now logged as an irregularity on the flagged page. It is not a data error we introduced.
+
+### Session `0f6c89c6` — PR #30 merge and deploy-race record
+
+- **PR #30** https://github.com/buffedlizard55-lab/MaltaProj2/pull/30 (follow-up to #29, `quote_captured` labelling and coordination record) → **MERGED** 2026-10-13T21:33:52Z, merge commit `abd9c2b3f82e9a65412391032e24034937796b96`. PR check `build` passed.
+- **Deploy job on `abd9c2b` failed** (`Verify and publish dashboard` run 38471560741; `build` job success, `deploy` job failure). Cause as far as the job definition shows: the deploy job first waits up to 180 s for the legacy Pages build of its own SHA; a bot refresh (`0c6c693`, `data: refresh source-linked fixtures…`) landed one minute after the merge and superseded it, so the check never matched and the Actions deploy step never ran. This is the same race documented earlier in this file for `d530651`. Not a site-content failure.
+- **Live site state:** legacy Pages build for `0c6c693` = `built` (run 38471713869). Fetched https://buffedlizard55-lab.github.io/MaltaProj2/current/flagged.html: includes the 11 board-wide irregularities and the per-row EGW exclusions. The board is live and current.
+- **Retry:** this record is shipped as a separate PR so that `main` gets a new merge SHA with its own `Verify and publish dashboard` run, rather than re-running the stale SHA (which can never match).
