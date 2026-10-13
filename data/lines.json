@@ -1,7 +1,7 @@
 {
- "generated_at_utc": "2026-10-13T21:22:22Z",
- "odds_collected_at_utc": "2026-10-13T18:50:09Z",
- "fixture_list_collected_at_utc": "2026-10-13T18:49:21Z",
+ "generated_at_utc": "2026-10-13T21:23:30Z",
+ "odds_collected_at_utc": "2026-10-13T21:23:30Z",
+ "fixture_list_collected_at_utc": "2026-10-13T21:22:41Z",
  "method": {
   "match_rule": "both teams, explicit CS2, exact UTC start, unique fixture and source quote",
   "max_age_seconds": 14400,
@@ -11,8 +11,8 @@
  },
  "summary": {
   "fixtures_total": 92,
-  "fixtures_with_external_line": 0,
-  "fixtures_without_external_line": 92,
+  "fixtures_with_external_line": 9,
+  "fixtures_without_external_line": 83,
   "by_tier": {
    "c": {
     "total": 62,
@@ -20,14 +20,17 @@
    },
    "b": {
     "total": 26,
-    "with_line": 0
+    "with_line": 6
    },
    "s": {
     "total": 4,
-    "with_line": 0
+    "with_line": 3
    }
   },
-  "by_source": {}
+  "by_source": {
+   "pinnacle": 6,
+   "bovada": 7
+  }
  },
  "fixtures": [
   {
@@ -58,16 +61,78 @@
    "team_b": "Overtake Sector",
    "source_reported_status": "scheduled",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/1079546",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "source_kind": "licensed bookmaker",
+     "source_public_url": null,
+     "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638279105/markets/related/straight",
+     "source_event_id": "1638279105",
+     "source_market_id": "None",
+     "source_league": "CS2 - ESL Challenger League North America",
+     "market_type": "series/match winner (moneyline)",
+     "market_period": "full match",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "open",
+     "source_reported_status": "pending",
+     "retrieved_at_utc": "2026-10-13T21:23:16Z",
+     "start_time_utc": "2026-10-14T01:00:00Z",
+     "team_a_name": "Zomblers",
+     "team_b_name": "Overtake Sector",
+     "raw_price_format": "american",
+     "raw_price_a": 155,
+     "raw_price_b": -216,
+     "decimal_odds_a": 2.55,
+     "decimal_odds_b": 1.463,
+     "decimal_odds_derived": true,
+     "raw_prices": [
+      {
+       "designation": "home",
+       "price": 155
+      },
+      {
+       "designation": "away",
+       "price": -216
+      }
+     ],
+     "derived_probability_a": 0.3646,
+     "derived_probability_b": 0.6354,
+     "overround": 0.07568,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Zomblers",
+      "Overtake Sector"
+     ],
+     "source_start_time_utc": "2026-10-14T01:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "pinnacle": {
+      "derived_probability_a": 0.3646,
+      "derived_probability_b": 0.6354,
+      "overround": 0.07568
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "pinnacle"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.3646,
+     "derived_probability_b_mean": 0.6354,
+     "derived_probability_a_min": 0.3646,
+     "derived_probability_a_max": 0.3646
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "quote_game_not_confirmed"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1079621",
@@ -116,16 +181,78 @@
    "team_b": "Aurora",
    "source_reported_status": "scheduled",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/1080176",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "source_kind": "licensed bookmaker",
+     "source_public_url": null,
+     "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight",
+     "source_event_id": "1638111785",
+     "source_market_id": "None",
+     "source_league": "CS2 - TP World Championship",
+     "market_type": "series/match winner (moneyline)",
+     "market_period": "full match",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "open",
+     "source_reported_status": "pending",
+     "retrieved_at_utc": "2026-10-13T21:22:50Z",
+     "start_time_utc": "2026-10-14T08:30:00Z",
+     "team_a_name": "9z",
+     "team_b_name": "Aurora",
+     "raw_price_format": "american",
+     "raw_price_a": 261,
+     "raw_price_b": -335,
+     "decimal_odds_a": 3.61,
+     "decimal_odds_b": 1.2985,
+     "decimal_odds_derived": true,
+     "raw_prices": [
+      {
+       "designation": "home",
+       "price": 261
+      },
+      {
+       "designation": "away",
+       "price": -335
+      }
+     ],
+     "derived_probability_a": 0.2645,
+     "derived_probability_b": 0.7355,
+     "overround": 0.04713,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "9z",
+      "Aurora"
+     ],
+     "source_start_time_utc": "2026-10-14T08:30:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "pinnacle": {
+      "derived_probability_a": 0.2645,
+      "derived_probability_b": 0.7355,
+      "overround": 0.04713
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "pinnacle"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.2645,
+     "derived_probability_b_mean": 0.7355,
+     "derived_probability_a_min": 0.2645,
+     "derived_probability_a_max": 0.2645
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "quote_game_not_confirmed"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1079438",
@@ -136,16 +263,82 @@
    "team_b": "Sashi",
    "source_reported_status": "scheduled",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/1079438",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "licensed bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "31804206",
+     "source_market_id": "532995419",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-13T21:23:19Z",
+     "start_time_utc": "2026-10-14T10:00:00Z",
+     "team_a_name": "Astralis",
+     "team_b_name": "Sashi Esport",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.100",
+     "raw_price_b": "6.500",
+     "decimal_odds_a": 1.1,
+     "decimal_odds_b": 6.5,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "Astralis",
+       "Sashi Esport"
+      ],
+      "decimal": [
+       "1.100",
+       "6.500"
+      ],
+      "american": [
+       "-1000",
+       "+550"
+      ]
+     },
+     "derived_probability_a": 0.8553,
+     "derived_probability_b": 0.1447,
+     "overround": 0.06294,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Astralis",
+      "Sashi Esport"
+     ],
+     "source_start_time_utc": "2026-10-14T10:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.8553,
+      "derived_probability_b": 0.1447,
+      "overround": 0.06294
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.8553,
+     "derived_probability_b_mean": 0.1447,
+     "derived_probability_a_min": 0.8553,
+     "derived_probability_a_max": 0.8553
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "quote_game_not_confirmed"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1079439",
@@ -156,16 +349,136 @@
    "team_b": "Fnatic",
    "source_reported_status": "scheduled",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/1079439",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "licensed bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/hotu-fnatic-202610140600",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "31805176",
+     "source_market_id": "532995398",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-13T21:23:19Z",
+     "start_time_utc": "2026-10-14T10:00:00Z",
+     "team_a_name": "HOTU",
+     "team_b_name": "Fnatic",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.952381",
+     "raw_price_b": "1.800",
+     "decimal_odds_a": 1.952381,
+     "decimal_odds_b": 1.8,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "HOTU",
+       "Fnatic"
+      ],
+      "decimal": [
+       "1.952381",
+       "1.800"
+      ],
+      "american": [
+       "-105",
+       "-125"
+      ]
+     },
+     "derived_probability_a": 0.4797,
+     "derived_probability_b": 0.5203,
+     "overround": 0.06775,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "HOTU",
+      "Fnatic"
+     ],
+     "source_start_time_utc": "2026-10-14T10:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "source_kind": "licensed bookmaker",
+     "source_public_url": null,
+     "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148/markets/related/straight",
+     "source_event_id": "1637867148",
+     "source_market_id": "None",
+     "source_league": "CS2 - STK Pulse Beat",
+     "market_type": "series/match winner (moneyline)",
+     "market_period": "full match",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "open",
+     "source_reported_status": "pending",
+     "retrieved_at_utc": "2026-10-13T21:22:44Z",
+     "start_time_utc": "2026-10-14T10:00:00Z",
+     "team_a_name": "HOTU",
+     "team_b_name": "fnatic",
+     "raw_price_format": "american",
+     "raw_price_a": -101,
+     "raw_price_b": -125,
+     "decimal_odds_a": 1.9901,
+     "decimal_odds_b": 1.8,
+     "decimal_odds_derived": true,
+     "raw_prices": [
+      {
+       "designation": "home",
+       "price": -101
+      },
+      {
+       "designation": "away",
+       "price": -125
+      }
+     ],
+     "derived_probability_a": 0.4749,
+     "derived_probability_b": 0.5251,
+     "overround": 0.05804,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "HOTU",
+      "fnatic"
+     ],
+     "source_start_time_utc": "2026-10-14T10:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.4797,
+      "derived_probability_b": 0.5203,
+      "overround": 0.06775
+     },
+     "pinnacle": {
+      "derived_probability_a": 0.4749,
+      "derived_probability_b": 0.5251,
+      "overround": 0.05804
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada",
+      "pinnacle"
+     ],
+     "n_sources": 2,
+     "derived_probability_a_mean": 0.4773,
+     "derived_probability_b_mean": 0.5227,
+     "derived_probability_a_min": 0.4749,
+     "derived_probability_a_max": 0.4797
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "quote_game_not_confirmed"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1079622",
@@ -195,16 +508,136 @@
    "team_b": "Ninjas in Pyjamas",
    "source_reported_status": "scheduled",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/1080177",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "licensed bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-ninjas-in-pyjamas-202610140700",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "32033977",
+     "source_market_id": "534400444",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-13T21:23:19Z",
+     "start_time_utc": "2026-10-14T11:00:00Z",
+     "team_a_name": "Team Falcons",
+     "team_b_name": "Ninjas in Pyjamas",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.229885",
+     "raw_price_b": "3.900",
+     "decimal_odds_a": 1.229885,
+     "decimal_odds_b": 3.9,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "Team Falcons",
+       "Ninjas in Pyjamas"
+      ],
+      "decimal": [
+       "1.229885",
+       "3.900"
+      ],
+      "american": [
+       "-435",
+       "+290"
+      ]
+     },
+     "derived_probability_a": 0.7603,
+     "derived_probability_b": 0.2397,
+     "overround": 0.06949,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Team Falcons",
+      "Ninjas in Pyjamas"
+     ],
+     "source_start_time_utc": "2026-10-14T11:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "source_kind": "licensed bookmaker",
+     "source_public_url": null,
+     "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674/markets/related/straight",
+     "source_event_id": "1638111674",
+     "source_market_id": "None",
+     "source_league": "CS2 - TP World Championship",
+     "market_type": "series/match winner (moneyline)",
+     "market_period": "full match",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "open",
+     "source_reported_status": "pending",
+     "retrieved_at_utc": "2026-10-13T21:22:43Z",
+     "start_time_utc": "2026-10-14T11:00:00Z",
+     "team_a_name": "Falcons",
+     "team_b_name": "Ninjas In Pyjamas",
+     "raw_price_format": "american",
+     "raw_price_a": -403,
+     "raw_price_b": 308,
+     "decimal_odds_a": 1.2481,
+     "decimal_odds_b": 4.08,
+     "decimal_odds_derived": true,
+     "raw_prices": [
+      {
+       "designation": "home",
+       "price": -403
+      },
+      {
+       "designation": "away",
+       "price": 308
+      }
+     ],
+     "derived_probability_a": 0.7658,
+     "derived_probability_b": 0.2342,
+     "overround": 0.04632,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Falcons",
+      "Ninjas In Pyjamas"
+     ],
+     "source_start_time_utc": "2026-10-14T11:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.7603,
+      "derived_probability_b": 0.2397,
+      "overround": 0.06949
+     },
+     "pinnacle": {
+      "derived_probability_a": 0.7658,
+      "derived_probability_b": 0.2342,
+      "overround": 0.04632
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada",
+      "pinnacle"
+     ],
+     "n_sources": 2,
+     "derived_probability_a_mean": 0.7631,
+     "derived_probability_b_mean": 0.2369,
+     "derived_probability_a_min": 0.7603,
+     "derived_probability_a_max": 0.7658
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "quote_game_not_confirmed"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1081112",
@@ -234,16 +667,82 @@
    "team_b": "PARIVISION",
    "source_reported_status": "scheduled",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/1080178",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "licensed bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610140930",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "32033778",
+     "source_market_id": "534402990",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-13T21:23:19Z",
+     "start_time_utc": "2026-10-14T13:30:00Z",
+     "team_a_name": "Legacy",
+     "team_b_name": "Parivision",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.690",
+     "raw_price_b": "2.100",
+     "decimal_odds_a": 1.69,
+     "decimal_odds_b": 2.1,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "Legacy",
+       "Parivision"
+      ],
+      "decimal": [
+       "1.690",
+       "2.100"
+      ],
+      "american": [
+       "-145",
+       "+110"
+      ]
+     },
+     "derived_probability_a": 0.5541,
+     "derived_probability_b": 0.4459,
+     "overround": 0.06791,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Legacy",
+      "Parivision"
+     ],
+     "source_start_time_utc": "2026-10-14T13:30:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.5541,
+      "derived_probability_b": 0.4459,
+      "overround": 0.06791
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.5541,
+     "derived_probability_b_mean": 0.4459,
+     "derived_probability_a_min": 0.5541,
+     "derived_probability_a_max": 0.5541
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "quote_game_not_confirmed"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1079623",
@@ -254,16 +753,82 @@
    "team_b": "The Last Resort",
    "source_reported_status": "scheduled",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/1079623",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "licensed bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-the-last-resort-202610141000",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "32179398",
+     "source_market_id": "535433988",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-13T21:23:19Z",
+     "start_time_utc": "2026-10-14T14:00:00Z",
+     "team_a_name": "G2 Ares",
+     "team_b_name": "The Last Resort",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.500",
+     "raw_price_b": "2.500",
+     "decimal_odds_a": 1.5,
+     "decimal_odds_b": 2.5,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "G2 Ares",
+       "The Last Resort"
+      ],
+      "decimal": [
+       "1.500",
+       "2.500"
+      ],
+      "american": [
+       "-200",
+       "+150"
+      ]
+     },
+     "derived_probability_a": 0.625,
+     "derived_probability_b": 0.375,
+     "overround": 0.06667,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "G2 Ares",
+      "The Last Resort"
+     ],
+     "source_start_time_utc": "2026-10-14T14:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.625,
+      "derived_probability_b": 0.375,
+      "overround": 0.06667
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.625,
+     "derived_probability_b_mean": 0.375,
+     "derived_probability_a_min": 0.625,
+     "derived_probability_a_max": 0.625
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "quote_game_not_confirmed"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1081113",
@@ -350,16 +915,136 @@
    "team_b": "BC.Game",
    "source_reported_status": "scheduled",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/1079440",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "licensed bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-bc-game-202610150600",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "31805765",
+     "source_market_id": "532998324",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-13T21:23:19Z",
+     "start_time_utc": "2026-10-15T10:00:00Z",
+     "team_a_name": "MIBR",
+     "team_b_name": "BC.Game",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.645161",
+     "raw_price_b": "2.200",
+     "decimal_odds_a": 1.645161,
+     "decimal_odds_b": 2.2,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "MIBR",
+       "BC.Game"
+      ],
+      "decimal": [
+       "1.645161",
+       "2.200"
+      ],
+      "american": [
+       "-155",
+       "+120"
+      ]
+     },
+     "derived_probability_a": 0.5721,
+     "derived_probability_b": 0.4279,
+     "overround": 0.06239,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "MIBR",
+      "BC.Game"
+     ],
+     "source_start_time_utc": "2026-10-15T10:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "source_kind": "licensed bookmaker",
+     "source_public_url": null,
+     "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745/markets/related/straight",
+     "source_event_id": "1637936745",
+     "source_market_id": "None",
+     "source_league": "CS2 - STK Pulse Beat",
+     "market_type": "series/match winner (moneyline)",
+     "market_period": "full match",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "open",
+     "source_reported_status": "pending",
+     "retrieved_at_utc": "2026-10-13T21:22:56Z",
+     "start_time_utc": "2026-10-15T10:00:00Z",
+     "team_a_name": "MIBR",
+     "team_b_name": "BC.Game",
+     "raw_price_format": "american",
+     "raw_price_a": -157,
+     "raw_price_b": 123,
+     "decimal_odds_a": 1.6369,
+     "decimal_odds_b": 2.23,
+     "decimal_odds_derived": true,
+     "raw_prices": [
+      {
+       "designation": "home",
+       "price": -157
+      },
+      {
+       "designation": "away",
+       "price": 123
+      }
+     ],
+     "derived_probability_a": 0.5767,
+     "derived_probability_b": 0.4233,
+     "overround": 0.05934,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "MIBR",
+      "BC.Game"
+     ],
+     "source_start_time_utc": "2026-10-15T10:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.5721,
+      "derived_probability_b": 0.4279,
+      "overround": 0.06239
+     },
+     "pinnacle": {
+      "derived_probability_a": 0.5767,
+      "derived_probability_b": 0.4233,
+      "overround": 0.05934
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada",
+      "pinnacle"
+     ],
+     "n_sources": 2,
+     "derived_probability_a_mean": 0.5744,
+     "derived_probability_b_mean": 0.4256,
+     "derived_probability_a_min": 0.5721,
+     "derived_probability_a_max": 0.5767
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "quote_game_not_confirmed"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1079442",
@@ -370,16 +1055,136 @@
    "team_b": "Envy",
    "source_reported_status": "scheduled",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/1079442",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "licensed bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/heroic-envy-202610150600",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "31804602",
+     "source_market_id": "532996299",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-13T21:23:19Z",
+     "start_time_utc": "2026-10-15T10:00:00Z",
+     "team_a_name": "Heroic",
+     "team_b_name": "Envy",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.526316",
+     "raw_price_b": "2.450",
+     "decimal_odds_a": 1.526316,
+     "decimal_odds_b": 2.45,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "Heroic",
+       "Envy"
+      ],
+      "decimal": [
+       "1.526316",
+       "2.450"
+      ],
+      "american": [
+       "-190",
+       "+145"
+      ]
+     },
+     "derived_probability_a": 0.6161,
+     "derived_probability_b": 0.3839,
+     "overround": 0.06334,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Heroic",
+      "Envy"
+     ],
+     "source_start_time_utc": "2026-10-15T10:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "source_kind": "licensed bookmaker",
+     "source_public_url": null,
+     "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637999450/markets/related/straight",
+     "source_event_id": "1637999450",
+     "source_market_id": "None",
+     "source_league": "CS2 - STK Pulse Beat",
+     "market_type": "series/match winner (moneyline)",
+     "market_period": "full match",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "open",
+     "source_reported_status": "pending",
+     "retrieved_at_utc": "2026-10-13T21:23:09Z",
+     "start_time_utc": "2026-10-15T10:00:00Z",
+     "team_a_name": "HEROIC",
+     "team_b_name": "Envy",
+     "raw_price_format": "american",
+     "raw_price_a": -194,
+     "raw_price_b": 150,
+     "decimal_odds_a": 1.5155,
+     "decimal_odds_b": 2.5,
+     "decimal_odds_derived": true,
+     "raw_prices": [
+      {
+       "designation": "home",
+       "price": -194
+      },
+      {
+       "designation": "away",
+       "price": 150
+      }
+     ],
+     "derived_probability_a": 0.6226,
+     "derived_probability_b": 0.3774,
+     "overround": 0.05985,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "HEROIC",
+      "Envy"
+     ],
+     "source_start_time_utc": "2026-10-15T10:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.6161,
+      "derived_probability_b": 0.3839,
+      "overround": 0.06334
+     },
+     "pinnacle": {
+      "derived_probability_a": 0.6226,
+      "derived_probability_b": 0.3774,
+      "overround": 0.05985
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada",
+      "pinnacle"
+     ],
+     "n_sources": 2,
+     "derived_probability_a_mean": 0.6194,
+     "derived_probability_b_mean": 0.3806,
+     "derived_probability_a_min": 0.6161,
+     "derived_probability_a_max": 0.6226
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "quote_game_not_confirmed"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1080280",
@@ -1815,7 +2620,7 @@
    "start_time_utc": "2026-10-13T19:00:00Z",
    "team_a": "Grêmio",
    "team_b": "LOS NINOS",
-   "source_reported_status": "scheduled",
+   "source_reported_status": "started",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/1081104",
    "bookmaker_lines": [],
    "derived": {
@@ -1825,8 +2630,8 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status",
-    "quote_game_not_confirmed"
+    "fixture_not_upcoming",
+    "fixture_start_time_in_the_past_or_stale_source_status"
    ]
   },
   {
@@ -1836,7 +2641,7 @@
    "start_time_utc": "2026-10-13T21:00:00Z",
    "team_a": "ex-Keyd Stars",
    "team_b": "Galorys",
-   "source_reported_status": "scheduled",
+   "source_reported_status": "started",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/1081076",
    "bookmaker_lines": [],
    "derived": {
@@ -1846,8 +2651,8 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status",
-    "quote_game_not_confirmed"
+    "fixture_not_upcoming",
+    "fixture_start_time_in_the_past_or_stale_source_status"
    ]
   }
  ]
