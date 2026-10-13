@@ -1,9 +1,9 @@
 {
-  "generated_at_utc": "2026-10-13T21:23:08Z",
+  "generated_at_utc": "2026-10-13T21:28:47Z",
   "snapshot_basis": {
-    "hotspawn_api_snapshot_utc": "2026-10-13T21:23:08Z",
+    "hotspawn_api_snapshot_utc": "2026-10-13T21:28:47Z",
     "hotspawn_api": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1",
-    "lines_collected_utc": "2026-10-13T21:23:54Z",
+    "lines_collected_utc": "2026-10-13T21:29:32Z",
     "egw_capture_utc": "2026-10-13T19:10:00Z"
   },
   "scope": "CS2 fixtures from the Hotspawn fixtures API with status scheduled and lock time after the snapshot. LoL fixtures are not priced on this board.",
@@ -15,8 +15,8 @@
   ],
   "summary": {
     "open_cs2_fixtures": 30,
-    "with_named_bookmaker_line": 10,
-    "with_egw_fallback_only": 14,
+    "with_named_bookmaker_line": 9,
+    "with_egw_fallback_only": 15,
     "without_any_line": 6
   },
   "rows": [
@@ -47,7 +47,8 @@
         "EGW quote excluded (see irregularities)",
         "tier C event"
       ],
-      "verified": false
+      "quote_captured": false,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1079546",
@@ -78,16 +79,16 @@
           "decimal_b": 1.463,
           "p_a": 0.3646,
           "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638279105/markets/related/straight",
-          "retrieved_at_utc": "2026-10-13T21:23:38Z",
+          "retrieved_at_utc": "2026-10-13T21:29:19Z",
           "market": "series/match winner (moneyline)",
-          "join": "joined by team names + tournament (no start time from source)"
+          "join": "start time agrees with fixture"
         }
       ],
       "flags": [
-        "Pinnacle join by team names + tournament (no start time in source)",
         "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1081111",
@@ -127,7 +128,8 @@
         "single quote from unnamed bookmaker widget; may be stale",
         "tier C event"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1079621",
@@ -166,7 +168,8 @@
       "flags": [
         "single quote from unnamed bookmaker widget; may be stale"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080176",
@@ -182,13 +185,13 @@
         "team_a": 5,
         "team_b": 95
       },
-      "probability_a": 0.2624,
-      "probability_b": 0.7376,
+      "probability_a": 0.2645,
+      "probability_b": 0.7355,
       "pick": "Aurora",
-      "pick_probability": 0.7376,
+      "pick_probability": 0.7355,
       "pick_confidence": "Strong lean",
-      "quality": "High (2 named bookmakers)",
-      "basis": "Pinnacle + Bovada",
+      "quality": "Medium (1 named bookmaker)",
+      "basis": "Pinnacle",
       "sources": [
         {
           "source": "Pinnacle",
@@ -197,28 +200,16 @@
           "decimal_b": 1.2985,
           "p_a": 0.2645,
           "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight",
-          "retrieved_at_utc": "2026-10-13T21:23:16Z",
+          "retrieved_at_utc": "2026-10-13T21:28:55Z",
           "market": "series/match winner (moneyline)",
-          "join": "joined by team names + tournament (no start time from source)"
-        },
-        {
-          "source": "Bovada",
-          "kind": "licensed bookmaker",
-          "decimal_a": 3.6,
-          "decimal_b": 1.266667,
-          "p_a": 0.2603,
-          "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/9z-globant-team-aurora-202610140430",
-          "retrieved_at_utc": "2026-10-13T21:23:45Z",
-          "market": "match winner (moneyline, full match)",
           "join": "start time agrees with fixture"
         }
       ],
       "flags": [
-        "Pinnacle join by team names + tournament (no start time in source)",
-        "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only",
         "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1079438",
@@ -249,7 +240,7 @@
           "decimal_b": 6.5,
           "p_a": 0.8553,
           "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600",
-          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "retrieved_at_utc": "2026-10-13T21:29:23Z",
           "market": "match winner (moneyline, full match)",
           "join": "start time agrees with fixture"
         }
@@ -257,7 +248,8 @@
       "flags": [
         "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1079439",
@@ -279,19 +271,8 @@
       "pick_probability": 0.5227,
       "pick_confidence": "Toss-up",
       "quality": "High (2 named bookmakers)",
-      "basis": "Pinnacle + Bovada",
+      "basis": "Bovada + Pinnacle",
       "sources": [
-        {
-          "source": "Pinnacle",
-          "kind": "licensed bookmaker",
-          "decimal_a": 1.9901,
-          "decimal_b": 1.8,
-          "p_a": 0.4749,
-          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148/markets/related/straight",
-          "retrieved_at_utc": "2026-10-13T21:23:11Z",
-          "market": "series/match winner (moneyline)",
-          "join": "joined by team names + tournament (no start time from source)"
-        },
         {
           "source": "Bovada",
           "kind": "licensed bookmaker",
@@ -299,17 +280,28 @@
           "decimal_b": 1.8,
           "p_a": 0.4797,
           "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/hotu-fnatic-202610140600",
-          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "retrieved_at_utc": "2026-10-13T21:29:23Z",
           "market": "match winner (moneyline, full match)",
+          "join": "start time agrees with fixture"
+        },
+        {
+          "source": "Pinnacle",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.9901,
+          "decimal_b": 1.8,
+          "p_a": 0.4749,
+          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148/markets/related/straight",
+          "retrieved_at_utc": "2026-10-13T21:28:50Z",
+          "market": "series/match winner (moneyline)",
           "join": "start time agrees with fixture"
         }
       ],
       "flags": [
-        "Pinnacle join by team names + tournament (no start time in source)",
         "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only",
         "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1081112",
@@ -338,7 +330,8 @@
         "EGW quote excluded (see irregularities)",
         "tier C event"
       ],
-      "verified": false
+      "quote_captured": false,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1079622",
@@ -377,7 +370,8 @@
       "flags": [
         "single quote from unnamed bookmaker widget; may be stale"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080177",
@@ -399,19 +393,8 @@
       "pick_probability": 0.7631,
       "pick_confidence": "Strong lean",
       "quality": "High (2 named bookmakers)",
-      "basis": "Pinnacle + Bovada",
+      "basis": "Bovada + Pinnacle",
       "sources": [
-        {
-          "source": "Pinnacle",
-          "kind": "licensed bookmaker",
-          "decimal_a": 1.2481,
-          "decimal_b": 4.08,
-          "p_a": 0.7658,
-          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674/markets/related/straight",
-          "retrieved_at_utc": "2026-10-13T21:23:10Z",
-          "market": "series/match winner (moneyline)",
-          "join": "joined by team names + tournament (no start time from source)"
-        },
         {
           "source": "Bovada",
           "kind": "licensed bookmaker",
@@ -419,17 +402,28 @@
           "decimal_b": 3.9,
           "p_a": 0.7603,
           "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-ninjas-in-pyjamas-202610140700",
-          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "retrieved_at_utc": "2026-10-13T21:29:23Z",
           "market": "match winner (moneyline, full match)",
+          "join": "start time agrees with fixture"
+        },
+        {
+          "source": "Pinnacle",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.2481,
+          "decimal_b": 4.08,
+          "p_a": 0.7658,
+          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674/markets/related/straight",
+          "retrieved_at_utc": "2026-10-13T21:28:48Z",
+          "market": "series/match winner (moneyline)",
           "join": "start time agrees with fixture"
         }
       ],
       "flags": [
-        "Pinnacle join by team names + tournament (no start time in source)",
         "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only",
         "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080178",
@@ -445,25 +439,14 @@
         "team_a": 74,
         "team_b": 26
       },
-      "probability_a": 0.5623,
-      "probability_b": 0.4377,
+      "probability_a": 0.5541,
+      "probability_b": 0.4459,
       "pick": "Legacy",
-      "pick_probability": 0.5623,
+      "pick_probability": 0.5541,
       "pick_confidence": "Lean",
-      "quality": "High (2 named bookmakers)",
-      "basis": "Pinnacle + Bovada",
+      "quality": "Medium (1 named bookmaker)",
+      "basis": "Bovada",
       "sources": [
-        {
-          "source": "Pinnacle",
-          "kind": "licensed bookmaker",
-          "decimal_a": 1.6711,
-          "decimal_b": 2.22,
-          "p_a": 0.5705,
-          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111786/markets/related/straight",
-          "retrieved_at_utc": "2026-10-13T21:23:30Z",
-          "market": "series/match winner (moneyline)",
-          "join": "joined by team names + tournament (no start time from source)"
-        },
         {
           "source": "Bovada",
           "kind": "licensed bookmaker",
@@ -471,17 +454,16 @@
           "decimal_b": 2.1,
           "p_a": 0.5541,
           "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610140930",
-          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "retrieved_at_utc": "2026-10-13T21:29:23Z",
           "market": "match winner (moneyline, full match)",
           "join": "start time agrees with fixture"
         }
       ],
       "flags": [
-        "Pinnacle join by team names + tournament (no start time in source)",
-        "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only",
-        "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
+        "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1081113",
@@ -510,7 +492,8 @@
         "EGW quote excluded (see irregularities)",
         "tier C event"
       ],
-      "verified": false
+      "quote_captured": false,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1079623",
@@ -541,7 +524,7 @@
           "decimal_b": 2.5,
           "p_a": 0.625,
           "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-the-last-resort-202610141000",
-          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "retrieved_at_utc": "2026-10-13T21:29:23Z",
           "market": "match winner (moneyline, full match)",
           "join": "start time agrees with fixture"
         }
@@ -549,7 +532,8 @@
       "flags": [
         "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080179",
@@ -565,43 +549,31 @@
         "team_a": 89,
         "team_b": 11
       },
-      "probability_a": 0.6908,
-      "probability_b": 0.3092,
+      "probability_a": 0.6659,
+      "probability_b": 0.3341,
       "pick": "FURIA",
-      "pick_probability": 0.6908,
+      "pick_probability": 0.6659,
       "pick_confidence": "Strong lean",
-      "quality": "High (2 named bookmakers)",
-      "basis": "Pinnacle + Bovada",
+      "quality": "Low (single unnamed-bookmaker widget quote)",
+      "basis": "EGamersWorld odds widget (bookmaker not named in capture)",
       "sources": [
         {
-          "source": "Pinnacle",
-          "kind": "licensed bookmaker",
-          "decimal_a": 1.3745,
-          "decimal_b": 3.12,
-          "p_a": 0.6942,
-          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111787/markets/related/straight",
-          "retrieved_at_utc": "2026-10-13T21:23:38Z",
-          "market": "series/match winner (moneyline)",
-          "join": "joined by team names + tournament (no start time from source)"
-        },
-        {
-          "source": "Bovada",
-          "kind": "licensed bookmaker",
-          "decimal_a": 1.363636,
-          "decimal_b": 3.0,
-          "p_a": 0.6875,
-          "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-bb-team-202610141200",
-          "retrieved_at_utc": "2026-10-13T21:23:45Z",
-          "market": "match winner (moneyline, full match)",
-          "join": "start time agrees with fixture"
+          "source": "EGamersWorld odds widget (bookmaker not named in capture)",
+          "kind": "odds aggregator widget",
+          "decimal_a": 1.37,
+          "decimal_b": 2.73,
+          "p_a": 0.6659,
+          "url": "https://egamersworld.com/counterstrike/match/5X5sFiL7H/furia-vs-betboom-team-ZeSbzy91oH",
+          "retrieved_at_utc": "2026-10-13T19:05:00Z",
+          "market": "match winner (widget)",
+          "join": "team name variant: BetBoom Team ~ BetBoom"
         }
       ],
       "flags": [
-        "Pinnacle join by team names + tournament (no start time in source)",
-        "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only",
-        "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
+        "single quote from unnamed bookmaker widget; may be stale"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1079624",
@@ -629,7 +601,8 @@
         "no external line: probability left blank",
         "EGW quote excluded (see irregularities)"
       ],
-      "verified": false
+      "quote_captured": false,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080279",
@@ -669,7 +642,8 @@
         "single quote from unnamed bookmaker widget; may be stale",
         "tier C event"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1079440",
@@ -691,19 +665,8 @@
       "pick_probability": 0.5744,
       "pick_confidence": "Lean",
       "quality": "High (2 named bookmakers)",
-      "basis": "Pinnacle + Bovada",
+      "basis": "Bovada + Pinnacle",
       "sources": [
-        {
-          "source": "Pinnacle",
-          "kind": "licensed bookmaker",
-          "decimal_a": 1.6369,
-          "decimal_b": 2.23,
-          "p_a": 0.5767,
-          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745/markets/related/straight",
-          "retrieved_at_utc": "2026-10-13T21:23:22Z",
-          "market": "series/match winner (moneyline)",
-          "join": "joined by team names + tournament (no start time from source)"
-        },
         {
           "source": "Bovada",
           "kind": "licensed bookmaker",
@@ -711,17 +674,28 @@
           "decimal_b": 2.2,
           "p_a": 0.5721,
           "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-bc-game-202610150600",
-          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "retrieved_at_utc": "2026-10-13T21:29:23Z",
           "market": "match winner (moneyline, full match)",
+          "join": "start time agrees with fixture"
+        },
+        {
+          "source": "Pinnacle",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.6369,
+          "decimal_b": 2.23,
+          "p_a": 0.5767,
+          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745/markets/related/straight",
+          "retrieved_at_utc": "2026-10-13T21:29:01Z",
+          "market": "series/match winner (moneyline)",
           "join": "start time agrees with fixture"
         }
       ],
       "flags": [
-        "Pinnacle join by team names + tournament (no start time in source)",
         "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only",
         "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1079442",
@@ -743,19 +717,8 @@
       "pick_probability": 0.6194,
       "pick_confidence": "Lean",
       "quality": "High (2 named bookmakers)",
-      "basis": "Pinnacle + Bovada",
+      "basis": "Bovada + Pinnacle",
       "sources": [
-        {
-          "source": "Pinnacle",
-          "kind": "licensed bookmaker",
-          "decimal_a": 1.5155,
-          "decimal_b": 2.5,
-          "p_a": 0.6226,
-          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637999450/markets/related/straight",
-          "retrieved_at_utc": "2026-10-13T21:23:32Z",
-          "market": "series/match winner (moneyline)",
-          "join": "joined by team names + tournament (no start time from source)"
-        },
         {
           "source": "Bovada",
           "kind": "licensed bookmaker",
@@ -763,17 +726,28 @@
           "decimal_b": 2.45,
           "p_a": 0.6161,
           "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/heroic-envy-202610150600",
-          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "retrieved_at_utc": "2026-10-13T21:29:23Z",
           "market": "match winner (moneyline, full match)",
+          "join": "start time agrees with fixture"
+        },
+        {
+          "source": "Pinnacle",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.5155,
+          "decimal_b": 2.5,
+          "p_a": 0.6226,
+          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637999450/markets/related/straight",
+          "retrieved_at_utc": "2026-10-13T21:29:13Z",
+          "market": "series/match winner (moneyline)",
           "join": "start time agrees with fixture"
         }
       ],
       "flags": [
-        "Pinnacle join by team names + tournament (no start time in source)",
         "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only",
         "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080280",
@@ -813,7 +787,8 @@
         "single quote from unnamed bookmaker widget; may be stale",
         "tier C event"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080281",
@@ -853,7 +828,8 @@
         "single quote from unnamed bookmaker widget; may be stale",
         "tier C event"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080282",
@@ -893,7 +869,8 @@
         "single quote from unnamed bookmaker widget; may be stale",
         "tier C event"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080283",
@@ -933,7 +910,8 @@
         "single quote from unnamed bookmaker widget; may be stale",
         "tier C event"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080284",
@@ -973,7 +951,8 @@
         "single quote from unnamed bookmaker widget; may be stale",
         "tier C event"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080285",
@@ -1013,7 +992,8 @@
         "single quote from unnamed bookmaker widget; may be stale",
         "tier C event"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080286",
@@ -1053,7 +1033,8 @@
         "single quote from unnamed bookmaker widget; may be stale",
         "tier C event"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080287",
@@ -1093,7 +1074,8 @@
         "single quote from unnamed bookmaker widget; may be stale",
         "tier C event"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1081120",
@@ -1122,7 +1104,8 @@
         "EGW quote excluded (see irregularities)",
         "tier C event"
       ],
-      "verified": false
+      "quote_captured": false,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080288",
@@ -1162,7 +1145,8 @@
         "single quote from unnamed bookmaker widget; may be stale",
         "tier C event"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080289",
@@ -1191,7 +1175,8 @@
         "EGW quote excluded (see irregularities)",
         "tier C event"
       ],
-      "verified": false
+      "quote_captured": false,
+      "verified_against_source_this_session": false
     },
     {
       "fixture_id": "1080290",
@@ -1231,7 +1216,8 @@
         "single quote from unnamed bookmaker widget; may be stale",
         "tier C event"
       ],
-      "verified": true
+      "quote_captured": true,
+      "verified_against_source_this_session": false
     }
   ],
   "irregularities": [
@@ -1294,6 +1280,12 @@
       "match": "board-wide",
       "issue": "Bovada event URLs in lines.json (e.g. Astralis vs Sashi, 9z vs Aurora) returned 'Not Found' with reCAPTCHA when re-opened in verification; the Bovada quotes could not be re-checked",
       "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600"
+    },
+    {
+      "fixture_id": null,
+      "match": "board-wide",
+      "issue": "Quote availability changes between refreshes: the 21:27 UTC capture had Pinnacle and Bovada for FURIA vs BetBoom and Bovada for 9z vs Aurora; the 21:29 UTC capture has no Pinnacle or Bovada quote for FURIA vs BetBoom and only Pinnacle for 9z vs Aurora. The board follows the latest capture; the EGamersWorld fallback is shown for FURIA vs BetBoom",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/9z-globant-team-aurora-202610140430"
     },
     {
       "fixture_id": null,

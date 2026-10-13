@@ -28,7 +28,7 @@ class CurrentBoardTests(unittest.TestCase):
 
     def test_probabilities_are_complementary_and_pick_is_the_higher_side(self):
         for r in self.rows:
-            if not r["verified"]:
+            if not r["quote_captured"]:
                 self.assertIsNone(r["probability_a"])
                 self.assertIsNone(r["pick"])
                 continue

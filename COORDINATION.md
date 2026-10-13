@@ -2073,6 +2073,15 @@ Reason for claim: the existing `pickem/` board (26 rows) was built from a hand-m
 
 **Status:** T-CURRENT → done (pending PR merge and Pages check, recorded below).
 
+### Session `0f6c89c6` — PR, merge and Pages record (T-CURRENT)
+
+- **PR #29** https://github.com/buffedlizard55-lab/MaltaProj2/pull/29 — "T-CURRENT: current open-for-picks CS2 board" → **MERGED** 2026-10-13T21:24:49Z, merge commit `c09fca7a71b4f7546197095599c5c0fb372c6f8a` (merged without waiting for review; PR checks `build` and `collect` green).
+- **Pages:** `pages build and deployment` run 38470407364 → status `built` for `c09fca7`. Live check (fetch of https://buffedlizard55-lab.github.io/MaltaProj2/current/index.html): 30 cards, pick and probability per card, sources and flags render; `current/flagged.html` renders 11 irregularities and the 20 flagged rows.
+- **Labelling fix after review (follow-up PR, same branch):** the first revision used `verified: true` for any row with a captured quote. That was wrong for Bovada rows I could not re-open. Replaced by `quote_captured` in the JSON; the page now reads "no external line captured" and no row claims verification against a source checked in this session. `verified_against_source_this_session: false` on every row.
+- **Verification status, honest summary:** Pinnacle series moneyline re-checked against the official endpoint for 9z vs Aurora only (identical); all other Pinnacle rows rely on the CI capture plus the code path (`period == 0`). Bovada: not re-openable (Not Found / reCAPTCHA) → quotes from CI capture only. EGW: one unnamed-bookmaker price per row, stale (19:05–19:10 UTC).
+- **Not done in this session (flagged):** LoL fixtures not priced; the `/pickem/` board (26 rows) still uses its own older joins and Polymarket values and was not reconciled row by row; the 68-vs-30 lobby count is unexplained; Bovada and EGW rows need a manual re-check.
+- Shared-file edits made by this session (one line each): `.github/workflows/update-data.yml` (CI step + `current` added to the data commit), `scripts/stage_site.py` (`current` section), `scripts/build_site.py` (one NAV entry). No other session's files were edited.
+- **Task status:** T-CURRENT → **done** (board live; irregularities published, not blocking).
 ## Session `d4ec32a9` — automation safety / final integration (2026-10-13 21:20 UTC)
 
 | Task | Status | Owner | Claimed UTC | File scope |
@@ -2103,3 +2112,10 @@ Reason for claim: the existing `pickem/` board (26 rows) was built from a hand-m
 - Latest successful source refresh: https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38470784435 (21:29 UTC), 390 total rows (92 CS2 + 298 LoL), 9 CS2 fixtures / 13 eligible quotes; 83 CS2 blanks. All 21 primary payloads retained. All 50 combined unit tests and staged local links passed against this batch.
 - Hosted combined root/docs/browser/staging CI passed both push https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38470784473 and PR https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38470791052 . Earlier overlapping refresh run 38470720330 failed during concurrent integration; the subsequent latest-head refresh succeeded, no data was discarded.
 - Removed the temporary collection push trigger for the session branch after two successful official captures. Production still collects hourly and on relevant `main` changes; the session push verification trigger remains for final pre-merge checks. This avoids further bot commits changing PR head while finishing integration. Every manual push is preceded by `pull --rebase=merges` to preserve the reconciled main merge.
+
+### Session `0f6c89c6` — integration merge with main (PR #30 conflict resolution)
+
+- PR #30 was not mergeable: main had advanced (PR #28 and CI refresh commits). Resolution: merged `origin/main` into `arena/0f6c89c6-maltaproj2`.
+- Generated files (`data/hotspawn_matches.json`, `data/lines.json`, `data/odds.json`, `evidence/hotspawn_probe.json`, `evidence/matching_evidence.json`, `evidence/odds_collection.json`): took main's newer CI captures; nothing of this session's was in them. `data/current_board.json` regenerated from them.
+- `COORDINATION.md`: the one conflict hunk kept on both sides (append-only log); no record discarded.
+- Effect on the board after the newer capture (21:28:47 UTC snapshot): named-bookmaker rows 10 → 9 (FURIA vs BetBoom lost Pinnacle and Bovada; 9z vs Aurora lost Bovada) and the fallback rows 14 → 15. This is quote volatility between refreshes, now logged as an irregularity on the flagged page. It is not a data error we introduced.

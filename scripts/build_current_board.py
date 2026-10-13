@@ -201,7 +201,8 @@ def main():
             "quality": quality, "basis": basis,
             "sources": used,
             "flags": flags,
-            "verified": bool(used),
+            "quote_captured": bool(used),
+            "verified_against_source_this_session": False,
         })
 
     # Board-level irregularities found during this session's verification
@@ -219,6 +220,9 @@ def main():
          "issue": "Bovada event URLs in lines.json (e.g. Astralis vs Sashi, 9z vs Aurora) returned 'Not Found' with reCAPTCHA when re-opened in verification; the Bovada quotes could not be re-checked",
          "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600"},
         {"fixture_id": None, "match": "board-wide",
+         "issue": "Quote availability changes between refreshes: the 21:27 UTC capture had Pinnacle and Bovada for FURIA vs BetBoom and Bovada for 9z vs Aurora; the 21:29 UTC capture has no Pinnacle or Bovada quote for FURIA vs BetBoom and only Pinnacle for 9z vs Aurora. The board follows the latest capture; the EGamersWorld fallback is shown for FURIA vs BetBoom",
+         "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/9z-globant-team-aurora-202610140430"},
+        {"fixture_id": None, "match": "board-wide",
          "issue": "Pinnacle moneyline 9z vs Aurora re-checked against the official guest API: period 0 (series) home +261 / away -335 = 3.61 / 1.2985 decimal, identical to the capture; period 1 (Map 1) is +216/-272 and is not used",
          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight"},
     ])
@@ -227,7 +231,7 @@ def main():
         "open_cs2_fixtures": len(rows),
         "with_named_bookmaker_line": sum(1 for r in rows if r["quality"] and r["quality"].startswith(("High", "Medium"))),
         "with_egw_fallback_only": sum(1 for r in rows if r["quality"] and r["quality"].startswith("Low")),
-        "without_any_line": sum(1 for r in rows if not r["verified"]),
+        "without_any_line": sum(1 for r in rows if not r["quote_captured"]),
     }
     doc = {
         "generated_at_utc": hs["generated_at_utc"],
