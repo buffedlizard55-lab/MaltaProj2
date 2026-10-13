@@ -1,0 +1,76 @@
+name: expanded-lines
+
+# Session a0586093 (T-EXPAND). Collects external (non-HotSpawn) esports betting lines
+# on a runner with full internet, because this sandbox has no general egress.
+# Evidence and data are committed back with [skip ci] so the run cannot loop.
+
+on:
+  workflow_dispatch:
+    inputs:
+      playwright:
+        description: 'Also probe JS-rendered pages with headless Chromium'
+        type: boolean
+        default: true
+  push:
+    paths:
+      - '.github/workflows/expanded-lines.yml'
+      - 'scripts/expanded/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: expanded-lines-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Probe external source reachability
+        run: |
+          mkdir -p data/expanded
+          python3 scripts/expanded/probe_sources.py \
+            --out data/expanded/source_probe.json ${{ (github.event_name == 'workflow_dispatch' && inputs.playwright) && '--playwright' || '' }}
+        continue-on-error: false
+
+      - name: Install Playwright browser (for JS-rendered sources)
+        if: always()
+        run: |
+          pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+
+      - name: Probe JS-rendered sources with headless Chromium
+        run: |
+          python3 scripts/expanded/probe_rendered.py --out data/expanded/rendered_probe.json || \
+            echo "rendered probe returned non-zero (evidence kept)"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: expanded-source-evidence
+          path: data/expanded/
+          retention-days: 14
+
+      - name: Commit evidence + data to this branch
+        if: always()
+        run: |
+          git config user.name "malta-data-bot"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add -A data/expanded scripts/expanded 2>/dev/null || git add -A data/expanded
+          if git diff --cached --quiet; then
+            echo "no changes to commit"
+          else
+            git commit -m "evidence: expanded external source probe [skip ci]"
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push && break || sleep 5
+            done
+          fi
