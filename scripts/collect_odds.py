@@ -46,10 +46,29 @@ def now_iso():
 
 
 def ms_iso(value):
+    # Pinnacle supplies ISO-8601 startTime; Bovada supplies epoch milliseconds.
+    # Do not interpret timezone-free strings or missing fields as UTC.
+    if isinstance(value, str) and "T" in value:
+        dt = parse_iso(value)
+        return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ") if dt else None
     try:
         return datetime.fromtimestamp(int(value) / 1000, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    except (TypeError, ValueError):
+    except (TypeError, ValueError, OverflowError, OSError):
         return None
+
+
+def aligned_bovada_outcomes(competitors, outcomes):
+    """Only an explicit unique competitorId join establishes price ordering."""
+    ids = [str(c.get("id") or "") for c in competitors]
+    if len(ids) != 2 or not all(ids) or len(set(ids)) != 2 or len(outcomes) != 2:
+        return None
+    result = []
+    for cid in ids:
+        matches = [o for o in outcomes if str(o.get("competitorId") or "") == cid]
+        if len(matches) != 1:
+            return None
+        result.append(matches[0])
+    return result
 
 
 def american_to_decimal(a):
@@ -90,7 +109,7 @@ def collect_pinnacle(lines, evidence):
     st, matchups = get_json(url, PIN_HEADERS)
     evidence["pinnacle_matchups"] = {"url": url, "status": st,
                                      "count": len(matchups) if isinstance(matchups, list) else None}
-    if not isinstance(matchups, list):
+    if st != 200 or not isinstance(matchups, list):
         return
     cs2 = [m for m in matchups
            if CS2_LEAGUE_RE.search(str((m.get("league") or {}).get("name", "")))]
@@ -103,7 +122,7 @@ def collect_pinnacle(lines, evidence):
         mid = m.get("id")
         murl = f"{PIN}/matchups/{mid}/markets/related/straight"
         st2, markets = get_json(murl, PIN_HEADERS)
-        if not isinstance(markets, list):
+        if st2 != 200 or not isinstance(markets, list):
             time.sleep(0.2)
             continue
         # Main series/match moneyline = type moneyline, period 0, not alternate, 2 prices.
@@ -112,8 +131,10 @@ def collect_pinnacle(lines, evidence):
                  and mk.get("period") == 0 and not mk.get("isAlternate")
                  and isinstance(mk.get("prices"), list) and len(mk.get("prices") or []) == 2
                  and all(p.get("price") is not None for p in mk.get("prices") or [])]
-        for mk in cands[:1]:
+        for mk in cands:
             prices = mk["prices"]
+            if {p.get("alignment") for p in parts} != {"home", "away"} or {p.get("designation") for p in prices} != {"home", "away"}:
+                continue
             home = parts[0] if parts[0].get("alignment") == "home" else parts[1]
             by_align = {p.get("designation"): p.get("price") for p in prices}
             a_am = by_align.get("home") if parts[0].get("alignment") == "home" else by_align.get("away")
@@ -131,7 +152,9 @@ def collect_pinnacle(lines, evidence):
                 "source_league": (m.get("league") or {}).get("name"),
                 "market_type": "series/match winner (moneyline)",
                 "market_period": "full match",
-                "market_is_live": bool(mk.get("isLive")),
+                "market_is_live": m.get("isLive"),
+                "sport": "cs2",
+                "outcome_alignment_verified": True,
                 "market_status": mk.get("status"),
                 "source_reported_status": m.get("status"),
                 "retrieved_at_utc": now_iso(),
@@ -146,6 +169,8 @@ def collect_pinnacle(lines, evidence):
                 "decimal_odds_derived": True,
                 "raw_prices": prices,
             })
+            evidence.setdefault("quote_payloads", []).append({"source": "pinnacle", "url": murl,
+                "retrieved_at_utc": lines[-1]["retrieved_at_utc"], "matchup": m, "market": mk})
         time.sleep(0.25)
 
 
@@ -178,6 +203,10 @@ def collect_bovada(lines, evidence):
                     outs = mk.get("outcomes") or []
                     if len(outs) != 2:
                         continue
+                    outs = aligned_bovada_outcomes(comps, outs)
+                    if outs is None:
+                        evidence.setdefault("rejected_alignment", []).append({"source": "bovada", "event_id": ev.get("id"), "market_id": mk.get("id")})
+                        continue
                     prices = [((o.get("price") or {}).get("decimal")) for o in outs]
                     am = [((o.get("price") or {}).get("american")) for o in outs]
                     if not all(prices):
@@ -194,7 +223,9 @@ def collect_bovada(lines, evidence):
                         "source_league": (dg.get("description") or ""),
                         "market_type": "match winner (moneyline, full match)",
                         "market_period": period.get("description"),
-                        "market_is_live": bool(ev.get("live")),
+                        "market_is_live": ev.get("live"),
+                        "sport": "cs2",
+                        "outcome_alignment_verified": True,
                         "market_status": mk.get("status"),
                         "source_reported_status": "live" if ev.get("live") else "scheduled",
                         "retrieved_at_utc": now_iso(),
@@ -210,6 +241,10 @@ def collect_bovada(lines, evidence):
                         "raw_prices": {"outcomes": [o.get("description") for o in outs],
                                        "decimal": prices, "american": am},
                     })
+                    evidence.setdefault("quote_payloads", []).append({"source": "bovada", "url": url,
+                        "retrieved_at_utc": lines[-1]["retrieved_at_utc"], "event_id": ev.get("id"),
+                        "startTime": ev.get("startTime"), "live": ev.get("live"),
+                        "competitors": comps, "market": mk})
     evidence["bovada"].update({"groups": groups, "events": events, "cs2_moneyline_lines": cs2_events})
 
 
@@ -268,7 +303,10 @@ def collect_polymarket(lines, evidence):
                 "market_status": "open",
                 "source_reported_status": "open",
                 "retrieved_at_utc": now_iso(),
-                "start_time_utc": iso_utc(mk.get("endDate") or ev.get("endDate")),
+                "start_time_utc": None,
+                "source_end_time_utc": iso_utc(mk.get("endDate") or ev.get("endDate")),
+                "outcome_alignment_verified": False,
+                "review_flag": "prediction_market_not_eligible_for_primary_bookmaker_consensus",
                 "team_a_name": m.group("a").strip(),
                 "team_b_name": m.group("b").strip(),
                 "series_format": m.group("fmt"),
@@ -296,7 +334,8 @@ def parse_iso(value):
     if not value:
         return None
     try:
-        return datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        dt = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        return dt if dt.tzinfo is not None else None
     except Exception:
         return None
 
