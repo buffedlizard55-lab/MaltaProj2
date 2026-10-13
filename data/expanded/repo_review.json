@@ -1,0 +1,191 @@
+{
+ "generated_at_utc": "2026-10-13T22:08:15Z",
+ "checks": [
+  {
+   "id": "R1",
+   "claim": "data/hotspawn_matches.json matches the live lobby fixture list",
+   "source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "snapshot_file": "data/hotspawn_matches.json",
+   "snapshot_generated_at_utc": "2026-10-13T21:54:50Z",
+   "live_count_all_sports": 11570,
+   "snapshot_count": 406,
+   "missing_from_snapshot": [
+    "1",
+    "1000076",
+    "1000077",
+    "1000078",
+    "1000097",
+    "1000098",
+    "1000167",
+    "1000168",
+    "1000169",
+    "1000170",
+    "1000171",
+    "1000172",
+    "1000173",
+    "1000174",
+    "1000175",
+    "1000176",
+    "1000177",
+    "1000178",
+    "1000179",
+    "1000180"
+   ],
+   "stale_in_snapshot": [],
+   "status": "discrepancy",
+   "detail": "406 snapshot rows; 11164 live ids absent from the snapshot, 0 snapshot ids no longer live"
+  },
+  {
+   "id": "R2",
+   "claim": "data/originated_matches.json team VRS points and standings match Valve's official regional standings",
+   "sources": [
+    "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_global_2026_10_05.md",
+    "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_europe_2026_10_05.md",
+    "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_americas_2026_10_05.md",
+    "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_asia_2026_10_05.md"
+   ],
+   "status": "verified",
+   "teams_checked": 56,
+   "mismatches": [],
+   "vrs_snapshot_date": "2026-10-05"
+  },
+  {
+   "id": "R3",
+   "claim": "the favourite in each data/originated_matches.json pairing is what the documented Bradley-Terry formula produces",
+   "method": "p = 1/(1+10^(-(Ra-Rb)/400)) on the file's own vrs_points values",
+   "status": "discrepancy",
+   "pairs_checked": 28,
+   "mismatches": [
+    {
+     "pairing": "Falcons vs Legacy",
+     "file_prob_a": 0.4831,
+     "formula_prob_a": 0.376
+    },
+    {
+     "pairing": "Falcons vs FURIA",
+     "file_prob_a": 0.6066,
+     "formula_prob_a": 0.5201
+    },
+    {
+     "pairing": "Falcons vs Aurora",
+     "file_prob_a": 0.7439,
+     "formula_prob_a": 0.675
+    },
+    {
+     "pairing": "Falcons vs BetBoom",
+     "file_prob_a": 0.8274,
+     "formula_prob_a": 0.8056
+    },
+    {
+     "pairing": "Falcons vs NiP",
+     "file_prob_a": 0.9058,
+     "formula_prob_a": 0.8555
+    },
+    {
+     "pairing": "Legacy vs FURIA",
+     "file_prob_a": 0.6227,
+     "formula_prob_a": 0.6427
+    },
+    {
+     "pairing": "Legacy vs BetBoom",
+     "file_prob_a": 0.8368,
+     "formula_prob_a": 0.8731
+    },
+    {
+     "pairing": "Legacy vs 9z",
+     "file_prob_a": 0.8472,
+     "formula_prob_a": 0.9032
+    },
+    {
+     "pairing": "Legacy vs PARIVISION",
+     "file_prob_a": 0.92,
+     "formula_prob_a": 0.9523
+    },
+    {
+     "pairing": "FURIA vs BetBoom",
+     "file_prob_a": 0.7566,
+     "formula_prob_a": 0.7927
+    },
+    {
+     "pairing": "FURIA vs 9z",
+     "file_prob_a": 0.7706,
+     "formula_prob_a": 0.8384
+    },
+    {
+     "pairing": "FURIA vs PARIVISION",
+     "file_prob_a": 0.8823,
+     "formula_prob_a": 0.9173
+    },
+    {
+     "pairing": "Aurora vs BetBoom",
+     "file_prob_a": 0.6227,
+     "formula_prob_a": 0.6661
+    },
+    {
+     "pairing": "Aurora vs 9z",
+     "file_prob_a": 0.6407,
+     "formula_prob_a": 0.7302
+    },
+    {
+     "pairing": "Aurora vs PARIVISION",
+     "file_prob_a": 0.7992,
+     "formula_prob_a": 0.8527
+    },
+    {
+     "pairing": "Aurora vs NiP",
+     "file_prob_a": 0.7681,
+     "formula_prob_a": 0.7403
+    },
+    {
+     "pairing": "BetBoom vs 9z",
+     "file_prob_a": 0.5194,
+     "formula_prob_a": 0.5757
+    },
+    {
+     "pairing": "BetBoom vs PARIVISION",
+     "file_prob_a": 0.707,
+     "formula_prob_a": 0.7436
+    },
+    {
+     "pairing": "BetBoom vs NiP",
+     "file_prob_a": 0.6674,
+     "formula_prob_a": 0.5883
+    },
+    {
+     "pairing": "9z vs NiP",
+     "file_prob_a": 0.65,
+     "formula_prob_a": 0.5129
+    }
+   ]
+  },
+  {
+   "id": "R4",
+   "claim": "data/cs2_odds_egamersworld.json rows refer to real lobby fixtures",
+   "source": "https://egamersworld.com/counterstrike/matches",
+   "rows": 32,
+   "status": "verified",
+   "mismatches": []
+  },
+  {
+   "id": "R5",
+   "claim": "data/lines.json summary counters match its own row list",
+   "declared_fixtures_total": 92,
+   "rows": 92,
+   "status": "verified"
+  }
+ ],
+ "irregularities": [
+  {
+   "id": "R1",
+   "severity": "low",
+   "finding": "The committed fixture snapshot is not identical to the live lobby API response (expected: both change continuously). Rows are refreshed every 3 hours by the scheduled workflow.",
+   "evidence": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
+  },
+  {
+   "id": "R3",
+   "severity": "medium",
+   "finding": "The originated model file contains probabilities that differ from its own documented formula by more than 2 points (momentum adjustments are applied on top and are model assumptions, not verified facts).",
+   "evidence": "data/originated_matches.json + scripts/originate_lines.py"
+  }
+ ]
+}
