@@ -176,12 +176,12 @@
       "book": "unattributed",
       "decimal_a": 2.95,
       "decimal_b": 1.33,
-      "team_a_book": "order ambiguous (page lists Overtake Sector first)",
-      "team_b_book": "order ambiguous",
+      "team_a_book": "Zomblers",
+      "team_b_book": "Overtake Sector",
       "observed_at": "2026-10-13T18:31:00+00:00",
       "observed_via": "web_search snippet",
-      "join_status": "conflict-flagged",
-      "join_notes": "П1 2.95 / П2 1.33 with ambiguous side order: if П1=Zomblers then Zomblers 2.95 / Overtake 1.33 (Overtake heavy favorite, consistent with stavka 1.59 direction); if reversed, contradiction. Order not verifiable from snippet alone -> flagged, not used."
+      "join_status": "identity-unverified",
+      "join_notes": "Binding resolved via validated kushvsporte.ru rule (П1/П2 follow event-page title order; URL slug \"zomblers-overtake-sector\" -> П1 2.95 = Zomblers, П2 1.33 = Overtake). Same rule accepted for OBS-008 (ex-Keyd/Galorys). Direction (Overtake favorite) corroborated by Polymarket card 2.94x/1.49x (OBS-064) and stavka.tv Overtake 1.59 one-sided (OBS-009)."
     },
     {
       "obs_id": "OBS-011",
@@ -304,7 +304,7 @@
       "observed_at": "2026-10-13T18:32:00+00:00",
       "observed_via": "web_search snippet (page dated Oct 12)",
       "join_status": "identity-unverified",
-      "join_notes": "Same blog lists Legacy-PARIVISION adjacent row 1.68/2.08 (not captured as separate obs due to truncated team label)."
+      "join_notes": "Same blog lists Legacy-PARIVISION adjacent row 1.68/2.08 - now captured as OBS-065 with binding resolved via widget structure + cross-source corroboration."
     },
     {
       "obs_id": "OBS-018",
@@ -1123,6 +1123,63 @@
       "observed_via": "web_search snippet",
       "join_status": "verified-context",
       "join_notes": "MIBR vs BC.Game Oct 15 12:00 CEST = 10:00 UTC (matches fixture). DISCREPANCY: Liquipedia main-page snippet lists HOTU vs Fnatic Oct 14 13:00 CEST = 11:00 UTC vs Hotspawn fixture 10:00 UTC - schedule variance flagged (could be CEST/CET confusion on Liquipedia side; unresolved)."
+    },
+    {
+      "obs_id": "OBS-064",
+      "fixture_id": "1079546",
+      "match": "Zomblers vs Overtake Sector",
+      "tournament_hotspawn": "ESL Challenger League Season 52: North America - Cup #3",
+      "source": "https://polymarket.com/esports/cs2",
+      "source_type": "prediction market (Polymarket)",
+      "market": "Match Winner (BO3) - ESL Challenger League North America Cup #3 Playoffs",
+      "book": "Polymarket",
+      "decimal_a": 2.94,
+      "decimal_b": 1.49,
+      "team_a_book": "Zomblers",
+      "team_b_book": "Overtake",
+      "display_time_on_source": "Tomorrow, 1:00 AM (= 2026-10-14 01:00 UTC, matches fixture); $1.48K Vol",
+      "observed_at": "2026-10-13T19:40:00+00:00",
+      "observed_via": "web_search snippet of polymarket.com/esports/cs2 (card: 'Zomblers [ot2 icon] Overtake 2.94x 1.49x')",
+      "join_status": "identity-unverified",
+      "join_notes": "Card title 'Zomblers vs Overtake (BO3) - ESL Challenger League North America Cup #3 Playoffs' + start time 01:00 UTC match fixture 1079546 exactly. Title-order binding (validated PM card rule): Zomblers 2.94x / Overtake 1.49x. Overtake-favorite direction corroborated by stavka.tv 1.59 (OBS-009) and kushvsporte 1.33 (OBS-010). $1.48K volume = traded market. EGamersWorld match page shows 1.8/1.8 placeholder (not real odds; excluded)."
+    },
+    {
+      "obs_id": "OBS-065",
+      "fixture_id": "1080178",
+      "match": "Legacy vs PARIVISION",
+      "tournament_hotspawn": "Thunderpick World Championship 2026",
+      "source": "https://egamersworld.com/blog/thunderpick-world-championship-2026-schedule-teams-3y5NuMb4pp",
+      "source_type": "odds editorial/aggregator (EGamersWorld blog)",
+      "market": "Match Winner",
+      "book": "unattributed",
+      "decimal_a": 1.68,
+      "decimal_b": 2.08,
+      "team_a_book": "Legacy",
+      "team_b_book": "PARIVISION",
+      "display_time_on_source": "16:30 EEST (=13:30 UTC, matches fixture)",
+      "observed_at": "2026-10-13T19:45:00+00:00",
+      "observed_via": "web_search snippet ('#20 PARIVISION (Counter-Strike (CS2)) PARIVISION 1.68 Make a bet 2.08')",
+      "join_status": "identity-unverified",
+      "join_notes": "Binding resolution: EGW widget structure places the combined odds row ('odds1 Make a bet odds2') AFTER both team blocks in title order (same structure as EGW Zomblers-Overtake widget 'Zomblers 1.8 ... Overtake Sector 1.8 -> 1.8 Make a bet 1.8'). Snippet captured only the second (PARIVISION) block + odds row; first block (Legacy) truncated out. Row therefore reads Legacy 1.68 / PARIVISION 2.08. Naive label-adjacency reading (PARIVISION 1.68) would CONTRADICT four independent signals: Polymarket Legacy 1.79/PARI 2.27 (OBS-014), bwin Legacy 1.66/PARI 2.10 (OBS-015, itself excluded), Hotspawn crowd 88/12, and outrights Legacy 3.80 vs PARI 15.00 (OBS-060). Blog schedule '16:30 - Legacy vs PARIVISION' (EEST) = 13:30 UTC matches fixture start. bwin 1.66/2.10 numerically agrees with 1.68/2.08 within ~1%."
+    },
+    {
+      "obs_id": "OBS-066",
+      "fixture_id": null,
+      "match": "TWC 2026 opening-day schedule verification (4 fixtures)",
+      "tournament_hotspawn": "Thunderpick World Championship 2026",
+      "source": "https://egamersworld.com/blog/thunderpick-world-championship-2026-schedule-teams-3y5NuMb4pp",
+      "source_type": "schedule/editorial (EGamersWorld blog)",
+      "market": null,
+      "book": null,
+      "decimal_a": null,
+      "decimal_b": null,
+      "team_a_book": null,
+      "team_b_book": null,
+      "display_time_on_source": "Opening matches Oct 14, all times EEST (UTC+3): 11:30 9z-Aurora, 14:00 Falcons-NIP, 16:30 Legacy-PARIVISION, 19:00 FURIA-BetBoom",
+      "observed_at": "2026-10-13T19:45:00+00:00",
+      "observed_via": "web_search snippet",
+      "join_status": "verified-context",
+      "join_notes": "EEST->UTC conversion reproduces all four Hotspawn fixture start times EXACTLY: 08:30 (1080176), 11:00 (1080177), 13:30 (1080178), 16:00 (1080179). Strengthens identity joins for all TWC fixtures. Blog also confirms: venue BLAST Arena Studios Malta, Oct 14-18, $1M prize, Group A Falcons/NIP/9z/Aurora, Group B Legacy/PARIVISION/FURIA/BetBoom, and that TWC awards Valve Regional Standings (VRS) points (context for repo T-B VRS review)."
     }
   ]
 }
