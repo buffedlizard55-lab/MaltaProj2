@@ -1,6 +1,6 @@
 # Repo verification — session `ac475c09`
 
-Generated 2026-10-13T22:04:53Z. Mechanical, re-runnable checks over this repository's published pick'em artefacts.
+Generated 2026-10-13T22:07:52Z. Mechanical, re-runnable checks over this repository's published pick'em artefacts.
 
 **0 high · 1 medium · 1 low · 20 informational**
 
@@ -19,8 +19,8 @@ Generated 2026-10-13T22:04:53Z. Mechanical, re-runnable checks over this reposit
 | freshness | info | `data/odds.json` | snapshot is 0.0h old |
 | freshness | info | `data/lines.json` | snapshot is 0.0h old |
 | freshness | info | `data/probabilities.json` | snapshot is 2.5h old |
-| freshness | info | `data/picks_fixtures.json` | snapshot is 0.1h old |
-| freshness | info | `data/picks_board.json` | snapshot is 0.1h old |
+| freshness | info | `data/picks_fixtures.json` | snapshot is 0.2h old |
+| freshness | info | `data/picks_board.json` | snapshot is 0.2h old |
 | published_counts | info | `data/lines.json` | summary and rows agree (9 priced fixtures of 91) |
 | typed_quotes | medium | `scripts/*.py` | price-like literals are typed into generator scripts; they cannot be re-verified without opening the linked page, so they are listed for review |
 | cross_pipeline | low | `data/lines.json vs data/picks_board.json` | no fixture currently carries a pre-match line in both pipelines (the older collection captured them before they started), so the two collections cannot be cross-checked on this build |
