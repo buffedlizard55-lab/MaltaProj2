@@ -32,8 +32,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from live_core import (  # noqa: E402
-    UA, UA_BROWSER, canon_team, fetch, fetch_json, html_to_text, json_dump, now_iso, now_utc,
-    parse_lobby_counters, parse_ms, to_iso,
+    UA, UA_BROWSER, canon_team, extract_lobby_listing, fetch, fetch_json, html_to_text, json_dump,
+    now_iso, now_utc, parse_any, parse_lobby_counters, parse_ms, to_iso,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -125,13 +125,22 @@ def collect_fixtures(log: dict) -> list[dict]:
     return out
 
 
-def collect_lobby_page(log: dict) -> dict:
+def collect_lobby_page(log: dict, sample_dir: Path | None = None) -> dict:
     res = fetch(LOBBY_PAGE, {"Accept": "text/html", "User-Agent": UA_BROWSER}, timeout=60)
-    counters = {}
+    counters: dict = {}
     if res["body"]:
-        counters = parse_lobby_counters(res["body"].decode("utf-8", "replace"))
+        text = res["body"].decode("utf-8", "replace")
+        counters = parse_lobby_counters(text)
+        listing = extract_lobby_listing(text)
+        counters["listing"] = {k: v for k, v in listing.items() if k != "listed_ids"}
+        counters["listing_ids_sample"] = listing["listed_ids"][:5]
+        # Ids are kept out of the counters blob only to keep the log readable; they travel with the
+        # fixture snapshot below.
+        counters["listing_ids"] = listing["listed_ids"]
+        if sample_dir is not None:
+            save_sample(sample_dir, "lobby_page.html", text, limit=600_000)
     log["lobby_page"] = {k: v for k, v in res.items() if k != "body"}
-    log["lobby_page"]["counters"] = counters
+    log["lobby_page"]["counters"] = {k: v for k, v in counters.items() if k != "listing_ids"}
     return counters
 
 
@@ -213,11 +222,27 @@ PIN_HEADERS = {
 }
 
 
-def collect_pinnacle(quotes: list[dict], log: dict, sample_dir: Path) -> None:
+def save_sample(sample_dir: Path, name: str, payload, limit: int = 200_000) -> None:
+    """Persist a bounded, verbatim sample of what a source served (evidence, never re-typed)."""
+    sample_dir.mkdir(parents=True, exist_ok=True)
+    target = sample_dir / name
+    if isinstance(payload, (bytes, bytearray)):
+        text = bytes(payload[:limit]).decode("utf-8", "replace")
+    elif isinstance(payload, str):
+        text = payload[:limit]
+    else:
+        text = json.dumps(payload, indent=1)[:limit]
+    target.write_text(text, encoding="utf-8")
+
+
+def collect_pinnacle(quotes: list[dict], log: dict, sample_dir: Path | None = None) -> None:
     url = f"{PIN}/sports/12/matchups"
     data, meta = fetch_json(url, PIN_HEADERS)
     entry = {**{k: v for k, v in meta.items() if k != "body"}, "type": "matchups list"}
     log["pinnacle"] = entry
+    if sample_dir is not None:
+        save_sample(sample_dir, "pinnacle_matchups_head.json",
+                    data[:8] if isinstance(data, list) else data)
     if not isinstance(data, list):
         return
     matchups = [m for m in data if isinstance(m, dict) and m.get("type") == "matchup"
@@ -270,9 +295,7 @@ def collect_pinnacle(quotes: list[dict], log: dict, sample_dir: Path) -> None:
                 "market_type": "match winner (moneyline, full match)",
                 "market_is_live": bool(mk.get("isLive")), "market_status": mk.get("status"),
                 "retrieved_at_utc": now_iso(),
-                "start_time_utc": to_iso(parse_ms(m.get("startTime")) if m.get("startTime") and
-                                        not isinstance(m.get("startTime"), str)
-                                        else None),
+                "start_time_utc": to_iso(parse_any(m.get("startTime"))),
                 "start_time_raw": m.get("startTime"),
                 "team_a_name": names[0], "team_b_name": names[1],
                 "raw_price_format": "american", "raw_price_a": a_am, "raw_price_b": b_am,
@@ -285,11 +308,15 @@ def collect_pinnacle(quotes: list[dict], log: dict, sample_dir: Path) -> None:
 
 
 # -------------------------------------------------------------------------------- Bovada
-def collect_bovada(quotes: list[dict], log: dict) -> None:
+def collect_bovada(quotes: list[dict], log: dict, sample_dir: Path | None = None) -> None:
     url = "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
     data, meta = fetch_json(url, {"Accept": "application/json"})
     entry = {**{k: v for k, v in meta.items() if k != "body"}, "type": "coupon"}
     log["bovada"] = entry
+    if sample_dir is not None:
+        save_sample(sample_dir, "bovada_esports_head.json",
+                    [{**g, "events": (g.get("events") or [])[:2]}
+                     for g in (data[:3] if isinstance(data, list) else [])])
     if not isinstance(data, list):
         return
     events = 0
@@ -391,7 +418,7 @@ def guess_game(sport_name: str, league: str | None) -> str | None:
     return None
 
 
-def collect_linefeed(quotes: list[dict], log: dict) -> None:
+def collect_linefeed(quotes: list[dict], log: dict, sample_dir: Path | None = None) -> None:
     sports_url = ("https://melbet.com/service-api/LineFeed/GetSportsShortZip"
                   "?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true")
     data, meta = fetch_json(sports_url)
@@ -557,11 +584,11 @@ def collect_egamersworld(quotes: list[dict], log: dict, sample_dir: Path) -> Non
             if res["status"] == 200 and res["bytes"] > 2000 and "egamersworld.com" in text:
                 rows = extract_egw_rows(text, game, turl)
                 attempt["rows_parsed"] = len(rows)
+                attempt["contains_match_link"] = bool(EGW_MATCH_LINK_RE.search(text))
+                attempt["contains_vs_title"] = bool(EGW_TITLE_RE.search(text))
+                save_sample(sample_dir, f"{page_key}_{tname}.html", text, limit=400_000)
+                attempt["sample_saved"] = f"{page_key}_{tname}.html"
                 if rows:
-                    sample_dir.mkdir(parents=True, exist_ok=True)
-                    (sample_dir / f"{page_key}_{tname}.html").write_text(
-                        text[:400_000], encoding="utf-8")
-                    attempt["sample_saved"] = f"{page_key}_{tname}.html"
                     quotes.extend(rows)
                     got_rows += len(rows)
                     attempts.append(attempt)
@@ -573,12 +600,20 @@ def collect_egamersworld(quotes: list[dict], log: dict, sample_dir: Path) -> Non
 
 
 # ---------------------------------------------------------- exchanges (reference only)
-def collect_kalshi(quotes: list[dict], log: dict) -> None:
+def collect_kalshi(quotes: list[dict], log: dict, sample_dir: Path | None = None) -> None:
     url = ("https://api.elections.kalshi.com/trade-api/v2/events"
            "?limit=200&status=open&with_nested_markets=true")
     data, meta = fetch_json(url, {"Accept": "application/json"})
     entry = {**{k: v for k, v in meta.items() if k != "body"}, "type": "events+markets"}
     log["kalshi"] = entry
+    if sample_dir is not None and isinstance(data, dict):
+        save_sample(sample_dir, "kalshi_tickers.json",
+                    [{"event_ticker": e.get("event_ticker"), "title": e.get("title"),
+                      "sub_title": e.get("sub_title"), "category": e.get("category"),
+                      "markets": [{"ticker": m.get("ticker"), "title": m.get("title"),
+                                   "yes_bid": m.get("yes_bid"), "yes_ask": m.get("yes_ask")}
+                                  for m in (e.get("markets") or [])[:1]]}
+                     for e in (data.get("events") or [])])
     events = (data or {}).get("events") if isinstance(data, dict) else None
     if not isinstance(events, list):
         return
@@ -614,11 +649,16 @@ def collect_kalshi(quotes: list[dict], log: dict) -> None:
     entry["quotes_written"] = written
 
 
-def collect_polymarket(quotes: list[dict], log: dict) -> None:
+def collect_polymarket(quotes: list[dict], log: dict, sample_dir: Path | None = None) -> None:
     url = "https://gamma-api.polymarket.com/events?closed=false&limit=200&tag_slug=esports"
     data, meta = fetch_json(url, {"Accept": "application/json"})
     entry = {**{k: v for k, v in meta.items() if k != "body"}, "type": "events"}
     log["polymarket"] = entry
+    if sample_dir is not None and isinstance(data, list):
+        save_sample(sample_dir, "polymarket_events_head.json",
+                    [{"title": e.get("title"), "slug": e.get("slug"), "outcomes": e.get("outcomes"),
+                      "outcomePrices": e.get("outcomePrices"), "tags": [t.get("slug") for t in (e.get("tags") or [])]}
+                     for e in data[:40]])
     if not isinstance(data, list):
         return
     entry["events"] = len(data)
@@ -684,27 +724,24 @@ def main() -> int:
                  ]}
 
     fixtures = collect_fixtures(log)
-    counters = collect_lobby_page(log)
+    counters = collect_lobby_page(log, sample_dir)
     vrs = vrs_latest(log)
 
     quotes: list[dict] = []
-    for fn in (collect_pinnacle, collect_bovada, collect_linefeed):
+    collectors = [
+        ("pinnacle", lambda: collect_pinnacle(quotes, log, sample_dir)),
+        ("bovada", lambda: collect_bovada(quotes, log, sample_dir)),
+        ("linefeed", lambda: collect_linefeed(quotes, log, sample_dir)),
+        ("egamersworld", lambda: collect_egamersworld(quotes, log, sample_dir)),
+        ("kalshi", lambda: collect_kalshi(quotes, log, sample_dir)),
+        ("polymarket", lambda: collect_polymarket(quotes, log, sample_dir)),
+    ]
+    for name, fn in collectors:
         try:
-            fn(quotes, log)
+            fn()
         except Exception as exc:  # noqa: BLE001 - one broken source must not stop the rest
             log.setdefault("source_errors", []).append(
-                {"collector": fn.__name__, "error": f"{type(exc).__name__}: {exc}"})
-    try:
-        collect_egamersworld(quotes, log, sample_dir)
-    except Exception as exc:  # noqa: BLE001
-        log.setdefault("source_errors", []).append(
-            {"collector": "collect_egamersworld", "error": f"{type(exc).__name__}: {exc}"})
-    for fn in (collect_kalshi, collect_polymarket):
-        try:
-            fn(quotes, log)
-        except Exception as exc:  # noqa: BLE001
-            log.setdefault("source_errors", []).append(
-                {"collector": fn.__name__, "error": f"{type(exc).__name__}: {exc}"})
+                {"collector": name, "error": f"{type(exc).__name__}: {exc}"})
 
     # Bounded raw samples so a parser can always be re-checked against real bytes.
     if fixtures:

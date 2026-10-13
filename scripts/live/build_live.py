@@ -76,9 +76,14 @@ def window_analysis(fixtures: list[dict], counters: dict, now) -> dict:
         "kickoff in the future": lambda f: (
             (d := parse_iso(f.get("start_time_utc"))) is not None and d > now),
     }
+    listing_ids = counters.get("listing_ids") or []
+    listing_set = set(str(i) for i in listing_ids)
+    if listing_set:
+        rules["listed by the lobby page state"] = lambda f: str(f.get("fixture_id")) in listing_set
     out = {"week_window": {"start": start.isoformat(), "end": end.isoformat(),
                            "rule": "Monday 00:00 UTC .. next Monday 00:00 UTC"},
-           "lobby_counters": counters, "candidates": {}}
+           "lobby_counters": {k: v for k, v in counters.items() if k != "listing_ids"},
+           "listing_ids_count": len(listing_set), "candidates": {}}
     for name, fn in rules.items():
         rows = [f for f in fixtures if fn(f)]
         out["candidates"][name] = {
@@ -158,6 +163,9 @@ def build_board(fixtures_doc: dict, quotes_doc: dict, ratings_doc: dict, now) ->
         key = tuple(sorted([canon_team(f.get("team_a")), canon_team(f.get("team_b"))]))
         pairings[key] = pairings.get(key, 0) + 1
 
+    listing_ids = (counters.get("listing_ids") or None)
+    listing_set = set(listing_ids) if listing_ids else None
+
     rows = []
     used_quotes: set[int] = set()
     rejected: list[dict] = []
@@ -175,6 +183,8 @@ def build_board(fixtures_doc: dict, quotes_doc: dict, ratings_doc: dict, now) ->
             "hotspawn_match_url": (f.get("source") or {}).get("hotspawn_match_url"),
             "hotspawn_fixture_api": (f.get("source") or {}).get("api"),
             "hotspawn_pick_pct_reference_only": f.get("hotspawn_pick_pct_reference_only"),
+            "listed_in_lobby": (None if listing_set is None
+                                else str(f.get("fixture_id")) in listing_set),
             "flags": [],
             "quotes": [],
             "market": None,
@@ -191,7 +201,6 @@ def build_board(fixtures_doc: dict, quotes_doc: dict, ratings_doc: dict, now) ->
         if start is not None and start <= now:
             row["flags"].append("kickoff_passed")
 
-        market_entries: list[dict] = []
         for idx, q in enumerate(quotes):
             joined = join_quote_to_fixture(f, q)
             if not joined:
@@ -245,8 +254,6 @@ def build_board(fixtures_doc: dict, quotes_doc: dict, ratings_doc: dict, now) ->
                           "prob_a": nv["prob_a"], "prob_b": nv["prob_b"],
                           "overround": nv["overround"]})
             row["quotes"].append(entry)
-            market_entries.append({"source_key": q.get("source_key"),
-                                   "prob_a": nv["prob_a"], "prob_b": nv["prob_b"]})
             used_quotes.add(idx)
 
         # Duplicate quotes from one source: keep the newest, record the others.
@@ -259,8 +266,6 @@ def build_board(fixtures_doc: dict, quotes_doc: dict, ratings_doc: dict, now) ->
                     by_source[key] = entry
             else:
                 by_source[key] = entry
-        dedup_entries = [{"source_key": e["source_key"], "prob_a": e["prob_a"], "prob_b": e["prob_b"]}
-                         for e in by_source.values()]
         fresh = []
         for entry in by_source.values():
             read = parse_iso(entry.get("retrieved_at_utc"))
@@ -359,8 +364,17 @@ def build_board(fixtures_doc: dict, quotes_doc: dict, ratings_doc: dict, now) ->
                                 "edge": None, "source_links": []}
         rows.append(row)
 
+    listed = [r for r in rows if r.get("listed_in_lobby") is True]
+    unlisted = [r for r in rows if r.get("listed_in_lobby") is False]
     summary = {
         "rows": len(rows),
+        "lobby_listing_available": listing_set is not None,
+        "lobby_listed_rows": len(listed),
+        "lobby_listed_with_probability": sum(1 for r in listed if r["published"]["basis"] != "none"),
+        "lobby_listed_market": sum(1 for r in listed if r["published"]["basis"] == "market"),
+        "lobby_listed_estimate": sum(1 for r in listed if r["published"]["basis"] == "estimate"),
+        "lobby_listed_blank": sum(1 for r in listed if r["published"]["basis"] == "none"),
+        "not_in_lobby_listing_rows": len(unlisted),
         "with_market_probability": sum(1 for r in rows if r["published"]["basis"] == "market"),
         "with_originated_estimate": sum(1 for r in rows if r["published"]["basis"] == "estimate"),
         "blank": sum(1 for r in rows if r["published"]["basis"] == "none"),
@@ -543,6 +557,20 @@ def verify_board(board: dict, quotes_doc: dict, ratings_doc: dict, fixtures_doc:
     add("C10 probability arithmetic is in range and normalised", not bad,
         {"failures": bad[:5]})
 
+    # C11: the lobby's own listing must be fully inside this board — a missing id is a coverage gap,
+    # published rather than hidden.
+    listing_ids = {str(i) for i in
+                   ((fixtures_doc.get("lobby_counters") or {}).get("listing_ids") or [])}
+    board_ids = {str(r["fixture_id"]) for r in rows}
+    missing = sorted(listing_ids - board_ids)
+    flag_wrong = [r["fixture_id"] for r in rows
+                  if r.get("listed_in_lobby") is not None
+                  and (str(r["fixture_id"]) in listing_ids) != bool(r.get("listed_in_lobby"))]
+    add("C11 every lobby-listed fixture is present in the board",
+        not missing and not flag_wrong,
+        {"listed_ids": len(listing_ids), "missing_count": len(missing), "missing": missing[:20],
+         "listing_flag_mismatches": flag_wrong[:5]})
+
     passed = sum(1 for c in checks if c["passed"])
     return {"verified_at_utc": now_iso(), "checks": checks, "passed": passed,
             "failed": len(checks) - passed,
@@ -708,43 +736,59 @@ def row_card(row: dict, show_estimate: bool = True) -> str:
 def render_index(board: dict, verification: dict) -> str:
     rows = board["rows"]
     order = {"market": 0, "estimate": 1, "none": 2}
+
     def sort_key(r):
         locked = "picks_locked_or_past" in r["flags"]
         return (locked, order[r["published"]["basis"]], r["start_time_utc"] or "")
-    ordered = sorted(rows, key=sort_key)
-    cards = "".join(row_card(r) for r in ordered)
+
+    listed = sorted([r for r in rows if r.get("listed_in_lobby") is True], key=sort_key)
+    other = sorted([r for r in rows if r.get("listed_in_lobby") is not True], key=sort_key)
     s = board["summary"]
     kpis = f"""<div class="kpi">
-<div><b>{s["rows"]}</b>lobby fixtures tracked</div>
-<div><b>{s["with_market_probability"]}</b>with an external market probability</div>
-<div><b>{s["with_originated_estimate"]}</b>labelled originated estimate</div>
-<div><b>{s["blank"]}</b>blank / unverified</div>
-<div><b>{s["with_pick"]}</b>rows with a pick</div>
+<div><b>{s["lobby_listed_rows"]}</b>matches listed by the lobby now</div>
+<div><b>{s["lobby_listed_with_probability"]}</b>of those with a published probability</div>
+<div><b>{s["lobby_listed_market"]}</b>from external bookmaker lines</div>
+<div><b>{s["lobby_listed_estimate"]}</b>labelled originated estimate</div>
+<div><b>{s["lobby_listed_blank"]}</b>blank / unverified</div>
 </div>"""
-    note = f"""<div class="note"><b>What this page is.</b> Every fixture the HotSpawn Pick'ems lobby currently
-lists, with a win probability and an obvious pick. A probability is published only from an external
-bookmaker's two-way price (de-vigged) or, when no bookmaker prices the match, from a clearly labelled
-estimate derived from Valve's official CS2 Regional Standings. Anything that cannot be confirmed stays
-blank and is listed on <a href="flagged.html">Flagged for review</a>.
+    note = f"""<div class="note"><b>What this page is.</b> Every fixture the HotSpawn Pick'ems lobby is
+currently listing, with a win probability and an obvious pick. A probability is published only from an
+external bookmaker's two-way price (de-vigged) or, when no bookmaker prices the match, from a clearly
+labelled estimate derived from Valve's official CS2 Regional Standings. Anything that cannot be confirmed
+stays blank and is listed on <a href="flagged.html">Flagged for review</a>.
 Verification: {verification["passed"]}/{len(verification["checks"])} checks passed on this build.</div>"""
-    window = board["window_analysis"]
-    wc = window["lobby_counters"]
-    win_note = (f"""<div class="note"><b>Coverage check.</b> The lobby page itself prints: """
-                f"""{esc(wc.get("matches_this_week"))} matches this week, All tiers {esc(wc.get("all_tiers"))}, """
-                f"""tiers {esc(wc.get("tier_counts"))}. This snapshot holds {len(board["rows"])} fixtures in the """
-                f"""kept window; the counter reproduction is recorded in the method page."""
-                + (f""" <b>Unreproduced counters: {esc(", ".join(window["unexplained_counters"]))}</b> — flagged."""
-                   if window.get("unexplained_counters") else "") + "</div>")
+    wc = board["window_analysis"]["lobby_counters"]
+    listing = (wc.get("listing") or {})
+    win_note = (f"""<div class="note"><b>Coverage check.</b> The lobby page itself prints """
+                f"""{esc(wc.get("matches_this_week"))} matches this week and All tiers {esc(wc.get("all_tiers"))} """
+                f"""(tiers {esc(wc.get("tier_counts"))}); its own page state carries """
+                f"""{esc(listing.get("listed_count"))} fixture ids, of which """
+                f"""{s["lobby_listed_rows"]} are in this board's window and """
+                f"""{s["lobby_listed_with_probability"]} have a published probability."""
+                + (f""" <b>Unreproduced counters: {esc(", ".join(board["window_analysis"]["unexplained_counters"]))}"""
+                   f""" — published as unexplained rather than guessed.</b>"""
+                   if board["window_analysis"].get("unexplained_counters") else "") + "</div>")
+    cards = "".join(row_card(r) for r in listed) or "<p>No fixtures in the lobby listing window.</p>"
+    other_block = ""
+    if other:
+        other_block = (f'<h2>Also seen in the fixture API window but not listed by the lobby right now '
+                       f'({len(other)})</h2><div class="note">These rows are kept so nothing is hidden, '
+                       f'but they are not part of the lobby listing and are excluded from the coverage '
+                       f'numbers above.</div><details><summary>Show {len(other)} rows</summary>'
+                       f'<div class="cards">' + "".join(row_card(r) for r in other) + "</div></details>")
     return page("HotSpawn Pick'ems — live probability board", "index.html",
-                kpis + note + win_note + f'<h2>All matches ({len(rows)})</h2><div class="cards">{cards}</div>',
+                kpis + note + win_note + f'<h2>Listed in the lobby now ({len(listed)})</h2>'
+                f'<div class="cards">{cards}</div>' + other_block,
                 board["generated_at_utc"])
 
 
 def render_game(board: dict, game: str) -> str:
     rows = [r for r in board["rows"] if (r["game"] or "").upper() == game]
-    rows.sort(key=lambda r: (r["published"]["basis"] != "market", r["start_time_utc"] or ""))
-    body = f'<h2>{esc(game)} matches ({len(rows)})</h2><div class="cards">' + \
-           "".join(row_card(r) for r in rows) + "</div>"
+    rows.sort(key=lambda r: (r.get("listed_in_lobby") is not True,
+                             r["published"]["basis"] != "market", r["start_time_utc"] or ""))
+    listed = [r for r in rows if r.get("listed_in_lobby") is True]
+    body = (f'<h2>{esc(game)} matches ({len(rows)} in the fixture window, {len(listed)} listed in '
+            f'the lobby now)</h2><div class="cards">' + "".join(row_card(r) for r in rows) + "</div>")
     return page(f"{game} — HotSpawn Pick'ems probabilities", f"{game.lower()}.html", body,
                 board["generated_at_utc"])
 
@@ -785,6 +829,11 @@ so the numbers above can be challenged item by item.</div>
 <h2>Row-level flags ({len(flagged)})</h2>{flag_rows}
 <h2>Joins refused ({len(rejected)})</h2><ul>{rej_lines or "<li>none</li>"}</ul>
 <h2>Source access problems</h2><ul>{''.join(source_problems) or "<li>none recorded in this run</li>"}</ul>
+<h2>Coverage gap against the lobby listing</h2>
+<p>Check C11 compares the fixture ids the lobby page itself carries against this board: if the lobby
+lists a match that is not in this board, it is reported here rather than dropped.</p>
+<pre style="white-space:pre-wrap;font-size:12.5px;color:#9aa4b2">{esc(next((json.dumps(c["detail"])
+   for c in verification["checks"] if c["check"].startswith("C11")), "C11 not present"))}</pre>
 <h2>Line-by-line verification of this build</h2><ul>{checks}</ul>"""
     return page("Flagged for review — HotSpawn Pick'ems board", "flagged.html", body,
                 board["generated_at_utc"])

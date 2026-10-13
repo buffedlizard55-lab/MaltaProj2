@@ -72,6 +72,18 @@ def parse_iso(value) -> datetime | None:
     return dt.astimezone(timezone.utc)
 
 
+def parse_any(value) -> datetime | None:
+    """Parse a timestamp that a source may publish either as ISO text or as epoch milliseconds."""
+    if value in (None, ""):
+        return None
+    if isinstance(value, (int, float)):
+        return parse_ms(value)
+    text = str(value).strip()
+    if text.isdigit():
+        return parse_ms(text)
+    return parse_iso(text)
+
+
 def hours_between(a: datetime | None, b: datetime | None) -> float | None:
     if a is None or b is None:
         return None
@@ -326,6 +338,52 @@ def parse_lobby_counters(html: str) -> dict:
     m = re.search(r"All tournaments\s*\((\d+)\)", text)
     if m:
         out["all_tournaments"] = int(m.group(1))
+    return out
+
+
+LOBBY_STATE_RE = re.compile(r'<script[^>]*id="ng-state"[^>]*>(.*?)</script>', re.S | re.I)
+INLINE_JSON_RE = re.compile(r'<script[^>]*type="application/json"[^>]*>(.*?)</script>', re.S | re.I)
+MATCH_LINK_RE = re.compile(r"hotspawn\.com/matches/", re.I)
+
+
+def extract_lobby_listing(html: str) -> dict:
+    """Read the fixture ids the lobby page itself carries (Angular `ng-state` / inline JSON).
+
+    The lobby is an Angular app whose server-rendered state embeds the fixture payload, so the ids
+    found here ARE the fixtures the page is listing. If nothing parses, the caller must treat the
+    listing as unknown — never as empty.
+    """
+    out: dict = {"found": False, "listed_ids": [], "listed_count": 0, "source": None,
+                 "match_links_rendered": len(MATCH_LINK_RE.findall(html))}
+    blobs: list[tuple[str, str]] = []
+    m = LOBBY_STATE_RE.search(html)
+    if m:
+        blobs.append(("ng-state", html.unescape(m.group(1))))
+    for i, mm in enumerate(INLINE_JSON_RE.finditer(html)):
+        blobs.append((f"inline-json-{i}", html.unescape(mm.group(1))))
+    for name, raw in blobs:
+        try:
+            state = json.loads(raw)
+        except Exception:  # noqa: BLE001
+            continue
+        ids: list[str] = []
+
+        def walk(node):
+            if isinstance(node, dict):
+                if "participants0_name" in node and "scheduled_start_time" in node and "id" in node:
+                    ids.append(str(node["id"]))
+                for value in node.values():
+                    walk(value)
+            elif isinstance(node, list):
+                for value in node:
+                    walk(value)
+
+        walk(state)
+        if ids:
+            unique = sorted(set(ids))
+            out.update({"found": True, "source": name, "listed_ids": unique,
+                        "listed_count": len(unique)})
+            return out
     return out
 
 
