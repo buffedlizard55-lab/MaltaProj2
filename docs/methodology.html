@@ -14,6 +14,11 @@
 <p class="mut">Exactly how each number was produced, and what was excluded.</p>
 
 <h2>Pipeline</h2>
+<p class="small mut"><b>Time base:</b> every kickoff in this dataset is UTC, taken from the lobby payload's
+<code>scheduled_start</code> epoch values (row-level evidence in
+<code>audits/1d4de836/lobby-snapshot-audit.json</code>) and matched against the HLTV match page. Hotspawn's rendered
+clock reads four hours earlier (US Eastern), and Polymarket's clocks for the Elisa BreakOut markets read four hours
+earlier again - both deviations are published on the Flagged for review page rather than silently corrected in the data.</p>
 <ol>
 <li><b>Enumerate.</b> The Pick'em lobby (<a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">play.hotspawn.com/lobby</a>
 and <a href="https://play.hotspawn.com/cs2-pickems" target="_blank" rel="noopener">/cs2-pickems</a>) was read at

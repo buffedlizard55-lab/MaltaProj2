@@ -51,8 +51,21 @@ python3 scripts/check_links.py  # verifies no broken internal links
 ## Coverage (snapshot 2026-10-13, UTC)
 
 * 26 fixtures open for picks; 25 carry a line, 1 left blank and flagged.
-* 15 fixtures with a bc.game (via EGamersWorld) line, 20 with a Polymarket market.
-* 13 flagged items, each with the source link needed to resolve it.
+* 22 fixtures with a bc.game (via EGamersWorld) line, 20 with a Polymarket market, 17 with both.
+* Quality badges: 12 High, 8 Medium, 5 Low, 1 n/a (blank row).
+* 14 flagged items, each with the source link needed to resolve it.
+* Kickoffs are UTC, taken from the lobby payload's `scheduled_start` epoch and matched against HLTV
+  (the lobby's rendered clock reads 4 h earlier, US Eastern - see the Flagged page).
 
 Everything on the site is a point-in-time capture. Re-check the linked source
 before acting on any number.
+
+## Corrections made after the first pass (all logged on the Flagged page)
+
+* Kickoff times are UTC from the lobby payload epoch, not the rendered (US Eastern) labels.
+* `RoundsGG vs Voca` (hs-1080289) had its Polymarket prices double-flipped in the first build;
+  corrected to RoundsGG 47c / Voca 91c and re-verified against the market page and the HLTV slug.
+* The two ESL Challenger League fixtures now carry their HLTV match pages (2399204, 2399232, both bo3).
+* Elisa BreakOut bc.game lines were completed from the EGamersWorld event page (7 fixtures added), and
+  the WBT/EA Copenhagen pair refined to the page's own 1.989/1.722 figures.
+* The independent 86-row lobby audit committed here (`audits/1d4de836/`) is cited by the coverage flag.

@@ -38,35 +38,37 @@ MATCHES = [
     dict(
         id="hs-1081076", event="ESL Challenger League Season 52: South America - Cup #3",
         tier="B", points=3, stage="Waiting For Information", section="Closing Soon",
-        kickoff_utc="2026-10-13T17:00:00Z", fmt="Bo3 (bo3 on HLTV/bo3.gg)",
+        kickoff_utc="2026-10-13T21:00:00Z", fmt="Bo3 (HLTV match page: playoffs)",
         team_a="ex-Keyd Stars", team_b="Galorys",
         hotspawn_url="https://www.hotspawn.com/matches/ex-keyd-stars-vs-galorys-esl-challenger-league-season-52-south-america-cup-3-1081076",
         pick_pct_a=86, pick_pct_b=14,
         pick_pct_note="86/14 at 14:15 UTC snapshot; 83/17 at 13:56 UTC snapshot (live-ticking).",
-        hltv_match_url=None,
-        hltv_event_url="https://www.hltv.org/matches?event=2635",
-        hltv_note="Per-match HLTV page not captured; match confirmed inside HLTV event 2635 listing (ESL CL S52 Cup 3, playoffs).",
+        hltv_match_url="https://www.hltv.org/matches/2399204/ex-keyd-stars-vs-galorys-esl-challenger-league-season-52-south-america-cup-3",
+        hltv_betting_url="https://www.hltv.org/betting/analytics/2399204/ex-keyd-stars-vs-galorys-esl-challenger-league-season-52-south-america-cup-3",
+        hltv_event_url="https://www.hltv.org/events/9385/esl-challenger-league-season-52-south-america-cup-3",
+        hltv_note="Per-match HLTV page captured on re-check (match 2399204, ESL CL S52 South America Cup 3 playoffs, bo3). Supersedes the earlier event-listing-only flag.",
         other_match_url="https://bo3.gg/matches/ex-keyd-stats-vs-galorys-cs-13-10-2026",
         other_match_note="bo3.gg shows the fixture (Oct 13, 17:00, Bo3, playoffs/lower-bracket final) and partial book lines: 'Winner Galorys 1.54', 'Galorys handicap +1.5 maps 1.48', 'ex-Keyd Stars handicap +1.5 maps 2.13'. The 1.17 figure on the page could not be tied to the match-winner market, so no complete two-sided line was usable.",
     ),
     dict(
         id="hs-1079546", event="ESL Challenger League Season 52: North America - Cup #3",
         tier="B", points=3, stage="Waiting For Information", section="Closing Soon",
-        kickoff_utc="2026-10-13T21:00:00Z", fmt="Bo3",
+        kickoff_utc="2026-10-14T01:00:00Z", fmt="Bo3",
         team_a="Zomblers", team_b="Overtake Sector",
         hotspawn_url="https://www.hotspawn.com/matches/zomblers-vs-overtake-sector-esl-challenger-league-season-52-north-america-cup-3-1079546",
         pick_pct_a=11, pick_pct_b=89,
         pick_pct_note="Live-ticking (11/89 at 14:15 UTC snapshot).",
-        hltv_match_url=None,
-        hltv_event_url="https://www.hltv.org/matches?event=2635",
-        hltv_note="Per-match HLTV page not captured; fixture appears in HLTV event 2635 listing (North America Cup 3, upper final, 03:00 in HLTV's display timezone).",
+        hltv_match_url="https://www.hltv.org/matches/2399232/zomblers-vs-overtake-sector-esl-challenger-league-season-52-north-america-cup-3",
+        hltv_betting_url="https://www.hltv.org/betting/analytics/2399232/zomblers-vs-overtake-sector-esl-challenger-league-season-52-north-america-cup-3",
+        hltv_event_url="https://www.hltv.org/events/9387/esl-challenger-league-season-52-north-america-cup-3",
+        hltv_note="Per-match HLTV page captured on re-check (match 2399232, ESL CL S52 North America Cup 3 playoffs, bo3). HLTV lists the start as 21:00 in its (US Eastern) display clock, consistent with 01:00 UTC on 2026-10-14.",
         other_match_url="https://bo3.gg/matches/zomblers-vs-overtake-14-10-2026",
         other_match_note="bo3.gg lists the fixture (21:00). No two-sided book line captured.",
     ),
     dict(
         id="hs-1079621", event="CCT Europe 2026 Series #11",
         tier="B", points=3, stage="Waiting For Information", section="Closing Soon",
-        kickoff_utc="2026-10-14T04:00:00Z", fmt="Bo3",
+        kickoff_utc="2026-10-14T08:00:00Z", fmt="Bo3",
         team_a="Gothic", team_b="Lavked",
         hotspawn_url="https://www.hotspawn.com/matches/gothic-vs-lavked-cct-europe-2026-series-11-1079621",
         pick_pct_a=10, pick_pct_b=90, pick_pct_note="10/90 at 13:56 UTC; 13/88 earlier.",
@@ -77,7 +79,7 @@ MATCHES = [
     dict(
         id="hs-1080176", event="Thunderpick World Championship 2026",
         tier="S", points=7, stage="Group Stage And Playoffs", section="Closing Soon",
-        kickoff_utc="2026-10-14T04:30:00Z", fmt="Bo3 (LAN, Group A opening match)",
+        kickoff_utc="2026-10-14T08:30:00Z", fmt="Bo3 (LAN, Group A opening match)",
         team_a="9z", team_b="Aurora",
         hotspawn_url="https://www.hotspawn.com/matches/9z-vs-aurora-thunderpick-world-championship-2026-1080176",
         pick_pct_a=5, pick_pct_b=95, pick_pct_note="Live-ticking (0/100 at 13:56 UTC).",
@@ -89,7 +91,7 @@ MATCHES = [
     dict(
         id="hs-1079438", event="Stake Pulse Beat III",
         tier="B", points=3, stage="Waiting For Information", section="Closing Soon",
-        kickoff_utc="2026-10-14T06:00:00Z", fmt="Bo3 (LAN)",
+        kickoff_utc="2026-10-14T10:00:00Z", fmt="Bo3 (LAN)",
         team_a="Astralis", team_b="Sashi",
         hotspawn_url="https://www.hotspawn.com/matches/astralis-vs-sashi-stake-pulse-beat-iii-1079438",
         pick_pct_a=95, pick_pct_b=5, pick_pct_note="95/5 at 14:15 UTC.",
@@ -100,7 +102,7 @@ MATCHES = [
     dict(
         id="hs-1079439", event="Stake Pulse Beat III",
         tier="B", points=3, stage="Waiting For Information", section="Closing Soon",
-        kickoff_utc="2026-10-14T06:00:00Z", fmt="Bo3 (LAN)",
+        kickoff_utc="2026-10-14T10:00:00Z", fmt="Bo3 (LAN)",
         team_a="HOTU", team_b="Fnatic",
         hotspawn_url="https://www.hotspawn.com/matches/hotu-vs-fnatic-stake-pulse-beat-iii-1079439",
         pick_pct_a=9, pick_pct_b=91, pick_pct_note="9/91 at 14:15 UTC.",
@@ -111,7 +113,7 @@ MATCHES = [
     dict(
         id="hs-1079622", event="CCT Europe 2026 Series #11",
         tier="B", points=3, stage="Waiting For Information", section="Closing Soon",
-        kickoff_utc="2026-10-14T07:00:00Z", fmt="Bo3",
+        kickoff_utc="2026-10-14T11:00:00Z", fmt="Bo3",
         team_a="ex-RUSTEC", team_b="mellren",
         hotspawn_url="https://www.hotspawn.com/matches/ex-rustec-vs-mellren-cct-europe-2026-series-11-1079622",
         pick_pct_a=89, pick_pct_b=11, pick_pct_note="89/11 at 14:15 UTC.",
@@ -122,7 +124,7 @@ MATCHES = [
     dict(
         id="hs-1080177", event="Thunderpick World Championship 2026",
         tier="S", points=7, stage="Group Stage And Playoffs", section="Closing Soon",
-        kickoff_utc="2026-10-14T07:00:00Z", fmt="Bo3 (LAN)",
+        kickoff_utc="2026-10-14T11:00:00Z", fmt="Bo3 (LAN)",
         team_a="Falcons", team_b="Ninjas in Pyjamas",
         hotspawn_url="https://www.hotspawn.com/matches/falcons-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026-1080177",
         pick_pct_a=89, pick_pct_b=11, pick_pct_note="Live-ticking (94/6 earlier same day).",
@@ -133,7 +135,7 @@ MATCHES = [
     dict(
         id="hs-1080178", event="Thunderpick World Championship 2026",
         tier="S", points=7, stage="Group Stage And Playoffs", section="Closing Soon",
-        kickoff_utc="2026-10-14T09:30:00Z", fmt="Bo3 (LAN)",
+        kickoff_utc="2026-10-14T13:30:00Z", fmt="Bo3 (LAN)",
         team_a="Legacy", team_b="PARIVISION",
         hotspawn_url="https://www.hotspawn.com/matches/legacy-vs-parivision-thunderpick-world-championship-2026-1080178",
         pick_pct_a=83, pick_pct_b=17, pick_pct_note="Live-ticking (88/12 earlier same day).",
@@ -144,7 +146,7 @@ MATCHES = [
     dict(
         id="hs-1079623", event="CCT Europe 2026 Series #11",
         tier="B", points=3, stage="Waiting For Information", section="Closing Soon",
-        kickoff_utc="2026-10-14T10:00:00Z", fmt="Bo3",
+        kickoff_utc="2026-10-14T14:00:00Z", fmt="Bo3",
         team_a="G2 Ares", team_b="The Last Resort",
         hotspawn_url="https://www.hotspawn.com/matches/g2-ares-vs-the-last-resort-cct-europe-2026-series-11-1079623",
         pick_pct_a=100, pick_pct_b=0, pick_pct_note="100/0 at 14:15 UTC.",
@@ -155,7 +157,7 @@ MATCHES = [
     dict(
         id="hs-1080179", event="Thunderpick World Championship 2026",
         tier="S", points=7, stage="Group Stage And Playoffs", section="Closing Soon",
-        kickoff_utc="2026-10-14T12:00:00Z", fmt="Bo3 (LAN)",
+        kickoff_utc="2026-10-14T16:00:00Z", fmt="Bo3 (LAN)",
         team_a="FURIA", team_b="BetBoom",
         hotspawn_url="https://www.hotspawn.com/matches/furia-vs-betboom-thunderpick-world-championship-2026-1080179",
         pick_pct_a=89, pick_pct_b=11, pick_pct_note="Live-ticking (94/6 earlier same day).",
@@ -166,7 +168,7 @@ MATCHES = [
     dict(
         id="hs-1079624", event="CCT Europe 2026 Series #11",
         tier="B", points=3, stage="Waiting For Information", section="Closing Soon",
-        kickoff_utc="2026-10-14T13:00:00Z", fmt="Bo3",
+        kickoff_utc="2026-10-14T17:00:00Z", fmt="Bo3",
         team_a="FORZE Reload", team_b="LFO 10",
         hotspawn_url="https://www.hotspawn.com/matches/forze-reload-vs-lfo-10-cct-europe-2026-series-11-1079624",
         pick_pct_a=89, pick_pct_b=11, pick_pct_note="Live-ticking (100/0 earlier same day).",
@@ -177,7 +179,7 @@ MATCHES = [
     dict(
         id="hs-1080279", event="Elisa BreakOut Series #2",
         tier="C", points=2, stage="Waiting For Information", section="Upcoming",
-        kickoff_utc="2026-10-15T04:00:00Z", fmt="Bo1",
+        kickoff_utc="2026-10-15T08:00:00Z", fmt="Bo1",
         team_a="WROTBERRY", team_b="EAC",
         alias_note="Hotspawn 'WROTBERRY' occupies the same fixture slot as HLTV/Polymarket 'WBT' (Ukraine); Hotspawn 'EAC' = HLTV 'EAC' = Polymarket 'Esport Academy Copenhagen'/'EA Copenhagen'.",
         hotspawn_url="https://www.hotspawn.com/matches/wrotberry-vs-eac-elisa-breakout-series-2-1080279",
@@ -189,7 +191,7 @@ MATCHES = [
     dict(
         id="hs-1079440", event="Stake Pulse Beat III",
         tier="B", points=3, stage="Waiting For Information", section="Upcoming",
-        kickoff_utc="2026-10-15T06:00:00Z", fmt="Bo3 (LAN)",
+        kickoff_utc="2026-10-15T10:00:00Z", fmt="Bo3 (LAN)",
         team_a="MIBR", team_b="BC.Game",
         hotspawn_url="https://www.hotspawn.com/matches/mibr-vs-bc-game-stake-pulse-beat-iii-1079440",
         pick_pct_a=30, pick_pct_b=70, pick_pct_note="Live-ticking (32/68 earlier same day).",
@@ -200,7 +202,7 @@ MATCHES = [
     dict(
         id="hs-1079442", event="Stake Pulse Beat III",
         tier="B", points=3, stage="Waiting For Information", section="Upcoming",
-        kickoff_utc="2026-10-15T06:00:00Z", fmt="Bo3 (LAN)",
+        kickoff_utc="2026-10-15T10:00:00Z", fmt="Bo3 (LAN)",
         team_a="Heroic", team_b="Envy",
         hotspawn_url="https://www.hotspawn.com/matches/heroic-vs-envy-stake-pulse-beat-iii-1079442",
         pick_pct_a=90, pick_pct_b=10, pick_pct_note="Live-ticking (95/5 earlier same day).",
@@ -211,7 +213,7 @@ MATCHES = [
     dict(
         id="hs-1080280", event="Elisa BreakOut Series #2",
         tier="C", points=2, stage="Waiting For Information", section="Upcoming",
-        kickoff_utc="2026-10-15T06:00:00Z", fmt="Bo1",
+        kickoff_utc="2026-10-15T10:00:00Z", fmt="Bo1",
         team_a="ENCE", team_b="BOJONG",
         hotspawn_url="https://www.hotspawn.com/matches/ence-vs-bojong-elisa-breakout-series-2-1080280",
         pick_pct_a=94, pick_pct_b=6, pick_pct_note="Live-ticking (100/0 earlier same day).",
@@ -222,7 +224,7 @@ MATCHES = [
     dict(
         id="hs-1080281", event="Elisa BreakOut Series #2",
         tier="C", points=2, stage="Waiting For Information", section="Upcoming",
-        kickoff_utc="2026-10-15T08:00:00Z", fmt="Bo1",
+        kickoff_utc="2026-10-15T12:00:00Z", fmt="Bo1",
         team_a="WROTBERRY", team_b="ENCE",
         alias_note="Hotspawn 'WROTBERRY' = HLTV 'WBT' (same fixture slot/time; not independently confirmed as the same org).",
         hotspawn_url="https://www.hotspawn.com/matches/wrotberry-vs-ence-elisa-breakout-series-2-1080281",
@@ -234,7 +236,7 @@ MATCHES = [
     dict(
         id="hs-1080282", event="Elisa BreakOut Series #2",
         tier="C", points=2, stage="Waiting For Information", section="Upcoming",
-        kickoff_utc="2026-10-15T10:00:00Z", fmt="Bo1",
+        kickoff_utc="2026-10-15T14:00:00Z", fmt="Bo1",
         team_a="EAC", team_b="BOJONG",
         hotspawn_url="https://www.hotspawn.com/matches/eac-vs-bojong-elisa-breakout-series-2-1080282",
         pick_pct_a=93, pick_pct_b=7, pick_pct_note="Live-ticking (100/0 earlier same day).",
@@ -245,7 +247,7 @@ MATCHES = [
     dict(
         id="hs-1080283", event="Elisa BreakOut Series #2",
         tier="C", points=2, stage="Waiting For Information", section="Upcoming",
-        kickoff_utc="2026-10-15T12:00:00Z", fmt="Bo1",
+        kickoff_utc="2026-10-15T16:00:00Z", fmt="Bo1",
         team_a="WROTBERRY", team_b="BOJONG",
         alias_note="Hotspawn 'WROTBERRY' = HLTV 'WBT' (same fixture slot/time; not independently confirmed as the same org).",
         hotspawn_url="https://www.hotspawn.com/matches/wrotberry-vs-bojong-elisa-breakout-series-2-1080283",
@@ -257,7 +259,7 @@ MATCHES = [
     dict(
         id="hs-1080284", event="Elisa BreakOut Series #2",
         tier="C", points=2, stage="Waiting For Information", section="Upcoming",
-        kickoff_utc="2026-10-15T14:00:00Z", fmt="Bo1",
+        kickoff_utc="2026-10-15T18:00:00Z", fmt="Bo1",
         team_a="EAC", team_b="ENCE",
         hotspawn_url="https://www.hotspawn.com/matches/eac-vs-ence-elisa-breakout-series-2-1080284",
         pick_pct_a=27, pick_pct_b=73, pick_pct_note="Live-ticking (29/71 earlier same day).",
@@ -268,7 +270,7 @@ MATCHES = [
     dict(
         id="hs-1080285", event="Elisa BreakOut Series #2",
         tier="C", points=2, stage="Waiting For Information", section="Upcoming",
-        kickoff_utc="2026-10-16T04:00:00Z", fmt="Bo1",
+        kickoff_utc="2026-10-16T08:00:00Z", fmt="Bo1",
         team_a="Voca", team_b="Phantom",
         hotspawn_url="https://www.hotspawn.com/matches/voca-vs-phantom-elisa-breakout-series-2-1080285",
         pick_pct_a=27, pick_pct_b=73, pick_pct_note="Live-ticking (21/79 earlier same day).",
@@ -279,7 +281,7 @@ MATCHES = [
     dict(
         id="hs-1080286", event="Elisa BreakOut Series #2",
         tier="C", points=2, stage="Waiting For Information", section="Upcoming",
-        kickoff_utc="2026-10-16T06:00:00Z", fmt="Bo1",
+        kickoff_utc="2026-10-16T10:00:00Z", fmt="Bo1",
         team_a="HAVU", team_b="RoundsGG",
         alias_note="Hotspawn 'RoundsGG' = HLTV 'ROUNDS' (same fixture slot/time).",
         hotspawn_url="https://www.hotspawn.com/matches/havu-vs-roundsgg-elisa-breakout-series-2-1080286",
@@ -291,7 +293,7 @@ MATCHES = [
     dict(
         id="hs-1080287", event="Elisa BreakOut Series #2",
         tier="C", points=2, stage="Waiting For Information", section="Upcoming",
-        kickoff_utc="2026-10-16T08:00:00Z", fmt="Bo1",
+        kickoff_utc="2026-10-16T12:00:00Z", fmt="Bo1",
         team_a="Voca", team_b="HAVU",
         hotspawn_url="https://www.hotspawn.com/matches/voca-vs-havu-elisa-breakout-series-2-1080287",
         pick_pct_a=64, pick_pct_b=36, pick_pct_note="Live-ticking (69/31 earlier same day).",
@@ -302,7 +304,7 @@ MATCHES = [
     dict(
         id="hs-1080288", event="Elisa BreakOut Series #2",
         tier="C", points=2, stage="Waiting For Information", section="Upcoming",
-        kickoff_utc="2026-10-16T10:00:00Z", fmt="Bo1",
+        kickoff_utc="2026-10-16T14:00:00Z", fmt="Bo1",
         team_a="Phantom", team_b="RoundsGG",
         alias_note="Hotspawn 'RoundsGG' = HLTV 'ROUNDS' (same fixture slot/time).",
         hotspawn_url="https://www.hotspawn.com/matches/phantom-vs-roundsgg-elisa-breakout-series-2-1080288",
@@ -314,7 +316,7 @@ MATCHES = [
     dict(
         id="hs-1080289", event="Elisa BreakOut Series #2",
         tier="C", points=2, stage="Waiting For Information", section="Upcoming",
-        kickoff_utc="2026-10-16T12:00:00Z", fmt="Bo1",
+        kickoff_utc="2026-10-16T16:00:00Z", fmt="Bo1",
         team_a="RoundsGG", team_b="Voca",
         alias_note="Hotspawn team order (RoundsGG vs Voca) differs from HLTV (Voca vs ROUNDS) for the same slot; Polymarket lists Voca vs RoundsGG.",
         hotspawn_url="https://www.hotspawn.com/matches/roundsgg-vs-voca-elisa-breakout-series-2-1080289",
@@ -326,7 +328,7 @@ MATCHES = [
     dict(
         id="hs-1080290", event="Elisa BreakOut Series #2",
         tier="C", points=2, stage="Waiting For Information", section="Upcoming",
-        kickoff_utc="2026-10-16T14:00:00Z", fmt="Bo1",
+        kickoff_utc="2026-10-16T18:00:00Z", fmt="Bo1",
         team_a="Phantom", team_b="HAVU",
         hotspawn_url="https://www.hotspawn.com/matches/phantom-vs-havu-elisa-breakout-series-2-1080290",
         pick_pct_a=100, pick_pct_b=0, pick_pct_note="Live-ticking.",
@@ -423,9 +425,9 @@ MARKETS = {
                 usable=False),
     ),
     "hs-1080279": dict(
-        odds_egw=dict(a=2.0, b=1.72, url="https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
+        odds_egw=dict(a=1.989, b=1.722, url="https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
                       book="bc.game (via EGamersWorld)", captured=EGW_CAP,
-                      note="Fixture listed as WBT vs EA Copenhagen. The EGW match page later showed 1.8/1.8 (looks like a placeholder)."),
+                      note="EGW lists WBT 1.989 / EA Copenhagen 1.722 (odds module shows rounded 2 / 1.72; tip text states 1.989 and 1.722). WBT = Hotspawn WROTBERRY."),
         pm=dict(prices=[49, 52], url="https://polymarket.com/esports/cs2/elisa-breakout/cs2-wbt-eac-2026-10-15",
                 volume="$0.00", note="Headline 49c/52c; detail list showed 56c/59c (wide spread); $0 volume."),
     ),
@@ -467,50 +469,64 @@ MARKETS = {
                 volume="$0.00", note="Detail list 87c/48c (sum 135 -> very wide spread); $0 volume."),
     ),
     "hs-1080284": dict(
-        odds_egw=None,
+        odds_egw=dict(a=1.5, b=2.4, url="https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
+                      book="bc.game (via EGamersWorld)", captured=EGW_CAP,
+                      note="From the EGW event schedule row (EAC 1.5 / ENCE 2.4 on the bc.game line)."),
         odds_egw_note="Not present in the EGamersWorld 'Bets on' module at capture time (later fixtures listed as schedule only).",
         egw_url="https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
         pm=dict(prices=[71, 46], url="https://polymarket.com/esports/cs2/elisa-breakout/cs2-eac-ence-2026-10-15",
                 volume="$3.08", note="Detail list 71c/46c (sum 117); headline 71c/46c."),
     ),
     "hs-1080285": dict(
-        odds_egw=None,
+        odds_egw=dict(a=1.9, b=1.8, url="https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
+                      book="bc.game (via EGamersWorld)", captured=EGW_CAP,
+                      note="From the EGW event schedule row (Voca 1.9 / Phantom 1.8)."),
         odds_egw_note="Not captured (Group B fixtures were schedule-only on the EGW event page at capture time).",
         egw_url="https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
         pm=dict(prices=[47, 54], url="https://polymarket.com/esports/cs2/elisa-breakout/cs2-voc-pha-2026-10-16",
                 volume="$0.00", note="Headline 47c/54c (sum 101)."),
     ),
     "hs-1080286": dict(
-        odds_egw=None,
+        odds_egw=dict(a=1.2, b=4.0, url="https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
+                      book="bc.game (via EGamersWorld)", captured=EGW_CAP,
+                      note="From the EGW event schedule row (HAVU 1.2 / Rounds 4.0)."),
         odds_egw_note="Not captured on the event page; the EGW match page displayed 1.8/1.8 which looks like a placeholder and is not used.",
         egw_url="https://egamersworld.com/counterstrike/match/4yn491uUVl/havu-vs-rounds-rg48QwsiJ9",
         pm=dict(prices=[83, 46], url="https://polymarket.com/esports/cs2/elisa-breakout/cs2-havu-rgg-2026-10-16",
                 volume="$0.00", note="Detail list 83c/46c (sum 129 -> very wide spread); $0 volume."),
     ),
     "hs-1080287": dict(
-        odds_egw=None,
+        odds_egw=dict(a=1.42, b=2.7, url="https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
+                      book="bc.game (via EGamersWorld)", captured=EGW_CAP,
+                      note="From the EGW event schedule row (Voca 1.42 / HAVU 2.7)."),
         odds_egw_note="Not captured (Group B fixtures were schedule-only on the EGW event page at capture time).",
         egw_url="https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
         pm=dict(prices=[74, 37], url="https://polymarket.com/esports/cs2/elisa-breakout/cs2-voc-havu-2026-10-16",
                 volume="$0.00", note="Detail list 74c/37c (sum 111)."),
     ),
     "hs-1080288": dict(
-        odds_egw=None,
+        odds_egw=dict(a=1.06, b=7.0, url="https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
+                      book="bc.game (via EGamersWorld)", captured=EGW_CAP,
+                      note="From the EGW event schedule row (Phantom 1.06 / Rounds 7.0)."),
         odds_egw_note="Not captured (Group B fixtures were schedule-only on the EGW event page at capture time).",
         egw_url="https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
         pm=dict(prices=[93, 46], url="https://polymarket.com/esports/cs2/elisa-breakout/cs2-pha-rgg-2026-10-16",
                 volume="$0.00", note="Detail list 93c/46c (sum 139 -> very wide spread); $0 volume."),
     ),
     "hs-1080289": dict(
-        odds_egw=None,
+        odds_egw=dict(a=6.3, b=1.08, url="https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
+                      book="bc.game (via EGamersWorld)", captured=EGW_CAP,
+                      note="EGW lists the fixture as Voca vs Rounds (Voca 1.08). Stored in Hotspawn order: RoundsGG 6.3 / Voca 1.08."),
         odds_egw_note="Not captured (Group B fixtures were schedule-only on the EGW event page at capture time).",
         egw_url="https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
         pm=dict(prices=[47, 91], url="https://polymarket.com/esports/cs2/elisa-breakout/cs2-voc-rgg-2026-10-16",
-                volume="$0.00", note="Polymarket lists Voca vs RoundsGG (Voca priced 91c, RoundsGG 47c). Hotspawn lists the fixture as RoundsGG vs Voca, so team order differs - prices mapped by team name, not position.",
-                reversed=True),
+                volume="$0.00", note="Prices are stored in Hotspawn order: RoundsGG 47c (underdog), Voca 91c - although the market title and the HLTV match page list Voca first (HLTV slug 'voca-vs-rounds'). Mapping is by team name; re-verified against the market page 2026-10-13 and corrected (an earlier build double-flipped this market).",
+                reversed=False),
     ),
     "hs-1080290": dict(
-        odds_egw=None,
+        odds_egw=dict(a=1.35, b=2.9, url="https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
+                      book="bc.game (via EGamersWorld)", captured=EGW_CAP,
+                      note="From the EGW event schedule row (Phantom 1.35 / HAVU 2.9)."),
         odds_egw_note="Not captured (Group B fixtures were schedule-only on the EGW event page at capture time).",
         egw_url="https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
         pm=dict(prices=[79, 46], url="https://polymarket.com/esports/cs2/elisa-breakout/cs2-pha-havu-2026-10-16",
@@ -547,43 +563,46 @@ TOURNAMENTS = [
 # 4. Flagged items (do not block publication)
 # --------------------------------------------------------------------------
 FLAGS = [
-    dict(title="Two ESL Challenger League rows lack a per-match HLTV page", rows=["hs-1081076", "hs-1079546"],
-         detail="HLTV's per-match URLs for ex-Keyd Stars vs Galorys and Zomblers vs Overtake Sector were not captured. Both fixtures were confirmed inside HLTV event 2635 (ESL Challenger League Season 52 Cup 3) and on bo3.gg; EGamersWorld did not list a two-sided line for either at capture time.",
-         action="Reviewer: open https://www.hltv.org/matches?event=2635 and add the per-match URLs."),
+    dict(title="Two ESL Challenger League rows rest on a single market (HLTV pages found on re-check)", rows=["hs-1081076", "hs-1079546"],
+         detail="HLTV per-match pages were captured on re-check (2399204 ex-Keyd Stars vs Galorys, SA Cup 3 playoffs, bo3; 2399232 Zomblers vs Overtake Sector, NA Cup 3 playoffs, bo3) and are cited on both rows, so the earlier 'no HLTV page' flag is closed. What remains: neither fixture had a two-sided bc.game/EGamersWorld line at capture time (EGamersWorld showed no such fixture), so both lines rest on the Polymarket market alone.",
+         action="Reviewer: add a book line if one appears before these matches lock."),
     dict(title="Hotspawn crowd vs market disagreement (largest gaps)", rows=["hs-1081076", "hs-1079439", "hs-1079440", "hs-1079621"],
          detail="ex-Keyd Stars vs Galorys: crowd 86% ex-Keyd Stars vs Polymarket 33c/68c (market favours Galorys). HOTU vs Fnatic: crowd 91% Fnatic vs bc.game 1.93/1.83 (near coin-flip). MIBR vs BC.Game: crowd 70% BC.Game vs bc.game 1.64/2.20 (market favours MIBR). Gothic vs Lavked: crowd 90% Lavked and bc.game 1.881/1.782 (favours Lavked) vs Polymarket 53c/47c (favours Gothic).",
          action="These are genuine source disagreements, not errors in this dataset. Both numbers are shown with links."),
-    dict(title="Team-name aliases between sources", rows=["hs-1080279", "hs-1080281", "hs-1080283", "hs-1080286", "hs-1080288"],
-         detail="Hotspawn 'WROTBERRY' occupies the same fixture slots/times as HLTV/Polymarket 'WBT'; Hotspawn 'RoundsGG' corresponds to HLTV 'ROUNDS' and Polymarket 'RoundsGG'; Hotspawn 'EAC' appears on EGW as 'EA Copenhagen' and on Polymarket as 'Esport Academy Copenhagen'. Slot-for-slot correspondence is exact, but no official statement that WROTBERRY is WBT was captured.",
-         action="Reviewer: confirm the WROTBERRY / WBT identity before trusting the odds mapping for those 4 fixtures."),
-    dict(title="FORZE Reload opponent mismatch in the prediction market", rows=["hs-1079624"],
-         detail="Hotspawn and HLTV both list FORZE Reload vs LFO 10 at 2026-10-14 13:00 UTC. Polymarket lists the same slot as 'FORZE Reload vs Sokerorg' (FORZE 95c / opponent 12c). Because the opponent identity does not match, the Polymarket price was NOT used for this row's line.",
-         action="Reviewer: confirm whether LFO 10 and Sokerorg are the same roster."),
-    dict(title="Fixture team order differs between Hotspawn and HLTV", rows=["hs-1080289"],
-         detail="Hotspawn: RoundsGG vs Voca. HLTV: Voca vs ROUNDS. Polymarket: Voca vs RoundsGG. Prices were mapped by team name, not position.",
-         action="Reviewer: confirm home/away ordering does not affect the pick'em entry."),
-    dict(title="EGamersWorld placeholder-looking odds", rows=["hs-1080286", "hs-1080279", "hs-1080281"],
-         detail="Several EGW match pages displayed identical 1.8 / 1.8 decimals for both teams (a pattern consistent with an unset/placeholder line, e.g. HAVU vs Rounds). These values were excluded; only the event-page 'Bets on ... by bc.game' module was used.",
-         action="Reviewer: spot-check those EGW match pages."),
+    dict(title="Team-name aliases between sources (WROTBERRY / WBT)", rows=["hs-1080279", "hs-1080281", "hs-1080283", "hs-1080286", "hs-1080288"],
+         detail="Hotspawn 'WROTBERRY' occupies exactly the slots HLTV and Polymarket label 'WBT'. Supporting evidence captured 2026-10-13: EGamersWorld's team page for that roster resolves to the URL slug /counterstrike/team/wrotberry-0I2cpR8LZA while displaying the name 'WBT'. 'RoundsGG' = HLTV 'ROUNDS' = EGW 'Rounds' (EGW logo file roundsgg-logo.webp; Polymarket market slugs use 'rgg'). 'EAC' = EGW 'EA Copenhagen' = Polymarket 'Esport Academy Copenhagen'.",
+         action="Reviewer: confirm that WBT and WROTBERRY are the same organisation before acting on those rows."),
+    dict(title="FORZE Reload opponent mismatch in both external markets", rows=["hs-1079624"],
+         detail="Hotspawn and HLTV both list FORZE Reload vs LFO 10 at 2026-10-14 17:00 UTC. Polymarket lists the same slot as 'FORZE Reload vs Sokerorg' (FORZE 95c / opponent 12c), and the EGamersWorld schedule row renders the opponent as a blank team link with placeholder 1.8/1.8 odds. No market therefore pairs FORZE Reload with LFO 10, and the row is left blank rather than guessing which opponent the prices refer to.",
+         action="Reviewer: confirm whether LFO 10 and Sokerorg are the same roster, then the listed prices can be attached."),
+    dict(title="Fixture team order differs between sources (price mapping corrected)", rows=["hs-1080289"],
+         detail="Hotspawn: RoundsGG vs Voca. HLTV match page and the Polymarket market: Voca first (HLTV slug 'voca-vs-rounds'). Prices are mapped by team name - RoundsGG 47c (underdog) / Voca 91c, and bc.game 6.3 / 1.08. An earlier build of this dataset double-flipped that market; the published values are corrected and were re-checked against the market page on 2026-10-13.",
+         action="None - kept as a record of the correction."),
+    dict(title="Placeholder-looking 1.8/1.8 odds on several EGamersWorld rows", rows=["hs-1079622", "hs-1080286", "hs-1080279", "hs-1079624"],
+         detail="EGW shows identical 1.8/1.8 decimals for Black Phoenix vs 6666, ex-RUSTEC vs mellren and the unnamed FORZE Reload opponent, a pattern consistent with an unset line; rows with real lines show unequal values (e.g. Gothic 1.881 / Lavked 1.782, HAVU 1.2 / Rounds 4.0). Every 1.8/1.8 pair was excluded from the derivations.",
+         action="Reviewer: spot-check those EGW rows before trusting any future re-pull."),
     dict(title="Odds move between components and between captures", rows=["hs-1080176", "hs-1080177"],
-         detail="9z vs Aurora was displayed as 3.3/1.26 (EGW match page), 3.6/1.27 (EGW event odds module) and 3.8/1.22 (EGW event schedule list). Falcons vs NiP showed 1.23/3.95 and 1.22/3.8. Every captured price in this dataset is a point-in-time snapshot, timestamped 2026-10-13.",
+         detail="9z vs Aurora: 3.3/1.26 (EGW match page), 3.6/1.27 (EGW event odds module) and 3.8/1.22 (EGW schedule list) on 2026-10-13. Falcons vs NiP: 1.23/3.95 and 1.22/3.8. Later re-checks the same evening showed 3.6/1.27 again. Every price in this dataset is a point-in-time snapshot.",
          action="Reviewer: treat all prices as snapshots; re-pull before acting."),
+    dict(title="Polymarket market times for Elisa BreakOut run 4 hours earlier than every other source", rows=["hs-1080279", "hs-1080285", "hs-1080290"],
+         detail="On 2026-10-13 the Elisa BreakOut market pages showed e.g. 'Voca vs Phantom Oct 16, 4:00 AM' and 'Phantom vs HAVU Oct 16, 2:00 PM', four hours earlier than the lobby payload epoch, HLTV and EGamersWorld for the same fixtures (08:00 / 18:00 UTC). Polymarket's ESL Challenger League market times matched the UTC schedule exactly, so the deviation is Polymarket-side and tournament-specific. No price was adjusted for it; the kickoff column uses the lobby-payload/HLTV times.",
+         action="Reviewer: treat Polymarket start times for this tournament as display noise."),
     dict(title="Prediction-market spreads are wide on low-liquidity fixtures", rows=["hs-1080282", "hs-1080283", "hs-1080286", "hs-1080288"],
-         detail="Polymarket detail prices on several Elisa BreakOut Group B/A fixtures sum to 125-139 cents, indicating wide bid/ask and near-zero volume. Those prices were normalised before use and are marked low quality.",
+         detail="Polymarket detail prices on several Elisa BreakOut fixtures sum to 125-139 cents, indicating a wide bid/ask and near-zero volume. Those prices were normalised before use and the rows are marked Low/Medium quality where the two markets disagree.",
          action="Reviewer: prefer the bc.game line where both exist."),
     dict(title="Hotspawn pick percentages tick continuously", rows=[],
          detail="Captured crowd percentages moved between two snapshots 20 minutes apart (e.g. ex-Keyd Stars 83% -> 86%, Falcons 94% -> 89%). All displayed percentages are one snapshot and are never used in any probability.",
          action="None - informational."),
-    dict(title="Coverage boundary: locked/completed matches are not in the table", rows=[],
-         detail="The lobby's tournament filter counts 85-86 pool entries for the week ('60 matches this week'), while the lobby itself listed 26 open-for-picks fixtures at capture. Matches that had already locked/completed were not enumerated (they cannot be picked any more). Tournament-group counts are reproduced on the Tournaments page.",
-         action="Reviewer: say if completed matches should be back-filled as well."),
+    dict(title="Coverage boundary: 86 entries in the lobby payload, 26 open for picks", rows=[],
+         detail="The lobby's SSR payload holds 86 CS2 fixture entries: 26 with start times after the snapshot (this dataset, all priced) and 60 with start times in the past - 59 dated 2026-06-26 to 2026-06-28, one 2026-07-10 and two earlier on 2026-10-13 - all still reported as 'scheduled' by the source. Those stale entries cannot be picked and are not priced here. The independent row-level audit of that payload is committed in this repository (audits/1d4de836/lobby-snapshot-audit.json).",
+         action="Reviewer: say if the stale entries should also be listed (their odds columns would be blank)."),
     dict(title="HLTV betting-analytics pages do not expose numeric odds to this pipeline", rows=["hs-1079438"],
-         detail="HLTV's '/betting/analytics/<id>/<slug>' pages render analytics (form, head-to-head, handicap distributions, map stats) but the numeric decimal odds table did not render as machine-readable text (values such as '1.23eOddset' appear to be parsing artefacts). HLTV figures were therefore used for verification/support only, not as a price source.",
+         detail="HLTV's '/betting/analytics/<id>/<slug>' pages render analytics (form, head-to-head, handicap distributions, map stats) but the numeric decimal odds table did not render as machine-readable text (values such as '1.23eOddset' appear to be parsing artefacts). HLTV figures were therefore used for verification only, not as a price source.",
          action="None - informational; documented in Methodology."),
     dict(title="League of Legends pick'em tab not covered", rows=[],
          detail="play.hotspawn.com/lol-pickems exists (per sitemap). This dataset covers the CS2 pick'em lobby only.",
          action="Reviewer: say if LoL should be added."),
-    dict(title="Pool-size counts differ between renders", rows=[],
+    dict(title="Pool-size counters differ between renders", rows=[],
          detail="The lobby filter showed 'All tiers (86), B (27), C (55), S (4)' in one render and 'All tiers (85), B (26), C (55), S (4)' minutes later (matches starting drop out of the pool).",
          action="None - informational."),
 ]
@@ -592,6 +611,12 @@ FLAGS = [
 # 5. Source register
 # --------------------------------------------------------------------------
 SOURCES = [
+    ("Independent lobby-snapshot audit - all 86 payload rows, epoch timestamps, evidence links (committed in this repo)", "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/audits/1d4de836/lobby-snapshot-audit.json", "Verification (coverage + kickoff times)"),
+    ("HLTV event page - ESL Challenger League S52 South America Cup 3 (match 2399204)", "https://www.hltv.org/events/9385/esl-challenger-league-season-52-south-america-cup-3", "Verification"),
+    ("HLTV event page - ESL Challenger League S52 North America Cup 3 (match 2399232)", "https://www.hltv.org/events/9387/esl-challenger-league-season-52-north-america-cup-3", "Verification"),
+    ("EGamersWorld team page - WBT roster served under the 'wrotberry' slug (alias evidence)", "https://egamersworld.com/counterstrike/team/wrotberry-0I2cpR8LZA", "Verification (alias)"),
+    ("EGamersWorld match page - WBT vs EA Copenhagen (bc.game 1.989/1.722 and tip text)", "https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-ea-copenhagen-hSC7a2mtP", "Market prices (verification)"),
+    ("Polymarket - ESL Challenger League markets", "https://polymarket.com/esports/cs2/esl-challenger-league", "Market prices"),
     ("Hotspawn Play - Pick'em lobby (entry list, crowd %, tier/points, lock times)", HS_LOBBY, "Primary (entries only)"),
     ("Hotspawn Play - CS2 Pick'ems lobby (same pool, CS2 view)", HS_CS2, "Primary (entries only)"),
     ("Hotspawn Play - Thunderpick World Championships tournament hub (8 teams, 14 matches, scoring)", "https://play.hotspawn.com/tournaments/thunderpick-world-championships", "Primary (entries only)"),
@@ -643,11 +668,19 @@ def fmt_pct(x, nd=1):
     return f"{x * 100:.{nd}f}%" if x is not None else ""
 
 
+KICKOFF_SRC = ("UTC, converted from the lobby payload's scheduled_start epoch "
+               "(evidence: audits/1d4de836/lobby-snapshot-audit.json) and cross-checked "
+               "against the HLTV match page for every fixture. Hotspawn renders its "
+               "display clocks in US Eastern, so the labels shown on the lobby page are "
+               "4 hours behind these values.")
+
+
 def build_rows():
     rows = []
     for m in MATCHES:
         mk = MARKETS.get(m["id"], {})
         r = dict(m)
+        r["kickoff_utc_note"] = KICKOFF_SRC
         r["sources"] = []
 
         # --- bookmaker (bc.game via EGamersWorld) ---
@@ -971,7 +1004,11 @@ calculation.</p>
 <code>Bets on &lt;event&gt; by bc.game</code> module, converted to a de-margined probability.
 "Our line (consensus)" is the equal-weight average of the available de-margined sources (bc.game via EGamersWorld
 and/or Polymarket). Rows without any captured external line are left blank and listed on the
-<a href="flagged.html">Flagged for review</a> page.</p>
+<a href="flagged.html">Flagged for review</a> page.
+<b>Kickoff times are UTC.</b> They come from the lobby payload's machine-readable start timestamps
+(independent audit: <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/audits/1d4de836/lobby-snapshot-audit.json" target="_blank" rel="noopener">86-row evidence file</a>)
+and match the HLTV match pages; the clock labels rendered on Hotspawn's own pages read 4 hours earlier (US Eastern), so
+a 17:00 label there is 21:00 UTC here. Every fixture also carries its Hotspawn, HLTV and market links in the last column.</p>
 <script src="assets/table.js"></script>
 """
     write(os.path.join(DOCS, "matches.html"),
@@ -1062,16 +1099,17 @@ context only and are not part of the line.</p>
 
 <h2>Structural findings</h2>
 <ul>
-<li><b>Coverage is uneven by tier.</b> All four Tier S Thunderpick fixtures carry a bc.game line (three of the
-four also have a Polymarket market). The six Tier C Elisa BreakOut <i>Group B</i> fixtures rely on Polymarket
-only, all with $0 volume, and are marked Low quality; Group A has a bc.game line for five of its six fixtures.
-15 of 26 rows in total carry a bc.game line and 20 carry a Polymarket market.</li>
-<li><b>The 8:00 pm ESL Challenger League final is a live example of crowd-vs-market divergence.</b> The crowd is
-86% on ex-Keyd Stars while the prediction market prices Galorys at 68c; the bc.game line for that fixture was not
-captured, so the row carries only the prediction-market line and is flagged.</li>
+<li><b>Coverage is uneven by tier.</b> All four Tier S Thunderpick fixtures carry a bc.game line (three also
+have a Polymarket market). The Elisa BreakOut fixtures have bc.game lines for all twelve fixtures (captured on
+re-check) but the Polymarket side of Group B is $0-volume, so those rows lean on the bookmaker module.
+22 of 26 rows carry a bc.game line (all 26 fixtures except the two ESL Challenger League rows, ex-RUSTEC vs
+mellren and FORZE Reload vs LFO 10) and 20 carry a Polymarket market; 17 carry both.</li>
+<li><b>The ESL Challenger League playoffs are a live example of crowd-vs-market divergence.</b> The crowd is
+86% on ex-Keyd Stars while the prediction market prices Galorys at 68c; no two-sided book line existed for either
+ESL fixture, so both rows carry only the prediction-market line and are flagged as single-source.</li>
 <li><b>Naming differences are systematic, not one-off.</b> Hotspawn uses WROTBERRY/RoundsGG/EAC where HLTV writes
-WBT/ROUNDS/EAC and Polymarket writes WBT/RoundsGG/Esport Academy Copenhagen. Fixture slots and kickoff times line
-up exactly, but the identity mapping is flagged for human confirmation.</li>
+WBT/ROUNDS/EAC and Polymarket writes WBT/RoundsGG/Esport Academy Copenhagen. EGamersWorld's own team URL for the
+roster is /counterstrike/team/wrotberry-...</li>
 <li><b>Odds drift within a single page.</b> EGamersWorld displayed 3.6/1.27 for 9z vs Aurora in its odds module and
 3.8/1.22 in the schedule list of the same page. Both are recorded; only one is used in the derivation.</li>
 <li><b>De-margining matters in Tier C.</b> On the most liquid fixtures the book margin is under 5%, so the
@@ -1086,6 +1124,11 @@ move by several points, which is why the raw method is documented on the Methodo
     # ---------------- methodology ----------------
     body = """
 <h2>Pipeline</h2>
+<p class="small mut"><b>Time base:</b> every kickoff in this dataset is UTC, taken from the lobby payload's
+<code>scheduled_start</code> epoch values (row-level evidence in
+<code>audits/1d4de836/lobby-snapshot-audit.json</code>) and matched against the HLTV match page. Hotspawn's rendered
+clock reads four hours earlier (US Eastern), and Polymarket's clocks for the Elisa BreakOut markets read four hours
+earlier again - both deviations are published on the Flagged for review page rather than silently corrected in the data.</p>
 <ol>
 <li><b>Enumerate.</b> The Pick'em lobby (<a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">play.hotspawn.com/lobby</a>
 and <a href="https://play.hotspawn.com/cs2-pickems" target="_blank" rel="noopener">/cs2-pickems</a>) was read at

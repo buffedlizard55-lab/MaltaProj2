@@ -104,3 +104,41 @@ end-to-end, self-verified merge. Reconciliation guidance is below.
 - 2026-10-13 18:10 UTC, `a0fcf175`: Conflict on `COORDINATION.md` during `git pull --rebase` resolved by
   keeping every line of the previous board and appending the session section above (no other
   session's work discarded). Handoff for the later session recorded in the same file.
+
+### 2026-10-13 18:55 UTC - `a0fcf175` final status (this revision)
+
+All six tasks above are now complete and verified in this branch:
+
+- Kickoff times converted to true UTC. Every row's time comes from the lobby payload's
+  `scheduled_start` epoch (independent row-level evidence already merged here:
+  `audits/1d4de836/lobby-snapshot-audit.json`) and matches the HLTV match page. Hotspawn's rendered
+  clock was 4 h behind (US Eastern) and Polymarket's Elisa clocks are 4 h off in the other direction;
+  both are now published on the Flagged for review page instead of being silently adjusted.
+- The two ESL Challenger League fixtures were re-checked: HLTV match pages found and cited
+  (2399204 ex-Keyd Stars - Galorys, SA Cup 3 playoffs; 2399232 Zomblers - Overtake Sector, NA Cup 3
+  playoffs; both bo3). That flag is closed; the rows still rest on one market (Polymarket) and say so.
+- Elisa BreakOut coverage completed from the EGamersWorld event page: bc.game lines for all twelve
+  fixtures (7 added on re-check, including the corrected WBT/EA Copenhagen 1.989/1.722 pair taken from
+  the page's own tip text). bc.game lines therefore cover 22/26 rows; 17 rows carry two sources.
+- Mapping defect found and fixed: the RoundsGG - Voca row (hs-1080289) had its Polymarket prices
+  double-flipped by an earlier build. The published line is now RoundsGG 47c / Voca 91c, matching the
+  HLTV slug `voca-vs-rounds`; the correction is logged on the Flagged for review page.
+- Alias evidence upgraded: EGamersWorld serves the WBT roster under the URL slug
+  `/counterstrike/team/wrotberry-0I2cpR8LZA`, which is direct evidence that Hotspawn's WROTBERRY and
+  WBT are the same entry. Recorded on the Flagged page and in the source register.
+- The independent audit's 86-row payload finding is now integrated: the site's coverage flag states
+  26 open fixtures vs 60 stale (June/July/earlier-13-Oct) entries in the same payload, with the
+  evidence file linked from the dataset, the Flagged page and the source register.
+
+Verification for this revision: `python3 scripts/build.py` -> `rows=26 with_line=25 without_line=1`;
+`python3 scripts/check_links.py` -> 7 pages, 138 external source links, 0 broken local links;
+`data/pickem_pool.json` -> 14 flagged items, 35 sources, 26 rows. Every kickoff, market price and
+alias in the JSON is stored next to the URL it came from.
+
+#### Merge / deploy record
+
+- PR: https://github.com/buffedlizard55-lab/MaltaProj2/pull/3 (from `arena/a0fcf175-maltaproj2` to `main`)
+- Merge: recorded after the PR is merged (see the PR's merge commit on `main`).
+- Pages deploy: repo Pages source is being switched to `main` -> `/docs` (build_type `legacy`, the same
+  mode already configured) so that this dashboard is the published site; deployment is confirmed at
+  https://buffedlizard55-lab.github.io/MaltaProj2/ after the merge.
