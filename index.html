@@ -1,363 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TWC 2026 Malta Finals — Betting Lines & Probability Engine</title>
-  <link rel="stylesheet" href="assets/style.css">
-  <meta name="description" content="Verified betting lines, fair probabilities, and pick'em analysis for Thunderpick World Championship 2026 Malta Finals without Hotspawn bias.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pick&#x27;em betting-line dashboard · HotSpawn Pick'ems betting-line analysis</title>
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>HotSpawn Pick'ems · betting-line analysis</div>
+    <nav><a href="index.html" class="active">Dashboard</a>
+<a href="cs2.html">CS2 matches</a>
+<a href="lol.html">LoL matches</a>
+<a href="tournaments.html">Tournaments</a>
+<a href="flagged.html">Flagged for review</a>
+<a href="methodology.html">Methodology &amp; sources</a></nav>
+  </div>
+</header>
+<main class="wrap">
+  <h1>Pick&#x27;em betting-line dashboard</h1>
+  <p class="sub">External betting lines, derived no-vig probabilities and explicit unverified gaps for every CS2 fixture in the HotSpawn Pick'ems lobby.</p>
+  
+  
+<div class="cards"><div class="card"><div class="card-num">93</div><div class="card-label">Pick&#x27;em CS2 fixtures tracked</div></div><div class="card"><div class="card-num">11</div><div class="card-label">Fixtures with a verified external line</div></div><div class="card"><div class="card-num">82</div><div class="card-label">Fixtures still unverified (blank)</div></div><div class="card"><div class="card-num">2</div><div class="card-label">External sources quoted</div></div></div>
+<h2>What this is</h2>
+<p>The HotSpawn pick'em lobby lists CS2 (and LoL) matches you can pick. This dashboard collects those
+fixtures from the lobby's own public API, then looks up <strong>external betting lines</strong> for every
+fixture at licensed bookmakers and public prediction markets. For each match where an external price was
+found you get the quoted odds, the bookmaker margin and a derived no-vig probability, each with the exact
+source link and the time it was read. Matches where no external line could be confirmed are left
+<strong>blank and flagged unverified</strong> — they are never estimated.</p>
 
-  <header class="site-header">
-    <div class="nav-container">
-      <a href="index.html" class="brand-logo">
-        <span class="brand-badge">CS2 Analytics</span>
-        <span>Malta Finals 2026</span>
-      </a>
-      <nav class="main-nav">
-        <a href="index.html" class="active">Dashboard</a>
-        <a href="lines.html">Originated Lines (28)</a>
-        <a href="teams.html">Teams & Rosters</a>
-        <a href="methodology.html">Origination Methodology</a>
-<a href="hotspawn.html">Hotspawn Reverse-Engineering</a>
-        <a href="flagged.html">Flagged for Review (12)</a>
-        <a href="pickem/index.html">Pick'em Lobby Board (26 priced)</a>
-      </nav>
-    </div>
-  </header>
+<h2>Derived probabilities — the short version</h2>
+<p>Raw quoted decimal odds are converted to implied shares <code>q = 1 / odds</code>, normalised to remove
+the bookmaker margin: <code>p = q / (q<sub>a</sub> + q<sub>b</sub>)</code>. Where two sources quote the same
+match, the dashboard shows their mean and the min–max range. These probabilities are <em>derived from
+market prices</em>, not forecasts, and the rule is published on every row.</p>
+<p class="note">HotSpawn's own "picked %" is a crowd pick percentage. It is shown for reference only and is
+<strong>never</strong> used as a probability input, per the project requirements.</p>
 
-  <main class="container">
-    
-    <div class="page-title-section">
-      <h1 class="page-title">
-        <span>Thunderpick World Championship 2026</span>
-        <span class="tag-badge info">Malta LAN Finals</span>
-      </h1>
-      <p class="page-subtitle">
-        Independent line origination, fair match probabilities, and pick'em optimization calibrated against official Valve Regional Standings (VRS) and HLTV data.
-      </p>
-    </div>
+<h2>Closest matches with verified external lines</h2>
+<div class="tablewrap"><table id="fixtures" class="sortable"><thead><tr><th>Scheduled (UTC)</th><th>Tier</th><th>Tournament</th><th>Match</th><th>External decimal odds (A / B)</th><th>Derived no-vig probability (A / B)</th><th>Verification</th><th>HotSpawn</th><th>Review flags</th></tr></thead><tbody><tr><td>2026-10-13 21:00:00 UTC</td><td>B</td><td>ESL Challenger League Season 52: South America - Cup #3</td><td><strong>ex-Keyd Stars</strong> vs <strong>Galorys</strong></td><td><div class="srcblock"><div class="srcname"><a href="https://www.bovada.lv/esports/counter-strike-2/esl-challenger-league/south-america/ex-keyd-stars-galorys-202610131700" rel="noopener">Bovada</a><br><a class="mini" href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:57Z</span></div><div class="odds">2.75 / 1.434783</div><div class="mini">derived p: 34.3% / 65.7% · overround 0.06061</div></div><div class="srcblock"><div class="srcname"><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">Pinnacle</a><br><a class="mini" href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638278447/markets/related/straight" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:49Z</span></div><div class="odds">2.7 / 1.4115</div><div class="mini">derived p: 34.3% / 65.7% · overround 0.07884</div></div></td><td><strong>34.3%</strong> / 65.7%<div class="mini">2 source(s): bovada, pinnacle</div></td><td><span class="ok">verified external line</span></td><td><a href="https://www.hotspawn.com/matches/1081076" rel="noopener">match</a></td><td><span class="chip">start time not published by pinnacle</span> <span class="chip">decimal price derived from american pinnacle</span></td></tr><tr><td>2026-10-14 01:00:00 UTC</td><td>B</td><td>ESL Challenger League Season 52: North America - Cup #3</td><td><strong>Zomblers</strong> vs <strong>Overtake Sector</strong></td><td><div class="srcblock"><div class="srcname"><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">Pinnacle</a><br><a class="mini" href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638279105/markets/related/straight" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:39Z</span></div><div class="odds">2.55 / 1.463</div><div class="mini">derived p: 36.5% / 63.5% · overround 0.07568</div></div></td><td><strong>36.5%</strong> / 63.5%<div class="mini">1 source(s): pinnacle</div></td><td><span class="ok">verified external line</span></td><td><a href="https://www.hotspawn.com/matches/1079546" rel="noopener">match</a></td><td><span class="chip">start time not published by pinnacle</span> <span class="chip">decimal price derived from american pinnacle</span></td></tr><tr><td>2026-10-14 08:30:00 UTC</td><td>S</td><td>Thunderpick World Championship 2026</td><td><strong>9z</strong> vs <strong>Aurora</strong></td><td><div class="srcblock"><div class="srcname"><a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/9z-globant-team-aurora-202610140430" rel="noopener">Bovada</a><br><a class="mini" href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:57Z</span></div><div class="odds">3.65 / 1.26</div><div class="mini">derived p: 25.7% / 74.3% · overround 0.06762</div></div><div class="srcblock"><div class="srcname"><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">Pinnacle</a><br><a class="mini" href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:36Z</span></div><div class="odds">3.65 / 1.2933</div><div class="mini">derived p: 26.2% / 73.8% · overround 0.04719</div></div></td><td><strong>25.9%</strong> / 74.1%<div class="mini">2 source(s): bovada, pinnacle</div></td><td><span class="ok">verified external line</span></td><td><a href="https://www.hotspawn.com/matches/1080176" rel="noopener">match</a></td><td><span class="chip">start time not published by pinnacle</span> <span class="chip">decimal price derived from american pinnacle</span></td></tr><tr><td>2026-10-14 10:00:00 UTC</td><td>B</td><td>Stake Pulse Beat III</td><td><strong>Astralis</strong> vs <strong>Sashi</strong></td><td><div class="srcblock"><div class="srcname"><a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600" rel="noopener">Bovada</a><br><a class="mini" href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:57Z</span></div><div class="odds">1.1 / 6.5</div><div class="mini">derived p: 85.5% / 14.5% · overround 0.06294</div></div></td><td><strong>85.5%</strong> / 14.5%<div class="mini">1 source(s): bovada</div></td><td><span class="ok">verified external line</span></td><td><a href="https://www.hotspawn.com/matches/1079438" rel="noopener">match</a></td><td></td></tr><tr><td>2026-10-14 10:00:00 UTC</td><td>B</td><td>Stake Pulse Beat III</td><td><strong>HOTU</strong> vs <strong>Fnatic</strong></td><td><div class="srcblock"><div class="srcname"><a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/hotu-fnatic-202610140600" rel="noopener">Bovada</a><br><a class="mini" href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:57Z</span></div><div class="odds">1.952381 / 1.8</div><div class="mini">derived p: 48.0% / 52.0% · overround 0.06775</div></div><div class="srcblock"><div class="srcname"><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">Pinnacle</a><br><a class="mini" href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148/markets/related/straight" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:21Z</span></div><div class="odds">1.9901 / 1.8</div><div class="mini">derived p: 47.5% / 52.5% · overround 0.05804</div></div></td><td><strong>47.7%</strong> / 52.3%<div class="mini">2 source(s): bovada, pinnacle</div></td><td><span class="ok">verified external line</span></td><td><a href="https://www.hotspawn.com/matches/1079439" rel="noopener">match</a></td><td><span class="chip">start time not published by pinnacle</span> <span class="chip">decimal price derived from american pinnacle</span></td></tr><tr><td>2026-10-14 11:00:00 UTC</td><td>S</td><td>Thunderpick World Championship 2026</td><td><strong>Falcons</strong> vs <strong>Ninjas in Pyjamas</strong></td><td><div class="srcblock"><div class="srcname"><a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-ninjas-in-pyjamas-202610140700" rel="noopener">Bovada</a><br><a class="mini" href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:57Z</span></div><div class="odds">1.229885 / 3.9</div><div class="mini">derived p: 76.0% / 24.0% · overround 0.06949</div></div><div class="srcblock"><div class="srcname"><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">Pinnacle</a><br><a class="mini" href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674/markets/related/straight" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:47Z</span></div><div class="odds">1.2494 / 4.06</div><div class="mini">derived p: 76.5% / 23.5% · overround 0.04669</div></div></td><td><strong>76.2%</strong> / 23.8%<div class="mini">2 source(s): bovada, pinnacle</div></td><td><span class="ok">verified external line</span></td><td><a href="https://www.hotspawn.com/matches/1080177" rel="noopener">match</a></td><td><span class="chip">start time not published by pinnacle</span> <span class="chip">decimal price derived from american pinnacle</span></td></tr><tr><td>2026-10-14 13:30:00 UTC</td><td>S</td><td>Thunderpick World Championship 2026</td><td><strong>Legacy</strong> vs <strong>PARIVISION</strong></td><td><div class="srcblock"><div class="srcname"><a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610140930" rel="noopener">Bovada</a><br><a class="mini" href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:57Z</span></div><div class="odds">1.69 / 2.1</div><div class="mini">derived p: 55.4% / 44.6% · overround 0.06791</div></div><div class="srcblock"><div class="srcname"><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">Pinnacle</a><br><a class="mini" href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111786/markets/related/straight" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:23Z</span></div><div class="odds">1.6667 / 2.23</div><div class="mini">derived p: 57.2% / 42.8% · overround 0.04842</div></div></td><td><strong>56.3%</strong> / 43.7%<div class="mini">2 source(s): bovada, pinnacle</div></td><td><span class="ok">verified external line</span></td><td><a href="https://www.hotspawn.com/matches/1080178" rel="noopener">match</a></td><td><span class="chip">start time not published by pinnacle</span> <span class="chip">decimal price derived from american pinnacle</span></td></tr><tr><td>2026-10-14 14:00:00 UTC</td><td>B</td><td>CCT Europe 2026 Series #11</td><td><strong>G2 Ares</strong> vs <strong>The Last Resort</strong></td><td><div class="srcblock"><div class="srcname"><a href="https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-the-last-resort-202610141000" rel="noopener">Bovada</a><br><a class="mini" href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:57Z</span></div><div class="odds">1.5 / 2.5</div><div class="mini">derived p: 62.5% / 37.5% · overround 0.06667</div></div></td><td><strong>62.5%</strong> / 37.5%<div class="mini">1 source(s): bovada</div></td><td><span class="ok">verified external line</span></td><td><a href="https://www.hotspawn.com/matches/1079623" rel="noopener">match</a></td><td></td></tr><tr><td>2026-10-14 16:00:00 UTC</td><td>S</td><td>Thunderpick World Championship 2026</td><td><strong>FURIA</strong> vs <strong>BetBoom</strong></td><td><div class="srcblock"><div class="srcname"><a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-bb-team-202610141200" rel="noopener">Bovada</a><br><a class="mini" href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:57Z</span></div><div class="odds">1.363636 / 3.0</div><div class="mini">derived p: 68.8% / 31.2% · overround 0.06667</div></div><div class="srcblock"><div class="srcname"><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">Pinnacle</a><br><a class="mini" href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111787/markets/related/straight" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:32Z</span></div><div class="odds">1.3745 / 3.12</div><div class="mini">derived p: 69.4% / 30.6% · overround 0.04805</div></div></td><td><strong>69.1%</strong> / 30.9%<div class="mini">2 source(s): bovada, pinnacle</div></td><td><span class="ok">verified external line</span></td><td><a href="https://www.hotspawn.com/matches/1080179" rel="noopener">match</a></td><td><span class="chip">start time not published by pinnacle</span> <span class="chip">decimal price derived from american pinnacle</span></td></tr><tr><td>2026-10-15 10:00:00 UTC</td><td>B</td><td>Stake Pulse Beat III</td><td><strong>MIBR</strong> vs <strong>BC.Game</strong></td><td><div class="srcblock"><div class="srcname"><a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-bc-game-202610150600" rel="noopener">Bovada</a><br><a class="mini" href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:57Z</span></div><div class="odds">1.645161 / 2.2</div><div class="mini">derived p: 57.2% / 42.8% · overround 0.06239</div></div><div class="srcblock"><div class="srcname"><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">Pinnacle</a><br><a class="mini" href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745/markets/related/straight" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:52Z</span></div><div class="odds">1.6369 / 2.23</div><div class="mini">derived p: 57.7% / 42.3% · overround 0.05934</div></div></td><td><strong>57.4%</strong> / 42.6%<div class="mini">2 source(s): bovada, pinnacle</div></td><td><span class="ok">verified external line</span></td><td><a href="https://www.hotspawn.com/matches/1079440" rel="noopener">match</a></td><td><span class="chip">start time not published by pinnacle</span> <span class="chip">decimal price derived from american pinnacle</span></td></tr><tr><td>2026-10-15 10:00:00 UTC</td><td>B</td><td>Stake Pulse Beat III</td><td><strong>Heroic</strong> vs <strong>Envy</strong></td><td><div class="srcblock"><div class="srcname"><a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/heroic-envy-202610150600" rel="noopener">Bovada</a><br><a class="mini" href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:57Z</span></div><div class="odds">1.526316 / 2.45</div><div class="mini">derived p: 61.6% / 38.4% · overround 0.06334</div></div><div class="srcblock"><div class="srcname"><a href="https://www.pinnacle.com/en/esports/counter-strike/" rel="noopener">Pinnacle</a><br><a class="mini" href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637999450/markets/related/straight" rel="noopener">quote API</a><br><span class="mini">read 2026-10-13T18:11:43Z</span></div><div class="odds">1.5155 / 2.5</div><div class="mini">derived p: 62.3% / 37.7% · overround 0.05985</div></div></td><td><strong>61.9%</strong> / 38.1%<div class="mini">2 source(s): bovada, pinnacle</div></td><td><span class="ok">verified external line</span></td><td><a href="https://www.hotspawn.com/matches/1079442" rel="noopener">match</a></td><td><span class="chip">start time not published by pinnacle</span> <span class="chip">decimal price derived from american pinnacle</span></td></tr></tbody></table></div>
+<p><a class="btn" href="cs2.html">Open the full CS2 table (93 fixtures)</a>
+<a class="btn ghost" href="flagged.html">Flagged for review (82 unverified rows)</a></p>
 
-    <!-- Requirements Compliance Banner -->
-    <div class="callout success">
-      <div class="callout-title">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-        <span>Zero-Hallucination & Independent Origination Standard</span>
-      </div>
-      <p>
-        Strict compliance with project charter: <strong>Hotspawn is NOT used as an indicator of match probability</strong>. All betting lines and win probabilities are independently originated from verified Valve Regional Standings (Oct 5, 2026 snapshot), HLTV ranking metrics, with standard 4.5% bookmaker overround. No prediction-market calibration is in the code (see IRREG-012 on Flagged page). External bookmaker match odds are blank/unverified — see fixtures table. Every row is verified line by line against official primary sources.
-      </p>
-    </div>
+<h2>Parallel session data preserved in this repo</h2>
+<p>Other sessions in this repo published their own reference material, kept intact: the VRS-based
+reference lines (<a href="data/originated_matches.json">data/originated_matches.json</a>,
+<a href="data/originated_outrights.json">data/originated_outrights.json</a>,
+<a href="data/origination_summary.json">origination summary</a>), the verified fixture set
+(<a href="data/fixtures_verified.json">data/fixtures_verified.json</a>), the verified team list
+(<a href="data/teams_verified.json">data/teams_verified.json</a>),
+<a href="data/flagged_irregularities.json">flagged irregularities</a> and the
+<a href="docs/index.html">parallel dashboard under docs/</a>. Their pages
+(<a href="lines.html">lines</a>, <a href="teams.html">teams</a>, <a href="hotspawn.html">HotSpawn notes</a>)
+remain at their original paths and are listed on the <a href="flagged.html">Flagged for review</a> page.
+Nothing published by another session was discarded during integration.</p>
 
-    <!-- Top Metrics Overview -->
-    <div class="metrics-grid">
-      <div class="metric-card">
-        <div class="metric-label">Tournament Prize Pool</div>
-        <div class="metric-value">$1,000,000</div>
-        <div class="metric-sub">50% Players / 50% Club Share</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Dates & Venue</div>
-        <div class="metric-value">Oct 14–18, 2026</div>
-        <div class="metric-sub">BLAST Studios Malta (Attard)</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Qualified Teams</div>
-        <div class="metric-value">8 Teams</div>
-        <div class="metric-sub">7 VRS Global Invites + 1 Qualifier</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Originated Head-to-Head Lines</div>
-        <div class="metric-value">28 Matchups</div>
-        <div class="metric-sub">Full pairwise BO3 series coverage</div>
-      </div>
-    </div>
+<h2>Timestamps</h2>
+<p class="note">Fixtures collected: <strong>2026-10-13T18:11:16Z</strong> · Odds collected: <strong>2026-10-13T18:12:05Z</strong> · Lines derived: <strong>2026-10-13T18:15:33Z</strong> · Raw quote rows: <strong>24</strong></p>
 
-    <!-- Interactive Pick'em Matchup Simulator -->
-    <section class="sim-container">
-      <h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 0.5rem;">Interactive Pick'em Matchup Simulator</h2>
-      <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.25rem;">
-        Select any two qualified finalists to instantly preview originated fair probability, decimal & American odds, map spread (-1.5/+1.5), and Over/Under 2.5 map lines.
-      </p>
-
-      <div class="sim-selectors">
-        <div class="select-group">
-          <label for="select-team-a">Team A (Red / Blue Side)</label>
-          <select id="select-team-a" class="select-control">
-            <option value="legacy" selected>Legacy (VRS #2)</option>
-            <option value="falcons">Team Falcons (VRS #6)</option>
-            <option value="furia">FURIA Esports (VRS #7)</option>
-            <option value="aurora">Aurora Gaming (VRS #9)</option>
-            <option value="betboom">BetBoom Team (VRS #11)</option>
-            <option value="9z">9z Team (VRS #17)</option>
-            <option value="parivision">PARIVISION (VRS #36)</option>
-            <option value="nip">Ninjas in Pyjamas (VRS #18)</option>
-          </select>
-        </div>
-
-        <div style="font-weight: 800; font-size: 1.2rem; color: var(--text-muted); align-self: flex-end; padding-bottom: 0.6rem;">VS</div>
-
-        <div class="select-group">
-          <label for="select-team-b">Team B</label>
-          <select id="select-team-b" class="select-control">
-            <option value="legacy">Legacy (VRS #2)</option>
-            <option value="falcons" selected>Team Falcons (VRS #6)</option>
-            <option value="furia">FURIA Esports (VRS #7)</option>
-            <option value="aurora">Aurora Gaming (VRS #9)</option>
-            <option value="betboom">BetBoom Team (VRS #11)</option>
-            <option value="9z">9z Team (VRS #17)</option>
-            <option value="parivision">PARIVISION (VRS #36)</option>
-            <option value="nip">Ninjas in Pyjamas (VRS #18)</option>
-          </select>
-        </div>
-      </div>
-
-      <div id="sim-display" class="sim-result-box">
-        <!-- Rendered by JS -->
-      </div>
-    </section>
-
-    <!-- Verified Opening Fixtures (Oct 14) -->
-    <div style="margin-bottom:2rem"><h2 style="font-size:1.4rem;font-weight:700">Verified Opening Fixtures &amp; Originated Picks — Oct 14, 2026</h2>
-    <p style="color:var(--text-secondary);font-size:.9rem;margin-bottom:1rem">Groups published Oct 9–12 (HLTV): <strong>Group A:</strong> Falcons, Ninjas in Pyjamas, 9z, Aurora · <strong>Group B:</strong> Legacy, PARIVISION, FURIA, BETBOOM. Virtus.pro withdrew and were replaced by NiP (<a href="flagged.html">IRREG-007</a>). Picks below are <strong>derived originated</strong> — not bookmaker quotes, not Hotspawn percentages.</p>
-    <div class="table-wrapper"><table class="data-table"><thead><tr><th>Group</th><th>Fixture (BO3)</th><th>Originated Pick (derived)</th><th>Dec / Am</th><th>Bookmaker Match Odds</th><th>Sources</th></tr></thead><tbody><tr><td><span class="tag-badge info">Group A</span></td><td><strong>9z Team vs Aurora Gaming</strong><div style="font-size:.75rem;color:var(--text-muted)">BO3 · Oct 14, 2026 · start time blank/unverified (timezone) — see HLTV link</div></td><td class="num-cell" style="font-weight:700;color:var(--accent-cyan)">Aurora Gaming — 64.1%</td><td class="num-cell mono">1.49 (-178)</td><td>Blank — unverified (no official bookmaker pair verified)</td><td><a href="https://www.hltv.org/matches/2399384/" target="_blank" rel="noopener">HLTV match</a> | <a href="https://www.hotspawn.com/matches/9z-vs-aurora-thunderpick-world-championship-2026-1080176" target="_blank" rel="noopener">Hotspawn fixture (discovery only)</a></td></tr>
-<tr><td><span class="tag-badge info">Group A</span></td><td><strong>Team Falcons vs Ninjas in Pyjamas</strong><div style="font-size:.75rem;color:var(--text-muted)">BO3 · Oct 14, 2026 · start time blank/unverified (timezone) — see HLTV link</div></td><td class="num-cell" style="font-weight:700;color:var(--accent-cyan)">Team Falcons — 90.6%</td><td class="num-cell mono">1.06 (-962)</td><td>Blank — unverified (no official bookmaker pair verified)</td><td><a href="https://www.hltv.org/matches/2399385/" target="_blank" rel="noopener">HLTV match</a> | <a href="https://www.hotspawn.com/matches/falcons-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026-1080177" target="_blank" rel="noopener">Hotspawn fixture (discovery only)</a></td></tr>
-<tr><td><span class="tag-badge info">Group B</span></td><td><strong>Legacy vs PARIVISION</strong><div style="font-size:.75rem;color:var(--text-muted)">BO3 · Oct 14, 2026 · start time blank/unverified (timezone) — see HLTV link</div></td><td class="num-cell" style="font-weight:700;color:var(--accent-cyan)">Legacy — 92.0%</td><td class="num-cell mono">1.04 (-1150)</td><td>Blank — unverified (no official bookmaker pair verified)</td><td><a href="https://www.hltv.org/matches/2399386/" target="_blank" rel="noopener">HLTV match</a> | <a href="https://www.hotspawn.com/matches/legacy-vs-parivision-thunderpick-world-championship-2026-1080178" target="_blank" rel="noopener">Hotspawn fixture (discovery only)</a></td></tr>
-<tr><td><span class="tag-badge info">Group B</span></td><td><strong>FURIA Esports vs BetBoom Team</strong><div style="font-size:.75rem;color:var(--text-muted)">BO3 · Oct 14, 2026 · start time blank/unverified (timezone) — see HLTV link</div></td><td class="num-cell" style="font-weight:700;color:var(--accent-cyan)">FURIA Esports — 75.7%</td><td class="num-cell mono">1.26 (-311)</td><td>Blank — unverified (no official bookmaker pair verified)</td><td><a href="https://www.hltv.org/matches/2399387/" target="_blank" rel="noopener">HLTV match</a> | <a href="https://www.hotspawn.com/matches/furia-vs-betboom-thunderpick-world-championship-2026-1080179" target="_blank" rel="noopener">Hotspawn fixture (discovery only)</a></td></tr>
-</tbody></table></div>
-    <p style="color:var(--text-secondary);font-size:.85rem">External outright comparison (secondary, unverified attribution — IRREG-009): FreeTips Oct 11 table listed Falcons 2.40, Legacy 3.80, FURIA 4.40, Aurora 6.30, BetBoom 12.00, 9z 14.00, PARIVISION 15.00, NiP 25.00. <a href="https://www.freetips.com/esports/thunderpick-world-championship-2026-betting-odds-20261011-0007/" target="_blank" rel="noopener">FreeTips source</a> · Full data: <a href="data/fixtures_verified.json">fixtures_verified.json</a> · <a href="data/external_outrights_snapshot.json">external_outrights_snapshot.json</a></p></div>
-    <!-- Outright Tournament Winner Board -->
-    <div style="margin-bottom: 2rem;">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1rem;">
-        <div>
-          <h2 style="font-size: 1.4rem; font-weight: 700;">Outright Championship Betting Lines</h2>
-          <p style="color: var(--text-secondary); font-size: 0.9rem;">
-            Originated tournament win probabilities & decimal prices (10.0% outright vig applied).
-          </p>
-        </div>
-        <a href="lines.html" class="tag-badge info">View All 28 Match Lines →</a>
-      </div>
-
-      <div class="table-wrapper">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Team</th>
-              <th>Region</th>
-              <th>VRS Rank (Oct 5)</th>
-              <th>VRS Points</th>
-              <th class="num-cell">Fair Probability</th>
-              <th class="num-cell">Decimal Odds</th>
-              <th class="num-cell">American Odds</th>
-              <th>Status / Verified Source</th>
-            </tr>
-          </thead>
-          <tbody id="outrights-table-body">
-            <!-- Dynamically populated -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Official Tournament Quick Reference Table -->
-    <div style="margin-bottom: 2rem;">
-      <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem;">Verified Tournament Structure</h2>
-      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
-        Official schedule, format rules, and primary documentation links verified claim-by-claim.
-      </p>
-
-      <div class="table-wrapper">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Specification</th>
-              <th>Details</th>
-              <th>Primary Source Link</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Tournament</strong></td>
-              <td>Thunderpick World Championship 2026</td>
-              <td>4th edition premier CS2 LAN; BLAST Studios Malta</td>
-              <td><a href="https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-returns-to-malta-with-1-million-prize-pool-302850221.html" target="_blank" rel="noopener">PRNewswire (Aug 13, 2026)</a></td>
-              <td><span class="tag-badge success">Verified</span></td>
-            </tr>
-            <tr>
-              <td><strong>Organizers</strong></td>
-              <td>GAM3RS_X & Thunderpick</td>
-              <td>Official data partner: GRID; Presenting partner: Hotspawn</td>
-              <td><a href="https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026" target="_blank" rel="noopener">Liquipedia TWC 2026</a></td>
-              <td><span class="tag-badge success">Verified</span></td>
-            </tr>
-            <tr>
-              <td><strong>Tournament Dates</strong></td>
-              <td>October 14–18, 2026</td>
-              <td>Group Stage: Oct 14–16; Playoffs: Oct 17–18</td>
-              <td><a href="https://www.hltv.org/events/8932/thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Event #8932</a></td>
-              <td><span class="tag-badge success">Verified</span></td>
-            </tr>
-            <tr>
-              <td><strong>Match Format</strong></td>
-              <td>2 GSL Groups (Bo3) → Playoffs</td>
-              <td>Single-elimination Bo3 playoffs; Bo5 Grand Final + 3rd place decider</td>
-              <td><a href="https://world-championship.thunderpick.io/" target="_blank" rel="noopener">TWC Official Portal</a></td>
-              <td><span class="tag-badge success">Verified</span></td>
-            </tr>
-            <tr>
-              <td><strong>Official Map Pool</strong></td>
-              <td>7 Active Duty Maps</td>
-              <td>Ancient, Anubis, Cache, Dust II, Inferno, Mirage, Nuke</td>
-              <td><a href="https://www.counter-strike.net/news/updates" target="_blank" rel="noopener">Valve CS2 Patch Notes</a></td>
-              <td><span class="tag-badge success">Verified</span></td>
-            </tr>
-            <tr>
-              <td><strong>Seeding Basis</strong></td>
-              <td>Valve Regional Standings (VRS)</td>
-              <td>Official global ranking snapshot of September 7 / October 5, 2026</td>
-              <td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings" target="_blank" rel="noopener">Valve VRS GitHub</a></td>
-              <td><span class="tag-badge success">Verified</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div>
-        <strong>TWC 2026 Malta Finals Dashboard</strong> — Powered by Valve VRS & HLTV verified metrics.
-        <div style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.2rem;">All probabilities independently originated. Not financial or gambling advice.</div>
-      </div>
-      <div class="footer-links">
-        <a href="lines.html">Originated Lines</a>
-        <a href="teams.html">Teams & Rosters</a>
-        <a href="methodology.html">Methodology</a>
-        <a href="flagged.html">Flagged for Review</a>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // Embedded Data for Instant Interactivity
-    const TEAMS_DATA = {
-      "legacy": { "name": "Legacy", "short": "Legacy", "rank": 2, "points": 1931, "rating": 1916.5 },
-      "falcons": { "name": "Team Falcons", "short": "Falcons", "rank": 6, "points": 1843, "rating": 1904.8 },
-      "furia": { "name": "FURIA Esports", "short": "FURIA", "rank": 7, "points": 1829, "rating": 1829.5 },
-      "aurora": { "name": "Aurora Gaming", "short": "Aurora", "rank": 9, "points": 1716, "rating": 1719.5 },
-      "betboom": { "name": "BetBoom Team", "short": "BetBoom", "rank": 11, "points": 1596, "rating": 1632.5 },
-      "9z": { "name": "9z Team", "short": "9z", "rank": 17, "points": 1543, "rating": 1619.0 },
-      "parivision": { "name": "PARIVISION", "short": "PARIVISION", "rank": 36, "points": 1411, "rating": 1479.5 },
-      "nip": { "name": "Ninjas in Pyjamas", "short": "NiP", "rank": 18, "points": 1534, "rating": 1511.5 }
-    };
-
-    const OUTRIGHTS_DATA = [
-      { "name": "Legacy", "region": "Americas", "rank": 2, "pts": 1931, "prob": "34.0%", "dec": 2.67, "am": "+194", "src": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" },
-      { "name": "Team Falcons", "region": "Europe", "rank": 6, "pts": 1843, "prob": "31.1%", "dec": 2.92, "am": "+222", "src": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" },
-      { "name": "FURIA Esports", "region": "Americas", "rank": 7, "pts": 1829, "prob": "17.4%", "dec": 5.22, "am": "+474", "src": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" },
-      { "name": "Aurora Gaming", "region": "Europe", "rank": 9, "pts": 1716, "prob": "7.5%", "dec": 12.16, "am": "+1237", "src": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" },
-      { "name": "BetBoom Team", "region": "Europe", "rank": 11, "pts": 1596, "prob": "3.8%", "dec": 23.74, "am": "+2511", "src": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" },
-      { "name": "9z Team", "region": "Americas", "rank": 17, "pts": 1543, "prob": "3.5%", "dec": 26.34, "am": "+2797", "src": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" },
-      { "name": "PARIVISION", "region": "Europe", "rank": 36, "pts": 1411, "prob": "1.2%", "dec": 77.02, "am": "+8372", "src": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" },
-      { "name": "Ninjas in Pyjamas", "region": "Europe", "rank": 18, "pts": 1534, "prob": "1.5%", "dec": 60.22, "am": "+6524", "src": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" }
-    ];
-
-    // Populate Outrights Table
-    const tbody = document.getElementById("outrights-table-body");
-    OUTRIGHTS_DATA.forEach(row => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td><strong>${row.name}</strong></td>
-        <td><span class="tag-badge info">${row.region}</span></td>
-        <td class="mono">#${row.rank}</td>
-        <td class="mono">${row.pts}</td>
-        <td class="num-cell" style="font-weight: 700; color: var(--accent-cyan);">${row.prob}</td>
-        <td class="num-cell mono"><strong>${row.dec.toFixed(2)}</strong></td>
-        <td class="num-cell mono">${row.am}</td>
-        <td><a href="${row.src}" target="_blank" rel="noopener">Valve VRS Oct 5</a></td>
-      `;
-      tbody.appendChild(tr);
-    });
-
-    // Match Simulator Calculation
-    function updateSimulator() {
-      const idA = document.getElementById("select-team-a").value;
-      const idB = document.getElementById("select-team-b").value;
-      const display = document.getElementById("sim-display");
-
-      if (idA === idB) {
-        display.innerHTML = `<div style="text-align: center; color: var(--accent-amber); padding: 1.5rem; font-weight: 600;">Please select two different teams to compute head-to-head match lines.</div>`;
-        return;
-      }
-
-      const teamA = TEAMS_DATA[idA];
-      const teamB = TEAMS_DATA[idB];
-
-      const diff = teamA.rating - teamB.rating;
-      const probA = 1.0 / (1.0 + Math.pow(10, -diff / 400.0));
-      const probB = 1.0 - probA;
-
-      const overround = 1.045;
-      const decA = (1.0 / (probA * overround)).toFixed(2);
-      const decB = (1.0 / (probB * overround)).toFixed(2);
-
-      const amA = probA >= 0.5 ? `-${Math.round((probA / (1 - probA)) * 100)}` : `+${Math.round(((1 - probA) / probA) * 100)}`;
-      const amB = probB >= 0.5 ? `-${Math.round((probB / (1 - probB)) * 100)}` : `+${Math.round(((1 - probB) / probB) * 100)}`;
-
-      const pctA = (probA * 100).toFixed(1);
-      const pctB = (probB * 100).toFixed(1);
-
-      // 2.5 Over/under maps
-      const sweepA = Math.pow(probA, 1.55);
-      const sweepB = Math.pow(probB, 1.55);
-      const probOver25 = ((1.0 - (sweepA + sweepB)) * 100).toFixed(1);
-
-      display.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-          <div>
-            <div style="font-size: 1.25rem; font-weight: 700;">${teamA.name} <span style="color: var(--accent-cyan);">(${pctA}%)</span></div>
-            <div style="font-size: 0.85rem; color: var(--text-secondary);">VRS Rank #${teamA.rank} (${teamA.points} pts)</div>
-          </div>
-          <div style="text-align: right;">
-            <div style="font-size: 1.25rem; font-weight: 700;">${teamB.name} <span style="color: var(--accent-amber);">(${pctB}%)</span></div>
-            <div style="font-size: 0.85rem; color: var(--text-secondary);">VRS Rank #${teamB.rank} (${teamB.points} pts)</div>
-          </div>
-        </div>
-
-        <div class="prob-bar-container">
-          <div class="prob-bar-a" style="width: ${pctA}%;">${pctA}%</div>
-          <div class="prob-bar-b" style="width: ${pctB}%;">${pctB}%</div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-top: 0.75rem;">
-          <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-color);">
-            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Originated Decimal Line</div>
-            <div style="font-size: 1.15rem; font-weight: 700; font-family: var(--font-mono);">${teamA.short}: ${decA} | ${teamB.short}: ${decB}</div>
-          </div>
-          <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-color);">
-            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Originated American Line</div>
-            <div style="font-size: 1.15rem; font-weight: 700; font-family: var(--font-mono);">${teamA.short}: ${amA} | ${teamB.short}: ${amB}</div>
-          </div>
-          <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-color);">
-            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Total Maps > 2.5 (3 Maps)</div>
-            <div style="font-size: 1.15rem; font-weight: 700; font-family: var(--font-mono); color: var(--accent-green);">${probOver25}% Implied</div>
-          </div>
-          <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-color);">
-            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Pick'em Model Pick</div>
-            <div style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan);">${probA >= probB ? teamA.short : teamB.short} Win</div>
-          </div>
-        </div>
-      `;
-    }
-
-    document.getElementById("select-team-a").addEventListener("change", updateSimulator);
-    document.getElementById("select-team-b").addEventListener("change", updateSimulator);
-    updateSimulator();
-  </script>
+</main>
+<footer class="wrap">
+  <p>Page generated <strong>2026-10-13 18:15 UTC</strong>. Fixture list and every quoted price are read from the
+  public sources linked on each row; HotSpawn is used for fixture discovery only and is never used as a
+  probability source. Values that could not be confirmed against an external source are left blank and
+  listed on the <a href="flagged.html">Flagged for review</a> page.</p>
+</footer>
+<script src="assets/app.js"></script>
 </body>
 </html>
