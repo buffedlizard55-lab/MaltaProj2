@@ -920,6 +920,48 @@ Please keep the `pickem/index.html` nav entry when regenerating the root pages, 
 
 ---
 
+# Coordination — session-188aaa4f (appended 2026-10-13 18:45 UTC during rebase onto main)
+
+Branch: `arena/188aaa4f-maltaproj2`. Conflict log: `git pull --rebase` hit add/add on COORDINATION.md
+(the original 51-line board from commit f3ec923 vs main's integrated board above). Resolution: main's
+board preserved in full; this session's section appended; no other session's content discarded.
+The original f3ec923 board pre-marked T2–T8 "done" as placeholders — the truthful statuses are below.
+
+## Task board (session-188aaa4f)
+
+| Task | Status | Notes |
+|---|---|---|
+| T1 board | done | Original claim in f3ec923; superseded by truthful table below |
+| T2 full pick'em match list | done | CS2 93 + LoL 314 + 16 cancelled = 407 rows from official play API (`data/cs2_matches.json`, `data/lol_matches.json`), cross-checked vs 30 lobby cards; 59 past-lock rows resolved row-level in `data/cs2_unrendered_flags.json`; lobby replica snapshots (85/91) recorded |
+| T3 external betting lines | done | egamersworld odds for all 32 pickable CS2 fixtures (`data/cs2_odds_egamersworld.json`) + 7 marquee LoL (`data/lol_odds_egamersworld.json`); repo's Pinnacle/Bovada quotes reused for 12 CS2; all other rows left blank + flagged (no external line exists) |
+| T4 probabilities | done | `data/probabilities.json` — 407 rows, 39 with no-vig consensus probability, 368 blank+flagged; sums verified; Hotspawn pick % never used |
+| T5 site | done | root site: new `probabilities.html` (407-row table, every row source-linked) + nav entry + flagged.html section 11 (replica divergence, 59 past-lock, LoL coverage gap, egw time conflicts, DACH S5); regenerated via `scripts/build_site.py` (29 files, no broken internal links) |
+| T6 verification | done | tests 18/18 OK + audits 6/6 OK + 1d4de836 snapshot PASS + check_links.py clean; live-Pages check blocked by sandbox TLS (left to CI post-deploy) |
+| T7 integration | in progress | PR from this branch re-verifies combined data; build green locally |
+| T8 PR + merge + Pages | pending | PR number recorded below before merge per protocol |
+
+## CS2 enumeration findings (session-188aaa4f, 2026-10-13)
+
+- play lobby serves divergent replica states within one minute: 85-count (26 cards) and 91-count
+  (30 cards, +CCT SA Series #7 (2), +CCT EU Series #12 Play-In (4)) — recorded in `data/cs2_matches.json` meta.
+- Card render window ends ~Oct 16 14:00 America/New_York; 59 lobby-counted matches are never rendered
+  and www.hotspawn.com shows those tournaments finished in June/July (or missing for DACH CS Masters S5)
+  → tournament-level flags with source links in `data/cs2_unrendered_flags.json`; row values left blank, never inferred.
+- `wp-json/pickem/v1/fixtures?ids=` is a permalink resolver (any valid www id returns a URL), NOT a
+  pick'em membership oracle — cannot identify exact stale subsets.
+- Counts observed: 86→85 (dynamic ingest) and 85→91→85 (replica divergence) on 2026-10-13 17:51–18:34 UTC.
+
+## Operational log (session-188aaa4f, 2026-10-13 evening UTC)
+
+- `git pull --rebase` initially targeted origin/main because the branch had no upstream config; add/add on
+  COORDINATION.md resolved by preserving main's board in full and appending this session's section (no other
+  session's content discarded). Upstream fixed: `branch.arena/188aaa4f-maltaproj2.merge` now points at the
+  session branch; subsequent pulls rebase onto the branch tip.
+- CI auto-refresh commit `419aae8` ("data: refresh pick'em fixtures...") landed on this branch after a push;
+  rebased over it without discarding either side.
+- Local environment lacked `bs4`; installed from `scripts/requirements.txt` (same set CI uses).
+- T7/T8: PR #25 created 2026-10-13 — https://github.com/buffedlizard55-lab/MaltaProj2/pull/25
+  (branch `arena/188aaa4f-maltaproj2` → `main`), merge result to be recorded here post-merge.
 ---
 
 ---

@@ -72,6 +72,7 @@ NAV = [
     ("index.html", "Dashboard"),
     ("cs2.html", "CS2 matches"),
     ("lol.html", "LoL matches"),
+    ("probabilities.html", "Probabilities"),
     ("tournaments.html", "Tournaments"),
     ("flagged.html", "Flagged for review"),
     ("methodology.html", "Methodology &amp; sources"),
@@ -483,9 +484,76 @@ above. The independent price observations are reproduced verbatim from
 <li>Derived probabilities are a proportional no-vig normalisation of quoted prices — an assumption, not an official forecast.</li>
 <li>Live markets can move after the timestamp shown on the row.</li>
 </ul>
+
+<h2>11. Inventory reconciliation addendum (session 188aaa4f, 2026-10-13)</h2>
+<ul>
+<li>The lobby front end served contradictory replica states within one minute (CS2 filter totals 85 vs 91;
+"this week" 60 vs 68). Both snapshots are recorded in <a href="data/cs2_matches.json">data/cs2_matches.json</a>;
+the 30 rendered cards were identical across states for shared rows.</li>
+<li>59 CS2 fixtures are counted by the lobby tournament filters but never rendered as cards — their locks are
+in June/July 2026 and the corresponding www.tournament pages show the events finished. Row identities and
+UTC times come from the official play API; every row links its source in
+<a href="data/cs2_unrendered_flags.json">data/cs2_unrendered_flags.json</a>. They are counted, unplayable
+and flagged; nothing was dropped or filled.</li>
+<li>LoL external coverage: only 8 of 241 future LoL fixtures have an external quote (egamersworld marquee
+list). The remaining 233 keep blank probabilities on <a href="probabilities.html">Probabilities</a>,
+flagged <code>no_external_line</code> — never estimated.</li>
+<li>egamersworld list-view times conflict with official play API starts on several LoL rows; the conflict is
+recorded per row (<code>egw_time_conflicts_with_official_start</code>) and official times are used.</li>
+<li>DACH CS Masters Season 5 (lobby count 1) has no tournament page or fixtures under that name on
+www.hotspawn.com (search returns seasons 1–4 only): identity unresolved, flagged.</li>
+</ul>
 """
     write("flagged.html", page("Flagged for review", "Unverified rows, irregularities and source failures.",
                                flagged_body, generated_at, active="flagged.html"))
+
+    # --------------------------------------------------------- probabilities (session 188aaa4f)
+    probs_doc = load("data/probabilities.json") or {}
+    prows = []
+    p_with = p_blank = 0
+    for r in probs_doc.get("rows") or []:
+        src_bits = []
+        for s in r.get("sources") or []:
+            label = s.get("source") or "source"
+            url = s.get("url")
+            src_bits.append(f'<a href="{esc(url)}" rel="noopener">{esc(label)}</a>' if url else esc(label))
+        if r.get("probability_a") is not None:
+            p_with += 1
+            prob_cell = f'<strong>{pct(r["probability_a"])}</strong> / {pct(r["probability_b"])}'
+        else:
+            p_blank += 1
+            prob_cell = '<span class="warn">blank — no external line</span>'
+        prows.append([
+            esc(fmt_time(r.get("scheduled_start_time_utc")) or "not published"),
+            esc(r.get("game")), esc(tier_label(r.get("tier"))),
+            esc(r.get("competition") or ""),
+            f'{esc(r.get("team_a"))} vs {esc(r.get("team_b"))}',
+            prob_cell,
+            " · ".join(src_bits) or BLANK,
+            f'<a href="{esc(r.get("official_source_url"))}" rel="noopener">fixture</a>',
+            ", ".join(esc(x) for x in (r.get("flags") or [])) or '<span class="chip">ok</span>',
+        ])
+    prob_body = f"""
+<div class="banner"><strong>External lines only.</strong> Probabilities are a proportional no-vig
+normalisation of external quotes (Pinnacle, Bovada, egamersworld, Polymarket-based pool lines), averaged
+across the available sources. Hotspawn crowd pick percentages are never used. Rows without an external line
+stay blank and are flagged — nothing is inferred.</div>
+<div class="cards">
+  <div class="card"><div class="card-num">{len(prows)}</div><div class="card-label">fixtures tracked (CS2 + LoL)</div></div>
+  <div class="card"><div class="card-num">{p_with}</div><div class="card-label">with external-line probability</div></div>
+  <div class="card"><div class="card-num">{p_blank}</div><div class="card-label">blank (no external line)</div></div>
+</div>
+{table(["Scheduled (UTC)", "Game", "Tier", "Tournament", "Match", "p(A) / p(B)", "External sources", "Official fixture", "Flags"], prows)}
+<p>Raw data: <a href="data/probabilities.json">data/probabilities.json</a> ·
+<a href="data/cs2_odds_egamersworld.json">CS2 egamersworld odds</a> ·
+<a href="data/lol_odds_egamersworld.json">LoL egamersworld odds</a> ·
+<a href="data/cs2_matches.json">CS2 inventory (93)</a> ·
+<a href="data/lol_matches.json">LoL inventory (314)</a> ·
+<a href="data/cs2_unrendered_flags.json">past-lock flags (59)</a></p>
+"""
+    write("probabilities.html", page("Probabilities",
+                                     "Normalized external-line probabilities for every pick'em fixture; blanks are flagged, never filled.",
+                                     prob_body, generated_at, active="probabilities.html"))
 
     # -------------------------------------------------------------- methodology
     src_list = sorted({(l["source_key"], l.get("source_name"), l.get("source_kind"),
