@@ -85,9 +85,17 @@ for comp, oa, ob, wa, wb, lo, wo, cest, url, note in ROWS:
     na, nb = m["team_a"].lower(), m["team_b"].lower()
     LA = {"fearx": na if "fearx" in na else nb, "brion": na if "brion" in na else nb}
     pair = (LA.get(pair[0], pair[0]), LA.get(pair[1], pair[1]))
-    if pair == (na, nb):
+
+    def eq(x, y):
+        return x == y or (x and y and (x.startswith(y) or y.startswith(x)))
+
+    if eq(pair[0], na):
         a, b = lo
-    elif pair == (nb, na):
+    elif eq(pair[0], nb):
+        a, b = lo[1], lo[0]
+    elif eq(pair[1], nb):
+        a, b = lo
+    elif eq(pair[1], na):
         a, b = lo[1], lo[0]
     else:
         a, b = None, None
