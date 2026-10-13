@@ -79,8 +79,8 @@ This board coordinates tasks, audit trails, and file ownership across sessions f
 ---
 
 ## Session Details
-- **Active Session ID:** `session-898abb4f`
-- **Branch:** `arena/898abb4f-maltaproj2`
+- **Active Session ID:** `session-898abb4f` (prior, PR #7 merged) + `arena/8c3d79a6-maltaproj2` (this session, 2026-10-13 re-verification)
+- **Branch:** `arena/8c3d79a6-maltaproj2` (current)
 - **Workspace Root:** `/home/user/MaltaProj2`
 - **Reference Date (UTC):** 2026-10-13
 
@@ -95,6 +95,8 @@ This board coordinates tasks, audit trails, and file ownership across sessions f
 | `TASK-03` | Build comprehensive static dashboard site for GitHub Pages (Landing, Originated Lines, Pick'em Simulator, Roster & Form, Flagged Reviews) | `index.html`, `lines.html`, `teams.html`, `flagged.html`, `methodology.html`, `assets/*` | `session-898abb4f` | **done** | `arena/898abb4f-maltaproj2` |
 | `TASK-04` | Audit, verification against primary sources, zero hallucination check, local test server verification | `tests/*`, `site validation` | `session-898abb4f` | **done** | `arena/898abb4f-maltaproj2` |
 | `TASK-05` | Final integration, Git commit, PR to main and merge | Repository-wide | `session-898abb4f` | **done** | `arena/898abb4f-maltaproj2` |
+| `TASK-06` | Re-verify line-by-line vs Valve VRS Oct5 + HLTV Oct12; fix VP→NiP replacement, published groups/opening fixtures; regenerate originated lines for current 8; Hotspawn lobby reverse-engineering page; external bookmaker line check | `COORDINATION.md`, `data/*`, `scripts/originate_lines.py`, `index.html`, `lines.html`, `teams.html`, `methodology.html`, `flagged.html`, `hotspawn.html`, `tests/*` | `arena/8c3d79a6` | **in progress** | `arena/8c3d79a6-maltaproj2` |
+| `TASK-07` | Final integration this session: tests, live preview, PR to main, merge, confirm Pages | Repository-wide | `arena/8c3d79a6` | **unclaimed→in progress (same session, after TASK-06)** | `arena/8c3d79a6-maltaproj2` |
 
 ---
 
