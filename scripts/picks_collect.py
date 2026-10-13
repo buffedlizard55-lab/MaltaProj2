@@ -252,6 +252,55 @@ def collect_permalinks(evidence: dict) -> dict:
     return found
 
 
+HOTSPAWN_MATCHES = "https://www.hotspawn.com/matches"
+PERMALINK_RE = re.compile(r"/matches/([a-z0-9][a-z0-9-]*-\d+)")
+
+
+def collect_matches_permalinks(evidence: dict, base_map: dict) -> dict:
+    """Scrape the public matches feed for the slug permalinks it publishes.
+
+    The lobby's server-rendered payload only carries permalinks for the cards it renders (in this
+    snapshot the CS2 cards). The matches feed publishes the same kind of slug URL for the week's
+    fixtures of both games, so the feed is read and every `/matches/<slug>-<id>` anchor is kept.
+    Only URLs the page itself contains are used; nothing is constructed here.
+    """
+    found: dict = {}
+    pages = [HOTSPAWN_MATCHES]
+    seen_pages = []
+    status, body, final = fetch(HOTSPAWN_MATCHES, {"Accept": "text/html"}, timeout=60, max_bytes=4_000_000)
+    html = body.decode("utf-8", "replace")
+    seen_pages.append({"url": HOTSPAWN_MATCHES, "status": status, "final_url": final, "bytes": len(body)})
+    for match in PERMALINK_RE.finditer(html):
+        slug = match.group(1)
+        found[slug.rsplit("-", 1)[-1]] = f"https://www.hotspawn.com/matches/{slug}"
+    # Follow the page's own day/game filter links (never guessed) to widen the week's coverage.
+    filters = []
+    for href in re.findall(r'href="(/matches[^"#]*)"', html):
+        if href.rstrip("/") == "/matches" or href in filters:
+            continue
+        filters.append(href)
+    for href in filters[:8]:
+        url = "https://www.hotspawn.com" + href
+        st, bd, fin = fetch(url, {"Accept": "text/html"}, timeout=45, max_bytes=4_000_000)
+        text = bd.decode("utf-8", "replace")
+        before = len(found)
+        for match in PERMALINK_RE.finditer(text):
+            slug = match.group(1)
+            found[slug.rsplit("-", 1)[-1]] = f"https://www.hotspawn.com/matches/{slug}"
+        seen_pages.append({"url": url, "status": st, "bytes": len(bd), "new_permalinks": len(found) - before})
+
+    merged = dict(found)
+    merged.update(base_map)  # the lobby's own published permalink always wins for its own cards
+    evidence["hotspawn_matches_feed"] = {
+        "pages": seen_pages,
+        "permalinks_found": len(found),
+        "lobby_permalinks": len(base_map),
+        "merged": len(merged),
+        "filter_links_followed": len(filters[:8]),
+    }
+    return merged
+
+
 # --------------------------------------------------------------------------- link checks
 def verify_links(urls: list[str], evidence: dict, cap: int = 140, workers: int = 8) -> dict:
     """Open every published URL once and record what the source answered.
@@ -419,6 +468,35 @@ def collect_pinnacle(quotes: list[dict], evidence: dict) -> None:
 
 
 # --------------------------------------------------------------------------- Bovada
+BOVADA_URL_CACHE: dict[str, str] = {}
+
+
+def bovada_public_url(link: str, evidence: dict) -> str:
+    """Open the event page the coupon JSON points at and keep the URL that actually answers.
+
+    A link that 404s for a reviewer is not a source link, so each candidate form is opened once
+    and the first one that answers 200 is published; if none does, the raw coupon URL is kept
+    and recorded as unverified instead of being presented as a working page.
+    """
+    if link in BOVADA_URL_CACHE:
+        return BOVADA_URL_CACHE[link]
+    candidates = [f"https://www.bovada.lv{link}"]
+    if not link.startswith("/sports"):
+        candidates.append(f"https://www.bovada.lv/sports{link}")
+    probe = []
+    chosen = candidates[0]
+    for candidate in candidates:
+        status, _, final = fetch(candidate, {"Accept": "text/html"}, timeout=15, max_bytes=20_000)
+        probe.append({"url": candidate, "status": status})
+        if status == 200:
+            chosen = final or candidate
+            break
+    evidence.setdefault("bovada_url_probe", []).append({"coupon_link": link, "chosen": chosen,
+                                                        "attempts": probe})
+    BOVADA_URL_CACHE[link] = chosen
+    return chosen
+
+
 def collect_bovada(quotes: list[dict], evidence: dict) -> None:
     """Public esports coupon JSON. Market shape verified against the source's own payload."""
     status, body, _ = fetch(BOVADA_ESPORTS, {"Accept": "application/json"})
@@ -472,7 +550,7 @@ def collect_bovada(quotes: list[dict], evidence: dict) -> None:
                         "source_key": "bovada",
                         "source_name": "Bovada",
                         "source_kind": "licensed bookmaker (public coupon JSON)",
-                        "source_public_url": "https://www.bovada.lv" + link,
+                        "source_public_url": bovada_public_url(link, evidence),
                         "source_api_url": BOVADA_ESPORTS,
                         "source_event_id": str(ev.get("id")),
                         "source_market_id": str(mk.get("id")),
@@ -654,9 +732,15 @@ def main() -> int:
     now_str = now.strftime("%Y-%m-%dT%H:%M:%SZ")
     permalinks: dict = {}
     try:
-        permalinks = collect_permalinks(evidence)
+        lobby_permalinks = collect_permalinks(evidence)
     except Exception as exc:  # noqa: BLE001
         evidence["hotspawn_permalinks_error"] = repr(exc)
+        lobby_permalinks = {}
+    try:
+        permalinks = collect_matches_permalinks(evidence, lobby_permalinks)
+    except Exception as exc:  # noqa: BLE001
+        evidence["hotspawn_matches_feed_error"] = repr(exc)
+        permalinks = lobby_permalinks
 
     for f in fixtures:
         lock = f.get("lock_time_utc")
@@ -716,6 +800,19 @@ def main() -> int:
         link_urls += [f["hotspawn_match_url"] for f in fixtures if f["open_for_picks"]]
         link_urls += [HOTSPAWN_LOBBY, f"{HOTSPAWN_API}/fixtures"]
         link_report = verify_links(link_urls, evidence)
+        # A redirect that only normalises the same URL (trailing slash) is not a broken link:
+        # publish the URL the source actually served so the check is honest for a reviewer.
+        canonicalised = 0
+        for q in quotes:
+            url = q.get("source_public_url")
+            record = link_report["results"].get(url) if url else None
+            if not record or record.get("status") != 200:
+                continue
+            final = record.get("final_url") or url
+            if final.rstrip("/") == (url or "").rstrip("/") and final != url:
+                q["source_public_url"] = final
+                canonicalised += 1
+        evidence["link_checks"]["canonicalised_redirects"] = canonicalised
         write("evidence/picks/link_checks.json", link_report)
     except Exception as exc:  # noqa: BLE001
         evidence["link_checks_error"] = repr(exc)

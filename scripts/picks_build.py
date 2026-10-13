@@ -159,6 +159,15 @@ def link_state(results, url):
     return "ok"
 
 
+def quote_link_state(quote, results):
+    """Collector link check first; a dated capture (EGamersWorld) brings its own check record."""
+    url = quote.get("source_public_url") or quote.get("source_api_url")
+    state = link_state(results, url)
+    if state == "unchecked" and isinstance(quote.get("link_check"), dict):
+        state = str(quote["link_check"].get("state") or "unchecked")
+    return state
+
+
 def build_board(fixtures, quotes, link_results=None):
     by_id = {f["fixture_id"]: dict(f) for f in fixtures}
     for f in by_id.values():
@@ -233,7 +242,7 @@ def build_board(fixtures, quotes, link_results=None):
             "retrieved_at_utc": q.get("retrieved_at_utc"),
             "join_rule": why,
             "side_reversed": reversed_side,
-            "link_state": link_state(link_results or {}, q.get("source_public_url") or q.get("source_api_url")),
+            "link_state": quote_link_state(q, link_results or {}),
         })
         accepted += 1
 
@@ -268,7 +277,7 @@ def build_board(fixtures, quotes, link_results=None):
         kind = f.get("hotspawn_match_url_kind")
         if kind and kind != "lobby_published_permalink":
             f["flags"].append("match_link_" + kind)
-        if any(q.get("link_state") not in ("ok", "unchecked") for q in f["quotes"]):
+        if any(q.get("link_state") not in ("ok", "unchecked", "capture_page_ok") for q in f["quotes"]):
             f["flags"].append("quoted_source_link_not_200")
         f["sources_used"] = sorted({q["source_key"] for q in pre})
     return list(by_id.values()), rejections, accepted
@@ -355,6 +364,7 @@ def quote_cell(row):
         live = " · live (excluded)" if q["is_live"] else ""
         state = q.get("link_state", "unchecked")
         mark = {"ok": "", "unchecked": " · link not re-checked",
+                "capture_page_ok": " · read from the source's event page (this exact row link was not opened separately)",
                 "redirected": " · ⚠ link redirects elsewhere"}.get(
                     state, f' · <span class="bad-text">⚠ link answered {esc(state.replace("http_", "HTTP "))}</span>')
         parts.append(
@@ -451,6 +461,7 @@ def summary_cards(board):
 
 
 def render(board, rejections, meta):
+    link_report, _ = link_checks()
     os.makedirs(os.path.join(OUT, "data"), exist_ok=True)
     open_rows = sorted([r for r in board if r.get("open_for_picks")],
                        key=lambda r: (r.get("lock_time_utc") or ""))
@@ -762,6 +773,7 @@ def main() -> int:
             "source_kind": row.get("source_kind", "esports odds aggregator"),
             "source_public_url": row.get("source_url"),
             "source_api_url": row.get("source_url"),
+            "link_check": row.get("link_check"),
             "source_league": row.get("source_league"),
             "source_market_id": row.get("source_market_id"),
             "fixture_id_hint": row.get("fixture_id"),
@@ -795,7 +807,7 @@ def main() -> int:
               or (f.get("status") != "ended" and (f.get("start_time_utc") or "") >= recent_cut)
               or (f.get("status") == "scheduled" and not f.get("lock_time_utc")
                   and not f.get("start_time_utc") and f.get("competition") in open_comps)]
-    link_report, link_results = link_checks()
+    _, link_results = link_checks()
     board, rejections, accepted = build_board(window, quotes, link_results)
     meta = {
         "generated_at_utc": fixtures_doc.get("summary", {}).get("generated_at_utc"),
