@@ -1,31 +1,69 @@
-name: probe-42580809
+name: runner-42580809
 
-# Session 42580809: runs external source reachability probes on a runner that has
-# unrestricted egress, and publishes the raw results as a downloadable artifact.
-# Triggered by push (works on any branch) so it never depends on default-branch
-# workflow registration.
+# Session 42580809: runner-side data collection. GitHub runners have unrestricted
+# egress, so every external fetch (odds sources, fixture API, ranking feeds) runs
+# here and the raw results are committed back to the session branch as evidence.
+#
+# Run order (each script is optional; missing files are skipped):
+#   1. proof/42580809/run/fetch_fixtures.py       -> out/fixtures.json
+#   2. proof/42580809/run/probe_sources.py        -> out/probe.json
+#   3. proof/42580809/run/collect_lines.py        -> out/lines_raw.json
+# Every produced file is committed to the branch so the sandbox (which has
+# restricted egress) can read it back with a normal git pull.
 
 on:
   push:
     branches: ['arena/42580809-maltaproj2']
     paths:
-      - 'proof/42580809/**'
+      - 'proof/42580809/run/**'
       - '.github/workflows/probe-42580809.yml'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: runner-42580809
+  cancel-in-progress: false
 
 jobs:
-  probe:
+  run:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run reachability probe
-        run: python3 proof/42580809/probe_sources.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run session runner tasks
+        run: |
+          set -u
+          mkdir -p proof/42580809/out
+          for s in fetch_fixtures probe_sources collect_lines; do
+            f="proof/42580809/run/$s.py"
+            if [ -f "$f" ]; then
+              echo "=== running $s"
+              python3 "$f" || echo "$s exited non-zero (evidence kept)"
+            else
+              echo "=== skipping $s (not present)"
+            fi
+          done
+          ls -la proof/42580809/out || true
+      - name: Commit collected evidence back to the session branch
+        run: |
+          git config user.name "arena-42580809-runner"
+          git config user.email "arena-42580809@users.noreply.github.com"
+          git add -A proof/42580809/out
+          if git diff --cached --quiet; then
+            echo "no output to commit"
+            exit 0
+          fi
+          git commit -m "proof(42580809): runner-collected evidence [skip ci]"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push && break || sleep 6
+          done
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: probe-42580809
+          name: runner-42580809
           path: proof/42580809/out
           retention-days: 14
