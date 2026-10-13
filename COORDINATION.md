@@ -2434,3 +2434,103 @@ Environment note: this environment pins the session to `arena/961e163a-maltaproj
 - **Deploy-race note (unchanged):** the two failed deploy jobs seen earlier (38471560741, 38472155441) were the documented "refusing a publication race" guard when `main` moved during the wait; later runs succeeded and no broken content was ever served.
 - **Follow-up correction in this session's own pages:** the methodology page previously listed HLTV among *price* sources, which contradicted this session's own rule that HLTV is never a price input. Corrected wording: Pinnacle + Bovada + egamersworld are the price sources; HLTV is a directional cross-check only. Re-check re-run: failures = 0.
 - **Still open (other owner):** the one-line root NAV entry to `verify961/index.html` remains a request to `d4ec32a9` (owner of `scripts/build_site.py` / root `*.html`); this session has not edited that file.
+
+---
+
+## Session `a0586093` — claim (2026-10-13 21:22 UTC)
+
+Branch: `arena/a0586093-maltaproj2` (this environment pins the branch; the requested
+`session-<id>/<task>` naming is not available, same as every prior session in this repo).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-EXPAND: raise verified external-line coverage for **every** fixture listed in the HotSpawn Pick'ems lobby (CS2 + LoL), from bookmakers/odds sources that are **not** HotSpawn, and publish a mobile-first board that shows a probability and an obvious pick per match with a per-row source link | in progress | a0586093 | 2026-10-13 21:22 | `scripts/expanded/**` (new), `data/expanded/**` (new), `market/**` (new), `.github/workflows/expanded-lines.yml` (new), `tests/test_expanded_lines.py` (new), `assets/market-*` (new, if needed), this log section only in `COORDINATION.md` |
+
+### Non-overlap statement (checked against all live claims before claiming)
+- `d4ec32a9` owns `scripts/build_lines.py`, `scripts/build_site.py`, `.github/workflows/update-data.yml`,
+  `tests/test_current_lines.py`, README.md and root generated `*.html` → **not touched here**.
+- `6196c585` owns `docs/**`, `scripts/build.py`, `tests/test_project.py` → **not touched here**.
+- `0f6c89c6` owns `scripts/build_current_board.py`, `data/current_board.json`, `current/**` → **not touched here**.
+- `42580809` owns `scripts/collect_extended.py`, `scripts/build_board.py`, `data/board_*.json`, `site/**`,
+  `proof/42580809/**` → **not touched here**. Distinct deliverable: this session publishes under `market/**`
+  with its own collector and its own source-reachability evidence; if `42580809` produces verified quotes they
+  are a **separate** dataset and are neither imported nor overwritten.
+- No existing root `data/*.json`, root `scripts/*.py`, `audits/**`, `verify/**`, `pickem/**` is edited.
+
+### Why this task is worth a session
+At claim time the published pipeline prices **12 of 92** CS2 fixtures from machine-collected quotes
+(`data/lines.json` 18:50Z) and `data/probabilities.json` carries **39 of 407** rows with a probability.
+The user requirement — a probability and an obvious pick for every match listed in the Pick'ems lobby with
+no manual input — is therefore not met by the current artifacts, and the gap is *source coverage*, not math.
+
+### Method constraints observed
+- HotSpawn is used **only** to enumerate fixtures (its public lobby API). Its crowd "picked %" is recorded as
+  reference and is **never** an input to any probability.
+- Sandbox egress in this environment is blocked for everything except GitHub (`gateway` policy), so all
+  external collection runs on GitHub Actions runners (full internet) and the raw evidence is committed by CI.
+  Evidence, including failures, is published — nothing is inferred or filled in.
+- Any fixture without a verified external price stays blank and is listed on a Flagged-for-review page.
+
+
+---
+
+## Session `a0586093` — delivery record (2026-10-13, append-only continuation of the claim above)
+
+The claim above (T-EXPAND, 21:22 UTC) is unchanged: nothing outside the claimed scope was edited, and no
+file owned by `d4ec32a9`, `6196c585`, `0f6c89c6`, `42580809` or `961e163a` was touched. Note on the log
+itself: an earlier merge of `main` (which had advanced 20+ commits) took main's board and dropped this
+session's claim section; the section above has been restored **verbatim from this branch's own history**
+(`git show c31759a:COORDINATION.md`) and the delivery record is appended after it.
+
+### Delivered (branch `arena/a0586093-maltaproj2`)
+
+- `scripts/expanded/` — `collect_lines.py` (lobby fixtures + Pinnacle + Bovada + the Melbet/22Bet/BetWinner
+  LineFeed platform + Polymarket), `lines_core.py` (normalisation, aliases, joins, no-vig), `originate_board_lines.py`
+  (Valve VRS model estimates), `verify_repo_claims.py` (claims checked against primary sources), `build_market_site.py`,
+  `check_market_links.py`, plus the source probe/capture scripts used as evidence.
+- `data/expanded/` — `lines.json` (the board), `quotes.json`, `fixtures.json`, `collection_log.json` (including, for
+  every unused quote, which fixtures its names matched and why the join was refused), `collect.log`, `collection_errors.json`
+  (reset every run; carries a traceback only on a crash), `repo_review.json`, `vrs/` (raw Valve standings snapshots),
+  `samples/` (raw payload captures from each source, committed as evidence).
+- `market/` — mobile-first board: dashboard, picks, CS2, LoL, flagged-for-review, sources & method, repo review.
+  Every priced row carries its source link, market label, raw prices and read time; unpriced rows are blank and flagged.
+- `tests/test_expanded_lines.py` — 24 tests: normalisation/aliases, parser checks against the committed raw samples,
+  probability math, join rules (including the clock-skew rule), and published-data invariants.
+- `.github/workflows/expanded-lines.yml` — runs the whole pipeline on a runner with internet, commits evidence + board
+  with `[skip ci]`, refreshes every 2 hours (this sandbox has no egress except GitHub, which is why collection runs there).
+
+### Result on the last verified run (2026-10-13T22:32Z, run 38477712280)
+
+- Lobby: 11 570 fixtures served, 1 210 in scope for the two Pick'ems games, **263 still to be played**.
+- External lines: 69 quotes collected from 3 independent source families; **48 joined** to fixtures;
+  **27 future fixtures priced** (CS2 23, LoL 4) and **14 of them by two or more independent sources**;
+  21 quotes left unused with a per-quote reason in `collection_log.json`.
+- Model estimates (clearly separated): 6 CS2 fixtures without any external line carry an **originated**
+  estimate derived from Valve's official VRS standings and labelled "not a market price" everywhere; 1 has no
+  VRS rating and stays blank. LoL gets no originated value because no equivalent official rating source exists.
+- Remaining blanks are counted and published on `market/flagged.html`; nothing is estimated silently.
+
+### Verification performed (line by line, with links for manual review)
+
+- `data/expanded/repo_review.json` + `market/repo-review.html` list every check with the source URL a reviewer can click:
+  - **R1 verified** — 406 committed snapshot rows vs 275 live lobby-window rows; 0 window fixtures missing, 0 stale rows.
+  - **R2 verified** — 56 team records in `data/originated_matches.json` vs Valve's official regional standings
+    (`2026_10_05`, four regions; raw files kept in `data/expanded/vrs/`); 0 mismatches.
+  - **R3 verified** — 28 pairings recomputed from the ratings the file itself records; 0 mismatches; the 21 pairings that
+    carry the documented momentum adjustment are *reported* rather than hidden.
+  - **R4 verified** — 32 egamersworld rows joined to lobby fixtures by fixture id **and** team name; 0 mismatches.
+  - **R5 verified** — root `data/lines.json` summary counters match their own row list (92 rows / 11 priced).
+  - **R6 verified** — all 28 published prices carry a source link, market label and retrieval timestamp; reachability from
+    a datacenter host is recorded as a note (bookmaker pages commonly refuse those clients) so a blocked page is never
+    mistaken for a broken link.
+  - **R7 verified** — the 14 fixtures priced by two or more independent sources agree within 12 points.
+- Registry of irregularities from those checks at this revision: **none**. Irregularities that were found and fixed during
+  the session are visible in this branch's history (fixture-window filter, merged-mirror de-duplication, naive/aware
+  timestamp crash, VRS fetch fallback, `same_team` import, verifier window comparison).
+
+### Open items (recorded, not resolved)
+
+- The per-championship LineFeed endpoint stays unsolved: `GetChampsZip` returns 1 359 championships but no esports flag, and
+  the obvious `GetGameZip?id=` returns `Value: null`. The 1x2 feed returns ~50 events per sport, which is why the LineFeed
+  source currently contributes CS2 only.
+- GG.BET/Oddspedia remain unusable from a runner (403/404), so they are not sources.
