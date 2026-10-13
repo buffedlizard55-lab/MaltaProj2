@@ -295,6 +295,24 @@ def check_published_links():
                 "no link-check record in this revision", value=0)
 
 
+# ------------------------------------------------------------------ 8b. pickable accounting
+def check_pickable_accounting():
+    board = load("data/picks_board.json")
+    rows = board.get("rows") or []
+    if not rows:
+        finding("pickable_accounting", "info", "data/picks_board.json", "no board in this revision")
+        return
+    bad = [r for r in rows if r.get("status") == "cancelled" and r.get("open_for_picks")]
+    stats = board.get("stats") or {}
+    counted = len([r for r in rows if r.get("open_for_picks")])
+    finding("pickable_accounting", "high" if bad else "info", "data/picks_board.json",
+            f"{len(bad)} cancelled fixtures are counted as open for picks" if bad
+            else "no cancelled fixture is counted as open for picks", value=len(bad))
+    if stats.get("open") not in (None, counted):
+        finding("pickable_accounting", "medium", "data/picks_board.json",
+                f"stats.open ({stats.get('open')}) disagrees with the rows ({counted})", value=counted)
+
+
 # ------------------------------------------------------------------ 9. dated captures
 def check_dated_capture():
     doc = load("data/picks_supplementary.json")
@@ -324,6 +342,7 @@ def main() -> int:
     check_cross_pipeline()
     check_fixture_drift()
     check_published_links()
+    check_pickable_accounting()
     check_dated_capture()
 
     payload = {

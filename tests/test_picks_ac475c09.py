@@ -154,11 +154,24 @@ class TestPicksBoard(unittest.TestCase):
             self.assertIn(rej["reason"], {"no_fixture_match", "ambiguous_multiple_fixtures"})
             self.assertTrue(rej.get("source_url", "").startswith("http") or rej.get("source_key"))
 
+    def test_cancelled_fixtures_are_never_counted_as_pickable(self):
+        """The lobby API keeps a future lock time on fixtures it cancelled; those are not pickable."""
+        for row in self.board["rows"]:
+            if row.get("status") == "cancelled":
+                self.assertFalse(row.get("open_for_picks"),
+                                 f"cancelled fixture {row.get('fixture_id')} counted as open")
+        open_rows = [r for r in self.board["rows"] if r.get("open_for_picks")]
+        self.assertTrue(all(r.get("status") != "cancelled" for r in open_rows))
+        self.assertEqual(len(open_rows), self.board["stats"]["open"])
+
     def test_locked_fixtures_are_marked_not_pickable(self):
+        """Every row that is not open states why: locked, cancelled by the source, or undated."""
         for row in self.board["rows"]:
             if row.get("open_for_picks"):
                 continue
-            if row.get("lock_time_utc"):
+            if row.get("status") == "cancelled":
+                self.assertIn("source_status_cancelled", row["flags"])
+            elif row.get("lock_time_utc"):
                 self.assertIn("past_lock_not_pickable", row["flags"])
             else:
                 self.assertIn("lock_time_unknown_in_source_api", row["flags"])

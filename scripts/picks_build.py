@@ -307,6 +307,11 @@ def build_board(fixtures, quotes, link_results=None):
             f["flags"].append("lock_time_unknown_in_source_api")
         if f.get("status") == "cancelled":
             f["flags"].append("source_status_cancelled")
+            if f.get("open_for_picks"):
+                # The lobby API still returns a future lock time for fixtures it has cancelled.
+                # Counting those as "open for picks" would overstate what a user can actually pick.
+                f["open_for_picks"] = False
+                f["flags"].append("listed_but_cancelled")
         # The fixture link must open the fixture, not the matches index: /matches/<id> alone was
         # measured to redirect to /matches, so only a source-confirmed permalink is trusted.
         kind = f.get("hotspawn_match_url_kind")
@@ -504,8 +509,11 @@ def render(board, rejections, meta):
     os.makedirs(os.path.join(OUT, "data"), exist_ok=True)
     open_rows = sorted([r for r in board if r.get("open_for_picks")],
                        key=lambda r: (r.get("lock_time_utc") or ""))
-    locked_rows = sorted([r for r in board if not r.get("open_for_picks")],
+    locked_rows = sorted([r for r in board if not r.get("open_for_picks")
+                          and r.get("status") != "cancelled"],
                          key=lambda r: (r.get("lock_time_utc") or ""), reverse=True)
+    cancelled_rows = sorted([r for r in board if r.get("status") == "cancelled"],
+                            key=lambda r: (r.get("lock_time_utc") or ""), reverse=True)
     priced_open = [r for r in open_rows if r["prob_a"] is not None]
     cs2 = [r for r in open_rows if (r.get("sport") or "") == "cs2"]
     lol = [r for r in open_rows if (r.get("sport") or "") == "lol"]
@@ -568,6 +576,14 @@ def render(board, rejections, meta):
         if locked:
             blocks.append("<h2>Already locked (listed, not pickable)</h2>")
             blocks.append(table(locked, show_game=False))
+        cancelled_here = [r for r in cancelled_rows if (r.get("sport") or "") == key]
+        if cancelled_here:
+            blocks.append(f'<h2>Listed by the lobby but cancelled in the source '
+                          f'<span class="muted small">({len(cancelled_here)})</span></h2>')
+            blocks.append('<div class="notice warn">The lobby API still returns these fixtures with a '
+                          'future lock time, but its own <code>status</code> field says <code>cancelled</code>. '
+                          'They are shown so the list is complete and are never counted as pickable.</div>')
+            blocks.append(table(cancelled_here, show_game=False))
         write_page(name, page(title, name, "\n".join(blocks), meta))
 
     # ---------------------------------------------------------------- by tournament
