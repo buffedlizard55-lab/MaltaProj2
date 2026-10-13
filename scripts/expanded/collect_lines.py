@@ -291,57 +291,95 @@ def linefeed_sports_ids(log: dict) -> list[int]:
 
 
 def collect_linefeed(quotes: list[dict], log: dict, game_filter: set[str]) -> None:
+    """Collect the 1xBet-platform match moneylines.
+
+    Melbet, 22Bet and BetWinner are three mirrors of one platform and quote identical prices,
+    so only ONE of them is published as a source. The other mirrors are still fetched and their
+    event-id/price agreement with the primary is recorded, so a mirror outage is visible instead
+    of silently changing the consensus.
+    """
     ids = linefeed_sports_ids(log)
     if not ids:
-        ids = [12]
-    log["linefeed"] = {"sport_ids": ids, "sources": []}
+        ids = [40]
+    log["linefeed"] = {"sport_ids": ids, "mirrors": [], "primary": None, "published_quotes": 0}
+    per_mirror: dict[str, dict] = {}
     for mirror_key, base in LINE_FEED_MIRRORS:
-        per_mirror = {"mirror": mirror_key, "url": None, "events_esports": 0, "moneyline_rows": 0,
-                      "by_sport": {}, "error": None}
+        events: dict[str, tuple[str, str, float, float, str, str, str]] = {}
+        epochs: dict[str, object] = {}
+        info = {"mirror": mirror_key, "urls": [], "events": 0, "moneyline_events": 0,
+                "by_league": {}, "errors": [], "game_counts": {}}
         for sid in ids:
-            url = f"{base}/service-api/LineFeed/Get1x2_VZip?sports={sid}&count=1000&lng=en&mode=4&country=1"
+            url = (f"{base}/service-api/LineFeed/Get1x2_VZip"
+                   f"?sports={sid}&count=1000&lng=en&mode=4&country=1")
+            info["urls"].append(url)
             status, data, err = fetch_json(url)
-            per_mirror["url"] = url
             if not isinstance(data, dict):
-                per_mirror["error"] = f"{status} {err}"
+                info["errors"].append(f"{url} -> {status} {err}")
                 continue
             value = data.get("Value")
-            events = value.get("_items") if isinstance(value, dict) else value
-            if not isinstance(events, list):
+            rows = value.get("_items") if isinstance(value, dict) else value
+            if not isinstance(rows, list):
                 continue
-            for ev in events:
+            for ev in rows:
+                info["events"] += 1
+                league = ev.get("LE") or ev.get("L")
+                game = guess_game(str(ev.get("SN") or ev.get("SE") or ""), league)
+                if game:
+                    info["game_counts"][game] = info["game_counts"].get(game, 0) + 1
                 parsed = parse_linefeed_event(ev)
                 if not parsed:
                     continue
-                per_mirror["events_esports"] += 1
-                sport_name = str(ev.get("SN") or ev.get("SE") or "")
-                per_mirror["by_sport"][sport_name] = per_mirror["by_sport"].get(sport_name, 0) + 1
-                game = guess_game(sport_name, ev.get("LE") or ev.get("L"))
-                if game is None or (game_filter and game not in game_filter):
+                info["moneyline_events"] += 1
+                info["by_league"][str(league)[:60]] = info["by_league"].get(str(league)[:60], 0) + 1
+                if not game or (game_filter and game not in game_filter):
                     continue
-                quotes.append({
-                    "source_key": f"linefeed_{mirror_key}", "source_name": mirror_key.capitalize(),
-                    "source_kind": "licensed bookmaker (1xBet platform, public LineFeed)",
-                    "game": game,
-                    "source_public_url": f"{base}/en/line/",
-                    "source_api_url": url,
-                    "source_event_id": str(ev.get("I")),
-                    "source_market_id": f"T1/T3 G{parsed['group']}",
-                    "source_league": ev.get("LE") or ev.get("L"),
-                    "market_type": "match winner (moneyline, 2-way, full match)",
-                    "market_is_live": bool(ev.get("HL")),
-                    "market_status": "open",
-                    "retrieved_at_utc": now_iso(),
-                    "start_time_utc": to_utc_iso(parse_iso(ev.get("S"))),
-                    "team_a_name": parsed["team_a"], "team_b_name": parsed["team_b"],
-                    "raw_price_format": "decimal",
-                    "raw_price_a": parsed["dec_a"], "raw_price_b": parsed["dec_b"],
-                    "decimal_odds_a": parsed["dec_a"], "decimal_odds_b": parsed["dec_b"],
-                    "decimal_odds_derived": False,
-                })
-                per_mirror["moneyline_rows"] += 1
-            time.sleep(0.2)
-        log["linefeed"]["sources"].append(per_mirror)
+                events[str(ev.get("I"))] = (parsed["team_a"], parsed["team_b"], parsed["dec_a"],
+                                            parsed["dec_b"], str(league), url, game)
+                epochs[str(ev.get("I"))] = ev.get("S")
+        per_mirror[mirror_key] = {"info": info, "events": events, "epochs": epochs}
+        time.sleep(0.2)
+
+    primary_key = max(per_mirror, key=lambda k: len(per_mirror[k]["events"])) if per_mirror else None
+    log["linefeed"]["primary"] = primary_key
+    if primary_key is None:
+        return
+    primary = per_mirror[primary_key]
+    for key, payload in per_mirror.items():
+        agreement = {"mirror": key, "events": len(payload["events"]),
+                     "matching_ids": None, "price_mismatches": [], "errors": payload["info"]["errors"]}
+        if key != primary_key:
+            shared = set(payload["events"]) & set(primary["events"])
+            agreement["matching_ids"] = len(shared)
+            for eid in sorted(shared)[:50]:
+                if payload["events"][eid][2:4] != primary["events"][eid][2:4]:
+                    agreement["price_mismatches"].append(eid)
+        log["linefeed"]["mirrors"].append({**payload["info"], **agreement})
+
+    base = dict(LINE_FEED_MIRRORS)[primary_key]
+    for eid, (ta, tb, da, db, league, url, game) in primary["events"].items():
+        quotes.append({
+            "source_key": "linefeed_1xbet_platform",
+            "source_name": f"{primary_key.capitalize()} (1xBet platform, LineFeed)",
+            "source_kind": "licensed bookmaker (public LineFeed JSON)",
+            "source_platform_note": ("Melbet / 22Bet / BetWinner are mirrors of one platform and quote "
+                                     "the same prices; the primary mirror is published once, and mirror "
+                                     "agreement is recorded in data/expanded/collection_log.json"),
+            "game": game,
+            "source_public_url": f"{base}/en/line/esports/",
+            "source_api_url": url,
+            "source_event_id": eid,
+            "source_market_id": "main match moneyline (market type codes T1/T3)",
+            "source_league": league,
+            "market_type": "match winner (moneyline, 2-way, full match)",
+            "market_is_live": False,
+            "market_status": "open",
+            "retrieved_at_utc": now_iso(),
+            "start_time_utc": to_utc_iso(parse_iso(primary["epochs"].get(eid))),
+            "team_a_name": ta, "team_b_name": tb,
+            "raw_price_format": "decimal", "raw_price_a": da, "raw_price_b": db,
+            "decimal_odds_a": da, "decimal_odds_b": db, "decimal_odds_derived": False,
+        })
+        log["linefeed"]["published_quotes"] += 1
 
 
 def parse_linefeed_event(ev: dict) -> dict | None:
@@ -378,8 +416,14 @@ def parse_linefeed_event(ev: dict) -> dict | None:
 
 
 def guess_game(sport_name: str, league: str | None) -> str | None:
+    """Map a source's own naming to a lobby game.
+
+    The 1xBet-platform feeds label CS2 leagues as e.g. "CS 2. Elisa Esports BreakOut" and the
+    sport itself as "Esports", so the league name — not the sport name — carries the title.
+    """
     hay = f"{sport_name} {league or ''}".casefold()
-    if "counter" in hay or "cs2" in hay or "csgo" in hay or "cs:go" in hay:
+    if re.search(r"\bcounter[- ]?strike\b", hay) or re.search(r"\bcs\s*2\b", hay) \
+            or re.search(r"\bcs\s*:?\s*go\b", hay) or re.search(r"\bcsgo\b", hay):
         return "cs2"
     if "league of legends" in hay or re.search(r"\blol\b", hay):
         return "lol"

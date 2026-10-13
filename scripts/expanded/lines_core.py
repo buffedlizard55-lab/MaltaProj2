@@ -110,12 +110,31 @@ def same_team(a: str | None, b: str | None) -> bool:
     return bool(canon_a & canon_b)
 
 
+def competition_tokens(name: str | None) -> set[str]:
+    """Significant tokens of a competition name (letters/digits, length > 3, casefolded)."""
+    if not name:
+        return set()
+    txt = unicodedata.normalize("NFKD", str(name))
+    txt = "".join(ch for ch in txt if not unicodedata.combining(ch)).casefold()
+    return {t for t in re.split(r"[^a-z0-9]+", txt) if len(t) > 3}
+
+
 def same_competition(a: str | None, b: str | None) -> bool:
-    """Loose competition comparison: normalised containment either way (>= 8 chars)."""
-    na, nb = norm(a), norm(b)
-    if len(na) < 8 or len(nb) < 8:
+    """Competition names agree when the shorter name's significant tokens are mostly present.
+
+    Sources abbreviate tournament names differently ("ESL Challenger League Season 52: North
+    America - Cup #3" vs "ESL Challenger League North America"), so containment alone is too
+    strict. The rule used is: at least 3 shared significant tokens AND at least 60% of the
+    shorter name's tokens present in the longer one.
+    """
+    ta, tb = competition_tokens(a), competition_tokens(b)
+    if len(ta) < 3 or len(tb) < 3:
         return False
-    return na in nb or nb in na
+    shared = ta & tb
+    if len(shared) < 3:
+        return False
+    shorter = ta if len(ta) <= len(tb) else tb
+    return len(shared) / len(shorter) >= 0.6
 
 
 def parse_iso(value) -> datetime | None:
@@ -130,8 +149,13 @@ def parse_iso(value) -> datetime | None:
     txt = str(value).strip()
     if not txt:
         return None
+    if txt.isdigit():  # epoch seconds or milliseconds given as a string
+        return parse_iso(int(txt))
     try:
-        return datetime.fromisoformat(txt.replace("Z", "+00:00").replace("z", "+00:00"))
+        dt = datetime.fromisoformat(txt.replace("Z", "+00:00").replace("z", "+00:00"))
+        # The lobby API mixes timezone-aware and naive timestamps; the project contract is
+        # that every parsed time is UTC-aware, otherwise comparisons raise TypeError.
+        return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
     except ValueError:
         for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S", "%d.%m.%Y %H:%M", "%d.%m.%y %H:%M"):
             try:

@@ -60,6 +60,18 @@ jobs:
           python3 scripts/expanded/collect_lines.py --capture-out data/expanded/lines.json 2>&1 | tee data/expanded/collect.log || \
             echo "line collector returned non-zero (evidence kept)"
 
+      - name: 6b. Originate labelled model estimates from official Valve VRS standings
+        run: |
+          python3 scripts/expanded/originate_board_lines.py 2>&1 | tee -a data/expanded/collect.log || \
+            echo "origination non-zero (evidence kept)"
+
+      - name: 6c. Render the mobile board and check its internal links
+        run: |
+          python3 scripts/expanded/build_market_site.py 2>&1 | tee -a data/expanded/collect.log || \
+            echo "site build non-zero (evidence kept)"
+          python3 scripts/expanded/check_market_links.py 2>&1 | tee -a data/expanded/collect.log || \
+            echo "link check non-zero (evidence kept)"
+
       - name: 7. Guard committed sample size
         run: |
           du -sh data/expanded || true
@@ -77,7 +89,7 @@ jobs:
         run: |
           git config user.name "malta-data-bot"
           git config user.email "malta-data-bot@users.noreply.github.com"
-          git add -A data/expanded 2>/dev/null || true
+          git add -A data/expanded market 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "no changes to commit"
           else

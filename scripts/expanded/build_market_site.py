@@ -129,6 +129,22 @@ def pick_badge(row: dict) -> str:
     return f'<span class="badge pick">{esc(pick["team"])} · {pct(pick["probability"])}</span>'
 
 
+def originated_cell(row: dict) -> str:
+    est = row.get("originated_estimate") or {}
+    if not est.get("available"):
+        reason = est.get("reason") or "no external market line"
+        return f'<span class="mini">{esc(reason)}</span>'
+    srcs = " · ".join(
+        f'<a href="{esc(s["url"])}" rel="noopener">{esc(s["label"])}</a>'
+        for s in (est.get("sources") or []) if s.get("url"))
+    return (f'<span class="badge model">MODEL {esc(est["pick"])} · {pct(est["pick_probability"])}</span>'
+            f'<div class="mini">not a market price · {esc(est["method"])}</div>'
+            f'<div class="mini">VRS points: {esc(est["team_a_points"])} ({esc(est["team_a_region"])} '
+            f'#{esc(est["team_a_standing"])}) vs {esc(est["team_b_points"])} ({esc(est["team_b_region"])} '
+            f'#{esc(est["team_b_standing"])})</div>'
+            f'<div class="mini">{srcs}</div>')
+
+
 def flags_cell(row: dict) -> str:
     flags = row.get("verification", {}).get("flags") or []
     if not flags:
@@ -154,6 +170,7 @@ def fixture_row(row: dict, show_game: bool = True) -> str:
   <td data-label="Derived no-vig probability">{probability_bar(a, b, row['team_a'], row['team_b'])}
       <div class="mini">{esc(sources)}</div></td>
   <td data-label="Pick">{pick_badge(row)}</td>
+  <td data-label="Originated estimate (model, not a market price)">{originated_cell(row)}</td>
   <td data-label="Verification">{flags_cell(row)}</td>
 </tr>"""
 
@@ -168,7 +185,8 @@ def table(rows: list[dict], show_game=True) -> str:
 </div>
 <div class="tablewrap"><table class="fixtures">
 <thead><tr><th>Kick-off (UTC)</th>{head_game}<th>Tournament</th><th>Match</th>
-<th>External line(s)</th><th>Derived probability</th><th>Pick</th><th>Verification</th></tr></thead>
+<th>External line(s)</th><th>Derived probability</th><th>Pick</th>
+<th>Originated estimate (model)</th><th>Verification</th></tr></thead>
 <tbody>{body}</tbody></table></div>"""
 
 
@@ -181,6 +199,8 @@ def summary_cards(doc: dict) -> str:
         (s["future_without_external_line"], "no external line found (blank, flagged)"),
         (s["future_with_two_or_more_sources"], "priced by 2+ independent sources"),
         (s["quotes_joined"], "external quotes joined"),
+        (sum(1 for r in rows if (r.get("originated_estimate") or {}).get("available")),
+         "with an originated model estimate (not a market price)"),
     ]
     return '<div class="cards">' + "".join(
         f'<div class="card"><div class="num">{esc(n)}</div><div class="lbl">{esc(l)}</div></div>'
@@ -305,9 +325,17 @@ probability on this site.</p>
   (<code>p = (1/d) / Σ(1/d)</code> per source, then averaged).</li>
   <li><strong>Pick</strong> — the higher-probability side of that consensus. This is what the market says,
   not a prediction by this site.</li>
+  <li><strong>Originated estimate (model)</strong> — a clearly-labelled <em>model</em> value for CS2
+  fixtures that no reachable book prices, computed from Valve's official regional standings
+  (<code>p = 1/(1+10^(-(Ra-Rb)/400))</code> on VRS points). It is never mixed into the market consensus
+  and is never shown as a market line. Everyone else stays blank.</li>
   <li><strong>Verification</strong> — "verified from external line" only when a source quote was joined
   to the fixture; otherwise the flag explains what is missing.</li>
 </ul>
+<p class="note">Two different things are on this page on purpose: <strong>market numbers</strong>
+(quoted prices from bookmakers/prediction markets, each with its source link) and <strong>model
+numbers</strong> (our own originated estimate, labelled, only where no market price exists). They are
+never blended.</p>
 <h2>Start here</h2>
 <p><a class="btn" href="picks.html">All picks ({len(priced)} priced matches)</a>
 <a class="btn ghost" href="cs2.html">CS2 table ({sum(1 for r in future if r['game'] == 'cs2')})</a>
@@ -367,9 +395,12 @@ collection time. They are published blank — no estimate, no inference.</p>
 <code>scheduled</code>. Their source-reported state is kept as-is and they are excluded from the picks
 list.</p>
 {table(stale)}
-<h2>3. Source reachability failures</h2>
+<h2>3. Matches with neither an external line nor a model estimate</h2>
+<p>Nothing is published for these rows: no price, no probability, no originated estimate.</p>
+{table([r for r in unpriced if not (r.get("originated_estimate") or {}).get("available")])}
+<h2>4. Source reachability failures</h2>
 {source_table(log, doc)}
-<h2>4. Irregularities carried forward from earlier sessions</h2>
+<h2>5. Irregularities carried forward from earlier sessions</h2>
 <ul>
   <li>Fixture count differs between earlier snapshots (86 SSR rows at 17:51 UTC, 92/93 from the API,
   90 in the lobby app filters) — reported here, never silently reconciled.</li>
@@ -480,6 +511,7 @@ table.fixtures tr.unpriced{opacity:.72}
 .bar.empty{color:var(--mut);align-items:center;justify-content:center;font-size:.75rem}
 .badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:.82rem;font-weight:700}
 .badge.pick{background:#123324;color:var(--ok);border:1px solid #1d5c3c}
+.badge.model{background:#1a2436;color:#8fc0ff;border:1px solid #2f4f7d}
 .badge.none{background:#33261a;color:var(--warn);border:1px solid #6a4a1e}
 .chip{display:inline-block;background:#2a2118;color:var(--warn);border:1px solid #5b442173;
 border-radius:999px;padding:2px 8px;font-size:.72rem;margin:2px 2px 0 0}
