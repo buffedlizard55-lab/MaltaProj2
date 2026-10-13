@@ -115,6 +115,25 @@ def window_analysis(fixtures: list[dict], counters: dict, now) -> dict:
 
 
 # ------------------------------------------------------------------------------ join rules
+def rating_candidates(name: str, ratings: dict) -> list[dict]:
+    """Names in the official standings that look like this team but are NOT it.
+
+    Published on the flagged page so a reviewer can confirm or reject the mapping; a candidate is
+    never applied automatically, because a wrong rating would silently corrupt a probability.
+    """
+    key = canon_team(name)
+    out = []
+    if not key:
+        return out
+    for other, rec in ratings.items():
+        if other == key or len(other) < 4:
+            continue
+        if other.startswith(key) or key.startswith(other):
+            out.append({"standings_name": rec["team"], "points": rec["points"],
+                        "region": rec["region"], "snapshot": rec["snapshot"]})
+    return sorted(out, key=lambda r: -r["points"])[:4]
+
+
 def classify_quote(quote: dict) -> str:
     return quote.get("confidence") or "market"
 
@@ -320,6 +339,7 @@ def build_board(fixtures_doc: dict, quotes_doc: dict, ratings_doc: dict, now) ->
             else:
                 missing = [t for t, r in ((row["team_a"], ra), (row["team_b"], rb)) if not r]
                 row["flags"].append("no_valve_vrs_rating:" + "|".join(missing))
+                row["rating_candidates_refused"] = {t: rating_candidates(t, ratings) for t in missing}
         elif (row["game"] or "").upper() == "LOL":
             row["flags"].append("no_official_rating_source_for_lol")
 
@@ -365,6 +385,7 @@ def build_board(fixtures_doc: dict, quotes_doc: dict, ratings_doc: dict, now) ->
         rows.append(row)
 
     listed = [r for r in rows if r.get("listed_in_lobby") is True]
+    listed_pickable = [r for r in listed if "picks_locked_or_past" not in r["flags"]]
     unlisted = [r for r in rows if r.get("listed_in_lobby") is False]
     summary = {
         "rows": len(rows),
@@ -375,6 +396,16 @@ def build_board(fixtures_doc: dict, quotes_doc: dict, ratings_doc: dict, now) ->
         "lobby_listed_estimate": sum(1 for r in listed if r["published"]["basis"] == "estimate"),
         "lobby_listed_blank": sum(1 for r in listed if r["published"]["basis"] == "none"),
         "not_in_lobby_listing_rows": len(unlisted),
+        "lobby_listed_pickable": len(listed_pickable),
+        "lobby_listed_pickable_with_probability": sum(1 for r in listed_pickable
+                                                      if r["published"]["basis"] != "none"),
+        "lobby_listed_pickable_market": sum(1 for r in listed_pickable
+                                            if r["published"]["basis"] == "market"),
+        "lobby_listed_pickable_estimate": sum(1 for r in listed_pickable
+                                              if r["published"]["basis"] == "estimate"),
+        "lobby_listed_pickable_blank": sum(1 for r in listed_pickable
+                                           if r["published"]["basis"] == "none"),
+        "lobby_listed_picks_closed": len(listed) - len(listed_pickable),
         "with_market_probability": sum(1 for r in rows if r["published"]["basis"] == "market"),
         "with_originated_estimate": sum(1 for r in rows if r["published"]["basis"] == "estimate"),
         "blank": sum(1 for r in rows if r["published"]["basis"] == "none"),
@@ -745,11 +776,11 @@ def render_index(board: dict, verification: dict) -> str:
     other = sorted([r for r in rows if r.get("listed_in_lobby") is not True], key=sort_key)
     s = board["summary"]
     kpis = f"""<div class="kpi">
-<div><b>{s["lobby_listed_rows"]}</b>matches listed by the lobby now</div>
-<div><b>{s["lobby_listed_with_probability"]}</b>of those with a published probability</div>
-<div><b>{s["lobby_listed_market"]}</b>from external bookmaker lines</div>
-<div><b>{s["lobby_listed_estimate"]}</b>labelled originated estimate</div>
-<div><b>{s["lobby_listed_blank"]}</b>blank / unverified</div>
+<div><b>{s["lobby_listed_rows"]}</b>matches listed by the lobby</div>
+<div><b>{s["lobby_listed_pickable"]}</b>still open for picks</div>
+<div><b>{s["lobby_listed_pickable_market"]}</b>of those priced from external bookmaker lines</div>
+<div><b>{s["lobby_listed_pickable_estimate"]}</b>labelled originated estimate</div>
+<div><b>{s["lobby_listed_pickable_blank"]}</b>blank / unverified</div>
 </div>"""
     note = f"""<div class="note"><b>What this page is.</b> Every fixture the HotSpawn Pick'ems lobby is
 currently listing, with a win probability and an obvious pick. A probability is published only from an
@@ -771,11 +802,19 @@ Verification: {verification["passed"]}/{len(verification["checks"])} checks pass
     cards = "".join(row_card(r) for r in listed) or "<p>No fixtures in the lobby listing window.</p>"
     other_block = ""
     if other:
-        other_block = (f'<h2>Also seen in the fixture API window but not listed by the lobby right now '
-                       f'({len(other)})</h2><div class="note">These rows are kept so nothing is hidden, '
-                       f'but they are not part of the lobby listing and are excluded from the coverage '
-                       f'numbers above.</div><details><summary>Show {len(other)} rows</summary>'
-                       f'<div class="cards">' + "".join(row_card(r) for r in other) + "</div></details>")
+        other_rows = "".join(
+            f'<tr><td>{esc(r["start_time_utc"])}</td><td>{esc(r["game"])}</td>'
+            f'<td>{esc(r["competition"])}</td><td>{esc(r["team_a"])} vs {esc(r["team_b"])}</td>'
+            f'<td>{esc(r["published"]["basis"])}</td>'
+            f'<td>{"yes" if r["published"]["pick_side"] else "no"}</td>'
+            f'<td><a href="{esc(r["hotspawn_match_url"])}">fixture</a></td></tr>' for r in other[:400])
+        other_block = (f'<h2>Also returned by the fixture API but not listed by the lobby right now '
+                       f'({len(other)})</h2><div class="note">Kept so nothing is hidden, but these rows '
+                       f'are <b>not</b> part of the lobby listing and are excluded from the coverage '
+                       f'numbers above.</div><details><summary>Show the list</summary>'
+                       f'<div class="wrap"><table><thead><tr><th>Kickoff (UTC)</th><th>Game</th>'
+                       f'<th>Tournament</th><th>Match</th><th>Basis</th><th>Pick</th><th>Source</th>'
+                       f'</tr></thead><tbody>{other_rows}</tbody></table></div></details>')
     return page("HotSpawn Pick'ems — live probability board", "index.html",
                 kpis + note + win_note + f'<h2>Listed in the lobby now ({len(listed)})</h2>'
                 f'<div class="cards">{cards}</div>' + other_block,
@@ -787,6 +826,7 @@ def render_game(board: dict, game: str) -> str:
     rows.sort(key=lambda r: (r.get("listed_in_lobby") is not True,
                              r["published"]["basis"] != "market", r["start_time_utc"] or ""))
     listed = [r for r in rows if r.get("listed_in_lobby") is True]
+    listed_pickable = [r for r in listed if "picks_locked_or_past" not in r["flags"]]
     body = (f'<h2>{esc(game)} matches ({len(rows)} in the fixture window, {len(listed)} listed in '
             f'the lobby now)</h2><div class="cards">' + "".join(row_card(r) for r in rows) + "</div>")
     return page(f"{game} — HotSpawn Pick'ems probabilities", f"{game.lower()}.html", body,
@@ -822,6 +862,22 @@ def render_flagged(board: dict, verification: dict, quotes_doc: dict, log: dict)
                                    f'{esc(value.get("error"))} <a href="{esc(value.get("url"))}">url</a></li>')
     checks = "".join(f'<li>{"PASS" if c["passed"] else "FAIL"} — {esc(c["check"])}: '
                      f'{esc(json.dumps(c["detail"])[:400])}</li>' for c in verification["checks"])
+    cand_rows = []
+    for r in board["rows"]:
+        for team, cands in (r.get("rating_candidates_refused") or {}).items():
+            for c in cands:
+                cand_rows.append(
+                    f'<tr><td>{esc(r["start_time_utc"])}</td>'
+                    f'<td>{esc(r["team_a"])} vs {esc(r["team_b"])}</td>'
+                    f'<td>{esc(team)}</td><td>{esc(c["standings_name"])}</td>'
+                    f'<td>{esc(c["points"])}</td><td>{esc(c["region"])}</td>'
+                    f'<td>{esc(c["snapshot"])}</td></tr>')
+    rating_candidates_html = (
+        '<div class="wrap"><table><thead><tr><th>Kickoff (UTC)</th><th>Match</th>'
+        '<th>Team we could not rate</th><th>Similar name in the standings</th><th>Points</th>'
+        '<th>Region</th><th>Snapshot</th></tr></thead><tbody>' + "".join(cand_rows)
+        + '</tbody></table></div>') if cand_rows else (
+        '<p>No similar names were found for the unrated teams in this build.</p>')
     body = f"""<div class="note"><b>Flagged for review.</b> Nothing on this page blocks the release.
 It is the complete list of what could <i>not</i> be confirmed from an official or primary source, published
 so the numbers above can be challenged item by item.</div>
@@ -829,12 +885,19 @@ so the numbers above can be challenged item by item.</div>
 <h2>Row-level flags ({len(flagged)})</h2>{flag_rows}
 <h2>Joins refused ({len(rejected)})</h2><ul>{rej_lines or "<li>none</li>"}</ul>
 <h2>Source access problems</h2><ul>{''.join(source_problems) or "<li>none recorded in this run</li>"}</ul>
+<h2>Rating candidates considered and refused</h2>
+<p>When a match has no external price, the originated estimate needs an official Valve VRS rating for
+<b>both</b> teams. Where a name in the standings merely looks similar, the mapping is <b>never</b> applied
+automatically — it is listed here for a human decision, because a wrong rating would silently corrupt a
+probability.</p>
+{rating_candidates}
 <h2>Coverage gap against the lobby listing</h2>
 <p>Check C11 compares the fixture ids the lobby page itself carries against this board: if the lobby
 lists a match that is not in this board, it is reported here rather than dropped.</p>
 <pre style="white-space:pre-wrap;font-size:12.5px;color:#9aa4b2">{esc(next((json.dumps(c["detail"])
    for c in verification["checks"] if c["check"].startswith("C11")), "C11 not present"))}</pre>
 <h2>Line-by-line verification of this build</h2><ul>{checks}</ul>"""
+    body = body.replace("{rating_candidates}", rating_candidates_html)
     return page("Flagged for review — HotSpawn Pick'ems board", "flagged.html", body,
                 board["generated_at_utc"])
 
