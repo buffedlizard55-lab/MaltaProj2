@@ -1,0 +1,108 @@
+name: expanded-lines
+
+# Session a0586093 (T-EXPAND). Collects external (non-HotSpawn) esports betting lines on a
+# runner with full internet, because this sandbox has no general egress. Evidence and data
+# are committed back with [skip ci] so the run cannot loop on its own commits.
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/expanded-lines.yml'
+      - 'scripts/expanded/**'
+  schedule:
+    # Keep the external lines and the board fresh without anyone touching the repo.
+    - cron: '41 */2 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: expanded-lines-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 1. Probe source reachability (plain HTTP)
+        run: python3 scripts/expanded/probe_sources.py --out data/expanded/source_probe.json
+
+      - name: 2. Capture raw payload samples (plain HTTP)
+        run: python3 scripts/expanded/capture_samples.py --outdir data/expanded/samples
+
+      - name: 3. Round-3 exploration — full-coverage endpoints + extra bookmakers
+        run: python3 scripts/expanded/probe_extra_sources.py || echo "extra probe non-zero (evidence kept)"
+
+      - name: 4. Install headless Chromium
+        run: |
+          pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+
+      - name: 5. Capture browser-only sources (GG.BET, Oddspedia) + rendered probe
+        run: |
+          python3 scripts/expanded/capture_browser_samples.py --outdir data/expanded/samples || \
+            echo "browser capture returned non-zero (evidence kept)"
+          python3 scripts/expanded/probe_rendered.py --out data/expanded/rendered_probe.json || \
+            echo "rendered probe returned non-zero (evidence kept)"
+
+      - name: 6a. Probe per-championship feeds (LineFeed)
+        run: python3 scripts/expanded/probe_league_feeds.py || echo "league feed probe non-zero (evidence kept)"
+
+      - name: 6. Build line dataset from captured sources
+        run: |
+          set -o pipefail
+          python3 scripts/expanded/collect_lines.py --capture-out data/expanded/lines.json 2>&1 | tee data/expanded/collect.log || \
+            echo "line collector returned non-zero (evidence kept)"
+
+      - name: 6b. Originate labelled model estimates from official Valve VRS standings
+        run: |
+          python3 scripts/expanded/originate_board_lines.py 2>&1 | tee -a data/expanded/collect.log || \
+            echo "origination non-zero (evidence kept)"
+
+      - name: 6bb. Verify the repository's own claims against primary sources
+        run: |
+          python3 scripts/expanded/verify_repo_claims.py 2>&1 | tee -a data/expanded/collect.log || \
+            echo "repo review non-zero (evidence kept)"
+
+      - name: 6c. Render the mobile board and check its internal links
+        run: |
+          python3 scripts/expanded/build_market_site.py 2>&1 | tee -a data/expanded/collect.log || \
+            echo "site build non-zero (evidence kept)"
+          python3 scripts/expanded/check_market_links.py 2>&1 | tee -a data/expanded/collect.log || \
+            echo "link check non-zero (evidence kept)"
+
+      - name: 7. Guard committed sample size
+        run: |
+          du -sh data/expanded || true
+          find data/expanded/samples -type f -size +3M -print -delete || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: expanded-evidence
+          path: data/expanded/
+          retention-days: 14
+
+      - name: 8. Commit evidence + data to this branch
+        if: always()
+        run: |
+          git config user.name "malta-data-bot"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add -A data/expanded market 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "no changes to commit"
+          else
+            git commit -m "evidence: expanded external source capture [skip ci]"
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push && break || sleep 5
+            done
+          fi

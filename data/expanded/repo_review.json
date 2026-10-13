@@ -1,0 +1,206 @@
+{
+ "generated_at_utc": "2026-10-13T22:32:12Z",
+ "checks": [
+  {
+   "id": "R1",
+   "claim": "data/hotspawn_matches.json matches the live lobby fixture list",
+   "source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "snapshot_file": "data/hotspawn_matches.json",
+   "snapshot_generated_at_utc": "2026-10-13T22:02:49Z",
+   "live_count_all_sports": 11570,
+   "live_window_rows": 275,
+   "snapshot_count": 406,
+   "window_ids_missing_from_snapshot": [],
+   "stale_in_snapshot": [],
+   "status": "verified",
+   "detail": "406 snapshot rows vs 275 live window rows; 0 live window fixture(s) missing from the snapshot, 0 snapshot row(s) no longer served"
+  },
+  {
+   "id": "R2",
+   "claim": "data/originated_matches.json team VRS points and standings match Valve's official regional standings",
+   "sources": [
+    "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_global_2026_10_05.md",
+    "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_europe_2026_10_05.md",
+    "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_americas_2026_10_05.md",
+    "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_asia_2026_10_05.md"
+   ],
+   "status": "verified",
+   "teams_checked": 56,
+   "mismatches": [],
+   "vrs_snapshot_date": "2026-10-05",
+   "detail": "56 team records across 4 Valve VRS files (2026-10-05) checked; 0 mismatch(es)"
+  },
+  {
+   "id": "R3",
+   "claim": "each data/originated_matches.json fair probability is what its own documented model produces from the ratings it records",
+   "method": "p = 1/(1+10^(-(Ra-Rb)/400)) on the file's recorded effective ratings, and decimal odds = 1/(p*1.045) for the documented 4.5% overround",
+   "status": "verified",
+   "pairs_checked": 28,
+   "mismatches": [],
+   "detail": "28 pairings recomputed from the ratings the file itself records; 0 mismatch(es); 21 pairing(s) carry documented momentum adjustments",
+   "model_assumptions_documented_by_the_file": [
+    {
+     "pairing": "Falcons vs Legacy",
+     "note": "pure VRS-logistic differs from the published number (documented momentum adjustment)",
+     "pure_vrs_prob_a": 0.376,
+     "published_prob_a": 0.4831
+    },
+    {
+     "pairing": "Falcons vs FURIA",
+     "note": "pure VRS-logistic differs from the published number (documented momentum adjustment)",
+     "pure_vrs_prob_a": 0.5201,
+     "published_prob_a": 0.6066
+    },
+    {
+     "pairing": "Falcons vs Aurora",
+     "note": "pure VRS-logistic differs from the published number (documented momentum adjustment)",
+     "pure_vrs_prob_a": 0.675,
+     "published_prob_a": 0.7439
+    },
+    {
+     "pairing": "Falcons vs BetBoom",
+     "note": "pure VRS-logistic differs from the published number (documented momentum adjustment)",
+     "pure_vrs_prob_a": 0.8056,
+     "published_prob_a": 0.8274
+    },
+    {
+     "pairing": "Falcons vs NiP",
+     "note": "pure VRS-logistic differs from the published number (documented momentum adjustment)",
+     "pure_vrs_prob_a": 0.8555,
+     "published_prob_a": 0.9058
+    },
+    {
+     "pairing": "Legacy vs FURIA",
+     "note": "pure VRS-logistic differs from the published number (documented momentum adjustment)",
+     "pure_vrs_prob_a": 0.6427,
+     "published_prob_a": 0.6227
+    },
+    {
+     "pairing": "Legacy vs BetBoom",
+     "note": "pure VRS-logistic differs from the published number (documented momentum adjustment)",
+     "pure_vrs_prob_a": 0.8731,
+     "published_prob_a": 0.8368
+    },
+    {
+     "pairing": "Legacy vs 9z",
+     "note": "pure VRS-logistic differs from the published number (documented momentum adjustment)",
+     "pure_vrs_prob_a": 0.9032,
+     "published_prob_a": 0.8472
+    },
+    {
+     "pairing": "Legacy vs PARIVISION",
+     "note": "pure VRS-logistic differs from the published number (documented momentum adjustment)",
+     "pure_vrs_prob_a": 0.9523,
+     "published_prob_a": 0.92
+    },
+    {
+     "pairing": "FURIA vs BetBoom",
+     "note": "pure VRS-logistic differs from the published number (documented momentum adjustment)",
+     "pure_vrs_prob_a": 0.7927,
+     "published_prob_a": 0.7566
+    }
+   ],
+   "note": "Team strengths beyond raw VRS (momentum/invite weighting) are modelling assumptions made in scripts/originate_lines.py and are reported here rather than silently accepted."
+  },
+  {
+   "id": "R4",
+   "claim": "data/cs2_odds_egamersworld.json rows refer to real lobby fixtures",
+   "source": "https://egamersworld.com/counterstrike/matches",
+   "rows": 32,
+   "status": "verified",
+   "mismatches": [],
+   "detail": "32 priced rows joined to the lobby snapshot by fixture id and team name; 0 mismatch(es)"
+  },
+  {
+   "id": "R5",
+   "claim": "data/lines.json summary counters match its own row list",
+   "declared_fixtures_total": 92,
+   "rows": 92,
+   "status": "verified",
+   "detail": "declared fixtures_total=92 vs 92 rows; fixtures_with_external_line=11"
+  },
+  {
+   "id": "R6",
+   "claim": "every price published on the board carries a source link, a market label and a retrieval timestamp",
+   "priced_rows": 28,
+   "distinct_source_pages": 16,
+   "links_listed_for_manual_review": [
+    "https://melbet.com/en/line/esports/",
+    "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-the-last-resort-202610141000",
+    "https://www.bovada.lv/esports/counter-strike-2/esl-challenger-league/south-america/ex-keyd-stars-galorys-202610131700",
+    "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600",
+    "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/heroic-envy-202610150600",
+    "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/hotu-fnatic-202610140600",
+    "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-bc-game-202610150600",
+    "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/9z-globant-team-aurora-202610140430",
+    "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-bb-team-202610141200",
+    "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610140930",
+    "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-ninjas-in-pyjamas-202610140700",
+    "https://www.bovada.lv/esports/league-of-legends/demacia-cup-global-invitational/bnk-fearx-kt-rolster-202610140500",
+    "https://www.bovada.lv/esports/league-of-legends/emea-masters-summer/solary-anubis-gaming-202610141200",
+    "https://www.bovada.lv/esports/league-of-legends/world-championship-play-in/cloud9-karmine-corp-202610151900",
+    "https://www.bovada.lv/esports/league-of-legends/world-championship-play-in/furia-esports-mvk-esports-202610151400",
+    "https://www.pinnacle.com/en/esports/"
+   ],
+   "reachability_from_this_host": {
+    "reachable": 1,
+    "not_reachable": 15,
+    "note": "bookmaker pages commonly refuse datacenter clients, so a failure here is not treated as a broken link \u2014 the reviewer clicks them",
+    "not_reachable_examples": [
+     {
+      "source": "Bovada",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/esl-challenger-league/south-america/ex-keyd-stars-galorys-202610131700"
+     },
+     {
+      "source": "Melbet (1xBet platform, LineFeed)",
+      "url": "https://melbet.com/en/line/esports/"
+     },
+     {
+      "source": "Bovada",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/9z-globant-team-aurora-202610140430"
+     },
+     {
+      "source": "Bovada",
+      "url": "https://www.bovada.lv/esports/league-of-legends/demacia-cup-global-invitational/bnk-fearx-kt-rolster-202610140500"
+     },
+     {
+      "source": "Bovada",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600"
+     },
+     {
+      "source": "Bovada",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/hotu-fnatic-202610140600"
+     },
+     {
+      "source": "Bovada",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-ninjas-in-pyjamas-202610140700"
+     },
+     {
+      "source": "Bovada",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610140930"
+     },
+     {
+      "source": "Bovada",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-the-last-resort-202610141000"
+     },
+     {
+      "source": "Bovada",
+      "url": "https://www.bovada.lv/esports/league-of-legends/emea-masters-summer/solary-anubis-gaming-202610141200"
+     }
+    ]
+   },
+   "status": "verified",
+   "mismatches": [],
+   "detail": "28 priced rows, 16 distinct source pages, 0 row(s) missing provenance; 1 link(s) answered automatically"
+  },
+  {
+   "id": "R7",
+   "claim": "where two or more independent sources price the same fixture, their no-vig probabilities agree within 12 points",
+   "fixtures_with_two_or_more_sources": 14,
+   "status": "verified",
+   "mismatches": [],
+   "detail": "14 fixture(s) priced by 2+ sources compared source by source; 0 with a spread wider than 12 points"
+  }
+ ],
+ "irregularities": []
+}

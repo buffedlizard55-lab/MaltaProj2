@@ -95,6 +95,9 @@ NAV = [
     # session's independent line-by-line verification report
     ("reconcile/index.html", "Reconciled picks (4e6dcd0d)"),
     ("verify/0f71ea59/index.html", "Independent verification (0f71ea59)"),
+    # integration link added by session a0586093 (T-EXPAND, single-anchor edit documented in
+    # COORDINATION.md): the source-linked external-line board with the repo-review page
+    ("market/index.html", "Pick'em line board (a0586093)"),
 ]
 
 
