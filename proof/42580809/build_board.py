@@ -511,11 +511,23 @@ def build():
             gate_rejected.append(dict(rec, rejection_reason=reason))
         else:
             usable.append(rec)
+    seen_gate, unique_gate = set(), []
+    for rec in gate_rejected:
+        key = (rec["source_key"], tuple(rec["source_quoted"][k] for k in ("team_a", "team_b")),
+               json.dumps(rec.get("raw", {}).get("odds")))
+        if key in seen_gate:
+            continue
+        seen_gate.add(key)
+        unique_gate.append(rec)
+    gate_rejected = unique_gate
     failed_fixtures = {r["fixture_id"] for r in gate_rejected}
     for rec in gate_rejected:
         rejected.append({"reason": rec["rejection_reason"], "source_key": rec["source_key"],
                          "raw_names": [rec["source_quoted"]["team_a"], rec["source_quoted"]["team_b"]],
-                         "start": rec["start_time_utc"], "quality_gate": True, "raw": rec.get("raw")})
+                         "start": rec["start_time_utc"], "quality_gate": True, "raw": rec.get("raw"),
+                         # provenance kept so every flagged row can link the official page it was read from
+                         "source_url": rec.get("source_url"), "api_url": rec.get("api_url"),
+                         "retrieved_at_utc": rec.get("retrieved_at_utc")})
     accepted = usable
 
     # De-duplicate: the same underlying market can be present in more than one collected batch

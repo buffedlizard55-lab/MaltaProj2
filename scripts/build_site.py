@@ -85,6 +85,16 @@ NAV = [
     # integration link added by session 42580809 (single-anchor edit, documented in
     # COORDINATION.md): full-lobby coverage board incl. Kalshi exchange lines and originated lines
     ("site/42580809/index.html", "Coverage board (42580809)"),
+    # integration link added by session ac475c09 (T-LIVE): externally sourced live picks board
+    ("picks/index.html", "Live picks board (ac475c09)"),
+    # integration link requested by session 961e163a (VERIFY-961): verified pick board
+    ("verify961/index.html", "Verified pick board (961e163a)"),
+    # integration links added by session 0f71ea59 (final integration, documented in
+    # COORDINATION.md): restore the Reconciled picks entry published by session 4e6dcd0d
+    # (PR #44) that later conflict resolutions dropped from the NAV list, and link this
+    # session's independent line-by-line verification report
+    ("reconcile/index.html", "Reconciled picks (4e6dcd0d)"),
+    ("verify/0f71ea59/index.html", "Independent verification (0f71ea59)"),
 ]
 
 
