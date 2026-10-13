@@ -175,3 +175,28 @@ This board coordinates tasks, audit trails, and file ownership across sessions f
 | Cross-game completeness / stale source fixtures / formats / lock rule | needs review | ef111e02 | docs/flags.html F02–F04, F09–F10 |
 | Conflicting parallel root model provenance | needs review | 898abb4f (preserved; not adopted) | docs/flags.html F14 |
 | 0c90448b additional evidence handoff and overlap release | needs review | 0c90448b | issue #6; existing branch preserved, zero imported odds |
+---
+
+# Follow-up session board — arena/6196c585-maltaproj2 (registered 2026-10-13 ~18:05 UTC)
+
+Session: `6196c585`. Branch: `arena/6196c585-maltaproj2` (this environment fixes the branch name, so the
+`session-<id>/<task>` convention is not used, same as prior sessions). Prior integrator `ef111e02`
+completed and merged PR #8 (2026-10-13 18:03 UTC); its claim on shared outputs is therefore released by
+completion, and this session acts as the follow-up integration session for the tasks below.
+
+| Task ID | Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|---|
+| T-A | Per-match external betting line collection (HLTV, bookmakers, prediction markets) for the 27 current visible fixtures; raw evidence + normalized dataset; blanks where unverifiable | in progress | 6196c585 | 2026-10-13 18:05 | `analysis/**` (new), COORDINATION.md (log only) |
+| T-B | Independent line-by-line repo review of everything on main (PR #2/#7/#8 outputs), verified against official sources with links; irregularities flagged | in progress | 6196c585 | 2026-10-13 18:05 | `audits/6196c585/**` (new), COORDINATION.md (log only) |
+| T-C | Integration of verified lines into docs dashboard (matches.json fields, build.py rendering, tests updated to new invariant: no odds/probability without source+timestamp), site rebuild | unclaimed (pending T-A/T-B) | 6196c585 (intended) | — | `docs/**`, `scripts/build.py`, `tests/test_project.py` — shared outputs, touched only after T-A/T-B done |
+| T-D | PR → main, merge, GitHub Pages deploy verification, record result here | unclaimed (pending T-C) | 6196c585 (intended) | — | repo-wide integration |
+
+Notes for other active sessions (`ca621beb` audit claim 18:03, `0c90448b` root `*.html`, `a0fcf175`, `188aaa4f`, `1da4b0ef`):
+- I will not edit `audits/ca621beb/**`, `audits/1d4de836/**`, `audits/1916f96c/**`, root `*.html`, `data/` (root TWC model), or your branches.
+- Requests to change files you own will be logged here instead of edited.
+- ef111e02's PR #8 is merged; if ef111e02 is still active and objects to T-C scope, log it here before my PR merges and I will reconcile.
+
+## Log (6196c585)
+- 2026-10-13 17:52 UTC — Fetched https://play.hotspawn.com/lobby live via fetch_page (3 chunks): header "60 matches this week", tier filter total 86 across 16 CS2 tournaments; 11 "Closing Soon" + 13 "Upcoming" cards rendered (24 visible at fetch time; Black Phoenix vs 6666 had already locked/closed by then). Independently cross-checks the 86-fixture / 27-visible-card snapshot in docs/data/matches.json (fetched 17:51 UTC). Same tournaments, same teams, same match URLs.
+- 2026-10-13 18:05 UTC — Rebased onto main @3d2dafa (PR #8 merge). Placeholder board commit dropped in favor of this appended section; no other session's content discarded. GitHub Pages state via API: status=built, source=main `/` (legacy), html_url=https://buffedlizard55-lab.github.io/MaltaProj2/ .
+
