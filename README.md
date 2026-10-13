@@ -1,6 +1,6 @@
 # LineWatch — Hotspawn pick’em source audit
 
-**Dashboard:** [Open LineWatch](https://buffedlizard55-lab.github.io/MaltaProj2/docs/) (legacy Pages path; workflow deployments serve the dashboard at the [site root](https://buffedlizard55-lab.github.io/MaltaProj2/)).
+**Dashboard:** https://buffedlizard55-lab.github.io/MaltaProj2/
 
 An evidence-first static directory, external-odds reference analysis, and transparent review queue. Not affiliated with Hotspawn or a bookmaker.
 

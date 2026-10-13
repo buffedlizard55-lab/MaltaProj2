@@ -4,7 +4,7 @@ Session: `ef111e02` (final integration session). This environment requires all w
 
 | Task | Status | Owner | Claimed UTC | File scope |
 |---|---|---|---|---|
-| Repository audit, source investigation, data pipeline, dashboard, tests and Pages integration | in progress | ef111e02 | 2026-10-13 17:50 | COORDINATION.md, README.md, docs/**, scripts/**, tests/**, .github/workflows/**, .gitignore |
+| Repository audit, source investigation, data pipeline, dashboard, tests and Pages integration | done | ef111e02 | 2026-10-13 17:50 | COORDINATION.md, README.md, docs/**, scripts/**, tests/**, .github/workflows/**, .gitignore |
 
 ## Log
 - Initial checkout contains only README.md (`# MaltaProj2`), no application, data, tests, or existing task board. No other task claims exist.
@@ -162,3 +162,16 @@ This board coordinates tasks, audit trails, and file ownership across sessions f
 - Before integration PR #8 could merge, another session `898abb4f` merged PR #7 into main, outside this session's first-pushed integration claim. Its root TWC model covers hypothetical pairings, not the verified full lobby inventory, and claims no official opening fixtures / sportsbook lines despite this audit's observed fixtures and two explicit markets.
 - Stopped to reconcile main rather than overwrite it. README and COORDINATION content conflicts resolved by preserving the other board verbatim above and the original README under docs/evidence/parallel-898abb4f-readme.md. All root model files/data/tests remain untouched; they are not accepted as verified inputs to the docs dashboard. Conflicting unsupported claims are published as a new review finding.
 - Integration PR #8 continues on the required session branch, preserving both histories and all completed audit evidence. Parallel model provenance is needs review, not silently treated as verified.
+
+## Release record — integration session ef111e02
+- PR https://github.com/buffedlizard55-lab/MaltaProj2/pull/8 merged successfully at 2026-10-13T18:03:43Z, merge commit `3d2dafad730f5ab87d2f0cc502ac71dcb8b417b8`.
+- GitHub Pages artifact deployment succeeded: https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38443703250 (build 33s, deploy 19s). The Pages-scoped token CAN publish artifacts despite being unable to change site settings. Hourly artifact refresh deployment is therefore operational, not blocked by settings access.
+- Deployment ID `7046137048` targets the merged commit and the live root https://buffedlizard55-lab.github.io/MaltaProj2/ . The earlier legacy build also succeeded. Added sequencing to avoid a later legacy build overwriting the artifact dashboard, and an actual hosted HTTP content check (six pages/assets/JSON) for follow-up deployments.
+- Browser smoke checks passed after main-branch fresh collection as well as PR validation. The retained parallel model's eight structural tests also pass, but those tests do not establish model-data provenance. Our 13 audit/integration tests plus exhaustive 86-row comparison remain the factual verification basis.
+
+| Remaining item | Status | Owner | Published location |
+|---|---|---|---|
+| Complete fresh external odds, validated joins and probabilities for every match | needs review | ef111e02 | docs/flags.html F01, F05–F08 and per-row table |
+| Cross-game completeness / stale source fixtures / formats / lock rule | needs review | ef111e02 | docs/flags.html F02–F04, F09–F10 |
+| Conflicting parallel root model provenance | needs review | 898abb4f (preserved; not adopted) | docs/flags.html F14 |
+| 0c90448b additional evidence handoff and overlap release | needs review | 0c90448b | issue #6; existing branch preserved, zero imported odds |
