@@ -22,6 +22,13 @@ from datetime import datetime, timezone
 
 TIME_TOLERANCE_MIN = 90
 
+# Sources whose event clock is known to run ahead of the lobby card clock (HotSpawn's own lobby
+# clock is documented as ~4 h behind the API's UTC start), and majors whose bookmaker list simply
+# opens hours later, still describe the same fixture. A join that far apart is only accepted when
+# both team names match AND the competition names agree, and the row carries the wider rule label
+# so a reviewer can see the skew instead of it being silently absorbed.
+RELAXED_TOLERANCE_MIN = 720
+
 # Explicit, reviewable alias table: source spelling -> canonical spelling used by the lobby.
 # Keys are normalised (see `norm`). Only add an entry when the two names are the same team;
 # "Academy", "fe" (female) and "Jr" variants are deliberately NOT collapsed.
@@ -121,6 +128,18 @@ def same_team(a: str | None, b: str | None) -> bool:
     canon_a = {ALIASES.get(x, x) for x in ca}
     canon_b = {ALIASES.get(x, x) for x in cb}
     return bool(canon_a & canon_b)
+
+
+def both_names_are_exact(fa: str, fb: str, qa: str, qb: str) -> bool:
+    """True when each source name equals a fixture name after normalisation (no alias guesswork)."""
+    q = {norm(qa), norm(qb)}
+    f = {norm(fa), norm(fb)}
+    return bool(q) and q == f
+
+
+def token_overlap(a: str | None, b: str | None) -> int:
+    """Number of shared significant (longer than 3 characters) competition tokens."""
+    return len(competition_tokens(a) & competition_tokens(b))
 
 
 def competition_tokens(name: str | None) -> set[str]:
@@ -227,9 +246,14 @@ def join_quote(fixture: dict, quote: dict) -> dict | None:
     q_dt = parse_iso(quote.get("start_time_utc"))
     delta = minutes_between(f_dt, q_dt)
     if delta is not None:
-        if delta > TIME_TOLERANCE_MIN:
+        if delta <= TIME_TOLERANCE_MIN:
+            rule = f"both teams match; source start time within {TIME_TOLERANCE_MIN} min"
+        elif delta <= RELAXED_TOLERANCE_MIN and token_overlap(fixture.get("competition_name"),
+                                                              quote.get("source_league")) >= 1:
+            rule = (f"both teams match; source start time {round(delta) if delta else delta} min away "
+                    f"(within the {RELAXED_TOLERANCE_MIN} min clock-skew rule) and competition names agree")
+        else:
             return None
-        rule = f"both teams match; source start time within {TIME_TOLERANCE_MIN} min"
     else:
         if not same_competition(fixture.get("competition_name"), quote.get("source_league")):
             return None
@@ -239,6 +263,7 @@ def join_quote(fixture: dict, quote: dict) -> dict | None:
         "rule": rule,
         "side_order": "reversed" if swapped else "same",
         "start_time_delta_min": round(delta, 1) if delta is not None else None,
+        "within_strict_tolerance": bool(delta is not None and delta <= TIME_TOLERANCE_MIN),
         "aliases_applied": sorted({n for n in (qa, qb)
                                    if norm(n) not in (norm(fa), norm(fb))}),
     }

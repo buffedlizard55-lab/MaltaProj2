@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "expanded"))
 
 from collect_lines import guess_game, parse_linefeed_event  # noqa: E402
+from verify_repo_claims import window_rows  # noqa: E402
 from lines_core import (  # noqa: E402
     consensus, implied, join_quote, norm, parse_iso, same_team, to_utc_iso,
 )
@@ -165,6 +166,28 @@ class TestJoinRules(unittest.TestCase):
                  "start_time_utc": "2026-10-15T01:00:00Z"}
         self.assertIsNone(join_quote(self.fixture, quote))
 
+    def test_join_accepts_clock_skew_when_the_competition_agrees(self):
+        fixture = {"team_a": "Cloud9", "team_b": "Karmine Corp",
+                   "competition_name": "World Championship Play-In",
+                   "scheduled_start_time": "2026-10-15T18:00:00Z"}
+        quote = {"team_a_name": "Karmine Corp", "team_b_name": "Cloud9",
+                 "source_league": "League of Legends - World Championship Play-In",
+                 "start_time_utc": "2026-10-15T13:00:00Z"}
+        join = join_quote(fixture, quote)
+        self.assertIsNotNone(join)
+        self.assertFalse(join["within_strict_tolerance"])
+        self.assertEqual(join["side_order"], "reversed")
+        self.assertIn("clock-skew", join["rule"])
+
+    def test_join_rejects_clock_skew_without_competition_agreement(self):
+        fixture = {"team_a": "Cloud9", "team_b": "Karmine Corp",
+                   "competition_name": "Some Local Cup",
+                   "scheduled_start_time": "2026-10-15T18:00:00Z"}
+        quote = {"team_a_name": "Cloud9", "team_b_name": "Karmine Corp",
+                 "source_league": "League of Legends - World Championship Play-In",
+                 "start_time_utc": "2026-10-15T13:00:00Z"}
+        self.assertIsNone(join_quote(fixture, quote))
+
     def test_join_without_time_requires_competition_agreement(self):
         quote = {"team_a_name": "Zomblers", "team_b_name": "Overtake Sector",
                  "start_time_utc": None,
@@ -227,3 +250,31 @@ class TestPublishedData(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class TestRepoReviewWindow(unittest.TestCase):
+    """The R1 comparison set is the live pick'em window, not every fixture the API ever served."""
+
+    NOW = datetime(2026, 10, 13, 22, 0, tzinfo=timezone.utc)
+    LIVE = [
+        {"id": "a", "sport_alias": "cs2", "status": "scheduled", "scheduled_start_time": "2026-10-15T08:00:00Z"},
+        {"id": "b", "sport_alias": "cs2", "status": "ended", "scheduled_start_time": "2026-10-15T08:00:00Z"},
+        {"id": "c", "sport_alias": "lol", "status": "cancelled", "scheduled_start_time": "2026-10-15T08:00:00Z"},
+        {"id": "d", "sport_alias": "lol", "status": "scheduled", "scheduled_start_time": 1792065600000},
+        {"id": "e", "sport_alias": "dota2", "status": "scheduled", "scheduled_start_time": 1792065600000},
+        {"id": "f", "sport_alias": "cs2", "status": "scheduled", "scheduled_start_time": None},
+        {"id": "g", "sport_alias": "cs2", "status": "scheduled", "scheduled_start_time": "2026-08-01T08:00:00Z"},
+        {"id": "h", "sport_alias": "cs2", "status": "scheduled", "scheduled_start_time": "2027-06-01T08:00:00Z"},
+    ]
+
+    def test_window_keeps_only_upcoming_cs2_and_lol(self):
+        ids = [f["id"] for f in window_rows(self.LIVE, self.NOW)]
+        self.assertEqual(ids, ["a", "d"])
+
+    def test_window_tolerates_naive_and_epoch_timestamps(self):
+        naive = [{"id": "n", "sport_alias": "cs2", "status": "scheduled",
+                  "scheduled_start_time": "2026-10-14T10:00:00"}]
+        self.assertEqual([f["id"] for f in window_rows(naive, self.NOW)], ["n"])
+
+    def test_window_is_empty_for_an_empty_response(self):
+        self.assertEqual(window_rows([], self.NOW), [])

@@ -530,6 +530,8 @@ def build_lines(fixtures: list[dict], quotes: list[dict], log: dict) -> dict:
             flags.append("start_time_in_the_past_but_source_status_scheduled")
         if matched and not f["is_future"]:
             flags.append("line_for_a_fixture_whose_start_time_has_passed")
+        if any(not m.get("within_strict_tolerance", True) for m in matched):
+            flags.append("joined_under_the_clock_skew_rule")
         rows.append({
             "fixture_id": f["fixture_id"], "game": f["game"], "tier": f["tier"],
             "competition": f["competition_name"], "status": f["status"],
@@ -650,6 +652,11 @@ def run() -> int:
     log: dict = {"generated_at_utc": now_iso()}
     fixtures = collect_fixtures(log)
     print(f"fixtures: {len(fixtures)}")
+    (OUTDIR / "collection_errors.json").write_text(
+        json.dumps({"generated_at_utc": now_iso(), "error": None,
+                    "note": "run started; this file only carries a traceback when the collector crashes"},
+                   indent=1), encoding="utf-8")
+
     if not fixtures:
         print("no fixtures collected — aborting without writing (fail closed)")
         (OUTDIR / "collection_log.json").write_text(json.dumps(log, indent=1), encoding="utf-8")

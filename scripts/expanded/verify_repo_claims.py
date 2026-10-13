@@ -29,12 +29,12 @@ import json
 import re
 import sys
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lines_core import same_team  # noqa: E402
+from lines_core import parse_iso, same_team  # noqa: E402
 
 OUT = ROOT / "data" / "expanded" / "repo_review.json"
 LOBBY_API = "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
@@ -130,6 +130,26 @@ def vrs_points() -> tuple[dict[str, dict], list[str]]:
     return out, used
 
 
+def window_rows(live: list, now_dt: datetime) -> list:
+    """The fixtures data/hotspawn_matches.json is meant to cover: both games, not ended, upcoming.
+
+    The lobby API also serves every fixture it has ever listed (10k+ rows), so comparing against the
+    whole dump would always "disagree"; the comparable set is the live pick'em window.
+    """
+    out = []
+    for f in live or []:
+        if str(f.get("sport_alias") or "").lower() not in ("cs2", "lol"):
+            continue
+        if str(f.get("status") or "").lower() in ("ended", "cancelled", "canceled"):
+            continue
+        start = parse_iso(f.get("scheduled_start_time"))
+        if start is None:
+            continue
+        if now_dt - timedelta(hours=24) < start < now_dt + timedelta(days=40):
+            out.append(f)
+    return out
+
+
 def main() -> int:
     review: dict = {"generated_at_utc": now_iso(), "checks": [], "irregularities": []}
 
@@ -147,11 +167,7 @@ def main() -> int:
         # The committed snapshot is the pick'em window (both games, not ended), not every fixture the
         # API has ever served, so the comparison is made against the live window, not the whole dump.
         now_dt = datetime.now(tz=timezone.utc)
-        window = [f for f in live
-                  if str(f.get("sport_alias") or "").lower() in ("cs2", "lol")
-                  and str(f.get("status") or "").lower() not in ("ended", "cancelled", "canceled")
-                  and (window_start := parse_iso(f.get("scheduled_start_time"))) is not None
-                  and now_dt - timedelta(hours=24) < window_start < now_dt + timedelta(days=40)]
+        window = window_rows(live, now_dt)
         live_ids = {str(f.get("id")) for f in live}
         window_ids = {str(f.get("id")) for f in window}
         snap_ids = {str(m.get("fixture_id")) for m in snap_rows}
