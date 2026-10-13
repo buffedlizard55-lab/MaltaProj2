@@ -811,6 +811,8 @@ def main() -> int:
             final = record.get("final_url") or url
             if final.rstrip("/") == (url or "").rstrip("/") and final != url:
                 q["source_public_url"] = final
+                # keep the check reachable under the URL that is now published
+                link_report["results"].setdefault(final, dict(record, canonical_of=url))
                 canonicalised += 1
         evidence["link_checks"]["canonicalised_redirects"] = canonicalised
         write("evidence/picks/link_checks.json", link_report)

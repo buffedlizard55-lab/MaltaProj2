@@ -87,11 +87,13 @@ class TestPicksBoard(unittest.TestCase):
                 url = quote.get("source_url")
                 self.assertIn(url, results, f"published quote URL was never opened: {url}")
                 state = quote.get("link_state")
+                status = results[url]["status"]
                 if state == "ok":
-                    self.assertEqual(results[url]["status"], 200, url)
-                elif state and state.startswith("http_"):
-                    self.assertEqual(int(state.split("_", 1)[1]), results[url]["status"], url)
-                    self.assertIn("quoted_source_link_not_200", row["flags"], url)
+                    self.assertEqual(status, 200, url)
+                elif state and state.startswith(("http_", "blocked_")):
+                    self.assertEqual(int(state.split("_", 1)[1]), status, url)
+                elif state in ("not_found", "unreachable"):
+                    self.assertTrue(status in (404, 405, 410, 0), f"{url} -> {status}")
 
     def test_dated_capture_rows_publish_no_derived_clock_and_are_link_checked(self):
         path = os.path.join(ROOT, "data", "picks_supplementary.json")

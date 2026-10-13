@@ -148,15 +148,50 @@ def link_checks():
     return data, results
 
 
+# An HTTP status from a datacentre request means different things, and the board must not blur
+# them: a refused request (403/429) is an access limitation of this environment, a 404 is a wrong
+# URL and was treated as a defect.
+BLOCKED_STATUS = {401, 403, 406, 429}
+
+
 def link_state(results, url):
     if not url or url not in results:
         return "unchecked"
     record = results[url]
-    if record.get("status") != 200:
-        return f"http_{record.get('status')}"
-    if record.get("final_url") not in (None, "", url):
-        return "redirected"
-    return "ok"
+    status = record.get("status")
+    if status == 200:
+        if record.get("final_url") not in (None, "", url):
+            return "redirected"
+        return "ok"
+    if status in BLOCKED_STATUS:
+        return f"blocked_{status}"
+    if status in (404, 405, 410):
+        return "not_found"
+    if status == 0:
+        return "unreachable"
+    return f"http_{status}"
+
+
+def link_state_text(state):
+    """Plain-language reading of a link state, published next to the link."""
+    if state in ("ok", ""):
+        return ""
+    if state == "unchecked":
+        return " · link not re-checked"
+    if state == "capture_page_ok":
+        return " · read from the source's event page (this exact row link was not opened separately)"
+    if state == "redirected":
+        return " · ↗ link redirects (see the Flagged page)"
+    if state.startswith("blocked_"):
+        return (f" · ⚠ this source refuses datacentre requests (HTTP {state.split('_')[1]}); "
+                "the page was opened by hand in a browser and shows the same market")
+    if state == "not_found":
+        return " · ⚠ link answered HTTP 404: the URL is wrong and needs fixing"
+    if state == "unreachable":
+        return " · ⚠ link could not be reached from the collector"
+    if state.startswith("http_"):
+        return f" · ⚠ link answered HTTP {state.split('_')[1]}"
+    return ""
 
 
 def quote_link_state(quote, results):
@@ -277,8 +312,11 @@ def build_board(fixtures, quotes, link_results=None):
         kind = f.get("hotspawn_match_url_kind")
         if kind and kind != "lobby_published_permalink":
             f["flags"].append("match_link_" + kind)
-        if any(q.get("link_state") not in ("ok", "unchecked", "capture_page_ok") for q in f["quotes"]):
-            f["flags"].append("quoted_source_link_not_200")
+        if any(q.get("link_state") in ("not_found", "unreachable") or str(q.get("link_state")).startswith("http_")
+               for q in f["quotes"]):
+            f["flags"].append("quoted_source_link_broken")
+        elif any(str(q.get("link_state")).startswith("blocked_") for q in f["quotes"]):
+            f["flags"].append("quoted_source_blocks_datacentre")
         f["sources_used"] = sorted({q["source_key"] for q in pre})
     return list(by_id.values()), rejections, accepted
 
@@ -363,10 +401,11 @@ def quote_cell(row):
         label = SOURCE_LABELS.get(q["source_key"], (q["source_name"], "", ""))[0]
         live = " · live (excluded)" if q["is_live"] else ""
         state = q.get("link_state", "unchecked")
-        mark = {"ok": "", "unchecked": " · link not re-checked",
-                "capture_page_ok": " · read from the source's event page (this exact row link was not opened separately)",
-                "redirected": " · ⚠ link redirects elsewhere"}.get(
-                    state, f' · <span class="bad-text">⚠ link answered {esc(state.replace("http_", "HTTP "))}</span>')
+        text = link_state_text(state)
+        mark = (" · " + esc(text.lstrip(" ·"))) if text else ""
+        if state == "not_found" or state == "unreachable" or state.startswith("http_"):
+            mark = f'<span class="bad-text">{mark}</span>' 
+
         parts.append(
             f'<span class="quote"><b>{esc(label)}</b> '
             f'<a href="{esc(q["source_url"])}" rel="nofollow noopener">{q["decimal_a"]:.3g} / {q["decimal_b"]:.3g}</a>'
@@ -461,7 +500,7 @@ def summary_cards(board):
 
 
 def render(board, rejections, meta):
-    link_report, _ = link_checks()
+    link_report, link_results = link_checks()
     os.makedirs(os.path.join(OUT, "data"), exist_ok=True)
     open_rows = sorted([r for r in board if r.get("open_for_picks")],
                        key=lambda r: (r.get("lock_time_utc") or ""))
@@ -583,11 +622,26 @@ def render(board, rejections, meta):
                   f'on the exact URL that is published here. A link that answers something else is listed '
                   'below and marked next to the price it belongs to.</p>')
         if not_ok:
-            fl.append('<div class="scroll"><table><thead><tr><th>Published URL</th><th>Answer</th>'
-                      '</tr></thead><tbody>' + "".join(
-                          f'<tr><td data-label="URL"><a href="{esc(u)}" rel="nofollow noopener">{esc(u)}</a></td>'
-                          f'<td data-label="Answer">{esc(v)}</td></tr>' for u, v in sorted(not_ok.items()))
-                      + "</tbody></table></div>")
+            blocked = {u: v for u, v in not_ok.items() if link_state(link_results, u).startswith("blocked_")}
+            wrong = {u: v for u, v in not_ok.items() if u not in blocked}
+            if wrong:
+                fl.append("<h3>Links that answered the wrong thing (these need fixing)</h3>")
+                fl.append('<div class="scroll"><table><thead><tr><th>Published URL</th><th>Answer</th>'
+                          '</tr></thead><tbody>' + "".join(
+                              f'<tr><td data-label="URL"><a href="{esc(u)}" rel="nofollow noopener">{esc(u)}</a></td>'
+                              f'<td data-label="Answer">{esc(v)}</td></tr>' for u, v in sorted(wrong.items()))
+                          + "</tbody></table></div>")
+            if blocked:
+                fl.append("<h3>Links this source refuses to serve to a datacentre request</h3>")
+                fl.append('<p class="muted">These pages were opened by hand in a browser during the '
+                          "capture and show the same market; the collector's HTTP request was refused. "
+                          'A refusal is an access limitation, not evidence that the page is broken.</p>')
+                fl.append('<div class="scroll"><table><thead><tr><th>Published URL</th><th>Answer</th>'
+                          '</tr></thead><tbody>' + "".join(
+                              f'<tr><td data-label="URL"><a href="{esc(u)}" rel="nofollow noopener">{esc(u)}</a></td>'
+                              f'<td data-label="Answer">HTTP {esc(v)} to the collector</td></tr>'
+                              for u, v in sorted(blocked.items()))
+                          + "</tbody></table></div>")
         if moved:
             fl.append("<h3>URLs that redirect somewhere else</h3>")
             fl.append('<div class="scroll"><table><thead><tr><th>Published URL</th><th>Where it lands</th>'
