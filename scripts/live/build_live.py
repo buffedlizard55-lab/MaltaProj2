@@ -115,6 +115,37 @@ def window_analysis(fixtures: list[dict], counters: dict, now) -> dict:
 
 
 # ------------------------------------------------------------------------------ join rules
+def resolve_rating(name: str, ratings: dict) -> tuple[dict | None, dict | None]:
+    """Look a team up in the official standings, allowing only exact, reviewable name variants.
+
+    The only transformations applied are stripping a leading "team " or a trailing " esports" /
+    " esport" / " gaming" — each one is recorded with the standings entry it resolved to and that
+    entry's table URL is shown on the row, so a reviewer can confirm the mapping with one click. A
+    variant is accepted only when it matches exactly one standings entry; anything else stays
+    unresolved and is published as blank.
+    """
+    key = canon_team(name)
+    if not key:
+        return None, None
+    rec = ratings.get(key)
+    if rec:
+        return rec, None
+    variants = []
+    if key.startswith("team") and len(key) > 4:
+        variants.append((key[4:], "leading \"team \" stripped"))
+    for suffix, label in (("esports", "trailing \" esports\" stripped"),
+                          ("esport", "trailing \" esport\" stripped"),
+                          ("gaming", "trailing \" gaming\" stripped")):
+        if key.endswith(suffix) and len(key) > len(suffix):
+            variants.append((key[:-len(suffix)], label))
+    hits = [(value, label, ratings[value]) for value, label in variants if value in ratings]
+    if len(hits) == 1:
+        value, label, rec = hits[0]
+        return rec, {"board_name": name, "standings_name": rec["team"], "rule": label,
+                     "source_url": rec.get("source_url"), "raw_url": rec.get("raw_url")}
+    return None, None
+
+
 def rating_candidates(name: str, ratings: dict) -> list[dict]:
     """Names in the official standings that look like this team but are NOT it.
 
@@ -320,8 +351,9 @@ def build_board(fixtures_doc: dict, quotes_doc: dict, ratings_doc: dict, now) ->
                                                 for e in fresh]}
         # Originated estimate — CS2 only, official Valve VRS input, its own labelled field.
         if (row["game"] or "").upper() == "CS2":
-            ra = ratings.get(canon_team(row["team_a"]))
-            rb = ratings.get(canon_team(row["team_b"]))
+            ra, alias_a = resolve_rating(row["team_a"], ratings)
+            rb, alias_b = resolve_rating(row["team_b"], ratings)
+            row["rating_aliases_used"] = [a for a in (alias_a, alias_b) if a]
             if ra and rb:
                 est = vrs_estimate(ra["points"], rb["points"])
                 if est:
@@ -520,8 +552,8 @@ def verify_board(board: dict, quotes_doc: dict, ratings_doc: dict, fixtures_doc:
     bad = []
     for r in est_rows:
         e = r["estimate"]
-        ra = ratings.get(canon_team(r["team_a"]))
-        rb = ratings.get(canon_team(r["team_b"]))
+        ra, _ = resolve_rating(r["team_a"], ratings)
+        rb, _ = resolve_rating(r["team_b"], ratings)
         if not (ra and rb):
             bad.append({"fixture_id": r["fixture_id"], "reason": "rating missing"})
             continue
@@ -741,7 +773,11 @@ def row_card(row: dict, show_estimate: bool = True) -> str:
                   f'{esc(row["team_b"])} {esc(e["team_b_points"])} (#{esc(e["team_b_standing"])} '
                   f'{esc(e["team_b_region"])}, {esc(e["team_b_snapshot"])})</div>'
                   f'<div class="src">Rating source: <a href="{esc(e["team_a_source_url"])}">{esc(row["team_a"])}</a> · '
-                  f'<a href="{esc(e["team_b_source_url"])}">{esc(row["team_b"])}</a> · {esc(e["model"])}</div>')
+                  f'<a href="{esc(e["team_b_source_url"])}">{esc(row["team_b"])}</a> · {esc(e["model"])}</div>'
+                  + "".join(f'<div class="src">Name matched to the standings entry '
+                            f'<b>{esc(a["standings_name"])}</b> ({esc(a["rule"])}) — '
+                            f'<a href="{esc(a["source_url"])}">standings table</a></div>'
+                            for a in (row.get("rating_aliases_used") or [])))
     else:
         reason = [f for f in row["flags"] if f.startswith(("no_valve_vrs", "no_official_rating"))]
         detail = (f'<div class="src">No external price and no official rating available for both teams '

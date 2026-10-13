@@ -381,7 +381,7 @@ def collect_bovada(quotes: list[dict], log: dict, sample_dir: Path | None = None
 
 # ------------------------------------------------------- 1xBet platform (Melbet/22Bet/BetWinner)
 LINE_FEED_MIRRORS = [("melbet", "https://melbet.com"), ("22bet", "https://22bet.com"),
-                     ("betwinner", "https://betwinner.com")]
+                     ("betwinner", "https://betwinner.com"), ("1xbet", "https://1xbet.com")]
 ESPORTS_HINTS = ("esport", "counter", "cs2", "csgo", "cyber", "dota", "league of legends",
                  "valorant")
 
@@ -424,12 +424,11 @@ def guess_game(sport_name: str, league: str | None) -> str | None:
     return None
 
 
-def collect_linefeed(quotes: list[dict], log: dict, sample_dir: Path | None = None) -> None:
-    sports_url = ("https://melbet.com/service-api/LineFeed/GetSportsShortZip"
-                  "?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true")
-    data, meta = fetch_json(sports_url)
-    entry = {**{k: v for k, v in meta.items() if k != "body"}, "mirrors": []}
-    log["linefeed"] = entry
+def mirror_sport_ids(base: str) -> tuple[list[int], dict]:
+    """Ask one mirror for its own esports sport ids (they are not guaranteed to be identical)."""
+    url = (f"{base}/service-api/LineFeed/GetSportsShortZip"
+           "?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true")
+    data, meta = fetch_json(url)
     ids: list[int] = []
     if isinstance(data, dict):
         value = data.get("Value")
@@ -440,6 +439,21 @@ def collect_linefeed(quotes: list[dict], log: dict, sample_dir: Path | None = No
             name = " ".join(str(it.get(k) or "") for k in ("N", "SE", "SN", "E")).casefold()
             if any(h in name for h in ESPORTS_HINTS) and isinstance(it.get("I"), int):
                 ids.append(int(it["I"]))
+    return ids, {k: v for k, v in meta.items() if k != "body"}
+
+
+def collect_linefeed(quotes: list[dict], log: dict, sample_dir: Path | None = None) -> None:
+    entry: dict = {"mirrors": [], "sport_id_discovery": {}}
+    log["linefeed"] = entry
+    ids: list[int] = []
+    for mirror_key, base in LINE_FEED_MIRRORS:
+        try:
+            found, meta = mirror_sport_ids(base)
+        except Exception as exc:  # noqa: BLE001
+            entry["sport_id_discovery"][mirror_key] = {"error": f"{type(exc).__name__}: {exc}"}
+            continue
+        entry["sport_id_discovery"][mirror_key] = {**meta, "esports_sport_ids": sorted(set(found))}
+        ids.extend(found)
     entry["esports_sport_ids"] = sorted(set(ids))
     if not ids:
         ids = [40]

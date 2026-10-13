@@ -1,7 +1,7 @@
 {
  "session": "3cd9787c",
  "task": "T-COVER",
- "started_at_utc": "2026-10-13T23:17:47Z",
+ "started_at_utc": "2026-10-13T23:29:03Z",
  "notes": [
   "HotSpawn is used for fixture discovery only; its crowd picked % is never a probability input.",
   "Quotes with confidence=market come from licensed bookmakers or an odds aggregator's cited widget; confidence=reference rows are exchanges and are published separately, never averaged into the consensus."
@@ -41,17 +41,17 @@
  "hotspawn_fixtures": {
   "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
   "status": 200,
-  "bytes": 9215070,
+  "bytes": 9215068,
   "error": null,
   "content_type": "application/json; charset=utf-8",
   "final_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
   "rows": 11570,
   "status_counts_all_rows": {
-   "ended": 10218,
+   "ended": 10219,
    "cancelled": 142,
    "forfeited": 821,
    "scheduled": 387,
-   "started": 2
+   "started": 1
   },
   "game_counts_all_rows": {
    "cs2": 10213,
@@ -62,8 +62,8 @@
   "force_kept_from_lobby_listing": 90,
   "omitted_outside_window": 11096,
   "window": {
-   "from": "2026-10-10T23:17:55Z",
-   "to": "2026-11-27T23:17:55Z",
+   "from": "2026-10-10T23:29:10Z",
+   "to": "2026-11-27T23:29:10Z",
    "rule": "start time within -3d..+45d of collect time"
   }
  },
@@ -100,12 +100,6 @@
   "quotes_written": 15
  },
  "linefeed": {
-  "url": "https://melbet.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
-  "status": 200,
-  "bytes": 88482,
-  "error": null,
-  "content_type": "application/json; charset=utf-8",
-  "final_url": "https://melbet.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
   "mirrors": [
    {
     "mirror": "melbet",
@@ -137,8 +131,69 @@
     "errors": [],
     "shared_event_ids": 39,
     "price_mismatches": []
+   },
+   {
+    "mirror": "1xbet",
+    "urls": [
+     "https://1xbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"
+    ],
+    "events": 0,
+    "with_moneyline": 0,
+    "errors": [
+     {
+      "url": "https://1xbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+      "status": 403,
+      "error": "HTTPError 403"
+     }
+    ],
+    "shared_event_ids": 0,
+    "price_mismatches": []
    }
   ],
+  "sport_id_discovery": {
+   "melbet": {
+    "url": "https://melbet.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
+    "status": 200,
+    "bytes": 88482,
+    "error": null,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://melbet.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
+    "esports_sport_ids": [
+     40
+    ]
+   },
+   "22bet": {
+    "url": "https://22bet.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
+    "status": 200,
+    "bytes": 88482,
+    "error": null,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://22bet.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
+    "esports_sport_ids": [
+     40
+    ]
+   },
+   "betwinner": {
+    "url": "https://betwinner.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
+    "status": 200,
+    "bytes": 88482,
+    "error": null,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://betwinner.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
+    "esports_sport_ids": [
+     40
+    ]
+   },
+   "1xbet": {
+    "url": "https://1xbet.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
+    "status": 403,
+    "bytes": 6041,
+    "error": "HTTPError 403",
+    "content_type": null,
+    "final_url": "https://1xbet.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
+    "esports_sport_ids": []
+   }
+  },
   "esports_sport_ids": [
    40
   ],
@@ -153,21 +208,21 @@
      "transport": "direct",
      "url": "https://egamersworld.com/counterstrike/matches",
      "status": 403,
-     "bytes": 6137,
+     "bytes": 6136,
      "error": "HTTPError 403"
     },
     {
      "transport": "allorigins",
      "url": "https://api.allorigins.win/raw?url=https%3A%2F%2Fegamersworld.com%2Fcounterstrike%2Fmatches",
-     "status": 520,
-     "bytes": 7362,
-     "error": "HTTPError 520"
+     "status": 522,
+     "bytes": 7256,
+     "error": "HTTPError 522"
     },
     {
      "transport": "codetabs",
      "url": "https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fegamersworld.com%2Fcounterstrike%2Fmatches",
      "status": 522,
-     "bytes": 7246,
+     "bytes": 7244,
      "error": "HTTPError 522"
     },
     {
@@ -187,21 +242,21 @@
      "transport": "direct",
      "url": "https://egamersworld.com/lol/matches",
      "status": 403,
-     "bytes": 6137,
+     "bytes": 6136,
      "error": "HTTPError 403"
     },
     {
      "transport": "allorigins",
      "url": "https://api.allorigins.win/raw?url=https%3A%2F%2Fegamersworld.com%2Flol%2Fmatches",
-     "status": 500,
-     "bytes": 579,
-     "error": "HTTPError 500"
+     "status": 522,
+     "bytes": 7257,
+     "error": "HTTPError 522"
     },
     {
      "transport": "codetabs",
      "url": "https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fegamersworld.com%2Flol%2Fmatches",
      "status": 522,
-     "bytes": 7246,
+     "bytes": 7245,
      "error": "HTTPError 522"
     },
     {
@@ -218,7 +273,7 @@
  "kalshi": {
   "url": "https://api.elections.kalshi.com/trade-api/v2/events?limit=200&status=open&with_nested_markets=true",
   "status": 200,
-  "bytes": 3946399,
+  "bytes": 3946402,
   "error": null,
   "content_type": "application/json",
   "final_url": "https://api.elections.kalshi.com/trade-api/v2/events?limit=200&status=open&with_nested_markets=true",
@@ -229,7 +284,7 @@
  "polymarket": {
   "url": "https://gamma-api.polymarket.com/events?closed=false&limit=200&tag_slug=esports",
   "status": 200,
-  "bytes": 4355046,
+  "bytes": 4355228,
   "error": null,
   "content_type": "application/json",
   "final_url": "https://gamma-api.polymarket.com/events?closed=false&limit=200&tag_slug=esports",
@@ -237,7 +292,7 @@
   "events": 100,
   "quotes_written": 0
  },
- "finished_at_utc": "2026-10-13T23:19:32Z",
+ "finished_at_utc": "2026-10-13T23:30:50Z",
  "counts": {
   "fixtures_in_snapshot": 474,
   "quotes_total": 64,
