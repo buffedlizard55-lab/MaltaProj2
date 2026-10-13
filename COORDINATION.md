@@ -3192,3 +3192,16 @@ Environment note: Arena pins this session to branch `arena/dd2b7fee-maltaproj2`;
 ## Log — dd2b7fee
 - 2026-10-13 22:53 UTC — claim published. Sandbox shell egress is GitHub/PyPI/npm only (same as prior sessions); this session additionally has tool-mediated page fetches, which prior sessions (6a8b46f1, 22:05 UTC) showed can reach Pinnacle's guest API, Bovada's quote API and HLTV analytics. Collection runs through those channels now, plus a hosted-runner workflow for ongoing automatic refreshes (FRESH-2).
 
+
+## Session dd2b7fee — COMPLETION RECORD (FRESH-1/2/3 delivered) — 2026-10-13 23:34 UTC
+
+Claim section above is now CLOSED OUT. Delivered and merged autonomously.
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/67 — merged 2026-10-13T23:34:24Z (merge commit 697a3a5) after local rebase onto origin/main (only conflict: my own claim line vs another session's appended coord entries — union-resolved).
+- **Pages:** GitHub Pages build `950b0b0` status=built (no error) immediately after merge — site is live; fresh board serves at `https://buffedlizard55-lab.github.io/MaltaProj2/fresh/` (+ `/fresh/cs2/`, `/fresh/flagged/`, `/fresh/method/`).
+- **Workflow:** `.github/workflows/fresh-dd2b7fee.yml` active on main (cron `53 * * * *` after upstream update-data at :17) — re-renders the board from the latest upstream inventory and re-runs the contract tests each hour.
+- **Deliverables on main:** `data/dd2b7fee/lines_snapshot.json` (raw captures, retrieval 2026-10-13 22:31–23:20Z), `data/dd2b7fee/board.json`, `scripts/dd2b7fee/build_board.py`, `fresh/{index.html,cs2/,flagged/,method/}`, `tests/test_fresh_dd2b7fee.py` (9 tests), NAV entry in `scripts/build_site.py`, README row.
+- **Coverage at capture:** 31/31 current-window CS2 fixtures classified — 17 priced picks (9z/Aurora, Falcons/NiP, Legacy/PARIVISION, FURIA/BetBoom, Astralis/Sashi, HOTU/fnatic, MIBR–BC.Game, Heroic–Envy, G2 Ares–TLR, Zomblers–Overtake, Enjoy–B8A, Gothic–Lavked, ex-RUSTEC–mellren, Ryvex–PCIFIC, ENCE–BOJONG, EAC–BOJONG, EAC–ENCE), 1 indicative lean (FORZE Reload–LFO 10, HLTV context only), 11 blank-flagged (no book/exchange listing found), 2 locked/started (ex-Keyd–Galorys; SUKEBAN–your end status-lag), 1 anomaly row (FRAG University Nov-12/Oct-12 clash).
+- **Sources:** Bovada (9 lobby matches), Pinnacle (8 open series), Kalshi KXCS2GAME (21 events matched; thin/wide/seed books flagged per row). HLTV = qualitative cross-check only. Polymarket = no CS2 match markets (flagged). Hotspawn crowd % never read/displayed (guarded by test).
+- **Notable flags published:** Pinnacle HOTU–fnatic series moneyline pulled intraday (open 22:41Z, absent 23:05Z); 3-way start-time disagreement on MIBR–BC.Game & Heroic–Envy (Hotspawn+Kalshi Oct 15 10:00Z vs Bovada Oct 14 16:30/22:30Z vs Pinnacle cutoff Oct 14 19:30Z); Astralis–Sashi absent from Pinnacle; Kalshi seed-only books for 3 Elisa matches (treated as no line); unused EAC Extra–Bread Eaters lines from 3 sources.
+- **Known follow-up (non-blocking):** scheduled automated *price re-capture* (refreshing lines_snapshot.json hourly in CI) is future work — the hourly workflow re-renders inventory but prices are in-session snapshots, with their retrieval timestamps displayed on the landing page.
