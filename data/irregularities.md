@@ -50,3 +50,19 @@ record for pairing, tournament, and match ID.
 6. **List extends beyond the stated week.** Although the lobby is labelled "This week" (weekly reset in
    ~5 days), the Upcoming list continues to 2026-11-13. All listed pickable matches are included in the
    inventory regardless of date.
+
+## T2/T3 additions (2026-10-13, external odds sweep)
+
+7. **Demacia Cup format conflict (match 1076650, KT Rolster vs BNK FearX).** EGamersWorld labels the match "Bo1"; Polymarket and esportbet.com describe the same semifinal as "Bo5". Time agrees across sources (2026-10-14 05:00 ET / 09:00 UTC). Format left blank; flagged for review. Sources: https://egamersworld.com/lol/match/FqxSssBfV/fearx-vs-kt-rolster-tW-gg6CEW, https://polymarket.com/esports/league-of-legends/demacia-cup-global-invitational/lol-fox1-kt-2026-10-14, https://esportbet.com/2026-demacia-cup-global-invitational-playoffs-betting-tips-monday-october-12/
+
+8. **Thunderpick WC day-1 slot-order disagreement.** esports.gg lists the day-1 order as 9z-Aurora, Legacy-PARIVISION, Falcons-NiP, FURIA-BetBoom; HLTV, EGamersWorld and the Hotspawn lobby all order it 9z-Aurora (08:30 UTC), Falcons-NiP (11:00 UTC), Legacy-PARIVISION (13:30 UTC), FURIA-BetBoom (16:00 UTC). Inventory uses the Hotspawn lobby times (majority of sources). Sources: https://esports.gg/news/counter-strike-2/cs2-thunderpick-world-championship-2026-results/, https://egamersworld.com/blog/thunderpick-world-championship-2026-schedule-teams-3y5NuMb4pp, https://www.hltv.org/matches/2399385/falcons-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026
+
+9. **No external market published for 4 pick'em matches (blank, unverified).** ex-RUSTEC vs mellren (1079622) and FORZE Reload vs LFO 10 (1079624) show only the EGW 1.8/1.8 placeholder (opponent "LFO 10" is absent from the EGW team database); Mental Rush vs SK Gaming Avarosa (1076025) and Vitality Rising Bees vs G2 Hel (1076026) likewise show 1.8/1.8 with no "Bets by" panel for LGC 2026 Rising. No prices on any checked source. Probabilities left blank.
+
+10. **225 minor-league LoL matches have no bookmaker market on any checked source** (PRM 2nd/3rd Div, Tunisian Super League, RIVALS LEAGUE, Arabian League 2nd Div, Komplettligaen, LigaGG CELOL A, Superstrike League, MängudeÖÖ, Benelux Ascend). EGamersWorld, Polymarket and general odds aggregators cover none of these leagues. All probabilities blank + "unverified". No values inferred.
+
+11. **Odds snapshot volatility.** Several lines moved during the 2026-10-13 capture session (e.g. ex-Keyd Stars/Galorys 2.366/1.53 -> 2.43/1.46; KT/FearX 2.79/1.38 -> 3.27/1.31). `data/odds.csv` records one snapshot per match (the later capture) with earlier captures noted in the row notes.
+
+## Team-name alias mappings used for odds sources (not irregularities; recorded for verification)
+
+- Hotspawn "WROTBERRY" = EGW "WBT"; "EAC" = EGW "EA Copenhagen"; "RoundsGG" = EGW "Rounds"; "Phantom" = EGW "Phantom Esports"; "Sashi" = EGW "Sashi Esport"; "Envy" = EGW "Team Envy"; "BC.Game" = EGW "BC.Game Esports"; "BetBoom" = EGW "BetBoom Team"; "Ninjas in Pyjamas" = EGW "NiP"; "Fnatic" = EGW "fnatic"; Hotspawn "BNK FearX" = EGW "FearX" = Polymarket "BNK FEARX"; Hotspawn "The Last Resort" = EGW "The Last Resort" (tag TLR).
