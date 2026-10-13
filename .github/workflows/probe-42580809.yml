@@ -1,0 +1,31 @@
+name: probe-42580809
+
+# Session 42580809: runs external source reachability probes on a runner that has
+# unrestricted egress, and publishes the raw results as a downloadable artifact.
+# Triggered by push (works on any branch) so it never depends on default-branch
+# workflow registration.
+
+on:
+  push:
+    branches: ['arena/42580809-maltaproj2']
+    paths:
+      - 'proof/42580809/**'
+      - '.github/workflows/probe-42580809.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run reachability probe
+        run: python3 proof/42580809/probe_sources.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: probe-42580809
+          path: proof/42580809/out
+          retention-days: 14
