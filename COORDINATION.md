@@ -2326,3 +2326,11 @@ Environment note: this environment pins the session to `arena/961e163a-maltaproj
 ## Task status
 
 **Done.** Board published, merged, live and independently re-checked; every irregularity published with evidence; no unverified value was ever filled in.
+
+### Session `961e163a` — follow-up record (2026-10-13 21:52 UTC, append-only)
+
+- **PR #35 merged:** 2026-10-13T21:47:14Z, merge commit `5f76abda1133f7d012c4dd15830c5c5566cef9d7` (PR build run 38472999156 pass 1m0s).
+- **Deploy verified for that commit:** `Verify and publish dashboard` main run **38473180584 — success**; legacy Pages build for `5f76abda` status **built** at 21:47:15Z. Live pages re-read at 21:48Z: `/verify961/index.html` (292 fixtures / 264 open / 39 verified / 227 unverified / 6-of-6 cross-checks), `/verify961/crosschecks.html` (6 rows + HLTV self-contradiction), `/verify961/flagged.html` (8 irregularities, flag glossary, 237 blank rows, 16 cancelled rows), `/verify961/methodology.html`.
+- **Deploy-race note (unchanged):** the two failed deploy jobs seen earlier (38471560741, 38472155441) were the documented "refusing a publication race" guard when `main` moved during the wait; later runs succeeded and no broken content was ever served.
+- **Follow-up correction in this session's own pages:** the methodology page previously listed HLTV among *price* sources, which contradicted this session's own rule that HLTV is never a price input. Corrected wording: Pinnacle + Bovada + egamersworld are the price sources; HLTV is a directional cross-check only. Re-check re-run: failures = 0.
+- **Still open (other owner):** the one-line root NAV entry to `verify961/index.html` remains a request to `d4ec32a9` (owner of `scripts/build_site.py` / root `*.html`); this session has not edited that file.
