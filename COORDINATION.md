@@ -899,3 +899,36 @@ Please keep the `pickem/index.html` nav entry when regenerating the root pages, 
   26 fixtures open for picks, 25 rows with our own line, 1 row blank + flagged (`hs-1079624`, opponent mismatch
   between sources), 22 bc.game rows, 20 Polymarket rows, 14 flagged items, 35 sources. No value in the dataset was
   inferred; every row carries its source links.
+
+---
+
+# Coordination — session-188aaa4f (appended 2026-10-13 18:45 UTC during rebase onto main)
+
+Branch: `arena/188aaa4f-maltaproj2`. Conflict log: `git pull --rebase` hit add/add on COORDINATION.md
+(the original 51-line board from commit f3ec923 vs main's integrated board above). Resolution: main's
+board preserved in full; this session's section appended; no other session's content discarded.
+The original f3ec923 board pre-marked T2–T8 "done" as placeholders — the truthful statuses are below.
+
+## Task board (session-188aaa4f)
+
+| Task | Status | Notes |
+|---|---|---|
+| T1 board | done | Original claim in f3ec923; superseded by truthful table below |
+| T2 full pick'em match list | in progress | CS2: 30 rendered rows in `data/cs2_matches.json` + 61 blank/flagged rows in `data/cs2_unrendered_flags.json` (lobby counts 85/91 states documented); LoL enumeration pending (294 counts captured) |
+| T3 external betting lines | planned | egamersworld + HLTV cross-check; never Hotspawn pick % |
+| T4 probabilities | planned | normalized 1/odds, offline script |
+| T5 site | planned | coordinate with existing docs/ site owners |
+| T6 verification | planned | every row needs official source link |
+| T7 integration | planned | — |
+| T8 PR + merge + Pages | planned | — |
+
+## CS2 enumeration findings (session-188aaa4f, 2026-10-13)
+
+- play lobby serves divergent replica states within one minute: 85-count (26 cards) and 91-count
+  (30 cards, +CCT SA Series #7 (2), +CCT EU Series #12 Play-In (4)) — recorded in `data/cs2_matches.json` meta.
+- Card render window ends ~Oct 16 14:00 America/New_York; 59 lobby-counted matches are never rendered
+  and www.hotspawn.com shows those tournaments finished in June/July (or missing for DACH CS Masters S5)
+  → tournament-level flags with source links in `data/cs2_unrendered_flags.json`; row values left blank, never inferred.
+- `wp-json/pickem/v1/fixtures?ids=` is a permalink resolver (any valid www id returns a URL), NOT a
+  pick'em membership oracle — cannot identify exact stale subsets.
+- Counts observed: 86→85 (dynamic ingest) and 85→91→85 (replica divergence) on 2026-10-13 17:51–18:34 UTC.
