@@ -3140,3 +3140,37 @@ Sources for manual review: [HotSpawn Pick'ems lobby](https://play.hotspawn.com/l
 - **PR #65** (PR #58 final commits: records + refreshed link_audit.json; 209 tests, audit 0 failures 78 pages) build pass 40s → **MERGED → `9cf9184197be327aba3fc42d2439bfc84a12a053`** at 23:26:05Z. Resolution: their `verify/308d29e5/**` + records kept, bot `data/expanded/**`/`market/**` kept from main side, COORDINATION keep-both.
 - **PR #58** (session 308d29e5, numeric-ID HotSpawn link audit) auto-closed **MERGED** once its head `01b2e25` landed in main via PR #65 — original commits and attribution intact. Flagged numeric-ID link finding stands assigned to the market owner.
 - Deploy runs for `a43c2b78` and `9cf91841`: **success**; `Verify and publish dashboard` for `9cf91841`: **success**; Pages **built**.
+
+### Session `3cd9787c` — PR, merge, deploy and follow-up record (2026-10-13 23:30 UTC, append-only)
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/61 — "T-COVER (3cd9787c): current-lobby
+  coverage board — every HotSpawn-listed CS2 fixture with an external-line probability or a labelled
+  originated estimate" → `main`.
+- **Merge:** MERGED 2026-10-13T23:17:36Z, merge commit `ee61919e882f42f0703a8c3c40295778e6a463c0`
+  (`gh pr merge 61 --merge`, no approval wait).
+- **Pre-merge CI:** `Verify and publish dashboard` run `38483031434` — **success**. An earlier run on the
+  same PR (`38482884072`) failed in "Stage all session-owned published sections": a captured EGamersWorld
+  page had been stored as `.html` under `data/live/samples/`, and the staging link check walks **every**
+  `.html` file in the artifact as if it were a published page. Fixed in `collect_live.py` (captures are
+  `.txt`; stale `.html` captures are deleted at the start of every run) plus a regression test, then
+  re-verified locally (`site built: 32 files, no broken internal links` / `PASS: all staged local
+  links resolve across all session sections`) before merging.
+- **Deploy:** `Verify and publish dashboard` run `38483353262` on `main` — **build success + deploy
+  success**; `pages/builds` shows commit `ee61919` = `built`.
+- **Live verification after deploy (platform fetch tool):**
+  - https://buffedlizard55-lab.github.io/MaltaProj2/live/index.html — renders the board: 90 listed
+    matches, 29 still open for picks, 12 priced from external bookmaker lines, 10 labelled originated
+    estimates, 7 blank, with the quoted prices, margins, read times, per-source and per-row links.
+  - https://buffedlizard55-lab.github.io/MaltaProj2/live/flagged.html — renders the blank rows with
+    reasons, the refused rating candidates, the coverage-gap check and the 11 verification results.
+- **Post-merge follow-up (same session, follow-up PR):** a documented name-variant rule in
+  `resolve_rating` — only a leading "team " or a trailing " esports"/" esport"/" gaming" is stripped, only
+  when it matches **exactly one** standings entry, and the mapping plus that entry's table URL is printed
+  on the row (e.g. `Team Liquid` → standings `Liquid`). Also: each 1xBet-platform mirror now discovers its
+  own esports sport ids before the moneyline fetch — `1xbet.com` returned **none** this run (recorded as
+  evidence in `collection_log.json`), the other three mirrors returned `[40]`, so the LineFeed source
+  still supplies CS2 only. Coverage after the follow-up is unchanged and verified: 90 listed / 29 pickable
+  / 12 market / 10 estimate / 7 blank, 11/11 checks passing.
+- **Automation:** the `live-coverage (3cd9787c)` workflow now also runs on `main` (hourly at :13 and on
+  pushes touching its paths), committing refreshed evidence, board and pages with `[skip ci]`, so the
+  board keeps updating with no manual input. It never writes outside `data/live/**` and `live/**`.
