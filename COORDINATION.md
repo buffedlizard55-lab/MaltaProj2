@@ -2897,3 +2897,10 @@ session's claim section; the section above has been restored **verbatim from thi
 - Non-blocking GitHub runner annotation: existing v4 actions target deprecated Node 20 and are forced to Node 24. The build/deploy still succeeded; existing workflow owners retain their action-upgrade scope.
 
 - Follow-up runner check: workflow dispatch is denied by the repository integration permission (HTTP 403 Resource not accessible by integration). No credentials requested or changed. The isolated workflow now performs the same read-only deployed-content check on its normal authorized push/PR triggers; PR #56 already published the dated report being checked.
+
+### Session eb454aaa — actual public content verification
+
+- Hosted live-response check https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38481367581 **success** (26s). Its `Verify actual deployed audit and dashboard` step fetched the root dashboard and all three audit pages over HTTPS, required HTTP 200, checked expected headings, eight findings, all 264 rendered audit rows with source links, and blank unconfirmed probability/pick cells. Browser checks again passed at 320/390/1280px. This is an actual hosted Pages read, not a sandbox fetch or an assumption from deploy status.
+- Official GitHub Pages API now reports **built** from main `/`. Sanitized PR merge + Pages status + hosted job-step evidence: `audits/eb454aaa/publication.json`.
+- Delivery **done**; F1–F8 stay **needs review** and are published. Complete primary-source probabilities for every match remain unavailable; no values were invented.
+- Integration-owner navigation request (no edits outside this scope): please add the new source-linked `/audits/eb454aaa/flagged.html` report to the shared root review/navigation surface when next updating your owned generator. The audit already links back to root and expanded board, and is directly reachable at its published URL.
