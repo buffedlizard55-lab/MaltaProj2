@@ -1,18 +1,33 @@
 fixtures: 11569
 after pinnacle: 15
 after bovada: 30
-after linefeed: 30
-after polymarket: 30
-collector crashed; traceback:
+after linefeed: 69
+after polymarket: 69
+{
+ "fixtures_total": 11569,
+ "fixtures_future": 277,
+ "future_with_external_line": 0,
+ "future_without_external_line": 277,
+ "future_with_two_or_more_sources": 0,
+ "quotes_total": 69,
+ "quotes_joined": 0,
+ "unused_quotes": 69,
+ "by_source": {
+  "bovada": 15,
+  "linefeed_1xbet_platform": 39,
+  "pinnacle": 15
+ }
+}
+originated estimates: 0; without rating: 10213; snapshots: {}
 Traceback (most recent call last):
-  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/collect_lines.py", line 542, in main
-    return run()
-           ^^^^^
-  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/collect_lines.py", line 579, in run
-    doc = build_lines(fixtures, quotes, log)
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/collect_lines.py", line 454, in build_lines
-    f["is_future"] = bool(f_dt and f_dt > now - timedelta(minutes=15))
-                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: can't compare offset-naive and offset-aware datetimes
-
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/build_market_site.py", line 578, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/build_market_site.py", line 311, in main
+    {summary_cards(doc)}
+     ^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/build_market_site.py", line 202, in summary_cards
+    (sum(1 for r in rows if (r.get("originated_estimate") or {}).get("available")),
+                    ^^^^
+NameError: name 'rows' is not defined
+market/: no pages generated yet — nothing to validate
