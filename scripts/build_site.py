@@ -77,6 +77,9 @@ NAV = [
     ("flagged.html", "Flagged for review"),
     ("methodology.html", "Methodology &amp; sources"),
     ("pickem/index.html", "Pick'em line board"),   # integration link: session a0fcf175's board
+    # integration link added by session 8e7a652d (single-anchor edit, documented in
+    # COORDINATION.md): independent verification & multi-book market cross-check page
+    ("verify/8e7a652d/index.html", "Verification &amp; Cross-Check"),
 ]
 
 

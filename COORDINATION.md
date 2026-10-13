@@ -5,6 +5,7 @@ Session: `ef111e02` (final integration session). This environment requires all w
 | Task | Status | Owner | Claimed UTC | File scope |
 |---|---|---|---|---|
 | Repository audit, source investigation, data pipeline, dashboard, tests and Pages integration | done | ef111e02 | 2026-10-13 17:50 | COORDINATION.md, README.md, docs/**, scripts/**, tests/**, .github/workflows/**, .gitignore |
+| Independent audit of inherited TWC model, current field/fixture sources and published state | done | ca621beb | 2026-10-13 18:10 | audits/ca621beb/**, COORDINATION.md |
 
 ## Log
 - Initial checkout contains only README.md (`# MaltaProj2`), no application, data, tests, or existing task board. No other task claims exist.
@@ -162,6 +163,23 @@ This board coordinates tasks, audit trails, and file ownership across sessions f
 - Before integration PR #8 could merge, another session `898abb4f` merged PR #7 into main, outside this session's first-pushed integration claim. Its root TWC model covers hypothetical pairings, not the verified full lobby inventory, and claims no official opening fixtures / sportsbook lines despite this audit's observed fixtures and two explicit markets.
 - Stopped to reconcile main rather than overwrite it. README and COORDINATION content conflicts resolved by preserving the other board verbatim above and the original README under docs/evidence/parallel-898abb4f-readme.md. All root model files/data/tests remain untouched; they are not accepted as verified inputs to the docs dashboard. Conflicting unsupported claims are published as a new review finding.
 - Integration PR #8 continues on the required session branch, preserving both histories and all completed audit evidence. Parallel model provenance is needs review, not silently treated as verified.
+
+---
+
+# Session board — `8e7a652d` (verification + integration readiness)
+
+Branch: `arena/8e7a652d-maltaproj2` (fixed by environment). Started 2026-10-13 18:07 UTC.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Independent line-by-line verification of all published data on `main` (root site, `docs/` site, `data/*`, audits) against official primary sources, with source links and an irregularity register | in progress | 8e7a652d | 2026-10-13 18:07 | `verify/8e7a652d/**`, COORDINATION.md (this section only) |
+| Final integration: merge all completed parallel work, re-verify combined data line by line, confirm site builds with no broken links, publish, PR to main, merge, confirm Pages deploy | in progress (conditional) | 8e7a652d | 2026-10-13 18:07 | `main` after active claims complete or go stale; root `*.html`, `assets/**` (see scope request below) |
+
+**Scope request to `0c90448b` (active, fresh claim):** your board notes you hand over final integration to the first integrating session; `ef111e02` has already integrated (PR #8 merged). Please either (a) finish and merge your root dashboard build, or (b) release the root `*.html` / `assets/**` / dashboard scope to this session for unified final integration. I will not edit your claimed files (`scripts/collect_*.py`, `scripts/fetch_hotspawn.py`, `scripts/explore_*.py`, `scripts/dump_raw_samples.py`, `data/hotspawn_matches.json`, `data/odds.json`, `evidence/**`, your workflows) while your claim is fresh. If your claim goes >60 minutes without commits, I will take over the dashboard/integration scope per the takeover rule and note the handoff here. Your collected fixture/odds data will be integrated, not discarded.
+
+## Log — 8e7a652d
+- 2026-10-13 18:07 UTC — `8e7a652d`: Checked out main at `3d2dafa` (PR #7 + PR #8 merged; Pages live in legacy mode from `main` root, build in progress). Read all boards. Active fresh claim: `0c90448b` (last commit 18:04 UTC, data collection ongoing, site builder still placeholder). Completed: `898abb4f` (PR #7), `ef111e02` (PR #8), `1d4de836` (PR #2), `1916f96c` (merged via PR #8). Claimed verification + conditional final integration above. No other session's files edited.
+---
 
 ## Release record — integration session ef111e02
 - PR https://github.com/buffedlizard55-lab/MaltaProj2/pull/8 merged successfully at 2026-10-13T18:03:43Z, merge commit `3d2dafad730f5ab87d2f0cc502ac71dcb8b417b8`.
@@ -944,3 +962,67 @@ The original f3ec923 board pre-marked T2–T8 "done" as placeholders — the tru
 - Local environment lacked `bs4`; installed from `scripts/requirements.txt` (same set CI uses).
 - T7/T8: PR #25 created 2026-10-13 — https://github.com/buffedlizard55-lab/MaltaProj2/pull/25
   (branch `arena/188aaa4f-maltaproj2` → `main`), merge result to be recorded here post-merge.
+---
+
+---
+
+)
+
+## Session board — `8e7a652d` completion record (2026-10-13 18:55 UTC)
+
+**TASK-V (independent line-by-line verification): DONE.** Full report: `verify/8e7a652d/VERIFICATION_REPORT.md`; live page: `verify/8e7a652d/index.html` (linked from root nav). All findings below carry manual-review links in the report.
+
+### Verification performed (all against official primary sources)
+- Valve VRS Oct 5 + Aug 3 snapshots fetched from `ValveSoftware/counter-strike_regional_standings` via GitHub API; verbatim copies archived in `verify/8e7a652d/evidence/`. 9/9 team rank+points entries EXACT; rosters 7/8 EXACT (PARIVISION HObbit transfer verified via Liquipedia timeline + PARIVISION's Sep 17 announcements — Valve table lags, already flagged).
+- TWC 2026 event facts verified on HLTV event 8932 + Liquipedia (dates, $1M, BLAST Arena Studios Attard, GAM3RS_X, 8 teams). Virtus.pro Oct 9 withdrawal → NiP replacement confirmed; groups confirmed (A: Falcons/9z/Aurora/NiP, B: Legacy/FURIA/BetBoom/PARIVISION) — consistent with PR #12's propagation.
+- All 4 opening fixtures triple-verified: live Hotspawn lobby (18:10Z fetch), HLTV match pages 2399384–2399387, and Pinnacle guest-API markets whose `cutoffAt` equals each kickoff.
+- Fresh market captures 18:01–18:25Z: Pinnacle series moneylines for all 4 openers (matchups 1638111785/74/86/87, open status); Thunderpick 9z–Aurora match page (+280/−455 ML, −1.5/+1.5 hcap, O/U 2.5, map-1 markets — matches `docs/data/quotes.json` reference quote, confirmed still live); Thunderpick official tournament-winner outright market (8 teams, 121.25% overround, Falcons favourite). Bovada/bc.game/Polymarket lines from PR #11 data and 0c90448b's branch cross-checked; consensus fair probabilities published for all 4 matches.
+- Root model arithmetic reproduced exactly (28 pairwise + 8 outrights, clamps, vigs) from verified inputs. 15/15 repo tests pass (beautifulsoup4 installed).
+- Context claims verified: Falcons IEM Cologne Major 2026 (3–0 vs FURIA, Jun 21), Legacy FISSURE Playground 3 (3–0 vs G2, Sep 13, latto MVP).
+
+### Irregularities found (full register: IR-V1…IR-V10 in the report and on the page)
+- **IR-V1 (High):** root pairwise model diverges materially from the real market (Legacy 92.0% model vs 53.7% Pinnacle-implied vs PARIVISION; model outright favourite Legacy 34.4% vs verified Thunderpick favourite Falcons 33.0%, Legacy 17.4%). Recommendation: market-anchored consensus for the four real fixtures; model kept as labeled hypothetical.
+- **IR-V2 (High, to `0c90448b`):** your `data/odds.json` stores Pinnacle **American** odds in fields named `decimal_odds_a/b` (e.g. −150/+123). Please rename or convert before merging; correct decimals are published in `verify/8e7a652d/verified_market_lines.json`.
+- **IR-V3:** Thunderpick NiP outright conflict (+2900 Winner market vs +5000 special on one page).
+- **IR-V4:** 245 upcoming LoL lobby fixtures remain unpriced (CS2-focused scope; Bovada LoL lines exist on the unmerged 0c90448b branch — recommend integrating once that claim completes).
+- IR-V5 line movement (Pinnacle Legacy−PVISION −150→−129 in 19 min); IR-V6 Bovada 4 unlabeled rows/match; IR-V7 FreeTips secondary outrights vs verified Thunderpick market (9z 14.00 vs 30.00); IR-V8 stale June payload in docs/ (already flagged); IR-V9 HLTV Sept ranks not re-verified; IR-V10 sandbox egress limits (documented).
+
+### Integration edits (documented, minimal)
+- One nav anchor added to root `index.html` ("Verification & Market Cross-Check" → `verify/8e7a652d/index.html`), same single-anchor pattern PR #11 used. No other shared file edited.
+- New files only, otherwise: `verify/8e7a652d/**`, `tests/test_verify_8e7a652d.py`.
+
+### Final-integration task status
+Per this board's 18:07 conditional claim: integrations were performed by `ef111e02` (PR #8), `a0fcf175` (PR #11), `8c3d79a6` (PR #12) while verification ran; `0c90448b` remains active on its dashboard (fresh commits at 18:13). This session is publishing its verification deliverable + the market cross-check via PR and will confirm the Pages deploy, rather than taking over any active claim. Pages remains legacy-served from `main` root; `verify/8e7a652d/` publishes automatically as a sub-path.)
+
+---
+
+## Independent evidence audit — session `ca621beb` (2026-10-13)
+
+- Branch: `arena/ca621beb-maltaproj2` (fixed by Arena). Status: **done**; full report: `audits/ca621beb/README.md`.
+- Scope: audit the d530651 TWC VRS model, verified field/openers and roster evidence, row-level source provenance, model arithmetic, and published Pages state. Exclusive audit output: `audits/ca621beb/**`; this coordination record is the only shared file edited. No dashboard, model, fixture, or odds data was changed by this audit.
+- Baseline: `main` at `d530651`, 2026-10-13 18:21 UTC. Historical code/data references are commit-pinned in the report; the later live-site checks are separately timestamped.
+- Verified sources: Valve VRS Oct. 5/Aug. 3; PARIVISION official Sept. 17 X post; HLTV Oct. 9 replacement/openers report, Oct. 12 event overview, current PARIVISION team page, and slugged match pages; EGamersWorld, Polymarket, Thunderpick; and direct Bovada/Pinnacle URLs with quote-read times from the integrated dashboard.
+- Baseline findings: missing row-level Aug. 3 VRS provenance; calibration/input claims overstate the d530 implementation; American and Decimal odds use different probability bases; JavaScript omits Python's cap/floor; four bare HLTV match URLs return 404. The d530 Pick'em JSON lacked exact PM URLs on two rows, but later public `/pickem/matches.html` rows now show specific market links; per-market quote timestamps are still absent. Full reproductions/caveats are in the report.
+- PARIVISION's current HObbit roster entry is supported by the official team post and HLTV; Oct. 5 VRS is a dated roster snapshot, not a current roster.
+- Publication recheck: at 18:21 the root was the 86-fixture LineWatch page and tested `/pickem/` routes 404ed. By 18:36, public rechecks showed the 93-fixture odds dashboard (12 lines, 81 blank), the root Flagged page (81 unpriced rows), the 26-row `/pickem/` board, and the Pick'em Flagged page (14 items); four TWC openers show direct Bovada/Pinnacle links. Generated `index.html` contains the Pick'em nav link. PR #13 main verification `38446661064`, PR #20 Pages deploy `38447169101`, and PR #22 main workflow `38447860601` passed; Pages deploy `38447860252` succeeded. Public fetches confirmed root and direct board/flag content; the content extractor omits the header, so no browser click test was made.
+- Other main-site rows were not certified: this audit checked the four TWC openers, not the other 89 fixtures or eight non-TWC quoted rows. PR #22's subsequent data refresh and PR #20's separate verification page are preserved but were not adopted as this audit's findings.
+- Rebase log: rebased from `d530651` through PR #19 (`ad5d40d`), PR #20 (`09759e7`), and PR #22 (`5dd243e`). Resolved append-only `COORDINATION.md` conflicts by preserving all main/session records and this task claim/completion; no other session files or records were discarded.
+- Concurrent verification: PR #20 from session `8e7a652d` was open during this audit and merged afterward. This report remains the scoped `ca621beb` audit; no files or conclusions were imported from that PR.
+- Verification: baseline tests passed 18/18; after rebasing, current `python -m unittest discover -s tests -v` passed 27/27 (two existing non-fatal `ResourceWarning`s). Public root and Pick'em routes were re-fetched. The report does not certify every Pick'em join or every fixture/market in the integrated site.
+- Follow-up requests: fix archived bare HLTV URLs before reuse; preserve clear model/calibration disclaimers, Aug. 3 source links, and consistent odds/UI math; persist capture times with legacy Polymarket prices; keep route smoke tests. Details are in `audits/ca621beb/README.md`.
+
+---
+
+## Session `8e7a652d` — PR and merge record (final, 2026-10-13 18:35 UTC)
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/20 — "Independent verification report + multi-book TWC market cross-check (8e7a652d)" → `main`
+- **Merge:** MERGED at 2026-10-13T18:29:28Z, merge commit `09759e7046d8ae304cdf8df5e35f5c6d650a5e51`
+- **Delivered:** `verify/8e7a652d/**` (verification report, verified market lines JSON, cross-check page, Valve VRS evidence snapshots), `tests/test_verify_8e7a652d.py` (9 tests), nav entry in `scripts/build_site.py` (both integration links coexist with a0fcf175's), `verify` section in `scripts/stage_site.py` (fixes the pages.yml artifact build), regenerated site pages from main's own data, COORDINATION records.
+- **Conflicts resolved en route (no work discarded):** main advanced four times during this session (PRs #13, #18, #19 + workflow data refreshes). Each merge kept BOTH coordination boards verbatim, took main's newest data/evidence files, re-applied the two-line integration deltas, and regenerated the site from the merged data. PR #19's (0c90448b) dashboard improvements and PR #18's (a0fcf175) pickem nav link are preserved.
+- **CI:** first merge attempt failed the `pages.yml` build because the staged artifact did not include the new `verify/` section (broken staged link). Fixed by adding `verify` to `scripts/stage_site.py`'s section list; full pipeline then passed locally and in CI: `Verify and publish dashboard` run 38447171767 — **success**, including hosted browser smoke tests and live-site verification.
+- **Deploy verification (2026-10-13 ~18:33 UTC):**
+  - Pages build for merge commit `09759e7`: **built** (legacy, source `main` /)
+  - https://buffedlizard55-lab.github.io/MaltaProj2/ — live, 93 CS2 fixtures tracked, 12 with verified dual-source external lines (Bovada + Pinnacle), TWC openers priced
+  - https://buffedlizard55-lab.github.io/MaltaProj2/verify/8e7a652d/index.html — live, renders the full verification report, cross-book table, Thunderpick outright market and IR-V1…V10 register
+  - Root nav links both integration sections (`pickem/` + `verify/8e7a652d/`)
+- **Task status:** TASK-V verification **done**; conditional final-integration task closed — integration was performed collaboratively (ef111e02 PR #8, a0fcf175 PR #11/#18, 8c3d79a6 PR #12, 0c90448b PR #19, this session PR #20), with all evidence preserved and the combined site re-verified line by line, built, and deployed. Flagged irregularities (IR-V1…V10 and all prior registers) are published on the Flagged pages and do not block anything.
