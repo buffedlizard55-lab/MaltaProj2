@@ -210,7 +210,7 @@ def coverage_cards(summary, odds_doc, lines_doc):
     sources = sorted({l["source_key"] for l in (odds_doc.get("lines") or [])})
     cards = [
         ("Pick'em CS2 fixtures tracked", summary.get("fixtures_total", 0)),
-        ("Fixtures with a eligible source-linked line", summary.get("fixtures_with_external_line", 0)),
+        ("Fixtures with an eligible source-linked line", summary.get("fixtures_with_external_line", 0)),
         ("Fixtures still unverified (blank)", summary.get("fixtures_without_external_line", 0)),
         ("External sources quoted", len(sources)),
     ]
@@ -455,8 +455,9 @@ that a retrieval is real-time, or that a derived probability is a verified fact.
 these bookmaker hosts; automatic retrieval runs in GitHub Actions. Per-attempt payloads and failures:
 <a href="evidence/odds_collection.json">collection evidence</a>.</p>
 <h2>1. Fixtures with no external line found ({len(unverified)})</h2>
-<p>These rows are deliberately blank. Bookmakers and public markets did not quote them at collection time;
-no value was inferred from HotSpawn or from any other source.</p>
+<p>These rows are deliberately blank: no eligible official-source quote could be confirmed under the published
+policy. Missing, rejected, stale, unavailable or uncollected data are not proof that no betting market exists.
+No probability was inferred from HotSpawn or an unconfirmed source.</p>
 {table(["Scheduled (UTC)", "Tier", "Tournament", "Match", "Status", "Flags", "HotSpawn link"], unv_rows)}
 
 <h2>2. Stale fixtures ({len(stale)})</h2>
