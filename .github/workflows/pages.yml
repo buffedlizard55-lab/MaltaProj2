@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -42,22 +42,10 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs
-  configure:
-    if: github.ref == 'refs/heads/arena/ef111e02-maltaproj2'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pages: write
-    steps:
-      - name: Enable requested workflow-based Pages publishing
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: gh api --method PUT repos/$GH_REPO/pages -f build_type=workflow
   deploy:
     if: github.ref == 'refs/heads/main'
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       pages: write
       id-token: write
