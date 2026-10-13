@@ -57,9 +57,6 @@ BOVADA_ESPORTS = "https://www.bovada.lv/services/sports/event/v2/events/A/descri
 # finds a shape it can read without guessing. A blocked source is evidence of an access
 # limitation, never taken as "this fixture has no price".
 EXTRA_SOURCES = {
-    "egamersworld_cs2": "https://egamersworld.com/counterstrike/matches",
-    "egamersworld_lol": "https://egamersworld.com/lol/matches",
-    "egamersworld_api_matches": "https://egamersworld.com/api/matches/counterstrike/1",
     "thunderpick_api": "https://api.thunderpick.io/api/v1/esports/matches",
     "cloudbet_esports": "https://sports-api.cloudbet.com/pub/v2/odds/sports/3/categories",
     "onexbet_line": ("https://1xbet.com/service-api/LineFeed/Get1x2_VZip"
@@ -70,7 +67,6 @@ EXTRA_SOURCES = {
     "bo3gg_matches": "https://bo3.gg/api/v1/matches?page[limit]=50",
     "strafe_cs2": "https://strafe.com/matches/counter-strike",
     "draftkings_esports": "https://sportsbook-nash-usnj.draftkings.com/sites/US-NJ-SB/api/v5/eventgroups/88670846?format=json",
-    "hltv_matches": "https://www.hltv.org/matches",
     "liquipedia_cs": "https://liquipedia.net/counterstrike/Matches",
     "unibet_esports": "https://www.unibet.com/api/sports/offerings/10001000/sports/23",
     "midnite_cs2": "https://www.midnite.com/api/sportsbook/sports/cs2/events",
@@ -79,13 +75,18 @@ EXTRA_SOURCES = {
                        "?sports=3&count=100&lng=en&mode=4&country=1"),
 }
 
-# Pages that block datacentre requests (Cloudflare) are read through a public reader proxy. The
-# content still comes from the source itself; the proxy is only a transport, and the exact URL
-# used is recorded in the evidence file next to every parsed row.
-READER_PROXY = "https://r.jina.ai/"
-PROXIED_PAGES = {
-    "egamersworld_cs2_proxied": "https://egamersworld.com/counterstrike/matches",
-    "egamersworld_lol_proxied": "https://egamersworld.com/lol/matches",
+# Sources whose own site blocks datacentre requests (Cloudflare) are read through public
+# transports. The content still comes from the source itself; the transport is only a pipe, the
+# exact transport URL is recorded in the evidence file, and every parsed row keeps the source URL.
+TRANSPORTS = {
+    "allorigins": "https://api.allorigins.win/raw?url={url}",
+    "codetabs": "https://api.codetabs.com/v1/proxy?quest={url}",
+    "corsproxy": "https://corsproxy.io/?url={url}",
+    "jina": "https://r.jina.ai/{url}",
+    "direct": "{url}",
+}
+TRANSPORT_PAGES = {
+    "hltv_matches": "https://www.hltv.org/matches",
 }
 
 CS2_LEAGUE_RE = re.compile(r"counter[- ]?strike|cs2|cs:?go", re.I)
@@ -443,71 +444,97 @@ def probe_extra_sources(quotes: list[dict], evidence: dict) -> None:
 
 # --------------------------------------------------------------------------- proxied aggregator pages
 EGW_MATCH_LINK_RE = re.compile(
-    r"https://egamersworld\.com/(counterstrike|lol)/match/[^\s\)\]]+", re.I)
+    r"https://egamersworld\.com/(counterstrike|lol)/match/[^\s\)\]\"]+", re.I)
 EGW_TITLE_RE = re.compile(r'"([^"]{3,80}?)\s+VS\s+([^"]{1,60}?)"')
-DECIMAL_ODD_RE = re.compile(r"\[\s*(\d{1,2}\.\d{2,3})\s*\]")
+DECIMAL_ODD_RE = re.compile(r"\[?\s*(\d{1,2}\.\d{2,3})\s*\]?")
 
 
-def collect_proxied_pages(quotes: list[dict], evidence: dict) -> None:
-    """Read Cloudflare-protected aggregator pages through a public reader proxy.
+def transport_map(url: str) -> dict[str, str]:
+    """Build the transport URL for each candidate pipe (URL-encoded where the pipe needs it)."""
+    from urllib.parse import quote
+    encoded = quote(url, safe="")
+    out = {}
+    for name, template in TRANSPORTS.items():
+        out[name] = url if name == "direct" else template.format(url=encoded)
+    return out
 
-    The proxy only transports bytes; every parsed row keeps the *source* URL, and the proxy URL
-    is recorded separately so a reviewer can reproduce the exact request.
+
+def extract_egw_rows(text: str, game: str, transport_url: str) -> list[dict]:
+    """Pull (match link, both team names, both decimal odds) out of an EGamersWorld listing page.
+
+    EGamersWorld renders its odds widget server-side, so the numbers appear immediately after each
+    match link in the served markup. A row is only emitted when the link, the quoted pairing and
+    two plausible decimal prices are all present in the same fragment.
     """
-    for key, target in PROXIED_PAGES.items():
-        url = READER_PROXY + target
-        status, body, _ = fetch(url, {"Accept": "text/plain"}, timeout=90)
-        text = body.decode("utf-8", "replace")
-        entry = {"url": url, "target": target, "status": status, "bytes": len(body)}
-        if status != 200:
-            entry["error"] = text[:300]
-            evidence[key] = entry
+    rows = []
+    links = list(EGW_MATCH_LINK_RE.finditer(text))
+    for i, m in enumerate(links):
+        seg_end = links[i + 1].start() if i + 1 < len(links) else min(len(text), m.start() + 700)
+        segment = text[m.start():seg_end]
+        title = EGW_TITLE_RE.search(segment[:400])
+        if not title:
             continue
-        raw_path = os.path.join(ROOT, "evidence", "picks", "raw", key + ".txt")
-        os.makedirs(os.path.dirname(raw_path), exist_ok=True)
-        with open(raw_path, "w", encoding="utf-8") as fh:
-            fh.write(text[:1_500_000])
-        entry["raw_saved"] = f"evidence/picks/raw/{key}.txt"
+        tail = segment[:500]
+        # Only numbers that follow the pairing text count, so team ranks/scores cannot be mistaken
+        # for prices.
+        numbers = [float(x) for x in DECIMAL_ODD_RE.findall(tail[title.end() - m.start():])]
+        odds = [n for n in numbers if 1.01 <= n <= 60]
+        if len(odds) < 2:
+            continue
+        rows.append({
+            "source_key": "egamersworld",
+            "source_name": "EGamersWorld odds widget",
+            "source_kind": "esports odds aggregator (widget bookmaker: bc.game)",
+            "source_public_url": m.group(0),
+            "source_api_url": transport_url,
+            "source_game": game,
+            "source_league": None,
+            "source_market_id": None,
+            "market_type": "match winner (moneyline, full match)",
+            "market_is_live": False,
+            "retrieved_at_utc": now_iso(),
+            "start_time_utc": None,
+            "team_a_name": title.group(1).strip(),
+            "team_b_name": title.group(2).strip(),
+            "raw_price_format": "decimal",
+            "raw_price_a": odds[0], "raw_price_b": odds[1],
+            "decimal_odds_a": odds[0], "decimal_odds_b": odds[1],
+            "decimal_odds_derived": False,
+        })
+    return rows
 
-        game = "cs2" if "counterstrike" in target else "lol"
-        parsed = 0
-        links = list(EGW_MATCH_LINK_RE.finditer(text))
-        for i, m in enumerate(links):
-            seg_end = links[i + 1].start() if i + 1 < len(links) else min(len(text), m.start() + 700)
-            segment = text[m.start():seg_end]
-            title = EGW_TITLE_RE.search(segment[:300])
-            odds = DECIMAL_ODD_RE.findall(segment[:400])
-            if not title or len(odds) < 2:
-                continue
-            a, b = float(odds[0]), float(odds[1])
-            if not (1.01 <= a <= 60 and 1.01 <= b <= 60):
-                continue
-            parsed += 1
-            quotes.append({
-                "source_key": "egamersworld",
-                "source_name": "EGamersWorld odds widget",
-                "source_kind": "esports odds aggregator (widget bookmaker: bc.game)",
-                "source_public_url": m.group(0),
-                "source_api_url": url,
-                "source_league": None,
-                "source_market_id": None,
-                "source_game": game,
-                "market_type": "match winner (moneyline, full match)",
-                "market_is_live": False,
-                "market_status": None,
-                "retrieved_at_utc": now_iso(),
-                "start_time_utc": None,
-                "team_a_name": title.group(1).strip(),
-                "team_b_name": title.group(2).strip(),
-                "raw_price_format": "decimal",
-                "raw_price_a": a, "raw_price_b": b,
-                "decimal_odds_a": a, "decimal_odds_b": b,
-                "decimal_odds_derived": False,
-                "transport": "public reader proxy",
-            })
-        entry["parsed_rows"] = parsed
-        entry["match_links_seen"] = len(links)
-        evidence[key] = entry
+
+def collect_transport_pages(quotes: list[dict], evidence: dict) -> None:
+    """Try each transport for each blocked source and keep the first one that yields real rows."""
+    for page_key, target in TRANSPORT_PAGES.items():
+        if any(q.get("source_page_key") == page_key for q in quotes):
+            continue
+        game = "lol" if "/lol/" in target else ("cs2" if "counterstrike" in target else "other")
+        attempts = []
+        for tname, turl in transport_map(target).items():
+            status, body, _ = fetch(turl, {"Accept": "text/html,text/plain;q=0.9,*/*;q=0.8"}, timeout=90)
+            text = body.decode("utf-8", "replace")
+            entry = {"transport": tname, "url": turl, "status": status, "bytes": len(body)}
+            rows = []
+            if status == 200 and len(body) > 2000 and "egamersworld.com" in target:
+                rows = extract_egw_rows(text, game, turl)
+                if rows:
+                    raw_name = f"{page_key}_{tname}.txt"
+                    raw_path = os.path.join(ROOT, "evidence", "picks", "raw", raw_name)
+                    os.makedirs(os.path.dirname(raw_path), exist_ok=True)
+                    with open(raw_path, "w", encoding="utf-8") as fh:
+                        fh.write(text[:1_500_000])
+                    entry["raw_saved"] = f"evidence/picks/raw/{raw_name}"
+                    entry["parsed_rows"] = len(rows)
+                    for r in rows:
+                        r["source_page_key"] = page_key
+                        r["transport"] = tname
+                    quotes.extend(rows)
+                    entry["used"] = True
+            attempts.append(entry)
+            if entry.get("used"):
+                break
+        evidence["transport_" + page_key] = attempts
 
 
 # --------------------------------------------------------------------------- main
@@ -530,9 +557,9 @@ def main() -> int:
         evidence["extra_sources_error"] = repr(exc)
 
     try:
-        collect_proxied_pages(quotes, evidence)
+        collect_transport_pages(quotes, evidence)
     except Exception as exc:  # noqa: BLE001
-        evidence["proxied_pages_error"] = repr(exc)
+        evidence["transport_pages_error"] = repr(exc)
 
     now = datetime.now(tz=timezone.utc)
     for f in fixtures:
