@@ -214,7 +214,9 @@ def main() -> int:
         matched.append({
             "fixture_id": fx["fixture_id"] if fx else None,
             "team_a_norm": a, "team_b_norm": b, "p_a": p_a, "p_b": p_b,
-            "overround": over, "source_key": sk, "weight": 1.0,
+            "overround": over, "source_key": sk, "source_name": line.get("source_name"), "weight": 1.0,
+            "source_public_url": line.get("source_public_url"), "retrieved_at_utc": line.get("retrieved_at_utc"),
+            "market_type": line.get("market_type"), "source_market_id": line.get("source_market_id"),
             "quoted_a": line.get("team_a_name"), "quoted_b": line.get("team_b_name"),
             "start_time_utc": line.get("start_time_utc"), "api": line.get("source_api_url"),
             "detail": detail,
@@ -321,7 +323,10 @@ def main() -> int:
         matched.append({
             "fixture_id": fx["fixture_id"] if fx else None,
             "team_a_norm": a, "team_b_norm": b, "p_a": ma / total, "p_b": mb / total,
-            "overround": total - 1, "source_key": "kalshi", "weight": 1.0,
+            "overround": total - 1, "source_key": "kalshi", "source_name": "Kalshi", "weight": 1.0,
+            "source_public_url": listing.get("source_public_url"),
+            "retrieved_at_utc": listing.get("retrieved_at_utc"),
+            "market_type": "match winner (Kalshi two-sided book, both outcomes)",
             "quoted_a": parts["teams"][0], "quoted_b": parts["teams"][1],
             "start_time_utc": lstart.strftime("%Y-%m-%dT%H:%M:%SZ") if lstart else None,
             "api": listing.get("source_api_url"), "detail": detail,
