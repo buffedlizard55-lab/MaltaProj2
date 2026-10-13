@@ -27,7 +27,7 @@ Repo: `MaltaProj2` — Hotspawn Pick'em betting-line analysis & GitHub Pages das
 | # | Task | Status | Owner (session) | File scope | Notes |
 |---|---|---|---|---|---|
 | T0 | Repo review + this coordination board | done | arena-1da4b0ef-maltaproj2 | COORDINATION.md, README.md | Repo was empty except README "Initial commit" — no pre-existing data to review. |
-| T1 | Inventory of all matches listed in the Hotspawn pick'em game (CS2 + LoL), with official links | in progress | arena-1da4b0ef-maltaproj2 | data/matches.csv, data/irregularities.md | Sources: play.hotspawn.com lobby pages + www.hotspawn.com WP REST API. |
+| T1 | Inventory of all matches listed in the Hotspawn pick'em game (CS2 + LoL), with official links | done | arena-1da4b0ef-maltaproj2 | data/matches.csv, data/irregularities.md | Sources: play.hotspawn.com lobby pages + www.hotspawn.com WP REST API. |
 | T2 | External betting lines for CS2 pick'em matches + our implied probabilities | unclaimed | — | data/odds_cs2.csv, data/odds_sources.md | Will use outside sources only (HLTV, bookmakers, aggregators). Never Hotspawn pick %. |
 | T3 | External betting lines for LoL pick'em matches + our implied probabilities | unclaimed | — | data/odds_lol.csv | Same methodology as T2. |
 | T4 | Build GH Pages dashboard site (landing + category subpages + tables + analysis + flagged page) | unclaimed | — | docs/**, tools/build_site.py | Generated from data/ by tools/build_site.py (single source of truth). |
@@ -42,7 +42,7 @@ Repo: `MaltaProj2` — Hotspawn Pick'em betting-line analysis & GitHub Pages das
 - Reviewed repository at commit `e489221` ("Initial commit"): only `README.md` (title "MaltaProj2"). Nothing else to audit.
 - Irregularities: none.
 
-### T1 — Match inventory (in progress)
+### T1 — Match inventory (done)
 - Claimed: arena-1da4b0ef-maltaproj2 @ 2026-10-13. Scope: `data/matches.csv`, `data/irregularities.md`.
 - Sources being used:
   - https://play.hotspawn.com/lobby (pick'em lobby — match cards, tiers, points, lock times)
@@ -50,9 +50,15 @@ Repo: `MaltaProj2` — Hotspawn Pick'em betting-line analysis & GitHub Pages das
   - https://www.hotspawn.com/matches (official match schedule / cross-check)
   - https://www.hotspawn.com/wp-json/wp/v2/fixtures (official Hotspawn WordPress REST API — fixture records, external IDs)
   - https://www.hotspawn.com/wp-json/fixtures/v1/get?external_id=... (official fixture endpoint)
-- Verification performed: TBD at completion (every row must carry its official Hotspawn match-page URL).
+- Verification performed: 257 rows captured (26 CS2 + 231 LoL). Script check: every `match_id` unique, every
+  `hotspawn_url` ends with its `match_id` (100% pass). Pairings/times cross-checked against https://www.hotspawn.com/matches
+  (UTC-labelled) — lobby timezone confirmed UTC-4 (EDT) with conversion documented in data/irregularities.md.
+- Irregularities: 6 items documented in data/irregularities.md (banner-vs-rendered count mismatch; pick-% rounding drift;
+  one chunk-boundary card reconstructed via official REST API + flagged; duplicate fixture pairings; "WAITING FOR
+  INFORMATION" tiers recorded verbatim; list extends beyond stated week).
 
 ---
 
 ## Change log / handoffs
 - 2026-10-13 — session `arena-1da4b0ef-maltaproj2` created this board, claimed T0 (done) and T1 (in progress). T2-T6 remain unclaimed. No handoffs.
+- 2026-10-13 — T1 completed: data/matches.csv (257 rows) + data/irregularities.md. Claiming T2 (CS2 odds).
