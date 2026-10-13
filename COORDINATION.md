@@ -953,3 +953,19 @@ Per this board's 18:07 conditional claim: integrations were performed by `ef111e
 
 
 
+
+---
+
+## Session `8e7a652d` — PR and merge record (final, 2026-10-13 18:35 UTC)
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/20 — "Independent verification report + multi-book TWC market cross-check (8e7a652d)" → `main`
+- **Merge:** MERGED at 2026-10-13T18:29:28Z, merge commit `09759e7046d8ae304cdf8df5e35f5c6d650a5e51`
+- **Delivered:** `verify/8e7a652d/**` (verification report, verified market lines JSON, cross-check page, Valve VRS evidence snapshots), `tests/test_verify_8e7a652d.py` (9 tests), nav entry in `scripts/build_site.py` (both integration links coexist with a0fcf175's), `verify` section in `scripts/stage_site.py` (fixes the pages.yml artifact build), regenerated site pages from main's own data, COORDINATION records.
+- **Conflicts resolved en route (no work discarded):** main advanced four times during this session (PRs #13, #18, #19 + workflow data refreshes). Each merge kept BOTH coordination boards verbatim, took main's newest data/evidence files, re-applied the two-line integration deltas, and regenerated the site from the merged data. PR #19's (0c90448b) dashboard improvements and PR #18's (a0fcf175) pickem nav link are preserved.
+- **CI:** first merge attempt failed the `pages.yml` build because the staged artifact did not include the new `verify/` section (broken staged link). Fixed by adding `verify` to `scripts/stage_site.py`'s section list; full pipeline then passed locally and in CI: `Verify and publish dashboard` run 38447171767 — **success**, including hosted browser smoke tests and live-site verification.
+- **Deploy verification (2026-10-13 ~18:33 UTC):**
+  - Pages build for merge commit `09759e7`: **built** (legacy, source `main` /)
+  - https://buffedlizard55-lab.github.io/MaltaProj2/ — live, 93 CS2 fixtures tracked, 12 with verified dual-source external lines (Bovada + Pinnacle), TWC openers priced
+  - https://buffedlizard55-lab.github.io/MaltaProj2/verify/8e7a652d/index.html — live, renders the full verification report, cross-book table, Thunderpick outright market and IR-V1…V10 register
+  - Root nav links both integration sections (`pickem/` + `verify/8e7a652d/`)
+- **Task status:** TASK-V verification **done**; conditional final-integration task closed — integration was performed collaboratively (ef111e02 PR #8, a0fcf175 PR #11/#18, 8c3d79a6 PR #12, 0c90448b PR #19, this session PR #20), with all evidence preserved and the combined site re-verified line by line, built, and deployed. Flagged irregularities (IR-V1…V10 and all prior registers) are published on the Flagged pages and do not block anything.
