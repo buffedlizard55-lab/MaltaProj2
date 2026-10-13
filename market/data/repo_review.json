@@ -1,19 +1,19 @@
 {
- "generated_at_utc": "2026-10-13T22:32:12Z",
+ "generated_at_utc": "2026-10-13T22:57:38Z",
  "checks": [
   {
    "id": "R1",
    "claim": "data/hotspawn_matches.json matches the live lobby fixture list",
    "source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
    "snapshot_file": "data/hotspawn_matches.json",
-   "snapshot_generated_at_utc": "2026-10-13T22:02:49Z",
+   "snapshot_generated_at_utc": "2026-10-13T22:29:32Z",
    "live_count_all_sports": 11570,
    "live_window_rows": 275,
-   "snapshot_count": 406,
+   "snapshot_count": 405,
    "window_ids_missing_from_snapshot": [],
    "stale_in_snapshot": [],
    "status": "verified",
-   "detail": "406 snapshot rows vs 275 live window rows; 0 live window fixture(s) missing from the snapshot, 0 snapshot row(s) no longer served"
+   "detail": "405 snapshot rows vs 275 live window rows; 0 live window fixture(s) missing from the snapshot, 0 snapshot row(s) no longer served"
   },
   {
    "id": "R2",
@@ -109,15 +109,24 @@
    "rows": 32,
    "status": "verified",
    "mismatches": [],
-   "detail": "32 priced rows joined to the lobby snapshot by fixture id and team name; 0 mismatch(es)"
+   "stale_rows_no_longer_in_the_lobby_window": [
+    {
+     "fixture_id": "1081104",
+     "teams": [
+      "Gr\u00eamio",
+      "LOS NINOS"
+     ]
+    }
+   ],
+   "detail": "32 priced rows joined to the lobby snapshot by fixture id and team name; 0 mismatch(es), 1 row(s) whose fixture has since left the lobby window"
   },
   {
    "id": "R5",
    "claim": "data/lines.json summary counters match its own row list",
-   "declared_fixtures_total": 92,
-   "rows": 92,
+   "declared_fixtures_total": 91,
+   "rows": 91,
    "status": "verified",
-   "detail": "declared fixtures_total=92 vs 92 rows; fixtures_with_external_line=11"
+   "detail": "declared fixtures_total=91 vs 91 rows; fixtures_with_external_line=9"
   },
   {
    "id": "R6",
