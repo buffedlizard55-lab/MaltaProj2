@@ -431,3 +431,20 @@ directory; `/pickem/` = priced analysis. Neither uses Hotspawn pick percentages 
 
 - Concurrent PRs #11 and #12 landed before runtime-hardening PR #13. Board content conflict resolved by preserving both logs. Other session files retained without editing; dashboard evidence boundaries remain unchanged.
 - Follow-up scope disposition: PR #11's separate priced board and PR #12's corrected root model remain preserved in repository history and source links from F14. They are not copied into this artifact's verified current quote fields: secondary-source pricing, source timestamps and cross-provider event joins need independent review. F14 now distinguishes original PR #7 claims from later corrections rather than implying corrections never occurred. The Pages artifact intentionally serves the reviewed LineWatch docs tree, not an unreviewed aggregation of all root model outputs.
+## Session `a0fcf175` — merge + deploy record (2026-10-13 18:35 UTC)
+
+* PR: https://github.com/buffedlizard55-lab/MaltaProj2/pull/11 - merged to `main` (merge commit
+  `ce4bc54`), no file of any other session overwritten; the root dashboard and `docs/**` are intact.
+* Deploy verification (published site, root Pages source `main` / unchanged):
+  * https://buffedlizard55-lab.github.io/MaltaProj2/pickem/index.html - 200, renders the dashboard
+    (26 fixtures, 25 lines, 22 bc.game, 20 Polymarket, 14 flags).
+  * https://buffedlizard55-lab.github.io/MaltaProj2/pickem/matches.html - 200, all 26 rows with
+    their per-row source links (Hotspawn entry, HLTV match page, HLTV betting analytics, market page).
+  * Bare `pickem/` returned a cached 404 immediately after the deploy (GitHub Pages caches 404s for
+    a few minutes); `pickem/index.html` served 200 as soon as the cache key changed, and the root
+    dashboard nav now links the board.
+  * `python3 scripts/build_pickem_lines.py` -> `rows=26 with_line=25 without_line=1`;
+    `python3 scripts/check_links.py` -> 7 pages, 138 external links, 0 broken local links.
+* Post-merge state: this session's files are `data/pickem_pool.json`, `data/keys.json`,
+  `scripts/build_pickem_lines.py`, `scripts/check_links.py`, `pickem/**`, plus the README section and
+  the one nav anchor in the root `index.html`. Nothing else was changed by this session.
