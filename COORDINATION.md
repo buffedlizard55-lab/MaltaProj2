@@ -2895,3 +2895,5 @@ session's claim section; the section above has been restored **verbatim from thi
 - Live URLs: `https://buffedlizard55-lab.github.io/MaltaProj2/` and `https://buffedlizard55-lab.github.io/MaltaProj2/audits/eb454aaa/flagged.html`.
 - Follow-up in own scope adds an on-demand runner check of actual deployed audit-page HTTP responses, markers and row sources. This does not change data/collectors or other sessions’ files. Sandbox cannot directly fetch the Pages domain; the hosted check records the actual verification rather than assuming a successful deploy proves every URL.
 - Non-blocking GitHub runner annotation: existing v4 actions target deprecated Node 20 and are forced to Node 24. The build/deploy still succeeded; existing workflow owners retain their action-upgrade scope.
+
+- Follow-up runner check: workflow dispatch is denied by the repository integration permission (HTTP 403 Resource not accessible by integration). No credentials requested or changed. The isolated workflow now performs the same read-only deployed-content check on its normal authorized push/PR triggers; PR #56 already published the dated report being checked.
