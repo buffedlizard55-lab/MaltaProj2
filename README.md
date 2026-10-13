@@ -45,3 +45,7 @@ Offline evidence replay: `python scripts/collect.py --fixture docs/evidence/prob
 ## Verification scope
 
 Tests verify source parsing, exact fixture values against preserved HTML, odds arithmetic, missing-data behavior, official links on every generated table row, and all local links/anchors. They do not certify every external URL is reachable or that a source is factually correct. No aliases, future years, market identities, live states or missing prices are inferred. See `COORDINATION.md` for integration and release history.
+
+## Parallel publication retained for review
+
+Another session merged PR #7 while this integration was active. Its root-level TWC model and datasets remain in Git, and its [original README is preserved](docs/evidence/parallel-898abb4f-readme.md). Those outputs are **not** source-verified inputs to LineWatch. They describe hypothetical pairings and unsupported claims of absent bookmaker lines that conflict with this session's observed explicit markets. See the LineWatch Flagged for Review page; do not mistake the parallel model for current verified pick’em pricing.
