@@ -28,7 +28,20 @@ for m in data['matches']:
 outright = data['outright_market']
 rows_outright = ""
 for o in outright['entries']:
-    rows_outright += f'<tr><td><b>{o["team"]}</b></td><td>{o["american"]}</td><td>{o["decimal"]}</td><td>{pct(o["raw_implied"])}</td><td><b>{pct(o["fair_probability"])}</b></td></tr>'
+    rows_outright += (f'<tr><td><b>{o["team"]}</b><div class="sub dim">'
+                      f'<a href="{outright["source_url"]}" target="_blank" rel="noopener">source</a>'
+                      f'</div></td><td>{o["american"]}</td><td>{o["decimal"]}</td>'
+                      f'<td>{pct(o["raw_implied"])}</td><td><b>{pct(o["fair_probability"])}</b></td></tr>')
+
+# Source links reused by the verification-summary and irregularity rows so every
+# value-stating row links the official page the value was read from.
+src_vrs = "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md"
+src_outright = outright['source_url']
+src_pinnacle_lp = next(
+    (l['source_url'] for m in data['matches'] if m['match'] == 'Legacy vs PARIVISION'
+     for l in m['lines'] if l['source'] == 'Pinnacle'),
+    src_outright,
+)
 
 html = f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
@@ -123,7 +136,7 @@ ul{{margin:8px 0 8px 20px}} li{{margin:3px 0}}
 <tr><td>Pinnacle prices for all 4 openers (American odds, open status)</td><td><span class="tag tgood">CAPTURED</span></td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight" target="_blank" rel="noopener">Pinnacle guest API</a> (matchups 1638111785/74/86/87)</td></tr>
 <tr><td>Falcons IEM Cologne Major 2026 title, 3–0 vs FURIA (Jun 21)</td><td><span class="tag tgood">VERIFIED</span></td><td><a href="https://www.shanethegamer.com/esports-news/iem-cologne-major-2026-falcons-furia-final/" target="_blank" rel="noopener">shanethegamer</a> · <a href="https://vpesports.com/more-esports/falcons-are-iem-cologne-major-2026-champions" target="_blank" rel="noopener">vpesports</a></td></tr>
 <tr><td>Legacy FISSURE Playground 3 title, 3–0 vs G2 (Sep 13), latto MVP</td><td><span class="tag tgood">VERIFIED</span></td><td><a href="https://esports-news.co.uk/2026/09/14/legacy-deliver-at-4-1-to-win-fissure-playground-3" target="_blank" rel="noopener">esports-news.co.uk</a> · <a href="https://1vx.gg/news/legacy-sweep-g2-3-0-to-win-fissure-playground-3-as-latto-takes-mvp" target="_blank" rel="noopener">1vX.gg</a></td></tr>
-<tr><td>Root model arithmetic (28 pairwise + 8 outright lines)</td><td><span class="tag tgood">REPRODUCED EXACT</span></td><td>Recomputed from verified VRS inputs; clamps [0.08, 0.92], vigs 4.5%/10% confirmed in code</td></tr>
+<tr><td>Root model arithmetic (28 pairwise + 8 outright lines)</td><td><span class="tag tgood">REPRODUCED EXACT</span></td><td>Recomputed from verified VRS inputs (<a href="{src_vrs}" target="_blank" rel="noopener">Valve VRS Oct 5, 2026 standings</a>); clamps [0.08, 0.92], vigs 4.5%/10% confirmed in code</td></tr>
 <tr><td>Repo test suite</td><td><span class="tag tgood">15/15 PASS</span></td><td><code>python3 -m unittest discover tests/</code> (requires beautifulsoup4)</td></tr>
 <tr><td>HLTV September team-rank fields (Falcons 5, Legacy 6, …)</td><td><span class="tag twarn">NOT RE-VERIFIED</span></td><td>HLTV ranking archive is JS-heavy; values left as published (not used in any probability) — IR-V9</td></tr>
 </tbody></table></div>
@@ -132,13 +145,13 @@ ul{{margin:8px 0 8px 20px}} li{{margin:3px 0}}
 <div class="tablewrap"><table class="mini">
 <thead><tr><th>ID</th><th>Severity</th><th>Finding</th><th>Handling</th></tr></thead>
 <tbody>
-<tr><td><b>IR-V1</b></td><td><span class="tag tbad">High</span></td><td>Root pairwise model diverges materially from the real market: model Legacy 92.0% vs PARIVISION vs Pinnacle-implied 53.7%; model outright favorite Legacy 34.4% vs Thunderpick-verified favorite Falcons 33.0% (Legacy 17.4%).</td><td>Use market-anchored consensus (this page / pickem board) for the four real fixtures; keep the 28-pairing model as a labeled hypothetical. Root site already labels lines "Derived, not a bookmaker quote" (PR #12).</td></tr>
+<tr><td><b>IR-V1</b></td><td><span class="tag tbad">High</span></td><td>Root pairwise model diverges materially from the real market: model Legacy 92.0% vs PARIVISION vs Pinnacle-implied 53.7% (<a href="{src_pinnacle_lp}" target="_blank" rel="noopener">Pinnacle source</a>); model outright favorite Legacy 34.4% vs Thunderpick-verified favorite Falcons 33.0% (Legacy 17.4%) (<a href="{src_outright}" target="_blank" rel="noopener">Thunderpick source</a>).</td><td>Use market-anchored consensus (this page / pickem board) for the four real fixtures; keep the 28-pairing model as a labeled hypothetical. Root site already labels lines "Derived, not a bookmaker quote" (PR #12).</td></tr>
 <tr><td><b>IR-V2</b></td><td><span class="tag tbad">High</span></td><td>Session 0c90448b's <code>data/odds.json</code> stores Pinnacle <b>American</b> odds in fields named <code>decimal_odds_a/b</code> (e.g. −150/+123).</td><td>Flagged to owner via COORDINATION.md; correct decimals published in <a href="verified_market_lines.json">verified_market_lines.json</a>.</td></tr>
 <tr><td><b>IR-V3</b></td><td><span class="tag twarn">Med</span></td><td>Thunderpick page: NiP +2900 (Winner market) vs "NiP to win the tournament +5000" (specials) — inconsistent.</td><td>Winner market used; discrepancy flagged.</td></tr>
 <tr><td><b>IR-V4</b></td><td><span class="tag twarn">Med</span></td><td>245 upcoming LoL lobby fixtures unpriced (CS2-focused scope). Bovada lines for several LoL fixtures exist on the unmerged 0c90448b branch.</td><td>Left blank (never inferred); noted for follow-up integration.</td></tr>
 <tr><td><b>IR-V5</b></td><td><span class="tag twarn">Med</span></td><td>Rapid line movement (Pinnacle Legacy−PVISION −150→−129 in 19 min).</td><td>All captures timestamped; point-in-time disclaimer shown.</td></tr>
 <tr><td><b>IR-V6</b></td><td><span class="tag twarn">Med</span></td><td>Bovada capture has 4 unlabeled price rows per match; first row taken as headline.</td><td>Cross-checked vs Pinnacle/bc.game — deviations within normal book spread.</td></tr>
-<tr><td><b>IR-V7</b></td><td><span class="tag twarn">Med</span></td><td>FreeTips secondary outright snapshot (root data file) differs from verified Thunderpick market (9z 14.00 vs 30.00; Legacy 3.80 vs 4.75).</td><td>Verified Thunderpick capture published as primary; FreeTips retained as flagged secondary.</td></tr>
+<tr><td><b>IR-V7</b></td><td><span class="tag twarn">Med</span></td><td>FreeTips secondary outright snapshot (root data file) differs from verified Thunderpick market (9z 14.00 vs 30.00; Legacy 3.80 vs 4.75) — compared against <a href="{src_outright}" target="_blank" rel="noopener">the verified Thunderpick outright market</a>.</td><td>Verified Thunderpick capture published as primary; FreeTips retained as flagged secondary.</td></tr>
 <tr><td><b>IR-V8</b></td><td><span class="tag tgood">Low</span></td><td>docs/ 86-fixture dataset is a June-2026 payload (60/86 kickoffs in the past) — already flagged by LineWatch audits.</td><td>Confirmed; no change.</td></tr>
 <tr><td><b>IR-V9</b></td><td><span class="tag tgood">Low</span></td><td>HLTV Sept team-rank fields not independently re-verified.</td><td>Left as published; unused in probabilities.</td></tr>
 <tr><td><b>IR-V10</b></td><td><span class="tag tgood">Info</span></td><td>Sandbox egress limited to GitHub/npm/PyPI; non-GitHub evidence captured via platform fetch tool / GitHub Actions runners.</td><td>Documented; no bypass attempted.</td></tr>
