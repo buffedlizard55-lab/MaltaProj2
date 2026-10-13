@@ -13,7 +13,12 @@ on:
     branches: ['arena/42580809-maltaproj2']
     paths:
       - 'proof/42580809/run/**'
+      - 'proof/42580809/build_*.py'
+      - 'proof/42580809/originate.py'
       - '.github/workflows/probe-42580809.yml'
+  schedule:
+    # Keep the session's evidence, board and published section fresh (hourly).
+    - cron: '23 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -45,6 +50,20 @@ jobs:
             fi
           done
           ls -la proof/42580809/evidence || true
+      - name: Rebuild and validate the board from the fresh evidence
+        continue-on-error: true
+        run: |
+          set -e
+          python3 proof/42580809/build_board.py
+          python3 proof/42580809/originate.py
+          python3 proof/42580809/build_site.py
+          if ! python3 -m unittest tests.test_42580809 -v; then
+            echo "::warning title=BOARD_TESTS_FAILED::discarding the regenerated board, keeping the last validated one"
+            git checkout -- data/board_42580809.json data/board_42580809.csv \
+                            data/originated_42580809.json proof/42580809/evidence site/42580809 || true
+            exit 1
+          fi
+          python3 -c 'import json;d=json.load(open("data/board_42580809.json"));c=d["coverage"];print("::notice title=BOARD_REBUILT::generated "+d["generated_at_utc"]+" fixtures "+str(c["fixtures_total"])+" named "+str(c["fixtures_with_named_line"])+" accepted "+str(c["quotes_accepted"])+" rejected "+str(c["quote_decisions_rejected"]))'
       - name: Summarise results as annotations
         if: always()
         run: |
@@ -74,6 +93,9 @@ jobs:
               note("LINES", f"{lines.get('collected_at_utc')} total={len(lines['lines'])} {dict(c)}")
           src = load("lines_sources.json") or {}
           note("SOURCES", json.dumps(src)[:900])
+          cov = load("coverage.json") or {}
+          if cov:
+              note("COVERAGE", json.dumps({k: v for k, v in cov.items() if k != "by_tournament"})[:900])
           probe = load("probe.json") or {}
           note("PROBE_REACHABLE", ",".join(probe.get("reachable_200", []))[:900])
           note("EVIDENCE_FILES", ",".join(sorted(os.listdir(out)) if os.path.isdir(out) else []))
@@ -85,7 +107,8 @@ jobs:
           set +e
           git config user.name "arena-42580809-runner"
           git config user.email "arena-42580809@users.noreply.github.com"
-          git add -A proof/42580809/evidence
+          git add -A proof/42580809/evidence data/board_42580809.json data/board_42580809.csv \
+                    data/originated_42580809.json site/42580809
           if git diff --cached --quiet; then echo "nothing staged"; exit 0; fi
           git commit -m "proof(42580809): runner-collected evidence [skip ci]"
           BR="${GITHUB_REF_NAME}"
