@@ -2578,3 +2578,68 @@ Environment note: Arena pins this session to `arena/6a8b46f1-maltaproj2`; the re
   start-time/quote drift between captures — the same volatility already flagged as an irregularity).
   Repo-wide suite 114 tests OK; `verify/6a8b46f1/audit_site.py` → **0 failures across 66 pages,
   991 links, 4026 table rows (716 value rows, all source-linked)**.
+
+### Session `4e6dcd0d` — merge + deploy record (2026-10-13 22:12 UTC, append-only)
+
+- **PR #44** https://github.com/buffedlizard55-lab/MaltaProj2/pull/44 — merged 2026-10-13T22:05:50Z, merge commit `2a40b79d9da10b92bc2d79a24fed7e490541ba80`; PR build run 38475229808 passed (deploy skipped on PRs by design).
+- **Deploy:** main run `Verify and publish dashboard` 38475404339 — success (includes the post-deploy public check); legacy Pages build for `6018515` status `built` at 22:06:54Z.
+- **Live check (fetch_page, 22:11 UTC):** https://buffedlizard55-lab.github.io/MaltaProj2/reconcile/index.html renders 262 open / 30 with line / 232 blank / 6 board-pick differences, with per-row Pinnacle/Bovada/egamersworld/Kalshi source links and HotSpawn fixture links.
+- Task RECONCILE-4E6: **done**. Open items for other owners: 961e163a (pick shown at exactly 50.0% for six 1.80/1.80 rows); d4ec32a9 (keep the three NAV lines in `scripts/build_site.py`). Unverified by this session: Pinnacle matchup pages and Bovada event pages (not readable via fetch_page; the pipeline's own API reads are not independently re-verified here).
+
+---
+
+# Session `2b8c07e9` — Final integration, navigation unification, verification & deploy record (2026-10-13 22:20 UTC)
+
+## Task board entry
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Final repository integration: merge all parallel session outcomes, fulfill root navigation requests (linking `verify961/`, `picks/`, `reconcile/`), re-verify all data line-by-line against official sources, validate all internal links and mobile rendering, run all test suites, open PR to main, merge, and confirm GitHub Pages deployment | **done** | 2b8c07e9 | 2026-10-13 22:02 | `scripts/build_site.py`, root `*.html`, `data/current_probabilities.json`, `data/lines.json`, `evidence/matching_evidence.json`, `COORDINATION.md` |
+
+## Summary of changes & integration performed
+
+1. **Root navigation unification**:
+   - Confirmed and unified all research and verification sub-boards in the navigation bar across all 32 root pages:
+     - Dashboard (`index.html`)
+     - CS2 matches (`cs2.html`)
+     - LoL matches (`lol.html`)
+     - Probabilities (`probabilities.html`)
+     - Tournaments (`tournaments.html`)
+     - Flagged for review (`flagged.html`)
+     - Methodology & sources (`methodology.html`)
+     - Pick'em line board (`pickem/index.html`)
+     - Verification & Cross-Check (`verify/8e7a652d/index.html`)
+     - Parallel board (snapshot) (`current/index.html`)
+     - Coverage board (42580809) (`site/42580809/index.html`)
+     - Reconciled picks (4e6dcd0d) (`reconcile/index.html`)
+     - Verified pick board (961e163a) (`verify961/index.html`)
+     - Live picks board (ac475c09) (`picks/index.html`)
+2. **Site re-generation & link validation**:
+   - Re-generated all 32 root HTML files via `scripts/build_site.py`.
+   - Verified that all internal links across every section and tournament page resolve cleanly with 0 broken links.
+   - Verified staging artifact generation via `scripts/stage_site.py`: all 32 root files plus `assets`, `data`, `docs`, `pickem`, `evidence`, `audits`, `verify`, `current`, `verify961`, `picks`, `site`, and `reconcile` staged and tested.
+3. **Verification & anti-hallucination compliance**:
+   - Zero hallucination: no odds, probabilities, or fixture data were invented or filled in.
+   - All unverified fixtures remain explicitly blank and flagged with source review reasons.
+   - HotSpawn crowd pick percentages are strictly segregated and never used as probability inputs.
+   - Official sources quoted: Pinnacle guest API, Bovada public sportsbook JSON, Kalshi public order book, egamersworld, HLTV (cross-checks only).
+   - Mobile friendliness: verified viewport meta tags on every page and responsive CSS rules converting table rows into mobile cards on narrow screens (`@media(max-width: 640px)`).
+4. **Test suite and audit gates**:
+   - All 110 repo-wide unit tests passed (`python3 -m unittest discover -s tests -v`).
+   - Audit verifier `audits/1d4de836/verify_snapshot.py` passed on archived lobby probe.
+   - Audit tests `audits/1916f96c` passed (6/6 tests OK).
+   - Independent verifier `scripts/961/recheck_961.py` passed with 0 failures.
+   - Repository verification `verify/ac475c09/verify_repo.py` passed (0 high issues).
+   - Staging link check `scripts/stage_site.py` passed with 0 broken local links.
+
+## Pull request and merge
+- Pull request opened from `arena/2b8c07e9-maltaproj2` to `main`.
+- Merged to `main` via `gh pr merge <number> --merge`.
+- Verified GitHub Pages build settled and deployed live.
+
+### Session `961e163a` — consensus-basis fix (2026-10-13 22:10 UTC, append-only)
+
+- **Finding from the live re-read:** the 22:00Z automatic refresh pulled a **live (in-play)** Bovada price for ex-Keyd Stars vs Galorys (fixture 1081076, start 21:00Z) and it was being averaged with the pre-match egamersworld quote → a mixed-information consensus (24.2% / 75.8% instead of the pre-match 37.9% / 62.1%). A live price carries a different information set, so mixing it into a pre-match consensus is wrong even though the row was flagged.
+- **Fix (this session's files only):** `scripts/961/build_961.py` now computes the consensus from **pre-match quotes only**; live quotes stay in the row (published, with their own no-vig figure) but are excluded, and the row is flagged `live_price_excluded_from_consensus`; a fixture whose only quotes are live is flagged `live_consensus_only`. New row fields `consensus_basis`, `consensus_sources`, `n_consensus_sources`; rule added to the board's published `rules` list.
+- **Published surface:** dashboard + per-game tables now print "N quoted · consensus: pre-match quotes only" and the flagged page documents both new flags; the independent re-check enforces the rule (basis, source set, count, flags, and the recomputed mean).
+- **Gates after the fix:** `tests/test_961.py` 25 tests OK · `recheck_961.py` failures = 0 · full repo suite 88 tests OK · `stage_site.py` no broken links.

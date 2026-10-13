@@ -68,15 +68,35 @@ class BoardTests(unittest.TestCase):
                 self.assertAlmostEqual(s["overround"], qa + qb - 1, delta=TOL,
                                        msg=f'{r["fixture_id"]} {s["source_key"]}')
 
-    def test_consensus_is_the_mean_of_sources(self):
+    def test_consensus_is_the_mean_of_pre_match_sources(self):
         for r in self.rows:
             if r["probability_a"] is None:
                 continue
-            probs = [s["no_vig_probability_a"] for s in r["sources"]]
+            pre = [s for s in r["sources"] if not s.get("market_is_live")]
+            used = pre or r["sources"]
+            probs = [s["no_vig_probability_a"] for s in used]
             self.assertAlmostEqual(sum(probs) / len(probs), r["probability_a"], delta=TOL,
                                    msg=r["fixture_id"])
             self.assertAlmostEqual(1.0, r["probability_a"] + r["probability_b"], delta=TOL,
                                    msg=r["fixture_id"])
+            self.assertEqual(len(used), r["n_consensus_sources"], msg=r["fixture_id"])
+            self.assertEqual(sorted(s["source_key"] for s in used),
+                             sorted(r["consensus_sources"]), msg=r["fixture_id"])
+            self.assertEqual("pre_match" if pre else "live_only", r["consensus_basis"],
+                             msg=r["fixture_id"])
+
+    def test_live_prices_are_published_but_never_mixed_in(self):
+        for r in self.rows:
+            if r["probability_a"] is None:
+                continue
+            pre = [s for s in r["sources"] if not s.get("market_is_live")]
+            live = [s for s in r["sources"] if s.get("market_is_live")]
+            if pre and live:
+                self.assertIn("live_price_excluded_from_consensus", r["flags"], msg=r["fixture_id"])
+                self.assertEqual(len(pre), r["n_consensus_sources"], msg=r["fixture_id"])
+            if live and not pre:
+                self.assertIn("live_consensus_only", r["flags"], msg=r["fixture_id"])
+                self.assertEqual(len(live), r["n_consensus_sources"], msg=r["fixture_id"])
 
     def test_pick_is_the_more_probable_side(self):
         for r in self.rows:
