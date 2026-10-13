@@ -19,3 +19,32 @@ for name in ('assets','data','docs','pickem','evidence'):
 (OUT/'.nojekyll').touch()
 assert (OUT/'docs/index.html').is_file()
 print('Staged root contributions, LineWatch at /docs/, and separate /pickem/ board')
+# Verify local navigation across every staged section, not just LineWatch.
+from html.parser import HTMLParser
+from urllib.parse import urlsplit, unquote
+class Links(HTMLParser):
+    def __init__(self):
+        super().__init__();self.urls=[]
+    def handle_starttag(self, tag, attrs):
+        for key,value in attrs:
+            if key in ('href','src') and value:
+                self.urls.append(value)
+errors=[]
+for page in OUT.rglob('*.html'):
+    parser=Links();parser.feed(page.read_text())
+    for url in parser.urls:
+        parsed=urlsplit(url)
+        if parsed.scheme or parsed.netloc or not parsed.path:
+            continue
+        path=unquote(parsed.path)
+        if path.startswith('/MaltaProj2/'):
+            target=OUT/path.removeprefix('/MaltaProj2/')
+        elif path.startswith('/'):
+            target=OUT/path.lstrip('/')
+        else:
+            target=page.parent/path
+        if not target.exists():
+            errors.append(f'{page.relative_to(OUT)} -> {url}')
+if errors:
+    raise SystemExit('Broken staged local links:\n'+'\n'.join(errors))
+print('PASS: all staged local links resolve across all session sections')
