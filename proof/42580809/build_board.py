@@ -63,6 +63,7 @@ ALIASES = {
 # start time also match, and every use is recorded in matching.json with both raw spellings.
 CONDITIONAL_ALIASES = {
     "wbt academy": "wrotberry",
+    "esport academy copenhagen": "eac",
 }
 
 SUFFIXES = (" esports", " esport", " e sports", " gaming", " club", " team", " csgo", " cs2")

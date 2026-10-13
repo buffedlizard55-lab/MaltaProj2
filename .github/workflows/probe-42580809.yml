@@ -1,13 +1,4 @@
 name: runner-42580809
-
-# Session 42580809: runner-side data collection. GitHub runners have unrestricted egress,
-# so every external fetch (odds sources, fixture API, ranking feeds) runs here and the raw
-# results are committed back to the session branch as evidence.
-#
-# Transport note: this environment cannot download workflow artifacts or logs, but it *can*
-# read workflow-run annotations on the public run page, so a compact summary of every result
-# is emitted as a `::notice::` annotation while the full payloads travel through the commit.
-
 on:
   push:
     branches: ['arena/42580809-maltaproj2']
@@ -19,96 +10,36 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: runner-42580809
-  cancel-in-progress: false
-
 jobs:
-  run:
+  probe:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Run session runner tasks
+      - name: Run probe
         run: |
-          mkdir -p proof/42580809/evidence
-          for s in fetch_fixtures probe_sources explore_sources inspect_pinnacle collect_lines; do
-            f="proof/42580809/run/$s.py"
-            if [ -f "$f" ]; then
-              echo "=== running $s"
-              timeout 900 python3 "$f" 2>&1 | tail -60 || echo "(exit $? from $s, evidence kept)"
-            else
-              echo "=== skipping $s (not present)"
-            fi
-          done
-          ls -la proof/42580809/evidence || true
-      - name: Summarise results as annotations
-        if: always()
+          python3 -VV
+          python3 proof/42580809/run/probe_sources.py
+          python3 proof/42580809/run/fetch_fixtures.py
+          python3 proof/42580809/run/fetch_reference.py
+          python3 proof/42580809/run/collect_lines.py
+      - name: Commit evidence
         run: |
-          python3 - <<'PY' || true
-          import json, os
-          out = "proof/42580809/evidence"
-          def note(title, msg):
-              msg = str(msg).replace("%", "%25").replace("\r", " ").replace("\n", " ")
-              print(f"::notice title={title}::{msg[:900]}")
-          def load(name):
-              p = os.path.join(out, name)
-              if not os.path.exists(p):
-                  return None
-              try:
-                  return json.load(open(p))
-              except Exception as exc:
-                  note("BAD_JSON_" + name, exc)
-                  return None
-          f = load("fixtures.json")
-          note("FIXTURES", json.dumps(f.get("counts", {})) if f else "missing")
-          p = load("probe.json")
-          if p:
-              note("PROBE_REACHABLE", ",".join(p.get("reachable_200", [])) or "none")
-          s = load("sources.json")
-          if s:
-              note("SOURCES_COUNTS", json.dumps(s.get("counts", {})))
-              note("SOURCES_CS2", ",".join(s.get("cs2_sources", [])) or "none")
-              note("SOURCES_PRICED", ",".join(s.get("cs2_priced", [])) or "none")
-              for r in s.get("results", []):
-                  if r.get("status") == 200:
-                      bits = [f"{k}={r[k]}" for k in ("json", "cs2_mentions", "has_odds_keys",
-                                                      "events", "bet_offers", "results", "list_len")
-                              if k in r]
-                      note("SRC_" + r["key"][:40], " ".join(bits) + " | " + ",".join(r.get("samples", [])[:6]))
-          else:
-              note("SOURCES_MISSING", "evidence/sources.json not written")
-          l = load("lines_raw.json")
-          if l:
-              note("LINES", json.dumps({k: v for k, v in l.items() if k != "lines"})[:900])
-          note("EVIDENCE_FILES", ",".join(sorted(os.listdir(out)) if os.path.isdir(out) else []))
-          PY
-      - name: Commit collected evidence back to the session branch
-        if: always()
-        continue-on-error: true
-        run: |
-          set +e
-          git config user.name "arena-42580809-runner"
-          git config user.email "arena-42580809@users.noreply.github.com"
+          git config user.name  "runner-42580809"
+          git config user.email "runner-42580809@users.noreply.github.com"
           git add -A proof/42580809/evidence
-          if git diff --cached --quiet; then echo "nothing staged"; exit 0; fi
-          git commit -m "proof(42580809): runner-collected evidence [skip ci]"
-          BR="${GITHUB_REF_NAME}"
-          echo "branch=$BR head=$(git rev-parse --short HEAD)"
-          PULL=$(git pull --rebase --autostash origin "$BR" 2>&1); echo "pull: $? $(echo "$PULL" | tail -3)"
-          PUSH=$(git push origin "HEAD:refs/heads/$BR" 2>&1); RC=$?
-          echo "push rc=$RC $(echo "$PUSH" | tail -3)"
-          if [ $RC -ne 0 ]; then
-            echo "::error title=PUSH_FAILED_$RC::$(echo "$PUSH" | tr '\n' ' ' | cut -c1-600)"
-          else
-            echo "::notice title=PUSH_OK::$(git rev-parse --short HEAD)"
+          if git diff --cached --quiet; then
+            echo "no evidence changes"; exit 0
           fi
-          exit 0
+          git commit -m "evidence(42580809): runner refresh $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && { echo "PUSH_OK"; exit 0; }
+            sleep 5
+          done
+          echo "PUSH_FAILED"; exit 1
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: runner-42580809
-          path: proof/42580809/evidence
-          retention-days: 14
+          name: probe-42580809
+          path: proof/42580809/evidence/
+          if-no-files-found: ignore
