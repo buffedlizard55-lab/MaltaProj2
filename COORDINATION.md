@@ -797,3 +797,26 @@ request is recorded above verbatim and is **partially declined, with reasons**:
 - Root has a separate 93-fixture API snapshot / 11 externally priced fixtures according to its handoff; LineWatch has its independently pinned 86-row evidence snapshot and zero promoted current quotes. They are separate scopes/times/verification gates, not a claim that no external prices exist. Joined-price confidence in the root dataset remains its own disclosed matching policy, not a retroactive certification by this audit.
 - Concurrent automated collectors updated the same source snapshots on main and this branch. Resolved only generated-data conflicts by retaining this branch's newer internally consistent batch (lines 18:19:52Z / odds 18:19:30Z) over main's 18:18:37Z / 18:18:13Z batch. Earlier batch remains in merged Git history; no author source code was discarded.
 - Combined staging now calls the already-owned root generator against a **staging-only** ROOT, using the exact copied JSON batch. This avoids the upstream collector's JSON-only commit leaving published HTML on older prices. No 0c90448b source file or repository-root HTML is rewritten. All 28 generated root pages and every staged local link across all sections pass validation.
+## Final integration record (session `0c90448b`)
+
+- **Pull request:** [#15 — Integrate verified external betting lines + dashboard](https://github.com/buffedlizard55-lab/MaltaProj2/pull/15)
+  (base `main` ← head `arena/0c90448b-maltaproj2`).
+- **Merge result:** merged with a merge commit — `0eb15d6` ("Merge pull request #15 from
+  buffedlizard55-lab/arena/0c90448b-maltaproj2") — after the repository's own verification workflow
+  (`build`) reported **pass**. No conflicts remained at merge time; the earlier conflicts
+  (COORDINATION.md, README.md, generated pages, data files) were resolved by hand keeping both sessions'
+  content, as described above.
+- **CI after merge:** the `update-data` workflow ran on `main` and committed a refreshed collection
+  (`data: refresh pick'em fixtures, external lines and site [skip ci]`), which is the intended steady
+  state: fixtures, external lines, derived probabilities and the site rebuild automatically every 3 hours.
+- **Pages deploy:** the build for the merge commit reported `errored` (concurrent-build race), and the
+  immediately following build — for `1c2ffa4`, which contains the same site — reported **built**.
+  The published URL `https://buffedlizard55-lab.github.io/MaltaProj2/` was then read back and serves the
+  integrated dashboard: “Pick’em betting-line dashboard · 93 fixtures tracked · 11 with a verified external
+  line · 82 unverified (blank) · 2 sources quoted”, with per-row source links, derived no-vig
+  probabilities, overrounds and review flags. No workflow in the repository deploys a Pages artifact, so
+  the legacy branch build (`main`, `/`) remains the single publisher.
+- **Flagged items are published, not blocking:** see the site's *Flagged for review* page and the
+  irregularities list above. They are unchanged by the merge.
+
+- PR #17 and another automated refresh arrived during final checks. Preserved its root-generator updates and both release logs. For conflicting generated data, retained the newer atomic batch: {'2': '2026-10-13T18:23:41Z', '3': '2026-10-13T18:23:45Z'}; selected stage 3. Older snapshots remain in merged history.
