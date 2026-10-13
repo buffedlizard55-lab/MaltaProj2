@@ -1,0 +1,671 @@
+{
+  "session": "dd2b7fee",
+  "generated_at_utc": "2026-10-13T23:20:00Z",
+  "purpose": "Point-in-time raw captures of external CS2 match-winner betting lines for the Hotspawn pick'em board. Values below were read live by this session from the cited official endpoints within the stated retrieval window. No value originates from Hotspawn crowd percentages (never used).",
+  "retrieval_window_utc": "2026-10-13 22:31 - 23:20",
+  "sources": {
+    "bovada": {
+      "page_url": "https://sports.bovada.lv/esports/counter-strike-2",
+      "note": "Counter-Strike 2 coupon, match-winner markets. Decimal odds. Bovada lobby_display_time is stated 'GMT+2' in its feed; UTC conversions computed from that stated offset. Deep per-event links are not exposed by the SPA; the coupon URL plus event id is the verifiable reference.",
+      "retrieved_utc": "2026-10-13T22:31:00Z",
+      "markets": [
+        {
+          "event_id": "A_19033654",
+          "home": "9z Team",
+          "away": "Aurora",
+          "competition": "Thunderpick World Championship 2026",
+          "start_utc": "2026-10-14T08:30:00Z",
+          "price_home_dec": 4.15,
+          "price_away_dec": 1.182917
+        },
+        {
+          "event_id": "A_19033712",
+          "home": "The Falcons",
+          "away": "Ninjas in Pyjamas",
+          "competition": "Thunderpick World Championship 2026",
+          "start_utc": "2026-10-14T11:00:00Z",
+          "price_home_dec": 1.244755,
+          "price_away_dec": 3.6
+        },
+        {
+          "event_id": "A_19033747",
+          "home": "Legacy",
+          "away": "PARIVISION",
+          "competition": "Thunderpick World Championship 2026",
+          "start_utc": "2026-10-14T13:30:00Z",
+          "price_home_dec": 1.628663,
+          "price_away_dec": 2.25
+        },
+        {
+          "event_id": "A_19033783",
+          "home": "FURIA Academy",
+          "away": "BB Team",
+          "competition": "Thunderpick World Championship 2026",
+          "start_utc": "2026-10-14T16:00:00Z",
+          "price_home_dec": 1.30303,
+          "price_away_dec": 3.15,
+          "name_flags": [
+            "Bovada lists 'FURIA Academy'; parent fixture/registrations name FURIA"
+          ]
+        },
+        {
+          "event_id": "A_19033833",
+          "home": "MIBR",
+          "away": "BC.Game Esports",
+          "competition": "Stake Pulse Beat III 2026",
+          "start_utc": "2026-10-14T22:30:00Z",
+          "price_home_dec": 1.625,
+          "price_away_dec": 2.2,
+          "name_flags": [
+            "Bovada lobby time 2026-10-15 00:30 GMT+2 = 22:30 UTC, conflicts with Hotspawn/Pinnacle 19:30 UTC"
+          ]
+        },
+        {
+          "event_id": "A_19033867",
+          "home": "HEROIC",
+          "away": "Envy",
+          "competition": "Stake Pulse Beat III 2026",
+          "start_utc": "2026-10-14T16:30:00Z",
+          "price_home_dec": 1.537037,
+          "price_away_dec": 2.35,
+          "name_flags": [
+            "Bovada lobby time 18:30 GMT+2 = 16:30 UTC, Hotspawn says 19:30 UTC"
+          ]
+        },
+        {
+          "event_id": "A_19036192",
+          "home": "Astralis",
+          "away": "Sashi Esport",
+          "competition": "Stake Pulse Beat III 2026",
+          "start_utc": "2026-10-14T10:00:00Z",
+          "price_home_dec": 1.149425,
+          "price_away_dec": 4.65,
+          "name_flags": [
+            "Bovada shows 12:00 GMT+2 = 10:00 UTC = lobby 10:00 UTC"
+          ]
+        },
+        {
+          "event_id": "A_19036215",
+          "home": "HOTU",
+          "away": "Fnatic",
+          "competition": "Stake Pulse Beat III 2026",
+          "start_utc": "2026-10-14T10:00:00Z",
+          "price_home_dec": 1.952381,
+          "price_away_dec": 1.8
+        },
+        {
+          "event_id": "A_19036381",
+          "home": "G2 Ares",
+          "away": "The Last Resort",
+          "competition": "CCT 2026 Europe Series 11",
+          "start_utc": "2026-10-14T14:00:00Z",
+          "price_home_dec": 1.568627,
+          "price_away_dec": 2.25
+        },
+        {
+          "event_id": "A_19038837",
+          "home": "EAC Extra",
+          "away": "Bread Eaters Esports",
+          "competition": "European Pro League Season 32",
+          "start_utc": "2026-10-14T10:30:00Z",
+          "price_home_dec": 1.540541,
+          "price_away_dec": 2.35,
+          "name_flags": [
+            "no matching Hotspawn lobby fixture - unused book line"
+          ]
+        }
+      ]
+    },
+    "pinnacle": {
+      "page_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+      "api_url_template": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/{matchup_id}/markets/related/straight",
+      "note": "Primary series moneyline = market row with matchupId == parent id, key 's;0;m', period 0, isAlternate false, status open. American odds. Limits 100-125 maxRiskStake observed on series moneylines (thin book; consistent with prior audit 222fd574's note that Pinnacle CS series limits are low).",
+      "retrieved_utc": "2026-10-13T22:56:00Z",
+      "leagues_seen": [
+        {
+          "league_id": 230242,
+          "name": "Thunderpick World Championship"
+        },
+        {
+          "league_id": 237744,
+          "name": "Pulse Beat"
+        },
+        {
+          "league_id": 236613,
+          "name": "ESL Challenger League - North America"
+        },
+        {
+          "league_id": 226567,
+          "name": "ESL Challenger League - South America"
+        },
+        {
+          "league_id": 233066,
+          "name": "European Pro League"
+        }
+      ],
+      "markets": [
+        {
+          "matchup_id": 1638111785,
+          "home": "9z",
+          "away": "Aurora",
+          "competition": "Thunderpick WC 2026",
+          "start_utc": "2026-10-14T08:30:00Z",
+          "price_home_us": 255,
+          "price_away_us": -326,
+          "status": "open"
+        },
+        {
+          "matchup_id": 1638111674,
+          "home": "Falcons",
+          "away": "Ninjas in Pyjamas",
+          "competition": "Thunderpick WC 2026",
+          "start_utc": "2026-10-14T11:00:00Z",
+          "price_home_us": -393,
+          "price_away_us": 301,
+          "status": "open"
+        },
+        {
+          "matchup_id": 1638111786,
+          "home": "Legacy",
+          "away": "PVISION",
+          "competition": "Thunderpick WC 2026",
+          "start_utc": "2026-10-14T13:30:00Z",
+          "price_home_us": -153,
+          "price_away_us": 126,
+          "status": "open",
+          "note": "Pinnacle spells the away team 'PVISION'; = PARIVISION"
+        },
+        {
+          "matchup_id": 1638111787,
+          "home": "FURIA",
+          "away": "BB Team",
+          "competition": "Thunderpick WC 2026",
+          "start_utc": "2026-10-14T16:00:00Z",
+          "price_home_us": -275,
+          "price_away_us": 218,
+          "status": "open",
+          "note": "Pinnacle 'FURIA' (no 'Academy' suffix)"
+        },
+        {
+          "matchup_id": 1637936745,
+          "home": "MIBR",
+          "away": "BC.Game Esports",
+          "competition": "Pulse Beat",
+          "start_utc": "2026-10-14T19:30:00Z",
+          "price_home_us": -157,
+          "price_away_us": 123,
+          "status": "open"
+        },
+        {
+          "matchup_id": 1637999450,
+          "home": "HEROIC",
+          "away": "Envy",
+          "competition": "Pulse Beat",
+          "start_utc": "2026-10-14T19:30:00Z",
+          "price_home_us": -213,
+          "price_away_us": 162,
+          "status": "open"
+        },
+        {
+          "matchup_id": 1638279105,
+          "home": "Zomblers",
+          "away": "Overtake Sector",
+          "competition": "ESL Challenger League NA Cup 3",
+          "start_utc": "2026-10-14T01:00:00Z",
+          "price_home_us": 170,
+          "price_away_us": -244,
+          "status": "open",
+          "note": "BO3 confirmed by map-1/2/3 markets present; totals at 2.5 maps and 21.5/22.5 game totals"
+        },
+        {
+          "matchup_id": 1638305917,
+          "home": "EAC Extra",
+          "away": "Bread Eaters",
+          "competition": "European Pro League S32",
+          "start_utc": "2026-10-14T10:30:00Z",
+          "price_home_us": -181,
+          "price_away_us": 140,
+          "status": "open",
+          "note": "no matching Hotspawn lobby fixture - unused book line"
+        },
+        {
+          "matchup_id": 1637867148,
+          "home": "HOTU",
+          "away": "Fnatic",
+          "competition": "Pulse Beat",
+          "start_utc": "2026-10-14T10:00:00Z",
+          "price_home_us": null,
+          "price_away_us": null,
+          "status": "series_moneyline_absent",
+          "note": "Primary 's;0;m' row was NOT returned in a live read of all response chunks at 23:05Z (period 1/2/3 map markets still open). A 22:41:50Z runner capture in data/expanded/samples/pinnacle_markets_1637867148.json shows it open at home -101 / away -125. Treated as pulled intraday - flagged, not published as current."
+        },
+        {
+          "matchup_id": 1638278447,
+          "home": "ex-Keyd Stars",
+          "away": "Galorys",
+          "competition": "ESL Challenger League SA Cup 3",
+          "start_utc": "2026-10-13T21:00:00Z",
+          "price_home_us": null,
+          "price_away_us": null,
+          "status": "empty_market_list",
+          "note": "market list returned [] at 23:03Z - pre-match markets removed after the 21:00Z start. Fixture already in progress; locks any pick."
+        }
+      ],
+      "listing_gaps": [
+        "Astralis vs Sashi did not appear in the Pinnacle CS2 league/matchup listings read at 22:41-23:05Z (Pulse Beat league shows 4 series parents, all accounted for: HOTU, G2A/TLR, HEROIC, MIBR). Covered by Bovada instead."
+      ]
+    },
+    "kalshi": {
+      "page_url": "https://kalshi.com/markets/KXCS2GAME",
+      "api_url_template": "https://api.elections.kalshi.com/trade-api/v2/markets?event_ticker={event_ticker}&status=open",
+      "note": "Regulated event-contract exchange. Two mutually-exclusive binary 'wins' markets per CS2 match. Quotes are yes_bid/yes_ask dollars on a $1 payout; midpoint is a vig-free implied probability (cross-side consistency checked against 1 - opposite mid). Volumes/open interest included because books are thin for C/B-tier matches.",
+      "retrieved_utc": "2026-10-13T23:18:00Z",
+      "series_ticker": "KXCS2GAME",
+      "settlement_sources": [
+        "bo3.gg",
+        "hltv.org",
+        "egamersworld.com"
+      ],
+      "markets": [
+        {
+          "event_ticker": "KXCS2GAME-26OCT140430AUR9Z",
+          "competition": "Thunderpick WC 2026",
+          "scheduled_local": "Oct 14 2026 4:30 AM EDT",
+          "start_utc_equiv": "2026-10-14T08:30:00Z",
+          "team_a": "Aurora Gaming",
+          "team_b": "9z",
+          "a_yes_bid": 0.75,
+          "a_yes_ask": 0.76,
+          "b_yes_bid": 0.24,
+          "b_yes_ask": 0.25,
+          "a_volume_fp": 10773.89,
+          "b_volume_fp": 1374.68
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT140700NIPFAL",
+          "competition": "Thunderpick WC 2026",
+          "scheduled_local": "Oct 14 2026 7:00 AM EDT",
+          "start_utc_equiv": "2026-10-14T11:00:00Z",
+          "team_a": "Team Falcons",
+          "team_b": "NIP",
+          "a_yes_bid": 0.76,
+          "a_yes_ask": 0.77,
+          "b_yes_bid": 0.22,
+          "b_yes_ask": 0.23,
+          "a_volume_fp": 7884.47,
+          "b_volume_fp": 647.07
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT140930PRVLGC",
+          "competition": "Thunderpick WC 2026",
+          "scheduled_local": "Oct 14 2026 9:30 AM EDT",
+          "start_utc_equiv": "2026-10-14T13:30:00Z",
+          "team_a": "Legacy",
+          "team_b": "PARIVISION",
+          "a_yes_bid": 0.57,
+          "a_yes_ask": 0.58,
+          "b_yes_bid": 0.41,
+          "b_yes_ask": 0.42,
+          "a_volume_fp": 930.15,
+          "b_volume_fp": 3658.3
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT141200BBFURIA",
+          "competition": "Thunderpick WC 2026",
+          "scheduled_local": "Oct 14 2026 12:00 PM EDT",
+          "start_utc_equiv": "2026-10-14T16:00:00Z",
+          "team_a": "FURIA",
+          "team_b": "BetBoom Team",
+          "a_yes_bid": 0.71,
+          "a_yes_ask": 0.72,
+          "b_yes_bid": 0.28,
+          "b_yes_ask": 0.29,
+          "a_volume_fp": 747.73,
+          "b_volume_fp": 1723.4
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT140600SASHIAST",
+          "competition": "Stake Pulse Beat III 2026",
+          "scheduled_local": "Oct 14 2026 6:00 AM EDT",
+          "start_utc_equiv": "2026-10-14T10:00:00Z",
+          "team_a": "Astralis",
+          "team_b": "Sashi Esport",
+          "a_yes_bid": 0.85,
+          "a_yes_ask": 0.86,
+          "b_yes_bid": 0.14,
+          "b_yes_ask": 0.16,
+          "a_volume_fp": 5.77,
+          "b_volume_fp": 974.8,
+          "thin": true
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT140600FNCHOTU",
+          "competition": "Stake Pulse Beat III 2026",
+          "scheduled_local": "Oct 14 2026 6:00 AM EDT",
+          "start_utc_equiv": "2026-10-14T10:00:00Z",
+          "team_a": "fnatic",
+          "team_b": "HOTU",
+          "a_yes_bid": 0.52,
+          "a_yes_ask": 0.55,
+          "b_yes_bid": 0.45,
+          "b_yes_ask": 0.46,
+          "a_volume_fp": 153.29,
+          "b_volume_fp": 422.0
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT132100OTZOMB",
+          "competition": "ESL Challenger League NA Cup 3",
+          "scheduled_local": "Oct 13 2026 9:00 PM EDT",
+          "start_utc_equiv": "2026-10-14T01:00:00Z",
+          "team_a": "Overtake",
+          "team_b": "Zomblers",
+          "a_yes_bid": 0.65,
+          "a_yes_ask": 0.66,
+          "b_yes_bid": 0.34,
+          "b_yes_ask": 0.35,
+          "a_volume_fp": 487.03,
+          "b_volume_fp": 498.98
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT150600BCGMIBR",
+          "competition": "Stake Pulse Beat III 2026",
+          "scheduled_local": "Oct 15 2026 6:00 AM EDT",
+          "start_utc_equiv": "2026-10-15T10:00:00Z",
+          "team_a": "MIBR",
+          "team_b": "BC.Game Esports",
+          "a_yes_bid": 0.55,
+          "a_yes_ask": 0.56,
+          "b_yes_bid": 0.43,
+          "b_yes_ask": 0.44,
+          "a_volume_fp": 35.36,
+          "b_volume_fp": 1616.5,
+          "schedule_mismatch": "Kalshi lists this match Oct 15 (06:00 EDT); Hotspawn and Pinnacle list Oct 14 19:30 UTC"
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT150600ENVYHERO",
+          "competition": "Stake Pulse Beat III 2026",
+          "scheduled_local": "Oct 15 2026 6:00 AM EDT",
+          "start_utc_equiv": "2026-10-15T10:00:00Z",
+          "team_a": "Heroic",
+          "team_b": "Envy",
+          "a_yes_bid": 0.66,
+          "a_yes_ask": 0.67,
+          "b_yes_bid": 0.33,
+          "b_yes_ask": 0.35,
+          "a_volume_fp": 2.91,
+          "b_volume_fp": 13.66,
+          "thin": true,
+          "schedule_mismatch": "Kalshi lists this match Oct 15 (06:00 EDT); Hotspawn and Pinnacle list Oct 14 19:30 UTC"
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT140400B8AENJOY",
+          "competition": "CCT Europe Series 12 Closed Qualifier",
+          "scheduled_local": "Oct 14 2026 4:00 AM EDT",
+          "start_utc_equiv": "2026-10-14T08:00:00Z",
+          "team_a": "ENJOY",
+          "team_b": "B8 Academy",
+          "a_yes_bid": 0.52,
+          "a_yes_ask": 0.67,
+          "b_yes_bid": 0.32,
+          "b_yes_ask": 0.43,
+          "a_volume_fp": 0.0,
+          "b_volume_fp": 2.12,
+          "thin": true,
+          "wide_spread": true
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT140400LAVGOT",
+          "competition": "CCT 2026 Europe Series 11",
+          "scheduled_local": "Oct 14 2026 4:00 AM EDT",
+          "start_utc_equiv": "2026-10-14T08:00:00Z",
+          "team_a": "Lavked",
+          "team_b": "Gothic",
+          "a_yes_bid": 0.48,
+          "a_yes_ask": 0.52,
+          "b_yes_bid": 0.47,
+          "b_yes_ask": 0.51,
+          "a_volume_fp": 1.79,
+          "b_volume_fp": 74.31,
+          "thin": true
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT140700MELEXR",
+          "competition": "CCT 2026 Europe Series 11",
+          "scheduled_local": "Oct 14 2026 7:00 AM EDT",
+          "start_utc_equiv": "2026-10-14T11:00:00Z",
+          "team_a": "ex-RUSTEC",
+          "team_b": "mellren",
+          "a_yes_bid": 0.5,
+          "a_yes_ask": 0.75,
+          "b_yes_bid": 0.24,
+          "b_yes_ask": 0.51,
+          "a_volume_fp": 82.01,
+          "b_volume_fp": 125.01,
+          "thin": true,
+          "wide_spread": true
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT141000TLRG2A",
+          "competition": "CCT 2026 Europe Series 11",
+          "scheduled_local": "Oct 14 2026 10:00 AM EDT",
+          "start_utc_equiv": "2026-10-14T14:00:00Z",
+          "team_a": "G2 Ares",
+          "team_b": "The Last Resort",
+          "a_yes_bid": 0.63,
+          "a_yes_ask": 0.67,
+          "b_yes_bid": 0.3,
+          "b_yes_ask": 0.37,
+          "a_volume_fp": 0.0,
+          "b_volume_fp": 0.0,
+          "thin": true
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT140630BREEACE",
+          "competition": "European Pro League Season 32",
+          "scheduled_local": "Oct 14 2026 6:30 AM EDT",
+          "start_utc_equiv": "2026-10-14T10:30:00Z",
+          "team_a": "Bread Eaters Esports (listing)",
+          "team_b": "EAC Extra (listing)",
+          "a_yes_bid": null,
+          "a_yes_ask": null,
+          "b_yes_bid": null,
+          "b_yes_ask": null,
+          "note": "event listing only (quotes not fetched - match is not a lobby fixture); corroborates Bovada/Pinnacle unused lines"
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT150400EACWBTACADEMY",
+          "competition": "Elisa BreakOut Series #2",
+          "start_utc_equiv": "2026-10-15T08:00:00Z",
+          "team_a": "Esport Academy Copenhagen",
+          "team_b": "WBT Academy",
+          "a_yes_bid": 0.06,
+          "a_yes_ask": 0.94,
+          "b_yes_bid": 0.06,
+          "b_yes_ask": 0.94,
+          "a_volume_fp": 0.0,
+          "b_volume_fp": 0.0,
+          "thin": true,
+          "empty_seed_book": true,
+          "note": "Exchange seed quotes only (6c/94c both sides, zero volume) - no usable signal"
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT150600BOJENCE",
+          "competition": "Elisa BreakOut Series #2",
+          "start_utc_equiv": "2026-10-15T10:00:00Z",
+          "team_a": "ENCE",
+          "team_b": "BOJONG",
+          "a_yes_bid": 0.54,
+          "a_yes_ask": 0.73,
+          "b_yes_bid": 0.27,
+          "b_yes_ask": 0.44,
+          "a_volume_fp": 3.29,
+          "b_volume_fp": 30.16,
+          "thin": true,
+          "wide_spread": true,
+          "note": "last trades 0.75 ENCE / 0.24 BOJONG; weak directional book"
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT150800ENCEWBTACADEMY",
+          "competition": "Elisa BreakOut Series #2",
+          "start_utc_equiv": "2026-10-15T12:00:00Z",
+          "team_a": "ENCE",
+          "team_b": "WBT Academy",
+          "a_yes_bid": 0.05,
+          "a_yes_ask": 0.95,
+          "b_yes_bid": 0.05,
+          "b_yes_ask": 0.95,
+          "a_volume_fp": 0.0,
+          "b_volume_fp": 0.0,
+          "thin": true,
+          "empty_seed_book": true,
+          "note": "exchange seed quotes only - no usable signal"
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT151000BOJEAC",
+          "competition": "Elisa BreakOut Series #2",
+          "start_utc_equiv": "2026-10-15T14:00:00Z",
+          "team_a": "BOJONG",
+          "team_b": "Esport Academy Copenhagen",
+          "a_yes_bid": 0.14,
+          "a_yes_ask": 0.49,
+          "b_yes_bid": 0.49,
+          "b_yes_ask": 0.88,
+          "a_volume_fp": 0.0,
+          "b_volume_fp": 0.0,
+          "thin": true,
+          "wide_spread": true
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT151200BOJWBTACADEMY",
+          "competition": "Elisa BreakOut Series #2",
+          "start_utc_equiv": "2026-10-15T16:00:00Z",
+          "team_a": "BOJONG",
+          "team_b": "WBT Academy",
+          "a_yes_bid": 0.05,
+          "a_yes_ask": 0.95,
+          "b_yes_bid": 0.05,
+          "b_yes_ask": 0.95,
+          "a_volume_fp": 0.0,
+          "b_volume_fp": 0.0,
+          "thin": true,
+          "empty_seed_book": true,
+          "note": "exchange seed quotes only - no usable signal"
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT151400ENCEEAC",
+          "competition": "Elisa BreakOut Series #2",
+          "start_utc_equiv": "2026-10-15T18:00:00Z",
+          "team_a": "ENCE",
+          "team_b": "Esport Academy Copenhagen",
+          "a_yes_bid": 0.26,
+          "a_yes_ask": 0.49,
+          "b_yes_bid": 0.51,
+          "b_yes_ask": 0.69,
+          "a_volume_fp": 1.97,
+          "b_volume_fp": 0.0,
+          "thin": true,
+          "wide_spread": true,
+          "note": "book leans EAC over ENCE"
+        },
+        {
+          "event_ticker": "KXCS2GAME-26OCT141000RYVWRA",
+          "competition": "CCT Europe Series 12 Closed Qualifier",
+          "start_utc_equiv": "2026-10-14T14:00:00Z",
+          "team_a": "WRAITH PCIFIC",
+          "team_b": "Ryvex",
+          "a_yes_bid": 0.62,
+          "a_yes_ask": 0.88,
+          "b_yes_bid": 0.13,
+          "b_yes_ask": 0.39,
+          "a_volume_fp": 0.0,
+          "b_volume_fp": 11.16,
+          "thin": true,
+          "wide_spread": true,
+          "note": "lobby names the opponent 'PCIFIC'; Kalshi full name 'WRAITH PCIFIC' - matched by opponent + exact start time, alias flagged"
+        }
+      ]
+    },
+    "hltv_analytics": {
+      "page_url": "https://www.hltv.org/betting/analytics",
+      "retrieved_utc": "2026-10-13T23:04:00Z",
+      "note": "Qualitative cross-check only: HLTV labels one side 'the bookmaker favorite with the best odds' for some matches and lists world-ranking/form context. 'Best Odds' numeric columns were blank for all inspected rows, so HLTV prices were NOT used anywhere - only direction-of-favorite cross-checks. HLTV displays times in EDT.",
+      "checks": [
+        {
+          "match": "9z vs Aurora",
+          "hltv": "Aurora is the bookmaker favorite; #6 vs #17; won H2H this month",
+          "url": "https://www.hltv.org/betting/analytics/2399384/9z-vs-aurora-thunderpick-world-championship-2026"
+        },
+        {
+          "match": "Falcons vs Ninjas in Pyjamas",
+          "hltv": "Falcons is the bookmaker favorite; #5 vs #26",
+          "url": "https://www.hltv.org/betting/analytics/2399385/falcons-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026"
+        },
+        {
+          "match": "Legacy vs PARIVISION",
+          "hltv": "Legacy is the bookmaker favorite; #7 vs #11; Legacy stand-in bobz",
+          "url": "https://www.hltv.org/betting/analytics/2399386/legacy-vs-parivision-thunderpick-world-championship-2026"
+        },
+        {
+          "match": "FURIA vs BetBoom",
+          "hltv": "no favorite label; FURIA #4 vs BETBOOM #14, FURIA won recent H2H",
+          "url": "https://www.hltv.org/betting/analytics/2399387/furia-vs-betboom-thunderpick-world-championship-2026"
+        },
+        {
+          "match": "Astralis vs Sashi",
+          "hltv": "Astralis is the bookmaker favorite; #15 vs unranked",
+          "url": "https://www.hltv.org/betting/analytics/2399134/astralis-vs-sashi-stake-pulse-beat-iii"
+        },
+        {
+          "match": "HOTU vs fnatic",
+          "hltv": "fnatic is the bookmaker favorite; #36 vs #41; fnatic won recent H2H",
+          "url": "https://www.hltv.org/betting/analytics/2399135/hotu-vs-fnatic-stake-pulse-beat-iii"
+        },
+        {
+          "match": "Enjoy vs B8 Academy",
+          "hltv": "no favorite label; Enjoy #199 vs B8A #229, Enjoy better form",
+          "url": "https://www.hltv.org/betting/analytics/2399461/enjoy-vs-b8-academy-cct-2026-europe-series-12-closed-qualifier"
+        },
+        {
+          "match": "Gothic vs Lavked",
+          "hltv": "no favorite name captured for the lobby match; Lombert Lobby lists Lavked #140 (context only)",
+          "url": "https://www.hltv.org/betting/analytics"
+        },
+        {
+          "match": "ex-RUSTEC vs mellren",
+          "hltv": "no favorite label; ex-RUSTEC #79 vs mellren #94, both 4W in last 5; ex-RUSTEC stand-ins noted",
+          "url": "https://www.hltv.org/betting/analytics/2399299/ex-rustec-vs-mellren-cct-2026-europe-series-11"
+        },
+        {
+          "match": "FORZE Reload vs LFO 10",
+          "hltv": "FORZE Reload #75 vs LFO 10 unranked; FORZE better form; 13:00 EDT Oct 14 = 17:00 UTC matches the lobby fixture slot whose opponent the lobby names 'Leo Team'",
+          "url": "https://www.hltv.org/betting/analytics/2399301/forze-reload-vs-lfo-10-cct-2026-europe-series-11"
+        },
+        {
+          "match": "ex-Keyd Stars vs Galorys",
+          "hltv": "Galorys is the bookmaker favorite (per analytics list); match started 21:00Z Oct 13 - pick window closed",
+          "url": "https://www.hltv.org/betting/analytics"
+        },
+        {
+          "match": "Zomblers vs Overtake",
+          "hltv": "no favorite label; Zomblers #197 vs Overtake #143",
+          "url": "https://www.hltv.org/betting/analytics"
+        }
+      ]
+    },
+    "polymarket": {
+      "page_url": "https://polymarket.com/sports/counter-strike-2",
+      "retrieved_utc": "2026-10-13T23:00:00Z",
+      "status": "no_match_lines",
+      "note": "Gamma API tag_slug=counter-strike (closed=false) returned only Valve sticker trade-up meta markets; tag_slug=esports first page was LoL/other titles. No CS2 match-winner markets available - documented on the flagged page; Polymarket not used as a source this cycle."
+    }
+  },
+  "inventory_basis": {
+    "file": "data/hotspawn_matches.json",
+    "generated_at_utc": "2026-10-13T22:41:38Z",
+    "source_api": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+    "source_page": "https://play.hotspawn.com/lobby",
+    "fixtures_current_window_cs2": 31,
+    "window": "2026-10-13 21:00Z through 2026-10-16 fixtures (plus one anomalous FRAG University row with mismatched Nov-12 schedule / Oct-12 start)",
+    "note": "Upstream hourly pipeline normalises the reverse-engineered play.hotspawn.com JSON API (scripts/fetch_hotspawn.py). Crowd pick-percent fields exist in that feed but are never read or displayed by this board."
+  }
+}

@@ -1,0 +1,57 @@
+name: fresh-dd2b7fee
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'fresh/**'
+      - 'data/dd2b7fee/**'
+      - 'scripts/dd2b7fee/**'
+      - 'tests/test_fresh_dd2b7fee.py'
+      - '.github/workflows/fresh-dd2b7fee.yml'
+      - 'data/hotspawn_matches.json'
+  schedule:
+    # runs hourly, after update-data (cron 17 * * * *) has refreshed the upstream inventory
+    - cron: '53 * * * *'
+permissions:
+  contents: write
+concurrency:
+  group: fresh-dd2b7fee-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Rebuild fresh pick board from latest inventory snapshot
+        run: python scripts/dd2b7fee/build_board.py
+      - name: Validate evidence-first contract
+        run: python tests/test_fresh_dd2b7fee.py
+      - name: Commit rendered pages
+        env:
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          git config user.name "malta-fresh-bot"
+          git config user.email "malta-fresh-bot@users.noreply.github.com"
+          git add fresh/ data/dd2b7fee/
+          if git diff --cached --quiet; then
+            echo "No changes to publish"
+            exit 0
+          fi
+          git commit -m "fresh-dd2b7fee: re-render pick board from latest inventory"
+          for attempt in 1 2 3; do
+            git pull --rebase origin "$REF_NAME"
+            if git push origin "HEAD:$REF_NAME"; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Failed to publish refresh after three attempts" >&2
+          exit 1

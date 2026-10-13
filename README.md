@@ -19,6 +19,7 @@ crowd "picked %" is shown for reference and is never used as a probability input
 | `tournaments.html` + `tournament-*.html` | Coverage per tournament |
 | `flagged.html` | Unverified rows, stale fixtures, unused bookmaker lines, rejected matches, source reachability, discrepancies, aliases |
 | `methodology.html` | Sources with links, formulas, matching rules, limitations |
+| `fresh/` (sub-site) | Session `dd2b7fee` mobile-first pick board (landing + CS2 board + flagged + method). Probabilities originate exclusively from Bovada / Pinnacle / Kalshi lines captured in-session (see `data/dd2b7fee/lines_snapshot.json`); HotSpawn crowd % is not even displayed there. Re-rendered hourly by `.github/workflows/fresh-dd2b7fee.yml` |
 
 ## Data and evidence
 

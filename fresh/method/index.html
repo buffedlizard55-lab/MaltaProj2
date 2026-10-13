@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method — how these picks are built</title>
+<meta name="description" content="External betting-line picks for every CS2 match on the Hotspawn pick'em lobby. Lines originate from Bovada, Pinnacle and Kalshi - never from Hotspawn crowd percentages.">
+<style>
+:root{--bg:#0b0e14;--card:#141927;--ink:#e8ecf5;--dim:#9aa4b8;--ac:#3fd08c;--warn:#f5b13f;--bad:#ff6b6b;--line:#232b3d;--hot:#7c5cff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:0 0 60px}
+header{padding:18px 16px 10px;max-width:1060px;margin:0 auto}
+h1{font-size:1.35rem}
+h1 .sub{color:var(--dim);font-weight:400;display:block;font-size:.85rem;margin-top:4px}
+nav{max-width:1060px;margin:8px auto 0;padding:0 16px;display:flex;gap:8px;flex-wrap:wrap}
+nav a{background:var(--card);border:1px solid var(--line);color:var(--ink);text-decoration:none;padding:8px 12px;border-radius:10px;font-size:.85rem}
+nav a.here{border-color:var(--hot)}
+main{max-width:1060px;margin:14px auto 0;padding:0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.stat b{display:block;font-size:1.4rem;color:var(--ac)}
+.stat span{color:var(--dim);font-size:.78rem}
+.scrollable{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:820px;font-size:.85rem}
+th{color:var(--dim);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+.pick{font-weight:700;color:var(--ac)}
+.pick.na{color:var(--dim);font-weight:400}
+.chip{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.72rem;border:1px solid var(--line);color:var(--dim);margin:2px 0}
+.chip.strong{color:var(--ac);border-color:#2e6b50}
+.chip.lean{color:var(--warn);border-color:#6b582e}
+.chip.bad{color:var(--bad);border-color:#6b3636}
+.muted{color:var(--dim)}
+a{color:#8fb6ff}
+.src{font-size:.75rem;display:block;color:#8fb6ff;text-decoration:none}
+.src:hover{text-decoration:underline}
+.flag{color:var(--warn);font-size:.75rem}
+.banner{background:#1d2540;border:1px solid #33406b;border-left:4px solid var(--hot);border-radius:10px;padding:10px 12px;font-size:.85rem;margin-bottom:14px}
+.banner.green{border-left-color:var(--ac)}
+.banner.red{border-left-color:var(--bad)}
+h2{font-size:1.05rem;margin:18px 0 8px}
+h3{font-size:.95rem;margin:12px 0 6px}
+ul,ol{padding-left:20px}
+li{margin-bottom:6px}
+code{background:#0006;padding:1px 5px;border-radius:5px;font-size:.82rem}
+footer{max-width:1060px;margin:24px auto 0;padding:0 16px;color:var(--dim);font-size:.75rem}
+</style>
+</head><body>
+<header><h1>Method — how these picks are built<span class="sub">Sources, no-vig math, consensus rules</span></h1></header>
+
+<nav>
+ <a href="../../../index.html">⌂ root dashboard</a>
+ <a href="../../index.html">Landing</a>
+ <a href="../../cs2/">CS2 board</a>
+ <a href="../../flagged/">Flagged for Review</a>
+ <a href="../../method/" class="here">Method</a>
+</nav>
+<main>
+<div class="card"><h2 style="margin-top:0">Method</h2><ol>
+<li><b>Inventory.</b> All fixtures come from the official Hotspawn fixtures API (<code>phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures</code>, reverse-engineered from the play.hotspawn.com lobby by earlier sessions; refreshed upstream ~hourly). Nothing hand-entered.</li>
+<li><b>External lines.</b> Prices captured from Bovada's CS2 coupon, Pinnacle's Arcadia guest API (primary series moneyline <code>s;0;m</code>), and Kalshi's KXCS2GAME binary series (yes bid/ask midpoints). Raw captures with retrieval timestamps: <code>data/dd2b7fee/lines_snapshot.json</code>.</li>
+<li><b>No-vig.</b> Book prices divided by their implied sum (overround removed). Kalshi is an exchange: midpoint used directly; thin/wide/seed books flagged — exchange seed books (6¢/94¢ both sides, zero volume) are treated as NO line.</li>
+<li><b>Consensus.</b> Published P(pick) = mean of source estimates for the picked side; [low–high] shows the spread. Single-source rows are labelled. HLTV is a qualitative cross-check only.</li>
+<li><b>Never crowd-derived.</b> Hotspawn pick-percent fields exist in the feed but are never read here.</li>
+<li><b>Honesty.</b> No line → blank + flagged. Schedule disagreements (e.g. MIBR–BC.Game and Heroic–Envy at Oct 15 10:00Z per Hotspawn+Kalshi but Oct 14 16:30–22:30Z per Bovada/Pinnacle) are published. Unconfirmed aliases are listed, not silently merged.</li>
+<li><b>EV.</b> points × P(pick). Pick'em points (2–7 per fixture) come from the fixtures API <code>offered_points</code> field.</li>
+</ol></div>
+<div class="card"><h2 style="margin-top:0">Sources</h2><ul>
+<li><a href="https://play.hotspawn.com/lobby">Hotspawn CS2 pick'em lobby</a> · <a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures">fixtures API</a> (inventory + points + locks only)</li>
+<li><a href="https://sports.bovada.lv/esports/counter-strike-2">Bovada — Counter-Strike 2</a> (9 lobby matches priced)</li>
+<li><a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle — CS2 hub</a> (verbatim per-matchup API rows linked on the board)</li>
+<li><a href="https://kalshi.com/markets/KXCS2GAME">Kalshi — KXCS2GAME</a> (21 events; per-event API rows linked)</li>
+<li><a href="https://www.hltv.org/betting/analytics">HLTV betting analytics</a> (cross-check only)</li>
+<li><a href="https://polymarket.com/sports/counter-strike-2">Polymarket</a> (checked — no match markets; see Flagged)</li>
+</ul></div>
+<div class="card"><h2 style="margin-top:0">Refresh loop</h2>
+<p class="muted">The repo's upstream pipeline refreshes the inventory about hourly;
+<code>.github/workflows/fresh-dd2b7fee.yml</code> re-runs this builder plus tests on that cadence.
+Line captures are in-session snapshots — each source's retrieval timestamp is shown on the landing page
+(2026-10-13 22:31 - 23:20 UTC). Scheduled automated price re-capture is future work, recorded in COORDINATION.md.</p></div>
+</main>
+<footer>Evidence-first build by session <code>dd2b7fee</code> · raw snapshot <code>data/dd2b7fee/lines_snapshot.json</code> · Hotspawn crowd % never used.</footer>
+</body></html>
