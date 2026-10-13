@@ -5,6 +5,7 @@ Session: `ef111e02` (final integration session). This environment requires all w
 | Task | Status | Owner | Claimed UTC | File scope |
 |---|---|---|---|---|
 | Repository audit, source investigation, data pipeline, dashboard, tests and Pages integration | done | ef111e02 | 2026-10-13 17:50 | COORDINATION.md, README.md, docs/**, scripts/**, tests/**, .github/workflows/**, .gitignore |
+| Independent audit of inherited TWC model, current field/fixture sources and published state | done | ca621beb | 2026-10-13 18:10 | audits/ca621beb/**, COORDINATION.md |
 
 ## Log
 - Initial checkout contains only README.md (`# MaltaProj2`), no application, data, tests, or existing task board. No other task claims exist.
@@ -951,8 +952,22 @@ Please keep the `pickem/index.html` nav entry when regenerating the root pages, 
 ### Final-integration task status
 Per this board's 18:07 conditional claim: integrations were performed by `ef111e02` (PR #8), `a0fcf175` (PR #11), `8c3d79a6` (PR #12) while verification ran; `0c90448b` remains active on its dashboard (fresh commits at 18:13). This session is publishing its verification deliverable + the market cross-check via PR and will confirm the Pages deploy, rather than taking over any active claim. Pages remains legacy-served from `main` root; `verify/8e7a652d/` publishes automatically as a sub-path.)
 
+---
 
+## Independent evidence audit — session `ca621beb` (2026-10-13)
 
+- Branch: `arena/ca621beb-maltaproj2` (fixed by Arena). Status: **done**; full report: `audits/ca621beb/README.md`.
+- Scope: audit the d530651 TWC VRS model, verified field/openers and roster evidence, row-level source provenance, model arithmetic, and published Pages state. Exclusive audit output: `audits/ca621beb/**`; this coordination record is the only shared file edited. No dashboard, model, fixture, or odds data was changed by this audit.
+- Baseline: `main` at `d530651`, 2026-10-13 18:21 UTC. Historical code/data references are commit-pinned in the report; the later live-site checks are separately timestamped.
+- Verified sources: Valve VRS Oct. 5/Aug. 3; PARIVISION official Sept. 17 X post; HLTV Oct. 9 replacement/openers report, Oct. 12 event overview, current PARIVISION team page, and slugged match pages; EGamersWorld, Polymarket, Thunderpick; and direct Bovada/Pinnacle URLs with quote-read times from the integrated dashboard.
+- Baseline findings: missing row-level Aug. 3 VRS provenance; calibration/input claims overstate the d530 implementation; American and Decimal odds use different probability bases; JavaScript omits Python's cap/floor; four bare HLTV match URLs return 404. The d530 Pick'em JSON lacked exact PM URLs on two rows, but later public `/pickem/matches.html` rows now show specific market links; per-market quote timestamps are still absent. Full reproductions/caveats are in the report.
+- PARIVISION's current HObbit roster entry is supported by the official team post and HLTV; Oct. 5 VRS is a dated roster snapshot, not a current roster.
+- Publication recheck: at 18:21 the root was the 86-fixture LineWatch page and tested `/pickem/` routes 404ed. After integration, public rechecks showed the 93-fixture odds dashboard (12 lines, 81 blank) and the 26-row `/pickem/` board; four TWC openers show direct Bovada/Pinnacle links. Generated `index.html` contains the Pick'em nav link. PR #13 main verification `38446661064`, PR #20 Pages deploy `38447169101`, and PR #22 main workflow `38447860601` passed; Pages deploy `38447860252` succeeded. Public fetches confirmed root and direct board content; the content extractor omits the header, so no browser click test was made.
+- Other main-site rows were not certified: this audit checked the four TWC openers, not the other 89 fixtures or eight non-TWC quoted rows. PR #22's subsequent data refresh and PR #20's separate verification page are preserved but were not adopted as this audit's findings.
+- Rebase log: rebased from `d530651` through PR #19 (`ad5d40d`), PR #20 (`09759e7`), and PR #22 (`5dd243e`). Resolved append-only `COORDINATION.md` conflicts by preserving all main/session records and this task claim/completion; no other session files or records were discarded.
+- Concurrent verification: PR #20 from session `8e7a652d` was open during this audit and merged afterward. This report remains the scoped `ca621beb` audit; no files or conclusions were imported from that PR.
+- Verification: baseline tests passed 18/18; after rebasing, current `python -m unittest discover -s tests -v` passed 27/27 (two existing non-fatal `ResourceWarning`s). Public root and Pick'em routes were re-fetched. The report does not certify every Pick'em join or every fixture/market in the integrated site.
+- Follow-up requests: fix archived bare HLTV URLs before reuse; preserve clear model/calibration disclaimers, Aug. 3 source links, and consistent odds/UI math; persist capture times with legacy Polymarket prices; keep route smoke tests. Details are in `audits/ca621beb/README.md`.
 
 ---
 
