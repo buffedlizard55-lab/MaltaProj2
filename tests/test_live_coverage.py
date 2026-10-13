@@ -408,6 +408,23 @@ class TestPublishedBoard(unittest.TestCase):
         result = check_page_links(site)
         self.assertTrue(result["ok"], result["problems"])
 
+    def test_pages_are_mobile_ready(self):
+        site = ROOT / "live"
+        if not site.is_dir():
+            self.skipTest("pages not rendered in this checkout")
+        css = (site / "assets" / "live.css").read_text()
+        self.assertIn("@media (max-width:520px)", css.replace("@media (max-width: 520px)",
+                                                              "@media (max-width:520px)"))
+        for name in ("index.html", "cs2.html", "lol.html", "flagged.html", "methodology.html",
+                     "sources.html"):
+            text = (site / name).read_text()
+            self.assertIn('name="viewport"', text, name)
+            self.assertIn("width=device-width", text, name)
+            # every page must be reachable from every other page (no dead ends on mobile)
+            for target in ("index.html", "cs2.html", "lol.html", "flagged.html", "methodology.html",
+                           "sources.html"):
+                self.assertIn(f'href="{target}"', text, f"{name} -> {target}")
+
     def test_probability_coverage_is_documented_not_assumed(self):
         summary = self.board["summary"]
         self.assertEqual(summary["with_market_probability"] + summary["with_originated_estimate"]
