@@ -22,3 +22,5 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
+# trigger: push-triggered capture run (workflow_dispatch is not available to the repo token)
