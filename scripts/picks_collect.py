@@ -514,7 +514,7 @@ def collect_transport_pages(quotes: list[dict], evidence: dict) -> None:
         game = "lol" if "/lol/" in target else ("cs2" if "counterstrike" in target else "other")
         attempts = []
         for tname, turl in transport_map(target).items():
-            status, body, _ = fetch(turl, {"Accept": "text/html,text/plain;q=0.9,*/*;q=0.8"}, timeout=90)
+            status, body, _ = fetch(turl, {"Accept": "text/html,text/plain;q=0.9,*/*;q=0.8"}, timeout=25)
             text = body.decode("utf-8", "replace")
             entry = {"transport": tname, "url": turl, "status": status, "bytes": len(body)}
             rows = []
@@ -588,8 +588,10 @@ def main() -> int:
     for q in quotes:
         summary["quotes_by_source"][q["source_key"]] = summary["quotes_by_source"].get(q["source_key"], 0) + 1
 
-    write("data/picks_fixtures.json", {"summary": summary, "fixtures": fixtures})
-    write("data/picks_quotes.json", {"summary": summary, "quotes": quotes})
+    write("data/picks_fixtures.json",
+          {"generated_at_utc": started, "summary": summary, "fixtures": fixtures})
+    write("data/picks_quotes.json",
+          {"generated_at_utc": started, "summary": summary, "quotes": quotes})
     write("evidence/picks/reachability.json", evidence)
     print(json.dumps(summary, indent=1))
     return 0

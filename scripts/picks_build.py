@@ -217,7 +217,7 @@ def build_board(fixtures, quotes):
                 f["flags"].append("sources_disagree_gt_8pts")
         else:
             f["verified"] = False
-            f["flags"].append("no_external_line")
+            f["flags"].append("live_market_only_no_prematch_line" if live else "no_external_line")
         if not f.get("open_for_picks"):
             f["flags"].append("past_lock_not_pickable")
         if f.get("status") == "cancelled":

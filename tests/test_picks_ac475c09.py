@@ -1,0 +1,150 @@
+#!/usr/bin/env python3
+"""Tests for the /picks/ live-lines board (session ac475c09, task T-LIVE).
+
+These tests run offline against the committed data so that they validate the published artefact
+rather than live sources. Every assertion maps to a rule from the task brief:
+
+  * every table row must carry a source link to an official site,
+  * a value that could not be confirmed must be blank and flagged, never inferred,
+  * HotSpawn's crowd "picked %" must never enter a probability,
+  * probabilities must be arithmetic derived from quoted prices (no odds -> no probability),
+  * the dashboard must build and have no broken local links.
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import subprocess
+import sys
+import unittest
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "scripts"))
+
+BOARD = os.path.join(ROOT, "data", "picks_board.json")
+QUOTES = os.path.join(ROOT, "data", "picks_quotes.json")
+FIXTURES = os.path.join(ROOT, "data", "picks_fixtures.json")
+
+
+def load(path):
+    with open(path, encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+class TestPicksBoard(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.board = load(BOARD)
+        cls.quotes = load(QUOTES)
+        cls.fixtures = load(FIXTURES)
+
+    def test_board_covers_open_fixtures(self):
+        rows = self.board["rows"]
+        self.assertGreater(len(rows), 0, "board must contain the fixtures in scope")
+        open_rows = [r for r in rows if r.get("open_for_picks")]
+        self.assertGreater(len(open_rows), 0, "the lobby must have open fixtures")
+        self.assertEqual(len(open_rows), self.board["stats"]["open"])
+
+    def test_every_row_links_to_the_official_fixture_page(self):
+        for row in self.board["rows"]:
+            url = row.get("hotspawn_match_url") or ""
+            self.assertTrue(url.startswith("https://www.hotspawn.com/matches/"),
+                            f"row {row.get('fixture_id')} lacks its official HotSpawn link")
+            self.assertEqual(url.rsplit("/", 1)[-1], str(row["fixture_id"]),
+                             "the fixture link must point at the same fixture id")
+
+    def test_probability_exists_only_with_a_quoted_price(self):
+        for row in self.board["rows"]:
+            used = [q for q in row["quotes"] if not q["is_live"]]
+            if used:
+                self.assertIsNotNone(row["prob_a"], f"{row['fixture_id']} has quotes but no probability")
+                self.assertIsNotNone(row["pick"])
+                self.assertAlmostEqual(row["prob_a"] + row["prob_b"], 1.0, places=9)
+                self.assertEqual(row["n_sources"], len(used))
+            else:
+                self.assertIsNone(row["prob_a"], f"{row['fixture_id']} has no quote but a probability")
+                self.assertIsNone(row["pick"])
+                self.assertIn("no_external_line", row["flags"])
+
+    def test_every_probability_is_reproducible_from_its_quotes(self):
+        """Re-derive the consensus from the stored quotes; it must match the published number."""
+        for row in self.board["rows"]:
+            used = [q for q in row["quotes"] if not q["is_live"]]
+            if not used:
+                continue
+            for q in used:
+                qa, qb = 1 / q["decimal_a"], 1 / q["decimal_b"]
+                self.assertAlmostEqual(q["prob_a"], qa / (qa + qb), places=9)
+                self.assertAlmostEqual(q["overround"], (qa + qb) - 1, places=9)
+            expected = sum(q["prob_a"] for q in used) / len(used)
+            self.assertAlmostEqual(row["prob_a"], expected, places=9)
+
+    def test_every_quote_has_a_source_url_and_timestamp(self):
+        for q in self.quotes["quotes"]:
+            self.assertTrue(str(q.get("source_public_url") or q.get("source_api_url") or "").startswith("http"),
+                            "a quote without a source URL is not publishable")
+            self.assertTrue(q.get("retrieved_at_utc"), "a quote without a retrieval time is not publishable")
+            self.assertNotIn(q.get("source_key"), (None, ""))
+
+    def test_no_crowd_percentage_is_ever_used_as_a_probability(self):
+        for row in self.board["rows"]:
+            self.assertNotIn("team_a_pick_pct", row)
+            self.assertFalse(row.get("crowd_pct_used", False))
+        source = open(os.path.join(ROOT, "scripts", "picks_build.py"), encoding="utf-8").read()
+        self.assertNotIn("pick_pct", source.replace("pick_pct_used", ""),
+                         "the builder must never read a crowd pick percentage")
+
+    def test_quotes_outside_the_lobby_are_rejected_not_used(self):
+        for rej in self.board["rejections"]:
+            self.assertIn(rej["reason"], {"no_fixture_match", "ambiguous_multiple_fixtures"})
+            self.assertTrue(rej.get("source_url", "").startswith("http") or rej.get("source_key"))
+
+    def test_locked_fixtures_are_marked_not_pickable(self):
+        for row in self.board["rows"]:
+            if not row.get("open_for_picks"):
+                self.assertIn("past_lock_not_pickable", row["flags"])
+
+
+class TestPicksSite(unittest.TestCase):
+    def test_pages_exist(self):
+        for name in ("index.html", "cs2.html", "lol.html", "events.html",
+                     "flagged.html", "methodology.html", "style.css"):
+            self.assertTrue(os.path.isfile(os.path.join(ROOT, "picks", name)), f"picks/{name} missing")
+
+    def test_no_broken_local_links(self):
+        import picks_build
+        self.assertEqual(picks_build.check_links(), [])
+
+    def test_mobile_viewport_and_card_labels(self):
+        html = open(os.path.join(ROOT, "picks", "index.html"), encoding="utf-8").read()
+        self.assertIn('name="viewport" content="width=device-width, initial-scale=1"', html)
+        self.assertIn('href="style.css"', html)
+        with open(os.path.join(ROOT, "picks", "cs2.html"), encoding="utf-8") as fh:
+            cs2 = fh.read()
+        self.assertIn('data-label="Pick"', cs2, "mobile card layout needs per-cell labels")
+
+    def test_every_probability_row_renders_its_source_link(self):
+        """A row that shows a number must show the source it came from on the same page."""
+        with open(os.path.join(ROOT, "picks", "cs2.html"), encoding="utf-8") as fh:
+            cs2 = fh.read()
+        board = load(BOARD)
+        for row in board["rows"]:
+            if row["prob_a"] is None or row.get("sport") != "cs2" or not row.get("open_for_picks"):
+                continue
+            for q in row["quotes"]:
+                self.assertIn(q["source_url"], cs2,
+                              f"source link for fixture {row['fixture_id']} is missing from the page")
+
+    def test_builder_is_deterministic(self):
+        """Re-running the builder twice must produce byte-identical pages (excluding the timestamp
+        of the *source* data, which is not rewritten)."""
+        before = open(os.path.join(ROOT, "picks", "cs2.html"), encoding="utf-8").read()
+        subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "picks_build.py")],
+                       check=True, capture_output=True)
+        after = open(os.path.join(ROOT, "picks", "cs2.html"), encoding="utf-8").read()
+        self.assertEqual(before, after)
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)
