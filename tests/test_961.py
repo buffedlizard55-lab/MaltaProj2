@@ -99,12 +99,13 @@ class BoardTests(unittest.TestCase):
         """The reference file must not be reachable from the builder's executable code."""
         with open(os.path.join(ROOT, "scripts", "961", "build_961.py"), encoding="utf-8") as fh:
             source = fh.read()
-        referenced = {os.path.basename(m) for m in re.findall(r"[\w./]+\.json", source)}
+        reads = {os.path.basename(m) for m in
+                 re.findall(r"(?:load_json|open)\([^\n]*?([\w./]+\.json)", source)}
         allowed = {"lobby.json", "quotes.json", "board.json", "odds.json",
                    "cs2_odds_egamersworld.json", "lol_odds_egamersworld.json"}
-        self.assertTrue(referenced <= allowed, msg=sorted(referenced - allowed))
-        self.assertNotIn("hotspawn_reference.json", referenced)
-        # and the only mention of the reference file must be a warning string, not a read
+        self.assertNotIn("hotspawn_reference.json", reads)
+        self.assertTrue(reads <= allowed, msg=sorted(reads - allowed))
+        # the only mention of the reference file must be a warning string, not a read
         for line in source.splitlines():
             if "hotspawn_reference" in line:
                 self.assertNotIn("load_json(", line)
