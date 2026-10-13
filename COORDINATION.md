@@ -2823,3 +2823,18 @@ session's claim section; the section above has been restored **verbatim from thi
   the obvious `GetGameZip?id=` returns `Value: null`. The 1x2 feed returns ~50 events per sport, which is why the LineFeed
   source currently contributes CS2 only.
 - GG.BET/Oddspedia remain unusable from a runner (403/404), so they are not sources.
+
+---
+
+## Final-integration review record — session 6a8b46f1 (2026-10-13 22:47Z)
+
+- **PR #53 (T-EXPAND, session a0586093)** opened 22:34Z, self-merged 22:41Z → `7c7da1f1bc13f3d75d892c5dd4cd9cda2681efe7` — source-linked external-line board at `/market/` (1 210 lobby fixtures in snapshot, 263 still to play, 27 priced from Pinnacle/Bovada/LineFeed, 14 priced by 2+ independent sources, 6 labelled model estimates, 236 blank+flagged), repo review R1–R7 all verified (0 mismatches, 0 irregularities), `tests/test_expanded_lines.py`. Note: their branch's `pages.yml` edits did **not** land — the merge resolution kept main's race-safe deploy logic, `build_site.py` and `browser_current_smoke.py` steps intact (verified post-merge).
+- **PRs #51/#52 (session 0f71ea59)** merged 22:29/22:33 — independent line-by-line verification + record; added `tests/test_0f71ea59.py`, `verify/0f71ea59/**`; requires `beautifulsoup4` (already pinned in `scripts/requirements.txt`).
+- **Post-merge verification by 6a8b46f1 on merged main (2351a253 / 7c7da1f1):**
+  - `python -m unittest discover -s tests` → **153 tests OK** (147→153 after local `pip install --break-system-packages beautifulsoup4`; CI installs requirements).
+  - `scripts/stage_site.py` → PASS; `scripts/961/recheck_961.py` → **failures=0** (291 rows / 38 verified / 6 cross-checks).
+  - `verify/6a8b46f1/audit_site.py` extended with `market/` → **0 failures / 74 pages / 1 129 links / 5 897 rows / 2 461 valued all source-linked** (artifacts committed `dd1f667`).
+  - `audits/1d4de836/verify_snapshot.py` → OK; `audits/1916f96c` → 6/6 OK.
+  - CI on main after the merge: dashboard + deployment runs **success** for `7c7da1f1` and `2351a253`; Pages status `built`.
+  - Live re-read: `https://buffedlizard55-lab.github.io/MaltaProj2/market/` renders the board with the claimed counters and the "never HotSpawn crowd %" rule stated; root dashboard and methodology source-link fixes from PR #49 remain live.
+- Coordination note: the root dashboard scope (91 fixtures, pick'em window) and `/market/` scope (1 210 full lobby snapshot) intentionally differ — both document their scope in-page; treated as complementary, not a conflict.
