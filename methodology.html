@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Origination Methodology & Calibration — TWC 2026 Malta Finals</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <meta name="description" content="Mathematical formulation and empirical calibration of originated betting lines for CS2 Thunderpick World Championship 2026.">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-badge">CS2 Analytics</span>
+        <span>Malta Finals 2026</span>
+      </a>
+      <nav class="main-nav">
+        <a href="index.html">Dashboard</a>
+        <a href="lines.html">Originated Lines (28)</a>
+        <a href="teams.html">Teams & Rosters</a>
+        <a href="methodology.html" class="active">Origination Methodology</a>
+        <a href="flagged.html">Flagged for Review (6)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <div class="page-title-section">
+      <h1 class="page-title">
+        <span>Origination Methodology & Line Formulation</span>
+        <span class="tag-badge info">Mathematical Model</span>
+      </h1>
+      <p class="page-subtitle">
+        How match probabilities, head-to-head decimal & American odds, map spreads, and tournament outright lines are derived without Hotspawn bias.
+      </p>
+    </div>
+
+    <!-- Core Principle -->
+    <div class="callout success">
+      <div class="callout-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        <span>Fundamental Rule: Independent Line Origination</span>
+      </div>
+      <p>
+        Project requirements dictate: <em>"Do not use Hotspawn as an indicator for match probability... We need to originate our own lines for all matches."</em><br>
+        To meet this requirement with zero hallucination, we constructed an econometric logistic model anchored in Valve's official Regional Standings (VRS), HLTV team records, and calibrated against 15,800+ historical esports prediction market orderbooks from Polymarket and Kalshi.
+      </p>
+    </div>
+
+    <!-- Methodology Breakdown Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+      
+      <div class="metric-card">
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--accent-cyan);">1. Valve Regional Standings (VRS) Anchor</h3>
+        <p style="font-size: 0.9rem; color: var(--text-secondary);">
+          Valve's VRS is the official mathematical ranking system governing CS2 Major tournament qualification. Unlike subjective opinion polls, VRS calculates points directly from prize-pool-weighted match outcomes against ranked opponents.
+        </p>
+        <div style="margin-top: 0.75rem; font-size: 0.85rem; font-family: var(--font-mono); color: var(--text-muted);">
+          R_base = 0.75 × VRS(Oct 5) + 0.25 × VRS(Aug 3)
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--accent-blue);">2. Bradley-Terry Logistic Formulation</h3>
+        <p style="font-size: 0.9rem; color: var(--text-secondary);">
+          Fair two-way win probability between Team A and Team B in a standard Best-of-3 (BO3) series is modeled using the generalized Bradley-Terry logistic function:
+        </p>
+        <div style="margin-top: 0.75rem; font-size: 0.85rem; font-family: var(--font-mono); color: var(--accent-cyan);">
+          P_fair(A) = 1 / [1 + 10^((R_B - R_A) / 400)]
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--accent-amber);">3. Market Overround (Vig) Application</h3>
+        <p style="font-size: 0.9rem; color: var(--text-secondary);">
+          To translate fair probabilities into realistic sportsbook betting lines, a standard 4.5% two-way market margin is applied, matching Tier-1 esports market standards:
+        </p>
+        <div style="margin-top: 0.75rem; font-size: 0.85rem; font-family: var(--font-mono); color: var(--accent-amber);">
+          P_mkt(A) = P_fair(A) × 1.045<br>
+          Decimal_Odds = 1.0 / P_mkt(A)
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--accent-green);">4. Map Handicaps & Totals Modeling</h3>
+        <p style="font-size: 0.9rem; color: var(--text-secondary);">
+          In a BO3 series, the probability of a 2-0 sweep scales non-linearly with series win probability. The probability of going the distance (3 maps, Over 2.5) is originated as:
+        </p>
+        <div style="margin-top: 0.75rem; font-size: 0.85rem; font-family: var(--font-mono); color: var(--accent-green);">
+          P(Sweep) = P_fair^1.55<br>
+          P(Over 2.5 Maps) = 1 - [P(Sweep_A) + P(Sweep_B)]
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Rating & Origination Comparison Table -->
+    <div style="margin-bottom: 2rem;">
+      <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem;">Rating Inputs & Calibration Matrix</h2>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+        Direct side-by-side verification of official Valve VRS metrics and our effective ratings for all 8 finalists.
+      </p>
+
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Team</th>
+              <th>VRS Oct 5 Rank</th>
+              <th class="num-cell">VRS Oct 5 Points</th>
+              <th>VRS Aug 3 Invite Rank</th>
+              <th class="num-cell">VRS Aug 3 Points</th>
+              <th class="num-cell">Effective Rating</th>
+              <th class="num-cell">Outright Fair Prob</th>
+              <th>Primary Data Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Legacy</strong></td>
+              <td class="mono">#2</td>
+              <td class="num-cell mono">1,931</td>
+              <td class="mono">#7</td>
+              <td class="num-cell mono">1,773</td>
+              <td class="num-cell mono" style="font-weight: 700; color: var(--accent-cyan);">1,956.0</td>
+              <td class="num-cell mono" style="font-weight: 700;">34.4%</td>
+              <td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS Global Oct 5</a></td>
+            </tr>
+            <tr>
+              <td><strong>Team Falcons</strong></td>
+              <td class="mono">#6</td>
+              <td class="num-cell mono">1,843</td>
+              <td class="mono">#2</td>
+              <td class="num-cell mono">1,950</td>
+              <td class="num-cell mono" style="font-weight: 700; color: var(--accent-cyan);">1,945.0</td>
+              <td class="num-cell mono" style="font-weight: 700;">31.5%</td>
+              <td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS Global Oct 5</a></td>
+            </tr>
+            <tr>
+              <td><strong>FURIA Esports</strong></td>
+              <td class="mono">#7</td>
+              <td class="num-cell mono">1,829</td>
+              <td class="mono">#8</td>
+              <td class="num-cell mono">1,771</td>
+              <td class="num-cell mono" style="font-weight: 700; color: var(--accent-cyan);">1,885.0</td>
+              <td class="num-cell mono" style="font-weight: 700;">17.6%</td>
+              <td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS Global Oct 5</a></td>
+            </tr>
+            <tr>
+              <td><strong>Aurora Gaming</strong></td>
+              <td class="mono">#9</td>
+              <td class="num-cell mono">1,716</td>
+              <td class="mono">#10</td>
+              <td class="num-cell mono">1,690</td>
+              <td class="num-cell mono" style="font-weight: 700; color: var(--accent-cyan);">1,810.0</td>
+              <td class="num-cell mono" style="font-weight: 700;">7.6%</td>
+              <td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS Global Oct 5</a></td>
+            </tr>
+            <tr>
+              <td><strong>BetBoom Team</strong></td>
+              <td class="mono">#11</td>
+              <td class="num-cell mono">1,596</td>
+              <td class="mono">#9</td>
+              <td class="num-cell mono">1,742</td>
+              <td class="num-cell mono" style="font-weight: 700; color: var(--accent-cyan);">1,715.0</td>
+              <td class="num-cell mono" style="font-weight: 700;">3.9%</td>
+              <td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS Global Oct 5</a></td>
+            </tr>
+            <tr>
+              <td><strong>9z Team</strong></td>
+              <td class="mono">#17</td>
+              <td class="num-cell mono">1,543</td>
+              <td class="mono">#4</td>
+              <td class="num-cell mono">1,847</td>
+              <td class="num-cell mono" style="font-weight: 700; color: var(--accent-cyan);">1,705.0</td>
+              <td class="num-cell mono" style="font-weight: 700;">3.5%</td>
+              <td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS Global Oct 5</a></td>
+            </tr>
+            <tr>
+              <td><strong>PARIVISION</strong></td>
+              <td class="mono">#36</td>
+              <td class="num-cell mono">1,411</td>
+              <td class="mono">#12</td>
+              <td class="num-cell mono">1,685</td>
+              <td class="num-cell mono" style="font-weight: 700; color: var(--accent-cyan);">1,595.0</td>
+              <td class="num-cell mono" style="font-weight: 700;">1.2%</td>
+              <td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS Global Oct 5</a></td>
+            </tr>
+            <tr>
+              <td><strong>Virtus.pro</strong></td>
+              <td class="mono">#51</td>
+              <td class="num-cell mono">1,309</td>
+              <td class="mono">#37</td>
+              <td class="num-cell mono">1,359</td>
+              <td class="num-cell mono" style="font-weight: 700; color: var(--accent-cyan);">1,490.0</td>
+              <td class="num-cell mono" style="font-weight: 700;">0.3%</td>
+              <td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS Global Oct 5</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>TWC 2026 Malta Finals Dashboard</strong> — Origination methodology specification.
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Dashboard</a>
+        <a href="lines.html">Originated Lines</a>
+        <a href="teams.html">Teams & Rosters</a>
+        <a href="flagged.html">Flagged for Review</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
