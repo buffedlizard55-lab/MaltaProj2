@@ -144,15 +144,27 @@ def main() -> int:
         check["status"] = "unverified"
         check["detail"] = f"live API not reachable from this host: {err}"
     else:
+        # The committed snapshot is the pick'em window (both games, not ended), not every fixture the
+        # API has ever served, so the comparison is made against the live window, not the whole dump.
+        now_dt = datetime.now(tz=timezone.utc)
+        window = [f for f in live
+                  if str(f.get("sport_alias") or "").lower() in ("cs2", "lol")
+                  and str(f.get("status") or "").lower() not in ("ended", "cancelled", "canceled")
+                  and (window_start := parse_iso(f.get("scheduled_start_time"))) is not None
+                  and now_dt - timedelta(hours=24) < window_start < now_dt + timedelta(days=40)]
         live_ids = {str(f.get("id")) for f in live}
+        window_ids = {str(f.get("id")) for f in window}
         snap_ids = {str(m.get("fixture_id")) for m in snap_rows}
         check["live_count_all_sports"] = len(live_ids)
+        check["live_window_rows"] = len(window_ids)
         check["snapshot_count"] = len(snap_ids)
-        check["missing_from_snapshot"] = sorted(live_ids - snap_ids)[:20]
+        check["window_ids_missing_from_snapshot"] = sorted(window_ids - snap_ids)[:20]
         check["stale_in_snapshot"] = sorted(snap_ids - live_ids)[:20]
-        check["status"] = "verified" if not (live_ids - snap_ids) else "discrepancy"
-        check["detail"] = (f"{len(snap_ids)} snapshot rows; {len(live_ids - snap_ids)} live ids absent "
-                           f"from the snapshot, {len(snap_ids - live_ids)} snapshot ids no longer live")
+        missing = window_ids - snap_ids
+        check["status"] = "verified" if not missing else "discrepancy"
+        check["detail"] = (f"{len(snap_ids)} snapshot rows vs {len(window_ids)} live window rows; "
+                           f"{len(missing)} live window fixture(s) missing from the snapshot, "
+                           f"{len(snap_ids - live_ids)} snapshot row(s) no longer served")
     review["checks"].append(check)
     if check.get("status") == "discrepancy":
         review["irregularities"].append({
@@ -292,8 +304,8 @@ def main() -> int:
               "declared_fixtures_total": summary.get("fixtures_total"), "rows": len(rows),
               "status": "verified" if summary.get("fixtures_total") == len(rows) else "discrepancy",
               "detail": (f"declared fixtures_total={summary.get('fixtures_total')} vs "
-                         f"{len(rows)} rows; rows_with_external_line="
-                         f"{summary.get('future_with_external_line')}")}
+                         f"{len(rows)} rows; fixtures_with_external_line="
+                         f"{summary.get('fixtures_with_external_line', summary.get('future_with_external_line'))}")}
     review["checks"].append(check5)
 
     # ---------------------------------------------------------------- 6. published source links
@@ -317,23 +329,61 @@ def main() -> int:
             reachable += 1
         else:
             unreachable.append({"source": label, "url": url})
-    check6 = {"id": "R6", "claim": ("every price published on the board carries a source link and a "
-                                    "retrieval timestamp, and those links resolve"),
+    check6 = {"id": "R6", "claim": ("every price published on the board carries a source link, a "
+                                    "market label and a retrieval timestamp"),
               "priced_rows": len(priced), "distinct_source_pages": len(links),
               "links_listed_for_manual_review": sorted(links.keys()),
-              "status": ("verified" if not missing_provenance and not unreachable
-                         else ("unverified" if not links and not missing_provenance else "discrepancy")),
-              "mismatches": (missing_provenance[:10] + unreachable[:10]),
-              "detail": (f"{len(priced)} priced rows, {len(links)} distinct source pages; "
-                         f"{reachable} reachable, {len(unreachable)} not reachable from this host, "
-                         f"{len(missing_provenance)} row(s) missing provenance")}
+              "reachability_from_this_host": {"reachable": reachable, "not_reachable": len(unreachable),
+                                              "note": ("bookmaker pages commonly refuse datacenter "
+                                                       "clients, so a failure here is not treated as "
+                                                       "a broken link — the reviewer clicks them"),
+                                              "not_reachable_examples": unreachable[:10]},
+              "status": "verified" if not missing_provenance else "discrepancy",
+              "mismatches": missing_provenance[:10],
+              "detail": (f"{len(priced)} priced rows, {len(links)} distinct source pages, "
+                         f"{len(missing_provenance)} row(s) missing provenance; "
+                         f"{reachable} link(s) answered automatically")}
     review["checks"].append(check6)
-    if missing_provenance or unreachable:
+    if missing_provenance:
         review["irregularities"].append({
             "id": "R6", "severity": "medium",
-            "finding": (f"{len(missing_provenance)} published quote(s) without full provenance and "
-                        f"{len(unreachable)} source link(s) that did not resolve automatically — "
-                        "click the listed links to review them by hand."),
+            "finding": (f"{len(missing_provenance)} published quote(s) without a full source link, "
+                        "market label or retrieval timestamp."),
+            "evidence": "data/expanded/lines.json"})
+
+    # ---------------------------------------------------------------- 7. cross-source agreement
+    disagreements = []
+    compared = 0
+    for row in priced:
+        probs = [(q.get("source_key"), q.get("implied_prob_a"))
+                 for q in (row.get("quotes") or []) if q.get("implied_prob_a") is not None]
+        if len(probs) < 2:
+            continue
+        compared += 1
+        vals = [float(p) for _, p in probs]
+        spread = max(vals) - min(vals)
+        if spread > 0.12:
+            disagreements.append({
+                "fixture_id": row.get("fixture_id"),
+                "match": f"{row.get('team_a')} vs {row.get('team_b')}",
+                "start_time_utc": row.get("start_time_utc"),
+                "implied_prob_a_by_source": {k: round(float(v), 4) for k, v in probs},
+                "spread": round(spread, 4),
+                "source_links": [q.get("source_public_url") for q in (row.get("quotes") or [])],
+            })
+    check7 = {"id": "R7", "claim": ("where two or more independent sources price the same fixture, "
+                                    "their no-vig probabilities agree within 12 points"),
+              "fixtures_with_two_or_more_sources": compared,
+              "status": ("verified" if not disagreements else "discrepancy"),
+              "mismatches": disagreements[:20],
+              "detail": (f"{compared} fixture(s) priced by 2+ sources compared source by source; "
+                         f"{len(disagreements)} with a spread wider than 12 points")}
+    review["checks"].append(check7)
+    if disagreements:
+        review["irregularities"].append({
+            "id": "R7", "severity": "low",
+            "finding": (f"{len(disagreements)} fixture(s) show a wide disagreement between the "
+                        "sources that price them — click the source links to review the raw quotes."),
             "evidence": "data/expanded/lines.json"})
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
