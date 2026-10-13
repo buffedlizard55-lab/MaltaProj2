@@ -2887,3 +2887,11 @@ session's claim section; the section above has been restored **verbatim from thi
 - **Follow-up (PR #57):** on the first live run R4 correctly flagged one egamersworld row whose fixture had left
   the lobby window; the check now separates *stale* rows (fixture gone from the window) from *name mismatches*
   (fixture present but names disagree), and the repo-review page lists every source URL on its own line.
+- **Live re-verification after the follow-up (2026-10-13 23:08 UTC):** `main` tip `e464e0e` (the scheduled
+  `expanded-lines` run on main regenerated the board); `pages build and deployment` for that commit = `built`.
+  https://buffedlizard55-lab.github.io/MaltaProj2/market/repo-review.html now reads **Run at 2026-10-13T23:06:54Z**,
+  **R1–R7 all `verified`**, R2 listing each Valve standings file as its own link, R4 reporting
+  "32 priced rows joined… 0 mismatch(es), 1 row(s) whose fixture has since left the lobby window", and
+  **"Irregularities flagged for review: None found by these checks."** The board itself
+  (https://buffedlizard55-lab.github.io/MaltaProj2/market/) is unchanged in shape: 263 upcoming fixtures,
+  27 with a verified external line, 14 priced by 2+ sources, 6 labelled originated estimates, the rest blank and flagged.
