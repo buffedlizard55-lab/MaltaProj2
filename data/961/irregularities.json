@@ -1,0 +1,96 @@
+{
+ "session": "961e163a",
+ "generated_at_utc": "2026-10-13T22:00:00Z",
+ "note": "Flagged irregularities found while re-verifying the live Hotspawn pick'em list and its external prices. Every entry links the evidence. None of these block publication; they are published for manual review.",
+ "items": [
+  {
+   "id": "IR-961-01",
+   "severity": "high",
+   "title": "HLTV cannot be read by the automation runner (HTTP 403)",
+   "detail": "HLTV's public betting-analytics pages are readable interactively from this session, but the GitHub Actions runner receives HTTP 403 (bot protection). HLTV's own wording ('<team> is the bookmaker favorite with the best odds') is therefore used only as a manual directional cross-check, never as an automated price input. No bypass was attempted.",
+   "evidence": [
+    "data/961/sources.json -> sources.hltv_analytics_list (status 403, bytes 5678)",
+    "data/961/cross_checks.json (manual reads, each with URL)",
+    "https://www.hltv.org/betting/analytics"
+   ],
+   "status": "flagged for review"
+  },
+  {
+   "id": "IR-961-02",
+   "severity": "medium",
+   "title": "HLTV contradicts itself on one fixture's favourite",
+   "detail": "For ex-Keyd Stars vs Galorys the listed analytics row says 'Galorys is the bookmaker favorite with the best odds', while the per-match page says 'ex-Keyd Stars is the bookmaker favorite with the best odds'. The board follows the external prices (Galorys favoured at Pinnacle, Bovada and egamersworld), which agree with the list row.",
+   "evidence": [
+    "https://www.hltv.org/betting/analytics",
+    "https://www.hltv.org/betting/analytics/2399204/ex-keyd-stars-vs-galorys-esl-challenger-league-season-52-south-america-cup-3"
+   ],
+   "status": "flagged for review"
+  },
+  {
+   "id": "IR-961-03",
+   "severity": "medium",
+   "title": "egamersworld could not be re-read at verification time (HTTP 500)",
+   "detail": "The egamersworld quotes in this build come from a same-day capture stored in data/cs2_odds_egamersworld.json and data/lol_odds_egamersworld.json (retrieved 2026-10-13T19:05-19:10Z, source URLs recorded per row). A re-read attempt at 21:47Z returned HTTP 500, so those rows are single-source and marked single_source.",
+   "evidence": [
+    "data/cs2_odds_egamersworld.json",
+    "data/lol_odds_egamersworld.json"
+   ],
+   "status": "flagged for review"
+  },
+  {
+   "id": "IR-961-04",
+   "severity": "medium",
+   "title": "Hotspawn fixture status field is inconsistent with the schedule",
+   "detail": "Three fixtures carry status 'started' although their scheduled start is in the future (example: FRAG University 2026, fixture id 1080200, scheduled 2026-11-12T00:00:00Z). Sixteen rows are status 'cancelled' and duplicate otherwise identical live fixtures (same competition, teams and time). Cancelled rows are excluded from the 'open for picks' count and flagged fixture_cancelled.",
+   "evidence": [
+    "data/961/lobby.json (fixtures[].status, fixtures[].scheduled_start_time_utc)",
+    "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
+   ],
+   "status": "flagged for review"
+  },
+  {
+   "id": "IR-961-05",
+   "severity": "low",
+   "title": "Lobby card clock times are displayed in a timezone 4 hours behind UTC",
+   "detail": "The lobby card for 9z vs Aurora reads 'Oct 14, 04:30' with 'Locks in 11:10:14' at 21:16Z, while the fixtures API epoch for the same fixture is scheduled_start_time 2026-10-14T08:30:00Z (lock 08:24Z). The countdown agrees with the API, the printed clock does not - the card clock is in a UTC-4 display timezone. All published times on this board are the API's explicit UTC values; card clock times are not used.",
+   "evidence": [
+    "https://play.hotspawn.com/lobby",
+    "data/961/lobby.json (fixture 1080176: scheduled_start_time_utc 2026-10-14T08:30:00Z)"
+   ],
+   "status": "flagged for review"
+  },
+  {
+   "id": "IR-961-06",
+   "severity": "high",
+   "title": "No external market exists (that we can reach) for most LoL fixtures",
+   "detail": "233 of the still-open fixtures are LoL entries from regional amateur circuits (PRM 2nd/3rd Division, Komplettligaen, EM 2026) which no reachable bookmaker or odds aggregator prices. They are published blank and flagged no_external_line by rule; nothing is estimated. Reachable LoL coverage in this build: 7 fixtures (KT Rolster, Team WE, Cloud9, FURIA, Solary, Mental Rush, Vitality Rising Bees).",
+   "evidence": [
+    "data/961/board.json (summary.by_game.lol)",
+    "https://play.hotspawn.com/lobby"
+   ],
+   "status": "flagged for review"
+  },
+  {
+   "id": "IR-961-07",
+   "severity": "low",
+   "title": "Pinnacle does not publish a start time for every event",
+   "detail": "Some Pinnacle matchup records omit startTime, so the row's start-time comparison cannot be made and the join rests on team names only. The board records this per row (start_time_delta_hours null) and the raw capture is in data/961/quotes.json.",
+   "evidence": [
+    "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups",
+    "data/961/quotes.json"
+   ],
+   "status": "flagged for review"
+  },
+  {
+   "id": "IR-961-08",
+   "severity": "low",
+   "title": "Bovada coupon labels some events by market group, not tournament",
+   "detail": "For some CS2 events the coupon's display-group description is 'Game Lines' rather than the tournament name, so the board's league label can differ from the tournament shown on Hotspawn. The join is made on the event URL slug (which carries the tournament) and the competitor names, and the exact URL is published per row.",
+   "evidence": [
+    "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+    "data/961/quotes.json"
+   ],
+   "status": "flagged for review"
+  }
+ ]
+}

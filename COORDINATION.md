@@ -2119,3 +2119,33 @@ Reason for claim: the existing `pickem/` board (26 rows) was built from a hand-m
 - Generated files (`data/hotspawn_matches.json`, `data/lines.json`, `data/odds.json`, `evidence/hotspawn_probe.json`, `evidence/matching_evidence.json`, `evidence/odds_collection.json`): took main's newer CI captures; nothing of this session's was in them. `data/current_board.json` regenerated from them.
 - `COORDINATION.md`: the one conflict hunk kept on both sides (append-only log); no record discarded.
 - Effect on the board after the newer capture (21:28:47 UTC snapshot): named-bookmaker rows 10 → 9 (FURIA vs BetBoom lost Pinnacle and Bovada; 9z vs Aurora lost Bovada) and the fallback rows 14 → 15. This is quote volatility between refreshes, now logged as an irregularity on the flagged page. It is not a data error we introduced.
+
+---
+
+# Coordination — session `961e163a` (2026-10-13 21:25 UTC)
+
+Environment note: this environment pins the session to `arena/961e163a-maltaproj2`; the requested
+`session-<id>/<task>` branch naming is unavailable. Branched from `main` @ `c71aa8c`.
+
+## Claim (published immediately, before other work)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| VERIFY-961: independent line-by-line verification of the live Hotspawn board and of every published external quote, an HLTV-sourced external-odds layer for fixtures the main stream missed, a mobile-first verification/pick board, tests, and final merge + Pages deploy check | in progress | 961e163a | 2026-10-13 21:25 | `data/961/**`, `scripts/961/**`, `verify961/**` (new published section), `.github/workflows/961-*.yml` (new), `tests/test_961.py` (new), `COORDINATION.md` (append-only), README.md note; one additive nav entry per published page after merge |
+
+### Scan of other claims before claiming (from the shared board on `main` @ `c71aa8c`)
+- `0f6c89c6` — owns `data/current_board.json`, `scripts/build_current_board.py`, `current/**`.
+- `42580809` — owns `proof/42580809/**`, `scripts/collect_extended.py`, `scripts/build_board.py`, `data/board_*.json`, `site/**`, `tests/test_42580809.py`.
+- `d4ec32a9` — owns `scripts/build_lines.py`, `scripts/build_site.py`, `.github/workflows/update-data.yml`, `tests/test_current_lines.py`, README.md, root generated `*.html`, `audits/d4ec32a9/**`.
+- `6196c585` — previously claimed T-A/T-B/T-C in its own scope (branch preserved).
+
+### Non-overlap rules observed by this session
+- This session does NOT edit `current/**`, `site/**`, `proof/**`, `pickem/**`, `docs/**`, `audits/**` of other sessions, `scripts/build_lines.py`, `scripts/build_site.py`, `scripts/build_site.py`, `scripts/stage_site.py`, `scripts/collect_extended.py`, `scripts/build_board.py`, `scripts/build_current_board.py`, or `tools/**`.
+- All this session's collectors, data and pages are new, uniquely named paths (`scripts/961/**`, `data/961/**`, `verify961/**`).
+- Shared outputs (root nav / index) are touched only in the final integration step, additively, and only if no newer session owns them at merge time; conflicts are resolved by rebase, never by discarding another session's work.
+- HLTV-sourced odds are claimed as this session's evidence lane so no other session duplicates that work; existing Pinnacle/Bovada/egamersworld evidence is read, never overwritten.
+
+### Standing rules restated
+- Every published value must carry the exact public URL it was read from plus a retrieval timestamp (UTC).
+- Hotspawn crowd pick percentages are never used as probability inputs.
+- A fixture with no verified external price stays blank and is flagged unverified; nothing is inferred or filled in.
