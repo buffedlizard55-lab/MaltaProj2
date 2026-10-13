@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 import sys
 import unittest
@@ -47,12 +48,62 @@ class TestPicksBoard(unittest.TestCase):
         self.assertEqual(len(open_rows), self.board["stats"]["open"])
 
     def test_every_row_links_to_the_official_fixture_page(self):
+        """A published row link must open something real on the official site.
+
+        `/matches/<id>` on its own was measured to redirect to the matches index, so it is never
+        published: a row either carries a slug permalink the source itself publishes, or the lobby
+        listing, and the kind of link is stated on the row.
+        """
+        allowed = {"lobby_published_permalink", "constructed_slug_verified_200", "lobby_listing_fallback"}
         for row in self.board["rows"]:
             url = row.get("hotspawn_match_url") or ""
-            self.assertTrue(url.startswith("https://www.hotspawn.com/matches/"),
-                            f"row {row.get('fixture_id')} lacks its official HotSpawn link")
-            self.assertEqual(url.rsplit("/", 1)[-1], str(row["fixture_id"]),
-                             "the fixture link must point at the same fixture id")
+            kind = row.get("hotspawn_match_url_kind")
+            self.assertTrue(url.startswith("https://"), f"row {row.get('fixture_id')} has no link")
+            self.assertIn(kind, allowed, f"row {row.get('fixture_id')} has unknown link kind {kind!r}")
+            self.assertIsNone(re.fullmatch(r"https://www\.hotspawn\.com/matches/\d+", url),
+                              f"row {row.get('fixture_id')} publishes the redirecting bare-id URL")
+            if kind == "lobby_published_permalink":
+                self.assertTrue(url.startswith("https://www.hotspawn.com/matches/"), url)
+                self.assertTrue(url.endswith("-" + str(row["fixture_id"])), url)
+            elif kind == "lobby_listing_fallback":
+                self.assertEqual(url, "https://play.hotspawn.com/lobby")
+
+    def test_lobby_listing_fallback_rows_are_flagged(self):
+        for row in self.board["rows"]:
+            if row.get("hotspawn_match_url_kind") == "lobby_listing_fallback":
+                self.assertIn("match_link_lobby_listing_fallback", row["flags"],
+                              f"row {row.get('fixture_id')} uses the fallback link without saying so")
+
+    def test_link_checks_cover_the_published_quote_urls(self):
+        path = os.path.join(ROOT, "evidence", "picks", "link_checks.json")
+        if not os.path.exists(path):
+            self.skipTest("collector has not run a link check for this revision")
+        results = (load(path).get("results") or {})
+        capture_sources = {"egamersworld_manual"}
+        for row in self.board["rows"]:
+            for quote in row["quotes"]:
+                if quote["source_key"] in capture_sources:
+                    continue
+                url = quote.get("source_url")
+                self.assertIn(url, results, f"published quote URL was never opened: {url}")
+                state = quote.get("link_state")
+                status = results[url]["status"]
+                if state == "ok":
+                    self.assertEqual(status, 200, url)
+                elif state and state.startswith(("http_", "blocked_")):
+                    self.assertEqual(int(state.split("_", 1)[1]), status, url)
+                elif state in ("not_found", "unreachable"):
+                    self.assertTrue(status in (404, 405, 410, 0), f"{url} -> {status}")
+
+    def test_dated_capture_rows_publish_no_derived_clock_and_are_link_checked(self):
+        path = os.path.join(ROOT, "data", "picks_supplementary.json")
+        if not os.path.exists(path):
+            self.skipTest("no dated capture in this revision")
+        capture = load(path)
+        for row in capture.get("rows", []):
+            self.assertIn("link_check", row, f"capture row {row.get('fixture_id')} has no link check")
+            self.assertIsNone(row.get("start_time_utc"),
+                              f"capture row {row.get('fixture_id')} publishes a derived UTC time")
 
     def test_probability_exists_only_with_a_quoted_price(self):
         for row in self.board["rows"]:

@@ -2347,6 +2347,78 @@ Environment note: this environment pins the session to `arena/961e163a-maltaproj
 - Every published value must carry the exact public URL it was read from plus a retrieval timestamp (UTC).
 - Hotspawn crowd pick percentages are never used as probability inputs.
 - A fixture with no verified external price stays blank and is flagged unverified; nothing is inferred or filled in.
+
+
+---
+
+# Session `ac475c09` — T-LIVE continuation log (2026-10-13 22:0x UTC)
+
+### Publication record (completes the "Integration / publication" note above)
+- **PR #33 merged** with `gh pr merge 33 --merge` into `main`; merge commit `557ba71`.
+  Pre-merge check on the PR head: run 38472539469 "Verify and publish dashboard" **success**
+  (build: full unittest suite + browser smoke + staged-site link check; deploy skipped for PRs).
+- **Pages deploy after merge:** run 38472702792 (push on `main`, same merge commit) → **build success,
+  deploy success**, including `stage_site.py` staging the `picks/` section (that file gained `picks`
+  in the merge-resolution commit `ed18c92`, which is part of the merge).
+- **Live check:** `https://buffedlizard55-lab.github.io/MaltaProj2/picks/index.html` renders in a
+  browser fetch; `picks/cs2.html`, `picks/lol.html`, `picks/events.html`, `picks/flagged.html`,
+  `picks/methodology.html` all resolve from it. The public page states its own build time, source
+  links and flags, so it can be reviewed without this document.
+
+### Defect found and fixed after the first publication (link integrity)
+The first published board linked every row to `https://www.hotspawn.com/matches/<fixture_id>`.
+A browser fetch of that URL lands on the **matches index**, not the fixture: the official permalink
+form is `/matches/<team>-vs-<team>-<tournament>-<id>`, and the lobby publishes those permalinks
+inside its own page state (`ng-state` → `permalinks`, e.g. fixture 1080279 →
+`https://www.hotspawn.com/matches/wrotberry-vs-ea-copenhagen-elisa-breakout-series-2-1080279`).
+Fixes, all committed and re-run on the runner:
+1. `scripts/picks_collect.py` now fetches the lobby HTML and the matches feed and keeps **only URLs the
+   source itself publishes** (26 lobby permalinks in this run; the matches feed answers HTTP 403 to a
+   datacentre request, so it contributed none). A row without a source-published permalink links to the
+   lobby listing and is flagged `match_link_lobby_listing_fallback`; the redirecting bare-id URL is never
+   published again.
+2. Every published URL is now **opened once by the collector** (`evidence/picks/link_checks.json`) and the
+   result is shown next to the price it belongs to: 200 / redirect / refused / 404 / unreachable.
+   This found two real problems and one non-problem:
+   - **Bovada event links answered 404** with the coupon path prefixed by `https://www.bovada.lv`; the
+     working form is `https://www.bovada.lv/sports/esports/...` (probed and recorded per event in
+     `evidence/picks/reachability.json → bovada_url_probe`, chosen URL published).
+   - **Pinnacle match URLs redirect** to the same URL with a trailing slash; the collector now publishes
+     the URL that was actually served (redirect normalisation, not a broken link).
+   - **`www.hotspawn.com` refuses datacentre requests (HTTP 403)** while `play.hotspawn.com` answers 200.
+     That is an access limitation of the runner, so it is published as "refused our request" and *not* as
+     "broken"; the same pages open normally in this environment's browser reader.
+3. Correction to a claim from the previous log: the EGamersWorld capture **cannot** verify its clock
+   by comparison with the lobby API. Reading the same fixture three ways on EGW gives three different
+   clocks (page title 10:00 = UTC, match header 12:00, event list 11:00 for fixture 1080280, whose lobby
+   kick-off is 10:00Z), so `data/picks_supplementary.json` now publishes **no derived UTC time at all**,
+   keeps the displayed string verbatim, and the join rests only on the fixture-id hint plus both team
+   names. The dated capture also carries its own `link_check` per row: the two match pages that were
+   opened directly in this environment are marked `ok` (1.99/1.72 and 1.31/3.2 — the second confirms a
+   small price move since the capture), the others `capture_page_ok` because their price was read from
+   the event page.
+
+### Verification at this revision
+- `python3 -m unittest tests.test_picks_ac475c09` → **16 tests OK**, now including: no row may publish
+  the redirecting bare-id URL, fallback rows must say so, every published quote URL must appear in the
+  collector's link check, and dated-capture rows may not publish a derived clock.
+- `python3 verify/ac475c09/verify_repo.py` → **22 mechanical checks, 0 high** over this repository's
+  pick'em artefacts (`verify/ac475c09/REPORT.md`), with two new checks: published-link integrity and
+  the dated-capture rules above.
+- `python3 scripts/picks_build.py` → board rebuilt; `PASS: /picks/ pages rendered and every local link
+  resolves`.
+
+### Still open for review (nothing here is hidden on the site)
+1. Only 26 of 267 open fixtures have a source-published HotSpawn permalink (all CS2); LoL rows fall back
+   to the lobby listing and are flagged. A reviewer with browser access can read the LoL slugs from the
+   lobby's client-side render.
+2. `www.hotspawn.com` and the matches feed refuse the runner (403), so permalinks cannot be re-verified
+   automatically from CI; they are verified in this environment's browser reader.
+3. 21 of 267 open fixtures have a verified external line (7 with two independent bookmakers). The other
+   246 stay blank and flagged — the agreed behaviour.
+4. Root navigation (`index.html`) is owned by another session; this session still does not edit it. The
+   request stands: one additive nav entry pointing at `picks/index.html`.
+
 - PR #32 and its automatic captures landed during final follow-up checks. Retained its independent section, navigation and staging changes plus all task-board appendices. Kept main's newest atomic source batch and regenerated conflicting root/data output using this session's strict source/link policy. No work in other sessions' owned scopes was edited or removed. Remaining parallel sections are research contributions, not automatically re-certified by this current pipeline.
 - Confirmed the existing Pages race on main: PR #32 verification/deploy run 38472155441 failed after 4m9s even though Pages history reports its exact merge commit `0f8014e` as `built`. A bot had advanced the `/builds/latest` pointer. Fixed this session-owned Pages workflow to search build history for **its own SHA**, ignoring unrelated newer builds/errors. No error masking or unverified deployment claim; actual content checks remain mandatory.
 - The 961 lane made an isolated generated-data commit on this branch after parent CI; those files are in its own scope and preserved. Request to its owner: avoid unreviewed mutation of other sessions' PR heads where possible. Full combined local tests and staging are re-run against the actual head; current root probabilities do not use that lane's secondary data.
