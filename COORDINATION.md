@@ -2027,3 +2027,33 @@ Per this board's 18:07 conditional claim: integrations were performed by `ef111e
 - **GitHub Pages:** LIVE — https://buffedlizard55-lab.github.io/MaltaProj2/ (Pages status `built` on the merge commit). This session's site is served from `main` at **/docs/**: [analysis dashboard](https://buffedlizard55-lab.github.io/MaltaProj2/docs/analysis.html), [CS2 tables](https://buffedlizard55-lab.github.io/MaltaProj2/docs/cs2.html), [LoL tables](https://buffedlizard55-lab.github.io/MaltaProj2/docs/lol.html), [Flagged for Review](https://buffedlizard55-lab.github.io/MaltaProj2/docs/flagged.html). Public liveness verified by fetching the deployed pages (tables + per-row source links render).
 - **Pages source note:** repository Pages is configured `legacy` from `main` `/` (root), as retained by integration session `ef111e02`. Switching the source to `main` `/docs` would unpublish the root handoff and `/pickem/` sections of other sessions, so the integrated configuration was preserved; `docs/` is deployed from `main` and served at `/docs/`. The Actions deploy job additionally publishes the full staged site.
 - T6 status: ✅ Done.
+
+---
+
+# Coordination — session `961e163a` (2026-10-13 21:25 UTC)
+
+Environment note: this environment pins the session to `arena/961e163a-maltaproj2`; the requested
+`session-<id>/<task>` branch naming is unavailable. Branched from `main` @ `c71aa8c`.
+
+## Claim (published immediately, before other work)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| VERIFY-961: independent line-by-line verification of the live Hotspawn board and of every published external quote, an HLTV-sourced external-odds layer for fixtures the main stream missed, a mobile-first verification/pick board, tests, and final merge + Pages deploy check | in progress | 961e163a | 2026-10-13 21:25 | `data/961/**`, `scripts/961/**`, `verify961/**` (new published section), `.github/workflows/961-*.yml` (new), `tests/test_961.py` (new), `COORDINATION.md` (append-only), README.md note; one additive nav entry per published page after merge |
+
+### Scan of other claims before claiming (from the shared board on `main` @ `c71aa8c`)
+- `0f6c89c6` — owns `data/current_board.json`, `scripts/build_current_board.py`, `current/**`.
+- `42580809` — owns `proof/42580809/**`, `scripts/collect_extended.py`, `scripts/build_board.py`, `data/board_*.json`, `site/**`, `tests/test_42580809.py`.
+- `d4ec32a9` — owns `scripts/build_lines.py`, `scripts/build_site.py`, `.github/workflows/update-data.yml`, `tests/test_current_lines.py`, README.md, root generated `*.html`, `audits/d4ec32a9/**`.
+- `6196c585` — previously claimed T-A/T-B/T-C in its own scope (branch preserved).
+
+### Non-overlap rules observed by this session
+- This session does NOT edit `current/**`, `site/**`, `proof/**`, `pickem/**`, `docs/**`, `audits/**` of other sessions, `scripts/build_lines.py`, `scripts/build_site.py`, `scripts/build_site.py`, `scripts/stage_site.py`, `scripts/collect_extended.py`, `scripts/build_board.py`, `scripts/build_current_board.py`, or `tools/**`.
+- All this session's collectors, data and pages are new, uniquely named paths (`scripts/961/**`, `data/961/**`, `verify961/**`).
+- Shared outputs (root nav / index) are touched only in the final integration step, additively, and only if no newer session owns them at merge time; conflicts are resolved by rebase, never by discarding another session's work.
+- HLTV-sourced odds are claimed as this session's evidence lane so no other session duplicates that work; existing Pinnacle/Bovada/egamersworld evidence is read, never overwritten.
+
+### Standing rules restated
+- Every published value must carry the exact public URL it was read from plus a retrieval timestamp (UTC).
+- Hotspawn crowd pick percentages are never used as probability inputs.
+- A fixture with no verified external price stays blank and is flagged unverified; nothing is inferred or filled in.
