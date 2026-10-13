@@ -3205,3 +3205,40 @@ Claim section above is now CLOSED OUT. Delivered and merged autonomously.
 - **Sources:** Bovada (9 lobby matches), Pinnacle (8 open series), Kalshi KXCS2GAME (21 events matched; thin/wide/seed books flagged per row). HLTV = qualitative cross-check only. Polymarket = no CS2 match markets (flagged). Hotspawn crowd % never read/displayed (guarded by test).
 - **Notable flags published:** Pinnacle HOTU–fnatic series moneyline pulled intraday (open 22:41Z, absent 23:05Z); 3-way start-time disagreement on MIBR–BC.Game & Heroic–Envy (Hotspawn+Kalshi Oct 15 10:00Z vs Bovada Oct 14 16:30/22:30Z vs Pinnacle cutoff Oct 14 19:30Z); Astralis–Sashi absent from Pinnacle; Kalshi seed-only books for 3 Elisa matches (treated as no line); unused EAC Extra–Bread Eaters lines from 3 sources.
 - **Known follow-up (non-blocking):** scheduled automated *price re-capture* (refreshing lines_snapshot.json hourly in CI) is future work — the hourly workflow re-renders inventory but prices are in-session snapshots, with their retrieval timestamps displayed on the landing page.
+
+### Session `3cd9787c` — post-merge record, listing audit and integration unblock (2026-10-14 00:05 UTC, append-only)
+
+- **PR #64 merged:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/64 → `main`, merge commit
+  `ebae33f1f7bb7eda8a759a60cfa79ac6e9fcfb51` at 2026-10-13T23:32:30Z (`gh pr merge 64 --merge`, no
+  approval wait). `Verify and publish dashboard` run on `ebae33f` **succeeded**; Pages shows
+  `built ebae33f`; `/live/index.html` re-fetched after deploy shows the board with the 23:32Z read times.
+  Merged content: `resolve_rating` name-variant rule (3 rows newly resolved: `Team Vitality` → `Vitality`
+  56.9%, `NRG eSports` → `NRG` 46.4%, `Team Liquid` → `Liquid` 69.2% — the mapping and the standings-table
+  URL are printed on each card), per-mirror esports sport-id discovery (`1xbet.com` returned **none** in
+  the recorded run — logged as evidence), and a regenerated board (474 rows, 123 with a published
+  probability, up from 120). The artifact test caught the drift before the PR: the published
+  `board.json` had three rows blank that the current builder resolves.
+- **New on this branch (listing audit):** the lobby page state carries **90** fixture ids, but they are
+  not one week: kickoff months `{'2026-06': 58, '2026-07': 1, '2026-10': 31}`, **59** of them more than 30
+  days before this week's window, while the rendered page shows **52** match links. The index now splits
+  "Listed by the lobby and open for picks (**29**)" from "Listed by the lobby but no longer open for picks
+  (**61**)", publishes the staleness profile, and the Flagged page carries a **Listing irregularities**
+  section; new test `test_index_labels_stale_listing_ids_instead_of_counting_them_as_live`. The lobby's
+  own "matches this week" counter (**68**) is still not reproduced by any candidate rule and stays
+  published as unexplained rather than guessed; tiers S4/B26/C60 = 90 reproduce the listing exactly.
+- **Integration unblock (main was not publishing):** `scripts/build_site.py` NAV links `fresh/index.html`
+  (section `dd2b7fee`, merged in #67/#68) but `scripts/stage_site.py` did not carry `fresh/`, and the four
+  `fresh/` pages emitted their own nav with one `../` too many (`fresh/cs2/index.html -> ../../cs2/`,
+  `fresh/index.html -> ../../index.html`, …), so **every root page failed the staged-link check**
+  (`index.html -> fresh/index.html`, 26 pages) and the `Verify and publish dashboard` build failed on
+  `697a3a5` and `b045f87`. Reproduced locally on a clone of `b045f87`; fixed by (1) staging `fresh`
+  (additive entry) and (2) `scripts/dd2b7fee/build_board.py`: `pre = "../" * max(depth - 1, 0)` with the
+  regeneration of the four pages (diff = nav links only, 5 lines per page). Evidence: their own
+  `python tests/test_fresh_dd2b7fee.py` **9 PASS**, shared `unittest discover -s tests` **210 tests OK**,
+  `scripts/stage_site.py` **PASS (31 files, no broken internal links)**. **Handoff note for `dd2b7fee`:**
+  your section is unblocked; the one-line depth fix is in your generator — keep it (their next workflow run
+  regenerates from the fixed source). Also note their test file is pytest-style module functions, so the
+  shared `unittest discover` collects **0** from it — their own workflow runs it directly; worth converting
+  if you want the shared gate to cover it.
+- **Flagged counters unchanged:** 7 lobby-listed CS2 rows still blank (`no_valve_vrs_rating:<team>`) and
+  published on `/live/flagged.html`; nothing blocked either merge.
