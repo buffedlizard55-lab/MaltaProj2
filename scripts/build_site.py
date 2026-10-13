@@ -193,7 +193,7 @@ def fixture_row(fx, with_prices=True):
         odds_html,
         prob_html,
         status,
-        (f'<a href="{esc(fx.get("hotspawn_match_url"))}" rel="noopener">match</a>'),
+        (f'<a href="{esc(fx.get("hotspawn_match_url"))}" rel="noopener">fixture source</a>'),
         flag_chips(fx.get("review_flags")),
     ]
 
@@ -256,7 +256,7 @@ def main() -> int:
     odds_doc = load("data/odds.json")
     # Every render (including Pages staging) recalculates eligibility at render time.
     # Cached JSON must not silently keep a closed/aged market current.
-    from build_lines import build_document
+    from build_lines import build_document, fixture_source_url
     lines_doc, current_matching = build_document(matches_doc, odds_doc)
     write("data/lines.json", json.dumps(lines_doc, indent=1, ensure_ascii=False, allow_nan=False))
     write("evidence/matching_evidence.json", json.dumps(current_matching, indent=1, ensure_ascii=False, allow_nan=False))
@@ -351,7 +351,7 @@ links to the page/API the quote was read from. Blank cells mean no eligible offi
             f'<strong>{esc(m.get("team_a"))}</strong> vs <strong>{esc(m.get("team_b"))}</strong>',
             BLANK, BLANK,
             '<span class="warn">unverified — external line collection covers CS2 only</span>',
-            f'<a href="{esc(m.get("source", {}).get("hotspawn_match_url"))}" rel="noopener">match</a>',
+            f'<a href="{esc(fixture_source_url(m))}" rel="noopener">fixture source</a>',
             '<span class="chip">lol odds not collected</span>',
         ])
     lol_body = f"""
@@ -450,7 +450,11 @@ Sources for manual review: <a href="https://play.hotspawn.com/lobby">official lo
 <a href="https://www.hltv.org/betting/analytics">HLTV analytics</a>,
 <a href="https://www.pinnacle.com/">Pinnacle</a>, <a href="https://www.bovada.lv/">Bovada</a>,
 <a href="audits/d4ec32a9/REPORT.md">pipeline audit and limitations</a>.</p>
-<p>Coverage is incomplete wherever no eligible official quote exists. No claim is made that every match is priced,
+<p><p>Numeric legacy Hotspawn links such as <code>/matches/1079438</code> were tested and redirect to a generic
+match listing, not a verified match permalink. Current rows now link the observed official fixture API/lobby
+rather than synthesizing a slug. Fixture IDs in the JSON permit exact manual lookup. Archived numeric links
+remain unverified; source-link reachability is not universally certified.</p>
+Coverage is incomplete wherever no eligible official quote exists. No claim is made that every match is priced,
 that a retrieval is real-time, or that a derived probability is a verified fact. Sandbox egress does not allow
 these bookmaker hosts; automatic retrieval runs in GitHub Actions. Per-attempt payloads and failures:
 <a href="evidence/odds_collection.json">collection evidence</a>.</p>
@@ -560,7 +564,7 @@ www.hotspawn.com (search returns seasons 1–4 only): identity unresolved, flagg
             "probability_b": c["derived_probability_b_mean"] if c else None,
             "sources": [{"source": q["source_name"], "url": q.get("source_public_url") or q.get("source_api_url"),
                         "retrieved_at_utc": q.get("retrieved_at_utc")} for q in fx.get("bookmaker_lines", [])],
-            "official_source_url": (m.get("source") or {}).get("hotspawn_match_url") or "https://play.hotspawn.com/lobby",
+            "official_source_url": fixture_source_url(m),
             "flags": fx.get("review_flags") or (["external_odds_not_collected_for_this_game"] if not fx else [])})
     probs_doc = {"generated_at_utc": lines_doc["generated_at_utc"], "rows": current_rows}
     write("data/current_probabilities.json", json.dumps(probs_doc, indent=1, ensure_ascii=False))
@@ -588,7 +592,7 @@ www.hotspawn.com (search returns seasons 1–4 only): identity unresolved, flagg
             f'{esc(r.get("team_a"))} vs {esc(r.get("team_b"))}',
             prob_cell,
             " · ".join(src_bits) or BLANK,
-            f'<a href="{esc(r.get("official_source_url"))}" rel="noopener">fixture</a>',
+            f'<a href="{esc(r.get("official_source_url"))}" rel="noopener">fixture #{esc(r.get("fixture_id"))}</a>',
             ", ".join(esc(x) for x in (r.get("flags") or [])) or '<span class="chip">ok</span>',
         ])
     prob_body = f"""

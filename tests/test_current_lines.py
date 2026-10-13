@@ -151,7 +151,7 @@ class CurrentLinesTests(unittest.TestCase):
             return
         d = json.loads(path.read_text())
         for row in d['rows']:
-            self.assertIn(urlsplit(row['official_source_url']).hostname, {'www.hotspawn.com', 'play.hotspawn.com'})
+            self.assertIn(urlsplit(row['official_source_url']).hostname, {'www.hotspawn.com', 'play.hotspawn.com', 'phpstack-1372681-6459848.cloudwaysapps.com'})
             if row['probability_a'] is not None:
                 self.assertTrue(row['sources'])
                 self.assertAlmostEqual(row['probability_a'] + row['probability_b'], 1)
