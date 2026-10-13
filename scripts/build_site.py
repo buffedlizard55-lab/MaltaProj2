@@ -336,7 +336,7 @@ links to the page/API the quote was read from. Blank cells mean no eligible offi
 {cs2_table}
 {market_data_notes(lines_doc, odds_doc)}
 """
-    write("cs2.html", page("CS2 pick'em fixtures", "Every CS2 fixture currently offered by the HotSpawn Pick'ems lobby.",
+    write("cs2.html", page("CS2 pick'em fixtures", "Observed CS2 fixture inventory; past or locked rows are flagged, not treated as playable.",
                            cs2_body, generated_at, active="cs2.html"))
 
     # -------------------------------------------------------------------- lol.html
