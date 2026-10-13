@@ -54,10 +54,12 @@ PIN_HEADERS = {
 BOVADA_ESPORTS = "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
 
 # Candidate extra sources. Each is probed and recorded; a parser only runs when the probe
-# finds a shape it can read without guessing.
+# finds a shape it can read without guessing. A blocked source is evidence of an access
+# limitation, never taken as "this fixture has no price".
 EXTRA_SOURCES = {
     "egamersworld_cs2": "https://egamersworld.com/counterstrike/matches",
     "egamersworld_lol": "https://egamersworld.com/lol/matches",
+    "egamersworld_api_matches": "https://egamersworld.com/api/matches/counterstrike/1",
     "thunderpick_api": "https://api.thunderpick.io/api/v1/esports/matches",
     "cloudbet_esports": "https://sports-api.cloudbet.com/pub/v2/odds/sports/3/categories",
     "onexbet_line": ("https://1xbet.com/service-api/LineFeed/Get1x2_VZip"
@@ -66,11 +68,20 @@ EXTRA_SOURCES = {
                        "&tag_slug=counter-strike"),
     "kalshi_esports": "https://api.elections.kalshi.com/trade-api/v2/events?limit=200",
     "bo3gg_matches": "https://bo3.gg/api/v1/matches?page[limit]=50",
+    "strafe_cs2": "https://strafe.com/matches/counter-strike",
+    "draftkings_esports": "https://sportsbook-nash-usnj.draftkings.com/sites/US-NJ-SB/api/v5/eventgroups/88670846?format=json",
+    "hltv_matches": "https://www.hltv.org/matches",
+    "liquipedia_cs": "https://liquipedia.net/counterstrike/Matches",
+    "unibet_esports": "https://www.unibet.com/api/sports/offerings/10001000/sports/23",
+    "midnite_cs2": "https://www.midnite.com/api/sportsbook/sports/cs2/events",
 }
 
 CS2_LEAGUE_RE = re.compile(r"counter[- ]?strike|cs2|cs:?go", re.I)
 LOL_LEAGUE_RE = re.compile(r"league of legends|\blol\b", re.I)
 ESPORT_LEAGUE_RE = re.compile(r"counter[- ]?strike|cs2|cs:?go|league of legends|\blol\b", re.I)
+# Prop markets are published as two-participant "matchups" too (e.g. "Yes"/"No", "Team X (Kills)");
+# they are not match-winner markets and are excluded rather than quoted.
+PROP_NAME_RE = re.compile(r"[()]|\byes\b|\bno\b|kills?|maps?|total|handicap|rounds?|first blood", re.I)
 
 SUFFIXES = (" esports", " esport", " e sports", " gaming", " club", " academy")
 PREFIXES = ("team ",)
@@ -111,6 +122,24 @@ def norm(name) -> str:
 
 
 def ms_iso(value):
+    """Epoch-milliseconds or an ISO-8601 string -> 'YYYY-MM-DDTHH:MM:SSZ'. Never guesses."""
+    if value in (None, ""):
+        return None
+    if isinstance(value, str):
+        text = value.strip()
+        if text.endswith("Z"):
+            text = text[:-1] + "+00:00"
+        try:
+            dt = datetime.fromisoformat(text)
+        except ValueError:
+            try:
+                return datetime.fromtimestamp(int(float(value)) / 1000, tz=timezone.utc)\
+                    .strftime("%Y-%m-%dT%H:%M:%SZ")
+            except (TypeError, ValueError):
+                return None
+        if dt.tzinfo is None:
+            return None
+        return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     try:
         return datetime.fromtimestamp(int(value) / 1000, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     except (TypeError, ValueError):
@@ -221,6 +250,7 @@ def collect_pinnacle(quotes: list[dict], evidence: dict) -> None:
         {(m.get("league") or {}).get("name", "") for m in esports
          if CS2_LEAGUE_RE.search(str((m.get("league") or {}).get("name", "")))})
 
+    props_seen = 0
     for m in esports:
         parts = m.get("participants") or []
         if len(parts) != 2:
@@ -228,6 +258,10 @@ def collect_pinnacle(quotes: list[dict], evidence: dict) -> None:
         league = (m.get("league") or {}).get("name", "")
         game = "cs2" if CS2_LEAGUE_RE.search(league) else ("lol" if LOL_LEAGUE_RE.search(league) else None)
         if game is None:
+            continue
+        p_names = [str(p.get("name") or "") for p in parts]
+        if any(PROP_NAME_RE.search(n) for n in p_names) or str(m.get("type") or "").lower() not in ("", "matchup"):
+            props_seen += 1
             continue
         mid = m.get("id")
         murl = f"{PIN}/matchups/{mid}/markets/related/straight"
@@ -278,80 +312,89 @@ def collect_pinnacle(quotes: list[dict], evidence: dict) -> None:
             "decimal_odds_derived": True,
         })
         time.sleep(0.2)
+    evidence["pinnacle_matchups"]["prop_markets_excluded"] = props_seen
+    evidence["pinnacle_matchups"]["moneyline_quotes"] = sum(1 for q in quotes if q["source_key"] == "pinnacle")
 
 
 # --------------------------------------------------------------------------- Bovada
 def collect_bovada(quotes: list[dict], evidence: dict) -> None:
+    """Public esports coupon JSON. Market shape verified against the source's own payload."""
     status, body, _ = fetch(BOVADA_ESPORTS, {"Accept": "application/json"})
-    evidence["bovada_esports"] = {"url": BOVADA_ESPORTS, "status": status, "bytes": len(body)}
+    entry = {"url": BOVADA_ESPORTS, "status": status, "bytes": len(body)}
+    evidence["bovada_esports"] = entry
     try:
         data = json.loads(body.decode("utf-8", "replace"))
     except Exception as exc:  # noqa: BLE001
-        evidence["bovada_esports"]["error"] = str(exc)
+        entry["error"] = str(exc)
         return
-    events = []
-    for group in data if isinstance(data, list) else []:
-        for path in (group.get("events") or []), ((group.get("path") or [{}])[0].get("events") or []):
-            for ev in path:
-                events.append((group, ev))
-    evidence["bovada_esports"]["events"] = len(events)
-    groups = {}
-    for group, ev in events:
-        league = "/".join([(p.get("description") or "") for p in (group.get("path") or [])]) or group.get("description") or ""
-        game = "cs2" if CS2_LEAGUE_RE.search(league) else ("lol" if LOL_LEAGUE_RE.search(league) else None)
-        if game is None:
-            continue
-        comp = ev.get("competitors") or []
-        if len(comp) != 2:
-            continue
-        ml = None
-        for disp in ev.get("displayGroups") or []:
-            for mk in disp.get("markets") or []:
-                if str(mk.get("description", "")).lower().startswith("moneyline") and len(mk.get("outcomes") or []) == 2:
-                    ml = mk
-                    break
-            if ml:
-                break
-        if not ml:
-            continue
-        prices = {}
-        for oc in ml["outcomes"]:
-            try:
-                prices[str(oc.get("description"))] = float(str(oc.get("price", "")).replace(",", ""))
-            except (TypeError, ValueError):
-                prices[str(oc.get("description"))] = None
-        a_am = prices.get(str(comp[0].get("description")))
-        b_am = prices.get(str(comp[1].get("description")))
-        if a_am is None or b_am is None:
-            continue
-        link = ev.get("link") or f"/sports/esports/{ev.get('id')}"
-        groups.setdefault(league, 0)
-        groups[league] += 1
-        quotes.append({
-            "source_key": "bovada",
-            "source_name": "Bovada",
-            "source_kind": "licensed bookmaker (public coupon JSON)",
-            "source_public_url": "https://www.bovada.lv" + link,
-            "source_api_url": BOVADA_ESPORTS,
-            "source_event_id": str(ev.get("id")),
-            "source_market_id": str(ml.get("id")),
-            "source_game": game,
-            "source_league": league,
-            "market_type": "match winner (moneyline)",
-            "market_is_live": bool(ev.get("live")),
-            "market_status": ev.get("status"),
-            "retrieved_at_utc": now_iso(),
-            "start_time_utc": ev.get("startTime"),
-            "team_a_name": comp[0].get("description"),
-            "team_b_name": comp[1].get("description"),
-            "raw_price_format": "american",
-            "raw_price_a": a_am,
-            "raw_price_b": b_am,
-            "decimal_odds_a": american_to_decimal(a_am),
-            "decimal_odds_b": american_to_decimal(b_am),
-            "decimal_odds_derived": True,
-        })
-    evidence["bovada_esports"]["matched_by_league"] = groups
+    if not isinstance(data, list):
+        entry["error"] = "not a list"
+        return
+    groups = 0
+    events = 0
+    per_league: dict[str, int] = {}
+    for group in data:
+        groups += 1
+        for ev in group.get("events") or []:
+            events += 1
+            comps = ev.get("competitors") or []
+            if len(comps) != 2:
+                continue
+            link = str(ev.get("link") or "")
+            game = None
+            if CS2_LEAGUE_RE.search(link):
+                game = "cs2"
+            elif LOL_LEAGUE_RE.search(link):
+                game = "lol"
+            elif str(ev.get("sport") or "").lower() == "esports":
+                game = "other-esport"
+            if game is None:
+                continue
+            for dg in ev.get("displayGroups") or []:
+                for mk in dg.get("markets") or []:
+                    if str(mk.get("description", "")).strip().lower() != "moneyline":
+                        continue
+                    period = mk.get("period") or {}
+                    if not period.get("main"):
+                        continue  # excludes Map 1/2/3 moneylines
+                    outs = mk.get("outcomes") or []
+                    if len(outs) != 2:
+                        continue
+                    dec = [((o.get("price") or {}).get("decimal")) for o in outs]
+                    am = [((o.get("price") or {}).get("american")) for o in outs]
+                    if not all(dec):
+                        continue
+                    per_league[dg.get("description") or "unlabelled"] = \
+                        per_league.get(dg.get("description") or "unlabelled", 0) + 1
+                    quotes.append({
+                        "source_key": "bovada",
+                        "source_name": "Bovada",
+                        "source_kind": "licensed bookmaker (public coupon JSON)",
+                        "source_public_url": "https://www.bovada.lv" + link,
+                        "source_api_url": BOVADA_ESPORTS,
+                        "source_event_id": str(ev.get("id")),
+                        "source_market_id": str(mk.get("id")),
+                        "source_game": game,
+                        "source_league": dg.get("description") or "",
+                        "source_event_path": link,
+                        "market_type": "match winner (moneyline, full match)",
+                        "market_period": period.get("description"),
+                        "market_is_live": bool(ev.get("live")),
+                        "market_status": mk.get("status"),
+                        "retrieved_at_utc": now_iso(),
+                        "start_time_utc": ms_iso(ev.get("startTime")),
+                        "team_a_name": comps[0].get("name"),
+                        "team_b_name": comps[1].get("name"),
+                        "raw_price_format": "decimal",
+                        "raw_price_a": dec[0],
+                        "raw_price_b": dec[1],
+                        "decimal_odds_a": float(dec[0]),
+                        "decimal_odds_b": float(dec[1]),
+                        "decimal_odds_derived": False,
+                        "raw_prices": {"outcomes": [o.get("description") for o in outs],
+                                       "decimal": dec, "american": am},
+                    })
+    entry.update({"groups": groups, "events": events, "matched_by_league": per_league})
 
 
 # --------------------------------------------------------------------------- extras (probe + best effort)
