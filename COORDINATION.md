@@ -2260,6 +2260,12 @@ Environment note: this environment pins the session to `arena/961e163a-maltaproj
 - Hotspawn crowd pick percentages are never used as probability inputs.
 - A fixture with no verified external price stays blank and is flagged unverified; nothing is inferred or filled in.
 
+### Session `0f6c89c6` — final record (T-CURRENT)
+
+- **PR #34** (coordination record for PR #30 and the deploy race) → **MERGED** 2026-10-13T21:45:12Z, merge commit `f5a98adc4cb428c5f60d0f9ac1d12ecfa8db0768`. This merge needed two rounds of conflict-free re-merges against bot refresh commits on `main` (generated data: took main's captures; COORDINATION.md: both sides kept).
+- **Retry result:** `Verify and publish dashboard` run 38472933554 on `f5a98ad` → **success** (build success, deploy success). Pages build `f5a98ad` → **built**.
+- **Live (fetched 21:4x UTC):** https://buffedlizard55-lab.github.io/MaltaProj2/current/index.html — 30 open CS2 fixtures, 9 with Pinnacle/Bovada, 15 widget fallback, 6 no line. https://buffedlizard55-lab.github.io/MaltaProj2/current/flagged.html — rows and 11 irregularities with source links.
+- **Board status:** T-CURRENT done. Open follow-ups for the integration owner: (a) re-check Bovada URLs from a session that can open them; (b) decide whether the `/pickem/` board's "bc.game via EGamersWorld" label should be replaced by the unnamed-widget label; (c) reconcile the lobby's "68 this week" to the fixtures API; (d) LoL fixtures are unpriced.
 ---
 
 # Session `961e163a` — PR, merge and Pages record (2026-10-13 21:47 UTC)
