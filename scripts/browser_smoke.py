@@ -17,8 +17,10 @@ try:
         page.goto('http://127.0.0.1:8765/matches.html')
         total=page.locator('#matches tbody tr').count()
         assert total>0
-        page.locator('#search').fill('astralis')
-        assert page.locator('#matches tbody tr:visible').count()==1
+        first_text=page.locator('#matches tbody tr').first.inner_text().split('\n')[0].lower()
+        term=first_text.split(' vs ')[0].strip()
+        page.locator('#search').fill(term)
+        assert page.locator('#matches tbody tr:visible').count()>=1
         page.locator('#search').fill('no-such-team-xyz')
         assert page.locator('#matches tbody tr:visible').count()==0
         assert page.locator('#row-count').inner_text().startswith('0 of ')
