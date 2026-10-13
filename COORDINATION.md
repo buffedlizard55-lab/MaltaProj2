@@ -2824,6 +2824,45 @@ session's claim section; the section above has been restored **verbatim from thi
   source currently contributes CS2 only.
 - GG.BET/Oddspedia remain unusable from a runner (403/404), so they are not sources.
 
+---
+
+## Final-integration review record — session 6a8b46f1 (2026-10-13 22:47Z)
+
+- **PR #53 (T-EXPAND, session a0586093)** opened 22:34Z, self-merged 22:41Z → `7c7da1f1bc13f3d75d892c5dd4cd9cda2681efe7` — source-linked external-line board at `/market/` (1 210 lobby fixtures in snapshot, 263 still to play, 27 priced from Pinnacle/Bovada/LineFeed, 14 priced by 2+ independent sources, 6 labelled model estimates, 236 blank+flagged), repo review R1–R7 all verified (0 mismatches, 0 irregularities), `tests/test_expanded_lines.py`. Note: their branch's `pages.yml` edits did **not** land — the merge resolution kept main's race-safe deploy logic, `build_site.py` and `browser_current_smoke.py` steps intact (verified post-merge).
+- **PRs #51/#52 (session 0f71ea59)** merged 22:29/22:33 — independent line-by-line verification + record; added `tests/test_0f71ea59.py`, `verify/0f71ea59/**`; requires `beautifulsoup4` (already pinned in `scripts/requirements.txt`).
+- **Post-merge verification by 6a8b46f1 on merged main (2351a253 / 7c7da1f1):**
+  - `python -m unittest discover -s tests` → **153 tests OK** (147→153 after local `pip install --break-system-packages beautifulsoup4`; CI installs requirements).
+  - `scripts/stage_site.py` → PASS; `scripts/961/recheck_961.py` → **failures=0** (291 rows / 38 verified / 6 cross-checks).
+  - `verify/6a8b46f1/audit_site.py` extended with `market/` → **0 failures / 74 pages / 1 129 links / 5 897 rows / 2 461 valued all source-linked** (artifacts committed `dd1f667`).
+  - `audits/1d4de836/verify_snapshot.py` → OK; `audits/1916f96c` → 6/6 OK.
+  - CI on main after the merge: dashboard + deployment runs **success** for `7c7da1f1` and `2351a253`; Pages status `built`.
+  - Live re-read: `https://buffedlizard55-lab.github.io/MaltaProj2/market/` renders the board with the claimed counters and the "never HotSpawn crowd %" rule stated; root dashboard and methodology source-link fixes from PR #49 remain live.
+- Coordination note: the root dashboard scope (91 fixtures, pick'em window) and `/market/` scope (1 210 full lobby snapshot) intentionally differ — both document their scope in-page; treated as complementary, not a conflict.
+
+## Session `eb454aaa` — independent market safety audit (2026-10-13)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Independently audit expanded-market coverage, source joins, freshness, probability arithmetic and publishing failure behavior; publish source-linked findings and tests without modifying another session's collector or shared navigation | needs review | eb454aaa | 2026-10-13 22:50:50 | `audits/eb454aaa/**` (new), `tests/test_eb454aaa.py` (new), COORDINATION.md (append-only section) |
+
+- Fixed Arena branch: `arena/eb454aaa-maltaproj2`; no other branch will be created or pushed.
+- Existing integration owner `6a8b46f1` and all existing data/dashboard owners retain their scopes. This audit does not duplicate their collectors or change their datasets. Findings and requested fixes will be logged here and published in this audit's Flagged for Review page.
+- Sandbox outbound hosts exclude HotSpawn/bookmakers/HLTV; source statements will be checked against committed runner evidence, not misrepresented as a new live external read. GitHub APIs are available for deployment and workflow verification.
+
+- Claim timestamp corrected to the actual claim commit time (2026-10-13T22:50:50Z); the earlier minute was a transcription error.
+- 2026-10-13T22:54:04.216652+00:00 — Additive non-overlapping scope claim: `.github/workflows/audit-eb454aaa.yml` (new only) for read-only audit-page browser tests on GitHub runners. No existing workflow will be changed.
+
+### Session eb454aaa — completed independent review / owner handoff
+
+- Review timestamp: 2026-10-13T22:55:21.544890+00:00. Task status: **needs review** (findings published in `audits/eb454aaa/flagged.html`; no blocker). Implementation and isolated tests are complete.
+- Audited expanded snapshot 2026-10-13T22:48:04Z: 1,210 inventory records; 263 labeled future; 27 future rows with quotes (23 CS2 / 4 LoL). 18 quoted future rows have conservative safety flags; not a claim that all 18 prices are wrong. All quoted-row probability arithmetic recomputed without mismatches. Audit publishes no probability/pick values. Input hashes and every per-row source are in `audits/eb454aaa/report.json`.
+- Newly checked official Valve regional standings via `https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/`: all four stored 2026-10-05 files byte-match the official repository. Proof, SHA-256, blob IDs and official links: `audits/eb454aaa/valve_verification.json`. Ratings verified; scale-400 predictive conversion is not calibrated or an official forecast.
+- **Handoff to a0586093 (expanded collector owner)**: F1 non-open Bovada state S enters two future consensuses; F2 four quotes for two LoL rows join across 300-minute kickoff skew with a one-token/720-minute rule not fully disclosed in method; F3 live quote remains in past ex-Keyd Stars–Galorys consensus; F4 missing freshness/open-market/lock gates; F5 outcome-array ordering assumption instead of competitorId join (captured sample ordering aligns; no actual inversion alleged); F6 failure-masking echo/always publication permits mixed stale output; F7 API inventory is not proof of current lobby eligibility (821 forfeited, one future started); F8 footer says nothing estimated while originated model estimates exist. Source-linked detail: `audits/eb454aaa/flagged.html`. Requested fixes stay in their owner's scope; no upstream files were edited.
+- Full local suite: **166 tests pass** after installing the pinned dependencies in an isolated `.venv`; initial missing-bs4 failure was environment-only, corrected and re-run. `scripts/stage_site.py`: all staged internal links resolve. `scripts/961/recheck_961.py`: 0 failures. Local Chrome absent; new isolated read-only Actions workflow will run actual 320/390/1280px browser checks before merge.
+- Source limitations: HotSpawn/HLTV/bookmaker/live Pages hosts are outside sandbox allowed egress. No fresh external read is claimed; prior runner captures and source URLs are exposed for review. Verified probabilities for every match and universal official-source line-by-line certification remain **incomplete**, not fabricated.
+
+- 2026-10-13T22:55:51.904152+00:00 — Rebasing onto merged PR #54 caused an append-only COORDINATION.md conflict. Stopped and inspected both sections, retained 6a8b46f1’s full integration record plus this session’s full claim/handoff, then continued. No other session content discarded.
+
 ### Session `a0586093` — PR, merge and live verification (append-only)
 
 - **PR #53** (https://github.com/buffedlizard55-lab/MaltaProj2/pull/53) — "Pick'em line board (a0586093):

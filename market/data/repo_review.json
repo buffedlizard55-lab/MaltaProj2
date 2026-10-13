@@ -1,5 +1,5 @@
 {
- "generated_at_utc": "2026-10-13T22:57:38Z",
+ "generated_at_utc": "2026-10-13T22:48:06Z",
  "checks": [
   {
    "id": "R1",
@@ -107,18 +107,14 @@
    "claim": "data/cs2_odds_egamersworld.json rows refer to real lobby fixtures",
    "source": "https://egamersworld.com/counterstrike/matches",
    "rows": 32,
-   "status": "verified",
-   "mismatches": [],
-   "stale_rows_no_longer_in_the_lobby_window": [
+   "status": "discrepancy",
+   "mismatches": [
     {
      "fixture_id": "1081104",
-     "teams": [
-      "Gr\u00eamio",
-      "LOS NINOS"
-     ]
+     "issue": "fixture id not in the lobby snapshot"
     }
    ],
-   "detail": "32 priced rows joined to the lobby snapshot by fixture id and team name; 0 mismatch(es), 1 row(s) whose fixture has since left the lobby window"
+   "detail": "32 priced rows joined to the lobby snapshot by fixture id and team name; 1 mismatch(es)"
   },
   {
    "id": "R5",
@@ -211,5 +207,12 @@
    "detail": "14 fixture(s) priced by 2+ sources compared source by source; 0 with a spread wider than 12 points"
   }
  ],
- "irregularities": []
+ "irregularities": [
+  {
+   "id": "R4",
+   "severity": "medium",
+   "finding": "1 egamersworld row(s) do not join to the lobby snapshot",
+   "evidence": "https://egamersworld.com/counterstrike/matches"
+  }
+ ]
 }
