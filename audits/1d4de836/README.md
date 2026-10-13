@@ -50,3 +50,7 @@ The integration session subsequently fetched the official lobby through [GitHub 
 `lobby-snapshot-audit.json` preserves all 86 observed fixture IDs, participants, competitions, raw scheduled milliseconds, source-reported status, null format fields, official lobby links, and exact match permalinks where explicitly present in the source. ISO timestamps and past-date flags are labeled as derived. Every row links to the official lobby and exact archived evidence. All bookmaker prices and probabilities remain null. Snapshot SHA-256: `7c21397146ea5d8653abdea5e58d0ca3a19db07285d4d697564c3d50ddbc96a6`.
 
 This is a row-level evidence handoff for integration, not a replacement fixture collector or an assertion of independently confirmed match schedules. The source's discovery response and its embedded backend URLs were read as published page content; no admin endpoint, account, or access control was used.
+
+### Reproduce the row-level verification
+
+Run `python audits/1d4de836/verify_snapshot.py` in a checkout with pinned source commit `c48b28e8e16f9a33b473ff1dba22fc4add305acd` available. Alternatively supply `--html /path/to/exact/archived/lobby.html`. The verifier checks the snapshot hash, all extracted source fields, source-supplied permalinks, null bookmaker data, derived timestamps, count summaries and review flags. It makes no network requests. Positive verification passed for all 86 rows; negative tests rejected an invented team, filled unverified odds, inferred match URL, removed flag and changed archive bytes.
