@@ -34,7 +34,7 @@ jobs:
       - name: Run session runner tasks
         run: |
           mkdir -p proof/42580809/evidence
-          for s in fetch_fixtures probe_sources explore_sources collect_lines; do
+          for s in fetch_fixtures probe_sources explore_sources inspect_pinnacle collect_lines; do
             f="proof/42580809/run/$s.py"
             if [ -f "$f" ]; then
               echo "=== running $s"
