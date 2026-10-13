@@ -914,13 +914,13 @@ The original f3ec923 board pre-marked T2–T8 "done" as placeholders — the tru
 | Task | Status | Notes |
 |---|---|---|
 | T1 board | done | Original claim in f3ec923; superseded by truthful table below |
-| T2 full pick'em match list | in progress | CS2: 30 rendered rows in `data/cs2_matches.json` + 61 blank/flagged rows in `data/cs2_unrendered_flags.json` (lobby counts 85/91 states documented); LoL enumeration pending (294 counts captured) |
-| T3 external betting lines | planned | egamersworld + HLTV cross-check; never Hotspawn pick % |
-| T4 probabilities | planned | normalized 1/odds, offline script |
-| T5 site | planned | coordinate with existing docs/ site owners |
-| T6 verification | planned | every row needs official source link |
-| T7 integration | planned | — |
-| T8 PR + merge + Pages | planned | — |
+| T2 full pick'em match list | done | CS2 93 + LoL 314 + 16 cancelled = 407 rows from official play API (`data/cs2_matches.json`, `data/lol_matches.json`), cross-checked vs 30 lobby cards; 59 past-lock rows resolved row-level in `data/cs2_unrendered_flags.json`; lobby replica snapshots (85/91) recorded |
+| T3 external betting lines | done | egamersworld odds for all 32 pickable CS2 fixtures (`data/cs2_odds_egamersworld.json`) + 7 marquee LoL (`data/lol_odds_egamersworld.json`); repo's Pinnacle/Bovada quotes reused for 12 CS2; all other rows left blank + flagged (no external line exists) |
+| T4 probabilities | done | `data/probabilities.json` — 407 rows, 39 with no-vig consensus probability, 368 blank+flagged; sums verified; Hotspawn pick % never used |
+| T5 site | done | root site: new `probabilities.html` (407-row table, every row source-linked) + nav entry + flagged.html section 11 (replica divergence, 59 past-lock, LoL coverage gap, egw time conflicts, DACH S5); regenerated via `scripts/build_site.py` (29 files, no broken internal links) |
+| T6 verification | done | tests 18/18 OK + audits 6/6 OK + 1d4de836 snapshot PASS + check_links.py clean; live-Pages check blocked by sandbox TLS (left to CI post-deploy) |
+| T7 integration | in progress | PR from this branch re-verifies combined data; build green locally |
+| T8 PR + merge + Pages | pending | PR number recorded below before merge per protocol |
 
 ## CS2 enumeration findings (session-188aaa4f, 2026-10-13)
 
@@ -932,3 +932,13 @@ The original f3ec923 board pre-marked T2–T8 "done" as placeholders — the tru
 - `wp-json/pickem/v1/fixtures?ids=` is a permalink resolver (any valid www id returns a URL), NOT a
   pick'em membership oracle — cannot identify exact stale subsets.
 - Counts observed: 86→85 (dynamic ingest) and 85→91→85 (replica divergence) on 2026-10-13 17:51–18:34 UTC.
+
+## Operational log (session-188aaa4f, 2026-10-13 evening UTC)
+
+- `git pull --rebase` initially targeted origin/main because the branch had no upstream config; add/add on
+  COORDINATION.md resolved by preserving main's board in full and appending this session's section (no other
+  session's content discarded). Upstream fixed: `branch.arena/188aaa4f-maltaproj2.merge` now points at the
+  session branch; subsequent pulls rebase onto the branch tip.
+- CI auto-refresh commit `419aae8` ("data: refresh pick'em fixtures...") landed on this branch after a push;
+  rebased over it without discarding either side.
+- Local environment lacked `bs4`; installed from `scripts/requirements.txt` (same set CI uses).
