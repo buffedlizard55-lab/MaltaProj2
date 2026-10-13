@@ -33,4 +33,20 @@ See `access-evidence.json` for attempt timestamps and exact errors, `pages-api-e
 
 The checkout initially contained only `README.md`. This session owns only `audits/1d4de836/**`, plus shared board claim/log updates. The first active integration claim belongs to session `ef111e02`; session `1916f96c` also claimed overlapping integration scopes. See the shared board and issue #1 for the reconciliation request.
 
-No verified matches, betting lines, or current probabilities were obtained in this audit. No live data is invented. No candidate source is asserted to be officially authenticated by this audit.
+The initial direct-access audit obtained no match data. The follow-up below verifies fixture fields against an archived official lobby response, but does not establish current betting lines or probabilities. No live data is invented. No candidate bookmaker is asserted to be officially authenticated by this audit.
+
+## Follow-up: independently reviewed official lobby snapshot
+
+The integration session subsequently fetched the official lobby through [GitHub Actions run 38442030251](https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38442030251). I independently read the [archived lobby HTML at commit c48b28e](https://github.com/buffedlizard55-lab/MaltaProj2/blob/c48b28e8e16f9a33b473ff1dba22fc4add305acd/docs/evidence/probe/lobby.html) and its [response headers](https://github.com/buffedlizard55-lab/MaltaProj2/blob/c48b28e8e16f9a33b473ff1dba22fc4add305acd/docs/evidence/probe/lobby.headers). This does not change the recorded sandbox failures.
+
+- HTTP response date: 2026-10-13 17:51:30 UTC; HTTP status 200; response `age` header 3839 seconds. This is a cached snapshot, not necessarily a fresh upstream response.
+- The `ng-state` JSON contains a `/api/v1/fixtures` response with **86 entries**, all source-reported `sport_alias: cs2`, all source-reported `status: scheduled`.
+- **60 entries** have scheduled timestamps before the response date; **26** have scheduled timestamps at or after it. This is a mechanical timestamp comparison, **not** an assertion that any match is completed, live, eligible, or open for picks.
+- All 86 entries have null `best_of` and `series_format`. Leave these blank. No BO3 assumptions.
+- The payload includes Hotspawn pick percentages and gamification points. They are intentionally excluded from the audit extraction and must not become probability inputs.
+- Tenant metadata lists CS2 and LOL as enabled. The 86-entry CS2 response does **not** prove the full cross-sport pick-em list was collected. League of Legends coverage needs separate verification.
+- Source-reported fixture status conflicts with past scheduled dates for many rows. Preserve the raw status, flag the discrepancy, and do not silently correct it or present all 86 as upcoming.
+
+`lobby-snapshot-audit.json` preserves all 86 observed fixture IDs, participants, competitions, raw scheduled milliseconds, source-reported status, null format fields, official lobby links, and exact match permalinks where explicitly present in the source. ISO timestamps and past-date flags are labeled as derived. Every row links to the official lobby and exact archived evidence. All bookmaker prices and probabilities remain null. Snapshot SHA-256: `7c21397146ea5d8653abdea5e58d0ca3a19db07285d4d697564c3d50ddbc96a6`.
+
+This is a row-level evidence handoff for integration, not a replacement fixture collector or an assertion of independently confirmed match schedules. The source's discovery response and its embedded backend URLs were read as published page content; no admin endpoint, account, or access control was used.
