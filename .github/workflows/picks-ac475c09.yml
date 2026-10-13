@@ -1,0 +1,60 @@
+name: picks-data (ac475c09)
+
+# Session ac475c09 / task T-LIVE.
+# Refreshes the externally-sourced "live picks" dataset used by the /picks/ dashboard.
+# Scope guard: this workflow only commits files owned by this session
+#   data/picks_*.json, evidence/picks/**, picks/**  — it never rewrites another session's files.
+
+on:
+  push:
+    branches: ['arena/ac475c09-maltaproj2']
+    paths:
+      - 'scripts/picks_collect.py'
+      - 'scripts/picks_build.py'
+      - '.github/workflows/picks-ac475c09.yml'
+  schedule:
+    - cron: '23 */3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: picks-data-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect lobby fixtures and external bookmaker quotes
+        run: python3 scripts/picks_collect.py
+
+      - name: Build the /picks/ dashboard from the collected data
+        run: python3 scripts/picks_build.py || echo "builder non-zero (raw data kept for inspection)"
+
+      - name: Upload raw evidence for inspection
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: picks-evidence
+          path: |
+            data/picks_*.json
+            evidence/picks/
+          retention-days: 7
+
+      - name: Commit refreshed data, evidence and dashboard
+        run: |
+          git config user.name "malta-picks-bot"
+          git config user.email "malta-picks-bot@users.noreply.github.com"
+          git add data/picks_fixtures.json data/picks_quotes.json data/picks_board.json evidence/picks picks 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "no changes to commit"
+          else
+            git commit -m "data: refresh live picks board (lobby fixtures + external lines) [skip ci]"
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push && break || sleep 5
+            done
+          fi
