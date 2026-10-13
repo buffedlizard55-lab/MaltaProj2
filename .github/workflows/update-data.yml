@@ -33,13 +33,15 @@ jobs:
         run: python3 scripts/explore_sources.py || echo "explore non-zero (evidence kept)"
       - name: Derive no-vig lines from matched external quotes
         run: python3 scripts/build_lines.py || echo "line builder non-zero (evidence kept)"
+      - name: Build current open-for-picks board (T-CURRENT, session 0f6c89c6)
+        run: python3 scripts/build_current_board.py || echo "current board builder non-zero (evidence kept)"
       - name: Build static site
         run: python3 scripts/build_site.py
       - name: Commit refreshed data + site
         run: |
           git config user.name "malta-data-bot"
           git config user.email "malta-data-bot@users.noreply.github.com"
-          git add -A data evidence docs 2>/dev/null || git add -A
+          git add -A data evidence docs current 2>/dev/null || git add -A
           if git diff --cached --quiet; then
             echo "no changes to commit"
           else
