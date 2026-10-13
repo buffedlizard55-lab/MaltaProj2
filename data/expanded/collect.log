@@ -1,0 +1,18 @@
+fixtures: 11569
+after pinnacle: 15
+after bovada: 30
+after linefeed: 30
+after polymarket: 30
+collector crashed; traceback:
+Traceback (most recent call last):
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/collect_lines.py", line 542, in main
+    return run()
+           ^^^^^
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/collect_lines.py", line 579, in run
+    doc = build_lines(fixtures, quotes, log)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/collect_lines.py", line 454, in build_lines
+    f["is_future"] = bool(f_dt and f_dt > now - timedelta(minutes=15))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: can't compare offset-naive and offset-aware datetimes
+
