@@ -1,0 +1,12 @@
+name: probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, 'arena/**']
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - run: echo "actions available" && curl -sS -o /dev/null -w "%{http_code}\n" https://play.hotspawn.com/lobby
