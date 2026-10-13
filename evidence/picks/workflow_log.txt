@@ -1,10 +1,12 @@
-== picks-data run 38471023219 for d8c6c4f86c1f3c92bda21362602e6fe8352bab85 at 2026-10-13T21:30:45Z
+== picks-data run 38473114617 for a79a27ed981409934211305f061ac1afc5dbecea at 2026-10-13T21:49:11Z
 == collect log (tail)
+wrote evidence/picks/link_checks.json
 wrote data/picks_fixtures.json
 wrote data/picks_quotes.json
+wrote data/picks_permalinks.json
 wrote evidence/picks/reachability.json
 {
- "generated_at_utc": "2026-10-13T21:29:49Z",
+ "generated_at_utc": "2026-10-13T21:46:53Z",
  "hotspawn_source": {
   "page": "https://play.hotspawn.com/lobby",
   "api": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
@@ -13,6 +15,12 @@ wrote evidence/picks/reachability.json
  "fixtures_open_cs2": 29,
  "fixtures_open_lol": 239,
  "quotes_total": 25,
+ "match_urls": {
+  "lobby_published_permalink": 26,
+  "constructed_slug_verified_200": 0,
+  "lobby_listing_fallback": 11544
+ },
+ "links_checked": 50,
  "quotes_by_source": {
   "pinnacle": 14,
   "bovada": 11
@@ -25,12 +33,15 @@ wrote evidence/picks/reachability.json
 }
 collect_exit=0
 == build log (tail)
-{
- "open": 268,
- "priced_open": 12,
- "rows": 283,
- "rejections": 4,
- "accepted_quotes": 21
-}
-PASS: /picks/ pages rendered and every local link resolves
-build_exit=0
+Traceback (most recent call last):
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/picks_build.py", line 826, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/picks_build.py", line 807, in main
+    stats = render(board, rejections, meta)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/picks_build.py", line 567, in render
+    if link_report:
+       ^^^^^^^^^^^
+NameError: name 'link_report' is not defined
+build_exit=1
