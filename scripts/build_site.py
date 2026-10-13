@@ -280,6 +280,19 @@ market prices</em>, not forecasts, and the rule is published on every row.</p>
 <p><a class="btn" href="cs2.html">Open the full CS2 table ({len(fixtures)} fixtures)</a>
 <a class="btn ghost" href="flagged.html">Flagged for review ({summary.get("fixtures_without_external_line", 0)} unverified rows)</a></p>
 
+<h2>Parallel session data preserved in this repo</h2>
+<p>Other sessions in this repo published their own reference material, kept intact: the VRS-based
+reference lines (<a href="data/originated_matches.json">data/originated_matches.json</a>,
+<a href="data/originated_outrights.json">data/originated_outrights.json</a>,
+<a href="data/origination_summary.json">origination summary</a>), the verified fixture set
+(<a href="data/fixtures_verified.json">data/fixtures_verified.json</a>), the verified team list
+(<a href="data/teams_verified.json">data/teams_verified.json</a>),
+<a href="data/flagged_irregularities.json">flagged irregularities</a> and the
+<a href="docs/index.html">parallel dashboard under docs/</a>. Their pages
+(<a href="lines.html">lines</a>, <a href="teams.html">teams</a>, <a href="hotspawn.html">HotSpawn notes</a>)
+remain at their original paths and are listed on the <a href="flagged.html">Flagged for review</a> page.
+Nothing published by another session was discarded during integration.</p>
+
 <h2>Timestamps</h2>
 {market_data_notes(lines_doc, odds_doc)}
 """
@@ -512,7 +525,15 @@ and either the start times agree within 90 minutes or — when a source publishe
 tournament/league name must correspond to the fixture's tournament. One bookmaker line is used for at most one
 fixture. Every decision, alias and rejection is recorded in <code>evidence/matching_evidence.json</code>.</p>
 
-<h2>6. Refresh</h2>
+<h2>6. Cross-session material</h2>
+<p>This integration keeps every session's artefacts: <a href="data/originated_matches.json">VRS-originated
+reference lines</a>, <a href="data/fixtures_verified.json">verified fixtures</a>,
+<a href="data/teams_verified.json">verified teams</a>,
+<a href="data/flagged_irregularities.json">flagged irregularities</a>,
+<a href="data/teams_verified.json">team identity evidence</a>, the
+<a href="docs/index.html">parallel dashboard</a> and the audit reports linked from the Flagged page.</p>
+
+<h2>7. Refresh</h2>
 <p>A scheduled GitHub Actions job re-runs the collectors, re-derives the lines and rebuilds these pages.
 The collection attempt time and the successful data time are kept separate, and a failed source keeps its
 last verified quotes rather than inventing new ones.</p>
