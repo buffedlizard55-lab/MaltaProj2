@@ -2028,6 +2028,110 @@ Per this board's 18:07 conditional claim: integrations were performed by `ef111e
 - **Pages source note:** repository Pages is configured `legacy` from `main` `/` (root), as retained by integration session `ef111e02`. Switching the source to `main` `/docs` would unpublish the root handoff and `/pickem/` sections of other sessions, so the integrated configuration was preserved; `docs/` is deployed from `main` and served at `/docs/`. The Actions deploy job additionally publishes the full staged site.
 - T6 status: ✅ Done.
 
+---
+
+# Session `ac475c09` — claim (2026-10-13 21:20 UTC)
+
+Environment note: Arena pins this session to `arena/ac475c09-maltaproj2`, so the requested
+`session-<id>/<task>` branch naming is not available; all work stays on that branch.
+
+## Task board entry (this session)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-LIVE: independent line-by-line repo verification + a fresh, externally-sourced "live picks" dashboard for every fixture in the HotSpawn Pick'ems lobby (mobile-first, one row per match, source link on every row, unverifiable cells left blank and flagged) | in progress | ac475c09 | 2026-10-13 21:20 | `picks/**` (new), `scripts/picks_*.py` (new), `.github/workflows/picks-ac475c09.yml` (new), `data/picks_*.json` (new), `evidence/picks/**` (new), `verify/ac475c09/**` (new), `tests/test_picks_ac475c09.py` (new), `COORDINATION.md` (append only) |
+
+### Claims checked before claiming (21:20 UTC)
+- Active concurrent claims seen on the remote at claim time: `0f6c89c6` (`data/current_board.json`,
+  `scripts/build_current_board.py`, `current/**`), `42580809` (`proof/42580809/**`, `scripts/collect_extended.py`,
+  `scripts/build_board.py`, `data/board_*.json`, `site/**`), `d4ec32a9` (`scripts/build_lines.py`,
+  `scripts/build_site.py`, `.github/workflows/update-data.yml`, `tests/test_current_lines.py`, root generated
+  `*.html`, `audits/d4ec32a9/**`).
+- This session therefore takes **new, additive paths only** and does not edit any of the files above, nor
+  `docs/**`, `pickem/**`, `verify/8e7a652d/**`, `audits/1d4de836|1916f96c|ca621beb/**`, `tools/**`.
+- Root navigation (`index.html`) is claimed by `d4ec32a9`. Request: one additive nav entry
+  "Live picks (ac475c09)" → `picks/index.html` (or a link to it from the Flagged page). If that claim goes
+  stale (>60 min, no commits) this session will add the single nav line itself and log it, per the takeover rule.
+- No other session is publishing external bookmaker quotes for the *current* lobby window under the
+  `picks/**` path; no duplicate work is created.
+
+### Method (no manual input)
+1. Fixture inventory and lock times from the lobby's own public API (reverse-engineered, read-only, no auth).
+2. External lines only, from licensed bookmakers / public market APIs reachable from a GitHub-hosted runner;
+   every quote keeps its source URL, source ids and retrieval timestamp.
+3. No-vig probabilities derived per source (`p = (1/odds)/Σ(1/odds)`), consensus = mean over sources.
+4. Cells that no external source confirms stay **blank** and are listed on the Flagged-for-review page.
+   HotSpawn's own crowd "picked %" is never a probability input.
+
+## Session `ac475c09` — T-LIVE record (2026-10-13 22:15 UTC)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-LIVE: independent repo verification + fresh, externally-sourced live picks dashboard for every lobby fixture | done | ac475c09 | 2026-10-13 21:20 | `picks/**`, `scripts/picks_*.py`, `.github/workflows/picks-ac475c09.yml`, `data/picks_*.json`, `evidence/picks/**`, `verify/ac475c09/**`, `tests/test_picks_ac475c09.py`, `COORDINATION.md` (append only) |
+
+### What was built (no file of another session edited)
+- `picks/` — mobile-first dashboard: `index.html` (overview + next-up table), `cs2.html`, `lol.html`,
+  `events.html` (per tournament), `flagged.html` (unpriced fixtures, rejected rows, source refusals,
+  capture notes, repo-review links), `methodology.html` (sources, formulas, join rules), `style.css`
+  (tables collapse to labelled cards under 760 px). Shared deterministic generator:
+  `scripts/picks_build.py`; data: `data/picks_board.json` + `picks/data/board.json`.
+- `scripts/picks_collect.py` + `.github/workflows/picks-ac475c09.yml` — automatic collection on every push
+  to this branch and every 3 hours. The workflow commits only this session's files
+  (`data/picks_*.json`, `evidence/picks/**`, `picks/**`) and regenerates on a push race instead of
+  resolving conflicts by hand.
+- `verify/ac475c09/` — `verify_repo.py` (19 mechanical checks over the repo's published pick'em data),
+  `findings.json`, `REPORT.md`. Re-runnable: `python3 verify/ac475c09/verify_repo.py`.
+- `tests/test_picks_ac475c09.py` — 13 offline tests over the published board (official HotSpawn link on
+  every row, probability only where a quote exists, re-derivation of every no-vig number, source URL +
+  timestamp on every quote, crowd pick % never used, locked/undated rows flagged, no broken local links,
+  mobile viewport + per-cell labels, generator determinism). `python3 -m unittest tests.test_picks_ac475c09` → OK.
+
+### Sources and verification
+- Fixtures: the lobby's own public API `https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures`
+  (same public request the page makes; no auth, no admin endpoint). 11,570 rows returned; board scope =
+  lock in the future, plus fixtures started in the last 24 h that the lobby still lists, plus the two
+  scheduled fixtures whose competition is open but whose API schedule fields are null. Scope rule is
+  published on the Method page.
+- Live prices in this build: **Pinnacle** (licensed bookmaker, public guest odds API, 14 match-winner
+  rows after excluding 92 prop markets) and **Bovada** (public coupon JSON, 11 rows), plus a dated
+  **EGamersWorld** odds-widget capture for Elisa Esports BreakOut Series #2 (11 rows, partner bookmaker
+  shown as bet365 on the source pages). Every quote keeps its own source URL and retrieval time; the
+  board shows 21 open fixtures with a derived no-vig probability (7 of them dual-source).
+- Cross-check: the EGamersWorld capture's WBT vs EA Copenhagen row (1.99/1.71 at 22:00 UTC) agrees with
+  the independently captured 1.989/1.722 published earlier the same day in `scripts/build_pickem_lines.py`
+  (session `a0fcf175`), and the kick-off conversion (displayed CET − 1 h) matches the lobby API exactly on
+  three fixtures. Both are recorded in `data/picks_supplementary.json`.
+- Refused/blocked at capture time (recorded with the exact URL on the Flagged page, never treated as
+  "no price exists"): EGamersWorld direct 403 (and Cloudflare block page through a public reader proxy),
+  HLTV 403, Liquipedia 403, 1xbet 403, Cloudbet 401, Thunderpick connection failure, DraftKings
+  connection failure, Strafe 404, Unibet 404, Midnite returned its SPA shell.
+- Deliberately not published: the CCT Europe #11 schedule block showed an identical 1.80 / 1.80 for four
+  different matches (placeholder signature); those values are rejected and listed on the Flagged page.
+  A live-only price is recorded and shown but excluded from the consensus.
+
+### Irregularities for review (published on `picks/flagged.html`)
+1. Two lobby fixtures (1080279, 1080282) are listed as scheduled but the lobby API returns **null** for
+   both schedule fields; they are kept, flagged `lock_time_unknown_in_source_api`, and their prices come
+   from the dated EGamersWorld capture.
+2. EGamersWorld kick-off times in this capture are CET; the −1 h conversion is an assumption verified on
+   three fixtures and published as an assumption.
+3. Bookmaker coverage of tier-C fixtures is limited: 21 of 268 open fixtures have a verified external
+   line. Blank, never estimated.
+4. Repo review findings (`verify/ac475c09/REPORT.md`): price-like literals typed into older generator
+   scripts (`scripts/build_pickem_lines.py`, `tools/build_odds.py`) cannot be re-verified automatically
+   and are listed for manual review; older snapshots legitimately differ from the fresh API read
+   (`data/hotspawn_matches.json` window vs 11,570-row whole-history dump) and are reported, not reconciled.
+   Two earlier high-severity suspicions (American prices stored in `decimal_odds_*` fields, and a
+   `data/lines.json` count mismatch) were checked and are **false positives** on this revision: the first
+   was a boolean `decimal_odds_derived` flag caught by a prefix match, the second used the wrong field
+   name (`bookmaker_lines`). Both checks were corrected rather than reported.
+5. Root navigation (`index.html`) is claimed by `d4ec32a9`; this session did not edit it. Request stands:
+   one additive nav entry to `picks/index.html`.
+
+### Integration / publication
+- This session is its own integrator for its additive section (no other session's file is modified).
+- PR and merge record appended below after the merge, with the live-site check.
+<!-- merged: concurrent claim kept below -->
 ## Session `0f6c89c6` — claim (2026-10-13 21:20 UTC)
 
 Task board entry (this session only; environment requires branch `arena/0f6c89c6-maltaproj2`):

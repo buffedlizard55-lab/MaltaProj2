@@ -1,0 +1,173 @@
+{
+ "generated_at_utc": "2026-10-13T21:41:48Z",
+ "session": "ac475c09",
+ "freshness_budget_hours": 6,
+ "findings": [
+  {
+   "check": "price_provenance",
+   "severity": "info",
+   "file": "data/odds.json",
+   "detail": "all 21 stored price rows carry a source URL",
+   "value": 21,
+   "source": null
+  },
+  {
+   "check": "price_provenance",
+   "severity": "info",
+   "file": "data/lines.json",
+   "detail": "all 0 stored price rows carry a source URL",
+   "value": 0,
+   "source": null
+  },
+  {
+   "check": "price_provenance",
+   "severity": "info",
+   "file": "data/cs2_odds_egamersworld.json",
+   "detail": "all 32 stored price rows carry a source URL",
+   "value": 32,
+   "source": null
+  },
+  {
+   "check": "price_provenance",
+   "severity": "info",
+   "file": "data/lol_odds_egamersworld.json",
+   "detail": "all 7 stored price rows carry a source URL",
+   "value": 7,
+   "source": null
+  },
+  {
+   "check": "price_provenance",
+   "severity": "info",
+   "file": "data/picks_quotes.json",
+   "detail": "all 25 stored price rows carry a source URL",
+   "value": 25,
+   "source": null
+  },
+  {
+   "check": "price_units",
+   "severity": "info",
+   "file": "data/odds.json",
+   "detail": "no decimal_odds_* field is out of range",
+   "value": null,
+   "source": null
+  },
+  {
+   "check": "price_units",
+   "severity": "info",
+   "file": "data/lines.json",
+   "detail": "no decimal_odds_* field is out of range",
+   "value": null,
+   "source": null
+  },
+  {
+   "check": "freshness",
+   "severity": "info",
+   "file": "data/hotspawn_matches.json",
+   "detail": "snapshot is 0.0h old",
+   "value": null,
+   "source": null
+  },
+  {
+   "check": "freshness",
+   "severity": "info",
+   "file": "data/cs2_matches.json",
+   "detail": "snapshot is 2.7h old",
+   "value": null,
+   "source": null
+  },
+  {
+   "check": "freshness",
+   "severity": "info",
+   "file": "data/lol_matches.json",
+   "detail": "snapshot is 2.7h old",
+   "value": null,
+   "source": null
+  },
+  {
+   "check": "freshness",
+   "severity": "info",
+   "file": "data/odds.json",
+   "detail": "snapshot is 0.0h old",
+   "value": null,
+   "source": null
+  },
+  {
+   "check": "freshness",
+   "severity": "info",
+   "file": "data/lines.json",
+   "detail": "snapshot is 0.0h old",
+   "value": null,
+   "source": null
+  },
+  {
+   "check": "freshness",
+   "severity": "info",
+   "file": "data/probabilities.json",
+   "detail": "snapshot is 2.1h old",
+   "value": null,
+   "source": null
+  },
+  {
+   "check": "freshness",
+   "severity": "info",
+   "file": "data/picks_fixtures.json",
+   "detail": "snapshot is 0.0h old",
+   "value": null,
+   "source": null
+  },
+  {
+   "check": "freshness",
+   "severity": "info",
+   "file": "data/picks_board.json",
+   "detail": "snapshot is 0.0h old",
+   "value": null,
+   "source": null
+  },
+  {
+   "check": "published_counts",
+   "severity": "info",
+   "file": "data/lines.json",
+   "detail": "summary and rows agree (9 priced fixtures of 92)",
+   "value": null,
+   "source": null
+  },
+  {
+   "check": "typed_quotes",
+   "severity": "medium",
+   "file": "scripts/*.py",
+   "detail": "price-like literals are typed into generator scripts; they cannot be re-verified without opening the linked page, so they are listed for review",
+   "value": [
+    {
+     "file": "scripts/build_pickem_lines.py",
+     "literal_price_like_values": 22
+    }
+   ],
+   "source": null
+  },
+  {
+   "check": "cross_pipeline",
+   "severity": "low",
+   "file": "data/lines.json vs data/picks_board.json",
+   "detail": "no fixture currently carries a pre-match line in both pipelines (the older collection captured them before they started), so the two collections cannot be cross-checked on this build",
+   "value": null,
+   "source": null
+  },
+  {
+   "check": "fixture_drift",
+   "severity": "info",
+   "file": "data/hotspawn_matches.json vs data/picks_fixtures.json",
+   "detail": "older snapshot lists 406 fixtures, the fresh API read lists 11570 fixtures in total and 29 CS2 / 239 LoL fixtures still open for picks",
+   "value": {
+    "older_snapshot": 406,
+    "fresh_total": 11570
+   },
+   "source": null
+  }
+ ],
+ "summary": {
+  "high": 0,
+  "medium": 1,
+  "low": 1,
+  "info": 17
+ }
+}
