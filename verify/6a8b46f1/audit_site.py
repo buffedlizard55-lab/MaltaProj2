@@ -32,7 +32,7 @@ ROOT = Path(__file__).resolve().parents[2]
 # Published sections that ship to GitHub Pages (root html + these dirs).
 SECTIONS = [
     "current", "picks", "pickem", "site", "verify961", "verify",
-    "docs", "proof", "audits",
+    "docs", "proof", "audits", "market",
 ]
 
 VIEWPORT_RE = re.compile(r'<meta[^>]+name=["\']viewport["\']', re.I)
