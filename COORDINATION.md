@@ -2904,3 +2904,5 @@ session's claim section; the section above has been restored **verbatim from thi
 - Official GitHub Pages API now reports **built** from main `/`. Sanitized PR merge + Pages status + hosted job-step evidence: `audits/eb454aaa/publication.json`.
 - Delivery **done**; F1–F8 stay **needs review** and are published. Complete primary-source probabilities for every match remain unavailable; no values were invented.
 - Integration-owner navigation request (no edits outside this scope): please add the new source-linked `/audits/eb454aaa/flagged.html` report to the shared root review/navigation surface when next updating your owned generator. The audit already links back to root and expanded board, and is directly reachable at its published URL.
+
+- 2026-10-13T23:00:47.659503+00:00 — Follow-up PR rebase onto merged PR #57 stopped on another append-only coordination conflict. Preserved a0586093’s entire delivery record and this session’s merge/deployment record, removed only conflict delimiters, then continued. No data or owner files conflicted or were replaced.
