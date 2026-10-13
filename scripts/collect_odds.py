@@ -122,7 +122,9 @@ def collect_pinnacle(lines, evidence):
                 "source_key": "pinnacle",
                 "source_name": "Pinnacle",
                 "source_kind": "licensed bookmaker",
-                "source_public_url": "https://www.pinnacle.com/en/esports/counter-strike/",
+                # Pinnacle's browser pages are region-restricted; the guest API on the
+                # pinnacle.com domain is the exact public source of the quote below.
+                "source_public_url": None,
                 "source_api_url": murl,
                 "source_event_id": str(mid),
                 "source_market_id": str(mk.get("id")),
