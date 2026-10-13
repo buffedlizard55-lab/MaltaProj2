@@ -68,3 +68,7 @@ Repo: `MaltaProj2` — Hotspawn Pick'em betting-line analysis & GitHub Pages das
 - `arena-1da4b0ef-maltaproj2` 2026-10-13 — T2 done (commit 551d36c): external odds for 28/257 matches from bookmaker lines (GG.BET / BC.GAME / N1 Bet via EGamersWorld event+match pages; GG.bet via tips.gg/win.gg; Polymarket cross-check). Sources per row in `data/odds.csv`. CS2 24/26 priced; 4 LoL named events priced; 229 matches have no published market anywhere checked → blank + unverified (see `data/irregularities.md` items 7–11).
 - `arena-1da4b0ef-maltaproj2` 2026-10-13 — T3 done (commit 551d36c): `data/probabilities.csv` (proportional de-vig of external decimal odds; Hotspawn pick-% never used) + `data/analysis.md` (coverage table, market-vs-public findings, EV framing).
 - `arena-1da4b0ef-maltaproj2` 2026-10-13 — T4 claimed: GitHub Pages site in `docs/` (index + category pages + Flagged for Review), integrating T1–T3 data.
+
+- `arena-1da4b0ef-maltaproj2` 2026-10-13 — T4 done (commit 2475e35): `docs/` GitHub Pages site (dashboard + CS2/LoL category tables + Flagged for Review), per-row source links, generator `tools/build_site.py` with built-in verification.
+- `arena-1da4b0ef-maltaproj2` 2026-10-13 — T5 done: `data/verification.md`. Automated audit: 257/257 rows have official links, 28/28 priced rows sourced + probs sum 100%, 229/229 unpriced blank+unverified (0 forbidden fills), HTML parse clean, 329 external links, all odds source URLs present on site pages.
+- `arena-1da4b0ef-maltaproj2` 2026-10-13 — T6 claimed: PR to main + merge + GitHub Pages (main/docs).
