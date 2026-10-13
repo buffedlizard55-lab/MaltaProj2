@@ -36,24 +36,27 @@ jobs:
       - name: 2. Capture raw payload samples (plain HTTP)
         run: python3 scripts/expanded/capture_samples.py --outdir data/expanded/samples
 
-      - name: 3. Install headless Chromium
+      - name: 3. Round-3 exploration: full-coverage endpoints + extra bookmakers
+        run: python3 scripts/expanded/probe_extra_sources.py || echo "extra probe non-zero (evidence kept)"
+
+      - name: 4. Install headless Chromium
         run: |
           pip install playwright==1.55.0
           python -m playwright install --with-deps chromium
 
-      - name: 4. Capture browser-only sources (GG.BET, Oddspedia) + rendered probe
+      - name: 5. Capture browser-only sources (GG.BET, Oddspedia) + rendered probe
         run: |
           python3 scripts/expanded/capture_browser_samples.py --outdir data/expanded/samples || \
             echo "browser capture returned non-zero (evidence kept)"
           python3 scripts/expanded/probe_rendered.py --out data/expanded/rendered_probe.json || \
             echo "rendered probe returned non-zero (evidence kept)"
 
-      - name: 5. Build line dataset from captured sources
+      - name: 6. Build line dataset from captured sources
         run: |
           python3 scripts/expanded/collect_lines.py --capture-out data/expanded/lines.json || \
             echo "line collector returned non-zero (evidence kept)"
 
-      - name: 6. Guard committed sample size
+      - name: 7. Guard committed sample size
         run: |
           du -sh data/expanded || true
           find data/expanded/samples -type f -size +3M -print -delete || true
@@ -65,7 +68,7 @@ jobs:
           path: data/expanded/
           retention-days: 14
 
-      - name: 7. Commit evidence + data to this branch
+      - name: 8. Commit evidence + data to this branch
         if: always()
         run: |
           git config user.name "malta-data-bot"

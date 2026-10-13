@@ -64,7 +64,7 @@ LEAGUE_GAME_HINTS = {
     "cs2": ("counter", "cs2", "csgo"),
     "lol": ("league of legends", "lol"),
 }
-MAX_BYTES = 8_000_000
+MAX_BYTES = 64 * 1024 * 1024
 MAX_QUOTE_MATCHUPS = 400
 
 
