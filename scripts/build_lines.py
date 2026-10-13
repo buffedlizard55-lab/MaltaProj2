@@ -103,6 +103,14 @@ def eligibility(fixture, quote, fixtures_time, now):
     return None
 
 
+def fixture_source_url(fixture):
+    # The inherited /matches/{id} path is synthesized, not an observed permalink.
+    # Use the actual official JSON endpoint recorded by fixture discovery instead.
+    api = (fixture.get("source") or {}).get("api")
+    known = "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
+    return api if api == known else "https://play.hotspawn.com/lobby"
+
+
 def build_document(fixtures_doc, odds_doc, now=None):
     now = now or datetime.now(timezone.utc)
     fixtures = [f for f in fixtures_doc["matches"] if f.get("sport") == "cs2"
@@ -183,7 +191,7 @@ def build_document(fixtures_doc, odds_doc, now=None):
                        "tier": fx.get("tier"), "start_time_utc": fx.get("scheduled_start_time"),
                        "team_a": fx.get("team_a"), "team_b": fx.get("team_b"),
                        "source_reported_status": fx.get("status"),
-                       "hotspawn_match_url": (fx.get("source") or {}).get("hotspawn_match_url") or "https://play.hotspawn.com/lobby",
+                       "hotspawn_match_url": fixture_source_url(fx),
                        "bookmaker_lines": found,
                        "derived": {"per_source": {q["source_key"]: {k: q[k] for k in
                                     ("derived_probability_a", "derived_probability_b", "overround")} for q in found},

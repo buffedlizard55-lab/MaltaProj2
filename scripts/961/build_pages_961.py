@@ -369,7 +369,7 @@ start time; they are not pickable and are excluded from the open count.</p>
 <li>The fixture list (teams, tournament, tier, lock time, Hotspawn link) is read from the lobby's own
 public fixtures API behind <a href="https://play.hotspawn.com/lobby" rel="noopener">play.hotspawn.com/lobby</a>.</li>
 <li>Prices are read from external, independent sources only: Pinnacle's public guest odds API, Bovada's
-public coupon, HLTV's published bookmaker odds and egamersworld's public odds widget.</li>
+public coupon and egamersworld's public odds widget. HLTV is <strong>not</strong> a price source (see item 6).</li>
 <li>Per source the margin is removed: q = 1/decimal, p_a = q_a / (q_a + q_b). The published probability is
 the arithmetic mean of the per-source no-vig shares; the pick is the higher share.</li>
 <li><strong>Hotspawn's crowd pick percentage is never an input.</strong> It is stored separately in
@@ -383,9 +383,12 @@ automation runner (HTTP 403), so it is a manual cross-check only, never a price 
 <div class="tablewrap"><table class="board"><tr><th>Source key</th><th>Rows using it</th></tr>{src_rows}</table></div>
 <h2>Re-verification</h2>
 <p class="sub">Every quote is stored with its URL and read time in <code>data/961/quotes.json</code>; the join
-and the arithmetic can be recomputed with <code>python3 scripts/961/build_961.py</code> and checked with
+and the arithmetic can be recomputed with <code>python3 scripts/961/build_961.py</code>, re-checked independently
+(arithmetic, picks, source links, blank-unverified rule, page links) with
+<code>python3 scripts/961/recheck_961.py</code>, and unit-tested with
 <code>python3 -m unittest tests.test_961</code>. The GitHub Actions run
-<code>.github/workflows/961-collect.yml</code> re-reads every source on a schedule and commits the evidence.</p>
+<code>.github/workflows/961-collect.yml</code> re-reads every source on a schedule, runs the re-check and commits
+the evidence, so the board refreshes without manual input.</p>
 <p class="note">Known limitations: a bookmaker price is a snapshot that can be pulled at any time; some sources
 omit the event start time (join then rests on team names and is flagged); most LoL amateur-circuit fixtures have
 no external market anywhere reachable and stay blank. Published limitations and source contradictions are
