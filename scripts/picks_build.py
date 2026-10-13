@@ -56,6 +56,13 @@ ALIASES = {
     "nip": "ninjas in pyjamas",
     "wrotberry": "wrotberry",
     "los ninos": "los ninos",
+    # EGamersWorld spellings verified against the lobby fixture they join to: the pairing is unique
+    # inside the event and the kick-off times agree after the documented CET offset (see
+    # data/picks_supplementary.json -> time_conversion).
+    "wbt": "wrotberry",
+    "ea copenhagen": "eac",
+    "rounds": "roundsgg",
+    "phantom esports": "phantom",
 }
 
 SOURCE_LABELS = {
@@ -146,20 +153,33 @@ def build_board(fixtures, quotes):
         if not na or not nb:
             continue
         q_time = parse_iso(q.get("start_time_utc"))
+        hint = str(q.get("fixture_id_hint") or "")
         candidates = []
-        for f in by_id.values():
-            fa, fb = norm(f.get("team_a")), norm(f.get("team_b"))
-            pair_matches = (na == fa and nb == fb) or (na == fb and nb == fa)
-            if not pair_matches:
+        if hint and hint in by_id:
+            target = by_id[hint]
+            t_names = {norm(target.get("team_a")), norm(target.get("team_b"))}
+            if {na, nb} == t_names:
+                candidates = [(target, na != norm(target.get("team_a")),
+                               "explicit_fixture_id_hint_verified_by_team_names")]
+            else:
+                rejections.append({"reason": "fixture_id_hint_name_mismatch", "source_key": q.get("source_key"),
+                                   "team_a": q.get("team_a_name"), "team_b": q.get("team_b_name"),
+                                   "source_url": q.get("source_public_url"), "fixture_ids": [hint]})
                 continue
-            reversed_side = (na == fb and nb == fa)
-            f_time = parse_iso(f.get("lock_time_utc")) or parse_iso(f.get("start_time_utc"))
-            delta = minutes_apart(q_time, f_time)
-            if delta is not None:
-                if delta <= TIME_TOLERANCE_MIN:
-                    candidates.append((f, reversed_side, f"start_time_delta_{delta:.0f}m"))
-            elif tournament_matches(q.get("source_league"), f.get("competition")):
-                candidates.append((f, reversed_side, "tournament_name_match_no_source_time"))
+        else:
+            for f in by_id.values():
+                fa, fb = norm(f.get("team_a")), norm(f.get("team_b"))
+                pair_matches = (na == fa and nb == fb) or (na == fb and nb == fa)
+                if not pair_matches:
+                    continue
+                reversed_side = (na == fb and nb == fa)
+                f_time = parse_iso(f.get("lock_time_utc")) or parse_iso(f.get("start_time_utc"))
+                delta = minutes_apart(q_time, f_time)
+                if delta is not None:
+                    if delta <= TIME_TOLERANCE_MIN:
+                        candidates.append((f, reversed_side, f"start_time_delta_{delta:.0f}m"))
+                elif tournament_matches(q.get("source_league"), f.get("competition")):
+                    candidates.append((f, reversed_side, "tournament_name_match_no_source_time"))
         if not candidates:
             rejections.append({"reason": "no_fixture_match", "source_key": q.get("source_key"),
                                "team_a": q.get("team_a_name"), "team_b": q.get("team_b_name"),
@@ -218,8 +238,10 @@ def build_board(fixtures, quotes):
         else:
             f["verified"] = False
             f["flags"].append("live_market_only_no_prematch_line" if live else "no_external_line")
-        if not f.get("open_for_picks"):
+        if f.get("lock_time_utc") and not f.get("open_for_picks"):
             f["flags"].append("past_lock_not_pickable")
+        if not f.get("lock_time_utc") and not f.get("start_time_utc"):
+            f["flags"].append("lock_time_unknown_in_source_api")
         if f.get("status") == "cancelled":
             f["flags"].append("source_status_cancelled")
         f["sources_used"] = sorted({q["source_key"] for q in pre})
@@ -498,6 +520,7 @@ def render(board, rejections, meta):
                           f'<td data-label="Why">{esc(r.get("reason"))}'
                           f'{" " + esc(r.get("fixture_ids")) if r.get("fixture_ids") else ""}</td></tr>'
                           for r in rejections) + "</tbody></table></div>")
+    fl += review_notes()
     write_page("flagged.html", page("Flagged for review", "flagged.html", "\n".join(fl), meta))
 
     # ---------------------------------------------------------------- methodology
@@ -557,6 +580,70 @@ def render(board, rejections, meta):
             "rejections": len(rejections)}
 
 
+def review_notes():
+    """Items this session found while building the board, each with the link a reviewer needs."""
+    blocks = ["<h2>Source access at capture time</h2>",
+              '<p class="muted">A source that refuses a datacentre request is an access limitation, '
+              'not evidence that no price exists. Each entry is the exact URL that was refused.</p>']
+    reach = load("evidence/picks/reachability.json", {})
+    rows = []
+    for key, value in reach.items():
+        if key.startswith("__") or not isinstance(value, dict) or "url" not in value:
+            continue
+        status = value.get("status")
+        if status in (200,):
+            continue
+        rows.append(f'<tr><td data-label="Source">{esc(key)}</td>'
+                    f'<td data-label="HTTP status">{esc(status)}</td>'
+                    f'<td data-label="URL"><a href="{esc(value["url"])}" rel="nofollow noopener">{esc(value["url"][:90])}</a></td>'
+                    f'<td data-label="Note">{esc(str(value.get("error", ""))[:120])}</td></tr>')
+    for key, value in reach.items():
+        if not key.startswith("transport_") or not isinstance(value, list):
+            continue
+        for attempt in value:
+            if attempt.get("status") == 200 and attempt.get("parsed_rows"):
+                continue
+            rows.append(f'<tr><td data-label="Source">{esc(key)} via {esc(attempt.get("transport"))}</td>'
+                        f'<td data-label="HTTP status">{esc(attempt.get("status"))}</td>'
+                        f'<td data-label="URL"><a href="{esc(attempt.get("url"))}" rel="nofollow noopener">'
+                        f'{esc(str(attempt.get("url"))[:90])}</a></td>'
+                        f'<td data-label="Note">bytes {esc(attempt.get("bytes"))}</td></tr>')
+    if rows:
+        blocks.append('<div class="scroll"><table><thead><tr><th>Source</th><th>HTTP status</th>'
+                      '<th>URL</th><th>Note</th></tr></thead><tbody>' + "".join(rows) + "</tbody></table></div>")
+
+    supp = load("data/picks_supplementary.json", {})
+    if supp:
+        blocks.append("<h2>Dated capture notes (EGamersWorld odds widget)</h2>")
+        conv = supp.get("time_conversion") or {}
+        if conv:
+            blocks.append('<div class="notice warn"><b>Time-zone assumption.</b> '
+                          + esc(conv.get("displayed", "")) + '. Rule: ' + esc(conv.get("rule", ""))
+                          + '. Verification: ' + esc(conv.get("verification", ""))
+                          + f' Status: {esc(conv.get("status", ""))}.</div>')
+        blocks.append(f'<p class="muted">Capture: {esc(supp.get("how_captured", ""))}</p>')
+        rejected = supp.get("rejected_from_capture") or []
+        if rejected:
+            blocks.append('<h3>Values seen but deliberately not published</h3>')
+            blocks.append('<div class="scroll"><table><thead><tr><th>What was seen</th>'
+                          '<th>Why it is not published</th></tr></thead><tbody>' + "".join(
+                              f'<tr><td data-label="Seen">{esc(r.get("detail"))}</td>'
+                              f'<td data-label="Why"><a href="{esc(r.get("capture_url"))}" rel="nofollow noopener">'
+                              f'source page</a> — repeated identical prices across different matches '
+                              'are a placeholder, not a market</td></tr>' for r in rejected)
+                          + "</tbody></table></div>")
+
+    blocks += ["<h2>Repository review</h2>",
+               "<p class=\"muted\">Mechanical checks over the other pick'em artefacts in this repository, "
+               'with the file and the offending value for each item.</p>',
+               '<ul>'
+               '<li><a href="../verify/ac475c09/REPORT.md">verify/ac475c09/REPORT.md</a> — the check table</li>'
+               '<li><a href="../verify/ac475c09/findings.json">verify/ac475c09/findings.json</a> — machine-readable findings</li>'
+               '<li><a href="../verify/ac475c09/verify_repo.py">verify/ac475c09/verify_repo.py</a> — re-run it yourself</li>'
+               '</ul>']
+    return blocks
+
+
 def write_page(name, html):
     with open(os.path.join(OUT, name), "w", encoding="utf-8") as fh:
         fh.write(html)
@@ -608,6 +695,10 @@ def main() -> int:
             "source_api_url": row.get("source_url"),
             "source_league": row.get("source_league"),
             "source_market_id": row.get("source_market_id"),
+            "fixture_id_hint": row.get("fixture_id"),
+            "capture_url": row.get("capture_url"),
+            "partner_bookmaker": row.get("partner_bookmaker"),
+            "source_display_time": row.get("egw_time_display"),
             "market_type": "match winner (moneyline, full match)",
             "market_is_live": bool(row.get("is_live")),
             "retrieved_at_utc": row.get("retrieved_at_utc"),
@@ -624,9 +715,17 @@ def main() -> int:
     # published on the Method page (never a silent truncation).
     now = datetime.now(tz=timezone.utc)
     recent_cut = (now - timedelta(hours=24)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    now_stamp = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    open_comps = {f.get("competition") for f in fixtures
+                  if (f.get("lock_time_utc") or "") > now_stamp}
+    # Fixtures the lobby lists as scheduled but for which the API returns no time at all: they are
+    # kept (and flagged) only when the same tournament has fixtures that are definitely open, so a
+    # dateless backlog cannot leak into the board.
     window = [f for f in fixtures
-              if (f.get("lock_time_utc") or "") > now.strftime("%Y-%m-%dT%H:%M:%SZ")
-              or (f.get("status") != "ended" and (f.get("start_time_utc") or "") >= recent_cut)]
+              if (f.get("lock_time_utc") or "") > now_stamp
+              or (f.get("status") != "ended" and (f.get("start_time_utc") or "") >= recent_cut)
+              or (f.get("status") == "scheduled" and not f.get("lock_time_utc")
+                  and not f.get("start_time_utc") and f.get("competition") in open_comps)]
     board, rejections, accepted = build_board(window, quotes)
     meta = {
         "generated_at_utc": fixtures_doc.get("summary", {}).get("generated_at_utc"),

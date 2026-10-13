@@ -65,7 +65,10 @@ class TestPicksBoard(unittest.TestCase):
             else:
                 self.assertIsNone(row["prob_a"], f"{row['fixture_id']} has no quote but a probability")
                 self.assertIsNone(row["pick"])
-                self.assertIn("no_external_line", row["flags"])
+                # Either there was no external price at all, or only a live one (which is never
+                # presented as a pre-match line) — both cases stay blank and flagged.
+                self.assertTrue({"no_external_line", "live_market_only_no_prematch_line"}
+                                & set(row["flags"]), row["flags"])
 
     def test_every_probability_is_reproducible_from_its_quotes(self):
         """Re-derive the consensus from the stored quotes; it must match the published number."""
@@ -102,8 +105,12 @@ class TestPicksBoard(unittest.TestCase):
 
     def test_locked_fixtures_are_marked_not_pickable(self):
         for row in self.board["rows"]:
-            if not row.get("open_for_picks"):
+            if row.get("open_for_picks"):
+                continue
+            if row.get("lock_time_utc"):
                 self.assertIn("past_lock_not_pickable", row["flags"])
+            else:
+                self.assertIn("lock_time_unknown_in_source_api", row["flags"])
 
 
 class TestPicksSite(unittest.TestCase):
