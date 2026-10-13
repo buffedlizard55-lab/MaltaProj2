@@ -95,10 +95,20 @@ class BoardTests(unittest.TestCase):
             self.assertFalse(r["hotspawn_pick_pct_used"], msg=r["fixture_id"])
             for key in r:
                 self.assertNotIn("crowd", key.lower(), msg=r["fixture_id"])
-        # the builder must be structurally unable to read the reference file
+    def test_builder_never_reads_the_crowd_pick_file(self):
+        """The reference file must not be reachable from the builder's executable code."""
         with open(os.path.join(ROOT, "scripts", "961", "build_961.py"), encoding="utf-8") as fh:
-            builder = fh.read()
-        self.assertNotIn("hotspawn_reference", builder)
+            source = fh.read()
+        referenced = set(re.findall(r"[\w./]+\.json", source))
+        allowed = {"lobby.json", "quotes.json", "board.json", "odds.json",
+                   "cs2_odds_egamersworld.json", "lol_odds_egamersworld.json"}
+        self.assertTrue(referenced <= allowed, msg=sorted(referenced - allowed))
+        self.assertNotIn("hotspawn_reference.json", referenced)
+        # and the only mention of the reference file must be a warning string, not a read
+        for line in source.splitlines():
+            if "hotspawn_reference" in line:
+                self.assertNotIn("load_json(", line)
+                self.assertNotIn("open(", line)
 
     def test_every_row_links_an_official_hotspawn_source(self):
         for r in self.rows:
@@ -124,8 +134,12 @@ class BoardTests(unittest.TestCase):
         with open(REFERENCE, encoding="utf-8") as fh:
             ref = json.load(fh)
         self.assertIn("never a probability input", ref["warning"])
+        allowed = {"fixture_id", "crowd_pick_pct_a", "crowd_pick_pct_b", "total_picks", "note"}
+        self.assertEqual(len(ref["rows"]), len(self.lobby["fixtures"]))
         for row in ref["rows"]:
-            self.assertNotIn("probability", json.dumps(row).lower())
+            self.assertTrue(set(row) <= allowed, msg=row.get("fixture_id"))
+            payload = {k: v for k, v in row.items() if k != "note"}
+            self.assertNotIn("probab", json.dumps(payload).lower())
 
 
 class PageTests(unittest.TestCase):
