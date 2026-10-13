@@ -246,3 +246,21 @@ directory; `/pickem/` = priced analysis. Neither uses Hotspawn pick percentages 
 - **Sources:** Valve VRS Oct 5 + Aug 3 via GitHub API (Legacy 2/1931, Falcons 6/1843, FURIA 7/1829, Aurora 9/1716, BETBOOM 11/1596, 9z 17/1543, NiP 18/1534, PARIVISION 36/1411); HLTV 45688 (Oct 9 VP→NiP, groups, matches 2399384–2399387), 45706 (Oct 12), event 8932, NiP team 4411; Hotspawn lobby/how-it-works via reader (86 CS2, 4 TWC); FreeTips Oct 11 secondary; Thunderpick reference in docs/data/quotes.json (9z +280/Aurora −455, quoted_at null, reference only — in root IRREG-009, not adopted as current).
 - **Corrections:** IRREG-007 VP→NiP, 008 groups (supersedes 001), 009 odds blank/reference flagged, 010 Hotspawn access/timezone blank, 011 names/NiP roles blank, 012 calibration claim removed + ratings synced.
 - **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/12 → main, merged without waiting per charter; flagged items published on root Flagged page.
+
+## Session `a0fcf175` — merge + deploy record (2026-10-13 18:35 UTC)
+
+* PR: https://github.com/buffedlizard55-lab/MaltaProj2/pull/11 - merged to `main` (merge commit
+  `ce4bc54`), no file of any other session overwritten; the root dashboard and `docs/**` are intact.
+* Deploy verification (published site, root Pages source `main` / unchanged):
+  * https://buffedlizard55-lab.github.io/MaltaProj2/pickem/index.html - 200, renders the dashboard
+    (26 fixtures, 25 lines, 22 bc.game, 20 Polymarket, 14 flags).
+  * https://buffedlizard55-lab.github.io/MaltaProj2/pickem/matches.html - 200, all 26 rows with
+    their per-row source links (Hotspawn entry, HLTV match page, HLTV betting analytics, market page).
+  * Bare `pickem/` returned a cached 404 immediately after the deploy (GitHub Pages caches 404s for
+    a few minutes); `pickem/index.html` served 200 as soon as the cache key changed, and the root
+    dashboard nav now links the board.
+  * `python3 scripts/build_pickem_lines.py` -> `rows=26 with_line=25 without_line=1`;
+    `python3 scripts/check_links.py` -> 7 pages, 138 external links, 0 broken local links.
+* Post-merge state: this session's files are `data/pickem_pool.json`, `data/keys.json`,
+  `scripts/build_pickem_lines.py`, `scripts/check_links.py`, `pickem/**`, plus the README section and
+  the one nav anchor in the root `index.html`. Nothing else was changed by this session.
