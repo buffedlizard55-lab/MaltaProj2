@@ -1,12 +1,12 @@
 {
- "generated_at_utc": "2026-10-13T22:48:06Z",
+ "generated_at_utc": "2026-10-13T23:06:54Z",
  "checks": [
   {
    "id": "R1",
    "claim": "data/hotspawn_matches.json matches the live lobby fixture list",
    "source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
    "snapshot_file": "data/hotspawn_matches.json",
-   "snapshot_generated_at_utc": "2026-10-13T22:29:32Z",
+   "snapshot_generated_at_utc": "2026-10-13T22:41:38Z",
    "live_count_all_sports": 11570,
    "live_window_rows": 275,
    "snapshot_count": 405,
@@ -107,14 +107,18 @@
    "claim": "data/cs2_odds_egamersworld.json rows refer to real lobby fixtures",
    "source": "https://egamersworld.com/counterstrike/matches",
    "rows": 32,
-   "status": "discrepancy",
-   "mismatches": [
+   "status": "verified",
+   "mismatches": [],
+   "stale_rows_no_longer_in_the_lobby_window": [
     {
      "fixture_id": "1081104",
-     "issue": "fixture id not in the lobby snapshot"
+     "teams": [
+      "Gr\u00eamio",
+      "LOS NINOS"
+     ]
     }
    ],
-   "detail": "32 priced rows joined to the lobby snapshot by fixture id and team name; 1 mismatch(es)"
+   "detail": "32 priced rows joined to the lobby snapshot by fixture id and team name; 0 mismatch(es), 1 row(s) whose fixture has since left the lobby window"
   },
   {
    "id": "R5",
@@ -207,12 +211,5 @@
    "detail": "14 fixture(s) priced by 2+ sources compared source by source; 0 with a spread wider than 12 points"
   }
  ],
- "irregularities": [
-  {
-   "id": "R4",
-   "severity": "medium",
-   "finding": "1 egamersworld row(s) do not join to the lobby snapshot",
-   "evidence": "https://egamersworld.com/counterstrike/matches"
-  }
- ]
+ "irregularities": []
 }
