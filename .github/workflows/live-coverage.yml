@@ -83,6 +83,7 @@ jobs:
           PY
 
       - name: Commit refreshed evidence, board and pages
+        if: always()
         run: |
           git config user.name "live-coverage-bot"
           git config user.email "live-coverage-bot@users.noreply.github.com"

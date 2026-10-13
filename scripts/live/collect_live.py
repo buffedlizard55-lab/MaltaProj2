@@ -54,7 +54,7 @@ KEEP_FUTURE_DAYS = 45
 
 
 # ------------------------------------------------------------------------------- HotSpawn
-def collect_fixtures(log: dict) -> list[dict]:
+def collect_fixtures(log: dict, listed_ids: set[str] | None = None) -> list[dict]:
     url = f"{LOBBY_API}/fixtures"
     data, meta = fetch_json(url, {"Accept": "application/json", "Referer": LOBBY_PAGE}, timeout=90)
     log["hotspawn_fixtures"] = meta
@@ -62,6 +62,7 @@ def collect_fixtures(log: dict) -> list[dict]:
     log["hotspawn_fixtures"]["rows"] = len(rows)
     if not rows:
         return []
+    listed_ids = listed_ids or set()
     now = now_utc()
     lo, hi = now - timedelta(days=KEEP_PAST_DAYS), now + timedelta(days=KEEP_FUTURE_DAYS)
     out, kept, skipped = [], 0, 0
@@ -78,12 +79,13 @@ def collect_fixtures(log: dict) -> list[dict]:
         start = parse_ms(f.get("scheduled_start_time"))
         lock = parse_ms(f.get("lock_time"))
         in_window = start is not None and lo <= start <= hi
-        if not in_window:
+        # A fixture the lobby page is listing is always kept, whatever its start time says, so the
+        # board can never miss a match the user can actually pick.
+        must_keep = str(f.get("id")) in listed_ids
+        if not in_window and not must_keep:
             skipped += 1
-        else:
-            kept += 1
-        if not in_window:
             continue
+        kept += 1 if in_window else 0
         out.append({
             "fixture_id": str(f.get("id")),
             "game": GAMES.get(game) if game else None,
@@ -102,6 +104,7 @@ def collect_fixtures(log: dict) -> list[dict]:
             "team_a": f.get("participants0_name"),
             "team_b_id": str(f.get("participants1_id") or ""),
             "team_b": f.get("participants1_name"),
+            "listed_in_lobby_hint": bool(must_keep),
             "hotspawn_pick_pct_reference_only": {
                 "team_a": f.get("participants0_picked_percent"),
                 "team_b": f.get("participants1_picked_percent"),
@@ -118,6 +121,7 @@ def collect_fixtures(log: dict) -> list[dict]:
         "status_counts_all_rows": statuses,
         "game_counts_all_rows": games,
         "kept_in_snapshot": kept,
+        "force_kept_from_lobby_listing": sum(1 for r in out if r.get("listed_in_lobby_hint")),
         "omitted_outside_window": skipped,
         "window": {"from": to_iso(lo), "to": to_iso(hi),
                    "rule": f"start time within -{KEEP_PAST_DAYS}d..+{KEEP_FUTURE_DAYS}d of collect time"},
@@ -741,8 +745,9 @@ def _main() -> int:
                      "published separately, never averaged into the consensus.",
                  ]}
 
-    fixtures = collect_fixtures(log)
     counters = collect_lobby_page(log, sample_dir)
+    listed_ids = {str(i) for i in (counters.get("listing_ids") or [])}
+    fixtures = collect_fixtures(log, listed_ids)
     vrs = vrs_latest(log)
 
     quotes: list[dict] = []
