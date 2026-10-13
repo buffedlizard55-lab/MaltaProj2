@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flagged for Review (6) — TWC 2026 Malta Finals</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <meta name="description" content="Audit log of flagged irregularities, naming discrepancies, and unverified data points for manual review.">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-badge">CS2 Analytics</span>
+        <span>Malta Finals 2026</span>
+      </a>
+      <nav class="main-nav">
+        <a href="index.html">Dashboard</a>
+        <a href="lines.html">Originated Lines (28)</a>
+        <a href="teams.html">Teams & Rosters</a>
+        <a href="methodology.html">Origination Methodology</a>
+        <a href="flagged.html" class="active">Flagged for Review (6)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <div class="page-title-section">
+      <h1 class="page-title">
+        <span>Flagged for Review</span>
+        <span class="tag-badge warning">6 Audit Findings</span>
+      </h1>
+      <p class="page-subtitle">
+        Every irregularity, source discrepancy, and unresolved data point documented line by line with source links for transparent human verification.
+      </p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        <span>Verification & Audit Standard</span>
+      </div>
+      <p>
+        In accordance with the project charter: <em>"If a value can't be confirmed from an official source, leave it blank and flag it as unverified. Never infer or fill in values. Flagged irregularities and unverified items do not block the merge. Publish them on a clearly labeled 'Flagged for Review' page on the site, with the source links."</em>
+      </p>
+    </div>
+
+    <!-- Irregularities Table -->
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Category</th>
+            <th>Irregularity / Conflict Summary</th>
+            <th>Details & Impact</th>
+            <th>Resolution in Project</th>
+            <th>Official Sources for Review</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="irregularities-table-body">
+          <!-- Dynamically populated via JS -->
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>TWC 2026 Malta Finals Dashboard</strong> — Flagged irregularities log.
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Dashboard</a>
+        <a href="lines.html">Originated Lines</a>
+        <a href="teams.html">Teams & Rosters</a>
+        <a href="methodology.html">Methodology</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    async function loadIrregularities() {
+      try {
+        const res = await fetch('data/flagged_irregularities.json');
+        const list = await res.json();
+        const tbody = document.getElementById("irregularities-table-body");
+        tbody.innerHTML = "";
+
+        list.forEach(item => {
+          const tr = document.createElement("tr");
+          const sourcesHtml = item.verification_sources.map(s => `
+            <a href="${s.url}" target="_blank" rel="noopener">${s.label}</a>
+          `).join("<br>");
+
+          tr.innerHTML = `
+            <td class="mono" style="font-weight: 700; color: var(--accent-amber);">${item.id}</td>
+            <td><span class="tag-badge warning">${item.category}</span></td>
+            <td><strong>${item.title}</strong></td>
+            <td style="font-size: 0.85rem; color: var(--text-secondary); max-width: 320px;">${item.details}</td>
+            <td style="font-size: 0.85rem; max-width: 280px;">${item.resolution}</td>
+            <td style="font-size: 0.85rem;">${sourcesHtml}</td>
+            <td><span class="tag-badge success">${item.status}</span></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error("Failed to load irregularities:", err);
+      }
+    }
+
+    loadIrregularities();
+  </script>
+</body>
+</html>
