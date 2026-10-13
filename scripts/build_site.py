@@ -482,9 +482,9 @@ that a site is down, only that this pipeline could not read it.</p>
 <p>An independent audit of the server-rendered lobby page (published by session <code>1d4de836</code> in
 <code>audits/1d4de836/</code>) counted <strong>86</strong> CS2 fixture rows, all with source status
 <code>scheduled</code>. This pipeline reads the lobby's JSON API directly and currently sees
-<strong>{summary.get("fixtures_total", 0)}</strong> non-cancelled, non-ended CS2 fixtures: the extra row(s)
-are fixtures that are live/started or were added after that snapshot. Both numbers are reported rather than
-reconciled silently.</p>
+<strong>{summary.get("fixtures_total", 0)}</strong> non-cancelled, non-ended CS2 fixtures. These are different retrieval times and methods; the precise cause
+of the count discrepancy has not been independently confirmed. Both observations remain visible rather than
+being reconciled by an inferred explanation.</p>
 
 <h2>7. Team-name aliases used for matching</h2>
 <p>Historical spellings below are not independently verified identity evidence. Current matching requires

@@ -34,3 +34,22 @@ Audit date: 2026-10-13 UTC. This is a code/evidence audit, **not** a declaration
 ## Validation / publication
 
 Regression tests cover fail-closed matching, price arithmetic and source eligibility. Final commands and hosted-runner results, PR and deploy records are appended to `COORDINATION.md`; no deployment is claimed until checked.
+
+### Final observed primary batch
+
+Hosted collector runs [38470098126](https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38470098126) and
+[38470784435](https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38470784435) succeeded.
+The latter batch rendered at 2026-10-13T21:29:32Z: 390 non-cancelled/non-ended fixture rows (92 CS2 + 298 LoL),
+9 CS2 fixtures with 13 eligible source quotes, 83 CS2 blanks; LoL probabilities all blank.
+21 primary quote payloads retained. Tests reconstruct every **eligible** quote's price, ordering, kickoff
+and no-vig calculation from the captured official response, rather than trusting a stored verification label.
+
+All 50 combined unit tests passed locally after preserving PR #29's separate board.
+Desktop/390px/320px Chromium tests passed for seven current root pages; every root-generator table row has a
+source/review link; the complete staged site's local links resolve. Hosted integration push run
+[38470784473](https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38470784473) and PR run
+[38470791052](https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38470791052) succeeded.
+
+The parallel `current/` board from PR #29 is preserved, but its unnamed third-party fallback and double-reversal
+logic need owner review. It is explicitly linked as a snapshot, not used as current official-source evidence.
+The competing older-policy source batch is archived in this audit's `pr29_snapshot/` directory for review.

@@ -14,7 +14,7 @@ crowd "picked %" is shown for reference and is never used as a probability input
 | Page | Content |
 |---|---|
 | `index.html` | Coverage summary, method in short, matches with verified lines, timestamps |
-| `cs2.html` | All 87 CS2 pick'em fixtures: odds per source, derived no-vig probability, verification status, review flags |
+| `cs2.html` | Automatically observed CS2 fixture inventory: odds per source, derived no-vig probability, verification status, review flags |
 | `lol.html` | LoL fixtures from the same lobby (external line collection not yet run for LoL) |
 | `tournaments.html` + `tournament-*.html` | Coverage per tournament |
 | `flagged.html` | Unverified rows, stale fixtures, unused bookmaker lines, rejected matches, source reachability, discrepancies, aliases |
