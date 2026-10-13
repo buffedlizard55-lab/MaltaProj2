@@ -1,0 +1,30 @@
+name: Independent market audit UI
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'audits/eb454aaa/**'
+      - 'tests/test_eb454aaa.py'
+      - '.github/workflows/audit-eb454aaa.yml'
+  push:
+    branches: [main, arena/eb454aaa-maltaproj2]
+    paths:
+      - 'audits/eb454aaa/**'
+      - 'tests/test_eb454aaa.py'
+      - '.github/workflows/audit-eb454aaa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r scripts/requirements.txt playwright==1.55.0
+      - name: Check independent audit safeguards
+        run: python -m unittest discover -s tests -p test_eb454aaa.py -v
+      - name: Verify mobile and desktop pages in hosted Chrome
+        run: python audits/eb454aaa/browser_smoke.py
