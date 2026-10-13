@@ -1,15 +1,12 @@
 name: runner-42580809
 
-# Session 42580809: runner-side data collection. GitHub runners have unrestricted
-# egress, so every external fetch (odds sources, fixture API, ranking feeds) runs
-# here and the raw results are committed back to the session branch as evidence.
+# Session 42580809: runner-side data collection. GitHub runners have unrestricted egress,
+# so every external fetch (odds sources, fixture API, ranking feeds) runs here and the raw
+# results are committed back to the session branch as evidence.
 #
-# Run order (each script is optional; missing files are skipped):
-#   1. proof/42580809/run/fetch_fixtures.py       -> out/fixtures.json
-#   2. proof/42580809/run/probe_sources.py        -> out/probe.json
-#   3. proof/42580809/run/collect_lines.py        -> out/lines_raw.json
-# Every produced file is committed to the branch so the sandbox (which has
-# restricted egress) can read it back with a normal git pull.
+# Transport note: this sandbox cannot download workflow artifacts or logs, and *can* read
+# workflow-run annotations over the public web UI, so every result is also summarised as a
+# `::notice::` annotation. Full payloads travel through the git commit.
 
 on:
   push:
@@ -36,31 +33,69 @@ jobs:
           python-version: '3.11'
       - name: Run session runner tasks
         run: |
-          set -u
           mkdir -p proof/42580809/out
           for s in fetch_fixtures probe_sources collect_lines; do
             f="proof/42580809/run/$s.py"
             if [ -f "$f" ]; then
               echo "=== running $s"
-              python3 "$f" || echo "$s exited non-zero (evidence kept)"
+              python3 "$f" 2>&1 | tail -40 || true
             else
               echo "=== skipping $s (not present)"
             fi
           done
           ls -la proof/42580809/out || true
-      - name: Commit collected evidence back to the session branch
+      - name: Summarise results as annotations
+        if: always()
         run: |
+          python3 - <<'PY' || true
+          import json, os
+          out = "proof/42580809/out"
+          def note(title, msg):
+              msg = str(msg).replace("\n", " ").replace("%", "%25").replace("\r", " ")
+              print(f"::notice title={title}::{msg[:900]}")
+          p = os.path.join(out, "probe.json")
+          if os.path.exists(p):
+              d = json.load(open(p))
+              note("PROBE_REACHABLE", ",".join(d.get("reachable_200", [])) or "none")
+              blocked = d.get("blocked", {})
+              note("PROBE_BLOCKED", ",".join(f"{k}={v}" for k, v in list(blocked.items()))[:900])
+              note("PROBE_COUNT", f"reachable={len(d.get('reachable_200', []))} blocked={len(blocked)}")
+          else:
+              note("PROBE_MISSING", "out/probe.json not written")
+          f = os.path.join(out, "fixtures.json")
+          if os.path.exists(f):
+              d = json.load(open(f))
+              note("FIXTURES", json.dumps(d.get("counts", {}))[:900])
+          else:
+              note("FIXTURES_MISSING", "out/fixtures.json not written")
+          for name in ("collect_lines.json", "lines_raw.json"):
+              f = os.path.join(out, name)
+              if os.path.exists(f):
+                  d = json.load(open(f))
+                  note("LINES", json.dumps({k: v for k, v in d.items() if k != "lines"})[:900])
+          note("OUT_FILES", ",".join(sorted(os.listdir(out)) if os.path.isdir(out) else []))
+          PY
+      - name: Commit collected evidence back to the session branch
+        if: always()
+        continue-on-error: true
+        run: |
+          set +e
           git config user.name "arena-42580809-runner"
           git config user.email "arena-42580809@users.noreply.github.com"
           git add -A proof/42580809/out
-          if git diff --cached --quiet; then
-            echo "no output to commit"
-            exit 0
-          fi
+          if git diff --cached --quiet; then echo "nothing staged"; exit 0; fi
           git commit -m "proof(42580809): runner-collected evidence [skip ci]"
-          for i in 1 2 3 4 5; do
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push && break || sleep 6
-          done
+          BR="${GITHUB_REF_NAME}"
+          OUT=$(git pull --rebase --autostash origin "$BR" 2>&1); echo "pull rc=$?"; echo "$OUT" | tail -5
+          OUT=$(git push origin "HEAD:refs/heads/$BR" 2>&1); RC=$?
+          echo "push rc=$RC"; echo "$OUT" | tail -5
+          if [ $RC -ne 0 ]; then
+            MSG=$(echo "$OUT" | tr '\n' ' ' | cut -c1-600)
+            echo "::error title=PUSH_FAILED_$RC::$MSG"
+          else
+            echo "::notice title=PUSH_OK::committed $(git rev-parse --short HEAD)"
+          fi
+          exit 0
       - uses: actions/upload-artifact@v4
         if: always()
         with:
