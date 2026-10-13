@@ -128,9 +128,16 @@ def collect_fixtures(log: dict) -> list[dict]:
         else:
             return []
     out = []
+    skipped = {"ended": 0, "other_sport": 0}
     for f in data:
         sport = str(f.get("sport_alias") or "").lower()
         if sport not in GAMES:
+            skipped["other_sport"] += 1
+            continue
+        # Same window rule the repository's own lobby collector uses: a fixture that the API
+        # marks "ended" can no longer be offered by the lobby, so it is not part of the board.
+        if str(f.get("status") or "").lower() in ("ended", "cancelled", "canceled"):
+            skipped["ended"] += 1
             continue
         start = f.get("scheduled_start_time")
         out.append({
@@ -156,6 +163,7 @@ def collect_fixtures(log: dict) -> list[dict]:
             "source": {"api": url, "page": LOBBY_PAGE,
                        "hotspawn_match_url": f"https://www.hotspawn.com/matches/{f.get('id')}"},
         })
+    log["fixtures"]["skipped"] = skipped
     log["fixtures"]["by_game"] = {g: sum(1 for x in out if x["game"] == g) for g in set(GAMES.values())}
     return out
 
@@ -501,7 +509,7 @@ def build_lines(fixtures: list[dict], quotes: list[dict], log: dict) -> dict:
             join = join_quote(f, q)
             if not join:
                 continue
-            if q["game"] != f["game"]:
+            if str(q["game"]).lower() != str(f["game"]).lower():
                 continue
             pa, pb, over = implied(q["decimal_odds_a"], q["decimal_odds_b"])
             if join["side_order"] == "reversed":

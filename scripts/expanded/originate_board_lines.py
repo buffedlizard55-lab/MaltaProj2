@@ -169,6 +169,12 @@ def main() -> int:
                 "reason": "external market line available — the market value is the one shown",
             }
             continue
+        if not row.get("is_future"):
+            row["originated_estimate"] = {
+                "available": False,
+                "reason": "fixture start time has passed — no estimate published",
+            }
+            continue
         a = b = None
         a_name = b_name = None
         for name, rec in ratings.items():

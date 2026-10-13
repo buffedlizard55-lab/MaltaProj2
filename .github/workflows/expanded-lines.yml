@@ -10,6 +10,9 @@ on:
     paths:
       - '.github/workflows/expanded-lines.yml'
       - 'scripts/expanded/**'
+  schedule:
+    # Keep the external lines and the board fresh without anyone touching the repo.
+    - cron: '41 */2 * * *'
 
 permissions:
   contents: write
@@ -64,6 +67,11 @@ jobs:
         run: |
           python3 scripts/expanded/originate_board_lines.py 2>&1 | tee -a data/expanded/collect.log || \
             echo "origination non-zero (evidence kept)"
+
+      - name: 6bb. Verify the repository's own claims against primary sources
+        run: |
+          python3 scripts/expanded/verify_repo_claims.py 2>&1 | tee -a data/expanded/collect.log || \
+            echo "repo review non-zero (evidence kept)"
 
       - name: 6c. Render the mobile board and check its internal links
         run: |

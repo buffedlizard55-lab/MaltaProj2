@@ -61,6 +61,13 @@ ALIASES = {
     "roundsgg": "roundsgg",
     "vocagaming": "voca",
     "phantomgaming": "phantom",
+    "whitebitteam": "wrotberry",
+    "whitebit": "wrotberry",
+    "bbteam": "betboom",
+    "auroragaming": "aurora",
+    "rounds": "roundsgg",
+    "roundsggteam": "roundsgg",
+    "kaisergaming": "kaiser",
 }
 ALIASES = {k: v for k, v in ALIASES.items() if v}
 
@@ -68,6 +75,7 @@ ALIASES = {k: v for k, v in ALIASES.items() if v}
 # when the remainder still matches another team exactly, which is why this is applied
 # produce-a-candidate rather than as a blanket equal-name rule.
 NOISE_SUFFIXES = ("esports", "esport", "gaming", "team", "club", "gg")
+NOISE_PREFIXES = ("team", "the")
 
 
 def norm(name: str | None) -> str:
@@ -89,13 +97,18 @@ def candidates(name: str | None) -> list[str]:
     out = [n]
     if n in ALIASES:
         out.append(ALIASES[n])
+    stems = [n]
     for suffix in NOISE_SUFFIXES:
         if n.endswith(suffix) and len(n) > len(suffix) + 1:
-            stem = n[: -len(suffix)]
-            if stem not in out:
-                out.append(stem)
-            if stem in ALIASES:
-                out.append(ALIASES[stem])
+            stems.append(n[: -len(suffix)])
+    for prefix in NOISE_PREFIXES:
+        if n.startswith(prefix) and len(n) > len(prefix) + 1:
+            stems.append(n[len(prefix):])
+    for stem in stems:
+        if stem not in out:
+            out.append(stem)
+        if stem in ALIASES and ALIASES[stem] not in out:
+            out.append(ALIASES[stem])
     return out
 
 

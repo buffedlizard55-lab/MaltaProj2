@@ -25,7 +25,8 @@ DATA = ROOT / "data" / "expanded"
 OUT = ROOT / "market"
 
 NAV = [("index.html", "Dashboard"), ("picks.html", "Picks"), ("cs2.html", "CS2"),
-       ("lol.html", "LoL"), ("flagged.html", "Flagged for review"), ("sources.html", "Sources & method")]
+       ("lol.html", "LoL"), ("flagged.html", "Flagged for review"), ("sources.html", "Sources & method"),
+       ("repo-review.html", "Repo review")]
 
 
 def esc(value) -> str:
@@ -161,7 +162,7 @@ def fixture_row(row: dict, show_game: bool = True) -> str:
     sources = ", ".join(cons["sources"]) if cons else "—"
     return f"""<tr class="fixture{' unpriced' if not quotes else ''}" data-search="{esc((row['team_a'] + ' ' + row['team_b'] + ' ' + (row['competition'] or '')).lower())}" data-priced="{1 if quotes else 0}" data-game="{esc(row['game'])}">
   <td data-label="Kick-off (UTC)">{local_time_cell(row.get('start_time_utc'))}</td>
-  <td data-label="Game / tier">{esc(row['game'])}{' · ' + esc(row['tier']).upper() if row.get('tier') else ''}</td>
+  <td data-label="Game / tier">{esc(str(row['game']).upper())}{' · ' + esc(row['tier']).upper() if row.get('tier') else ''}</td>
   <td data-label="Tournament">{esc(row.get('competition'))}</td>
   <td data-label="Match"><strong>{esc(row['team_a'])}</strong> vs <strong>{esc(row['team_b'])}</strong>
       <div class="mini"><a href="{esc(row['hotspawn_match_url'])}" rel="noopener">HotSpawn fixture</a>
@@ -210,8 +211,8 @@ def summary_cards(doc: dict) -> str:
 def game_section_counts(doc: dict) -> str:
     rows = []
     for game, stats in sorted(doc["summary"]["by_game"].items()):
-        rows.append(f'<tr><td>{esc(game)}</td><td>{stats["total"]}</td><td>{stats["future"]}</td>'
-                    f'<td>{stats["priced"]}</td></tr>')
+        rows.append(f'<tr><td>{esc(str(game).upper())}</td><td>{stats["total"]}</td>'
+                    f'<td>{stats["future"]}</td><td>{stats["priced"]}</td></tr>')
     return ("<table class=\"plain\"><thead><tr><th>Game</th><th>Fixtures in snapshot</th>"
             "<th>Still to be played</th><th>With external line</th></tr></thead><tbody>"
             + "".join(rows) + "</tbody></table>")
@@ -274,6 +275,52 @@ def source_table(log: dict, doc: dict) -> str:
     return "".join(out)
 
 
+def render_repo_review(doc: dict, generated: str) -> None:
+    """Publish the line-by-line repo verification (claims checked against primary sources)."""
+    path = DATA / "repo_review.json"
+    if not path.exists():
+        body = '<p class="note">No repo review has been recorded yet — it is produced by the same ' \
+               'scheduled run that collects the lines.</p>'
+    else:
+        review = json.loads(path.read_text(encoding="utf-8"))
+        rows = []
+        for c in review.get("checks") or []:
+            status = str(c.get("status") or "unverified")
+            cls = "ok" if status == "verified" else ("chip" if status == "discrepancy" else "chip")
+            src = c.get("source") or ", ".join(c.get("sources") or []) or "—"
+            if src and not src.startswith("http"):
+                src_link = esc(src)
+            elif src:
+                src_link = f'<a href="{esc(src)}" rel="noopener">{esc(src[:70])}</a>'
+            else:
+                src_link = "—"
+            detail = c.get("detail") or (f'{c.get("teams_checked", "")} teams checked; '
+                                          f'{len(c.get("mismatches") or [])} mismatch(es)')
+            rows.append(f'<tr><td>{esc(c.get("id"))}</td><td>{esc(c.get("claim"))}</td>'
+                        f'<td><span class="{cls}">{esc(status)}</span></td>'
+                        f'<td>{src_link}</td><td class="mini">{esc(detail)}</td></tr>')
+        irr = review.get("irregularities") or []
+        irr_html = "".join(
+            f'<li><strong>{esc(i.get("id"))}</strong> ({esc(i.get("severity"))}): {esc(i.get("finding"))} '
+            f'<span class="mini">evidence: {esc(i.get("evidence"))}</span></li>' for i in irr) \
+            or "<li>None found by these checks.</li>"
+        body = f"""
+<p class="sub">Run at {esc(review.get('generated_at_utc'))}. Each row is a claim published by this
+repository, the primary source it was checked against, and the outcome. A claim that cannot be
+confirmed from its source is marked <span class="chip">unverified</span> — never assumed true.</p>
+<div class="tablewrap"><table class="plain"><thead><tr><th>#</th><th>Claim checked</th><th>Outcome</th>
+<th>Source</th><th>Detail</th></tr></thead><tbody>{''.join(rows)}</tbody></table></div>
+<h2>Irregularities flagged for review</h2>
+<ul>{irr_html}</ul>
+<p class="mini">Raw evidence: <a href="data/repo_review.json">data/repo_review.json</a>. Fixture
+evidence for this board: <a href="data/fixtures.json">data/fixtures.json</a>.</p>
+"""
+    (OUT / "repo-review.html").write_text(render_page(
+        "Repo review — claims checked line by line", "repo-review.html", body, generated,
+        "Every publishable claim in this repository, checked against its primary source with links."),
+        encoding="utf-8")
+
+
 def main() -> int:
     lines_path = DATA / "lines.json"
     if not lines_path.exists():
@@ -292,7 +339,7 @@ def main() -> int:
     (OUT / "assets").mkdir(parents=True, exist_ok=True)
     (OUT / "data").mkdir(parents=True, exist_ok=True)
     shutil.copy2(lines_path, OUT / "data" / "lines.json")
-    for extra in ("quotes.json", "collection_log.json", "fixtures.json"):
+    for extra in ("quotes.json", "collection_log.json", "fixtures.json", "repo_review.json"):
         if (DATA / extra).exists():
             shutil.copy2(DATA / extra, OUT / "data" / extra)
 
@@ -302,7 +349,7 @@ def main() -> int:
         f'<li><a href="cs2.html">{esc(r["team_a"])} vs {esc(r["team_b"])}</a> — '
         f'{flags_cell(r)} {pick_badge(r)} <span class="mini">{esc(r.get("competition"))}, '
         f'{fmt_dt(r.get("start_time_utc"))}</span></li>'
-        if r["game"] == "cs2" else
+        if str(r["game"]).lower() == "cs2" else
         f'<li><a href="lol.html">{esc(r["team_a"])} vs {esc(r["team_b"])}</a> — '
         f'{flags_cell(r)} {pick_badge(r)} <span class="mini">{esc(r.get("competition"))}, '
         f'{fmt_dt(r.get("start_time_utc"))}</span></li>'
@@ -338,8 +385,8 @@ numbers</strong> (our own originated estimate, labelled, only where no market pr
 never blended.</p>
 <h2>Start here</h2>
 <p><a class="btn" href="picks.html">All picks ({len(priced)} priced matches)</a>
-<a class="btn ghost" href="cs2.html">CS2 table ({sum(1 for r in future if r['game'] == 'cs2')})</a>
-<a class="btn ghost" href="lol.html">LoL table ({sum(1 for r in future if r['game'] == 'lol')})</a>
+<a class="btn ghost" href="cs2.html">CS2 table ({sum(1 for r in future if str(r['game']).lower() == 'cs2')})</a>
+<a class="btn ghost" href="lol.html">LoL table ({sum(1 for r in future if str(r['game']).lower() == 'lol')})</a>
 <a class="btn ghost" href="flagged.html">Flagged for review ({len(unpriced)} unpriced + {len(stale)} stale)</a></p>
 <h2>Strongest market favourites right now</h2>
 <ul class="list">{top_cards}</ul>
@@ -372,7 +419,7 @@ page.</p>
     # ----------------------------------------------------------------- category
     for game, fname, title in (("cs2", "cs2.html", "CS2 matches"),
                                ("lol", "lol.html", "LoL matches")):
-        game_rows = [r for r in future if r["game"] == game]
+        game_rows = [r for r in future if str(r["game"]).lower() == game]
         priced_n = sum(1 for r in game_rows if r["quotes"])
         body = f"""
 <p class="sub">{len(game_rows)} fixtures still to be played · {priced_n} with a verified external line ·
@@ -456,6 +503,7 @@ lists the teams in the other order, prices are swapped and the row says so. Reje
         "Which sources were read, what failed, and exactly how the numbers are produced."),
         encoding="utf-8")
 
+    render_repo_review(doc, generated)
     write_assets(generated)
     print(f"wrote market/ pages from {lines_path} ({len(rows)} fixtures, {len(priced)} priced)")
     return 0
