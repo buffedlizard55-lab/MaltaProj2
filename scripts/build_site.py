@@ -80,6 +80,8 @@ NAV = [
     # integration link added by session 8e7a652d (single-anchor edit, documented in
     # COORDINATION.md): independent verification & multi-book market cross-check page
     ("verify/8e7a652d/index.html", "Verification &amp; Cross-Check"),
+    # integration link added by session 0f6c89c6 (T-CURRENT): current open-for-picks board
+    ("current/index.html", "Parallel board (snapshot)"),
 ]
 
 
@@ -108,6 +110,9 @@ def page(title, subtitle, body, generated_at, active=None, banner=None):
 <main class="wrap">
   <h1>{esc(title)}</h1>
   <p class="sub">{subtitle}</p>
+  <div class="banner"><strong>Current picks vs. research snapshots.</strong> The CS2 and Probabilities tables use
+  eligible primary-bookmaker quotes only; unverified values stay blank. Other linked sections preserve dated research,
+  not live prices. Estimates are not guarantees. 18+; gamble responsibly.</div>
   {banner_html}
   {body}
 </main>
@@ -127,7 +132,7 @@ def table(headers, rows, table_id=None, classes=""):
     th = "".join(f"<th>{h}</th>" for h in headers)
     trs = []
     for row in rows:
-        tds = "".join(f"<td>{c}</td>" for c in row)
+        tds = "".join(f'<td data-label="{esc(headers[i]) if i < len(headers) else ""}">{c}</td>' for i, c in enumerate(row))
         trs.append(f"<tr>{tds}</tr>")
     tid = f' id="{table_id}"' if table_id else ""
     return (f'<div class="tablewrap"><table{tid} class="{classes}">'
@@ -163,18 +168,22 @@ def fixture_row(fx, with_prices=True):
                 f'<div class="srcblock"><div class="srcname">{source_cell(line)}</div>'
                 f'<div class="odds">{line["decimal_odds_a"]} / {line["decimal_odds_b"]}</div>'
                 f'<div class="mini">derived p: {pct(line["derived_probability_a"])} / '
-                f'{pct(line["derived_probability_b"])} · overround {line["overround"]}</div></div>')
+                f'{pct(line["derived_probability_b"])} · overround {line["overround"]}</div>'
+                f'<div class="mini">Read {esc(fmt_time(line.get("retrieved_at_utc")))}</div></div>')
         odds_html = "".join(odds_cells) if odds_cells else f'{BLANK} <span class="chip">no external line found</span>'
         if consensus:
             prob_html = (f'<strong>{pct(consensus["derived_probability_a_mean"])}</strong> / '
                          f'{pct(consensus["derived_probability_b_mean"])}'
                          f'<div class="mini">{consensus["n_sources"]} source(s): '
                          f'{esc(", ".join(consensus["sources"]))}</div>')
+            a, b = consensus["derived_probability_a_mean"], consensus["derived_probability_b_mean"]
+            pick = fx.get("team_a") if a > b else fx.get("team_b") if b > a else None
+            prob_html += f'<div class="ok">Pick: {esc(pick)}</div>' if pick else '<div class="chip">No edge (tie)</div>' 
         else:
             prob_html = BLANK
     else:
         odds_html = prob_html = BLANK
-    status = ('<span class="ok">verified external line</span>' if lines
+    status = ('<span class="ok">eligible source-linked line</span>' if lines
               else '<span class="warn">unverified — no external line found</span>')
     return [
         esc(fmt_time(fx.get("start_time_utc")) or "not published"),
@@ -201,7 +210,7 @@ def coverage_cards(summary, odds_doc, lines_doc):
     sources = sorted({l["source_key"] for l in (odds_doc.get("lines") or [])})
     cards = [
         ("Pick'em CS2 fixtures tracked", summary.get("fixtures_total", 0)),
-        ("Fixtures with a verified external line", summary.get("fixtures_with_external_line", 0)),
+        ("Fixtures with a eligible source-linked line", summary.get("fixtures_with_external_line", 0)),
         ("Fixtures still unverified (blank)", summary.get("fixtures_without_external_line", 0)),
         ("External sources quoted", len(sources)),
     ]
@@ -211,9 +220,10 @@ def coverage_cards(summary, odds_doc, lines_doc):
     tier_rows = []
     for tier, data in sorted((summary.get("by_tier") or {}).items(), key=lambda kv: {"s": 0, "b": 1, "c": 2}.get(kv[0], 3)):
         tier_rows.append([tier_label(tier), data.get("total", 0), data.get("with_line", 0),
-                          data.get("total", 0) - data.get("with_line", 0)])
+                          data.get("total", 0) - data.get("with_line", 0),
+                          '<a href="https://play.hotspawn.com/lobby">official fixture inventory</a>'])
     return (html_cards,
-            table(["Tier", "Fixtures", "With external line", "Unverified"], tier_rows),
+            table(["Tier", "Fixtures", "With external line", "Unverified", "Source (counts derived)"], tier_rows),
             [{"key": k, "lines": v} for k, v in sorted((summary.get("by_source") or {}).items())])
 
 
@@ -222,14 +232,14 @@ def source_health_table(odds_evidence, probe_evidence):
     for row in (odds_evidence.get("candidate_sources") or []):
         status = row.get("status")
         ok = "reachable" if status == 200 else f"HTTP {status}" if status else "connection failed"
-        rows.append([esc(row.get("key")), esc(row.get("url")),
+        rows.append([esc(row.get("key")), f'<a href="{esc(row.get("url"))}" rel="noopener">{esc(row.get("url"))}</a>', 
                      f'<span class="{"ok" if status == 200 else "warn"}">{esc(ok)}</span>',
                      esc((row.get("preview") or "")[:120])])
     for row in (probe_evidence.get("probes") or []):
         status = row.get("http_status")
         ok = "reachable" if status == 200 else f"HTTP {status}" if status else "connection failed"
         cf = " · Cloudflare challenge" if row.get("cloudflare_mitigated") else ""
-        rows.append([esc(row.get("key")), esc(row.get("url")),
+        rows.append([esc(row.get("key")), f'<a href="{esc(row.get("url"))}" rel="noopener">{esc(row.get("url"))}</a>', 
                      f'<span class="{"ok" if status == 200 else "warn"}">{esc(ok + cf)}</span>',
                      esc((row.get("body_preview") or "")[:120])])
     seen, out = set(), []
@@ -242,9 +252,14 @@ def source_health_table(odds_evidence, probe_evidence):
 
 
 def main() -> int:
-    lines_doc = load("data/lines.json")
     matches_doc = load("data/hotspawn_matches.json")
     odds_doc = load("data/odds.json")
+    # Every render (including Pages staging) recalculates eligibility at render time.
+    # Cached JSON must not silently keep a closed/aged market current.
+    from build_lines import build_document
+    lines_doc, current_matching = build_document(matches_doc, odds_doc)
+    write("data/lines.json", json.dumps(lines_doc, indent=1, ensure_ascii=False, allow_nan=False))
+    write("evidence/matching_evidence.json", json.dumps(current_matching, indent=1, ensure_ascii=False, allow_nan=False))
     odds_evidence = load("evidence/odds_collection.json")
     probe_evidence = load("evidence/odds_probe.json")
     html_probe = load("evidence/html_source_probe.json")
@@ -260,14 +275,14 @@ def main() -> int:
 
     # ------------------------------------------------------------------ index.html
     verified = [f for f in fixtures if f.get("bookmaker_lines")]
-    upcoming = [f for f in fixtures if (f.get("start_time_utc") or "") >= "2026-10-13"]
+    upcoming = [f for f in fixtures if (f.get("start_time_utc") or "") >= lines_doc["generated_at_utc"]]
     top_table, _ = fixtures_table(verified[:12])
     idx_body = f"""
 <div class="cards">{cards}</div>
 <h2>What this is</h2>
 <p>The HotSpawn pick'em lobby lists CS2 (and LoL) matches you can pick. This dashboard collects those
 fixtures from the lobby's own public API, then looks up <strong>external betting lines</strong> for every
-fixture at licensed bookmakers and public prediction markets. For each match where an external price was
+fixture at external bookmakers (Pinnacle and Bovada). Prediction-market snapshots are excluded from current picks. For each match where an external price was
 found you get the quoted odds, the bookmaker margin and a derived no-vig probability, each with the exact
 source link and the time it was read. Matches where no external line could be confirmed are left
 <strong>blank and flagged unverified</strong> — they are never estimated.</p>
@@ -277,10 +292,10 @@ source link and the time it was read. Matches where no external line could be co
 the bookmaker margin: <code>p = q / (q<sub>a</sub> + q<sub>b</sub>)</code>. Where two sources quote the same
 match, the dashboard shows their mean and the min–max range. These probabilities are <em>derived from
 market prices</em>, not forecasts, and the rule is published on every row.</p>
-<p class="note">HotSpawn's own "picked %" is a crowd pick percentage. It is shown for reference only and is
+<p class="note">HotSpawn's own "picked %" is a crowd pick percentage. It is excluded from this table and is
 <strong>never</strong> used as a probability input, per the project requirements.</p>
 
-<h2>Closest matches with verified external lines</h2>
+<h2>Closest matches with eligible source-linked lines</h2>
 {top_table}
 <p><a class="btn" href="cs2.html">Open the full CS2 table ({len(fixtures)} fixtures)</a>
 <a class="btn ghost" href="flagged.html">Flagged for review ({summary.get("fixtures_without_external_line", 0)} unverified rows)</a></p>
@@ -311,17 +326,17 @@ Nothing published by another session was discarded during integration.</p>
     cs2_body = f"""
 <div class="cards">
   <div class="card"><div class="card-num">{n_cs2}</div><div class="card-label">CS2 pick'em fixtures</div></div>
-  <div class="card"><div class="card-num">{summary.get("fixtures_with_external_line", 0)}</div><div class="card-label">with verified line</div></div>
+  <div class="card"><div class="card-num">{summary.get("fixtures_with_external_line", 0)}</div><div class="card-label">with eligible line</div></div>
   <div class="card"><div class="card-num">{summary.get("fixtures_without_external_line", 0)}</div><div class="card-label">blank / unverified</div></div>
 </div>
 <p class="note">Sort or filter the table below. "External decimal odds" shows the raw quoted price pair from
 each source; "derived no-vig" is <code>(1/odds<sub>i</sub>) / Σ(1/odds<sub>j</sub>)</code>. Every source cell
-links to the page/API the quote was read from. Blank cells mean the source was checked and had no line.</p>
+links to the page/API the quote was read from. Blank cells mean no eligible official quote was confirmed; a source may be unavailable or uncollected.</p>
 <input id="filter" class="filter" type="search" placeholder="Filter by team, tournament, tier or flag…">
 {cs2_table}
 {market_data_notes(lines_doc, odds_doc)}
 """
-    write("cs2.html", page("CS2 pick'em fixtures", "Every CS2 fixture currently offered by the HotSpawn Pick'ems lobby.",
+    write("cs2.html", page("CS2 pick'em fixtures", "Observed CS2 fixture inventory; past or locked rows are flagged, not treated as playable.",
                            cs2_body, generated_at, active="cs2.html"))
 
     # -------------------------------------------------------------------- lol.html
@@ -365,11 +380,12 @@ unverified rather than estimated. {len(lol_fixtures)} LoL fixtures are listed fo
         has = len(with_lines.get(name, []))
         t_rows.append([f'<a href="tournament-{slug}.html">{esc(name)}</a>', len(group), has,
                        len(group) - has,
-                       " · ".join(sorted({tier_label(f.get("tier")) for f in group}))])
+                       " · ".join(sorted({tier_label(f.get("tier")) for f in group})),
+                       '<a href="https://play.hotspawn.com/lobby">official fixture inventory</a>'])
     tour_body = f"""
 <p>Fixtures are grouped by the tournament name reported by the lobby API. Each tournament page lists its
 fixtures with the same verification columns as the main table.</p>
-{table(["Tournament", "Fixtures", "With external line", "Unverified", "Tiers"], t_rows)}
+{table(["Tournament", "Fixtures", "With external line", "Unverified", "Tiers", "Source (counts derived)"], t_rows)}
 """
     write("tournaments.html", page("Tournaments", "Pick'em coverage per tournament.", tour_body,
                                    generated_at, active="tournaments.html"))
@@ -382,7 +398,7 @@ fixtures with the same verification columns as the main table.</p>
 <p><a class="mini" href="tournaments.html">← all tournaments</a></p>
 <div class="cards">
   <div class="card"><div class="card-num">{len(group)}</div><div class="card-label">fixtures</div></div>
-  <div class="card"><div class="card-num">{has}</div><div class="card-label">with verified external line</div></div>
+  <div class="card"><div class="card-num">{has}</div><div class="card-label">with eligible source-linked line</div></div>
   <div class="card"><div class="card-num">{len(group) - has}</div><div class="card-label">unverified (blank)</div></div>
 </div>
 {t_table}
@@ -403,21 +419,41 @@ fixtures with the same verification columns as the main table.</p>
     stale = [f for f in fixtures if "fixture_start_time_in_the_past_or_stale_source_status" in (f.get("review_flags") or [])]
     stale_rows = [[esc(fmt_time(f.get("start_time_utc"))), esc(f.get("competition")), f'{esc(f.get("team_a"))} vs {esc(f.get("team_b"))}',
                    esc(f.get("source_reported_status")),
-                   '<span class="chip">scheduled in the past but the source still reports a pickable status</span>']
+                   '<span class="chip">past kickoff; raw source status is not proof the fixture is pickable</span>',
+                   f'<a href="{esc(f.get("hotspawn_match_url"))}" rel="noopener">official fixture</a>']
                   for f in stale[:80]]
     rejects_rows = [[esc(r.get("fixture_id")), esc(r.get("source")), esc(r.get("reason")),
-                     esc(r.get("fixture") or r.get("event") or "")]
+                     esc(r.get("fixture") or r.get("event") or ""),
+                     f'<a href="{esc(r.get("source_url") or "https://play.hotspawn.com/lobby")}" rel="noopener">source</a>']
                     for r in (matching.get("rejected_candidates") or [])]
     unmatched_rows = [[esc(r.get("source")), esc(r.get("event")), esc(fmt_time(r.get("start_time_utc")) or "not published"),
-                       esc(r.get("league")), esc(r.get("reason"))]
+                       esc(r.get("league")), esc(r.get("reason")),
+                       f'<a href="{esc(r.get("source_url") or "https://play.hotspawn.com/lobby")}" rel="noopener">source</a>']
                       for r in (matching.get("unmatched_bookmaker_lines") or [])]
-    alias_rows = [[esc(k), esc(v)] for k, v in ALIAS_NOTE.items()]
+    alias_rows = [[esc(k), BLANK + ' <span class="warn">not independently verified</span>',
+                   '<a href="https://play.hotspawn.com/lobby">official inventory reference</a>'] for k, v in ALIAS_NOTE.items()]
 
     flagged_body = f"""
 <div class="banner warn"><strong>These items are published for review, not as verified facts.</strong>
 Nothing on this page blocks the analysis; it exists so every gap, irregularity and failed access attempt is
 visible instead of being silently filled in.</div>
 
+<h2>0. Current pipeline safety and archived-source limitations</h2>
+<p>Current picks require fresh primary-bookmaker quotes, exact kickoff identity, explicit game/market state,
+confirmed outcome ordering, an unlocked upcoming fixture and unique joins. A rejected quote is not a confirmed line.
+The <a href="current/index.html">parallel current/ board</a> has an unnamed third-party fallback and a
+separate source/identity policy; it is a dated research snapshot, not this pipeline's current confirmed picks.
+Its reversal handling needs owner review (derived probabilities in lines.json are already fixture-oriented).
+The prior third-party combined probabilities, hypothetical VRS lines, pickem board and independent reports are
+preserved research snapshots, not current picks. They have not all been re-verified in this session.
+Sources for manual review: <a href="https://play.hotspawn.com/lobby">official lobby</a>,
+<a href="https://www.hltv.org/betting/analytics">HLTV analytics</a>,
+<a href="https://www.pinnacle.com/">Pinnacle</a>, <a href="https://www.bovada.lv/">Bovada</a>,
+<a href="audits/d4ec32a9/REPORT.md">pipeline audit and limitations</a>.</p>
+<p>Coverage is incomplete wherever no eligible official quote exists. No claim is made that every match is priced,
+that a retrieval is real-time, or that a derived probability is a verified fact. Sandbox egress does not allow
+these bookmaker hosts; automatic retrieval runs in GitHub Actions. Per-attempt payloads and failures:
+<a href="evidence/odds_collection.json">collection evidence</a>.</p>
 <h2>1. Fixtures with no external line found ({len(unverified)})</h2>
 <p>These rows are deliberately blank. Bookmakers and public markets did not quote them at collection time;
 no value was inferred from HotSpawn or from any other source.</p>
@@ -426,16 +462,16 @@ no value was inferred from HotSpawn or from any other source.</p>
 <h2>2. Stale fixtures ({len(stale)})</h2>
 <p>The lobby API still reports these as pickable while their scheduled start is in the past. The raw
 source status is preserved; we do not correct it.</p>
-{table(["Scheduled (UTC)", "Tournament", "Match", "Source-reported status", "Note"], stale_rows)}
+{table(["Scheduled (UTC)", "Tournament", "Match", "Source-reported status", "Note", "Source"], stale_rows)}
 
 <h2>3. Bookmaker lines that were deliberately not used ({len(unmatched_rows)})</h2>
 <p>Quotes for CS2 matches that are <em>not</em> in the current pick'em fixture list (for example the
 European Pro League or a CCT South America match outside the lobby list). They are recorded here so the
 matching step can be audited.</p>
-{table(["Source", "Event", "Start (UTC)", "League", "Reason"], unmatched_rows)}
+{table(["Source", "Event", "Start (UTC)", "League", "Reason", "Evidence"], unmatched_rows)}
 
 <h2>4. Rejected candidate matches ({len(rejects_rows)})</h2>
-{table(["Fixture", "Source", "Rejection reason", "Detail"], rejects_rows)}
+{table(["Fixture", "Source", "Rejection reason", "Detail", "Evidence"], rejects_rows)}
 
 <h2>5. Source reachability (probed from CI)</h2>
 <p>Sources that could not be read are listed with their HTTP result. A connection failure is not evidence
@@ -446,15 +482,15 @@ that a site is down, only that this pipeline could not read it.</p>
 <p>An independent audit of the server-rendered lobby page (published by session <code>1d4de836</code> in
 <code>audits/1d4de836/</code>) counted <strong>86</strong> CS2 fixture rows, all with source status
 <code>scheduled</code>. This pipeline reads the lobby's JSON API directly and currently sees
-<strong>{summary.get("fixtures_total", 0)}</strong> non-cancelled, non-ended CS2 fixtures: the extra row(s)
-are fixtures that are live/started or were added after that snapshot. Both numbers are reported rather than
-reconciled silently.</p>
+<strong>{summary.get("fixtures_total", 0)}</strong> non-cancelled, non-ended CS2 fixtures. These are different retrieval times and methods; the precise cause
+of the count discrepancy has not been independently confirmed. Both observations remain visible rather than
+being reconciled by an inferred explanation.</p>
 
 <h2>7. Team-name aliases used for matching</h2>
-<p>Matching requires both participants plus an agreeing start time (or a corresponding tournament name).
-Aliases are only applied to the spellings below and every applied alias is logged in
-<code>evidence/matching_evidence.json</code>.</p>
-{table(["Bookmaker spelling", "Pick'em spelling"], alias_rows)}
+<p>Historical spellings below are not independently verified identity evidence. Current matching requires
+both normalized participants and an exact UTC kickoff; no tournament-name fallback is used.
+Rejection reasons are published in <code>evidence/matching_evidence.json</code>.</p>
+{table(["Historical spelling rule", "Verification", "Source for review"], alias_rows)}
 
 <h2>8. Price-format derivations</h2>
 <p>Pinnacle's public API publishes match-winner prices in American format; the decimal column for Pinnacle
@@ -508,7 +544,25 @@ www.hotspawn.com (search returns seasons 1–4 only): identity unresolved, flagg
                                flagged_body, generated_at, active="flagged.html"))
 
     # --------------------------------------------------------- probabilities (session 188aaa4f)
-    probs_doc = load("data/probabilities.json") or {}
+    # Complete inventory, but only the fresh primary-bookmaker pipeline can supply a pick.
+    current_by_id = {f["fixture_id"]: f for f in fixtures}
+    current_rows = []
+    for m in matches_doc.get("matches") or []:
+        if str(m.get("status", "")).lower() in {"cancelled", "ended"}:
+            continue
+        fx = current_by_id.get(m["fixture_id"], {})
+        c = fx.get("derived", {}).get("consensus")
+        current_rows.append({"fixture_id": m["fixture_id"], "game": m.get("sport"),
+            "scheduled_start_time_utc": m.get("scheduled_start_time"), "tier": m.get("tier"),
+            "competition": m.get("competition_name"), "team_a": m.get("team_a"), "team_b": m.get("team_b"),
+            "probability_a": c["derived_probability_a_mean"] if c else None,
+            "probability_b": c["derived_probability_b_mean"] if c else None,
+            "sources": [{"source": q["source_name"], "url": q.get("source_public_url") or q.get("source_api_url"),
+                        "retrieved_at_utc": q.get("retrieved_at_utc")} for q in fx.get("bookmaker_lines", [])],
+            "official_source_url": (m.get("source") or {}).get("hotspawn_match_url") or "https://play.hotspawn.com/lobby",
+            "flags": fx.get("review_flags") or (["external_odds_not_collected_for_this_game"] if not fx else [])})
+    probs_doc = {"generated_at_utc": lines_doc["generated_at_utc"], "rows": current_rows}
+    write("data/current_probabilities.json", json.dumps(probs_doc, indent=1, ensure_ascii=False))
     prows = []
     p_with = p_blank = 0
     for r in probs_doc.get("rows") or []:
@@ -516,10 +570,13 @@ www.hotspawn.com (search returns seasons 1–4 only): identity unresolved, flagg
         for s in r.get("sources") or []:
             label = s.get("source") or "source"
             url = s.get("url")
-            src_bits.append(f'<a href="{esc(url)}" rel="noopener">{esc(label)}</a>' if url else esc(label))
+            src_bits.append((f'<a href="{esc(url)}" rel="noopener">{esc(label)}</a>' if url else esc(label)) +
+                            f'<div class="mini">Read {esc(fmt_time(s.get("retrieved_at_utc")))}</div>')
         if r.get("probability_a") is not None:
             p_with += 1
             prob_cell = f'<strong>{pct(r["probability_a"])}</strong> / {pct(r["probability_b"])}'
+            pick = r["team_a"] if r["probability_a"] > r["probability_b"] else r["team_b"] if r["probability_b"] > r["probability_a"] else None
+            prob_cell += f'<div class="ok">Pick: {esc(pick)}</div>' if pick else '<div class="chip">No edge (tie)</div>'
         else:
             p_blank += 1
             prob_cell = '<span class="warn">blank — no external line</span>'
@@ -535,21 +592,26 @@ www.hotspawn.com (search returns seasons 1–4 only): identity unresolved, flagg
         ])
     prob_body = f"""
 <div class="banner"><strong>External lines only.</strong> Probabilities are a proportional no-vig
-normalisation of external quotes (Pinnacle, Bovada, egamersworld, Polymarket-based pool lines), averaged
-across the available sources. Hotspawn crowd pick percentages are never used. Rows without an external line
+normalisation of eligible primary-bookmaker quotes (Pinnacle and Bovada), averaged across independent
+sources. Both teams, explicit CS2 game, exact UTC kickoff, an open prematch market, confirmed outcome ordering,
+a unique join, an unpassed pick lock and a quote/fixture snapshot no older than four hours are required. Hotspawn crowd pick percentages are never used. Rows without an external line
 stay blank and are flagged — nothing is inferred.</div>
 <div class="cards">
   <div class="card"><div class="card-num">{len(prows)}</div><div class="card-label">fixtures tracked (CS2 + LoL)</div></div>
   <div class="card"><div class="card-num">{p_with}</div><div class="card-label">with external-line probability</div></div>
   <div class="card"><div class="card-num">{p_blank}</div><div class="card-label">blank (no external line)</div></div>
 </div>
-{table(["Scheduled (UTC)", "Game", "Tier", "Tournament", "Match", "p(A) / p(B)", "External sources", "Official fixture", "Flags"], prows)}
-<p>Raw data: <a href="data/probabilities.json">data/probabilities.json</a> ·
-<a href="data/cs2_odds_egamersworld.json">CS2 egamersworld odds</a> ·
-<a href="data/lol_odds_egamersworld.json">LoL egamersworld odds</a> ·
-<a href="data/cs2_matches.json">CS2 inventory (93)</a> ·
-<a href="data/lol_matches.json">LoL inventory (314)</a> ·
-<a href="data/cs2_unrendered_flags.json">past-lock flags (59)</a></p>
+<input id="filter" class="filter" type="search" placeholder="Filter by team, tournament, game or flag…">
+{table(["Scheduled (UTC)", "Game", "Tier", "Tournament", "Match", "p(A) / p(B) & pick", "External sources", "Official fixture", "Flags"], prows, classes="sortable")}
+<p>Current data: <a href="data/current_probabilities.json">current probabilities</a> ·
+<a href="data/hotspawn_matches.json">automatic fixture inventory</a> · <a href="data/odds.json">raw primary quotes</a> ·
+<a href="evidence/odds_collection.json">quote payloads and source failures</a>.</p>
+<p class="note">Preserved prior-session snapshots are not current verified inputs:
+<a href="data/probabilities.json">third-party combined snapshot</a>,
+<a href="data/cs2_odds_egamersworld.json">CS2 third-party odds</a>,
+<a href="data/lol_odds_egamersworld.json">LoL third-party odds</a>.
+Unpriced games stay blank. Archived model/pickem/audit sections retain their own dated evidence and do not supply these picks.</p>
+{market_data_notes(lines_doc, odds_doc)}
 """
     write("probabilities.html", page("Probabilities",
                                      "Normalized external-line probabilities for every pick'em fixture; blanks are flagged, never filled.",
@@ -594,9 +656,10 @@ dashboard shows their arithmetic mean and the min–max range, and names the sou
 
 <h2>5. Matching rule</h2>
 <p>Both participants must match after normalisation (order-insensitive; reversed pairs keep reversed prices),
-and either the start times agree within 90 minutes or — when a source publishes no start time — the
-tournament/league name must correspond to the fixture's tournament. One bookmaker line is used for at most one
-fixture. Every decision, alias and rejection is recorded in <code>evidence/matching_evidence.json</code>.</p>
+and explicit UTC start times must agree exactly. Missing times are not guessed from league names.
+Quotes and fixture snapshots must be no older than four hours, prematch/open, with confirmed outcome ordering,
+and the fixture must be upcoming and unlocked. Ambiguous fixture joins or multiple quotes from one source
+are rejected rather than assigned by input order. Every decision, alias and rejection is recorded in <code>evidence/matching_evidence.json</code>.</p>
 
 <h2>6. Cross-session material</h2>
 <p>This integration keeps every session's artefacts: <a href="data/originated_matches.json">VRS-originated
@@ -608,8 +671,9 @@ reference lines</a>, <a href="data/fixtures_verified.json">verified fixtures</a>
 
 <h2>7. Refresh</h2>
 <p>A scheduled GitHub Actions job re-runs the collectors, re-derives the lines and rebuilds these pages.
-The collection attempt time and the successful data time are kept separate, and a failed source keeps its
-last verified quotes rather than inventing new ones.</p>
+The job runs hourly and publishes its data and rendered root pages together. Collection failures are
+recorded; missing or ineligible quotes leave the probability blank. Eligibility is recalculated on every
+site render, including Pages staging, so old inputs cannot become current merely by rebuilding HTML.</p>
 {market_data_notes(lines_doc, odds_doc)}
 """
     write("methodology.html", page("Methodology &amp; sources", "How the fixture list, the quoted odds and the derived probabilities are produced.",
@@ -678,11 +742,12 @@ STYLE = """
 --acc:#4da3ff;--ok:#3fb950;--warn:#d29922;--bad:#f85149}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-.wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+.wrap{overflow-wrap:anywhere;max-width:1180px;margin:0 auto;padding:0 18px}
 .topbar{background:linear-gradient(180deg,#111827,#0d1117);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
 .topbar .wrap{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:12px 18px}
 .brand{font-weight:600;display:flex;align-items:center;gap:8px}
 .dot{width:10px;height:10px;border-radius:50%;background:var(--acc);box-shadow:0 0 12px var(--acc)}
+nav{display:flex;flex-wrap:wrap;gap:4px;max-width:100%}
 nav a{color:var(--mut);text-decoration:none;margin-left:14px;padding:6px 8px;border-radius:8px;font-size:14px}
 nav a:hover{color:var(--txt);background:var(--panel)}
 nav a.active{color:var(--txt);background:var(--panel2)}
@@ -716,6 +781,15 @@ tr:hover td{background:#182030}
 .btn{display:inline-block;background:var(--acc);color:#04101f;font-weight:700;text-decoration:none;padding:9px 14px;border-radius:10px;margin:6px 8px 6px 0}
 .btn.ghost{background:transparent;color:var(--acc);border:1px solid var(--acc)}
 code{background:#111827;border:1px solid var(--line);border-radius:6px;padding:1px 5px}
+@media(max-width:640px){
+.wrap{min-width:0} .topbar{position:static} nav a{margin-left:0}
+.sortable,.sortable tbody,.sortable tr{display:block;width:100%}
+.sortable thead{display:none}
+.sortable tbody tr{border-bottom:3px solid var(--line);padding:8px 0}
+.sortable td{display:grid;grid-template-columns:36% minmax(0,1fr);gap:10px;overflow-wrap:anywhere;border-bottom:0}
+.sortable td:before{content:attr(data-label);color:var(--mut);font-size:12px;font-weight:600}
+.sortable td>*{grid-column:2}
+}
 footer{color:var(--mut);font-size:13px;border-top:1px solid var(--line);margin-top:40px;padding:18px}
 """
 
