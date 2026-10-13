@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flagged for Review — Hotspawn pick&#x27;em analysis</title>
+<link rel="stylesheet" href="analysis-style.css">
+</head>
+<body>
+<header>
+<h1>Hotspawn Pick'em — Match Inventory &amp; Market Win Probabilities</h1>
+<p>Reverse-engineered lobby of <a style="color:#9db8ee" href="https://play.hotspawn.com/lobby">play.hotspawn.com</a> ·
+probabilities derived exclusively from external bookmaker lines · generated 2026-10-13</p>
+</header>
+<nav><a href="analysis.html" class="">Dashboard</a><a href="cs2.html" class="">CS2 Matches</a><a href="lol.html" class="">LoL Matches</a><a href="flagged.html" class="on">Flagged for Review</a></nav>
+<main>
+
+<h2>Flagged for Review</h2>
+<p>Items below are flagged, published with source links, and do not block merge. Unverified
+values were left blank — never inferred or filled.</p>
+<div class="note"><b>229 matches carry no external bookmaker line</b> (4 individual matches +
+225 minor-league LoL). Their probability cells are blank and badge-marked
+<span class="badge b-unv">unverified</span> on the category pages. No market exists on any
+checked source (EGamersWorld/GG.BET/BC.GAME/N1 Bet, GG.bet, Polymarket, HLTV, odds aggregators).</div>
+<h3>Irregularities log (<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/irregularities.md">data/irregularities.md</a>)</h3>
+<pre style="white-space:pre-wrap;background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:12.5px"># Data irregularities &amp; capture notes (T1)
+
+Captured: 2026-10-13 (session `arena-1da4b0ef-maltaproj2`)
+
+## Sources for the match inventory (official)
+- https://play.hotspawn.com/lobby — pick&#x27;em lobby (combined)
+- https://play.hotspawn.com/cs2-pickems — CS2 pick&#x27;em lobby (all 26 pickable cards harvested)
+- https://play.hotspawn.com/lol-pickems — LoL pick&#x27;em lobby (all 231 pickable cards harvested, 16 content chunks)
+- https://www.hotspawn.com/matches — Hotspawn official match schedule (used to cross-check pairings and times)
+- https://www.hotspawn.com/wp-json/wp/v2/fixtures — Hotspawn WordPress REST API (fixture records; used to validate match IDs/permalinks)
+- https://www.hotspawn.com/wp-json/fixtures/v1/get?external_id=1081076 — official fixture endpoint (spot-checked: returns matching participants + status &quot;scheduled&quot;)
+
+Every row in `data/matches.csv` links its official Hotspawn match page (`hotspawn_url`), which is the source of
+record for pairing, tournament, and match ID.
+
+## Timezone note (verified)
+- The pick&#x27;em lobby renders times in US Eastern (UTC-4 while EDT in effect). Verified against
+  https://www.hotspawn.com/matches which labels times in UTC:
+  - Match 1079009 (No Need Orga vs Reveal Multigaming): lobby &quot;Oct 13, 14:30&quot; = matches page &quot;18:30 UTC&quot; → lobby = UTC-4. ✔
+  - Match 1081076 (ex-Keyd Stars vs Galorys): lobby &quot;Oct 13, 17:00&quot; = matches page &quot;21:00 UTC&quot;. ✔
+- `start_utc` in data/matches.csv = displayed time + 4h for dates through 2026-10-31, and + 5h from
+  2026-11-01 (US DST ends 2026-11-01 02:00 ET; times after that are EST = UTC-5).
+
+## Irregularities found (flagged for review)
+
+1. **Lobby banner vs rendered list.** The CS2 lobby banner says &quot;60 matches this week&quot; and filter widgets
+   count 85 tracked CS2 matches (294 for LoL), but only 26 CS2 + 231 LoL match cards are publicly rendered
+   as pickable (&quot;Closing Soon&quot; + &quot;Upcoming&quot;). The remainder are presumably locked/graded/TBD-stage and are
+   not publicly enumerable without signing in. Inventory = the matches actually listed as pickable at
+   capture time (2026-10-13). Source: https://play.hotspawn.com/cs2-pickems and https://play.hotspawn.com/lol-pickems
+
+2. **Community-pick percentages do not always sum to 100.** Example: Gothic vs Lavked (1079621) displayed
+   10% + 90% at one fetch and 13% + 88% (=101%) at another — Hotspawn&#x27;s live pick percentages drift with
+   new votes and are rounded. These are recorded as captured context only and are NEVER used to derive our
+   probabilities. Source: https://play.hotspawn.com/lobby
+
+3. **Chunk-boundary gap (resolved, documented).** One match card (1071218, Volda E-Sport vs CNG Royal,
+   Komplettligaen 2026 Autumn) was split across extraction chunks; its permalink was reconstructed from the
+   Hotspawn fixtures REST API and its pairing confirmed on https://www.hotspawn.com/matches
+   (see verification log). Its team order follows the fixture slug. Flagged for manual review of team order.
+   Match 1071217 (Phenti vs VES Japan) had its community-pick % cut at a chunk boundary → left blank (unverified).
+
+4. **Duplicate fixture IDs for same pairings.** Several LoL pairings appear twice with two Hotspawn fixture IDs
+   (e.g. Neko Elite Kittens vs Second Time Alive Revival = 1075724 (Oct 13) and 1080901 (Oct 13) — two
+   different BO1s of the same league round, or a re-scheduled fixture). Recorded as listed, both rows kept.
+
+5. **&quot;WAITING FOR INFORMATION&quot; tier.** Many LoL cards show tier &quot;WAITING FOR INFORMATION&quot; and stage
+   &quot;Waiting For Information&quot; (Hotspawn has not yet classified them). Recorded verbatim; NOT inferred.
+
+6. **List extends beyond the stated week.** Although the lobby is labelled &quot;This week&quot; (weekly reset in
+   ~5 days), the Upcoming list continues to 2026-11-13. All listed pickable matches are included in the
+   inventory regardless of date.
+
+## T2/T3 additions (2026-10-13, external odds sweep)
+
+7. **Demacia Cup format conflict (match 1076650, KT Rolster vs BNK FearX).** EGamersWorld labels the match &quot;Bo1&quot;; Polymarket and esportbet.com describe the same semifinal as &quot;Bo5&quot;. Time agrees across sources (2026-10-14 05:00 ET / 09:00 UTC). Format left blank; flagged for review. Sources: https://egamersworld.com/lol/match/FqxSssBfV/fearx-vs-kt-rolster-tW-gg6CEW, https://polymarket.com/esports/league-of-legends/demacia-cup-global-invitational/lol-fox1-kt-2026-10-14, https://esportbet.com/2026-demacia-cup-global-invitational-playoffs-betting-tips-monday-october-12/
+
+8. **Thunderpick WC day-1 slot-order disagreement.** esports.gg lists the day-1 order as 9z-Aurora, Legacy-PARIVISION, Falcons-NiP, FURIA-BetBoom; HLTV, EGamersWorld and the Hotspawn lobby all order it 9z-Aurora (08:30 UTC), Falcons-NiP (11:00 UTC), Legacy-PARIVISION (13:30 UTC), FURIA-BetBoom (16:00 UTC). Inventory uses the Hotspawn lobby times (majority of sources). Sources: https://esports.gg/news/counter-strike-2/cs2-thunderpick-world-championship-2026-results/, https://egamersworld.com/blog/thunderpick-world-championship-2026-schedule-teams-3y5NuMb4pp, https://www.hltv.org/matches/2399385/falcons-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026
+
+9. **No external market published for 4 pick&#x27;em matches (blank, unverified).** ex-RUSTEC vs mellren (1079622) and FORZE Reload vs LFO 10 (1079624) show only the EGW 1.8/1.8 placeholder (opponent &quot;LFO 10&quot; is absent from the EGW team database); Mental Rush vs SK Gaming Avarosa (1076025) and Vitality Rising Bees vs G2 Hel (1076026) likewise show 1.8/1.8 with no &quot;Bets by&quot; panel for LGC 2026 Rising. No prices on any checked source. Probabilities left blank.
+
+10. **225 minor-league LoL matches have no bookmaker market on any checked source** (PRM 2nd/3rd Div, Tunisian Super League, RIVALS LEAGUE, Arabian League 2nd Div, Komplettligaen, LigaGG CELOL A, Superstrike League, MängudeÖÖ, Benelux Ascend). EGamersWorld, Polymarket and general odds aggregators cover none of these leagues. All probabilities blank + &quot;unverified&quot;. No values inferred.
+
+11. **Odds snapshot volatility.** Several lines moved during the 2026-10-13 capture session (e.g. ex-Keyd Stars/Galorys 2.366/1.53 -&gt; 2.43/1.46; KT/FearX 2.79/1.38 -&gt; 3.27/1.31). `data/odds.csv` records one snapshot per match (the later capture) with earlier captures noted in the row notes.
+
+## Team-name alias mappings used for odds sources (not irregularities; recorded for verification)
+
+- Hotspawn &quot;WROTBERRY&quot; = EGW &quot;WBT&quot;; &quot;EAC&quot; = EGW &quot;EA Copenhagen&quot;; &quot;RoundsGG&quot; = EGW &quot;Rounds&quot;; &quot;Phantom&quot; = EGW &quot;Phantom Esports&quot;; &quot;Sashi&quot; = EGW &quot;Sashi Esport&quot;; &quot;Envy&quot; = EGW &quot;Team Envy&quot;; &quot;BC.Game&quot; = EGW &quot;BC.Game Esports&quot;; &quot;BetBoom&quot; = EGW &quot;BetBoom Team&quot;; &quot;Ninjas in Pyjamas&quot; = EGW &quot;NiP&quot;; &quot;Fnatic&quot; = EGW &quot;fnatic&quot;; Hotspawn &quot;BNK FearX&quot; = EGW &quot;FearX&quot; = Polymarket &quot;BNK FEARX&quot;; Hotspawn &quot;The Last Resort&quot; = EGW &quot;The Last Resort&quot; (tag TLR).
+</pre>
+
+</main>
+<footer>Generated 2026-10-13 by session <code>arena-1da4b0ef-maltaproj2</code> ·
+data: <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/matches.csv">matches.csv</a> ·
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/odds.csv">odds.csv</a> ·
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/probabilities.csv">probabilities.csv</a> ·
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/analysis.md">analysis.md</a> ·
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/irregularities.md">irregularities.md</a></footer>
+</body>
+</html>
