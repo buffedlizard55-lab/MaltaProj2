@@ -1,0 +1,871 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pick&#x27;em coverage board</title>
+<meta name="description" content="Win probabilities and picks for every CS2 match in the HotSpawn pick'em lobby, derived from external betting lines only.">
+<meta name="color-scheme" content="dark"><link rel="stylesheet" href="assets/style.css"></head>
+<body><header><h1>Pick&#x27;em coverage board</h1>
+<div class="sub">Every CS2 fixture in the HotSpawn pick'em lobby · external lines only · HotSpawn used for fixture discovery, never as a probability</div>
+<nav><a class="on" href="index.html">Board</a><a class="" href="tables.html">Tables</a><a class="" href="methodology.html">Methodology</a><a class="" href="flagged.html">Flagged for review</a></nav></header><div class="wrap"><div class="stats">
+<div class="stat"><b>92</b><span>CS2 fixtures in the lobby's pick'em window</span></div>
+<div class="stat"><b>31</b><span>still upcoming (61 listed kickoffs already passed)</span></div>
+<div class="stat"><b>16</b><span>upcoming with a named bookmaker/exchange line</span></div>
+<div class="stat"><b>10</b><span>upcoming with only an aggregator fallback</span></div>
+<div class="stat"><b>3</b><span>upcoming priced by our originated model</span></div>
+<div class="stat"><b>2</b><span>upcoming with no usable line (blank + flagged)</span></div>
+<div class="stat"><b>64</b><span>market quotes accepted onto fixtures</span></div>
+<div class="stat"><b>12</b><span>quotes rejected by the quality gate</span></div></div><div class="note"><b>How to read a card.</b> The team marked ✅ is the pick, with both probabilities
+beside the names. <span class="badge ok">named bookmaker/exchange quote</span> means the line comes from Pinnacle,
+Bovada or Kalshi and the card links the exact URL that was read. <span class="badge warn">aggregator fallback</span>
+means only egamersworld.com priced it — shown because the alternative would be a blank, but it is not a licensed
+bookmaker. <span class="badge warn">originated model line</span> means no market prices the pairing at all and the
+number comes from our own documented model (<a href="methodology.html">method</a>, with its calibration error).
+<span class="badge bad">no usable external line</span> means we publish nothing for that match.
+Every card also links the HotSpawn fixture listing and shows the lobby's crowd pick <i>for reference only</i> —
+it never enters any calculation.</div>
+<div class="note">Snapshot: fixtures read 2026-10-13 21:49:24 UTC from the lobby's public API;
+quotes read at the timestamps printed on each card. Rows sort by kickoff, soonest first; the default filter hides
+the 61 listings whose kickoff is in the past (they remain pickable in the lobby but no
+live market can exist for them — see <a href="flagged.html">Flagged for review</a>).</div><div class="controls">
+<select id="show" aria-label="Show"><option value="upcoming">Upcoming only</option>
+<option value="all">All 92 fixtures</option><option value="stale">Past-kickoff listings only</option>
+<option value="nopick">Rows without a probability</option></select>
+<input id="q" type="search" placeholder="Search team or tournament" aria-label="Search">
+<select id="basis" aria-label="Basis"><option value="">Any evidence</option>
+<option value="market-derived">Named bookmaker/exchange line</option>
+<option value="aggregator-fallback">Aggregator fallback only</option>
+<option value="unverified">No usable line / model only</option></select>
+<select id="tour" aria-label="Tournament"><option value="">All tournaments</option>
+<option value="CCT Europe 2026 Challengers #4">CCT Europe 2026 Challengers #4</option><option value="CCT Europe 2026 Series #11">CCT Europe 2026 Series #11</option><option value="CCT Europe 2026 Series #12 Play-In">CCT Europe 2026 Series #12 Play-In</option><option value="CCT South America 2026 Series #3">CCT South America 2026 Series #3</option><option value="CCT South America 2026 Series #7">CCT South America 2026 Series #7</option><option value="DACH CS Masters Season 5">DACH CS Masters Season 5</option><option value="DraculaN Season 7">DraculaN Season 7</option><option value="ESL Challenger League Season 52: North America - Cup #3">ESL Challenger League Season 52: North America - Cup #3</option><option value="ESL Challenger League Season 52: South America - Cup #3">ESL Challenger League Season 52: South America - Cup #3</option><option value="Elisa BreakOut Series #2">Elisa BreakOut Series #2</option><option value="European Pro League Series 8">European Pro League Series 8</option><option value="European Pro League Series 8 Play-In">European Pro League Series 8 Play-In</option><option value="FRAG University 2026">FRAG University 2026</option><option value="LG UltraGear Tournament 2026">LG UltraGear Tournament 2026</option><option value="Rainhas do Clutch 2026">Rainhas do Clutch 2026</option><option value="Stake Pulse Beat III">Stake Pulse Beat III</option><option value="Svenska CS-Ligan 2026">Svenska CS-Ligan 2026</option><option value="Thunderpick World Championship 2026">Thunderpick World Championship 2026</option><option value="Thunderpick World Championship 2026: South American Series #1">Thunderpick World Championship 2026: South American Series #1</option><option value="Urban Riga Open #5">Urban Riga Open #5</option></select>
+<span class="fresh">showing <b id="shown">31</b> of 92</span></div><article class="card none" data-basis="stale-listing" data-tour="European Pro League Series 8 Play-In"
+ data-stale="1" data-pick="0" data-search="fortress endless journey european pro league series 8 play-in">
+<div class="top"><span>European Pro League Series 8 Play-In · tier C · 2 pts</span>
+<span>2026-06-26 10:30:00 UTC · 1052746</span></div>
+<div class="teams"><div class="team nodata"><span>Fortress</span><span class="p">—</span></div><div class="team nodata"><span>Endless Journey</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052746" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 20% / 80%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="DraculaN Season 7"
+ data-stale="1" data-pick="0" data-search="acend infinite draculan season 7">
+<div class="top"><span>DraculaN Season 7 · tier B · 3 pts</span>
+<span>2026-06-26 12:00:00 UTC · 1051339</span></div>
+<div class="teams"><div class="team nodata"><span>Acend</span><span class="p">—</span></div><div class="team nodata"><span>Infinite</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1051339" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Svenska CS-Ligan 2026"
+ data-stale="1" data-pick="0" data-search="johnny speeds rethink svenska cs-ligan 2026">
+<div class="top"><span>Svenska CS-Ligan 2026 · tier C · 2 pts</span>
+<span>2026-06-26 13:00:00 UTC · 1053068</span></div>
+<div class="teams"><div class="team nodata"><span>Johnny Speeds</span><span class="p">—</span></div><div class="team nodata"><span>ReThink</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053068" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="LG UltraGear Tournament 2026"
+ data-stale="1" data-pick="0" data-search="cybershoke prospects pcific lg ultragear tournament 2026">
+<div class="top"><span>LG UltraGear Tournament 2026 · tier C · 2 pts</span>
+<span>2026-06-26 13:00:00 UTC · 1051301</span></div>
+<div class="teams"><div class="team nodata"><span>CYBERSHOKE Prospects</span><span class="p">—</span></div><div class="team nodata"><span>PCIFIC</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1051301" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="European Pro League Series 8 Play-In"
+ data-stale="1" data-pick="0" data-search="sashi academy eternal premium european pro league series 8 play-in">
+<div class="top"><span>European Pro League Series 8 Play-In · tier C · 2 pts</span>
+<span>2026-06-26 13:10:00 UTC · 1052747</span></div>
+<div class="teams"><div class="team nodata"><span>Sashi Academy</span><span class="p">—</span></div><div class="team nodata"><span>eternal premium</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052747" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 78% / 22%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Rainhas do Clutch 2026"
+ data-stale="1" data-pick="0" data-search="atrix clutchain rainhas do clutch 2026">
+<div class="top"><span>Rainhas do Clutch 2026 · tier B · 3 pts</span>
+<span>2026-06-26 14:00:00 UTC · 1053146</span></div>
+<div class="teams"><div class="team nodata"><span>Atrix</span><span class="p">—</span></div><div class="team nodata"><span>Clutchain</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053146" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="DraculaN Season 7"
+ data-stale="1" data-pick="0" data-search="walczaki inner circle draculan season 7">
+<div class="top"><span>DraculaN Season 7 · tier B · 3 pts</span>
+<span>2026-06-26 15:00:00 UTC · 1051340</span></div>
+<div class="teams"><div class="team nodata"><span>Walczaki</span><span class="p">—</span></div><div class="team nodata"><span>Inner Circle</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1051340" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 100%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Svenska CS-Ligan 2026"
+ data-stale="1" data-pick="0" data-search="roamsfiest train launcher svenska cs-ligan 2026">
+<div class="top"><span>Svenska CS-Ligan 2026 · tier C · 2 pts</span>
+<span>2026-06-26 16:45:00 UTC · 1053069</span></div>
+<div class="teams"><div class="team nodata"><span>roamsfiest</span><span class="p">—</span></div><div class="team nodata"><span>train launcher</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053069" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 20% / 80%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Rainhas do Clutch 2026"
+ data-stale="1" data-pick="0" data-search="shimmer mibr fe rainhas do clutch 2026">
+<div class="top"><span>Rainhas do Clutch 2026 · tier B · 3 pts</span>
+<span>2026-06-26 17:45:00 UTC · 1052686</span></div>
+<div class="teams"><div class="team nodata"><span>shimmer</span><span class="p">—</span></div><div class="team nodata"><span>MIBR fe</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052686" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 67% / 33%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Thunderpick World Championship 2026: South American Series #1"
+ data-stale="1" data-pick="0" data-search="mibr academy isurus thunderpick world championship 2026: south american series #1">
+<div class="top"><span>Thunderpick World Championship 2026: South American Series #1 · tier C · 2 pts</span>
+<span>2026-06-26 18:00:00 UTC · 1051789</span></div>
+<div class="teams"><div class="team nodata"><span>MIBR Academy</span><span class="p">—</span></div><div class="team nodata"><span>Isurus</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1051789" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 60% / 40%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Svenska CS-Ligan 2026"
+ data-stale="1" data-pick="0" data-search="rethink train launcher svenska cs-ligan 2026">
+<div class="top"><span>Svenska CS-Ligan 2026 · tier C · 2 pts</span>
+<span>2026-06-26 19:00:00 UTC · 1053070</span></div>
+<div class="teams"><div class="team nodata"><span>ReThink</span><span class="p">—</span></div><div class="team nodata"><span>train launcher</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053070" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Thunderpick World Championship 2026: South American Series #1"
+ data-stale="1" data-pick="0" data-search="keyd yawara thunderpick world championship 2026: south american series #1">
+<div class="top"><span>Thunderpick World Championship 2026: South American Series #1 · tier C · 2 pts</span>
+<span>2026-06-26 21:00:00 UTC · 1051790</span></div>
+<div class="teams"><div class="team nodata"><span>Keyd</span><span class="p">—</span></div><div class="team nodata"><span>Yawara</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1051790" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="European Pro League Series 8 Play-In"
+ data-stale="1" data-pick="0" data-search="inner circle academy saw european pro league series 8 play-in">
+<div class="top"><span>European Pro League Series 8 Play-In · tier C · 2 pts</span>
+<span>2026-06-27 08:00:00 UTC · 1052748</span></div>
+<div class="teams"><div class="team nodata"><span>Inner Circle Academy</span><span class="p">—</span></div><div class="team nodata"><span>sAw</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052748" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 33% / 67%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Svenska CS-Ligan 2026"
+ data-stale="1" data-pick="0" data-search="johnny speeds roamsfiest svenska cs-ligan 2026">
+<div class="top"><span>Svenska CS-Ligan 2026 · tier C · 2 pts</span>
+<span>2026-06-27 10:00:00 UTC · 1053071</span></div>
+<div class="teams"><div class="team nodata"><span>Johnny Speeds</span><span class="p">—</span></div><div class="team nodata"><span>roamsfiest</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053071" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="European Pro League Series 8 Play-In"
+ data-stale="1" data-pick="0" data-search="misa wrotberry european pro league series 8 play-in">
+<div class="top"><span>European Pro League Series 8 Play-In · tier C · 2 pts</span>
+<span>2026-06-27 10:30:00 UTC · 1052749</span></div>
+<div class="teams"><div class="team nodata"><span>Misa</span><span class="p">—</span></div><div class="team nodata"><span>WROTBERRY</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052749" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT Europe 2026 Challengers #4"
+ data-stale="1" data-pick="0" data-search="new vision julie&amp;cie cct europe 2026 challengers #4">
+<div class="top"><span>CCT Europe 2026 Challengers #4 · tier C · 2 pts</span>
+<span>2026-06-27 11:00:00 UTC · 1052180</span></div>
+<div class="teams"><div class="team nodata"><span>NEW VISION</span><span class="p">—</span></div><div class="team nodata"><span>Julie&amp;Cie</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052180" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 29% / 71%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT Europe 2026 Challengers #4"
+ data-stale="1" data-pick="0" data-search="just players olybet cct europe 2026 challengers #4">
+<div class="top"><span>CCT Europe 2026 Challengers #4 · tier C · 2 pts</span>
+<span>2026-06-27 11:00:00 UTC · 1052181</span></div>
+<div class="teams"><div class="team nodata"><span>Just Players</span><span class="p">—</span></div><div class="team nodata"><span>OlyBet</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052181" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT South America 2026 Series #3"
+ data-stale="1" data-pick="0" data-search="vasco red feet cct south america 2026 series #3">
+<div class="top"><span>CCT South America 2026 Series #3 · tier B · 3 pts</span>
+<span>2026-06-27 13:00:00 UTC · 1052699</span></div>
+<div class="teams"><div class="team nodata"><span>Vasco</span><span class="p">—</span></div><div class="team nodata"><span>Red Feet</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052699" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 80% / 20%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Thunderpick World Championship 2026: South American Series #1"
+ data-stale="1" data-pick="0" data-search="shinden mibr academy thunderpick world championship 2026: south american series #1">
+<div class="top"><span>Thunderpick World Championship 2026: South American Series #1 · tier C · 2 pts</span>
+<span>2026-06-27 13:00:00 UTC · 1051800</span></div>
+<div class="teams"><div class="team nodata"><span>ShindeN</span><span class="p">—</span></div><div class="team nodata"><span>MIBR Academy</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1051800" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT Europe 2026 Challengers #4"
+ data-stale="1" data-pick="0" data-search="misa wampirki cct europe 2026 challengers #4">
+<div class="top"><span>CCT Europe 2026 Challengers #4 · tier C · 2 pts</span>
+<span>2026-06-27 13:45:00 UTC · 1052183</span></div>
+<div class="teams"><div class="team nodata"><span>Misa</span><span class="p">—</span></div><div class="team nodata"><span>Wampirki</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052183" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="DraculaN Season 7"
+ data-stale="1" data-pick="0" data-search="sharks inner circle draculan season 7">
+<div class="top"><span>DraculaN Season 7 · tier B · 3 pts</span>
+<span>2026-06-27 13:50:00 UTC · 1051341</span></div>
+<div class="teams"><div class="team nodata"><span>Sharks</span><span class="p">—</span></div><div class="team nodata"><span>Inner Circle</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1051341" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT Europe 2026 Challengers #4"
+ data-stale="1" data-pick="0" data-search="mai tai megoshort cct europe 2026 challengers #4">
+<div class="top"><span>CCT Europe 2026 Challengers #4 · tier C · 2 pts</span>
+<span>2026-06-27 14:00:00 UTC · 1052599</span></div>
+<div class="teams"><div class="team nodata"><span>Mai Tai</span><span class="p">—</span></div><div class="team nodata"><span>Megoshort</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052599" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Svenska CS-Ligan 2026"
+ data-stale="1" data-pick="0" data-search="train launcher roamsfiest svenska cs-ligan 2026">
+<div class="top"><span>Svenska CS-Ligan 2026 · tier C · 2 pts</span>
+<span>2026-06-27 14:10:00 UTC · 1053072</span></div>
+<div class="teams"><div class="team nodata"><span>train launcher</span><span class="p">—</span></div><div class="team nodata"><span>roamsfiest</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053072" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="DACH CS Masters Season 5"
+ data-stale="1" data-pick="0" data-search="big academy berg dach cs masters season 5">
+<div class="top"><span>DACH CS Masters Season 5 · tier C · 2 pts</span>
+<span>2026-06-27 15:00:00 UTC · 1052357</span></div>
+<div class="teams"><div class="team nodata"><span>BIG Academy</span><span class="p">—</span></div><div class="team nodata"><span>BERG</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052357" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT South America 2026 Series #3"
+ data-stale="1" data-pick="0" data-search="gamehunters vexa cct south america 2026 series #3">
+<div class="top"><span>CCT South America 2026 Series #3 · tier B · 3 pts</span>
+<span>2026-06-27 16:00:00 UTC · 1052700</span></div>
+<div class="teams"><div class="team nodata"><span>GameHunters</span><span class="p">—</span></div><div class="team nodata"><span>VEXA</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052700" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Thunderpick World Championship 2026: South American Series #1"
+ data-stale="1" data-pick="0" data-search="bounty hunters uno mille thunderpick world championship 2026: south american series #1">
+<div class="top"><span>Thunderpick World Championship 2026: South American Series #1 · tier C · 2 pts</span>
+<span>2026-06-27 16:00:00 UTC · 1051801</span></div>
+<div class="teams"><div class="team nodata"><span>Bounty Hunters</span><span class="p">—</span></div><div class="team nodata"><span>UNO MILLE</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1051801" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Svenska CS-Ligan 2026"
+ data-stale="1" data-pick="0" data-search="roamsfiest rethink svenska cs-ligan 2026">
+<div class="top"><span>Svenska CS-Ligan 2026 · tier C · 2 pts</span>
+<span>2026-06-27 17:00:00 UTC · 1053073</span></div>
+<div class="teams"><div class="team nodata"><span>roamsfiest</span><span class="p">—</span></div><div class="team nodata"><span>ReThink</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053073" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="DraculaN Season 7"
+ data-stale="1" data-pick="0" data-search="ex-tricked acend draculan season 7">
+<div class="top"><span>DraculaN Season 7 · tier B · 3 pts</span>
+<span>2026-06-27 17:00:00 UTC · 1051342</span></div>
+<div class="teams"><div class="team nodata"><span>ex-Tricked</span><span class="p">—</span></div><div class="team nodata"><span>Acend</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1051342" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT South America 2026 Series #3"
+ data-stale="1" data-pick="0" data-search="pain academy alka cct south america 2026 series #3">
+<div class="top"><span>CCT South America 2026 Series #3 · tier B · 3 pts</span>
+<span>2026-06-27 19:00:00 UTC · 1052701</span></div>
+<div class="teams"><div class="team nodata"><span>paiN Academy</span><span class="p">—</span></div><div class="team nodata"><span>Alka</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052701" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Thunderpick World Championship 2026: South American Series #1"
+ data-stale="1" data-pick="0" data-search="fake do biru lp thunderpick world championship 2026: south american series #1">
+<div class="top"><span>Thunderpick World Championship 2026: South American Series #1 · tier C · 2 pts</span>
+<span>2026-06-27 19:00:00 UTC · 1053313</span></div>
+<div class="teams"><div class="team nodata"><span>Fake do Biru</span><span class="p">—</span></div><div class="team nodata"><span>LP</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053313" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT South America 2026 Series #3"
+ data-stale="1" data-pick="0" data-search="procyon bestia academy cct south america 2026 series #3">
+<div class="top"><span>CCT South America 2026 Series #3 · tier B · 3 pts</span>
+<span>2026-06-27 22:00:00 UTC · 1052702</span></div>
+<div class="teams"><div class="team nodata"><span>Procyon</span><span class="p">—</span></div><div class="team nodata"><span>BESTIA Academy</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052702" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 100%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Thunderpick World Championship 2026: South American Series #1"
+ data-stale="1" data-pick="0" data-search="fluxo keyd thunderpick world championship 2026: south american series #1">
+<div class="top"><span>Thunderpick World Championship 2026: South American Series #1 · tier C · 2 pts</span>
+<span>2026-06-27 22:00:00 UTC · 1051803</span></div>
+<div class="teams"><div class="team nodata"><span>Fluxo</span><span class="p">—</span></div><div class="team nodata"><span>Keyd</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1051803" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="European Pro League Series 8 Play-In"
+ data-stale="1" data-pick="0" data-search="honvéd olybet european pro league series 8 play-in">
+<div class="top"><span>European Pro League Series 8 Play-In · tier C · 2 pts</span>
+<span>2026-06-28 08:00:00 UTC · 1052750</span></div>
+<div class="teams"><div class="team nodata"><span>Honvéd</span><span class="p">—</span></div><div class="team nodata"><span>OlyBet</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052750" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 67% / 33%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="European Pro League Series 8 Play-In"
+ data-stale="1" data-pick="0" data-search="ex-mana subtop de france european pro league series 8 play-in">
+<div class="top"><span>European Pro League Series 8 Play-In · tier C · 2 pts</span>
+<span>2026-06-28 10:50:00 UTC · 1052751</span></div>
+<div class="teams"><div class="team nodata"><span>ex-MANA</span><span class="p">—</span></div><div class="team nodata"><span>Subtop De France</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052751" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT Europe 2026 Challengers #4"
+ data-stale="1" data-pick="0" data-search="saw entropy cct europe 2026 challengers #4">
+<div class="top"><span>CCT Europe 2026 Challengers #4 · tier C · 2 pts</span>
+<span>2026-06-28 11:00:00 UTC · 1052185</span></div>
+<div class="teams"><div class="team nodata"><span>sAw</span><span class="p">—</span></div><div class="team nodata"><span>Entropy</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052185" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 60% / 40%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Urban Riga Open #5"
+ data-stale="1" data-pick="0" data-search="gameharmony coalesce urban riga open #5">
+<div class="top"><span>Urban Riga Open #5 · tier C · 2 pts</span>
+<span>2026-06-28 11:00:00 UTC · 1053431</span></div>
+<div class="teams"><div class="team nodata"><span>GAMEHARMONY</span><span class="p">—</span></div><div class="team nodata"><span>Coalesce</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053431" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Urban Riga Open #5"
+ data-stale="1" data-pick="0" data-search="leo aimhaus urban riga open #5">
+<div class="top"><span>Urban Riga Open #5 · tier C · 2 pts</span>
+<span>2026-06-28 11:00:00 UTC · 1053432</span></div>
+<div class="teams"><div class="team nodata"><span>Leo</span><span class="p">—</span></div><div class="team nodata"><span>Aimhaus</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053432" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Urban Riga Open #5"
+ data-stale="1" data-pick="0" data-search="gameharmony aimhaus urban riga open #5">
+<div class="top"><span>Urban Riga Open #5 · tier C · 2 pts</span>
+<span>2026-06-28 12:00:00 UTC · 1053433</span></div>
+<div class="teams"><div class="team nodata"><span>GAMEHARMONY</span><span class="p">—</span></div><div class="team nodata"><span>Aimhaus</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053433" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Urban Riga Open #5"
+ data-stale="1" data-pick="0" data-search="leo coalesce urban riga open #5">
+<div class="top"><span>Urban Riga Open #5 · tier C · 2 pts</span>
+<span>2026-06-28 12:00:00 UTC · 1053434</span></div>
+<div class="teams"><div class="team nodata"><span>Leo</span><span class="p">—</span></div><div class="team nodata"><span>Coalesce</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053434" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT South America 2026 Series #3"
+ data-stale="1" data-pick="0" data-search="ex-krü magicos cct south america 2026 series #3">
+<div class="top"><span>CCT South America 2026 Series #3 · tier B · 3 pts</span>
+<span>2026-06-28 13:00:00 UTC · 1052698</span></div>
+<div class="teams"><div class="team nodata"><span>ex-KRÜ</span><span class="p">—</span></div><div class="team nodata"><span>MAGICOS</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052698" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 40% / 60%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Urban Riga Open #5"
+ data-stale="1" data-pick="0" data-search="gameharmony leo urban riga open #5">
+<div class="top"><span>Urban Riga Open #5 · tier C · 2 pts</span>
+<span>2026-06-28 13:00:00 UTC · 1053435</span></div>
+<div class="teams"><div class="team nodata"><span>GAMEHARMONY</span><span class="p">—</span></div><div class="team nodata"><span>Leo</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053435" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Urban Riga Open #5"
+ data-stale="1" data-pick="0" data-search="aimhaus coalesce urban riga open #5">
+<div class="top"><span>Urban Riga Open #5 · tier C · 2 pts</span>
+<span>2026-06-28 13:00:00 UTC · 1053436</span></div>
+<div class="teams"><div class="team nodata"><span>Aimhaus</span><span class="p">—</span></div><div class="team nodata"><span>Coalesce</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053436" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="DraculaN Season 7"
+ data-stale="1" data-pick="0" data-search="sharks ex-tricked draculan season 7">
+<div class="top"><span>DraculaN Season 7 · tier B · 3 pts</span>
+<span>2026-06-28 13:35:00 UTC · 1051343</span></div>
+<div class="teams"><div class="team nodata"><span>Sharks</span><span class="p">—</span></div><div class="team nodata"><span>ex-Tricked</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1051343" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT Europe 2026 Challengers #4"
+ data-stale="1" data-pick="0" data-search="lilmix subtop de france cct europe 2026 challengers #4">
+<div class="top"><span>CCT Europe 2026 Challengers #4 · tier C · 2 pts</span>
+<span>2026-06-28 13:45:00 UTC · 1052186</span></div>
+<div class="teams"><div class="team nodata"><span>Lilmix</span><span class="p">—</span></div><div class="team nodata"><span>Subtop De France</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052186" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT Europe 2026 Challengers #4"
+ data-stale="1" data-pick="0" data-search="big academy endless journey cct europe 2026 challengers #4">
+<div class="top"><span>CCT Europe 2026 Challengers #4 · tier C · 2 pts</span>
+<span>2026-06-28 13:45:00 UTC · 1052187</span></div>
+<div class="teams"><div class="team nodata"><span>BIG Academy</span><span class="p">—</span></div><div class="team nodata"><span>Endless Journey</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052187" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT Europe 2026 Challengers #4"
+ data-stale="1" data-pick="0" data-search="atreides donstu cct europe 2026 challengers #4">
+<div class="top"><span>CCT Europe 2026 Challengers #4 · tier C · 2 pts</span>
+<span>2026-06-28 14:05:00 UTC · 1052184</span></div>
+<div class="teams"><div class="team nodata"><span>Atreides</span><span class="p">—</span></div><div class="team nodata"><span>Donstu</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052184" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT South America 2026 Series #3"
+ data-stale="1" data-pick="0" data-search="yawara blitzkrieg cct south america 2026 series #3">
+<div class="top"><span>CCT South America 2026 Series #3 · tier B · 3 pts</span>
+<span>2026-06-28 16:00:00 UTC · 1052696</span></div>
+<div class="teams"><div class="team nodata"><span>Yawara</span><span class="p">—</span></div><div class="team nodata"><span>Blitzkrieg</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052696" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 60% / 40%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Urban Riga Open #5"
+ data-stale="1" data-pick="0" data-search="berg sinqu rehti urban riga open #5">
+<div class="top"><span>Urban Riga Open #5 · tier C · 2 pts</span>
+<span>2026-06-28 16:00:00 UTC · 1053469</span></div>
+<div class="teams"><div class="team nodata"><span>BERG</span><span class="p">—</span></div><div class="team nodata"><span>SINQU REHTI</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053469" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 100%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Urban Riga Open #5"
+ data-stale="1" data-pick="0" data-search="6666 astral urban riga open #5">
+<div class="top"><span>Urban Riga Open #5 · tier C · 2 pts</span>
+<span>2026-06-28 16:00:00 UTC · 1053439</span></div>
+<div class="teams"><div class="team nodata"><span>6666</span><span class="p">—</span></div><div class="team nodata"><span>ASTRAL</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053439" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 100%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Urban Riga Open #5"
+ data-stale="1" data-pick="0" data-search="astral berg urban riga open #5">
+<div class="top"><span>Urban Riga Open #5 · tier C · 2 pts</span>
+<span>2026-06-28 17:00:00 UTC · 1053441</span></div>
+<div class="teams"><div class="team nodata"><span>ASTRAL</span><span class="p">—</span></div><div class="team nodata"><span>BERG</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053441" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Urban Riga Open #5"
+ data-stale="1" data-pick="0" data-search="6666 sinqu rehti urban riga open #5">
+<div class="top"><span>Urban Riga Open #5 · tier C · 2 pts</span>
+<span>2026-06-28 17:00:00 UTC · 1053470</span></div>
+<div class="teams"><div class="team nodata"><span>6666</span><span class="p">—</span></div><div class="team nodata"><span>SINQU REHTI</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053470" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="DraculaN Season 7"
+ data-stale="1" data-pick="0" data-search="inner circle acend draculan season 7">
+<div class="top"><span>DraculaN Season 7 · tier B · 3 pts</span>
+<span>2026-06-28 17:30:00 UTC · 1051344</span></div>
+<div class="teams"><div class="team nodata"><span>Inner Circle</span><span class="p">—</span></div><div class="team nodata"><span>Acend</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1051344" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Urban Riga Open #5"
+ data-stale="1" data-pick="0" data-search="6666 berg urban riga open #5">
+<div class="top"><span>Urban Riga Open #5 · tier C · 2 pts</span>
+<span>2026-06-28 18:00:00 UTC · 1053442</span></div>
+<div class="teams"><div class="team nodata"><span>6666</span><span class="p">—</span></div><div class="team nodata"><span>BERG</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053442" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Urban Riga Open #5"
+ data-stale="1" data-pick="0" data-search="astral sinqu rehti urban riga open #5">
+<div class="top"><span>Urban Riga Open #5 · tier C · 2 pts</span>
+<span>2026-06-28 18:00:00 UTC · 1053471</span></div>
+<div class="teams"><div class="team nodata"><span>ASTRAL</span><span class="p">—</span></div><div class="team nodata"><span>SINQU REHTI</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053471" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Thunderpick World Championship 2026: South American Series #1"
+ data-stale="1" data-pick="0" data-search="fluxo uno mille thunderpick world championship 2026: south american series #1">
+<div class="top"><span>Thunderpick World Championship 2026: South American Series #1 · tier C · 2 pts</span>
+<span>2026-06-28 18:00:00 UTC · 1051804</span></div>
+<div class="teams"><div class="team nodata"><span>Fluxo</span><span class="p">—</span></div><div class="team nodata"><span>UNO MILLE</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1051804" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT South America 2026 Series #3"
+ data-stale="1" data-pick="0" data-search="metanoia wolves guara cct south america 2026 series #3">
+<div class="top"><span>CCT South America 2026 Series #3 · tier B · 3 pts</span>
+<span>2026-06-28 19:05:00 UTC · 1052697</span></div>
+<div class="teams"><div class="team nodata"><span>METANOIA Wolves</span><span class="p">—</span></div><div class="team nodata"><span>Guara</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052697" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 60% / 40%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="Thunderpick World Championship 2026: South American Series #1"
+ data-stale="1" data-pick="0" data-search="shinden lp thunderpick world championship 2026: south american series #1">
+<div class="top"><span>Thunderpick World Championship 2026: South American Series #1 · tier C · 2 pts</span>
+<span>2026-06-28 21:15:00 UTC · 1053679</span></div>
+<div class="teams"><div class="team nodata"><span>ShindeN</span><span class="p">—</span></div><div class="team nodata"><span>LP</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1053679" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT South America 2026 Series #3"
+ data-stale="1" data-pick="0" data-search="mibr academy patins de ferrari cct south america 2026 series #3">
+<div class="top"><span>CCT South America 2026 Series #3 · tier B · 3 pts</span>
+<span>2026-06-28 22:00:00 UTC · 1052695</span></div>
+<div class="teams"><div class="team nodata"><span>MIBR Academy</span><span class="p">—</span></div><div class="team nodata"><span>Patins de Ferrari</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1052695" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="European Pro League Series 8"
+ data-stale="1" data-pick="0" data-search="illwill lavked european pro league series 8">
+<div class="top"><span>European Pro League Series 8 · tier C · 2 pts</span>
+<span>2026-07-10 08:00:00 UTC · 1055478</span></div>
+<div class="teams"><div class="team nodata"><span>illwill</span><span class="p">—</span></div><div class="team nodata"><span>Lavked</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1055478" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="CCT South America 2026 Series #7"
+ data-stale="1" data-pick="0" data-search="grêmio los ninos cct south america 2026 series #7">
+<div class="top"><span>CCT South America 2026 Series #7 · tier C · 2 pts</span>
+<span>2026-10-13 19:00:00 UTC · 1081104</span></div>
+<div class="teams"><div class="team nodata"><span>Grêmio</span><span class="p">—</span></div><div class="team nodata"><span>LOS NINOS</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div><div><b><a href="https://www.pinnacle.com/en/esports/" rel="nofollow noopener">Pinnacle</a></b> — no-vig 81.6% / 18.4% · read 2026-10-13 21:41:43 UTC · <a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638291107/markets/related/straight" rel="nofollow noopener">quote API</a>. quoted decimal odds 1.146413 / 5.08; book margin 6.91%</div><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct131500lngre" rel="nofollow noopener">Kalshi</a></b> — no-vig 95.9% / 4.1% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT131500LNGRE-LN" rel="nofollow noopener">quote API</a>. Kalshi book: 0.03–0.05 / 0.93–0.96 (spread 0.02/0.03, volume 74241.87/122775.59); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1081104" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="stale-listing" data-tour="ESL Challenger League Season 52: South America - Cup #3"
+ data-stale="1" data-pick="0" data-search="ex-keyd stars galorys esl challenger league season 52: south america - cup #3">
+<div class="top"><span>ESL Challenger League Season 52: South America - Cup #3 · tier B · 3 pts</span>
+<span>2026-10-13 21:00:00 UTC · 1081076</span></div>
+<div class="teams"><div class="team nodata"><span>ex-Keyd Stars</span><span class="p">—</span></div><div class="team nodata"><span>Galorys</span><span class="p">—</span></div></div>
+<div><span class="badge none">past-kickoff listing — no probability published</span><span class="badge bad">listing stale: kickoff already passed</span></div>
+<div class="src"><div>This listing's kickoff has already passed, so any price read for it was read while the match was live or finished. It is not a pre-match line, no probability or pick is published, and the readings below are kept only as evidence.</div><div><b><a href="https://www.bovada.lv/esports/counter-strike-2/esl-challenger-league/south-america/ex-keyd-stars-galorys-202610131700" rel="nofollow noopener">Bovada</a></b> — no-vig 32.3% / 67.7% · read 2026-10-13 21:42:12 UTC. quoted decimal odds 2.9 / 1.3846; book margin 6.71%; market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1081076" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 80% / 20%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="CCT South America 2026 Series #7"
+ data-stale="0" data-pick="1" data-search="sukeban your end cct south america 2026 series #7">
+<div class="top"><span>CCT South America 2026 Series #7 · tier C · 2 pts</span>
+<span>2026-10-13 22:00:00 UTC · 1081105</span></div>
+<div class="teams"><div class="team"><span>SUKEBAN</span><span class="p">41%</span></div><div class="team pick"><span>your end ✅</span><span class="p">59%</span></div></div><div class="bar"><i style="width:41%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">1 named source(s)</span><span class="badge warn">single source</span></div>
+<div class="src"><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct131800sukeyou" rel="nofollow noopener">Kalshi</a></b> — no-vig 41.3% / 58.7% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT131800SUKEYOU-SUKE" rel="nofollow noopener">quote API</a>. Kalshi book: 0.4–0.43 / 0.58–0.6 (spread 0.03/0.02, volume 525.05/468.68); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1081105" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 100%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="ESL Challenger League Season 52: North America - Cup #3"
+ data-stale="0" data-pick="1" data-search="zomblers overtake sector esl challenger league season 52: north america - cup #3">
+<div class="top"><span>ESL Challenger League Season 52: North America - Cup #3 · tier B · 3 pts</span>
+<span>2026-10-14 01:00:00 UTC · 1079546</span></div>
+<div class="teams"><div class="team"><span>Zomblers</span><span class="p">36%</span></div><div class="team pick"><span>Overtake Sector ✅</span><span class="p">64%</span></div></div><div class="bar"><i style="width:36%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">2 named source(s)</span></div>
+<div class="src"><div><b><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638279105/markets/related/straight" rel="nofollow noopener">Pinnacle</a></b> — no-vig 36.5% / 63.5% · read 2026-10-13 21:44:09 UTC. quoted decimal odds 2.55 / 1.463; book margin 7.57%</div><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct132100otzomb" rel="nofollow noopener">Kalshi</a></b> — no-vig 34.7% / 65.3% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT132100OTZOMB-OT" rel="nofollow noopener">quote API</a>. Kalshi book: 0.64–0.66 / 0.34–0.35 (spread 0.02/0.01, volume 52.11/487.70); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1079546" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 8% / 92%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="CCT Europe 2026 Series #12 Play-In"
+ data-stale="0" data-pick="1" data-search="enjoy b8 academy cct europe 2026 series #12 play-in">
+<div class="top"><span>CCT Europe 2026 Series #12 Play-In · tier C · 2 pts</span>
+<span>2026-10-14 08:00:00 UTC · 1081111</span></div>
+<div class="teams"><div class="team pick"><span>Enjoy ✅</span><span class="p">62%</span></div><div class="team"><span>B8 Academy</span><span class="p">38%</span></div></div><div class="bar"><i style="width:62%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">1 named source(s)</span><span class="badge warn">single source</span></div>
+<div class="src"><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct140400b8aenjoy" rel="nofollow noopener">Kalshi</a></b> — no-vig 62.4% / 37.6% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT140400B8AENJOY-B8A" rel="nofollow noopener">quote API</a>. Kalshi book: 0.3–0.44 / 0.54–0.69 (spread 0.14/0.15, volume 0.00/0.00); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1081111" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 25% / 75%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="CCT Europe 2026 Series #11"
+ data-stale="0" data-pick="1" data-search="gothic lavked cct europe 2026 series #11">
+<div class="top"><span>CCT Europe 2026 Series #11 · tier B · 3 pts</span>
+<span>2026-10-14 08:00:00 UTC · 1079621</span></div>
+<div class="teams"><div class="team"><span>Gothic</span><span class="p">50%</span></div><div class="team pick"><span>Lavked ✅</span><span class="p">50%</span></div></div><div class="bar"><i style="width:50%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">1 named source(s)</span><span class="badge warn">single source</span></div>
+<div class="src"><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct140400lavgot" rel="nofollow noopener">Kalshi</a></b> — no-vig 49.7% / 50.3% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT140400LAVGOT-LAV" rel="nofollow noopener">quote API</a>. Kalshi book: 0.45–0.54 / 0.47–0.51 (spread 0.09/0.04, volume 1.79/74.31); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1079621" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 18% / 82%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="Thunderpick World Championship 2026"
+ data-stale="0" data-pick="1" data-search="9z aurora thunderpick world championship 2026">
+<div class="top"><span>Thunderpick World Championship 2026 · tier S · 7 pts</span>
+<span>2026-10-14 08:30:00 UTC · 1080176</span></div>
+<div class="teams"><div class="team"><span>9z</span><span class="p">26%</span></div><div class="team pick"><span>Aurora ✅</span><span class="p">74%</span></div></div><div class="bar"><i style="width:26%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">3 named source(s)</span></div>
+<div class="src"><div><b><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight" rel="nofollow noopener">Pinnacle</a></b> — no-vig 26.5% / 73.5% · read 2026-10-13 21:44:18 UTC. quoted decimal odds 3.61 / 1.2985; book margin 4.71%</div><div><b><a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/9z-globant-team-aurora-202610140430" rel="nofollow noopener">Bovada</a></b> — no-vig 26% / 74% · read 2026-10-13 21:42:12 UTC. quoted decimal odds 3.6 / 1.2667; book margin 6.72%</div><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct140430aur9z" rel="nofollow noopener">Kalshi</a></b> — no-vig 24.7% / 75.3% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT140430AUR9Z-AUR" rel="nofollow noopener">quote API</a>. Kalshi book: 0.74–0.75 / 0.24–0.25 (spread 0.01/0.01, volume 8095.07/594.39); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080176" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 5% / 95%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="Stake Pulse Beat III"
+ data-stale="0" data-pick="1" data-search="astralis sashi stake pulse beat iii">
+<div class="top"><span>Stake Pulse Beat III · tier B · 3 pts</span>
+<span>2026-10-14 10:00:00 UTC · 1079438</span></div>
+<div class="teams"><div class="team pick"><span>Astralis ✅</span><span class="p">85%</span></div><div class="team"><span>Sashi</span><span class="p">15%</span></div></div><div class="bar"><i style="width:85%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">2 named source(s)</span></div>
+<div class="src"><div><b><a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600" rel="nofollow noopener">Bovada</a></b> — no-vig 85.5% / 14.5% · read 2026-10-13 21:44:25 UTC · <a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="nofollow noopener">quote API</a>. quoted decimal odds 1.1 / 6.5; book margin 6.29%</div><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct140600sashiast" rel="nofollow noopener">Kalshi</a></b> — no-vig 85.1% / 14.9% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT140600SASHIAST-SASHI" rel="nofollow noopener">quote API</a>. Kalshi book: 0.14–0.16 / 0.85–0.87 (spread 0.02/0.02, volume 974.80/5.77); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1079438" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 95% / 5%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="Stake Pulse Beat III"
+ data-stale="0" data-pick="1" data-search="hotu fnatic stake pulse beat iii">
+<div class="top"><span>Stake Pulse Beat III · tier B · 3 pts</span>
+<span>2026-10-14 10:00:00 UTC · 1079439</span></div>
+<div class="teams"><div class="team"><span>HOTU</span><span class="p">47%</span></div><div class="team pick"><span>Fnatic ✅</span><span class="p">53%</span></div></div><div class="bar"><i style="width:47%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">3 named source(s)</span></div>
+<div class="src"><div><b><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148/markets/related/straight" rel="nofollow noopener">Pinnacle</a></b> — no-vig 47.5% / 52.5% · read 2026-10-13 21:43:56 UTC. quoted decimal odds 1.9901 / 1.8; book margin 5.8%</div><div><b><a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/hotu-fnatic-202610140600" rel="nofollow noopener">Bovada</a></b> — no-vig 48% / 52% · read 2026-10-13 21:44:25 UTC · <a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="nofollow noopener">quote API</a>. quoted decimal odds 1.952381 / 1.8; book margin 6.78%</div><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct140600fnchotu" rel="nofollow noopener">Kalshi</a></b> — no-vig 46.2% / 53.8% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT140600FNCHOTU-FNC" rel="nofollow noopener">quote API</a>. Kalshi book: 0.52–0.54 / 0.45–0.46 (spread 0.02/0.01, volume 153.29/221.00); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1079439" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 14% / 86%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="unverified" data-tour="CCT Europe 2026 Series #12 Play-In"
+ data-stale="0" data-pick="0" data-search="banda chuya 6666 cct europe 2026 series #12 play-in">
+<div class="top"><span>CCT Europe 2026 Series #12 Play-In · tier C · 2 pts</span>
+<span>2026-10-14 11:00:00 UTC · 1081112</span></div>
+<div class="teams"><div class="team nodata"><span>Banda chuya</span><span class="p">—</span></div><div class="team nodata"><span>6666</span><span class="p">—</span></div></div>
+<div><span class="badge none">no usable external line</span><span class="badge bad">source quote(s) rejected by the quality gate — see flagged page</span><span class="badge bad">no model coverage: Banda chuya: only 1 collected market observation(s); Banda chuya: ambiguous in Valve&#x27;s standings — the name is listed more than once (#165 (801 pts), #373 (402 pts)); not used rather than guessed; 6666: ambiguous in Valve&#x27;s standings — the name is listed more than once (#127 (923 pts), #368 (425 pts)); not used rather than guessed</span></div>
+<div class="src"><div>No external source priced this match and no model input covers both teams, so no probability is published. Listed on <a href="flagged.html">Flagged for review</a>.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1081112" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 100%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="CCT Europe 2026 Series #11"
+ data-stale="0" data-pick="1" data-search="ex-rustec mellren cct europe 2026 series #11">
+<div class="top"><span>CCT Europe 2026 Series #11 · tier B · 3 pts</span>
+<span>2026-10-14 11:00:00 UTC · 1079622</span></div>
+<div class="teams"><div class="team pick"><span>ex-RUSTEC ✅</span><span class="p">68%</span></div><div class="team"><span>mellren</span><span class="p">32%</span></div></div><div class="bar"><i style="width:68%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">1 named source(s)</span><span class="badge warn">single source</span></div>
+<div class="src"><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct140700melexr" rel="nofollow noopener">Kalshi</a></b> — no-vig 68% / 32% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT140700MELEXR-MEL" rel="nofollow noopener">quote API</a>. Kalshi book: 0.23–0.4 / 0.6–0.74 (spread 0.17/0.14, volume 0.00/0.00); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1079622" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 89% / 11%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="Thunderpick World Championship 2026"
+ data-stale="0" data-pick="1" data-search="falcons ninjas in pyjamas thunderpick world championship 2026">
+<div class="top"><span>Thunderpick World Championship 2026 · tier S · 7 pts</span>
+<span>2026-10-14 11:00:00 UTC · 1080177</span></div>
+<div class="teams"><div class="team pick"><span>Falcons ✅</span><span class="p">77%</span></div><div class="team"><span>Ninjas in Pyjamas</span><span class="p">23%</span></div></div><div class="bar"><i style="width:77%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">3 named source(s)</span></div>
+<div class="src"><div><b><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674/markets/related/straight" rel="nofollow noopener">Pinnacle</a></b> — no-vig 76.6% / 23.4% · read 2026-10-13 21:43:43 UTC. quoted decimal odds 1.2481 / 4.08; book margin 4.63%</div><div><b><a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-ninjas-in-pyjamas-202610140700" rel="nofollow noopener">Bovada</a></b> — no-vig 76% / 24% · read 2026-10-13 21:44:25 UTC · <a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="nofollow noopener">quote API</a>. quoted decimal odds 1.229885 / 3.9; book margin 6.95%</div><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct140700nipfal" rel="nofollow noopener">Kalshi</a></b> — no-vig 77.3% / 22.7% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT140700NIPFAL-NIP" rel="nofollow noopener">quote API</a>. Kalshi book: 0.22–0.23 / 0.76–0.77 (spread 0.01/0.01, volume 647.07/7050.99); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080177" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 90% / 10%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="Thunderpick World Championship 2026"
+ data-stale="0" data-pick="1" data-search="legacy parivision thunderpick world championship 2026">
+<div class="top"><span>Thunderpick World Championship 2026 · tier S · 7 pts</span>
+<span>2026-10-14 13:30:00 UTC · 1080178</span></div>
+<div class="teams"><div class="team pick"><span>Legacy ✅</span><span class="p">57%</span></div><div class="team"><span>PARIVISION</span><span class="p">43%</span></div></div><div class="bar"><i style="width:57%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">3 named source(s)</span></div>
+<div class="src"><div><b><a href="https://www.pinnacle.com/en/esports/" rel="nofollow noopener">Pinnacle</a></b> — no-vig 57.1% / 42.9% · read 2026-10-13 21:41:43 UTC · <a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111786/markets/related/straight" rel="nofollow noopener">quote API</a>. quoted decimal odds 1.671141 / 2.22; book margin 4.88%</div><div><b><a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610140930" rel="nofollow noopener">Bovada</a></b> — no-vig 55.4% / 44.6% · read 2026-10-13 21:44:25 UTC · <a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="nofollow noopener">quote API</a>. quoted decimal odds 1.69 / 2.1; book margin 6.79%</div><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct140930prvlgc" rel="nofollow noopener">Kalshi</a></b> — no-vig 57.8% / 42.2% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT140930PRVLGC-PRV" rel="nofollow noopener">quote API</a>. Kalshi book: 0.41–0.43 / 0.57–0.58 (spread 0.02/0.01, volume 3507.42/857.15); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080178" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 74% / 26%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card originated" data-basis="unverified" data-tour="CCT Europe 2026 Series #12 Play-In"
+ data-stale="0" data-pick="1" data-search="ryvex pcific cct europe 2026 series #12 play-in">
+<div class="top"><span>CCT Europe 2026 Series #12 Play-In · tier C · 2 pts</span>
+<span>2026-10-14 14:00:00 UTC · 1081113</span></div>
+<div class="teams"><div class="team"><span>Ryvex</span><span class="p">21%</span></div><div class="team pick"><span>PCIFIC ✅</span><span class="p">79%</span></div></div><div class="bar orig"><i style="width:21%"></i></div>
+<div><span class="badge originated">originated model line</span><span class="badge bad">source quote(s) rejected by the quality gate — see flagged page</span><span class="badge warn">Valve Regional Standings (official ranking, calibrated) — not a book price</span></div>
+<div class="src"><div>No bookmaker or exchange price exists for this pairing. This line is our own model output; the inputs and the calibration error are on the <a href="methodology.html">Methodology</a> page.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1081113" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 100%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="CCT Europe 2026 Series #11"
+ data-stale="0" data-pick="1" data-search="g2 ares the last resort cct europe 2026 series #11">
+<div class="top"><span>CCT Europe 2026 Series #11 · tier B · 3 pts</span>
+<span>2026-10-14 14:00:00 UTC · 1079623</span></div>
+<div class="teams"><div class="team pick"><span>G2 Ares ✅</span><span class="p">65%</span></div><div class="team"><span>The Last Resort</span><span class="p">35%</span></div></div><div class="bar"><i style="width:65%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">2 named source(s)</span></div>
+<div class="src"><div><b><a href="https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-the-last-resort-202610141000" rel="nofollow noopener">Bovada</a></b> — no-vig 62.5% / 37.5% · read 2026-10-13 21:44:25 UTC · <a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="nofollow noopener">quote API</a>. quoted decimal odds 1.5 / 2.5; book margin 6.67%</div><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct141000tlrg2a" rel="nofollow noopener">Kalshi</a></b> — no-vig 67% / 33% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT141000TLRG2A-TLR" rel="nofollow noopener">quote API</a>. Kalshi book: 0.28–0.37 / 0.64–0.68 (spread 0.09/0.04, volume 0.00/0.00); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1079623" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="Thunderpick World Championship 2026"
+ data-stale="0" data-pick="1" data-search="furia betboom thunderpick world championship 2026">
+<div class="top"><span>Thunderpick World Championship 2026 · tier S · 7 pts</span>
+<span>2026-10-14 16:00:00 UTC · 1080179</span></div>
+<div class="teams"><div class="team pick"><span>FURIA ✅</span><span class="p">70%</span></div><div class="team"><span>BetBoom</span><span class="p">30%</span></div></div><div class="bar"><i style="width:70%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">3 named source(s)</span></div>
+<div class="src"><div><b><a href="https://www.pinnacle.com/en/esports/" rel="nofollow noopener">Pinnacle</a></b> — no-vig 69.4% / 30.6% · read 2026-10-13 21:41:43 UTC · <a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111787/markets/related/straight" rel="nofollow noopener">quote API</a>. quoted decimal odds 1.374532 / 3.12; book margin 4.8%</div><div><b><a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-bb-team-202610141200" rel="nofollow noopener">Bovada</a></b> — no-vig 68.8% / 31.2% · read 2026-10-13 21:41:43 UTC · <a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="nofollow noopener">quote API</a>. quoted decimal odds 1.363636 / 3.0; book margin 6.67%</div><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct141200bbfuria" rel="nofollow noopener">Kalshi</a></b> — no-vig 71.5% / 28.5% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT141200BBFURIA-BB" rel="nofollow noopener">quote API</a>. Kalshi book: 0.28–0.29 / 0.71–0.72 (spread 0.01/0.01, volume 1657.70/747.73); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080179" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 89% / 11%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card none" data-basis="unverified" data-tour="CCT Europe 2026 Series #11"
+ data-stale="0" data-pick="0" data-search="forze reload lfo 10 cct europe 2026 series #11">
+<div class="top"><span>CCT Europe 2026 Series #11 · tier B · 3 pts</span>
+<span>2026-10-14 17:00:00 UTC · 1079624</span></div>
+<div class="teams"><div class="team nodata"><span>FORZE Reload</span><span class="p">—</span></div><div class="team nodata"><span>LFO 10</span><span class="p">—</span></div></div>
+<div><span class="badge none">no usable external line</span><span class="badge bad">source quote(s) rejected by the quality gate — see flagged page</span><span class="badge bad">no model coverage: LFO 10: only 1 collected market observation(s); LFO 10: not in Valve Regional Standings 2026-10-05</span></div>
+<div class="src"><div>No external source priced this match and no model input covers both teams, so no probability is published. Listed on <a href="flagged.html">Flagged for review</a>.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1079624" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 89% / 11%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card originated" data-basis="aggregator-fallback" data-tour="Elisa BreakOut Series #2"
+ data-stale="0" data-pick="1" data-search="wrotberry eac elisa breakout series #2">
+<div class="top"><span>Elisa BreakOut Series #2 · tier C · 2 pts</span>
+<span>2026-10-15 08:00:00 UTC · 1080279</span></div>
+<div class="teams"><div class="team"><span>WROTBERRY</span><span class="p">46%</span></div><div class="team pick"><span>EAC ✅</span><span class="p">54%</span></div></div><div class="bar orig"><i style="width:46%"></i></div>
+<div><span class="badge originated">aggregator fallback (not a licensed bookmaker)</span><span class="badge warn">aggregator, not a licensed bookmaker</span></div>
+<div class="src"><div><b><a href="https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-ea-copenhagen-hSC7a2mtP" rel="nofollow noopener">egamersworld.com odds widget</a></b> — no-vig 45.7% / 54.3% · read 2026-10-13 19:05:00 UTC. quoted decimal odds 2.01 / 1.69; book margin 8.92%</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080279" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 73% / 27%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="Stake Pulse Beat III"
+ data-stale="0" data-pick="1" data-search="mibr bc.game stake pulse beat iii">
+<div class="top"><span>Stake Pulse Beat III · tier B · 3 pts</span>
+<span>2026-10-15 10:00:00 UTC · 1079440</span></div>
+<div class="teams"><div class="team pick"><span>MIBR ✅</span><span class="p">57%</span></div><div class="team"><span>BC.Game</span><span class="p">43%</span></div></div><div class="bar"><i style="width:57%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">3 named source(s)</span></div>
+<div class="src"><div><b><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745/markets/related/straight" rel="nofollow noopener">Pinnacle</a></b> — no-vig 57.7% / 42.3% · read 2026-10-13 21:44:11 UTC. quoted decimal odds 1.6369 / 2.23; book margin 5.93%</div><div><b><a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-bc-game-202610150600" rel="nofollow noopener">Bovada</a></b> — no-vig 57.2% / 42.8% · read 2026-10-13 21:44:25 UTC · <a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="nofollow noopener">quote API</a>. quoted decimal odds 1.645161 / 2.2; book margin 6.24%</div><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct150600bcgmibr" rel="nofollow noopener">Kalshi</a></b> — no-vig 56.3% / 43.7% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT150600BCGMIBR-BCG" rel="nofollow noopener">quote API</a>. Kalshi book: 0.43–0.44 / 0.55–0.57 (spread 0.01/0.02, volume 1609.50/10.04); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1079440" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 30% / 70%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="Stake Pulse Beat III"
+ data-stale="0" data-pick="1" data-search="heroic envy stake pulse beat iii">
+<div class="top"><span>Stake Pulse Beat III · tier B · 3 pts</span>
+<span>2026-10-15 10:00:00 UTC · 1079442</span></div>
+<div class="teams"><div class="team pick"><span>Heroic ✅</span><span class="p">63%</span></div><div class="team"><span>Envy</span><span class="p">37%</span></div></div><div class="bar"><i style="width:63%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">3 named source(s)</span></div>
+<div class="src"><div><b><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637999450/markets/related/straight" rel="nofollow noopener">Pinnacle</a></b> — no-vig 62.3% / 37.7% · read 2026-10-13 21:44:01 UTC. quoted decimal odds 1.5155 / 2.5; book margin 5.98%</div><div><b><a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/heroic-envy-202610150600" rel="nofollow noopener">Bovada</a></b> — no-vig 61.6% / 38.4% · read 2026-10-13 21:44:25 UTC · <a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="nofollow noopener">quote API</a>. quoted decimal odds 1.526316 / 2.45; book margin 6.33%</div><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct150600envyhero" rel="nofollow noopener">Kalshi</a></b> — no-vig 66.2% / 33.8% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT150600ENVYHERO-ENVY" rel="nofollow noopener">quote API</a>. Kalshi book: 0.33–0.35 / 0.66–0.67 (spread 0.02/0.01, volume 13.66/2.91); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1079442" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 90% / 10%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="Elisa BreakOut Series #2"
+ data-stale="0" data-pick="1" data-search="ence bojong elisa breakout series #2">
+<div class="top"><span>Elisa BreakOut Series #2 · tier C · 2 pts</span>
+<span>2026-10-15 10:00:00 UTC · 1080280</span></div>
+<div class="teams"><div class="team pick"><span>ENCE ✅</span><span class="p">65%</span></div><div class="team"><span>BOJONG</span><span class="p">35%</span></div></div><div class="bar"><i style="width:65%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">1 named source(s)</span><span class="badge warn">single source</span></div>
+<div class="src"><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct150600bojence" rel="nofollow noopener">Kalshi</a></b> — no-vig 65.5% / 34.5% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT150600BOJENCE-BOJ" rel="nofollow noopener">quote API</a>. Kalshi book: 0.24–0.44 / 0.54–0.75 (spread 0.2/0.21, volume 30.16/3.29); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080280" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 94% / 6%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card originated" data-basis="aggregator-fallback" data-tour="Elisa BreakOut Series #2"
+ data-stale="0" data-pick="1" data-search="wrotberry ence elisa breakout series #2">
+<div class="top"><span>Elisa BreakOut Series #2 · tier C · 2 pts</span>
+<span>2026-10-15 12:00:00 UTC · 1080281</span></div>
+<div class="teams"><div class="team pick"><span>WROTBERRY ✅</span><span class="p">57%</span></div><div class="team"><span>ENCE</span><span class="p">43%</span></div></div><div class="bar orig"><i style="width:57%"></i></div>
+<div><span class="badge originated">aggregator fallback (not a licensed bookmaker)</span><span class="badge warn">aggregator, not a licensed bookmaker</span></div>
+<div class="src"><div><b><a href="https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-ence-GQ0xieRgQS" rel="nofollow noopener">egamersworld.com odds widget</a></b> — no-vig 56.5% / 43.5% · read 2026-10-13 19:05:00 UTC. quoted decimal odds 1.62 / 2.107; book margin 9.19%</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080281" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 29% / 71%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card originated" data-basis="aggregator-fallback" data-tour="Elisa BreakOut Series #2"
+ data-stale="0" data-pick="1" data-search="eac bojong elisa breakout series #2">
+<div class="top"><span>Elisa BreakOut Series #2 · tier C · 2 pts</span>
+<span>2026-10-15 14:00:00 UTC · 1080282</span></div>
+<div class="teams"><div class="team pick"><span>EAC ✅</span><span class="p">77%</span></div><div class="team"><span>BOJONG</span><span class="p">23%</span></div></div><div class="bar orig"><i style="width:77%"></i></div>
+<div><span class="badge originated">aggregator fallback (not a licensed bookmaker)</span><span class="badge warn">aggregator, not a licensed bookmaker</span></div>
+<div class="src"><div><b><a href="https://egamersworld.com/counterstrike/match/4yn491uUVl/ea-copenhagen-vs-bojong-vBsvfnHU5" rel="nofollow noopener">egamersworld.com odds widget</a></b> — no-vig 77.2% / 22.8% · read 2026-10-13 19:05:00 UTC. quoted decimal odds 1.19 / 4.02; book margin 8.91%</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080282" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 93% / 7%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card originated" data-basis="aggregator-fallback" data-tour="Elisa BreakOut Series #2"
+ data-stale="0" data-pick="1" data-search="wrotberry bojong elisa breakout series #2">
+<div class="top"><span>Elisa BreakOut Series #2 · tier C · 2 pts</span>
+<span>2026-10-15 16:00:00 UTC · 1080283</span></div>
+<div class="teams"><div class="team pick"><span>WROTBERRY ✅</span><span class="p">77%</span></div><div class="team"><span>BOJONG</span><span class="p">23%</span></div></div><div class="bar orig"><i style="width:77%"></i></div>
+<div><span class="badge originated">aggregator fallback (not a licensed bookmaker)</span><span class="badge warn">aggregator, not a licensed bookmaker</span></div>
+<div class="src"><div><b><a href="https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-bojong-r7kNL0-LX6" rel="nofollow noopener">egamersworld.com odds widget</a></b> — no-vig 76.7% / 23.3% · read 2026-10-13 19:05:00 UTC. quoted decimal odds 1.21 / 3.99; book margin 7.71%</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080283" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 87% / 13%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card named" data-basis="market-derived" data-tour="Elisa BreakOut Series #2"
+ data-stale="0" data-pick="1" data-search="eac ence elisa breakout series #2">
+<div class="top"><span>Elisa BreakOut Series #2 · tier C · 2 pts</span>
+<span>2026-10-15 18:00:00 UTC · 1080284</span></div>
+<div class="teams"><div class="team pick"><span>EAC ✅</span><span class="p">63%</span></div><div class="team"><span>ENCE</span><span class="p">37%</span></div></div><div class="bar"><i style="width:63%"></i></div>
+<div><span class="badge named">named bookmaker/exchange quote</span><span class="badge ok">1 named source(s)</span><span class="badge warn">single source</span></div>
+<div class="src"><div><b><a href="https://kalshi.com/markets/kxcs2game-26oct151400enceeac" rel="nofollow noopener">Kalshi</a></b> — no-vig 62.6% / 37.4% · read 2026-10-13 21:41:43 UTC · <a href="https://api.elections.kalshi.com/trade-api/v2/markets/KXCS2GAME-26OCT151400ENCEEAC-ENCE" rel="nofollow noopener">quote API</a>. Kalshi book: 0.28–0.45 / 0.53–0.69 (spread 0.17/0.16, volume 1.97/0.00); source listed the teams in the opposite order (prices reversed); market status active when read</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080284" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 27% / 73%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card originated" data-basis="aggregator-fallback" data-tour="Elisa BreakOut Series #2"
+ data-stale="0" data-pick="1" data-search="voca phantom elisa breakout series #2">
+<div class="top"><span>Elisa BreakOut Series #2 · tier C · 2 pts</span>
+<span>2026-10-16 08:00:00 UTC · 1080285</span></div>
+<div class="teams"><div class="team"><span>Voca</span><span class="p">49%</span></div><div class="team pick"><span>Phantom ✅</span><span class="p">51%</span></div></div><div class="bar orig"><i style="width:49%"></i></div>
+<div><span class="badge originated">aggregator fallback (not a licensed bookmaker)</span><span class="badge warn">aggregator, not a licensed bookmaker</span></div>
+<div class="src"><div><b><a href="https://egamersworld.com/counterstrike/match/4yn491uUVl/voca-vs-phantom-esports-zby52fbAja" rel="nofollow noopener">egamersworld.com odds widget</a></b> — no-vig 48.6% / 51.4% · read 2026-10-13 19:05:00 UTC. quoted decimal odds 1.87 / 1.77; book margin 9.97%</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080285" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 27% / 73%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card originated" data-basis="aggregator-fallback" data-tour="Elisa BreakOut Series #2"
+ data-stale="0" data-pick="1" data-search="havu roundsgg elisa breakout series #2">
+<div class="top"><span>Elisa BreakOut Series #2 · tier C · 2 pts</span>
+<span>2026-10-16 10:00:00 UTC · 1080286</span></div>
+<div class="teams"><div class="team pick"><span>HAVU ✅</span><span class="p">77%</span></div><div class="team"><span>RoundsGG</span><span class="p">23%</span></div></div><div class="bar orig"><i style="width:77%"></i></div>
+<div><span class="badge originated">aggregator fallback (not a licensed bookmaker)</span><span class="badge warn">aggregator, not a licensed bookmaker</span></div>
+<div class="src"><div><b><a href="https://egamersworld.com/counterstrike/match/4yn491uUVl/havu-vs-rounds-rg48QwsiJ9" rel="nofollow noopener">egamersworld.com odds widget</a></b> — no-vig 77% / 23% · read 2026-10-13 19:05:00 UTC. quoted decimal odds 1.2 / 4.01; book margin 8.27%</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080286" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 93% / 7%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card originated" data-basis="aggregator-fallback" data-tour="Elisa BreakOut Series #2"
+ data-stale="0" data-pick="1" data-search="voca havu elisa breakout series #2">
+<div class="top"><span>Elisa BreakOut Series #2 · tier C · 2 pts</span>
+<span>2026-10-16 12:00:00 UTC · 1080287</span></div>
+<div class="teams"><div class="team pick"><span>Voca ✅</span><span class="p">66%</span></div><div class="team"><span>HAVU</span><span class="p">34%</span></div></div><div class="bar orig"><i style="width:66%"></i></div>
+<div><span class="badge originated">aggregator fallback (not a licensed bookmaker)</span><span class="badge warn">aggregator, not a licensed bookmaker</span></div>
+<div class="src"><div><b><a href="https://egamersworld.com/counterstrike/match/4yn491uUVl/voca-vs-havu-nQn6IrZXP" rel="nofollow noopener">egamersworld.com odds widget</a></b> — no-vig 66.2% / 33.8% · read 2026-10-13 19:05:00 UTC. quoted decimal odds 1.38 / 2.7; book margin 9.5%</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080287" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 64% / 36%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card originated" data-basis="unverified" data-tour="CCT Europe 2026 Series #12 Play-In"
+ data-stale="0" data-pick="1" data-search="mellren privateer cct europe 2026 series #12 play-in">
+<div class="top"><span>CCT Europe 2026 Series #12 Play-In · tier C · 2 pts</span>
+<span>2026-10-16 14:00:00 UTC · 1081120</span></div>
+<div class="teams"><div class="team pick"><span>mellren ✅</span><span class="p">90%</span></div><div class="team"><span>Privateer</span><span class="p">10%</span></div></div><div class="bar orig"><i style="width:90%"></i></div>
+<div><span class="badge originated">originated model line</span><span class="badge bad">source quote(s) rejected by the quality gate — see flagged page</span><span class="badge warn">Valve Regional Standings (official ranking, calibrated) — not a book price</span></div>
+<div class="src"><div>No bookmaker or exchange price exists for this pairing. This line is our own model output; the inputs and the calibration error are on the <a href="methodology.html">Methodology</a> page.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1081120" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card originated" data-basis="aggregator-fallback" data-tour="Elisa BreakOut Series #2"
+ data-stale="0" data-pick="1" data-search="phantom roundsgg elisa breakout series #2">
+<div class="top"><span>Elisa BreakOut Series #2 · tier C · 2 pts</span>
+<span>2026-10-16 14:00:00 UTC · 1080288</span></div>
+<div class="teams"><div class="team pick"><span>Phantom ✅</span><span class="p">87%</span></div><div class="team"><span>RoundsGG</span><span class="p">13%</span></div></div><div class="bar orig"><i style="width:87%"></i></div>
+<div><span class="badge originated">aggregator fallback (not a licensed bookmaker)</span><span class="badge warn">aggregator, not a licensed bookmaker</span></div>
+<div class="src"><div><b><a href="https://egamersworld.com/counterstrike/match/4yn491uUVl/phantom-esports-vs-rounds-m6Cnk4tOxU" rel="nofollow noopener">egamersworld.com odds widget</a></b> — no-vig 86.8% / 13.2% · read 2026-10-13 19:05:00 UTC. quoted decimal odds 1.05 / 6.89; book margin 9.75%</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080288" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 93% / 7%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card originated" data-basis="aggregator-fallback" data-tour="Elisa BreakOut Series #2"
+ data-stale="0" data-pick="1" data-search="roundsgg voca elisa breakout series #2">
+<div class="top"><span>Elisa BreakOut Series #2 · tier C · 2 pts</span>
+<span>2026-10-16 16:00:00 UTC · 1080289</span></div>
+<div class="teams"><div class="team"><span>RoundsGG</span><span class="p">14%</span></div><div class="team pick"><span>Voca ✅</span><span class="p">86%</span></div></div><div class="bar orig"><i style="width:14%"></i></div>
+<div><span class="badge originated">aggregator fallback (not a licensed bookmaker)</span><span class="badge warn">aggregator, not a licensed bookmaker</span></div>
+<div class="src"><div><b><a href="https://egamersworld.com/counterstrike/match/4yn491uUVl/voca-vs-rounds-_dTpdE0K7U" rel="nofollow noopener">egamersworld.com odds widget</a></b> — no-vig 14.2% / 85.8% · read 2026-10-13 19:05:00 UTC. quoted decimal odds 6.4 / 1.063; book margin 9.7%</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080289" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 100%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card originated" data-basis="aggregator-fallback" data-tour="Elisa BreakOut Series #2"
+ data-stale="0" data-pick="1" data-search="phantom havu elisa breakout series #2">
+<div class="top"><span>Elisa BreakOut Series #2 · tier C · 2 pts</span>
+<span>2026-10-16 18:00:00 UTC · 1080290</span></div>
+<div class="teams"><div class="team pick"><span>Phantom ✅</span><span class="p">68%</span></div><div class="team"><span>HAVU</span><span class="p">32%</span></div></div><div class="bar orig"><i style="width:68%"></i></div>
+<div><span class="badge originated">aggregator fallback (not a licensed bookmaker)</span><span class="badge warn">aggregator, not a licensed bookmaker</span></div>
+<div class="src"><div><b><a href="https://egamersworld.com/counterstrike/match/4yn491uUVl/phantom-esports-vs-havu-H8whr4r586" rel="nofollow noopener">egamersworld.com odds widget</a></b> — no-vig 67.7% / 32.3% · read 2026-10-13 19:05:00 UTC. quoted decimal odds 1.36 / 2.85; book margin 8.62%</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080290" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 100% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article><article class="card originated" data-basis="unverified" data-tour="FRAG University 2026"
+ data-stale="0" data-pick="1" data-search="wildcard dendele frag university 2026">
+<div class="top"><span>FRAG University 2026 · tier C · 2 pts</span>
+<span>2026-11-12 00:00:00 UTC · 1080200</span></div>
+<div class="teams"><div class="team"><span>Wildcard</span><span class="p">25%</span></div><div class="team pick"><span>DENDELE ✅</span><span class="p">75%</span></div></div><div class="bar orig"><i style="width:25%"></i></div>
+<div><span class="badge originated">originated model line</span><span class="badge warn">Valve Regional Standings (official ranking, calibrated) — not a book price</span></div>
+<div class="src"><div>No bookmaker or exchange price exists for this pairing. This line is our own model output; the inputs and the calibration error are on the <a href="methodology.html">Methodology</a> page.</div>
+<div>Fixture listing: <a href="https://www.hotspawn.com/matches/1080200" rel="nofollow noopener">HotSpawn match page</a>
+ · crowd pick shown for reference only: 0% / 0%
+ (<a href="methodology.html">excluded from every calculation</a>)</div></div></article></div>
+<footer>Session 42580809 coverage board. Odds and probabilities are derived from the external sources linked on each
+row; rows that could not be confirmed are blank and published on <a href="flagged.html">Flagged for review</a>.
+Not affiliated with HotSpawn or any bookmaker. 18+ · betting involves risk.</footer>
+<script src="assets/app.js"></script></body></html>
