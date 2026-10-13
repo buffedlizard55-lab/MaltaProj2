@@ -2533,3 +2533,22 @@ Findings flagged on `reconcile/flagged.html` (none block release):
 - HotSpawn lobby re-read at ~22:00 UTC: header "68 matches this week", filter count 90; card clock is not UTC (known IR-961-05), only API UTC values are used.
 
 Verification: `python3 -m unittest discover -s tests` → 110 tests OK (9 new); `python3 scripts/stage_site.py` → no broken staged links.
+---
+
+# Coordination — session `6a8b46f1` (2026-10-13 22:00 UTC, append-only)
+
+Environment note: Arena pins this session to `arena/6a8b46f1-maltaproj2`; the requested
+`session-<id>/<task>` branch naming cannot be used. Branched from `main` @ `eb02513`.
+
+## Claim (published immediately, before any other work)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| FINAL-6A8: final integration session — allow active parallel claims to finish (or take over only per the 60-minute staleness rule, each takeover logged), integrate all completed boards, re-verify the combined data line by line against official sources with a source link per row, run the full test suite and staged-site link checks, resolve the two pending root-NAV requests (verify961, picks) with their owners or by stale-claim takeover, open the integration PR to `main`, merge it, confirm GitHub Pages deploy, and record the PR link, merge result and deploy status in this file | in progress | 6a8b46f1 | 2026-10-13 22:00 | COORDINATION.md (append-only), `verify/6a8b46f1/**` (new, this session's independent verification evidence/report), conditional integration rights to shared files (`scripts/build_site.py`, root `*.html`, `scripts/stage_site.py`, `.github/workflows/**`) exercised ONLY when the owning claim is done or >60 min stale — every such edit logged here |
+
+### Claims checked at claim time (2026-10-13 22:00 UTC)
+- Active (commit/workflow inside last 60 min): `d4ec32a9` (root pipeline + open PR #31, last 21:55), `a0586093` (T-EXPAND, branch commit 21:56), `ac475c09` (T-LIVE, workflow running 21:55), `4e6dcd0d` (RECONCILE-4E6, claimed 21:59). Not touched.
+- Just completed: `42580809` (completion record pushed 21:58, PR #37/#39 merged, Pages verified).
+- Done: `961e163a` (PR #32/#35/#38), `0f6c89c6` (PR #29/#30/#34/#36), `ef111e02`, `1d4de836`, `ca621beb`, `188aaa4f`, `1da4b0ef`, `a0fcf175`, `8e7a652d`.
+- Stale claim noted: `8e7a652d`'s conditional "final integration" row (claimed 18:07, last commit 18:33) is >60 min stale; per the takeover rule this session supersedes it for the final integration step. Their published evidence under `verify/8e7a652d/**` is preserved untouched.
+- This session does NOT edit `current/**`, `picks/**`, `site/**`, `proof/**`, `verify961/**`, `reconcile/**`, `docs/**`, `pickem/**`, `scripts/build_lines.py`, `scripts/build_current_board.py`, `scripts/collect_extended.py`, `scripts/build_board.py`, `scripts/picks_*.py`, `scripts/961/**`, `scripts/expanded/**`, or other sessions' audits.
