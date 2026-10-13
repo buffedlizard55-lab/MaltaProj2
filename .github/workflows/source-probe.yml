@@ -1,0 +1,20 @@
+name: Official source probe
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Retrieve public pages without authentication
+        shell: bash
+        run: |
+          mkdir probe
+          curl -L --max-time 45 -A 'MaltaProj2 research dashboard (public pages only)' -D probe/hotspawn.headers https://play.hotspawn.com/lobby -o probe/hotspawn.html || true
+          curl -L --max-time 45 -D probe/thunderpick.headers https://thunderpick.io/esports/cs2-betting -o probe/thunderpick.html || true
+          curl -L --max-time 45 -D probe/hltv.headers https://www.hltv.org/matches -o probe/hltv.html || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: source-probe
+          path: probe/
+          retention-days: 3
