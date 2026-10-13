@@ -1,0 +1,92 @@
+name: live-coverage (3cd9787c)
+
+# Session 3cd9787c / task T-COVER.
+#
+# Refreshes the current-lobby coverage board: every fixture the HotSpawn Pick'ems lobby lists, with a
+# probability from external (non-HotSpawn) bookmaker prices or a labelled originated estimate from the
+# official Valve CS2 Regional Standings. Runs hourly with no manual input and commits its own evidence
+# back to the branch it ran on. Scope guard: this workflow only writes files owned by this session
+#   data/live/**, live/**, and nothing else.
+on:
+  push:
+    branches: ['arena/3cd9787c-maltaproj2', 'main']
+    paths:
+      - 'scripts/live/**'
+      - 'tests/test_live_coverage.py'
+      - '.github/workflows/live-coverage.yml'
+  schedule:
+    - cron: '13 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: live-coverage-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Collect lobby fixtures, external prices and official Valve ratings
+        run: |
+          mkdir -p data/live
+          python3 scripts/live/collect_live.py --outdir data/live 2>&1 | tee /tmp/live_collect.log
+          echo "collector exit=${PIPESTATUS[0]}"
+
+      - name: Build the board, re-derive every number and render the pages
+        run: python3 scripts/live/build_live.py --data data/live --site live --allow-blank-quotes
+
+      - name: Tests (arithmetic, join rules, published-artifact invariants)
+        run: python3 -m unittest tests.test_live_coverage -v
+
+      - name: Publish a compact run summary as a workflow annotation
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          p = pathlib.Path('data/live/collection_log.json')
+          if p.is_file():
+              log = json.loads(p.read_text())
+              counts = log.get('counts', {})
+              print(f"::notice::live-coverage fixtures={counts.get('fixtures_in_snapshot')} "
+                    f"market_quotes={counts.get('quotes_market')} "
+                    f"reference_quotes={counts.get('quotes_reference')} "
+                    f"by_source={counts.get('by_source')}")
+          v = pathlib.Path('data/live/verification.json')
+          if v.is_file():
+              ver = json.loads(v.read_text())
+              print(f"::notice::live-coverage verification {ver['passed']}/"
+                    f"{ver['passed'] + ver['failed']} checks passed; rows={ver['rows_checked']} "
+                    f"market={ver['market_rows']} estimate={ver['estimate_rows']} "
+                    f"blank={ver['blank_rows']}")
+          b = pathlib.Path('data/live/board.json')
+          if b.is_file():
+              board = json.loads(b.read_text())
+              print(f"::notice::live-coverage summary {json.dumps(board['summary'])}")
+          PY
+
+      - name: Commit refreshed evidence, board and pages
+        run: |
+          git config user.name "live-coverage-bot"
+          git config user.email "live-coverage-bot@users.noreply.github.com"
+          git add -A data/live live
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "live-coverage: refresh lobby board, external quotes and verification [skip ci]"
+            for i in 1 2 3 4 5; do
+              git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break || sleep 10
+            done
+          fi
