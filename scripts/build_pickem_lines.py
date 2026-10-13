@@ -4,7 +4,7 @@ MaltaProj2 - Hotspawn Pick'em betting-line reconstruction.
 
 Builds:
   data/*.json                 machine-readable dataset (canonical)
-  docs/**                     static GitHub Pages site (dashboard + subpages)
+  pickem/**                   static site pages (dashboard + subpages), published at /pickem/
 
 Design rules enforced by this script:
   * Every row carries source links.
@@ -14,7 +14,7 @@ Design rules enforced by this script:
   * Our own line ("consensus market line") is a documented, reproducible
     de-margin of captured market prices only.
 
-Run:  python3 scripts/build.py
+Run:  python3 scripts/build_pickem_lines.py
 """
 
 import json
@@ -849,6 +849,7 @@ NAV = [
     ("methodology.html", "Methodology"),
     ("flagged.html", "Flagged for review"),
     ("sources.html", "Sources"),
+    ("../index.html", "Site dashboard"),
 ]
 
 
@@ -875,6 +876,8 @@ def page(title, subtitle, body, active):
 <footer><div class="wrap">
 Data snapshot {SNAPSHOT}. Hotspawn crowd percentages are shown for context only and are never used to
 compute a probability. All external prices are point-in-time captures - re-check the linked source before acting.
+<br>Part of the MaltaProj2 site: <a href="../index.html">site dashboard</a> (all games, live collection) &middot;
+<a href="../lines.html">VRS-originated reference lines</a> (28 pairwise Thunderpick lines).
 </div></footer>
 </body></html>"""
 
@@ -1116,6 +1119,14 @@ roster is /counterstrike/team/wrotberry-...</li>
 difference between raw and de-margined probability is small; on thin markets the raw and de-margined numbers can
 move by several points, which is why the raw method is documented on the Methodology page.</li>
 </ul>
+<h2>Independent cross-check against the parallel session's board</h2>
+<p class="small mut">A second session (<code>0c90448b</code>) collected Pinnacle and Bovada prices for the same
+lobby and published its own de-margined lines on the <a href="../index.html">site dashboard</a> (captured
+2026-10-13 ~18:15 UTC). The two builds used different books and independent pipelines, so the overlap is a useful
+sanity check: 9z vs Aurora 25.9% / 74.1% there against 25.9% / 74.1% here; Legacy vs PARIVISION 56.3% / 43.7%
+against 56.3% / 43.7%; ex-Keyd Stars vs Galorys 34.3% / 65.7% (Bovada + Pinnacle) against 32.7% / 67.3% (the
+Polymarket-only row here). Differences of a point or two are expected between books, and both boards label every
+price with its source.</p>
 """
     write(os.path.join(DOCS, "analysis.html"),
           page("Analysis", "How the two markets compare, where the crowd diverges, and what the data cannot tell us.",
@@ -1168,9 +1179,10 @@ between page components and between fetches, and (2) the market sum (overround) 
 badge derived from the captured spread, and the capture date is stated in the header of every page.</p>
 
 <h2>Reproducing this build</h2>
-<p>The entire site is generated from <code>scripts/build.py</code>, which holds the captured values next to the URL
-they came from. <code>python3 scripts/build.py</code> regenerates <code>data/*.json</code> and
-<code>docs/**</code>. Data files: <a href="assets/data/pool.json">pool.json</a>.</p>
+<p>The entire site is generated from <code>scripts/build_pickem_lines.py</code>, which holds the captured values
+next to the URL they came from. <code>python3 scripts/build_pickem_lines.py</code> regenerates
+<code>data/pickem_pool.json</code> and every page in <code>pickem/</code>.
+Data files: <a href="assets/data/pool.json">pool.json</a>.</p>
 """
     write(os.path.join(DOCS, "methodology.html"),
           page("Methodology", "Exactly how each number was produced, and what was excluded.",
