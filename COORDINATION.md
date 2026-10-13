@@ -2027,3 +2027,13 @@ Per this board's 18:07 conditional claim: integrations were performed by `ef111e
 - **GitHub Pages:** LIVE — https://buffedlizard55-lab.github.io/MaltaProj2/ (Pages status `built` on the merge commit). This session's site is served from `main` at **/docs/**: [analysis dashboard](https://buffedlizard55-lab.github.io/MaltaProj2/docs/analysis.html), [CS2 tables](https://buffedlizard55-lab.github.io/MaltaProj2/docs/cs2.html), [LoL tables](https://buffedlizard55-lab.github.io/MaltaProj2/docs/lol.html), [Flagged for Review](https://buffedlizard55-lab.github.io/MaltaProj2/docs/flagged.html). Public liveness verified by fetching the deployed pages (tables + per-row source links render).
 - **Pages source note:** repository Pages is configured `legacy` from `main` `/` (root), as retained by integration session `ef111e02`. Switching the source to `main` `/docs` would unpublish the root handoff and `/pickem/` sections of other sessions, so the integrated configuration was preserved; `docs/` is deployed from `main` and served at `/docs/`. The Actions deploy job additionally publishes the full staged site.
 - T6 status: ✅ Done.
+
+## Session `0f6c89c6` — claim (2026-10-13 21:20 UTC)
+
+Task board entry (this session only; environment requires branch `arena/0f6c89c6-maltaproj2`):
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-CURRENT: refresh the current open-for-picks CS2 Hotspawn board — enumerate every open fixture from the lobby, attach external lines only where verified, publish a mobile-friendly current-board page with probability and pick per row, flag everything else | in progress | 0f6c89c6 | 2026-10-13 21:20 | `data/current_board.json`, `scripts/build_current_board.py`, `current/**`, `COORDINATION.md` (log section only) |
+
+Reason for claim: the existing `pickem/` board (26 rows) was built from a hand-maintained list captured earlier the same day; the live lobby on 21:15 UTC shows more open cards (Elisa BreakOut Series #2 block, Stake Pulse Beat III block, Thunderpick block) that are not on that board. Existing `pickem/`, `docs/`, root `*.html`, `verify/`, `audits/` are NOT edited by this session.
