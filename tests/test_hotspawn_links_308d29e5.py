@@ -93,6 +93,11 @@ class HotSpawnMarketLinkAuditTests(unittest.TestCase):
         self.assertEqual(parser.rows, len(self.report["rows"]))
         self.assertEqual(parser.row_links, len(self.report["rows"]))
 
+    def test_live_check_attributes_permalink_to_separate_capture_and_one_read(self):
+        page = AUDIT.render(self.report)
+        self.assertIn("The separate HotSpawn lobby capture recorded", page)
+        self.assertIn("when opened in this one manual check", page)
+
 
 if __name__ == "__main__":
     unittest.main()
