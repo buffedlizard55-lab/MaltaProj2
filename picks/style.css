@@ -1,0 +1,78 @@
+/* Live picks dashboard — session ac475c09. Mobile-first: every table collapses to cards. */
+:root{
+  --bg:#0f1115; --panel:#171a21; --panel-2:#1e222b; --line:#2a2f3a;
+  --fg:#e8eaed; --muted:#9aa3b2; --accent:#4da3ff; --accent-2:#1f6feb;
+  --good:#2ecc71; --warn:#f5a623; --bad:#ff6b6b; --pick:#7ee787;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+header.site{
+  position:sticky;top:0;z-index:20;background:rgba(15,17,21,.96);
+  border-bottom:1px solid var(--line);backdrop-filter:blur(6px)
+}
+.wrap{max-width:1200px;margin:0 auto;padding:0 14px}
+header.site .wrap{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;padding-top:10px;padding-bottom:10px}
+.brand{font-weight:700;letter-spacing:.2px}
+.brand small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+nav.site{margin-left:auto;display:flex;flex-wrap:wrap;gap:6px}
+nav.site a{
+  color:var(--fg);text-decoration:none;font-size:14px;padding:8px 11px;border:1px solid var(--line);
+  border-radius:999px;background:var(--panel);white-space:nowrap
+}
+nav.site a[aria-current="page"]{border-color:var(--accent);color:var(--accent)}
+main{padding:16px 0 60px}
+h1{font-size:22px;margin:8px 0 4px}
+h2{font-size:17px;margin:26px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+h3{font-size:15px;margin:18px 0 6px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+p,li{color:#d5d9e0}
+a{color:var(--accent)}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+.card .n{font-size:24px;font-weight:700}
+.card .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.notice{border-left:3px solid var(--accent);background:var(--panel);padding:10px 12px;border-radius:8px;margin:12px 0}
+.notice.warn{border-left-color:var(--warn)}
+.notice.bad{border-left-color:var(--bad)}
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+th,td{padding:9px 10px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line);font-size:14px}
+th{background:var(--panel-2);font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
+tr:last-child td{border-bottom:none}
+td .team{font-weight:600}
+.pill{display:inline-block;padding:1px 7px;border-radius:999px;font-size:11px;border:1px solid var(--line);color:var(--muted);margin:1px 3px 1px 0;white-space:nowrap}
+.pill.ok{border-color:var(--good);color:var(--good)}
+.pill.warn{border-color:var(--warn);color:var(--warn)}
+.pill.bad{border-color:var(--bad);color:var(--bad)}
+.pick{color:var(--pick);font-weight:700}
+.prob{font-variant-numeric:tabular-nums;font-weight:600}
+.bar{height:6px;border-radius:3px;background:var(--panel-2);overflow:hidden;margin-top:4px;display:flex}
+.bar i{display:block;height:100%}
+.bar i.a{background:var(--accent)}
+.bar i.b{background:var(--warn)}
+.quote{display:block;font-variant-numeric:tabular-nums}
+.quote b{font-weight:600}
+.foot{margin-top:28px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+.scroll{overflow-x:auto}
+details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+code{background:var(--panel-2);padding:1px 5px;border-radius:5px;font-size:13px}
+
+/* Mobile: turn each row into a card with its column labels. */
+@media (max-width:760px){
+  table,thead,tbody,tr,td,th{display:block;width:100%}
+  thead{display:none}
+  table{border:none;background:transparent}
+  tr{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin:0 0 10px;padding:6px 4px}
+  td{border:none;padding:5px 10px;display:flex;gap:10px;justify-content:space-between;align-items:baseline}
+  td::before{content:attr(data-label);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.4px;flex:0 0 42%}
+  td[data-label=""]::before{content:none}
+  td.match{display:block}
+  td.match::before{content:none}
+  td.match .team{font-size:16px}
+  h1{font-size:20px}
+}

@@ -12,7 +12,7 @@ if OUT.exists():
 OUT.mkdir(parents=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','site'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site'):
     source=ROOT/name
     if source.exists():
         shutil.copytree(source,OUT/name,ignore=shutil.ignore_patterns('__pycache__','*.pyc','.git'))
@@ -25,7 +25,7 @@ if build_site.main() != 0:
     raise SystemExit('Root handoff generator failed in staging')
 (OUT/'.nojekyll').touch()
 assert (OUT/'docs/index.html').is_file()
-print('Staged root contributions, LineWatch at /docs/, /pickem/ board and /verify961/ pick board')
+print('Staged root contributions, LineWatch at /docs/, /pickem/ and /verify961/ boards and /picks/ live-lines board')
 # Verify local navigation across every staged section, not just LineWatch.
 from html.parser import HTMLParser
 from urllib.parse import urlsplit, unquote
