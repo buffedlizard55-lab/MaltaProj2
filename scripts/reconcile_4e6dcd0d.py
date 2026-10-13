@@ -271,6 +271,9 @@ def build_model(now: datetime | None = None) -> dict:
                 qflags.append("no_published_probability")
             if p_calc is not None and p_pub is not None and abs(p_calc - p_pub) > 0.002:
                 qflags.append("probability_does_not_match_decimal_odds")
+            if q["dec_a"] is not None and q["dec_b"] is not None and q["dec_a"] == q["dec_b"]:
+                # an identical price on both sides (seen as 1.80/1.80 on six unrelated fixtures) is not a usable line
+                qflags.append("identical_odds_both_sides_not_a_usable_line")
             if q["live"]:
                 # Kalshi markets are carried as market_is_live=True by the coverage board even before kickoff;
                 # for the reference-only exchange column that is tolerated while HotSpawn says the match has not started.
@@ -492,6 +495,13 @@ def src_links(f) -> str:
     return "".join(out) or "—"
 
 
+def why_blank(f) -> str:
+    reasons = sorted({x for q in f["quotes"] for x in q["flags"]})
+    if not reasons:
+        return "no external line found on any board"
+    return "quote excluded: " + ", ".join(e(r) for r in reasons)
+
+
 def card(f, show_flags=True) -> str:
     lock = f["lock_utc"] or ""
     pa, pb = f["consensus_p_a"], f["consensus_p_b"]
@@ -560,11 +570,11 @@ def build_pages(model: dict, out: Path) -> None:
     # ---- unpriced
     rows = "".join(
         f'<tr data-game="{e(f["game"])}"><td>{e(f["game"].upper())}</td><td>{e(f["team_a"])} vs {e(f["team_b"])}</td><td>{e(f["competition"])}</td>'
-        f'<td>{e(f["start_utc"])}</td><td>—</td><td><a href="{e(f["hotspawn_url"])}" rel="noopener">HotSpawn #{e(f["fixture_id"])}</a></td></tr>'
+        f'<td>{e(f["start_utc"])}</td><td>—</td><td>{why_blank(f)}</td><td><a href="{e(f["hotspawn_url"])}" rel="noopener">HotSpawn #{e(f["fixture_id"])}</a></td></tr>'
         for f in sorted(open_unpriced, key=lambda f: (f["game"] != "cs2", f["start_utc"] or "")))
     body = ('<h2>Open fixtures with no eligible external line</h2><div class="note">Probability and pick are intentionally <b>blank</b> here: no checked bookmaker/aggregator line passed the join + freshness rules. Nothing is estimated. '
             'The source link is the official HotSpawn fixture record only.</div>'
-            f'<p>{len(open_unpriced)} fixtures ({S["open_unpriced_cs2"]} CS2).</p><div class="scroll"><table><thead><tr><th>Game</th><th>Match</th><th>Tournament</th><th>Start (UTC)</th><th>Probability / pick</th><th>Source</th></tr></thead><tbody>{rows}</tbody></table></div>')
+            f'<p>{len(open_unpriced)} fixtures ({S["open_unpriced_cs2"]} CS2).</p><div class="scroll"><table><thead><tr><th>Game</th><th>Match</th><th>Tournament</th><th>Start (UTC)</th><th>Probability / pick</th><th>Why blank</th><th>Source</th></tr></thead><tbody>{rows}</tbody></table></div>')
     (out / "unpriced.html").write_text(page("No line yet", "unpriced.html", body, gen), encoding="utf-8")
     # ---- locked
     lp = "".join(card(f) for f in sorted(locked_priced, key=lambda f: f["start_utc"] or "", reverse=True))
@@ -618,7 +628,7 @@ def build_pages(model: dict, out: Path) -> None:
         ("IR-4E6-03", "Kalshi is a prediction exchange (price = probability, not a bookmaker line). It is shown as a reference and checked for agreement but never averaged into the consensus.", "https://kalshi.com/"),
         ("IR-4E6-04", "HLTV pages are not machine-readable from the build runner (HTTP 403 reported by session 961e163a), so HLTV is not used as a price input; originate-your-own-line work for fixtures without prices is blank rather than modeled.", "https://www.hltv.org/betting/analytics"),
         ("IR-4E6-06", "Many egamersworld rows were transcribed by a session from the aggregator page at 19:05 UTC (data/cs2_odds_egamersworld.json, written by scripts/write_cs2_odds.py) rather than fetched by an automated collector; they age out of the 4-hour window at 23:05 UTC and are then excluded automatically. Spot-checks above show the lines moved by under 1 pp since capture.", "https://egamersworld.com/counterstrike/matches"),
-        ("IR-4E6-07", "Several egamersworld rows show identical odds on both sides (probability exactly 50%). That is the source's published number, not a forecast; no pick is made for them and they are listed as no pick.", "https://egamersworld.com/counterstrike/matches"),
+        ("IR-4E6-07", "Six egamersworld rows carry the identical price 1.80 / 1.80 (exactly 50%) on unrelated fixtures. This is treated as not a usable line: the quote is excluded and the fixture stays blank. The 961 board shows a pick at exactly 50.0% for these rows. Cause (placeholder price vs. genuine even market) is not confirmed.", "https://egamersworld.com/counterstrike/matches"),
         ("IR-4E6-05", "The Pages deploy runs this builder at staging time from the data files on main; the data files themselves are refreshed by other sessions' workflows on their own schedules, so line ages shown are the age of those captures at build time.", "https://github.com/buffedlizard55-lab/MaltaProj2/actions"),
     ]
     srows = "".join(f'<tr><td>{a}</td><td>{e(b)}</td><td><a href="{e(c)}" rel="noopener">{e(c)}</a></td></tr>' if c.startswith("http") else f'<tr><td>{a}</td><td>{e(b)}</td><td>{e(c)}</td></tr>' for a, b, c in static)

@@ -113,6 +113,14 @@ class ReconcileTests(unittest.TestCase):
         self.assertIn("hotspawn.com/matches/", txt)
         self.assertNotIn("%</td>", txt.split("<tbody>")[1])
 
+    def test_identical_two_sided_price_is_never_a_line(self):
+        for f in self.model["fixtures"]:
+            for q in f["quotes"]:
+                if q["decimal_a"] is not None and q["decimal_a"] == q["decimal_b"]:
+                    self.assertFalse(q["eligible"])
+            if f["consensus_p_a"] is not None:
+                self.assertNotEqual(f["consensus_p_a"], 0.5)
+
     def test_cancelled_rows_have_no_pick(self):
         for f in self.model["fixtures"]:
             if f["cancelled"]:
