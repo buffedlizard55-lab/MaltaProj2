@@ -10,7 +10,7 @@ The probe only performs GET requests against public URLs, records the HTTP statu
 the byte count, a content hash and a short inert snippet of the body. Nothing is
 authenticated, nothing is bypassed, nothing is written back to any source.
 
-Output: out/probe.json  (+ raw/ mirrors for the endpoints that answered 200)
+Output: evidence/probe.json  (+ raw/ mirrors for the endpoints that answered 200)
 """
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ import urllib.error
 import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.abspath(os.path.join(HERE, "..", "out"))
+OUT = os.path.abspath(os.path.join(HERE, "..", "evidence"))
 RAW = os.path.join(OUT, "raw")
 
 UA = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -134,14 +134,14 @@ def fetch(item):
     rec["bytes"] = len(body)
     rec["sha256"] = hashlib.sha256(body).hexdigest()
     text = body[:4000].decode("utf-8", "replace")
-    rec["snippet"] = text[:1200].replace("\n", " ")[:1200]
+    rec["snippet"] = text[:300].replace("\n", " ")[:300]
     if rec["status"] == 200 and len(body) > 0:
         os.makedirs(RAW, exist_ok=True)
         safe = "".join(c if c.isalnum() or c in "-_" else "_" for c in key)[:60]
         ext = "json" if (text.lstrip()[:1] in "[{" and "json" in (rec["content_type"] or "")) else "txt"
         path = os.path.join(RAW, f"{safe}.{ext}")
         with open(path, "wb") as fh:
-            fh.write(body[:8_000_000])
+            fh.write(body[:400_000])
         rec["saved"] = os.path.relpath(path, OUT)
     return rec
 

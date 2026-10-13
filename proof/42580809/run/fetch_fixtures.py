@@ -7,20 +7,22 @@ Reverse-engineered source (public, unauthenticated):
   JSON API     https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures
 
 The lobby page only server-renders the next handful of cards, so the API response is the
-complete source of everything the pick'em game can currently offer. Both are written back
-verbatim as evidence; the normalised window applies only the documented rule below.
+complete source of everything the pick'em game can currently offer. The API payload itself
+is never stored wholesale (11k+ historical rows); its size and SHA-256 are recorded, and the
+unmodified rows for the current pick'em window are kept as evidence.
 
-Window rule (identical to the rule already published by this repo):
-  keep a fixture unless status == "ended" AND its scheduled start is older than 24 h.
-  (Recently ended fixtures are kept for auditing; nothing is ever invented.)
+Window rule (identical to the rule this repo already publishes):
+  drop a fixture only when status == "ended"; also drop non-live rows whose scheduled start
+  is older than 24 h. Nothing is ever invented.
 
-Outputs (committed back to the session branch):
-  out/fixtures_raw.json   - every fixture exactly as returned by the API
-  out/fixtures.json       - normalised pick'em window + counts
+Outputs (committed back to the session branch, see proof/42580809/evidence/):
+  fixtures.json            - normalised pick'em window + counts + evidence
+  fixtures_raw_window.json - unmodified API rows for the same fixtures
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import urllib.error
@@ -28,18 +30,18 @@ import urllib.request
 from datetime import datetime, timezone
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.abspath(os.path.join(HERE, "..", "out"))
+OUT = os.path.abspath(os.path.join(HERE, "..", "evidence"))
 API = "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1"
 LOBBIES = ["https://play.hotspawn.com/lobby"]
 UA = "MaltaProj2-research/1.0 (+https://github.com/buffedlizard55-lab/MaltaProj2)"
 LIVE_STATUSES = {"upcoming", "live", "open", "pending", "scheduled"}
 
 
-def get(url: str, timeout: int = 90) -> tuple[int, bytes, str]:
+def get(url: str, timeout: int = 90):
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "*/*"})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
-            return resp.status, resp.read(), resp.headers.get("Date") or ""
+            return resp.status, resp.read(), (resp.headers.get("Date") or "")
     except urllib.error.HTTPError as exc:
         return exc.code, exc.read(), (exc.headers.get("Date") if exc.headers else "") or ""
     except Exception as exc:  # noqa: BLE001
@@ -76,15 +78,12 @@ def main() -> int:
                                                "response_date_header": date2}
         if st2 == 200:
             text = body2.decode("utf-8", "replace")
-            # count the fixture cards the lobby server-renders (verified in earlier sessions)
             lobby_snapshots[url] = {
                 "bytes": len(text),
+                "sha256": hashlib.sha256(body2).hexdigest(),
                 "has_ng_state": "ng-state" in text,
                 "script_tag_count": text.count("<script"),
             }
-            os.makedirs(OUT, exist_ok=True)
-            with open(os.path.join(OUT, "lobby.html"), "wb") as fh:
-                fh.write(body2)
     evidence["lobby_snapshots"] = lobby_snapshots
 
     if st != 200:
@@ -92,13 +91,9 @@ def main() -> int:
         return 1
 
     fixtures = json.loads(body.decode("utf-8", "replace"))
-    write("fixtures_raw.json", {
-        "collected_at_utc": evidence["collected_at_utc"],
-        "source": API + "/fixtures",
-        "source_page": "https://play.hotspawn.com/lobby",
-        "count": len(fixtures),
-        "fixtures": fixtures,
-    })
+    evidence["fixtures_api"] = {"count": len(fixtures),
+                                "sha256": hashlib.sha256(body).hexdigest(),
+                                "bytes": len(body)}
 
     now_ms = int(now.timestamp() * 1000)
     window = []
@@ -148,6 +143,14 @@ def main() -> int:
     for r in rows:
         by_sport[r["sport"] or "unknown"] = by_sport.get(r["sport"] or "unknown", 0) + 1
 
+    keep_ids = {r["fixture_id"] for r in rows}
+    write("fixtures_raw_window.json", {
+        "collected_at_utc": evidence["collected_at_utc"],
+        "source": API + "/fixtures",
+        "note": "unmodified API rows for every fixture in the normalised window",
+        "count": len([f for f in fixtures if str(f.get("id")) in keep_ids]),
+        "fixtures": [f for f in fixtures if str(f.get("id")) in keep_ids],
+    })
     write("fixtures.json", {
         "collected_at_utc": evidence["collected_at_utc"],
         "source_api": API + "/fixtures",
