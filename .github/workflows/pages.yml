@@ -25,6 +25,10 @@ jobs:
       - run: pip install -r scripts/requirements.txt
       - name: Validate preserved evidence and arithmetic
         run: python -m unittest discover -s tests -v
+      - name: Verify independent audit handoffs
+        run: |
+          python audits/1d4de836/verify_snapshot.py --html docs/evidence/probe/lobby.txt
+          python -m unittest discover -s audits/1916f96c -p 'test_*.py' -v
       - name: Attempt public refresh (preserve snapshot on source failure)
         if: github.ref == 'refs/heads/main'
         run: python scripts/collect.py

@@ -34,6 +34,8 @@ def parse_lobby(html, retrieved_at):
             continue
         url, body = value.get('u', ''), value.get('b')
         if url.endswith('/api/v1/fixtures') and isinstance(body, list):
+            if fixtures is not None:
+                raise ValueError('Ambiguous fixture responses')
             fixtures = body
         if isinstance(body, dict) and isinstance(body.get('permalinks'), dict):
             links = body['permalinks']
@@ -58,6 +60,8 @@ def parse_lobby(html, retrieved_at):
             raise ValueError('Unexpected permalink origin')
         start = iso_ms(f.get('scheduled_start_time'))
         flags = ['No verified current external market mapping']
+        if f.get('best_of') is None or f.get('series_format') is None:
+            flags.append('Series format unverified')
         if start and datetime.fromisoformat(start) < datetime.fromisoformat(retrieved_at) and f.get('status') == 'scheduled':
             flags.append('Past start but source status still scheduled')
         if f.get('lock_offset_sec') != 300:
@@ -67,6 +71,7 @@ def parse_lobby(html, retrieved_at):
             tournament=f['competition_name'], game=f['sport_alias'], start_utc=start,
             display_time=visible.get(source), source=source, lobby_source=LOBBY,
             source_status=f.get('status'), visible_card=source in visible,
+            best_of=f.get('best_of'), series_format=f.get('series_format'),
             lock_utc=iso_ms(f.get('lock_time')), lock_offset_sec=f.get('lock_offset_sec'),
             odds_a=None, odds_b=None, probability_a=None, probability_b=None,
             status='unverified', flags=flags))

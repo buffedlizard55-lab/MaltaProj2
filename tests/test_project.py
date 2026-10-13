@@ -41,7 +41,7 @@ class AuditTests(unittest.TestCase):
         with self.assertRaises(ValueError): iso_ms('tomorrow')
     def test_every_row_has_official_source(self):
         build()
-        allowed={'play.hotspawn.com','www.hotspawn.com','thunderpick.io','www.hltv.org'}
+        allowed={'play.hotspawn.com','www.hotspawn.com','thunderpick.io','www.hltv.org','gg.bet','www.rivalry.com'}
         for file in (ROOT/'docs').glob('*.html'):
             soup=BeautifulSoup(file.read_text(),'html.parser')
             for row in soup.select('tbody tr'):

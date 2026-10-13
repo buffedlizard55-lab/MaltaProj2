@@ -58,3 +58,10 @@ Session: `ef111e02` (final integration session). This environment requires all w
 - `1d4de836`: Reproducible verifier added only under owned audit scope (`audits/1d4de836/verify_snapshot.py`). Full 86-row check passes; five corruption/missing-evidence negative cases rejected. No application or integration file changed.
 
 - Integration conflict: add/add on COORDINATION.md resolved by retaining both boards verbatim (audit board above). No audit evidence discarded.
+
+### Independent handoff integration
+- `1d4de836` completed audit branch merged into this integration branch; all evidence preserved. Plain pull --rebase tried to flatten merge ancestry and reintroduced the board add/add conflict; aborted without losing work, then used pull --rebase=merges successfully.
+- `1916f96c` completed handoff copied ONLY `audits/1916f96c/**` as explicitly requested; its root board and duplicate workflow were not copied. Independent six tests pass, and the first audit rechecks all 86 rows against exact archived public HTML.
+- Audit reports are published through Sources & audit and new findings F09–F13. 9z / 9z Team label relation independently rechecked on the official Hotspawn detail page; quote flag corrected while retaining unverified cross-provider event join/freshness.
+- Additional official pages rechecked: https://gg.bet/en/esports (regional denial), https://www.rivalry.com/operationally-closed (closure notice), https://help.smarkets.com/hc/en-gb/articles/214058369-How-to-calculate-implied-probability-in-betting (American odds formulas).
+- Current local verification: 7 integration tests + 6 independent audit tests + exhaustive 86-row snapshot comparison all pass. GitHub CI of initial dashboard is successful.
