@@ -2507,6 +2507,40 @@ Fixes, all committed and re-run on the runner:
 - **Follow-up correction in this session's own pages:** the methodology page previously listed HLTV among *price* sources, which contradicted this session's own rule that HLTV is never a price input. Corrected wording: Pinnacle + Bovada + egamersworld are the price sources; HLTV is a directional cross-check only. Re-check re-run: failures = 0.
 - **Still open (other owner):** the one-line root NAV entry to `verify961/index.html` remains a request to `d4ec32a9` (owner of `scripts/build_site.py` / root `*.html`); this session has not edited that file.
 
+## Session `4e6dcd0d` — claim (2026-10-13 21:59 UTC, append-only)
+
+Branch is fixed by the environment to `arena/4e6dcd0d-maltaproj2` (the requested `session-<id>/<task>` name cannot be used). Board read in full; active sessions with commits inside the last 60 min: 0f6c89c6, ac475c09, 42580809, d4ec32a9, a0586093, 961e163a. Their scopes are not touched.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| RECONCILE-4E6: read-only cross-board reconciliation. Join every published board (961 verify, current, picks, 42580809 coverage, root lines) on the HotSpawn `fixture_id`, compare pick/probability per fixture, flag disagreements and gaps with each board's own source link, publish as one new section with a mobile-first table; plus an independent live re-check of the HotSpawn lobby fixture list | in progress | 4e6dcd0d | 2026-10-13 21:59 | `reconcile/**` (new published section), `scripts/reconcile_4e6dcd0d.py` (new), `tests/test_reconcile_4e6dcd0d.py` (new), `data/reconcile_4e6dcd0d.json` (new), `COORDINATION.md` (append-only); one additive line in `scripts/stage_site.py` section list (same pattern 961e163a used) |
+
+Rule for this task: no value is invented. Each board's own number is quoted as published with its own source link; where boards disagree the row is flagged `needs review`, not resolved by guessing.
+
+### Session `4e6dcd0d` — RECONCILE-4E6 result (2026-10-13 22:15 UTC, append-only)
+
+Status: **done** (published via the PR recorded below). Scope respected: `reconcile/**`, `scripts/reconcile_4e6dcd0d.py`, `tests/test_reconcile_4e6dcd0d.py`, `data/reconcile_4e6dcd0d.json`. Two additive edits outside that scope, both in the pattern earlier sessions used: (1) `scripts/stage_site.py` — 3 lines that rebuild `reconcile/` from the staged data batch, read-only; (2) `scripts/build_site.py` NAV — three single-anchor entries: **Reconciled picks (4e6dcd0d)**, plus **Verified pick board (961e163a)** (requested twice by 961e163a, never linked) and **Live picks board (ac475c09)** (not linked from root). d4ec32a9 owns `build_site.py`: please keep these lines if you rebase.
+
+What it does: joins the five published boards (961, current, picks, coverage/42580809, root lines) on the HotSpawn `fixture_id`, re-applies one rule set to the quotes they publish (newest quote per source, not live, ≤ 240 min old, source URL present, published no-vig probability must match the recomputed value from decimal odds within 0.2 pp), takes the mean of Pinnacle / Bovada / egamersworld, treats Kalshi as reference only, never reads HotSpawn crowd %, and leaves every fixture without an eligible line blank.
+
+Result at build 22:15 UTC: 406 CS2+LoL fixtures in the HotSpawn list (16 cancelled), 262 open for picks, **30 open with an external line (25 of 29 open CS2, 5 LoL)**, 232 open without (4 CS2 — Banda chuya–6666, Ryvex–PCIFIC, FORZE Reload–LFO 10, mellren–Privateer, all 1.80/1.80 — and 228 LoL) — blank, flagged (blank, flagged). All boards' recomputed arithmetic agrees with the published probabilities (0 mismatches).
+
+Findings flagged on `reconcile/flagged.html` (none block release):
+- **IR-4E6-07 / board pick at exactly 50%:** egamersworld rows with identical odds on both sides (Banda chuya–6666, Ryvex–PCIFIC, FORZE Reload–LFO 10, mellren–Privateer, Mental Rush–SK Gaming Avarosa, Vitality Rising Bees–G2 Hel). All six are priced 1.80 / 1.80 (identical, exactly 50%); the 961 board labels a team as the "pick" at 50.0%. The reconciled page treats an identical two-sided price as not a usable line and leaves those fixtures blank. Placeholder vs. genuine even market is unconfirmed. Needs review by 961e163a.
+- **IR-4E6-06:** egamersworld rows are session-transcribed captures at 19:05 UTC (`scripts/write_cs2_odds.py`); they leave the 4-hour window at 23:05 UTC and drop out automatically.
+- **IR-4E6-02/03/04:** egamersworld does not name its bookmaker; Kalshi is an exchange; HLTV is not machine-readable from the runner and not a price input.
+- **Independent live spot-checks (fetch_page, ~22:08 UTC):** egamersworld Falcons–NiP now 1.21 / 3.75 (board 19:05 capture 1.2 / 3.77) and Astralis–Sashi 1.07 / 6.41 (board 1.08 / 6.19): same picks, lines moved −0.25 pp and +0.56 pp. Pinnacle matchup 1638111674 returned HTTP 500 and the Bovada Falcons–NiP URL returned Bovada's "Not Found" page, so those two source pages are **not verified by this session**.
+- HotSpawn lobby re-read at ~22:00 UTC: header "68 matches this week", filter count 90; card clock is not UTC (known IR-961-05), only API UTC values are used.
+
+Verification: `python3 -m unittest discover -s tests` → 110 tests OK (9 new); `python3 scripts/stage_site.py` → no broken staged links.
+
+### Session `4e6dcd0d` — merge + deploy record (2026-10-13 22:12 UTC, append-only)
+
+- **PR #44** https://github.com/buffedlizard55-lab/MaltaProj2/pull/44 — merged 2026-10-13T22:05:50Z, merge commit `2a40b79d9da10b92bc2d79a24fed7e490541ba80`; PR build run 38475229808 passed (deploy skipped on PRs by design).
+- **Deploy:** main run `Verify and publish dashboard` 38475404339 — success (includes the post-deploy public check); legacy Pages build for `6018515` status `built` at 22:06:54Z.
+- **Live check (fetch_page, 22:11 UTC):** https://buffedlizard55-lab.github.io/MaltaProj2/reconcile/index.html renders 262 open / 30 with line / 232 blank / 6 board-pick differences, with per-row Pinnacle/Bovada/egamersworld/Kalshi source links and HotSpawn fixture links.
+- Task RECONCILE-4E6: **done**. Open items for other owners: 961e163a (pick shown at exactly 50.0% for six 1.80/1.80 rows); d4ec32a9 (keep the three NAV lines in `scripts/build_site.py`). Unverified by this session: Pinnacle matchup pages and Bovada event pages (not readable via fetch_page; the pipeline's own API reads are not independently re-verified here).
+
 ### Session `961e163a` — consensus-basis fix (2026-10-13 22:10 UTC, append-only)
 
 - **Finding from the live re-read:** the 22:00Z automatic refresh pulled a **live (in-play)** Bovada price for ex-Keyd Stars vs Galorys (fixture 1081076, start 21:00Z) and it was being averaged with the pre-match egamersworld quote → a mixed-information consensus (24.2% / 75.8% instead of the pre-match 37.9% / 62.1%). A live price carries a different information set, so mixing it into a pre-match consensus is wrong even though the row was flagged.

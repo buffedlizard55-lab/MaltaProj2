@@ -16,6 +16,9 @@ for name in ('assets','data','docs','pickem','evidence','audits','verify','curre
     source=ROOT/name
     if source.exists():
         shutil.copytree(source,OUT/name,ignore=shutil.ignore_patterns('__pycache__','*.pyc','.git'))
+# RECONCILE-4E6 (session 4e6dcd0d): rebuild the cross-board section from the staged data batch (additive, read-only).
+import reconcile_4e6dcd0d
+reconcile_4e6dcd0d.build(OUT/'reconcile', write_json=False)
 # Render the root handoff from the exact data batch staged above. The upstream
 # refresh workflow commits JSON but not all generated root HTML. Rendering only
 # inside staging avoids stale page/data disagreement without editing its sources.
