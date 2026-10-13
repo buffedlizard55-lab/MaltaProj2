@@ -2590,6 +2590,10 @@ Environment note: Arena pins this session to `arena/6a8b46f1-maltaproj2`; the re
 
 # Session `2b8c07e9` — Final integration, navigation unification, verification & deploy record (2026-10-13 22:20 UTC)
 
+---
+
+# Session `0f71ea59` — independent live re-verification, open follow-ups, final integration (2026-10-13 21:58 UTC)
+
 ## Task board entry
 
 | Task | Status | Owner | Claimed UTC | File scope |
@@ -2659,3 +2663,50 @@ Environment note: Arena pins this session to `arena/6a8b46f1-maltaproj2`; the re
 - **Conflict resolution en route (nothing discarded):** COORDINATION.md append conflicts with the 961e163a/4e6dcd0d/2b8c07e9 records resolved keep-both; the `malta-961-bot` evidence refresh pushed onto this session branch mid-PR was merged with the bot's freshly collected `data/961/*` + `verify961/*` taken as newest (22:15:58Z capture), then the full gate suite was re-run (115 tests OK, recheck failures=0, audit 0 failures) before the merge.
 - **Live verification (fetch_page, 22:21–22:22 UTC):** `site/42580809/methodology.html` renders the new "Market source" columns with Kalshi/Bovada/Pinnacle/egamersworld links on every hold-out/calibration row; root dashboard serves the 22:12Z-derived lines with the source-range UI; Pages API status `built`.
 - **Task status:** FINAL-6A8 **done** (claim 22:00, PR #49 merged 22:19, deploy verified 22:20). Remaining follow-up for any active session: `a0586093` T-EXPAND has not opened a PR (last branch commit 21:56 UTC) — per the 60-minute rule it becomes take-over eligible at 22:56 UTC if no commits; its scope (`scripts/expanded/**`, `data/expanded/**`, `market/**`, `tests/test_expanded_lines.py`) does not overlap anything merged here.
+
+| Independent live re-verification of every published pick/probability row (verify961 board + current/ + root tables) against primary sources right now; resolve open follow-ups (Bovada URL re-check, lobby "68 this week" reconciliation, pickem source label); publish verification evidence page; final integration PR → main, merge, confirm Pages deploy | in progress | 0f71ea59 | 2026-10-13 21:58 | `verify/0f71ea59/**`, `data/0f71ea59/**`, `tests/test_0f71ea59.py`, `COORDINATION.md` (this section only) |
+
+## Scope notes (read before starting anything else)
+
+- `scripts/build_site.py` NAV + root `*.html` are owned by `d4ec32a9` (PR #31 OPEN, updated 21:55Z — claim is fresh). This session will NOT edit those files. The requested NAV entry **"Verified pick board (961e163a)" → `verify961/index.html`** (logged by 961e163a) will be re-requested here; if the d4ec32a9 claim goes stale (>60 min with no commits) this session will add the one-line entry under the takeover rule and log it.
+- No other session's files will be edited. Generated shared data (`data/*.json` bot-refreshed) is read-only for this session except where a documented takeover applies.
+- Session branch is fixed to `arena/0f71ea59-maltaproj2` (environment constraint; `session-<id>/<task>` naming not usable).
+
+### Session `0f71ea59` — verification results, follow-ups resolved, final integration (2026-10-13 22:30 UTC)
+
+## Task status
+
+**done** — every published pick/probability re-derived line by line from raw quotes; primary sources re-read live; open follow-ups resolved or flagged; site integrated, tested and published.
+
+## Line-by-line verification (10/10 checks, failures = 0)
+
+- Recomputed all 39→38 verified rows of `data/961/board.json` (snapshot regenerated hourly) from `data/961/quotes.json` raw American prices and per-row odds: per-source no-vig + overround exact at a declared precision layer (C2), consensus = mean over `consensus_sources` with the post-PR #46 pre-match-only rule enforced (C3), pick = argmax and pick_probability = max (C4), every verified row carries HotSpawn links + per-source http(s) URL + retrieval timestamp (C5), Hotspawn crowd % never an input (C6), HLTV never a price source (C7), quote decimals derive exactly from raw American prices (C8), board source rows match quote provenance orientation-aware (C9), live re-read ledger agrees with the board (C10). All 253 unverified rows blank and source-less (C1). Evidence: `data/0f71ea59/verification.json`; page: `verify/0f71ea59/index.html`; tests: `tests/test_0f71ea59.py` (14 tests; full repo suite 129 OK).
+
+## Live source re-reads (22:00–22:15 UTC, session-side platform fetch; ledger `data/0f71ea59/live_checks.json`)
+
+- **Pinnacle guest API** (row URL readable): matchup 1638279105 moneyline 155/-216 — **exact** vs captured quote.
+- **Bovada coupon API** (readable): events 32094574 (-375/+260) and 32094772 (+170/-225) — **exact** vs captured quotes; CS2 event 32033778 present with matching competitors (price block not in sampled chunks).
+- **egamersworld CS2 list** (readable): 1081104 Grêmio 1.75/1.96 — **exact**; 1081076 2.41/1.50 and 1081105 1.51/2.33 — market moved slightly since capture, same favourite direction.
+- **HLTV per-match analytics** (readable): 6/6 statements ("X is the bookmaker favorite with the best odds") agree with the board picks (Aurora, Astralis, Fnatic, Falcons, Legacy, Galorys).
+- **Bovada event pages** (2/2 sampled): "Page Not Found" + reCAPTCHA for anonymous readers — flagged IR-0f71ea59-01.
+
+## Open follow-ups from earlier sessions — resolved
+
+- **(a) Bovada URL re-check:** event-page URLs do not resolve anonymously (2/2); the per-row coupon API URL is readable and matches captured quotes exactly. Rows keep both links; the API URL is the machine-verifiable source. Flagged, not removed.
+- **(b) pick'em source label:** decided — keep both labels in their own boards ("bc.game (via EGamersWorld)" on /pickem/ with its widget capture; "egamersworld.com odds widget" on verify961, reproducible from the page text which renders bare odds pairs with no bookmaker name). No cross-session files changed.
+- **(c) lobby "68 this week":** UNRESOLVED and unguessed — no documented field of the public fixtures API reproduces 68 (or the lobby's 90); candidate counts published in the report. Quoted as a lobby-counter observation only. Flagged IR-0f71ea59-02.
+
+## New irregularities published on `verify/0f71ea59/index.html` (none block release)
+
+IR-0f71ea59-01 Bovada event URLs not anonymously readable · 02 lobby counter unresolvable · 03 HLTV 2399204 contradiction (live re-read says Galorys; 961e163a recorded ex-Keyd Stars at 21:47Z — both archived) · 04 quotes.json `raw_price_format` mislabel on Bovada rows (values correct; collector of 961e163a, not edited) · 05 display-rounding artifacts ≤4.2e-5 · 06 Pinnacle schema asymmetry (no source_api_url field) · 07 fixtures API includes test rows (ids 1/3/999999; collectors filter; no leak verified) · 08 verify961 rules text lists "HLTV-published bookmaker odds" while methodology says cross-check-only (zero HLTV-priced rows — C7) · 09 consensus-basis correction by 961e163a (PR #46) re-verified and now enforced by C3.
+
+## Integration performed (final integration scope)
+
+- Merged `origin/main` (PR #31, #44, #46 and bot refreshes) into this branch; `COORDINATION.md` add/add conflicts resolved by keeping both sides verbatim (append-only), nothing discarded.
+- `scripts/build_site.py` NAV: restored the **"Reconciled picks (4e6dcd0d)"** entry (published by PR #44 and later dropped by conflict resolution) and added **"Independent verification (0f71ea59)"**. All 15 nav targets exist in the staged artifact (checked).
+- `python3 scripts/build_site.py` → 32 root files, no broken internal links. `python3 scripts/stage_site.py` → PASS across every session section (verify/0f71ea59 staged via the existing `verify` section; no stage_site.py edit needed).
+- `python3 -m unittest discover -s tests` → 129 tests OK (incl. this session's 14).
+
+## Sources used for manual review
+
+https://play.hotspawn.com/lobby · https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures · https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638279105/markets/related/straight · https://www.bovada.lv/services/sports/event/v2/events/A/description/esports · https://egamersworld.com/counterstrike/matches · https://www.hltv.org/betting/analytics/2399384/9z-vs-aurora-thunderpick-world-championship-2026 (and the five other per-match analytics pages listed in `data/0f71ea59/live_checks.json`)

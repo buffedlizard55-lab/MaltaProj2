@@ -89,6 +89,12 @@ NAV = [
     ("picks/index.html", "Live picks board (ac475c09)"),
     # integration link requested by session 961e163a (VERIFY-961): verified pick board
     ("verify961/index.html", "Verified pick board (961e163a)"),
+    # integration links added by session 0f71ea59 (final integration, documented in
+    # COORDINATION.md): restore the Reconciled picks entry published by session 4e6dcd0d
+    # (PR #44) that later conflict resolutions dropped from the NAV list, and link this
+    # session's independent line-by-line verification report
+    ("reconcile/index.html", "Reconciled picks (4e6dcd0d)"),
+    ("verify/0f71ea59/index.html", "Independent verification (0f71ea59)"),
 ]
 
 

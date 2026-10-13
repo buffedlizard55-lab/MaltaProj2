@@ -1,0 +1,83 @@
+{
+ "session": "0f71ea59",
+ "generated_at_utc": "2026-10-13T22:27:51Z",
+ "board_generated_at_utc": "2026-10-13T22:23:58Z",
+ "rules": [
+  "External betting lines only (Pinnacle, Bovada, HLTV-published bookmaker odds, egamersworld).",
+  "Per source: q = 1/decimal; p_a = q_a/(q_a+q_b) removes that source's margin.",
+  "Consensus = arithmetic mean of per-source no-vig shares.",
+  "Consensus basis = pre-match quotes only; live (in-play) quotes are published but excluded, and a live-only consensus is flagged.",
+  "Hotspawn crowd pick % is never an input (see data/961/hotspawn_reference.json).",
+  "No verified external line => probabilities blank and flagged no_external_line."
+ ],
+ "checks": [
+  {
+   "id": "C1",
+   "description": "Every unverified row is blank and carries no price sources",
+   "ok": true,
+   "detail": "253 unverified rows checked; violations: []"
+  },
+  {
+   "id": "C2",
+   "description": "Per-source no-vig probabilities and overround match the published odds at a declared precision layer (display decimals or quote decimals)",
+   "ok": true,
+   "detail": "61 source rows checked (61 consistent with display decimals, 0 need the quote's higher-precision decimals); violations: []"
+  },
+  {
+   "id": "C3",
+   "description": "Board consensus equals the mean of per-source no-vig shares over the declared consensus_sources (pre-match only; live quotes excluded and flagged) and sums to 1",
+   "ok": true,
+   "detail": "38 verified rows checked; violations: []"
+  },
+  {
+   "id": "C4",
+   "description": "Pick is the argmax team and pick_probability is the max probability",
+   "ok": true,
+   "detail": "38 verified rows checked; violations: []"
+  },
+  {
+   "id": "C5",
+   "description": "Every verified row carries HotSpawn links, per-source http(s) URLs and retrieval timestamps",
+   "ok": true,
+   "detail": "38 verified rows checked; violations: []"
+  },
+  {
+   "id": "C6",
+   "description": "Hotspawn crowd pick % is never used as a probability input",
+   "ok": true,
+   "detail": "291 rows checked; violations: []"
+  },
+  {
+   "id": "C7",
+   "description": "HLTV never appears as a price source on the board",
+   "ok": true,
+   "detail": "61 source rows checked; violations: []"
+  },
+  {
+   "id": "C8",
+   "description": "Every quote's published decimal odds derive exactly from its raw American price",
+   "ok": true,
+   "detail": "28 quotes checked; violations: []"
+  },
+  {
+   "id": "C9",
+   "description": "Board source rows match their quote provenance (orientation-aware)",
+   "ok": true,
+   "detail": "23 rows matched to data/961/quotes.json; violations: []"
+  },
+  {
+   "id": "C10",
+   "description": "Session live re-reads agree with the board (6/6 HLTV directions; price re-reads exact or direction-consistent)",
+   "ok": true,
+   "detail": "6 HLTV rows + 7 price re-reads checked; violations: []"
+  }
+ ],
+ "failures": [],
+ "counts": {
+  "rows": 291,
+  "verified": 38,
+  "unverified": 253,
+  "checks_passing": 10,
+  "checks_total": 10
+ }
+}
