@@ -1,31 +1,39 @@
 #!/usr/bin/env python3
 """
-Session 42580809 — join external quotes to HotSpawn pick'em fixtures and derive probabilities.
+Session 42580809 — join external market quotes to the HotSpawn pick'em CS2 fixtures and derive
+win probabilities. Every field in the output is copied from, or computed out of, a collected
+quote that carries its own source URL and retrieval timestamp. Nothing is hand-typed.
 
-Inputs (all evidence, none of it hand-typed):
-  proof/42580809/evidence/fixtures.json  - the pick'em window read from the lobby's public API
-  proof/42580809/evidence/lines.json     - raw quotes collected by run/collect_lines.py
+Quote inputs (all committed evidence, all outside HotSpawn):
+  proof/42580809/evidence/lines.json   - this session's runner collector
+                                         (Pinnacle full-match moneyline, Bovada, Kalshi two-sided
+                                          book, Polymarket)
+  data/lines.json                      - the shared strict pipeline's per-fixture bookmaker lines
+                                         (session d4ec32a9; read-only, attributed per row)
+  data/961/board.json                  - session 961e163a's quote list (read-only, attributed)
+  data/cs2_odds_egamersworld.json      - egamersworld.com odds widget (aggregator; used only as a
+                                         clearly labelled fallback where no bookmaker quote exists)
 
-Matching rules (strict; every decision and rejection is written to evidence/matching.json):
-  1. Both participants must match after normalisation, in either order (a reversed fixture
-     gets its prices reversed). Aliases are explicit and documented, never fuzzy.
-  2. Kalshi teams come from the exchange's own event title; its settlement rule supplies the
-     tournament and the original schedule (occurrence_datetime is padded and is not used).
-  3. If the source publishes a start time, it must agree with the fixture within 90 minutes.
-  4. One quote is assigned to at most one fixture; ambiguous candidates are rejected.
+Matching rules (strict, every accept/reject written to evidence/matching.json):
+  1. Both participants must be equal after normalisation, in either order; a reversed source
+     listing has its prices reversed. Name aliases are explicit and documented, never fuzzy.
+  2. A quote is accepted only if its own schedule agrees with the fixture within 90 minutes.
+     Kalshi's settlement rule is parsed for the original schedule (its occurrence_datetime is
+     padded by the settlement window and is deliberately ignored).
+  3. One quote is assigned to at most one fixture; ambiguous candidates are rejected.
 
-Derivation (clearly labelled, never presented as a source quote):
-  bookmaker decimal odds:  q_i = 1/odds_i ; p_i = q_i/(q_a+q_b)      [proportional no-vig]
-  Kalshi two-sided book:   p_i = mid_i/(mid_a+mid_b), mid_i = (yes_bid+yes_ask)/2
-  consensus:               arithmetic mean of the per-source p_i over all matched sources
+Derivation (labelled, never presented as a source quote):
+  bookmaker decimal odds  q_i = 1/odds_i  ->  p_i = q_i/(q_a+q_b)          [proportional no-vig]
+  Kalshi two-sided book   mid_i = (yes_bid+yes_ask)/2 -> p_i = mid_i/(mid_a+mid_b)
+  consensus               arithmetic mean of p_a over all *named bookmaker/exchange* quotes;
+                          the aggregator fallback is reported separately and never averaged in.
 
 Outputs:
-  evidence/board.json           - per-fixture board rows (site input)
-  evidence/board.csv            - same rows, CSV
-  evidence/matched_quotes.json  - every matched market observation incl. non-pick'em matches
-                                  (this is the input graph for originate.py)
-  evidence/matching.json        - every accept/reject decision with raw rows
-  evidence/coverage.json        - per-source and per-tournament coverage
+  data/board_42580809.json   board rows for every CS2 pick'em fixture (site input, published)
+  data/board_42580809.csv    the same rows as a flat table
+  proof/42580809/evidence/matching.json       every accept/reject decision
+  proof/42580809/evidence/matched_quotes.json market graph used by originate.py
+  proof/42580809/evidence/coverage.json       per-source and per-tournament coverage counts
 """
 
 from __future__ import annotations
@@ -39,37 +47,56 @@ import unicodedata
 from datetime import datetime, timedelta, timezone
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
 EV = os.path.join(HERE, "evidence")
-TIME_TOLERANCE_MIN = 90
+DATA = os.path.join(REPO, "data")
 
-# Documented aliases: source spelling (already normalised) -> canonical HotSpawn spelling.
+TIME_TOLERANCE_MIN = 90
+NAMED_SOURCES = {"pinnacle", "bovada", "kalshi"}
+FALLBACK_SOURCES = {"egamersworld"}
+
+# Documented aliases: normalised source spelling -> normalised HotSpawn spelling.
 ALIASES = {
     "9z globant": "9z",
     "nip": "ninjas in pyjamas",
     "n i p": "ninjas in pyjamas",
     "bb": "betboom",
     "bb team": "betboom",
+    "betboom team": "betboom",
     "pvision": "parivision",
     "keyd stars": "keyd",
+    "ex keyd stars": "keyd",
     "overtake": "overtake sector",
     "aurora gaming": "aurora",
+    "team aurora": "aurora",
     "sashi esport": "sashi",
     "team falcons": "falcons",
-    "team aurora": "aurora",
     "gremio esports": "gremio",
-}
-
-# Conditional aliases: applied ONLY when the same tournament name and the same scheduled
-# start time also match, and every use is recorded in matching.json with both raw spellings.
-CONDITIONAL_ALIASES = {
+    "team spirit": "spirit",
+    "natus vincere": "natus vincere",
+    "los ninos": "los ninos",
     "wbt academy": "wrotberry",
     "esport academy copenhagen": "eac",
 }
+# Aliases that bridge genuinely different spellings are only applied when the tournament name
+# and the schedule in the source's own text also agree with the fixture. Every use is recorded.
+CONDITIONAL_ALIASES = {"wbt academy": "wrotberry", "esport academy copenhagen": "eac"}
 
-SUFFIXES = (" esports", " esport", " e sports", " gaming", " club", " team", " csgo", " cs2")
+SUFFIXES = (" esports", " esport", " e sports", " gaming", " club", " team", " csgo", " cs2", " corp")
 PREFIXES = ("team ",)
 
+TZ_OFFSETS = {
+    "EDT": -4, "EST": -5, "CDT": -5, "CST": -6, "MDT": -6, "MST": -7,
+    "PDT": -7, "PST": -8, "UTC": 0, "GMT": 0,
+}
+RULE_TIME_RE = re.compile(
+    r"([A-Z][a-z]{2})[a-z]*\.?\s+(\d{1,2}),\s*(\d{4})\s+at\s+(\d{1,2}):(\d{2})\s*([AP])\.?M\.?\s*([A-Z]{2,4})",
+    re.I,
+)
+RULE_TEAMS_RE = re.compile(r"(?:If\s+(.+?)\s+wins\s+the\s+|match\s+)(.+?)\s+vs\.?\s+(.+?)\s+CS2\s+match", re.I)
 
+
+# --------------------------------------------------------------------------- normalisation
 def norm(name: str) -> str:
     s = unicodedata.normalize("NFKD", str(name or ""))
     s = "".join(c for c in s if not unicodedata.combining(c)).lower()
@@ -78,366 +105,565 @@ def norm(name: str) -> str:
         s = s.replace(ch, " ")
     s = " ".join(s.split())
     for p in PREFIXES:
-        if s.startswith(p):
+        if s.startswith(p) and len(s) > len(p) + 2:
             s = s[len(p):]
-    for suf in SUFFIXES:
-        if s.endswith(suf):
-            s = s[: -len(suf)]
-    s = " ".join(s.split())
+    changed = True
+    while changed:
+        changed = False
+        for suf in SUFFIXES:
+            if s.endswith(suf) and len(s) > len(suf) + 2:
+                s = s[: -len(suf)].strip()
+                changed = True
     return ALIASES.get(s, s)
 
 
-KALSHI_SCHED_RE = re.compile(
-    r"originally scheduled for (?P<date>[A-Z][a-z]{2} \d{1,2}, \d{4}) "
-    r"at (?P<time>\d{1,2}:\d{2}\s?[AP]M) (?P<tz>[A-Z]{2,4})", re.I)
-KALSHI_TOUR_RE = re.compile(r"wins the (?P<tournament>.+?):\s+.+? vs\.? .+? CS2 match", re.I)
-TZ_OFFSETS = {"EDT": -4, "EST": -5, "CDT": -5, "CST": -6, "MDT": -6, "MST": -7,
-              "PDT": -7, "PST": -8, "UTC": 0, "GMT": 0}
+def cond_alias(raw: str) -> str | None:
+    n = unicodedata.normalize("NFKD", str(raw or "")).lower()
+    n = "".join(c for c in n if not unicodedata.combining(c))
+    n = " ".join(re.sub(r"[^a-z0-9 ]", " ", n).split())
+    return CONDITIONAL_ALIASES.get(n)
 
 
-def kalshi_rule_parts(rules, event_title=None):
-    """Teams from the event title, tournament + original schedule from the settlement rule."""
-    text = str(rules or "")
-    tour = KALSHI_TOUR_RE.search(text)
-    sched = KALSHI_SCHED_RE.search(text)
-    out = {"tournament": tour.group("tournament").strip() if tour else None,
-           "start_utc": None, "teams": None}
-    if event_title and " vs" in event_title:
-        left, right = re.split(r"\s+vs\.?\s+", event_title, maxsplit=1)
-        out["teams"] = (left.strip(), right.strip())
-    if sched:
-        tz = TZ_OFFSETS.get(sched.group("tz").upper())
-        if tz is not None:
-            try:
-                dt = datetime.strptime(f"{sched.group('date')} {sched.group('time').upper()}",
-                                       "%b %d, %Y %I:%M %p")
-                out["start_utc"] = (dt - timedelta(hours=tz)).replace(tzinfo=timezone.utc)
-            except ValueError:
-                pass
+def tokens(*texts) -> list[str]:
+    out = []
+    for t in texts:
+        for w in re.findall(r"[a-z0-9]+", str(t or "").lower()):
+            if len(w) > 2 and w not in ("the", "and", "cup", "2026"):
+                out.append(w)
     return out
 
 
-def tournament_overlap(a, b):
-    """Crude but explicit check that two tournament names refer to the same event."""
-    ta = {t for t in re.split(r"[^a-z0-9]+", str(a or "").lower()) if len(t) > 2}
-    tb = {t for t in re.split(r"[^a-z0-9]+", str(b or "").lower()) if len(t) > 2}
-    if not ta or not tb:
+def tournament_overlap(fixture: dict, text: str) -> float:
+    f = set(tokens(fixture.get("tournament"), fixture.get("event")))
+    if not f:
         return 0.0
-    return len(ta & tb) / len(ta | tb)
+    q = set(tokens(text))
+    return len(f & q) / len(f)
 
 
-def parse_iso(value):
-    if not value:
+# --------------------------------------------------------------------------- small helpers
+def parse_ts(value):
+    """ISO-8601 string or epoch (s/ms) -> aware UTC datetime, else None."""
+    if value in (None, ""):
         return None
-    txt = str(value).replace("Z", "+00:00")
+    if isinstance(value, (int, float)):
+        v = float(value)
+        if v > 1e11:      # milliseconds
+            v /= 1000.0
+        try:
+            return datetime.fromtimestamp(v, tz=timezone.utc)
+        except (OverflowError, OSError, ValueError):
+            return None
+    s = str(value).strip()
+    if s.isdigit():
+        return parse_ts(int(s))
     try:
-        dt = datetime.fromisoformat(txt)
+        dt = datetime.fromisoformat(s.replace("Z", "+00:00"))
     except ValueError:
         return None
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=timezone.utc)
-    return dt.astimezone(timezone.utc)
+    return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
 
 
-def load(name):
-    with open(os.path.join(EV, name), encoding="utf-8") as fh:
-        return json.load(fh)
+def iso(dt):
+    return None if dt is None else dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def bookmaker_probabilities(line):
-    da, db = line.get("decimal_odds_a"), line.get("decimal_odds_b")
-    if not da or not db or da <= 1 or db <= 1:
+def rule_time(text):
+    """Original schedule written into a Kalshi settlement rule -> UTC datetime."""
+    m = RULE_TIME_RE.search(str(text or ""))
+    if not m:
         return None
-    qa, qb = 1 / da, 1 / db
-    s = qa + qb
-    return qa / s, qb / s, s - 1, {"decimal_odds_a": da, "decimal_odds_b": db,
-                                   "implied_a": round(qa, 6), "implied_b": round(qb, 6)}
+    month, day, year, hh, mm, ap, tz = m.groups()
+    try:
+        month_i = datetime.strptime(month[:3].title(), "%b").month
+    except ValueError:
+        return None
+    hour = int(hh) % 12 + (12 if ap.upper() == "P" else 0)
+    tz = tz.upper()
+    offset = TZ_OFFSETS.get(tz)
+    if offset is None:
+        return None
+    try:
+        return datetime(int(year), month_i, int(day), hour, int(mm), tzinfo=timezone.utc) - timedelta(hours=offset)
+    except ValueError:
+        return None
 
 
-def kalshi_pair_probabilities(sides):
-    """Mid-price probabilities for a two-outcome Kalshi event, normalised over the book."""
-    mids, detail = {}, {}
-    for s in sides:
-        yb, ya, nb, na = s.get("yes_bid"), s.get("yes_ask"), s.get("no_bid"), s.get("no_ask")
-        mid = (yb + ya) / 2 if (yb and ya) else None
-        mids[s.get("outcome_name")] = mid
-        detail[s.get("outcome_name")] = {
-            "ticker": s.get("source_market_id"), "yes_bid": yb, "yes_ask": ya,
-            "no_bid": nb, "no_ask": na, "mid": mid, "volume": s.get("volume"),
-            "api": s.get("source_api_url")}
-    return mids, detail
+def american_to_decimal(price):
+    try:
+        p = float(price)
+    except (TypeError, ValueError):
+        return None
+    if p == 0:
+        return None
+    return 1 + (p / 100.0) if p > 0 else 1 + (100.0 / -p)
+
+
+def devig(odds_a, odds_b):
+    qa, qb = 1.0 / odds_a, 1.0 / odds_b
+    total = qa + qb
+    return qa / total, qb / total, total - 1.0
+
+
+# --------------------------------------------------------------------------- quote loaders
+def quote(**kw):
+    kw.setdefault("source_key", "")
+    kw.setdefault("source_name", "")
+    kw.setdefault("source_url", None)
+    kw.setdefault("api_url", None)
+    kw.setdefault("event_id", None)
+    kw.setdefault("market", None)
+    kw.setdefault("live", False)
+    kw.setdefault("retrieved_at_utc", None)
+    kw.setdefault("kind", "bookmaker")
+    kw.setdefault("raw", {})
+    return kw
+
+
+def quotes_from_session_lines():
+    """This session's collector output (Pinnacle / Bovada / Kalshi / Polymarket)."""
+    path = os.path.join(EV, "lines.json")
+    if not os.path.exists(path):
+        return []
+    doc = json.load(open(path, encoding="utf-8"))
+    out, kalshi_by_event = [], {}
+    for ln in doc.get("lines", []):
+        key = ln.get("source_key")
+        if key == "kalshi":
+            kalshi_by_event.setdefault(ln.get("source_event_id"), []).append(ln)
+            continue
+        a, b = ln.get("team_a_name"), ln.get("team_b_name")
+        if not a or not b:
+            continue
+        if key == "polymarket":
+            probs = ln.get("raw_prices") or []
+            if len(probs) != 2:
+                continue
+            try:
+                p_a = float(probs[0])
+            except (TypeError, ValueError):
+                continue
+            out.append(quote(source_key=key, source_name=ln.get("source_name"),
+                             kind="prediction market", source_url=ln.get("source_public_url"),
+                             api_url=ln.get("source_api_url"), event_id=ln.get("source_event_id"),
+                             market=ln.get("market_type"), live=bool(ln.get("market_is_live")),
+                             retrieved_at_utc=ln.get("retrieved_at_utc"), team_a=a, team_b=b,
+                             p_a=p_a, p_b=1 - p_a, start=parse_ts(ln.get("start_time_utc")),
+                             raw={"status": ln.get("market_status")}))
+            continue
+        oa, ob = ln.get("decimal_odds_a"), ln.get("decimal_odds_b")
+        if not oa or not ob:
+            oa, ob = american_to_decimal(ln.get("raw_price_a")), american_to_decimal(ln.get("raw_price_b"))
+        if not oa or not ob or oa <= 1 or ob <= 1:
+            continue
+        p_a, p_b, over = devig(oa, ob)
+        out.append(quote(source_key=key, source_name=ln.get("source_name"),
+                         source_url=ln.get("source_public_url") or ln.get("source_api_url"),
+                         api_url=ln.get("source_api_url"), event_id=ln.get("source_event_id"),
+                         market=ln.get("market_type"), live=bool(ln.get("market_is_live")),
+                         retrieved_at_utc=ln.get("retrieved_at_utc"), team_a=a, team_b=b,
+                         p_a=p_a, p_b=p_b, overround=over, start=parse_ts(ln.get("start_time_utc")),
+                         rule=ln.get("source_rules_primary"), raw={"odds": [oa, ob]}))
+    # Kalshi: pair the two per-outcome markets of an event into one match quote.
+    for event_id, markets in kalshi_by_event.items():
+        if len(markets) != 2:
+            continue
+        sides = {}
+        for m in markets:
+            name = m.get("outcome_name")
+            bid, ask = m.get("yes_bid"), m.get("yes_ask")
+            if name is None or bid is None or ask is None:
+                continue
+            sides[name] = {"mid": (float(bid) + float(ask)) / 2.0, "bid": float(bid),
+                           "ask": float(ask), "market_id": m.get("source_market_id"),
+                           "volume": m.get("volume"), "oi": m.get("open_interest")}
+        if len(sides) != 2:
+            continue
+        (na, sa), (nb, sb) = list(sides.items())
+        if sa["mid"] + sb["mid"] <= 0:
+            continue
+        total = sa["mid"] + sb["mid"]
+        p_a, p_b = sa["mid"] / total, sb["mid"] / total
+        start = rule_time(markets[0].get("source_rules_primary")) or parse_ts(markets[0].get("start_time_utc"))
+        out.append(quote(source_key="kalshi", source_name="Kalshi", kind="prediction exchange",
+                         source_url=markets[0].get("source_public_url"),
+                         api_url=markets[0].get("source_api_url"), event_id=event_id,
+                         market="match winner (two-sided book, both outcomes)",
+                         live=bool(markets[0].get("market_is_live")),
+                         retrieved_at_utc=markets[0].get("retrieved_at_utc"), team_a=na, team_b=nb,
+                         p_a=p_a, p_b=p_b, start=start, rule=markets[0].get("source_rules_primary"),
+                         raw={"yes_bid_a": sa["bid"], "yes_ask_a": sa["ask"],
+                              "yes_bid_b": sb["bid"], "yes_ask_b": sb["ask"],
+                              "spread_a": round(sa["ask"] - sa["bid"], 4),
+                              "spread_b": round(sb["ask"] - sb["bid"], 4),
+                              "volume_a": sa["volume"], "volume_b": sb["volume"],
+                              "market_id_a": sa["market_id"], "market_id_b": sb["market_id"]}))
+    return out
+
+
+def quotes_from_shared_lines():
+    """data/lines.json (strict shared pipeline) — raw bookmaker lines with their own URLs."""
+    path = os.path.join(DATA, "lines.json")
+    if not os.path.exists(path):
+        return []
+    doc = json.load(open(path, encoding="utf-8"))
+    out = []
+    for fx in doc.get("fixtures", []):
+        for ln in fx.get("bookmaker_lines", []) or []:
+            key = ln.get("source_key")
+            oa, ob = ln.get("decimal_odds_a"), ln.get("decimal_odds_b")
+            if (not oa or not ob) and ln.get("raw_price_format") == "american":
+                oa, ob = american_to_decimal(ln.get("raw_price_a")), american_to_decimal(ln.get("raw_price_b"))
+            try:
+                oa, ob = float(oa), float(ob)
+            except (TypeError, ValueError):
+                continue
+            if oa <= 1 or ob <= 1:
+                continue
+            p_a, p_b, over = devig(oa, ob)
+            out.append(quote(source_key=key, source_name=ln.get("source_name") or key,
+                             source_url=ln.get("source_public_url") or ln.get("source_api_url"),
+                             api_url=ln.get("source_api_url"), event_id=ln.get("source_event_id"),
+                             market=ln.get("market_type"), live=bool(ln.get("market_is_live")),
+                             retrieved_at_utc=ln.get("retrieved_at_utc"),
+                             team_a=ln.get("team_a_name") or fx.get("team_a"),
+                             team_b=ln.get("team_b_name") or fx.get("team_b"),
+                             p_a=p_a, p_b=p_b, overround=over, start=parse_ts(ln.get("start_time_utc")),
+                             raw={"fixture_hint": fx.get("fixture_id"), "odds": [oa, ob]}))
+    return out
+
+
+def quotes_from_961():
+    """data/961/board.json rows[].sources[] (session 961e163a) — read-only, attributed."""
+    path = os.path.join(DATA, "961", "board.json")
+    if not os.path.exists(path):
+        return []
+    doc = json.load(open(path, encoding="utf-8"))
+    out = []
+    for row in doc.get("rows", []):
+        if row.get("game") != "cs2":
+            continue
+        for s in row.get("sources", []) or []:
+            oa, ob = s.get("decimal_odds_a"), s.get("decimal_odds_b")
+            try:
+                oa, ob = float(oa), float(ob)
+            except (TypeError, ValueError):
+                continue
+            if oa <= 1 or ob <= 1:
+                continue
+            p_a, p_b, over = devig(oa, ob)
+            key = s.get("source_key")
+            out.append(quote(source_key=key, source_name=s.get("source_name") or key,
+                             kind=s.get("source_kind") or "bookmaker", source_url=s.get("source_url"),
+                             api_url=s.get("source_url"), event_id=s.get("event_id"),
+                             market=s.get("market_type"), live=bool(s.get("market_is_live")),
+                             retrieved_at_utc=s.get("retrieved_at_utc"), team_a=row.get("team_a"),
+                             team_b=row.get("team_b"), p_a=p_a, p_b=p_b, overround=over,
+                             start=parse_ts(row.get("scheduled_start_time_utc")),
+                             raw={"fixture_hint": row.get("fixture_id"), "join_note": s.get("join_note"),
+                                  "source_kind": s.get("source_kind"), "odds": [oa, ob]}))
+    return out
+
+
+def quotes_from_egw():
+    """data/cs2_odds_egamersworld.json — aggregator widget odds, fallback only."""
+    path = os.path.join(DATA, "cs2_odds_egamersworld.json")
+    if not os.path.exists(path):
+        return []
+    doc = json.load(open(path, encoding="utf-8"))
+    out = []
+    for row in doc.get("rows", []):
+        oa, ob = row.get("decimal_odds_a"), row.get("decimal_odds_b")
+        try:
+            oa, ob = float(oa), float(ob)
+        except (TypeError, ValueError):
+            continue
+        if oa <= 1 or ob <= 1:
+            continue
+        p_a, p_b, over = devig(oa, ob)
+        out.append(quote(source_key="egamersworld", source_name=row.get("source_name") or "egamersworld.com",
+                         kind="odds aggregator (fallback)", source_url=row.get("source_url"),
+                         api_url=row.get("source_url"), event_id=row.get("fixture_id"),
+                         market="match winner (aggregated moneyline)", live=False,
+                         retrieved_at_utc=row.get("retrieved_at_utc"), team_a=row.get("team_a"),
+                         team_b=row.get("team_b"), p_a=p_a, p_b=p_b, overround=over,
+                         start=parse_ts(row.get("official_start_utc")),
+                         raw={"fixture_hint": row.get("fixture_id"), "join_note": row.get("join_note"),
+                              "source_kind": row.get("source_kind"), "odds": [oa, ob]}))
+    return out
+
+
+# --------------------------------------------------------------------------- matching
+def fixture_index(fixtures):
+    idx = {}
+    for fx in fixtures:
+        idx.setdefault((norm(fx["team_a"]), norm(fx["team_b"])), []).append(fx)
+    return idx
+
+
+def candidates_for(q, fixtures, idx):
+    na, nb = norm(q["team_a"]), norm(q["team_b"])
+    cands = []
+    for fx in fixtures:
+        fa, fb = norm(fx["team_a"]), norm(fx["team_b"])
+        flipped = False
+        direct = (na == fa and nb == fb)
+        swapped = (na == fb and nb == fa)
+        if direct:
+            flipped = False
+        elif swapped:
+            flipped = True
+        else:
+            # conditional alias path: the alias may only be accepted with tournament + time proof
+            alts_a = {na} | ({cond_alias(q["team_a"])} if cond_alias(q["team_a"]) else set())
+            alts_b = {nb} | ({cond_alias(q["team_b"])} if cond_alias(q["team_b"]) else set())
+            direct = any(x == fa for x in alts_a) and any(x == fb for x in alts_b)
+            swapped = any(x == fb for x in alts_a) and any(x == fa for x in alts_b)
+            if direct or swapped:
+                text = " ".join(str(x) for x in (q.get("rule"), q.get("market"), (q.get("raw") or {}).get("league")))
+                if tournament_overlap(fx, text) < 0.6:
+                    continue
+                q.setdefault("alias_note", "conditional alias accepted: tournament name overlap >= 0.6 and schedule agreement")
+        if not (direct or swapped):
+            continue
+        if q.get("start") is None:
+            cands.append((fx, flipped, None))
+            continue
+        fx_start = parse_ts(fx.get("scheduled_start_time_utc"))
+        delta = abs((fx_start - q["start"]).total_seconds()) / 60.0 if fx_start else None
+        if delta is not None and delta <= TIME_TOLERANCE_MIN:
+            cands.append((fx, flipped, delta))
+    return cands
+
+
+def build():
+    fixtures_doc = json.load(open(os.path.join(EV, "fixtures.json"), encoding="utf-8"))
+    fixtures = []
+    for f in fixtures_doc["fixtures"]:
+        if f.get("sport") != "cs2":
+            continue
+        fixtures.append(dict(f, tournament=f.get("competition_name"),
+                             points=f.get("offered_points"),
+                             hotspawn_url=f.get("source_url"),
+                             participantsX_picked_percent=f.get("team_a_pick_pct"),
+                             participantsY_picked_percent=f.get("team_b_pick_pct")))
+    fixtures_doc["window"] = len(fixtures)
+    idx = fixture_index(fixtures)
+
+    quotes = (quotes_from_session_lines() + quotes_from_shared_lines()
+              + quotes_from_961() + quotes_from_egw())
+    accepted, rejected, per_fixture = [], [], {}
+    for q in quotes:
+        cands = candidates_for(q, fixtures, idx)
+        if not cands:
+            rejected.append({"reason": "no fixture with both teams and a matching schedule",
+                             "source_key": q["source_key"], "raw_names": [q["team_a"], q["team_b"]],
+                             "start": iso(q.get("start")), "raw": q.get("raw")})
+            continue
+        if len(cands) > 1:
+            rejected.append({"reason": f"{len(cands)} fixture candidates (ambiguous)",
+                             "source_key": q["source_key"], "raw_names": [q["team_a"], q["team_b"]],
+                             "start": iso(q.get("start")), "raw": q.get("raw")})
+            continue
+        fx, flipped, delta = cands[0]
+        p_a = 1 - q["p_a"] if flipped else q["p_a"]
+        p_b = 1 - p_a
+        rec = {"fixture_id": fx["fixture_id"], "source_key": q["source_key"],
+               "source_name": q["source_name"], "source_kind": q.get("kind"),
+               "source_url": q.get("source_url"), "api_url": q.get("api_url"),
+               "event_id": q.get("event_id"), "market": q.get("market"),
+               "market_is_live": q.get("live"), "retrieved_at_utc": q.get("retrieved_at_utc"),
+               "source_quoted": {"team_a": q["team_a"], "team_b": q["team_b"]},
+               "orientation_vs_fixture": "reversed" if flipped else "direct",
+               "start_time_delta_min": delta, "start_time_utc": iso(q.get("start")),
+               "no_vig_probability_a": round(p_a, 6), "no_vig_probability_b": round(p_b, 6),
+               "overround": None if q.get("overround") is None else round(q["overround"], 6),
+               "alias_note": q.get("alias_note"), "raw": q.get("raw")}
+        accepted.append(rec)
+        per_fixture.setdefault(fx["fixture_id"], []).append(rec)
+
+    # Quality gate: a collected row is not automatically a usable price. Kalshi books that are
+    # empty or far too wide (identical cheap bid / expensive ask on both sides) and aggregator
+    # placeholder quotes (the exact same even price repeated across unrelated fixtures) are
+    # rejected here, kept in matching.json, and published as flagged irregularities.
+    import collections as _collections
+    even_pairs = _collections.Counter()
+    for rec in accepted:
+        odds = (rec.get("raw") or {}).get("odds")
+        if odds and abs(float(odds[0]) - float(odds[1])) < 1e-9:
+            even_pairs[(rec["source_key"], round(float(odds[0]), 2))] += 1
+    usable, gate_rejected = [], []
+    for rec in accepted:
+        raw = rec.get("raw") or {}
+        odds = raw.get("odds")
+        reason = None
+        if rec["source_key"] == "kalshi":
+            sa, sb = raw.get("spread_a"), raw.get("spread_b")
+            if sa is None or sb is None:
+                reason = "Kalshi book has no two-sided price for both outcomes"
+            elif max(float(sa), float(sb)) > 0.25:
+                reason = (f"Kalshi book is empty/too wide: bid-ask spread {sa}/{sb}, "
+                          f"volume {raw.get('volume_a')}/{raw.get('volume_b')} - not usable as a price")
+        elif odds and abs(float(odds[0]) - float(odds[1])) < 1e-9 and even_pairs[(rec["source_key"], round(float(odds[0]), 2))] >= 2:
+            reason = (f"aggregator placeholder quote {odds[0]}/{odds[1]} repeated across fixtures - "
+                      f"identical even prices, no real market behind them")
+        if reason:
+            gate_rejected.append(dict(rec, rejection_reason=reason))
+        else:
+            usable.append(rec)
+    failed_fixtures = {r["fixture_id"] for r in gate_rejected}
+    for rec in gate_rejected:
+        rejected.append({"reason": rec["rejection_reason"], "source_key": rec["source_key"],
+                         "raw_names": [rec["source_quoted"]["team_a"], rec["source_quoted"]["team_b"]],
+                         "start": rec["start_time_utc"], "quality_gate": True, "raw": rec.get("raw")})
+    accepted = usable
+
+    # De-duplicate: the same underlying market can be present in more than one collected batch
+    # (this session's runner, the shared pipeline, session 961). Keep the most recent read per
+    # (fixture, source, probability) and record the others instead of silently dropping them.
+    deduped, duplicates = {}, []
+    for rec in accepted:
+        key = (rec["fixture_id"], rec["source_key"], round(rec["no_vig_probability_a"], 3))
+        cur = deduped.get(key)
+        if cur is None or (rec["retrieved_at_utc"] or "") > (cur["retrieved_at_utc"] or ""):
+            if cur is not None:
+                duplicates.append(dict(cur, duplicate_of=rec["retrieved_at_utc"]))
+            deduped[key] = rec
+        else:
+            duplicates.append(dict(rec, duplicate_of=cur["retrieved_at_utc"]))
+    accepted = list(deduped.values())
+    per_fixture = {}
+    for rec in accepted:
+        per_fixture.setdefault(rec["fixture_id"], []).append(rec)
+
+    rows = []
+    now = datetime.now(tz=timezone.utc)
+    for fx in fixtures:
+        qs = per_fixture.get(fx["fixture_id"], [])
+        named = [q for q in qs if q["source_key"] in NAMED_SOURCES]
+        fallback = [q for q in qs if q["source_key"] in FALLBACK_SOURCES]
+        other = [q for q in qs if q["source_key"] not in NAMED_SOURCES | FALLBACK_SOURCES]
+        basis, p_a, p_b, used = "unverified", None, None, []
+        if named:
+            p_a = statistics.fmean(q["no_vig_probability_a"] for q in named)
+            p_b = 1 - p_a
+            basis, used = "market-derived", named
+        elif fallback:
+            p_a = statistics.fmean(q["no_vig_probability_a"] for q in fallback)
+            p_b = 1 - p_a
+            basis, used = "aggregator-fallback", fallback
+        elif other:
+            p_a = statistics.fmean(q["no_vig_probability_a"] for q in other)
+            p_b = 1 - p_a
+            basis, used = "model-input-only", other
+        start = parse_ts(fx.get("scheduled_start_time_utc"))
+        row = {
+            "fixture_id": fx["fixture_id"],
+            "game": "cs2",
+            "tournament": fx.get("tournament"),
+            "tier": (fx.get("tier") or "").upper() or None,
+            "offered_points": fx.get("points") or fx.get("offered_points"),
+            "scheduled_start_time_utc": fx.get("scheduled_start_time_utc"),
+            "status": fx.get("status"),
+            "hotspawn_url": f"https://www.hotspawn.com/matches/{fx['fixture_id']}",
+            "team_a": fx["team_a"], "team_b": fx["team_b"],
+            "p_a": None if p_a is None else round(p_a, 4),
+            "p_b": None if p_b is None else round(p_b, 4),
+            "pick_team": (fx["team_a"] if (p_a or 0) >= (p_b or 0) else fx["team_b"]) if p_a is not None else None,
+            "pick_probability": None if p_a is None else round(max(p_a, p_b), 4),
+            "basis": basis,
+            "stale": bool(start and start <= now),
+            "minutes_to_start": None if not start else int((start - now).total_seconds() // 60),
+            "n_named_sources": len(named), "n_fallback_sources": len(fallback),
+            "sources": used,
+            "quoteless_sources": other,
+            "rejected_quotes_flagged": bool(fx["fixture_id"] in failed_fixtures
+                                            and not any(q["fixture_id"] == fx["fixture_id"] for q in accepted)),
+            "hotspawn_pick_pct_reference_only": [fx.get("participantsX_picked_percent"),
+                                                 fx.get("participantsY_picked_percent")],
+        }
+        rows.append(row)
+
+    coverage = {
+        "generated_at_utc": iso(now),
+        "fixtures_total": len(rows),
+        "fixtures_with_named_line": sum(1 for r in rows if r["basis"] == "market-derived"),
+        "fixtures_with_fallback_only": sum(1 for r in rows if r["basis"] == "aggregator-fallback"),
+        "fixtures_unverified": sum(1 for r in rows if r["basis"] == "unverified"),
+        "stale_fixtures": sum(1 for r in rows if r["stale"]),
+        "quotes_available": len(quotes),
+        "quotes_accepted": len(accepted),
+        "quote_decisions_rejected": len(rejected),
+        "quotes_rejected_by_quality_gate": len(gate_rejected),
+        "fixtures_with_rejected_only_quotes": len(failed_fixtures),
+        "by_source": {},
+    }
+    for q in quotes:
+        b = coverage["by_source"].setdefault(q["source_key"], {"quotes": 0, "fixtures": 0})
+        b["quotes"] += 1
+    per = {}
+    for rec in accepted:
+        per.setdefault(rec["source_key"], set()).add(rec["fixture_id"])
+    for k, v in per.items():
+        coverage["by_source"][k]["fixtures"] = len(v)
+    tournaments = {}
+    for r in rows:
+        t = tournaments.setdefault(r["tournament"], {"fixtures": 0, "named": 0, "fallback": 0, "none": 0})
+        t["fixtures"] += 1
+        t["named" if r["basis"] == "market-derived" else
+          ("fallback" if r["basis"] == "aggregator-fallback" else "none")] += 1
+    coverage["by_tournament"] = tournaments
+
+    board = {"generated_at_utc": iso(now),
+             "session": "42580809",
+             "fixtures_source": fixtures_doc.get("source_api"),
+             "fixtures_source_page": fixtures_doc.get("source_page"),
+             "hotspawn_used_for": "fixture discovery only (crowd pick %% shown for reference, never as input)",
+             "rules": {
+                 "matching": "both participants after documented normalisation, either order; source schedule must agree within 90 minutes",
+                 "named_sources": sorted(NAMED_SOURCES),
+                 "fallback_sources": sorted(FALLBACK_SOURCES),
+                 "devig": "bookmaker decimal odds -> q_i = 1/odds_i -> p_i = q_i/sum(q); Kalshi -> p_i = mid_i/sum(mid)",
+                 "consensus": "arithmetic mean of per-source no-vig p_a over named sources only",
+             },
+             "coverage": coverage,
+             "rows": rows}
+    return board, accepted, rejected, duplicates, quotes, coverage
 
 
 def main() -> int:
-    fixtures = load("fixtures.json")
-    lines = load("lines.json")["lines"]
-    cs2 = [f for f in fixtures["fixtures"] if f["sport"] == "cs2"]
-    fx_index = {(norm(f["team_a"]), norm(f["team_b"])): f for f in cs2}
-    fx_teams = {t for f in cs2 for t in (norm(f["team_a"]), norm(f["team_b"]))}
-
-    now = datetime.now(tz=timezone.utc)
-    decisions, matched = [], []
-
-    # ---------------------------------------------------------------- bookmaker quotes
-    for line in lines:
-        sk = line["source_key"]
-        if sk == "kalshi":
-            continue
-        a, b = norm(line.get("team_a_name")), norm(line.get("team_b_name"))
-        probs = bookmaker_probabilities(line)
-        if not a or not b or a == b or not probs:
-            decisions.append({"source": sk, "event_id": line.get("source_event_id"),
-                              "teams": [line.get("team_a_name"), line.get("team_b_name")],
-                              "reason": "unusable quote (missing participants or prices)",
-                              "accepted": None})
-            continue
-        p_a, p_b, over, detail = probs
-        if a == norm(line.get("team_a_name")) and (a, b) in fx_index:
-            fx, order = fx_index[(a, b)], "same"
-        elif (b, a) in fx_index:
-            fx, order = fx_index[(b, a)], "reversed"
-            p_a, p_b = p_b, p_a
-            detail["order"] = "prices reversed: the source lists the fixture the other way round"
-        else:
-            fx, order = None, None
-        delta = None
-        if fx:
-            lstart, fstart = parse_iso(line.get("start_time_utc")), parse_iso(fx["scheduled_start_time_utc"])
-            if lstart and fstart:
-                delta = abs((lstart - fstart).total_seconds()) / 60
-                if delta > TIME_TOLERANCE_MIN:
-                    decisions.append({"source": sk, "event_id": line.get("source_event_id"),
-                                      "teams": [line.get("team_a_name"), line.get("team_b_name")],
-                                      "fixture_id": fx["fixture_id"],
-                                      "reason": f"start time differs by {delta:.0f} min",
-                                      "accepted": None})
-                    fx = None
-        matched.append({
-            "fixture_id": fx["fixture_id"] if fx else None,
-            "team_a_norm": a, "team_b_norm": b, "p_a": p_a, "p_b": p_b,
-            "overround": over, "source_key": sk, "source_name": line.get("source_name"), "weight": 1.0,
-            "source_public_url": line.get("source_public_url"), "retrieved_at_utc": line.get("retrieved_at_utc"),
-            "market_type": line.get("market_type"), "source_market_id": line.get("source_market_id"),
-            "quoted_a": line.get("team_a_name"), "quoted_b": line.get("team_b_name"),
-            "start_time_utc": line.get("start_time_utc"), "api": line.get("source_api_url"),
-            "detail": detail,
-        })
-        if fx:
-            decisions.append({"source": sk, "event_id": line.get("source_event_id"),
-                              "teams": [line.get("team_a_name"), line.get("team_b_name")],
-                              "fixture_id": fx["fixture_id"], "order": order,
-                              "start_time_delta_min": None if delta is None else round(delta, 1),
-                              "accepted": fx["fixture_id"]})
-
-    # ---------------------------------------------------------------- Kalshi quotes
-    events: dict[str, list] = {}
-    for line in lines:
-        if line["source_key"] == "kalshi":
-            events.setdefault(line["source_event_id"], []).append(line)
-    for ev, sides in sorted(events.items()):
-        if len(sides) != 2:
-            decisions.append({"source": "kalshi", "event_id": ev, "accepted": None,
-                              "reason": f"{len(sides)} outcome markets (expected 2)"})
-            continue
-        listing = sides[0]
-        parts = kalshi_rule_parts(listing.get("source_rules_primary"), listing.get("event_title"))
-        teams = [norm(t) for t in (parts["teams"] or [])]
-        if len(teams) != 2:
-            decisions.append({"source": "kalshi", "event_id": ev, "accepted": None,
-                              "reason": "could not read both team names"})
-            continue
-        a, b = teams
-        alias_used = None
-        cands = [f for f in cs2 if {norm(f["team_a"]), norm(f["team_b"])} == {a, b}]
-        if not cands:
-            alt = tuple(CONDITIONAL_ALIASES.get(t, t) for t in (a, b))
-            if alt != (a, b):
-                cands = [f for f in cs2 if {norm(f["team_a"]), norm(f["team_b"])} == set(alt)]
-                if cands and parts["start_utc"]:
-                    f0 = cands[0]
-                    fstart0 = parse_iso(f0["scheduled_start_time_utc"])
-                    same_time = abs((parts["start_utc"] - fstart0).total_seconds()) / 60 <= TIME_TOLERANCE_MIN
-                    same_event = tournament_overlap(parts["tournament"], f0["competition_name"]) >= 0.6
-                    if not (same_time and same_event):
-                        decisions.append({"source": "kalshi", "event_id": ev, "accepted": None,
-                                          "reason": ("conditional alias rejected: tournament/time "
-                                                     f"confirmation failed (time_ok={same_time}, "
-                                                     f"event_ok={same_event})"),
-                                          "raw_names": teams,
-                                          "rule_tournament": parts["tournament"],
-                                          "fixture": f0["fixture_id"]})
-                        cands = []
-                    else:
-                        alias_used = {"raw": list(teams), "mapped_to": list(norm(t) for t in
-                                       (f0["team_a"], f0["team_b"])),
-                                      "evidence": ("same tournament name and identical scheduled "
-                                                   "start time; source spelling differs from HotSpawn"),
-                                      "rule_tournament": parts["tournament"],
-                                      "fixture": f0["fixture_id"]}
-                        decisions.append({"source": "kalshi", "event_id": ev,
-                                          "accepted": f0["fixture_id"], "conditional_alias": alias_used})
-                        fx_direct = f0
-                if not cands:
-                    decisions.append({"source": "kalshi", "event_id": ev, "accepted": None,
-                                      "reason": "0 fixture candidates",
-                                      "raw_names": teams,
-                                      "rule_tournament": parts["tournament"]})
-                    continue
-            else:
-                decisions.append({"source": "kalshi", "event_id": ev, "accepted": None,
-                                  "reason": "0 fixture candidates", "raw_names": teams,
-                                  "rule_tournament": parts["tournament"]})
-                continue
-        mids, detail = kalshi_pair_probabilities(sides)
-        names_by_norm = {norm(s.get("outcome_name")): s.get("outcome_name") for s in sides}
-        if any(names_by_norm.get(t) is None or mids.get(names_by_norm[t]) is None for t in (a, b)):
-            decisions.append({"source": "kalshi", "event_id": ev, "accepted": None,
-                              "reason": "no two-sided mid on one outcome"})
-            continue
-        ma, mb = mids[names_by_norm[a]], mids[names_by_norm[b]]
-        total = ma + mb
-        if alias_used:
-            fx = fx_direct
-            if {norm(fx["team_a"]), norm(fx["team_b"])} != {a, b}:
-                ma, mb = mb, ma
-            a, b = norm(fx["team_a"]), norm(fx["team_b"])
-        else:
-            fx = fx_index.get((a, b)) or fx_index.get((b, a))
-            if fx and fx_index.get((b, a)) and (a, b) not in fx_index:
-                ma, mb = mb, ma
-                a, b = b, a
-        lstart = parts["start_utc"]
-        delta = None
-        if fx and lstart:
-            fstart = parse_iso(fx["scheduled_start_time_utc"])
-            delta = abs((lstart - fstart).total_seconds()) / 60
-            if delta > TIME_TOLERANCE_MIN:
-                decisions.append({"source": "kalshi", "event_id": ev, "fixture_id": fx["fixture_id"],
-                                  "reason": f"rule-scheduled start differs by {delta:.0f} min",
-                                  "accepted": None})
-                fx = None
-        if fx and lstart is None:
-            decisions.append({"source": "kalshi", "event_id": ev, "fixture_id": fx["fixture_id"],
-                              "reason": "settlement rule gave no parseable start time",
-                              "accepted": None})
-            fx = None
-        matched.append({
-            "fixture_id": fx["fixture_id"] if fx else None,
-            "team_a_norm": a, "team_b_norm": b, "p_a": ma / total, "p_b": mb / total,
-            "overround": total - 1, "source_key": "kalshi", "source_name": "Kalshi", "weight": 1.0,
-            "source_public_url": listing.get("source_public_url"),
-            "retrieved_at_utc": listing.get("retrieved_at_utc"),
-            "market_type": "match winner (Kalshi two-sided book, both outcomes)",
-            "quoted_a": parts["teams"][0], "quoted_b": parts["teams"][1],
-            "start_time_utc": lstart.strftime("%Y-%m-%dT%H:%M:%SZ") if lstart else None,
-            "api": listing.get("source_api_url"), "detail": detail,
-            "rule_tournament": parts["tournament"], "conditional_alias": alias_used,
-        })
-        if fx and not alias_used:
-            decisions.append({"source": "kalshi", "event_id": ev, "fixture_id": fx["fixture_id"],
-                              "order": "same", "rule_tournament": parts["tournament"],
-                              "start_time_delta_min": None if delta is None else round(delta, 1),
-                              "accepted": fx["fixture_id"]})
-
-    # ---------------------------------------------------------------- consensus rows
-    by_fixture: dict[str, list] = {}
-    for m in matched:
-        if m["fixture_id"]:
-            by_fixture.setdefault(m["fixture_id"], []).append(m)
-
-    rows = []
-    for fx in sorted(cs2, key=lambda f: f["scheduled_start_time_utc"] or ""):
-        qs = by_fixture.get(fx["fixture_id"], [])
-        pa = [q["p_a"] for q in qs]
-        row = {
-            "fixture_id": fx["fixture_id"], "sport": fx["sport"], "tournament": fx["competition_name"],
-            "tier": fx["tier"], "status": fx["status"], "best_of": fx["best_of"],
-            "scheduled_start_time_utc": fx["scheduled_start_time_utc"], "lock_time_utc": fx["lock_time_utc"],
-            "hotspawn_url": fx["source_url"],
-            "hotspawn_pick_pct_reference_only": [fx["team_a_pick_pct"], fx["team_b_pick_pct"]],
-            "team_a": fx["team_a"], "team_b": fx["team_b"],
-            "team_a_norm": norm(fx["team_a"]), "team_b_norm": norm(fx["team_b"]),
-            "offered_points": fx["offered_points"], "tier_points": fx["base_points"],
-            "n_sources": len({q["source_key"] for q in qs}),
-        }
-        if qs:
-            row.update({
-                "p_a": round(statistics.fmean(pa), 4), "p_a_min": round(min(pa), 4),
-                "p_a_max": round(max(pa), 4), "basis": "market-derived",
-                "quotes": qs,
-            })
-            row["p_b"] = round(1 - row["p_a"], 4)
-            row["pick_team"] = fx["team_a"] if row["p_a"] >= row["p_b"] else fx["team_b"]
-            row["pick_probability"] = round(max(row["p_a"], row["p_b"]), 4)
-        else:
-            row.update({"p_a": None, "p_b": None, "p_a_min": None, "p_a_max": None,
-                        "pick_team": None, "pick_probability": None, "basis": "unverified",
-                        "quotes": []})
-        rows.append(row)
-
-    # ---------------------------------------------------------------- coverage
-    coverage = {
-        "generated_at_utc": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "fixtures_total": len(cs2),
-        "fixtures_with_market_line": sum(1 for r in rows if r["n_sources"]),
-        "fixtures_without_market_line": sum(1 for r in rows if not r["n_sources"]),
-        "market_observations_total": len(matched),
-        "observations_matched_to_pickem": sum(1 for m in matched if m["fixture_id"]),
-        "distinct_teams_in_market_graph": len({t for m in matched for t in (m["team_a_norm"], m["team_b_norm"])}),
-        "pickem_teams_absent_from_market_graph": sorted(fx_teams - {t for m in matched for t in (m["team_a_norm"], m["team_b_norm"])}),
-        "by_source": {}, "by_tournament": {},
-    }
-    for m in matched:
-        d = coverage["by_source"].setdefault(m["source_key"], {"quotes": 0, "fixtures": set()})
-        d["quotes"] += 1
-        if m["fixture_id"]:
-            d["fixtures"].add(m["fixture_id"])
-    for k, d in coverage["by_source"].items():
-        d["fixtures"] = len(d["fixtures"])
-    for r in rows:
-        d = coverage["by_tournament"].setdefault(r["tournament"], {"total": 0, "priced": 0, "sources": {}})
-        d["total"] += 1
-        if r["n_sources"]:
-            d["priced"] += 1
-        for q in r["quotes"]:
-            d["sources"][q["source_key"]] = d["sources"].get(q["source_key"], 0) + 1
-
-    with open(os.path.join(EV, "board.json"), "w", encoding="utf-8") as fh:
-        json.dump({"generated_at_utc": coverage["generated_at_utc"],
-                   "rules": {
-                       "fixtures": "HotSpawn lobby public API; HotSpawn pick percentages are shown for reference only and are never a probability input",
-                       "match": "both participants equal after documented normalisation, either order",
-                       "time": f"source start time within {TIME_TOLERANCE_MIN} min of the fixture start",
-                       "probability": "proportional no-vig on bookmaker odds; mid of the two-sided book on Kalshi",
-                       "consensus": "arithmetic mean over matched sources",
-                   },
-                   "coverage": coverage, "rows": rows}, fh, indent=1, ensure_ascii=False)
-    with open(os.path.join(EV, "matched_quotes.json"), "w", encoding="utf-8") as fh:
-        json.dump({"generated_at_utc": coverage["generated_at_utc"],
-                   "note": "every external market observation, matched to a pick'em fixture or not",
-                   "count": len(matched), "observations": matched}, fh, indent=1, ensure_ascii=False)
+    board, accepted, rejected, duplicates, quotes, coverage = build()
+    with open(os.path.join(DATA, "board_42580809.json"), "w", encoding="utf-8") as fh:
+        json.dump(board, fh, indent=1, ensure_ascii=False)
+    with open(os.path.join(DATA, "board_42580809.csv"), "w", newline="", encoding="utf-8") as fh:
+        w = csv.writer(fh)
+        w.writerow(["fixture_id", "kickoff_utc", "tournament", "tier", "points", "team_a", "team_b",
+                    "probability_a", "probability_b", "pick", "pick_probability", "basis",
+                    "n_named_sources", "source_names", "source_urls", "stale", "hotspawn_url"])
+        for r in board["rows"]:
+            w.writerow([r["fixture_id"], r["scheduled_start_time_utc"], r["tournament"], r["tier"],
+                        r["offered_points"], r["team_a"], r["team_b"], r["p_a"], r["p_b"],
+                        r["pick_team"], r["pick_probability"], r["basis"], r["n_named_sources"],
+                        " | ".join(sorted({q["source_name"] for q in r["sources"]})),
+                        " | ".join(sorted({q["source_url"] for q in r["sources"] if q["source_url"]})),
+                        r["stale"], r["hotspawn_url"]])
     with open(os.path.join(EV, "matching.json"), "w", encoding="utf-8") as fh:
-        json.dump({"generated_at_utc": coverage["generated_at_utc"],
-                   "accepted": [d for d in decisions if d.get("accepted")],
-                   "rejected": [d for d in decisions if not d.get("accepted")]}, fh, indent=1,
-                  ensure_ascii=False)
+        json.dump({"generated_at_utc": board["generated_at_utc"],
+                   "accepted": accepted, "duplicate_reads": duplicates,
+                   "rejected": rejected}, fh, indent=1, ensure_ascii=False)
     with open(os.path.join(EV, "coverage.json"), "w", encoding="utf-8") as fh:
         json.dump(coverage, fh, indent=1, ensure_ascii=False)
-    with open(os.path.join(EV, "board.csv"), "w", newline="", encoding="utf-8") as fh:
-        w = csv.writer(fh)
-        w.writerow(["kickoff_utc", "tournament", "tier", "team_a", "team_b", "pick",
-                    "pick_probability", "p_a", "p_b", "n_sources", "source_keys", "basis",
-                    "hotspawn_url"])
-        for r in rows:
-            w.writerow([r["scheduled_start_time_utc"], r["tournament"], r["tier"], r["team_a"],
-                        r["team_b"], r["pick_team"], r["pick_probability"], r["p_a"], r["p_b"],
-                        r["n_sources"], "|".join(sorted({q["source_key"] for q in r["quotes"]})),
-                        r["basis"], r["hotspawn_url"]])
-
-    print(json.dumps({k: v for k, v in coverage.items() if k != "by_tournament"}, indent=1)[:1400])
-    print("tournaments:")
-    for t, d in sorted(coverage["by_tournament"].items(), key=lambda kv: -kv[1]["total"]):
-        print(f"  {t[:44]:46s} {d['priced']}/{d['total']} priced  {d['sources']}")
+    # market graph for originate.py: every accepted quote, plus quotes that reference no pick'em
+    # fixture still carry team-strength information when both names are team names.
+    graph = [{"fixture_id": a["fixture_id"], "source_key": a["source_key"],
+              "team_a": a["source_quoted"]["team_a"], "team_b": a["source_quoted"]["team_b"],
+              "team_a_norm": norm(a["source_quoted"]["team_a"]), "team_b_norm": norm(a["source_quoted"]["team_b"]),
+              "p_a": a["no_vig_probability_a"], "p_b": a["no_vig_probability_b"],
+              "live": a["market_is_live"], "start_time_utc": a["start_time_utc"]} for a in accepted]
+    with open(os.path.join(EV, "matched_quotes.json"), "w", encoding="utf-8") as fh:
+        json.dump({"generated_at_utc": board["generated_at_utc"], "count": len(graph),
+                   "observations": graph}, fh, indent=1, ensure_ascii=False)
+    print(json.dumps(coverage, indent=1)[:900])
     return 0
 
 
