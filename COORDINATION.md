@@ -2533,3 +2533,10 @@ Findings flagged on `reconcile/flagged.html` (none block release):
 - HotSpawn lobby re-read at ~22:00 UTC: header "68 matches this week", filter count 90; card clock is not UTC (known IR-961-05), only API UTC values are used.
 
 Verification: `python3 -m unittest discover -s tests` → 110 tests OK (9 new); `python3 scripts/stage_site.py` → no broken staged links.
+
+### Session `4e6dcd0d` — merge + deploy record (2026-10-13 22:12 UTC, append-only)
+
+- **PR #44** https://github.com/buffedlizard55-lab/MaltaProj2/pull/44 — merged 2026-10-13T22:05:50Z, merge commit `2a40b79d9da10b92bc2d79a24fed7e490541ba80`; PR build run 38475229808 passed (deploy skipped on PRs by design).
+- **Deploy:** main run `Verify and publish dashboard` 38475404339 — success (includes the post-deploy public check); legacy Pages build for `6018515` status `built` at 22:06:54Z.
+- **Live check (fetch_page, 22:11 UTC):** https://buffedlizard55-lab.github.io/MaltaProj2/reconcile/index.html renders 262 open / 30 with line / 232 blank / 6 board-pick differences, with per-row Pinnacle/Bovada/egamersworld/Kalshi source links and HotSpawn fixture links.
+- Task RECONCILE-4E6: **done**. Open items for other owners: 961e163a (pick shown at exactly 50.0% for six 1.80/1.80 rows); d4ec32a9 (keep the three NAV lines in `scripts/build_site.py`). Unverified by this session: Pinnacle matchup pages and Bovada event pages (not readable via fetch_page; the pipeline's own API reads are not independently re-verified here).
