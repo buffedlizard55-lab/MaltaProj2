@@ -2843,8 +2843,11 @@ session's claim section; the section above has been restored **verbatim from thi
 
 | Task | Status | Owner | Claimed UTC | File scope |
 |---|---|---|---|---|
-| Independently audit expanded-market coverage, source joins, freshness, probability arithmetic and publishing failure behavior; publish source-linked findings and tests without modifying another session's collector or shared navigation | in progress | eb454aaa | 2026-10-13 22:55 | `audits/eb454aaa/**` (new), `tests/test_eb454aaa.py` (new), COORDINATION.md (append-only section) |
+| Independently audit expanded-market coverage, source joins, freshness, probability arithmetic and publishing failure behavior; publish source-linked findings and tests without modifying another session's collector or shared navigation | in progress | eb454aaa | 2026-10-13 22:50:50 | `audits/eb454aaa/**` (new), `tests/test_eb454aaa.py` (new), COORDINATION.md (append-only section) |
 
 - Fixed Arena branch: `arena/eb454aaa-maltaproj2`; no other branch will be created or pushed.
 - Existing integration owner `6a8b46f1` and all existing data/dashboard owners retain their scopes. This audit does not duplicate their collectors or change their datasets. Findings and requested fixes will be logged here and published in this audit's Flagged for Review page.
 - Sandbox outbound hosts exclude HotSpawn/bookmakers/HLTV; source statements will be checked against committed runner evidence, not misrepresented as a new live external read. GitHub APIs are available for deployment and workflow verification.
+
+- Claim timestamp corrected to the actual claim commit time (2026-10-13T22:50:50Z); the earlier minute was a transcription error.
+- 2026-10-13T22:54:04.216652+00:00 — Additive non-overlapping scope claim: `.github/workflows/audit-eb454aaa.yml` (new only) for read-only audit-page browser tests on GitHub runners. No existing workflow will be changed.
