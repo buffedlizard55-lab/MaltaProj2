@@ -2911,3 +2911,11 @@ session's claim section; the section above has been restored **verbatim from thi
 - Integration-owner navigation request (no edits outside this scope): please add the new source-linked `/audits/eb454aaa/flagged.html` report to the shared root review/navigation surface when next updating your owned generator. The audit already links back to root and expanded board, and is directly reachable at its published URL.
 
 - 2026-10-13T23:00:47.659503+00:00 — Follow-up PR rebase onto merged PR #57 stopped on another append-only coordination conflict. Preserved a0586093’s entire delivery record and this session’s merge/deployment record, removed only conflict delimiters, then continued. No data or owner files conflicted or were replaced.
+- **Live re-verification after the follow-up (2026-10-13 23:08 UTC):** `main` tip `e464e0e` (the scheduled
+  `expanded-lines` run on main regenerated the board); `pages build and deployment` for that commit = `built`.
+  https://buffedlizard55-lab.github.io/MaltaProj2/market/repo-review.html now reads **Run at 2026-10-13T23:06:54Z**,
+  **R1–R7 all `verified`**, R2 listing each Valve standings file as its own link, R4 reporting
+  "32 priced rows joined… 0 mismatch(es), 1 row(s) whose fixture has since left the lobby window", and
+  **"Irregularities flagged for review: None found by these checks."** The board itself
+  (https://buffedlizard55-lab.github.io/MaltaProj2/market/) is unchanged in shape: 263 upcoming fixtures,
+  27 with a verified external line, 14 priced by 2+ sources, 6 labelled originated estimates, the rest blank and flagged.
