@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sources — HotSpawn Pick&#x27;ems board</title>
+<meta name="description" content="External betting-line probabilities for every CS2 and LoL match listed in the HotSpawn Pick'ems lobby.">
+<link rel="stylesheet" href="assets/live.css">
+</head><body>
+<header><h1>Sources — HotSpawn Pick&#x27;ems board</h1><nav><a href="index.html">Live board</a><a href="cs2.html">CS2</a><a href="lol.html">LoL</a><a href="flagged.html">Flagged for review</a><a href="methodology.html">Method &amp; sources</a><a href="sources.html" style="border-color:#4aa3ff">Sources</a></nav></header>
+<main>
+<h2>External price sources used in this build</h2>
+<div class="wrap"><table><thead><tr><th>Key</th><th>Source</th><th>Kind</th><th>Quotes</th>
+<th>Games</th><th>Exact payload</th></tr></thead><tbody><tr><td>bovada</td><td><a href="https://www.bovada.lv/esports/league-of-legends/world-championship-play-in/furia-esports-mvk-esports-202610151400">Bovada</a></td><td>licensed bookmaker</td><td>15</td><td>[&#x27;cs2&#x27;, &#x27;lol&#x27;]</td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports">payload</a></td></tr><tr><td>linefeed_melbet</td><td><a href="https://melbet.com/en/line/esports/">Melbet (1xBet platform)</a></td><td>licensed bookmaker (public LineFeed JSON)</td><td>36</td><td>[&#x27;cs2&#x27;]</td><td><a href="https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1">payload</a></td></tr><tr><td>pinnacle</td><td><a href="https://www.pinnacle.com/en/esports/">Pinnacle</a></td><td>licensed bookmaker</td><td>13</td><td>[&#x27;cs2&#x27;, &#x27;lol&#x27;]</td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111786/markets/related/straight">payload</a></td></tr></tbody></table></div>
+<div class="note">Exchanges (Kalshi, Polymarket) are published as <b>reference only</b>: their prices are
+never averaged into a bookmaker consensus. HotSpawn appears only as the fixture-discovery source and as
+a reference link per row.</div>
+<h2>Rating source for the originated estimate</h2>
+<div class="wrap"><table><thead><tr><th>Region</th><th>Snapshot</th><th>Teams parsed</th>
+<th>Source</th></tr></thead><tbody><tr><td>global</td><td>2026_10_05</td><td>349</td><td><a href="https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_global_2026_10_05.md">table</a> · <a href="https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md">contents API</a></td></tr><tr><td>europe</td><td>2026_10_05</td><td>224</td><td><a href="https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_europe_2026_10_05.md">table</a> · <a href="https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_europe_2026_10_05.md">contents API</a></td></tr><tr><td>americas</td><td>2026_10_05</td><td>83</td><td><a href="https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_americas_2026_10_05.md">table</a> · <a href="https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_americas_2026_10_05.md">contents API</a></td></tr><tr><td>asia</td><td>2026_10_05</td><td>43</td><td><a href="https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_asia_2026_10_05.md">table</a> · <a href="https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_asia_2026_10_05.md">contents API</a></td></tr></tbody></table></div>
+<p>Each team&#x27;s record is the highest-points row across the global and regional tables of the newest snapshot; the exact url of the table it came from is stored per team.</p>
+<h2>Access outcomes recorded in this run</h2>
+<pre style="white-space:pre-wrap;font-size:12.5px;color:#9aa4b2">{
+ &quot;session&quot;: &quot;3cd9787c&quot;,
+ &quot;task&quot;: &quot;T-COVER&quot;,
+ &quot;started_at_utc&quot;: &quot;2026-10-13T23:17:47Z&quot;,
+ &quot;lobby_page&quot;: {
+  &quot;url&quot;: &quot;https://play.hotspawn.com/lobby&quot;,
+  &quot;status&quot;: 200,
+  &quot;bytes&quot;: 433814,
+  &quot;error&quot;: null,
+  &quot;content_type&quot;: &quot;text/html;charset=UTF-8&quot;,
+  &quot;final_url&quot;: &quot;https://play.hotspawn.com/lobby&quot;,
+  &quot;counters&quot;: {
+   &quot;text_sample&quot;: &quot; Pick&#x27;ems Lobby | Hotspawn Play Lobby My Picks Leaderboard Tournaments How To Play This week 68 matches this week Resets in 5d 03h 09m 46s Sign in to track your picks this week. CS2 LoL Tier All tiers (90) B (26) C (60) S (4) Tournament All tournaments (90) CCT Europe 2026 Challengers #4 (8) CCT Europe 2026 Series #11 (4) CCT Europe 2026 Series #12 Play-In (4) CCT South America 2026 Series #3 (8) &quot;,
+   &quot;matches_this_week&quot;: 68,
+   &quot;all_tiers&quot;: 90,
+   &quot;tier_counts&quot;: {
+    &quot;s&quot;: 4,
+    &quot;b&quot;: 26,
+    &quot;c&quot;: 60
+   },
+   &quot;all_tournaments&quot;: 90,
+   &quot;listing&quot;: {
+    &quot;found&quot;: true,
+    &quot;listed_count&quot;: 90,
+    &quot;source&quot;: &quot;ng-state&quot;,
+    &quot;match_links_rendered&quot;: 52
+   },
+   &quot;listing_ids_sample&quot;: [
+    &quot;1051301&quot;,
+    &quot;1051339&quot;,
+    &quot;1051340&quot;,
+    &quot;1051341&quot;,
+    &quot;1051342&quot;
+   ]
+  }
+ },
+ &quot;hotspawn_fixtures&quot;: {
+  &quot;url&quot;: &quot;https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures&quot;,
+  &quot;status&quot;: 200,
+  &quot;bytes&quot;: 9215070,
+  &quot;error&quot;: null,
+  &quot;content_type&quot;: &quot;application/json; charset=utf-8&quot;,
+  &quot;final_url&quot;: &quot;https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures&quot;,
+  &quot;rows&quot;: 11570,
+  &quot;status_counts_all_rows&quot;: {
+   &quot;ended&quot;: 10218,
+   &quot;cancelled&quot;: 142,
+   &quot;forfeited&quot;: 821,
+   &quot;scheduled&quot;: 387,
+   &quot;started&quot;: 2
+  },
+  &quot;game_counts_all_rows&quot;: {
+   &quot;cs2&quot;: 10213,
+   &quot;football&quot;: 1,
+   &quot;lol&quot;: 1356
+  },
+  &quot;kept_in_snapshot&quot;: 415,
+  &quot;force_kept_from_lobby_listing&quot;: 90,
+  &quot;omitted_outside_window&quot;: 11096,
+  &quot;window&quot;: {
+   &quot;from&quot;: &quot;2026-10-10T23:17:55Z&quot;,
+   &quot;to&quot;: &quot;2026-11-27T23:17:55Z&quot;,
+   &quot;rule&quot;: &quot;start time within -3d..+45d of collect time&quot;
+  }
+ },
+ &quot;valve_vrs_tree&quot;: {
+  &quot;url&quot;: &quot;https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/git/trees/main?recursive=1&quot;,
+  &quot;status&quot;: 200,
+  &quot;bytes&quot;: 6574948,
+  &quot;error&quot;: null,
+  &quot;content_type&quot;: &quot;application/json; charset=utf-8&quot;,
+  &quot;final_url&quot;: &quot;https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/git/trees/main?recursive=1&quot;,
+  &quot;paths_parsed&quot;: 4
+ },
+ &quot;pinnacle&quot;: {
+  &quot;url&quot;: &quot;https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups&quot;,
+  &quot;status&quot;: 200,
+  &quot;bytes&quot;: 689666,
+  &quot;error&quot;: null,
+  &quot;content_type&quot;: &quot;application/json&quot;,
+  &quot;final_url&quot;: &quot;https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups&quot;,
+  &quot;type&quot;: &quot;matchups list&quot;,
+  &quot;matchups_total&quot;: 38,
+  &quot;matchups_relevant&quot;: 15,
+  &quot;quotes_written&quot;: 13
+ },
+ &quot;bovada&quot;: {
+  &quot;url&quot;: &quot;https://www.bovada.lv/services/sports/event/v2/events/A/description/esports&quot;,
+  &quot;status&quot;: 200,
+  &quot;bytes&quot;: 739090,
+  &quot;error&quot;: null,
+  &quot;content_type&quot;: &quot;application/json&quot;,
+  &quot;final_url&quot;: &quot;https://www.bovada.lv/services/sports/event/v2/events/A/description/esports&quot;,
+  &quot;type&quot;: &quot;coupon&quot;,
+  &quot;events_scanned&quot;: 19,
+  &quot;quotes_written&quot;: 15
+ },
+ &quot;linefeed&quot;: {
+  &quot;url&quot;: &quot;https://melbet.com/service-api/LineFeed/GetSportsShortZip?sports=1&amp;lng=en&amp;country=1&amp;virtualSports=true&amp;groupChamps=true&quot;,
+  &quot;status&quot;: 200,
+  &quot;bytes&quot;: 88482,
+  &quot;error&quot;: null,
+  &quot;content_type&quot;: &quot;application/json; charset=utf-8&quot;,
+  &quot;final_url&quot;: &quot;https://melbet.com/service-api/LineFeed/GetSportsShortZip?sports=1&amp;lng=en&amp;country=1&amp;virtualSports=true&amp;groupChamps=true&quot;,
+  &quot;mirrors&quot;: [
+   {
+    &quot;mirror&quot;: &quot;melbet&quot;,
+    &quot;urls&quot;: [
+     &quot;https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1&quot;
+    ],
+    &quot;events&quot;: 43,
+    &quot;with_moneyline&quot;: 39,
+    &quot;errors&quot;: []
+   },
+   {
+    &quot;mirror&quot;: &quot;22bet&quot;,
+    &quot;urls&quot;: [
+     &quot;https://22bet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1&quot;
+    ],
+    &quot;events&quot;: 43,
+    &quot;with_moneyline&quot;: 39,
+    &quot;errors&quot;: [],
+    &quot;shared_event_ids&quot;: 39,
+    &quot;price_mismatches&quot;: []
+   },
+   {
+    &quot;mirror&quot;: &quot;betwinner&quot;,
+    &quot;urls&quot;: [
+     &quot;https://betwinner.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1&quot;
+    ],
+    &quot;events&quot;: 43,
+    &quot;with_moneyline&quot;: 39,
+    &quot;errors&quot;: [],
+    &quot;shared_event_ids&quot;: 39,
+    &quot;price_mismatches&quot;: []
+   }
+  ],
+  &quot;esports_sport_ids&quot;: [
+   40
+  ],
+  &quot;primary_mirror&quot;: &quot;melbet&quot;,
+  &quot;quotes_written&quot;: 36
+ },
+ &quot;egamersworld&quot;: {
+  &quot;egamersworld_cs2&quot;: {
+   &quot;target&quot;: &quot;https://egamersworld.com/counterstrike/matches&quot;,
+   &quot;attempts&quot;: [
+    {
+     &quot;transport&quot;: &quot;direct&quot;,
+     &quot;url&quot;: &quot;https://egamersworld.com/counterstrike/matches&quot;,
+     &quot;status&quot;: 403,
+     &quot;bytes&quot;: 6137,
+     &quot;error&quot;: &quot;HTTPError 403&quot;
+    },
+    {
+     &quot;transport&quot;: &quot;allorigins&quot;,
+     &quot;url&quot;: &quot;https://api.allorigins.win/raw?url=https%3A%2F%2Fegamersworld.com%2Fcounterstrike%2Fmatches&quot;,
+     &quot;status&quot;: 520,
+     &quot;bytes&quot;: 7362,
+     &quot;error&quot;: &quot;HTTPError 520&quot;
+    },
+    {
+     &quot;transport&quot;: &quot;codetabs&quot;,
+     &quot;url&quot;: &quot;https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fegamersworld.com%2Fcounterstrike%2Fmatches&quot;,
+     &quot;status&quot;: 522,
+     &quot;bytes&quot;: 7246,
+     &quot;error&quot;: &quot;HTTPError 522&quot;
+    },
+    {
+     &quot;transport&quot;: &quot;jina&quot;,
+     &quot;url&quot;: &quot;https://r.jina.ai/https%3A%2F%2Fegamersworld.com%2Fcounterstrike%2Fmatches&quot;,
+     &quot;status&quot;: 200,
+     &quot;bytes&quot;: 797,
+     &quot;error&quot;: null
+    }
+   ],
+   &quot;rows&quot;: 0
+  },
+  &quot;egamersworld_lol&quot;: {
+   &quot;target&quot;: &quot;https://egamersworld.com/lol/matches&quot;,
+   &quot;attempts&quot;: [
+    {
+     &quot;transport&quot;: &quot;direct&quot;,
+     &quot;url&quot;: &quot;https://egamersworld.com/lol/matches&quot;,
+     &quot;status&quot;: 403,
+     &quot;bytes&quot;: 6137,
+     &quot;error&quot;: &quot;HTTPError 403&quot;
+    },
+    {
+     &quot;transport&quot;: &quot;allorigins&quot;,
+     &quot;url&quot;: &quot;https://api.allorigins.win/raw?url=https%3A%2F%2Fegamersworld.com%2Flol%2Fmatches&quot;,
+     &quot;status&quot;: 500,
+     &quot;bytes&quot;: 579,
+     &quot;error&quot;: &quot;HTTPError 500&quot;
+    },
+    {
+     &quot;transport&quot;: &quot;codetabs&quot;,
+     &quot;url&quot;: &quot;https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fegamersworld.com%2Flol%2Fmatches&quot;,
+     &quot;status&quot;: 522,
+     &quot;bytes&quot;: 7246,
+     &quot;error&quot;: &quot;HTTPError 522&quot;
+    },
+    {
+     &quot;transport&quot;: &quot;jina&quot;,
+     &quot;url&quot;: &quot;https://r.jina.ai/https%3A%2F%2Fegamerswo</pre>
+</main>
+<footer>Generated 2026-10-13T23:19:32Z · Fixtures discovered from the HotSpawn Pick'ems lobby; all
+probabilities come from external bookmakers or a labelled originated estimate — never from HotSpawn's
+crowd pick percentage. Estimates are not guarantees. 18+; gamble responsibly. Not affiliated with
+HotSpawn or any bookmaker.</footer>
+</body></html>

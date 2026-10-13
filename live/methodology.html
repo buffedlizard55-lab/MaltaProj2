@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Method &amp; sources — HotSpawn Pick&#x27;ems board</title>
+<meta name="description" content="External betting-line probabilities for every CS2 and LoL match listed in the HotSpawn Pick'ems lobby.">
+<link rel="stylesheet" href="assets/live.css">
+</head><body>
+<header><h1>Method &amp; sources — HotSpawn Pick&#x27;ems board</h1><nav><a href="index.html">Live board</a><a href="cs2.html">CS2</a><a href="lol.html">LoL</a><a href="flagged.html">Flagged for review</a><a href="methodology.html" style="border-color:#4aa3ff">Method &amp; sources</a><a href="sources.html">Sources</a></nav></header>
+<main>
+<h2>Method</h2>
+<ul>
+<li><b>Fixture discovery:</b> HotSpawn Pick&#x27;ems public fixtures endpoint (discovery only) — <a href="">fixtures endpoint</a>.</li>
+<li><b>Probabilities:</b> external bookmakers and the EGamersWorld odds widget — never HotSpawn.</li>
+<li><b>Join rule:</b> both team names must match after normalisation/alias mapping and, when the source publishes a start time, it must be within 8h of the lobby start time.</li>
+<li><b>De-vig:</b> raw quoted odds → implied share <code>q = 1/odds</code> → normalised
+<code>p = q / (q_a + q_b)</code>. The bookmaker margin (overround) is published per row.</li>
+<li><b>Consensus:</b> arithmetic mean of per-source proportional no-vig probabilities.</li>
+<li><b>Pick:</b> pick = higher published probability; an edge below 0.005 is published as a coin flip with no pick.</li>
+<li><b>Freshness:</b> market quotes older than 6h and live (in-play) markets are excluded from the published probability.</li>
+<li><b>Estimate:</b> p(a beats b) = 1 / (1 + 10 ** (-(R_a - R_b) / 400)) on official Valve CS2 Regional Standings points. The 400-point scale is a stated modelling assumption, not a Valve-published quantity. Published only for CS2 and always labelled as an estimate.</li>
+<li><b>HotSpawn crowd picks:</b> never used as an input to any probability. The board re-derives every number
+with the crowd fields scrambled and requires identical output (check C7).</li>
+</ul>
+<h2>Lobby counter reconciliation</h2>
+<p>The lobby prints its own counters. Instead of assuming what they mean, every candidate window rule is
+counted here and compared with what the page printed ({&#x27;text_sample&#x27;: &quot; Pick&#x27;ems Lobby | Hotspawn Play Lobby My Picks Leaderboard Tournaments How To Play This week 68 matches this week Resets in 5d 03h 09m 46s Sign in to track your picks this week. CS2 LoL Tier All tiers (90) B (26) C (60) S (4) Tournament All tournaments (90) CCT Europe 2026 Challengers #4 (8) CCT Europe 2026 Series #11 (4) CCT Europe 2026 Series #12 Play-In (4) CCT South America 2026 Series #3 (8) &quot;, &#x27;matches_this_week&#x27;: 68, &#x27;all_tiers&#x27;: 90, &#x27;tier_counts&#x27;: {&#x27;s&#x27;: 4, &#x27;b&#x27;: 26, &#x27;c&#x27;: 60}, &#x27;all_tournaments&#x27;: 90, &#x27;listing&#x27;: {&#x27;found&#x27;: True, &#x27;listed_count&#x27;: 90, &#x27;source&#x27;: &#x27;ng-state&#x27;, &#x27;match_links_rendered&#x27;: 52}, &#x27;listing_ids_sample&#x27;: [&#x27;1051301&#x27;, &#x27;1051339&#x27;, &#x27;1051340&#x27;, &#x27;1051341&#x27;, &#x27;1051342&#x27;]}).</p>
+<div class="wrap"><table><thead><tr><th>Candidate rule</th><th>Total</th><th>CS2</th><th>LoL</th>
+<th>By tier</th></tr></thead><tbody><tr><td>all rows</td><td>474</td><td>164</td><td>310</td><td>{&#x27;s&#x27;: 14, &#x27;b&#x27;: 63, &#x27;c&#x27;: 176}</td></tr><tr><td>scheduled (any time)</td><td>343</td><td>89</td><td>254</td><td>{&#x27;s&#x27;: 8, &#x27;b&#x27;: 25, &#x27;c&#x27;: 129}</td></tr><tr><td>scheduled and kickoff inside current UTC week</td><td>127</td><td>30</td><td>97</td><td>{&#x27;s&#x27;: 8, &#x27;b&#x27;: 9, &#x27;c&#x27;: 38}</td></tr><tr><td>scheduled and lock inside current UTC week</td><td>127</td><td>30</td><td>97</td><td>{&#x27;s&#x27;: 8, &#x27;b&#x27;: 9, &#x27;c&#x27;: 38}</td></tr><tr><td>pick still open (scheduled, lock in the future)</td><td>262</td><td>29</td><td>233</td><td>{&#x27;s&#x27;: 8, &#x27;b&#x27;: 9, &#x27;c&#x27;: 78}</td></tr><tr><td>kickoff in the future</td><td>276</td><td>30</td><td>246</td><td>{&#x27;s&#x27;: 8, &#x27;b&#x27;: 9, &#x27;c&#x27;: 84}</td></tr><tr><td>listed by the lobby page state</td><td>90</td><td>90</td><td>0</td><td>{&#x27;s&#x27;: 4, &#x27;b&#x27;: 26, &#x27;c&#x27;: 60}</td></tr></tbody></table></div>
+<ul><li>all_tiers = 90 reproduced by rule “listed by the lobby page state”</li><li>tier_s = 4 reproduced by rule “listed by the lobby page state”</li><li>tier_b = 26 reproduced by rule “listed by the lobby page state”</li><li>tier_c = 60 reproduced by rule “listed by the lobby page state”</li></ul>
+<h2>This build</h2>
+<ul>
+<li>Verification: 11/11 checks passed
+(474 rows: 16 market,
+104 estimate, 354 blank).</li>
+<li>Collection run: started 2026-10-13T23:17:47Z, finished 2026-10-13T23:19:32Z.</li>
+<li>Quote counts: {&quot;fixtures_in_snapshot&quot;: 474, &quot;quotes_total&quot;: 64, &quot;quotes_market&quot;: 64, &quot;quotes_reference&quot;: 0, &quot;by_source&quot;: {&quot;bovada&quot;: 15, &quot;linefeed_melbet&quot;: 36, &quot;pinnacle&quot;: 13}, &quot;by_game&quot;: {&quot;cs2&quot;: 56, &quot;lol&quot;: 8}}</li>
+</ul></main>
+<footer>Generated 2026-10-13T23:19:32Z · Fixtures discovered from the HotSpawn Pick'ems lobby; all
+probabilities come from external bookmakers or a labelled originated estimate — never from HotSpawn's
+crowd pick percentage. Estimates are not guarantees. 18+; gamble responsibly. Not affiliated with
+HotSpawn or any bookmaker.</footer>
+</body></html>

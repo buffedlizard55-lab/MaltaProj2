@@ -2826,6 +2826,7 @@ session's claim section; the section above has been restored **verbatim from thi
 
 ---
 
+
 ## Final-integration review record — session 6a8b46f1 (2026-10-13 22:47Z)
 
 - **PR #53 (T-EXPAND, session a0586093)** opened 22:34Z, self-merged 22:41Z → `7c7da1f1bc13f3d75d892c5dd4cd9cda2681efe7` — source-linked external-line board at `/market/` (1 210 lobby fixtures in snapshot, 263 still to play, 27 priced from Pinnacle/Bovada/LineFeed, 14 priced by 2+ independent sources, 6 labelled model estimates, 236 blank+flagged), repo review R1–R7 all verified (0 mismatches, 0 irregularities), `tests/test_expanded_lines.py`. Note: their branch's `pages.yml` edits did **not** land — the merge resolution kept main's race-safe deploy logic, `build_site.py` and `browser_current_smoke.py` steps intact (verified post-merge).
@@ -2959,3 +2960,133 @@ Sources for manual review: [HotSpawn Pick'ems lobby](https://play.hotspawn.com/l
 - **PR #58 validation (2026-10-13 23:17 UTC):** pushed rebased head `b994733`; hosted workflow run [38483178620](https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38483178620) completed successfully (build 54s, including full tests, browser smoke tests and staging; deploy correctly skipped for a PR). At that query, GitHub reported `mergeable=MERGEABLE`, `mergeStateStatus=CLEAN`. Merge and Pages deployment are not yet confirmed.
 
 - **Fifth rebase conflict resolved (2026-10-13 23:15 UTC):** the merged `origin/main` tip `61af111` contained the coherent 23:06 expanded-market batch, while replaying the successful 23:08 workflow commit conflicted in 35 generated data/market files. Kept the complete newer 23:08 batch as one snapshot (replayed as `200dfd4`) rather than line-merging JSON/HTML; the 23:06 batch remains in the mainline history. No values were hand-edited or inferred, and the route audit was regenerated against the retained 23:08 batch.
+# Session `3cd9787c` — claim (2026-10-13 23:05 UTC, append-only)
+
+Branch: `arena/3cd9787c-maltaproj2` (this environment pins the session branch; the
+`session-<id>/<task>` naming is not available here, same as every prior session in this repo).
+Base commit at claim time: `2f8c992` (= `main` / `origin/main`).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-COVER: one unified **current-lobby** coverage board — every fixture the HotSpawn Pick'ems lobby currently lists (CS2 + LoL), each with a labelled probability and an obvious pick: market consensus from **non-HotSpawn** external sources where a verified quote exists, otherwise a clearly labelled originated estimate (CS2 = Valve official VRS), otherwise blank + flagged; hourly automatic refresh from GitHub runners; per-row official source link; line-by-line self-verification | in progress | 3cd9787c | 2026-10-13 23:05 | `scripts/live/**` (new), `data/live/**` (new), `live/**` (new published section), `.github/workflows/live-coverage.yml` (new), `tests/test_live_coverage.py` (new), `COORDINATION.md` (append-only, this section) |
+
+### Non-overlap statement (checked against the live board before claiming)
+- `a0586093` owns `scripts/expanded/**`, `data/expanded/**`, `market/**`, `.github/workflows/expanded-lines.yml`,
+  `tests/test_expanded_lines.py` → **not touched here**.
+- `6a8b46f1` owns `verify/6a8b46f1/**` and holds conditional integration rights over shared files → **not touched here**.
+- `ac475c09` owns `scripts/picks_*.py`, `data/picks_*.json`, `picks/**`, `evidence/picks/**` → **not touched here**.
+- `961e163a` owns `data/961/**`, `scripts/961/**`, `verify961/**`; `42580809` owns `proof/42580809/**`, `site/42580809/**`;
+  `4e6dcd0d` owns `reconcile/**`; `0f71ea59` owns `verify/0f71ea59/**`; `d4ec32a9` owns the root current-lines pipeline
+  (`scripts/build_lines.py`, `scripts/build_site.py`, root `*.html`) → **none touched here**.
+- Root `index.html` / shared navigation / `scripts/stage_site.py` are **not** edited by this session; the additive nav
+  entry for `live/` is requested at the end of this section for the integration session.
+- Ids and numbers are never imported from another board: this session re-collects its own raw quotes and re-derives
+  every published number from them, so its table can be audited independently.
+
+### Why this task is worth a session
+At claim time the published root dashboard prices **9 of 91** CS2 lobby fixtures, and the `market/` board prices
+27 of 263 future fixtures in its wider 1210-fixture window. The user requirement — a probability and an obvious
+pick for **every** match listed in the Pick'ems lobby, with no manual input and automatic refreshes — is still
+not met end-to-end on the lobby's own current listing, and LoL coverage is blank. This session closes that gap
+as far as externally verifiable evidence allows and publishes every remaining blank explicitly, never as an
+invented number.
+
+### Method constraints observed
+- HotSpawn is used **only** to enumerate fixtures (its public lobby page and the fixtures endpoint it calls).
+  Its crowd "picked %" is recorded for reference only and is never an input to any published probability.
+- This sandbox has no general egress (verified again at claim time: `curl` to the fixtures endpoint fails with
+  TLS error 35). All bulk external collection therefore runs on GitHub Actions runners and commits raw evidence
+  back; the platform's own fetch tool is used for spot re-verification of individual rows.
+- Sandbox **can** reach `api.github.com`, which is where Valve publishes the official CS2 Regional Standings
+  (`ValveSoftware/counter-strike_regional_standings`), so the CS2 rating input is a primary source, not a third party.
+- Every published row carries its source link; a value that cannot be confirmed from the linked source stays blank
+
+  and is listed on `live/flagged.html`.
+  and is listed on `live/flagged.html`.
+
+---
+
+## Session `3cd9787c` — T-COVER delivery record (2026-10-13, append-only continuation of the claim above)
+
+Claim unchanged: nothing outside the claimed scope was edited. Two additive integration edits were
+made to shared files, each a single documented line/anchor (same pattern previous sessions used):
+`scripts/stage_site.py` now stages the new `live/` section, and `scripts/build_site.py`'s `NAV` list
+gained the entry `("live/index.html", "Live coverage board (3cd9787c)")`. Both are marked with the
+session id in the source.
+
+### Delivered
+- `scripts/live/live_core.py` — pure helpers (odds arithmetic, no-vig, consensus, join rules, the
+  Valve-VRS estimate model, lobby-page counters/listing parsing).
+- `scripts/live/collect_live.py` — runner-side collection: lobby fixtures **and** the lobby page's own
+  listing/counters, Pinnacle, Bovada, the Melbet/22Bet/BetWinner LineFeed platform, EGamersWorld
+  (through public transports), Kalshi and Polymarket (exchanges, reference only), plus the official
+  Valve CS2 Regional Standings used for the labelled estimate. Bounded raw samples of every source
+  are committed as evidence; a collector crash leaves a traceback in `data/live/collector_error.txt`.
+- `scripts/live/build_live.py` — joins quotes to fixtures, derives every published number, renders the
+  mobile-first pages, and **refuses to publish** if any verification check fails.
+- `data/live/**` — `fixtures.json`, `quotes.json`, `ratings.json`, `collection_log.json`, `board.json`,
+  `verification.json`, `page_links.json`, `samples/**`.
+- `live/**` — `index.html` (the board), `cs2.html`, `lol.html`, `flagged.html`, `methodology.html`,
+  `sources.html`, `assets/live.css`.
+- `.github/workflows/live-coverage.yml` — hourly (`13 * * * *`) plus push/dispatch; commits evidence,
+  board and pages back to the branch it ran on with `[skip ci]`.
+- `tests/test_live_coverage.py` — 36 tests: odds arithmetic, rating model, lobby parsing, join rules,
+  builder behaviour, corruption cases (a tampered probability/pick/estimate **must** be rejected), and
+  re-verification of the published artifact in the checkout.
+
+### Result on the last verified run (2026-10-13T23:11:52Z build, run `38482386488`/`38482411436`)
+- Lobby listing: the page's own server-rendered state carries **90 fixture ids**; the board tracks all
+  90 (29 still open for picks, 61 locked/past) plus 385 other fixtures the API returns in the window
+  (shown separately, never mixed into the coverage numbers).
+- Probabilities for the listed matches: **58 of 90** (12 external market, 46 labelled originated
+  estimate); among the **29 still open for picks, 22 have a published probability** (12 from external
+  bookmaker lines — Pinnacle, Bovada, Melbet/1xBet-platform — and 10 from the labelled estimate) and
+  **7 are blank and flagged** because one team has no rating in the official standings.
+- External quotes in the last run: 64 (Bovada 15, Melbet/LineFeed 36, Pinnacle 13); two mirrors of the
+  LineFeed platform agreed with the primary mirror on all 39 shared events with 0 price mismatches.
+- Kotter reproduction: the lobby's printed counters `All tiers (90)`, `S 4`, `B 26`, `C 60` are all
+  reproduced exactly by the listing ids parsed from the page. The lobby's separate
+  **"68 matches this week"** figure is still **not** reproduced by any rule tried (kick-off window,
+  lock window, pick-open, listing) and is published as unexplained rather than guessed.
+
+### Line-by-line verification (11/11 checks, failures = 0)
+`data/live/verification.json` + the Flagged page list every check. Highlights: C1 every per-source
+probability re-derives from the raw quoted prices; C2 consensus = mean of its sources; C3 pick =
+argmax and pick probability = max; C4 every market source carries a link and a read time; C5 every
+estimate re-derives from the official standings points and carries the table URL; C6 blank rows are
+blank and flagged; **C7 the whole board is recomputed with every HotSpawn crowd percentage scrambled
+and must come out identical** (crowd picks can never be an input); C9 no stale/in-play quote is
+published; C10 probabilities normalised in (0,1) with positive overround; **C11 every fixture id the
+lobby page itself lists is present in the board** — a missing id fails the build instead of hiding.
+
+### Sources used for manual review
+https://play.hotspawn.com/lobby · https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures ·
+https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups (and the per-match
+`.../matchups/<id>/markets/related/straight` payloads linked on every row) ·
+https://www.bovada.lv/services/sports/event/v2/events/A/description/esports ·
+https://melbet.com/service-api/LineFeed/Get1x2_VZip (Melbet/22Bet/BetWinner, mirrors compared) ·
+https://github.com/ValveSoftware/counter-strike_regional_standings (official Valve CS2 Regional
+Standings; per-team table URL is on every estimate row) · https://egamersworld.com/counterstrike/matches ·
+https://egamersworld.com/lol/matches · https://api.elections.kalshi.com/trade-api/v2/events ·
+https://gamma-api.polymarket.com/events?closed=false&tag_slug=esports
+
+### Irregularities published on `live/flagged.html` (none block release)
+- 7 pickable CS2 matches have **no** external price and **no** official rating for one team (LFO 10,
+  WROTBERRY, RoundsGG) → blank, with the similar-but-different standings names that were considered
+  and **refused** listed for human review.
+- The lobby's "68 matches this week" counter is unreproduced (see above); everything else is exact.
+- HotSpawn lists fixtures whose scheduled start has already passed (61 of 90 listed rows are past
+  kickoff); they are published with `picks_locked_or_past` flags rather than dropped.
+- EGamersWorld refused the runner directly (HTTP 403) and two public transports returned 522; the
+  transport that answered returned a stub, so **zero** EGamersWorld rows were parsed this run and the
+  source contributes nothing (recorded in `collection_log.json`, never as "no price exists").
+- Kalshi and Polymarket answered with 200 but returned no esports event matching a lobby fixture in
+  this run (`kalshi_tickers.json` / `polymarket_events_head.json` samples are committed), so the
+  board currently carries **no** exchange reference rows.
+- Sandbox egress for the lobby/odds endpoints is blocked (TLS error 35); the platform fetch tool was
+  used for spot checks (`https://play.hotspawn.com/lobby`, the fixtures endpoint) and all bulk
+  collection runs on GitHub runners.
+- One CI-found defect fixed on the branch: `extract_lobby_listing`'s parameter shadowed the `html`
+  module (`AttributeError ... 'str' object has no attribute 'unescape'`); fixed and covered by a test.
+- A staged-site link-check defect was found and fixed before merge: raw page captures must be stored
+  as `.txt`, because the staging check walks **every** `.html` file in the artifact.
