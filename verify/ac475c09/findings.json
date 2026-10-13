@@ -1,5 +1,5 @@
 {
- "generated_at_utc": "2026-10-13T21:41:48Z",
+ "generated_at_utc": "2026-10-13T22:01:33Z",
  "session": "ac475c09",
  "freshness_budget_hours": 6,
  "findings": [
@@ -63,7 +63,7 @@
    "check": "freshness",
    "severity": "info",
    "file": "data/hotspawn_matches.json",
-   "detail": "snapshot is 0.0h old",
+   "detail": "snapshot is 0.4h old",
    "value": null,
    "source": null
   },
@@ -71,7 +71,7 @@
    "check": "freshness",
    "severity": "info",
    "file": "data/cs2_matches.json",
-   "detail": "snapshot is 2.7h old",
+   "detail": "snapshot is 3.0h old",
    "value": null,
    "source": null
   },
@@ -79,7 +79,7 @@
    "check": "freshness",
    "severity": "info",
    "file": "data/lol_matches.json",
-   "detail": "snapshot is 2.7h old",
+   "detail": "snapshot is 3.0h old",
    "value": null,
    "source": null
   },
@@ -87,7 +87,7 @@
    "check": "freshness",
    "severity": "info",
    "file": "data/odds.json",
-   "detail": "snapshot is 0.0h old",
+   "detail": "snapshot is 0.4h old",
    "value": null,
    "source": null
   },
@@ -95,7 +95,7 @@
    "check": "freshness",
    "severity": "info",
    "file": "data/lines.json",
-   "detail": "snapshot is 0.0h old",
+   "detail": "snapshot is 0.4h old",
    "value": null,
    "source": null
   },
@@ -103,7 +103,7 @@
    "check": "freshness",
    "severity": "info",
    "file": "data/probabilities.json",
-   "detail": "snapshot is 2.1h old",
+   "detail": "snapshot is 2.4h old",
    "value": null,
    "source": null
   },
@@ -111,7 +111,7 @@
    "check": "freshness",
    "severity": "info",
    "file": "data/picks_fixtures.json",
-   "detail": "snapshot is 0.0h old",
+   "detail": "snapshot is 0.1h old",
    "value": null,
    "source": null
   },
@@ -119,7 +119,7 @@
    "check": "freshness",
    "severity": "info",
    "file": "data/picks_board.json",
-   "detail": "snapshot is 0.0h old",
+   "detail": "snapshot is 0.1h old",
    "value": null,
    "source": null
   },
@@ -156,11 +156,35 @@
    "check": "fixture_drift",
    "severity": "info",
    "file": "data/hotspawn_matches.json vs data/picks_fixtures.json",
-   "detail": "older snapshot lists 406 fixtures, the fresh API read lists 11570 fixtures in total and 29 CS2 / 239 LoL fixtures still open for picks",
+   "detail": "older snapshot lists 406 fixtures, the fresh API read lists 11570 fixtures in total and 28 CS2 / 239 LoL fixtures still open for picks",
    "value": {
     "older_snapshot": 406,
     "fresh_total": 11570
    },
+   "source": null
+  },
+  {
+   "check": "published_links",
+   "severity": "info",
+   "file": "data/picks_board.json",
+   "detail": "none of 292 rows publish the redirecting bare /matches/<id> URL",
+   "value": 0,
+   "source": null
+  },
+  {
+   "check": "published_links",
+   "severity": "info",
+   "file": "evidence/picks/link_checks.json",
+   "detail": "21 published quote URLs were opened by the collector",
+   "value": 21,
+   "source": null
+  },
+  {
+   "check": "dated_capture",
+   "severity": "info",
+   "file": "data/picks_supplementary.json",
+   "detail": "11 captured rows, each carrying its own URL and retrieval time",
+   "value": 11,
    "source": null
   }
  ],
@@ -168,6 +192,6 @@
   "high": 0,
   "medium": 1,
   "low": 1,
-  "info": 17
+  "info": 20
  }
 }

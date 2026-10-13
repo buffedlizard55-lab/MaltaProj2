@@ -4,10 +4,10 @@
  "source_key": "egamersworld_manual",
  "how_captured": "The EGamersWorld match list and event pages block datacentre requests (HTTP 403 from the CI runner, and Cloudflare's block page even through public reader proxies), so the pages were read with the session's own browser-style fetcher and the exact bytes were inspected before any number was written here. Each row below was typed from the served markup of the linked match page; the event page that lists every row of the capture is recorded as capture_url.",
  "time_conversion": {
-  "displayed": "EGamersWorld renders kick-off times in CET (UTC+1) for this capture",
-  "rule": "UTC = displayed time - 1 hour",
-  "verification": "three rows of this capture match lobby API kick-off times exactly under the rule: 09:00 -> 08:00Z (fixture 1080279), 11:00 -> 10:00Z (1080280), 13:00 -> 12:00Z (1080281). No row is published unless its fixture_id hint also matches both team names.",
-  "status": "assumption, published on the site as an item for review"
+  "displayed": "EGamersWorld clocks are not stable between reads: the same fixture (ENCE vs BOJONG, fixture 1080280) renders as 10:00 in the page title, 12:00 in the match header of the same page and 11:00 in an earlier event-list read, while the lobby API reports 10:00Z.",
+  "rule": "No UTC value is derived from an EGamersWorld clock. A row joins only on its fixture_id hint plus both team names.",
+  "verification": "The page-title clock matched the lobby API exactly on 1080280 ('ENCE VS BOJONG: 15.10.2026 at 10:00' vs lobby 10:00Z) and the on-page countdown (1d 12h 12m, read 2026-10-13T21:48Z) lands on the same instant; the other two clocks on that page (11:00, 12:00) do not. Because the rendering differs per element, the displayed time is kept verbatim for review and never converted.",
+  "status": "irregularity published for review; this capture publishes no UTC time of its own"
  },
  "rejected_from_capture": [
   {
@@ -23,13 +23,21 @@
    "decimal_odds_a": 1.99,
    "decimal_odds_b": 1.71,
    "egw_time_display": "15.10.26 09:00 CET",
-   "start_time_utc": "2026-10-15T08:00:00Z",
+   "start_time_utc": null,
    "source_url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-ea-copenhagen-hSC7a2mtP",
    "capture_url": "https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
    "source_league": "Elisa Esports BreakOut Series 2",
    "partner_bookmaker": "bet365 (as displayed by EGamersWorld)",
    "retrieved_at_utc": "2026-10-13T22:00:00Z",
-   "join_note": "HotSpawn lists this fixture as WROTBERRY vs EAC; the lobby API returns no kick-off time for it (null), so the join uses the fixture_id hint plus the team names."
+   "join_note": "HotSpawn lists this fixture as WROTBERRY vs EAC; the lobby API returns no kick-off time for it (null), so the join uses the fixture_id hint plus the team names.",
+   "start_time_utc_note": "left null: the source's clock rendering was measured to differ between elements of the same page, so no UTC value is derived from it",
+   "link_check": {
+    "state": "ok",
+    "status": 200,
+    "checked_at_utc": "2026-10-13T21:47:56Z",
+    "method": "the exact match URL was opened and shows WBT 1.99 / EA Copenhagen 1.72",
+    "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-ea-copenhagen-hSC7a2mtP"
+   }
   },
   {
    "fixture_id": "1080280",
@@ -38,13 +46,21 @@
    "decimal_odds_a": 1.3,
    "decimal_odds_b": 3.17,
    "egw_time_display": "15.10.26 11:00 CET",
-   "start_time_utc": "2026-10-15T10:00:00Z",
+   "start_time_utc": null,
    "source_url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/ence-vs-bojong-qV78OzvXFg",
    "capture_url": "https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
    "source_league": "Elisa Esports BreakOut Series 2",
    "partner_bookmaker": "bet365 (as displayed by EGamersWorld)",
    "retrieved_at_utc": "2026-10-13T22:00:00Z",
-   "join_note": null
+   "join_note": null,
+   "start_time_utc_note": "left null: the source's clock rendering was measured to differ between elements of the same page, so no UTC value is derived from it",
+   "link_check": {
+    "state": "ok",
+    "status": 200,
+    "checked_at_utc": "2026-10-13T21:47:56Z",
+    "method": "the exact match URL was opened and shows ENCE 1.31 / BOJONG 3.2",
+    "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/ence-vs-bojong-qV78OzvXFg"
+   }
   },
   {
    "fixture_id": "1080281",
@@ -53,13 +69,21 @@
    "decimal_odds_a": 1.61,
    "decimal_odds_b": 2.19,
    "egw_time_display": "15.10.26 13:00 CET",
-   "start_time_utc": "2026-10-15T12:00:00Z",
+   "start_time_utc": null,
    "source_url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-ence-GQ0xieRgQS",
    "capture_url": "https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
    "source_league": "Elisa Esports BreakOut Series 2",
    "partner_bookmaker": "bet365 (as displayed by EGamersWorld)",
    "retrieved_at_utc": "2026-10-13T22:00:00Z",
-   "join_note": null
+   "join_note": null,
+   "start_time_utc_note": "left null: the source's clock rendering was measured to differ between elements of the same page, so no UTC value is derived from it",
+   "link_check": {
+    "state": "capture_page_ok",
+    "status": 200,
+    "checked_at_utc": "2026-10-13T22:00:00Z",
+    "method": "price was read from the source's event page listed in capture_url; this exact match URL was not opened separately",
+    "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-ence-GQ0xieRgQS"
+   }
   },
   {
    "fixture_id": "1080282",
@@ -68,13 +92,21 @@
    "decimal_odds_a": 1.2,
    "decimal_odds_b": 4.03,
    "egw_time_display": "15.10.26 15:00 CET",
-   "start_time_utc": "2026-10-15T14:00:00Z",
+   "start_time_utc": null,
    "source_url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/ea-copenhagen-vs-bojong-vBsvfnHU5",
    "capture_url": "https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
    "source_league": "Elisa Esports BreakOut Series 2",
    "partner_bookmaker": "bet365 (as displayed by EGamersWorld)",
    "retrieved_at_utc": "2026-10-13T22:00:00Z",
-   "join_note": "HotSpawn lists this fixture as EAC vs BOJONG; the lobby API returns no kick-off time for it (null), so the join uses the fixture_id hint plus the team names."
+   "join_note": "HotSpawn lists this fixture as EAC vs BOJONG; the lobby API returns no kick-off time for it (null), so the join uses the fixture_id hint plus the team names.",
+   "start_time_utc_note": "left null: the source's clock rendering was measured to differ between elements of the same page, so no UTC value is derived from it",
+   "link_check": {
+    "state": "capture_page_ok",
+    "status": 200,
+    "checked_at_utc": "2026-10-13T22:00:00Z",
+    "method": "price was read from the source's event page listed in capture_url; this exact match URL was not opened separately",
+    "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/ea-copenhagen-vs-bojong-vBsvfnHU5"
+   }
   },
   {
    "fixture_id": "1080283",
@@ -83,13 +115,21 @@
    "decimal_odds_a": 1.19,
    "decimal_odds_b": 3.99,
    "egw_time_display": "15.10.26 17:00 CET",
-   "start_time_utc": "2026-10-15T16:00:00Z",
+   "start_time_utc": null,
    "source_url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-bojong-r7kNL0-LX6",
    "capture_url": "https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
    "source_league": "Elisa Esports BreakOut Series 2",
    "partner_bookmaker": "bet365 (as displayed by EGamersWorld)",
    "retrieved_at_utc": "2026-10-13T22:00:00Z",
-   "join_note": null
+   "join_note": null,
+   "start_time_utc_note": "left null: the source's clock rendering was measured to differ between elements of the same page, so no UTC value is derived from it",
+   "link_check": {
+    "state": "capture_page_ok",
+    "status": 200,
+    "checked_at_utc": "2026-10-13T22:00:00Z",
+    "method": "price was read from the source's event page listed in capture_url; this exact match URL was not opened separately",
+    "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-bojong-r7kNL0-LX6"
+   }
   },
   {
    "fixture_id": "1080284",
@@ -98,13 +138,21 @@
    "decimal_odds_a": 1.52,
    "decimal_odds_b": 2.41,
    "egw_time_display": "15.10.26 19:00 CET",
-   "start_time_utc": "2026-10-15T18:00:00Z",
+   "start_time_utc": null,
    "source_url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/ea-copenhagen-vs-ence-kTR_sMK3PT",
    "capture_url": "https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
    "source_league": "Elisa Esports BreakOut Series 2",
    "partner_bookmaker": "bet365 (as displayed by EGamersWorld)",
    "retrieved_at_utc": "2026-10-13T22:00:00Z",
-   "join_note": null
+   "join_note": null,
+   "start_time_utc_note": "left null: the source's clock rendering was measured to differ between elements of the same page, so no UTC value is derived from it",
+   "link_check": {
+    "state": "capture_page_ok",
+    "status": 200,
+    "checked_at_utc": "2026-10-13T22:00:00Z",
+    "method": "price was read from the source's event page listed in capture_url; this exact match URL was not opened separately",
+    "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/ea-copenhagen-vs-ence-kTR_sMK3PT"
+   }
   },
   {
    "fixture_id": "1080285",
@@ -113,13 +161,21 @@
    "decimal_odds_a": 1.91,
    "decimal_odds_b": 1.84,
    "egw_time_display": "16.10.26 09:00 CET",
-   "start_time_utc": "2026-10-16T08:00:00Z",
+   "start_time_utc": null,
    "source_url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/voca-vs-phantom-esports-zby52fbAja",
    "capture_url": "https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
    "source_league": "Elisa Esports BreakOut Series 2",
    "partner_bookmaker": "bet365 (as displayed by EGamersWorld)",
    "retrieved_at_utc": "2026-10-13T22:00:00Z",
-   "join_note": "HotSpawn lists the opponent as Phantom; EGamersWorld lists Phantom Esports."
+   "join_note": "HotSpawn lists the opponent as Phantom; EGamersWorld lists Phantom Esports.",
+   "start_time_utc_note": "left null: the source's clock rendering was measured to differ between elements of the same page, so no UTC value is derived from it",
+   "link_check": {
+    "state": "capture_page_ok",
+    "status": 200,
+    "checked_at_utc": "2026-10-13T22:00:00Z",
+    "method": "price was read from the source's event page listed in capture_url; this exact match URL was not opened separately",
+    "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/voca-vs-phantom-esports-zby52fbAja"
+   }
   },
   {
    "fixture_id": "1080286",
@@ -128,13 +184,21 @@
    "decimal_odds_a": 1.19,
    "decimal_odds_b": 4.02,
    "egw_time_display": "16.10.26 11:00 CET",
-   "start_time_utc": "2026-10-16T10:00:00Z",
+   "start_time_utc": null,
    "source_url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/havu-vs-rounds-rg48QwsiJ9",
    "capture_url": "https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
    "source_league": "Elisa Esports BreakOut Series 2",
    "partner_bookmaker": "bet365 (as displayed by EGamersWorld)",
    "retrieved_at_utc": "2026-10-13T22:00:00Z",
-   "join_note": "HotSpawn lists the opponent as RoundsGG; EGamersWorld lists Rounds."
+   "join_note": "HotSpawn lists the opponent as RoundsGG; EGamersWorld lists Rounds.",
+   "start_time_utc_note": "left null: the source's clock rendering was measured to differ between elements of the same page, so no UTC value is derived from it",
+   "link_check": {
+    "state": "capture_page_ok",
+    "status": 200,
+    "checked_at_utc": "2026-10-13T22:00:00Z",
+    "method": "price was read from the source's event page listed in capture_url; this exact match URL was not opened separately",
+    "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/havu-vs-rounds-rg48QwsiJ9"
+   }
   },
   {
    "fixture_id": "1080287",
@@ -143,13 +207,21 @@
    "decimal_odds_a": 1.41,
    "decimal_odds_b": 2.7,
    "egw_time_display": "16.10.26 13:00 CET",
-   "start_time_utc": "2026-10-16T12:00:00Z",
+   "start_time_utc": null,
    "source_url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/voca-vs-havu-nQn6IrZXP",
    "capture_url": "https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
    "source_league": "Elisa Esports BreakOut Series 2",
    "partner_bookmaker": "bet365 (as displayed by EGamersWorld)",
    "retrieved_at_utc": "2026-10-13T22:00:00Z",
-   "join_note": null
+   "join_note": null,
+   "start_time_utc_note": "left null: the source's clock rendering was measured to differ between elements of the same page, so no UTC value is derived from it",
+   "link_check": {
+    "state": "capture_page_ok",
+    "status": 200,
+    "checked_at_utc": "2026-10-13T22:00:00Z",
+    "method": "price was read from the source's event page listed in capture_url; this exact match URL was not opened separately",
+    "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/voca-vs-havu-nQn6IrZXP"
+   }
   },
   {
    "fixture_id": "1080288",
@@ -158,13 +230,21 @@
    "decimal_odds_a": 1.08,
    "decimal_odds_b": 6.94,
    "egw_time_display": "16.10.26 15:00 CET",
-   "start_time_utc": "2026-10-16T14:00:00Z",
+   "start_time_utc": null,
    "source_url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/phantom-esports-vs-rounds-m6Cnk4tOxU",
    "capture_url": "https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
    "source_league": "Elisa Esports BreakOut Series 2",
    "partner_bookmaker": "bet365 (as displayed by EGamersWorld)",
    "retrieved_at_utc": "2026-10-13T22:00:00Z",
-   "join_note": "HotSpawn lists Phantom vs RoundsGG."
+   "join_note": "HotSpawn lists Phantom vs RoundsGG.",
+   "start_time_utc_note": "left null: the source's clock rendering was measured to differ between elements of the same page, so no UTC value is derived from it",
+   "link_check": {
+    "state": "capture_page_ok",
+    "status": 200,
+    "checked_at_utc": "2026-10-13T22:00:00Z",
+    "method": "price was read from the source's event page listed in capture_url; this exact match URL was not opened separately",
+    "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/phantom-esports-vs-rounds-m6Cnk4tOxU"
+   }
   },
   {
    "fixture_id": "1080289",
@@ -173,13 +253,21 @@
    "decimal_odds_a": 1.08,
    "decimal_odds_b": 6.24,
    "egw_time_display": "16.10.26 17:00 CET",
-   "start_time_utc": "2026-10-16T16:00:00Z",
+   "start_time_utc": null,
    "source_url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/voca-vs-rounds-_dTpdE0K7U",
    "capture_url": "https://egamersworld.com/counterstrike/event/elisa-esports-breakout-series-2-4yn491uUVl",
    "source_league": "Elisa Esports BreakOut Series 2",
    "partner_bookmaker": "bet365 (as displayed by EGamersWorld)",
    "retrieved_at_utc": "2026-10-13T22:00:00Z",
-   "join_note": "EGamersWorld lists the pair as Voca vs Rounds (Voca 1.08); HotSpawn lists RoundsGG vs Voca, so the sides are reversed and the prices are reversed when the probability is derived."
+   "join_note": "EGamersWorld lists the pair as Voca vs Rounds (Voca 1.08); HotSpawn lists RoundsGG vs Voca, so the sides are reversed and the prices are reversed when the probability is derived.",
+   "start_time_utc_note": "left null: the source's clock rendering was measured to differ between elements of the same page, so no UTC value is derived from it",
+   "link_check": {
+    "state": "capture_page_ok",
+    "status": 200,
+    "checked_at_utc": "2026-10-13T22:00:00Z",
+    "method": "price was read from the source's event page listed in capture_url; this exact match URL was not opened separately",
+    "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/voca-vs-rounds-_dTpdE0K7U"
+   }
   }
  ]
 }
