@@ -2844,3 +2844,51 @@ session's claim section; the section above has been restored **verbatim from thi
 - **PR #54** ("Post-merge verification (6a8b46f1): PR #51/#52/#53 review, 153 tests, repo-wide audit 0 failures incl. new market/ board") build pass 58s → **MERGED → `c1ed7af92f0a0f9fd99632d33c70c1d60c8127d9`** at 22:52:41Z.
 - Deploy run for `c1ed7af9` (`pages build and deployment`) **success**; `Verify and publish dashboard` for `c1ed7af9` **success**; Pages status **built**.
 - Contents: audit extended to `market/` (74 pages / 1 129 links / 5 897 rows / 2 461 valued, 0 failures), refreshed AUDIT artifacts, this record.
+## Session `eb454aaa` — independent market safety audit (2026-10-13)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Independently audit expanded-market coverage, source joins, freshness, probability arithmetic and publishing failure behavior; publish source-linked findings and tests without modifying another session's collector or shared navigation | needs review | eb454aaa | 2026-10-13 22:50:50 | `audits/eb454aaa/**` (new), `tests/test_eb454aaa.py` (new), COORDINATION.md (append-only section) |
+
+- Fixed Arena branch: `arena/eb454aaa-maltaproj2`; no other branch will be created or pushed.
+- Existing integration owner `6a8b46f1` and all existing data/dashboard owners retain their scopes. This audit does not duplicate their collectors or change their datasets. Findings and requested fixes will be logged here and published in this audit's Flagged for Review page.
+- Sandbox outbound hosts exclude HotSpawn/bookmakers/HLTV; source statements will be checked against committed runner evidence, not misrepresented as a new live external read. GitHub APIs are available for deployment and workflow verification.
+
+- Claim timestamp corrected to the actual claim commit time (2026-10-13T22:50:50Z); the earlier minute was a transcription error.
+- 2026-10-13T22:54:04.216652+00:00 — Additive non-overlapping scope claim: `.github/workflows/audit-eb454aaa.yml` (new only) for read-only audit-page browser tests on GitHub runners. No existing workflow will be changed.
+
+### Session eb454aaa — completed independent review / owner handoff
+
+- Review timestamp: 2026-10-13T22:55:21.544890+00:00. Task status: **needs review** (findings published in `audits/eb454aaa/flagged.html`; no blocker). Implementation and isolated tests are complete.
+- Audited expanded snapshot 2026-10-13T22:48:04Z: 1,210 inventory records; 263 labeled future; 27 future rows with quotes (23 CS2 / 4 LoL). 18 quoted future rows have conservative safety flags; not a claim that all 18 prices are wrong. All quoted-row probability arithmetic recomputed without mismatches. Audit publishes no probability/pick values. Input hashes and every per-row source are in `audits/eb454aaa/report.json`.
+- Newly checked official Valve regional standings via `https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/`: all four stored 2026-10-05 files byte-match the official repository. Proof, SHA-256, blob IDs and official links: `audits/eb454aaa/valve_verification.json`. Ratings verified; scale-400 predictive conversion is not calibrated or an official forecast.
+- **Handoff to a0586093 (expanded collector owner)**: F1 non-open Bovada state S enters two future consensuses; F2 four quotes for two LoL rows join across 300-minute kickoff skew with a one-token/720-minute rule not fully disclosed in method; F3 live quote remains in past ex-Keyd Stars–Galorys consensus; F4 missing freshness/open-market/lock gates; F5 outcome-array ordering assumption instead of competitorId join (captured sample ordering aligns; no actual inversion alleged); F6 failure-masking echo/always publication permits mixed stale output; F7 API inventory is not proof of current lobby eligibility (821 forfeited, one future started); F8 footer says nothing estimated while originated model estimates exist. Source-linked detail: `audits/eb454aaa/flagged.html`. Requested fixes stay in their owner's scope; no upstream files were edited.
+- Full local suite: **166 tests pass** after installing the pinned dependencies in an isolated `.venv`; initial missing-bs4 failure was environment-only, corrected and re-run. `scripts/stage_site.py`: all staged internal links resolve. `scripts/961/recheck_961.py`: 0 failures. Local Chrome absent; new isolated read-only Actions workflow will run actual 320/390/1280px browser checks before merge.
+- Source limitations: HotSpawn/HLTV/bookmaker/live Pages hosts are outside sandbox allowed egress. No fresh external read is claimed; prior runner captures and source URLs are exposed for review. Verified probabilities for every match and universal official-source line-by-line certification remain **incomplete**, not fabricated.
+
+- 2026-10-13T22:55:51.904152+00:00 — Rebasing onto merged PR #54 caused an append-only COORDINATION.md conflict. Stopped and inspected both sections, retained 6a8b46f1’s full integration record plus this session’s full claim/handoff, then continued. No other session content discarded.
+
+### Session `a0586093` — PR, merge and live verification (append-only)
+
+- **PR #53** (https://github.com/buffedlizard55-lab/MaltaProj2/pull/53) — "Pick'em line board (a0586093):
+  source-linked external lines, labelled model estimates, line-by-line repo review" → `main`.
+  **Merged 2026-10-13T22:41Z**, merge commit `7c7da1f` (base `main` had advanced ~70 commits since the
+  claim; merged twice during the session and kept main's generated `data/**`+`evidence/**`+`verify961/**`
+  while re-appending this session's board sections, so no other session's content was dropped).
+- **Main CI after the merge:** `Verify and publish dashboard` (push, main) — **success**;
+  `update-data` — **success**; `pages build and deployment` — **success**; `expanded-lines` on `main`
+  started as well, so the board and its evidence refresh themselves from main every 2 hours
+  (the scheduled run also re-runs the whole repo review).
+- **Live verification (fetched 2026-10-13 ~22:50 UTC):**
+  - https://buffedlizard55-lab.github.io/MaltaProj2/market/ — dashboard renders 1 210 lobby fixtures /
+    263 upcoming / **27 with a verified external line** / 14 priced by 2+ sources / 48 joined quotes /
+    6 originated model estimates; per-row source links and read times.
+  - https://buffedlizard55-lab.github.io/MaltaProj2/market/repo-review.html — the line-by-line review with
+    the source link for every check (R1 lobby API, R2/R3 Valve VRS files, R4 egamersworld, R6/R7 published lines).
+  - https://buffedlizard55-lab.github.io/MaltaProj2/market/picks.html and `/market/flagged.html` — picks with
+    derived probabilities; the unpriced matches listed as blank-and-flagged.
+  - Root dashboard gained the single additive NAV entry **"Pick'em line board (a0586093)" → `market/index.html`**,
+    and `scripts/stage_site.py` gained `market` in its section list so the built artifact carries the section too.
+- **Follow-up (PR #57):** on the first live run R4 correctly flagged one egamersworld row whose fixture had left
+  the lobby window; the check now separates *stale* rows (fixture gone from the window) from *name mismatches*
+  (fixture present but names disagree), and the repo-review page lists every source URL on its own line.
