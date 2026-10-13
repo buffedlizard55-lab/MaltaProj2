@@ -12,7 +12,7 @@ probability input — only as the list of fixtures to price.</div>
 <h2>1. Fixtures (discovery only)</h2>
 <p>The lobby's own public JSON API is read by the runner:
 <code>https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures</code> (page: <a href="https://play.hotspawn.com/lobby" rel="nofollow noopener">play.hotspawn.com/lobby</a>).
-It returned <b>92</b> CS2 fixtures for the pick'em window. The lobby's "picked %" crowd
+It returned <b>91</b> CS2 fixtures for the pick'em window. The lobby's "picked %" crowd
 number is displayed on each card <b>for reference only</b> and never enters a calculation.</p>
 
 <h2>2. External prices</h2>
@@ -58,21 +58,21 @@ These are derived quantities, not forecasts and not source quotes.</p>
 <li><b>Market-graph Bradley-Terry.</b> Every collected moneyline is one observation of
 <code>logit(p) = strength_A − strength_B</code>; strengths are fitted by maximum likelihood over the whole graph
 (including matches outside the pick'em). A team needs at least 3
-collected observations against at least two different opponents to carry a usable strength. Graph: <b>112</b>
+collected observations against at least two different opponents to carry a usable strength. Graph: <b>111</b>
 observations over <b>103</b> teams. Held-out (refit without the fixture, predict it, compare with the
-market): <b>2</b> fixture(s), mean absolute error <b>0.011</b>, Brier
-<b>0.0002</b> — thin, because the identification rule excludes everything else.</li>
+market): <b>2</b> fixture(s), mean absolute error <b>0.0169</b>, Brier
+<b>0.0004</b> — thin, because the identification rule excludes everything else.</li>
 <li><b>Valve Regional Standings.</b> <code>p = sigmoid((points_A − points_B)/scale)</code> with the scale fitted
 against the priced fixtures: <b>120.1</b> points, calibration on
-<b>14</b> fixtures, mean absolute error <b>0.1929</b>
+<b>14</b> fixtures, mean absolute error <b>0.1942</b>
 (deeper books only: 9 fixtures,
-MAE 0.1829). Because that error is large, the
+MAE 0.1819). Because that error is large, the
 model output is clamped to [0.1, 0.9] and every row using it says "originated".</li>
 </ol>
 <h3>Market-graph hold-out checks</h3>
-<div class="tablewrap"><table><tr><th>Fixture</th><th>Market</th><th>Model (refit without it)</th><th>|error|</th></tr><tr><td>ENCE vs BOJONG</td><td>65.5%</td><td>67.1%</td><td>0.0166</td></tr><tr><td>EAC vs ENCE</td><td>62.6%</td><td>63.1%</td><td>0.0055</td></tr></table></div>
+<div class="tablewrap"><table><tr><th>Fixture</th><th>Market</th><th>Model (refit without it)</th><th>|error|</th></tr><tr><td>ENCE vs BOJONG</td><td>64.3%</td><td>67.2%</td><td>0.0294</td></tr><tr><td>EAC vs ENCE</td><td>63.2%</td><td>62.8%</td><td>0.0044</td></tr></table></div>
 <h3>VRS calibration against real prices</h3>
-<div class="tablewrap"><table><tr><th>Fixture</th><th>Points difference</th><th>Market</th><th>Model</th><th>|error|</th></tr><tr><td>Zomblers vs Overtake Sector</td><td>-135</td><td>35.6%</td><td>24.5%</td><td>0.1104</td></tr><tr><td>Enjoy vs B8 Academy</td><td>240</td><td>62.4%</td><td>88.1%</td><td>0.2563</td></tr><tr><td>Gothic vs Lavked</td><td>-157</td><td>49.8%</td><td>21.3%</td><td>0.2846</td></tr><tr><td>9z vs Aurora</td><td>-173</td><td>25.7%</td><td>19.1%</td><td>0.066</td></tr><tr><td>Astralis vs Sashi</td><td>543</td><td>85.3%</td><td>98.9%</td><td>0.1358</td></tr><tr><td>HOTU vs Fnatic</td><td>20</td><td>47.2%</td><td>54.1%</td><td>0.0693</td></tr><tr><td>ex-RUSTEC vs mellren</td><td>134</td><td>68%</td><td>75.3%</td><td>0.073</td></tr><tr><td>Falcons vs Ninjas in Pyjamas</td><td>309</td><td>76.6%</td><td>92.9%</td><td>0.1629</td></tr><tr><td>Legacy vs PARIVISION</td><td>520</td><td>56.8%</td><td>98.7%</td><td>0.4195</td></tr><tr><td>G2 Ares vs The Last Resort</td><td>-13</td><td>64.8%</td><td>47.3%</td><td>0.1745</td></tr><tr><td>FURIA vs BetBoom</td><td>233</td><td>69.9%</td><td>87.4%</td><td>0.1755</td></tr><tr><td>MIBR vs BC.Game</td><td>267</td><td>57.1%</td><td>90.2%</td><td>0.3317</td></tr><tr><td>ENCE vs BOJONG</td><td>562</td><td>65.5%</td><td>99.1%</td><td>0.336</td></tr><tr><td>EAC vs ENCE</td><td>10</td><td>62.6%</td><td>52.1%</td><td>0.1048</td></tr></table></div>
+<div class="tablewrap"><table><tr><th>Fixture</th><th>Points difference</th><th>Market</th><th>Model</th><th>|error|</th></tr><tr><td>Zomblers vs Overtake Sector</td><td>-135</td><td>35.6%</td><td>24.5%</td><td>0.1104</td></tr><tr><td>Enjoy vs B8 Academy</td><td>240</td><td>61.5%</td><td>88.1%</td><td>0.2653</td></tr><tr><td>Gothic vs Lavked</td><td>-157</td><td>49.8%</td><td>21.3%</td><td>0.2846</td></tr><tr><td>9z vs Aurora</td><td>-173</td><td>25.5%</td><td>19.1%</td><td>0.0639</td></tr><tr><td>Astralis vs Sashi</td><td>543</td><td>85.3%</td><td>98.9%</td><td>0.1362</td></tr><tr><td>HOTU vs Fnatic</td><td>20</td><td>47.1%</td><td>54.1%</td><td>0.0701</td></tr><tr><td>ex-RUSTEC vs mellren</td><td>134</td><td>68%</td><td>75.3%</td><td>0.073</td></tr><tr><td>Falcons vs Ninjas in Pyjamas</td><td>309</td><td>76.5%</td><td>92.9%</td><td>0.164</td></tr><tr><td>Legacy vs PARIVISION</td><td>520</td><td>57.1%</td><td>98.7%</td><td>0.4162</td></tr><tr><td>G2 Ares vs The Last Resort</td><td>-13</td><td>64.3%</td><td>47.3%</td><td>0.1703</td></tr><tr><td>FURIA vs BetBoom</td><td>233</td><td>70.1%</td><td>87.4%</td><td>0.1736</td></tr><tr><td>MIBR vs BC.Game</td><td>267</td><td>57%</td><td>90.2%</td><td>0.3325</td></tr><tr><td>ENCE vs BOJONG</td><td>562</td><td>64.3%</td><td>99.1%</td><td>0.3479</td></tr><tr><td>EAC vs ENCE</td><td>10</td><td>63.2%</td><td>52.1%</td><td>0.1113</td></tr></table></div>
 
 <h2>6. Reproducing this board</h2>
 <ul>
@@ -89,7 +89,7 @@ plus every accept/reject decision in <code>evidence/matching.json</code>.</li>
 
 <h2>7. Limits, stated plainly</h2>
 <ul>
-<li>62 of 92 listed fixtures have a kickoff already in the past;
+<li>61 of 91 listed fixtures have a kickoff already in the past;
 they stay listed (the lobby still shows them) and stay blank.</li>
 <li>Aggregator-only rows are weaker evidence than bookmaker rows and are marked as such everywhere.</li>
 <li>Low-tier tournaments (Elisa BreakOut, CCT play-ins, FRAG University) are barely priced by the reachable
