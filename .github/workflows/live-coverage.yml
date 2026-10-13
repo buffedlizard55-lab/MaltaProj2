@@ -40,10 +40,15 @@ jobs:
           python-version: '3.11'
 
       - name: Collect lobby fixtures, external prices and official Valve ratings
+        continue-on-error: true
         run: |
           mkdir -p data/live
-          python3 scripts/live/collect_live.py --outdir data/live 2>&1 | tee /tmp/live_collect.log
-          echo "collector exit=${PIPESTATUS[0]}"
+          python3 scripts/live/collect_live.py --outdir data/live > /tmp/live_collect.log 2>&1
+          code=$?
+          echo "collector exit=$code"
+          tail -c 20000 /tmp/live_collect.log
+          tail -c 20000 /tmp/live_collect.log > data/live/collector_run.log
+          exit 0
 
       - name: Build the board, re-derive every number and render the pages
         run: python3 scripts/live/build_live.py --data data/live --site live --allow-blank-quotes

@@ -98,6 +98,10 @@ NAV = [
     # integration link added by session a0586093 (T-EXPAND, single-anchor edit documented in
     # COORDINATION.md): the source-linked external-line board with the repo-review page
     ("market/index.html", "Pick'em line board (a0586093)"),
+    # integration link added by session 3cd9787c (T-COVER, single-anchor edit documented in
+    # COORDINATION.md): current-lobby coverage board — every lobby fixture with an external-market
+    # probability or a labelled originated estimate.
+    ("live/index.html", "Live coverage board (3cd9787c)"),
 ]
 
 

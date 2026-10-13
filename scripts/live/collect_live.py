@@ -707,6 +707,24 @@ def collect_polymarket(quotes: list[dict], log: dict, sample_dir: Path | None = 
 
 # ----------------------------------------------------------------------------------- main
 def main() -> int:
+    try:
+        return _main()
+    except Exception:  # noqa: BLE001 - a crash must still leave a readable trace in the evidence
+        import traceback
+        outdir = ROOT / "data" / "live"
+        for i, arg in enumerate(sys.argv):
+            if arg == "--outdir" and i + 1 < len(sys.argv):
+                outdir = Path(sys.argv[i + 1])
+        try:
+            outdir.mkdir(parents=True, exist_ok=True)
+            (outdir / "collector_error.txt").write_text(traceback.format_exc(), encoding="utf-8")
+        except Exception:  # noqa: BLE001
+            pass
+        traceback.print_exc()
+        return 1
+
+
+def _main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--outdir", default="data/live")
     args = ap.parse_args()
