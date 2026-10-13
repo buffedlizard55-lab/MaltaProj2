@@ -71,6 +71,7 @@ class _Links(HTMLParser):
 
 
 def check_board(board, verbose=False):
+    """Recompute every published number from the raw per-source decimals and assert the rules."""
     fails: list[str] = []
     rows = board["rows"]
     verified = 0
@@ -89,8 +90,9 @@ def check_board(board, verbose=False):
         srcs = row.get("sources") or []
         if not srcs:
             fails.append(f"R3 {tag}: verified row has no source")
-        shares = []
-        seen = set()
+        # per-source checks
+        pairs: list[tuple[dict, tuple]] = []
+        seen: set[str] = set()
         for s in srcs:
             url = s.get("source_url") or ""
             if not url.startswith("http"):
@@ -104,15 +106,31 @@ def check_board(board, verbose=False):
             if pair is None:
                 fails.append(f"R6 {tag}: source {s.get('source_key')} has an unusable price pair")
                 continue
-            shares.append(pair)
+            pairs.append((s, pair))
             if s.get("no_vig_probability_a") is not None:
                 if abs(pair[0] - float(s["no_vig_probability_a"])) > 0.005:
                     fails.append(
                         f"R5 {tag}: source {s.get('source_key')} no-vig {s['no_vig_probability_a']} "
                         f"!= recomputed {pair[0]:.4f}")
-        if not shares:
+        if not pairs:
             continue
-        mean_a = sum(p[0] for p in shares) / len(shares)
+        # consensus rule: pre-match quotes only; live quotes are published but excluded
+        pre_match = [(s, p) for s, p in pairs if not s.get("market_is_live")]
+        live = [(s, p) for s, p in pairs if s.get("market_is_live")]
+        used = pre_match or live
+        expected_basis = "pre_match" if pre_match else "live_only"
+        if row.get("consensus_basis") != expected_basis:
+            fails.append(f"R1 {tag}: consensus_basis {row.get('consensus_basis')} != {expected_basis}")
+        if row.get("n_consensus_sources") != len(used):
+            fails.append(f"R1 {tag}: n_consensus_sources {row.get('n_consensus_sources')} != {len(used)}")
+        expected_keys = sorted(s.get("source_key") for s, _ in used)
+        if sorted(row.get("consensus_sources") or []) != expected_keys:
+            fails.append(f"R1 {tag}: consensus_sources {row.get('consensus_sources')} != {expected_keys}")
+        if pre_match and live and "live_price_excluded_from_consensus" not in row["flags"]:
+            fails.append(f"R1 {tag}: live quote excluded from consensus but not flagged")
+        if live and not pre_match and "live_consensus_only" not in row["flags"]:
+            fails.append(f"R1 {tag}: live-only consensus not flagged")
+        mean_a = sum(p[0] for _, p in used) / len(used)
         mean_b = 1.0 - mean_a
         pa, pb = row.get("probability_a"), row.get("probability_b")
         if pa is None or pb is None:
@@ -131,7 +149,8 @@ def check_board(board, verbose=False):
         if row.get("pick_probability") is None or abs(float(row["pick_probability"]) - best) > TOL:
             fails.append(f"R2 {tag}: pick_probability {row.get('pick_probability')} != {best:.4f}")
         if verbose:
-            print(f"  ok {fid} {row.get('pick')} {best:.4f} ({len(srcs)} source(s))")
+            print(f"  ok {fid} {row.get('pick')} {best:.4f} "
+                  f"({len(srcs)} source(s), consensus={expected_basis})")
     return fails, verified
 
 

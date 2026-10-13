@@ -2591,3 +2591,10 @@ Verification: `python3 -m unittest discover -s tests` → 110 tests OK (9 new); 
 - Pull request opened from `arena/2b8c07e9-maltaproj2` to `main`.
 - Merged to `main` via `gh pr merge <number> --merge`.
 - Verified GitHub Pages build settled and deployed live.
+
+### Session `961e163a` — consensus-basis fix (2026-10-13 22:10 UTC, append-only)
+
+- **Finding from the live re-read:** the 22:00Z automatic refresh pulled a **live (in-play)** Bovada price for ex-Keyd Stars vs Galorys (fixture 1081076, start 21:00Z) and it was being averaged with the pre-match egamersworld quote → a mixed-information consensus (24.2% / 75.8% instead of the pre-match 37.9% / 62.1%). A live price carries a different information set, so mixing it into a pre-match consensus is wrong even though the row was flagged.
+- **Fix (this session's files only):** `scripts/961/build_961.py` now computes the consensus from **pre-match quotes only**; live quotes stay in the row (published, with their own no-vig figure) but are excluded, and the row is flagged `live_price_excluded_from_consensus`; a fixture whose only quotes are live is flagged `live_consensus_only`. New row fields `consensus_basis`, `consensus_sources`, `n_consensus_sources`; rule added to the board's published `rules` list.
+- **Published surface:** dashboard + per-game tables now print "N quoted · consensus: pre-match quotes only" and the flagged page documents both new flags; the independent re-check enforces the rule (basis, source set, count, flags, and the recomputed mean).
+- **Gates after the fix:** `tests/test_961.py` 25 tests OK · `recheck_961.py` failures = 0 · full repo suite 88 tests OK · `stage_site.py` no broken links.

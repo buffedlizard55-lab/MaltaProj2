@@ -250,7 +250,14 @@ def main() -> int:
                 per_source[src] = entry
 
         sources = sorted(per_source.values(), key=lambda s: s["source_key"])
-        probs = [s["no_vig_probability_a"] for s in sources]
+        # Consensus basis: pre-match quotes only. An in-play (live) price carries a different
+        # information set (the match has already started), so it is published in the row but never
+        # mixed into a pre-match consensus; a row whose only quotes are live is flagged as such.
+        pre_match = [s for s in sources if not s.get("market_is_live")]
+        live_quotes = [s for s in sources if s.get("market_is_live")]
+        consensus_sources = pre_match or live_quotes
+        consensus_basis = "pre_match" if pre_match else ("live_only" if live_quotes else None)
+        probs = [s["no_vig_probability_a"] for s in consensus_sources]
         prob_a = round(sum(probs) / len(probs), 5) if probs else None
         status_l = str(fx.get("status") or "").lower()
         flags = []
@@ -272,6 +279,10 @@ def main() -> int:
             age_h = hours_between(parse_iso(s.get("retrieved_at_utc")), now)
             if age_h is not None and age_h > 6:
                 flags.append("quote_older_than_6h")
+        if live_quotes and pre_match:
+            flags.append("live_price_excluded_from_consensus")
+        elif live_quotes:
+            flags.append("live_consensus_only")
         if used_fallback:
             flags.append("uses_fallback_stored_quote")
         for q, orientation, delta_h in matches:
@@ -298,6 +309,9 @@ def main() -> int:
             "probability_b": None if prob_a is None else round(1 - prob_a, 5),
             "pick": pick,
             "pick_probability": pick_probability,
+            "consensus_basis": consensus_basis,
+            "consensus_sources": [s["source_key"] for s in consensus_sources],
+            "n_consensus_sources": len(consensus_sources),
             "n_sources": len(sources),
             "sources": sources,
             "flags": sorted(set(flags)),
@@ -325,6 +339,7 @@ def main() -> int:
             "External betting lines only (Pinnacle, Bovada, HLTV-published bookmaker odds, egamersworld).",
             "Per source: q = 1/decimal; p_a = q_a/(q_a+q_b) removes that source's margin.",
             "Consensus = arithmetic mean of per-source no-vig shares.",
+  "Consensus basis = pre-match quotes only; live (in-play) quotes are published but excluded, and a live-only consensus is flagged.",
             "Hotspawn crowd pick % is never an input (see data/961/hotspawn_reference.json).",
             "No verified external line => probabilities blank and flagged no_external_line.",
         ],

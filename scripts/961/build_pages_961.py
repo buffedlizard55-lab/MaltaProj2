@@ -34,11 +34,18 @@ FLAG_HELP = {
     "single_source": "Only one external source quoted this fixture; the consensus equals that source.",
     "scheduled_start_in_the_past_or_started": "The scheduled start time is in the past relative to the build time (fixture started or the lobby list is stale).",
     "live_market_quote": "The source reports the market as live; a live price is not an opening pre-match line.",
+    "live_price_excluded_from_consensus": "A live (in-play) price is published in the row but excluded from the pre-match consensus.",
+    "live_consensus_only": "Every quote for this fixture is live (in-play); the consensus rests on live prices only.",
     "quote_older_than_6h": "The quote is older than 6 hours at build time.",
     "uses_fallback_stored_quote": "A previously stored capture was used because this run could not re-read the book directly.",
     "start_time_mismatch_over_6h": "The source's reported start time differs from Hotspawn's by more than 6 hours.",
     "fixture_cancelled": "Hotspawn's own fixture record says cancelled; duplicates of a live fixture are excluded from the open count.",
     "source_status_inconsistent_with_future_start": "Hotspawn's status says started although the scheduled start is in the future (source inconsistency).",
+}
+CONSENSUS_LABEL = {
+    "pre_match": "pre-match quotes only",
+    "live_only": "live quotes only (flagged)",
+    None: "no quote",
 }
 NAV_ITEMS = [("index.html", "Dashboard"), ("cs2.html", "CS2"), ("lol.html", "LoL"),
              ("crosschecks.html", "Cross-checks"), ("flagged.html", "Flagged for review"),
@@ -199,7 +206,7 @@ def row_html(row):
   <td data-label="Tournament">{esc(row.get('competition'))}</td>
   <td data-label="Match">{match}</td>
   <td data-label="Probability A / B">{fmt_prob(row.get('probability_a'))} / {fmt_prob(row.get('probability_b'))}
-    <span class="mini">{esc(row.get('n_sources'))} source(s)</span></td>
+    <span class="mini">{esc(row.get('n_sources'))} quoted · consensus: {esc(CONSENSUS_LABEL.get(row.get('consensus_basis'), '—'))}</span></td>
   <td data-label="Pick">{pick_html}</td>
   <td data-label="External sources">{source_cell(row)}</td>
   <td data-label="Hotspawn">{hot_link}{lobby_link}</td>
@@ -258,7 +265,8 @@ sources only. A blank cell is unverified, never estimated. <a href="methodology.
 {xcheck_line}
 <h2>Open fixtures with verified external lines ({len(picks)})</h2>
 <p class="sub">Pick = the higher external no-vig probability. The probability is the mean of the per-source
-de-margined shares; every source link and read time sits in the row.</p>
+de-margined shares, computed from <strong>pre-match quotes only</strong> (a live/in-play price is shown in the row
+but never mixed into the pre-match consensus); every source link and read time sits in the row.</p>
 {table(picks) if picks else '<p class="note">No open fixture currently has a verified external line.</p>'}
 <h2>All fixtures in the current window ({len(rows)})</h2>
 {table(rows)}
@@ -372,6 +380,10 @@ public fixtures API behind <a href="https://play.hotspawn.com/lobby" rel="noopen
 public coupon and egamersworld's public odds widget. HLTV is <strong>not</strong> a price source (see item 6).</li>
 <li>Per source the margin is removed: q = 1/decimal, p_a = q_a / (q_a + q_b). The published probability is
 the arithmetic mean of the per-source no-vig shares; the pick is the higher share.</li>
+<li><strong>Consensus basis:</strong> pre-match quotes only. When a source reports its market as live (in-play),
+that price is still shown in the row but excluded from the mean and the row is flagged
+<code>live_price_excluded_from_consensus</code>; a fixture whose only quotes are live is flagged
+<code>live_consensus_only</code>.</li>
 <li><strong>Hotspawn's crowd pick percentage is never an input.</strong> It is stored separately in
 <code>data/961/hotspawn_reference.json</code> and is not read by the builder (enforced by a test).</li>
 <li>If no external price can be verified the row is blank and flagged <code>no_external_line</code>.</li>
