@@ -142,7 +142,9 @@ def collect_lobby_page(log: dict, sample_dir: Path | None = None) -> dict:
         # fixture snapshot below.
         counters["listing_ids"] = listing["listed_ids"]
         if sample_dir is not None:
-            save_sample(sample_dir, "lobby_page.html", text, limit=600_000)
+            # stored as .txt: the raw page is inert evidence and must not be treated as a site page by
+            # any link checker (the staged-site check walks every .html file in the artifact).
+            save_sample(sample_dir, "lobby_page.txt", text, limit=600_000)
     log["lobby_page"] = {k: v for k, v in res.items() if k != "body"}
     log["lobby_page"]["counters"] = {k: v for k, v in counters.items() if k != "listing_ids"}
     return counters
@@ -590,8 +592,8 @@ def collect_egamersworld(quotes: list[dict], log: dict, sample_dir: Path) -> Non
                 attempt["rows_parsed"] = len(rows)
                 attempt["contains_match_link"] = bool(EGW_MATCH_LINK_RE.search(text))
                 attempt["contains_vs_title"] = bool(EGW_TITLE_RE.search(text))
-                save_sample(sample_dir, f"{page_key}_{tname}.html", text, limit=400_000)
-                attempt["sample_saved"] = f"{page_key}_{tname}.html"
+                save_sample(sample_dir, f"{page_key}_{tname}.txt", text, limit=400_000)
+                attempt["sample_saved"] = f"{page_key}_{tname}.txt"
                 if rows:
                     quotes.extend(rows)
                     got_rows += len(rows)
