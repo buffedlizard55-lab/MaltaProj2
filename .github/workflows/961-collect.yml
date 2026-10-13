@@ -34,6 +34,8 @@ jobs:
         run: python3 scripts/961/build_961.py || echo 'builder returned non-zero'
       - name: Build mobile-first pages
         run: python3 scripts/961/build_pages_961.py || echo 'page builder returned non-zero'
+      - name: Independent re-check (arithmetic, picks, sources, page links)
+        run: python3 scripts/961/recheck_961.py
       - name: Commit refreshed evidence, board and pages
         if: always()
         run: |

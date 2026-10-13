@@ -20,6 +20,7 @@ from __future__ import annotations
 import html
 import json
 import os
+import re
 from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -42,6 +43,50 @@ FLAG_HELP = {
 NAV_ITEMS = [("index.html", "Dashboard"), ("cs2.html", "CS2"), ("lol.html", "LoL"),
              ("crosschecks.html", "Cross-checks"), ("flagged.html", "Flagged for review"),
              ("methodology.html", "Methodology &amp; sources")]
+
+
+def staged_sections():
+    """Section directories that scripts/stage_site.py copies into the published artifact.
+
+    Cross-section links are emitted only for these, so the published build can never ship a
+    link to a directory that staging drops (the failure mode that broke an earlier pipeline run).
+    """
+    path = os.path.join(ROOT, "scripts", "stage_site.py")
+    try:
+        with open(path, encoding="utf-8") as fh:
+            text = fh.read()
+    except OSError:
+        return set()
+    match = re.search(r"for name in \(([^)]*)\)", text)
+    if not match:
+        return set()
+    return {p.strip().strip("'\"") for p in match.group(1).split(",") if p.strip()}
+
+
+RELATED = [
+    ("index.html", "Root dashboard (all sections)"),
+    ("docs/index.html", "LineWatch dashboard"),
+    ("docs/analysis.html", "Pick&rsquo;em analysis (257 rows)"),
+    ("pickem/index.html", "Priced pick&rsquo;em board"),
+    ("verify/8e7a652d/index.html", "Independent verification report"),
+]
+
+
+def related_block():
+    staged = staged_sections()
+    items = []
+    for rel, label in RELATED:
+        if not os.path.exists(os.path.join(ROOT, rel)):
+            continue
+        first = rel.split("/")[0]
+        if "/" in rel and first not in staged:
+            continue
+        items.append('<li><a href="../%s">%s</a></li>' % (rel, label))
+    if not items:
+        return ""
+    return ('<h2>Other sections of this site</h2><ul class="flags">' + "".join(items) + "</ul>"
+            '<p class="mini">These links are emitted only when the target section is part of the same '
+            'published artifact, so the build cannot ship a broken link.</p>')
 
 
 def esc(v):
@@ -139,8 +184,11 @@ def row_html(row):
              f'<span class="vs">vs</span>'
              f'<span class="tb">{esc(row.get("team_b"))}</span>')
     hot = row.get("hotspawn_match_url")
-    hot_link = (f'<a class="mini" href="{esc(hot)}" rel="noopener">fixture {esc(row.get("fixture_id"))}</a>'
+    hot_link = (f'<a href="{esc(hot)}" rel="noopener">fixture {esc(row.get("fixture_id"))}</a>'
                 if hot else esc(row.get("fixture_id")))
+    lobby = row.get("official_source_url_hotspawn")
+    lobby_link = ('<a class="mini" href="%s" rel="noopener">lobby API (fixture list)</a>' % esc(lobby)
+                  if lobby else "")
     css = "row verified" if row["verified"] else "row unverified-row"
     if row.get("cancelled"):
         css = "row cancelled-row"
@@ -154,7 +202,7 @@ def row_html(row):
     <span class="mini">{esc(row.get('n_sources'))} source(s)</span></td>
   <td data-label="Pick">{pick_html}</td>
   <td data-label="External sources">{source_cell(row)}</td>
-  <td data-label="Hotspawn">{hot_link}</td>
+  <td data-label="Hotspawn">{hot_link}{lobby_link}</td>
   <td data-label="Flags">{flags_cell(row)}</td>
 </tr>"""
 
@@ -216,7 +264,8 @@ de-margined shares; every source link and read time sits in the row.</p>
 {table(rows)}
 <p class="note">Sources are re-read by a scheduled GitHub Actions run; the read time is shown per row so
 staleness is always visible. Fixtures with no external price, cancelled duplicates and all irregularities are on
-<a href="flagged.html">Flagged for review</a>.</p>"""
+<a href="flagged.html">Flagged for review</a>.</p>
+{related_block()}"""
     write("index.html", "Pick board", idx)
 
     for game, fname, label in (("cs2", "cs2.html", "CS2 fixtures"), ("lol", "lol.html", "LoL fixtures")):

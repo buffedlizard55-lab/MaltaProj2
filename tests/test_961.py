@@ -22,6 +22,7 @@ BOARD = os.path.join(ROOT, "data", "961", "board.json")
 LOBBY = os.path.join(ROOT, "data", "961", "lobby.json")
 REFERENCE = os.path.join(ROOT, "data", "961", "hotspawn_reference.json")
 PAGES = os.path.join(ROOT, "verify961")
+SCRIPTS = os.path.join(ROOT, "scripts")
 TOL = 1e-4
 
 
@@ -252,3 +253,29 @@ class CrossCheckTests(unittest.TestCase):
             self.assertIn("fixture_cancelled", r["flags"], msg=r["fixture_id"])
         self.assertLessEqual(summary["open_for_picks"],
                              summary["fixtures_total"] - len(cancelled))
+
+class IndependentRecheckTests(unittest.TestCase):
+    """Run the standalone re-checker (independent arithmetic + page link audit)."""
+
+    def test_recheck_reports_no_failures(self):
+        import importlib.util
+        path = os.path.join(SCRIPTS, "961", "recheck_961.py")
+        spec = importlib.util.spec_from_file_location("recheck_961", path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        fails, verified, cross = mod.verify()
+        self.assertEqual(fails, [])
+        self.assertGreater(verified, 0)
+        self.assertEqual(verified, mod._load(mod.BOARD)["summary"]["fixtures_with_external_line"])
+        self.assertGreater(cross, 0)
+
+    def test_every_page_has_a_mobile_viewport(self):
+        for name in sorted(os.listdir(PAGES)):
+            if name.endswith(".html"):
+                with open(os.path.join(PAGES, name), encoding="utf-8") as fh:
+                    self.assertIn('name="viewport"', fh.read(), msg=name)
+
+    def test_recheck_is_wired_into_the_workflow(self):
+        with open(os.path.join(ROOT, ".github", "workflows", "961-collect.yml"), encoding="utf-8") as fh:
+            wf = fh.read()
+        self.assertIn("recheck_961.py", wf)
