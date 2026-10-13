@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Methodology - Hotspawn Pick'em line reconstruction</title>
+<link rel="stylesheet" href="assets/style.css">
+</head><body>
+<header><div class="wrap">
+<div class="brand"><b>Hotspawn Pick'em &rarr; independent betting lines</b>
+<span>CS2 &middot; snapshot 2026-10-13 (UTC); site re-verified 2026-10-13</span></div>
+<nav><a class="" href="index.html">Dashboard</a><a class="" href="matches.html">All matches</a><a class="" href="events.html">By tournament</a><a class="" href="analysis.html">Analysis</a><a class="on" href="methodology.html">Methodology</a><a class="" href="flagged.html">Flagged for review</a><a class="" href="sources.html">Sources</a><a class="" href="../index.html">Site dashboard</a></nav>
+</div></header>
+<main><div class="wrap">
+<h1>Methodology</h1>
+<p class="mut">Exactly how each number was produced, and what was excluded.</p>
+
+<h2>Pipeline</h2>
+<p class="small mut"><b>Time base:</b> every kickoff in this dataset is UTC, taken from the lobby payload's
+<code>scheduled_start</code> epoch values (row-level evidence in
+<code>audits/1d4de836/lobby-snapshot-audit.json</code>) and matched against the HLTV match page. Hotspawn's rendered
+clock reads four hours earlier (US Eastern), and Polymarket's clocks for the Elisa BreakOut markets read four hours
+earlier again - both deviations are published on the Flagged for review page rather than silently corrected in the data.</p>
+<ol>
+<li><b>Enumerate.</b> The Pick'em lobby (<a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">play.hotspawn.com/lobby</a>
+and <a href="https://play.hotspawn.com/cs2-pickems" target="_blank" rel="noopener">/cs2-pickems</a>) was read at
+three points in time. Every fixture that was open for picks was recorded with its tournament, tier, points,
+kickoff (UTC), both team names and the crowd percentages.</li>
+<li><b>Verify the fixture.</b> Each fixture was matched to an HLTV match page (kickoff, format, both team names).
+Where no HLTV match URL exists yet, the HLTV event listing and a second independent site (bo3.gg) are cited
+instead, and the gap is flagged.</li>
+<li><b>Capture external prices.</b> Two independent markets are used:
+  <ul>
+   <li><b>Bookmaker:</b> EGamersWorld's <code>Bets on &lt;event&gt; by bc.game</code> module on each event page
+   (every EGamersWorld odds module states the bookmaker it prices).</li>
+   <li><b>Prediction market:</b> Polymarket CS2 markets for the same fixture.</li>
+  </ul></li>
+<li><b>De-margin.</b> For a two-way market with prices <code>o1</code>, <code>o2</code>:
+<code>p_i = (1/o_i) / (1/o_1 + 1/o_2)</code>. Prediction-market prices are normalised the same way
+<code>p_i = c_i / (c_1 + c_2)</code>, which removes the bid/ask spread.</li>
+<li><b>Our line.</b> Equal-weight average of the de-margined probabilities from the sources captured for that
+fixture. Fair odds are <code>1/p</code>. Where no external two-sided price was captured the row is left blank and
+flagged - no value is guessed.</li>
+</ol>
+
+<h2>What is deliberately NOT used</h2>
+<ul>
+<li><b>Hotspawn crowd percentages.</b> They are displayed in their own column, labelled "context only", and are
+excluded from every calculation. They are a measure of what other players did, not of the match.</li>
+<li><b>Model/AI win probabilities</b> (for example bo3.gg's "prediction" percentages). They are not market
+prices and are not used for the line.</li>
+<li><b>Unsourced inference.</b> If a value was not captured with a link, the cell is empty and the item appears on
+the <a href="flagged.html">Flagged for review</a> page.</li>
+</ul>
+
+<h2>Why the numbers will move</h2>
+<p>Prices are point-in-time. Two things were observed inside the capture window: (1) the captured decimals changed
+between page components and between fetches, and (2) the market sum (overround) differs by fixture, from roughly
+1.02 on liquid Tier S matches to ~1.35 on empty Tier C prediction markets. Every row therefore carries a quality
+badge derived from the captured spread, and the capture date is stated in the header of every page.</p>
+
+<h2>Reproducing this build</h2>
+<p>The entire site is generated from <code>scripts/build_pickem_lines.py</code>, which holds the captured values
+next to the URL they came from. <code>python3 scripts/build_pickem_lines.py</code> regenerates
+<code>data/pickem_pool.json</code> and every page in <code>pickem/</code>.
+Data files: <a href="assets/data/pool.json">pool.json</a>.</p>
+
+</div></main>
+<footer><div class="wrap">
+Data snapshot 2026-10-13 (UTC); site re-verified 2026-10-13. Hotspawn crowd percentages are shown for context only and are never used to
+compute a probability. All external prices are point-in-time captures - re-check the linked source before acting.
+<br>Part of the MaltaProj2 site: <a href="../index.html">site dashboard</a> (all games, live collection) &middot;
+<a href="../lines.html">VRS-originated reference lines</a> (28 pairwise Thunderpick lines).
+</div></footer>
+</body></html>

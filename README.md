@@ -1,1 +1,54 @@
-# MaltaProj2
+# Pick'ems betting-line dashboard — HotSpawn lobby fixtures
+
+**Live dashboard: https://buffedlizard55-lab.github.io/MaltaProj2/**
+
+An evidence-first table of every CS2 fixture currently offered by the HotSpawn Pick'ems lobby,
+with **external betting lines** (never HotSpawn) and **derived no-vig probabilities**, plus an
+explicit *Flagged for review* page for everything that could not be confirmed.
+
+Not affiliated with HotSpawn or any bookmaker. HotSpawn is used for fixture discovery only — its
+crowd "picked %" is shown for reference and is never used as a probability input.
+
+## What the dashboard contains
+
+| Page | Content |
+|---|---|
+| `index.html` | Coverage summary, method in short, matches with verified lines, timestamps |
+| `cs2.html` | All 87 CS2 pick'em fixtures: odds per source, derived no-vig probability, verification status, review flags |
+| `lol.html` | LoL fixtures from the same lobby (external line collection not yet run for LoL) |
+| `tournaments.html` + `tournament-*.html` | Coverage per tournament |
+| `flagged.html` | Unverified rows, stale fixtures, unused bookmaker lines, rejected matches, source reachability, discrepancies, aliases |
+| `methodology.html` | Sources with links, formulas, matching rules, limitations |
+
+## Data and evidence
+
+| File | Meaning |
+|---|---|
+| `data/hotspawn_matches.json` | Fixture list from the lobby's public API (`/api/v1/fixtures`) |
+| `data/odds.json` | Raw quotes per source, with source URLs, ids and retrieval timestamps |
+| `data/lines.json` | Fixtures joined to quotes, with derived no-vig probabilities and flags |
+| `evidence/*.json` | Probes: API discovery, source reachability, matching decisions, raw payload samples |
+| `audits/1d4de836/**` | Independent audit of the lobby snapshot (session `1d4de836`) |
+
+## Pipeline
+
+`.github/workflows/update-data.yml` runs on every relevant push and every 3 hours:
+
+1. `scripts/fetch_hotspawn.py` — lobby fixtures from the reverse-engineered public API
+   (`https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures`).
+2. `scripts/collect_odds.py` — external lines: Pinnacle (licensed bookmaker, public guest odds API),
+   Bovada (licensed bookmaker, public coupon JSON), Polymarket (public markets; stale CS2 markets are
+   filtered out), plus reachability probes for further candidate sources.
+3. `scripts/build_lines.py` — strict fixture⇄quote matching and proportional no-vig derivation.
+4. `scripts/build_site.py` — renders the static dashboard and refuses to write if an internal link
+   would break.
+
+Sources, derivation rules and every rejection are recorded in `evidence/` so the numbers can be
+reproduced and audited. Nothing is inferred: a fixture without a confirmed external price renders
+blank and is listed on the Flagged for review page.
+
+## LineWatch audited snapshot and shared publication
+
+LineWatch remains available at https://buffedlizard55-lab.github.io/MaltaProj2/docs/ with the independent 86-record source audit, two dated Thunderpick reference markets, original fair-line arithmetic, row-level review flags, CSV/JSON and collection health. Current odds in this stricter snapshot remain blank where current-market joins and freshness are not verified. This does not imply no prices exist in the separate integrated root pipeline.
+
+The Pages workflow now stages all session-owned root HTML/assets/data/evidence/audits **plus** `docs/` and `pickem/`. It waits for the legacy build before deploying the combined artifact. This supersedes the earlier docs-only artifact that hid other sections and the subsequent verification-only workflow. No root or pickem source generator is replaced; their data provenance remains their own. Local navigation is checked across the complete artifact and live LineWatch content is checked after deployment with bounded CDN-propagation retries.

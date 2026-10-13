@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotspawn Lobby Reverse-Engineering — TWC 2026 Malta Finals</title>
+  <link rel="stylesheet" href="assets/linewatch.css">
+  <meta name="description" content="Reverse engineering of play.hotspawn.com/lobby Pick'ems: structure, scoring, lock rules, and fixture discovery for Thunderpick World Championship 2026. Hotspawn is never used as a probability indicator.">
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo"><span class="brand-badge">CS2 Analytics</span><span>Malta Finals 2026</span></a>
+      <nav class="main-nav">
+        <a href="index.html">Dashboard</a>
+        <a href="lines.html">Originated Lines (28)</a>
+        <a href="teams.html">Teams &amp; Rosters</a>
+        <a href="methodology.html">Origination Methodology</a>
+        <a href="hotspawn.html" class="active">Hotspawn Reverse-Engineering</a>
+        <a href="flagged.html">Flagged for Review (12)</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="page-title-section">
+      <h1 class="page-title"><span>Hotspawn Lobby — Reverse Engineering</span><span class="tag-badge warning">Fixture discovery only</span></h1>
+      <p class="page-subtitle">What play.hotspawn.com/lobby is, how its Pick'ems scoring works, and exactly which TWC 2026 fixtures it lists. Re-verified 2026-10-13 (session arena/8c3d79a6).</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title"><span>Charter rule</span></div>
+      <p><strong>Hotspawn is NOT used as an indicator of match probability.</strong> The lobby displays community pick percentages and gamification points; neither was copied into, nor used to compute, any probability or odds on this site. All probabilities are originated from Valve VRS in <a href="methodology.html">Methodology</a>. See IRREG-010 on the <a href="flagged.html">Flagged page</a>.</p>
+    </div>
+
+    <h2 style="font-size:1.4rem;font-weight:700;margin-bottom:1rem">How Pick'ems works (official Hotspawn page)</h2>
+    <div class="table-wrapper"><table class="data-table"><thead><tr><th>Mechanic</th><th>What the official page says</th><th>Source</th><th>Status</th></tr></thead><tbody>
+      <tr><td><strong>Make picks</strong></td><td>Browse upcoming matches and pick the winner; account required to save picks / appear on leaderboard; free to play, no entry fee</td><td><a href="https://play.hotspawn.com/how-it-works" target="_blank" rel="noopener">play.hotspawn.com/how-it-works</a></td><td><span class="tag-badge success">Verified</span></td></tr>
+      <tr><td><strong>Lock time</strong></td><td>Picks lock 5 minutes before scheduled start; changeable until lock</td><td><a href="https://play.hotspawn.com/how-it-works" target="_blank" rel="noopener">How it works</a></td><td><span class="tag-badge success">Verified</span></td></tr>
+      <tr><td><strong>Points</strong></td><td>Points per correct pick; higher-tier matches reward more; streak bonuses for consecutive correct picks</td><td><a href="https://play.hotspawn.com/how-it-works" target="_blank" rel="noopener">How it works</a></td><td><span class="tag-badge success">Verified</span></td></tr>
+      <tr><td><strong>Leaderboard &amp; prizes</strong></td><td>Weekly leaderboard reset; top performers win voucher-code prizes; winners contacted by registered email</td><td><a href="https://play.hotspawn.com/how-it-works" target="_blank" rel="noopener">How it works</a></td><td><span class="tag-badge success">Verified</span></td></tr>
+      <tr><td><strong>Forfeit / cancelled</strong></td><td>Forfeited predictions voided; cancelled matches cancelled — no points awarded/deducted either way</td><td><a href="https://play.hotspawn.com/how-it-works" target="_blank" rel="noopener">How it works (FAQ)</a></td><td><span class="tag-badge success">Verified</span></td></tr>
+    </tbody></table></div>
+
+    <h2 style="font-size:1.4rem;font-weight:700;margin:2rem 0 1rem">Lobby structure observed 2026-10-13</h2>
+    <div class="table-wrapper"><table class="data-table"><thead><tr><th>Element</th><th>Observed value (as displayed)</th><th>Source</th><th>Status / note</th></tr></thead><tbody>
+      <tr><td><strong>Lobby URL</strong></td><td>play.hotspawn.com/lobby — CS2 and LoL tabs; sign-in prompt to track picks</td><td><a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">Hotspawn lobby</a></td><td><span class="tag-badge success">Verified via page reader</span></td></tr>
+      <tr><td><strong>CS2 fixture count in filters</strong></td><td>86 (all tiers: B 27, C 55, S 4, as displayed in filter counts)</td><td><a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">Hotspawn lobby</a></td><td>Snapshot only, 2026-10-13; changes as matches are added/played</td></tr>
+      <tr><td><strong>TWC 2026 fixtures in lobby</strong></td><td>4 — exactly the four Oct 14 group openers (table below)</td><td><a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">Hotspawn lobby</a></td><td><span class="tag-badge success">Verified</span>; later GSL/playoff fixtures not yet listed — not claimed</td></tr>
+      <tr><td><strong>TWC card scoring (as displayed)</strong></td><td>7 pts, Tier S ×3, stage "Group Stage And Playoffs", multiplier ×1.25</td><td><a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">Hotspawn lobby</a></td><td>Gamification only; never a probability input</td></tr>
+      <tr><td><strong>Match permalink pattern</strong></td><td>hotspawn.com/matches/&lt;team&gt;-vs-&lt;team&gt;-thunderpick-world-championship-2026-&lt;id&gt;</td><td>Links in fixture table below</td><td><span class="tag-badge success">Verified</span></td></tr>
+      <tr><td><strong>Access from this sandbox</strong></td><td>Direct curl failed (TLS EOF); page-reader fetch succeeded same day</td><td><a href="flagged.html">IRREG-010</a> · <a href="audits/1d4de836/README.md">prior audit 1d4de836</a></td><td><span class="tag-badge warning">Flagged</span> — sandbox egress failure, not evidence site is down</td></tr>
+      <tr><td><strong>Full cross-sport list</strong></td><td>Blank — not collected</td><td><a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">Hotspawn lobby (LoL tab)</a></td><td><span class="tag-badge warning">Unverified</span> — only CS2/TWC scope collected</td></tr>
+    </tbody></table></div>
+
+    <h2 style="font-size:1.4rem;font-weight:700;margin:2rem 0 1rem">TWC 2026 fixtures found in the lobby (= HLTV openers)</h2>
+    <div class="table-wrapper"><table class="data-table"><thead><tr><th>Date</th><th>Fixture</th><th>Hotspawn match (discovery)</th><th>HLTV match (official record)</th><th>Our originated pick (derived, not Hotspawn)</th></tr></thead><tbody>
+      <tr><td class="mono">2026-10-14</td><td><strong>9z vs Aurora</strong> (Group A)</td><td><a href="https://www.hotspawn.com/matches/9z-vs-aurora-thunderpick-world-championship-2026-1080176" target="_blank" rel="noopener">1080176</a></td><td><a href="https://www.hltv.org/matches/2399384/9z-vs-aurora-thunderpick-world-championship-2026" target="_blank" rel="noopener">2399384</a></td><td>Aurora — 64.1% (see <a href="index.html">Dashboard</a>)</td></tr>
+      <tr><td class="mono">2026-10-14</td><td><strong>Falcons vs Ninjas in Pyjamas</strong> (Group A)</td><td><a href="https://www.hotspawn.com/matches/falcons-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026-1080177" target="_blank" rel="noopener">1080177</a></td><td><a href="https://www.hltv.org/matches/2399385/falcons-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026" target="_blank" rel="noopener">2399385</a></td><td>Falcons — 90.6%</td></tr>
+      <tr><td class="mono">2026-10-14</td><td><strong>Legacy vs PARIVISION</strong> (Group B)</td><td><a href="https://www.hotspawn.com/matches/legacy-vs-parivision-thunderpick-world-championship-2026-1080178" target="_blank" rel="noopener">1080178</a></td><td><a href="https://www.hltv.org/matches/2399386/legacy-vs-parivision-thunderpick-world-championship-2026" target="_blank" rel="noopener">2399386</a></td><td>Legacy — 92.0% (model cap)</td></tr>
+      <tr><td class="mono">2026-10-14</td><td><strong>FURIA vs BETBOOM</strong> (Group B)</td><td><a href="https://www.hotspawn.com/matches/furia-vs-betboom-thunderpick-world-championship-2026-1080179" target="_blank" rel="noopener">1080179</a></td><td><a href="https://www.hltv.org/matches/2399387/furia-vs-betboom-thunderpick-world-championship-2026" target="_blank" rel="noopener">2399387</a></td><td>FURIA — 75.7%</td></tr>
+    </tbody></table></div>
+    <p style="color:var(--text-secondary);font-size:.9rem">Start clock times are deliberately blank: HLTV/Hotspawn extracted times carried no confirmed timezone (IRREG-010) — use the linked match pages for localised times. Community pick percentages shown on Hotspawn cards are intentionally not reproduced here. Machine-readable fixtures: <a href="data/fixtures_verified.json">data/fixtures_verified.json</a>.</p>
+  </main>
+  <footer class="site-footer"><div class="footer-inner"><div><strong>TWC 2026 Malta Finals Dashboard</strong> — Hotspawn reverse-engineering notes.</div><div class="footer-links"><a href="index.html">Dashboard</a><a href="lines.html">Originated Lines</a><a href="teams.html">Teams &amp; Rosters</a><a href="flagged.html">Flagged for Review</a></div></div></footer>
+</body>
+</html>

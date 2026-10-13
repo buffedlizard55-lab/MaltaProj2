@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teams & Rosters — TWC 2026 Malta Finals</title>
+  <link rel="stylesheet" href="assets/linewatch.css">
+  <meta name="description" content="Verified teams, active rosters, coaches, and Valve VRS standings for Thunderpick World Championship 2026 CS2 Malta Finals.">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-badge">CS2 Analytics</span>
+        <span>Malta Finals 2026</span>
+      </a>
+      <nav class="main-nav">
+        <a href="index.html">Dashboard</a>
+        <a href="lines.html">Originated Lines (28)</a>
+        <a href="teams.html" class="active">Teams & Rosters</a>
+        <a href="methodology.html">Origination Methodology</a>
+        <a href="hotspawn.html">Hotspawn Reverse-Engineering</a>
+        <a href="flagged.html">Flagged for Review (12)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <div class="page-title-section">
+      <h1 class="page-title">
+        <span>Qualified Teams & Verified Rosters</span>
+        <span class="tag-badge info">8 Finalists / 40 Players</span>
+      </h1>
+      <p class="page-subtitle">
+        Official player handles, real names, roles, coaches, and Valve VRS ranking history verified from official source repositories.
+      </p>
+    </div>
+
+    <!-- Teams Cards Grid -->
+    <div class="cards-grid" id="teams-grid">
+      <!-- Loaded dynamically via JavaScript -->
+    </div>
+
+    <!-- Comprehensive Roster Ledger Table -->
+    <div style="margin-top: 3rem;">
+      <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem;">Detailed Roster & Qualification Ledger</h2>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+        Complete breakdown of tournament qualification pathways, invite criteria, and official primary sources.
+      </p>
+
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Team</th>
+              <th>Region</th>
+              <th>Qualification Path</th>
+              <th>VRS Rank (Aug 3 Cutoff)</th>
+              <th>VRS Rank (Oct 5 Current)</th>
+              <th>Coach</th>
+              <th>Verified Starting Roster (5 Players)</th>
+              <th>Official Sources</th>
+            </tr>
+          </thead>
+          <tbody id="teams-ledger-body">
+            <!-- Loaded dynamically via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>TWC 2026 Malta Finals Dashboard</strong> — Teams & verified roster registry.
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Dashboard</a>
+        <a href="lines.html">Originated Lines</a>
+        <a href="methodology.html">Methodology</a>
+        <a href="flagged.html">Flagged for Review</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    async function loadTeams() {
+      try {
+        const res = await fetch('data/teams_verified.json');
+        const teams = await res.json();
+        renderTeamCards(teams);
+        renderTeamLedger(teams);
+      } catch (err) {
+        console.error("Failed to load teams:", err);
+      }
+    }
+
+    function renderTeamCards(teams) {
+      const grid = document.getElementById("teams-grid");
+      grid.innerHTML = "";
+
+      teams.forEach(t => {
+        const card = document.createElement("div");
+        card.className = "team-card";
+
+        const playersHtml = t.roster.map(p => `
+          <span class="player-chip">
+            <strong>${p.handle}</strong> <span style="color: var(--text-muted); font-size: 0.75rem;">(${p.role})</span>
+          </span>
+        `).join("");
+
+        const achievesHtml = t.key_achievements_2026.map(a => `<li>${a}</li>`).join("");
+
+        card.innerHTML = `
+          <div class="team-card-header">
+            <div>
+              <div class="team-title">${t.name}</div>
+              <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem;">${t.region} • ${t.invite_route}</div>
+            </div>
+            <div class="team-rank-pill">VRS #${t.vrs_rank_oct05}</div>
+          </div>
+
+          <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Active 5-Man Roster</div>
+          <div class="roster-list">${playersHtml}</div>
+
+          <div style="font-size: 0.85rem; margin-top: 0.5rem; margin-bottom: 0.75rem;">
+            <strong>Coach:</strong> ${t.coach.handle} <span style="color: var(--text-muted);">(${t.coach.name}, ${t.coach.country})</span>
+          </div>
+
+          <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-top: auto; padding-top: 0.5rem;">Key 2026 Form Signals</div>
+          <ul style="padding-left: 1.25rem; font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.3rem;">${achievesHtml}</ul>
+
+          <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color); font-size: 0.8rem;">
+            <a href="${t.sources[0].url}" target="_blank" rel="noopener">Valve VRS Profile</a> • 
+            <a href="${t.sources[1].url}" target="_blank" rel="noopener">HLTV Page</a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderTeamLedger(teams) {
+      const tbody = document.getElementById("teams-ledger-body");
+      tbody.innerHTML = "";
+
+      teams.forEach(t => {
+        const tr = document.createElement("tr");
+        const handles = t.roster.map(p => p.handle).join(", ");
+        tr.innerHTML = `
+          <td><strong>${t.name}</strong></td>
+          <td><span class="tag-badge info">${t.region}</span></td>
+          <td>${t.invite_route}</td>
+          <td class="mono">#${t.vrs_invite_rank} (${t.vrs_invite_points} pts)</td>
+          <td class="mono" style="font-weight: 700; color: var(--accent-cyan);">#${t.vrs_rank_oct05} (${t.vrs_points_oct05} pts)</td>
+          <td>${t.coach.handle}</td>
+          <td class="mono" style="font-size: 0.85rem;">${handles}</td>
+          <td>
+            <a href="${t.sources[0].url}" target="_blank" rel="noopener">Valve VRS</a> | 
+            <a href="${t.sources[1].url}" target="_blank" rel="noopener">HLTV</a>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    loadTeams();
+  </script>
+</body>
+</html>

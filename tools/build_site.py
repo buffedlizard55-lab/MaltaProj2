@@ -60,7 +60,7 @@ a { color:var(--accent); }
 .tsrc { color:var(--muted); font-size:12px; }
 """
 
-NAV = [("index.html", "Dashboard"), ("cs2.html", "CS2 Matches"),
+NAV = [("analysis.html", "Dashboard"), ("cs2.html", "CS2 Matches"),
        ("lol.html", "LoL Matches"), ("flagged.html", "Flagged for Review")]
 
 
@@ -74,7 +74,7 @@ def page(name, title, body):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{escape(title)}</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="analysis-style.css">
 </head>
 <body>
 <header>
@@ -188,6 +188,7 @@ def build():
 
     # ---- index.html ----
     n_unv = len(matches) - len(priced)
+    lobby_link = '<a href="https://play.hotspawn.com/lobby">Hotspawn lobby</a>'
     findings = [
         ("ex-Keyd Stars vs Galorys", "Galorys 62.5% (2.43/1.46)", "ex-Keyd Stars 86%",
          "Market favorite is Galorys; community heavily on ex-Keyd Stars",
@@ -246,17 +247,17 @@ and the official Hotspawn match card.</p>
 
 <h2>Coverage</h2>
 <table>
-<tr><th>Segment</th><th>Matches</th><th>With line</th><th>Unverified</th></tr>
-<tr><td>CS2 — Thunderpick World Championship (S)</td><td>4</td><td>4</td><td>0</td></tr>
-<tr><td>CS2 — Stake Pulse Beat III (B)</td><td>4</td><td>4</td><td>0</td></tr>
-<tr><td>CS2 — CCT Europe Series #11 (B)</td><td>4</td><td>2</td><td>2</td></tr>
-<tr><td>CS2 — ESL Challenger League cups (B)</td><td>2</td><td>2</td><td>0</td></tr>
-<tr><td>CS2 — Elisa BreakOut Series #2 (C)</td><td>12</td><td>12</td><td>0</td></tr>
-<tr><td>LoL — Worlds 2026 Play-In</td><td>2</td><td>2</td><td>0</td></tr>
-<tr><td>LoL — Demacia Cup / EMEA Masters Summer</td><td>2</td><td>2</td><td>0</td></tr>
-<tr><td>LoL — LGC Rising Playoffs</td><td>2</td><td>0</td><td>2</td></tr>
-<tr><td>LoL — minor leagues (PRM 2nd/3rd, Tunisian, RIVALS, Arabian 2nd, Komplettligaen, LigaGG CELOL A, Superstrike, MängudeÖÖ, Benelux)</td><td>225</td><td>0</td><td>225</td></tr>
-<tr><td><b>Total</b></td><td><b>257</b></td><td><b>28</b></td><td><b>229</b></td></tr>
+<tr><th>Segment</th><th>Matches</th><th>With line</th><th>Unverified</th><th>Inventory source</th></tr>
+<tr><td>CS2 — Thunderpick World Championship (S)</td><td>4</td><td>4</td><td>0</td><td>{lobby_link}</td></tr>
+<tr><td>CS2 — Stake Pulse Beat III (B)</td><td>4</td><td>4</td><td>0</td><td>{lobby_link}</td></tr>
+<tr><td>CS2 — CCT Europe Series #11 (B)</td><td>4</td><td>2</td><td>2</td><td>{lobby_link}</td></tr>
+<tr><td>CS2 — ESL Challenger League cups (B)</td><td>2</td><td>2</td><td>0</td><td>{lobby_link}</td></tr>
+<tr><td>CS2 — Elisa BreakOut Series #2 (C)</td><td>12</td><td>12</td><td>0</td><td>{lobby_link}</td></tr>
+<tr><td>LoL — Worlds 2026 Play-In</td><td>2</td><td>2</td><td>0</td><td>{lobby_link}</td></tr>
+<tr><td>LoL — Demacia Cup / EMEA Masters Summer</td><td>2</td><td>2</td><td>0</td><td>{lobby_link}</td></tr>
+<tr><td>LoL — LGC Rising Playoffs</td><td>2</td><td>0</td><td>2</td><td>{lobby_link}</td></tr>
+<tr><td>LoL — minor leagues (PRM 2nd/3rd, Tunisian, RIVALS, Arabian 2nd, Komplettligaen, LigaGG CELOL A, Superstrike, MängudeÖÖ, Benelux)</td><td>225</td><td>0</td><td>225</td><td>{lobby_link}</td></tr>
+<tr><td><b>Total</b></td><td><b>257</b></td><td><b>28</b></td><td><b>229</b></td><td>{lobby_link}</td></tr>
 </table>
 
 <h2>Browse</h2>
@@ -266,8 +267,8 @@ and the official Hotspawn match card.</p>
 <li><a href="flagged.html">Flagged for Review</a> — irregularities and unverified items</li>
 </ul>
 """
-    open(os.path.join(DOCS, "index.html"), "w", encoding="utf-8").write(
-        page("index.html", "Hotspawn pick'em — dashboard", body))
+    open(os.path.join(DOCS, "analysis.html"), "w", encoding="utf-8").write(
+        page("analysis.html", "Hotspawn pick'em — analysis dashboard", body))
 
     # ---- flagged.html ----
     irr = open(os.path.join(ROOT, "data", "irregularities.md"), encoding="utf-8").read()
@@ -285,7 +286,7 @@ checked source (EGamersWorld/GG.BET/BC.GAME/N1 Bet, GG.bet, Polymarket, HLTV, od
     open(os.path.join(DOCS, "flagged.html"), "w", encoding="utf-8").write(
         page("flagged.html", "Flagged for Review — Hotspawn pick'em analysis", body))
 
-    with open(os.path.join(DOCS, "style.css"), "w", encoding="utf-8") as f:
+    with open(os.path.join(DOCS, "analysis-style.css"), "w", encoding="utf-8") as f:
         f.write(CSS)
 
     verify(matches, probs, odds, ordered)
@@ -298,7 +299,7 @@ def m_url(matches, mid):
 
 def verify(matches, probs, odds, ordered):
     """T5 checks: every table row links a source; unpriced rows are flagged unverified."""
-    for page_name in ("index.html", "cs2.html", "lol.html", "flagged.html"):
+    for page_name in ("analysis.html", "cs2.html", "lol.html", "flagged.html"):
         path = os.path.join(DOCS, page_name)
         assert os.path.getsize(path) > 500, f"{page_name} suspiciously small"
     for m in ordered:

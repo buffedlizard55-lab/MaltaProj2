@@ -1,0 +1,48 @@
+name: explore-source
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/explore.yml'
+
+jobs:
+  explore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query HotSpawn pick'em API (fixtures) with candidate filters
+        run: |
+          set -x
+          API="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1"
+          mkdir -p out
+          curl -sS --max-time 120 "$API/fixtures" -o out/fixtures_all.json
+          echo "bytes: $(wc -c < out/fixtures_all.json)"
+          echo "count: $(jq 'length' out/fixtures_all.json)"
+          echo "statuses:"; jq -r '[.[].status] | group_by(.) | map({(.[0]): length}) | add' out/fixtures_all.json
+          echo "sports:"; jq -r '[.[].sport_alias] | group_by(.) | map({(.[0]): length}) | add' out/fixtures_all.json
+          echo "--- newest 5 by scheduled_start_time ---"
+          jq -r 'sort_by(.scheduled_start_time|tonumber) | .[-5:] | .[] | "\(.id) \(.competition_name) \(.participants0_name) vs \(.participants1_name) start=\(.scheduled_start_time) status=\(.status) tier=\(.tier)"' out/fixtures_all.json
+          echo "--- distinct query params probing ---"
+          for q in "status=upcoming" "game=CS2" "games=CS2" "sport=cs2" "week=current" "per_page=5" "page=2" "limit=5" "tenant=hotspawn" "sort=scheduled_start_time" "include=participants"; do
+            code=$(curl -sS -o out/probe.json -w '%{http_code}' --max-time 60 "$API/fixtures?$q")
+            n=$(jq 'if type=="array" then length else -1 end' out/probe.json 2>/dev/null || echo "n/a")
+            first=$(jq -c 'if type=="array" then (.[0]//{})|{id,status,competition_name,participants0_name,participants1_name,scheduled_start_time} else . end' out/probe.json 2>/dev/null | head -c 300)
+            echo "PARAM[$q] http=$code n=$n first=$first"
+          done
+      - name: Inspect Angular bundle for API usage / query parameters
+        run: |
+          set -e
+          cd out
+          curl -sS --max-time 120 https://play.hotspawn.com/main-YNSCYNCE.js -o main.js || true
+          echo "main.js bytes: $(wc -c < main.js 2>/dev/null || echo 0)"
+          echo "--- api paths in bundle ---"
+          grep -oE '/api/v1/[A-Za-z0-9_/{}$.:%+-]+' main.js | sort -u | head -40 || true
+          echo "--- fixtures context in bundle ---"
+          grep -oE '.{120}fixtures.{160}' main.js | head -20 || true
+          echo "--- HttpParams / query building context ---"
+          grep -oE '.{80}(HttpParams|competition_id|scheduled_start_time|lock_offset|participants0_picked_percent).{80}' main.js | sort -u | head -30 || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: explore-out
+          path: out/
+          retention-days: 5
