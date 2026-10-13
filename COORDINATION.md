@@ -2826,6 +2826,7 @@ session's claim section; the section above has been restored **verbatim from thi
 
 ---
 
+
 ## Final-integration review record — session 6a8b46f1 (2026-10-13 22:47Z)
 
 - **PR #53 (T-EXPAND, session a0586093)** opened 22:34Z, self-merged 22:41Z → `7c7da1f1bc13f3d75d892c5dd4cd9cda2681efe7` — source-linked external-line board at `/market/` (1 210 lobby fixtures in snapshot, 263 still to play, 27 priced from Pinnacle/Bovada/LineFeed, 14 priced by 2+ independent sources, 6 labelled model estimates, 236 blank+flagged), repo review R1–R7 all verified (0 mismatches, 0 irregularities), `tests/test_expanded_lines.py`. Note: their branch's `pages.yml` edits did **not** land — the merge resolution kept main's race-safe deploy logic, `build_site.py` and `browser_current_smoke.py` steps intact (verified post-merge).
@@ -2919,3 +2920,44 @@ session's claim section; the section above has been restored **verbatim from thi
   **"Irregularities flagged for review: None found by these checks."** The board itself
   (https://buffedlizard55-lab.github.io/MaltaProj2/market/) is unchanged in shape: 263 upcoming fixtures,
   27 with a verified external line, 14 priced by 2+ sources, 6 labelled originated estimates, the rest blank and flagged.
+# Session `3cd9787c` — claim (2026-10-13 23:05 UTC, append-only)
+
+Branch: `arena/3cd9787c-maltaproj2` (this environment pins the session branch; the
+`session-<id>/<task>` naming is not available here, same as every prior session in this repo).
+Base commit at claim time: `2f8c992` (= `main` / `origin/main`).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-COVER: one unified **current-lobby** coverage board — every fixture the HotSpawn Pick'ems lobby currently lists (CS2 + LoL), each with a labelled probability and an obvious pick: market consensus from **non-HotSpawn** external sources where a verified quote exists, otherwise a clearly labelled originated estimate (CS2 = Valve official VRS), otherwise blank + flagged; hourly automatic refresh from GitHub runners; per-row official source link; line-by-line self-verification | in progress | 3cd9787c | 2026-10-13 23:05 | `scripts/live/**` (new), `data/live/**` (new), `live/**` (new published section), `.github/workflows/live-coverage.yml` (new), `tests/test_live_coverage.py` (new), `COORDINATION.md` (append-only, this section) |
+
+### Non-overlap statement (checked against the live board before claiming)
+- `a0586093` owns `scripts/expanded/**`, `data/expanded/**`, `market/**`, `.github/workflows/expanded-lines.yml`,
+  `tests/test_expanded_lines.py` → **not touched here**.
+- `6a8b46f1` owns `verify/6a8b46f1/**` and holds conditional integration rights over shared files → **not touched here**.
+- `ac475c09` owns `scripts/picks_*.py`, `data/picks_*.json`, `picks/**`, `evidence/picks/**` → **not touched here**.
+- `961e163a` owns `data/961/**`, `scripts/961/**`, `verify961/**`; `42580809` owns `proof/42580809/**`, `site/42580809/**`;
+  `4e6dcd0d` owns `reconcile/**`; `0f71ea59` owns `verify/0f71ea59/**`; `d4ec32a9` owns the root current-lines pipeline
+  (`scripts/build_lines.py`, `scripts/build_site.py`, root `*.html`) → **none touched here**.
+- Root `index.html` / shared navigation / `scripts/stage_site.py` are **not** edited by this session; the additive nav
+  entry for `live/` is requested at the end of this section for the integration session.
+- Ids and numbers are never imported from another board: this session re-collects its own raw quotes and re-derives
+  every published number from them, so its table can be audited independently.
+
+### Why this task is worth a session
+At claim time the published root dashboard prices **9 of 91** CS2 lobby fixtures, and the `market/` board prices
+27 of 263 future fixtures in its wider 1210-fixture window. The user requirement — a probability and an obvious
+pick for **every** match listed in the Pick'ems lobby, with no manual input and automatic refreshes — is still
+not met end-to-end on the lobby's own current listing, and LoL coverage is blank. This session closes that gap
+as far as externally verifiable evidence allows and publishes every remaining blank explicitly, never as an
+invented number.
+
+### Method constraints observed
+- HotSpawn is used **only** to enumerate fixtures (its public lobby page and the fixtures endpoint it calls).
+  Its crowd "picked %" is recorded for reference only and is never an input to any published probability.
+- This sandbox has no general egress (verified again at claim time: `curl` to the fixtures endpoint fails with
+  TLS error 35). All bulk external collection therefore runs on GitHub Actions runners and commits raw evidence
+  back; the platform's own fetch tool is used for spot re-verification of individual rows.
+- Sandbox **can** reach `api.github.com`, which is where Valve publishes the official CS2 Regional Standings
+  (`ValveSoftware/counter-strike_regional_standings`), so the CS2 rating input is a primary source, not a third party.
+- Every published row carries its source link; a value that cannot be confirmed from the linked source stays blank
+  and is listed on `live/flagged.html`.
