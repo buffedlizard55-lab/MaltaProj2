@@ -62,3 +62,9 @@ Repo: `MaltaProj2` — Hotspawn Pick'em betting-line analysis & GitHub Pages das
 ## Change log / handoffs
 - 2026-10-13 — session `arena-1da4b0ef-maltaproj2` created this board, claimed T0 (done) and T1 (in progress). T2-T6 remain unclaimed. No handoffs.
 - 2026-10-13 — T1 completed: data/matches.csv (257 rows) + data/irregularities.md. Claiming T2 (CS2 odds).
+
+## Task log
+
+- `arena-1da4b0ef-maltaproj2` 2026-10-13 — T2 done (commit 551d36c): external odds for 28/257 matches from bookmaker lines (GG.BET / BC.GAME / N1 Bet via EGamersWorld event+match pages; GG.bet via tips.gg/win.gg; Polymarket cross-check). Sources per row in `data/odds.csv`. CS2 24/26 priced; 4 LoL named events priced; 229 matches have no published market anywhere checked → blank + unverified (see `data/irregularities.md` items 7–11).
+- `arena-1da4b0ef-maltaproj2` 2026-10-13 — T3 done (commit 551d36c): `data/probabilities.csv` (proportional de-vig of external decimal odds; Hotspawn pick-% never used) + `data/analysis.md` (coverage table, market-vs-public findings, EV framing).
+- `arena-1da4b0ef-maltaproj2` 2026-10-13 — T4 claimed: GitHub Pages site in `docs/` (index + category pages + Flagged for Review), integrating T1–T3 data.
