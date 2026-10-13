@@ -2710,3 +2710,16 @@ IR-0f71ea59-01 Bovada event URLs not anonymously readable · 02 lobby counter un
 ## Sources used for manual review
 
 https://play.hotspawn.com/lobby · https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures · https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638279105/markets/related/straight · https://www.bovada.lv/services/sports/event/v2/events/A/description/esports · https://egamersworld.com/counterstrike/matches · https://www.hltv.org/betting/analytics/2399384/9z-vs-aurora-thunderpick-world-championship-2026 (and the five other per-match analytics pages listed in `data/0f71ea59/live_checks.json`)
+
+### Session `0f71ea59` — PR #51 merge, Pages deploy and live verification record (2026-10-13 22:33 UTC, append-only)
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/51 — "independent line-by-line verification of every published pick/probability + live source re-reads, follow-ups resolved, navigation restored" → `main`.
+- **Merge:** MERGED 2026-10-13T22:29:17Z, merge commit `65bc67af665752bf38ffd9562fcb0be9fe4c4581` (`gh pr merge 51 --merge`, no approval wait).
+- **Pre-merge CI:** `Verify and publish dashboard` run 38477998025 — success (129 tests, audit verifiers, staged-site link validation, browser smoke). `961 collect + verify` run 38477479902 — success.
+- **Conflict rounds before the merge (nothing discarded):** PR was initially CONFLICTING (main advanced with PRs #48/#49/#50). `COORDINATION.md` add/add resolved keeping both sides verbatim. A 961-bot refresh (`dfdb926`, board 22:23:58Z) had landed on this branch mid-merge; the generated set `data/961/*` + `verify961/*` was reconciled by taking that newest coherent batch (a prior textual auto-merge of two generated board.json files was detected as invalid JSON and replaced wholesale by the newest batch — older batches remain in Git history). Verification report rebuilt against the newest board before merge: 10/10 checks, failures = 0.
+- **Deploy:** main run `Verify and publish dashboard` 38478123384 — **build success (50 s) + deploy success (12 s)** (no publication-race refusal this round).
+- **Live verification (fetch_page, 22:31–22:33 UTC):**
+  - https://buffedlizard55-lab.github.io/MaltaProj2/verify/0f71ea59/index.html — renders 10/10 checks passing, 38 verified rows with picks + both probabilities + source links, 6/6 HLTV agreements, 253 blank unverified rows, 9 flagged irregularities.
+  - https://buffedlizard55-lab.github.io/MaltaProj2/ — root dashboard live (91 CS2 tracked / 9 eligible source-linked lines / 82 blank) with per-row bookmaker links and read times.
+  - https://buffedlizard55-lab.github.io/MaltaProj2/reconcile/index.html — restored nav link serves the reconciled board (262 open / 30 with line / 232 blank / 6 board-pick differences).
+- **Task status: done.** PR link and merge result recorded here as required. Flagged irregularities (IR-0f71ea59-01…09) remain published on the report page and do not block anything.
