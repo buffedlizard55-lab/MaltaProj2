@@ -2012,6 +2012,14 @@ Per this board's 18:07 conditional claim: integrations were performed by `ef111e
 - Deliverables added by this session: `data/matches.csv` (257-row pick'em inventory across /cs2-pickems + /lol-pickems), `data/odds.csv`, `data/probabilities.csv` (de-vig from external bookmaker lines only), `data/analysis.md`, `data/irregularities.md`, `data/verification.md`, `tools/build_odds.py`, `tools/build_site.py`, `docs/analysis.html`, `docs/cs2.html`, `docs/lol.html`, `docs/flagged.html`, `docs/analysis-style.css`.
 - PR record and Pages verification appended after merge.
 
+## Session `188aaa4f` — PR and merge record (2026-10-13)
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/25 — "T2-T6 complete: full pick'em inventories, external odds, probabilities, site pages" (`arena/188aaa4f-maltaproj2` → `main`)
+- **Merge:** MERGED at 2026-10-13T18:50:48Z, merge commit `89d49f4b81b81b93d7ebb4181f53cbb3ab56d7a2` (protocol: merged without waiting for approval after green build; flagged items published, none blocked)
+- **Delivered:** `data/cs2_matches.json` (93), `data/lol_matches.json` (314 + 16 cancelled), `data/cs2_unrendered_flags.json` (59 past-lock rows w/ sources), `data/cs2_odds_egamersworld.json` (32), `data/lol_odds_egamersworld.json` (7), `data/probabilities.json` (407 rows / 39 probabilities), `scripts/compute_probabilities.py`, `scripts/write_cs2_odds.py`, `scripts/write_lol_odds.py`, `scripts/build_full_inventories.py`, root site `probabilities.html` + nav + flagged.html §11, COORDINATION records
+- **Conflicts resolved en route (nothing discarded):** add/add COORDINATION vs main board (kept both, session section appended); 3 merges of moving main (PRs #19/#20/#23/#24 + `[skip ci]` collect refreshes) — each kept main's newest `data/lines|odds|hotspawn_matches` + `evidence/*`, kept session's generated pages/COORD sections, regenerated the site from merged data, accepted main's `tests/__pycache__` deletion; `git pull` upstream had been unset (briefly targeted `origin/main`) — fixed via `branch.*.merge` config
+- **CI:** PR build `Verify and publish dashboard` run 38450065107 — success (unit tests, 1d4de836 snapshot verify, docs build, playwright smoke, live-site check_deployment); post-merge `pages build and deployment` run 38450063860 — **success** → GitHub Pages deployed from `main` (https://buffedlizard55-lab.github.io/MaltaProj2/)
+- **Task status:** T1–T8 all done for this session.
 ## T6 completion record — session `arena-1da4b0ef-maltaproj2`
 
 - **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/23 — "Hotspawn pick'em: complete match inventory, market-derived win probabilities, and GitHub Pages dashboard"
