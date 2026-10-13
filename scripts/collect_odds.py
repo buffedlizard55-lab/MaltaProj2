@@ -3,7 +3,7 @@
 External betting-line collector (raw quotes only).
 
 Sources:
-  * Pinnacle  — licensed bookmaker, public guest odds API. Sport id 12 = "E Sports".
+  * Pinnacle  — bookmaker, public guest odds API. Sport id 12 = "E Sports".
   * Bovada    — US-facing bookmaker, public coupon JSON.
   * Polymarket— public prediction market API (included; stale CS2 match markets filtered out).
 
@@ -142,7 +142,7 @@ def collect_pinnacle(lines, evidence):
             lines.append({
                 "source_key": "pinnacle",
                 "source_name": "Pinnacle",
-                "source_kind": "licensed bookmaker",
+                "source_kind": "bookmaker",
                 # Pinnacle's browser pages are region-restricted; the guest API on the
                 # pinnacle.com domain is the exact public source of the quote below.
                 "source_public_url": None,
@@ -216,7 +216,7 @@ def collect_bovada(lines, evidence):
                     lines.append({
                         "source_key": "bovada",
                         "source_name": "Bovada",
-                        "source_kind": "licensed bookmaker",
+                        "source_kind": "bookmaker",
                         "source_public_url": "https://www.bovada.lv" + link,
                         "source_api_url": url,
                         "source_event_id": str(ev.get("id")),

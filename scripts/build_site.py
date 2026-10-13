@@ -626,7 +626,7 @@ Unpriced games stay blank. Archived model/pickem/audit sections retain their own
     src_list = sorted({(l["source_key"], l.get("source_name"), l.get("source_kind"),
                         l.get("source_public_url"), l.get("source_api_url"))
                        for l in (odds_doc.get("lines") or [])})
-    src_rows = [[esc(k), esc(n), esc(kind), f'<a href="{esc(p)}" rel="noopener">{esc(p)}</a>' if p else BLANK,
+    src_rows = [[esc(k), esc(n), esc("bookmaker (license not assessed)" if kind == "licensed bookmaker" else kind), f'<a href="{esc(p)}" rel="noopener">{esc(p)}</a>' if p else BLANK,
                  f'<a href="{esc(a)}" rel="noopener">API</a>' if a else BLANK]
                 for k, n, kind, p, a in src_list]
     method_body = f"""
