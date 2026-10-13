@@ -179,6 +179,8 @@ def fixture_row(fx, with_prices=True):
                          f'{pct(consensus["derived_probability_b_mean"])}'
                          f'<div class="mini">{consensus["n_sources"]} source(s): '
                          f'{esc(", ".join(consensus["sources"]))}</div>')
+            prob_html += (f'<div class="mini">Source p(A) range: '
+                          f'{pct(consensus["derived_probability_a_min"])}–{pct(consensus["derived_probability_a_max"])}</div>')
             a, b = consensus["derived_probability_a_mean"], consensus["derived_probability_b_mean"]
             pick = fx.get("team_a") if a > b else fx.get("team_b") if b > a else None
             prob_html += f'<div class="ok">Pick: {esc(pick)}</div>' if pick else '<div class="chip">No edge (tie)</div>' 
