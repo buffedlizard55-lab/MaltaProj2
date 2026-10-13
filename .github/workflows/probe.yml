@@ -1,0 +1,18 @@
+name: Source access probe
+on: push
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch public documents without authentication
+        run: |
+          mkdir -p probe
+          curl -L --max-time 45 -D probe/lobby.headers https://play.hotspawn.com/lobby -o probe/lobby.html || true
+          curl -L --max-time 45 -D probe/odds.headers https://thunderpick.io/esports/cs2-betting -o probe/odds.html || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: public-source-probe
+          path: probe
