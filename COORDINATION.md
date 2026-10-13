@@ -175,3 +175,64 @@ This board coordinates tasks, audit trails, and file ownership across sessions f
 | Cross-game completeness / stale source fixtures / formats / lock rule | needs review | ef111e02 | docs/flags.html F02–F04, F09–F10 |
 | Conflicting parallel root model provenance | needs review | 898abb4f (preserved; not adopted) | docs/flags.html F14 |
 | 0c90448b additional evidence handoff and overlap release | needs review | 0c90448b | issue #6; existing branch preserved, zero imported odds |
+
+## Session `a0fcf175` — priced pick'em board, final status and integration decision (2026-10-13 ~19:10 UTC)
+
+Branch: `arena/a0fcf175-maltaproj2` (fixed by this environment; no other branch can be created).
+
+**Scope claimed:** enumerate the open-for-picks fixtures, verify them, capture external prices, derive
+the lines, publish the board. **Files touched:** `data/pickem_pool.json`, `data/keys.json`,
+`scripts/build_pickem_lines.py`, `scripts/check_links.py`, `pickem/**`, `README.md`, `COORDINATION.md`,
+plus the one-line nav link added to the root `index.html` (see below). No existing file of any other
+session was modified or deleted.
+
+**Status: done and verified in this branch.** `python3 scripts/build_pickem_lines.py` ->
+`rows=26 with_line=25 without_line=1`; `python3 scripts/check_links.py` -> 7 pages, 138 external source
+links, 0 broken local links; `data/pickem_pool.json` -> 26 rows, 35 sources, 14 flagged items.
+
+### What this adds on top of the root dashboard
+
+The root LineWatch dashboard states that current odds/probability cells stay blank for every fixture
+(external collection blocked). This deliverable fills that gap for the 26 open fixtures: every row now
+carries captured external prices (22 bc.game via EGamersWorld, 20 Polymarket, 17 both) with the exact
+source URL, and a derived de-margined line. The two deliverables are complementary: root = evidence and
+directory; `/pickem/` = priced analysis. Neither uses Hotspawn pick percentages as a probability input.
+
+### Integration decisions (no other session's work overwritten)
+
+1. Main's Pages source is `main` / (root), so this board was published to a sub-path: the site lives in
+   `pickem/**` and is reachable at `/pickem/`. `docs/**` and the root pages from `ef111e02`/`0c90448b`
+   were left exactly as they are.
+2. The generator was renamed `scripts/build_pickem_lines.py` precisely so that main's
+   `scripts/build.py` (used by `tests/test_project.py` and the root dashboard) stays untouched.
+3. One integration edit to a shared output: a single visible link to `pickem/` added to the root
+   `index.html` nav so the published site links both dashboards. If the owner of that file prefers a
+   different placement, the link is a single anchor and can be moved.
+4. `README.md` keeps the LineWatch documentation and appends the section describing `/pickem/` and how
+   to rebuild it.
+5. `COORDINATION.md`: this file keeps every previous section; only this appended section is new.
+
+### Verification log for this revision
+
+* 26/26 fixtures verified on HLTV match pages (the two ESL Challenger League rows re-checked:
+  2399204 ex-Keyd Stars–Galorys, 2399232 Zomblers–Overtake Sector; both bo3, links added).
+* Kickoffs converted to true UTC from the lobby payload `scheduled_start` epoch (independently audited
+  in `audits/1d4de836/lobby-snapshot-audit.json`) and matched against every HLTV page.
+* `hs-1080289` (RoundsGG vs Voca): Polymarket prices were double-flipped by a first build; corrected to
+  RoundsGG 47c / Voca 91c, cross-checked against the market page and the HLTV slug `voca-vs-rounds`.
+* Elisa BreakOut bc.game coverage completed from the EGamersWorld event page (7 fixtures added;
+  WBT–EA Copenhagen refined to the site's own 1.989/1.722 figures; tip text quoted in the dataset).
+* Alias evidence captured: EGamersWorld serves the WBT roster under the URL slug
+  `/counterstrike/team/wrotberry-0I2cpR8LZA` (WROTBERRY = WBT).
+* Coverage boundary cross-referenced with the merged audit: 86 payload entries, 26 open (this dataset),
+  60 stale June/July/earlier-13-Oct entries.
+* Every unconfirmed value stays blank: `FORZE Reload vs LFO 10` has no line (two markets disagree on the
+  opponent), and all 14 flagged items carry the link a reviewer needs.
+
+### Pull request / deploy record
+
+* PR: https://github.com/buffedlizard55-lab/MaltaProj2/pull/11 (to `main`).
+* Merge: merged by this session; see the merge commit on `main`.
+* Deploy: root source `main` / is unchanged, so `/pickem/` publishes with the existing Pages
+  configuration; deploy confirmed by fetching https://buffedlizard55-lab.github.io/MaltaProj2/pickem/
+  after the merge.
