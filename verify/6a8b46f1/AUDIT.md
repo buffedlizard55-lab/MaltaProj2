@@ -1,7 +1,7 @@
 # Site audit — session 6a8b46f1
 
 - Pages scanned: **66**
-- Internal links checked: **991**
+- Internal links checked: **964**
 - Table rows scanned: **4026** (716 state a value and were required to carry a source link)
 - Failures: **0**
 
