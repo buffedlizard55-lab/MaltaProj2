@@ -37,7 +37,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lines_core import (  # noqa: E402
+from lines_core import (TIME_TOLERANCE_MIN,   # noqa: E402
     american_to_decimal, consensus, implied, join_quote, minutes_between, norm, parse_iso, to_utc_iso,
 )
 
@@ -554,6 +554,42 @@ def build_lines(fixtures: list[dict], quotes: list[dict], log: dict) -> dict:
             },
         })
     unused = [q for i, q in enumerate(quotes) if i not in used_quote_ids]
+
+    # ---------------------------------------------------------------- join diagnostics
+    # Every unused quote is explained: which fixtures its team names matched (full and partial),
+    # how far the source start time is from the fixture, and why the join was refused. This is the
+    # evidence a reviewer needs to see that a blank row means "no external line", not "we gave up".
+    diag = []
+    for i, q in enumerate(quotes):
+        if i in used_quote_ids:
+            continue
+        full, partial = [], []
+        for f in fixtures:
+            if str(f["game"]).lower() != str(q["game"]).lower():
+                continue
+            direct = (same_team(f["team_a"], q["team_a_name"]), same_team(f["team_b"], q["team_b_name"]))
+            swap = (same_team(f["team_a"], q["team_b_name"]), same_team(f["team_b"], q["team_a_name"]))
+            delta = minutes_between(parse_iso(f.get("scheduled_start_time")), parse_iso(q.get("start_time_utc")))
+            entry = {"fixture_id": f["fixture_id"], "teams": f"{f['team_a']} vs {f['team_b']}",
+                     "competition": f["competition_name"], "start_time_utc": f.get("start_time_utc"),
+                     "start_time_delta_min": round(delta, 1) if delta is not None else None}
+            if all(direct) or all(swap):
+                full.append(entry)
+            elif any(direct) or any(swap):
+                partial.append(entry)
+        reason = ("both team names match a fixture but the source start time is outside the "
+                  f"{TIME_TOLERANCE_MIN} min tolerance" if full else
+                  "no fixture has both team names, even though one team name matches others"
+                  if partial else
+                  "neither team name matches any fixture in the current lobby list")
+        diag.append({"source": q.get("source_key"), "source_league": q.get("source_league"),
+                     "teams": f"{q['team_a_name']} vs {q['team_b_name']}",
+                     "quote_start_time_utc": q.get("start_time_utc"),
+                     "reason": reason,
+                     "full_name_matches": sorted(full, key=lambda e: abs(e["start_time_delta_min"] or 1e9))[:3],
+                     "partial_name_matches": partial[:3]})
+    log["joins"] = {"quotes_total": len(quotes), "quotes_joined": len(used_quote_ids),
+                    "unused_quotes": len(diag), "diagnostics": diag[:40]}
     future_rows = [r for r in rows if r["is_future"]]
     doc = {
         "generated_at_utc": now_iso(),
