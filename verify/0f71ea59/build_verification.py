@@ -101,19 +101,43 @@ def run_checks(board, quotes):
            f"({via_display} consistent with display decimals, {via_quote} need the quote's "
            f"higher-precision decimals); violations: {bad[:5]}")
 
-    # C3: consensus = mean of per-source no-vig; probs sum to 1
+    # C3: consensus = mean of per-source no-vig shares over consensus_sources only
+    # (post PR #46: pre-match quotes only; live quotes published but excluded),
+    # and probabilities sum to 1
     bad = []
     for r in verified:
         srcs = r["sources"]
-        nva = sum(s["no_vig_probability_a"] for s in srcs) / len(srcs)
-        nvb = sum(s["no_vig_probability_b"] for s in srcs) / len(srcs)
+        basis = r.get("consensus_basis", "all_sources")
+        cset = r.get("consensus_sources")
+        if cset is None:
+            used = srcs  # pre-PR-46 schema: consensus over all sources
+        else:
+            used = [s for s in srcs if s["source_key"] in set(cset)]
+            if r.get("n_consensus_sources") != len(used):
+                bad.append((r["fixture_id"], "n_consensus_sources mismatch"))
+            for s in used:
+                if basis == "pre_match" and s.get("market_is_live"):
+                    bad.append((r["fixture_id"], "live source inside pre-match consensus"))
+            for s in srcs:
+                if basis == "pre_match" and (not s.get("market_is_live")) and s["source_key"] not in set(cset):
+                    bad.append((r["fixture_id"], "pre-match source excluded from consensus"))
+        if not used:
+            bad.append((r["fixture_id"], "no consensus sources"))
+            continue
+        nva = sum(s["no_vig_probability_a"] for s in used) / len(used)
+        nvb = sum(s["no_vig_probability_b"] for s in used) / len(used)
         if not close_stored(r["probability_a"], nva, 5e-5):
             bad.append((r["fixture_id"], "consensus_a"))
         if not close_stored(r["probability_b"], nvb, 5e-5):
             bad.append((r["fixture_id"], "consensus_b"))
         if not close_stored((r["probability_a"] or 0) + (r["probability_b"] or 0), 1.0, 5e-5):
             bad.append((r["fixture_id"], "sum!=1"))
-    record("C3", "Board consensus equals the mean of per-source no-vig shares and sums to 1",
+        if basis == "pre_match" and r.get("flags") and any(
+                s.get("market_is_live") for s in srcs) \
+                and "live_price_excluded_from_consensus" not in (r.get("flags") or []):
+            bad.append((r["fixture_id"], "missing live_price_excluded_from_consensus flag"))
+    record("C3", "Board consensus equals the mean of per-source no-vig shares over the declared "
+                 "consensus_sources (pre-match only; live quotes excluded and flagged) and sums to 1",
            not bad, f"{len(verified)} verified rows checked; violations: {bad[:5]}")
 
     # C4: pick = argmax team, pick_probability = max
@@ -329,6 +353,18 @@ def build_page(board, quotes, checks, failures, verified, unverified, live):
          "'test tournament', id 999999 football 'Premier Test League') and the full history. "
          "Collectors must filter; the verify961 window excludes them (checked — no leak).",
          "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"),
+        ("IR-0f71ea59-08", "Wording inconsistency inside the verify961 board's published rules: "
+         "rule 1 lists 'HLTV-published bookmaker odds' among price capabilities while the "
+         "methodology declares HLTV a directional cross-check only. Verified: zero HLTV-priced "
+         "rows exist on the board (C7), so no published number is affected. Flagged for the "
+         "board owner (961e163a) to align the wording.",
+         "https://www.hltv.org/betting/analytics"),
+        ("IR-0f71ea59-09", "Consensus-basis correction observed and re-verified: before session "
+         "961e163a's PR #46 (merged 22:13:41Z) a live in-play Bovada price for fixture 1081076 "
+         "was averaged into the pre-match consensus (24.2% / 75.8%); the board now excludes live "
+         "prices from consensus (37.9% / 62.1% pre-match) and flags the row. This session's "
+         "recomputation (C3) enforces the corrected rule on the current board.",
+         "https://buffedlizard55-lab.github.io/MaltaProj2/verify961/cs2.html"),
     ]
     irr_rows = "".join(
         f'<tr><td class="nowrap">{esc(i)}</td><td>{esc(t)}<div class="small"><a href="{esc(u)}" rel="noopener">source</a></div></td></tr>'
@@ -360,9 +396,11 @@ def build_page(board, quotes, checks, failures, verified, unverified, live):
 <a href="../../verify961/index.html">Verified pick board</a> recomputed line by line from raw
 source quotes, plus fresh live re-reads of the primary sources — {esc(now)}.</p>
 <div class="banner"><strong>Rules honoured.</strong> Probabilities come only from external
-bookmaker/aggregator prices (Pinnacle, Bovada, egamersworld). HLTV is a directional cross-check
-only. Hotspawn enumerates fixtures only; its crowd pick % is never an input. Rows without a
-verified external price stay blank and flagged. 18+; gamble responsibly.</div>
+bookmaker/aggregator prices (Pinnacle, Bovada, egamersworld); consensus = mean of per-source
+no-vig shares over <em>pre-match</em> quotes only (live in-play prices are published per row but
+excluded from consensus and flagged). HLTV is a directional cross-check only. Hotspawn enumerates
+fixtures only; its crowd pick % is never an input. Rows without a verified external price stay
+blank and flagged. 18+; gamble responsibly.</div>
 {summary_cards}
 
 <h2>1 · Line-by-line checks</h2>

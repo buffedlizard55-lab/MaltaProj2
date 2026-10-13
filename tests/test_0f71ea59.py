@@ -82,8 +82,25 @@ class Verify961BoardTests(unittest.TestCase):
     def test_consensus_is_mean_of_sources_and_sums_to_one(self):
         for r in self.verified:
             srcs = r["sources"]
-            nva = sum(s["no_vig_probability_a"] for s in srcs) / len(srcs)
-            nvb = sum(s["no_vig_probability_b"] for s in srcs) / len(srcs)
+            basis = r.get("consensus_basis", "all_sources")
+            cset = r.get("consensus_sources")
+            if cset is None:
+                used = srcs
+            else:
+                used = [s for s in srcs if s["source_key"] in set(cset)]
+                self.assertEqual(r.get("n_consensus_sources"), len(used), r["fixture_id"])
+                for s in used:
+                    if basis == "pre_match":
+                        self.assertFalse(s.get("market_is_live"), (r["fixture_id"], s["source_key"]))
+                for s in srcs:
+                    if basis == "pre_match" and not s.get("market_is_live"):
+                        self.assertIn(s["source_key"], set(cset), (r["fixture_id"], s["source_key"]))
+                if basis == "pre_match" and any(s.get("market_is_live") for s in srcs):
+                    self.assertIn("live_price_excluded_from_consensus", r.get("flags") or [],
+                                  r["fixture_id"])
+            self.assertTrue(used, r["fixture_id"])
+            nva = sum(s["no_vig_probability_a"] for s in used) / len(used)
+            nvb = sum(s["no_vig_probability_b"] for s in used) / len(used)
             self.assertTrue(close_stored(r["probability_a"], nva, 5e-5), r["fixture_id"])
             self.assertTrue(close_stored(r["probability_b"], nvb, 5e-5), r["fixture_id"])
             self.assertTrue(close_stored((r["probability_a"] or 0) + (r["probability_b"] or 0), 1.0, 5e-5),

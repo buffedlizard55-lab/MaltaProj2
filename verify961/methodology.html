@@ -21,6 +21,10 @@ public fixtures API behind <a href="https://play.hotspawn.com/lobby" rel="noopen
 public coupon and egamersworld's public odds widget. HLTV is <strong>not</strong> a price source (see item 6).</li>
 <li>Per source the margin is removed: q = 1/decimal, p_a = q_a / (q_a + q_b). The published probability is
 the arithmetic mean of the per-source no-vig shares; the pick is the higher share.</li>
+<li><strong>Consensus basis:</strong> pre-match quotes only. When a source reports its market as live (in-play),
+that price is still shown in the row but excluded from the mean and the row is flagged
+<code>live_price_excluded_from_consensus</code>; a fixture whose only quotes are live is flagged
+<code>live_consensus_only</code>.</li>
 <li><strong>Hotspawn's crowd pick percentage is never an input.</strong> It is stored separately in
 <code>data/961/hotspawn_reference.json</code> and is not read by the builder (enforced by a test).</li>
 <li>If no external price can be verified the row is blank and flagged <code>no_external_line</code>.</li>
@@ -29,7 +33,7 @@ is compared with the board pick on <a href="crosschecks.html">Cross-checks</a>. 
 automation runner (HTTP 403), so it is a manual cross-check only, never a price input.</li>
 </ol>
 <h2>Sources quoted in this build</h2>
-<div class="tablewrap"><table class="board"><tr><th>Source key</th><th>Rows using it</th></tr><tr><td>bovada</td><td>13</td></tr><tr><td>egamersworld</td><td>39</td></tr><tr><td>pinnacle</td><td>10</td></tr></table></div>
+<div class="tablewrap"><table class="board"><tr><th>Source key</th><th>Rows using it</th></tr><tr><td>bovada</td><td>13</td></tr><tr><td>egamersworld</td><td>38</td></tr><tr><td>pinnacle</td><td>10</td></tr></table></div>
 <h2>Re-verification</h2>
 <p class="sub">Every quote is stored with its URL and read time in <code>data/961/quotes.json</code>; the join
 and the arithmetic can be recomputed with <code>python3 scripts/961/build_961.py</code>, re-checked independently

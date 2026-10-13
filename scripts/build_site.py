@@ -85,6 +85,16 @@ NAV = [
     # integration link added by session 42580809 (single-anchor edit, documented in
     # COORDINATION.md): full-lobby coverage board incl. Kalshi exchange lines and originated lines
     ("site/42580809/index.html", "Coverage board (42580809)"),
+    # integration link added by session ac475c09 (T-LIVE): externally sourced live picks board
+    ("picks/index.html", "Live picks board (ac475c09)"),
+    # integration link requested by session 961e163a (VERIFY-961): verified pick board
+    ("verify961/index.html", "Verified pick board (961e163a)"),
+    # integration links added by session 0f71ea59 (final integration, documented in
+    # COORDINATION.md): restore the Reconciled picks entry published by session 4e6dcd0d
+    # (PR #44) that later conflict resolutions dropped from the NAV list, and link this
+    # session's independent line-by-line verification report
+    ("reconcile/index.html", "Reconciled picks (4e6dcd0d)"),
+    ("verify/0f71ea59/index.html", "Independent verification (0f71ea59)"),
 ]
 
 
@@ -179,6 +189,8 @@ def fixture_row(fx, with_prices=True):
                          f'{pct(consensus["derived_probability_b_mean"])}'
                          f'<div class="mini">{consensus["n_sources"]} source(s): '
                          f'{esc(", ".join(consensus["sources"]))}</div>')
+            prob_html += (f'<div class="mini">Source p(A) range: '
+                          f'{pct(consensus["derived_probability_a_min"])}–{pct(consensus["derived_probability_a_max"])}</div>')
             a, b = consensus["derived_probability_a_mean"], consensus["derived_probability_b_mean"]
             pick = fx.get("team_a") if a > b else fx.get("team_b") if b > a else None
             prob_html += f'<div class="ok">Pick: {esc(pick)}</div>' if pick else '<div class="chip">No edge (tie)</div>' 
@@ -196,7 +208,7 @@ def fixture_row(fx, with_prices=True):
         odds_html,
         prob_html,
         status,
-        (f'<a href="{esc(fx.get("hotspawn_match_url"))}" rel="noopener">match</a>'),
+        (f'<a href="{esc(fx.get("hotspawn_match_url"))}" rel="noopener">fixture source</a>'),
         flag_chips(fx.get("review_flags")),
     ]
 
@@ -213,7 +225,7 @@ def coverage_cards(summary, odds_doc, lines_doc):
     sources = sorted({l["source_key"] for l in (odds_doc.get("lines") or [])})
     cards = [
         ("Pick'em CS2 fixtures tracked", summary.get("fixtures_total", 0)),
-        ("Fixtures with a eligible source-linked line", summary.get("fixtures_with_external_line", 0)),
+        ("Fixtures with an eligible source-linked line", summary.get("fixtures_with_external_line", 0)),
         ("Fixtures still unverified (blank)", summary.get("fixtures_without_external_line", 0)),
         ("External sources quoted", len(sources)),
     ]
@@ -259,7 +271,7 @@ def main() -> int:
     odds_doc = load("data/odds.json")
     # Every render (including Pages staging) recalculates eligibility at render time.
     # Cached JSON must not silently keep a closed/aged market current.
-    from build_lines import build_document
+    from build_lines import build_document, fixture_source_url
     lines_doc, current_matching = build_document(matches_doc, odds_doc)
     write("data/lines.json", json.dumps(lines_doc, indent=1, ensure_ascii=False, allow_nan=False))
     write("evidence/matching_evidence.json", json.dumps(current_matching, indent=1, ensure_ascii=False, allow_nan=False))
@@ -354,7 +366,7 @@ links to the page/API the quote was read from. Blank cells mean no eligible offi
             f'<strong>{esc(m.get("team_a"))}</strong> vs <strong>{esc(m.get("team_b"))}</strong>',
             BLANK, BLANK,
             '<span class="warn">unverified — external line collection covers CS2 only</span>',
-            f'<a href="{esc(m.get("source", {}).get("hotspawn_match_url"))}" rel="noopener">match</a>',
+            f'<a href="{esc(fixture_source_url(m))}" rel="noopener">fixture source</a>',
             '<span class="chip">lol odds not collected</span>',
         ])
     lol_body = f"""
@@ -453,13 +465,18 @@ Sources for manual review: <a href="https://play.hotspawn.com/lobby">official lo
 <a href="https://www.hltv.org/betting/analytics">HLTV analytics</a>,
 <a href="https://www.pinnacle.com/">Pinnacle</a>, <a href="https://www.bovada.lv/">Bovada</a>,
 <a href="audits/d4ec32a9/REPORT.md">pipeline audit and limitations</a>.</p>
-<p>Coverage is incomplete wherever no eligible official quote exists. No claim is made that every match is priced,
+<p><p>Numeric legacy Hotspawn links such as <code>/matches/1079438</code> were tested and redirect to a generic
+match listing, not a verified match permalink. Current rows now link the observed official fixture API/lobby
+rather than synthesizing a slug. Fixture IDs in the JSON permit exact manual lookup. Archived numeric links
+remain unverified; source-link reachability is not universally certified.</p>
+Coverage is incomplete wherever no eligible official quote exists. No claim is made that every match is priced,
 that a retrieval is real-time, or that a derived probability is a verified fact. Sandbox egress does not allow
 these bookmaker hosts; automatic retrieval runs in GitHub Actions. Per-attempt payloads and failures:
 <a href="evidence/odds_collection.json">collection evidence</a>.</p>
 <h2>1. Fixtures with no external line found ({len(unverified)})</h2>
-<p>These rows are deliberately blank. Bookmakers and public markets did not quote them at collection time;
-no value was inferred from HotSpawn or from any other source.</p>
+<p>These rows are deliberately blank: no eligible official-source quote could be confirmed under the published
+policy. Missing, rejected, stale, unavailable or uncollected data are not proof that no betting market exists.
+No probability was inferred from HotSpawn or an unconfirmed source.</p>
 {table(["Scheduled (UTC)", "Tier", "Tournament", "Match", "Status", "Flags", "HotSpawn link"], unv_rows)}
 
 <h2>2. Stale fixtures ({len(stale)})</h2>
@@ -562,7 +579,7 @@ www.hotspawn.com (search returns seasons 1–4 only): identity unresolved, flagg
             "probability_b": c["derived_probability_b_mean"] if c else None,
             "sources": [{"source": q["source_name"], "url": q.get("source_public_url") or q.get("source_api_url"),
                         "retrieved_at_utc": q.get("retrieved_at_utc")} for q in fx.get("bookmaker_lines", [])],
-            "official_source_url": (m.get("source") or {}).get("hotspawn_match_url") or "https://play.hotspawn.com/lobby",
+            "official_source_url": fixture_source_url(m),
             "flags": fx.get("review_flags") or (["external_odds_not_collected_for_this_game"] if not fx else [])})
     probs_doc = {"generated_at_utc": lines_doc["generated_at_utc"], "rows": current_rows}
     write("data/current_probabilities.json", json.dumps(probs_doc, indent=1, ensure_ascii=False))
@@ -590,7 +607,7 @@ www.hotspawn.com (search returns seasons 1–4 only): identity unresolved, flagg
             f'{esc(r.get("team_a"))} vs {esc(r.get("team_b"))}',
             prob_cell,
             " · ".join(src_bits) or BLANK,
-            f'<a href="{esc(r.get("official_source_url"))}" rel="noopener">fixture</a>',
+            f'<a href="{esc(r.get("official_source_url"))}" rel="noopener">fixture #{esc(r.get("fixture_id"))}</a>',
             ", ".join(esc(x) for x in (r.get("flags") or [])) or '<span class="chip">ok</span>',
         ])
     prob_body = f"""
@@ -624,7 +641,7 @@ Unpriced games stay blank. Archived model/pickem/audit sections retain their own
     src_list = sorted({(l["source_key"], l.get("source_name"), l.get("source_kind"),
                         l.get("source_public_url"), l.get("source_api_url"))
                        for l in (odds_doc.get("lines") or [])})
-    src_rows = [[esc(k), esc(n), esc(kind), f'<a href="{esc(p)}" rel="noopener">{esc(p)}</a>' if p else BLANK,
+    src_rows = [[esc(k), esc(n), esc("bookmaker (license not assessed)" if kind == "licensed bookmaker" else kind), f'<a href="{esc(p)}" rel="noopener">{esc(p)}</a>' if p else BLANK,
                  f'<a href="{esc(a)}" rel="noopener">API</a>' if a else BLANK]
                 for k, n, kind, p, a in src_list]
     method_body = f"""
