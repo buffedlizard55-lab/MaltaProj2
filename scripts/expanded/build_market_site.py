@@ -165,7 +165,7 @@ def fixture_row(row: dict, show_game: bool = True) -> str:
   <td data-label="Game / tier">{esc(str(row['game']).upper())}{' · ' + esc(row['tier']).upper() if row.get('tier') else ''}</td>
   <td data-label="Tournament">{esc(row.get('competition'))}</td>
   <td data-label="Match"><strong>{esc(row['team_a'])}</strong> vs <strong>{esc(row['team_b'])}</strong>
-      <div class="mini"><a href="{esc(row['hotspawn_match_url'])}" rel="noopener">HotSpawn fixture</a>
+      <div class="mini"><a href="{esc(row['hotspawn_match_url'])}" rel="noopener">{esc(hotspawn_link_label(row))}</a>
       · crowd {esc(row['hotspawn_pick_pct_reference_only']['team_a'])}/{esc(row['hotspawn_pick_pct_reference_only']['team_b'])}% (reference only)</div></td>
   <td data-label="External lines">{lines}</td>
   <td data-label="Derived no-vig probability">{probability_bar(a, b, row['team_a'], row['team_b'])}
@@ -189,6 +189,12 @@ def table(rows: list[dict], show_game=True) -> str:
 <th>External line(s)</th><th>Derived probability</th><th>Pick</th>
 <th>Originated estimate (model)</th><th>Verification</th></tr></thead>
 <tbody>{body}</tbody></table></div>"""
+
+
+def hotspawn_link_label(row: dict) -> str:
+    """Say what the HotSpawn link actually is: a published match page, or the official lobby."""
+    kind = str(row.get("hotspawn_match_url_kind") or "")
+    return "HotSpawn match page" if kind.startswith("lobby-published") else "HotSpawn lobby"
 
 
 def summary_cards(doc: dict) -> str:
