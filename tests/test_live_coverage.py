@@ -425,6 +425,13 @@ class TestPublishedBoard(unittest.TestCase):
                            "sources.html"):
                 self.assertIn(f'href="{target}"', text, f"{name} -> {target}")
 
+    def test_no_captured_page_is_stored_as_html(self):
+        samples = DATA / "samples"
+        if not samples.is_dir():
+            self.skipTest("no samples in this checkout")
+        stray = sorted(p.name for p in samples.glob("*.html"))
+        self.assertEqual(stray, [], f"captured pages must be stored as .txt, found: {stray}")
+
     def test_probability_coverage_is_documented_not_assumed(self):
         summary = self.board["summary"]
         self.assertEqual(summary["with_market_probability"] + summary["with_originated_estimate"]

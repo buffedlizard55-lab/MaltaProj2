@@ -737,6 +737,11 @@ def _main() -> int:
     outdir = (ROOT / args.outdir) if not Path(args.outdir).is_absolute() else Path(args.outdir)
     sample_dir = outdir / "samples"
     sample_dir.mkdir(parents=True, exist_ok=True)
+    # Raw page captures are inert evidence and must never be stored as .html: the site staging step
+    # walks every .html file in the published artifact, so a captured page would be checked as if it
+    # were one of our pages. Any stale .html capture from an older run is removed here.
+    for stale in sample_dir.glob("*.html"):
+        stale.unlink()
 
     log: dict = {"session": "3cd9787c", "task": "T-COVER", "started_at_utc": now_iso(),
                  "notes": [
