@@ -524,7 +524,10 @@ def build():
     for rec in gate_rejected:
         rejected.append({"reason": rec["rejection_reason"], "source_key": rec["source_key"],
                          "raw_names": [rec["source_quoted"]["team_a"], rec["source_quoted"]["team_b"]],
-                         "start": rec["start_time_utc"], "quality_gate": True, "raw": rec.get("raw")})
+                         "start": rec["start_time_utc"], "quality_gate": True, "raw": rec.get("raw"),
+                         # provenance kept so every flagged row can link the official page it was read from
+                         "source_url": rec.get("source_url"), "api_url": rec.get("api_url"),
+                         "retrieved_at_utc": rec.get("retrieved_at_utc")})
     accepted = usable
 
     # De-duplicate: the same underlying market can be present in more than one collected batch
