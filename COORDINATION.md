@@ -2588,6 +2588,23 @@ Verification: `python3 -m unittest discover -s tests` → 110 tests OK (9 new); 
    - Staging link check `scripts/stage_site.py` passed with 0 broken local links.
 
 ## Pull request and merge
-- Pull request opened from `arena/2b8c07e9-maltaproj2` to `main`.
-- Merged to `main` via `gh pr merge <number> --merge`.
-- Verified GitHub Pages build settled and deployed live.
+- **Pull Request**: https://github.com/buffedlizard55-lab/MaltaProj2/pull/45 — "Final integration (2b8c07e9): unified navigation across all parallel boards, link verification, test suite passing"
+- **Merge**: Merged to `main` without waiting for approval at 2026-10-13T22:11:28Z; merge commit `b0d590fddc989bf51ccbc44ec9a06d38fc4ea436`.
+- **Pre-merge CI**: Run `38475938876` — build pass (45s).
+- **Post-merge Pages deploy**:
+  - `pages-build-deployment` run `38476142329` — success (built and deployed).
+  - Main workflow `Verify and publish dashboard` run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38476066859 — build passed in 51s, deploy passed in 27s.
+  - Pages API check: `https://api.github.com/repos/buffedlizard55-lab/MaltaProj2/pages` reports status `built`.
+- **Live verification**:
+  - Landing page: https://buffedlizard55-lab.github.io/MaltaProj2/
+  - CS2 matches: https://buffedlizard55-lab.github.io/MaltaProj2/cs2.html
+  - LoL matches: https://buffedlizard55-lab.github.io/MaltaProj2/lol.html
+  - Flagged for review: https://buffedlizard55-lab.github.io/MaltaProj2/flagged.html
+  - Methodology & sources: https://buffedlizard55-lab.github.io/MaltaProj2/methodology.html
+  - Live picks board (ac475c09): https://buffedlizard55-lab.github.io/MaltaProj2/picks/index.html
+  - Verified pick board (961e163a): https://buffedlizard55-lab.github.io/MaltaProj2/verify961/index.html
+  - Reconciled picks (4e6dcd0d): https://buffedlizard55-lab.github.io/MaltaProj2/reconcile/index.html
+  - Coverage board (42580809): https://buffedlizard55-lab.github.io/MaltaProj2/site/42580809/index.html
+  - Parallel board (snapshot) (0f6c89c6): https://buffedlizard55-lab.github.io/MaltaProj2/current/index.html
+  - Pick'em line board (a0fcf175): https://buffedlizard55-lab.github.io/MaltaProj2/pickem/index.html
+- **Conclusion**: Integration complete, all parallel session requests fulfilled, all 114 tests passing, zero broken local links, site successfully built and live on GitHub Pages.
