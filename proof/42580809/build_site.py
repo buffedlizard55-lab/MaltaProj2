@@ -291,7 +291,10 @@ live market can exist for them — see <a href="flagged.html">Flagged for review
 {''.join(f'<option value="{esc(t)}">{esc(t)}</option>' for t in tours)}</select>
 <span class="fresh">showing <b id="shown">{len(upcoming)}</b> of {len(rows)}</span></div>"""
 
-    ordered = sorted(rows, key=lambda r: r["scheduled_start_time_utc"] or "")
+    # Upcoming first (soonest kickoff at the top), then past-kickoff listings newest first, so the
+    # actionable rows come first even before the filter script runs.
+    ordered = (sorted([r for r in rows if not r["stale"]], key=lambda r: r["scheduled_start_time_utc"] or "")
+               + sorted([r for r in rows if r["stale"]], key=lambda r: r["scheduled_start_time_utc"] or "", reverse=True))
     cards = "".join(card(r, orig) for r in ordered)
     index = page("Pick'em coverage board", "index.html", stats + intro + controls + cards)
 
