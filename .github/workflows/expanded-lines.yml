@@ -1,16 +1,11 @@
 name: expanded-lines
 
-# Session a0586093 (T-EXPAND). Collects external (non-HotSpawn) esports betting lines
-# on a runner with full internet, because this sandbox has no general egress.
-# Evidence and data are committed back with [skip ci] so the run cannot loop.
+# Session a0586093 (T-EXPAND). Collects external (non-HotSpawn) esports betting lines on a
+# runner with full internet, because this sandbox has no general egress. Evidence and data
+# are committed back with [skip ci] so the run cannot loop on its own commits.
 
 on:
   workflow_dispatch:
-    inputs:
-      playwright:
-        description: 'Also probe JS-rendered pages with headless Chromium'
-        type: boolean
-        default: true
   push:
     paths:
       - '.github/workflows/expanded-lines.yml'
@@ -35,41 +30,51 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Probe external source reachability
-        run: |
-          mkdir -p data/expanded
-          python3 scripts/expanded/probe_sources.py \
-            --out data/expanded/source_probe.json ${{ (github.event_name == 'workflow_dispatch' && inputs.playwright) && '--playwright' || '' }}
-        continue-on-error: false
+      - name: 1. Probe source reachability (plain HTTP)
+        run: python3 scripts/expanded/probe_sources.py --out data/expanded/source_probe.json
 
-      - name: Install Playwright browser (for JS-rendered sources)
-        if: always()
+      - name: 2. Capture raw payload samples (plain HTTP)
+        run: python3 scripts/expanded/capture_samples.py --outdir data/expanded/samples
+
+      - name: 3. Install headless Chromium
         run: |
           pip install playwright==1.55.0
           python -m playwright install --with-deps chromium
 
-      - name: Probe JS-rendered sources with headless Chromium
+      - name: 4. Capture browser-only sources (GG.BET, Oddspedia) + rendered probe
         run: |
+          python3 scripts/expanded/capture_browser_samples.py --outdir data/expanded/samples || \
+            echo "browser capture returned non-zero (evidence kept)"
           python3 scripts/expanded/probe_rendered.py --out data/expanded/rendered_probe.json || \
             echo "rendered probe returned non-zero (evidence kept)"
+
+      - name: 5. Build line dataset from captured sources
+        run: |
+          python3 scripts/expanded/collect_lines.py --capture-out data/expanded/lines.json || \
+            echo "line collector returned non-zero (evidence kept)"
+
+      - name: 6. Guard committed sample size
+        run: |
+          du -sh data/expanded || true
+          find data/expanded/samples -type f -size +3M -print -delete || true
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: expanded-source-evidence
+          name: expanded-evidence
           path: data/expanded/
           retention-days: 14
 
-      - name: Commit evidence + data to this branch
+      - name: 7. Commit evidence + data to this branch
         if: always()
         run: |
           git config user.name "malta-data-bot"
           git config user.email "malta-data-bot@users.noreply.github.com"
-          git add -A data/expanded scripts/expanded 2>/dev/null || git add -A data/expanded
+          git add -A data/expanded 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "no changes to commit"
           else
-            git commit -m "evidence: expanded external source probe [skip ci]"
+            git commit -m "evidence: expanded external source capture [skip ci]"
             for i in 1 2 3; do
               git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push && break || sleep 5
             done
