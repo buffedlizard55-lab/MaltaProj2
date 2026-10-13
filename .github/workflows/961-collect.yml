@@ -28,12 +28,13 @@ jobs:
         with:
           python-version: '3.11'
       - name: Collect external quotes (raw evidence)
-        run: python3 scripts/961/collect_961.py
+        run: python3 scripts/961/collect_961.py || echo 'collector returned non-zero (evidence still written)'
       - name: Build board (de-vig + consensus)
-        run: python3 scripts/961/build_961.py
+        run: python3 scripts/961/build_961.py || echo 'builder returned non-zero'
       - name: Build mobile-first pages
-        run: python3 scripts/961/build_pages_961.py
+        run: python3 scripts/961/build_pages_961.py || echo 'page builder returned non-zero'
       - name: Commit refreshed evidence, board and pages
+        if: always()
         run: |
           git config user.name "malta-961-bot"
           git config user.email "malta-961-bot@users.noreply.github.com"

@@ -134,9 +134,11 @@ NAV_ITEMS = [("index.html", "Dashboard"), ("cs2.html", "CS2"), ("lol.html", "LoL
 
 
 def nav(active):
-    return "".join(
-        f'<a href="{href}"{" class=\"active\"" if href == active else ""}>{label}</a>'
-        for href, label in NAV_ITEMS)
+    links = []
+    for href, label in NAV_ITEMS:
+        cls = ' class="active"' if href == active else ""
+        links.append('<a href="%s"%s>%s</a>' % (href, cls, label))
+    return "".join(links)
 
 
 FOOT = """
@@ -211,13 +213,17 @@ staleness is always visible. Fixtures with no external price are on <a href="fla
 {table(grow)}"""
         write(fname, label, body)
 
-    flag_rows = "".join(
-        f"<tr><td>{esc(r.get('fixture_id'))}</td><td>{esc((r.get('game') or '').upper())}</td>"
-        f"<td>{esc(r.get('team_a'))} vs {esc(r.get('team_b'))}</td>"
-        f"<td>{esc(r.get('competition'))}</td><td>{esc(short_time(r.get('scheduled_start_time_utc')))}</td>"
-        f"<td>{' '.join(f'<span class=\"chip\">{esc(f)}</span>' for f in r['flags'])}</td>"
-        f"<td>{'<a href=\"' + esc(r.get('hotspawn_match_url')) + '\" rel=\"noopener\">fixture</a>' if r.get('hotspawn_match_url') else ''}</td></tr>"
-        for r in unverified)
+    flag_rows_list = []
+    for r in unverified:
+        chips = " ".join('<span class="chip">%s</span>' % esc(fl) for fl in r["flags"])
+        link = ('<a href="%s" rel="noopener">fixture</a>' % esc(r.get("hotspawn_match_url"))
+                if r.get("hotspawn_match_url") else "")
+        flag_rows_list.append(
+            "<tr><td>%s</td><td>%s</td><td>%s vs %s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>"
+            % (esc(r.get("fixture_id")), esc((r.get("game") or "").upper()), esc(r.get("team_a")),
+               esc(r.get("team_b")), esc(r.get("competition")),
+               esc(short_time(r.get("scheduled_start_time_utc"))), chips, link))
+    flag_rows = "".join(flag_rows_list)
     flagged = f"""<h1>Flagged for review</h1>
 <p class="sub">Nothing on this list is filled in, estimated or inferred. Unverified fixtures stay blank
 until an official external source publishes a price for them.</p>

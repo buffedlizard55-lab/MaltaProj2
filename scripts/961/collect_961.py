@@ -480,22 +480,38 @@ def main() -> int:
             "Hotspawn crowd pick percentages are stored separately and never used as probability inputs.",
         ],
         "sources": {},
+        "stage_errors": {},
     }
-    fixtures, reference = collect_hotspawn(state)
+    fixtures, reference = [], []
+    try:
+        fixtures, reference = collect_hotspawn(state)
+    except Exception as exc:  # noqa: BLE001
+        state["stage_errors"]["hotspawn"] = f"{type(exc).__name__}: {exc}"
     wanted = {f.get("sport") for f in fixtures} & {"cs2", "lol"}
+    if not wanted:
+        wanted = {"cs2", "lol"}
     quotes = []
-    collect_pinnacle(quotes, state, wanted)
-    collect_bovada(quotes, state, wanted)
-    state["hltv_probe"] = collect_hltv(quotes, state, fixtures)
-    run_probes(state)
+    for stage, fn in (("pinnacle", lambda: collect_pinnacle(quotes, state, wanted)),
+                      ("bovada", lambda: collect_bovada(quotes, state, wanted)),
+                      ("hltv", lambda: collect_hltv(quotes, state, fixtures)),
+                      ("probes", lambda: run_probes(state))):
+        try:
+            fn()
+        except Exception as exc:  # noqa: BLE001
+            state["stage_errors"][stage] = f"{type(exc).__name__}: {exc}"
 
+    by_source = {k: sum(1 for q in quotes if q["source_key"] == k)
+                 for k in sorted({q["source_key"] for q in quotes})}
+    state["quotes_kept_total"] = len(quotes)
+    state["quotes_by_source"] = by_source
     with open(os.path.join(OUT, "lobby.json"), "w", encoding="utf-8") as fh:
         json.dump({
             "generated_at_utc": state["generated_at_utc"],
             "source_page": "https://play.hotspawn.com/lobby",
             "source_api": HOTSPAWN_API + "/fixtures",
             "fixture_count": len(fixtures),
-            "by_sport": {g: sum(1 for f in fixtures if f.get("sport") == g) for g in sorted(wanted)},
+            "by_sport": {g: sum(1 for f in fixtures if f.get("sport") == g)
+                         for g in sorted({f.get("sport") for f in fixtures if f.get("sport")})},
             "fixtures": fixtures,
         }, fh, indent=1, sort_keys=True)
     with open(os.path.join(OUT, "hotspawn_reference.json"), "w", encoding="utf-8") as fh:
@@ -505,16 +521,15 @@ def main() -> int:
     with open(os.path.join(OUT, "quotes.json"), "w", encoding="utf-8") as fh:
         json.dump({"generated_at_utc": state["generated_at_utc"],
                    "quote_count": len(quotes),
-                   "by_source": {k: sum(1 for q in quotes if q["source_key"] == k)
-                                 for k in sorted({q["source_key"] for q in quotes})},
+                   "by_source": by_source,
                    "quotes": quotes}, fh, indent=1, sort_keys=True)
     with open(os.path.join(OUT, "sources.json"), "w", encoding="utf-8") as fh:
         json.dump(state, fh, indent=1, sort_keys=True)
     if isinstance(state.get("hltv_probe"), dict):
         with open(os.path.join(OUT, "hltv_probe.json"), "w", encoding="utf-8") as fh:
             json.dump(state["hltv_probe"], fh, indent=1, sort_keys=True)
-    print(f"lobby fixtures={len(fixtures)} quotes={len(quotes)} "
-          f"by_source={ {k: sum(1 for q in quotes if q['source_key'] == k) for k in sorted({q['source_key'] for q in quotes})} }")
+    print(f"lobby fixtures={len(fixtures)} quotes={len(quotes)} by_source={by_source} "
+          f"errors={state['stage_errors']}")
     return 0
 
 

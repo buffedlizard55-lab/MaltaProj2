@@ -179,12 +179,19 @@ def main() -> int:
 
     fresh_sources = {q["source_key"] for q in quotes}
     used_fallback = False
-    if not ({q for q in fresh_sources} & {"pinnacle", "bovada"}):
-        fb = fallback_book_quotes()
+    notes = []
+    if not (fresh_sources & {"pinnacle", "bovada"}):
+        try:
+            fb = fallback_book_quotes()
+        except Exception as exc:  # noqa: BLE001
+            fb, _ = [], notes.append(f"fallback read failed: {exc}")
         if fb:
             quotes.extend(fb)
             used_fallback = True
-    quotes.extend(extra_quotes_from_existing_evidence())
+    try:
+        quotes.extend(extra_quotes_from_existing_evidence())
+    except Exception as exc:  # noqa: BLE001
+        notes.append(f"egamersworld evidence read failed: {exc}")
 
     now = datetime.now(tz=timezone.utc)
     fixtures = lobby.get("fixtures") or []
@@ -305,6 +312,7 @@ def main() -> int:
     doc = {
         "generated_at_utc": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "session": "961e163a",
+        "build_notes": notes,
         "source_of_fixtures": "https://play.hotspawn.com/lobby (public fixtures API)",
         "rules": [
             "External betting lines only (Pinnacle, Bovada, HLTV-published bookmaker odds, egamersworld).",
