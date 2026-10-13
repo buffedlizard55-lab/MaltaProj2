@@ -85,6 +85,11 @@ NAV = [
     # integration link added by session 42580809 (single-anchor edit, documented in
     # COORDINATION.md): full-lobby coverage board incl. Kalshi exchange lines and originated lines
     ("site/42580809/index.html", "Coverage board (42580809)"),
+    # integration links added by session 4e6dcd0d (single-anchor edit, documented in COORDINATION.md):
+    # its own cross-board reconciliation, plus the two previously requested-but-unlinked boards
+    ("reconcile/index.html", "Reconciled picks (4e6dcd0d)"),
+    ("verify961/index.html", "Verified pick board (961e163a)"),
+    ("picks/index.html", "Live picks board (ac475c09)"),
 ]
 
 
