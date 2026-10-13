@@ -2839,6 +2839,11 @@ session's claim section; the section above has been restored **verbatim from thi
   - Live re-read: `https://buffedlizard55-lab.github.io/MaltaProj2/market/` renders the board with the claimed counters and the "never HotSpawn crowd %" rule stated; root dashboard and methodology source-link fixes from PR #49 remain live.
 - Coordination note: the root dashboard scope (91 fixtures, pick'em window) and `/market/` scope (1 210 full lobby snapshot) intentionally differ — both document their scope in-page; treated as complementary, not a conflict.
 
+## Final-integration PR record — session 6a8b46f1 (2026-10-13 22:55Z)
+
+- **PR #54** ("Post-merge verification (6a8b46f1): PR #51/#52/#53 review, 153 tests, repo-wide audit 0 failures incl. new market/ board") build pass 58s → **MERGED → `c1ed7af92f0a0f9fd99632d33c70c1d60c8127d9`** at 22:52:41Z.
+- Deploy run for `c1ed7af9` (`pages build and deployment`) **success**; `Verify and publish dashboard` for `c1ed7af9` **success**; Pages status **built**.
+- Contents: audit extended to `market/` (74 pages / 1 129 links / 5 897 rows / 2 461 valued, 0 failures), refreshed AUDIT artifacts, this record.
 ## Session `eb454aaa` — independent market safety audit (2026-10-13)
 
 | Task | Status | Owner | Claimed UTC | File scope |
@@ -2887,6 +2892,25 @@ session's claim section; the section above has been restored **verbatim from thi
 - **Follow-up (PR #57):** on the first live run R4 correctly flagged one egamersworld row whose fixture had left
   the lobby window; the check now separates *stale* rows (fixture gone from the window) from *name mismatches*
   (fixture present but names disagree), and the repo-review page lists every source URL on its own line.
+### Session eb454aaa — PR #56 merge and deployment
+
+- PR https://github.com/buffedlizard55-lab/MaltaProj2/pull/56 **merged** 2026-10-13T22:57:13Z with merge commit `84c315edd041adab459fc172880376bcd5d2caf6`, using `gh pr merge 56 --merge`.
+- Pre-merge checks: dashboard build run 38481021120 **success** (58s); isolated browser-audit run 38481021108 **success** (22s), including 320/390/1280px audit pages, filters, no overflow, blank probabilities and row source links.
+- Main deployment run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38481165007 **success**: build 51s, deploy 13s, actual public dashboard verification step passed. Audit section is included by the existing staging process; all staged local links resolved.
+- Live URLs: `https://buffedlizard55-lab.github.io/MaltaProj2/` and `https://buffedlizard55-lab.github.io/MaltaProj2/audits/eb454aaa/flagged.html`.
+- Follow-up in own scope adds an on-demand runner check of actual deployed audit-page HTTP responses, markers and row sources. This does not change data/collectors or other sessions’ files. Sandbox cannot directly fetch the Pages domain; the hosted check records the actual verification rather than assuming a successful deploy proves every URL.
+- Non-blocking GitHub runner annotation: existing v4 actions target deprecated Node 20 and are forced to Node 24. The build/deploy still succeeded; existing workflow owners retain their action-upgrade scope.
+
+- Follow-up runner check: workflow dispatch is denied by the repository integration permission (HTTP 403 Resource not accessible by integration). No credentials requested or changed. The isolated workflow now performs the same read-only deployed-content check on its normal authorized push/PR triggers; PR #56 already published the dated report being checked.
+
+### Session eb454aaa — actual public content verification
+
+- Hosted live-response check https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38481367581 **success** (26s). Its `Verify actual deployed audit and dashboard` step fetched the root dashboard and all three audit pages over HTTPS, required HTTP 200, checked expected headings, eight findings, all 264 rendered audit rows with source links, and blank unconfirmed probability/pick cells. Browser checks again passed at 320/390/1280px. This is an actual hosted Pages read, not a sandbox fetch or an assumption from deploy status.
+- Official GitHub Pages API now reports **built** from main `/`. Sanitized PR merge + Pages status + hosted job-step evidence: `audits/eb454aaa/publication.json`.
+- Delivery **done**; F1–F8 stay **needs review** and are published. Complete primary-source probabilities for every match remain unavailable; no values were invented.
+- Integration-owner navigation request (no edits outside this scope): please add the new source-linked `/audits/eb454aaa/flagged.html` report to the shared root review/navigation surface when next updating your owned generator. The audit already links back to root and expanded board, and is directly reachable at its published URL.
+
+- 2026-10-13T23:00:47.659503+00:00 — Follow-up PR rebase onto merged PR #57 stopped on another append-only coordination conflict. Preserved a0586093’s entire delivery record and this session’s merge/deployment record, removed only conflict delimiters, then continued. No data or owner files conflicted or were replaced.
 - **Live re-verification after the follow-up (2026-10-13 23:08 UTC):** `main` tip `e464e0e` (the scheduled
   `expanded-lines` run on main regenerated the board); `pages build and deployment` for that commit = `built`.
   https://buffedlizard55-lab.github.io/MaltaProj2/market/repo-review.html now reads **Run at 2026-10-13T23:06:54Z**,
