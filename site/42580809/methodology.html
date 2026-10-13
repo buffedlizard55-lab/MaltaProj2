@@ -1,0 +1,102 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Methodology &amp; sources</title>
+<meta name="description" content="Win probabilities and picks for every CS2 match in the HotSpawn pick'em lobby, derived from external betting lines only.">
+<meta name="color-scheme" content="dark"><link rel="stylesheet" href="assets/style.css"></head>
+<body><header><h1>Methodology &amp; sources</h1>
+<div class="sub">Every CS2 fixture in the HotSpawn pick'em lobby · external lines only · HotSpawn used for fixture discovery, never as a probability</div>
+<nav><a class="" href="index.html">Board</a><a class="" href="tables.html">Tables</a><a class="on" href="methodology.html">Methodology</a><a class="" href="flagged.html">Flagged for review</a></nav></header><div class="wrap"><div class="note">Every number on this board is produced by the pipeline in this repository from a
+named public source. Nothing is typed in by hand, nothing is estimated silently, and HotSpawn is never used as a
+probability input — only as the list of fixtures to price.</div>
+
+<h2>1. Fixtures (discovery only)</h2>
+<p>The lobby's own public JSON API is read by the runner:
+<code>https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures</code> (page: <a href="https://play.hotspawn.com/lobby" rel="nofollow noopener">play.hotspawn.com/lobby</a>).
+It returned <b>92</b> CS2 fixtures for the pick'em window. The lobby's "picked %" crowd
+number is displayed on each card <b>for reference only</b> and never enters a calculation.</p>
+
+<h2>2. External prices</h2>
+<table><tr><th>Source</th><th>What is read</th><th>How to check it</th></tr>
+<tr><td>Pinnacle (licensed bookmaker)</td><td>full-match moneyline, the two-way market on the matchup's full-match period</td>
+<td><a href="https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups" rel="nofollow noopener">guest odds API</a> — each row links the exact matchup URL read</td></tr>
+<tr><td>Bovada (licensed bookmaker)</td><td>full-match moneyline from the public esports coupon</td>
+<td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports" rel="nofollow noopener">coupon JSON</a></td></tr>
+<tr><td>Kalshi (CFTC-regulated exchange)</td><td>two-sided book per outcome market; mid of yes-bid/yes-ask</td>
+<td><a href="https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&amp;status=open&amp;with_nested_markets=true&amp;limit=200" rel="nofollow noopener">trade API</a></td></tr>
+<tr><td>egamersworld.com (aggregator, fallback only)</td><td>decimal moneyline from its odds widget</td>
+<td>the exact match page is linked on the card</td></tr>
+<tr><td>Polymarket (prediction market)</td><td>collected; no current CS2 match market survived the freshness check</td>
+<td><a href="https://gamma-api.polymarket.com/events?closed=false&amp;limit=100&amp;tag_slug=counter-strike" rel="nofollow noopener">Gamma API</a></td></tr>
+<tr><td>Valve Regional Standings (official ranking)</td><td>team points used by the originated model</td>
+<td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings" rel="nofollow noopener">Valve's standings repository</a> (mirrored in this repo)</td></tr></table>
+<p class="sub">Books that refuse automated access from the runner (HLTV, EGamersWorld page, Thunderpick, GG.BET,
+Oddspedia, 1xBet, DraftKings, BetMGM, Caesars, Marathonbet, Kambi-powered books) are listed on the
+<a href="flagged.html">Flagged for review</a> page. Nothing was bypassed.</p>
+
+<h2>3. Matching rules</h2>
+<ol>
+<li>Both participants must match after documented normalisation (case, accents, punctuation, club suffixes,
+and an explicit alias table), in either order; a reversed source listing has its prices reversed.</li>
+<li>A quote is accepted only when its own schedule agrees with the fixture within 90 minutes. Kalshi's
+settlement rule is parsed for the original schedule — the exchange's padded <code>occurrence_datetime</code> is
+deliberately ignored.</li>
+<li>One quote is assigned to at most one fixture; ambiguous candidates are rejected and logged.</li>
+<li>Quotes that fail the quality gate are rejected, not published: empty or far-too-wide Kalshi books, and
+aggregator quotes that repeat the identical even price across unrelated matches (placeholders).</li>
+</ol>
+
+<h2>4. Probability maths</h2>
+<p>Bookmaker decimal odds: <code>q_i = 1 / odds_i</code>, then <code>p_i = q_i / (q_a + q_b)</code> (proportional
+no-vig; the book margin <code>q_a + q_b − 1</code> is printed on the card). Kalshi:
+<code>p_i = mid_i / (mid_a + mid_b)</code> with <code>mid_i = (yes_bid + yes_ask) / 2</code>. When several named
+sources quote the same match the card shows their arithmetic mean; the per-source values are listed under it.
+These are derived quantities, not forecasts and not source quotes.</p>
+
+<h2>5. Originated lines (matches no market prices)</h2>
+<p>Where no external price exists the board originates its own line, in this order, and says so on the card:</p>
+<ol>
+<li><b>Market-graph Bradley-Terry.</b> Every collected moneyline is one observation of
+<code>logit(p) = strength_A − strength_B</code>; strengths are fitted by maximum likelihood over the whole graph
+(including matches outside the pick'em). A team needs at least 3
+collected observations against at least two different opponents to carry a usable strength. Graph: <b>112</b>
+observations over <b>103</b> teams. Held-out (refit without the fixture, predict it, compare with the
+market): <b>2</b> fixture(s), mean absolute error <b>0.011</b>, Brier
+<b>0.0002</b> — thin, because the identification rule excludes everything else.</li>
+<li><b>Valve Regional Standings.</b> <code>p = sigmoid((points_A − points_B)/scale)</code> with the scale fitted
+against the priced fixtures: <b>120.1</b> points, calibration on
+<b>14</b> fixtures, mean absolute error <b>0.1929</b>
+(deeper books only: 9 fixtures,
+MAE 0.1829). Because that error is large, the
+model output is clamped to [0.1, 0.9] and every row using it says "originated".</li>
+</ol>
+<h3>Market-graph hold-out checks</h3>
+<div class="tablewrap"><table><tr><th>Fixture</th><th>Market</th><th>Model (refit without it)</th><th>|error|</th></tr><tr><td>ENCE vs BOJONG</td><td>65.5%</td><td>67.1%</td><td>0.0166</td></tr><tr><td>EAC vs ENCE</td><td>62.6%</td><td>63.1%</td><td>0.0055</td></tr></table></div>
+<h3>VRS calibration against real prices</h3>
+<div class="tablewrap"><table><tr><th>Fixture</th><th>Points difference</th><th>Market</th><th>Model</th><th>|error|</th></tr><tr><td>Zomblers vs Overtake Sector</td><td>-135</td><td>35.6%</td><td>24.5%</td><td>0.1104</td></tr><tr><td>Enjoy vs B8 Academy</td><td>240</td><td>62.4%</td><td>88.1%</td><td>0.2563</td></tr><tr><td>Gothic vs Lavked</td><td>-157</td><td>49.8%</td><td>21.3%</td><td>0.2846</td></tr><tr><td>9z vs Aurora</td><td>-173</td><td>25.7%</td><td>19.1%</td><td>0.066</td></tr><tr><td>Astralis vs Sashi</td><td>543</td><td>85.3%</td><td>98.9%</td><td>0.1358</td></tr><tr><td>HOTU vs Fnatic</td><td>20</td><td>47.2%</td><td>54.1%</td><td>0.0693</td></tr><tr><td>ex-RUSTEC vs mellren</td><td>134</td><td>68%</td><td>75.3%</td><td>0.073</td></tr><tr><td>Falcons vs Ninjas in Pyjamas</td><td>309</td><td>76.6%</td><td>92.9%</td><td>0.1629</td></tr><tr><td>Legacy vs PARIVISION</td><td>520</td><td>56.8%</td><td>98.7%</td><td>0.4195</td></tr><tr><td>G2 Ares vs The Last Resort</td><td>-13</td><td>64.8%</td><td>47.3%</td><td>0.1745</td></tr><tr><td>FURIA vs BetBoom</td><td>233</td><td>69.9%</td><td>87.4%</td><td>0.1755</td></tr><tr><td>MIBR vs BC.Game</td><td>267</td><td>57%</td><td>90.2%</td><td>0.3318</td></tr><tr><td>ENCE vs BOJONG</td><td>562</td><td>65.5%</td><td>99.1%</td><td>0.336</td></tr><tr><td>EAC vs ENCE</td><td>10</td><td>62.6%</td><td>52.1%</td><td>0.1048</td></tr></table></div>
+
+<h2>6. Reproducing this board</h2>
+<ul>
+<li>Collection runs on a GitHub runner (network access is restricted in the authoring sandbox):
+<code>python3 proof/42580809/run/fetch_fixtures.py &amp;&amp; python3 proof/42580809/run/fetch_reference.py &amp;&amp;
+python3 proof/42580809/run/probe_sources.py &amp;&amp; python3 proof/42580809/run/explore_sources.py &amp;&amp;
+python3 proof/42580809/run/inspect_pinnacle.py &amp;&amp; python3 proof/42580809/run/collect_lines.py</code> —
+raw payloads land in <code>proof/42580809/evidence/</code>.</li>
+<li>Join and derive: <code>python3 proof/42580809/build_board.py</code> → <code>data/board_42580809.json</code>,
+plus every accept/reject decision in <code>evidence/matching.json</code>.</li>
+<li>Originate: <code>python3 proof/42580809/originate.py</code> → <code>data/originated_42580809.json</code>.</li>
+<li>Publish: <code>python3 proof/42580809/build_site.py</code> → this section.</li>
+</ul>
+
+<h2>7. Limits, stated plainly</h2>
+<ul>
+<li>61 of 92 listed fixtures have a kickoff already in the past;
+they stay listed (the lobby still shows them) and stay blank.</li>
+<li>Aggregator-only rows are weaker evidence than bookmaker rows and are marked as such everywhere.</li>
+<li>Low-tier tournaments (Elisa BreakOut, CCT play-ins, FRAG University) are barely priced by the reachable
+sources; that is why the originated model exists and why some rows remain blank.</li>
+<li>No value on this board is filled in by hand, and no HotSpawn number is used as a probability.</li>
+</ul></div>
+<footer>Session 42580809 coverage board. Odds and probabilities are derived from the external sources linked on each
+row; rows that could not be confirmed are blank and published on <a href="flagged.html">Flagged for review</a>.
+Not affiliated with HotSpawn or any bookmaker. 18+ · betting involves risk.</footer>
+<script src="assets/app.js"></script></body></html>

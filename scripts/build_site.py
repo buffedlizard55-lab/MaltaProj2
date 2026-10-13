@@ -82,6 +82,9 @@ NAV = [
     ("verify/8e7a652d/index.html", "Verification &amp; Cross-Check"),
     # integration link added by session 0f6c89c6 (T-CURRENT): current open-for-picks board
     ("current/index.html", "Parallel board (snapshot)"),
+    # integration link added by session 42580809 (single-anchor edit, documented in
+    # COORDINATION.md): full-lobby coverage board incl. Kalshi exchange lines and originated lines
+    ("site/42580809/index.html", "Coverage board (42580809)"),
 ]
 
 

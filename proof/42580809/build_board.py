@@ -557,6 +557,13 @@ def build():
             p_b = 1 - p_a
             basis, used = "model-input-only", other
         start = parse_ts(fx.get("scheduled_start_time_utc"))
+        # A fixture whose kickoff has already passed cannot carry a pre-match probability: any
+        # quote for it was read after the match started. The readings are preserved here as
+        # late_quotes and published on the flagged page, never as a pick.
+        late = bool(start and start <= now)
+        late_quotes = used if late else []
+        if late:
+            basis, p_a, p_b, used = "stale-listing", None, None, []
         row = {
             "fixture_id": fx["fixture_id"],
             "game": "cs2",
@@ -576,6 +583,7 @@ def build():
             "minutes_to_start": None if not start else int((start - now).total_seconds() // 60),
             "n_named_sources": len(named), "n_fallback_sources": len(fallback),
             "sources": used,
+            "late_quotes": late_quotes,
             "quoteless_sources": other,
             "rejected_quotes_flagged": bool(fx["fixture_id"] in failed_fixtures
                                             and not any(q["fixture_id"] == fx["fixture_id"] for q in accepted)),
@@ -588,6 +596,9 @@ def build():
         "generated_at_utc": iso(now),
         "fixtures_total": len(rows),
         "fixtures_with_named_line": sum(1 for r in rows if r["basis"] == "market-derived"),
+        "fixtures_with_named_line_including_past": sum(
+            1 for r in rows if r["basis"] == "market-derived" or (r["stale"] and r["late_quotes"]
+            and any(q["source_key"] in NAMED_SOURCES for q in r["late_quotes"]))),
         "fixtures_with_fallback_only": sum(1 for r in rows if r["basis"] == "aggregator-fallback"),
         "fixtures_unverified": sum(1 for r in rows if r["basis"] == "unverified"),
         "stale_fixtures": sum(1 for r in rows if r["stale"]),
@@ -608,10 +619,14 @@ def build():
         coverage["by_source"][k]["fixtures"] = len(v)
     tournaments = {}
     for r in rows:
-        t = tournaments.setdefault(r["tournament"], {"fixtures": 0, "named": 0, "fallback": 0, "none": 0})
+        t = tournaments.setdefault(r["tournament"], {"fixtures": 0, "named": 0, "fallback": 0,
+                                                     "none": 0, "stale": 0})
         t["fixtures"] += 1
-        t["named" if r["basis"] == "market-derived" else
-          ("fallback" if r["basis"] == "aggregator-fallback" else "none")] += 1
+        key = ("named" if r["basis"] == "market-derived" else
+               "fallback" if r["basis"] == "aggregator-fallback" else
+               "stale" if r["basis"] == "stale-listing" else "none")
+        t.setdefault(key, 0)
+        t[key] += 1
     coverage["by_tournament"] = tournaments
 
     board = {"generated_at_utc": iso(now),
@@ -659,9 +674,34 @@ def main() -> int:
               "team_a": a["source_quoted"]["team_a"], "team_b": a["source_quoted"]["team_b"],
               "team_a_norm": norm(a["source_quoted"]["team_a"]), "team_b_norm": norm(a["source_quoted"]["team_b"]),
               "p_a": a["no_vig_probability_a"], "p_b": a["no_vig_probability_b"],
-              "live": a["market_is_live"], "start_time_utc": a["start_time_utc"]} for a in accepted]
+              "live": a["market_is_live"], "start_time_utc": a["start_time_utc"],
+              "matched_to_fixture": True} for a in accepted]
+    # Extra market observations that reference no pick'em fixture still carry team-strength
+    # information (e.g. Kalshi books for the same teams in another tournament). Property
+    # markets and placeholder names are excluded; every extra is kept in the file.
+    PROP_NAMES = {"yes", "no", "tie", "odd", "even", "overtime", "map 1", "map 2"}
+    for q in quotes:
+        if q["source_key"] not in NAMED_SOURCES | FALLBACK_SOURCES:
+            continue
+        a_norm, b_norm = norm(q["team_a"]), norm(q["team_b"])
+        if not a_norm or not b_norm or a_norm in PROP_NAMES or b_norm in PROP_NAMES:
+            continue
+        if any(w in f"{a_norm} {b_norm}" for w in (" by ", " total", "handicap")):
+            continue
+        if not (0.02 < q["p_a"] < 0.98):
+            continue
+        if any(e["team_a_norm"] == a_norm and e["team_b_norm"] == b_norm
+               and e["source_key"] == q["source_key"] for e in graph):
+            continue
+        graph.append({"fixture_id": None, "source_key": q["source_key"], "team_a": q["team_a"],
+                      "team_b": q["team_b"], "team_a_norm": a_norm, "team_b_norm": b_norm,
+                      "p_a": q["p_a"], "p_b": q["p_b"], "live": q.get("live"),
+                      "start_time_utc": iso(q.get("start")), "matched_to_fixture": False})
     with open(os.path.join(EV, "matched_quotes.json"), "w", encoding="utf-8") as fh:
         json.dump({"generated_at_utc": board["generated_at_utc"], "count": len(graph),
+                   "matched": sum(1 for g in graph if g["matched_to_fixture"]),
+                   "extra": sum(1 for g in graph if not g["matched_to_fixture"]),
+                   "teams": len({t for g in graph for t in (g["team_a_norm"], g["team_b_norm"])}),
                    "observations": graph}, fh, indent=1, ensure_ascii=False)
     print(json.dumps(coverage, indent=1)[:900])
     return 0
