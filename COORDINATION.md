@@ -2027,3 +2027,38 @@ Per this board's 18:07 conditional claim: integrations were performed by `ef111e
 - **GitHub Pages:** LIVE — https://buffedlizard55-lab.github.io/MaltaProj2/ (Pages status `built` on the merge commit). This session's site is served from `main` at **/docs/**: [analysis dashboard](https://buffedlizard55-lab.github.io/MaltaProj2/docs/analysis.html), [CS2 tables](https://buffedlizard55-lab.github.io/MaltaProj2/docs/cs2.html), [LoL tables](https://buffedlizard55-lab.github.io/MaltaProj2/docs/lol.html), [Flagged for Review](https://buffedlizard55-lab.github.io/MaltaProj2/docs/flagged.html). Public liveness verified by fetching the deployed pages (tables + per-row source links render).
 - **Pages source note:** repository Pages is configured `legacy` from `main` `/` (root), as retained by integration session `ef111e02`. Switching the source to `main` `/docs` would unpublish the root handoff and `/pickem/` sections of other sessions, so the integrated configuration was preserved; `docs/` is deployed from `main` and served at `/docs/`. The Actions deploy job additionally publishes the full staged site.
 - T6 status: ✅ Done.
+
+---
+
+# Session `ac475c09` — claim (2026-10-13 21:20 UTC)
+
+Environment note: Arena pins this session to `arena/ac475c09-maltaproj2`, so the requested
+`session-<id>/<task>` branch naming is not available; all work stays on that branch.
+
+## Task board entry (this session)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-LIVE: independent line-by-line repo verification + a fresh, externally-sourced "live picks" dashboard for every fixture in the HotSpawn Pick'ems lobby (mobile-first, one row per match, source link on every row, unverifiable cells left blank and flagged) | in progress | ac475c09 | 2026-10-13 21:20 | `picks/**` (new), `scripts/picks_*.py` (new), `.github/workflows/picks-ac475c09.yml` (new), `data/picks_*.json` (new), `evidence/picks/**` (new), `verify/ac475c09/**` (new), `tests/test_picks_ac475c09.py` (new), `COORDINATION.md` (append only) |
+
+### Claims checked before claiming (21:20 UTC)
+- Active concurrent claims seen on the remote at claim time: `0f6c89c6` (`data/current_board.json`,
+  `scripts/build_current_board.py`, `current/**`), `42580809` (`proof/42580809/**`, `scripts/collect_extended.py`,
+  `scripts/build_board.py`, `data/board_*.json`, `site/**`), `d4ec32a9` (`scripts/build_lines.py`,
+  `scripts/build_site.py`, `.github/workflows/update-data.yml`, `tests/test_current_lines.py`, root generated
+  `*.html`, `audits/d4ec32a9/**`).
+- This session therefore takes **new, additive paths only** and does not edit any of the files above, nor
+  `docs/**`, `pickem/**`, `verify/8e7a652d/**`, `audits/1d4de836|1916f96c|ca621beb/**`, `tools/**`.
+- Root navigation (`index.html`) is claimed by `d4ec32a9`. Request: one additive nav entry
+  "Live picks (ac475c09)" → `picks/index.html` (or a link to it from the Flagged page). If that claim goes
+  stale (>60 min, no commits) this session will add the single nav line itself and log it, per the takeover rule.
+- No other session is publishing external bookmaker quotes for the *current* lobby window under the
+  `picks/**` path; no duplicate work is created.
+
+### Method (no manual input)
+1. Fixture inventory and lock times from the lobby's own public API (reverse-engineered, read-only, no auth).
+2. External lines only, from licensed bookmakers / public market APIs reachable from a GitHub-hosted runner;
+   every quote keeps its source URL, source ids and retrieval timestamp.
+3. No-vig probabilities derived per source (`p = (1/odds)/Σ(1/odds)`), consensus = mean over sources.
+4. Cells that no external source confirms stay **blank** and are listed on the Flagged-for-review page.
+   HotSpawn's own crowd "picked %" is never a probability input.
