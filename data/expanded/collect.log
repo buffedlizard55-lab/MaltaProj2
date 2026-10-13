@@ -3,37 +3,26 @@ after pinnacle: 15
 after bovada: 30
 after linefeed: 69
 after polymarket: 69
-{
- "fixtures_total": 1210,
- "fixtures_future": 264,
- "future_with_external_line": 25,
- "future_without_external_line": 239,
- "future_with_two_or_more_sources": 12,
- "quotes_total": 69,
- "quotes_joined": 44,
- "unused_quotes": 25,
- "by_source": {
-  "bovada": 15,
-  "linefeed_1xbet_platform": 39,
-  "pinnacle": 15
- }
-}
+collector crashed; traceback:
+Traceback (most recent call last):
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/collect_lines.py", line 630, in main
+    return run()
+           ^^^^^
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/collect_lines.py", line 667, in run
+    doc = build_lines(fixtures, quotes, log)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/collect_lines.py", line 570, in build_lines
+    direct = (same_team(f["team_a"], q["team_a_name"]), same_team(f["team_b"], q["team_b_name"]))
+              ^^^^^^^^^
+NameError: name 'same_team' is not defined
+
 originated estimates: 6; without rating: 2; snapshots: {'americas': '2026_10_05', 'asia': '2026_10_05', 'europe': '2026_10_05', 'global': '2026_10_05'}
 R1 discrepancy: data/hotspawn_matches.json matches the live lobby fixture list — 406 snapshot rows; 11164 live ids absent from the snapshot, 0 snapshot ids no longer live
-R2 verified: data/originated_matches.json team VRS points and standings match Valve's official regional standings — None
-R3 discrepancy: the favourite in each data/originated_matches.json pairing is what the documented Bradley-Terry formula produces — None
-R4 verified: data/cs2_odds_egamersworld.json rows refer to real lobby fixtures — None
-R5 verified: data/lines.json summary counters match its own row list — None
+R2 verified: data/originated_matches.json team VRS points and standings match Valve's official regional standings — 56 team records across 4 Valve VRS files (2026-10-05) checked; 0 mismatch(es)
+R3 verified: each data/originated_matches.json fair probability is what its own documented model produces from the ratings it records — 28 pairings recomputed from the ratings the file itself records; 0 mismatch(es); 21 pairing(s) carry documente
+R4 verified: data/cs2_odds_egamersworld.json rows refer to real lobby fixtures — 32 priced rows joined to the lobby snapshot by fixture id and team name; 0 mismatch(es)
+R5 verified: data/lines.json summary counters match its own row list — declared fixtures_total=92 vs 92 rows; rows_with_external_line=None
+R6 discrepancy: every price published on the board carries a source link and a retrieval timestamp, and those links resolve — 26 priced rows, 14 distinct source pages; 1 reachable, 13 not reachable from this host, 0 row(s) missing prove
 irregularities: 2 — wrote data/expanded/repo_review.json
-Traceback (most recent call last):
-  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/build_market_site.py", line 626, in <module>
-    raise SystemExit(main())
-                     ^^^^^^
-  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/build_market_site.py", line 358, in main
-    {summary_cards(doc)}
-     ^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/build_market_site.py", line 203, in summary_cards
-    (sum(1 for r in rows if (r.get("originated_estimate") or {}).get("available")),
-                    ^^^^
-NameError: name 'rows' is not defined
-market/: no pages generated yet — nothing to validate
+wrote market/ pages from /home/runner/work/MaltaProj2/MaltaProj2/data/expanded/lines.json (1210 fixtures, 25 priced)
+OK: 7 pages, no broken local links, 26 priced rows all source-linked
