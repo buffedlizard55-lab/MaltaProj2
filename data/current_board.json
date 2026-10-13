@@ -1,0 +1,1305 @@
+{
+  "generated_at_utc": "2026-10-13T21:23:08Z",
+  "snapshot_basis": {
+    "hotspawn_api_snapshot_utc": "2026-10-13T21:23:08Z",
+    "hotspawn_api": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1",
+    "lines_collected_utc": "2026-10-13T21:23:54Z",
+    "egw_capture_utc": "2026-10-13T19:10:00Z"
+  },
+  "scope": "CS2 fixtures from the Hotspawn fixtures API with status scheduled and lock time after the snapshot. LoL fixtures are not priced on this board.",
+  "rules": [
+    "Hotspawn crowd pick % is reference only and never a probability input.",
+    "Named-bookmaker consensus (Pinnacle, Bovada) is preferred; EGamersWorld widget is a labelled fallback only.",
+    "Probability is proportional no-vig normalization per source, then arithmetic mean across named sources.",
+    "Blank probability + flag when no qualifying quote exists. Nothing is inferred."
+  ],
+  "summary": {
+    "open_cs2_fixtures": 30,
+    "with_named_bookmaker_line": 10,
+    "with_egw_fallback_only": 14,
+    "without_any_line": 6
+  },
+  "rows": [
+    {
+      "fixture_id": "1081105",
+      "kickoff_utc": "2026-10-13T22:00:00Z",
+      "lock_utc": "2026-10-13T21:54:00Z",
+      "event": "CCT South America 2026 Series #7",
+      "tier": "C",
+      "points": 2,
+      "team_a": "SUKEBAN",
+      "team_b": "your end",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1081105",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 0,
+        "team_b": 100
+      },
+      "probability_a": null,
+      "probability_b": null,
+      "pick": null,
+      "pick_probability": null,
+      "pick_confidence": null,
+      "quality": null,
+      "basis": null,
+      "sources": [],
+      "flags": [
+        "no external line: probability left blank",
+        "EGW quote excluded (see irregularities)",
+        "tier C event"
+      ],
+      "verified": false
+    },
+    {
+      "fixture_id": "1079546",
+      "kickoff_utc": "2026-10-14T01:00:00Z",
+      "lock_utc": "2026-10-14T00:54:00Z",
+      "event": "ESL Challenger League Season 52: North America - Cup #3",
+      "tier": "B",
+      "points": 3,
+      "team_a": "Zomblers",
+      "team_b": "Overtake Sector",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1079546",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 9,
+        "team_b": 91
+      },
+      "probability_a": 0.3646,
+      "probability_b": 0.6354,
+      "pick": "Overtake Sector",
+      "pick_probability": 0.6354,
+      "pick_confidence": "Lean",
+      "quality": "Medium (1 named bookmaker)",
+      "basis": "Pinnacle",
+      "sources": [
+        {
+          "source": "Pinnacle",
+          "kind": "licensed bookmaker",
+          "decimal_a": 2.55,
+          "decimal_b": 1.463,
+          "p_a": 0.3646,
+          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638279105/markets/related/straight",
+          "retrieved_at_utc": "2026-10-13T21:23:38Z",
+          "market": "series/match winner (moneyline)",
+          "join": "joined by team names + tournament (no start time from source)"
+        }
+      ],
+      "flags": [
+        "Pinnacle join by team names + tournament (no start time in source)",
+        "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1081111",
+      "kickoff_utc": "2026-10-14T08:00:00Z",
+      "lock_utc": "2026-10-14T07:54:00Z",
+      "event": "CCT Europe 2026 Series #12 Play-In",
+      "tier": "C",
+      "points": 2,
+      "team_a": "Enjoy",
+      "team_b": "B8 Academy",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1081111",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 33,
+        "team_b": 67
+      },
+      "probability_a": 0.5921,
+      "probability_b": 0.4079,
+      "pick": "Enjoy",
+      "pick_probability": 0.5921,
+      "pick_confidence": "Lean",
+      "quality": "Low (single unnamed-bookmaker widget quote)",
+      "basis": "EGamersWorld odds widget (bookmaker not named in capture)",
+      "sources": [
+        {
+          "source": "EGamersWorld odds widget (bookmaker not named in capture)",
+          "kind": "odds aggregator widget",
+          "decimal_a": 1.55,
+          "decimal_b": 2.25,
+          "p_a": 0.5921,
+          "url": "https://egamersworld.com/counterstrike/match/1sGIL2gAYu/enjoy-vs-b8-academy-qwO9cEnL7",
+          "retrieved_at_utc": "2026-10-13T19:05:00Z",
+          "market": "match winner (widget)",
+          "join": "fixture id join recorded in capture"
+        }
+      ],
+      "flags": [
+        "single quote from unnamed bookmaker widget; may be stale",
+        "tier C event"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1079621",
+      "kickoff_utc": "2026-10-14T08:00:00Z",
+      "lock_utc": "2026-10-14T07:54:00Z",
+      "event": "CCT Europe 2026 Series #11",
+      "tier": "B",
+      "points": 3,
+      "team_a": "Gothic",
+      "team_b": "Lavked",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1079621",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 20,
+        "team_b": 80
+      },
+      "probability_a": 0.4865,
+      "probability_b": 0.5135,
+      "pick": "Lavked",
+      "pick_probability": 0.5135,
+      "pick_confidence": "Toss-up",
+      "quality": "Low (single unnamed-bookmaker widget quote)",
+      "basis": "EGamersWorld odds widget (bookmaker not named in capture)",
+      "sources": [
+        {
+          "source": "EGamersWorld odds widget (bookmaker not named in capture)",
+          "kind": "odds aggregator widget",
+          "decimal_a": 1.881,
+          "decimal_b": 1.782,
+          "p_a": 0.4865,
+          "url": "https://egamersworld.com/counterstrike/match/_rW8GEyWK/gothic-vs-lavked-GGmfuJ1n4B",
+          "retrieved_at_utc": "2026-10-13T19:05:00Z",
+          "market": "match winner (widget)",
+          "join": "fixture id join recorded in capture"
+        }
+      ],
+      "flags": [
+        "single quote from unnamed bookmaker widget; may be stale"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1080176",
+      "kickoff_utc": "2026-10-14T08:30:00Z",
+      "lock_utc": "2026-10-14T08:24:00Z",
+      "event": "Thunderpick World Championship 2026",
+      "tier": "S",
+      "points": 7,
+      "team_a": "9z",
+      "team_b": "Aurora",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080176",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 5,
+        "team_b": 95
+      },
+      "probability_a": 0.2624,
+      "probability_b": 0.7376,
+      "pick": "Aurora",
+      "pick_probability": 0.7376,
+      "pick_confidence": "Strong lean",
+      "quality": "High (2 named bookmakers)",
+      "basis": "Pinnacle + Bovada",
+      "sources": [
+        {
+          "source": "Pinnacle",
+          "kind": "licensed bookmaker",
+          "decimal_a": 3.61,
+          "decimal_b": 1.2985,
+          "p_a": 0.2645,
+          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight",
+          "retrieved_at_utc": "2026-10-13T21:23:16Z",
+          "market": "series/match winner (moneyline)",
+          "join": "joined by team names + tournament (no start time from source)"
+        },
+        {
+          "source": "Bovada",
+          "kind": "licensed bookmaker",
+          "decimal_a": 3.6,
+          "decimal_b": 1.266667,
+          "p_a": 0.2603,
+          "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/9z-globant-team-aurora-202610140430",
+          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "market": "match winner (moneyline, full match)",
+          "join": "start time agrees with fixture"
+        }
+      ],
+      "flags": [
+        "Pinnacle join by team names + tournament (no start time in source)",
+        "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only",
+        "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1079438",
+      "kickoff_utc": "2026-10-14T10:00:00Z",
+      "lock_utc": "2026-10-14T09:54:00Z",
+      "event": "Stake Pulse Beat III",
+      "tier": "B",
+      "points": 3,
+      "team_a": "Astralis",
+      "team_b": "Sashi",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1079438",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 95,
+        "team_b": 5
+      },
+      "probability_a": 0.8553,
+      "probability_b": 0.1447,
+      "pick": "Astralis",
+      "pick_probability": 0.8553,
+      "pick_confidence": "Strong lean",
+      "quality": "Medium (1 named bookmaker)",
+      "basis": "Bovada",
+      "sources": [
+        {
+          "source": "Bovada",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.1,
+          "decimal_b": 6.5,
+          "p_a": 0.8553,
+          "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600",
+          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "market": "match winner (moneyline, full match)",
+          "join": "start time agrees with fixture"
+        }
+      ],
+      "flags": [
+        "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1079439",
+      "kickoff_utc": "2026-10-14T10:00:00Z",
+      "lock_utc": "2026-10-14T09:54:00Z",
+      "event": "Stake Pulse Beat III",
+      "tier": "B",
+      "points": 3,
+      "team_a": "HOTU",
+      "team_b": "Fnatic",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1079439",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 14,
+        "team_b": 86
+      },
+      "probability_a": 0.4773,
+      "probability_b": 0.5227,
+      "pick": "Fnatic",
+      "pick_probability": 0.5227,
+      "pick_confidence": "Toss-up",
+      "quality": "High (2 named bookmakers)",
+      "basis": "Pinnacle + Bovada",
+      "sources": [
+        {
+          "source": "Pinnacle",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.9901,
+          "decimal_b": 1.8,
+          "p_a": 0.4749,
+          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148/markets/related/straight",
+          "retrieved_at_utc": "2026-10-13T21:23:11Z",
+          "market": "series/match winner (moneyline)",
+          "join": "joined by team names + tournament (no start time from source)"
+        },
+        {
+          "source": "Bovada",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.952381,
+          "decimal_b": 1.8,
+          "p_a": 0.4797,
+          "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/hotu-fnatic-202610140600",
+          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "market": "match winner (moneyline, full match)",
+          "join": "start time agrees with fixture"
+        }
+      ],
+      "flags": [
+        "Pinnacle join by team names + tournament (no start time in source)",
+        "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only",
+        "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1081112",
+      "kickoff_utc": "2026-10-14T11:00:00Z",
+      "lock_utc": "2026-10-14T10:54:00Z",
+      "event": "CCT Europe 2026 Series #12 Play-In",
+      "tier": "C",
+      "points": 2,
+      "team_a": "Banda chuya",
+      "team_b": "6666",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1081112",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 0,
+        "team_b": 100
+      },
+      "probability_a": null,
+      "probability_b": null,
+      "pick": null,
+      "pick_probability": null,
+      "pick_confidence": null,
+      "quality": null,
+      "basis": null,
+      "sources": [],
+      "flags": [
+        "no external line: probability left blank",
+        "EGW quote excluded (see irregularities)",
+        "tier C event"
+      ],
+      "verified": false
+    },
+    {
+      "fixture_id": "1079622",
+      "kickoff_utc": "2026-10-14T11:00:00Z",
+      "lock_utc": "2026-10-14T10:54:00Z",
+      "event": "CCT Europe 2026 Series #11",
+      "tier": "B",
+      "points": 3,
+      "team_a": "ex-RUSTEC",
+      "team_b": "mellren",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1079622",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 89,
+        "team_b": 11
+      },
+      "probability_a": 0.6568,
+      "probability_b": 0.3432,
+      "pick": "ex-RUSTEC",
+      "pick_probability": 0.6568,
+      "pick_confidence": "Strong lean",
+      "quality": "Low (single unnamed-bookmaker widget quote)",
+      "basis": "EGamersWorld odds widget (bookmaker not named in capture)",
+      "sources": [
+        {
+          "source": "EGamersWorld odds widget (bookmaker not named in capture)",
+          "kind": "odds aggregator widget",
+          "decimal_a": 1.39,
+          "decimal_b": 2.66,
+          "p_a": 0.6568,
+          "url": "https://egamersworld.com/counterstrike/match/_rW8GEyWK/ex-rustec-vs-mellren-ZGVCwI7MK",
+          "retrieved_at_utc": "2026-10-13T19:05:00Z",
+          "market": "match winner (widget)",
+          "join": "fixture id join recorded in capture"
+        }
+      ],
+      "flags": [
+        "single quote from unnamed bookmaker widget; may be stale"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1080177",
+      "kickoff_utc": "2026-10-14T11:00:00Z",
+      "lock_utc": "2026-10-14T10:54:00Z",
+      "event": "Thunderpick World Championship 2026",
+      "tier": "S",
+      "points": 7,
+      "team_a": "Falcons",
+      "team_b": "Ninjas in Pyjamas",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080177",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 90,
+        "team_b": 10
+      },
+      "probability_a": 0.7631,
+      "probability_b": 0.2369,
+      "pick": "Falcons",
+      "pick_probability": 0.7631,
+      "pick_confidence": "Strong lean",
+      "quality": "High (2 named bookmakers)",
+      "basis": "Pinnacle + Bovada",
+      "sources": [
+        {
+          "source": "Pinnacle",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.2481,
+          "decimal_b": 4.08,
+          "p_a": 0.7658,
+          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674/markets/related/straight",
+          "retrieved_at_utc": "2026-10-13T21:23:10Z",
+          "market": "series/match winner (moneyline)",
+          "join": "joined by team names + tournament (no start time from source)"
+        },
+        {
+          "source": "Bovada",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.229885,
+          "decimal_b": 3.9,
+          "p_a": 0.7603,
+          "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-ninjas-in-pyjamas-202610140700",
+          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "market": "match winner (moneyline, full match)",
+          "join": "start time agrees with fixture"
+        }
+      ],
+      "flags": [
+        "Pinnacle join by team names + tournament (no start time in source)",
+        "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only",
+        "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1080178",
+      "kickoff_utc": "2026-10-14T13:30:00Z",
+      "lock_utc": "2026-10-14T13:24:00Z",
+      "event": "Thunderpick World Championship 2026",
+      "tier": "S",
+      "points": 7,
+      "team_a": "Legacy",
+      "team_b": "PARIVISION",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080178",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 74,
+        "team_b": 26
+      },
+      "probability_a": 0.5623,
+      "probability_b": 0.4377,
+      "pick": "Legacy",
+      "pick_probability": 0.5623,
+      "pick_confidence": "Lean",
+      "quality": "High (2 named bookmakers)",
+      "basis": "Pinnacle + Bovada",
+      "sources": [
+        {
+          "source": "Pinnacle",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.6711,
+          "decimal_b": 2.22,
+          "p_a": 0.5705,
+          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111786/markets/related/straight",
+          "retrieved_at_utc": "2026-10-13T21:23:30Z",
+          "market": "series/match winner (moneyline)",
+          "join": "joined by team names + tournament (no start time from source)"
+        },
+        {
+          "source": "Bovada",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.69,
+          "decimal_b": 2.1,
+          "p_a": 0.5541,
+          "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610140930",
+          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "market": "match winner (moneyline, full match)",
+          "join": "start time agrees with fixture"
+        }
+      ],
+      "flags": [
+        "Pinnacle join by team names + tournament (no start time in source)",
+        "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only",
+        "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1081113",
+      "kickoff_utc": "2026-10-14T14:00:00Z",
+      "lock_utc": "2026-10-14T13:54:00Z",
+      "event": "CCT Europe 2026 Series #12 Play-In",
+      "tier": "C",
+      "points": 2,
+      "team_a": "Ryvex",
+      "team_b": "PCIFIC",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1081113",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 0,
+        "team_b": 100
+      },
+      "probability_a": null,
+      "probability_b": null,
+      "pick": null,
+      "pick_probability": null,
+      "pick_confidence": null,
+      "quality": null,
+      "basis": null,
+      "sources": [],
+      "flags": [
+        "no external line: probability left blank",
+        "EGW quote excluded (see irregularities)",
+        "tier C event"
+      ],
+      "verified": false
+    },
+    {
+      "fixture_id": "1079623",
+      "kickoff_utc": "2026-10-14T14:00:00Z",
+      "lock_utc": "2026-10-14T13:54:00Z",
+      "event": "CCT Europe 2026 Series #11",
+      "tier": "B",
+      "points": 3,
+      "team_a": "G2 Ares",
+      "team_b": "The Last Resort",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1079623",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 100,
+        "team_b": 0
+      },
+      "probability_a": 0.625,
+      "probability_b": 0.375,
+      "pick": "G2 Ares",
+      "pick_probability": 0.625,
+      "pick_confidence": "Lean",
+      "quality": "Medium (1 named bookmaker)",
+      "basis": "Bovada",
+      "sources": [
+        {
+          "source": "Bovada",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.5,
+          "decimal_b": 2.5,
+          "p_a": 0.625,
+          "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-the-last-resort-202610141000",
+          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "market": "match winner (moneyline, full match)",
+          "join": "start time agrees with fixture"
+        }
+      ],
+      "flags": [
+        "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1080179",
+      "kickoff_utc": "2026-10-14T16:00:00Z",
+      "lock_utc": "2026-10-14T15:54:00Z",
+      "event": "Thunderpick World Championship 2026",
+      "tier": "S",
+      "points": 7,
+      "team_a": "FURIA",
+      "team_b": "BetBoom",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080179",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 89,
+        "team_b": 11
+      },
+      "probability_a": 0.6908,
+      "probability_b": 0.3092,
+      "pick": "FURIA",
+      "pick_probability": 0.6908,
+      "pick_confidence": "Strong lean",
+      "quality": "High (2 named bookmakers)",
+      "basis": "Pinnacle + Bovada",
+      "sources": [
+        {
+          "source": "Pinnacle",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.3745,
+          "decimal_b": 3.12,
+          "p_a": 0.6942,
+          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111787/markets/related/straight",
+          "retrieved_at_utc": "2026-10-13T21:23:38Z",
+          "market": "series/match winner (moneyline)",
+          "join": "joined by team names + tournament (no start time from source)"
+        },
+        {
+          "source": "Bovada",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.363636,
+          "decimal_b": 3.0,
+          "p_a": 0.6875,
+          "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-bb-team-202610141200",
+          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "market": "match winner (moneyline, full match)",
+          "join": "start time agrees with fixture"
+        }
+      ],
+      "flags": [
+        "Pinnacle join by team names + tournament (no start time in source)",
+        "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only",
+        "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1079624",
+      "kickoff_utc": "2026-10-14T17:00:00Z",
+      "lock_utc": "2026-10-14T16:54:00Z",
+      "event": "CCT Europe 2026 Series #11",
+      "tier": "B",
+      "points": 3,
+      "team_a": "FORZE Reload",
+      "team_b": "LFO 10",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1079624",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 89,
+        "team_b": 11
+      },
+      "probability_a": null,
+      "probability_b": null,
+      "pick": null,
+      "pick_probability": null,
+      "pick_confidence": null,
+      "quality": null,
+      "basis": null,
+      "sources": [],
+      "flags": [
+        "no external line: probability left blank",
+        "EGW quote excluded (see irregularities)"
+      ],
+      "verified": false
+    },
+    {
+      "fixture_id": "1080279",
+      "kickoff_utc": "2026-10-15T08:00:00Z",
+      "lock_utc": "2026-10-15T07:54:00Z",
+      "event": "Elisa BreakOut Series #2",
+      "tier": "C",
+      "points": 2,
+      "team_a": "WROTBERRY",
+      "team_b": "EAC",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080279",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 73,
+        "team_b": 27
+      },
+      "probability_a": 0.4568,
+      "probability_b": 0.5432,
+      "pick": "EAC",
+      "pick_probability": 0.5432,
+      "pick_confidence": "Toss-up",
+      "quality": "Low (single unnamed-bookmaker widget quote)",
+      "basis": "EGamersWorld odds widget (bookmaker not named in capture)",
+      "sources": [
+        {
+          "source": "EGamersWorld odds widget (bookmaker not named in capture)",
+          "kind": "odds aggregator widget",
+          "decimal_a": 2.01,
+          "decimal_b": 1.69,
+          "p_a": 0.4568,
+          "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-ea-copenhagen-hSC7a2mtP",
+          "retrieved_at_utc": "2026-10-13T19:05:00Z",
+          "market": "match winner (widget)",
+          "join": "team name variants: WBT ~ WROTBERRY, EA Copenhagen ~ EAC (joined via event+time+opponent double match)"
+        }
+      ],
+      "flags": [
+        "single quote from unnamed bookmaker widget; may be stale",
+        "tier C event"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1079440",
+      "kickoff_utc": "2026-10-15T10:00:00Z",
+      "lock_utc": "2026-10-15T09:54:00Z",
+      "event": "Stake Pulse Beat III",
+      "tier": "B",
+      "points": 3,
+      "team_a": "MIBR",
+      "team_b": "BC.Game",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1079440",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 30,
+        "team_b": 70
+      },
+      "probability_a": 0.5744,
+      "probability_b": 0.4256,
+      "pick": "MIBR",
+      "pick_probability": 0.5744,
+      "pick_confidence": "Lean",
+      "quality": "High (2 named bookmakers)",
+      "basis": "Pinnacle + Bovada",
+      "sources": [
+        {
+          "source": "Pinnacle",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.6369,
+          "decimal_b": 2.23,
+          "p_a": 0.5767,
+          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745/markets/related/straight",
+          "retrieved_at_utc": "2026-10-13T21:23:22Z",
+          "market": "series/match winner (moneyline)",
+          "join": "joined by team names + tournament (no start time from source)"
+        },
+        {
+          "source": "Bovada",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.645161,
+          "decimal_b": 2.2,
+          "p_a": 0.5721,
+          "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-bc-game-202610150600",
+          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "market": "match winner (moneyline, full match)",
+          "join": "start time agrees with fixture"
+        }
+      ],
+      "flags": [
+        "Pinnacle join by team names + tournament (no start time in source)",
+        "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only",
+        "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1079442",
+      "kickoff_utc": "2026-10-15T10:00:00Z",
+      "lock_utc": "2026-10-15T09:54:00Z",
+      "event": "Stake Pulse Beat III",
+      "tier": "B",
+      "points": 3,
+      "team_a": "Heroic",
+      "team_b": "Envy",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1079442",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 90,
+        "team_b": 10
+      },
+      "probability_a": 0.6194,
+      "probability_b": 0.3806,
+      "pick": "Heroic",
+      "pick_probability": 0.6194,
+      "pick_confidence": "Lean",
+      "quality": "High (2 named bookmakers)",
+      "basis": "Pinnacle + Bovada",
+      "sources": [
+        {
+          "source": "Pinnacle",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.5155,
+          "decimal_b": 2.5,
+          "p_a": 0.6226,
+          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637999450/markets/related/straight",
+          "retrieved_at_utc": "2026-10-13T21:23:32Z",
+          "market": "series/match winner (moneyline)",
+          "join": "joined by team names + tournament (no start time from source)"
+        },
+        {
+          "source": "Bovada",
+          "kind": "licensed bookmaker",
+          "decimal_a": 1.526316,
+          "decimal_b": 2.45,
+          "p_a": 0.6161,
+          "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/heroic-envy-202610150600",
+          "retrieved_at_utc": "2026-10-13T21:23:45Z",
+          "market": "match winner (moneyline, full match)",
+          "join": "start time agrees with fixture"
+        }
+      ],
+      "flags": [
+        "Pinnacle join by team names + tournament (no start time in source)",
+        "Bovada: source page not re-openable in verification (Not Found / reCAPTCHA); quote is from the CI capture only",
+        "Pinnacle: series moneyline (period 0) per official guest API; spot-checked for 9z vs Aurora only"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1080280",
+      "kickoff_utc": "2026-10-15T10:00:00Z",
+      "lock_utc": "2026-10-15T09:54:00Z",
+      "event": "Elisa BreakOut Series #2",
+      "tier": "C",
+      "points": 2,
+      "team_a": "ENCE",
+      "team_b": "BOJONG",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080280",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 94,
+        "team_b": 6
+      },
+      "probability_a": 0.708,
+      "probability_b": 0.292,
+      "pick": "ENCE",
+      "pick_probability": 0.708,
+      "pick_confidence": "Strong lean",
+      "quality": "Low (single unnamed-bookmaker widget quote)",
+      "basis": "EGamersWorld odds widget (bookmaker not named in capture)",
+      "sources": [
+        {
+          "source": "EGamersWorld odds widget (bookmaker not named in capture)",
+          "kind": "odds aggregator widget",
+          "decimal_a": 1.32,
+          "decimal_b": 3.2,
+          "p_a": 0.708,
+          "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/ence-vs-bojong-qV78OzvXFg",
+          "retrieved_at_utc": "2026-10-13T19:05:00Z",
+          "market": "match winner (widget)",
+          "join": "fixture id join recorded in capture"
+        }
+      ],
+      "flags": [
+        "single quote from unnamed bookmaker widget; may be stale",
+        "tier C event"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1080281",
+      "kickoff_utc": "2026-10-15T12:00:00Z",
+      "lock_utc": "2026-10-15T11:54:00Z",
+      "event": "Elisa BreakOut Series #2",
+      "tier": "C",
+      "points": 2,
+      "team_a": "WROTBERRY",
+      "team_b": "ENCE",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080281",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 29,
+        "team_b": 71
+      },
+      "probability_a": 0.5653,
+      "probability_b": 0.4347,
+      "pick": "WROTBERRY",
+      "pick_probability": 0.5653,
+      "pick_confidence": "Lean",
+      "quality": "Low (single unnamed-bookmaker widget quote)",
+      "basis": "EGamersWorld odds widget (bookmaker not named in capture)",
+      "sources": [
+        {
+          "source": "EGamersWorld odds widget (bookmaker not named in capture)",
+          "kind": "odds aggregator widget",
+          "decimal_a": 1.62,
+          "decimal_b": 2.107,
+          "p_a": 0.5653,
+          "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-ence-GQ0xieRgQS",
+          "retrieved_at_utc": "2026-10-13T19:05:00Z",
+          "market": "match winner (widget)",
+          "join": "team name variant: WBT ~ WROTBERRY"
+        }
+      ],
+      "flags": [
+        "single quote from unnamed bookmaker widget; may be stale",
+        "tier C event"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1080282",
+      "kickoff_utc": "2026-10-15T14:00:00Z",
+      "lock_utc": "2026-10-15T13:54:00Z",
+      "event": "Elisa BreakOut Series #2",
+      "tier": "C",
+      "points": 2,
+      "team_a": "EAC",
+      "team_b": "BOJONG",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080282",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 93,
+        "team_b": 7
+      },
+      "probability_a": 0.7716,
+      "probability_b": 0.2284,
+      "pick": "EAC",
+      "pick_probability": 0.7716,
+      "pick_confidence": "Strong lean",
+      "quality": "Low (single unnamed-bookmaker widget quote)",
+      "basis": "EGamersWorld odds widget (bookmaker not named in capture)",
+      "sources": [
+        {
+          "source": "EGamersWorld odds widget (bookmaker not named in capture)",
+          "kind": "odds aggregator widget",
+          "decimal_a": 1.19,
+          "decimal_b": 4.02,
+          "p_a": 0.7716,
+          "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/ea-copenhagen-vs-bojong-vBsvfnHU5",
+          "retrieved_at_utc": "2026-10-13T19:05:00Z",
+          "market": "match winner (widget)",
+          "join": "team name variant: EA Copenhagen ~ EAC"
+        }
+      ],
+      "flags": [
+        "single quote from unnamed bookmaker widget; may be stale",
+        "tier C event"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1080283",
+      "kickoff_utc": "2026-10-15T16:00:00Z",
+      "lock_utc": "2026-10-15T15:54:00Z",
+      "event": "Elisa BreakOut Series #2",
+      "tier": "C",
+      "points": 2,
+      "team_a": "WROTBERRY",
+      "team_b": "BOJONG",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080283",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 87,
+        "team_b": 13
+      },
+      "probability_a": 0.7673,
+      "probability_b": 0.2327,
+      "pick": "WROTBERRY",
+      "pick_probability": 0.7673,
+      "pick_confidence": "Strong lean",
+      "quality": "Low (single unnamed-bookmaker widget quote)",
+      "basis": "EGamersWorld odds widget (bookmaker not named in capture)",
+      "sources": [
+        {
+          "source": "EGamersWorld odds widget (bookmaker not named in capture)",
+          "kind": "odds aggregator widget",
+          "decimal_a": 1.21,
+          "decimal_b": 3.99,
+          "p_a": 0.7673,
+          "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-bojong-r7kNL0-LX6",
+          "retrieved_at_utc": "2026-10-13T19:05:00Z",
+          "market": "match winner (widget)",
+          "join": "team name variant: WBT ~ WROTBERRY"
+        }
+      ],
+      "flags": [
+        "single quote from unnamed bookmaker widget; may be stale",
+        "tier C event"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1080284",
+      "kickoff_utc": "2026-10-15T18:00:00Z",
+      "lock_utc": "2026-10-15T17:54:00Z",
+      "event": "Elisa BreakOut Series #2",
+      "tier": "C",
+      "points": 2,
+      "team_a": "EAC",
+      "team_b": "ENCE",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080284",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 27,
+        "team_b": 73
+      },
+      "probability_a": 0.6088,
+      "probability_b": 0.3912,
+      "pick": "EAC",
+      "pick_probability": 0.6088,
+      "pick_confidence": "Lean",
+      "quality": "Low (single unnamed-bookmaker widget quote)",
+      "basis": "EGamersWorld odds widget (bookmaker not named in capture)",
+      "sources": [
+        {
+          "source": "EGamersWorld odds widget (bookmaker not named in capture)",
+          "kind": "odds aggregator widget",
+          "decimal_a": 1.51,
+          "decimal_b": 2.35,
+          "p_a": 0.6088,
+          "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/ea-copenhagen-vs-ence-kTR_sMK3PT",
+          "retrieved_at_utc": "2026-10-13T19:05:00Z",
+          "market": "match winner (widget)",
+          "join": "team name variant: EA Copenhagen ~ EAC"
+        }
+      ],
+      "flags": [
+        "single quote from unnamed bookmaker widget; may be stale",
+        "tier C event"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1080285",
+      "kickoff_utc": "2026-10-16T08:00:00Z",
+      "lock_utc": "2026-10-16T07:54:00Z",
+      "event": "Elisa BreakOut Series #2",
+      "tier": "C",
+      "points": 2,
+      "team_a": "Voca",
+      "team_b": "Phantom",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080285",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 27,
+        "team_b": 73
+      },
+      "probability_a": 0.4863,
+      "probability_b": 0.5137,
+      "pick": "Phantom",
+      "pick_probability": 0.5137,
+      "pick_confidence": "Toss-up",
+      "quality": "Low (single unnamed-bookmaker widget quote)",
+      "basis": "EGamersWorld odds widget (bookmaker not named in capture)",
+      "sources": [
+        {
+          "source": "EGamersWorld odds widget (bookmaker not named in capture)",
+          "kind": "odds aggregator widget",
+          "decimal_a": 1.87,
+          "decimal_b": 1.77,
+          "p_a": 0.4863,
+          "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/voca-vs-phantom-esports-zby52fbAja",
+          "retrieved_at_utc": "2026-10-13T19:05:00Z",
+          "market": "match winner (widget)",
+          "join": "team name variant: Phantom Esports ~ Phantom"
+        }
+      ],
+      "flags": [
+        "single quote from unnamed bookmaker widget; may be stale",
+        "tier C event"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1080286",
+      "kickoff_utc": "2026-10-16T10:00:00Z",
+      "lock_utc": "2026-10-16T09:54:00Z",
+      "event": "Elisa BreakOut Series #2",
+      "tier": "C",
+      "points": 2,
+      "team_a": "HAVU",
+      "team_b": "RoundsGG",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080286",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 93,
+        "team_b": 7
+      },
+      "probability_a": 0.7697,
+      "probability_b": 0.2303,
+      "pick": "HAVU",
+      "pick_probability": 0.7697,
+      "pick_confidence": "Strong lean",
+      "quality": "Low (single unnamed-bookmaker widget quote)",
+      "basis": "EGamersWorld odds widget (bookmaker not named in capture)",
+      "sources": [
+        {
+          "source": "EGamersWorld odds widget (bookmaker not named in capture)",
+          "kind": "odds aggregator widget",
+          "decimal_a": 1.2,
+          "decimal_b": 4.01,
+          "p_a": 0.7697,
+          "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/havu-vs-rounds-rg48QwsiJ9",
+          "retrieved_at_utc": "2026-10-13T19:05:00Z",
+          "market": "match winner (widget)",
+          "join": "team name variant: Rounds ~ RoundsGG"
+        }
+      ],
+      "flags": [
+        "single quote from unnamed bookmaker widget; may be stale",
+        "tier C event"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1080287",
+      "kickoff_utc": "2026-10-16T12:00:00Z",
+      "lock_utc": "2026-10-16T11:54:00Z",
+      "event": "Elisa BreakOut Series #2",
+      "tier": "C",
+      "points": 2,
+      "team_a": "Voca",
+      "team_b": "HAVU",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080287",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 64,
+        "team_b": 36
+      },
+      "probability_a": 0.6618,
+      "probability_b": 0.3382,
+      "pick": "Voca",
+      "pick_probability": 0.6618,
+      "pick_confidence": "Strong lean",
+      "quality": "Low (single unnamed-bookmaker widget quote)",
+      "basis": "EGamersWorld odds widget (bookmaker not named in capture)",
+      "sources": [
+        {
+          "source": "EGamersWorld odds widget (bookmaker not named in capture)",
+          "kind": "odds aggregator widget",
+          "decimal_a": 1.38,
+          "decimal_b": 2.7,
+          "p_a": 0.6618,
+          "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/voca-vs-havu-nQn6IrZXP",
+          "retrieved_at_utc": "2026-10-13T19:05:00Z",
+          "market": "match winner (widget)",
+          "join": "fixture id join recorded in capture"
+        }
+      ],
+      "flags": [
+        "single quote from unnamed bookmaker widget; may be stale",
+        "tier C event"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1081120",
+      "kickoff_utc": "2026-10-16T14:00:00Z",
+      "lock_utc": "2026-10-16T13:54:00Z",
+      "event": "CCT Europe 2026 Series #12 Play-In",
+      "tier": "C",
+      "points": 2,
+      "team_a": "mellren",
+      "team_b": "Privateer",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1081120",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 100,
+        "team_b": 0
+      },
+      "probability_a": null,
+      "probability_b": null,
+      "pick": null,
+      "pick_probability": null,
+      "pick_confidence": null,
+      "quality": null,
+      "basis": null,
+      "sources": [],
+      "flags": [
+        "no external line: probability left blank",
+        "EGW quote excluded (see irregularities)",
+        "tier C event"
+      ],
+      "verified": false
+    },
+    {
+      "fixture_id": "1080288",
+      "kickoff_utc": "2026-10-16T14:00:00Z",
+      "lock_utc": "2026-10-16T13:54:00Z",
+      "event": "Elisa BreakOut Series #2",
+      "tier": "C",
+      "points": 2,
+      "team_a": "Phantom",
+      "team_b": "RoundsGG",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080288",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 93,
+        "team_b": 7
+      },
+      "probability_a": 0.8678,
+      "probability_b": 0.1322,
+      "pick": "Phantom",
+      "pick_probability": 0.8678,
+      "pick_confidence": "Strong lean",
+      "quality": "Low (single unnamed-bookmaker widget quote)",
+      "basis": "EGamersWorld odds widget (bookmaker not named in capture)",
+      "sources": [
+        {
+          "source": "EGamersWorld odds widget (bookmaker not named in capture)",
+          "kind": "odds aggregator widget",
+          "decimal_a": 1.05,
+          "decimal_b": 6.89,
+          "p_a": 0.8678,
+          "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/phantom-esports-vs-rounds-m6Cnk4tOxU",
+          "retrieved_at_utc": "2026-10-13T19:05:00Z",
+          "market": "match winner (widget)",
+          "join": "team name variants: Phantom Esports ~ Phantom, Rounds ~ RoundsGG"
+        }
+      ],
+      "flags": [
+        "single quote from unnamed bookmaker widget; may be stale",
+        "tier C event"
+      ],
+      "verified": true
+    },
+    {
+      "fixture_id": "1080289",
+      "kickoff_utc": "2026-10-16T16:00:00Z",
+      "lock_utc": "2026-10-16T15:54:00Z",
+      "event": "Elisa BreakOut Series #2",
+      "tier": "C",
+      "points": 2,
+      "team_a": "RoundsGG",
+      "team_b": "Voca",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080289",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 0,
+        "team_b": 100
+      },
+      "probability_a": null,
+      "probability_b": null,
+      "pick": null,
+      "pick_probability": null,
+      "pick_confidence": null,
+      "quality": null,
+      "basis": null,
+      "sources": [],
+      "flags": [
+        "no external line: probability left blank",
+        "EGW quote excluded (see irregularities)",
+        "tier C event"
+      ],
+      "verified": false
+    },
+    {
+      "fixture_id": "1080290",
+      "kickoff_utc": "2026-10-16T18:00:00Z",
+      "lock_utc": "2026-10-16T17:54:00Z",
+      "event": "Elisa BreakOut Series #2",
+      "tier": "C",
+      "points": 2,
+      "team_a": "Phantom",
+      "team_b": "HAVU",
+      "hotspawn_url": "https://www.hotspawn.com/matches/1080290",
+      "hotspawn_pick_pct_reference_only": {
+        "team_a": 100,
+        "team_b": 0
+      },
+      "probability_a": 0.677,
+      "probability_b": 0.323,
+      "pick": "Phantom",
+      "pick_probability": 0.677,
+      "pick_confidence": "Strong lean",
+      "quality": "Low (single unnamed-bookmaker widget quote)",
+      "basis": "EGamersWorld odds widget (bookmaker not named in capture)",
+      "sources": [
+        {
+          "source": "EGamersWorld odds widget (bookmaker not named in capture)",
+          "kind": "odds aggregator widget",
+          "decimal_a": 1.36,
+          "decimal_b": 2.85,
+          "p_a": 0.677,
+          "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/phantom-esports-vs-havu-H8whr4r586",
+          "retrieved_at_utc": "2026-10-13T19:05:00Z",
+          "market": "match winner (widget)",
+          "join": "team name variant: Phantom Esports ~ Phantom"
+        }
+      ],
+      "flags": [
+        "single quote from unnamed bookmaker widget; may be stale",
+        "tier C event"
+      ],
+      "verified": true
+    }
+  ],
+  "irregularities": [
+    {
+      "fixture_id": "1081105",
+      "match": "SUKEBAN vs your end",
+      "issue": "EGW quote excluded: side order reversed in capture: orientation not resolved",
+      "url": "https://egamersworld.com/counterstrike/match/0U32SId-H/your-end-vs-sukeban-uZgmpQMyd7"
+    },
+    {
+      "fixture_id": "1081112",
+      "match": "Banda chuya vs 6666",
+      "issue": "EGW quote excluded: identical 1.80/1.80 pair: widget placeholder pattern, not a market price",
+      "url": "https://egamersworld.com/counterstrike/match/1sGIL2gAYu/banda-chuya-vs-6666-JdPgKgp5y"
+    },
+    {
+      "fixture_id": "1081113",
+      "match": "Ryvex vs PCIFIC",
+      "issue": "EGW quote excluded: identical 1.80/1.80 pair: widget placeholder pattern, not a market price",
+      "url": "https://egamersworld.com/counterstrike/match/1sGIL2gAYu/pcific-espor-vs-ryvex-WPw_DghZr3"
+    },
+    {
+      "fixture_id": "1079624",
+      "match": "FORZE Reload vs LFO 10",
+      "issue": "EGW quote excluded: identical 1.80/1.80 pair: widget placeholder pattern, not a market price",
+      "url": "https://egamersworld.com/counterstrike/match/_rW8GEyWK/forze-reload-vs-Gr_YhyKi3"
+    },
+    {
+      "fixture_id": "1081120",
+      "match": "mellren vs Privateer",
+      "issue": "EGW quote excluded: identical 1.80/1.80 pair: widget placeholder pattern, not a market price",
+      "url": "https://egamersworld.com/counterstrike/match/1sGIL2gAYu/mellren-vs-privateer-gaming-ASh_MyDBS"
+    },
+    {
+      "fixture_id": "1080289",
+      "match": "RoundsGG vs Voca",
+      "issue": "EGW quote excluded: side order reversed in capture: orientation not resolved",
+      "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/voca-vs-rounds-_dTpdE0K7U"
+    },
+    {
+      "fixture_id": null,
+      "match": "board-wide",
+      "issue": "Hotspawn lobby text says '68 matches this week' but the fixtures API holds 30 open CS2 fixtures (lock time after snapshot); the 68 figure is not reconciled to CS2 fixtures",
+      "url": "https://play.hotspawn.com/cs2-pickems"
+    },
+    {
+      "fixture_id": null,
+      "match": "board-wide",
+      "issue": "EGamersWorld match pages list several named bookmakers (SpinAlto, RedSport, Spinbetter, 22bet, 1xBit, Herospin, Kinbet, Vave); the capture stores one unnamed price per match, so the 'bc.game via EGamersWorld' label used on /pickem/ is NOT verified",
+      "url": "https://egamersworld.com/counterstrike/match/0U32SId-H/gremio-vs-los-ninos-ZbETIr-WFL"
+    },
+    {
+      "fixture_id": null,
+      "match": "board-wide",
+      "issue": "EGamersWorld capture time 19:10 UTC is 2h+ before the snapshot; widget prices are not re-checked and may be stale",
+      "url": "https://egamersworld.com/counterstrike/matches"
+    },
+    {
+      "fixture_id": null,
+      "match": "board-wide",
+      "issue": "Bovada event URLs in lines.json (e.g. Astralis vs Sashi, 9z vs Aurora) returned 'Not Found' with reCAPTCHA when re-opened in verification; the Bovada quotes could not be re-checked",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600"
+    },
+    {
+      "fixture_id": null,
+      "match": "board-wide",
+      "issue": "Pinnacle moneyline 9z vs Aurora re-checked against the official guest API: period 0 (series) home +261 / away -335 = 3.61 / 1.2985 decimal, identical to the capture; period 1 (Map 1) is +216/-272 and is not used",
+      "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight"
+    }
+  ]
+}

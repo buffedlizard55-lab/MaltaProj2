@@ -2028,6 +2028,51 @@ Per this board's 18:07 conditional claim: integrations were performed by `ef111e
 - **Pages source note:** repository Pages is configured `legacy` from `main` `/` (root), as retained by integration session `ef111e02`. Switching the source to `main` `/docs` would unpublish the root handoff and `/pickem/` sections of other sessions, so the integrated configuration was preserved; `docs/` is deployed from `main` and served at `/docs/`. The Actions deploy job additionally publishes the full staged site.
 - T6 status: ✅ Done.
 
+## Session `0f6c89c6` — claim (2026-10-13 21:20 UTC)
+
+Task board entry (this session only; environment requires branch `arena/0f6c89c6-maltaproj2`):
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-CURRENT: refresh the current open-for-picks CS2 Hotspawn board — enumerate every open fixture from the lobby, attach external lines only where verified, publish a mobile-friendly current-board page with probability and pick per row, flag everything else | in progress | 0f6c89c6 | 2026-10-13 21:20 | `data/current_board.json`, `scripts/build_current_board.py`, `current/**`, `COORDINATION.md` (log section only) |
+
+Reason for claim: the existing `pickem/` board (26 rows) was built from a hand-maintained list captured earlier the same day; the live lobby on 21:15 UTC shows more open cards (Elisa BreakOut Series #2 block, Stake Pulse Beat III block, Thunderpick block) that are not on that board. Existing `pickem/`, `docs/`, root `*.html`, `verify/`, `audits/` are NOT edited by this session.
+
+### Session `0f6c89c6` — T-CURRENT record (2026-10-13)
+
+**What changed**
+- `data/current_board.json` + `current/index.html` (mobile-first card board: one card per open CS2 fixture, pick + probability, sources, flags) + `current/flagged.html` (rows without a line, every irregularity).
+- `scripts/build_current_board.py`, `scripts/current_site.py`, `tests/test_current_board.py` (9 tests), CI step in `update-data.yml` (one step + `current` added to the commit `git add`), `scripts/stage_site.py` (+`current` section), `scripts/build_site.py` (one NAV entry). The last three are one-line integration edits to shared files, logged here per protocol.
+- Root `*.html` regenerated locally for checks were reverted and NOT committed (the sibling sessions' convention).
+
+**Scope and coverage (snapshot 2026-10-13 21:17 UTC)**
+- Source of fixtures: Hotspawn fixtures API (`/api/v1/fixtures`), CS2, status scheduled, lock time after snapshot → **30 open fixtures**. LoL (314 rows) is out of this board's scope and is not priced here.
+- **10** fixtures with a named-bookmaker consensus (Pinnacle and/or Bovada). **14** with the EGamersWorld widget fallback only (labelled, unnamed bookmaker). **6** with no qualifying line: probability left blank and flagged.
+- Hotspawn crowd % is shown for reference and is never a probability input.
+
+**Sources used (all linked per row on the board)**
+- Hotspawn fixtures API (https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures) and lobby (https://play.hotspawn.com/cs2-pickems)
+- Pinnacle guest API (https://guest.api.arcadia.pinnacle.com/0.1/matchups/{id}/markets/related/straight)
+- Bovada coupon pages (URLs in `data/lines.json`)
+- EGamersWorld match pages (https://egamersworld.com/counterstrike/matches and per-match pages)
+
+**Verification performed this session**
+- Pinnacle 9z vs Aurora (matchup 1638111785): fetched the matchup metadata (`bestOfX 3`, `parent null`) and the market list. The series moneyline is `s;0;m` = home +261 / away −335 = 3.61 / 1.2985 decimal, identical to the capture. The `s;1;m` record is Map 1 (+216/−272) and is not used. Code check: `collect_odds.py` selects `period == 0` moneyline only.
+- Bovada: the event URLs in `lines.json` returned "Not Found" plus reCAPTCHA when re-opened here → **not re-verified**; flagged on every Bovada row.
+- EGamersWorld Grêmio vs LOS NINOS page: lists eight named bookmakers with live odds; the match had already started (scored 2–1). The capture stores one unnamed price, so the "bc.game via EGamersWorld" label used on `/pickem/` is **not verified**. Logged as an irregularity.
+
+**Irregularities (also on `current/flagged.html`)**
+1. Hotspawn lobby says "68 matches this week"; the API holds 30 open CS2 fixtures. Not reconciled.
+2. EGW prices 1.80/1.80 for FORZE Reload vs LFO 10, Ryvex vs PCIFIC, mellren vs Privateer: placeholder pattern → excluded.
+3. EGW side-order reversed for SUKEBAN vs your end and RoundsGG vs Voca → excluded (orientation unresolved).
+4. Duplicate Pinnacle quote rows in `lines.json` (e.g., Grêmio vs LOS NINOS) → first kept.
+5. Pinnacle joins are by team names + tournament (source gives no start time) → flagged on each row.
+6. EGW capture is 19:10 UTC (2h+ before snapshot) → "may be stale" on every fallback row.
+7. Bovada pages not re-openable (see above).
+8. Pickem board (`/pickem/`, 26 rows) and this board differ on some fixtures because the `/pickem/` values include Polymarket and a different EGW join; this board does not use Polymarket.
+
+**Status:** T-CURRENT → done (pending PR merge and Pages check, recorded below).
+
 ## Session `d4ec32a9` — automation safety / final integration (2026-10-13 21:20 UTC)
 
 | Task | Status | Owner | Claimed UTC | File scope |
@@ -2047,3 +2092,6 @@ Per this board's 18:07 conditional claim: integrations were performed by `ef111e
 - PR #28 initial browser check failed. GitHub signed log host is outside sandbox egress; API annotations exposed only exit code 1. Reproduced root Chromium tests locally using npm-provided Chromium + runtime libraries: overflow was on Flagged for Review at 390px, caused by long inline source text. Fixed wrapping; all seven root category pages now pass at desktop, 390px and 320px, including filters and source links. No concurrent edits were discarded.
 - Added numeric reconstruction against every actual eligible primary quote payload (raw American/decimal prices, outcome ordering, UTC kickoff and no-vig arithmetic), plus a source-link assertion for every table row of the current root generator. Archived independent models remain separately flagged, not re-certified by label assertions.
 - Numeric payload regression initially found 12 candidate Bovada payloads because their shared coupon URL and retrieval second are identical. Fixed the *test* to include the explicit source event ID (already used in production output); no quoted numbers changed or evidence discarded. Full suite now passes 41 tests. All current generator table rows carry source/review links, including stale fixtures and derived tournament/coverage summaries.
+- **Parallel-session integration / conflict log:** main advanced via session `0f6c89c6` PR #29 during verification. Stopped on content conflicts in the shared workflow/board and competing generated source files. Both append-only task-board sections are retained; `current/**`, its generator/tests and stage-site inclusion are preserved unchanged. The root navigation keeps its link, labeled a parallel snapshot because its unnamed third-party fallback is not eligible for this session's official-source current picks.
+- Preserved PR #29's competing source batch under `audits/d4ec32a9/pr29_snapshot/` and in merge history. Retained this session's coherent fixture/odds/payload batch (explicit kickoff/outcome evidence) for current root probabilities; never mixed two batches. Re-rendered the combined root and checked all links. Retained the safe atomic workflow instead of restoring masked builder failures.
+- **Request to `0f6c89c6` (needs review, non-blocking):** your `build_current_board.py` reverses `derived_probability_a/b` a second time when `order_as_quoted == reversed`; `build_lines.py` already oriented those values to the Hotspawn fixture. Please fix in your owned scope. Your unnamed EGW fallback is not official verified bookmaker evidence; remain a clearly dated research board, or blank those values before using it as current official picks. The new strict primary fields/age/exact-kickoff rules supersede the stale 'no source start time' assumptions for root lines. Until that handoff, do not add a new automatic current-board generation step to the strict workflow; its existing published snapshot is preserved and flagged on root `flagged.html`.

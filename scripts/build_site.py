@@ -80,6 +80,8 @@ NAV = [
     # integration link added by session 8e7a652d (single-anchor edit, documented in
     # COORDINATION.md): independent verification & multi-book market cross-check page
     ("verify/8e7a652d/index.html", "Verification &amp; Cross-Check"),
+    # integration link added by session 0f6c89c6 (T-CURRENT): current open-for-picks board
+    ("current/index.html", "Parallel board (snapshot)"),
 ]
 
 
@@ -439,6 +441,9 @@ visible instead of being silently filled in.</div>
 <h2>0. Current pipeline safety and archived-source limitations</h2>
 <p>Current picks require fresh primary-bookmaker quotes, exact kickoff identity, explicit game/market state,
 confirmed outcome ordering, an unlocked upcoming fixture and unique joins. A rejected quote is not a confirmed line.
+The <a href="current/index.html">parallel current/ board</a> has an unnamed third-party fallback and a
+separate source/identity policy; it is a dated research snapshot, not this pipeline's current confirmed picks.
+Its reversal handling needs owner review (derived probabilities in lines.json are already fixture-oriented).
 The prior third-party combined probabilities, hypothetical VRS lines, pickem board and independent reports are
 preserved research snapshots, not current picks. They have not all been re-verified in this session.
 Sources for manual review: <a href="https://play.hotspawn.com/lobby">official lobby</a>,
