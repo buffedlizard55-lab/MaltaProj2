@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/live/collect_live.py", line 711, in main
+    return _main()
+           ^^^^^^^
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/live/collect_live.py", line 745, in _main
+    counters = collect_lobby_page(log, sample_dir)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/live/collect_live.py", line 134, in collect_lobby_page
+    listing = extract_lobby_listing(text)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/live/live_core.py", line 361, in extract_lobby_listing
+    blobs.append(("ng-state", html.unescape(m.group(1))))
+                              ^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'unescape'
