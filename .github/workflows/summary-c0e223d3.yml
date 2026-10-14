@@ -1,0 +1,64 @@
+name: summary-c0e223d3
+
+# Rebuilds the `summary/` pick hub from data other workflows already committed.
+# It needs no external network: every input is a file in the repository
+# (the OURLINE board and Valve's official standings capture).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/f7279a54/**'
+      - 'data/expanded/vrs/**'
+      - 'scripts/c0e223d3/**'
+      - 'tests/test_c0e223d3.py'
+      - '.github/workflows/summary-c0e223d3.yml'
+  schedule:
+    - cron: '43 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: summary-c0e223d3
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Rebuild the summary hub
+        run: python scripts/c0e223d3/build.py
+
+      - name: Verify the rebuilt hub
+        run: python -m unittest tests.test_c0e223d3 -v
+
+      - name: Commit refreshed pages
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A summary data/c0e223d3
+          if git diff --cached --quiet; then
+            echo "No change to the summary hub"
+          else
+            git commit -m "summary(c0e223d3): refresh pick hub $(date -u +%Y-%m-%dT%H:%MZ)"
+            for attempt in 1 2 3 4 5; do
+              git pull --rebase origin main && git push origin HEAD:main && break
+              echo "push attempt $attempt failed, retrying"
+              sleep 10
+            done
+          fi
+
+      - name: Trigger a Pages rebuild so the hub goes live
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: gh workflow run pages.yml --repo "$GH_REPO" --ref main

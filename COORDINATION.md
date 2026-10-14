@@ -3612,3 +3612,136 @@ Also fixed a module-shadowing bug in my own `tests/test_c64a5e19.py` (`sys.path`
 - **Official sources independently read:** https://play.hotspawn.com/lobby ; https://github.com/ValveSoftware/counter-strike_regional_standings (380 standings rows + model code preserved); official Pinnacle/Bovada/Melbet/Kalshi provider URLs linked per quote and retained in `data/f7279a54/source_payloads.json`. 31/31 consumed quotes reconstructed from their official JSON responses. HotSpawn crowd percentages never enter this probability pipeline.
 - **HLTV access distinction:** public `fetch_page` reads of https://www.hltv.org/team/12457/roundsgg (redirects to `/rounds`) and https://www.hltv.org/team/13999/wbt-academy succeeded near 03:00Z; the automated runner probe remains blocked. These reads do not establish WROTBERRY identity or a complete current ROUNDS five-player roster, so no new numeric input/alias is inferred from them.
 - Main integrations preserved parallel PRs #81/#83/#84/#85 and their audits. This work is not superseded by their full-numeric boards: it specifically adds fail-closed eligibility, raw-response replay, expiry, rejects unverified identities/times/duplicate rosters and preserves missing probabilities rather than forcing coverage.
+# Session `c0e223d3` — executive-summary hub, full-coverage pick research and repo review (claim 2026-10-14 02:40 UTC)
+
+Environment note: Arena pins this session to branch `arena/c0e223d3-maltaproj2`; the requested
+`session-<id>/<task>` branch naming cannot be used in this environment. Branched from `main` @ `de2f4ef`.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| `T-HUB`: mobile-first **executive summary / "Where to find picks" hub** that links to every picks board on the site, with live counts, last-updated timestamps and a plain-language explanation of which board to use | in progress | c0e223d3 | 2026-10-14 02:40 | `scripts/c0e223d3/**`, `data/c0e223d3/**`, `summary/**`, `tests/test_c0e223d3.py`, `.github/workflows/summary-c0e223d3.yml` |
+| `T-SRCEV`: independent external-information research for the CS2 fixtures that currently have **no pick** (uncovered / low-tier rows), published as a source-evidence pack with official links for manual review | in progress | c0e223d3 | 2026-10-14 02:40 | `data/c0e223d3/**`, `summary/sources.html`, `summary/allpicks.html` |
+| `T-REPO`: line-by-line repository review with irregularities flagged for manual review | in progress | c0e223d3 | 2026-10-14 02:40 | `summary/repo-review.html` |
+| `T-HUB-INTEG` (integration, additive-only): one NAV entry + one staging entry + one README row so `summary/` ships in the Pages artifact | requested/queued | c0e223d3 | 2026-10-14 02:40 | `scripts/build_site.py` (NAV list), `scripts/stage_site.py`, `README.md`, `COORDINATION.md` |
+
+## Non-overlap statement (checked against every remote board at 2026-10-14 02:38 UTC)
+
+- **`6ddde224`** (`T-COVERAGE-FULL`, last commit 02:34Z) owns `scripts/coverage/**`, `data/coverage/**`,
+  `coverage/**`, `tests/test_coverage_6ddde224.py`, `coverage-6ddde224.yml`, and a **single additive NAV
+  anchor** in `scripts/build_site.py`. **This session does not edit any of those files.** Its
+  `coverage/` board is treated as the authoritative "picks for every match" board and will be linked
+  from the hub as soon as it exists. Session `c0e223d3` will **not** build a competing coverage board.
+- **`ae75c5c3`** (last commit 02:34Z) owns `.github/workflows/pages.yml`,
+  `.github/workflows/ourline-f7279a54.yml`, `scripts/f7279a54/**`, `ourline/**`,
+  `tests/test_ourline_f7279a54.py`, `scripts/ae75c5c3/**`, `audits/ae75c5c3/**` and README
+  model-coverage wording. **None of those files are edited by this session.** Its published
+  integration request (prominent executive-summary links to `ourline/` and `probabilities.html`) is
+  answered by this hub, which links both, without touching their files.
+- **`7cd2e67a`** (last commit 02:16Z) owns root `index.html`/`assets/**` via `scripts/build_site.py`
+  and `verify/7cd2e67a/**`. Its INT-3 landing-page scope is respected: **this session does not rewrite
+  the landing page or its NAV.** `T-HUB-INTEG` is logged as a request, not performed, for as long as
+  that claim is active.
+- All earlier sessions are marked `done` or closed; none is edited.
+- Nothing is invented. Any team, match, price or probability this session publishes is copied from an
+  official source read during this session, with the URL and the UTC read time stored next to it.
+  Rows that cannot be confirmed stay blank and are published on the flagged page.
+
+## Log — c0e223d3
+
+- 02:38 UTC: read the inherited board and every remote branch's COORDINATION.md. Two sessions are
+  live (`6ddde224`, `ae75c5c3`); no open PRs; `main` = `de2f4ef` (02:30Z).
+- Sandbox egress from `bash` is limited to github/codeload/api.github/registry.npmjs/pypi;
+  HLTV and HotSpawn return TLS EOF from `curl` here. All external reads are therefore done through
+  the platform fetch tools and re-done by CI where a hosted runner is needed.
+
+### Session `c0e223d3` — work log and integration handoff (2026-10-14 03:10 UTC, append-only)
+
+**Status: done. Claim closed after the PR below merges.**
+
+#### Re-scope (important)
+
+While this session was claiming, session `c64a5e19` merged **PR #81** (`picks-every-match/`) and
+session `5a3c1a63` merged **PR #83** (root executive summary). Together they already deliver the
+user's main asks: a mobile-first executive summary with "where to find the picks" links and
+**28/28 open CS2 matches with a pick**, auto-refreshed ~every 30 minutes.
+
+`c0e223d3` therefore **dropped its own competing every-match board** and re-scoped `summary/` to be
+the **verification companion** to that board, so the site does not end up with two rival pick
+boards. `summary/index.html` leads with a prominent link to `picks-every-match/` as the single
+place for picks, then cross-checks it.
+
+#### What `summary/` publishes
+
+1. **Where to find the picks** — cards linking every board, `picks-every-match/` first.
+2. **Independent cross-check of every pick** — 26 same pick, 1 opposite winner, 1 blank.
+3. **Every open pick table** with an official-source link on every row.
+4. **`summary/gaps.html`** — the name-resolution evidence and the two disagreements.
+5. **`summary/repo-review.html`** — line-by-line repository review with flagged irregularities.
+
+#### Findings (all with official sources; nothing inferred)
+
+- **N-1 — WROTBERRY = Valve's `WBT`.** HotSpawn's "WROTBERRY" is absent from Valve's file, but the
+  file contains `WBT` (standing 60, 1201 pts, roster `DemQQ, Psycho, s4ltovsk1yy, Smash, tyr1k`).
+  HLTV's Elisa BreakOut Series 2 group draw lists **WBT** (not WBT Academy) in group A and schedules
+  WBT vs EAC / ENCE / BOJONG at exactly the HotSpawn WROTBERRY slots. HLTV team 13683 carries the
+  identical roster and shows Valve rank #64. Melbet prices the same slots as "WhiteBIT Team".
+  Sources: [Valve](https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md),
+  [HLTV event](https://www.hltv.org/events/9332/elisa-breakout-series-2),
+  [HLTV team](https://www.hltv.org/team/13683/wbt), [Melbet](https://melbet.com/en/line/esports).
+- **N-2 — RoundsGG = Valve's `ROUNDS`** (standing 310, 548 pts, roster `Kollo, Lapa, Monoxx,
+  Tumppis, ykis`). HLTV group B lists ROUNDS in the same three slots as HotSpawn's RoundsGG.
+  The every-match board already resolves this one; this session corroborates it independently and
+  the two numbers agree (HAVU 71.1% vs 68.9%; Voca 81.2% vs 78.5%).
+- **N-3 — LFO 10 has no official rating.** Absent from Valve's latest published file (which does
+  carry LFO 7/8/9). HLTV's own match analytics page says "LFO 10 is worse ranked (Unranked)" while
+  HLTV's event page shows `#170 LFO 10` — an internal contradiction. This session leaves
+  `1079624 FORZE Reload vs LFO 10` **blank and flagged**.
+- **N-4 — WBT vs WBT Academy is genuinely contested.** Kalshi prices the 15 Oct 04:00 slot as
+  `KXCS2GAME-26OCT150400EACWBTACADEMY` ("WBT Academy"), and bo3.gg / strafe.com / egamersworld give
+  "WROTBERRY" the WBT **Academy** five (`fl1peR, marat2k, NxStep, svemyy, tired73`, standing 130,
+  911 pts). HLTV + Melbet + the schedule point at WBT. Both candidate ratings are published with
+  their sources; the conflict is **flagged, not settled**.
+
+#### Two items flagged for the user (non-blocking, published on `summary/gaps.html`)
+
+- **F-1 — opposite pick on `1080279 WROTBERRY vs EAC`.** This cross-check: WROTBERRY 58.4%
+  (WBT rating model). Every-match board: EAC 53.7% (Melbet slot price under the "WhiteBIT Team"
+  label). The gap is the identity question in N-4, not an arithmetic error.
+- **F-2 — `1079624 FORZE Reload vs LFO 10` is published by the every-match board as a tier-B
+  "fallback" pick (FORZE Reload 76.4%)** built from the VRS points of *sibling* rosters
+  (LFO 8 / LFO 7 / LFO 9). It is clearly labelled provisional there. This session leaves the row
+  blank because no official source rates this roster. Flagged for the user to decide.
+
+#### Repairs carried out (integration-blocking)
+
+- **`scripts/live/collect_live.py`** still wrote a constructed `https://www.hotspawn.com/matches/<id>`
+  on every row even after the permalink plumbing was added, so `live/` kept shipping a link that
+  resolves to HotSpawn's general matches index. Fixed (permalink, else the official lobby page), and
+  a `hotspawn_match_url_kind` label plus a `per_row_link_kinds` counter were added.
+- **Two shared tests failed on `main`** and were breaking the Pages validation gate
+  (`test_verify_7cd2e67a` x2, `test_58cb2600` x1) because the hourly live-coverage workflow
+  refreshes `data/live/samples/lobby_page.txt` while those assertions froze counts from an older
+  capture (90 -> 89 fixtures). `c64a5e19` repaired the same drift on `main` first; this session
+  rebased onto theirs rather than re-editing. `scripts/live/collect_live.py` keeps only the
+  added link-kind label from this session.
+- **Module shadowing:** this session's `scripts/c0e223d3/core.py` shadowed another session's `core`
+  and broke `tests/test_c64a5e19`. Renamed to `core_c0e223d3.py` / `aliases_c0e223d3.py`.
+
+#### Verification performed
+
+- `python -m unittest discover -s tests` → **315 OK** (includes 37 new `tests/test_c0e223d3.py`).
+- `tests.test_live_coverage` 38 OK, `tests.test_expanded_lines` 28 OK,
+  `tests/test_ourline_f7279a54` 26 OK, `tests/test_fresh_dd2b7fee.py` PASS,
+  `audits/1d4de836/verify_snapshot.py` PASS, `audits/1916f96c` 6 OK.
+- `scripts/stage_site.py` → PASS, all staged local links resolve (including `summary/`).
+- No external value is invented: every probability traces to a quoted bookmaker/exchange price or to
+  a row of Valve's published standings, and every row carries its source URL.
+
+#### Integration requests (logged, not performed)
+
+- **To `c64a5e19` (owner of `picks-every-match/`):** N-1 would move the three `WROTBERRY` rows from
+  tier C "fallback" to tier B "VRS model only" (WBT = 1201 pts is in the file you already read).
+  F-1 and F-2 are published on `summary/gaps.html` for the user either way. Not edited here.
+- **To the root generator owner:** one NAV anchor to `summary/` would make the verification
+  companion reachable from the landing page. `summary/` already ships in the Pages artifact via the
+  single additive `scripts/stage_site.py` entry. Not edited here while that claim is active.
