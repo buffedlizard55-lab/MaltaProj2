@@ -1,0 +1,95 @@
+name: coverage-6ddde224 (T-COVERAGE-FULL)
+
+# Session 6ddde224. Refreshes the coverage board — every CS2 fixture the HotSpawn Pick'ems lobby
+# lists, with an external (never HotSpawn) price or an explicitly labelled originated estimate, or a
+# blank row published on the flagged page. Runs hourly with no manual input.
+#
+# Scope guard: this workflow writes only files owned by this session — data/coverage/** and
+# coverage/**. It never edits another section's files.
+
+on:
+  push:
+    branches: ['arena/6ddde224-maltaproj2', 'main']
+    paths:
+      - 'scripts/coverage/**'
+      - 'tests/test_coverage_6ddde224.py'
+      - '.github/workflows/coverage-6ddde224.yml'
+  schedule:
+    - cron: '41 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: coverage-6ddde224-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Collect lobby inventory, external lines, exchange books, results corpus and ratings
+        continue-on-error: true
+        run: |
+          mkdir -p data/coverage
+          python3 scripts/coverage/collect_coverage.py --outdir data/coverage \
+            --corpus-days 90 2>&1 | tee /tmp/coverage_collect.log
+          echo "collector exit=${PIPESTATUS[0]}"
+
+      - name: Build the board, re-derive every number and render the pages
+        run: |
+          python3 scripts/coverage/build_coverage.py \
+            --data data/coverage --site coverage --allow-blank-quotes
+
+      - name: Tests (join rules, de-vig arithmetic, model, guards, published-artifact invariants)
+        run: python3 -m unittest tests.test_coverage_6ddde224 -v
+
+      - name: Publish a run summary as a workflow annotation
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          for path, keys in (
+              ('data/coverage/board.json', ('summary', 'model')),
+              ('data/coverage/verification.json', ('passed', 'failed')),
+          ):
+              p = pathlib.Path(path)
+              if not p.is_file():
+                  print(f"::warning::coverage: {path} missing")
+                  continue
+              payload = json.loads(p.read_text())
+              if 'summary' in payload:
+                  print(f"::notice::coverage summary {json.dumps(payload['summary'])}")
+                  print(f"::notice::coverage model preference={payload['model'].get('preference')} "
+                        f"bt_matches={payload['model']['bt'].get('matches_used')}")
+              else:
+                  print(f"::notice::coverage verification {payload['passed']}/"
+                        f"{payload['passed'] + payload['failed']} checks passed")
+          PY
+
+      - name: Commit refreshed evidence, board and pages
+        if: always()
+        run: |
+          git config user.name "coverage-bot"
+          git config user.email "coverage-bot@users.noreply.github.com"
+          git add -A data/coverage coverage
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "coverage: refresh external lines, originated model and coverage board [skip ci]"
+            for i in 1 2 3 4 5; do
+              git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
+                git push origin "HEAD:${GITHUB_REF_NAME}" && break || sleep 10
+            done
+          fi
