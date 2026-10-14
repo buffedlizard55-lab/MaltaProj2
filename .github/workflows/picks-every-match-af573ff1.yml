@@ -1,0 +1,69 @@
+name: picks-every-match (af573ff1)
+
+# Session af573ff1 / EVERY-1..2. Gives every open HotSpawn CS2 fixture a pick:
+# featured lines are read verbatim from data/f7279a54/board.json; fallback
+# sources (expanded Melbet alias quotes, fresh Melbet/Kalshi, Valve VRS) are
+# applied only where the featured board has no line. Re-checks the HotSpawn
+# lobby for new fixtures on its own chain. Scope guard: writes only
+# data/af573ff1/** and picks-every-match/**.
+on:
+  push:
+    branches: ['arena/af573ff1-maltaproj2', 'main']
+    paths:
+      - 'scripts/af573ff1/**'
+      - 'tests/test_picks_every_match_af573ff1.py'
+      - '.github/workflows/picks-every-match-af573ff1.yml'
+  schedule:
+    - cron: '23,53 * * * *'
+  workflow_run:
+    workflows: ['ourline (f7279a54)', 'expanded-lines', 'update-data']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: picks-every-match-af573ff1-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fresh fallback collection (HotSpawn check, Melbet/Kalshi, Valve VRS, probes)
+        continue-on-error: true
+        run: python3 scripts/af573ff1/collect.py
+      - name: Build board and pages (re-derives every fallback number)
+        run: python3 scripts/af573ff1/build.py
+      - name: Tests
+        run: python3 -m unittest tests.test_picks_every_match_af573ff1 -v
+      - name: Commit and push (rebase before every push)
+        env:
+          REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config user.name "picks-every-match-bot (af573ff1)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/af573ff1 picks-every-match
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "picks-every-match(af573ff1): refresh picks $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then
+              if [ "$REF_NAME" = "main" ]; then gh workflow run pages.yml --ref main || echo "pages dispatch failed"; fi
+              exit 0
+            fi
+            sleep $((attempt * 7))
+          done
+          exit 1

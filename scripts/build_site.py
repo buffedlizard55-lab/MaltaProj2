@@ -281,7 +281,28 @@ def main() -> int:
     open_fixtures = [f for f in fixtures if f.get("pick_status") == "open"]
     closed_fixtures = [f for f in fixtures if f.get("pick_status") != "open"]
     top_table, _ = fixtures_table(open_fixtures)
+    # Executive summary (session af573ff1): counts come from the every-match board
+    # when it has been built; the block degrades to a plain link when it has not.
+    em_board = load("data/af573ff1/board.json") or {}
+    em = em_board.get("summary") or {}
+    exec_summary = f"""
+<section class="banner" aria-label="Executive summary">
+<strong>Executive summary — find the picks fast (mobile-friendly).</strong><br>
+<strong><a href="picks-every-match/index.html">📱 Picks for every match</a></strong>:
+{esc(em.get("with_pick", "—"))} of {esc(em.get("open", "—"))} open HotSpawn CS2 matches have a pick there
+({esc(em.get("featured", "—"))} featured bookmaker/model picks copied verbatim, the rest resolved only where the
+featured board is blank — under a verified alias at a bookmaker, from Valve VRS ratings, or as a labelled
+low-confidence estimate). Board generated {esc(em_board.get("generated_utc") or "—")}; it re-checks the HotSpawn
+lobby automatically about every 30 minutes.<br>
+<a class="btn" href="picks-every-match/index.html">Open all picks 📱</a>
+<a class="btn ghost" href="ourline/index.html">Featured picks only</a>
+<a class="btn ghost" href="probabilities.html">Strict bookmaker-priced board</a>
+<a class="btn ghost" href="cs2.html">All listed CS2 rows</a>
+<a class="btn ghost" href="picks-every-match/flagged.html">Flagged for review</a>
+</section>
+"""
     idx_body = f"""
+{exec_summary}
 <div class="cards">{cards}</div>
 
 <div class="banner" id="executive-summary" style="border-left-color: var(--acc); background: var(--panel2);">
@@ -307,11 +328,15 @@ Prediction-market snapshots are excluded from current picks. For each match wher
 was found, the table shows the quoted odds, bookmaker margin and derived no-vig probability with the exact
 source link and read time. Matches where no eligible external line could be confirmed stay
 <strong>blank and flagged</strong> — they are never filled from HotSpawn or guessed.</p>
-<p class="note"><strong>Want a pick for every open match?</strong> The separate <a href="ourline/index.html">Our line</a>
-board (session f7279a54) gives a probability and a pick for every open CS2 fixture, including ones with no
-eligible bookmaker price. It blends Pinnacle, Bovada, Melbet and Kalshi prices with a Valve VRS rating model,
-labels which basis each pick uses, and grades its past picks on a track-record page. It is a model estimate, so
-it is kept apart from the strictly source-priced tables here.</p>
+<p class="note"><strong>Want a pick for every open match?</strong> Open the
+<a href="picks-every-match/index.html">📱 Picks for every match</a> board (session af573ff1): it copies the
+featured <a href="ourline/index.html">Our line</a> picks verbatim for the matches that board prices, and — only
+for the matches it leaves blank (low-tier or not covered by the featured bookmakers) — adds a clearly labelled
+fallback pick from an alias-verified bookmaker price, Valve VRS ratings, or a low-confidence single-rating
+estimate. The featured board blends Pinnacle, Bovada, Melbet and Kalshi prices with a Valve VRS rating model and
+grades its past picks on a track-record page. Fallback picks are model/alias estimates, so they stay labelled and
+listed on the every-match <a href="picks-every-match/flagged.html">Flagged for review</a> page, apart from the
+strictly source-priced tables here.</p>
 
 <h2>Derived probabilities — the short version</h2>
 <p>Raw quoted decimal odds are converted to implied shares <code>q = 1 / odds</code>, normalised to remove
