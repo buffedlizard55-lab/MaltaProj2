@@ -35,12 +35,15 @@ jobs:
       - run: python scripts/build.py
       - name: Recheck generated site and every source-linked row
         run: python -m unittest discover -s tests -v
+      - name: Re-evaluate every-match picks and replay official price evidence
+        run: python scripts/c64a5e19/build.py
       - name: Browser smoke tests
         run: |
           pip install playwright==1.55.0
           python scripts/browser_smoke.py
           python scripts/build_site.py
           python scripts/browser_current_smoke.py
+          python scripts/browser_479ef53e.py
           python scripts/ae75c5c3/browser_smoke.py
       - name: Stage all session-owned published sections
         run: python scripts/stage_site.py
