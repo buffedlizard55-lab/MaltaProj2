@@ -3834,3 +3834,14 @@ recorded here in full so it can be reviewed or reverted.
   equals the fixture snapshot stamp (`2026-10-14T03:01:37Z`), so the artifact and the code agree.
   `data/live/board.json`, `data/live/verification.json` and the six `live/*.html` pages were
   regenerated from the same inputs, with no change to any published number.
+
+## Session `53220a1b` — final integration for the every-match picks + executive-summary request (2026-10-14 03:55 UTC, append-only)
+
+Environment note: all work is on `arena/53220a1b-maltaproj2` (session branch naming `session-<id>/<task>` is not available in this environment; same convention as `ef111e02`).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| INT-A: final integration session — evaluate open parallel PRs (#80 `6ddde224` coverage board, #86 `fe803b80` full-coverage board), integrate verified non-conflicting work, close logged open integration requests (root NAV anchors to `summary/` + `picks-every-match/`), re-verify combined data line by line, confirm site builds with no broken links, PR to main, merge, confirm Pages deploy | in progress | 53220a1b | 2026-10-14 03:55 | COORDINATION.md (this section), `scripts/build_site.py` (NAV/landing only), `scripts/stage_site.py` (section list only), `README.md`, plus integration-branch merges of other sessions' branches |
+| INT-B: line-by-line verification of the every-match picks requirement (a pick + win % for every open HotSpawn CS2 fixture, including low-tier matches with no bookmaker price, using documented fallback information sources only for those rows) and of the mobile executive-summary entry points | in progress | 53220a1b | 2026-10-14 03:55 | `tests/test_53220a1b.py` (new), COORDINATION.md (this section) |
+
+Claim pushed immediately per the parallel-session rules. No other session's in-progress claim is taken over; `c64a5e19`, `c0e223d3`, `58cb2600`, `f7279a54`, `dd2b7fee`, `7cd2e67a`, `ae75c5c3` claims are recorded done/closed. Open integration requests addressed here: (1) root NAV anchor to `summary/` (from `c0e223d3`), (2) NAV/mobile entry points to the every-match board, (3) evaluation of the two open PRs.
