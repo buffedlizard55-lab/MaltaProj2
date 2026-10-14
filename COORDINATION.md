@@ -3834,3 +3834,16 @@ recorded here in full so it can be reviewed or reverted.
   equals the fixture snapshot stamp (`2026-10-14T03:01:37Z`), so the artifact and the code agree.
   `data/live/board.json`, `data/live/verification.json` and the six `live/*.html` pages were
   regenerated from the same inputs, with no change to any published number.
+
+## Session 49a181f8 — current integration claim (2026-10-14 03:56 UTC)
+
+Arena fixes this session to `arena/49a181f8-maltaproj2`; only that branch will be pushed.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Repair every-match evidence eligibility (no sibling/floor ratings, guessed kickoffs or ambiguous identities); preserve priced picks and research fallback only for uncovered rows; source-linked gap reporting and regression tests | in progress | 49a181f8 | 2026-10-14 03:56 | `scripts/c64a5e19/**`, `data/c64a5e19/**` generated only, `picks-every-match/**`, `tests/test_c64a5e19.py`, new `tests/test_49a181f8.py`, `.github/workflows/every-match-c64a5e19.yml`, `audits/49a181f8/**` |
+| Final integration: single truthful mobile executive summary, source timestamps, coverage counts; full tests, staged links, PR, merge and Pages verification | in progress | 49a181f8 | 2026-10-14 03:56 | `scripts/build_site.py`, root HTML/assets regenerated only, `README.md`, `scripts/stage_site.py` only if needed, COORDINATION.md append-only |
+
+- Read shared board and open PRs (#80 and #86). Their independent coverage namespaces remain untouched. c64a5e19 explicitly closed its scope at 03:05; ae75c5c3 closed at 03:02; root integration #83 is delivered. This session is the final integrator for the bounded repairs above; no other active scope is taken.
+- Found source-integrity regressions on the promoted every-match board: using unrelated LFO rosters / lowest VRS points for missing ratings, guessed Kalshi ticker timezone, blending featured market picks, and an executive summary with fixed old counts. These conflict with the user's no-invented-input and fallback-only requirements. Findings will be published, not hidden behind full-numeric coverage claims.
+- Exact full-roster identity and current prices cannot be inferred. Every lobby match will remain represented, but a genuinely unsupported percentage must remain blank and flagged as the user requires.
