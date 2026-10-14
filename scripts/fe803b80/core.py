@@ -66,6 +66,21 @@ def parse_iso(value) -> datetime | None:
     return dt.astimezone(timezone.utc)
 
 
+def parse_any(value) -> datetime | None:
+    """Epoch milliseconds, epoch seconds, or an ISO date string -> UTC, else None.
+
+    Bovada/Melbet publish start times as epoch milliseconds while their other fields are text, so a
+    single entry point refuses anything whose zone cannot be established instead of guessing.
+    """
+    if isinstance(value, (int, float)) and value > 10_000_000_000:
+        return datetime.fromtimestamp(value / 1000, tz=timezone.utc)
+    if isinstance(value, (int, float)) and value > 0:
+        return datetime.fromtimestamp(value, tz=timezone.utc)
+    if isinstance(value, str) and value.strip().isdigit():
+        return parse_any(int(value.strip()))
+    return parse_iso(value)
+
+
 def hours_apart(a: datetime | None, b: datetime | None) -> float | None:
     if a is None or b is None:
         return None

@@ -65,6 +65,7 @@ VRS_REPO = "ValveSoftware/counter-strike_regional_standings"
 PROP_RE = re.compile(r"\(|\)|\byes\b|\bno\b|kills?|\bmaps?\b|total|handicap|rounds?|pistol", re.I)
 LOG: dict = {}
 MAX_BO3_HISTORY_TEAMS = 40
+MAX_BO3_TEAM_SEARCHES = 24
 
 
 def fetch(url: str, headers: dict | None = None, timeout: int = 45) -> tuple[bytes, dict]:
@@ -387,6 +388,74 @@ def collect_bo3gg(pages: int = 6) -> dict:
     return {"matches": matches, "tournaments": tournaments, "teams": teams}
 
 
+def unresolved_team_names(fixtures: list[dict], quotes: list[dict], vrs: dict, bo3: dict) -> list[str]:
+    """Names of teams in a priced/rated fixture that the bo3.gg window did not reference.
+
+    Only names inside an open fixture that has neither a matched quote nor a VRS row on both sides
+    are looked up, so the number of extra requests stays small and tied to visible gaps.
+    """
+    vrs_keys = {core.canon(name)[0] for region in (vrs.get("regions") or {}).values() for name in region}
+    quote_index = build_quote_index(quotes)
+    known = set(team_id_index(bo3))
+    need: list[str] = []
+    for fx in fixtures:
+        if str(fx.get("status")) not in ("scheduled", "started"):
+            continue
+        candidates = []
+        for name in (fx["team_a"], fx["team_b"]):
+            key, _, _ = core.canon(name)
+            candidates.extend(quote_index.get(key, []))
+        if any(core.match_quote(fx, qt) for qt in candidates):
+            continue
+        key_a, _, _ = core.canon(fx["team_a"])
+        key_b, _, _ = core.canon(fx["team_b"])
+        if key_a in vrs_keys and key_b in vrs_keys:
+            continue
+        for name, key in ((fx["team_a"], key_a), (fx["team_b"], key_b)):
+            if key and key not in known and key not in vrs_keys and name not in need:
+                need.append(name)
+    return need[:MAX_BO3_TEAM_SEARCHES]
+
+
+def collect_bo3gg_teams(names: list[str]) -> dict:
+    """Team records looked up by name, for teams the upcoming-match window did not reference.
+
+    The lookup is exact *after* this project's normalisation (the record's own name, acronym or slug
+    must canonicalise to the same key), so a near-match can never be silently joined. Failures are
+    logged per name and simply leave that team unrated; they never invent one.
+    """
+    out: dict[str, dict] = {}
+    log: dict = {}
+    for name in names:
+        key, _, _ = core.canon(name)
+        found = None
+        for query in dict.fromkeys([name, core.norm(name)]):
+            if not query:
+                continue
+            url = (f"{BO3}/teams/?filter%5Bteams.discipline_id%5D%5Beq%5D=1"
+                   f"&filter%5Bteams.name%5D%5Blike%5D={urlquote(query, safe='')}"
+                   "&page%5Blimit%5D=10")
+            data, meta = fetch_json(url, {"Accept": "application/json"})
+            log[name] = {"url": url, "status": meta.get("status"), "error": meta.get("error")}
+            rows = (data or {}).get("results") if isinstance(data, dict) else None
+            for rec in rows or []:
+                for candidate in (rec.get("name"), rec.get("acronym"), rec.get("slug")):
+                    if core.canon(candidate)[0] == key:
+                        found = rec
+                        break
+                if found:
+                    break
+            if found:
+                break
+            time.sleep(0.05)
+        if found:
+            out[str(found.get("id"))] = {k: found.get(k) for k in
+                                         ("id", "name", "slug", "acronym", "rank", "discipline_id")}
+        time.sleep(0.05)
+    LOG["bo3gg_team_search"] = {"requested": names, "found": sorted(out), "log": log}
+    return out
+
+
 def collect_bo3gg_history(team_ids: list[str], per_side: int = 60) -> dict:
     """Finished-match history for specific teams — the input for the originated Elo line."""
     out: dict[str, list] = {}
@@ -420,6 +489,14 @@ def gh_headers() -> dict:
 
 
 def collect_vrs() -> dict:
+    """Official Valve regional standings, read from the table Valve publishes.
+
+    The published table is:
+        | Standing | Points | Team Name | Roster | [details](...) |
+    so the standing is column 0, the points Valve awards are column 1, and the team name is column 2.
+    Rows are keyed by team name because that is what a fixture can be joined on; the roster column is
+    kept out of the snapshot (it is not needed to price a match).
+    """
     tree, meta = fetch_json(f"https://api.github.com/repos/{VRS_REPO}/git/trees/main?recursive=1",
                             gh_headers())
     LOG["valve_vrs_tree"] = meta
@@ -432,7 +509,8 @@ def collect_vrs() -> dict:
         return {}
     newest_date = max(re.search(r"_(\d{4}_\d{2}_\d{2})\.md$", f).group(1) for f in files)
     out = {"snapshot": newest_date, "regions": {}, "evidence": []}
-    for f in files:
+    import base64
+    for f in sorted(files):
         if newest_date not in f:
             continue
         region = re.search(r"standings_(\w+)_", f).group(1)
@@ -441,22 +519,32 @@ def collect_vrs() -> dict:
         LOG[f"valve_vrs_{region}"] = meta2
         if not isinstance(blob, dict) or "content" not in blob:
             continue
-        import base64
         text = base64.b64decode(blob["content"]).decode("utf-8", "replace")
-        teams = {}
+        teams: dict[str, dict] = {}
+        header_seen = False
         for line in text.splitlines():
-            parts = [p.strip() for p in line.strip().strip("|").split("|")]
-            if len(parts) < 4 or not parts[0].isdigit():
+            stripped = line.strip()
+            if not stripped.startswith("|"):
                 continue
-            points = re.sub(r"[^\d.]", "", parts[3] if len(parts) > 3 else "")
-            if not points:
+            parts = [p.strip() for p in stripped.strip("|").split("|")]
+            if len(parts) < 3:
                 continue
-            teams[parts[1]] = {"standing": int(parts[0]), "points": float(points),
-                               "region": region, "row": line.strip()[:300]}
+            if parts[0].casefold().startswith("standing"):
+                header_seen = True
+                continue
+            if not parts[0].isdigit() or not re.fullmatch(r"\d+(?:\.\d+)?", parts[1] or ""):
+                continue
+            name = parts[2].strip()
+            if not name:
+                continue
+            teams[name] = {"standing": int(parts[0]), "points": float(parts[1]),
+                           "region": region, "vrs_name": name,
+                           "row": stripped[:300]}
         out["regions"][region] = teams
         out["evidence"].append({"region": region, "path": f,
                                 "page_url": f"https://github.com/{VRS_REPO}/blob/main/{f}",
-                                "api_url": api_url, "teams": len(teams)})
+                                "api_url": api_url, "teams": len(teams),
+                                "header_parsed": header_seen})
     out["teams_global"] = out["regions"].get("global", {})
     LOG["valve_vrs"] = {"snapshot": newest_date,
                         "sizes": {k: len(v) for k, v in out["regions"].items()}}
@@ -572,6 +660,14 @@ def main() -> int:
                                "max_coeff_a": t1.get("max_coeff"), "max_coeff_b": t2.get("max_coeff")}))
         written += 1
     LOG["thunderpick_quotes"] = written
+
+    # ---- teams the upcoming window never referenced: look them up by name (bounded) ----------
+    try:
+        missing = unresolved_team_names(hotspawn["fixtures"], quotes, vrs, bo3)
+        if missing:
+            bo3["teams"].update(collect_bo3gg_teams(missing))
+    except Exception as exc:  # noqa: BLE001
+        LOG["bo3gg_team_search"] = {"error": f"{type(exc).__name__}: {exc}"[:300]}
 
     # ---- rating history only for the fixtures that have neither a price nor a VRS row --------
     history: dict = {}

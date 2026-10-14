@@ -142,6 +142,23 @@ def elo_for(rows: list[dict], history: dict, vrs_teams: dict, bo3_ids: dict) -> 
     return ratings, info
 
 
+def rank_to_rating(rank) -> float | None:
+    """Map a bo3.gg published world ranking position onto the Elo scale (documented mapping).
+
+    bo3.gg publishes a world rank per team (1 = best). This is a modelling choice, not a source
+    value: rank 1 maps to 1799, rank 300 or worse to 1500, linearly in between, so that a ranking
+    gap alone can originate a line when a team has no VRS points and no match history. Every row
+    that uses it is labelled and flagged.
+    """
+    try:
+        value = float(rank)
+    except (TypeError, ValueError):
+        return None
+    if value <= 0:
+        return None
+    return core.ELO_BASE + max(0.0, 300.0 - min(value, 300.0))
+
+
 def mark_first_seen(rows: list[dict], build_utc: str) -> dict:
     """Record when each fixture id was first listed here, so the board can show what is new."""
     path = DATA / "fixtures_seen.json"
@@ -185,6 +202,17 @@ def main() -> int:
             key, _, _ = core.canon(candidate)
             if key and key not in bo3_ids:
                 bo3_ids[key] = str(tid)
+
+    # bo3.gg world ranking per canonical name (used only when nothing better exists)
+    rank_index: dict[str, int] = {}
+    slug_index: dict[str, str] = {}
+    for tid, rec in (bo3.get("teams") or {}).items():
+        for candidate in (rec.get("name"), rec.get("acronym"), rec.get("slug")):
+            key, _, _ = core.canon(candidate)
+            if key and key not in rank_index and rec.get("rank") is not None:
+                rank_index[key] = int(rec["rank"])
+            if key and key not in slug_index and rec.get("slug"):
+                slug_index[key] = rec["slug"]
 
     # Second route to the same ids: bo3.gg publishes the two teams of a fixture together, so a
     # fixture whose individual team name is not resolvable can still be resolved by its pairing
@@ -259,26 +287,40 @@ def main() -> int:
                          {r["key_b"] for r in rows if not r["model"].get("prob_a")})
     history = snap.get("bo3gg_history") or {}
     elo_info = {"matches": 0, "teams_seeded": 0}
+    ratings: dict[str, float] = {}
     if history:
         ratings, elo_info = elo_for(rows, history, vrs_teams, bo3_ids)
-        for row in rows:
-            if row["model"].get("prob_a") is not None:
-                continue
-            ida, idb = bo3_ids.get(row["key_a"]), bo3_ids.get(row["key_b"])
-            if not ida or not idb:
-                # fall back to the published pairing of the same two teams
-                pa_id, pb_id = resolve_pair(row["key_a"], row["key_b"])
-                ida, idb = ida or pa_id, idb or pb_id
-            if not ida or not idb:
-                continue
-            ra, rb = ratings.get(f"bo3:{ida}"), ratings.get(f"bo3:{idb}")
-            if ra is None or rb is None:
-                continue
-            pa = core.elo_expected(ra, rb)
-            row["model"]["prob_a"] = pa
-            row["model"]["basis"] = "originated_elo"
-            row["model"]["elo"] = {"rating_a": round(ra, 1), "rating_b": round(rb, 1),
-                                   "matches": elo_info["matches"]}
+
+    # Last resort that still has an external source: bo3.gg publishes a world rank per team, so a
+    # fixture whose teams have no VRS points and no result history can still be originated from
+    # that published ranking (documented mapping in rank_to_rating) — labelled and flagged.
+    for row in rows:
+        if row["model"].get("prob_a") is not None:
+            continue
+        ida, idb = bo3_ids.get(row["key_a"]), bo3_ids.get(row["key_b"])
+        if not ida or not idb:
+            # fall back to the published pairing of the same two teams
+            pa_id, pb_id = resolve_pair(row["key_a"], row["key_b"])
+            ida, idb = ida or pa_id, idb or pb_id
+        ra = ratings.get(f"bo3:{ida}") if ida else None
+        rb = ratings.get(f"bo3:{idb}") if idb else None
+        from_history = ra is not None and rb is not None
+        rank_a = rank_index.get(row["key_a"])
+        rank_b = rank_index.get(row["key_b"])
+        if ra is None and rank_a is not None:
+            ra = rank_to_rating(rank_a)
+        if rb is None and rank_b is not None:
+            rb = rank_to_rating(rank_b)
+        if ra is None or rb is None:
+            continue
+        pa = core.elo_expected(ra, rb)
+        row["model"]["prob_a"] = pa
+        row["model"]["basis"] = "originated_elo" if from_history else "originated_rank"
+        row["model"]["elo"] = {"rating_a": round(ra, 1), "rating_b": round(rb, 1),
+                               "matches": elo_info["matches"] if from_history else 0,
+                               "rank_a": rank_a, "rank_b": rank_b,
+                               "source_a": "bo3.gg history" if from_history else "bo3.gg rank",
+                               "source_b": "bo3.gg history" if from_history else "bo3.gg rank"}
 
     # --------------------------------------------------------------- final line, pick, flags --
     for row in rows:
@@ -300,6 +342,8 @@ def main() -> int:
             flags.append("no_external_price_for_this_fixture")
         if row["model"].get("basis") == "originated_elo":
             flags.append("originated_elo_line_no_official_rating")
+        if row["model"].get("basis") == "originated_rank":
+            flags.append("originated_rank_line_bo3gg_ranking")
         if row["model"].get("basis") == "valve_vrs" and row["market"] is None:
             flags.append("originated_vrs_line")
         if row["tier"] == "C":
@@ -346,6 +390,17 @@ def main() -> int:
                                    "note": f"{row['model'].get('elo', {}).get('matches', 0)} "
                                            "finished matches",
                                    "kind": "rating"})
+        if row["model"].get("basis") == "originated_rank":
+            for key, label in ((row["key_a"], row["team_a"]), (row["key_b"], row["team_b"])):
+                slug = slug_index.get(key)
+                row["sources"].append({
+                    "label": f"bo3.gg world ranking · {label} "
+                             f"#{rank_index.get(key)} (ranking-prior Elo input)",
+                    "url": f"https://bo3.gg/teams/{slug}" if slug else "https://bo3.gg/teams",
+                    "read_utc": snap.get("generated_utc"),
+                    "note": "external published ranking; mapped to the Elo scale by a documented "
+                            "formula, so this line is originated, not a market price",
+                    "kind": "rating"})
         if row["winner"] in ("a", "b") and row["hotspawn_url_kind"] == "match page":
             row["sources"].append({"label": "HotSpawn match page (final score, settlement only)",
                                    "url": row["hotspawn_url"],

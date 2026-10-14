@@ -167,13 +167,18 @@ class BoardTests(unittest.TestCase):
             if (row.get("line") or {}).get("basis") != "model":
                 continue
             basis = row["model"].get("basis")
-            self.assertIn(basis, ("valve_vrs", "originated_elo"), row["fixture_id"])
+            self.assertIn(basis, ("valve_vrs", "originated_elo", "originated_rank"),
+                          row["fixture_id"])
             urls = " ".join(s.get("url") or "" for s in row["sources"])
             if basis == "valve_vrs":
                 self.assertTrue(row["model"].get("prob_a") is not None)
                 self.assertIn("counter-strike_regional_standings", urls, row["fixture_id"])
             else:
                 self.assertIn("bo3.gg", urls, row["fixture_id"])
+                self.assertTrue(row["model"].get("elo"), row["fixture_id"])
+            if basis == "originated_rank":
+                self.assertIn("originated_rank_line_bo3gg_ranking", row["flags"],
+                              row["fixture_id"])
 
     def test_hotspawn_crowd_percentages_are_absent_everywhere(self):
         """The only permitted mention of crowd-picks is the note that they are never used."""

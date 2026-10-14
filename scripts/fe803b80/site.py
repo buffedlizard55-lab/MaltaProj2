@@ -130,7 +130,10 @@ def basis_badge(row) -> str:
         return '<span class="badge market">market+model</span>'
     if b == "model":
         origin = (row.get("model") or {}).get("basis")
-        label = "originated · Valve VRS" if origin == "valve_vrs" else "originated · Elo"
+        label = {"valve_vrs": "originated · Valve VRS",
+                 "originated_elo": "originated · Elo (bo3.gg results)",
+                 "originated_rank": "originated · bo3.gg ranking"}.get(
+                     origin, "originated · ratings")
         return f'<span class="badge model">{esc(label)}</span>'
     return '<span class="badge bad">no source</span>'
 
