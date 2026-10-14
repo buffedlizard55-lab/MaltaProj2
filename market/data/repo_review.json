@@ -1,19 +1,40 @@
 {
- "generated_at_utc": "2026-10-14T02:12:00Z",
+ "generated_at_utc": "2026-10-14T02:24:02Z",
  "checks": [
   {
    "id": "R1",
    "claim": "data/hotspawn_matches.json matches the live lobby fixture list",
    "source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
    "snapshot_file": "data/hotspawn_matches.json",
-   "snapshot_generated_at_utc": "2026-10-14T01:15:53Z",
+   "snapshot_generated_at_utc": "2026-10-14T02:05:00Z",
    "live_count_all_sports": 11570,
    "live_window_rows": 268,
-   "snapshot_count": 398,
-   "window_ids_missing_from_snapshot": [],
+   "snapshot_count": 89,
+   "window_ids_missing_from_snapshot": [
+    "1071186",
+    "1071191",
+    "1071193",
+    "1071203",
+    "1071208",
+    "1071209",
+    "1071210",
+    "1071211",
+    "1071212",
+    "1071213",
+    "1071214",
+    "1071215",
+    "1071216",
+    "1071217",
+    "1071218",
+    "1071219",
+    "1074645",
+    "1074646",
+    "1074647",
+    "1074648"
+   ],
    "stale_in_snapshot": [],
-   "status": "verified",
-   "detail": "398 snapshot rows vs 268 live window rows; 0 live window fixture(s) missing from the snapshot, 0 snapshot row(s) no longer served"
+   "status": "discrepancy",
+   "detail": "89 snapshot rows vs 268 live window rows; 238 live window fixture(s) missing from the snapshot, 0 snapshot row(s) no longer served"
   },
   {
    "id": "R2",
@@ -130,10 +151,10 @@
   {
    "id": "R5",
    "claim": "data/lines.json summary counters match its own row list",
-   "declared_fixtures_total": 90,
-   "rows": 90,
+   "declared_fixtures_total": 89,
+   "rows": 89,
    "status": "verified",
-   "detail": "declared fixtures_total=90 vs 90 rows; fixtures_with_external_line=8"
+   "detail": "declared fixtures_total=89 vs 89 rows; fixtures_with_external_line=10"
   },
   {
    "id": "R6",
@@ -219,5 +240,12 @@
    "detail": "14 fixture(s) priced by 2+ sources compared source by source; 0 with a spread wider than 12 points"
   }
  ],
- "irregularities": []
+ "irregularities": [
+  {
+   "id": "R1",
+   "severity": "low",
+   "finding": "The committed fixture snapshot is not identical to the live lobby API response (expected: both change continuously). Rows are refreshed every 3 hours by the scheduled workflow.",
+   "evidence": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
+  }
+ ]
 }
