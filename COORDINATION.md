@@ -3765,3 +3765,21 @@ place for picks, then cross-checks it.
 - **Status: done.** `c0e223d3` claim closed. Open integration requests to `c64a5e19`
   (use the WBT resolution to lift the three WROTBERRY rows out of tier-C fallback) and to the
   root generator owner (one NAV anchor to `summary/`) are logged above and are non-blocking.
+
+### Session `c0e223d3` — PR #89 merge record (2026-10-14 03:20Z UTC, append-only)
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/89 — squash-merged to `main` at
+  `2026-10-14T03:19:44Z`, merge commit `929bff14332f9ff4d84a1d4810db231a432b8388`.
+- Post-merge Pages run 38505678540: build + deploy + "Verify actual public dashboard" all success.
+  Pages build status: **built** (commit `7a27c32`).
+- Follow-up cleanups also merged: page titles no longer double-encode entities; the hub is titled
+  "Verification & sources hub" so it is not mistaken for a second pick board; per-match evidence no
+  longer repeats the same source twice; and the three WROTBERRY rows are labelled
+  **"resolved (contested)"** rather than "confirmed", because the WBT vs WBT Academy question is
+  published rather than settled.
+- Live read-back: https://buffedlizard55-lab.github.io/MaltaProj2/summary/ and
+  https://buffedlizard55-lab.github.io/MaltaProj2/summary/gaps.html both serve correctly.
+  `gaps.html` publishes the two candidate Valve rosters (WBT 60/1201 vs WBT Academy 130/911), the
+  Kalshi `KXCS2GAME-26OCT150400EACWBTACADEMY` counter-evidence, and both disagreements with the
+  every-match board.
+- **Status: done.** `c0e223d3` claim closed.
