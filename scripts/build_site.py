@@ -32,6 +32,8 @@ from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BLANK = '<span class="blank">—</span>'
+sys.path.insert(0, os.path.join(ROOT, "scripts"))
+from build_lines import fixture_source_kind, fixture_source_url  # noqa: E402
 
 
 def esc(value):
@@ -163,6 +165,22 @@ def table(headers, rows, table_id=None, classes=""):
             f'<thead><tr>{th}</tr></thead><tbody>{"".join(trs)}</tbody></table></div>')
 
 
+def hotspawn_link(fixture, label=None):
+    """Per-row official HotSpawn link.
+
+    Uses the permalink HotSpawn itself publishes on the lobby page. When HotSpawn publishes no
+    per-match page for that fixture the official lobby is linked instead and the label says so;
+    a constructed `/matches/<numeric id>` path is never emitted (it resolves to the general
+    matches index — verified 2026-10-14 ~01:50 UTC).
+    """
+    url = fixture_source_url(fixture)
+    kind = fixture_source_kind(fixture)
+    if label is None:
+        label = ("HotSpawn match page" if kind == "lobby_published_permalink"
+                 else "HotSpawn lobby (no per-match page published)")
+    return f'<a href="{esc(url)}" rel="noopener">{esc(label)}</a>'
+
+
 def source_cell(line):
     name = esc(line.get("source_name") or line.get("source_key"))
     url = line.get("source_public_url") or line.get("source_api_url")
@@ -219,7 +237,7 @@ def fixture_row(fx, with_prices=True):
         odds_html,
         prob_html,
         status,
-        (f'<a href="{esc(fx.get("hotspawn_match_url"))}" rel="noopener">fixture source</a>'),
+        hotspawn_link(fx, "HotSpawn match page" if fx.get("hotspawn_match_url_kind") == "lobby_published_permalink" else "HotSpawn lobby"),
         flag_chips(fx.get("review_flags")),
     ]
 
@@ -232,12 +250,21 @@ def fixtures_table(fixtures, with_prices=True):
 
 
 # --------------------------------------------------------------------------- sections
-def coverage_cards(summary, odds_doc, lines_doc):
+def coverage_cards(summary, odds_doc, lines_doc, fixtures=None):
     sources = sorted({l["source_key"] for l in (odds_doc.get("lines") or [])})
+    fixtures = fixtures or []
+    generated_at = lines_doc.get("generated_at_utc") or ""
+    open_fixtures = [f for f in fixtures
+                     if (f.get("start_time_utc") or "") >= generated_at
+                     and "fixture_start_time_in_the_past_or_stale_source_status"
+                     not in (f.get("review_flags") or [])]
+    locked = len(fixtures) - len(open_fixtures)
+    open_with_line = sum(1 for f in open_fixtures if f.get("bookmaker_lines"))
     cards = [
-        ("Pick'em CS2 fixtures tracked", summary.get("fixtures_total", 0)),
-        ("Fixtures with an eligible source-linked line", summary.get("fixtures_with_external_line", 0)),
-        ("Fixtures still unverified (blank)", summary.get("fixtures_without_external_line", 0)),
+        ("CS2 fixtures listed by the lobby", summary.get("fixtures_total", 0)),
+        ("Still open for picks", len(open_fixtures)),
+        ("Open fixtures with an eligible source-linked line", open_with_line),
+        ("Listed but locked or past (not pickable)", locked),
         ("External sources quoted", len(sources)),
     ]
     html_cards = "".join(
@@ -282,7 +309,7 @@ def main() -> int:
     odds_doc = load("data/odds.json")
     # Every render (including Pages staging) recalculates eligibility at render time.
     # Cached JSON must not silently keep a closed/aged market current.
-    from build_lines import build_document, fixture_source_url
+    from build_lines import build_document
     lines_doc, current_matching = build_document(matches_doc, odds_doc)
     write("data/lines.json", json.dumps(lines_doc, indent=1, ensure_ascii=False, allow_nan=False))
     write("evidence/matching_evidence.json", json.dumps(current_matching, indent=1, ensure_ascii=False, allow_nan=False))
@@ -297,15 +324,31 @@ def main() -> int:
     generated_at = datetime.now(tz=timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     data_time = lines_doc.get("odds_collected_at_utc") or odds_doc.get("generated_at_utc")
 
-    cards, tier_table, by_source = coverage_cards(summary, odds_doc, lines_doc)
+    cards, tier_table, by_source = coverage_cards(summary, odds_doc, lines_doc, fixtures)
 
     # ------------------------------------------------------------------ index.html
     verified = [f for f in fixtures if f.get("bookmaker_lines")]
-    upcoming = [f for f in fixtures if (f.get("start_time_utc") or "") >= lines_doc["generated_at_utc"]]
+    open_fixtures = [f for f in fixtures
+                     if (f.get("start_time_utc") or "") >= lines_doc["generated_at_utc"]
+                     and "fixture_start_time_in_the_past_or_stale_source_status"
+                     not in (f.get("review_flags") or [])]
+    open_verified = [f for f in open_fixtures if f.get("bookmaker_lines")]
+    open_blank = len(open_fixtures) - len(open_verified)
+    open_table, _ = fixtures_table(open_fixtures)
     top_table, _ = fixtures_table(verified[:12])
     idx_body = f"""
 <div class="cards">{cards}</div>
-<h2>What this is</h2>
+<div class="banner"><strong>What you can act on.</strong> The lobby lists
+{summary.get("fixtures_total", 0)} CS2 fixtures, but only <strong>{len(open_fixtures)}</strong> are still
+open for picks; the rest are already locked or in the past and are published for completeness only.
+Of the open fixtures, <strong>{len(open_verified)}</strong> have a confirmed external bookmaker line and
+{open_blank} stay blank and flagged. The
+<a href="live/index.html">live coverage board</a> additionally publishes a clearly labelled
+Valve-standingings estimate for open matches no bookmaker prices, so it can show a probability for
+more matches; this page only publishes what an external market confirms.</div>
+<h2>Open for picks — every CS2 match you can still pick</h2>
+{open_table}
+<h2>Closest matches with eligible source-linked lines</h2>
 <p>The HotSpawn pick'em lobby lists CS2 (and LoL) matches you can pick. This dashboard collects those
 fixtures from the lobby's own public API, then looks up <strong>external betting lines</strong> for every
 fixture at external bookmakers (Pinnacle and Bovada). Prediction-market snapshots are excluded from current picks. For each match where an external price was
@@ -324,7 +367,8 @@ market prices</em>, not forecasts, and the rule is published on every row.</p>
 <h2>Closest matches with eligible source-linked lines</h2>
 {top_table}
 <p><a class="btn" href="cs2.html">Open the full CS2 table ({len(fixtures)} fixtures)</a>
-<a class="btn ghost" href="flagged.html">Flagged for review ({summary.get("fixtures_without_external_line", 0)} unverified rows)</a></p>
+<a class="btn ghost" href="flagged.html">Flagged for review ({summary.get("fixtures_without_external_line", 0)} unverified rows)</a>
+<a class="btn ghost" href="live/index.html">Live coverage board (estimates + market lines)</a></p>
 
 <h2>Parallel session data preserved in this repo</h2>
 <p>Other sessions in this repo published their own reference material, kept intact: the VRS-based
@@ -377,7 +421,7 @@ links to the page/API the quote was read from. Blank cells mean no eligible offi
             f'<strong>{esc(m.get("team_a"))}</strong> vs <strong>{esc(m.get("team_b"))}</strong>',
             BLANK, BLANK,
             '<span class="warn">unverified — external line collection covers CS2 only</span>',
-            f'<a href="{esc(fixture_source_url(m))}" rel="noopener">fixture source</a>',
+            hotspawn_link(m),
             '<span class="chip">lol odds not collected</span>',
         ])
     lol_body = f"""
@@ -440,13 +484,13 @@ fixtures with the same verification columns as the main table.</p>
                  '<span class="warn">no external line found</span>',
                  ", ".join(esc(x) for x in (f.get("review_flags") or [])) or
                  '<span class="chip">external_odds_not_found</span>',
-                 f'<a href="{esc(f.get("hotspawn_match_url"))}" rel="noopener">HotSpawn match</a>']
+                 hotspawn_link(f, "HotSpawn match page" if f.get("hotspawn_match_url_kind") == "lobby_published_permalink" else "HotSpawn lobby")]
                 for f in unverified]
     stale = [f for f in fixtures if "fixture_start_time_in_the_past_or_stale_source_status" in (f.get("review_flags") or [])]
     stale_rows = [[esc(fmt_time(f.get("start_time_utc"))), esc(f.get("competition")), f'{esc(f.get("team_a"))} vs {esc(f.get("team_b"))}',
                    esc(f.get("source_reported_status")),
                    '<span class="chip">past kickoff; raw source status is not proof the fixture is pickable</span>',
-                   f'<a href="{esc(f.get("hotspawn_match_url"))}" rel="noopener">official fixture</a>']
+                   hotspawn_link(f, "HotSpawn match page" if f.get("hotspawn_match_url_kind") == "lobby_published_permalink" else "HotSpawn lobby")]
                   for f in stale[:80]]
     rejects_rows = [[esc(r.get("fixture_id")), esc(r.get("source")), esc(r.get("reason")),
                      esc(r.get("fixture") or r.get("event") or ""),
@@ -618,7 +662,7 @@ www.hotspawn.com (search returns seasons 1–4 only): identity unresolved, flagg
             f'{esc(r.get("team_a"))} vs {esc(r.get("team_b"))}',
             prob_cell,
             " · ".join(src_bits) or BLANK,
-            f'<a href="{esc(r.get("official_source_url"))}" rel="noopener">fixture #{esc(r.get("fixture_id"))}</a>',
+            f'{hotspawn_link(m)} <span class="mini">fixture #{esc(r.get("fixture_id"))}</span>',
             ", ".join(esc(x) for x in (r.get("flags") or [])) or '<span class="chip">ok</span>',
         ])
     prob_body = f"""

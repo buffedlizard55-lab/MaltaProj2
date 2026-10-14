@@ -103,12 +103,41 @@ def eligibility(fixture, quote, fixtures_time, now):
     return None
 
 
+BARE_ROUTE_PREFIX = "https://www.hotspawn.com/matches/"
+LOBBY_PAGE_URL = "https://play.hotspawn.com/lobby"
+
+
+def _match_url(fixture):
+    """The per-match URL recorded for a fixture, in either snapshot shape."""
+    url = fixture.get("hotspawn_match_url")
+    if url:
+        return url
+    return (fixture.get("source") or {}).get("hotspawn_match_url")
+
+
 def fixture_source_url(fixture):
-    # The inherited /matches/{id} path is synthesized, not an observed permalink.
-    # Use the actual official JSON endpoint recorded by fixture discovery instead.
-    api = (fixture.get("source") or {}).get("api")
-    known = "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
-    return api if api == known else "https://play.hotspawn.com/lobby"
+    """Official per-row source link for a HotSpawn fixture.
+
+    Only a permalink HotSawn itself publishes on the lobby page may be used as the per-match link.
+    A bare `/matches/<numeric id>` is never published by HotSawn (it resolves to the general matches
+    index, verified 2026-10-14 ~01:50 UTC), so such a value is discarded and the official lobby page
+    is returned instead. No slug is ever constructed.
+    """
+    url = _match_url(fixture)
+    if url and url.startswith(BARE_ROUTE_PREFIX) and url[len(BARE_ROUTE_PREFIX):].isdigit():
+        url = None
+    return url or LOBBY_PAGE_URL
+
+
+def fixture_source_kind(fixture):
+    source = fixture.get("source") or {}
+    if source.get("hotspawn_match_url_kind"):
+        return source["hotspawn_match_url_kind"]
+    if fixture.get("hotspawn_match_url_kind"):
+        return fixture["hotspawn_match_url_kind"]
+    url = _match_url(fixture) or ""
+    tail = url[len(BARE_ROUTE_PREFIX):] if url.startswith(BARE_ROUTE_PREFIX) else ""
+    return "lobby_published_permalink" if (url and not tail.isdigit()) else "official_lobby_fallback"
 
 
 def build_document(fixtures_doc, odds_doc, now=None):
@@ -192,6 +221,7 @@ def build_document(fixtures_doc, odds_doc, now=None):
                        "team_a": fx.get("team_a"), "team_b": fx.get("team_b"),
                        "source_reported_status": fx.get("status"),
                        "hotspawn_match_url": fixture_source_url(fx),
+                       "hotspawn_match_url_kind": fixture_source_kind(fx),
                        "bookmaker_lines": found,
                        "derived": {"per_source": {q["source_key"]: {k: q[k] for k in
                                     ("derived_probability_a", "derived_probability_b", "overround")} for q in found},

@@ -252,6 +252,7 @@ def build_board(fixtures_doc: dict, quotes_doc: dict, ratings_doc: dict, now) ->
             "team_a": f.get("team_a"),
             "team_b": f.get("team_b"),
             "hotspawn_match_url": (f.get("source") or {}).get("hotspawn_match_url"),
+            "hotspawn_match_url_kind": (f.get("source") or {}).get("hotspawn_match_url_kind"),
             "hotspawn_fixture_api": (f.get("source") or {}).get("api"),
             "hotspawn_pick_pct_reference_only": f.get("hotspawn_pick_pct_reference_only"),
             "listed_in_lobby": (None if listing_set is None
@@ -743,6 +744,16 @@ HotSpawn or any bookmaker.</footer>
 """
 
 
+def fixture_link(row: dict) -> str:
+    """Per-row HotSpawn source link: the published permalink when there is one, else the lobby."""
+    url = row.get("hotspawn_match_url")
+    if not url:
+        return ""
+    if row.get("hotspawn_match_url_kind") == "lobby_published_permalink":
+        return f'<a href="{esc(url)}">HotSpawn match page</a>'
+    return f'<a href="{esc(url)}">HotSpawn lobby</a>'
+
+
 def row_card(row: dict, show_estimate: bool = True) -> str:
     pub = row["published"]
     basis = pub["basis"]
@@ -809,8 +820,11 @@ def row_card(row: dict, show_estimate: bool = True) -> str:
                        f'{esc(r.get("quoted_probability_for"))} {esc(r.get("quoted_probability"))} · '
                        f'read {esc(r["retrieved_at_utc"])}</div>' for r in row["reference"])
         detail += refs
-    hs = (f'<div class="src"><a href="{esc(row["hotspawn_match_url"])}">HotSpawn fixture page</a> · '
-          f'<a href="{esc(row["hotspawn_fixture_api"])}">fixture API</a></div>' if row.get("hotspawn_match_url") else "")
+    if row.get("hotspawn_match_url"):
+        hs = (f'<div class="src">{fixture_link(row)} · '
+              f'<a href="{esc(row["hotspawn_fixture_api"])}">fixture API</a></div>')
+    else:
+        hs = ""
     return f"""<article class="card">
 <div class="meta">{esc(row["start_time_utc"])} · Tier {esc((row["tier"] or "?").upper())} · {esc(row["competition"])} · {esc(row["status"])}</div>
 <h3>{esc(row["team_a"])} vs {esc(row["team_b"])}</h3>
@@ -872,7 +886,7 @@ Verification: {verification["passed"]}/{len(verification["checks"])} checks pass
         f'<td>{esc(r["competition"])}</td><td>{esc(r["team_a"])} vs {esc(r["team_b"])}</td>'
         f'<td>{esc(r["published"]["basis"])}</td>'
         f'<td>{esc("; ".join(r["flags"]))}</td>'
-        f'<td><a href="{esc(r["hotspawn_match_url"])}">fixture</a></td></tr>' for r in closed_listed)
+        f'<td>{fixture_link(r)}</td></tr>' for r in closed_listed)
     closed_block = (
         f'<h2>Listed by the lobby but no longer open for picks ({len(closed_listed)})</h2>'
         f'<div class="note">Published so the listing coverage is complete and auditable. Rows here carry a '
@@ -888,7 +902,7 @@ Verification: {verification["passed"]}/{len(verification["checks"])} checks pass
             f'<td>{esc(r["competition"])}</td><td>{esc(r["team_a"])} vs {esc(r["team_b"])}</td>'
             f'<td>{esc(r["published"]["basis"])}</td>'
             f'<td>{"yes" if r["published"]["pick_side"] else "no"}</td>'
-            f'<td><a href="{esc(r["hotspawn_match_url"])}">fixture</a></td></tr>' for r in other[:400])
+            f'<td>{fixture_link(r)}</td></tr>' for r in other[:400])
         other_block = (f'<h2>Also returned by the fixture API but not listed by the lobby right now '
                        f'({len(other)})</h2><div class="note">Kept so nothing is hidden, but these rows '
                        f'are <b>not</b> part of the lobby listing and are excluded from the coverage '
@@ -927,7 +941,7 @@ def render_flagged(board: dict, verification: dict, quotes_doc: dict, log: dict)
         esc(r["start_time_utc"]), esc(r["game"]), esc(r["competition"]), esc(r["tier"]),
         f'{esc(r["team_a"])} vs {esc(r["team_b"])}',
         esc("; ".join(f for f in r["flags"] if f.startswith(("no_valve", "no_official")))),
-        f'<a href="{esc(r["hotspawn_match_url"])}">fixture</a>'] for r in blanks],
+        fixture_link(r)] for r in blanks],
         ["Kickoff (UTC)", "Game", "Tournament", "Tier", "Match", "Why blank", "Source"])
     flag_rows = table([[
         esc(r["start_time_utc"]), esc(r["game"]), f'{esc(r["team_a"])} vs {esc(r["team_b"])}',

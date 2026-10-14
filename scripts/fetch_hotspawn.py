@@ -30,13 +30,37 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 
 API = "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1"
+LOBBY_PAGE = "https://play.hotspawn.com/lobby"
 UA = "MaltaProj2-research/1.0 (+https://github.com/buffedlizard55-lab/MaltaProj2)"
+# HotSpawn publishes per-match permalinks as /matches/<team-a>-vs-<team-b>-<tournament>-<fixture id>.
+# A bare /matches/<numeric id> is NOT published by HotSpawn: it resolves to the general matches
+# index (verified 2026-10-14 ~01:50 UTC), so it must never be used as a per-row source link.
+PERMALINK_PATH_RE = re.compile(
+    r"https?://(?:www\.)?hotspawn\.com/matches/([A-Za-z0-9][A-Za-z0-9\-\.\+']*)")
+PERMALINK_TAIL_RE = re.compile(r"^(.+)-(\d{4,})$")
+
+
+def extract_published_permalinks(html: str) -> dict:
+    """Map fixture id -> the per-match permalink HotSawn itself publishes on the lobby page.
+
+    Only URLs found verbatim in the served page are returned. A fixture without a published
+    permalink is absent from the map, so the caller falls back to the official lobby URL instead
+    of constructing a slug. The id is the trailing `-<digits>` of the published slug, which keeps
+    tournaments containing digits intact (`...-cct-europe-2026-series-11-1079621`).
+    """
+    out = {}
+    for segment in PERMALINK_PATH_RE.findall(html or ""):
+        tail = PERMALINK_TAIL_RE.match(segment)
+        if tail:
+            out.setdefault(tail.group(2), "https://www.hotspawn.com/matches/" + segment)
+    return out
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LIVE_STATUSES = {"upcoming", "live", "open", "pending", "scheduled"}
 
@@ -116,6 +140,14 @@ def main() -> int:
 
     window.sort(key=lambda f: int(f.get("scheduled_start_time") or 0))
 
+    # Per-row source links come only from permalinks HotSpawn itself publishes on the lobby page.
+    status, page_body, page_url = get_json(LOBBY_PAGE, timeout=60)
+    page_html = page_body if isinstance(page_body, str) else ""
+    permalinks = extract_published_permalinks(page_html)
+    probe["lobby_page"] = {"url": page_url, "status": status,
+                           "permalinks_published": len(permalinks),
+                           "permalinks_sample": dict(list(sorted(permalinks.items()))[:5])}
+
     matches = []
     for f in window:
         cid = f.get("competition_id")
@@ -144,7 +176,11 @@ def main() -> int:
             "team_b_pick_pct": f.get("participants1_picked_percent"),
             "source": {
                 "api": f"{API}/fixtures",
-                "hotspawn_match_url": f"https://www.hotspawn.com/matches/{f.get('id')}",
+                "page": LOBBY_PAGE,
+                "hotspawn_match_url": permalinks.get(str(f.get("id")), LOBBY_PAGE),
+                "hotspawn_match_url_kind": ("lobby_published_permalink"
+                                            if str(f.get("id")) in permalinks
+                                            else "official_lobby_fallback"),
             },
         })
 
@@ -157,6 +193,10 @@ def main() -> int:
                  "team_a_pick_pct / team_b_pick_pct are HotSpawn player PICK percentages "
                  "and are NOT betting probabilities; they are recorded for reference only."),
         "match_count": len(matches),
+        "permalinks": permalinks,
+        "permalinks_note": ("fixture id -> the official HotSpawn match URL the lobby page itself "
+                            "publishes; /matches/<id> on its own redirects to the matches index and "
+                            "is never published, so the official lobby page is used instead"),
         "matches": matches,
     }
     _write(os.path.join(ROOT, "data", "hotspawn_matches.json"), out, indent=1)
