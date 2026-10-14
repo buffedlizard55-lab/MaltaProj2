@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method &amp; sources · Unresolved picks · HotSpawn CS2</title>
+<meta name="description" content="A pick and win probability for every open HotSpawn CS2 fixture, with the evidence basis and limitation published for each row.">
+<style>
+:root{--bg:#0f1218;--card:#171b23;--line:#262c38;--txt:#e8ebf1;--mut:#9aa3b2;--acc:#3ddc97;--acc2:#5aa9ff;--warn:#ffb547;--bad:#ff6b6b}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--acc2)}
+header{position:sticky;top:0;z-index:5;background:#0b0e13;border-bottom:1px solid var(--line)}
+.bar{max-width:1100px;margin:0 auto;padding:10px 14px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.brand{font-weight:700;margin-right:auto}
+.bar nav{display:flex;gap:6px;flex-wrap:wrap}
+.bar nav a{padding:6px 10px;border-radius:8px;text-decoration:none;color:var(--txt);background:#1c212b;font-size:14px}
+.bar nav a.on{background:var(--acc);color:#04130c;font-weight:700}
+main{max-width:1100px;margin:0 auto;padding:14px}
+h1{font-size:22px;margin:6px 0 4px}
+h2{font-size:18px;margin:26px 0 8px}
+h3{font-size:15px;margin:16px 0 6px}
+.mut{color:var(--mut)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:12px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
+.stat b{display:block;font-size:22px}
+.stat span{color:var(--mut);font-size:13px}
+.pickcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 12px;margin:8px 0}
+.pickcard .when{font-size:12.5px;color:var(--mut)}
+.teams{display:flex;justify-content:space-between;gap:8px;margin:4px 0}
+.team{flex:1;overflow-wrap:anywhere}
+.team.pk{font-weight:700;color:var(--acc)}
+.pct{font-variant-numeric:tabular-nums;font-weight:700}
+.meter{height:7px;background:#2a303c;border-radius:4px;overflow:hidden;margin:3px 0 6px}
+.meter i{display:block;height:100%;background:var(--acc)}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:700;margin-right:4px}
+.b-featured{background:#1f6f4d}
+.b-esportsbook{background:#1f6f4d}
+.b-originated_vrs{background:#245a85}
+.b-originated_rank{background:#5b3a12;color:#ffd9a3}
+.b-unresolved{background:#5b2222}
+.b-flag{background:#3a2c12;color:#ffd9a3}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;overflow-wrap:anywhere}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);background:#131720}
+.small{font-size:12.5px;color:var(--mut)}
+.note{background:#151a22;border-left:3px solid var(--acc2);padding:10px 12px;border-radius:6px;margin:10px 0}
+.warnbox{background:#221a10;border-left:3px solid var(--warn);padding:10px 12px;border-radius:6px;margin:10px 0}
+.linkcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.linkcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
+.linkcard a{font-weight:700;font-size:16px}
+.foot{margin:30px 0 10px;color:var(--mut);font-size:13px}
+code{background:#11151c;padding:1px 5px;border-radius:4px}
+ul.tight li{margin:3px 0}
+@media (max-width:760px){
+ table.cards thead{display:none}
+ table.cards tr{display:block;border-bottom:2px solid var(--line);padding:6px 0}
+ table.cards td{display:block;border:none;padding:4px 10px}
+ table.cards td:before{content:attr(data-l);display:block;font-size:11px;text-transform:uppercase;color:var(--mut);letter-spacing:.05em}
+}
+</style></head><body>
+<header><div class="bar"><div class="brand">🔎 Unresolved picks · CS2 Pick'ems</div><nav><a href="index.html">Picks for every match</a><a href="flagged.html">Unresolved &amp; contested</a><a href="method.html" class=on>Method &amp; sources</a><a href="repo-audit.html">Repository review</a><a href="../index.html">Main dashboard</a></nav></div></header>
+<main>
+<h1>Method &amp; sources</h1>
+<p class="mut">How each pick on the <a href="index.html">every-match page</a> was produced, in the
+order the project brief requires, and what each label means.</p>
+
+<h2>The featured route (tried first for every match)</h2>
+<p>An eligible two-sided primary-bookmaker quote (Pinnacle, Bovada) joined to the fixture by both team
+names after normalisation <em>and</em> the exact UTC kickoff, prematch and open, with confirmed outcome
+ordering, a unique join, an unpassed pick lock and a quote/fixture snapshot no older than four hours.
+Rows that meet it are labelled <span class="badge b-featured">Featured bookmaker line</span> and are
+not re-derived here.</p>
+
+<h2>The fallback ladder (only for matches the featured route cannot resolve)</h2>
+<ul>
+<li><b>1. HLTV.</b> Identity and ranking evidence read from official HLTV match, team and analytics
+pages, archived with read times in <code>data/7177d07f/hltv_research.json</code>. HLTV 'Best Odds'
+columns were empty for every unpriced fixture inspected on 2026-10-14, so HLTV contributes identity
+and ranking — not a price. HLTV's logged-in user-vote split is recorded but never used as a
+probability, exactly like HotSpawn's crowd percentage.</li>
+<li><b>2. Esportsbooks / esports betting lines.</b> Melbet's public LineFeed, Thunderpick coefficients
+as published by bo3.gg, and Kalshi exchange books. A price is used only when both team names match the
+fixture; the no-vig probability is <code>p = (1/odds) / Σ(1/odds)</code>.</li>
+<li><b>3. Official Valve VRS.</b> Points from Valve's own
+<a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">counter-strike_regional_standings</a> file, read through the GitHub API, with
+Valve's published Glicko expected-win curve and the slope re-fitted against this snapshot's
+market-priced fixtures (k = 0.3599, 11 pairs,
+MAE 0.0877).</li>
+<li><b>4. Published VRS standing substitution.</b> Where a team appears in no Valve file row but HLTV
+publishes its Valve VRS standing, points are substituted from the file's standing-order position.
+This is a documented substitution, flagged
+<code>rating_from_published_standing_not_a_measured_rating</code>.</li>
+</ul>
+
+<h2>What each label means</h2>
+<table class="cards"><thead><tr><th>Label</th><th>Meaning</th></tr></thead><tbody>
+<tr><td data-l="Label"><span class="badge b-featured">Featured bookmaker line</span></td>
+<td data-l="Meaning">Derived from eligible external bookmaker prices. Strongest evidence on the site.</td></tr>
+<tr><td data-l="Label"><span class="badge b-esportsbook">Esportsbook / exchange price</span></td>
+<td data-l="Meaning">Two-sided price from an esportsbook or regulated exchange read this run.</td></tr>
+<tr><td data-l="Label"><span class="badge b-originated_vrs">Originated — official Valve VRS</span></td>
+<td data-l="Meaning">No reachable price; the line is originated from both teams' official Valve points.</td></tr>
+<tr><td data-l="Label"><span class="badge b-originated_rank">Originated — published VRS standing</span></td>
+<td data-l="Meaning">One side has only a published standing; weakest evidence that still produces a number.</td></tr>
+<tr><td data-l="Label"><span class="badge b-unresolved">Unresolved</span></td>
+<td data-l="Meaning">No defensible evidence. The probability is left blank — never defaulted to 50/50.</td></tr>
+</tbody></table>
+
+<h2>Source access log for this build</h2>
+<div style="overflow-x:auto"><table class="cards"><thead><tr><th>Source</th><th>URL</th><th>Result</th>
+<th>Rows</th><th>Read (UTC)</th></tr></thead><tbody><tr><td data-l="Source">hltv_probe</td><td data-l="URL"><a href="https://www.hltv.org/betting/analytics" rel="noopener">https://www.hltv.org/betting/analytics</a></td><td data-l="Result">200</td><td data-l="Rows">0</td><td data-l="Read (UTC)">2026-10-14T05:53:52Z</td></tr><tr><td data-l="Source">melbet</td><td data-l="URL"><a href="https://melbet.com/en/line/esports" rel="noopener">https://melbet.com/en/line/esports</a></td><td data-l="Result">200</td><td data-l="Rows">39</td><td data-l="Read (UTC)">2026-10-14T05:53:51Z</td></tr><tr><td data-l="Source">thunderpick_via_bo3gg</td><td data-l="URL"><a href="https://bo3.gg/matches" rel="noopener">https://bo3.gg/matches</a></td><td data-l="Result">200</td><td data-l="Rows">38</td><td data-l="Read (UTC)">2026-10-14T05:53:52Z</td></tr><tr><td data-l="Source">kalshi</td><td data-l="URL"><a href="https://kalshi.com/markets/kxcs2game" rel="noopener">https://kalshi.com/markets/kxcs2game</a></td><td data-l="Result">200</td><td data-l="Rows">156</td><td data-l="Read (UTC)">2026-10-14T05:53:52Z</td></tr><tr><td data-l="Source">valve_vrs</td><td data-l="URL"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md</a></td><td data-l="Result">200</td><td data-l="Rows">380</td><td data-l="Read (UTC)">2026-10-14T05:53:50Z</td></tr></tbody></table></div>
+<p class="small">This collector runs on GitHub-hosted runners. When a source cannot be read it is
+recorded as unreachable and the build falls back to the last committed snapshot; a source failure
+never becomes a guessed number.</p>
+
+<h2>Limitations</h2>
+<ul class="tight">
+<li>Originated lines are model output with an official rating input. They are not bookmaker prices and
+no bookmaker is quoting these matches.</li>
+<li>Valve's published file is a snapshot (2026_10_05, 380 rows);
+rosters and ratings move between snapshots.</li>
+<li>HLTV's republication of the Valve VRS rank and Valve's own file can disagree because they are
+different snapshot dates. Both are published where they differ.</li>
+<li>Team identity is the largest source of error on the tier-C events. Every alias used is listed with
+its evidence and its counter-evidence on the <a href="flagged.html">Unresolved &amp; contested</a> page.</li>
+<li>The ladder is applied to this run's lobby inventory. A new low-tier fixture with no rating and no
+price anywhere would appear as <span class="badge b-unresolved">Unresolved</span> rather than be filled in.</li>
+</ul>
+
+<p class="foot">Built 2026-10-14T05:53:52Z UTC by an automated GitHub Actions run — no manual input. Session <code>7177d07f</code>.
+HotSpawn is used for fixture discovery only; its crowd pick percentage is never read or used.
+Originated lines are model output with an official rating input, not bookmaker prices, and not betting advice. 18+.</p>
+</main></body></html>

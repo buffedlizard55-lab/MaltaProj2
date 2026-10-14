@@ -159,6 +159,13 @@ def executive_summary_html():
          "Matches no source can settle yet: what was tried, why it cannot be resolved, and the "
          "limitation of each gap — never guessed, never filled.",
          _board_stamp("data/b5436cf0/board.json", "generated_utc")),
+        # 7177d07f integration (additive): the research-resolved section that applies HLTV,
+        # esportsbook/exchange lines and official Valve VRS only to fixtures the featured route
+        # cannot price, and publishes its own unresolved/limitation list.
+        ("unresolved/index.html", "Picks for every match (research-resolved)",
+         "Featured lines first; unpriced matches resolved with HLTV, esportsbooks and official "
+         "Valve VRS. Basis and limitation published per row.",
+         _board_stamp("data/7177d07f/board.json", "generated_utc")),
         ("picks-every-match/index.html", "Every-match picks at a glance",
          "Every open match; supported probabilities or blank + flagged. Start here on mobile.",
          _board_stamp("data/c64a5e19/board.json", "generated_utc")),
@@ -213,6 +220,9 @@ def executive_summary_html():
   evidence. HLTV rankings and form can guide research but are not betting lines. Disputed aliases,
   sparse results, thin exchange books and inaccessible bookmakers can prevent a defensible pick.</p>
   {unresolved}
+  <p><a href="unresolved/index.html">Picks for every match (research-resolved): every open CS2
+  fixture with a pick, the basis and the limitation</a> ·
+  <a href="unresolved/flagged.html">Unresolved &amp; contested rows</a></p>
   <p><a href="flagged.html">Flagged for Review: all strict gaps</a> ·
   <a href="audits/5cd24fb4/index.html">Flagged for Review: fallback-source audit</a> ·
   <a href="summary/gaps.html">Cross-board disagreements</a></p>

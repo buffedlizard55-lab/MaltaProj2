@@ -4317,3 +4317,55 @@ Log:
   same lobby is counted differently by the other boards (28 vs 29 fixtures, 13/14/15/23 market
   priced) because each session combines a different snapshot with a different acceptance rule —
   this section publishes its own snapshot time and never merges another board\'s numbers.
+
+---
+
+## Session `7177d07f` — unresolved/fallback CS2 picks resolution, limitations analysis, mobile executive summary & repo verification (2026-10-14 04:38 UTC, append-only)
+
+Environment note: Arena pins this session to `arena/7177d07f-maltaproj2`; the requested `session-<id>/<task>` branch naming cannot be used in this environment, so all work stays on `arena/7177d07f-maltaproj2`.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| `T-UNRESOLVED-7177D07F`: (1) resolve a pick and win probability for every open HotSpawn CS2 fixture, applying HLTV, external esportsbooks/betting lines (Melbet, Thunderpick-via-bo3.gg, Kalshi exchange) and official Valve VRS disambiguation **only** to matches that cannot be resolved in the same way as featured picks; (2) publish a dedicated **Unresolved Picks & Limitations** section (`unresolved/**`) and include it in the mobile Executive Summary with in-site navigation to every updated pick list; (3) conduct line-by-line repo & source verification (`unresolved/repo-audit.html`, `unresolved/flagged.html`); (4) configure 4-hourly automated refresh (`.github/workflows/unresolved-7177d07f.yml`) | in progress | 7177d07f | 2026-10-14 04:38 | `scripts/7177d07f/**`, `data/7177d07f/**`, `unresolved/**`, `tests/test_7177d07f.py`, `.github/workflows/unresolved-7177d07f.yml`, `COORDINATION.md` (this appended section only) |
+| `T-INTEG-7177D07F` (final integration handoff, additive-only): stage `unresolved/` in `scripts/stage_site.py`, surface the `unresolved/` entry and unresolved-picks limitation summary in `scripts/build_site.py` (`executive_summary_html`) and `README.md` without altering any other session's test contracts, open PR to `main`, merge, and confirm GitHub Pages deployment |claimed (pending completion of `T-UNRESOLVED-7177D07F`) | 7177d07f | 2026-10-14 04:38 | `scripts/stage_site.py` (single additive list entry `'unresolved'`), `scripts/build_site.py` (additive link in `executive_summary_html`), `README.md` (single additive table row), regenerated root `index.html` / `flagged.html`, `COORDINATION.md` |
+
+### Non-overlap & coordination log
+- Read `COORDINATION.md` and checked all remote branches before starting. Active parallel claims (`b1fb1465` on `exec/**`, `b5436cf0` on `picks-all/**`, `57e26db7` on `audits/57e26db7/**` and `picks-every-match/**`, and merged `5cd24fb4` on `audits/5cd24fb4/**`) are respected; none of their session-owned files are edited.
+- Existing published snapshots (`data/lines.json`, `data/hotspawn_matches.json`, `data/f7279a54/board.json`, `data/c64a5e19/board.json`, `data/fe803b80/board.json`, `data/coverage/board.json`, `data/live/board.json`) are read-only inputs for cross-verification.
+- Official source verification is mandatory: every table row carries an official `https://` source link; HotSpawn crowd `picked %` is never read or used as a probability input; any value that cannot be confirmed from an official source is left blank under strict verification and flagged with its exact limitation.
+
+### 7177d07f implementation record (2026-10-14 05:2x UTC, append-only)
+
+**Scope delivered** — `scripts/7177d07f/{collect,build,site}.py`, `data/7177d07f/{hltv_research,snapshot,board,valve_standings_fallback}.json`,
+`unresolved/{index,method,flagged,repo-audit}.html`, `tests/test_7177d07f.py`,
+`.github/workflows/unresolved-7177d07f.yml`, plus three additive integration touches
+(`scripts/stage_site.py` list entry, `scripts/build_site.py` executive-summary link, `README.md` row).
+
+**Resolution ladder** (featured route first; the extra sources are applied only to fixtures it cannot price):
+1. `featured` — eligible two-sided primary-bookmaker line from `data/lines.json` (11 of 28 open rows this run).
+2. `esportsbook` — two-sided price from Melbet LineFeed, Thunderpick coefficients as published by bo3.gg, or Kalshi books (0 rows this run; all three were unreachable from the sandbox and are recorded as unreachable, not substituted).
+3. `originated_vrs` — official Valve regional standings points for both teams, Valve's Glicko curve with the slope re-fitted on this snapshot (k = 0.3535, 11 pairs, MAE 0.0922) → 16 rows.
+4. `originated_rank` — one side known only by a published VRS standing; points substituted from the file's standing order, flagged `rating_from_published_standing_not_a_measured_rating` → 1 row (1079624 LFO 10, HLTV 'VRS #169').
+5. `unresolved` — blank + limitation (0 rows this run; the page states this is a per-run result, not a coverage guarantee).
+
+**New research findings (all dated, all source-linked, none invented):**
+- **LFO 10 has a published Valve VRS standing (#169) on HLTV** (`https://www.hltv.org/team/14084/lfo-10`) even though Valve's own 2026-10-05 global file has no LFO 10 row. Earlier boards used the sibling LFO 7/8/9 rows instead. Three documented estimates now exist and the conflict is published rather than resolved silently.
+- **WROTBERRY = WBT** is confirmed by roster identity: HLTV's WBT lineup (Psycho, Smash, s4ltovsk1yy, DemQQ, tyr1k) is character-identical to Valve's official WBT row (standing 60, 1201 points). Counter-evidence (Kalshi 'WBT Academy' tickers, bo3.gg/egamersworld/strafe rosters matching Valve's WBT Academy row) is published alongside; the two candidate rosters imply opposite picks on WROTBERRY vs EAC and both are shown.
+- **Envy = Valve '3DMAX'**: HLTV's Envy lineup (Maka, Lucky, misutaaa, Kursy, Graviti) is identical to Valve's 3DMAX row (standing 21, 1500 points).
+- **RoundsGG = ROUNDS** re-confirmed; **Banda Chuya** and **6666** each have two official rows in Valve's file (highest-rated used, duplication flagged).
+- **HLTV 'Best Odds' columns were empty (dashes) for every unpriced fixture inspected**, so HLTV could contribute identity and ranking but no price. HLTV's logged-in user-vote split is recorded and never used as a probability (same rule as HotSpawn's crowd %).
+
+**Cross-check published:** every row records how `picks-every-match` (c64a5e19), `board` (fe803b80), `ourline` (f7279a54) and `coverage` (6ddde224) picked the same fixture and whether they agree. 25 of 28 rows agree with every other board; 1080279 (WROTBERRY vs EAC) disagrees with both other boards because of the identity question, and 1080285 (Voca vs Phantom, a 51.7/48.3 toss-up) splits.
+
+**Verification:** full repository suite `python -m unittest discover -s tests` → 501 tests OK (1 skipped) including 18 new `tests/test_7177d07f.py` contracts (one open fixture per row, pick = higher side and pair sums to 1, blank rows flagged, featured rows never overridden, every row carries an https source link, originated rows cite the official Valve file, crowd-percentage fields forbidden, rendered pages are mobile-friendly with no JS/http, every local link resolves, cron gap ≤ 8 h). `scripts/stage_site.py` → PASS, all staged local links resolve across every section including the new `unresolved/`, `picks-all/` and `exec/`.
+
+**Merge-conflict log:** rebasing onto `origin/main` (which had merged PR #103, session `b5436cf0`, adding `picks-all/`) produced an append/add conflict in `COORDINATION.md` and additive-vs-additive conflicts in `scripts/build_site.py` and `scripts/stage_site.py`. Both were resolved by **union, not overwrite**: `8723ad37`'s and `b5436cf0`'s entries are preserved verbatim alongside `7177d07f`'s. Bot-regenerated artifacts (`index.html`, `cs2.html`, `data/lines.json`, `evidence/matching_evidence.json`, tournament pages, …) were reset to `origin/main` and regenerated locally rather than merged by hand.
+
+**Sources:** https://play.hotspawn.com/lobby ; https://www.hltv.org/betting/analytics ;
+https://www.hltv.org/matches/2399301/forze-reload-vs-lfo-10-cct-2026-europe-series-11 ;
+https://www.hltv.org/team/14084/lfo-10 ; https://www.hltv.org/team/13683/wbt ;
+https://www.hltv.org/team/13900/banda-chuya ; https://www.hltv.org/team/13882/6666 ;
+https://www.hltv.org/events/9332/matches ; https://www.hltv.org/events/9456/matches ;
+https://www.hltv.org/events/9442/matches ; https://www.hltv.org/events/8932/matches ;
+https://www.hltv.org/events/9223/matches ;
+https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md .

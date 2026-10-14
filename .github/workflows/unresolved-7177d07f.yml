@@ -1,0 +1,71 @@
+name: unresolved picks (7177d07f)
+on:
+  schedule:
+    # every 4 hours, inside the 4-8h window the brief requires
+    - cron: '23 */4 * * *'
+  workflow_dispatch:
+  push:
+    branches: [arena/7177d07f-maltaproj2]
+    paths:
+      - 'scripts/7177d07f/**'
+      - 'tests/test_7177d07f.py'
+      - '.github/workflows/unresolved-7177d07f.yml'
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: unresolved-7177d07f
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r scripts/requirements.txt
+      - name: Collect evidence for unresolved fixtures (HLTV -> esportsbooks -> Valve VRS)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/7177d07f/collect.py
+      - name: Build the resolved board
+        run: python scripts/7177d07f/build.py
+      - name: Render the unresolved/ section
+        run: python scripts/7177d07f/site.py
+      - name: Contract tests
+        run: python -m unittest tests.test_7177d07f -v
+      - name: Repository suite and staged link check
+        run: |
+          python -m unittest discover -s tests
+          python scripts/stage_site.py
+      - name: Commit refreshed data and pages
+        run: |
+          set -x
+          git config user.name "arena-agent"
+          git config user.email "297053741+arena-agent@users.noreply.github.com"
+          git add data/7177d07f unresolved
+          if git diff --cached --quiet; then
+            echo "no unresolved-board changes"
+            exit 0
+          fi
+          git commit -m "unresolved(7177d07f): refresh picks $(date -u +%Y-%m-%dT%H:%MZ)"
+          # Other sessions' scheduled workflows also push to this branch, so a plain push can lose a
+          # race. Rebase onto the latest remote tip and retry a bounded number of times.
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin arena/7177d07f-maltaproj2 || true
+            if [ -z "$(git status --porcelain)" ] && \
+               git push origin HEAD:arena/7177d07f-maltaproj2; then
+              echo "pushed on attempt ${attempt}"
+              exit 0
+            fi
+            echo "push attempt ${attempt} failed; retrying"
+            sleep 15
+          done
+          echo "::error title=unresolved-7177d07f::could not publish the refreshed board after 5 attempts"
+          exit 1
+      - name: Request a Pages rebuild
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh workflow run pages.yml --repo "$GH_REPO" --ref main
