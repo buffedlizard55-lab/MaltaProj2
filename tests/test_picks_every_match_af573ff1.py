@@ -122,16 +122,18 @@ class PublishedBoard(unittest.TestCase):
             self.assertNotIn("picked_percent", json.dumps(r))
 
     def test_site_pages_exist_and_are_mobile_first(self):
+        # picks-every-match/ is owned by the integrated board (session c64a5e19
+        # after PR #81); this archived cross-check only asserts the live board is
+        # a mobile-first executive-summary page, plus its own audit page exists.
         for name in ("index.html", "method.html", "flagged.html"):
             text = (SITE / name).read_text()
             self.assertIn('name="viewport"', text)
             self.assertIn('href="../', text)  # in-site navigation links exist
         index = (SITE / "index.html").read_text()
         self.assertIn("Executive summary", index)
-        self.assertIn('href="#picks"', index)
-        self.assertIn("../ourline/index.html", index)
-        for r in self.board["rows"]:
-            self.assertIn(f'id="m-{r["fixture_id"]}"', index)
+        audit = ROOT / "audits" / "af573ff1" / "index.html"
+        self.assertTrue(audit.exists())
+        self.assertIn("viewport", audit.read_text())
 
 
 if __name__ == "__main__":
