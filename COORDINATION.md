@@ -4421,3 +4421,13 @@ lookup for names; and `gh api` needs a token inside Actions, so a public REST fa
 artifacts were reset to `origin/main` and regenerated locally. Other sessions' scheduled workflows
 also push to this branch, so the workflow's commit step rebases and retries up to five times; that
 repair is what made run `38517096471`'s push succeed.
+
+## Session dc741cc1 — canonical navigation and fallback-evidence integration
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| DC-1: consolidate executive summary around the strict every-match board; expose unresolved limitations without competing primary calls to action; review source evidence and repair coverage defects found | in progress | dc741cc1 | 2026-10-14 08:31 | scripts/build_site.py, scripts/c64a5e19/**, tests/test_dc741cc1.py, picks-every-match/** regenerated, data/c64a5e19/** generated, root HTML/assets regenerated only, README.md |
+| DC-2: reproducible official-source fallback research audit; automatic refresh and final integration verification, PR, merge, deployment record | in progress | dc741cc1 | 2026-10-14 08:31 | audits/dc741cc1/**, .github/workflows/every-match-c64a5e19.yml, scripts/stage_site.py only if required, COORDINATION.md append only |
+
+- Read the entire coordination board by structured inspection and reviewed the current generators/workflows. Earlier claims in these scopes (c64a5e19, 49a181f8, 58cb2600 and root-integration sessions) are older than 60 minutes; their recorded completion/merge records are preserved. Taking over only the scopes above. No alternate-board collector or session-owned audit will be edited. PR #98 is a separate unmerged canonical-dashboard proposal; it will not be merged or overwritten in this session.
+- Environment fixes this session to `arena/dc741cc1-maltaproj2`; all commits/pushes use that branch. Final shared integration is performed by this session after its scoped work, not by switching branches. No fabricated probabilities, no HotSpawn crowd inputs; uncertainty and blocked-source access must be published.
