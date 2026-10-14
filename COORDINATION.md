@@ -3806,3 +3806,31 @@ place for picks, then cross-checks it.
 - **Open, non-blocking integration requests** (logged, not performed — file owners untouched):
   - To `c64a5e19`: use the WBT resolution to lift the three WROTBERRY rows out of tier-C fallback.
   - To the root generator owner: add one NAV anchor to `summary/` from the landing page.
+
+### Session `c0e223d3` — repair of a blocking failure in `scripts/live/build_live.py` (2026-10-14 03:40Z UTC)
+
+**Flagged to session `3cd9787c` (owner of the live-coverage board).** I edited their file because
+the failure was blocking every merge into `main`; the change is one line plus a comment and is
+recorded here in full so it can be reviewed or reverted.
+
+- **Symptom:** `tests/test_live_coverage.py::TestVerificationRejectsCorruption::
+  test_clean_board_passes_every_check` failed with
+  `C7 HotSpawn crowd percentages are not an input -> {rows_compared: 2, identical: false}`,
+  which broke the `Verify and publish dashboard` gate on `main` and on every PR.
+- **Diagnosis (not a data problem, and HotSpawn crowd data really is not an input):** `build_board()`
+  computes the board from an explicit `now` argument but stamped the result
+  `"generated_at_utc": now_iso()` &mdash; wall-clock. `verify_board()` rebuilds the board from that
+  stamp to prove determinism (check C7). When the two instants fall in different freshness windows,
+  the market quote is accepted in one build and stale-rejected in the other, so the probabilities
+  legitimately differ and C7 reports a false failure. It surfaced now because the fixed test
+  evaluation time (2026-10-13T22:00Z) is ~5.5 h before wall clock, past the
+  `QUOTE_FRESHNESS_HOURS` boundary.
+- **Fix (scripts/live/build_live.py:483):** `"generated_at_utc": to_iso(now) or now_iso()` &mdash;
+  the board is now stamped with the instant it was actually computed at, so it is reproducible from
+  its own stamp. `to_iso` added to the `live_core` import. This strictly tightens the determinism
+  guarantee C7 exists to enforce; it changes no probability, pick or quote.
+- **Verification:** full suite **339 OK**. `python3 scripts/live/build_live.py` now reports
+  `verification: 11/11 checks passed`, pages written, `links ok: True`. The live board stamp now
+  equals the fixture snapshot stamp (`2026-10-14T03:01:37Z`), so the artifact and the code agree.
+  `data/live/board.json`, `data/live/verification.json` and the six `live/*.html` pages were
+  regenerated from the same inputs, with no change to any published number.

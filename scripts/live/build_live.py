@@ -29,6 +29,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from live_core import (  # noqa: E402
     VRS_MODEL, canon_team, consensus, hours_between, json_dump, json_load, no_vig_two_way, now_iso,
+    to_iso,
     now_utc, parse_iso, pct, safe_round, same_team, vrs_estimate, week_window,
 )
 
@@ -480,7 +481,12 @@ def build_board(fixtures_doc: dict, quotes_doc: dict, ratings_doc: dict, now) ->
             "blank": sum(1 for r in subset if r["published"]["basis"] == "none"),
         }
     return {
-        "generated_at_utc": now_iso(),
+        # Stamp the board with the instant it was computed at, not with wall-clock time.
+        # verify_board() rebuilds the board from its own stamp to prove HotSpawn's crowd
+        # percentages are not an input (check C7); if the stamp were wall-clock while `now`
+        # was an explicit evaluation time, the two builds would land in different freshness
+        # windows and C7 would report a false failure. (Repaired by c0e223d3.)
+        "generated_at_utc": to_iso(now) or now_iso(),
         "rules": {
             "fixture_source": "HotSpawn Pick'ems public fixtures endpoint (discovery only)",
             "probability_source": "external bookmakers and the EGamersWorld odds widget — never HotSpawn",
