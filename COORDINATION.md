@@ -4185,3 +4185,11 @@ These contradict the user's no-invented-values requirement and will be corrected
   and an unclosed probability container hid the expiry notice along with expired numbers. Fixed
   wrapping and DOM nesting. Reproduced locally with Chromium; all four viewport sizes, search,
   tap-target and expiry tests now pass. No gate was bypassed.
+
+## Merge & deploy record (9a873ea7)
+
+- PR: https://github.com/buffedlizard55-lab/MaltaProj2/pull/96
+- Merged: 2026-10-14T04:50:11Z (merge commit `fbc084e`)
+- Build & deploy workflow: run 38513453329 succeeded (build 1m17s, deploy 15s). GitHub Pages live.
+- Note: the post-merge Pages workflow re-ran `scripts/build_site.py` which regenerates `index.html`, so the mobile CSS enhancements remain in `assets/style.css` but the executive summary HTML is generated from the current snapshot (which is more conservative, showing 11/28 strict eligible and 17 unresolved in the strict view, with prominent links to the every-match board). The every-match board (picks-every-match/, board/) and our HLTV corroboration data file remain intact.
+- Live: https://buffedlizard55-lab.github.io/MaltaProj2/ — executive summary, unresolved-picks table, and links to every pick board render correctly on mobile. https://buffedlizard55-lab.github.io/MaltaProj2/picks-every-match/ publishes 23 supported picks (14 market / 9 model) and 5 unverified blanks with lock-time freshness stamps.
