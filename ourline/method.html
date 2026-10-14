@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method · Our line · HotSpawn CS2 Pick'ems</title>
+<style>
+:root{--bg:#0f1218;--card:#171b23;--line:#262c38;--txt:#e8ebf1;--mut:#9aa3b2;--acc:#3ddc97;
+--acc2:#5aa9ff;--warn:#ffb547;--bad:#ff6b6b}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--acc2)}header{position:sticky;top:0;z-index:5;background:#0b0e13;border-bottom:1px solid var(--line)}
+.bar{max-width:1100px;margin:0 auto;padding:10px 14px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.brand{font-weight:700;margin-right:auto}.bar nav{display:flex;gap:6px;flex-wrap:wrap}
+.bar nav a{padding:6px 10px;border-radius:8px;text-decoration:none;color:var(--txt);background:#1c212b;font-size:14px}
+.bar nav a.on{background:var(--acc);color:#04130c;font-weight:700}
+main{max-width:1100px;margin:0 auto;padding:14px}
+h1{font-size:22px;margin:6px 0 4px}h2{font-size:18px;margin:26px 0 8px}.mut{color:var(--mut)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:12px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
+.stat b{display:block;font-size:22px}.stat span{color:var(--mut);font-size:13px}
+.tools{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.tools input{flex:1 1 200px;padding:9px 11px;border-radius:8px;border:1px solid var(--line);background:#11151c;color:var(--txt);font-size:15px}
+.chip{padding:7px 11px;border-radius:999px;border:1px solid var(--line);background:#11151c;color:var(--txt);font-size:14px;cursor:pointer}
+.chip.on{background:var(--acc2);color:#031326;border-color:var(--acc2);font-weight:600}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);background:#131720}
+.team{display:flex;align-items:center;gap:8px;margin:2px 0}.team .nm{flex:1;min-width:0}
+.team.pk .nm{font-weight:700;color:var(--acc)}.pct{font-variant-numeric:tabular-nums;min-width:52px;text-align:right}
+.meter{height:6px;background:#2a303c;border-radius:4px;overflow:hidden;margin:2px 0 6px}
+.meter i{display:block;height:100%;background:var(--acc)}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:700}
+.b-pick{background:var(--acc);color:#04130c}.b-Strong{background:#1f6f4d}.b-Solid{background:#245a85}
+.b-Lean{background:#5b4c1c}.b-Toss-up{background:#4a2b2b}.b-flag{background:#5b3a12;color:#ffd9a3}
+.b-basis{background:#232a36;color:var(--mut);font-weight:600}
+.pickcell b{font-size:17px}.small{font-size:12.5px;color:var(--mut)}.src a{display:inline-block;margin-right:8px}
+.empty{color:var(--warn);font-weight:600}.foot{margin:30px 0 10px;color:var(--mut);font-size:13px}
+.note{background:#151a22;border-left:3px solid var(--acc2);padding:10px 12px;border-radius:6px;margin:10px 0}
+code{background:#11151c;padding:1px 5px;border-radius:4px}
+@media (max-width:760px){
+ table.cards,table.cards tbody,table.cards tr,table.cards td{display:block;width:100%}
+ table.cards thead{display:none}table.cards{background:none;border:0}
+ table.cards tr{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:0 0 10px;padding:6px 4px}
+ table.cards td{border:0;padding:5px 10px}
+ table.cards td[data-l]::before{content:attr(data-l);display:block;font-size:11px;text-transform:uppercase;color:var(--mut);letter-spacing:.05em}
+ .wide{overflow-x:auto}
+}
+</style></head><body>
+<header><div class="bar"><div class="brand">🎯 Our line · CS2 Pick'ems</div><nav><a href="index.html">Picks</a><a href="results.html">Track record</a><a href="sources.html">Lines &amp; sources</a><a href="flagged.html">Flagged for review</a><a href="method.html" class=on>Method</a><a href="../index.html">Main dashboard</a></nav></div></header>
+<main>
+<h1>Method</h1>
+<div class="note">Short version: we take every bookmaker price for the match, remove the bookmaker's margin, average them, and
+blend that with a rating model built on Valve's official CS2 standings. The model's steepness is learned from the bookmaker prices.
+If no bookmaker prices the match, the calibrated model alone gives the line. If a team has no official rating and no bookmaker prices
+the match, the row stays blank and is flagged.</div>
+<h2>1. Which matches</h2>
+<p>The fixture list comes from the public HotSpawn lobby (<a href="https://play.hotspawn.com/lobby">play.hotspawn.com/lobby</a>): the page embeds the response of
+the lobby's own <code>/api/v1/fixtures</code> call in its Angular transfer state, and the same public endpoint is also read directly each run because the page is
+served from a cache (its <code>Age</code> header is recorded on the Flagged page). A match is <b>open</b> while its HotSpawn lock time is in the future.
+HotSpawn data is used only to know <i>which</i> matches exist and when they lock — crowd pick percentages are not read.</p>
+<h2>2. Bookmaker and exchange prices</h2>
+<ul>
+<li><b>Pinnacle</b> — public guest odds API used by pinnacle.com; full-match moneyline (period 0, not alternate, status open). American odds converted to decimal.</li>
+<li><b>Bovada</b> — public Counter-Strike 2 coupon JSON used by bovada.lv; main-period moneyline.</li>
+<li><b>Melbet</b> — public LineFeed JSON (CS2 leagues only); match winner market.</li>
+<li><b>Kalshi</b> — CFTC-regulated exchange, series <code>KXCS2GAME</code>; probability = midpoint of yes bid/ask, normalised over both teams. Books with a missing side or a spread wider than 10¢ are rejected.</li>
+<li><b>Polymarket</b> and <b>HLTV</b> are probed each run; their result is on the Flagged page. HLTV is not machine-readable from the automated runner, so it is not a numeric input.</li>
+</ul>
+<p>Margin removal (proportional): <code>p_A = (1/d_A) / (1/d_A + 1/d_B)</code> where <code>d</code> are decimal odds
+(implied-probability arithmetic as documented by <a href="https://help.smarkets.com/hc/en-gb/articles/214058369-How-to-calculate-implied-probability-in-betting">Smarkets</a>).
+In-play prices are excluded. Market consensus = weighted mean of the per-source probabilities with weights pinnacle 2, bovada 1, melbet 1, kalshi 1 (stated modelling choice: Pinnacle is weighted higher as a low-margin bookmaker).</p>
+<p><b>Joining a price to a HotSpawn match</b> requires both team names to be equal after normalisation (case, accents, punctuation, and the
+generic words <i>team / the / esports / gaming / club</i> at the start or end removed) and the source start time to be within ±14 h.
+No prefix/substring matching ("B8" never matches "B8 Academy"). Explicit aliases:</p>
+<table class="cards"><thead><tr><th>Source spelling (normalised)</th><th>HotSpawn team</th><th>Basis</th></tr></thead><tbody><tr><td data-l='Source spelling (normalised)'><code>bb</code></td><td data-l='HotSpawn team'><code>betboom</code></td><td data-l='Basis'>BetBoom Team is listed as &#x27;BB Team&#x27; by some bookmakers; the alias is only applied together with an agreeing opponent and start time.</td></tr><tr><td data-l='Source spelling (normalised)'><code>nip</code></td><td data-l='HotSpawn team'><code>ninjasinpyjamas</code></td><td data-l='Basis'>NIP is the official abbreviation of Ninjas in Pyjamas.</td></tr><tr><td data-l='Source spelling (normalised)'><code>pvision</code></td><td data-l='HotSpawn team'><code>parivision</code></td><td data-l='Basis'>PARIVISION is listed as &#x27;PVISION&#x27; on some feeds.</td></tr><tr><td data-l='Source spelling (normalised)'><code>9zglobant</code></td><td data-l='HotSpawn team'><code>9z</code></td><td data-l='Basis'>9z Team is sponsored as &#x27;9z Globant&#x27; on some feeds.</td></tr></tbody></table>
+<h2>3. Valve VRS rating model</h2>
+<p>Ratings are the points in the latest official <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve Regional Standings (global, 2026_10_05)</a>.
+Valve's own code defines expected win rate from a points difference Δ: <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/glicko.js">model/glicko.js</a> ("rank delta of 400 points = 90% chance of victory",
+<code>ev = 1/(1+10^(g·Δ/−400))</code>) evaluated with a fixed RD of 75 in <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js">model/fit.js</a>, giving g = 0.9728.
+Valve's <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/readme.md">readme</a> notes the curve is steeper than observed results, so we fit a slope factor <b>k</b>:
+<code>p_A = 1/(1+10^(−k·g·Δ/400))</code>, by least squares of logit(market) on Δ over every fixture seen with both a market price and two ratings.</p>
+<p>Current fit: k = <b>0.367</b> (raw 0.367) on 14 fixtures
+(minimum 6 to fit, otherwise k = 1, Valve's own curve; k is bounded to 0.25–1.5).
+Mean absolute error vs market: calibrated 7.7%, Valve default 14.5%.</p>
+<h2>4. Our line and the pick</h2>
+<p><code>logit(p_ours) = w·logit(p_market) + (1−w)·logit(p_model)</code> with w = 0.85 when two or more sources price the match, 0.75 with one
+(stated modelling choice). Market only when a team lacks a rating; model only when no price exists. Fair odds = 1/p.
+The <b>PICK</b> is the team with p ≥ 50%. Confidence: Strong ≥ 70%, Solid ≥ 60%, Lean ≥ 53%, otherwise Toss-up.</p>
+<h2>5. Automation</h2>
+<p><code>.github/workflows/ourline-f7279a54.yml</code> runs every 30 minutes and after each run of the repository's hourly <code>update-data</code> workflow:
+<code>scripts/f7279a54/collect.py</code> → <code>scripts/f7279a54/build.py</code> → tests → commit of <code>data/f7279a54/</code> and <code>ourline/</code>,
+which GitHub Pages publishes. Raw evidence: <code>data/f7279a54/snapshot.json</code>; derived board: <code>data/f7279a54/board.json</code>.</p>
+<h2>Limits</h2>
+<ul><li>These are estimates, not guarantees. A model-only line is weaker than a priced one and is labelled as such.</li>
+<li>Bookmaker start times sometimes differ from HotSpawn's; joins with differences over 3 h are flagged.</li>
+<li>Low-tier teams are often absent from both bookmakers and VRS; those rows stay blank.</li></ul>
+
+<p class="foot">Data collected 2026-10-14T02:01:20Z UTC (<span data-r="2026-10-14T02:01:20Z"></span>) by an automated GitHub Actions run — no manual input.
+Probabilities are estimates derived from external bookmaker/exchange prices and Valve's official VRS ratings; HotSpawn crowd picks are never used.
+Not affiliated with HotSpawn or any bookmaker. Not betting advice. Section owner: session <code>f7279a54</code>.</p>
+</main><script>
+(function(){
+ function fmt(iso){var d=new Date(iso);if(isNaN(d))return iso;
+  return d.toLocaleString([], {weekday:'short',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});}
+ function rel(iso){var s=(new Date(iso)-new Date())/1000,a=Math.abs(s),t;
+  if(a<3600)t=Math.round(a/60)+' min';else if(a<172800)t=(a/3600).toFixed(1)+' h';else t=Math.round(a/86400)+' d';
+  return s>=0?'in '+t:t+' ago';}
+ document.querySelectorAll('[data-t]').forEach(function(e){e.textContent=fmt(e.dataset.t);e.title=e.dataset.t+' (UTC)';});
+ document.querySelectorAll('[data-r]').forEach(function(e){e.textContent=rel(e.dataset.r);});
+ var q=document.getElementById('q'),chips=document.querySelectorAll('.chip'),mode='all';
+ function apply(){var s=(q&&q.value||'').toLowerCase(),n=0,now=Date.now();
+  document.querySelectorAll('tr[data-row]').forEach(function(r){
+   var ok=!s||r.dataset.s.indexOf(s)>=0;
+   if(mode==='24h')ok=ok&&(new Date(r.dataset.lock)-now)<864e5;
+   else if(mode==='line')ok=ok&&r.dataset.line!=='none';
+   else if(mode==='noline')ok=ok&&r.dataset.line==='none';
+   else if(mode.indexOf('tier-')===0)ok=ok&&r.dataset.tier===mode.slice(5);
+   r.style.display=ok?'':'none';if(ok)n++;});
+  var c=document.getElementById('count');if(c)c.textContent=n;}
+ if(q)q.addEventListener('input',apply);
+ chips.forEach(function(c){c.addEventListener('click',function(){chips.forEach(function(x){x.classList.remove('on')});
+  c.classList.add('on');mode=c.dataset.m;apply();});});
+})();
+</script></body></html>

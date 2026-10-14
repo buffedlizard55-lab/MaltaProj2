@@ -1,219 +1,309 @@
 #!/usr/bin/env python3
+"""Collect the exact CS2 fixture inventory embedded by the public HotSpawn lobby.
+
+HotSpawn's Angular server-rendered page stores HTTP responses in ``script#ng-state``.
+The response whose URL ends in ``/api/v1/fixtures`` is the fixture inventory used by
+that lobby render; a separate response contains HotSpawn-published match permalinks.
+This collector reads those public responses without signing in or calling an admin
+endpoint.
+
+Fail-closed rules:
+* a missing, malformed, duplicate, or ambiguous embedded fixture response returns 1;
+* the previous committed inventory is not overwritten on failure;
+* only source fields are copied (missing values stay ``null`` and are flagged);
+* HotSpawn crowd-pick percentages are deliberately not copied;
+* a match permalink is used only when it was present in the page state and has the
+  expected official host/path/id. Otherwise the official lobby is the fallback and
+  the row is flagged.
+
+Outputs:
+* ``data/hotspawn_matches.json`` — exact embedded fixture rows, normalized;
+* ``evidence/hotspawn_probe.json`` — response metadata, counters, field names,
+  listing ids, permalink coverage, and validation findings.
 """
-HotSpawn Pick'ems — fixture collector (reverse-engineered public API).
-
-Source of truth
----------------
-play.hotspawn.com is an Angular SSR app that loads its data from a public JSON API:
-
-    https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/
-
-Endpoints observed in the SSR payload of https://play.hotspawn.com/lobby
-(see evidence/api.md for the raw capture and the exact HTML/JS bytes they came from):
-
-    /api/v1/fixtures                              -> list of every fixture ever offered
-    /api/v1/tenants/slug/hotspawn                 -> tenant + feature flags
-    /api/v1/week-prizes/widget                    -> weekly prizes
-    /api/v1/admin/gamification/fixtures/permalinks -> match permalink slugs
-
-The lobby HTML only server-renders the next ~27 fixtures, so the API dump (not the
-HTML) is the only complete source for the weekly pick'em list.
-
-This script writes:
-    data/hotspawn_matches.json  - normalised current pick'em window fixtures
-    evidence/hotspawn_probe.json - diagnostics/evidence (endpoint probes, raw field list)
-
-It performs no inference: every value comes straight from the API response.
-"""
-
 from __future__ import annotations
 
+import argparse
+import hashlib
 import json
 import os
 import re
 import sys
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+from urllib.parse import urlsplit
 
+from bs4 import BeautifulSoup
+
+LOBBY = "https://play.hotspawn.com/lobby"
 API = "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1"
-LOBBY_PAGE = "https://play.hotspawn.com/lobby"
-UA = "MaltaProj2-research/1.0 (+https://github.com/buffedlizard55-lab/MaltaProj2)"
-# HotSpawn publishes per-match permalinks as /matches/<team-a>-vs-<team-b>-<tournament>-<fixture id>.
-# A bare /matches/<numeric id> is NOT published by HotSpawn: it resolves to the general matches
-# index (verified 2026-10-14 ~01:50 UTC), so it must never be used as a per-row source link.
-PERMALINK_PATH_RE = re.compile(
-    r"https?://(?:www\.)?hotspawn\.com/matches/([A-Za-z0-9][A-Za-z0-9\-\.\+']*)")
-PERMALINK_TAIL_RE = re.compile(r"^(.+)-(\d{4,})$")
+UA = "MaltaProj2-source-audit/2.0 (+https://github.com/buffedlizard55-lab/MaltaProj2)"
+ROOT = Path(__file__).resolve().parents[1]
+REQUIRED_TEXT_FIELDS = ("participants0_name", "participants1_name", "competition_name", "sport_alias")
 
 
-def extract_published_permalinks(html: str) -> dict:
-    """Map fixture id -> the per-match permalink HotSawn itself publishes on the lobby page.
-
-    Only URLs found verbatim in the served page are returned. A fixture without a published
-    permalink is absent from the map, so the caller falls back to the official lobby URL instead
-    of constructing a slug. The id is the trailing `-<digits>` of the published slug, which keeps
-    tournaments containing digits intact (`...-cct-europe-2026-series-11-1079621`).
-    """
-    out = {}
-    for segment in PERMALINK_PATH_RE.findall(html or ""):
-        tail = PERMALINK_TAIL_RE.match(segment)
-        if tail:
-            out.setdefault(tail.group(2), "https://www.hotspawn.com/matches/" + segment)
-    return out
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LIVE_STATUSES = {"upcoming", "live", "open", "pending", "scheduled"}
+def now_utc() -> datetime:
+    return datetime.now(tz=timezone.utc)
 
 
-def get_json(path: str, timeout: int = 120):
-    """GET an API path; return (status, parsed_json_or_text)."""
-    url = path if path.startswith("http") else API + path
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            body = resp.read()
-            status = resp.status
-    except urllib.error.HTTPError as exc:  # keep the body for evidence
-        body = exc.read()
-        status = exc.code
-    try:
-        return status, json.loads(body.decode("utf-8", "replace")), url
-    except Exception:
-        return status, body.decode("utf-8", "replace")[:2000], url
+def iso(value: datetime) -> str:
+    return value.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def ms_to_iso(value):
-    """Convert epoch-milliseconds (str/int) to an ISO-8601 UTC string. No inference."""
-    if value in (None, "", "0"):
+    """Convert source epoch milliseconds to UTC; invalid/missing fields remain blank."""
+    if value in (None, "", "0") or isinstance(value, bool):
         return None
     try:
-        return datetime.fromtimestamp(int(value) / 1000, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    except (TypeError, ValueError):
+        return iso(datetime.fromtimestamp(int(value) / 1000, tz=timezone.utc))
+    except (TypeError, ValueError, OverflowError, OSError):
         return None
 
 
-def main() -> int:
-    status, fixtures, url = get_json("/fixtures")
-    probe = {
-        "api_base": API,
-        "generated_at_utc": datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "endpoint_status": {"GET " + url: status},
-    }
-    if not isinstance(fixtures, list):
-        probe["error"] = "fixtures endpoint did not return a list"
-        probe["body_preview"] = fixtures
-        _write(os.path.join(ROOT, "evidence", "hotspawn_probe.json"), probe)
-        return 1
+def fetch_page(url: str = LOBBY, timeout: int = 90):
+    req = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": UA,
+            "Accept": "text/html,application/xhtml+xml",
+            "Accept-Encoding": "identity",
+            "Accept-Language": "en-US,en;q=0.9",
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as response:
+            body = response.read(5_000_001)
+            if len(body) > 5_000_000:
+                raise ValueError("lobby response exceeded the 5 MB safety limit")
+            headers = {key: response.headers.get(key) for key in ("Date", "Age", "ETag", "Last-Modified")}
+            return response.status, body.decode("utf-8", "replace"), headers
+    except urllib.error.HTTPError as exc:
+        return exc.code, exc.read(2000).decode("utf-8", "replace"), {
+            key: exc.headers.get(key) for key in ("Date", "Age", "ETag", "Last-Modified")
+        }
 
-    probe["fixtures_total"] = len(fixtures)
-    keys = sorted({k for f in fixtures for k in f})
-    probe["fixture_fields"] = keys
 
-    # ---- ancillary endpoints (evidence only) ----
-    for path in ("/tenants/slug/hotspawn", "/week-prizes/widget",
-                 "/admin/gamification/fixtures/permalinks"):
-        st, body, u = get_json(path, timeout=60)
-        probe.setdefault("endpoint_status", {})["GET " + u] = st
-        if st == 200:
-            if isinstance(body, list):
-                probe["endpoint_sample_" + path.strip("/").replace("/", "_")] = body[:3]
-                probe["endpoint_length_" + path.strip("/").replace("/", "_")] = len(body)
-            else:
-                probe["endpoint_sample_" + path.strip("/").replace("/", "_")] = body
+def published_permalink(value, fixture_id: str):
+    """Accept only a permalink literally published in state for this fixture id."""
+    if not isinstance(value, str):
+        return None
+    parsed = urlsplit(value)
+    if parsed.scheme != "https" or parsed.hostname != "www.hotspawn.com":
+        return None
+    if not parsed.path.startswith("/matches/") or not parsed.path.rstrip("/").endswith("-" + fixture_id):
+        return None
+    return value
 
-    # ---- current pick'em window = every fixture the lobby can still offer ----
-    now_ms = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
-    window = []
-    for f in fixtures:
-        status_l = str(f.get("status", "")).lower()
-        sched = f.get("scheduled_start_time")
-        try:
-            sched_ms = int(sched)
-        except (TypeError, ValueError):
-            sched_ms = None
-        if status_l == "ended":
+
+def parse_lobby(page_html: str) -> dict:
+    """Parse one public lobby response. No network calls and no inferred fixture values."""
+    soup = BeautifulSoup(page_html, "html.parser")
+    state_node = soup.select_one("script#ng-state")
+    raw_state = state_node.string if state_node is not None else None
+    if not raw_state:
+        raise ValueError("public Angular transfer-state is missing")
+    try:
+        state = json.loads(raw_state)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"public Angular transfer-state is invalid JSON: {exc}") from exc
+    if not isinstance(state, dict):
+        raise ValueError("public Angular transfer-state is not an object")
+
+    fixture_responses = []
+    permalink_maps = []
+    for entry in state.values():
+        if not isinstance(entry, dict):
             continue
-        # keep everything not finished, plus recently finished (last 24h) for auditing
-        if sched_ms is not None and sched_ms < now_ms - 24 * 3600 * 1000 and status_l not in LIVE_STATUSES:
-            continue
-        window.append(f)
+        url, body = str(entry.get("u") or ""), entry.get("b")
+        if url.rstrip("/").endswith("/api/v1/fixtures") and isinstance(body, list):
+            fixture_responses.append({"url": url, "body": body})
+        if isinstance(body, dict) and isinstance(body.get("permalinks"), dict):
+            permalink_maps.append(body["permalinks"])
+    if len(fixture_responses) != 1:
+        raise ValueError(f"expected exactly one embedded fixture response, found {len(fixture_responses)}")
+    if len(permalink_maps) > 1:
+        raise ValueError(f"ambiguous embedded permalink responses: {len(permalink_maps)}")
 
-    window.sort(key=lambda f: int(f.get("scheduled_start_time") or 0))
-
-    # Per-row source links come only from permalinks HotSpawn itself publishes on the lobby page.
-    status, page_body, page_url = get_json(LOBBY_PAGE, timeout=60)
-    page_html = page_body if isinstance(page_body, str) else ""
-    permalinks = extract_published_permalinks(page_html)
-    probe["lobby_page"] = {"url": page_url, "status": status,
-                           "permalinks_published": len(permalinks),
-                           "permalinks_sample": dict(list(sorted(permalinks.items()))[:5])}
-
-    matches = []
-    for f in window:
-        cid = f.get("competition_id")
-        matches.append({
-            "fixture_id": str(f.get("id")),
-            "competition_id": str(cid) if cid is not None else None,
-            "competition_name": f.get("competition_name"),
-            "sport": f.get("sport_alias"),
-            "sport_name": f.get("sport_name"),
-            "status": f.get("status"),
-            "tier": (f.get("tier") or None),
-            "stage": f.get("stage"),
-            "best_of": f.get("best_of"),
-            "series_format": f.get("series_format"),
-            "scheduled_start_time": ms_to_iso(f.get("scheduled_start_time")),
-            "lock_time": ms_to_iso(f.get("lock_time")),
-            "lock_offset_sec": f.get("lock_offset_sec"),
-            "offered_points": f.get("offered_points"),
-            "base_points": f.get("base_points"),
-            "total_picks": f.get("total_picks"),
-            "team_a_id": str(f.get("participants0_id")) if f.get("participants0_id") is not None else None,
-            "team_a": f.get("participants0_name"),
-            "team_a_pick_pct": f.get("participants0_picked_percent"),
-            "team_b_id": str(f.get("participants1_id")) if f.get("participants1_id") is not None else None,
-            "team_b": f.get("participants1_name"),
-            "team_b_pick_pct": f.get("participants1_picked_percent"),
+    fixtures = fixture_responses[0]["body"]
+    if not fixtures:
+        raise ValueError("embedded fixture response is empty")
+    permalinks = permalink_maps[0] if permalink_maps else {}
+    seen = set()
+    normalized = []
+    for source in fixtures:
+        if not isinstance(source, dict):
+            raise ValueError("embedded fixture response contains a non-object row")
+        fixture_id = str(source.get("id") or "")
+        if not fixture_id or fixture_id in seen:
+            raise ValueError("embedded fixture id is missing or duplicated")
+        seen.add(fixture_id)
+        missing = [key for key in REQUIRED_TEXT_FIELDS
+                   if not isinstance(source.get(key), str) or not source[key].strip()]
+        start = ms_to_iso(source.get("scheduled_start_time"))
+        lock = ms_to_iso(source.get("lock_time"))
+        if start is None:
+            missing.append("scheduled_start_time")
+        if lock is None:
+            missing.append("lock_time")
+        permalink = published_permalink(permalinks.get(fixture_id), fixture_id)
+        flags = [f"source_field_missing:{key}" for key in missing]
+        if permalink is None:
+            flags.append("official_match_permalink_unavailable")
+        competition_id = source.get("competition_id")
+        normalized.append({
+            "fixture_id": fixture_id,
+            "competition_id": str(competition_id) if competition_id is not None else None,
+            "competition_name": source.get("competition_name"),
+            "sport": source.get("sport_alias"),
+            "sport_name": source.get("sport_name"),
+            "status": source.get("status"),
+            "tier": source.get("tier") or None,
+            "stage": source.get("stage"),
+            "best_of": source.get("best_of"),
+            "series_format": source.get("series_format"),
+            "scheduled_start_time": start,
+            "lock_time": lock,
+            "lock_offset_sec": source.get("lock_offset_sec"),
+            "offered_points": source.get("offered_points"),
+            "base_points": source.get("base_points"),
+            "total_picks": source.get("total_picks"),
+            "team_a_id": str(source.get("participants0_id")) if source.get("participants0_id") is not None else None,
+            "team_a": source.get("participants0_name"),
+            "team_b_id": str(source.get("participants1_id")) if source.get("participants1_id") is not None else None,
+            "team_b": source.get("participants1_name"),
+            "source_flags": sorted(set(flags)),
             "source": {
-                "api": f"{API}/fixtures",
-                "page": LOBBY_PAGE,
-                "hotspawn_match_url": permalinks.get(str(f.get("id")), LOBBY_PAGE),
-                "hotspawn_match_url_kind": ("lobby_published_permalink"
-                                            if str(f.get("id")) in permalinks
-                                            else "official_lobby_fallback"),
+                "page": LOBBY,
+                "api": fixture_responses[0]["url"],
+                "published_match_url": permalink,
+                "published_match_url_verified": permalink is not None,
             },
         })
 
-    out = {
-        "generated_at_utc": probe["generated_at_utc"],
-        "source_api": API,
-        "source_endpoint": f"{API}/fixtures",
-        "source_page": "https://play.hotspawn.com/lobby",
-        "note": ("Reverse-engineered public JSON API of play.hotspawn.com. "
-                 "team_a_pick_pct / team_b_pick_pct are HotSpawn player PICK percentages "
-                 "and are NOT betting probabilities; they are recorded for reference only."),
-        "match_count": len(matches),
-        "permalinks": permalinks,
-        "permalinks_note": ("fixture id -> the official HotSpawn match URL the lobby page itself "
-                            "publishes; /matches/<id> on its own redirects to the matches index and "
-                            "is never published, so the official lobby page is used instead"),
-        "matches": matches,
+    normalized.sort(key=lambda row: (row.get("scheduled_start_time") or "", row["fixture_id"]))
+    rendered_links = sorted({a.get("href") for a in soup.select('a[href*="hotspawn.com/matches/"]') if a.get("href")})
+    text = soup.get_text(" ", strip=True)
+
+    def count(pattern):
+        match = re.search(pattern, text, re.I)
+        return int(match.group(1).replace(",", "")) if match else None
+
+    counters = {
+        "matches_this_week": count(r"(\d[\d,]*)\s*matches this week"),
+        "all_tiers": count(r"All tiers\s*\((\d[\d,]*)\)"),
+        "tier_s": count(r"(?<![A-Za-z])S\s*\((\d[\d,]*)\)"),
+        "tier_b": count(r"(?<![A-Za-z])B\s*\((\d[\d,]*)\)"),
+        "tier_c": count(r"(?<![A-Za-z])C\s*\((\d[\d,]*)\)"),
     }
-    _write(os.path.join(ROOT, "data", "hotspawn_matches.json"), out, indent=1)
-    _write(os.path.join(ROOT, "evidence", "hotspawn_probe.json"), probe, indent=1)
+    return {
+        "fixtures": normalized,
+        "fixture_response_url": fixture_responses[0]["url"],
+        "fixture_fields": sorted({key for row in fixtures for key in row}),
+        "permalink_map_found": bool(permalink_maps),
+        "published_permalink_count": sum(1 for row in normalized if row["source"]["published_match_url"]),
+        "rendered_match_link_count": len(rendered_links),
+        "counters": counters,
+    }
 
-    probe["window_count"] = len(matches)
-    probe["window_first"] = matches[0]["scheduled_start_time"] if matches else None
-    probe["window_last"] = matches[-1]["scheduled_start_time"] if matches else None
-    _write(os.path.join(ROOT, "evidence", "hotspawn_probe.json"), probe, indent=1)
-    print(f"matches written: {len(matches)}")
+
+def observed_time(retrieved_at: datetime, headers: dict) -> tuple[datetime, int | None]:
+    """Account for a standard HTTP Age header; missing/invalid Age is not invented."""
+    raw_age = headers.get("Age")
+    try:
+        age = int(raw_age) if raw_age is not None else None
+        if age is not None and age < 0:
+            age = None
+    except (TypeError, ValueError):
+        age = None
+    return (retrieved_at - timedelta(seconds=age) if age is not None else retrieved_at), age
+
+
+def build_documents(page_html: str, retrieved_at: datetime, headers: dict):
+    parsed = parse_lobby(page_html)
+    source_time, age = observed_time(retrieved_at, headers)
+    fixtures = parsed["fixtures"]
+    document = {
+        "generated_at_utc": iso(retrieved_at),
+        "source_observed_at_utc": iso(source_time),
+        "source_cache_age_seconds": age,
+        "source_page": LOBBY,
+        "source_endpoint": parsed["fixture_response_url"],
+        "scope": "Exact fixture response embedded in the public HotSpawn lobby render; CS2 is the observed lobby game in this response.",
+        "note": "HotSpawn is fixture discovery only. Crowd-picked percentages are deliberately omitted and never enter a probability.",
+        "match_count": len(fixtures),
+        "matches": fixtures,
+    }
+    probe = {
+        "generated_at_utc": iso(retrieved_at),
+        "source_observed_at_utc": iso(source_time),
+        "source_cache_age_seconds": age,
+        "source_page": LOBBY,
+        "source_endpoint": parsed["fixture_response_url"],
+        "response_headers": headers,
+        "response_sha256": hashlib.sha256(page_html.encode("utf-8")).hexdigest(),
+        "fixture_count": len(fixtures),
+        "fixture_ids": [row["fixture_id"] for row in fixtures],
+        "fixture_fields": parsed["fixture_fields"],
+        "sport_counts": {sport: sum(1 for row in fixtures if row.get("sport") == sport)
+                         for sport in sorted({row.get("sport") for row in fixtures}, key=lambda x: str(x))},
+        "status_counts": {status: sum(1 for row in fixtures if row.get("status") == status)
+                          for status in sorted({row.get("status") for row in fixtures}, key=lambda x: str(x))},
+        "counters": parsed["counters"],
+        "permalink_map_found": parsed["permalink_map_found"],
+        "published_permalink_count": parsed["published_permalink_count"],
+        "rendered_match_link_count": parsed["rendered_match_link_count"],
+        "validation": {
+            "fixture_ids_unique": len({row["fixture_id"] for row in fixtures}) == len(fixtures),
+            "normalized_crowd_percentage_fields_present": False,
+            "source_rows_with_flags": sum(1 for row in fixtures if row["source_flags"]),
+        },
+    }
+    return document, probe
+
+
+def write_json(path: Path, value) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--fixture", help="Parse a saved lobby HTML fixture instead of making a request")
+    parser.add_argument("--retrieved-at", help="UTC ISO timestamp for --fixture evidence")
+    args = parser.parse_args()
+    retrieved_at = now_utc()
+    headers = {"Date": None, "Age": None, "ETag": None, "Last-Modified": None}
+    probe_path = ROOT / "evidence" / "hotspawn_probe.json"
+    try:
+        if args.fixture:
+            page_html = Path(args.fixture).read_text(encoding="utf-8")
+            if args.retrieved_at:
+                parsed_time = datetime.fromisoformat(args.retrieved_at.replace("Z", "+00:00"))
+                if parsed_time.tzinfo is None:
+                    raise ValueError("--retrieved-at must include a UTC offset")
+                retrieved_at = parsed_time.astimezone(timezone.utc)
+        else:
+            status, page_html, headers = fetch_page()
+            if status != 200:
+                raise ValueError(f"official lobby returned HTTP {status}")
+        document, probe = build_documents(page_html, retrieved_at, headers)
+    except Exception as exc:  # retain prior inventory, but publish the failed attempt
+        write_json(probe_path, {
+            "generated_at_utc": iso(retrieved_at),
+            "source_page": LOBBY,
+            "response_headers": headers,
+            "error": str(exc),
+            "result": "failed; previous fixture inventory retained",
+        })
+        print(f"fixture collection failed: {exc}", file=sys.stderr)
+        return 1
+
+    write_json(ROOT / "data" / "hotspawn_matches.json", document)
+    write_json(probe_path, probe)
+    print(f"exact lobby fixtures written: {document['match_count']}")
     return 0
-
-
-def _write(path, obj, indent=2):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8") as fh:
-        json.dump(obj, fh, indent=indent, ensure_ascii=False, sort_keys=False)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,779 @@
+{
+  "audit_id": "797e94ea",
+  "audit_observed_at_utc": "2026-10-14T01:40:24Z",
+  "scope": {
+    "included": [
+      "data/lines.json",
+      "data/current_probabilities.json",
+      "cs2.html"
+    ],
+    "excluded": "All other research boards and live/legacy snapshots; no source collection or mutation performed."
+  },
+  "source_snapshot": {
+    "lines_generated_at_utc": "2026-10-14T01:16:08Z",
+    "odds_collected_at_utc": "2026-10-14T01:16:08Z",
+    "fixture_list_collected_at_utc": "2026-10-14T01:15:53Z",
+    "fixture_total": 90,
+    "quoted_fixture_total": 8,
+    "unquoted_fixture_total": 82,
+    "maximum_quote_age_seconds": 14400
+  },
+  "summary": {
+    "status": "pass",
+    "quoted_fixtures_checked": 8,
+    "quote_rows_checked": 12,
+    "root_rows_with_blank_probability": 82,
+    "errors": []
+  },
+  "checks": [
+    {
+      "id": "A-797-01",
+      "status": "pass",
+      "name": "Captured root arithmetic and consensus",
+      "detail": "Recomputed no-vig shares, consensus, and A+B=100% for 8 quoted fixtures / 12 quote rows.",
+      "sources": [
+        "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+        "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148/markets/related/straight",
+        "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745/markets/related/straight",
+        "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637999450/markets/related/straight",
+        "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674/markets/related/straight",
+        "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight",
+        "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-the-last-resort-202610141000",
+        "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600",
+        "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/heroic-envy-202610150600",
+        "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/hotu-fnatic-202610140600",
+        "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-bc-game-202610150600",
+        "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610140930",
+        "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-ninjas-in-pyjamas-202610140700",
+        "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+      ]
+    },
+    {
+      "id": "A-797-02",
+      "status": "pass",
+      "name": "Capture-time eligibility fields",
+      "detail": "Checked HTTPS source links, full-match market, non-live/open state, verified alignment, capture age ≤ 4h, and quote before kickoff.",
+      "sources": [
+        "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
+      ]
+    },
+    {
+      "id": "A-797-03",
+      "status": "pass",
+      "name": "Crowd percentages excluded from root analysis inputs",
+      "detail": "The audited analysis snapshots (`data/lines.json` and `data/current_probabilities.json`) contain no key with ‘picked’; raw fixture discovery is intentionally outside this check.",
+      "sources": [
+        "https://play.hotspawn.com/lobby",
+        "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
+      ]
+    },
+    {
+      "id": "A-797-04",
+      "status": "pass",
+      "name": "Rendered root CS2 source-link coverage",
+      "detail": "Every audited quoted fixture and its captured external source link is present in `cs2.html`.",
+      "sources": [
+        "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "fixture_id": "1080176",
+      "competition": "Thunderpick World Championship 2026",
+      "tier": "s",
+      "start_time_utc": "2026-10-14T08:30:00Z",
+      "team_a": "9z",
+      "team_b": "Aurora",
+      "hotspawn_fixture_source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+      "per_source": [
+        {
+          "source_key": "pinnacle",
+          "source_name": "Pinnacle",
+          "links": [
+            {
+              "label": "Pinnacle",
+              "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight"
+            }
+          ],
+          "retrieved_at_utc": "2026-10-14T01:15:57Z",
+          "decimal_odds": [
+            3.55,
+            1.3067
+          ],
+          "stored_probability": [
+            0.2691,
+            0.7309
+          ],
+          "recomputed_probability": [
+            0.2691,
+            0.7309
+          ],
+          "overround": 0.04698,
+          "checks": {
+            "https_source": true,
+            "full_match": true,
+            "prematch": true,
+            "open": true,
+            "team_alignment": true,
+            "kickoff_alignment": true,
+            "fresh_at_capture": true,
+            "before_fixture": true,
+            "math": true
+          }
+        }
+      ],
+      "consensus": {
+        "stored_probability_a": 0.2691,
+        "stored_probability_b": 0.7309,
+        "recomputed_probability_a": 0.2691,
+        "recomputed_probability_b": 0.7309,
+        "n_sources": 1
+      },
+      "checks": {
+        "consensus_math": true,
+        "current_mirror": true,
+        "external_source_count": true,
+        "hotspawn_is_discovery_only": true
+      },
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "fixture_id": "1079438",
+      "competition": "Stake Pulse Beat III",
+      "tier": "b",
+      "start_time_utc": "2026-10-14T10:00:00Z",
+      "team_a": "Astralis",
+      "team_b": "Sashi",
+      "hotspawn_fixture_source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+      "per_source": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "links": [
+            {
+              "label": "Bovada",
+              "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600"
+            },
+            {
+              "label": "quote API",
+              "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+            }
+          ],
+          "retrieved_at_utc": "2026-10-14T01:15:59Z",
+          "decimal_odds": [
+            1.111111,
+            6.0
+          ],
+          "stored_probability": [
+            0.8438,
+            0.1562
+          ],
+          "recomputed_probability": [
+            0.8438,
+            0.1562
+          ],
+          "overround": 0.06667,
+          "checks": {
+            "https_source": true,
+            "full_match": true,
+            "prematch": true,
+            "open": true,
+            "team_alignment": true,
+            "kickoff_alignment": true,
+            "fresh_at_capture": true,
+            "before_fixture": true,
+            "math": true
+          }
+        }
+      ],
+      "consensus": {
+        "stored_probability_a": 0.8438,
+        "stored_probability_b": 0.1562,
+        "recomputed_probability_a": 0.8438,
+        "recomputed_probability_b": 0.1562,
+        "n_sources": 1
+      },
+      "checks": {
+        "consensus_math": true,
+        "current_mirror": true,
+        "external_source_count": true,
+        "hotspawn_is_discovery_only": true
+      },
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "fixture_id": "1079439",
+      "competition": "Stake Pulse Beat III",
+      "tier": "b",
+      "start_time_utc": "2026-10-14T10:00:00Z",
+      "team_a": "HOTU",
+      "team_b": "Fnatic",
+      "hotspawn_fixture_source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+      "per_source": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "links": [
+            {
+              "label": "Bovada",
+              "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/hotu-fnatic-202610140600"
+            },
+            {
+              "label": "quote API",
+              "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+            }
+          ],
+          "retrieved_at_utc": "2026-10-14T01:15:59Z",
+          "decimal_odds": [
+            1.952381,
+            1.8
+          ],
+          "stored_probability": [
+            0.4797,
+            0.5203
+          ],
+          "recomputed_probability": [
+            0.4797,
+            0.5203
+          ],
+          "overround": 0.06775,
+          "checks": {
+            "https_source": true,
+            "full_match": true,
+            "prematch": true,
+            "open": true,
+            "team_alignment": true,
+            "kickoff_alignment": true,
+            "fresh_at_capture": true,
+            "before_fixture": true,
+            "math": true
+          }
+        },
+        {
+          "source_key": "pinnacle",
+          "source_name": "Pinnacle",
+          "links": [
+            {
+              "label": "Pinnacle",
+              "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148/markets/related/straight"
+            }
+          ],
+          "retrieved_at_utc": "2026-10-14T01:15:55Z",
+          "decimal_odds": [
+            1.9901,
+            1.8
+          ],
+          "stored_probability": [
+            0.4749,
+            0.5251
+          ],
+          "recomputed_probability": [
+            0.4749,
+            0.5251
+          ],
+          "overround": 0.05804,
+          "checks": {
+            "https_source": true,
+            "full_match": true,
+            "prematch": true,
+            "open": true,
+            "team_alignment": true,
+            "kickoff_alignment": true,
+            "fresh_at_capture": true,
+            "before_fixture": true,
+            "math": true
+          }
+        }
+      ],
+      "consensus": {
+        "stored_probability_a": 0.4773,
+        "stored_probability_b": 0.5227,
+        "recomputed_probability_a": 0.4773,
+        "recomputed_probability_b": 0.5227,
+        "n_sources": 2
+      },
+      "checks": {
+        "consensus_math": true,
+        "current_mirror": true,
+        "external_source_count": true,
+        "hotspawn_is_discovery_only": true
+      },
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "fixture_id": "1080177",
+      "competition": "Thunderpick World Championship 2026",
+      "tier": "s",
+      "start_time_utc": "2026-10-14T11:00:00Z",
+      "team_a": "Falcons",
+      "team_b": "Ninjas in Pyjamas",
+      "hotspawn_fixture_source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+      "per_source": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "links": [
+            {
+              "label": "Bovada",
+              "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-ninjas-in-pyjamas-202610140700"
+            },
+            {
+              "label": "quote API",
+              "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+            }
+          ],
+          "retrieved_at_utc": "2026-10-14T01:15:59Z",
+          "decimal_odds": [
+            1.235294,
+            3.85
+          ],
+          "stored_probability": [
+            0.7571,
+            0.2429
+          ],
+          "recomputed_probability": [
+            0.7571,
+            0.2429
+          ],
+          "overround": 0.06926,
+          "checks": {
+            "https_source": true,
+            "full_match": true,
+            "prematch": true,
+            "open": true,
+            "team_alignment": true,
+            "kickoff_alignment": true,
+            "fresh_at_capture": true,
+            "before_fixture": true,
+            "math": true
+          }
+        },
+        {
+          "source_key": "pinnacle",
+          "source_name": "Pinnacle",
+          "links": [
+            {
+              "label": "Pinnacle",
+              "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674/markets/related/straight"
+            }
+          ],
+          "retrieved_at_utc": "2026-10-14T01:15:58Z",
+          "decimal_odds": [
+            1.2703,
+            3.85
+          ],
+          "stored_probability": [
+            0.7519,
+            0.2481
+          ],
+          "recomputed_probability": [
+            0.7519,
+            0.2481
+          ],
+          "overround": 0.04696,
+          "checks": {
+            "https_source": true,
+            "full_match": true,
+            "prematch": true,
+            "open": true,
+            "team_alignment": true,
+            "kickoff_alignment": true,
+            "fresh_at_capture": true,
+            "before_fixture": true,
+            "math": true
+          }
+        }
+      ],
+      "consensus": {
+        "stored_probability_a": 0.7545,
+        "stored_probability_b": 0.2455,
+        "recomputed_probability_a": 0.7545,
+        "recomputed_probability_b": 0.2455,
+        "n_sources": 2
+      },
+      "checks": {
+        "consensus_math": true,
+        "current_mirror": true,
+        "external_source_count": true,
+        "hotspawn_is_discovery_only": true
+      },
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "fixture_id": "1080178",
+      "competition": "Thunderpick World Championship 2026",
+      "tier": "s",
+      "start_time_utc": "2026-10-14T13:30:00Z",
+      "team_a": "Legacy",
+      "team_b": "PARIVISION",
+      "hotspawn_fixture_source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+      "per_source": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "links": [
+            {
+              "label": "Bovada",
+              "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610140930"
+            },
+            {
+              "label": "quote API",
+              "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+            }
+          ],
+          "retrieved_at_utc": "2026-10-14T01:15:59Z",
+          "decimal_odds": [
+            1.69,
+            2.1
+          ],
+          "stored_probability": [
+            0.5541,
+            0.4459
+          ],
+          "recomputed_probability": [
+            0.5541,
+            0.4459
+          ],
+          "overround": 0.06791,
+          "checks": {
+            "https_source": true,
+            "full_match": true,
+            "prematch": true,
+            "open": true,
+            "team_alignment": true,
+            "kickoff_alignment": true,
+            "fresh_at_capture": true,
+            "before_fixture": true,
+            "math": true
+          }
+        }
+      ],
+      "consensus": {
+        "stored_probability_a": 0.5541,
+        "stored_probability_b": 0.4459,
+        "recomputed_probability_a": 0.5541,
+        "recomputed_probability_b": 0.4459,
+        "n_sources": 1
+      },
+      "checks": {
+        "consensus_math": true,
+        "current_mirror": true,
+        "external_source_count": true,
+        "hotspawn_is_discovery_only": true
+      },
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "fixture_id": "1079623",
+      "competition": "CCT Europe 2026 Series #11",
+      "tier": "b",
+      "start_time_utc": "2026-10-14T14:00:00Z",
+      "team_a": "G2 Ares",
+      "team_b": "The Last Resort",
+      "hotspawn_fixture_source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+      "per_source": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "links": [
+            {
+              "label": "Bovada",
+              "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-the-last-resort-202610141000"
+            },
+            {
+              "label": "quote API",
+              "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+            }
+          ],
+          "retrieved_at_utc": "2026-10-14T01:15:59Z",
+          "decimal_odds": [
+            1.5,
+            2.5
+          ],
+          "stored_probability": [
+            0.625,
+            0.375
+          ],
+          "recomputed_probability": [
+            0.625,
+            0.375
+          ],
+          "overround": 0.06667,
+          "checks": {
+            "https_source": true,
+            "full_match": true,
+            "prematch": true,
+            "open": true,
+            "team_alignment": true,
+            "kickoff_alignment": true,
+            "fresh_at_capture": true,
+            "before_fixture": true,
+            "math": true
+          }
+        }
+      ],
+      "consensus": {
+        "stored_probability_a": 0.625,
+        "stored_probability_b": 0.375,
+        "recomputed_probability_a": 0.625,
+        "recomputed_probability_b": 0.375,
+        "n_sources": 1
+      },
+      "checks": {
+        "consensus_math": true,
+        "current_mirror": true,
+        "external_source_count": true,
+        "hotspawn_is_discovery_only": true
+      },
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "fixture_id": "1079440",
+      "competition": "Stake Pulse Beat III",
+      "tier": "b",
+      "start_time_utc": "2026-10-15T10:00:00Z",
+      "team_a": "MIBR",
+      "team_b": "BC.Game",
+      "hotspawn_fixture_source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+      "per_source": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "links": [
+            {
+              "label": "Bovada",
+              "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-bc-game-202610150600"
+            },
+            {
+              "label": "quote API",
+              "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+            }
+          ],
+          "retrieved_at_utc": "2026-10-14T01:15:59Z",
+          "decimal_odds": [
+            1.645161,
+            2.2
+          ],
+          "stored_probability": [
+            0.5721,
+            0.4279
+          ],
+          "recomputed_probability": [
+            0.5721,
+            0.4279
+          ],
+          "overround": 0.06239,
+          "checks": {
+            "https_source": true,
+            "full_match": true,
+            "prematch": true,
+            "open": true,
+            "team_alignment": true,
+            "kickoff_alignment": true,
+            "fresh_at_capture": true,
+            "before_fixture": true,
+            "math": true
+          }
+        },
+        {
+          "source_key": "pinnacle",
+          "source_name": "Pinnacle",
+          "links": [
+            {
+              "label": "Pinnacle",
+              "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745/markets/related/straight"
+            }
+          ],
+          "retrieved_at_utc": "2026-10-14T01:15:56Z",
+          "decimal_odds": [
+            1.6369,
+            2.23
+          ],
+          "stored_probability": [
+            0.5767,
+            0.4233
+          ],
+          "recomputed_probability": [
+            0.5767,
+            0.4233
+          ],
+          "overround": 0.05934,
+          "checks": {
+            "https_source": true,
+            "full_match": true,
+            "prematch": true,
+            "open": true,
+            "team_alignment": true,
+            "kickoff_alignment": true,
+            "fresh_at_capture": true,
+            "before_fixture": true,
+            "math": true
+          }
+        }
+      ],
+      "consensus": {
+        "stored_probability_a": 0.5744,
+        "stored_probability_b": 0.4256,
+        "recomputed_probability_a": 0.5744,
+        "recomputed_probability_b": 0.4256,
+        "n_sources": 2
+      },
+      "checks": {
+        "consensus_math": true,
+        "current_mirror": true,
+        "external_source_count": true,
+        "hotspawn_is_discovery_only": true
+      },
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "fixture_id": "1079442",
+      "competition": "Stake Pulse Beat III",
+      "tier": "b",
+      "start_time_utc": "2026-10-15T10:00:00Z",
+      "team_a": "Heroic",
+      "team_b": "Envy",
+      "hotspawn_fixture_source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+      "per_source": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "links": [
+            {
+              "label": "Bovada",
+              "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/heroic-envy-202610150600"
+            },
+            {
+              "label": "quote API",
+              "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+            }
+          ],
+          "retrieved_at_utc": "2026-10-14T01:15:59Z",
+          "decimal_odds": [
+            1.487805,
+            2.55
+          ],
+          "stored_probability": [
+            0.6315,
+            0.3685
+          ],
+          "recomputed_probability": [
+            0.6315,
+            0.3685
+          ],
+          "overround": 0.06429,
+          "checks": {
+            "https_source": true,
+            "full_match": true,
+            "prematch": true,
+            "open": true,
+            "team_alignment": true,
+            "kickoff_alignment": true,
+            "fresh_at_capture": true,
+            "before_fixture": true,
+            "math": true
+          }
+        },
+        {
+          "source_key": "pinnacle",
+          "source_name": "Pinnacle",
+          "links": [
+            {
+              "label": "Pinnacle",
+              "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637999450/markets/related/straight"
+            }
+          ],
+          "retrieved_at_utc": "2026-10-14T01:15:57Z",
+          "decimal_odds": [
+            1.4695,
+            2.62
+          ],
+          "stored_probability": [
+            0.6407,
+            0.3593
+          ],
+          "recomputed_probability": [
+            0.6407,
+            0.3593
+          ],
+          "overround": 0.06218,
+          "checks": {
+            "https_source": true,
+            "full_match": true,
+            "prematch": true,
+            "open": true,
+            "team_alignment": true,
+            "kickoff_alignment": true,
+            "fresh_at_capture": true,
+            "before_fixture": true,
+            "math": true
+          }
+        }
+      ],
+      "consensus": {
+        "stored_probability_a": 0.6361,
+        "stored_probability_b": 0.3639,
+        "recomputed_probability_a": 0.6361,
+        "recomputed_probability_b": 0.3639,
+        "n_sources": 2
+      },
+      "checks": {
+        "consensus_math": true,
+        "current_mirror": true,
+        "external_source_count": true,
+        "hotspawn_is_discovery_only": true
+      },
+      "status": "pass",
+      "issues": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-797-01",
+      "severity": "needs review",
+      "title": "One direct Pinnacle re-read moved within the same hour",
+      "detail": "9z vs Aurora was captured at +255 / −326 at 01:15:57Z; public re-read showed +241 / −307. Do not call the stored 26.9% / 73.1% a live line after its timestamp. The automatic collector, not this audit, must refresh it.",
+      "sources": [
+        "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785",
+        "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight"
+      ]
+    },
+    {
+      "id": "F-797-02",
+      "severity": "needs review",
+      "title": "Rendered HotSpawn counter changed from 90 to 89",
+      "detail": "The root snapshot at 01:16:08Z records 90 fixtures (B25/C61/S4). The public lobby read at 01:40:24Z rendered All tiers (89), B25/C60/S4. The changed fixture is not inferred here; count drift means snapshot coverage and live lobby coverage must remain time-stamped.",
+      "sources": [
+        "https://play.hotspawn.com/lobby",
+        "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
+      ]
+    },
+    {
+      "id": "F-797-03",
+      "severity": "needs review",
+      "title": "Direct Bovada event-page review was blocked in this reader",
+      "detail": "The public Bovada coupon endpoint returned JSON, but one direct Astralis–Sashi event page returned Not Found / reCAPTCHA. This is an access limitation, not a finding that the stored quote is wrong. The stored API/event identifiers and capture time should remain visible for review.",
+      "sources": [
+        "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+        "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600"
+      ]
+    },
+    {
+      "id": "F-797-04",
+      "severity": "scope boundary",
+      "title": "This audit does not validate the other independently published boards",
+      "detail": "The repository intentionally preserves dated research sections with different source policies. This report validates only the root 01:16Z primary-bookmaker snapshot and must not be read as certification of every probability elsewhere in the repository.",
+      "sources": [
+        "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
+      ]
+    }
+  ]
+}

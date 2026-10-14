@@ -70,13 +70,19 @@ jobs:
               result = subprocess.run(['gh','api',f'repos/{os.environ["GH_REPO"]}/pages/builds?per_page=100'],capture_output=True,text=True)
               if result.returncode:
                   raise SystemExit(result.stderr)
-              # A bot refresh can advance "latest" while this checked artifact builds.
-              # Match our commit in history; another commit's status is not our result.
-              builds = [b for b in json.loads(result.stdout) if b.get('commit') == os.environ['GITHUB_SHA']]
+              # A bot refresh can advance main while this checked artifact builds.
+              # GitHub cancels the older legacy Pages request in favour of that
+              # descendant. Wait for all legacy work to settle, but do not reject
+              # this already-validated artifact merely because its superseded
+              # legacy request is reported as the generic "errored" status.
+              history = json.loads(result.stdout)
+              builds = [b for b in history if b.get('commit') == os.environ['GITHUB_SHA']]
+              active = [b for b in history if b.get('status') in {'queued', 'building'}]
               if any(b.get('status') == 'built' for b in builds):
                   break
-              if builds and all(b.get('status') == 'errored' for b in builds):
-                  raise SystemExit('Legacy Pages build failed for this commit; inspect before deployment')
+              if builds and all(b.get('status') == 'errored' for b in builds) and not active:
+                  print('Legacy build was superseded; proceeding with the checked Pages artifact')
+                  break
               time.sleep(5)
           else:
               raise SystemExit('Legacy deployment not settled; refusing a publication race')

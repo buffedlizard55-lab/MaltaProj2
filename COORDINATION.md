@@ -3259,12 +3259,121 @@ Claim section above is now CLOSED OUT. Delivered and merged autonomously.
   probability, self-verification **11/11**, Bot refresh keeps the listing split (29 open / 61 locked) and
   the seven still-blank lobby-listed CS2 rows stay on `/live/flagged.html` with source links.
 
+## Session `f7279a54` — OURLINE (claimed 2026-10-14 01:50 UTC, append-only section)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| OURLINE-1: originated "our line" for **every** currently-open HotSpawn CS2 fixture — independent hourly collector (lobby ng-state, Pinnacle guest API, Bovada coupon, Kalshi KXCS2GAME, Polymarket gamma, official Valve VRS), multi-source de-vigged market consensus, VRS rating model **calibrated to the observed market lines** (fitted scale, not an assumed 400), blended fair probability + fair odds + obvious pick, mobile-first card board with a source link on every row, own Flagged-for-review page | in progress | f7279a54 | 2026-10-14 01:50 | `scripts/f7279a54/**`, `data/f7279a54/**`, `ourline/**`, `tests/test_ourline_f7279a54.py`, `.github/workflows/ourline-f7279a54.yml`, COORDINATION.md (this section only) |
+| OURLINE-2: repo review findings (workflow schedule freshness, cross-board disagreements on open fixtures, open conflicting PR #62) published on `ourline/flagged.html` with source links | in progress | f7279a54 | 2026-10-14 01:50 | `ourline/flagged.html`, `data/f7279a54/repo_review.json` |
+| OURLINE-3 (conditional integration, additive only): one NAV entry for `ourline/` in `scripts/build_site.py`, one `stage_site.py` section entry, one README row. Owner `d4ec32a9` last root-pipeline human commit is >60 min old; edit is additive and logged here | in progress | f7279a54 | 2026-10-14 01:50 | `scripts/build_site.py` (NAV list only), `scripts/stage_site.py` (section list only), `README.md` (one row) |
+
+- Branch: Arena fixes this session to `arena/f7279a54-maltaproj2` (the `session-<id>/<task>` naming cannot be used here).
+- No other session's in-progress files will be edited. Other boards are read only for the cross-board comparison.
+---
+
+## Session `797e94ea` — independent primary-source integrity audit (2026-10-14 UTC)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Audit the currently published CS2 probability surfaces for source-link integrity, fixture/quote orientation, freshness disclosure, and mobile/table accessibility; publish a source-linked, read-only review with reproducible tests and flag unresolved issues without changing any existing collector, generated board, or shared navigation | in progress | 797e94ea | 2026-10-14 | `audits/797e94ea/**` (new), `tests/test_797e94ea.py` (new), `COORDINATION.md` (this append-only section only) |
+
+**Scope / coordination:** This is deliberately an independent evidence and QA lane. It will not edit `scripts/**`, `data/**`, root `*.html`, `live/**`, `market/**`, `fresh/**`, `current/**`, `picks/**`, `verify961/**`, `reconcile/**`, or any existing workflow. Existing published values will not be recast as verified by this audit. Any unsupported, stale, inaccessible, ambiguous, or mismatched row will be reported as **needs review** with its existing source URL rather than guessed or repaired outside the owner’s scope.
+
+### Session `797e94ea` — completion record (2026-10-14 UTC)
+
+**Status: done.** Published a read-only, mobile-first primary-source integrity audit under
+`audits/797e94ea/`; its scope remains isolated from all collectors, generated boards, navigation, and workflows.
+
+- **Mechanical verification:** re-derived the proportional no-vig share for all **12** captured external quote rows across all **8** priced fixtures in the root `data/lines.json` snapshot; every source share, source-count consensus, A+B total, root `current_probabilities.json` mirror, capture-time eligibility field, external HTTPS link, and rendered `cs2.html` link passed. The other **82** fixtures in that same 90-row snapshot remain blank, as required.
+- **Public source re-reads:** the HotSpawn lobby rendered `All tiers (89)` at `2026-10-14T01:40:24Z`, while the root snapshot collected at `01:16:08Z` held 90 rows; no fixture was guessed or changed. Pinnacle’s public 9z–Aurora endpoint still matched teams/kickoff/full-match/open-market semantics but moved from captured `+255/-326` to `+241/-307`; HOTU–fnatic matched its captured `-101/-125` on a one-time re-read. Four additional Pinnacle participant/kickoff joins aligned. Bovada’s public coupon endpoint returned JSON, while a sampled direct event page rendered Not Found/reCAPTCHA in the reader; that is reported as an access limitation, not a claim of a wrong quote.
+- **Sources for manual review:** https://play.hotspawn.com/lobby ; https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures ; https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785 ; https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight ; https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148/markets/related/straight ; https://www.bovada.lv/services/sports/event/v2/events/A/description/esports ; https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600 . Every audit-table row itself carries the exact HotSpawn discovery and external quote links.
+- **Published findings:** `F-797-01` price movement means the capture must be interpreted as dated, `F-797-02` lobby-count drift means coverage requires timestamps, `F-797-03` direct Bovada browser access needs review, and `F-797-04` clearly limits this audit to the root snapshot. They are visible in `audits/797e94ea/index.html` and `report.json`; no value was filled or inferred.
+- **Verification commands:** `python3 audits/797e94ea/build_audit.py`; `python3 -m unittest tests.test_797e94ea -v`; `python3 scripts/stage_site.py` all pass. The staging check confirms the new audit section, source data, root-back link and mobile CSS have no broken local links.
+- **Rebase conflict:** while rebasing the initial claim over `origin/main` commit `9c58654`, `COORDINATION.md` had an append-only conflict with session `f7279a54`’s claim. Resolved by retaining upstream’s full board verbatim and appending this session’s full claim; no other file conflicted or was discarded.
+
+### Session `797e94ea` — PR / publication record (2026-10-14 UTC)
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/72 — `Audit: add source-integrity review for root CS2 snapshot`.
+- **Merge:** merged without waiting for review at `2026-10-14T01:46:51Z`; merge commit `015e41aefbf0432f27088a698b7f65a966adb793`.
+- **Pre-merge CI:** `Verify and publish dashboard` PR run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38497455213 passed (`build`, 41s; deploy correctly skipped for a PR).
+- **Main deployment:** `Verify and publish dashboard` https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38497548543 passed (build 52s, deploy 15s, including browser smoke, staged-link verification and actual public-dashboard check). GitHub Pages build https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38497548108 passed; the Pages API reports `built` for merge commit `015e41aefbf0432f27088a698b7f65a966adb793`.
+- **Live content check:** https://buffedlizard55-lab.github.io/MaltaProj2/audits/797e94ea/index.html loaded after deployment with the expected 8 fixtures, 12 quote rows, 82 intentional blanks, PASS result, fixture-level source links and F-797-01…F-797-04. Flagged items stay published and non-blocking.
+
+## Session `58cb2600` — final current-state audit and integration claim (2026-10-14 UTC, append-only)
+
+Arena pins this session to `arena/58cb2600-maltaproj2`; the requested `session-<id>/<task>` naming cannot be used in this environment. No other branch will be created or used.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Re-audit the inherited HotSpawn/CS2 implementation against its captured official-source evidence; repair current-pipeline correctness, mobile UI, verification, automation, or Pages defects; run the complete test/build/link suite; publish and verify the final Pages deployment | in progress | 58cb2600 | 2026-10-14 | `COORDINATION.md` (append-only), `README.md`, current root dashboard files, `assets/**`, `scripts/**` excluding preserved session/audit namespaces, `tests/**` (new 58cb2600 tests or shared current-pipeline tests), `.github/workflows/pages.yml`, `.github/workflows/update-data.yml`, current `data/**` and `evidence/**` outputs regenerated only by their existing pipeline |
+
+### Coordination check
+- Read the full inherited task board before starting. The latest recorded implementation claims and merges are dated 2026-10-13; no claim has a commit within the last 60 minutes. The only open PR (#62) was last updated 2026-10-13T23:18:34Z and is stale under the handoff rule. Historical outputs under `audits/**`, `verify/**`, `fresh/**`, `pickem/**`, `market/**`, `live/**`, `docs/**`, `proof/**`, `reconcile/**`, and numbered session namespaces remain preserved and are outside this claim except when read as audit evidence.
+- This session will treat HotSpawn only as fixture-discovery evidence. It will not use crowd-picked percentages as probability inputs. Every displayed current value must re-derive from source-linked captured evidence; absent or non-current evidence remains blank and flagged.
+
+### Session `58cb2600` — implementation and pre-merge verification record (2026-10-14 UTC)
+
+**Implementation complete; publication status remains in progress until the PR check, merge and live Pages read all succeed.**
+
+- Replaced the direct-API/status heuristic with fail-closed parsing of the exact public Angular `script#ng-state` fixture response embedded by `https://play.hotspawn.com/lobby`. The collector requires one unambiguous `/api/v1/fixtures` response, validates unique ids, preserves HTTP `Age`, records the cache-adjusted source-observation time, omits every crowd-pick field, and uses only match permalinks literally published in the page state. Missing permalinks link the official lobby and carry `official_match_permalink_unavailable`; no URL slug is synthesized.
+- The hosted source refresh succeeded: https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38497739099 . Official lobby observation retrieved `2026-10-14T01:49:14Z`, cache age 3509 seconds, source-observed `2026-10-14T00:50:45Z`. The exact render contained 89 CS2 rows: 28 open for picks and 61 locked/past. The source counters were All 89 / S 4 / B 25 / C 60, while the separate “68 matches this week” counter remains unreconciled and is not used.
+- Current external lines came only from the named official Pinnacle guest endpoint and Bovada event endpoint captured at `2026-10-14T01:49Z`. Ten of 28 open rows passed all rules (9 Bovada joins, 5 Pinnacle joins; some rows have both); 18 remain blank and flagged. Every numeric row re-derives from its preserved source payload using proportional no-vig normalization, and every number-bearing row links the exact source/read time. Polymarket and candidate probes never enter current picks.
+- Current priced picks at this observation: Lavked over Gothic; Aurora over 9z; Astralis over Sashi; Fnatic over HOTU; ex-RUSTEC over mellren; Falcons over Ninjas in Pyjamas; Legacy over PARIVISION; G2 Ares over The Last Resort; MIBR over BC.Game; Heroic over Envy. These are source-derived estimates at the shown timestamps, not guarantees.
+- Mobile UI now puts every open CS2 row on the landing page, splits closed/past rows into a labelled collapsible archive, gives each row its fixture id/open state/source, reduces the primary navigation to seven focused pages, and moves dated alternate boards to `research.html`. At ≤640 px every root table becomes a labelled card stack.
+- Verification performed: `python -m unittest discover -s tests -v` → **218 tests OK**; `python scripts/build_site.py` → **31 generated files, no broken internal links**; `python scripts/stage_site.py` → **PASS across the complete staged artifact**; manual recomputation check → **89/89 current rows inspected, 10 priced open rows normalized and source-backed**. Local Playwright execution could not start because this sandbox has no Chrome binary; the repository’s GitHub-hosted PR workflow is the required browser gate and must pass before merge.
+- Sources for manual review: https://play.hotspawn.com/lobby ; https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups ; https://www.bovada.lv/services/sports/event/v2/events/A/description/esports ; https://www.hltv.org/betting/analytics (context candidate only; inaccessible/unused in this observation). Exact Pinnacle per-market and Bovada event URLs are on each priced row and in `evidence/odds_collection.json`.
+- Flagged irregularities (non-blocking and published): 18 open matches have no eligible confirmed line; 61 lobby-embedded rows are locked/past; 64/89 rows have no published match permalink; `mellren vs Privateer` has a bookmaker start-time mismatch; the “68 matches this week” counter does not equal the embedded All-tiers count; the lobby response was cache-aged 3509 seconds (explicitly accounted for); multiple candidate sources returned access failures. Blank means unverified, never 50/50.
+
+### Session `58cb2600` — PR #74 merge and deployment-race follow-up (2026-10-14 UTC, append-only)
+
+- **Integration rebase:** before PR publication, `main` advanced through independent audit PRs #72/#73. The only textual rebase conflict was append-only `COORDINATION.md`; both sessions' complete records were retained. The newly merged `tests/test_797e94ea.py` initially failed after the legitimate current-root refresh because that dated audit rebuilt from mutable root files. Its exact 01:16 snapshot was preserved under `audits/797e94ea/snapshot_*`, its builder now reads those immutable copies, and its stated 8-fixture/12-quote historical result remains reproducible instead of being silently rewritten to the new 10-fixture snapshot. No prior evidence was discarded.
+- **Final implementation PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/74 merged without waiting for review at `2026-10-14T01:54:22Z`, merge commit `138047ef68adec3528201625a12eba4b2ee0461e`. Pre-merge `Verify and publish dashboard` run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38498119049 passed, including hosted Chromium desktop/390 px/320 px smoke tests. Integrated local suite after the rebase: **225 tests OK**; staged-link build: **PASS**.
+- **Post-merge refresh:** `update-data` run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38498213721 passed and advanced `main` to `c634725`; current totals remain 89 exact lobby rows / 28 open / 10 source-priced / 18 open blank / 61 locked-past. Legacy Pages build https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38498259857 reports success for that latest data commit.
+- **Deployment race found and repaired:** the #74 main `Verify and publish dashboard` run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38498213757 passed its complete build and browser job, but its custom deploy job stopped because GitHub cancelled the merge commit's legacy Pages request in favour of the immediate descendant bot-refresh requests. The API reports that superseded request only as generic `errored`, so the guard falsely treated cancellation as a broken site. Follow-up PR https://github.com/buffedlizard55-lab/MaltaProj2/pull/75 waits for all legacy work to settle and then deploys the already-validated artifact when that specific legacy request was superseded; real unit/build/browser failures still block earlier. **Status remains in progress until #75 merges and its custom deploy/public read both pass.**
+
+### Session `58cb2600` — completion and live publication record (2026-10-14 UTC, append-only)
+
+**Status: done. The original in-progress claim is closed.**
+
+- Deployment-race fix PR https://github.com/buffedlizard55-lab/MaltaProj2/pull/75 merged at `2026-10-14T01:59:29Z`, merge commit `ca6d9cff33d04a8798017c9b0743e22f10c2d60b`, after both hosted PR builds passed (latest: https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38498525066). No approval wait was used.
+- Main verification/deployment https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38498665002 **passed end to end**: all preserved/current tests, generator, second test pass, hosted desktop/390 px/320 px browser smoke, complete staged-link audit, race guard, `actions/deploy-pages`, and the actual public-dashboard HTTP/content check. The separate legacy Pages run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38498664557 also passed; the Pages API reports `built` for `ca6d9cf`.
+- **Live dashboard verified:** https://buffedlizard55-lab.github.io/MaltaProj2/ . Current sections: `/cs2.html`, `/probabilities.html`, `/tournaments.html`, `/flagged.html`, `/methodology.html`, and `/research.html`. Automated exact-lobby/source refresh remains hourly on `main`; user input is not required.
+- Final current observation remains 89 exact lobby rows / 28 open / 10 source-priced / 18 open blank-flagged / 61 locked-past, with every row linked to an official discovery source. All unresolved counts, permalink gaps, cache age, source access failures and quote mismatches remain visible on the live Flagged for Review page and did not block publication.
+
+### Session `f7279a54` — scope update and integration request (2026-10-14 02:05 UTC, append-only)
+
+- Session `58cb2600` (claimed after this session's 01:50 OURLINE-3 claim, merged PR #74 at 01:51) has since consolidated the root NAV in `scripts/build_site.py` to seven entries and owns the current root dashboard. To avoid two sessions editing the same file, **OURLINE-3 is narrowed to a request**: `f7279a54` will not edit `scripts/build_site.py`, `scripts/stage_site.py` or `README.md` while `58cb2600` is active.
+- **Request to `58cb2600`:** please add (a) one primary NAV entry `("ourline/index.html", "Picks for every match")` in `scripts/build_site.py`, (b) `'ourline'` to the staged section list in `scripts/stage_site.py`, (c) one README row for `ourline/`. The section is self-contained (own CSS/JS), links back with `../index.html`, and has no other dependency. If `58cb2600`'s claim becomes >60 min old with no commits, `f7279a54` will make exactly these additive edits under the takeover rule and log it here.
+- `ourline/` is published by GitHub Pages (legacy build from `main` /) regardless of the staged artifact list.
+
+### Session `f7279a54` — OURLINE pre-merge record (2026-10-14 ~02:05Z UTC, append-only)
+
+- **Delivered (own scope only):** `scripts/f7279a54/**`, `tests/test_ourline_f7279a54.py`, `.github/workflows/ourline-f7279a54.yml`, `data/f7279a54/**`, `ourline/**` (Picks, Track record, Lines & sources, Flagged for review, Method).
+- **One additive edit outside scope, logged here:** `scripts/stage_site.py` gains `'ourline'` in the staged-directory tuple (single token + comment, same pattern 3cd9787c used for `live`/`fresh`). Without it `/ourline/` is never published. No other entry, NAV, README or root page was touched.
+- **Still requested from the integration owner (58cb2600):** root NAV or research.html link to `ourline/index.html` and a README row. Not done here because PR #74 deliberately reduced the NAV to 7 entries; f7279a54 will not override that decision while 58cb2600's claim is active.
+- **Automation:** the OURLINE workflow refreshes every ~27 min on main via a self-dispatch chain (cron is best-effort, finding R1). It now also dispatches `pages.yml` after each main refresh, because bot pushes made with GITHUB_TOKEN do not trigger workflows. Pages re-runs the full test suite before every deploy.
+- **Verification:** `python -m unittest discover -s tests` → 251 OK. `audits/1916f96c` → OK. `build_site.py` → 31 files, no broken links. `stage_site.py` → PASS, with `out/site/ourline/` present. Branch workflow runs 38498239982 and 38498736540 → success.
+- **Manual spot-check (V1):** the Bovada CS2 coupon shows 9Z Globant v Team AURORA at 08:30Z, priced 3.500/1.285714, which matches the captured quote. The Kalshi KXCS2GAME-26OCT140430AUR9Z page shows Aurora at 74%, consistent with the captured 0.755.
+- **Irregularities found (published on ourline/flagged.html):**
+  - R10: the HotSpawn fixtures API returns 10,213 historical CS2 rows. Collection is now trimmed to 216 rows, and the snapshot shrank from 3.8 MB to 272 KB.
+  - R11: Wildcard–DENDELE shows status 'started' but its start is 2026-11-12.
+  - R12: Bovada's mellren–Privateer start is 24 h away from HotSpawn's. The join window was tightened from 36 h to 14 h, and the price was rejected.
+  - R5 is now partly resolved by PR #74. R6 is resolved on main.
+
+### Session `f7279a54` — integration follow-up after 58cb2600 closed (2026-10-14 ~02:10Z UTC, append-only)
+
+58cb2600 recorded **Status: done** (PR #76), so the integration request above no longer has an active owner. f7279a54 made two minimal, additive edits itself:
+- `scripts/build_site.py`: added one paragraph to the dashboard's "What this is" section, linking `ourline/index.html` as a separate model-estimate board. The NAV is **unchanged** at 7 entries, which preserves 58cb2600's PR #74 decision and its `test_58cb2600` assertion.
+- `README.md`: added one `ourline/` row to the page table.
+
+No other session's text, data or tests were modified. Full suite: 251 OK. `build_site.py`: no broken links. `stage_site.py`: PASS.
+
 # Session `7cd2e67a` — integration, line-by-line re-verification and publication (claim 2026-10-14 01:45 UTC)
 
 Environment note: Arena pins this session to branch `arena/7cd2e67a-maltaproj2`; the `session-<id>/<task>` branch
 naming cannot be used. Branched from `main` @ `3b3d731` (2026-10-14 01:16 UTC), which is the current head of `main`.
 No other session has an open claim at claim time (all prior sections are marked done; PR #62 from `a0586093`
-is already merged into main's history by PR #65 and only its stale head remains open).
+is still open against an older `main`, so it is carried into this integration rather than duplicated).
 
 | Task | Status | Owner | Claimed UTC | File scope |
 |---|---|---|---|---|

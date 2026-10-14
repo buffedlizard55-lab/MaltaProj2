@@ -6,38 +6,43 @@ An evidence-first table of every CS2 fixture currently offered by the HotSpawn P
 with **external betting lines** (never HotSpawn) and **derived no-vig probabilities**, plus an
 explicit *Flagged for review* page for everything that could not be confirmed.
 
-Not affiliated with HotSpawn or any bookmaker. HotSpawn is used for fixture discovery only — its
-crowd "picked %" is shown for reference and is never used as a probability input.
+Not affiliated with HotSpawn or any bookmaker. HotSpawn is used for fixture discovery only. Its
+crowd "picked %" is omitted from the current inventory and never used as a probability input; some
+clearly dated archive sections preserve it as reference evidence.
 
 ## What the dashboard contains
 
 | Page | Content |
 |---|---|
-| `index.html` | Coverage summary, method in short, matches with verified lines, timestamps |
-| `cs2.html` | Automatically observed CS2 fixture inventory: odds per source, derived no-vig probability, verification status, review flags |
-| `lol.html` | LoL fixtures from the same lobby (external line collection not yet run for LoL) |
+| `index.html` | Every currently open CS2 pick first, coverage summary, lines, probabilities and timestamps |
+| `cs2.html` | Exact lobby-embedded CS2 inventory split into open picks and listed-but-closed rows |
+| `probabilities.html` | Mobile-first current picks; unpriced rows stay blank; closed rows are collapsed separately |
 | `tournaments.html` + `tournament-*.html` | Coverage per tournament |
-| `flagged.html` | Unverified rows, stale fixtures, unused bookmaker lines, rejected matches, source reachability, discrepancies, aliases |
+| `flagged.html` | Open gaps, stale fixtures, unused lines, rejected joins, access failures and discrepancies |
 | `verify/7cd2e67a/index.html` | Independent line-by-line re-verification (session `7cd2e67a`): every published probability re-derived from its quoted odds, every estimate rating checked against Valve's official standings, and every external source read again with its URL and UTC read time |
-| `methodology.html` | Sources with links, formulas, matching rules, limitations |
+| `methodology.html` | Sources with links, formulas, strict matching rules and limitations |
+| `research.html` | Dated audits and alternate session boards, separated from current picks |
+| `ourline/` (sub-site) | Session `f7279a54` board: a probability and a pick for every open CS2 fixture (no-vig Pinnacle/Bovada/Melbet/Kalshi consensus blended with a market-calibrated Valve VRS model; the basis is labelled per row), plus a track record graded from HotSpawn final scores, a source link for every quote, and its own Flagged for review page. Refreshed about every 27 min by `.github/workflows/ourline-f7279a54.yml`, which then dispatches Pages |
 | `fresh/` (sub-site) | Session `dd2b7fee` mobile-first pick board (landing + CS2 board + flagged + method). Probabilities originate exclusively from Bovada / Pinnacle / Kalshi lines captured in-session (see `data/dd2b7fee/lines_snapshot.json`); HotSpawn crowd % is not even displayed there. Re-rendered hourly by `.github/workflows/fresh-dd2b7fee.yml` |
 
 ## Data and evidence
 
 | File | Meaning |
 |---|---|
-| `data/hotspawn_matches.json` | Fixture list from the lobby's public API (`/api/v1/fixtures`) |
+| `data/hotspawn_matches.json` | Exact `/api/v1/fixtures` response embedded in the public lobby render, normalized without crowd percentages |
 | `data/odds.json` | Raw quotes per source, with source URLs, ids and retrieval timestamps |
-| `data/lines.json` | Fixtures joined to quotes, with derived no-vig probabilities and flags |
-| `evidence/*.json` | Probes: API discovery, source reachability, matching decisions, raw payload samples |
+| `data/lines.json` | Fixtures joined to quotes, with derived no-vig probabilities, open/closed state and flags |
+| `evidence/hotspawn_probe.json` | Lobby response hash/cache age, counters, exact ids, fields and published-permalink coverage |
+| `evidence/*.json` | Source reachability, matching decisions and bounded raw quote payload evidence |
 | `audits/1d4de836/**` | Independent audit of the lobby snapshot (session `1d4de836`) |
 
 ## Pipeline
 
-`.github/workflows/update-data.yml` runs on every relevant push and every 3 hours:
+`.github/workflows/update-data.yml` runs on every relevant main-branch push and hourly:
 
-1. `scripts/fetch_hotspawn.py` — lobby fixtures from the reverse-engineered public API
-   (`https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures`).
+1. `scripts/fetch_hotspawn.py` — exact fixture response and published permalink map from the public
+   Angular lobby transfer-state at `https://play.hotspawn.com/lobby`. Malformed/ambiguous state fails
+   closed and retains the prior inventory; HTTP cache age is preserved.
 2. `scripts/collect_odds.py` — external lines: Pinnacle (licensed bookmaker, public guest odds API),
    Bovada (licensed bookmaker, public coupon JSON), Polymarket (public markets; stale CS2 markets are
    filtered out), plus reachability probes for further candidate sources.
@@ -55,14 +60,16 @@ LineWatch remains available at https://buffedlizard55-lab.github.io/MaltaProj2/d
 
 The Pages workflow now stages all session-owned root HTML/assets/data/evidence/audits **plus** `docs/` and `pickem/`. It waits for the legacy build before deploying the combined artifact. This supersedes the earlier docs-only artifact that hid other sections and the subsequent verification-only workflow. No root or pickem source generator is replaced; their data provenance remains their own. Local navigation is checked across the complete artifact and live LineWatch content is checked after deployment with bounded CDN-propagation retries.
 
-## Current pipeline safety policy (2026-10-13, d4ec32a9)
+## Current pipeline safety policy (2026-10-14, re-audited by 58cb2600)
 
 The current root **CS2** and **Probabilities** tables supersede the earlier combined
-snapshot for current picks. They use only source-linked Pinnacle/Bovada full-match
-moneylines with explicit CS2 identity, confirmed participant/outcome alignment,
-exact UTC kickoff, a unique fixture/source join, an open prematch market and an
-upcoming fixture whose pick lock has not passed. Quote and fixture observation age
-must each be at most **four hours**. There is no tournament-token fallback.
+snapshot for current picks. The inventory is the exact fixture response embedded by the
+public lobby, not a status-based guess from the much larger direct API response. Current
+probabilities use only source-linked Pinnacle/Bovada full-match moneylines with explicit
+CS2 identity, confirmed participant/outcome alignment, exact UTC kickoff, a unique
+fixture/source join, an open prematch market and an upcoming fixture whose pick lock has
+not passed. Quote and cache-adjusted fixture observation age must each be at most
+**four hours**. There is no tournament-token fallback.
 
 Hourly GitHub Actions collection requires no user input. It publishes root HTML,
 assets, JSON and evidence in one commit; errors in computation or rendering block

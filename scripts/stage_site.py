@@ -12,7 +12,9 @@ if OUT.exists():
 OUT.mkdir(parents=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline'):
+# 'ourline' added by session f7279a54 (OURLINE board) as an additive single entry so /ourline/ is
+# published; requested in COORDINATION.md. f7279a54 does not touch NAV, README or other entries.
 # 'live' added by session 3cd9787c (T-COVER current-lobby coverage board), additive single entry.
 # 'fresh' added by session 3cd9787c as an integration unblock: the shared root NAV links
 # fresh/index.html (section dd2b7fee landed on main), so the artifact must carry the directory or
