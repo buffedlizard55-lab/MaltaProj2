@@ -4085,7 +4085,7 @@ earlier sessions too). Repo root `/home/user/MaltaProj2`.
 
 | Task | Status | Owner | File scope |
 |---|---|---|---|
-| Audit current source/coverage claims; simplify landing directions and explicitly summarize unresolved picks; verify tests, PR and Pages | in progress | 5cd24fb4 | scripts/build_site.py (executive summary only), generated root HTML, tests/test_5cd24fb4.py, audits/5cd24fb4/**, README.md (accuracy corrections only), COORDINATION.md append-only |
+| Audit current source/coverage claims; simplify landing directions and explicitly summarize unresolved picks; verify tests, PR and Pages | done | 5cd24fb4 | scripts/build_site.py (executive summary only), generated root HTML, tests/test_5cd24fb4.py, audits/5cd24fb4/**, README.md (accuracy corrections only), COORDINATION.md append-only |
 
 Prior final integrator 53220a1b explicitly closed INT-A/INT-B above; no active collector scope is taken. Session uses its mandated Arena branch, not a new session branch. External access is restricted in this sandbox; fresh source verification will be distinguished from archived evidence and GitHub-hosted runner results. No claim of universal live verification will be made.
 
@@ -4096,3 +4096,10 @@ Prior final integrator 53220a1b explicitly closed INT-A/INT-B above; no active c
 - Corrected landing: strict current inventory counts, one primary mobile CTA, capture/collection timestamps, unresolved row table with blank probabilities and official fixture links, alternate boards collapsed as research. Missing snapshot is unverified, not zero. No assertion that every inherited repository file/source was independently verified.
 - Local verification: 411 unittest cases passed (1 skipped); complete site staging passed all local-link checks. Six new regression tests cover blank/missing data, escaping, unsafe URL rejection, no fallback promotion, and open-row counts. Test-generated timestamp changes outside scope were reverted.
 - Sources: https://play.hotspawn.com/lobby ; https://www.hltv.org/betting/analytics ; https://melbet.com/en/line/esports (redirected to /en/block); https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md . Read times and limitations are published in the audit.
+
+### 5cd24fb4 publication result — done
+- PR https://github.com/buffedlizard55-lab/MaltaProj2/pull/94 merged without waiting for review at 2026-10-14T04:37:17Z; merge commit `30134eebaebbf939cddec947582b16bf63596dbe`.
+- PR check run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38512122201 succeeded: tests, desktop/390px/320px browser checks, complete staged links and artifact upload.
+- Production run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38512337894 succeeded: build, deploy, and Verify actual public dashboard all green.
+- Independent public fetch after deployment confirms new landing summary, strict 11/28 priced and 17 unresolved in the 04:23 UTC snapshot, source-linked blank unresolved table, disputed LFO/WROTBERRY notes, and audit links. Live URL: https://buffedlizard55-lab.github.io/MaltaProj2/ . These counts describe that capture, not guaranteed future coverage.
+- Main task complete; evidence irregularities remain **needs review**, published on audits/5cd24fb4/index.html and linked on Flagged for Review. Broader alternate-board probabilities have not been certified by this session. No new bookmaker line was confirmed in this audit, so no missing probability was invented.
