@@ -4,6 +4,11 @@ on:
     # every 4 hours, inside the 4-8h window the brief requires
     - cron: '23 */4 * * *'
   workflow_dispatch:
+  # Rebuild whenever the root fixture/line data is refreshed, so this board's featured rows are
+  # derived from the same snapshot the strict pages publish.
+  workflow_run:
+    workflows: ["update-data"]
+    types: [completed]
   push:
     branches: [arena/7177d07f-maltaproj2]
     paths:

@@ -86,9 +86,21 @@ class BoardContracts(unittest.TestCase):
             for fx in (self.lines.get("fixtures") or [])
             if fx.get("bookmaker_lines")
         }
+        board_from = (self.board.get("featured_source") or {}).get("generated_at_utc")
+        lines_from = self.lines.get("generated_at_utc")
+        same_snapshot = bool(board_from) and board_from == lines_from
         for row in self.rows:
-            if row["fixture_id"] in priced:
-                self.assertEqual(row["basis"], "featured", row["fixture_id"])
+            if row["basis"] == "featured":
+                self.assertTrue(row["fixture_id"] in priced or not same_snapshot,
+                                f"{row['fixture_id']}: claims a featured line that is not in the "
+                                f"lines snapshot it was built from")
+            elif row["fixture_id"] in priced and same_snapshot:
+                # Same snapshot, so the ladder skipped a fixture the strict route did price.
+                self.fail(f"{row['fixture_id']}: basis {row['basis']} overrides a featured line")
+        if not same_snapshot:
+            self.skipTest("board and data/lines.json come from different snapshots "
+                          f"(board={board_from}, lines={lines_from}); the workflow rebuilds this "
+                          "board whenever update-data runs")
 
     def test_every_row_carries_an_official_source_link(self):
         for row in self.rows:
