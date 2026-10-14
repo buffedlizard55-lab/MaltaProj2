@@ -3845,3 +3845,55 @@ Environment note: all work is on `arena/53220a1b-maltaproj2` (session branch nam
 | INT-B: line-by-line verification of the every-match picks requirement (a pick + win % for every open HotSpawn CS2 fixture, including low-tier matches with no bookmaker price, using documented fallback information sources only for those rows) and of the mobile executive-summary entry points | in progress | 53220a1b | 2026-10-14 03:55 | `tests/test_53220a1b.py` (new), COORDINATION.md (this section) |
 
 Claim pushed immediately per the parallel-session rules. No other session's in-progress claim is taken over; `c64a5e19`, `c0e223d3`, `58cb2600`, `f7279a54`, `dd2b7fee`, `7cd2e67a`, `ae75c5c3` claims are recorded done/closed. Open integration requests addressed here: (1) root NAV anchor to `summary/` (from `c0e223d3`), (2) NAV/mobile entry points to the every-match board, (3) evaluation of the two open PRs.
+
+## Preserved parallel session sections merged by 53220a1b (append-only boards kept verbatim)
+
+## Session `6ddde224` — claim (2026-10-14 01:43 UTC, append-only)
+
+Environment note: Arena pins this session to `arena/6ddde224-maltaproj2`; the requested
+`session-<id>/<task>` branch naming cannot be used in this environment.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| `T-COVERAGE-FULL`: close the remaining uncovered **pickable** HotSpawn CS2 fixtures (live board: 22/29 priced, 7 blank on `no_valve_vrs_rating:<team>`), add *additional* external non-HotSpawn line sources (bo3.gg/Thunderpick public feed, Kalshi exchange), add an explicitly labelled originated model (Bradley-Terry fitted on a source-linked bo3.gg results corpus) for teams absent from the official Valve VRS table, and publish a mobile-first coverage board with one source link per row + a Flagged-for-review page + a method page, refreshed hourly by CI with no manual input | in progress | 6ddde224 | `scripts/coverage/**`, `data/coverage/**`, `coverage/**`, `tests/test_coverage_6ddde224.py`, `.github/workflows/coverage-6ddde224.yml`, `COORDINATION.md` (this appended section only) |
+| `T-COVERAGE-INTEG` (integration, additive-only): one NAV anchor, one staging entry, one README row so `coverage/` ships in the Pages artifact; PR to `main`, merge, deploy verification | in progress | 6ddde224 | `scripts/build_site.py` (NAV list, single additive anchor), `scripts/stage_site.py` (single additive list entry), `README.md` (one row), `COORDINATION.md` |
+
+### Non-overlap statement (checked against the board at 01:43 UTC)
+- `3cd9787c` owns the `live/` section and its hourly workflow. **No file of theirs is edited**; their
+  published `data/live/quotes.json` + `data/live/fixtures.json` are **read as an input artifact** and
+  attributed per source, so this session does not duplicate their Pinnacle/Bovada/LineFeed requests.
+- `dd2b7fee` owns `fresh/`; `d4ec32a9` owns the root generator; neither is edited. The only shared files
+  this session touches are the two additive integration anchors listed above.
+- Gap to close, taken from their own published board (`data/live/board.json`, 2026-10-13T23:44:46Z):
+  90 lobby-listed CS2 rows, 29 still open for picks -> 12 market / 10 originated estimate / **7 blank**.
+  The 7 blanks are `1080279 WROTBERRY vs EAC`, `1080281 WROTBERRY vs ENCE`, `1080283 WROTBERRY vs BOJONG`,
+  `1080286 HAVU vs RoundsGG`, `1080288 Phantom vs RoundsGG`, `1080289 RoundsGG vs Voca`,
+  `1079624 FORZE Reload vs LFO 10` (all `no_valve_vrs_rating:<team>`).
+
+### Log
+- Sources for the claim itself: `data/live/board.json` (their summary counters), `data/live/ratings.json`
+  (349 VRS teams; WROTBERRY / RoundsGG / LFO 10 / SUKEBAN absent), `data/live/collection_log.json`
+  (63 market quotes from bovada 14 / linefeed_melbet 36 / pinnacle 13).
+- New source reachability confirmed by this session before claiming: `https://bo3.gg/api/v1/matches`
+  (HTTP 200, JSON, two-sided Thunderpick coefficients + team names + UTC start dates),
+  `https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME` (HTTP 200, JSON,
+  two-sided exchange book). Both are cited per row when used.
+- Nothing is invented: a row without a confirmed external price and without a documented rating for
+  **both** teams stays blank and is published on the flagged page with the reason and the source checks.
+
+## Session `6ddde224` — implementation complete + integration (append-only, continues the claim above)
+
+- `T-COVERAGE-FULL` implemented and running hourly (commits `06c7797`, `d2e02c1`, `e5ef6f7`): the collector
+  reads the HotSpawn lobby inventory (with a fallback to the committed `data/live` artifact if HotSpawn is
+  unreachable), reuses the Pinnacle / Bovada / LineFeed quotes already collected by `3cd9787c` (read-only),
+  adds the bo3.gg two-sided Thunderpick feed and Kalshi exchange books, fits a Bradley-Terry model on the
+  bo3.gg results corpus and renders a mobile-first board where every row is either a two-sided market quote,
+  an exchange quote inside the spread gate, an explicitly labelled *originated estimate*, or blank + flagged.
+  Pages: `coverage/index.html`, `coverage/flagged.html`, `coverage/method.html`, `coverage/review.html`.
+- Correction recorded on the review page: the first crawl of the bo3.gg feed used a plain `page` parameter
+  that the API ignores, so its corpus held 5,000 rows for 10 distinct matches; the snapshot is deleted, the
+  collector now refuses to reuse a corpus that fails a distinct-id/span check, and the contaminated "market"
+  benchmark was withdrawn from the method page (R-01/R-02, IR-01 on `coverage/review.html`).
+- `T-COVERAGE-INTEG` (additive only, no other session's file edited): one root NAV anchor
+  `coverage/index.html` in `scripts/build_site.py`, one `'coverage'` entry in `scripts/stage_site.py`,
+  one row in `README.md`. Staging link check re-run locally: PASS.

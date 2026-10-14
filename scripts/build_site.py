@@ -79,6 +79,12 @@ NAV = [
     ("flagged.html", "Flagged for review"),
     ("methodology.html", "Method &amp; sources"),
     ("research.html", "Research archive"),
+    # integration link added by session 6ddde224 (T-COVERAGE-INTEG, single additive anchor,
+    # documented in COORDINATION.md): full-lobby coverage board with external bookmaker/exchange
+    # lines, originated Bradley-Terry estimates or a blank+flagged row, plus a repo-review page.
+    # Kept during 53220a1b final integration; the pre-compaction historical session entries stay
+    # reachable from Research archive (research.html), per the compact-NAV policy on main.
+    ("coverage/index.html", "Coverage board (6ddde224)"),
 ]
 
 

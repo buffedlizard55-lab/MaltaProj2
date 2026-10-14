@@ -12,12 +12,16 @@ if OUT.exists():
 OUT.mkdir(parents=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage'):
 # 'picks-every-match' added by session c64a5e19 (every-match board) as an additive single entry.
 # 'summary' added by session c0e223d3 (T-HUB-INTEG) as an additive single entry so the
 # source/verification hub ships in the Pages artifact. Additive single entry only.
 # 'ourline' added by session f7279a54 (OURLINE board) as an additive single entry so /ourline/ is
 # published; requested in COORDINATION.md. f7279a54 does not touch NAV, README or other entries.
+# 'coverage' added by session 6ddde224 (T-COVERAGE-INTEG, additive single entry): the root NAV links
+# coverage/index.html, so the artifact must carry the directory or every staged page fails the
+# link check and no site is published. No other session's files are modified here.
+# 'board' and 'live' etc. retained from main; 'board' is added in the 53220a1b integration step.
 # 'live' added by session 3cd9787c (T-COVER current-lobby coverage board), additive single entry.
 # 'fresh' added by session 3cd9787c as an integration unblock: the shared root NAV links
 # fresh/index.html (section dd2b7fee landed on main), so the artifact must carry the directory or
