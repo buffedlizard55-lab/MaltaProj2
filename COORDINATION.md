@@ -3269,3 +3269,24 @@ Claim section above is now CLOSED OUT. Delivered and merged autonomously.
 
 - Branch: Arena fixes this session to `arena/f7279a54-maltaproj2` (the `session-<id>/<task>` naming cannot be used here).
 - No other session's in-progress files will be edited. Other boards are read only for the cross-board comparison.
+---
+
+## Session `797e94ea` — independent primary-source integrity audit (2026-10-14 UTC)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Audit the currently published CS2 probability surfaces for source-link integrity, fixture/quote orientation, freshness disclosure, and mobile/table accessibility; publish a source-linked, read-only review with reproducible tests and flag unresolved issues without changing any existing collector, generated board, or shared navigation | in progress | 797e94ea | 2026-10-14 | `audits/797e94ea/**` (new), `tests/test_797e94ea.py` (new), `COORDINATION.md` (this append-only section only) |
+
+**Scope / coordination:** This is deliberately an independent evidence and QA lane. It will not edit `scripts/**`, `data/**`, root `*.html`, `live/**`, `market/**`, `fresh/**`, `current/**`, `picks/**`, `verify961/**`, `reconcile/**`, or any existing workflow. Existing published values will not be recast as verified by this audit. Any unsupported, stale, inaccessible, ambiguous, or mismatched row will be reported as **needs review** with its existing source URL rather than guessed or repaired outside the owner’s scope.
+
+### Session `797e94ea` — completion record (2026-10-14 UTC)
+
+**Status: done.** Published a read-only, mobile-first primary-source integrity audit under
+`audits/797e94ea/`; its scope remains isolated from all collectors, generated boards, navigation, and workflows.
+
+- **Mechanical verification:** re-derived the proportional no-vig share for all **12** captured external quote rows across all **8** priced fixtures in the root `data/lines.json` snapshot; every source share, source-count consensus, A+B total, root `current_probabilities.json` mirror, capture-time eligibility field, external HTTPS link, and rendered `cs2.html` link passed. The other **82** fixtures in that same 90-row snapshot remain blank, as required.
+- **Public source re-reads:** the HotSpawn lobby rendered `All tiers (89)` at `2026-10-14T01:40:24Z`, while the root snapshot collected at `01:16:08Z` held 90 rows; no fixture was guessed or changed. Pinnacle’s public 9z–Aurora endpoint still matched teams/kickoff/full-match/open-market semantics but moved from captured `+255/-326` to `+241/-307`; HOTU–fnatic matched its captured `-101/-125` on a one-time re-read. Four additional Pinnacle participant/kickoff joins aligned. Bovada’s public coupon endpoint returned JSON, while a sampled direct event page rendered Not Found/reCAPTCHA in the reader; that is reported as an access limitation, not a claim of a wrong quote.
+- **Sources for manual review:** https://play.hotspawn.com/lobby ; https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures ; https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785 ; https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight ; https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148/markets/related/straight ; https://www.bovada.lv/services/sports/event/v2/events/A/description/esports ; https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600 . Every audit-table row itself carries the exact HotSpawn discovery and external quote links.
+- **Published findings:** `F-797-01` price movement means the capture must be interpreted as dated, `F-797-02` lobby-count drift means coverage requires timestamps, `F-797-03` direct Bovada browser access needs review, and `F-797-04` clearly limits this audit to the root snapshot. They are visible in `audits/797e94ea/index.html` and `report.json`; no value was filled or inferred.
+- **Verification commands:** `python3 audits/797e94ea/build_audit.py`; `python3 -m unittest tests.test_797e94ea -v`; `python3 scripts/stage_site.py` all pass. The staging check confirms the new audit section, source data, root-back link and mobile CSS have no broken local links.
+- **Rebase conflict:** while rebasing the initial claim over `origin/main` commit `9c58654`, `COORDINATION.md` had an append-only conflict with session `f7279a54`’s claim. Resolved by retaining upstream’s full board verbatim and appending this session’s full claim; no other file conflicted or was discarded.

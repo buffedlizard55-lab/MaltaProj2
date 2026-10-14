@@ -1,0 +1,151 @@
+{
+  "audit_observed_at_utc": "2026-10-14T01:40:24Z",
+  "collection_method": "One read of the public pages/endpoints using the platform page reader. This is not a replacement price feed: a readable response is not a certification of the operator, a promise of availability, or a current line for a later reader.",
+  "checks": [
+    {
+      "id": "SRC-797-01",
+      "status": "observed_price_moved",
+      "fixture_id": "1080176",
+      "fixture": "9z vs Aurora",
+      "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785",
+      "market_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight",
+      "observed": {
+        "participants": [
+          "9z",
+          "Aurora"
+        ],
+        "start_time_utc": "2026-10-14T08:30:00Z",
+        "full_match_market_key": "s;0;m",
+        "market_status": "open",
+        "american_prices": [
+          241,
+          -307
+        ]
+      },
+      "snapshot_at_011557z": {
+        "american_prices": [
+          255,
+          -326
+        ]
+      },
+      "note": "The same public Pinnacle market was readable and aligned on participants, kickoff, full-match key and open status, but the price had moved. The root value is therefore a dated snapshot, not a live price at this audit time."
+    },
+    {
+      "id": "SRC-797-02",
+      "status": "observed_snapshot_price_matches",
+      "fixture_id": "1079439",
+      "fixture": "HOTU vs Fnatic",
+      "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148",
+      "market_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148/markets/related/straight",
+      "observed": {
+        "participants": [
+          "HOTU",
+          "fnatic"
+        ],
+        "start_time_utc": "2026-10-14T10:00:00Z",
+        "full_match_market_key": "s;0;m",
+        "market_status": "open",
+        "american_prices": [
+          -101,
+          -125
+        ]
+      },
+      "snapshot_at_011555z": {
+        "american_prices": [
+          -101,
+          -125
+        ]
+      },
+      "note": "This single re-read matched the archived Pinnacle full-match price at the stated time."
+    },
+    {
+      "id": "SRC-797-03",
+      "status": "observed_metadata_alignment_only",
+      "fixture_id": "1080177",
+      "fixture": "Falcons vs Ninjas in Pyjamas",
+      "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674",
+      "market_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674/markets/related/straight",
+      "observed": {
+        "participants": [
+          "Falcons",
+          "Ninjas In Pyjamas"
+        ],
+        "start_time_utc": "2026-10-14T11:00:00Z",
+        "matchup_status": "pending"
+      },
+      "note": "Participants and kickoff aligned; this audit did not record a second full-match price."
+    },
+    {
+      "id": "SRC-797-04",
+      "status": "observed_metadata_alignment_only",
+      "fixture_id": "1079440",
+      "fixture": "MIBR vs BC.Game",
+      "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745",
+      "market_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745/markets/related/straight",
+      "observed": {
+        "participants": [
+          "MIBR",
+          "BC.Game"
+        ],
+        "start_time_utc": "2026-10-15T10:00:00Z",
+        "matchup_status": "pending"
+      },
+      "note": "Participants and kickoff aligned; this audit did not record a second full-match price."
+    },
+    {
+      "id": "SRC-797-05",
+      "status": "observed_metadata_alignment_only",
+      "fixture_id": "1079442",
+      "fixture": "Heroic vs Envy",
+      "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637999450",
+      "market_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637999450/markets/related/straight",
+      "observed": {
+        "participants": [
+          "HEROIC",
+          "Envy"
+        ],
+        "start_time_utc": "2026-10-15T10:00:00Z",
+        "matchup_status": "pending"
+      },
+      "note": "Participants and kickoff aligned (case-only team-name variation); no second full-match price recorded."
+    },
+    {
+      "id": "SRC-797-06",
+      "status": "public_coupon_readable_direct_event_sample_blocked",
+      "fixture_id": "1079438",
+      "fixture": "Astralis vs Sashi",
+      "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+      "direct_event_url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600",
+      "observed": {
+        "coupon_endpoint": "returned JSON",
+        "direct_event_page": "Not Found / reCAPTCHA in the audit reader"
+      },
+      "note": "This is a read-access observation for one event page, not evidence that any archived Bovada price is wrong. Exact current price re-validation from the direct event page is unresolved."
+    },
+    {
+      "id": "SRC-797-07",
+      "status": "lobby_counter_changed",
+      "fixture_id": null,
+      "fixture": "HotSpawn Pick'ems lobby",
+      "source_url": "https://play.hotspawn.com/lobby",
+      "observed": {
+        "matches_this_week": 68,
+        "all_tiers": 89,
+        "tier_counts": {
+          "b": 25,
+          "c": 60,
+          "s": 4
+        }
+      },
+      "snapshot_at_011608z": {
+        "root_fixture_total": 90,
+        "tier_counts": {
+          "b": 25,
+          "c": 61,
+          "s": 4
+        }
+      },
+      "note": "The rendered lobby counter differed from the root snapshot less than half an hour later. This audit does not infer which fixture changed or alter the captured inventory."
+    }
+  ]
+}
