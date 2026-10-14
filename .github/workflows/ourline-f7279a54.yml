@@ -55,6 +55,8 @@ jobs:
       - name: Commit and push (rebase before every push; never discards other sessions' work)
         env:
           REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
           git config user.name "ourline-bot (f7279a54)"
@@ -63,7 +65,12 @@ jobs:
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -m "ourline(f7279a54): refresh picks $(date -u +%Y-%m-%dT%H:%MZ)"
           for attempt in 1 2 3 4 5; do
-            git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME" && exit 0
+            if git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then
+              # Pushes made with GITHUB_TOKEN do not trigger other workflows, so on main explicitly
+              # dispatch the existing Pages workflow (it re-runs every test before deploying).
+              if [ "$REF_NAME" = "main" ]; then gh workflow run pages.yml --ref main || echo "pages dispatch failed"; fi
+              exit 0
+            fi
             sleep $((attempt * 7))
           done
           exit 1
