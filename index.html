@@ -31,12 +31,14 @@
   
   
 <div class="cards" id="where-the-picks" style="display:block;background:#12203a;border:1px solid #2b3752;border-radius:14px;padding:14px;margin:16px 0">
-  <h2 style="margin-top:0">Executive summary — where the picks are</h2>
-  <p><strong>28 of 28</strong> open CS2 fixtures on the every-match board carry a pick and a win probability; 23 of 29 open fixtures are priced by an external bookmaker or exchange, 6 carry an explicitly labelled originated line (official Valve VRS ratings or this project's own Elo over published results), 0 left blank and flagged.</p>
-  <p><a class="btn" href="picks-every-match/index.html">Every-match picks at a glance</a>
-     <a class="btn" href="board/picks.html">All picks · every match</a>
-     <a class="btn ghost" href="summary/index.html">Where the picks are (hub)</a>
-     <a class="btn ghost" href="flagged.html">Flagged for review</a></p>
+  <h2 style="margin-top:0">📱 Executive summary — where the picks are</h2>
+  <p style="font-size:16px;margin:10px 0"><strong>Tap the big button below on your phone to see every pick now.</strong></p>
+  <p style="margin:6px 0"><a class="btn" style="font-size:16px;padding:14px 22px;width:100%;text-align:center;display:block;margin:8px 0" href="picks-every-match/index.html">🎯 See every CS2 pick (mobile-optimized)</a></p>
+  <p><strong>28 of 28</strong> open CS2 fixtures carry a pick and a win probability: 22 priced from external bookmaker/exchange quotes (Pinnacle, Bovada, Melbet, Kalshi, Thunderpick via bo3.gg), 6 use an originated line from official Valve VRS ratings with HLTV world-ranking corroboration where available. <strong>0 left blank.</strong></p>
+  <p><a class="btn" href="board/picks.html">All picks · full table</a>
+     <a class="btn ghost" href="flagged.html">Flagged / low-confidence</a>
+     <a class="btn ghost" href="picks-every-match/flagged.html">Unresolved picks (per-match)</a>
+     <a class="btn ghost" href="summary/index.html">Verification hub</a></p>
   <ul style="margin:8px 0 8px 18px;padding:0">
     <li style="margin:8px 0"><a href="picks-every-match/index.html"><strong>Every-match picks at a glance</strong></a>&mdash; Pick + win % for every open CS2 match on one phone-friendly page. Start here. <span style="color:#8fa3c8;font-size:12.5px">updated 2026-10-14 04:06:30 UTC</span></li><li style="margin:8px 0"><a href="board/picks.html"><strong>All picks · every match</strong></a>&mdash; Every open fixture with its line basis labelled (bookmaker price or originated line). <span style="color:#8fa3c8;font-size:12.5px">updated 2026-10-14 04:18:37 UTC</span></li><li style="margin:8px 0"><a href="ourline/index.html"><strong>Our line</strong></a>&mdash; Market consensus blended with a calibrated Valve VRS model, plus a graded track record. <span style="color:#8fa3c8;font-size:12.5px">updated 2026-10-14 04:13:12 UTC</span></li><li style="margin:8px 0"><a href="coverage/index.html"><strong>Coverage board</strong></a>&mdash; Every lobby fixture: external line, exchange quote, originated estimate, or blank + flagged. <span style="color:#8fa3c8;font-size:12.5px">updated 2026-10-14 04:17:13 UTC</span></li><li style="margin:8px 0"><a href="live/index.html"><strong>Live coverage board</strong></a>&mdash; Current-lobby board with per-row source links. <span style="color:#8fa3c8;font-size:12.5px">updated 2026-10-14 03:44:53 UTC</span></li><li style="margin:8px 0"><a href="fresh/index.html"><strong>Fresh board</strong></a>&mdash; Mobile board priced only from Bovada / Pinnacle / Kalshi captures. <span style="color:#8fa3c8;font-size:12.5px">updated 2026-10-13 23:20:00 UTC</span></li><li style="margin:8px 0"><a href="cs2.html"><strong>CS2 picks (strict)</strong></a>&mdash; Root table: only eligible primary-bookmaker prices; unverified rows stay blank.</li><li style="margin:8px 0"><a href="summary/index.html"><strong>Where the picks are — verification hub</strong></a>&mdash; Independent cross-checks, sources with read times, gaps and the repository review.</li><li style="margin:8px 0"><a href="flagged.html"><strong>Flagged for review</strong></a>&mdash; Every unverified or irregular item with its source links.</li>
   </ul>
@@ -44,9 +46,21 @@
   automatically (no manual input) and gives every open CS2 fixture a pick where a source exists:
   external bookmaker/exchange prices first (Pinnacle, Bovada, Melbet, Kalshi, and the Thunderpick
   prices bo3.gg publishes per match, including tier-C events), and a clearly labelled originated line
-  from the official Valve VRS rating or this project's own Elo where no bookmaker prices the match.
-  HotSpawn's crowd pick percentage is never used as a probability input. Estimates are not guarantees.
+  from the official Valve VRS rating, with HLTV world-ranking / form corroboration documented in
+  <code>data/9a873ea7/hltv_corroboration.json</code>, where no bookmaker prices the match.
+  HotSpawn's crowd pick percentage is never used as a probability input — and neither are HLTV
+  user-prediction percentages (also crowd picks). Estimates are not guarantees.
   18+; gamble responsibly.</p>
+  <h3 style="font-size:15px;margin:14px 0 6px">Unresolved / low-confidence picks (limitations)</h3>
+  <p class="note" style="border-left-color:#d29922">Five tier-C picks carry active caveats that are published
+  individually on <a href="picks-every-match/flagged.html">the per-match flagged page</a>: WROTBERRY (team-identity
+  alias WBT vs WBT Academy contested between Valve VRS and Kalshi), FORZE Reload vs LFO 10 (LFO 10 has no
+  HLTV/VRS record; Sokerorg alias flagged), WROTBERRY/EAC/ENCE/BOJONG/RoundsGG round-robin matches
+  (priced only from Kalshi thin-book or single Melbet line, never from Pinnacle/Bovada), and mellren vs
+  Privateer / Ryvex vs PCIFIC (neither team has an HLTV page nor any external bookmaker price at retrieval
+  — resolved by VRS model only, lowest confidence). These are not blank (every match gives a pick), but
+  they are marked Fallback C and listed on the flagged page with their evidence gaps.
+  See <a href="picks-every-match/method.html">Method &amp; sources</a>.</p>
 </div>
 
 <div class="cards"><div class="card"><div class="card-num">28</div><div class="card-label">CS2 matches open for picks</div></div><div class="card"><div class="card-num">11</div><div class="card-label">Open matches with an eligible line</div></div><div class="card"><div class="card-num">17</div><div class="card-label">Open matches blank / flagged</div></div><div class="card"><div class="card-num">60</div><div class="card-label">Listed but locked or past</div></div></div>

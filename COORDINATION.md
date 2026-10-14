@@ -4080,3 +4080,29 @@ earlier sessions too). Repo root `/home/user/MaltaProj2`.
   Flagged for Review pages (`flagged.html`, `summary/gaps.html`, `board/flagged.html`,
   `coverage/flagged.html`, `audits/797e94ea/`) with source links for post-live review; they do not
   block anything and no unverified value was ever filled in.
+
+---
+
+## Session `9a873ea7` — fresh refresh + HLTV/thin-book research + mobile executive summary (2026-10-14 ~04:35 UTC)
+
+**Branch:** `arena/9a873ea7-maltaproj2` (fixed by environment). Starting commit `dd309e94991c5b3934ab9c4cb22fa6c4f6eff4b3` of main (post-integration).
+
+### Task board
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-REFRESH-9A873EA7 — re-run all collectors to pull latest HotSpawn lobby & external odds | in progress | 9a873ea7 | 2026-10-14 04:35 | calling existing collectors in scripts/*c64a5e19*, *fe803b80*, *f7279a54*, *6ddde224*, *3cd9787c*; regenerating data/** and board/picks-every-match/coverage/ourline docs |
+| T-THINBOOK-9A873EA7 — research additional sources (HLTV, egamersworld, bo3.gg, etc.) for tier-C matches with weak coverage | in progress | 9a873ea7 | 2026-10-14 04:35 | scripts/9a873ea7/**, data/9a873ea7/** |
+| T-EXECSUMM-9A873EA7 — tighten mobile executive summary, confirm all navigation leads visibly to picks on phone | in progress | 9a873ea7 | 2026-10-14 04:35 | index.html executive summary block; picks-every-match/index.html; board/index.html |
+| T-VERIFY-9A873EA7 — line-by-line source verification, link checks, test run, Pages deploy | pending | 9a873ea7 | 2026-10-14 04:35 | tests/ output only, then PR and merge |
+
+### Log
+- Starting state: all previous sessions' work merged; every-match board covers 28/28 open CS2; C-tier fallback uses VRS/Elo. Need fresh refresh, additional thin-book research, and site verification.
+
+### Log — 9a873ea7
+- Starting state reviewed: 405 tests pass, all internal links resolve. Every-match boards (board/picks.html, picks-every-match/*) already publish a pick + probability for all 28/28 open CS2 fixtures (29 on board/ due to including a fixture that picks-every-match's timing marks differently). 22 have market quotes from Pinnacle/Bovada/Melbet/Kalshi/Thunderpick-via-bo3.gg, 6 use originated VRS lines.
+- **HLTV corroboration:** Independently fetched HLTV betting analytics (fetch_page; urllib gets TLS EOF from sandbox, HLTV returns 403 to runner automation per earlier session evidence) at https://www.hltv.org/betting/analytics, team pages for Voca/Phantom, HLTV world ranking 2026-09-28, and the FRAG University Wildcard vs DENDELE match page. All corroborate the existing VRS-originated picks (Voca over Phantom, HAVU over unranked RoundsGG, Phantom over HAVU via HLTV rank, 6666 over Banda Chuya, etc.). HLTV user-prediction percentages are CROWD PICKS and are excluded — just like HotSpawn's. Wrote corroboration to `data/9a873ea7/hltv_corroboration.json` with per-fixture HLTV URLs and insights.
+- **Unresolved / limitations documented:** Five tier-C picks remain low-confidence and are published on picks-every-match/flagged.html with source links: (1) WROTBERRY identity (WBT vs WBT Academy alias contested), (2) FORZE Reload vs LFO 10 (LFO 10 has no VRS row; sibling range + Sokerorg alias), (3) mellren vs Privateer / Ryvex vs PCIFIC (neither team on HLTV nor any bookmaker; VRS-only), (4) several Elisa BreakOut thin-book-only matches (single Melbet line or Kalshi thin-book). These are NOT blank (every match has a pick) but are marked Fallback C and listed on the flagged page.
+- **Mobile executive summary tightened:** Added a full-width prominent "See every CS2 pick" primary CTA button at top of index.html, added HLTV corroboration note and an explicit "Unresolved / low-confidence picks" panel linking directly to picks-every-match/flagged.html. Added responsive @media breakpoints to assets/style.css so that the root index converts the main CS2 table to cards on phones (sub-720px viewport) like the picks-every-match page.
+- **Method page updated:** Changed the HLTV bullet in picks-every-match/method.html to describe the corroboration use, note that HLTV user-predictions are crowd picks and excluded, and point to data/9a873ea7/hltv_corroboration.json.
+- **Verification:** All 405 tests pass (1 skipped). All internal links resolve across all 10 key pages (index, picks-every-match/*, board/*, flagged, cs2, probabilities). No broken links.
+- T-REFRESH/T-THINBOOK/T-EXECSUMM complete. T-VERIFY next: commit, push, open PR, merge, verify Pages.
