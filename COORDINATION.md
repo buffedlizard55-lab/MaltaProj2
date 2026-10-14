@@ -3298,3 +3298,15 @@ Claim section above is now CLOSED OUT. Delivered and merged autonomously.
 - **Pre-merge CI:** `Verify and publish dashboard` PR run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38497455213 passed (`build`, 41s; deploy correctly skipped for a PR).
 - **Main deployment:** `Verify and publish dashboard` https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38497548543 passed (build 52s, deploy 15s, including browser smoke, staged-link verification and actual public-dashboard check). GitHub Pages build https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38497548108 passed; the Pages API reports `built` for merge commit `015e41aefbf0432f27088a698b7f65a966adb793`.
 - **Live content check:** https://buffedlizard55-lab.github.io/MaltaProj2/audits/797e94ea/index.html loaded after deployment with the expected 8 fixtures, 12 quote rows, 82 intentional blanks, PASS result, fixture-level source links and F-797-01…F-797-04. Flagged items stay published and non-blocking.
+
+## Session `58cb2600` — final current-state audit and integration claim (2026-10-14 UTC, append-only)
+
+Arena pins this session to `arena/58cb2600-maltaproj2`; the requested `session-<id>/<task>` naming cannot be used in this environment. No other branch will be created or used.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Re-audit the inherited HotSpawn/CS2 implementation against its captured official-source evidence; repair current-pipeline correctness, mobile UI, verification, automation, or Pages defects; run the complete test/build/link suite; publish and verify the final Pages deployment | in progress | 58cb2600 | 2026-10-14 | `COORDINATION.md` (append-only), `README.md`, current root dashboard files, `assets/**`, `scripts/**` excluding preserved session/audit namespaces, `tests/**` (new 58cb2600 tests or shared current-pipeline tests), `.github/workflows/pages.yml`, `.github/workflows/update-data.yml`, current `data/**` and `evidence/**` outputs regenerated only by their existing pipeline |
+
+### Coordination check
+- Read the full inherited task board before starting. The latest recorded implementation claims and merges are dated 2026-10-13; no claim has a commit within the last 60 minutes. The only open PR (#62) was last updated 2026-10-13T23:18:34Z and is stale under the handoff rule. Historical outputs under `audits/**`, `verify/**`, `fresh/**`, `pickem/**`, `market/**`, `live/**`, `docs/**`, `proof/**`, `reconcile/**`, and numbered session namespaces remain preserved and are outside this claim except when read as audit evidence.
+- This session will treat HotSpawn only as fixture-discovery evidence. It will not use crowd-picked percentages as probability inputs. Every displayed current value must re-derive from source-linked captured evidence; absent or non-current evidence remains blank and flagged.
