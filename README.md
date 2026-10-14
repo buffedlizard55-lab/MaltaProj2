@@ -19,6 +19,7 @@ clearly dated archive sections preserve it as reference evidence.
 | `probabilities.html` | Mobile-first current picks; unpriced rows stay blank; closed rows are collapsed separately |
 | `tournaments.html` + `tournament-*.html` | Coverage per tournament |
 | `flagged.html` | Open gaps, stale fixtures, unused lines, rejected joins, access failures and discrepancies |
+| `verify/7cd2e67a/index.html` | Independent line-by-line re-verification (session `7cd2e67a`): every published probability re-derived from its quoted odds, every estimate rating checked against Valve's official standings, and every external source read again with its URL and UTC read time |
 | `methodology.html` | Sources with links, formulas, strict matching rules and limitations |
 | `research.html` | Dated audits and alternate session boards, separated from current picks |
 | `ourline/` (sub-site) | Session `f7279a54` board: a probability and a pick for every open CS2 fixture (no-vig Pinnacle/Bovada/Melbet/Kalshi consensus blended with a market-calibrated Valve VRS model; the basis is labelled per row), plus a track record graded from HotSpawn final scores, a source link for every quote, and its own Flagged for review page. Refreshed about every 27 min by `.github/workflows/ourline-f7279a54.yml`, which then dispatches Pages |
@@ -84,7 +85,29 @@ an official forecast, guarantee, or independently validated predictive accuracy.
 - Tests: `python -m unittest discover -s tests -v`.
 
 All prior third-party and model data, `docs/`, `pickem/` and independent audit
-sections are preserved as dated research. They do **not** enter current picks,
+sections are preserved as dated research.
+
+## Independent re-verification (session 7cd2e67a, 2026-10-14)
+
+`scripts/7cd2e67a/verify_published_boards.py` re-checks what the boards already publish, without
+trusting it: it re-derives every no-vig probability from the odds stored next to it, re-reads Valve's
+official `standings_global_2026_10_05.md` and confirms every originated-estimate rating is a real row
+of that file, re-reads the HotSpawn lobby, and re-reads each external source the boards cite. Results
+and every irregularity are published on `verify/7cd2e67a/index.html` with the source URL and the UTC
+read time for each check. Findings are published as flags, never filled in.
+
+Two defects were found and repaired in the same session:
+
+1. **Per-row HotSpawn links were not per-match links.** The inherited collectors emitted
+   `https://www.hotspawn.com/matches/<fixture id>` on every row; fetching that route returns
+   HotSpawn's general matches index, not the match page. Rows now use the permalink HotSpawn itself
+   publishes on the lobby page, or the official lobby page when HotSpawn publishes no per-match page
+   for that fixture. No slug is ever constructed.
+2. **The landing page counted locked and past fixtures as coverage.** The KPI cards and the landing
+   table now lead with the fixtures that are still open for picks, and the locked/past count is
+   published separately.
+
+Regression tests: `python -m unittest tests.test_verify_7cd2e67a -v`. They do **not** enter current picks,
 and are not universally re-verified by this session. LoL inventory is retained,
 but current primary-bookmaker LoL probabilities remain blank in this CS2-focused
 pipeline. Full fixture coverage does not mean every match has a confirmed price.

@@ -345,6 +345,31 @@ def parse_lobby_counters(html: str) -> dict:
 LOBBY_STATE_RE = re.compile(r'<script[^>]*id="ng-state"[^>]*>(.*?)</script>', re.S | re.I)
 INLINE_JSON_RE = re.compile(r'<script[^>]*type="application/json"[^>]*>(.*?)</script>', re.S | re.I)
 MATCH_LINK_RE = re.compile(r"hotspawn\.com/matches/", re.I)
+# HotSpawn publishes per-match permalinks as /matches/<team-a>-vs-<team-b>-<tournament>-<fixture id>.
+# A bare /matches/<numeric id> is NOT published by HotSpawn: it resolves to the general matches
+# index, so it must never be used as a per-row source link.
+PERMALINK_PATH_RE = re.compile(
+    r"https?://(?:www\.)?hotspawn\.com/matches/([A-Za-z0-9][A-Za-z0-9\-\.\+']*)")
+PERMALINK_TAIL_RE = re.compile(r"^(.+)-(\d{4,})$")
+
+
+def extract_lobby_permalinks(page_html: str) -> dict:
+    """Map fixture id -> the per-match permalink HotSpawn itself publishes.
+
+    Only URLs found verbatim in the served lobby page are returned. Ids without a published
+    permalink are absent from the map, so callers must fall back to the official lobby URL rather
+    than constructing a slug. The fixture id is the trailing `-<digits>` of the published slug;
+    tournament names that contain digits (e.g. `...-cct-europe-2026-series-11-1079621`) are kept
+    intact because the id is anchored to the end of the path.
+    """
+    out: dict[str, str] = {}
+    for segment in PERMALINK_PATH_RE.findall(page_html or ""):
+        tail = PERMALINK_TAIL_RE.match(segment)
+        if not tail:
+            continue
+        slug, fixture_id = tail.group(1), tail.group(2)
+        out.setdefault(fixture_id, f"https://www.hotspawn.com/matches/{slug}-{fixture_id}")
+    return out
 
 
 def extract_lobby_listing(page_html: str) -> dict:

@@ -88,8 +88,78 @@ def fetch_json(url: str, headers: dict | None = None, timeout: int = 45):
         return 0, None, f"{type(exc).__name__}: {str(exc)[:200]}"
 
 
+HOTSPAWN_LOBBY = "https://play.hotspawn.com/lobby"
+
+
+def hotspawn_link(fixture_id, permalinks: dict | None) -> tuple[str, str]:
+    """Return (url, kind) for a fixture's HotSpawn link.
+
+    A permalink is used only when HotSpawn itself published one and it carries a slug; a bare
+    `/matches/<fixture_id>` path is never produced, because that route opens the matches index
+    rather than the fixture (audited by session 308d29e5).
+    """
+    url = str((permalinks or {}).get(str(fixture_id)) or "")
+    if url.startswith("http") and "/matches/" in url:
+        slug = url.rstrip("/").rsplit("/", 1)[-1]
+        if slug and not slug.isdigit():
+            return url, "lobby-published permalink"
+    return HOTSPAWN_LOBBY, "official lobby page (no published permalink for this fixture)"
+
+
+def fetch_text(url: str, timeout: int = 45):
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, headers=BASE_HEADERS),
+                                    timeout=timeout, context=ssl.create_default_context()) as r:
+            return r.status, r.read(MAX_BYTES).decode("utf-8", "replace"), None
+    except urllib.error.HTTPError as exc:
+        return exc.code, None, f"HTTPError {exc.code}"
+    except Exception as exc:  # noqa: BLE001
+        return 0, None, f"{type(exc).__name__}: {str(exc)[:200]}"
+
+
+def collect_hotspawn_permalinks(log: dict) -> dict[str, str]:
+    """Read the lobby page's own published match permalinks (fixture id -> match page URL).
+
+    The lobby is a server-rendered Angular app whose `ng-state` script carries the permalink map.
+    A constructed `/matches/<fixture_id>` path does NOT open the fixture — it lands on the matches
+    index (independently audited by session 308d29e5) — so the board only ever links a permalink the
+    source itself published, and otherwise links the official lobby/list instead.
+    """
+    status, html, err = fetch_text(LOBBY_PAGE)
+    info = {"url": LOBBY_PAGE, "status": status, "error": err, "permalinks": 0}
+    found: dict[str, str] = {}
+    if html:
+        m = re.search(r'<script[^>]*id="ng-state"[^>]*>(.*?)</script>', html, re.S)
+        if not m:
+            info["error"] = "ng-state script not found in the lobby page"
+        else:
+            try:
+                state = json.loads(m.group(1))
+            except Exception as exc:  # noqa: BLE001
+                info["error"] = f"ng-state unparsable: {exc}"
+                state = None
+            if isinstance(state, (dict, list)):
+                stack = [state]
+                while stack:
+                    node = stack.pop()
+                    if isinstance(node, dict):
+                        for key, value in node.items():
+                            if key == "permalinks" and isinstance(value, dict):
+                                for fid, url in value.items():
+                                    if isinstance(url, str) and url.startswith("http"):
+                                        found[str(fid)] = url
+                            else:
+                                stack.append(value)
+                    elif isinstance(node, list):
+                        stack.extend(node)
+        info["permalinks"] = len(found)
+    log["hotspawn_permalinks"] = info
+    return found
+
+
 # ------------------------------------------------------------------------- fixtures
 def collect_fixtures(log: dict) -> list[dict]:
+    permalinks = collect_hotspawn_permalinks(log)
     url = f"{LOBBY_API}/fixtures"
     status, data, err = fetch_json(url)
     log["fixtures"] = {"url": url, "status": status, "error": err,
@@ -161,8 +231,8 @@ def collect_fixtures(log: dict) -> list[dict]:
             "team_b": f.get("participants1_name"),
             "team_b_pick_pct": f.get("participants1_picked_percent"),
             "total_picks": f.get("total_picks"),
-            "source": {"api": url, "page": LOBBY_PAGE,
-                       "hotspawn_match_url": f"https://www.hotspawn.com/matches/{f.get('id')}"},
+            "source": dict(zip(("api", "page", "hotspawn_match_url", "hotspawn_match_url_kind"),
+                               (url, LOBBY_PAGE) + hotspawn_link(f.get("id"), permalinks))),
         })
     log["fixtures"]["skipped"] = skipped
     log["fixtures"]["by_game"] = {g: sum(1 for x in out if x["game"] == g) for g in set(GAMES.values())}
@@ -538,6 +608,7 @@ def build_lines(fixtures: list[dict], quotes: list[dict], log: dict) -> dict:
             "start_time_utc": f["start_time_utc"], "is_future": f["is_future"],
             "team_a": f["team_a"], "team_b": f["team_b"],
             "hotspawn_match_url": f["source"]["hotspawn_match_url"],
+            "hotspawn_match_url_kind": f["source"].get("hotspawn_match_url_kind"),
             "hotspawn_pick_pct_reference_only": {
                 "team_a": f["team_a_pick_pct"], "team_b": f["team_b_pick_pct"],
                 "total_picks": f.get("total_picks"),

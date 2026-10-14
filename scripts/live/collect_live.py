@@ -32,8 +32,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from live_core import (  # noqa: E402
-    UA, UA_BROWSER, canon_team, extract_lobby_listing, fetch, fetch_json, html_to_text, json_dump,
-    now_iso, now_utc, parse_any, parse_lobby_counters, parse_ms, to_iso,
+    UA, UA_BROWSER, canon_team, extract_lobby_listing, extract_lobby_permalinks, fetch, fetch_json,
+    html_to_text, json_dump, now_iso, now_utc, parse_any, parse_lobby_counters, parse_ms, to_iso,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -54,7 +54,8 @@ KEEP_FUTURE_DAYS = 45
 
 
 # ------------------------------------------------------------------------------- HotSpawn
-def collect_fixtures(log: dict, listed_ids: set[str] | None = None) -> list[dict]:
+def collect_fixtures(log: dict, listed_ids: set[str] | None = None,
+                     permalinks: dict[str, str] | None = None) -> list[dict]:
     url = f"{LOBBY_API}/fixtures"
     data, meta = fetch_json(url, {"Accept": "application/json", "Referer": LOBBY_PAGE}, timeout=90)
     log["hotspawn_fixtures"] = meta
@@ -63,6 +64,8 @@ def collect_fixtures(log: dict, listed_ids: set[str] | None = None) -> list[dict
     if not rows:
         return []
     listed_ids = listed_ids or set()
+    permalinks = permalinks or {}
+    link_kinds: dict[str, int] = {}
     now = now_utc()
     lo, hi = now - timedelta(days=KEEP_PAST_DAYS), now + timedelta(days=KEEP_FUTURE_DAYS)
     out, kept, skipped = [], 0, 0
@@ -768,7 +771,12 @@ def _main() -> int:
 
     counters = collect_lobby_page(log, sample_dir)
     listed_ids = {str(i) for i in (counters.get("listing_ids") or [])}
-    fixtures = collect_fixtures(log, listed_ids)
+    # Per-match source links come only from permalinks HotSpawn itself publishes on the lobby page.
+    permalinks = extract_lobby_permalinks(
+        (sample_dir / "lobby_page.txt").read_text(encoding="utf-8", errors="replace")
+        if sample_dir is not None and (sample_dir / "lobby_page.txt").is_file() else "")
+    log["lobby_page"]["permalinks_published"] = len(permalinks)
+    fixtures = collect_fixtures(log, listed_ids, permalinks)
     vrs = vrs_latest(log)
 
     quotes: list[dict] = []

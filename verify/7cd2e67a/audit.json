@@ -1,0 +1,6754 @@
+{
+ "generated_at_utc": "2026-10-14T02:15:51Z",
+ "session": "7cd2e67a",
+ "task": "INT-1 independent line-by-line verification of the published boards",
+ "sources": {
+  "hotspawn_lobby": "https://play.hotspawn.com/lobby",
+  "hotspawn_matches_listing": "https://www.hotspawn.com/matches",
+  "pinnacle_guest_api": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/{matchupId}/markets/related/straight",
+  "bovada_quote_api": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+  "melbet_linefeed": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+  "valve_vrs_repo": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+  "valve_vrs_file": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+  "valve_vrs_file_html": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+ },
+ "valve_standings_meta": {
+  "sha": "2aa2805394fbc68f36a5752a5b16026f2ab2fed5",
+  "size": 77872,
+  "bytes": 77861,
+  "html_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+ },
+ "checks": [
+  {
+   "id": "V1",
+   "check": "Root board: every published no-vig probability re-derived from its quoted odds",
+   "scope": "data/lines.json",
+   "rows": 10,
+   "result": "pass",
+   "detail": "10 priced rows; per-source probabilities, overrounds, consensus means and min/max ranges all reproduce exactly."
+  },
+  {
+   "id": "V2",
+   "check": "Live board: every market probability re-derived from its quoted odds",
+   "scope": "data/live/board.json",
+   "rows": 16,
+   "result": "pass_with_note",
+   "detail": "16 market rows and 107 originated-estimate rows; all per-source de-vigs and the Elo-style estimate arithmetic reproduce. The published consensus averages unrounded per-source probabilities while per-source values are stored rounded to 4 dp, so a recomputation from the rounded values can differ by 0.01 percentage point; the displayed percentage is unaffected."
+  },
+  {
+   "id": "V3",
+   "check": "Live board: pick side, pick team and edge re-derived",
+   "scope": "data/live/board.json",
+   "rows": 123,
+   "result": "pass",
+   "detail": "Every published pick is the higher published probability with an edge above 0.005, and every published edge equals the absolute probability gap."
+  },
+  {
+   "id": "V4",
+   "check": "Originated-estimate ratings are real rows of Valve's official standings",
+   "scope": "data/live/board.json vs ValveSoftware/counter-strike_regional_standings",
+   "rows": 214,
+   "result": "pass",
+   "detail": "214 team ratings checked against 349 distinct team names in standings_global_2026_10_05.md; every used (standing, points) pair is a row of that file. 37 of them are team names Valve lists on more than one roster line, so more than one official row exists for that name."
+  },
+  {
+   "id": "V5",
+   "check": "Blank rows for a missing rating are flagged, never estimated",
+   "scope": "data/live/board.json",
+   "rows": 351,
+   "result": "flag",
+   "detail": "351 rows published with no probability. Of those, 306 are League of Legends rows, which carry no_official_rating_source_for_lol because Valve publishes CS2 regional standings only, and every CS2 row whose team is absent from the official standings carries no_valve_vrs_rating:<team>. No blank row is estimated. 1 blank CS2 row(s) do not name every team whose rating is missing, so the reason is under-reported on those rows even though the row itself stays blank."
+  },
+  {
+   "id": "V6",
+   "check": "Every per-row HotSpawn link is an official URL HotSawn publishes",
+   "scope": "data/lines.json, data/live/board.json, data/expanded/lines.json",
+   "rows": 51,
+   "result": "repaired",
+   "detail": "The inherited collectors used https://www.hotspawn.com/matches/<fixture id> on every row; OBS-02 shows that route resolves to the general matches index. Repaired to published permalinks where HotSawn publishes one and to the official lobby page otherwise: 25 published permalinks + 64 lobby fallbacks on the root board, 26 + 448 on the live board, and 26 + 1184 on the expanded market board. No row links a constructed path."
+  },
+  {
+   "id": "V7",
+   "check": "Committed lobby snapshot cross-checked against an independent re-read",
+   "scope": "data/hotspawn_matches.json vs play.hotspawn.com/lobby",
+   "rows": 89,
+   "result": "flag",
+   "detail": "The committed snapshot (90 fixtures, tiers s4/b26/c60) and the independent re-read (89 fixtures, tiers s4/b25/c60) are different observations 32 minutes apart: the lobby changed between them. The lobby's own \"68 matches this week\" counter is still not reproduced by any rule applied to either observation and stays published as unexplained rather than guessed."
+  }
+ ],
+ "arithmetic": {
+  "root_board": {
+   "rows": [
+    {
+     "fixture_id": "1079621",
+     "match": "Gothic vs Lavked",
+     "start_time_utc": "2026-10-14T08:00:00Z",
+     "per_source": {
+      "bovada": {
+       "decimal_a": 2.1,
+       "decimal_b": 1.69,
+       "recomputed_pa": 0.4459,
+       "recomputed_pb": 0.5541,
+       "recomputed_overround": 0.06791,
+       "published_pa": 0.4459,
+       "published_pb": 0.5541,
+       "published_overround": 0.06791,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+      }
+     },
+     "recomputed_consensus_a": 0.4459,
+     "published_consensus_a": 0.4459,
+     "recomputed_range": [
+      0.4459,
+      0.4459
+     ],
+     "published_range": [
+      0.4459,
+      0.4459
+     ],
+     "matches": true
+    },
+    {
+     "fixture_id": "1080176",
+     "match": "9z vs Aurora",
+     "start_time_utc": "2026-10-14T08:30:00Z",
+     "per_source": {
+      "pinnacle": {
+       "decimal_a": 3.41,
+       "decimal_b": 1.3257,
+       "recomputed_pa": 0.2799,
+       "recomputed_pb": 0.7201,
+       "recomputed_overround": 0.04757,
+       "published_pa": 0.2799,
+       "published_pb": 0.7201,
+       "published_overround": 0.04757,
+       "matches": true,
+       "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight"
+      }
+     },
+     "recomputed_consensus_a": 0.2799,
+     "published_consensus_a": 0.2799,
+     "recomputed_range": [
+      0.2799,
+      0.2799
+     ],
+     "published_range": [
+      0.2799,
+      0.2799
+     ],
+     "matches": true
+    },
+    {
+     "fixture_id": "1079438",
+     "match": "Astralis vs Sashi",
+     "start_time_utc": "2026-10-14T10:00:00Z",
+     "per_source": {
+      "bovada": {
+       "decimal_a": 1.111111,
+       "decimal_b": 6.0,
+       "recomputed_pa": 0.8438,
+       "recomputed_pb": 0.1562,
+       "recomputed_overround": 0.06667,
+       "published_pa": 0.8438,
+       "published_pb": 0.1562,
+       "published_overround": 0.06667,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+      }
+     },
+     "recomputed_consensus_a": 0.8438,
+     "published_consensus_a": 0.8438,
+     "recomputed_range": [
+      0.8438,
+      0.8438
+     ],
+     "published_range": [
+      0.8438,
+      0.8438
+     ],
+     "matches": true
+    },
+    {
+     "fixture_id": "1079439",
+     "match": "HOTU vs Fnatic",
+     "start_time_utc": "2026-10-14T10:00:00Z",
+     "per_source": {
+      "bovada": {
+       "decimal_a": 1.952381,
+       "decimal_b": 1.8,
+       "recomputed_pa": 0.4797,
+       "recomputed_pb": 0.5203,
+       "recomputed_overround": 0.06775,
+       "published_pa": 0.4797,
+       "published_pb": 0.5203,
+       "published_overround": 0.06775,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+      },
+      "pinnacle": {
+       "decimal_a": 1.9901,
+       "decimal_b": 1.8,
+       "recomputed_pa": 0.4749,
+       "recomputed_pb": 0.5251,
+       "recomputed_overround": 0.05804,
+       "published_pa": 0.4749,
+       "published_pb": 0.5251,
+       "published_overround": 0.05804,
+       "matches": true,
+       "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148/markets/related/straight"
+      }
+     },
+     "recomputed_consensus_a": 0.4773,
+     "published_consensus_a": 0.4773,
+     "recomputed_range": [
+      0.4749,
+      0.4797
+     ],
+     "published_range": [
+      0.4749,
+      0.4797
+     ],
+     "matches": true
+    },
+    {
+     "fixture_id": "1079622",
+     "match": "ex-RUSTEC vs mellren",
+     "start_time_utc": "2026-10-14T11:00:00Z",
+     "per_source": {
+      "bovada": {
+       "decimal_a": 1.588235,
+       "decimal_b": 2.3,
+       "recomputed_pa": 0.5915,
+       "recomputed_pb": 0.4085,
+       "recomputed_overround": 0.06441,
+       "published_pa": 0.5915,
+       "published_pb": 0.4085,
+       "published_overround": 0.06441,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+      }
+     },
+     "recomputed_consensus_a": 0.5915,
+     "published_consensus_a": 0.5915,
+     "recomputed_range": [
+      0.5915,
+      0.5915
+     ],
+     "published_range": [
+      0.5915,
+      0.5915
+     ],
+     "matches": true
+    },
+    {
+     "fixture_id": "1080177",
+     "match": "Falcons vs Ninjas in Pyjamas",
+     "start_time_utc": "2026-10-14T11:00:00Z",
+     "per_source": {
+      "bovada": {
+       "decimal_a": 1.266667,
+       "decimal_b": 3.6,
+       "recomputed_pa": 0.7397,
+       "recomputed_pb": 0.2603,
+       "recomputed_overround": 0.06725,
+       "published_pa": 0.7397,
+       "published_pb": 0.2603,
+       "published_overround": 0.06725,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+      },
+      "pinnacle": {
+       "decimal_a": 1.2703,
+       "decimal_b": 3.85,
+       "recomputed_pa": 0.7519,
+       "recomputed_pb": 0.2481,
+       "recomputed_overround": 0.04696,
+       "published_pa": 0.7519,
+       "published_pb": 0.2481,
+       "published_overround": 0.04696,
+       "matches": true,
+       "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674/markets/related/straight"
+      }
+     },
+     "recomputed_consensus_a": 0.7458,
+     "published_consensus_a": 0.7458,
+     "recomputed_range": [
+      0.7397,
+      0.7519
+     ],
+     "published_range": [
+      0.7397,
+      0.7519
+     ],
+     "matches": true
+    },
+    {
+     "fixture_id": "1080178",
+     "match": "Legacy vs PARIVISION",
+     "start_time_utc": "2026-10-14T13:30:00Z",
+     "per_source": {
+      "bovada": {
+       "decimal_a": 1.69,
+       "decimal_b": 2.1,
+       "recomputed_pa": 0.5541,
+       "recomputed_pb": 0.4459,
+       "recomputed_overround": 0.06791,
+       "published_pa": 0.5541,
+       "published_pb": 0.4459,
+       "published_overround": 0.06791,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+      }
+     },
+     "recomputed_consensus_a": 0.5541,
+     "published_consensus_a": 0.5541,
+     "recomputed_range": [
+      0.5541,
+      0.5541
+     ],
+     "published_range": [
+      0.5541,
+      0.5541
+     ],
+     "matches": true
+    },
+    {
+     "fixture_id": "1079623",
+     "match": "G2 Ares vs The Last Resort",
+     "start_time_utc": "2026-10-14T14:00:00Z",
+     "per_source": {
+      "bovada": {
+       "decimal_a": 1.5,
+       "decimal_b": 2.5,
+       "recomputed_pa": 0.625,
+       "recomputed_pb": 0.375,
+       "recomputed_overround": 0.06667,
+       "published_pa": 0.625,
+       "published_pb": 0.375,
+       "published_overround": 0.06667,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+      }
+     },
+     "recomputed_consensus_a": 0.625,
+     "published_consensus_a": 0.625,
+     "recomputed_range": [
+      0.625,
+      0.625
+     ],
+     "published_range": [
+      0.625,
+      0.625
+     ],
+     "matches": true
+    },
+    {
+     "fixture_id": "1079440",
+     "match": "MIBR vs BC.Game",
+     "start_time_utc": "2026-10-15T10:00:00Z",
+     "per_source": {
+      "bovada": {
+       "decimal_a": 1.645161,
+       "decimal_b": 2.2,
+       "recomputed_pa": 0.5721,
+       "recomputed_pb": 0.4279,
+       "recomputed_overround": 0.06239,
+       "published_pa": 0.5721,
+       "published_pb": 0.4279,
+       "published_overround": 0.06239,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+      },
+      "pinnacle": {
+       "decimal_a": 1.6494,
+       "decimal_b": 2.22,
+       "recomputed_pa": 0.5737,
+       "recomputed_pb": 0.4263,
+       "recomputed_overround": 0.05673,
+       "published_pa": 0.5737,
+       "published_pb": 0.4263,
+       "published_overround": 0.05673,
+       "matches": true,
+       "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745/markets/related/straight"
+      }
+     },
+     "recomputed_consensus_a": 0.5729,
+     "published_consensus_a": 0.5729,
+     "recomputed_range": [
+      0.5721,
+      0.5737
+     ],
+     "published_range": [
+      0.5721,
+      0.5737
+     ],
+     "matches": true
+    },
+    {
+     "fixture_id": "1079442",
+     "match": "Heroic vs Envy",
+     "start_time_utc": "2026-10-15T10:00:00Z",
+     "per_source": {
+      "bovada": {
+       "decimal_a": 1.487805,
+       "decimal_b": 2.55,
+       "recomputed_pa": 0.6315,
+       "recomputed_pb": 0.3685,
+       "recomputed_overround": 0.06429,
+       "published_pa": 0.6315,
+       "published_pb": 0.3685,
+       "published_overround": 0.06429,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+      },
+      "pinnacle": {
+       "decimal_a": 1.4695,
+       "decimal_b": 2.62,
+       "recomputed_pa": 0.6407,
+       "recomputed_pb": 0.3593,
+       "recomputed_overround": 0.06218,
+       "published_pa": 0.6407,
+       "published_pb": 0.3593,
+       "published_overround": 0.06218,
+       "matches": true,
+       "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637999450/markets/related/straight"
+      }
+     },
+     "recomputed_consensus_a": 0.6361,
+     "published_consensus_a": 0.6361,
+     "recomputed_range": [
+      0.6315,
+      0.6407
+     ],
+     "published_range": [
+      0.6315,
+      0.6407
+     ],
+     "matches": true
+    }
+   ],
+   "mismatches": [],
+   "rows_checked": 10
+  },
+  "live_board": {
+   "market_rows": [
+    {
+     "fixture_id": "1079546",
+     "match": "Zomblers vs Overtake Sector",
+     "start_time_utc": "2026-10-14T01:00:00Z",
+     "listed_in_lobby": true,
+     "per_source": {
+      "pinnacle": {
+       "decimal_a": 2.7,
+       "decimal_b": 1.409836,
+       "recomputed_pa": 0.343,
+       "published_pa": 0.343,
+       "matches": true,
+       "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638279105/markets/related/straight",
+       "retrieved_at_utc": "2026-10-13T23:43:28Z"
+      },
+      "linefeed_melbet": {
+       "decimal_a": 2.667,
+       "decimal_b": 1.393,
+       "recomputed_pa": 0.3431,
+       "published_pa": 0.3431,
+       "matches": true,
+       "source_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_at_utc": "2026-10-13T23:43:35Z"
+      }
+     },
+     "recomputed_consensus_a": 0.3431,
+     "published_consensus_a": 0.3431,
+     "pick_team": "Overtake Sector",
+     "pick_probability": 0.6569285363882797,
+     "matches": true,
+     "rounding_tie": false
+    },
+    {
+     "fixture_id": "1079621",
+     "match": "Gothic vs Lavked",
+     "start_time_utc": "2026-10-14T08:00:00Z",
+     "listed_in_lobby": true,
+     "per_source": {
+      "linefeed_melbet": {
+       "decimal_a": 1.881,
+       "decimal_b": 1.782,
+       "recomputed_pa": 0.4865,
+       "published_pa": 0.4865,
+       "matches": true,
+       "source_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_at_utc": "2026-10-13T23:43:35Z"
+      }
+     },
+     "recomputed_consensus_a": 0.4865,
+     "published_consensus_a": 0.4865,
+     "pick_team": "Lavked",
+     "pick_probability": 0.5135135135135136,
+     "matches": true,
+     "rounding_tie": false
+    },
+    {
+     "fixture_id": "1080176",
+     "match": "9z vs Aurora",
+     "start_time_utc": "2026-10-14T08:30:00Z",
+     "listed_in_lobby": true,
+     "per_source": {
+      "pinnacle": {
+       "decimal_a": 3.55,
+       "decimal_b": 1.306748,
+       "recomputed_pa": 0.2691,
+       "published_pa": 0.2691,
+       "matches": true,
+       "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight",
+       "retrieved_at_utc": "2026-10-13T23:43:28Z"
+      },
+      "bovada": {
+       "decimal_a": 3.65,
+       "decimal_b": 1.26,
+       "recomputed_pa": 0.2566,
+       "published_pa": 0.2566,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+       "retrieved_at_utc": "2026-10-13T23:43:30Z"
+      }
+     },
+     "recomputed_consensus_a": 0.2629,
+     "published_consensus_a": 0.2628,
+     "pick_team": "Aurora",
+     "pick_probability": 0.7371613148024554,
+     "matches": false,
+     "rounding_tie": true
+    },
+    {
+     "fixture_id": "1076650",
+     "match": "KT Rolster vs BNK FearX",
+     "start_time_utc": "2026-10-14T09:00:00Z",
+     "listed_in_lobby": false,
+     "per_source": {
+      "pinnacle": {
+       "decimal_a": 1.606061,
+       "decimal_b": 2.34,
+       "recomputed_pa": 0.593,
+       "published_pa": 0.593,
+       "matches": true,
+       "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638305901/markets/related/straight",
+       "retrieved_at_utc": "2026-10-13T23:43:27Z"
+      },
+      "bovada": {
+       "decimal_a": 1.5,
+       "decimal_b": 2.5,
+       "recomputed_pa": 0.625,
+       "published_pa": 0.625,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+       "retrieved_at_utc": "2026-10-13T23:43:30Z"
+      }
+     },
+     "recomputed_consensus_a": 0.609,
+     "published_consensus_a": 0.609,
+     "pick_team": "KT Rolster",
+     "pick_probability": 0.6089982041585267,
+     "matches": true,
+     "rounding_tie": false
+    },
+    {
+     "fixture_id": "1079438",
+     "match": "Astralis vs Sashi",
+     "start_time_utc": "2026-10-14T10:00:00Z",
+     "listed_in_lobby": true,
+     "per_source": {
+      "bovada": {
+       "decimal_a": 1.111111,
+       "decimal_b": 6.0,
+       "recomputed_pa": 0.8438,
+       "published_pa": 0.8438,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+       "retrieved_at_utc": "2026-10-13T23:43:30Z"
+      },
+      "linefeed_melbet": {
+       "decimal_a": 1.1,
+       "decimal_b": 6.33,
+       "recomputed_pa": 0.852,
+       "published_pa": 0.852,
+       "matches": true,
+       "source_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_at_utc": "2026-10-13T23:43:35Z"
+      }
+     },
+     "recomputed_consensus_a": 0.8479,
+     "published_consensus_a": 0.8479,
+     "pick_team": "Astralis",
+     "pick_probability": 0.8478507804814335,
+     "matches": true,
+     "rounding_tie": false
+    },
+    {
+     "fixture_id": "1079439",
+     "match": "HOTU vs Fnatic",
+     "start_time_utc": "2026-10-14T10:00:00Z",
+     "listed_in_lobby": true,
+     "per_source": {
+      "pinnacle": {
+       "decimal_a": 1.990099,
+       "decimal_b": 1.8,
+       "recomputed_pa": 0.4749,
+       "published_pa": 0.4749,
+       "matches": true,
+       "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148/markets/related/straight",
+       "retrieved_at_utc": "2026-10-13T23:43:26Z"
+      },
+      "bovada": {
+       "decimal_a": 1.952381,
+       "decimal_b": 1.8,
+       "recomputed_pa": 0.4797,
+       "published_pa": 0.4797,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+       "retrieved_at_utc": "2026-10-13T23:43:30Z"
+      },
+      "linefeed_melbet": {
+       "decimal_a": 1.99,
+       "decimal_b": 1.8,
+       "recomputed_pa": 0.4749,
+       "published_pa": 0.4749,
+       "matches": true,
+       "source_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_at_utc": "2026-10-13T23:43:35Z"
+      }
+     },
+     "recomputed_consensus_a": 0.4765,
+     "published_consensus_a": 0.4765,
+     "pick_team": "Fnatic",
+     "pick_probability": 0.5234829687804714,
+     "matches": true,
+     "rounding_tie": false
+    },
+    {
+     "fixture_id": "1080177",
+     "match": "Falcons vs Ninjas in Pyjamas",
+     "start_time_utc": "2026-10-14T11:00:00Z",
+     "listed_in_lobby": true,
+     "per_source": {
+      "pinnacle": {
+       "decimal_a": 1.255102,
+       "decimal_b": 4.0,
+       "recomputed_pa": 0.7612,
+       "published_pa": 0.7612,
+       "matches": true,
+       "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674/markets/related/straight",
+       "retrieved_at_utc": "2026-10-13T23:43:26Z"
+      },
+      "bovada": {
+       "decimal_a": 1.229885,
+       "decimal_b": 3.9,
+       "recomputed_pa": 0.7603,
+       "published_pa": 0.7603,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+       "retrieved_at_utc": "2026-10-13T23:43:30Z"
+      },
+      "linefeed_melbet": {
+       "decimal_a": 1.27,
+       "decimal_b": 3.94,
+       "recomputed_pa": 0.7562,
+       "published_pa": 0.7562,
+       "matches": true,
+       "source_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_at_utc": "2026-10-13T23:43:35Z"
+      }
+     },
+     "recomputed_consensus_a": 0.7592,
+     "published_consensus_a": 0.7592,
+     "pick_team": "Falcons",
+     "pick_probability": 0.7592180063619803,
+     "matches": true,
+     "rounding_tie": false
+    },
+    {
+     "fixture_id": "1080178",
+     "match": "Legacy vs PARIVISION",
+     "start_time_utc": "2026-10-14T13:30:00Z",
+     "listed_in_lobby": true,
+     "per_source": {
+      "pinnacle": {
+       "decimal_a": 1.653595,
+       "decimal_b": 2.26,
+       "recomputed_pa": 0.5775,
+       "published_pa": 0.5775,
+       "matches": true,
+       "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111786/markets/related/straight",
+       "retrieved_at_utc": "2026-10-13T23:43:26Z"
+      },
+      "bovada": {
+       "decimal_a": 1.69,
+       "decimal_b": 2.1,
+       "recomputed_pa": 0.5541,
+       "published_pa": 0.5541,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+       "retrieved_at_utc": "2026-10-13T23:43:30Z"
+      },
+      "linefeed_melbet": {
+       "decimal_a": 1.67,
+       "decimal_b": 2.235,
+       "recomputed_pa": 0.5723,
+       "published_pa": 0.5723,
+       "matches": true,
+       "source_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_at_utc": "2026-10-13T23:43:35Z"
+      }
+     },
+     "recomputed_consensus_a": 0.568,
+     "published_consensus_a": 0.568,
+     "pick_team": "Legacy",
+     "pick_probability": 0.5679690077836107,
+     "matches": true,
+     "rounding_tie": false
+    },
+    {
+     "fixture_id": "1079623",
+     "match": "G2 Ares vs The Last Resort",
+     "start_time_utc": "2026-10-14T14:00:00Z",
+     "listed_in_lobby": true,
+     "per_source": {
+      "bovada": {
+       "decimal_a": 1.5,
+       "decimal_b": 2.5,
+       "recomputed_pa": 0.625,
+       "published_pa": 0.625,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+       "retrieved_at_utc": "2026-10-13T23:43:30Z"
+      },
+      "linefeed_melbet": {
+       "decimal_a": 1.465,
+       "decimal_b": 2.436,
+       "recomputed_pa": 0.6245,
+       "published_pa": 0.6245,
+       "matches": true,
+       "source_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_at_utc": "2026-10-13T23:43:35Z"
+      }
+     },
+     "recomputed_consensus_a": 0.6248,
+     "published_consensus_a": 0.6247,
+     "pick_team": "G2 Ares",
+     "pick_probability": 0.6247276339400154,
+     "matches": true,
+     "rounding_tie": false
+    },
+    {
+     "fixture_id": "1079335",
+     "match": "Solary vs Anubis Gaming",
+     "start_time_utc": "2026-10-14T16:00:00Z",
+     "listed_in_lobby": false,
+     "per_source": {
+      "bovada": {
+       "decimal_a": 1.111111,
+       "decimal_b": 6.0,
+       "recomputed_pa": 0.8438,
+       "published_pa": 0.8438,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+       "retrieved_at_utc": "2026-10-13T23:43:30Z"
+      }
+     },
+     "recomputed_consensus_a": 0.8438,
+     "published_consensus_a": 0.8438,
+     "pick_team": "Solary",
+     "pick_probability": 0.843750013183594,
+     "matches": true,
+     "rounding_tie": false
+    },
+    {
+     "fixture_id": "1080179",
+     "match": "FURIA vs BetBoom",
+     "start_time_utc": "2026-10-14T16:00:00Z",
+     "listed_in_lobby": true,
+     "per_source": {
+      "pinnacle": {
+       "decimal_a": 1.363636,
+       "decimal_b": 3.18,
+       "recomputed_pa": 0.6999,
+       "published_pa": 0.6999,
+       "matches": true,
+       "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111787/markets/related/straight",
+       "retrieved_at_utc": "2026-10-13T23:43:26Z"
+      },
+      "bovada": {
+       "decimal_a": 1.363636,
+       "decimal_b": 3.0,
+       "recomputed_pa": 0.6875,
+       "published_pa": 0.6875,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+       "retrieved_at_utc": "2026-10-13T23:43:30Z"
+      },
+      "linefeed_melbet": {
+       "decimal_a": 1.37,
+       "decimal_b": 3.15,
+       "recomputed_pa": 0.6969,
+       "published_pa": 0.6969,
+       "matches": true,
+       "source_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_at_utc": "2026-10-13T23:43:35Z"
+      }
+     },
+     "recomputed_consensus_a": 0.6948,
+     "published_consensus_a": 0.6948,
+     "pick_team": "FURIA",
+     "pick_probability": 0.6947609067175087,
+     "matches": true,
+     "rounding_tie": false
+    },
+    {
+     "fixture_id": "1079440",
+     "match": "MIBR vs BC.Game",
+     "start_time_utc": "2026-10-15T10:00:00Z",
+     "listed_in_lobby": true,
+     "per_source": {
+      "pinnacle": {
+       "decimal_a": 1.636943,
+       "decimal_b": 2.23,
+       "recomputed_pa": 0.5767,
+       "published_pa": 0.5767,
+       "matches": true,
+       "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745/markets/related/straight",
+       "retrieved_at_utc": "2026-10-13T23:43:27Z"
+      },
+      "bovada": {
+       "decimal_a": 1.645161,
+       "decimal_b": 2.2,
+       "recomputed_pa": 0.5721,
+       "published_pa": 0.5721,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+       "retrieved_at_utc": "2026-10-13T23:43:30Z"
+      },
+      "linefeed_melbet": {
+       "decimal_a": 1.66,
+       "decimal_b": 2.209,
+       "recomputed_pa": 0.5709,
+       "published_pa": 0.5709,
+       "matches": true,
+       "source_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_at_utc": "2026-10-13T23:43:35Z"
+      }
+     },
+     "recomputed_consensus_a": 0.5732,
+     "published_consensus_a": 0.5733,
+     "pick_team": "MIBR",
+     "pick_probability": 0.573259728238035,
+     "matches": true,
+     "rounding_tie": false
+    },
+    {
+     "fixture_id": "1079442",
+     "match": "Heroic vs Envy",
+     "start_time_utc": "2026-10-15T10:00:00Z",
+     "listed_in_lobby": true,
+     "per_source": {
+      "pinnacle": {
+       "decimal_a": 1.469484,
+       "decimal_b": 2.62,
+       "recomputed_pa": 0.6407,
+       "published_pa": 0.6407,
+       "matches": true,
+       "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637999450/markets/related/straight",
+       "retrieved_at_utc": "2026-10-13T23:43:29Z"
+      },
+      "bovada": {
+       "decimal_a": 1.487805,
+       "decimal_b": 2.55,
+       "recomputed_pa": 0.6315,
+       "published_pa": 0.6315,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+       "retrieved_at_utc": "2026-10-13T23:43:30Z"
+      },
+      "linefeed_melbet": {
+       "decimal_a": 1.48,
+       "decimal_b": 2.613,
+       "recomputed_pa": 0.6384,
+       "published_pa": 0.6384,
+       "matches": true,
+       "source_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_at_utc": "2026-10-13T23:43:35Z"
+      }
+     },
+     "recomputed_consensus_a": 0.6369,
+     "published_consensus_a": 0.6369,
+     "pick_team": "Heroic",
+     "pick_probability": 0.6368686337796164,
+     "matches": true,
+     "rounding_tie": false
+    },
+    {
+     "fixture_id": "1080280",
+     "match": "ENCE vs BOJONG",
+     "start_time_utc": "2026-10-15T10:00:00Z",
+     "listed_in_lobby": true,
+     "per_source": {
+      "linefeed_melbet": {
+       "decimal_a": 1.31,
+       "decimal_b": 3.2,
+       "recomputed_pa": 0.7095,
+       "published_pa": 0.7095,
+       "matches": true,
+       "source_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_at_utc": "2026-10-13T23:43:35Z"
+      }
+     },
+     "recomputed_consensus_a": 0.7095,
+     "published_consensus_a": 0.7095,
+     "pick_team": "ENCE",
+     "pick_probability": 0.7095343680709534,
+     "matches": true,
+     "rounding_tie": false
+    },
+    {
+     "fixture_id": "1075808",
+     "match": "Cloud9 vs Karmine Corp",
+     "start_time_utc": "2026-10-15T18:00:00Z",
+     "listed_in_lobby": false,
+     "per_source": {
+      "pinnacle": {
+       "decimal_a": 2.81,
+       "decimal_b": 1.434783,
+       "recomputed_pa": 0.338,
+       "published_pa": 0.338,
+       "matches": true,
+       "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638241049/markets/related/straight",
+       "retrieved_at_utc": "2026-10-13T23:43:27Z"
+      },
+      "bovada": {
+       "decimal_a": 2.7,
+       "decimal_b": 1.444444,
+       "recomputed_pa": 0.3485,
+       "published_pa": 0.3485,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+       "retrieved_at_utc": "2026-10-13T23:43:30Z"
+      }
+     },
+     "recomputed_consensus_a": 0.3432,
+     "published_consensus_a": 0.3433,
+     "pick_team": "Karmine Corp",
+     "pick_probability": 0.6567318411752813,
+     "matches": true,
+     "rounding_tie": false
+    },
+    {
+     "fixture_id": "1075807",
+     "match": "FURIA vs MVK Esports",
+     "start_time_utc": "2026-10-15T23:00:00Z",
+     "listed_in_lobby": false,
+     "per_source": {
+      "bovada": {
+       "decimal_a": 1.266667,
+       "decimal_b": 3.6,
+       "recomputed_pa": 0.7397,
+       "published_pa": 0.7397,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+       "retrieved_at_utc": "2026-10-13T23:43:30Z"
+      }
+     },
+     "recomputed_consensus_a": 0.7397,
+     "published_consensus_a": 0.7397,
+     "pick_team": "FURIA",
+     "pick_probability": 0.7397259767310974,
+     "matches": true,
+     "rounding_tie": false
+    }
+   ],
+   "estimate_rows": [
+    {
+     "fixture_id": "1052746",
+     "match": "Fortress vs Endless Journey",
+     "rating_diff": -31.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.4555,
+     "published_prob_a": 0.4555,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1051339",
+     "match": "Acend vs Infinite",
+     "rating_diff": -62.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.4117,
+     "published_prob_a": 0.4117,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052747",
+     "match": "Sashi Academy vs eternal premium",
+     "rating_diff": -7.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.4899,
+     "published_prob_a": 0.4899,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1051340",
+     "match": "Walczaki vs Inner Circle",
+     "rating_diff": -554.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.0396,
+     "published_prob_a": 0.0396,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053069",
+     "match": "roamsfiest vs train launcher",
+     "rating_diff": 88.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.624,
+     "published_prob_a": 0.624,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052686",
+     "match": "shimmer vs MIBR fe",
+     "rating_diff": -94.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.3679,
+     "published_prob_a": 0.3679,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1051789",
+     "match": "MIBR Academy vs Isurus",
+     "rating_diff": -155.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.2906,
+     "published_prob_a": 0.2906,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052748",
+     "match": "Inner Circle Academy vs sAw",
+     "rating_diff": -282.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.1647,
+     "published_prob_a": 0.1647,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053071",
+     "match": "Johnny Speeds vs roamsfiest",
+     "rating_diff": 326.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.8672,
+     "published_prob_a": 0.8672,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052180",
+     "match": "NEW VISION vs Julie&Cie",
+     "rating_diff": 255.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.8127,
+     "published_prob_a": 0.8127,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052181",
+     "match": "Just Players vs OlyBet",
+     "rating_diff": 493.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.9447,
+     "published_prob_a": 0.9447,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1051800",
+     "match": "ShindeN vs MIBR Academy",
+     "rating_diff": 493.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.9447,
+     "published_prob_a": 0.9447,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052599",
+     "match": "Mai Tai vs Megoshort",
+     "rating_diff": -151.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.2954,
+     "published_prob_a": 0.2954,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053072",
+     "match": "train launcher vs roamsfiest",
+     "rating_diff": -88.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.376,
+     "published_prob_a": 0.376,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052357",
+     "match": "BIG Academy vs BERG",
+     "rating_diff": -152.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.2942,
+     "published_prob_a": 0.2942,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052700",
+     "match": "GameHunters vs VEXA",
+     "rating_diff": -75.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.3937,
+     "published_prob_a": 0.3937,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1051801",
+     "match": "Bounty Hunters vs UNO MILLE",
+     "rating_diff": 308.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.8548,
+     "published_prob_a": 0.8548,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052701",
+     "match": "paiN Academy vs Alka",
+     "rating_diff": -205.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.235,
+     "published_prob_a": 0.235,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053313",
+     "match": "Fake do Biru vs LP",
+     "rating_diff": -367.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.1079,
+     "published_prob_a": 0.1079,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052702",
+     "match": "Procyon vs BESTIA Academy",
+     "rating_diff": 144.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.6961,
+     "published_prob_a": 0.6961,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052750",
+     "match": "Honvéd vs OlyBet",
+     "rating_diff": 307.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.8541,
+     "published_prob_a": 0.8541,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052185",
+     "match": "sAw vs Entropy",
+     "rating_diff": 533.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.9556,
+     "published_prob_a": 0.9556,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053432",
+     "match": "Leo vs Aimhaus",
+     "rating_diff": 580.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.9657,
+     "published_prob_a": 0.9657,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053434",
+     "match": "Leo vs Coalesce",
+     "rating_diff": 541.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.9575,
+     "published_prob_a": 0.9575,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053436",
+     "match": "Aimhaus vs Coalesce",
+     "rating_diff": -39.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.4441,
+     "published_prob_a": 0.4441,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052186",
+     "match": "Lilmix vs Subtop De France",
+     "rating_diff": 310.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.8563,
+     "published_prob_a": 0.8563,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052187",
+     "match": "BIG Academy vs Endless Journey",
+     "rating_diff": -86.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.3787,
+     "published_prob_a": 0.3787,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053439",
+     "match": "6666 vs ASTRAL",
+     "rating_diff": -149.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.2978,
+     "published_prob_a": 0.2978,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053441",
+     "match": "ASTRAL vs BERG",
+     "rating_diff": 318.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.8618,
+     "published_prob_a": 0.8618,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1051344",
+     "match": "Inner Circle vs Acend",
+     "rating_diff": 319.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.8625,
+     "published_prob_a": 0.8625,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053442",
+     "match": "6666 vs BERG",
+     "rating_diff": 169.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.7257,
+     "published_prob_a": 0.7257,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1051804",
+     "match": "Fluxo vs UNO MILLE",
+     "rating_diff": 531.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.9551,
+     "published_prob_a": 0.9551,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052697",
+     "match": "METANOIA Wolves vs Guara",
+     "rating_diff": 191.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.7502,
+     "published_prob_a": 0.7502,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053679",
+     "match": "ShindeN vs LP",
+     "rating_diff": 49.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.5701,
+     "published_prob_a": 0.5701,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1055478",
+     "match": "illwill vs Lavked",
+     "rating_diff": -224.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.2159,
+     "published_prob_a": 0.2159,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1079864",
+     "match": "Ground Zero vs Abyssal",
+     "rating_diff": 144.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.6961,
+     "published_prob_a": 0.6961,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080229",
+     "match": "EMPIRE vs regain",
+     "rating_diff": -136.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.3137,
+     "published_prob_a": 0.3137,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079538",
+     "match": "Overtake Sector vs Chicken Coop",
+     "rating_diff": 31.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.5445,
+     "published_prob_a": 0.5445,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079539",
+     "match": "Zomblers vs Iowa Stormboar",
+     "rating_diff": -148.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.299,
+     "published_prob_a": 0.299,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079541",
+     "match": "Wanted Goons vs Detonate",
+     "rating_diff": -106.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.352,
+     "published_prob_a": 0.352,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079866",
+     "match": "FlyQuest vs Ground Zero",
+     "rating_diff": 215.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.7752,
+     "published_prob_a": 0.7752,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079827",
+     "match": "NEXVOID vs Chinggis Warriors",
+     "rating_diff": -89.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.3746,
+     "published_prob_a": 0.3746,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079868",
+     "match": "Abyssal vs Ground Zero",
+     "rating_diff": -144.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.3039,
+     "published_prob_a": 0.3039,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079869",
+     "match": "FlyQuest vs Abyssal",
+     "rating_diff": 359.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.8876,
+     "published_prob_a": 0.8876,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079609",
+     "match": "benched gods vs ILLYRIANS",
+     "rating_diff": -51.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.4271,
+     "published_prob_a": 0.4271,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080294",
+     "match": "Just Players vs Misa",
+     "rating_diff": 91.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.628,
+     "published_prob_a": 0.628,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079828",
+     "match": "Chinggis Warriors vs 5star",
+     "rating_diff": -26.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.4627,
+     "published_prob_a": 0.4627,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079610",
+     "match": "Megoshort vs Noir Verse",
+     "rating_diff": -19.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.4727,
+     "published_prob_a": 0.4727,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080295",
+     "match": "Fire Flux vs Gothic",
+     "rating_diff": 202.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.7618,
+     "published_prob_a": 0.7618,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075892",
+     "match": "Aurora vs Spirit",
+     "rating_diff": -330.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.1302,
+     "published_prob_a": 0.1302,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079483",
+     "match": "Kaleido vs Chinggis Warriors",
+     "rating_diff": -313.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.1416,
+     "published_prob_a": 0.1416,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079482",
+     "match": "The KnockoutX vs Alter Ego",
+     "rating_diff": -308.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.1452,
+     "published_prob_a": 0.1452,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080753",
+     "match": "6666 vs benched gods",
+     "rating_diff": 112.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.6558,
+     "published_prob_a": 0.6558,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079611",
+     "match": "Bebop vs mellren",
+     "rating_diff": -230.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.2102,
+     "published_prob_a": 0.2102,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075893",
+     "match": "Team Vitality vs MOUZ",
+     "rating_diff": 48.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.5686,
+     "published_prob_a": 0.5686,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080414",
+     "match": "Imperial vs NRG eSports",
+     "rating_diff": -25.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.4641,
+     "published_prob_a": 0.4641,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080732",
+     "match": "FOKUS vs Nordic Partners",
+     "rating_diff": 343.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.8781,
+     "published_prob_a": 0.8781,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080734",
+     "match": "GenOne vs Banda chuya",
+     "rating_diff": 384.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.9012,
+     "published_prob_a": 0.9012,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080728",
+     "match": "Nuclear TigeRES vs Just Players",
+     "rating_diff": 350.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.8823,
+     "published_prob_a": 0.8823,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080729",
+     "match": "XI vs ASTRAL",
+     "rating_diff": -519.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.048,
+     "published_prob_a": 0.048,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080731",
+     "match": "BET-M vs PRIVATE",
+     "rating_diff": 85.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.6199,
+     "published_prob_a": 0.6199,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080296",
+     "match": "mellren vs Lavked",
+     "rating_diff": 70.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.5994,
+     "published_prob_a": 0.5994,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080876",
+     "match": "DENDELE vs Imperial",
+     "rating_diff": 71.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.6008,
+     "published_prob_a": 0.6008,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079512",
+     "match": "Yawara vs Galorys",
+     "rating_diff": -254.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.1881,
+     "published_prob_a": 0.1881,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079513",
+     "match": "BORRACHEIROS vs Bounty Hunters",
+     "rating_diff": -348.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.1189,
+     "published_prob_a": 0.1189,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080877",
+     "match": "DENDELE vs Wildcard",
+     "rating_diff": 129.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.6776,
+     "published_prob_a": 0.6776,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080538",
+     "match": "Overtake Sector vs regain",
+     "rating_diff": -33.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.4527,
+     "published_prob_a": 0.4527,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079543",
+     "match": "Detonate vs Iowa Stormboar",
+     "rating_diff": -63.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.4103,
+     "published_prob_a": 0.4103,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079613",
+     "match": "Enjoy vs Saint Sinners",
+     "rating_diff": 61.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.5869,
+     "published_prob_a": 0.5869,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079463",
+     "match": "Fruju vs MARKandLARRY",
+     "rating_diff": -193.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.2477,
+     "published_prob_a": 0.2477,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079464",
+     "match": "Rooster vs LFO 8",
+     "rating_diff": 116.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.661,
+     "published_prob_a": 0.661,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079434",
+     "match": "Inner Circle vs Sangal",
+     "rating_diff": 154.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.7082,
+     "published_prob_a": 0.7082,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079614",
+     "match": "Fire Flux vs mellren",
+     "rating_diff": -25.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.4641,
+     "published_prob_a": 0.4641,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079485",
+     "match": "Alter Ego vs Chinggis Warriors",
+     "rating_diff": -265.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.1787,
+     "published_prob_a": 0.1787,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080276",
+     "match": "Lynn Vision vs Just Swing",
+     "rating_diff": 466.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.936,
+     "published_prob_a": 0.936,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079574",
+     "match": "Ninjas in Pyjamas vs Inner Circle",
+     "rating_diff": 18.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.5259,
+     "published_prob_a": 0.5259,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080736",
+     "match": "Nuclear TigeRES vs XI",
+     "rating_diff": 771.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.9883,
+     "published_prob_a": 0.9883,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080737",
+     "match": "Johnny Speeds vs PRIVATE",
+     "rating_diff": -15.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.4784,
+     "published_prob_a": 0.4784,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080738",
+     "match": "Nordic Partners vs ex-RUSTEC",
+     "rating_diff": -88.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.376,
+     "published_prob_a": 0.376,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079615",
+     "match": "SAW Youngsters vs ILLYRIANS",
+     "rating_diff": -23.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.4669,
+     "published_prob_a": 0.4669,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079576",
+     "match": "Inner Circle vs Sangal",
+     "rating_diff": 154.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.7082,
+     "published_prob_a": 0.7082,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080740",
+     "match": "Johnny Speeds vs Nuclear TigeRES",
+     "rating_diff": -275.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.1704,
+     "published_prob_a": 0.1704,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079616",
+     "match": "6666 vs Megoshort",
+     "rating_diff": 117.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.6623,
+     "published_prob_a": 0.6623,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080409",
+     "match": "LP vs ex-Keyd Stars",
+     "rating_diff": 218.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.7781,
+     "published_prob_a": 0.7781,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079515",
+     "match": "Galorys vs Bounty Hunters",
+     "rating_diff": 45.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.5644,
+     "published_prob_a": 0.5644,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080742",
+     "match": "ex-RUSTEC vs Nuclear TigeRES",
+     "rating_diff": -258.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.1846,
+     "published_prob_a": 0.1846,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079544",
+     "match": "Chicken Coop vs Zomblers",
+     "rating_diff": 104.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.6454,
+     "published_prob_a": 0.6454,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079545",
+     "match": "Overtake Sector vs Iowa Stormboar",
+     "rating_diff": -13.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.4813,
+     "published_prob_a": 0.4813,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079617",
+     "match": "Spirit Academy vs BakS",
+     "rating_diff": -63.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.4103,
+     "published_prob_a": 0.4103,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079465",
+     "match": "Fruju vs Rooster",
+     "rating_diff": -337.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.1257,
+     "published_prob_a": 0.1257,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079436",
+     "match": "Team Liquid vs BBL",
+     "rating_diff": 141.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.6925,
+     "published_prob_a": 0.6925,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079437",
+     "match": "100 Thieves vs JiJieHao",
+     "rating_diff": 24.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.5345,
+     "published_prob_a": 0.5345,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079618",
+     "match": "Bushido Wildcats vs ILLYRIANS",
+     "rating_diff": 120.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.6661,
+     "published_prob_a": 0.6661,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1081031",
+     "match": "Just Swing vs Alter Ego",
+     "rating_diff": -95.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.3666,
+     "published_prob_a": 0.3666,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079620",
+     "match": "Black Phoenix vs 6666",
+     "rating_diff": 193.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.7523,
+     "published_prob_a": 0.7523,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1081076",
+     "match": "ex-Keyd Stars vs Galorys",
+     "rating_diff": -245.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.1962,
+     "published_prob_a": 0.1962,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1081111",
+     "match": "Enjoy vs B8 Academy",
+     "rating_diff": 240.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.7992,
+     "published_prob_a": 0.7992,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1081112",
+     "match": "Banda chuya vs 6666",
+     "rating_diff": -122.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.3313,
+     "published_prob_a": 0.3313,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1079622",
+     "match": "ex-RUSTEC vs mellren",
+     "rating_diff": 134.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.6838,
+     "published_prob_a": 0.6838,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1081113",
+     "match": "Ryvex vs PCIFIC",
+     "rating_diff": -156.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.2895,
+     "published_prob_a": 0.2895,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1080282",
+     "match": "EAC vs BOJONG",
+     "rating_diff": 572.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.9642,
+     "published_prob_a": 0.9642,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1080284",
+     "match": "EAC vs ENCE",
+     "rating_diff": 10.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.5144,
+     "published_prob_a": 0.5144,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1080285",
+     "match": "Voca vs Phantom",
+     "rating_diff": 35.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.5502,
+     "published_prob_a": 0.5502,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1080287",
+     "match": "Voca vs HAVU",
+     "rating_diff": 245.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.8038,
+     "published_prob_a": 0.8038,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1081120",
+     "match": "mellren vs Privateer",
+     "rating_diff": 324.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.8659,
+     "published_prob_a": 0.8659,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1080290",
+     "match": "Phantom vs HAVU",
+     "rating_diff": 210.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.7701,
+     "published_prob_a": 0.7701,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1080200",
+     "match": "Wildcard vs DENDELE",
+     "rating_diff": -129.0,
+     "scale": 400.0,
+     "recomputed_prob_a": 0.3224,
+     "published_prob_a": 0.3224,
+     "rating_source": "https://github.com/ValveSoftware/counter-strike_regional_standings",
+     "matches": true,
+     "listed_in_lobby": false
+    }
+   ],
+   "blank_rows": [
+    {
+     "fixture_id": "1053068",
+     "match": "Johnny Speeds vs ReThink",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:ReThink",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1051301",
+     "match": "CYBERSHOKE Prospects vs PCIFIC",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:CYBERSHOKE Prospects",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053146",
+     "match": "Atrix vs Clutchain",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Atrix",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053070",
+     "match": "ReThink vs train launcher",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:ReThink",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1051790",
+     "match": "Keyd vs Yawara",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Keyd",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052749",
+     "match": "Misa vs WROTBERRY",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:WROTBERRY",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052699",
+     "match": "Vasco vs Red Feet",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Red Feet",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052183",
+     "match": "Misa vs Wampirki",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Wampirki",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1051341",
+     "match": "Sharks vs Inner Circle",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Sharks",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053073",
+     "match": "roamsfiest vs ReThink",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:ReThink",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1051342",
+     "match": "ex-Tricked vs Acend",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:ex-Tricked",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1051803",
+     "match": "Fluxo vs Keyd",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Keyd",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052751",
+     "match": "ex-MANA vs Subtop De France",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:ex-MANA",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053431",
+     "match": "GAMEHARMONY vs Coalesce",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:GAMEHARMONY",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053433",
+     "match": "GAMEHARMONY vs Aimhaus",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:GAMEHARMONY",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052698",
+     "match": "ex-KRÜ vs MAGICOS",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:MAGICOS",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053435",
+     "match": "GAMEHARMONY vs Leo",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:GAMEHARMONY",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1051343",
+     "match": "Sharks vs ex-Tricked",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Sharks|ex-Tricked",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052184",
+     "match": "Atreides vs Donstu",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Atreides",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052696",
+     "match": "Yawara vs Blitzkrieg",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Blitzkrieg",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053469",
+     "match": "BERG vs SINQU REHTI",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:SINQU REHTI",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053470",
+     "match": "6666 vs SINQU REHTI",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:SINQU REHTI",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1053471",
+     "match": "ASTRAL vs SINQU REHTI",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:SINQU REHTI",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1052695",
+     "match": "MIBR Academy vs Patins de Ferrari",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Patins de Ferrari",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1079865",
+     "match": "FlyQuest vs Killzone",
+     "game": "CS2",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Killzone",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079867",
+     "match": "Abyssal vs Killzone",
+     "game": "CS2",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Killzone",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074001",
+     "match": "Saigon Warriors vs MVK Esports Academy",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075719",
+     "match": "Berlin 5 vs AceGaming Hearts",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075722",
+     "match": "Glacial Guardians vs BlackDivision",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075727",
+     "match": "Rich Gang vs Eintracht Spandau Zwei",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075729",
+     "match": "Socken und Sandalen vs LOOKSMAXXER",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075731",
+     "match": "Whalepower Humpbacks vs 1. Esport Club Frankfurt e.V.",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071202",
+     "match": "CNG Royal vs Rich Gang",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071204",
+     "match": "Playwell Rød Q vs NTNUI Kometkameratene",
+     "game": "LoL",
+     "flags": [
+      "status:forfeited",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071205",
+     "match": "VES Japan vs DMG Esports Norway",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071206",
+     "match": "Volda E-Sport vs Solid Gaming",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071207",
+     "match": "Your Saviours vs Ascent Gaming",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075728",
+     "match": "Sissi State Punks vs spongecord prime",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1073381",
+     "match": "Mental Rush vs Barcząca Esports Babylon",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074636",
+     "match": "2 Massive vs Team Lucidity Esports",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074637",
+     "match": "FlameHard vs OnlyWinByFF",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074638",
+     "match": "Fritt Fall vs Tung Sahur Mid",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074641",
+     "match": "Mazepa vs Rich Gang Sweden",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074642",
+     "match": "Northern Wolves Esports vs B2U",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074643",
+     "match": "Team cd vs Karolinerna",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080735",
+     "match": "acidhouze vs Inner Circle Academy",
+     "game": "CS2",
+     "flags": [
+      "status:forfeited",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:acidhouze",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075717",
+     "match": "AIX eSports vs Kanji Esports KIN",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075723",
+     "match": "MT1 Vision vs VfB x Engines Stuttgart",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079612",
+     "match": "antidaun vs Saint Sinners",
+     "game": "CS2",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:antidaun",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074639",
+     "match": "Lund Esports Organization OGs vs Turbo Gaming",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080733",
+     "match": "DIVINITY vs ex-RUSTEC",
+     "game": "CS2",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:DIVINITY",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074640",
+     "match": "Lundqvist Darkside vs DMG Esports Sweden",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1073380",
+     "match": "Vitality Rising Bees vs Good Chi Sakura",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1077744",
+     "match": "Rift Runners vs Cool Beans Team",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1077745",
+     "match": "Smá Nibu vs Fenrir",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1077746",
+     "match": "Whisky vs Chuds",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079338",
+     "match": "Clã NKZ VÓRAX vs LØS Academy",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078947",
+     "match": "Clã NKZ Esports VÓRAX vs LØS Academy",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078948",
+     "match": "EmBRAZA! Esports vs Marere E-Sports",
+     "game": "LoL",
+     "flags": [
+      "status:forfeited",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078949",
+     "match": "Juventus Gaming Red vs Invictus Team",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078950",
+     "match": "Sphere Esports vs Smoke Tram Ascension",
+     "game": "LoL",
+     "flags": [
+      "status:forfeited",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078951",
+     "match": "SharkBite Furious Gaming White vs Neon eSports",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078952",
+     "match": "Smoke Tram vs SharkBite Furious Gaming Black",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080897",
+     "match": "KT Rolster vs Team Vitality",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1076647",
+     "match": "BNK FearX vs JD Gaming",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079435",
+     "match": "Ninjas in Pyjamas vs Apogee Betclic",
+     "game": "CS2",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Apogee Betclic",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075698",
+     "match": "West Point Esports Philippines vs essences",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079575",
+     "match": "Apogee Betclic vs Sangal",
+     "game": "CS2",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Apogee Betclic",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071176",
+     "match": "Volda E-Sport vs DMG Esports Norway",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1081029",
+     "match": "Inner Circle Academy vs The Golden Horde",
+     "game": "CS2",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:The Golden Horde",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080960",
+     "match": "Fritt Fall vs Karolinerna",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079703",
+     "match": "FlameHard vs OnlyWinByFF",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1081030",
+     "match": "The Golden Horde vs GenOne",
+     "game": "CS2",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:The Golden Horde",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071188",
+     "match": "Volda E-Sport vs Phenti",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1073382",
+     "match": "SK Gaming Avarosa vs Blue Otter Europe",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075720",
+     "match": "Cloud eSport vs Atruvia Münster Esports",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080898",
+     "match": "Cloud eSport vs Atruvia Münster Esports",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080899",
+     "match": "Team Lucidity Esports vs Lund Esports Organization",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075730",
+     "match": "Team 300 White vs TeamOrangeGaming Academy",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1073379",
+     "match": "G2 Hel vs AZ Rising Eterna",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080741",
+     "match": "The Golden Horde vs ex-RUSTEC",
+     "game": "CS2",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:The Golden Horde",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1076740",
+     "match": "LØS vs KaBuM! Ilha das Lendas",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079344",
+     "match": "Maryville University vs Disguised",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1076648",
+     "match": "Team WE vs FlyQuest",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1076649",
+     "match": "LGD Gaming vs HANJIN BRION",
+     "game": "LoL",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075699",
+     "match": "Nothin'Here vs essences",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1081102",
+     "match": "QUINTESSÊNCIA vs Martians",
+     "game": "CS2",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Martians",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1081103",
+     "match": "Procyon vs Hacha",
+     "game": "CS2",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:Hacha",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079334",
+     "match": "Movistar KOI Fénix vs Galions",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079847",
+     "match": "reGOLD eSport vs No Need Orga",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079007",
+     "match": "DKB XPERION NXT vs The Bandits Prime",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079008",
+     "match": "ex-A41G vs No Need Orga",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075718",
+     "match": "Babos Gaming Academy vs Black Lion",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080900",
+     "match": "Babos Gaming Academy vs Black Lion",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071186",
+     "match": "Solid Gaming vs NTNUI Kometkameratene",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071193",
+     "match": "Phenti vs Ascent Gaming",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075724",
+     "match": "Neko Elite Kittens vs Second Time Alive Revival",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080901",
+     "match": "Neko Elite Kittens vs Second Time Alive Revival",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079009",
+     "match": "No Need Orga vs Reveal Multigaming",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079010",
+     "match": "regnum4games vs 404 Multigaming e.V.",
+     "game": "LoL",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1081104",
+     "match": "Grêmio vs LOS NINOS",
+     "game": "CS2",
+     "flags": [
+      "status:ended",
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:LOS NINOS",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1081105",
+     "match": "SUKEBAN vs your end",
+     "game": "CS2",
+     "flags": [
+      "picks_locked_or_past",
+      "kickoff_passed",
+      "no_valve_vrs_rating:SUKEBAN",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1080902",
+     "match": "Mazepa vs Rich Gang Sweden",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075725",
+     "match": "Packmiko E-Sports DACH vs Defiance eSports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080903",
+     "match": "Kanji Esports KIN vs Black Lion",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079624",
+     "match": "FORZE Reload vs LFO 10",
+     "game": "CS2",
+     "flags": [
+      "no_valve_vrs_rating:LFO 10",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1076570",
+     "match": "Meavedron Benelux vs The Bandits Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071203",
+     "match": "Phenti vs Mixlag fra Trondheim",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075708",
+     "match": "Kanji Esports KIN vs Black Lion",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075726",
+     "match": "Purple Emperor Lizards - Atomic vs REH Gaming",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080904",
+     "match": "Purple Emperor Lizards - Atomic vs REH Gaming",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1076571",
+     "match": "Nameless vs Triforce Esport",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080279",
+     "match": "WROTBERRY vs EAC",
+     "game": "CS2",
+     "flags": [
+      "no_valve_vrs_rating:WROTBERRY",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1076664",
+     "match": "Team WE vs HANJIN BRION",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080281",
+     "match": "WROTBERRY vs ENCE",
+     "game": "CS2",
+     "flags": [
+      "no_valve_vrs_rating:WROTBERRY",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1080283",
+     "match": "WROTBERRY vs BOJONG",
+     "game": "CS2",
+     "flags": [
+      "no_valve_vrs_rating:WROTBERRY",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1079131",
+     "match": "NextGeneration Esports vs JSK Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079132",
+     "match": "Void Walkers vs Pegasus Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079922",
+     "match": "Fritt Fall vs Tung Sahur Mid",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075704",
+     "match": "Atruvia Münster Esports vs Purple Emperor Lizards - Atomic",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080286",
+     "match": "HAVU vs RoundsGG",
+     "game": "CS2",
+     "flags": [
+      "no_valve_vrs_rating:RoundsGG",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1080288",
+     "match": "Phantom vs RoundsGG",
+     "game": "CS2",
+     "flags": [
+      "no_valve_vrs_rating:RoundsGG",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1079848",
+     "match": "Hannover Esports e.V. vs reGOLD eSport",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080289",
+     "match": "RoundsGG vs Voca",
+     "game": "CS2",
+     "flags": [
+      "no_valve_vrs_rating:RoundsGG",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": true
+    },
+    {
+     "fixture_id": "1079011",
+     "match": "Hannover Esports e.V. vs ex-A41G",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079012",
+     "match": "The Bandits Prime vs Phong Vũ Buffalo",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079133",
+     "match": "Team Reds vs Slam Dunk",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079134",
+     "match": "Victorious Demons vs New Era Team",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079013",
+     "match": "BvP vs Team 300",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079014",
+     "match": "MT1 Esports vs regnum4games",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080905",
+     "match": "Crazy Kittens E-Sport Rising vs B2U",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080906",
+     "match": "Karolinerna vs Team Lucidity Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080907",
+     "match": "Lund Esports Organization vs Crazy Kittens E-Sport Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080908",
+     "match": "Lundqvist Lightside vs OnlyWinByFF",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1081079",
+     "match": "Docta Esports Club vs BaronX",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1081080",
+     "match": "Maze GG vs Final Level eSports Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1081081",
+     "match": "Infinity Gaming vs Viktus",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080909",
+     "match": "Enfida Esports vs JSK Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080910",
+     "match": "Jendouba Esports vs Olympique Mnihla Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080911",
+     "match": "Olympique Mnihla vs Simplicity Gaming",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080912",
+     "match": "Supreme Leaders vs El Menzah Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080915",
+     "match": "Zahrouni Esports vs JSK Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079923",
+     "match": "Fritt Fall vs Karolinerna",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079135",
+     "match": "New Era Team vs NextGeneration Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079136",
+     "match": "Team Reds vs Void Walkers",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080916",
+     "match": "EESTI ORAVATE LIIT vs LOMiks",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078953",
+     "match": "Juventus Gaming Red vs EmBRAZA! Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078954",
+     "match": "Marere E-Sports vs LØS Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079339",
+     "match": "Clã NKZ VÓRAX vs Smoke Tram Ascension",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078956",
+     "match": "Smoke Tram vs Invictus Team",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078957",
+     "match": "SharkBite Furious Gaming White vs SharkBite Furious Gaming Black",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078958",
+     "match": "Sphere Esports vs Neon eSports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078955",
+     "match": "Clã NKZ Esports VÓRAX vs Smoke Tram Ascension",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075732",
+     "match": "1. Esport Club Frankfurt e.V. vs Socken und Sandalen",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075733",
+     "match": "AceGaming Hearts vs Neko Elite Kittens",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075734",
+     "match": "Atruvia Münster Esports vs Defiance eSports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075735",
+     "match": "Black Lion vs AIX eSports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075736",
+     "match": "BlackDivision vs Babos Gaming Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075737",
+     "match": "Purple Emperor Lizards - Atomic vs Cloud eSport",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075738",
+     "match": "Eintracht Spandau Zwei vs Whalepower Humpbacks",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075739",
+     "match": "Emperors Bremen vs Sissi State Punks",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075740",
+     "match": "Kanji Esports AKA vs Packmiko E-Sports DACH",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075741",
+     "match": "Kanji Esports KIN vs MT1 Vision",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075742",
+     "match": "LOOKSMAXXER vs Team 300 White",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075744",
+     "match": "spongecord prime vs Berlin 5",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075745",
+     "match": "TeamOrangeGaming Academy vs Rich Gang",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075746",
+     "match": "VfB x Engines Stuttgart vs Glacial Guardians",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071208",
+     "match": "CNG Royal vs Playwell Rød Q",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071210",
+     "match": "Mixlag fra Trondheim vs VES Japan",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071211",
+     "match": "NTNUI Kometkameratene vs Volda E-Sport",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071212",
+     "match": "Rich Gang vs Phenti",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071213",
+     "match": "Solid Gaming vs Ascent Gaming",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079015",
+     "match": "Hannover Esports e.V. vs BvP",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079016",
+     "match": "Team 300 vs Babos Gaming",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1081082",
+     "match": "Marere Academy vs Clã NKZ Revengers",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080917",
+     "match": "Enfida Esports vs Supreme Leaders",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080918",
+     "match": "Jendouba Esports vs El Menzah Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080919",
+     "match": "JSK Esports vs Olympique Mnihla Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080920",
+     "match": "Olympique Mnihla vs JSK Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080921",
+     "match": "Simplicity Gaming vs Zahrouni Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071209",
+     "match": "Your Saviours vs DMG Esports Norway",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074644",
+     "match": "2 Massive vs Turbo Gaming",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074645",
+     "match": "DMG Esports Sweden vs OnlyWinByFF",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074646",
+     "match": "FlameHard vs Northern Wolves Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074647",
+     "match": "Lund Esports Organization OGs vs Tung Sahur Mid",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074648",
+     "match": "Lundqvist Darkside vs Rich Gang Sweden",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074649",
+     "match": "B2U vs Mazepa",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074650",
+     "match": "Team cd vs Fritt Fall",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074651",
+     "match": "Team Lucidity Esports vs Karolinerna",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075721",
+     "match": "Emperors Bremen vs Duplex Silva Pigeons Edition",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080922",
+     "match": "Duplex Silva Pigeons Edition vs Emperors Bremen",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079017",
+     "match": "Phong Vũ Buffalo vs Locked IN",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079018",
+     "match": "VfB eSports vs MT1 Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079340",
+     "match": "Marere E-Sports vs Clã NKZ VÓRAX",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078959",
+     "match": "EmBRAZA! Esports vs Invictus Team",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078961",
+     "match": "Juventus Gaming Red vs SharkBite Furious Gaming Black",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078962",
+     "match": "Sphere Esports vs LØS Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078963",
+     "match": "SharkBite Furious Gaming White vs Smoke Tram Ascension",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078964",
+     "match": "Smoke Tram vs Neon eSports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1078960",
+     "match": "Marere E-Sports vs Clã NKZ Esports VÓRAX",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1076025",
+     "match": "Mental Rush vs SK Gaming Avarosa",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075743",
+     "match": "Second Time Alive Revival vs Duplex Silva Pigeons Edition",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079849",
+     "match": "reGOLD eSport vs Team 300",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1076026",
+     "match": "Vitality Rising Bees vs G2 Hel",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079019",
+     "match": "BvP vs Reveal Multigaming",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079020",
+     "match": "ex-A41G vs Team 300",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071191",
+     "match": "Mixlag fra Trondheim vs DMG Esports Norway",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079021",
+     "match": "404 Multigaming e.V. vs MT1 Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079022",
+     "match": "regnum4games vs Locked IN",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079137",
+     "match": "Slam Dunk vs JSK Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071214",
+     "match": "Ascent Gaming vs NTNUI Kometkameratene",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071215",
+     "match": "Playwell Rød Q vs Rich Gang",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071216",
+     "match": "Solid Gaming vs DMG Esports Norway",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071217",
+     "match": "Phenti vs VES Japan",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071218",
+     "match": "Volda E-Sport vs CNG Royal",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1071219",
+     "match": "Your Saviours vs Mixlag fra Trondheim",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079138",
+     "match": "Pegasus Esports vs Victorious Demons",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079023",
+     "match": "Locked IN vs The Bandits Prime",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079024",
+     "match": "Phong Vũ Buffalo vs 404 Multigaming e.V.",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079139",
+     "match": "NextGeneration Esports vs Pegasus Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079140",
+     "match": "Victorious Demons vs Team Reds",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079850",
+     "match": "Reveal Multigaming vs reGOLD eSport",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079025",
+     "match": "AceGaming vs Babos Gaming",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079026",
+     "match": "Reveal Multigaming vs ex-A41G",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080923",
+     "match": "Jendouba Esports vs Enfida Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080924",
+     "match": "JSK Esports vs El Menzah Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080925",
+     "match": "Olympique Mnihla vs Supreme Leaders",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080926",
+     "match": "Simplicity Gaming vs JSK Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080927",
+     "match": "Zahrouni Esports vs Olympique Mnihla Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074652",
+     "match": "2 Massive vs Lund Esports Organization OGs",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074653",
+     "match": "DMG Esports Sweden vs Northern Wolves Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074654",
+     "match": "FlameHard vs B2U",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074655",
+     "match": "Karolinerna vs Turbo Gaming",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074656",
+     "match": "Lundqvist Darkside vs Mazepa",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074657",
+     "match": "OnlyWinByFF vs Rich Gang Sweden",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074658",
+     "match": "Team cd vs Tung Sahur Mid",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074659",
+     "match": "Team Lucidity Esports vs Fritt Fall",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079141",
+     "match": "JSK Academy vs New Era Team",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079142",
+     "match": "Void Walkers vs Slam Dunk",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075747",
+     "match": "AceGaming Hearts vs Emperors Bremen",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075748",
+     "match": "AIX eSports vs MT1 Vision",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075749",
+     "match": "Babos Gaming Academy vs VfB x Engines Stuttgart",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075750",
+     "match": "Black Lion vs Glacial Guardians",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075751",
+     "match": "BlackDivision vs Kanji Esports KIN",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075752",
+     "match": "Defiance eSports vs REH Gaming",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075753",
+     "match": "Duplex Silva Pigeons Edition vs Sissi State Punks",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075754",
+     "match": "Eintracht Spandau Zwei vs Team 300 White",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075755",
+     "match": "Neko Elite Kittens vs spongecord prime",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075756",
+     "match": "Packmiko E-Sports DACH vs Atruvia Münster Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075757",
+     "match": "Purple Emperor Lizards - Atomic vs Kanji Esports AKA",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075758",
+     "match": "Rich Gang vs LOOKSMAXXER",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075759",
+     "match": "Second Time Alive Revival vs Berlin 5",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075760",
+     "match": "TeamOrangeGaming Academy vs 1. Esport Club Frankfurt e.V.",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075761",
+     "match": "Whalepower Humpbacks vs Socken und Sandalen",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079027",
+     "match": "Babos Gaming vs Hannover Esports e.V.",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079028",
+     "match": "Reveal Multigaming vs AceGaming",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080928",
+     "match": "JSK Esports vs Enfida Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080929",
+     "match": "Olympique Mnihla vs Jendouba Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080930",
+     "match": "Olympique Mnihla Academy vs El Menzah Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080931",
+     "match": "Simplicity Gaming vs Supreme Leaders",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080932",
+     "match": "Zahrouni Esports vs JSK Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074660",
+     "match": "2 Massive vs Tung Sahur Mid",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074661",
+     "match": "DMG Esports Sweden vs FlameHard",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074663",
+     "match": "Lundqvist Darkside vs B2U",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074664",
+     "match": "OnlyWinByFF vs Mazepa",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074665",
+     "match": "Northern Wolves Esports vs Rich Gang Sweden",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074666",
+     "match": "Team Lucidity Esports vs Team cd",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074667",
+     "match": "Turbo Gaming vs Fritt Fall",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1074662",
+     "match": "Karolinerna vs Lund Esports Organization OGs",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079029",
+     "match": "404 Multigaming e.V. vs VfB eSports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079030",
+     "match": "Locked IN vs DKB XPERION NXT",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079143",
+     "match": "Pegasus Esports vs Team Reds",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079031",
+     "match": "DKB XPERION NXT vs Phong Vũ Buffalo",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079032",
+     "match": "No Need Orga vs AceGaming",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079033",
+     "match": "Hannover Esports e.V. vs No Need Orga",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079034",
+     "match": "VfB eSports vs regnum4games",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079144",
+     "match": "Slam Dunk vs New Era Team",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079145",
+     "match": "Pegasus Esports vs JSK Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079851",
+     "match": "AceGaming vs reGOLD eSport",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079035",
+     "match": "AceGaming vs ex-A41G",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079036",
+     "match": "Reveal Multigaming vs Team 300",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079147",
+     "match": "Team Reds vs NextGeneration Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079037",
+     "match": "DKB XPERION NXT vs regnum4games",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079038",
+     "match": "VfB eSports vs Phong Vũ Buffalo",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080933",
+     "match": "JSK Academy vs Supreme Leaders",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080934",
+     "match": "JSK Esports vs Olympique Mnihla",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080935",
+     "match": "Olympique Mnihla Academy vs Enfida Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080936",
+     "match": "Simplicity Gaming vs Jendouba Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080937",
+     "match": "Zahrouni Esports vs El Menzah Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079148",
+     "match": "Void Walkers vs Victorious Demons",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079040",
+     "match": "Team 300 vs Hannover Esports e.V.",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075762",
+     "match": "1. Esport Club Frankfurt e.V. vs Rich Gang",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075763",
+     "match": "Berlin 5 vs Sissi State Punks",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075764",
+     "match": "Black Lion vs BlackDivision",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075765",
+     "match": "Cloud eSport vs Defiance eSports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075766",
+     "match": "Eintracht Spandau Zwei vs TeamOrangeGaming Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075767",
+     "match": "Emperors Bremen vs Neko Elite Kittens",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075768",
+     "match": "Glacial Guardians vs MT1 Vision",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075769",
+     "match": "REH Gaming vs Kanji Esports AKA",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075770",
+     "match": "Kanji Esports KIN vs Babos Gaming Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075771",
+     "match": "LOOKSMAXXER vs Whalepower Humpbacks",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075772",
+     "match": "Purple Emperor Lizards - Atomic vs Packmiko E-Sports DACH",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075773",
+     "match": "Second Time Alive Revival vs AceGaming Hearts",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075774",
+     "match": "spongecord prime vs Duplex Silva Pigeons Edition",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075775",
+     "match": "Team 300 White vs Socken und Sandalen",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075776",
+     "match": "VfB x Engines Stuttgart vs AIX eSports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079039",
+     "match": "Babos Gaming vs No Need Orga",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080938",
+     "match": "El Menzah Esports vs Enfida Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080939",
+     "match": "JSK Academy vs Jendouba Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080940",
+     "match": "Olympique Mnihla Academy vs Olympique Mnihla",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080941",
+     "match": "Simplicity Gaming vs JSK Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080942",
+     "match": "Zahrouni Esports vs Supreme Leaders",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079041",
+     "match": "MT1 Esports vs Locked IN",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079042",
+     "match": "The Bandits Prime vs 404 Multigaming e.V.",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079043",
+     "match": "BvP vs No Need Orga",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079044",
+     "match": "Hannover Esports e.V. vs Reveal Multigaming",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079045",
+     "match": "MT1 Esports vs DKB XPERION NXT",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079046",
+     "match": "regnum4games vs The Bandits Prime",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079047",
+     "match": "404 Multigaming e.V. vs DKB XPERION NXT",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079048",
+     "match": "Locked IN vs VfB eSports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079049",
+     "match": "BvP vs Babos Gaming",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079050",
+     "match": "Team 300 vs AceGaming",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080943",
+     "match": "El Menzah Esports vs Olympique Mnihla",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080944",
+     "match": "JSK Academy vs JSK Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080945",
+     "match": "Olympique Mnihla Academy vs Simplicity Gaming",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080946",
+     "match": "Supreme Leaders vs Jendouba Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1080947",
+     "match": "Zahrouni Esports vs Enfida Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079051",
+     "match": "AceGaming vs BvP",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079052",
+     "match": "ex-A41G vs Babos Gaming",
+     "game": "LoL",
+     "flags": [
+      "status:cancelled",
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079852",
+     "match": "reGOLD eSport vs Babos Gaming",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075777",
+     "match": "AIX eSports vs BlackDivision",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075778",
+     "match": "Babos Gaming Academy vs Glacial Guardians",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075779",
+     "match": "Defiance eSports vs Kanji Esports AKA",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075780",
+     "match": "Duplex Silva Pigeons Edition vs AceGaming Hearts",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075781",
+     "match": "LOOKSMAXXER vs 1. Esport Club Frankfurt e.V.",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075782",
+     "match": "MT1 Vision vs Black Lion",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075783",
+     "match": "Neko Elite Kittens vs Berlin 5",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075784",
+     "match": "Packmiko E-Sports DACH vs Cloud eSport",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075785",
+     "match": "REH Gaming vs Atruvia Münster Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075786",
+     "match": "Rich Gang vs Team 300 White",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075787",
+     "match": "Sissi State Punks vs Second Time Alive Revival",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075788",
+     "match": "Socken und Sandalen vs Eintracht Spandau Zwei",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075789",
+     "match": "spongecord prime vs Emperors Bremen",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075790",
+     "match": "VfB x Engines Stuttgart vs Kanji Esports KIN",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1075791",
+     "match": "Whalepower Humpbacks vs TeamOrangeGaming Academy",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079053",
+     "match": "Phong Vũ Buffalo vs MT1 Esports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079054",
+     "match": "The Bandits Prime vs VfB eSports",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079055",
+     "match": "Locked IN vs 404 Multigaming e.V.",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079056",
+     "match": "MT1 Esports vs The Bandits Prime",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079057",
+     "match": "Phong Vũ Buffalo vs regnum4games",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    },
+    {
+     "fixture_id": "1079058",
+     "match": "VfB eSports vs DKB XPERION NXT",
+     "game": "LoL",
+     "flags": [
+      "no_official_rating_source_for_lol",
+      "no_probability_available"
+     ],
+     "listed_in_lobby": false
+    }
+   ],
+   "mismatches": [
+    {
+     "fixture_id": "1080176",
+     "check": "consensus",
+     "detail": "recomputed 0.2629 vs published 0.2628386851975446"
+    }
+   ],
+   "rows_checked": 474
+  }
+ },
+ "ratings": {
+  "inputs_checked": 214,
+  "mismatches": [],
+  "ambiguous_duplicate_names": [
+   {
+    "team": "Johnny Speeds",
+    "rows": [
+     [
+      99,
+      1049
+     ],
+     [
+      164,
+      802
+     ]
+    ],
+    "used": [
+     99,
+     1049
+    ]
+   },
+   {
+    "team": "Just Players",
+    "rows": [
+     [
+      118,
+      974
+     ],
+     [
+      347,
+      485
+     ]
+    ],
+    "used": [
+     118,
+     974
+    ]
+   },
+   {
+    "team": "Mai Tai",
+    "rows": [
+     [
+      240,
+      655
+     ],
+     [
+      296,
+      575
+     ]
+    ],
+    "used": [
+     240,
+     655
+    ]
+   },
+   {
+    "team": "BIG Academy",
+    "rows": [
+     [
+      280,
+      602
+     ],
+     [
+      311,
+      540
+     ]
+    ],
+    "used": [
+     280,
+     602
+    ]
+   },
+   {
+    "team": "UNO MILLE",
+    "rows": [
+     [
+      186,
+      746
+     ],
+     [
+      266,
+      623
+     ]
+    ],
+    "used": [
+     186,
+     746
+    ]
+   },
+   {
+    "team": "Honvéd",
+    "rows": [
+     [
+      169,
+      788
+     ],
+     [
+      331,
+      515
+     ]
+    ],
+    "used": [
+     169,
+     788
+    ]
+   },
+   {
+    "team": "Leo",
+    "rows": [
+     [
+      112,
+      1001
+     ],
+     [
+      340,
+      499
+     ]
+    ],
+    "used": [
+     112,
+     1001
+    ]
+   },
+   {
+    "team": "Leo",
+    "rows": [
+     [
+      112,
+      1001
+     ],
+     [
+      340,
+      499
+     ]
+    ],
+    "used": [
+     112,
+     1001
+    ]
+   },
+   {
+    "team": "Lilmix",
+    "rows": [
+     [
+      167,
+      794
+     ],
+     [
+      244,
+      650
+     ]
+    ],
+    "used": [
+     167,
+     794
+    ]
+   },
+   {
+    "team": "BIG Academy",
+    "rows": [
+     [
+      280,
+      602
+     ],
+     [
+      311,
+      540
+     ]
+    ],
+    "used": [
+     280,
+     602
+    ]
+   },
+   {
+    "team": "6666",
+    "rows": [
+     [
+      127,
+      923
+     ],
+     [
+      368,
+      425
+     ]
+    ],
+    "used": [
+     127,
+     923
+    ]
+   },
+   {
+    "team": "6666",
+    "rows": [
+     [
+      127,
+      923
+     ],
+     [
+      368,
+      425
+     ]
+    ],
+    "used": [
+     127,
+     923
+    ]
+   },
+   {
+    "team": "UNO MILLE",
+    "rows": [
+     [
+      186,
+      746
+     ],
+     [
+      266,
+      623
+     ]
+    ],
+    "used": [
+     186,
+     746
+    ]
+   },
+   {
+    "team": "METANOIA Wolves",
+    "rows": [
+     [
+      235,
+      660
+     ],
+     [
+      339,
+      500
+     ]
+    ],
+    "used": [
+     235,
+     660
+    ]
+   },
+   {
+    "team": "EMPIRE",
+    "rows": [
+     [
+      229,
+      671
+     ],
+     [
+      360,
+      467
+     ]
+    ],
+    "used": [
+     229,
+     671
+    ]
+   },
+   {
+    "team": "Zomblers",
+    "rows": [
+     [
+      254,
+      639
+     ],
+     [
+      259,
+      631
+     ]
+    ],
+    "used": [
+     254,
+     639
+    ]
+   },
+   {
+    "team": "Chinggis Warriors",
+    "rows": [
+     [
+      87,
+      1084
+     ],
+     [
+      220,
+      685
+     ]
+    ],
+    "used": [
+     87,
+     1084
+    ]
+   },
+   {
+    "team": "benched gods",
+    "rows": [
+     [
+      157,
+      811
+     ],
+     [
+      329,
+      516
+     ]
+    ],
+    "used": [
+     157,
+     811
+    ]
+   },
+   {
+    "team": "Just Players",
+    "rows": [
+     [
+      118,
+      974
+     ],
+     [
+      347,
+      485
+     ]
+    ],
+    "used": [
+     118,
+     974
+    ]
+   },
+   {
+    "team": "Misa",
+    "rows": [
+     [
+      134,
+      883
+     ],
+     [
+      290,
+      587
+     ]
+    ],
+    "used": [
+     134,
+     883
+    ]
+   },
+   {
+    "team": "Chinggis Warriors",
+    "rows": [
+     [
+      87,
+      1084
+     ],
+     [
+      220,
+      685
+     ]
+    ],
+    "used": [
+     87,
+     1084
+    ]
+   },
+   {
+    "team": "Chinggis Warriors",
+    "rows": [
+     [
+      87,
+      1084
+     ],
+     [
+      220,
+      685
+     ]
+    ],
+    "used": [
+     87,
+     1084
+    ]
+   },
+   {
+    "team": "6666",
+    "rows": [
+     [
+      127,
+      923
+     ],
+     [
+      368,
+      425
+     ]
+    ],
+    "used": [
+     127,
+     923
+    ]
+   },
+   {
+    "team": "benched gods",
+    "rows": [
+     [
+      157,
+      811
+     ],
+     [
+      329,
+      516
+     ]
+    ],
+    "used": [
+     157,
+     811
+    ]
+   },
+   {
+    "team": "Bebop",
+    "rows": [
+     [
+      212,
+      702
+     ],
+     [
+      282,
+      597
+     ]
+    ],
+    "used": [
+     212,
+     702
+    ]
+   },
+   {
+    "team": "Just Players",
+    "rows": [
+     [
+      118,
+      974
+     ],
+     [
+      347,
+      485
+     ]
+    ],
+    "used": [
+     118,
+     974
+    ]
+   },
+   {
+    "team": "Chinggis Warriors",
+    "rows": [
+     [
+      87,
+      1084
+     ],
+     [
+      220,
+      685
+     ]
+    ],
+    "used": [
+     87,
+     1084
+    ]
+   },
+   {
+    "team": "Johnny Speeds",
+    "rows": [
+     [
+      99,
+      1049
+     ],
+     [
+      164,
+      802
+     ]
+    ],
+    "used": [
+     99,
+     1049
+    ]
+   },
+   {
+    "team": "ex-RUSTEC",
+    "rows": [
+     [
+      92,
+      1066
+     ],
+     [
+      152,
+      824
+     ]
+    ],
+    "used": [
+     92,
+     1066
+    ]
+   },
+   {
+    "team": "Johnny Speeds",
+    "rows": [
+     [
+      99,
+      1049
+     ],
+     [
+      164,
+      802
+     ]
+    ],
+    "used": [
+     99,
+     1049
+    ]
+   },
+   {
+    "team": "6666",
+    "rows": [
+     [
+      127,
+      923
+     ],
+     [
+      368,
+      425
+     ]
+    ],
+    "used": [
+     127,
+     923
+    ]
+   },
+   {
+    "team": "ex-RUSTEC",
+    "rows": [
+     [
+      92,
+      1066
+     ],
+     [
+      152,
+      824
+     ]
+    ],
+    "used": [
+     92,
+     1066
+    ]
+   },
+   {
+    "team": "Zomblers",
+    "rows": [
+     [
+      254,
+      639
+     ],
+     [
+      259,
+      631
+     ]
+    ],
+    "used": [
+     254,
+     639
+    ]
+   },
+   {
+    "team": "6666",
+    "rows": [
+     [
+      127,
+      923
+     ],
+     [
+      368,
+      425
+     ]
+    ],
+    "used": [
+     127,
+     923
+    ]
+   },
+   {
+    "team": "Zomblers",
+    "rows": [
+     [
+      254,
+      639
+     ],
+     [
+      259,
+      631
+     ]
+    ],
+    "used": [
+     254,
+     639
+    ]
+   },
+   {
+    "team": "6666",
+    "rows": [
+     [
+      127,
+      923
+     ],
+     [
+      368,
+      425
+     ]
+    ],
+    "used": [
+     127,
+     923
+    ]
+   },
+   {
+    "team": "ex-RUSTEC",
+    "rows": [
+     [
+      92,
+      1066
+     ],
+     [
+      152,
+      824
+     ]
+    ],
+    "used": [
+     92,
+     1066
+    ]
+   }
+  ],
+  "blank_rows_missing_flag": [
+   {
+    "fixture_id": "1052184",
+    "team": "Donstu",
+    "reason": "missing no_valve_vrs_rating flag"
+   }
+  ],
+  "lol_blank_rows_flagged": 306,
+  "teams_in_official_file": 349
+ },
+ "lobby_listing": {
+  "committed_snapshot": {
+   "generated_at_utc": "2026-10-14T02:05:00Z",
+   "match_count": 89,
+   "permalinks_published": 0
+  },
+  "independent_reread": {
+   "read_utc": "2026-10-14T01:47:00Z",
+   "matches_this_week_counter": 68,
+   "all_tiers_counter": 89,
+   "tier_counters": {
+    "s": 4,
+    "b": 25,
+    "c": 60
+   },
+   "all_tournaments_counter": 89,
+   "rendered_match_cards": 28
+  },
+  "irregularity": "The committed snapshot (90 fixtures, tiers s4/b26/c60) and the independent re-read (89 fixtures, tiers s4/b25/c60) are different observations 32 minutes apart: the lobby changed between them. The lobby's own \"68 matches this week\" counter is still not reproduced by any rule applied to either observation and stays published as unexplained rather than guessed."
+ },
+ "link_repair": {
+  "root": null,
+  "live": {
+   "repaired_by": "scripts/7cd2e67a/repair_hotspawn_links.py",
+   "rule": "published lobby permalink when HotSawn publishes one, otherwise the official lobby page; a constructed /matches/<id> path is never used",
+   "permalinks_available": 26,
+   "rows_by_kind": {
+    "official_lobby_fallback": 448,
+    "lobby_published_permalink": 26
+   },
+   "rows_changed": 474,
+   "sources": [
+    "data/picks_permalinks.json (captured 2026-10-13T21:58:17Z)",
+    "data/live/samples/lobby_page.txt (raw lobby HTML capture)"
+   ]
+  },
+  "root_kinds": {
+   "lobby_published_permalink": 25,
+   "official_lobby_fallback": 64
+  },
+  "expanded_kinds": null
+ },
+ "observations": [
+  {
+   "id": "OBS-01",
+   "source": "HotSpawn Pick'ems lobby",
+   "kind": "fixture discovery",
+   "url": "https://play.hotspawn.com/lobby",
+   "read_utc": "2026-10-14T01:47:00Z",
+   "status": "ok",
+   "observed": "Served lobby page. Its own counters read: \"This week 68 matches this week\", \"All tiers (89)\", \"B (25)\", \"C (60)\", \"S (4)\", \"All tournaments (89)\". 28 match cards rendered (13 under Closing Soon, 15 under Upcoming).",
+   "note": "Independent re-read, not a re-use of the committed snapshot. The committed snapshot was taken at 2026-10-14T01:15:53Z."
+  },
+  {
+   "id": "OBS-02",
+   "source": "HotSpawn numeric match route",
+   "kind": "link audit",
+   "url": "https://www.hotspawn.com/matches/1079546",
+   "read_utc": "2026-10-14T01:50:00Z",
+   "status": "fail",
+   "observed": "Final URL https://www.hotspawn.com/matches, page title \"Matches - Hotspawn\": the general matches index, not the Zomblers vs Overtake Sector match page.",
+   "note": "Proves `/matches/<numeric id>` is not a per-match source link. It is the route the inherited collectors used on every published row."
+  },
+  {
+   "id": "OBS-03",
+   "source": "HotSpawn matches listing",
+   "kind": "permalink discovery",
+   "url": "https://www.hotspawn.com/matches",
+   "read_utc": "2026-10-14T01:55:00Z",
+   "status": "ok",
+   "observed": "Official listing page publishes per-match permalinks of the form /matches/<team-a>-vs-<team-b>-<tournament>-<fixture id>, e.g. https://www.hotspawn.com/matches/gothic-vs-lavked-cct-europe-2026-series-11-1079621."
+  },
+  {
+   "id": "OBS-04",
+   "source": "Pinnacle guest API",
+   "kind": "quote verification",
+   "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight",
+   "read_utc": "2026-10-14T01:58:00Z",
+   "status": "ok",
+   "observed": "matchup 1638111785 (9z vs Aurora), cutoff 2026-10-14T08:30Z: full-match moneyline `s;0;m` status open, home +241 / away -307 (decimal 3.41 / 1.3257).",
+   "published": "3.55 / 1.3067 (read 2026-10-14T01:15:57Z)",
+   "verdict": "line moved since the published read; no-vig p(9z) 28.0% / p(Aurora) 72.0% today versus 26.9% / 73.1% published. The pick (Aurora) is unchanged."
+  },
+  {
+   "id": "OBS-05",
+   "source": "Pinnacle guest API",
+   "kind": "quote verification",
+   "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637867148/markets/related/straight",
+   "read_utc": "2026-10-14T01:58:00Z",
+   "status": "ok",
+   "observed": "matchup 1637867148 (HOTU vs Fnatic), cutoff 2026-10-14T10:00Z: full-match moneyline `s;0;m` status open, home -101 / away -125 (decimal 1.9901 / 1.8).",
+   "published": "1.9901 / 1.8 (read 2026-10-14T01:15:55Z)",
+   "verdict": "exact match with the published quote; no-vig 47.5% / 52.5% reproduces."
+  },
+  {
+   "id": "OBS-06",
+   "source": "Pinnacle guest API",
+   "kind": "quote verification",
+   "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674/markets/related/straight",
+   "read_utc": "2026-10-14T02:00:00Z",
+   "status": "changed",
+   "observed": "matchup 1638111674 (Falcons vs Ninjas in Pyjamas), cutoff 2026-10-14T11:00Z: no `period: 0` moneyline is present in the response. The first moneyline is `s;1;m` (map 1, home -243 / away +195); only per-map markets remain.",
+   "published": "1.2703 / 3.85 full-match moneyline (read 2026-10-14T01:15:58Z)",
+   "verdict": "the full-match market the published row cites is no longer offered, so that row is stale. Flagged, not silently refreshed."
+  },
+  {
+   "id": "OBS-07",
+   "source": "Pinnacle guest API",
+   "kind": "quote verification",
+   "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745/markets/related/straight",
+   "read_utc": "2026-10-14T02:00:00Z",
+   "status": "changed",
+   "observed": "matchup 1637936745 (MIBR vs BC.Game), cutoff 2026-10-15T10:00Z: no `period: 0` moneyline is present. First moneyline is `s;1;m` (map 1, home -122 / away -103).",
+   "published": "1.6369 / 2.23 full-match moneyline (read 2026-10-14T01:15:56Z)",
+   "verdict": "the cited full-match market is no longer offered; the published row is stale."
+  },
+  {
+   "id": "OBS-08",
+   "source": "Pinnacle guest API",
+   "kind": "quote verification",
+   "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637999450/markets/related/straight",
+   "read_utc": "2026-10-14T02:05:00Z",
+   "status": "changed",
+   "observed": "matchup 1637999450 (Heroic vs Envy), cutoff 2026-10-15T10:00Z: no `period: 0` moneyline is present. First moneyline is `s;1;m` (map 1, home -137 / away +109).",
+   "published": "1.4695 / 2.62 full-match moneyline (read 2026-10-14T01:15:57Z)",
+   "verdict": "the cited full-match market is no longer offered; the published row is stale."
+  },
+  {
+   "id": "OBS-09",
+   "source": "Bovada quote API",
+   "kind": "quote verification",
+   "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+   "read_utc": "2026-10-14T02:08:00Z",
+   "status": "ok",
+   "observed": "Served the esports event feed as JSON with live events and two-way moneyline prices (e.g. Cloud9 vs Karmine Corp +170 / -225).",
+   "note": "This is the URL the pipeline records as `source_api_url` for every Bovada quote, so the quote itself is traceable to a live official endpoint."
+  },
+  {
+   "id": "OBS-10",
+   "source": "Bovada event page",
+   "kind": "link audit",
+   "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600",
+   "read_utc": "2026-10-14T02:08:00Z",
+   "status": "fail",
+   "observed": "HTTP 200 body is Bovada's \"Not Found\" page (\"PÁGINA NO ENCONTRADA\") behind a reCAPTCHA challenge.",
+   "note": "A second event page URL (/esports/counter-strike-2/thunderpick-world-championship-26/9z-globant-team-aurora-202610140430) returned the same result, so this is a systematic access block rather than one bad URL. The per-event page links the dashboard prints for Bovada rows are therefore not usable as verification links from this environment; the quote API link is."
+  },
+  {
+   "id": "OBS-11",
+   "source": "Melbet LineFeed (1xBet platform)",
+   "kind": "quote verification",
+   "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+   "read_utc": "2026-10-14T02:10:00Z",
+   "status": "ok",
+   "observed": "Served the 1x2 feed as JSON. Its first entry is Gothic vs Lavked (CS 2. CCT Europe Series, start 1791964800 = 2026-10-14T08:00:00Z) with Gothic 1.881 and Lavked 1.782.",
+   "published": "live board row 1079621: Gothic 1.881 / Lavked 1.782 (read 2026-10-13T23:43:35Z)",
+   "verdict": "exact match with the published quote."
+  },
+  {
+   "id": "OBS-12",
+   "source": "Valve CS2 Regional Standings (official repository)",
+   "kind": "rating verification",
+   "url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+   "read_utc": "2026-10-14T02:15:00Z",
+   "status": "ok",
+   "observed": "File `live/2026/standings_global_2026_10_05.md`, blob sha 2aa2805394fbc68f36a5752a5b16026f2ab2fed5, 77872 bytes, 349 distinct team names (31 of them listed on more than one roster line). Head of the table: 1 Spirit 2046, 2 Legacy 1931, 3 Vitality 1911, 4 MOUZ 1863, 5 G2 1847, 6 Falcons 1843, 7 FURIA 1829, 8 FUT 1799, 9 Aurora 1716, 10 Astralis 1674.",
+   "note": "Also byte-identical to the committed capture `data/expanded/vrs/standings_global_2026_10_05.md` (sha256 df96e7fc3cd91a2687ec08cac0128e50cc4e4e55346581679572e881d79ae61b)."
+  }
+ ]
+}
