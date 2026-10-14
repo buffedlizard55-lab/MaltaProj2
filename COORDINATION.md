@@ -3526,3 +3526,10 @@ Also fixed a module-shadowing bug in my own `tests/test_c64a5e19.py` (`sys.path`
 - **Cross-check: picks agree 28/28** with the merged board; three probability-method differences (FORZE Reload–LFO 10, HAVU–RoundsGG, EAC–ENCE) and the LFO 10 / RoundsGG-market flags are published in `audits/af573ff1/REPORT.md` and on the live Flagged page. The one extra API fixture this session found (Wildcard vs DENDELE, 2026-11-12) is not in the current lobby week and is correctly excluded by the merged board.
 - EVERY-3: PR #84 (this session's branch) carries the merge + cross-check audit; merge and Pages-deploy result are recorded on the PR. Live board read back at 02:50Z: 28/28 picks with the executive summary and phone steps at https://buffedlizard55-lab.github.io/MaltaProj2/picks-every-match/
 - Duplicate PR #82 (`arena/ae75c5c3`) remains open against the same ask; recommend its owner close it as superseded by PR #81 + this cross-check, or rebase it — not edited here.
+
+### Session `c64a5e19` — FINAL record (2026-10-14 ~03:05Z UTC)
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/81 — merged to `main` (build check pass, 39s) after resolving conflicts with PR #83 (both executive summaries kept; live links re-repaired; lobby-count test made drift-proof). No broken site merged: full unittest suite OK before merge.
+- **Deploy verified live:** `Verify and publish dashboard` on main success; Pages deployment success. Public read confirms https://buffedlizard55-lab.github.io/MaltaProj2/picks-every-match/ shows 28 open / 28 with a pick (A 18, B 6, C 4, D 0), last update 2026-10-14T02:45:30Z from the main-branch runner (own snapshot, not the offline seed). Root dashboard remains the strict view and links onward.
+- **Auto-refresh live:** every-match workflow succeeded on the session branch (02:43Z, own snapshot) and on main after merge; its `next` job self-dispatches the following run (~25 min cycle) and cron 12,42 restarts the chain if needed.
+- **Status: done.** Flagged irregularities remain published on picks-every-match/flagged.html for post-live review (non-blocking, per instructions).
