@@ -3836,6 +3836,23 @@ recorded here in full so it can be reviewed or reverted.
   `data/live/board.json`, `data/live/verification.json` and the six `live/*.html` pages were
   regenerated from the same inputs, with no change to any published number.
 
+## Session `479ef53e` — integration claim (2026-10-14 04:00 UTC)
+
+Arena fixes this session to `arena/479ef53e-maltaproj2`; no other branch is created or pushed.
+Read the board and completion records before claiming. c64a5e19 and root integrators have closed their claims; c0e223d3's recent live fix is outside this scope and preserved. Open PRs #80/#86 own other namespaces; not edited.
+
+| Task | Status | Owner | File scope |
+|---|---|---|---|
+| Consolidate every-match output onto existing strict market-first/fallback-only engine; eliminate sibling/floor and ambiguous-slot inferred probabilities; preserve all listed fixtures, evidence and explicit blanks | in progress | 479ef53e | `scripts/c64a5e19/**`, `data/c64a5e19/**` generated, `picks-every-match/**` generated, `tests/test_c64a5e19.py`, new `tests/test_479ef53e.py`, `.github/workflows/every-match-c64a5e19.yml` |
+| Final integration: simplify root executive summary and navigation, mobile entry point, published irregularities, tests and hosted Pages verification | in progress | 479ef53e | `scripts/build_site.py`, root HTML/assets regenerated, new `scripts/browser_479ef53e.py`, `scripts/check_deployment.py`, `.github/workflows/pages.yml`, README.md, COORDINATION.md append-only |
+
+Findings to investigate: old every-match output invents unknown LFO 10 strength from sibling/floor ratings, accepts unresolved WROTBERRY slot identity, uses approximate Kalshi time, and does not expire stale inputs. Existing `scripts/f7279a54/**` strict engine already rejects these; reuse it read-only rather than creating another probability engine. New listed matches without verifiable inputs remain visible with blank probabilities, as required. No claim of exhaustive verification of all historical repository artifacts.
+
+### 479ef53e — fresh official-source verification and integration reconciliation
+- Hosted collector run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38509320217 succeeded on this session branch. It retained the actual lobby transfer-state, official Valve markdown + Git blob SHA, and bookmaker response payloads. Every consumed quote and all 88 lobby fixture rows / 380 Valve rows replay without discrepancies. Snapshot: 28 open; 13 market-derived, 7 model fallback, 8 blank/flagged.
+- Independently read Valve's official GitHub content endpoint for `live/2026/standings_global_2026_10_05.md`: blob `2aa2805394fbc68f36a5752a5b16026f2ab2fed5`, all 380 team/points rows agree with the captured input. Official source: https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md .
+- Full suite before generated-root integration: 345 tests OK (one existing archive skip). Post-render checks identified missing preserved audit links and nav-count drift; repairing before PR merge.
+- Concurrent main PRs #92/#93 landed while this claim was active. Session 53220a1b is now done. Preserve all of their board/coverage/source-hub namespaces and new navigation destinations. Scope extension for final integration: their completed `tests/test_53220a1b.py` assertions requiring invented picks must become explicit pick-or-blank+flag invariants (same user verification rule); no input/source checks relaxed. Generated root data/evidence remain the incoming main snapshots. Any root conflict is regenerated from the combined generator, and all append-only coordination records are retained.
 ## Session `53220a1b` — final integration for the every-match picks + executive-summary request (2026-10-14 03:55 UTC, append-only)
 
 Environment note: all work is on `arena/53220a1b-maltaproj2` (session branch naming `session-<id>/<task>` is not available in this environment; same convention as `ef111e02`).
@@ -4185,3 +4202,8 @@ These contradict the user's no-invented-values requirement and will be corrected
   and an unclosed probability container hid the expiry notice along with expired numbers. Fixed
   wrapping and DOM nesting. Reproduced locally with Chromium; all four viewport sizes, search,
   tap-target and expiry tests now pass. No gate was bypassed.
+
+### 479ef53e — PR #97 integration update
+- PR: https://github.com/buffedlizard55-lab/MaltaProj2/pull/97 . Concurrent PRs #94–#96 changed the same completed scopes before its hosted gate could start. Reconciled the overlaps rather than overwriting them: kept the 5cd24fb4 executive-summary audit helper and tests, all 8723ad37 source-safety/mobile tests and audit pages, all new board/coverage/summary sections, and their coordination records. Reused the shared strict engine rather than maintaining two divergent engines. Preserved incoming legacy source captures under `data/c64a5e19/legacy_pre_verification_snapshot.json`; current normalized data remains paired with its official response evidence.
+- Kept browser-test DOM hooks compatible across both sessions, preserving expiry, 44px navigation targets, source links, filtering, and markup escaping. Combined local suite: **431 OK (one inherited archive skip)**. Full source replay continues to pass.
+- An attempted `pull --rebase` tried flattening merged parallel history despite the remote session head already being an ancestor. Aborted that rebase without losing any work; preserved the explicit integration merge and used a normal fast-forward push. No force push or other session branch change.

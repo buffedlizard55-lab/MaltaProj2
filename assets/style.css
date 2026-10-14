@@ -10,6 +10,8 @@ body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.6 -apple-system,
 .dot{width:10px;height:10px;border-radius:50%;background:var(--acc);box-shadow:0 0 12px var(--acc)}
 nav{display:flex;flex-wrap:wrap;gap:5px;max-width:100%}
 nav a{color:var(--mut);text-decoration:none;padding:6px 9px;border-radius:8px;font-size:14px}
+nav a{min-height:44px;display:inline-flex;align-items:center}
+a:focus-visible{outline:3px solid var(--warn);outline-offset:3px}
 nav a:hover{color:var(--txt);background:var(--panel)}
 nav a.active{color:var(--txt);background:var(--panel2)}
 main{padding:26px 18px 40px}
@@ -48,37 +50,6 @@ tr:hover td{background:#182030}
 .btn{display:inline-block;background:var(--acc);color:#04101f;font-weight:700;text-decoration:none;padding:9px 14px;border-radius:10px;margin:6px 8px 6px 0}
 .btn.ghost{background:transparent;color:var(--acc);border:1px solid var(--acc)}
 code{background:#111827;border:1px solid var(--line);border-radius:6px;padding:1px 5px}
-/* Mobile-first improvements */
-@media (max-width:720px){
-  body{font-size:14px;line-height:1.5}
-  .topbar .wrap{padding:10px 14px;gap:8px}
-  .brand{font-size:15px;width:100%;margin:0}
-  nav{gap:4px}
-  nav a{padding:5px 8px;font-size:13px}
-  main{padding:16px 14px 30px}
-  h1{font-size:21px}
-  h2{font-size:17px;margin:22px 0 8px}
-  .wrap{padding:0 14px}
-  .cards{grid-template-columns:1fr 1fr;gap:8px}
-  .card{padding:10px 12px;border-radius:10px}
-  .card-num{font-size:22px}
-  table{font-size:12.5px}
-  th,td{padding:7px 8px}
-  /* Convert fixture table to card layout on phones */
-  table.sortable th{display:none}
-  table.sortable tbody tr{display:block;border-bottom:2px solid var(--line);padding:6px 0}
-  table.sortable tbody td{display:block;border:none;padding:3px 8px}
-  table.sortable tbody td:before{content:attr(data-label)':';font-size:11px;text-transform:uppercase;color:var(--mut);letter-spacing:.04em;display:block;margin-bottom:2px}
-  .btn{padding:10px 14px;font-size:14px;text-align:center;display:inline-block;min-width:120px;margin:4px 6px 4px 0}
-  .banner{padding:10px 12px;font-size:13.5px;border-radius:8px}
-  .stat{padding:8px}
-  .pickcard{padding:10px}
-  .meter{height:8px}
-}
-@media (max-width:380px){
-  .cards{grid-template-columns:1fr}
-  nav a{padding:5px 7px;font-size:12.5px}
-}
 @media(max-width:640px){
 .wrap{min-width:0;padding-left:12px;padding-right:12px}
 .topbar{position:static}.topbar .wrap{display:block;padding:12px}.brand{margin-bottom:10px}
