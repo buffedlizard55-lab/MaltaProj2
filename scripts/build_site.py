@@ -387,18 +387,13 @@ def main() -> int:
 <div class="cards">{cards}</div>
 
 <div class="banner" id="executive-summary" style="border-left-color: var(--acc); background: var(--panel2);">
-  <h2 style="margin: 0 0 8px; border-bottom: 0; padding-bottom: 0; font-size: 19px;">📱 Executive Summary — Where to find picks & probabilities</h2>
-  <p style="margin: 0 0 10px; font-size: 14.5px;">Quick access for mobile and desktop to updated match picks and betting lines across all listed HotSpawn matches:</p>
-  <ul style="margin: 0 0 12px; padding-left: 20px; font-size: 14px; line-height: 1.6;">
-    <li><strong><a href="ourline/index.html">🎯 Our Line Pick Board (Every Open Match)</a></strong> — Generated picks & win probabilities for every open CS2 fixture (28 open: 22 with clear pick, 6 VRS model only). Combines external bookmaker lines (Pinnacle, Bovada, Melbet, Kalshi) and calibrated Valve VRS ratings. Fully mobile-friendly card layout.</li>
-    <li><strong><a href="#fixtures">📊 Current Primary Bookmaker CS2 Lines</a></strong> — The 10 open matches with verified, active Pinnacle / Bovada moneylines with bookmaker overround removed (scroll directly to the table below).</li>
-    <li><strong><a href="cs2.html">📋 Full CS2 Inventory</a></strong> — All 89 CS2 fixtures listed in the HotSpawn lobby (open and historical), with per-row source links.</li>
-    <li><strong><a href="flagged.html">🚩 Flagged for Review</a></strong> — Low-tier matches without active external lines, unverified permalinks, and unconfirmed match entries.</li>
-    <li><strong><a href="ourline/results.html">🏆 Track Record & Results</a></strong> — Graded verification of past picks against completed match outcomes.</li>
-  </ul>
+  <h2 style="margin: 0 0 8px; border-bottom: 0; padding-bottom: 0; font-size: 19px;">Quick jumps</h2>
+  <p style="margin: 0 0 10px; font-size: 14.5px;">The full list of where the picks are is at the top of this page.
+  Two more shortcuts:</p>
   <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-    <a class="btn" href="ourline/index.html" style="margin: 0;">🎯 Open All Picks (Mobile Friendly)</a>
-    <a class="btn ghost" href="#fixtures" style="margin: 0;">View Verified Bookmaker Lines ↓</a>
+    <a class="btn ghost" href="#fixtures" style="margin: 0;">View verified bookmaker lines &#8595;</a>
+    <a class="btn ghost" href="ourline/results.html" style="margin: 0;">Track record &amp; results</a>
+    <a class="btn ghost" href="board/results.html" style="margin: 0;">All-picks track record</a>
   </div>
 </div>
 
