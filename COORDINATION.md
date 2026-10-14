@@ -4421,3 +4421,13 @@ lookup for names; and `gh api` needs a token inside Actions, so a public REST fa
 artifacts were reset to `origin/main` and regenerated locally. Other sessions' scheduled workflows
 also push to this branch, so the workflow's commit step rebases and retries up to five times; that
 repair is what made run `38517096471`'s push succeed.
+
+## Session d36a61e3 — canonical coverage and mobile integration (2026-10-14 08:29 UTC)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| D36-COVERAGE: audit and improve the existing canonical every-match resolver; fallback-only HLTV/bookmaker research, evidence replay, unresolved limitations and regression tests | in progress | d36a61e3 | 2026-10-14 08:29 | scripts/c64a5e19/**, data/c64a5e19/**, picks-every-match/**, tests/test_d36a61e3.py, audits/d36a61e3/**, .github/workflows/every-match-c64a5e19.yml |
+| D36-INTEGRATION: simplify the existing executive summary (no new competing pick board), stage/link checks, PR merge, Pages read-back | in progress | d36a61e3 | 2026-10-14 08:29 | scripts/build_site.py (landing only), generated root HTML/assets, README.md, scripts/check_deployment.py, .github/workflows/pages.yml, COORDINATION.md append-only |
+
+- Read the existing coordination board and remote PR list before work. Old canonical/integration claims (479ef53e, 8723ad37, 49a181f8, 53220a1b and open PR #98) have no recent implementation commits within 60 minutes; this is a documented takeover of the canonical/integration scope, not a takeover of session-owned alternate boards. Alternate collectors and boards remain read-only. No changes to PR #98's branch.
+- Session is environment-bound to `arena/d36a61e3-maltaproj2`; all commits and pushes will use that branch, with `git pull --rebase` before each push. Primary sources that cannot be reached will be reported as unverified, never replaced with invented figures. Model-derived values will be explicitly distinguished from source facts.
