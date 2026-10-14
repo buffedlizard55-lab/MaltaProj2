@@ -16,6 +16,23 @@ Not affiliated with HotSpawn or any bookmaker. HotSpawn is used for fixture disc
 crowd "picked %" is omitted from the current inventory and never used as a probability input; some
 clearly dated archive sections preserve it as reference evidence.
 
+## Start here (phone or desktop)
+
+Open the **[canonical dashboard](https://buffedlizard55-lab.github.io/MaltaProj2/)** and tap **See all match picks**.
+The searchable table contains every open match in the strict board’s captured lobby, with each team’s
+probability, an obvious pick, evidence type and official source links. Counts are derived from the data,
+not hard-coded. Expired or locked probabilities are hidden in the browser.
+
+- **Market-derived:** eligible external prices, unchanged by fallback research.
+- **Model estimate:** originated from unambiguous Valve ratings, only without an eligible market.
+- **Unverified:** insufficient or disputed evidence; blank probability, not an invented 50/50.
+
+[Detailed picks](https://buffedlizard55-lab.github.io/MaltaProj2/ourline/) ·
+[Flagged for Review](https://buffedlizard55-lab.github.io/MaltaProj2/flagged.html) ·
+[Integration evidence audit](https://buffedlizard55-lab.github.io/MaltaProj2/audits/9caec349/).
+Existing automatic collection targets ~30 minutes, with a four-hour freshness limit; schedules and
+source access are best-effort. Full fixture coverage does **not** guarantee full numeric coverage.
+
 ## What the dashboard contains
 
 | Page | Content |
@@ -29,7 +46,7 @@ clearly dated archive sections preserve it as reference evidence.
 | `methodology.html` | Sources with links, formulas, strict matching rules and limitations |
 | `research.html` | Dated audits and alternate session boards, separated from current picks |
 | `ourline/` (sub-site) | Session `f7279a54` board: all open CS2 fixtures, with eligible no-vig Pinnacle/Bovada/Melbet/Kalshi consensus first and a market-calibrated Valve VRS model only for unpriced matches with unambiguous ratings; absent evidence remains blank and flagged; the basis is labelled per row, plus a track record graded from HotSpawn final scores, a source link for every quote, and its own Flagged for review page. Refreshed about every 27 min by `.github/workflows/ourline-f7279a54.yml`, which then dispatches Pages |
-| `picks-every-match/` (sub-site) | **Start here on mobile.** Every open lobby-listed CS2 fixture: eligible external market first; unique, fresh Valve rating-model fallback only when no market is eligible; otherwise blank and flagged. No sibling/floor ratings or ambiguous slot-price transfers. Row-level expiry hides stale picks. Scheduled twice hourly by `.github/workflows/every-match-c64a5e19.yml`; source/Actions delays are possible. |
+| `picks-every-match/` (sub-site) | Alternate mobile coverage view. Every open lobby-listed CS2 fixture: eligible external market first; unique, fresh Valve rating-model fallback only when no market is eligible; otherwise blank and flagged. No sibling/floor ratings or ambiguous slot-price transfers. Row-level expiry hides stale picks. Scheduled twice hourly by `.github/workflows/every-match-c64a5e19.yml`; source/Actions delays are possible. |
 | `board/` (sub-site) | Session `fe803b80` full-coverage picks board, reached from the landing page's executive summary and the header nav (**All picks · every match**). `board/index.html` is the executive summary, `board/picks.html` gives **every** open CS2 fixture a pick, a probability, a confidence label and the basis it uses (`market`, `market+model`, or an explicitly labelled *originated* line), `board/lines.html` shows the raw quotes behind each market row, `board/tournaments.html` groups them by event, `board/results.html` grades published picks against HotSpawn final scores, `board/flagged.html` lists alias joins, originated lines, rejected prices and access failures with links, `board/method.html` documents formulas, weights, tolerances and limits. Prices come from Pinnacle, Bovada, Melbet (and its 1xBet-platform mirrors), Kalshi and the Thunderpick coefficients bo3.gg publishes per fixture; where no reachable bookmaker prices a match the line is originated from the official Valve regional standings (VRS) or, failing that, this project's own Elo over bo3.gg published results and its published world ranking. HotSpawn is discovery and settlement only. Refreshed by `.github/workflows/board-fe803b80.yml` (30-minute cron, self-dispatching chain, contract tests before publish) |
 | `fresh/` (sub-site) | Session `dd2b7fee` mobile-first pick board (landing + CS2 board + flagged + method). Probabilities originate exclusively from Bovada / Pinnacle / Kalshi lines captured in-session (see `data/dd2b7fee/lines_snapshot.json`); HotSpawn crowd % is not even displayed there. Re-rendered hourly by `.github/workflows/fresh-dd2b7fee.yml` |
 | `summary/` (sub-site) | Session `c0e223d3` **verification companion**. Mobile-first: (1) where to find the picks (links every board, with the every-match board first), (2) an independent cross-check of every pick against the every-match board, (3) the official-source evidence behind the matches with no bookmaker price, (4) sources, method and a line-by-line repository review. Rebuilt hourly by `.github/workflows/summary-c0e223d3.yml` |

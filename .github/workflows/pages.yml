@@ -43,6 +43,7 @@ jobs:
           python scripts/browser_smoke.py
           python scripts/build_site.py
           python scripts/browser_current_smoke.py
+          python scripts/9caec349/browser_smoke.py
           python scripts/ae75c5c3/browser_smoke.py
           python scripts/c64a5e19/browser_smoke.py
       - name: Stage all session-owned published sections
@@ -95,4 +96,6 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
       - name: Verify actual public dashboard
-        run: python scripts/check_deployment.py
+        run: |
+          python scripts/check_deployment.py
+          python scripts/9caec349/check_public.py

@@ -73,8 +73,8 @@ def pct(value):
 # available from Research archive rather than crowding every mobile header.
 NAV = [
     ("index.html", "Dashboard"),
-    ("board/picks.html", "All picks · every match"),
-    ("cs2.html", "CS2 picks"),
+    ("board/picks.html", "Alternate full-coverage picks"),
+    ("cs2.html", "CS2 inventory"),
     ("probabilities.html", "Probabilities"),
     ("tournaments.html", "Tournaments"),
     ("flagged.html", "Flagged for review"),
@@ -184,7 +184,7 @@ def executive_summary_html():
             f'&mdash; {esc(blurb)}{when}</li>')
     return f"""
 <div class="cards" id="where-the-picks" style="display:block;background:#12203a;border:1px solid #2b3752;border-radius:14px;padding:14px;margin:16px 0">
-  <h2 style="margin-top:0">Executive summary — where the picks are</h2>
+  <h2 style="margin-top:0">Alternate-board directory — where the picks are</h2>
   <p>{coverage}</p>
   <p><a class="btn" href="cs2.html">Start here: source-linked CS2 picks</a>
      <a class="btn ghost" href="#unresolved-picks">Unresolved matches</a>
@@ -226,20 +226,21 @@ def page(title, subtitle, body, generated_at, active=None, banner=None):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)} · HotSpawn Pick'ems betting-line analysis</title>
 <link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/dashboard-mobile.css">
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 <header class="topbar">
   <div class="wrap">
     <div class="brand"><span class="dot"></span>HotSpawn Pick'ems · betting-line analysis</div>
     <nav>{nav}</nav>
   </div>
 </header>
-<main class="wrap">
+<main class="wrap" id="main-content">
   <h1>{esc(title)}</h1>
   <p class="sub">{subtitle}</p>
-  <div class="banner"><strong>Current picks vs. research snapshots.</strong> The CS2 and Probabilities tables use
-  eligible primary-bookmaker quotes only; unverified values stay blank. Other linked sections preserve dated research,
-  not live prices. Estimates are not guarantees. 18+; gamble responsibly.</div>
+  <p class="note">Market-derived probabilities and model estimates are labelled separately. Unverified inputs stay blank.
+  <a href="ourline/index.html">All CS2 picks</a> · <a href="ourline/method.html">Method</a>. Not affiliated with HotSpawn. 18+; gamble responsibly.</p>
   {banner_html}
   {body}
 </main>
@@ -250,6 +251,7 @@ def page(title, subtitle, body, generated_at, active=None, banner=None):
   listed on the <a href="flagged.html">Flagged for review</a> page.</p>
 </footer>
 <script src="assets/app.js"></script>
+<script src="assets/dashboard-mobile.js"></script>
 </body>
 </html>
 """
@@ -411,54 +413,25 @@ def main() -> int:
     open_fixtures = [f for f in fixtures if f.get("pick_status") == "open"]
     closed_fixtures = [f for f in fixtures if f.get("pick_status") != "open"]
     top_table, _ = fixtures_table(open_fixtures)
-    idx_body = executive_summary_html() + f"""
-
+    import importlib
+    dashboard = importlib.import_module("9caec349.dashboard")
+    strict_board = load("data/f7279a54/board.json", {})
+    idx_body = dashboard.render(strict_board) + '<details class="archive"><summary>Other pick boards &amp; research directory</summary><p class="note">These boards have different source policies. Their counts and estimates are not adopted into the canonical table above; consult their flagged pages.</p>' + executive_summary_html() + '</details>' + f"""
+<details class="archive" id="primary-lines"><summary>Primary-bookmaker-only comparison &amp; full inventory</summary>
+<p class="note">This separate, narrower pipeline uses Pinnacle and Bovada only. Its observation may differ from the all-picks board above. No fallback estimate is used in this comparison.</p>
 <div class="cards">{cards}</div>
-
-<div class="banner" id="executive-summary" style="border-left-color: var(--acc); background: var(--panel2);">
-  <h2 style="margin: 0 0 8px; border-bottom: 0; padding-bottom: 0; font-size: 19px;">Quick jumps</h2>
-  <p style="margin: 0 0 10px; font-size: 14.5px;">The full list of where the picks are is at the top of this page.
-  Two more shortcuts:</p>
-  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-    <a class="btn ghost" href="#fixtures" style="margin: 0;">View verified bookmaker lines &#8595;</a>
-    <a class="btn ghost" href="ourline/results.html" style="margin: 0;">Track record &amp; results</a>
-    <a class="btn ghost" href="board/results.html" style="margin: 0;">All-picks track record</a>
-  </div>
-</div>
-<h2>What this is</h2>
-<p>HotSpawn supplies fixture discovery only. External prices are used to derive no-vig probabilities;
-where prices are unavailable, the mobile board can originate clearly labelled estimates from unique,
-source-linked historical Valve ratings. No HotSpawn crowd-pick percentage enters the analysis.</p>
-<p class="note">The tables below are the separate strict Pinnacle/Bovada view, not the complete
-market-plus-fallback board. <a href="picks-every-match/index.html">Use the mobile board for all picks</a>.
-The <a href="ourline/index.html">Our Line board</a> and its <a href="ourline/results.html">track record</a>
-remain available for comparison; models are estimates, not officially verified forecasts.</p>
-
-<h2>Derived probabilities — the short version</h2>
-<p>Raw quoted decimal odds are converted to implied shares <code>q = 1 / odds</code>, normalised to remove
-the bookmaker margin: <code>p = q / (q<sub>a</sub> + q<sub>b</sub>)</code>. Where two sources quote the same
-match, the dashboard shows their mean and the min–max range. These probabilities are <em>derived from
-market prices</em>, not forecasts, and the rule is published on every row.</p>
-<p class="note">HotSpawn's own "picked %" is a crowd pick percentage. It is excluded from this table and is
-<strong>never</strong> used as a probability input, per the project requirements.</p>
-
-<h2>Every CS2 match currently open for picks ({len(open_fixtures)})</h2>
-<p class="note">A probability appears only when a fresh, open, prematch, full-series bookmaker quote joins
-uniquely by both teams and exact UTC start. Blank means unverified, not 50/50.</p>
 {top_table}
-<p><a class="btn" href="cs2.html">Open all {len(fixtures)} lobby-listed CS2 rows</a>
-<a class="btn ghost" href="flagged.html">Review {summary.get("fixtures_open_without_external_line", 0)} open gaps</a></p>
-
-<h2>Audit trail and prior research</h2>
-<p>The primary navigation stays focused on the current fail-closed board. Dated experiments, independent
-audits and alternate models remain preserved on the <a href="research.html">Research archive</a>; they do
-not enter current picks. Start with the
-<a href="verify/8e7a652d/index.html">independent market verification and cross-check</a>, inspect the
-<a href="evidence/odds_collection.json">raw bookmaker payload evidence</a>, or review the preserved
-<a href="data/fixtures_verified.json">fixture-verification snapshot</a>.</p>
-
-<h2>Timestamps</h2>
+<p><a class="btn" href="cs2.html">Full lobby inventory ({len(fixtures)} rows at its observation)</a>
+<a class="btn ghost" href="probabilities.html">Primary-bookmaker probabilities</a></p>
 {market_data_notes(lines_doc, odds_doc)}
+</details>
+<h2>Sources &amp; verification</h2>
+<p>Each match links to HotSpawn for fixture identity, and to its external bookmaker or Valve rating source for the probability inputs. A source link verifies an input, not a future result. Models are originated estimates, not official betting lines.</p>
+<p><a href="audits/9caec349/index.html">Latest integration audit &amp; unresolved gaps</a> ·
+<a href="summary/index.html">Independent verification hub</a> ·
+<a href="verify/8e7a652d/index.html">Market verification &amp; cross-check</a> ·
+<a href="research.html">Research archive</a></p>
+<p class="note">Historical alternate research included contested roster aliases, thin exchange books or sibling-roster ratings. Those assumptions are not promoted into this dashboard; some alternate pipelines have since tightened their policies. <a href="flagged.html#coverage-review">Review the limitations</a>.</p>
 """
     write("index.html", page("Pick'em betting-line dashboard",
                              "External betting lines, derived no-vig probabilities and explicit unverified gaps "
@@ -586,6 +559,12 @@ fixtures with the same verification columns as the main table.</p>
                    '<a href="https://play.hotspawn.com/lobby">official inventory reference</a>'] for k, v in ALIAS_NOTE.items()]
 
     flagged_body = f"""
+<section id="coverage-review"><h2>Current pick coverage — unresolved evidence</h2>
+<p><a href="ourline/flagged.html">All current unverified matches and rejected sources</a> ·
+<a href="audits/9caec349/index.html">Integration audit: source replay and coverage</a>.</p>
+<p>Full fixture coverage does not imply a defensible probability for every fixture. No sibling-roster rating, contested team identity or one-sided exchange quote is used to fill a blank on the canonical board. The <a href="picks-every-match/flagged.html">alternate every-match research board</a> and <a href="summary/gaps.html">independent identity review</a> preserve those assumptions for manual review, not as verified picks.</p>
+<p>Fixture authority: <a href="https://play.hotspawn.com/lobby">HotSpawn lobby</a>. Rating authority: <a href="https://github.com/ValveSoftware/counter-strike_regional_standings">Valve standings</a>. Source access and schedules remain best-effort; see <a href="ourline/sources.html">timestamped source health</a>.</p></section>
+
 <div class="banner warn"><strong>These items are published for review, not as verified facts.</strong>
 Nothing on this page blocks the analysis; it exists so every gap, irregularity and failed access attempt is
 visible instead of being silently filled in.</div>
@@ -791,6 +770,7 @@ Unpriced games stay blank. Archived model/pickem/audit sections retain their own
 <div class="banner warn"><strong>Dated research, not current picks.</strong> These preserved sections use
 their own snapshots, source policies and model assumptions. They do not supply a number to the current CS2 or
 Probabilities tables.</div>
+<p><a href="ourline/index.html">Return to canonical picks</a>. The <a href="picks-every-match/index.html">alternate every-match board</a> includes provisional assumptions; its <a href="picks-every-match/flagged.html">flags</a> and the <a href="summary/index.html">verification companion</a> are retained for review, not adopted into current picks.</p>
 <div class="archive-grid">
   <article class="card"><h2>Independent verification</h2><p><a href="verify/8e7a652d/index.html">Market verification &amp; cross-check</a><br>
   <a href="verify/0f71ea59/index.html">Line-by-line verification report</a><br>
