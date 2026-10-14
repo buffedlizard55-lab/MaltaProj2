@@ -4051,3 +4051,32 @@ earlier sessions too). Repo root `/home/user/MaltaProj2`.
      evidence on `board/flagged.html` / `coverage/review.html`).
   4. PRs #80/#86 contain no green check runs on their heads (their workflows never triggered on the
      PR events); their test suites pass in the merged tree (31 + 35 tests within the 405).
+
+
+### Session `53220a1b` — PR and merge record (2026-10-14 04:25 UTC, append-only)
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/92 — **merged** to `main` at
+  `2026-10-14T04:16:52Z`, merge commit `d3ac26eeeec8eb4663fb8ad1bb152f3e60663b02`.
+- **PR heads merged through it:** PR #80 (`6ddde224` coverage board) and PR #86 (`fe803b80`
+  full-coverage board) both auto-flipped to **MERGED** at 04:16:54Z — GitHub detected their head
+  commits in `main` via the integration merge commits `a6c6e7a` / `8a50b6f`. Both sessions' claims
+  were recorded done before integration; no in-progress claim was taken over.
+- **Pre-merge gate:** PR head run 38510454531 `build` **success** (evidence validation, independent
+  audit handoffs, `scripts/build.py`, source-linked row recheck, browser smoke, staged-section link
+  audit). `deploy` skips on PRs by design.
+- **Post-merge deploy:** run 38510578423 `build` + `deploy` success, including
+  **"Avoid race with existing legacy Pages build"**, **"Deploy to GitHub Pages"** and
+  **"Verify actual public dashboard"** all green. Pages API: status **built**, no error.
+- **Live read-back (public, ~04:20Z):** https://buffedlizard55-lab.github.io/MaltaProj2/ opens with
+  the executive summary "Executive summary — where the picks are" — **28 of 28** open CS2 fixtures
+  on the every-match board carry a pick + win probability; every board link listed with its own
+  build stamp; buttons to every-match picks, all-picks, the summary hub and flagged pages.
+- **UX consolidation follow-up (this commit):** the older duplicate "📱 Executive Summary — Where to
+  find picks & probabilities" banner (session 5a3c1a63) carried stale counts and a second "start
+  here" ordering. Replaced with a compact "Quick jumps" strip keeping its unique destinations
+  (verified-lines anchor, ourline track record, board track record). The single executive summary is
+  the top block; `id="executive-summary"` anchor retained. Full suite remains 405 OK.
+- **Status: done. INT-A and INT-B claims closed.** Irregularities remain published on the site's
+  Flagged for Review pages (`flagged.html`, `summary/gaps.html`, `board/flagged.html`,
+  `coverage/flagged.html`, `audits/797e94ea/`) with source links for post-live review; they do not
+  block anything and no unverified value was ever filled in.
