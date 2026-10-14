@@ -393,13 +393,15 @@ def match_card(r):
 
 def render_index(b):
     s = b["summary"]
+    noinfo_txt = (f', plus {s["no_information"]} with no verified information (50/50, flagged)'
+                  if s["no_information"] else "")
     body = f"""
 <h1>Every open HotSpawn CS2 match — with a pick</h1>
 <section class="exec" aria-label="Executive summary">
 <p><b class="big">Executive summary — start here.</b></p>
 <p><b>{s["with_pick"]} of {s["open"]} open matches have a pick</b> ({s["featured"]} featured,
 {s["fallback_market"]} fallback-market, {s["fallback_model"]} fallback-model,
-{s["fallback_single_rating"]} single-rating estimate{s[", plus " + str(s["no_information"]) + " with no verified information (50/50, flagged)"] if s["no_information"] else ""}).
+{s["fallback_single_rating"]} single-rating estimate{noinfo_txt}).
 This page is the updated list of picks. It is rebuilt automatically whenever the featured board refreshes
 (about every 30 minutes) and re-checks the HotSpawn lobby for new matches — no manual input.</p>
 <p>
