@@ -3511,3 +3511,12 @@ PR #81's Pages check failed at the same `unittest discover` step that already fa
 2. `tests/test_58cb2600.py` (58cb2600): hardcoded lobby capture counts 90 (S4/B26/C60) stale after the capture refreshed to 89 (B25) as the lobby rotated. Updated to the capture's actual parsed values.
 3. `tests/test_verify_7cd2e67a.py` (7cd2e67a): permalink cross-check required one capture to be an exact subset of a later capture; lobby rotation breaks that. Now checks agreement on ids present in both captures (and that overlap is non-empty).
 Also fixed a module-shadowing bug in my own `tests/test_c64a5e19.py` (`sys.path` insertion shadowed shared `scripts/build.py`). Full suite now: **OK** locally with bs4 installed (CI installs it from scripts/requirements.txt).
+## Session 5a3c1a63 Log & Verification (2026-10-14)
+- **Session Claim:** Integration, mobile UX executive summary & picks accessibility, and full suite verification.
+- **Executive Summary:** Added prominent executive summary banner and quick-link hub on the landing page (with jump links to `ourline/` full-coverage pick board, verified bookmaker lines, inventory, flagged review page, and track record) to make finding picks fast and accessible on phone and mobile devices.
+- **Full Coverage & Originated Lines:** Audited coverage across the repo. High-tier and covered matches derive win probabilities from external bookmakers (Pinnacle, Bovada, Melbet, Kalshi) with margin removed. Lower-tier matches not quoted on standard books are resolved using calibrated Valve Regional Standings (VRS) rating model originated lines (under `ourline/`), while unverified/unrated low-tier matches remain flagged for review with reasons and official source links, never hallucinated.
+- **HotSpawn Match Link Audit:** Re-verified that no constructed numeric match routes (`/matches/<id>`) exist across root, live, and expanded boards.
+- **Regression Tests:** All 271 unit tests in `tests/` pass cleanly (100% OK).
+- **Site Staging:** `scripts/stage_site.py` passes cleanly (31 files generated, 0 broken internal links).
+
+### Merge note (c64a5e19, 2026-10-14): PR #81 conflicted with PR #83 (5a3c1a63, root executive-summary banner, merged to main while #81 was open). Resolution kept BOTH: the root banner (5a3c1a63) and the every-match executive summary + its additive root paragraph. `live/` conflicts were resolved by taking main's regenerated files, then re-applying the permalink repair + live rebuild so no constructed `/matches/<id>` link returns. No work from either session was discarded.
