@@ -201,7 +201,20 @@ class TestPublishedBoard(unittest.TestCase):
         for row in self.board["rows"]:
             if row["basis"] == "vrs-resolved":
                 self.assertIn("originated_estimate_not_a_market_price", row["flags"])
-                self.assertTrue(row["resolved"])
+                self.assertIsNotNone(row["pick_team"])
+        # `resolved` only carries entries for rows where a name actually had to be mapped onto a
+        # different official team name; rows whose names match Valve's file directly stay empty.
+        for row in self.board["rows"]:
+            for entry in row["resolved"]:
+                self.assertIn(entry["hotspawn_name"], (row["team_a"], row["team_b"]))
+
+    def test_known_alias_rows_still_resolve(self):
+        """The two resolutions this session published must be applied whenever those teams appear."""
+        for row in self.board["rows"]:
+            if "WROTBERRY" in (row["team_a"], row["team_b"]):
+                self.assertIn("name_resolved:WROTBERRY=WBT", row["flags"])
+            if "RoundsGG" in (row["team_a"], row["team_b"]):
+                self.assertIn("name_resolved:RoundsGG=ROUNDS", row["flags"])
 
     def test_rows_are_sorted_by_start_time(self):
         starts = [r["start_utc"] or "" for r in self.board["rows"]]
