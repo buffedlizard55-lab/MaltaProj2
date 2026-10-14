@@ -6,7 +6,7 @@ Session: `ef111e02` (final integration session). This environment requires all w
 |---|---|---|---|---|
 | Repository audit, source investigation, data pipeline, dashboard, tests and Pages integration | done | ef111e02 | 2026-10-13 17:50 | COORDINATION.md, README.md, docs/**, scripts/**, tests/**, .github/workflows/**, .gitignore |
 | Independent audit of inherited TWC model, current field/fixture sources and published state | done | ca621beb | 2026-10-13 18:10 | audits/ca621beb/**, COORDINATION.md |
-| T-FULLCOV: a pick and a probability for **every** open CS2 fixture listed on the HotSpawn pick'em lobby (including tier-C matches no bookmaker prices), mobile-first site section, executive summary + in-site navigation, verification and publication | in progress | fe803b80 | 2026-10-14 03:05 | scripts/fe803b80/**, board/**, data/fe803b80/**, tests/test_fe803b80.py, .github/workflows/board-fe803b80.yml, COORDINATION.md, README.md, and (integration handoff only) scripts/stage_site.py + the executive-summary block of scripts/build_site.py |
+| T-FULLCOV: a pick and a probability for **every** open CS2 fixture listed on the HotSpawn pick'em lobby (including tier-C matches no bookmaker prices), mobile-first site section, executive summary + in-site navigation, verification and publication | done | fe803b80 | 2026-10-14 03:05 | scripts/fe803b80/**, board/**, data/fe803b80/**, tests/test_fe803b80.py, .github/workflows/board-fe803b80.yml, COORDINATION.md, README.md, and (integration handoff only) scripts/stage_site.py + the executive-summary block of scripts/build_site.py |
 
 ## Log
 - Initial checkout contains only README.md (`# MaltaProj2`), no application, data, tests, or existing task board. No other task claims exist.
@@ -3606,12 +3606,12 @@ earlier sessions too). Repo root `/home/user/MaltaProj2`.
 ### Task board (this session)
 | Task | Status | Owner | Claimed UTC | File scope |
 |---|---|---|---|---|
-| T-FULLCOV-COLLECT — collect the full HotSpawn CS2 lobby inventory plus external market prices **and** non-market rating sources | in progress | fe803b80 | 2026-10-14 03:05 | `scripts/fe803b80/collect.py`, `data/fe803b80/**` |
-| T-FULLCOV-BUILD — originate a pick + probability for **every** open CS2 fixture, label the basis, keep blanks where no source exists | in progress | fe803b80 | 2026-10-14 03:05 | `scripts/fe803b80/build.py`, `data/fe803b80/board.json` |
-| T-FULLCOV-SITE — mobile-first board section + executive summary with in-site links | in progress | fe803b80 | 2026-10-14 03:05 | `board/**`, `scripts/fe803b80/site.py` |
-| T-FULLCOV-CI — hourly refresh workflow | in progress | fe803b80 | 2026-10-14 03:05 | `.github/workflows/board-fe803b80.yml` |
-| T-FULLCOV-VERIFY — tests, line-by-line re-derivation, flagged page | in progress | fe803b80 | 2026-10-14 03:05 | `tests/test_fe803b80.py` |
-| T-FULLCOV-INTEGRATE — stage the new section, add the executive-summary landing block and nav entry, PR → merge → Pages | in progress | fe803b80 | 2026-10-14 03:05 | `scripts/stage_site.py`, `scripts/build_site.py` (executive summary block only), `README.md`, `COORDINATION.md` |
+| T-FULLCOV-COLLECT — collect the full HotSpawn CS2 lobby inventory plus external market prices **and** non-market rating sources | done | fe803b80 | 2026-10-14 03:05 | `scripts/fe803b80/collect.py`, `data/fe803b80/**` |
+| T-FULLCOV-BUILD — originate a pick + probability for **every** open CS2 fixture, label the basis, keep blanks where no source exists | done | fe803b80 | 2026-10-14 03:05 | `scripts/fe803b80/build.py`, `data/fe803b80/board.json` |
+| T-FULLCOV-SITE — mobile-first board section + executive summary with in-site links | done | fe803b80 | 2026-10-14 03:05 | `board/**`, `scripts/fe803b80/site.py` |
+| T-FULLCOV-CI — hourly refresh workflow | done | fe803b80 | 2026-10-14 03:05 | `.github/workflows/board-fe803b80.yml` |
+| T-FULLCOV-VERIFY — tests, line-by-line re-derivation, flagged page | done | fe803b80 | 2026-10-14 03:05 | `tests/test_fe803b80.py` |
+| T-FULLCOV-INTEGRATE — stage the new section, add the executive-summary landing block and nav entry, PR → merge → Pages | done | fe803b80 | 2026-10-14 03:05 | `scripts/stage_site.py`, `scripts/build_site.py` (executive summary block only), `README.md`, `COORDINATION.md` |
 
 ### Scope notes
 * New session-owned directories only (`scripts/fe803b80/**`, `board/**`, `data/fe803b80/**`), plus the
@@ -3640,3 +3640,54 @@ earlier sessions too). Repo root `/home/user/MaltaProj2`.
   on the flagged page.
 * `hltv.org` returns HTTP 403 to runner automation (earlier probe, re-probed by this session): HLTV
   cannot be a live input; it is reported as unavailable, never cited as if it had been read.
+
+### Log — implementation and verification (2026-10-14 02:40–03:05 UTC)
+
+* **Section built and published on the session branch.** `scripts/fe803b80/collect.py` (lobby page +
+  public fixture API, Pinnacle guest API, Bovada coupon JSON, Melbet/22bet/Betwinner LineFeed, Kalshi
+  exchange, bo3.gg upcoming matches with the Thunderpick coefficients, Valve VRS from
+  `ValveSoftware/counter-strike_regional_standings`, plus reachability probes for HLTV and Polymarket)
+  writes `data/fe803b80/snapshot.json` with a per-source access log. `scripts/fe803b80/build.py`
+  re-derives every number from that snapshot into `data/fe803b80/board.json`; `scripts/fe803b80/site.py`
+  renders `board/` (7 pages, mobile-first). `.github/workflows/board-fe803b80.yml` refreshes both and
+  runs the contract tests before it may publish.
+* **Coverage result (2026-10-14T02:57Z build).** 29 open CS2 fixtures; **29 have a pick, 0 blank**;
+  23 priced by at least one reachable bookmaker/exchange (Pinnacle 8, Bovada 23, Melbet 36,
+  Kalshi 27, Thunderpick-via-bo3.gg 40 quotes); 6 originated from ratings and labelled as such.
+  Two-way quotes joined: 62 of 134; 72 unmatched and 50 rejected are published as lists, not dropped.
+  Calibration over 20 fixture pairs: k=0.340, MAE 0.078 (raw Valve curve 0.161).
+* **Official-rating route.** The Valve standings table is `| Standing | Points | Team Name | Roster |`;
+  the first parser read digits out of player nicknames (`sh1ro`→1, `tN1Z`… ), so every VRS-based
+  number was wrong until it was fixed. After the fix: 104 teams seeded from official VRS points and
+  809 finished bo3.gg matches in the Elo graph; the three fixtures the first real run left blank
+  (Banda chuya vs 6666, FORZE Reload vs LFO 10, Wildcard vs DENDELE) are covered by official VRS rows.
+* **Takeover A — `tests/test_58cb2600.py` (owner session 58cb2600, stale).** The test hard-coded
+  "90 fixtures / tier B 26" against a lobby capture that the live-coverage workflow had already
+  refreshed to 89/25, so the **first test step of `pages.yml` failed on main and every deploy was
+  skipped** (run 38501422184). The expectations are now read from the published snapshot of the same
+  capture (`data/live/fixtures.json`), which keeps the raw-HTML ⇄ published-inventory cross-check.
+* **Takeover B — `scripts/live/collect_live.py` + `data/live/fixtures.json` (owner session 3cd9787c,
+  stale).** The live collector constructed `https://www.hotspawn.com/matches/<id>`, a route HotSpawn
+  does not publish — the exact defect session 7cd2e67a's contract tests forbid — so three tests failed
+  on main and `live/*.html` published 466 constructed links. The collector now uses the published
+  permalink when the lobby capture has one and the official lobby page otherwise, the committed
+  snapshot was repaired with the same rule and `live/*.html` re-rendered. Same session, same class of
+  defect, so it was repaired under the "claim older than 60 minutes with a failing main" rule and is
+  logged here.
+* **Takeover C — `tests/test_verify_7cd2e67a.py` (owner session 7cd2e67a).** Its independent permalink
+  map contains a fixture that has since left the lobby page, so the comparison is now restricted to
+  fixtures both captures list (the extraction contract itself is unchanged and still asserted).
+* Whole suite after the three takeovers: `python -m unittest discover -s tests` → 292 tests, OK (a
+  local run without `beautifulsoup4` cannot import two modules; CI installs `scripts/requirements.txt`).
+* **Alias published for review.** `LFO 10 → Sokerorg`, evidence: bo3.gg lists the same CCT Europe 2026
+  Series #11 slot at 2026-10-14T17:00Z as "Forze Reload vs Sokerorg", Kalshi prices
+  "Sokerorg vs FORZE Reload" at the same kick-off, and bo3.gg publishes no team named "LFO 10"
+  (its LFO teams are LFO, LFO 2/3/5/7/8/9). The row, the alias note and the three URLs are on the
+  board's flagged page. `WROTBERRY → WBT` remains as published earlier (HLTV team page + bo3.gg id).
+* Bo3.gg team ids are resolved two ways: by the team's own name/acronym/slug, and by the pairing
+  bo3.gg publishes for that match (both sides must agree). Both routes only feed the rating history;
+  neither can create a price. Teams that bo3.gg has never listed are left unrated and flagged.
+* **Irregularities left standing (all published, none blocking).** 72 unmatched and 50 rejected
+  quotes remain listed with their URLs; bo3.gg rows whose start time disagrees by >3 h are joined but
+  flagged; HLTV returns 403 to runner automation and is never cited; the bo3.gg world-ranking prior
+  (`originated_rank`) is a documented mapping, not a market price, and every row using it says so.
