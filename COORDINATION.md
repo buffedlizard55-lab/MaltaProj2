@@ -4080,3 +4080,19 @@ earlier sessions too). Repo root `/home/user/MaltaProj2`.
   Flagged for Review pages (`flagged.html`, `summary/gaps.html`, `board/flagged.html`,
   `coverage/flagged.html`, `audits/797e94ea/`) with source links for post-live review; they do not
   block anything and no unverified value was ever filled in.
+
+## Session 5cd24fb4 — evidence-first landing integration (2026-10-14 04:32 UTC)
+
+| Task | Status | Owner | File scope |
+|---|---|---|---|
+| Audit current source/coverage claims; simplify landing directions and explicitly summarize unresolved picks; verify tests, PR and Pages | in progress | 5cd24fb4 | scripts/build_site.py (executive summary only), generated root HTML, tests/test_5cd24fb4.py, audits/5cd24fb4/**, README.md (accuracy corrections only), COORDINATION.md append-only |
+
+Prior final integrator 53220a1b explicitly closed INT-A/INT-B above; no active collector scope is taken. Session uses its mandated Arena branch, not a new session branch. External access is restricted in this sandbox; fresh source verification will be distinguished from archived evidence and GitHub-hosted runner results. No claim of universal live verification will be made.
+
+### 5cd24fb4 audit and implementation
+- Additive integration scope: a link at the top of generated `flagged.html` via `scripts/build_site.py`, pointing to this session's audit. No collector or alternate-board data changed.
+- Re-read official HotSpawn lobby and HLTV analytics with fetch_page. HLTV chunks 0/2/3 provide low-tier ranking/form context but numeric Best Odds fields are dashes; this differs from prior runner 403 failures and does not prove runner access is fixed. Melbet official esports page redirects to geographic access denial. No current prices invented.
+- Independently retrieved official Valve 2026-10-05 standings through GitHub API and archived verbatim under audits/5cd24fb4/. LFO 10 absent; LFO 7/8/9 have different rosters. WBT and WBT Academy distinct. Published source-linked findings at audits/5cd24fb4/index.html and linked from executive summary + Flagged for Review.
+- Corrected landing: strict current inventory counts, one primary mobile CTA, capture/collection timestamps, unresolved row table with blank probabilities and official fixture links, alternate boards collapsed as research. Missing snapshot is unverified, not zero. No assertion that every inherited repository file/source was independently verified.
+- Local verification: 411 unittest cases passed (1 skipped); complete site staging passed all local-link checks. Six new regression tests cover blank/missing data, escaping, unsafe URL rejection, no fallback promotion, and open-row counts. Test-generated timestamp changes outside scope were reverted.
+- Sources: https://play.hotspawn.com/lobby ; https://www.hltv.org/betting/analytics ; https://melbet.com/en/line/esports (redirected to /en/block); https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md . Read times and limitations are published in the audit.
