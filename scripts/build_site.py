@@ -284,21 +284,19 @@ def main() -> int:
     idx_body = f"""
 <div class="cards">{cards}</div>
 
-<div class="banner" id="executive-summary" style="border-left-color: var(--acc); background: var(--panel2);">
-  <h2 style="margin: 0 0 8px; border-bottom: 0; padding-bottom: 0; font-size: 19px;">📱 Executive Summary — Where to find picks & probabilities</h2>
-  <p style="margin: 0 0 10px; font-size: 14.5px;">Quick access for mobile and desktop to updated match picks and betting lines across all listed HotSpawn matches:</p>
-  <ul style="margin: 0 0 12px; padding-left: 20px; font-size: 14px; line-height: 1.6;">
-    <li><strong><a href="ourline/index.html">🎯 Our Line Pick Board (Every Open Match)</a></strong> — Generated picks & win probabilities for every open CS2 fixture (28 open: 22 with clear pick, 6 VRS model only). Combines external bookmaker lines (Pinnacle, Bovada, Melbet, Kalshi) and calibrated Valve VRS ratings. Fully mobile-friendly card layout.</li>
-    <li><strong><a href="#fixtures">📊 Current Primary Bookmaker CS2 Lines</a></strong> — The 10 open matches with verified, active Pinnacle / Bovada moneylines with bookmaker overround removed (scroll directly to the table below).</li>
-    <li><strong><a href="cs2.html">📋 Full CS2 Inventory</a></strong> — All 89 CS2 fixtures listed in the HotSpawn lobby (open and historical), with per-row source links.</li>
-    <li><strong><a href="flagged.html">🚩 Flagged for Review</a></strong> — Low-tier matches without active external lines, unverified permalinks, and unconfirmed match entries.</li>
-    <li><strong><a href="ourline/results.html">🏆 Track Record & Results</a></strong> — Graded verification of past picks against completed match outcomes.</li>
-  </ul>
-  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-    <a class="btn" href="ourline/index.html" style="margin: 0;">🎯 Open All Picks (Mobile Friendly)</a>
-    <a class="btn ghost" href="#fixtures" style="margin: 0;">View Verified Bookmaker Lines ↓</a>
-  </div>
-</div>
+<section class="banner" id="executive-summary" aria-label="Executive summary">
+<h2>Executive summary — find your CS2 picks</h2>
+<p><strong>Start with the all-match picks board.</strong> Every captured open match has a row, including lower-tier matches. External prices come first; sourced rating estimates are used only when no eligible price is available. Unsupported percentages stay blank and flagged.</p>
+<p><a class="btn" href="picks-every-match/index.html">Open all match picks →</a>
+<a class="btn ghost" href="picks-every-match/flagged.html">Review missing evidence</a></p>
+<ul>
+<li><a href="picks-every-match/picks.html">Picks, both teams’ probabilities &amp; per-row sources</a> — dated snapshot, market/fallback labels, phone-friendly cards.</li>
+<li><a href="#fixtures">Strict bookmaker lines below</a> — eligible Pinnacle/Bovada prices only.</li>
+<li><a href="cs2.html">Full captured CS2 inventory</a> — open and historical fixtures, with official source links.</li>
+<li><a href="ourline/index.html">Independent market-first board</a> · <a href="summary/index.html">Verification &amp; sources hub</a>.</li>
+</ul>
+<p class="note">Refresh is automatic and best-effort. See the board’s actual collection time, not the page build time. Complete fixture coverage does not mean every match has enough verified evidence for a probability. HotSpawn crowd picks are never inputs.</p>
+</section>
 
 <h2>What this is</h2>
 <p>This dashboard reads the exact CS2 fixture response embedded in the public HotSpawn Pick'ems lobby,
@@ -307,17 +305,6 @@ Prediction-market snapshots are excluded from current picks. For each match wher
 was found, the table shows the quoted odds, bookmaker margin and derived no-vig probability with the exact
 source link and read time. Matches where no eligible external line could be confirmed stay
 <strong>blank and flagged</strong> — they are never filled from HotSpawn or guessed.</p>
-<p class="note"><strong>Want a pick for every open match?</strong> The separate <a href="ourline/index.html">Our line</a>
-board (session f7279a54) gives a probability and a pick for every open CS2 fixture, including ones with no
-eligible bookmaker price. It blends Pinnacle, Bovada, Melbet and Kalshi prices with a Valve VRS rating model,
-labels which basis each pick uses, and grades its past picks on a track-record page. It is a model estimate, so
-it is kept apart from the strictly source-priced tables here.</p>
-<p class="note"><strong>Executive summary — fastest route to all picks (mobile):</strong>
-<a href="picks-every-match/index.html">Every-match picks at a glance</a> (session c64a5e19) lists
-<strong>every</strong> open CS2 match with a pick and win probability on one phone-friendly page, including
-low-tier matches with no normal bookmaker price, which are resolved there only from documented fallback
-sources and flagged individually. Start there if you just want the picks; return here for the strict view.</p>
-
 <h2>Derived probabilities — the short version</h2>
 <p>Raw quoted decimal odds are converted to implied shares <code>q = 1 / odds</code>, normalised to remove
 the bookmaker margin: <code>p = q / (q<sub>a</sub> + q<sub>b</sub>)</code>. Where two sources quote the same
