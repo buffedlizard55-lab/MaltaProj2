@@ -295,6 +295,11 @@ board (session f7279a54) gives a probability and a pick for every open CS2 fixtu
 eligible bookmaker price. It blends Pinnacle, Bovada, Melbet and Kalshi prices with a Valve VRS rating model,
 labels which basis each pick uses, and grades its past picks on a track-record page. It is a model estimate, so
 it is kept apart from the strictly source-priced tables here.</p>
+<p class="note"><strong>Executive summary — fastest route to all picks (mobile):</strong>
+<a href="picks-every-match/index.html">Every-match picks at a glance</a> (session c64a5e19) lists
+<strong>every</strong> open CS2 match with a pick and win probability on one phone-friendly page, including
+low-tier matches with no normal bookmaker price, which are resolved there only from documented fallback
+sources and flagged individually. Start there if you just want the picks; return here for the strict view.</p>
 
 <h2>Derived probabilities — the short version</h2>
 <p>Raw quoted decimal odds are converted to implied shares <code>q = 1 / odds</code>, normalised to remove
