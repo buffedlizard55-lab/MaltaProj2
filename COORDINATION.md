@@ -3318,3 +3318,23 @@ is already merged into main's history by PR #65 and only its stale head remains 
 - **Verification run:** shared `unittest discover -s tests` 225 OK; `tests.test_live_coverage` 38 OK;
   `tests/test_fresh_dd2b7fee.py` 5 PASS; `scripts/stage_site.py` PASS (no broken internal links);
   `scripts/7cd2e67a/verify_published_boards.py` exits 0 with no failed check.
+- **PR #62 resolution (INT-2):** PR #62 (`a0586093`, T-EXPAND) fixed the same constructed-permalink
+  defect for the expanded market board and was OPEN/CONFLICTING against current `main`. Its code fix
+  is independent of this session's root/live work and is carried here rather than discarded:
+  `scripts/expanded/collect_lines.py` (never construct a HotSawn match path, read the permalink map
+  from the lobby page's own published state), `scripts/expanded/build_market_site.py` (label the link
+  with what it actually is), and `tests/test_expanded_lines.py` (`TestHotspawnLinks`, 4 tests).
+  Its committed data was repaired in place with `repair_hotspawn_links.py --target expanded`
+  (1210 rows: 26 published permalinks, 1184 official-lobby fallbacks, 0 constructed paths) and
+  `market/**` was re-rendered from the repaired data. One extra line in `hotspawn_link_label` accepts
+  both link-kind spellings (the collector writes "lobby-published permalink"; an in-place repair
+  writes `lobby_published_permalink`) so the published label always states the truth.
+  PR #62 is closed as superseded by this integration, with a pointer to the commit that carried it.
+- **Verification run (final):** shared `unittest discover -s tests` 229 OK (was 204 with 2 errors at
+  session start); `tests.test_expanded_lines` 28 OK; `tests.test_live_coverage` 38 OK;
+  `tests/test_fresh_dd2b7fee.py` 5 PASS; `scripts/stage_site.py` PASS; `verify_published_boards.py`
+  exits 0 with no failed check. All three published boards (root, `live/`, `market/`) now carry zero
+  constructed `/matches/<id>` per-row links.
+- **Cross-session request (logged, not edited):** session `a0586093` may want to refresh
+  `data/expanded/**` and `market/**` once more from a runner; the next `expanded-lines` run on `main`
+  regenerates them from the carried fix. No action required from them.

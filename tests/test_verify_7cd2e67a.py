@@ -109,16 +109,17 @@ class NoConstructedMatchLinks(unittest.TestCase):
             for url in re.findall(r'https://www\.hotspawn\.com/matches/[^"\'\s<]+', html):
                 tail = url[len(BARE):]
                 self.assertFalse(tail.isdigit(), f"{name}: {url}")
-        live = os.path.join(ROOT, "live")
-        for base, _dirs, files in os.walk(live):
-            for name in files:
-                if not name.endswith(".html"):
-                    continue
-                with open(os.path.join(base, name), encoding="utf-8") as fh:
-                    html = fh.read()
-                for url in re.findall(r'https://www\.hotspawn\.com/matches/[^"\'\s<]+', html):
-                    tail = url[len(BARE):]
-                    self.assertFalse(tail.isdigit(), f"live/{name}: {url}")
+        for section in ("live", "market"):
+            for base, _dirs, files in os.walk(os.path.join(ROOT, section)):
+                for name in files:
+                    if not name.endswith(".html"):
+                        continue
+                    with open(os.path.join(base, name), encoding="utf-8") as fh:
+                        html = fh.read()
+                    for url in re.findall(
+                            r'https://www\.hotspawn\.com/matches/[^"\'\s<]+', html):
+                        tail = url[len(BARE):]
+                        self.assertFalse(tail.isdigit(), f"{section}/{name}: {url}")
 
 
 class PublishedArithmetic(unittest.TestCase):

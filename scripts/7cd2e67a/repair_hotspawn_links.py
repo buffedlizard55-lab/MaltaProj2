@@ -21,7 +21,7 @@ A fixture with no published permalink falls back to the official lobby page
 claimed for a URL that was not observed in an official capture.
 
 Usage:
-  python3 scripts/7cd2e67a/repair_hotspawn_links.py [--target root|live] [--dry-run]
+  python3 scripts/7cd2e67a/repair_hotspawn_links.py [--target root|live|expanded] [--dry-run]
 """
 from __future__ import annotations
 
@@ -40,6 +40,8 @@ BARE_ROUTE = "https://www.hotspawn.com/matches/"
 TARGETS = {
     "root": (ROOT / "data" / "hotspawn_matches.json", "matches", "fixture_id"),
     "live": (ROOT / "data" / "live" / "fixtures.json", "fixtures", "fixture_id"),
+    # The expanded market board keeps its per-row URL at the top level of each fixture row.
+    "expanded": (ROOT / "data" / "expanded" / "lines.json", "fixtures", "fixture_id"),
 }
 RULE = ("published lobby permalink when HotSawn publishes one, otherwise the official lobby page; "
         "a constructed /matches/<id> path is never used")
@@ -71,15 +73,19 @@ def repair(path: Path, key: str, id_key: str, permalinks: dict[str, str]) -> dic
     for row in doc.get(key) or []:
         source = row.get("source") or {}
         fixture_id = str(row.get(id_key))
-        old = source.get("hotspawn_match_url")
+        old = source.get("hotspawn_match_url") or row.get("hotspawn_match_url")
         if old and old.startswith(BARE_ROUTE) and old[len(BARE_ROUTE):].isdigit():
             old = None
         published = permalinks.get(fixture_id)
         kind = "lobby_published_permalink" if published else "official_lobby_fallback"
         target = published or LOBBY_PAGE
-        if old != target or source.get("hotspawn_match_url_kind") != kind:
-            source["hotspawn_match_url"] = target
-            source["hotspawn_match_url_kind"] = kind
+        if old != target or row.get("hotspawn_match_url_kind") != kind:
+            if "source" in row:
+                source["hotspawn_match_url"] = target
+                source["hotspawn_match_url_kind"] = kind
+            else:
+                row["hotspawn_match_url"] = target
+                row["hotspawn_match_url_kind"] = kind
             changed += 1
         kinds[kind] = kinds.get(kind, 0) + 1
     provenance = {

@@ -19,7 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "expanded"))
 
-from collect_lines import guess_game, parse_linefeed_event  # noqa: E402
+from collect_lines import guess_game, hotspawn_link, parse_linefeed_event  # noqa: E402
 from verify_repo_claims import window_rows  # noqa: E402
 from lines_core import (  # noqa: E402
     consensus, implied, join_quote, norm, parse_iso, same_team, to_utc_iso,
@@ -278,3 +278,36 @@ class TestRepoReviewWindow(unittest.TestCase):
 
     def test_window_is_empty_for_an_empty_response(self):
         self.assertEqual(window_rows([], self.NOW), [])
+
+
+class TestHotspawnLinks(unittest.TestCase):
+    """The board must never construct a /matches/<id> path (audited by session 308d29e5)."""
+
+    def test_published_permalink_is_used_verbatim(self):
+        url = ("https://www.hotspawn.com/matches/zomblers-vs-overtake-sector-esl-challenger-"
+               "league-season-52-north-america-cup-3-1079546")
+        got, kind = hotspawn_link("1079546", {"1079546": url})
+        self.assertEqual(got, url)
+        self.assertIn("permalink", kind)
+
+    def test_missing_permalink_falls_back_to_the_official_lobby(self):
+        got, kind = hotspawn_link("1079546", {})
+        self.assertEqual(got, "https://play.hotspawn.com/lobby")
+        self.assertIn("lobby", kind)
+
+    def test_numeric_only_permalink_is_rejected(self):
+        got, kind = hotspawn_link("1079546", {"1079546": "https://www.hotspawn.com/matches/1079546"})
+        self.assertEqual(got, "https://play.hotspawn.com/lobby")
+        self.assertNotIn("/matches/1079546", got)
+
+    def test_published_board_carries_no_constructed_match_path(self):
+        board = ROOT / "data" / "expanded" / "lines.json"
+        if not board.exists():
+            self.skipTest("board not collected yet")
+        doc = json.loads(board.read_text(encoding="utf-8"))
+        bad = []
+        for row in doc["fixtures"]:
+            url = str(row.get("hotspawn_match_url") or "")
+            if "/matches/" in url and url.rstrip("/").rsplit("/", 1)[-1].isdigit():
+                bad.append({"fixture_id": row.get("fixture_id"), "url": url})
+        self.assertEqual(bad, [])

@@ -165,7 +165,7 @@ def fixture_row(row: dict, show_game: bool = True) -> str:
   <td data-label="Game / tier">{esc(str(row['game']).upper())}{' · ' + esc(row['tier']).upper() if row.get('tier') else ''}</td>
   <td data-label="Tournament">{esc(row.get('competition'))}</td>
   <td data-label="Match"><strong>{esc(row['team_a'])}</strong> vs <strong>{esc(row['team_b'])}</strong>
-      <div class="mini"><a href="{esc(row['hotspawn_match_url'])}" rel="noopener">HotSpawn fixture</a>
+      <div class="mini"><a href="{esc(row['hotspawn_match_url'])}" rel="noopener">{esc(hotspawn_link_label(row))}</a>
       · crowd {esc(row['hotspawn_pick_pct_reference_only']['team_a'])}/{esc(row['hotspawn_pick_pct_reference_only']['team_b'])}% (reference only)</div></td>
   <td data-label="External lines">{lines}</td>
   <td data-label="Derived no-vig probability">{probability_bar(a, b, row['team_a'], row['team_b'])}
@@ -189,6 +189,18 @@ def table(rows: list[dict], show_game=True) -> str:
 <th>External line(s)</th><th>Derived probability</th><th>Pick</th>
 <th>Originated estimate (model)</th><th>Verification</th></tr></thead>
 <tbody>{body}</tbody></table></div>"""
+
+
+def hotspawn_link_label(row: dict) -> str:
+    """Say what the HotSpawn link actually is: a published match page, or the official lobby.
+
+    The link kind is written by `collect_hotspawn_links` in collect_lines.py ("lobby-published
+    permalink" / "official lobby page (...)"); when a committed snapshot is repaired in place the
+    same two states are recorded as `lobby_published_permalink` / `official_lobby_fallback`, so
+    both spellings are accepted here.
+    """
+    kind = str(row.get("hotspawn_match_url_kind") or "").lower().replace("_", "-")
+    return "HotSpawn match page" if "permalink" in kind else "HotSpawn lobby"
 
 
 def summary_cards(doc: dict) -> str:
