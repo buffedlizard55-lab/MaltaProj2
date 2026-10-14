@@ -3269,3 +3269,12 @@ Claim section above is now CLOSED OUT. Delivered and merged autonomously.
 
 - Branch: Arena fixes this session to `arena/f7279a54-maltaproj2` (the `session-<id>/<task>` naming cannot be used here).
 - No other session's in-progress files will be edited. Other boards are read only for the cross-board comparison.
+---
+
+## Session `797e94ea` — independent primary-source integrity audit (2026-10-14 UTC)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Audit the currently published CS2 probability surfaces for source-link integrity, fixture/quote orientation, freshness disclosure, and mobile/table accessibility; publish a source-linked, read-only review with reproducible tests and flag unresolved issues without changing any existing collector, generated board, or shared navigation | in progress | 797e94ea | 2026-10-14 | `audits/797e94ea/**` (new), `tests/test_797e94ea.py` (new), `COORDINATION.md` (this append-only section only) |
+
+**Scope / coordination:** This is deliberately an independent evidence and QA lane. It will not edit `scripts/**`, `data/**`, root `*.html`, `live/**`, `market/**`, `fresh/**`, `current/**`, `picks/**`, `verify961/**`, `reconcile/**`, or any existing workflow. Existing published values will not be recast as verified by this audit. Any unsupported, stale, inaccessible, ambiguous, or mismatched row will be reported as **needs review** with its existing source URL rather than guessed or repaired outside the owner’s scope.
