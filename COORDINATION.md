@@ -4185,3 +4185,13 @@ These contradict the user's no-invented-values requirement and will be corrected
   and an unclosed probability container hid the expiry notice along with expired numbers. Fixed
   wrapping and DOM nesting. Reproduced locally with Chromium; all four viewport sizes, search,
   tap-target and expiry tests now pass. No gate was bypassed.
+## Session 9caec349 — canonical mobile entry and verification (2026-10-14 04:03 UTC)
+
+This Arena session is fixed to `arena/9caec349-maltaproj2`; no other branch will be edited or pushed.
+Read the coordination board and completed-owner records. c64a5e19, ae75c5c3 and c0e223d3 have closed their claims; open PRs #80/#86 are separate coverage-board scopes and are not touched.
+
+| Task | Status | Owner | File scope |
+|---|---|---|---|
+| Final integration: remove contradictory/hard-coded executive-summary coverage, make existing strict market-first/fallback-only board the canonical mobile destination, source-linked coverage and freshness, verify primary evidence and publish | in progress | 9caec349 | `scripts/build_site.py` (root navigation/index/research/flags integration only), new `scripts/9caec349/**`, `assets/dashboard-*`, new `tests/test_9caec349.py`, `audits/9caec349/**`, README.md (entry guide), generated root HTML via existing generator, `.github/workflows/pages.yml` (new verification step only), COORDINATION.md append-only |
+
+No additional competing pick board or collector will be created. Existing strict `scripts/f7279a54/**`, all other session namespaces and their data remain untouched. Unverified probabilities remain blank; questionable alternate-board assumptions will be linked as needs review, not adopted.
