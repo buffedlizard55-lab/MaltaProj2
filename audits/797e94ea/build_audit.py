@@ -525,7 +525,7 @@ def render_report(report: dict[str, Any], ledger: dict[str, Any]) -> str:
     findings_html = "".join(
         "<article class=\"finding %s\"><h3>%s — %s</h3><p>%s</p><p class=\"sources\">%s</p></article>"
         % (
-            escape(finding["severity"]),
+            escape(finding["severity"].replace(" ", "-")),
             escape(finding["id"]),
             escape(finding["title"]),
             escape(finding["detail"]),

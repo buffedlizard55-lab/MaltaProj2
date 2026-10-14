@@ -91,6 +91,8 @@ class SourceIntegrityAuditTests(unittest.TestCase):
         for finding in self.report["findings"]:
             self.assertTrue(finding["sources"], finding)
             self.assertTrue(all(url.startswith("https://") for url in finding["sources"]))
+        self.assertIn('class="finding needs-review"', self.page)
+        self.assertIn('class="finding scope-boundary"', self.page)
 
 
 if __name__ == "__main__":
