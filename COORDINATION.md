@@ -4151,3 +4151,7 @@ These contradict the user's no-invented-values requirement and will be corrected
   duplicate ratings, fallback isolation, API-only coverage exclusion, source rows and expiry anchors.
 - Rebasing the claim onto current main rewrote this session's own two commits. Updating only this
   session branch with force-with-lease (no other branch touched) preserves the initial claim content.
+- PR created: https://github.com/buffedlizard55-lab/MaltaProj2/pull/95 . Concurrent PR #94's
+  evidence-first root summary and independent audit were preserved during rebase; its canonical
+  strict CTA remains. Updated only the every-match description now that unsupported proxies are
+  removed. Full combined suite: 424 OK (one inherited skip). Hosted gate running.

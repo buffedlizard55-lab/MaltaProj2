@@ -7,7 +7,7 @@ server=subprocess.Popen([sys.executable,'-m','http.server','8768','--bind','0.0.
 try:
     with sync_playwright() as p:
         browser=p.chromium.launch(executable_path=os.environ.get('CHROME_BIN','/usr/bin/google-chrome'),headless=True,args=['--no-sandbox'])
-        page=browser.new_page(); errors=[]
+        page=browser.new_page(); page.clock.install(); errors=[]
         page.on('pageerror',lambda e: errors.append(str(e)))
         for width in (320,390,768,1280):
             page.set_viewport_size({'width':width,'height':844})
@@ -24,7 +24,7 @@ try:
             if page.locator('[data-current]').count():
                 page.evaluate("document.querySelectorAll('[data-until]').forEach(e=>e.dataset.until='2000-01-01T00:00:00Z')")
                 # Fire timer callback by advancing the browser clock, without wall-clock waiting.
-                page.clock.install(); page.clock.fast_forward(31000)
+                page.clock.fast_forward(31000)
                 assert page.locator('[data-current]:visible').count()==0
                 assert page.locator('.expiry:visible').count()>0
         assert not errors,errors
