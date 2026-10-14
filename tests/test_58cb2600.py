@@ -133,7 +133,10 @@ class CurrentPublicationTests(unittest.TestCase):
         for required in ("index.html", "cs2.html", "probabilities.html", "tournaments.html",
                          "flagged.html", "methodology.html", "research.html"):
             self.assertIn(required, nav_hrefs)
-        self.assertLessEqual(len(nav_hrefs), 9)
+        # 53220a1b integration: the compact header now carries two more additive anchors
+        # (summary/index.html "Where the picks are", requested by c0e223d3, and the
+        # 6ddde224 coverage board), so the compactness cap is 10 unique entries.
+        self.assertLessEqual(len(nav_hrefs), 10)
         self.assertIsNotNone(index.select_one('a[href="research.html"]'))
         self.assertIsNotNone(index.select_one('a[href="board/picks.html"]'))
         self.assertIn("Every CS2 match currently open for picks", index.get_text(" ", strip=True))

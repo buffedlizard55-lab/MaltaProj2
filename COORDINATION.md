@@ -3997,3 +3997,57 @@ earlier sessions too). Repo root `/home/user/MaltaProj2`.
   quotes remain listed with their URLs; bo3.gg rows whose start time disagrees by >3 h are joined but
   flagged; HLTV returns 403 to runner automation and is never cited; the bo3.gg world-ranking prior
   (`originated_rank`) is a documented mapping, not a market price, and every row using it says so.
+
+
+### Session `53220a1b` — integration implementation record (2026-10-14 ~04:20 UTC, append-only)
+
+**INT-A implementation complete; status stays in progress until the PR merges and Pages verifies.**
+
+- **Branches merged into the integration branch** (both sessions' claims were recorded done, awaiting
+  the final integration session; no in-progress claim was taken over):
+  - `arena/6ddde224-maltaproj2` (PR #80, coverage board). Conflicts resolved additively: compact NAV
+    policy on main retained **plus** the `coverage/index.html` anchor; `stage_site.py` section lists
+    unioned; both README rows and both append-only COORDINATION boards kept verbatim.
+  - `arena/fe803b80-maltaproj2` (PR #86, full-coverage board + landing executive summary). Generated
+    root HTML and `data/current_probabilities.json` / `data/lines.json` /
+    `evidence/matching_evidence.json` kept from main (newer stamps 03:43Z vs 03:03Z); root HTML was
+    then regenerated from the merged generator (30 files, no broken internal links). The shared
+    `tests/test_58cb2600.py` auto-merged (fe803b80's unfrozen lobby-capture assertion + nav cap).
+- **Open integration request from `c0e223d3` closed:** `summary/index.html` now has a NAV anchor
+  ("Where the picks are") on every root page. Nav compactness cap in `tests/test_58cb2600.py` raised
+  9 → 10 with a comment (two additive anchors: 6ddde224 coverage + c0e223d3 summary).
+- **Landing executive summary reworked (logged shared-file change to `scripts/build_site.py`):**
+  the fe803b80 block now links **every** pick board on the site (`picks-every-match/`, `board/`,
+  `ourline/`, `coverage/`, `live/`, `fresh/`, strict `cs2.html`, `summary/` hub, `flagged.html`),
+  each with its own board.json last-build stamp where one exists. It shows the live coverage counts
+  from `data/c64a5e19/board.json` and `data/fe803b80/board.json`. Missing board files render links
+  only, never a crash.
+- **Summary hub completeness (logged additive change to `scripts/c0e223d3/build.py`):** the hub's
+  site-map cards missed the new `board/` section; one card added so the hub lists every pick board.
+  `summary/` regenerated (28 open rows cross-checked, disagreements stay published on gaps.html).
+- **INT-B verification (`tests/test_53220a1b.py`, 14 new tests):** every open fixture on the
+  every-match board has a pick + win probability with normalized pair and the pick is the
+  higher-probability side; every row carries http(s) source links; the no-bookmaker matches resolve
+  only through documented fallback evidence (published market slots / exchange books / official
+  Valve VRS rows) and HotSpawn crowd percentages appear nowhere in the board data; the full-coverage
+  board's open rows are all picked or blank-and-flagged with source URLs; the landing page is
+  mobile-friendly and its executive summary links every pick board with every internal link
+  resolving; the summary hub links every board; and all eight pick-board workflows refresh at least
+  every 8 hours (current cadence 30–60 minutes).
+- **Full verification performed before PR:** `python3 -m unittest discover -s tests` → **405 OK**
+  (1 skipped); `python3 scripts/build_site.py` → 30 files, no broken internal links;
+  `python3 scripts/stage_site.py` → PASS, all staged local links resolve across all session sections
+  (artifact contains board/, coverage/, summary/, picks-every-match/, ourline/, fresh/, live/, …).
+- **Irregularities flagged (published on the site's flagged pages, non-blocking):**
+  1. `WROTBERRY` identity remains **contested** (`WBT` 1201 pts vs `WBT Academy` 911 pts in Valve's
+     official standings; Kalshi tickers say `WBTACADEMY`) — published on `summary/gaps.html` and the
+     boards' flagged pages; the three WROTBERRY rows stay on tier-C fallback basis for that reason.
+  2. `summary/`'s independent cross-check counts 27/28 picks because it leaves
+     `1079624 FORZE Reload vs LFO 10` blank (no official rating for LFO 10) while the every-match
+     board resolves that row through its documented fallback tier. Both readings are published side
+     by side on `summary/gaps.html`; neither is filled in.
+  3. HLTV returns HTTP 403 to runner automation and is never cited as read; bo3.gg's Thunderpick
+     coefficient feed is used as the additional market source instead (session fe803b80/6ddde224
+     evidence on `board/flagged.html` / `coverage/review.html`).
+  4. PRs #80/#86 contain no green check runs on their heads (their workflows never triggered on the
+     PR events); their test suites pass in the merged tree (31 + 35 tests within the 405).

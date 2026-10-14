@@ -50,6 +50,14 @@ SITE_SECTIONS = [
         "badge": "Start here",
     },
     {
+        # Added by the 53220a1b final integration so the hub links every pick board on the site.
+        "href": "../board/picks.html",
+        "title": "All picks · every match",
+        "blurb": "Session fe803b80's full-coverage board: every open fixture with its line basis "
+                 "labelled (external bookmaker price or explicitly originated line).",
+        "badge": "Every match",
+    },
+    {
         "href": "index.html",
         "title": "Verification & sources hub",
         "blurb": "This section: independent cross-check of every pick, the team-name evidence "
