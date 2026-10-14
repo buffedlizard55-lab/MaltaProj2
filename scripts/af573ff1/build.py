@@ -118,7 +118,8 @@ def build_board(featured: dict, expanded: dict, egw: dict, fresh: dict | None) -
                "hotspawn_url": fx.get("hotspawn_url") or LOBBY,
                "hotspawn_url_kind": fx.get("hotspawn_url_kind") or "lobby",
                "featured": {"line": fx.get("line"), "market": fx.get("market"),
-                            "model": fx.get("model"), "quotes": fx.get("quotes") or [],
+                            "model": fx.get("model"), "vrs": fx.get("vrs"),
+                            "quotes": fx.get("quotes") or [],
                             "flags": fx.get("flags") or []}}
         rows.append(row)
     # Fixtures a fresh HotSpawn check lists as open that the featured board has
