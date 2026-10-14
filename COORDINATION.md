@@ -3290,3 +3290,11 @@ Claim section above is now CLOSED OUT. Delivered and merged autonomously.
 - **Published findings:** `F-797-01` price movement means the capture must be interpreted as dated, `F-797-02` lobby-count drift means coverage requires timestamps, `F-797-03` direct Bovada browser access needs review, and `F-797-04` clearly limits this audit to the root snapshot. They are visible in `audits/797e94ea/index.html` and `report.json`; no value was filled or inferred.
 - **Verification commands:** `python3 audits/797e94ea/build_audit.py`; `python3 -m unittest tests.test_797e94ea -v`; `python3 scripts/stage_site.py` all pass. The staging check confirms the new audit section, source data, root-back link and mobile CSS have no broken local links.
 - **Rebase conflict:** while rebasing the initial claim over `origin/main` commit `9c58654`, `COORDINATION.md` had an append-only conflict with session `f7279a54`’s claim. Resolved by retaining upstream’s full board verbatim and appending this session’s full claim; no other file conflicted or was discarded.
+
+### Session `797e94ea` — PR / publication record (2026-10-14 UTC)
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/72 — `Audit: add source-integrity review for root CS2 snapshot`.
+- **Merge:** merged without waiting for review at `2026-10-14T01:46:51Z`; merge commit `015e41aefbf0432f27088a698b7f65a966adb793`.
+- **Pre-merge CI:** `Verify and publish dashboard` PR run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38497455213 passed (`build`, 41s; deploy correctly skipped for a PR).
+- **Main deployment:** `Verify and publish dashboard` https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38497548543 passed (build 52s, deploy 15s, including browser smoke, staged-link verification and actual public-dashboard check). GitHub Pages build https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38497548108 passed; the Pages API reports `built` for merge commit `015e41aefbf0432f27088a698b7f65a966adb793`.
+- **Live content check:** https://buffedlizard55-lab.github.io/MaltaProj2/audits/797e94ea/index.html loaded after deployment with the expected 8 fixtures, 12 quote rows, 82 intentional blanks, PASS result, fixture-level source links and F-797-01…F-797-04. Flagged items stay published and non-blocking.
