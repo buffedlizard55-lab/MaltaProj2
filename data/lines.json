@@ -1,9 +1,9 @@
 {
- "generated_at_utc": "2026-10-14T08:36:23Z",
- "odds_collected_at_utc": "2026-10-14T06:14:40Z",
- "fixture_list_collected_at_utc": "2026-10-14T06:14:25Z",
- "fixture_source_observed_at_utc": "2026-10-14T02:43:46Z",
- "fixture_source_cache_age_seconds": 12639,
+ "generated_at_utc": "2026-10-14T08:37:37Z",
+ "odds_collected_at_utc": "2026-10-14T08:37:37Z",
+ "fixture_list_collected_at_utc": "2026-10-14T08:37:20Z",
+ "fixture_source_observed_at_utc": "2026-10-14T06:46:34Z",
+ "fixture_source_cache_age_seconds": 6646,
  "method": {
   "match_rule": "both teams, explicit CS2, exact UTC start, unique fixture and source quote",
   "max_age_seconds": 14400,
@@ -13,33 +13,36 @@
  },
  "summary": {
   "fixtures_total": 88,
-  "fixtures_with_external_line": 0,
-  "fixtures_without_external_line": 88,
+  "fixtures_with_external_line": 9,
+  "fixtures_without_external_line": 79,
   "fixtures_open_for_picks": 25,
-  "fixtures_open_with_external_line": 0,
-  "fixtures_open_without_external_line": 25,
+  "fixtures_open_with_external_line": 9,
+  "fixtures_open_without_external_line": 16,
   "fixtures_locked_or_past": 63,
   "by_tier": {
    "c": {
     "total": 60,
-    "with_line": 0,
+    "with_line": 1,
     "open": 15,
-    "open_with_line": 0
+    "open_with_line": 1
    },
    "b": {
     "total": 24,
-    "with_line": 0,
+    "with_line": 6,
     "open": 7,
-    "open_with_line": 0
+    "open_with_line": 6
    },
    "s": {
     "total": 4,
-    "with_line": 0,
+    "with_line": 2,
     "open": 3,
-    "open_with_line": 0
+    "open_with_line": 2
    }
   },
-  "by_source": {}
+  "by_source": {
+   "bovada": 8,
+   "pinnacle": 4
+  }
  },
  "fixtures": [
   {
@@ -54,16 +57,83 @@
    "pick_status": "open",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/astralis-vs-sashi-stake-pulse-beat-iii-1079438",
    "hotspawn_source_kind": "published_match_permalink",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-sashi-esport-202610140600",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "31804206",
+     "source_market_id": "532995419",
+     "source_market_key": "2W-12",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-14T08:37:28Z",
+     "start_time_utc": "2026-10-14T10:00:00Z",
+     "team_a_name": "Astralis",
+     "team_b_name": "Sashi Esport",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.111111",
+     "raw_price_b": "6.00",
+     "decimal_odds_a": 1.111111,
+     "decimal_odds_b": 6.0,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "Astralis",
+       "Sashi Esport"
+      ],
+      "decimal": [
+       "1.111111",
+       "6.00"
+      ],
+      "american": [
+       "-900",
+       "+500"
+      ]
+     },
+     "derived_probability_a": 0.8438,
+     "derived_probability_b": 0.1562,
+     "overround": 0.06667,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Astralis",
+      "Sashi Esport"
+     ],
+     "source_start_time_utc": "2026-10-14T10:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.8438,
+      "derived_probability_b": 0.1562,
+      "overround": 0.06667
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.8438,
+     "derived_probability_b_mean": 0.1562,
+     "derived_probability_a_min": 0.8438,
+     "derived_probability_a_max": 0.8438
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1079439",
@@ -77,15 +147,84 @@
    "pick_status": "open",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/hotu-vs-fnatic-stake-pulse-beat-iii-1079439",
    "hotspawn_source_kind": "published_match_permalink",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/hotu-fnatic-202610140600",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "31805176",
+     "source_market_id": "532995398",
+     "source_market_key": "2W-12",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-14T08:37:28Z",
+     "start_time_utc": "2026-10-14T10:00:00Z",
+     "team_a_name": "HOTU",
+     "team_b_name": "Fnatic",
+     "raw_price_format": "decimal",
+     "raw_price_a": "2.00",
+     "raw_price_b": "1.769230",
+     "decimal_odds_a": 2.0,
+     "decimal_odds_b": 1.76923,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "HOTU",
+       "Fnatic"
+      ],
+      "decimal": [
+       "2.00",
+       "1.769230"
+      ],
+      "american": [
+       "EVEN",
+       "-130"
+      ]
+     },
+     "derived_probability_a": 0.4694,
+     "derived_probability_b": 0.5306,
+     "overround": 0.06522,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "HOTU",
+      "Fnatic"
+     ],
+     "source_start_time_utc": "2026-10-14T10:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.4694,
+      "derived_probability_b": 0.5306,
+      "overround": 0.06522
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.4694,
+     "derived_probability_b_mean": 0.5306,
+     "derived_probability_a_min": 0.4694,
+     "derived_probability_a_max": 0.4694
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
+   "verification": "source_linked_current_quote",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
+    "start_time_mismatch"
    ]
   },
   {
@@ -100,16 +239,83 @@
    "pick_status": "open",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/ex-rustec-vs-mellren-cct-europe-2026-series-11-1079622",
    "hotspawn_source_kind": "published_match_permalink",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/ex-rustec-mellren-202610140700",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "32228767",
+     "source_market_id": "535702140",
+     "source_market_key": "2W-12",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-14T08:37:28Z",
+     "start_time_utc": "2026-10-14T11:00:00Z",
+     "team_a_name": "Ex-Rustec",
+     "team_b_name": "Mellren",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.588235",
+     "raw_price_b": "2.300",
+     "decimal_odds_a": 1.588235,
+     "decimal_odds_b": 2.3,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "Ex-Rustec",
+       "Mellren"
+      ],
+      "decimal": [
+       "1.588235",
+       "2.300"
+      ],
+      "american": [
+       "-170",
+       "+130"
+      ]
+     },
+     "derived_probability_a": 0.5915,
+     "derived_probability_b": 0.4085,
+     "overround": 0.06441,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Ex-Rustec",
+      "Mellren"
+     ],
+     "source_start_time_utc": "2026-10-14T11:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.5915,
+      "derived_probability_b": 0.4085,
+      "overround": 0.06441
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.5915,
+     "derived_probability_b_mean": 0.4085,
+     "derived_probability_a_min": 0.5915,
+     "derived_probability_a_max": 0.5915
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1080177",
@@ -123,16 +329,138 @@
    "pick_status": "open",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/falcons-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026-1080177",
    "hotspawn_source_kind": "published_match_permalink",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-ninjas-in-pyjamas-202610140700",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "32033977",
+     "source_market_id": "534400444",
+     "source_market_key": "2W-12",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-14T08:37:28Z",
+     "start_time_utc": "2026-10-14T11:00:00Z",
+     "team_a_name": "Team Falcons",
+     "team_b_name": "Ninjas in Pyjamas",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.307692",
+     "raw_price_b": "3.300",
+     "decimal_odds_a": 1.307692,
+     "decimal_odds_b": 3.3,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "Team Falcons",
+       "Ninjas in Pyjamas"
+      ],
+      "decimal": [
+       "1.307692",
+       "3.300"
+      ],
+      "american": [
+       "-325",
+       "+230"
+      ]
+     },
+     "derived_probability_a": 0.7162,
+     "derived_probability_b": 0.2838,
+     "overround": 0.06774,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Team Falcons",
+      "Ninjas in Pyjamas"
+     ],
+     "source_start_time_utc": "2026-10-14T11:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "source_kind": "bookmaker",
+     "source_public_url": null,
+     "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674/markets/related/straight",
+     "source_event_id": "1638111674",
+     "source_market_id": null,
+     "source_market_key": "s;0;m",
+     "source_league": "CS2 - TP World Championship",
+     "market_type": "series/match winner (moneyline)",
+     "market_period": "full match",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "open",
+     "source_reported_status": "pending",
+     "retrieved_at_utc": "2026-10-14T08:37:22Z",
+     "start_time_utc": "2026-10-14T11:00:00Z",
+     "team_a_name": "Falcons",
+     "team_b_name": "Ninjas In Pyjamas",
+     "raw_price_format": "american",
+     "raw_price_a": -306,
+     "raw_price_b": 240,
+     "decimal_odds_a": 1.3268,
+     "decimal_odds_b": 3.4,
+     "decimal_odds_derived": true,
+     "raw_prices": [
+      {
+       "designation": "home",
+       "price": -306
+      },
+      {
+       "designation": "away",
+       "price": 240
+      }
+     ],
+     "derived_probability_a": 0.7193,
+     "derived_probability_b": 0.2807,
+     "overround": 0.04781,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Falcons",
+      "Ninjas In Pyjamas"
+     ],
+     "source_start_time_utc": "2026-10-14T11:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.7162,
+      "derived_probability_b": 0.2838,
+      "overround": 0.06774
+     },
+     "pinnacle": {
+      "derived_probability_a": 0.7193,
+      "derived_probability_b": 0.2807,
+      "overround": 0.04781
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada",
+      "pinnacle"
+     ],
+     "n_sources": 2,
+     "derived_probability_a_mean": 0.7177,
+     "derived_probability_b_mean": 0.2823,
+     "derived_probability_a_min": 0.7162,
+     "derived_probability_a_max": 0.7193
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1081112",
@@ -144,8 +472,8 @@
    "team_b": "6666",
    "source_reported_status": "scheduled",
    "pick_status": "open",
-   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
-   "hotspawn_source_kind": "official_lobby_fallback",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/banda-chuya-vs-6666-cct-europe-2026-series-12-play-in-1081112",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -153,9 +481,7 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
-    "official_match_permalink_unavailable"
+    "external_odds_not_found"
    ]
   },
   {
@@ -170,16 +496,83 @@
    "pick_status": "open",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/legacy-vs-parivision-thunderpick-world-championship-2026-1080178",
    "hotspawn_source_kind": "published_match_permalink",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610140930",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "32033778",
+     "source_market_id": "534402990",
+     "source_market_key": "2W-12",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-14T08:37:28Z",
+     "start_time_utc": "2026-10-14T13:30:00Z",
+     "team_a_name": "Legacy",
+     "team_b_name": "Parivision",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.690",
+     "raw_price_b": "2.100",
+     "decimal_odds_a": 1.69,
+     "decimal_odds_b": 2.1,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "Legacy",
+       "Parivision"
+      ],
+      "decimal": [
+       "1.690",
+       "2.100"
+      ],
+      "american": [
+       "-145",
+       "+110"
+      ]
+     },
+     "derived_probability_a": 0.5541,
+     "derived_probability_b": 0.4459,
+     "overround": 0.06791,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Legacy",
+      "Parivision"
+     ],
+     "source_start_time_utc": "2026-10-14T13:30:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.5541,
+      "derived_probability_b": 0.4459,
+      "overround": 0.06791
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.5541,
+     "derived_probability_b_mean": 0.4459,
+     "derived_probability_a_min": 0.5541,
+     "derived_probability_a_max": 0.5541
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1079623",
@@ -193,16 +586,83 @@
    "pick_status": "open",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/g2-ares-vs-the-last-resort-cct-europe-2026-series-11-1079623",
    "hotspawn_source_kind": "published_match_permalink",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-the-last-resort-202610141000",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "32179398",
+     "source_market_id": "535433988",
+     "source_market_key": "2W-12",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-14T08:37:28Z",
+     "start_time_utc": "2026-10-14T14:00:00Z",
+     "team_a_name": "G2 Ares",
+     "team_b_name": "The Last Resort",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.434783",
+     "raw_price_b": "2.750",
+     "decimal_odds_a": 1.434783,
+     "decimal_odds_b": 2.75,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "G2 Ares",
+       "The Last Resort"
+      ],
+      "decimal": [
+       "1.434783",
+       "2.750"
+      ],
+      "american": [
+       "-230",
+       "+175"
+      ]
+     },
+     "derived_probability_a": 0.6571,
+     "derived_probability_b": 0.3429,
+     "overround": 0.06061,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "G2 Ares",
+      "The Last Resort"
+     ],
+     "source_start_time_utc": "2026-10-14T14:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.6571,
+      "derived_probability_b": 0.3429,
+      "overround": 0.06061
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.6571,
+     "derived_probability_b_mean": 0.3429,
+     "derived_probability_a_min": 0.6571,
+     "derived_probability_a_max": 0.6571
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1081113",
@@ -214,19 +674,81 @@
    "team_b": "PCIFIC",
    "source_reported_status": "scheduled",
    "pick_status": "open",
-   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
-   "hotspawn_source_kind": "official_lobby_fallback",
-   "bookmaker_lines": [],
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/ryvex-vs-pcific-cct-europe-2026-series-12-play-in-1081113",
+   "hotspawn_source_kind": "published_match_permalink",
+   "bookmaker_lines": [
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "source_kind": "bookmaker",
+     "source_public_url": null,
+     "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638339172/markets/related/straight",
+     "source_event_id": "1638339172",
+     "source_market_id": null,
+     "source_market_key": "s;0;m",
+     "source_league": "CS2 - CCT European Series 12 Qualifier",
+     "market_type": "series/match winner (moneyline)",
+     "market_period": "full match",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "open",
+     "source_reported_status": "pending",
+     "retrieved_at_utc": "2026-10-14T08:37:26Z",
+     "start_time_utc": "2026-10-14T14:00:00Z",
+     "team_a_name": "PCIFIC",
+     "team_b_name": "Ryvex",
+     "raw_price_format": "american",
+     "raw_price_a": -793,
+     "raw_price_b": 379,
+     "decimal_odds_a": 4.79,
+     "decimal_odds_b": 1.1261,
+     "decimal_odds_derived": true,
+     "raw_prices": [
+      {
+       "designation": "home",
+       "price": -793
+      },
+      {
+       "designation": "away",
+       "price": 379
+      }
+     ],
+     "derived_probability_a": 0.1903,
+     "derived_probability_b": 0.8097,
+     "overround": 0.09679,
+     "order_as_quoted": "reversed",
+     "bookmaker_order": [
+      "PCIFIC",
+      "Ryvex"
+     ],
+     "source_start_time_utc": "2026-10-14T14:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "pinnacle": {
+      "derived_probability_a": 0.1903,
+      "derived_probability_b": 0.8097,
+      "overround": 0.09679
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "pinnacle"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.1903,
+     "derived_probability_b_mean": 0.8097,
+     "derived_probability_a_min": 0.1903,
+     "derived_probability_a_max": 0.1903
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
-    "official_match_permalink_unavailable"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1080179",
@@ -247,8 +769,7 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
+    "external_odds_not_found"
    ]
   },
   {
@@ -270,8 +791,7 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
+    "external_odds_not_found"
    ]
   },
   {
@@ -293,8 +813,7 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
+    "external_odds_not_found"
    ]
   },
   {
@@ -309,16 +828,138 @@
    "pick_status": "open",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/mibr-vs-bc-game-stake-pulse-beat-iii-1079440",
    "hotspawn_source_kind": "published_match_permalink",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-bc-game-202610150600",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "31805765",
+     "source_market_id": "532998324",
+     "source_market_key": "2W-12",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-14T08:37:28Z",
+     "start_time_utc": "2026-10-15T10:00:00Z",
+     "team_a_name": "MIBR",
+     "team_b_name": "BC.Game",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.645161",
+     "raw_price_b": "2.200",
+     "decimal_odds_a": 1.645161,
+     "decimal_odds_b": 2.2,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "MIBR",
+       "BC.Game"
+      ],
+      "decimal": [
+       "1.645161",
+       "2.200"
+      ],
+      "american": [
+       "-155",
+       "+120"
+      ]
+     },
+     "derived_probability_a": 0.5721,
+     "derived_probability_b": 0.4279,
+     "overround": 0.06239,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "MIBR",
+      "BC.Game"
+     ],
+     "source_start_time_utc": "2026-10-15T10:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "source_kind": "bookmaker",
+     "source_public_url": null,
+     "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745/markets/related/straight",
+     "source_event_id": "1637936745",
+     "source_market_id": null,
+     "source_market_key": "s;0;m",
+     "source_league": "CS2 - STK Pulse Beat",
+     "market_type": "series/match winner (moneyline)",
+     "market_period": "full match",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "open",
+     "source_reported_status": "pending",
+     "retrieved_at_utc": "2026-10-14T08:37:25Z",
+     "start_time_utc": "2026-10-15T10:00:00Z",
+     "team_a_name": "MIBR",
+     "team_b_name": "BC.Game",
+     "raw_price_format": "american",
+     "raw_price_a": -151,
+     "raw_price_b": 119,
+     "decimal_odds_a": 1.6623,
+     "decimal_odds_b": 2.19,
+     "decimal_odds_derived": true,
+     "raw_prices": [
+      {
+       "designation": "home",
+       "price": -151
+      },
+      {
+       "designation": "away",
+       "price": 119
+      }
+     ],
+     "derived_probability_a": 0.5685,
+     "derived_probability_b": 0.4315,
+     "overround": 0.0582,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "MIBR",
+      "BC.Game"
+     ],
+     "source_start_time_utc": "2026-10-15T10:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.5721,
+      "derived_probability_b": 0.4279,
+      "overround": 0.06239
+     },
+     "pinnacle": {
+      "derived_probability_a": 0.5685,
+      "derived_probability_b": 0.4315,
+      "overround": 0.0582
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada",
+      "pinnacle"
+     ],
+     "n_sources": 2,
+     "derived_probability_a_mean": 0.5703,
+     "derived_probability_b_mean": 0.4297,
+     "derived_probability_a_min": 0.5685,
+     "derived_probability_a_max": 0.5721
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1079442",
@@ -332,16 +973,138 @@
    "pick_status": "open",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/heroic-vs-envy-stake-pulse-beat-iii-1079442",
    "hotspawn_source_kind": "published_match_permalink",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/heroic-envy-202610150600",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "31804602",
+     "source_market_id": "532996299",
+     "source_market_key": "2W-12",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-14T08:37:28Z",
+     "start_time_utc": "2026-10-15T10:00:00Z",
+     "team_a_name": "Heroic",
+     "team_b_name": "Envy",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.487805",
+     "raw_price_b": "2.550",
+     "decimal_odds_a": 1.487805,
+     "decimal_odds_b": 2.55,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "Heroic",
+       "Envy"
+      ],
+      "decimal": [
+       "1.487805",
+       "2.550"
+      ],
+      "american": [
+       "-205",
+       "+155"
+      ]
+     },
+     "derived_probability_a": 0.6315,
+     "derived_probability_b": 0.3685,
+     "overround": 0.06429,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Heroic",
+      "Envy"
+     ],
+     "source_start_time_utc": "2026-10-15T10:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "source_kind": "bookmaker",
+     "source_public_url": null,
+     "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637999450/markets/related/straight",
+     "source_event_id": "1637999450",
+     "source_market_id": null,
+     "source_market_key": "s;0;m",
+     "source_league": "CS2 - STK Pulse Beat",
+     "market_type": "series/match winner (moneyline)",
+     "market_period": "full match",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "open",
+     "source_reported_status": "pending",
+     "retrieved_at_utc": "2026-10-14T08:37:27Z",
+     "start_time_utc": "2026-10-15T10:00:00Z",
+     "team_a_name": "HEROIC",
+     "team_b_name": "Envy",
+     "raw_price_format": "american",
+     "raw_price_a": -213,
+     "raw_price_b": 162,
+     "decimal_odds_a": 1.4695,
+     "decimal_odds_b": 2.62,
+     "decimal_odds_derived": true,
+     "raw_prices": [
+      {
+       "designation": "home",
+       "price": -213
+      },
+      {
+       "designation": "away",
+       "price": 162
+      }
+     ],
+     "derived_probability_a": 0.6407,
+     "derived_probability_b": 0.3593,
+     "overround": 0.06218,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "HEROIC",
+      "Envy"
+     ],
+     "source_start_time_utc": "2026-10-15T10:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.6315,
+      "derived_probability_b": 0.3685,
+      "overround": 0.06429
+     },
+     "pinnacle": {
+      "derived_probability_a": 0.6407,
+      "derived_probability_b": 0.3593,
+      "overround": 0.06218
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada",
+      "pinnacle"
+     ],
+     "n_sources": 2,
+     "derived_probability_a_mean": 0.6361,
+     "derived_probability_b_mean": 0.3639,
+     "derived_probability_a_min": 0.6315,
+     "derived_probability_a_max": 0.6407
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1080280",
@@ -362,8 +1125,7 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
+    "external_odds_not_found"
    ]
   },
   {
@@ -385,8 +1147,7 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
+    "external_odds_not_found"
    ]
   },
   {
@@ -408,8 +1169,7 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
+    "external_odds_not_found"
    ]
   },
   {
@@ -431,8 +1191,7 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
+    "external_odds_not_found"
    ]
   },
   {
@@ -454,8 +1213,7 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
+    "external_odds_not_found"
    ]
   },
   {
@@ -477,8 +1235,7 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
+    "external_odds_not_found"
    ]
   },
   {
@@ -500,8 +1257,7 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
+    "external_odds_not_found"
    ]
   },
   {
@@ -523,8 +1279,7 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
+    "external_odds_not_found"
    ]
   },
   {
@@ -546,8 +1301,7 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
+    "external_odds_not_found"
    ]
   },
   {
@@ -560,8 +1314,8 @@
    "team_b": "Privateer",
    "source_reported_status": "scheduled",
    "pick_status": "open",
-   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
-   "hotspawn_source_kind": "official_lobby_fallback",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/mellren-vs-privateer-cct-europe-2026-series-12-play-in-1081120",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -570,8 +1324,7 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
-    "official_match_permalink_unavailable"
+    "start_time_mismatch"
    ]
   },
   {
@@ -593,8 +1346,7 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
+    "external_odds_not_found"
    ]
   },
   {
@@ -616,8 +1368,7 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp"
+    "external_odds_not_found"
    ]
   },
   {
@@ -640,7 +1391,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -666,7 +1416,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -692,7 +1441,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -718,7 +1466,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -744,7 +1491,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -770,7 +1516,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -796,7 +1541,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -822,7 +1566,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -848,7 +1591,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -874,7 +1616,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -900,7 +1641,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -926,7 +1666,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -952,7 +1691,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -978,7 +1716,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1004,7 +1741,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1030,7 +1766,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1056,7 +1791,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1082,7 +1816,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1108,7 +1841,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1134,7 +1866,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1160,7 +1891,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1186,7 +1916,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1212,7 +1941,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1238,7 +1966,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1264,7 +1991,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1290,7 +2016,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1316,7 +2041,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1342,7 +2066,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1368,7 +2091,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1394,7 +2116,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1420,7 +2141,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1446,7 +2166,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1472,7 +2191,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1498,7 +2216,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1524,7 +2241,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1550,7 +2266,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1576,7 +2291,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1602,7 +2316,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1628,7 +2341,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1654,7 +2366,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1680,7 +2391,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1706,7 +2416,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1732,7 +2441,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1758,7 +2466,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1784,7 +2491,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1810,7 +2516,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1836,7 +2541,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1862,7 +2566,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1888,7 +2591,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1914,7 +2616,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1940,7 +2641,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1966,7 +2666,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -1992,7 +2691,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -2018,7 +2716,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -2044,7 +2741,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -2070,7 +2766,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -2096,7 +2791,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -2122,7 +2816,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -2148,7 +2841,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -2174,7 +2866,6 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
@@ -2200,7 +2891,7 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
+    "fixture_not_upcoming",
     "fixture_start_time_in_the_past_or_stale_source_status",
     "picks_locked_past_or_unverified"
    ]
@@ -2215,8 +2906,8 @@
    "team_b": "B8 Academy",
    "source_reported_status": "scheduled",
    "pick_status": "closed_or_unverified",
-   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
-   "hotspawn_source_kind": "official_lobby_fallback",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/enjoy-vs-b8-academy-cct-europe-2026-series-12-play-in-1081111",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2225,9 +2916,8 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
+    "fixture_not_upcoming",
     "fixture_start_time_in_the_past_or_stale_source_status",
-    "official_match_permalink_unavailable",
     "picks_locked_past_or_unverified"
    ]
   },
@@ -2251,9 +2941,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_snapshot_stale_or_unverified_timestamp",
     "fixture_start_time_in_the_past_or_stale_source_status",
-    "picks_locked_past_or_unverified"
+    "picks_locked_past_or_unverified",
+    "start_time_mismatch"
    ]
   }
  ]
