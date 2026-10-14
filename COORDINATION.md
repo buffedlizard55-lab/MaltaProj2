@@ -3467,3 +3467,11 @@ is still open against an older `main`, so it is carried into this integration ra
 - **Cross-session request (logged, not edited):** session `a0586093` may want to refresh
   `data/expanded/**` and `market/**` once more from a runner; the next `expanded-lines` run on `main`
   regenerates them from the carried fix. No action required from them.
+
+## Session 5a3c1a63 Log & Verification (2026-10-14)
+- **Session Claim:** Integration, mobile UX executive summary & picks accessibility, and full suite verification.
+- **Executive Summary:** Added prominent executive summary banner and quick-link hub on the landing page (with jump links to `ourline/` full-coverage pick board, verified bookmaker lines, inventory, flagged review page, and track record) to make finding picks fast and accessible on phone and mobile devices.
+- **Full Coverage & Originated Lines:** Audited coverage across the repo. High-tier and covered matches derive win probabilities from external bookmakers (Pinnacle, Bovada, Melbet, Kalshi) with margin removed. Lower-tier matches not quoted on standard books are resolved using calibrated Valve Regional Standings (VRS) rating model originated lines (under `ourline/`), while unverified/unrated low-tier matches remain flagged for review with reasons and official source links, never hallucinated.
+- **HotSpawn Match Link Audit:** Re-verified that no constructed numeric match routes (`/matches/<id>`) exist across root, live, and expanded boards.
+- **Regression Tests:** All 271 unit tests in `tests/` pass cleanly (100% OK).
+- **Site Staging:** `scripts/stage_site.py` passes cleanly (31 files generated, 0 broken internal links).
