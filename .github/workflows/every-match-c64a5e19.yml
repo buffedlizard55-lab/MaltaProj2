@@ -1,0 +1,88 @@
+name: every-match picks (c64a5e19)
+
+# Refreshes the every-match CS2 pick board (picks-every-match/) with no manual input.
+# Scope guard: writes only data/c64a5e19/** and picks-every-match/**.
+# Self-dispatch chain on main (like ourline): each run waits ~25 min then dispatches the next.
+
+on:
+  push:
+    branches: ['arena/c64a5e19-maltaproj2', 'main']
+    paths:
+      - 'scripts/c64a5e19/**'
+      - 'tests/test_c64a5e19.py'
+      - '.github/workflows/every-match-c64a5e19.yml'
+  schedule:
+    - cron: '12,42 * * * *'
+  workflow_run:
+    workflows: ['ourline (f7279a54)']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: every-match-c64a5e19-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Collect HotSpawn lobby, external prices, thin books and Valve VRS
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/c64a5e19/collect.py
+      - name: Build every-match board (re-derives every number from the snapshot)
+        run: python3 scripts/c64a5e19/build.py
+      - name: Tests
+        run: python3 -m unittest tests.test_c64a5e19 -v
+      - name: Commit and push (rebase before every push)
+        env:
+          REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config user.name "every-match-bot (c64a5e19)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/c64a5e19 picks-every-match
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "every-match(c64a5e19): refresh picks $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then
+              if [ "$REF_NAME" = "main" ]; then gh workflow run pages.yml --ref main || echo "pages dispatch failed"; fi
+              exit 0
+            fi
+            sleep $((attempt * 7))
+          done
+          exit 1
+
+  next:
+    needs: refresh
+    if: always() && (github.ref == 'refs/heads/main' || github.event_name == 'workflow_run')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Wait, then dispatch the next refresh unless another run is already queued/running
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          sleep 1500
+          others=$(gh api "repos/$GH_REPO/actions/workflows/every-match-c64a5e19.yml/runs?per_page=30" \
+            --jq "[.workflow_runs[] | select(.id != $RUN_ID) | select(.status==\"queued\" or .status==\"in_progress\" or .status==\"waiting\" or .status==\"pending\")] | length")
+          echo "other active runs: $others"
+          if [ "$others" = "0" ]; then
+            gh workflow run every-match-c64a5e19.yml --ref main
+          fi

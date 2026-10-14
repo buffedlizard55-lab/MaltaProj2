@@ -13,8 +13,7 @@ OUT.mkdir(parents=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
 for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match'):
-# 'picks-every-match' added by session af573ff1 (EVERY board) as an additive single entry so the
-# executive-summary links from the root landing resolve in the staged artifact.
+# 'picks-every-match' added by session c64a5e19 (every-match board) as an additive single entry.
 # 'ourline' added by session f7279a54 (OURLINE board) as an additive single entry so /ourline/ is
 # published; requested in COORDINATION.md. f7279a54 does not touch NAV, README or other entries.
 # 'live' added by session 3cd9787c (T-COVER current-lobby coverage board), additive single entry.

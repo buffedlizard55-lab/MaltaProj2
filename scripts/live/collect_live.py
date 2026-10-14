@@ -117,7 +117,7 @@ def collect_fixtures(log: dict, listed_ids: set[str] | None = None,
             "source": {
                 "api": url,
                 "page": LOBBY_PAGE,
-                "hotspawn_match_url": f"https://www.hotspawn.com/matches/{f.get('id')}",
+                "hotspawn_match_url": permalinks.get(str(f.get("id"))) or LOBBY_PAGE,  # never construct /matches/<id> (7cd2e67a defect, c64a5e19 integration fix)
             },
         })
     log["hotspawn_fixtures"].update({
