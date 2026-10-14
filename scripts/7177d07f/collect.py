@@ -251,11 +251,22 @@ def collect_melbet():
                     if not isinstance(entry, dict):
                         continue
                     prices[entry.get("T")] = entry.get("C") or entry.get("CV")
-                try:
-                    da, db = float(prices.get(1)), float(prices.get(2))
-                except (TypeError, ValueError):
-                    continue
-                if da <= 1.0 or db <= 1.0:
+                da = db = None
+                pair = None
+                for candidate in ((1, 2), (1, 3)):
+                    try:
+                        ca, cb = float(prices.get(candidate[0])), float(prices.get(candidate[1]))
+                    except (TypeError, ValueError):
+                        continue
+                    if ca <= 1.0 or cb <= 1.0:
+                        continue
+                    # physical check: the two prices must be the complementary outcomes of one
+                    # market (implied probabilities sum to 1 + a plausible bookmaker margin).
+                    if not (1.0 < (1.0 / ca + 1.0 / cb) <= 1.30):
+                        continue
+                    da, db, pair = ca, cb, candidate
+                    break
+                if pair is None:
                     continue
                 start = ev.get("S")
                 quotes.append({
@@ -268,6 +279,8 @@ def collect_melbet():
                     "start_utc": datetime.fromtimestamp(int(start), timezone.utc).strftime(
                         "%Y-%m-%dT%H:%M:%SZ") if isinstance(start, int) else None,
                     "decimal_a": da, "decimal_b": db,
+                    "outcome_key_pair": list(pair),
+                    "overround": round(1.0 / da + 1.0 / db, 4),
                 })
         except Exception as exc:
             parse_error = f"{type(exc).__name__}: {exc}"
