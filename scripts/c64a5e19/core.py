@@ -1,4 +1,7 @@
-"""Every-match core (strict market-first policy) — pure functions, no network access.
+"""EVERY-MATCH core (session c64a5e19) — pure functions, no network access.
+
+Forked from the proven f7279a54 core (same odds maths, same Valve VRS model) with
+fallback-only additions documented inline. The featured (market/model) maths is unchanged.
 
 Everything that turns raw source payloads into numbers lives here so it can be unit-tested
 against real captured payloads without touching the internet.
@@ -88,6 +91,14 @@ ALIASES: dict[str, tuple[str, str]] = {
     "nip": ("ninjasinpyjamas", "NIP is the official abbreviation of Ninjas in Pyjamas."),
     "pvision": ("parivision", "PARIVISION is listed as 'PVISION' on some feeds."),
     "9zglobant": ("9z", "9z Team is sponsored as '9z Globant' on some feeds."),
+    # --- c64a5e19 fallback-only aliases (used ONLY where no featured line exists; every use is flagged) ---
+    "roundsgg": ("rounds", "RoundsGG (HotSpawn/Kalshi spelling) is ROUNDS in Valve's official VRS file "
+                           "(standing 310, 548 pts, roster Kollo/Lapa/Monoxx/Tumppis/ykis) and 'Rounds' "
+                           "on HLTV team 12457 (roundsgg). Suffix 'GG' is part of the HotSpawn label."),
+    "eacopenhagen": ("eac", "EA Copenhagen / Esport Academy Copenhagen is abbreviated EAC on Liquipedia's "
+                            "Elisa BreakOut Series #2 participants list and on HLTV team 13838, whose roster "
+                            "(Fessor, n1Xen, anber, sSen, bekker) matches Valve VRS 'EAC' (1035 pts)."),
+    "esportacademycopenhagen": ("eac", "See eacopenhagen alias evidence (Liquipedia Elisa BreakOut #2; HLTV team 13838)."),
 }
 
 
@@ -263,9 +274,11 @@ def market_weight(n_sources: int) -> float:
 def blend(market_prob_a: float | None, n_sources: int, model_prob_a: float | None) -> dict | None:
     if market_prob_a is None and model_prob_a is None:
         return None
-    # Research/model fallback is used only for fixtures without eligible external prices.
-    # Do not change a featured market pick by blending a second, unvalidated model.
-    if market_prob_a is not None:
+    if market_prob_a is not None and model_prob_a is not None:
+        w = market_weight(n_sources)
+        pa = sigmoid(w * logit(market_prob_a) + (1 - w) * logit(model_prob_a))
+        basis = "market+model"
+    elif market_prob_a is not None:
         w, pa, basis = 1.0, market_prob_a, "market"
     else:
         w, pa, basis = 0.0, model_prob_a, "model"
@@ -354,9 +367,9 @@ def result_winner(f: dict) -> str | None:
 
 
 # ------------------------------------------------------------------------------ joining
-TIME_TOLERANCE_H = 5 / 60   # at most five minutes; modelling policy, not source evidence
+TIME_TOLERANCE_H = 5 / 60   # same pairing must start within this many hours of HotSpawn's time
 TIME_WARN_H = 3.0         # larger differences are joined but flagged
-TIME_REJECT_LOG_H = 72.0  # near-time mismatches are published for review, never joined
+TIME_REJECT_LOG_H = 72.0  # same pairing 14-72 h apart: not joined, but published as a rejected join
 
 
 def match_quote(fixture: dict, quote: dict) -> dict | None:

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Executive summary · Full pick coverage (HotSpawn lobby)</title>
+<meta name="description" content="A pick and a probability for every open Counter-Strike 2 fixture
+listed in the HotSpawn pick'em lobby, with external betting lines and clearly labelled originated lines.">
+<link rel="stylesheet" href="assets/board.css">
+</head>
+<body>
+<header class="top"><div class="inner">
+  <div class="brand"><span class="dot"></span> Full pick coverage · every HotSpawn CS2 fixture</div>
+  <nav class="pages" aria-label="Board sections"><a href="index.html" aria-current=page>Summary</a><a href="picks.html">All picks</a><a href="lines.html">Lines</a><a href="tournaments.html">Tournaments</a><a href="results.html">Results</a><a href="flagged.html">Flagged</a><a href="method.html">Method</a></nav>
+</div></header>
+<main class="wrap">
+
+<h1>Executive summary</h1>
+<p class="sub">Every Counter-Strike 2 fixture in the HotSpawn pick'em lobby, with a pick and a
+probability for each one — including tier-C matches no bookmaker prices.</p>
+
+<div class="cards">
+  <div class="card"><div class="n">29</div><div class="l">CS2 fixtures open for picks</div></div>
+  <div class="card"><div class="n">29</div><div class="l">have a pick + probability</div></div>
+  <div class="card"><div class="n">23</div><div class="l">priced by a bookmaker/exchange</div></div>
+  <div class="card"><div class="n">0</div><div class="l">blank &amp; flagged (no source)</div></div>
+</div>
+
+<div class="note good"><strong>Where the picks are →</strong> the live list is on
+<a href="picks.html">All picks</a>. Each match shows the pick, the win probability, the basis
+(market, market+model, or originated from ratings) and the source link for every number.</div>
+
+<div class="jump">
+  <a href="picks.html"><b>All picks — every open fixture</b>
+    <span>Pick, probability, confidence and the source link for each match. Updated automatically.</span></a>
+  <a href="lines.html"><b>Betting lines used</b>
+    <span>The exact Pinnacle / Bovada / Kalshi / Melbet / Thunderpick prices behind each market row.</span></a>
+  <a href="tournaments.html"><b>By tournament</b>
+    <span>The same coverage grouped by event — useful when a whole event is low tier.</span></a>
+  <a href="flagged.html"><b>Flagged for review</b>
+    <span>Alias joins, originated lines, blocked sources and every unverified gap, with links.</span></a>
+  <a href="results.html"><b>Track record</b>
+    <span>Published picks graded against the final scores HotSpawn reports.</span></a>
+  <a href="method.html"><b>Method &amp; sources</b>
+    <span>Formulas, weights, tolerances, and what this board will not claim.</span></a>
+</div>
+
+<h2>How to read a pick</h2>
+<ul class="tight">
+  <li><span class="badge pick">PICK</span> the team with the higher final probability on that row.</li>
+  <li><span class="badge market">market</span> the number comes from external prices only
+      (bookmakers/exchange), margin removed with the proportional no-vig method.</li>
+  <li><span class="badge market">market+model</span> external prices blended with the official
+      Valve VRS rating model (logit blend, market weight 0.85 with 2+ sources, 0.75 with one).</li>
+  <li><span class="badge model">originated</span> no reachable bookmaker prices this fixture, so the
+      line is originated here: official Valve VRS points, or — when the teams have no VRS row — this
+      project's own Elo built from published bo3.gg match results. Labelled, never mixed silently.</li>
+  <li><span class="badge bad">unverified</span> nothing sourced could support a number; the cell
+      stays blank and the row is on the flagged page.</li>
+</ul>
+
+<h2>Coverage right now</h2>
+<table class="resp"><thead><tr><th>Measure</th><th>Value</th></tr></thead><tbody>
+<tr><td>Open fixtures</td><td class="num">29</td></tr>
+<tr><td>Open · basis = market</td><td class="num">1</td></tr>
+<tr><td>Open · basis = market+model</td><td class="num">22</td></tr>
+<tr><td>Open · basis = originated model</td><td class="num">6</td></tr>
+<tr><td>Open · blank with a flag</td><td class="num">0</td></tr>
+<tr><td>Listed but locked/past (kept for results)</td><td class="num">184</td></tr>
+<tr><td>External quotes collected</td><td class="num">140</td></tr>
+<tr><td>Quotes that joined a lobby fixture</td><td class="num">62</td></tr>
+<tr><td>Quotes unmatched (events not on the lobby)</td><td class="num">78</td></tr>
+<tr><td>Valve VRS calibration pairs / k</td>
+    <td class="num">20 / 0.338</td></tr>
+<tr><td>Track record settled picks</td>
+    <td class="num">0 (0 won)</td></tr>
+</tbody></table>
+
+<div class="note info"><strong>Mobile first.</strong> This section is built for a phone: one column,
+16&nbsp;px text, tables that become cards on narrow screens, and no external scripts or fonts.
+Use the pills at the top of any page to jump between sections, and
+<a href="picks.html">All picks</a> for the list itself.</div>
+
+<h2>Source health of this build</h2>
+<table class='resp'><thead><tr><th>Source</th><th>HTTP</th><th>Size/rows</th><th>Error</th></tr></thead><tbody><tr><td>hotspawn_lobby_page</td><td class='num'>ok</td><td class='num'>408057</td><td class='src'></td></tr><tr><td>hotspawn_api</td><td class='num'>ok</td><td class='num'>9214977</td><td class='src'></td></tr><tr><td>pinnacle</td><td class='num'>ok</td><td class='num'>721088</td><td class='src'></td></tr><tr><td>bovada</td><td class='num'>ok</td><td class='num'>496495</td><td class='src'></td></tr><tr><td>linefeed_melbet</td><td class='num'>ok</td><td class='num'>53767</td><td class='src'></td></tr><tr><td>kalshi</td><td class='num'>ok</td><td class='num'>444479</td><td class='src'></td></tr><tr><td>bo3gg_matches</td><td class='num'>—</td><td class='num'>344</td><td class='src'></td></tr><tr><td>valve_vrs</td><td class='num'>—</td><td class='num'></td><td class='src'></td></tr></tbody></table><h3>Reachability probes (never used as prices)</h3><table class='resp'><thead><tr><th>Probe</th><th>HTTP</th><th>Error</th></tr></thead><tbody><tr><td>hltv_matches</td><td class='num'>403</td><td class='src'>HTTPError 403</td></tr><tr><td>polymarket</td><td class='num'>200</td><td class='src'></td></tr><tr><td>linefeed_22bet</td><td class='num'>200</td><td class='src'></td></tr><tr><td>linefeed_betwinner</td><td class='num'>200</td><td class='src'></td></tr></tbody></table>
+
+<footer>
+  <p>Board data: <code>data/fe803b80/board.json</code> · wall clock of the last published build:
+  <strong>2026-10-14 04:45:33 UTC</strong> · lobby read
+  2026-10-14 04:44:00 UTC.</p>
+  <p>HotSpawn is used to discover fixtures and to settle results — never to set a probability.
+  Crowd "picked %" values are not read, stored or displayed here. Originated lines are model
+  output, clearly labelled, and are not betting advice or a guarantee. Model estimates only.
+  If you gamble, be 18+ and use licensed operators.</p>
+</footer>
+</main>
+</body>
+</html>
