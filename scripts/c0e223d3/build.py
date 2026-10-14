@@ -248,7 +248,9 @@ def build_rows(our_board: dict, valve_by_name: dict, k: float):
                 "flags": sorted(set(flags)),
                 "resolved": [
                     {"hotspawn_name": e["hotspawn_name"], "valve_name": e["valve_name"],
-                     "status": e["status"], "evidence": e["evidence"]}
+                     "status": e["status"], "evidence": e["evidence"],
+                     "candidates": e.get("candidates"),
+                     "counter_evidence": e.get("counter_evidence")}
                     for e in resolved_entries
                 ],
             }
@@ -625,24 +627,36 @@ market prices and ratings differently.</p>
     for r in gap_rows:
         status = "Resolved from official sources" if r["prob_a"] is not None else "Still unverified"
         res = ""
+        seen_urls = set()   # one source can back both the mapping and the "no rating" note
+
+        def ev_list(items):
+            out = []
+            for x in items:
+                url = x.get("url", "")
+                if url in seen_urls:
+                    continue
+                seen_urls.add(url)
+                out.append(
+                    f'<li><a href="{core.esc(url)}" rel="nofollow noopener" target="_blank">'
+                    f'{core.esc(x["source"])}</a> &mdash; &ldquo;{core.esc(x["quote"])}&rdquo;</li>')
+            return "".join(out)
+
         for e in r["resolved"]:
-            ev = "".join(
-                f'<li><a href="{core.esc(x["url"])}" rel="nofollow noopener" target="_blank">'
-                f'{core.esc(x["source"])}</a> &mdash; &ldquo;{core.esc(x["quote"])}&rdquo;</li>'
-                for x in e.get("evidence", [])
-            )
+            ev = ev_list(e.get("evidence", []))
+            if not ev:
+                continue
+            # A resolution that publishes competing candidates is not settled, only argued.
+            label = "resolved (contested &mdash; see below)" if e.get("candidates") else e["status"]
             res += (f"<h3>{core.esc(e['hotspawn_name'])} = {core.esc(e['valve_name'] or 'no match')}"
-                    f" <span class='small'>({core.esc(e['status'])})</span></h3><ul class='tight'>{ev}</ul>")
+                    f" <span class='small'>{label}</span></h3><ul class='tight'>{ev}</ul>")
         if r["prob_a"] is None:
             # pull the unresolved resolution entry for this team so the reviewer sees the checks
             for name in (r["team_a"], r["team_b"]):
                 ent = aliases.by_hotspawn_name(name)
                 if ent and ent["status"] == "unresolved":
-                    ev = "".join(
-                        f'<li><a href="{core.esc(x["url"])}" rel="nofollow noopener" target="_blank">'
-                        f'{core.esc(x["source"])}</a> &mdash; &ldquo;{core.esc(x["quote"])}&rdquo;</li>'
-                        for x in ent.get("evidence", [])
-                    )
+                    ev = ev_list(ent.get("evidence", []))
+                    if not ev:
+                        continue
                     res += (f"<h3>{core.esc(ent['hotspawn_name'])} &mdash; no official rating found</h3>"
                             f"<ul class='tight'>{ev}</ul>"
                             f"<p class='small'>{core.esc(ent.get('conflict') or '')}</p>")
