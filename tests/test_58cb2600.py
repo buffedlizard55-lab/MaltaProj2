@@ -23,14 +23,26 @@ class LobbyTransferStateTests(unittest.TestCase):
         cls.html = CAPTURE.read_text(encoding="utf-8")
 
     def test_real_public_capture_parses_exact_listing_and_published_links(self):
+        # The lobby is re-captured on every refresh, so the expected counters are read from the
+        # published snapshot of that same capture (data/live/fixtures.json, written by the same
+        # collector job) instead of a frozen literal: this still cross-checks the raw HTML
+        # against the published inventory, and it cannot go stale when the lobby changes.
+        published = json.loads((ROOT / "data" / "live" / "fixtures.json").read_text(encoding="utf-8"))
+        counters = published["lobby_counters"]
         parsed = parse_lobby(self.html)
-        self.assertEqual(len(parsed["fixtures"]), 89)
+        self.assertEqual(len(parsed["fixtures"]), counters["all_tiers"])
         self.assertEqual(parsed["counters"], {
-            "matches_this_week": 68, "all_tiers": 89,
-            "tier_s": 4, "tier_b": 25, "tier_c": 60,
+            "matches_this_week": counters["matches_this_week"],
+            "all_tiers": counters["all_tiers"],
+            "tier_s": counters["tier_counts"]["s"],
+            "tier_b": counters["tier_counts"]["b"],
+            "tier_c": counters["tier_counts"]["c"],
         })
         self.assertGreater(parsed["published_permalink_count"], 0)
-        self.assertEqual(len({row["fixture_id"] for row in parsed["fixtures"]}), 89)
+        self.assertEqual(len({row["fixture_id"] for row in parsed["fixtures"]}),
+                         counters["all_tiers"])
+        self.assertEqual(sorted(row["fixture_id"] for row in parsed["fixtures"]),
+                         sorted(counters["listing_ids"]))
         for row in parsed["fixtures"]:
             self.assertEqual(row["sport"], "cs2")
             self.assertNotIn("pick_pct", json.dumps(row).lower())
