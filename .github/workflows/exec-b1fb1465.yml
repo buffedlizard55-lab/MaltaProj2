@@ -58,6 +58,31 @@ jobs:
             data/b1fb1465
             exec
           retention-days: 7
+      - name: Publish a diagnostic copy on a session branch (never on main)
+        if: failure()
+        env:
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          if [ "$REF_NAME" = "main" ]; then
+            echo "main is never given a failed build; nothing is committed"
+            exit 0
+          fi
+          git config user.name "malta-exec-bot"
+          git config user.email "malta-exec-bot@users.noreply.github.com"
+          mkdir -p data/b1fb1465/diagnostic
+          for f in board.json verification.json snapshot.json; do
+            [ -f "data/b1fb1465/$f" ] && cp -f "data/b1fb1465/$f" data/b1fb1465/diagnostic/
+          done
+          git add -f data/b1fb1465/diagnostic
+          git diff --cached --quiet && exit 0
+          git commit -m "exec(b1fb1465): diagnostic build (verification failed)"
+          for attempt in 1 2 3; do
+            git pull --rebase origin "$REF_NAME"
+            if git push origin "HEAD:$REF_NAME"; then exit 0; fi
+            sleep 5
+          done
+          exit 0
       - name: Commit the refreshed data and pages atomically
         env:
           REF_NAME: ${{ github.ref_name }}
