@@ -24,13 +24,13 @@ class LobbyTransferStateTests(unittest.TestCase):
 
     def test_real_public_capture_parses_exact_listing_and_published_links(self):
         parsed = parse_lobby(self.html)
-        self.assertEqual(len(parsed["fixtures"]), 90)
+        self.assertEqual(len(parsed["fixtures"]), 89)  # capture refreshed 90->89 as lobby moved (c64a5e19 integration)
         self.assertEqual(parsed["counters"], {
-            "matches_this_week": 68, "all_tiers": 90,
-            "tier_s": 4, "tier_b": 26, "tier_c": 60,
+            "matches_this_week": 68, "all_tiers": 89,
+            "tier_s": 4, "tier_b": 25, "tier_c": 60,
         })
         self.assertGreater(parsed["published_permalink_count"], 0)
-        self.assertEqual(len({row["fixture_id"] for row in parsed["fixtures"]}), 90)
+        self.assertEqual(len({row["fixture_id"] for row in parsed["fixtures"]}), 89)
         for row in parsed["fixtures"]:
             self.assertEqual(row["sport"], "cs2")
             self.assertNotIn("pick_pct", json.dumps(row).lower())

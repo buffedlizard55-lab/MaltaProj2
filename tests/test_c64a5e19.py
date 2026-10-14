@@ -2,9 +2,20 @@
 import json, sys, unittest
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts" / "c64a5e19"))
-import core  # noqa: E402
-import build as B  # noqa: E402
+# Load with unique module names and restore sys.path/sys.modules afterwards, so this file
+# never shadows the shared scripts/build.py ("build") or any other session's "core".
+import importlib.util  # noqa: E402
+def _load(name, path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod); return mod
+_here = str(ROOT / "scripts" / "c64a5e19")
+sys.path.insert(0, _here)
+try:
+    core = _load("c64a5e19_core", Path(_here) / "core.py")
+    B = _load("c64a5e19_build", Path(_here) / "build.py")
+finally:
+    sys.path.remove(_here)
+    sys.modules.pop("build", None); sys.modules.pop("core", None)
 
 def board():
     snap = json.loads((ROOT / "data" / "f7279a54" / "snapshot.json").read_text())
