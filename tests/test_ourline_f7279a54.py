@@ -146,6 +146,47 @@ class Joining(unittest.TestCase):
                                                      "start_utc": "2026-10-14T16:00:00Z"}))
 
 
+class JoinWindowAndResults(unittest.TestCase):
+    FX = {"team_a": "mellren", "team_b": "Privateer", "start_utc": "2026-10-16T14:00:00Z"}
+
+    def test_14h_tolerance_and_rejected_join(self):
+        q = {"team_a": "Mellren", "team_b": "Privateer Gaming", "start_utc": "2026-10-15T14:00:00Z"}
+        j = core.match_quote(self.FX, q)          # same pairing, 24 h earlier -> not joined
+        self.assertTrue(j["rejected"])
+        self.assertAlmostEqual(j["start_diff_h"], 24.0)
+        q["start_utc"] = "2026-10-16T04:00:00Z"   # 10 h -> joined (flagged downstream)
+        self.assertNotIn("rejected", core.match_quote(self.FX, q))
+
+    def test_result_winner(self):
+        self.assertEqual(core.result_winner({"status": "ended", "participants0_score": 2,
+                                             "participants1_score": 1}), "a")
+        self.assertEqual(core.result_winner({"status": "ended", "participants0_score": "0",
+                                             "participants1_score": "2"}), "b")
+        self.assertIsNone(core.result_winner({"status": "scheduled", "participants0_score": 2,
+                                              "participants1_score": 0}))
+        self.assertIsNone(core.result_winner({"status": "ended", "participants0_score": 1,
+                                              "participants1_score": 1}))
+        self.assertIsNone(core.result_winner({"status": "forfeited"}))
+
+    def test_grade_uses_last_published_line_only(self):
+        hist = {"1": {"observed_utc": "2026-10-14T07:00:00Z",
+                      "line": {"prob_a": 0.7, "pick_team": "A", "pick_side": "a",
+                               "pick_prob": 0.7, "basis": "market"}},
+                "2": {"observed_utc": "2026-10-14T07:00:00Z",
+                      "line": {"prob_a": 0.4, "pick_team": "D", "pick_side": "b",
+                               "pick_prob": 0.6, "basis": "model"}}}
+        fx = [{"fixture_id": "1", "team_a": "A", "team_b": "B", "start_utc": "x", "winner": "b"},
+              {"fixture_id": "2", "team_a": "C", "team_b": "D", "start_utc": "x", "winner": "b"},
+              {"fixture_id": "3", "team_a": "E", "team_b": "F", "start_utc": "x", "winner": "a"}]
+        track = {}
+        s = build.grade(fx, hist, track)
+        self.assertEqual(set(track), {"1", "2"})   # no published line -> not graded
+        self.assertEqual((s["all"]["n"], s["all"]["correct"]), (2, 1))
+        self.assertAlmostEqual(track["1"]["brier"], 0.49)
+        self.assertAlmostEqual(track["2"]["brier"], 0.16)
+        self.assertEqual(s["by_basis"]["model"]["correct"], 1)
+
+
 class VrsDuplicates(unittest.TestCase):
     def test_duplicate_resolved_only_by_strictly_later_match(self):
         vrs = {"teams": [
@@ -201,12 +242,19 @@ class PublishedArtifacts(unittest.TestCase):
         gen = core.parse_iso(self.board["generated_utc"])
         for r in self.board["open"]:
             self.assertGreater(core.parse_iso(r["lock_utc"]), gen)
+            self.assertEqual(r["status"], "scheduled")
+
+    def test_rejected_joins_never_feed_the_line(self):
+        for r in self.board["open"]:
+            rejected = {q["source_key"] for q in r.get("rejected_joins") or []}
+            used = {q["source_key"] for q in r["quotes"]}
+            self.assertFalse(rejected & used, r["fixture_id"])
 
     def test_pages_list_every_open_fixture(self):
         index = (SITE / "index.html").read_text()
         for r in self.board["open"]:
             self.assertIn(f'id="m-{r["fixture_id"]}"', index)
-        for name in ("index.html", "sources.html", "flagged.html", "method.html"):
+        for name in ("index.html", "results.html", "sources.html", "flagged.html", "method.html"):
             self.assertTrue((SITE / name).exists(), name)
 
     def test_local_links_resolve(self):

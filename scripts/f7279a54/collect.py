@@ -102,6 +102,21 @@ def collect_hotspawn() -> dict:
             if origin == "api":  # the API response is fresher than the cached page
                 cur.update(fx)
             cur["seen_in"].append(origin)
+    # The API returns the full fixture history (>10,000 CS2 rows). Keep only what the board needs:
+    # every row the lobby page lists, every scheduled/started row, rows that started in the last
+    # 4 days (results for the track record) — the rest is summarised by counts.
+    from datetime import timedelta
+    cutoff = core.to_iso(core.now_utc() - timedelta(days=4))
+    status_counts: dict[str, int] = {}
+    kept = {}
+    for fid, fx in fixtures.items():
+        status_counts[str(fx.get("status"))] = status_counts.get(str(fx.get("status")), 0) + 1
+        if ("lobby_page" in fx["seen_in"] or fx.get("status") in ("scheduled", "started")
+                or fx["start_utc"] >= cutoff):
+            kept[fid] = fx
+    LOG["hotspawn_api"]["cs2_status_counts_all_rows"] = status_counts
+    LOG["hotspawn_api"]["cs2_rows_kept"] = len(kept)
+    fixtures = kept
     return {"fixtures": sorted(fixtures.values(), key=lambda r: (r["start_utc"], r["fixture_id"])),
             "permalinks": state.get("permalinks") or {}, "week": state.get("week")}
 

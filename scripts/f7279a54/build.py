@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "f7279a54"
 SITE = ROOT / "ourline"
 LOBBY = "https://play.hotspawn.com/lobby"
+HS_API_PUBLIC = "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
 VALVE_GLICKO = ("https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/"
                 "model/glicko.js")
 VALVE_FIT = ("https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/"
@@ -84,7 +85,37 @@ def rating_for(name: str, idx: dict, dup: dict) -> tuple[dict | None, str | None
 
 
 # --------------------------------------------------------------------------------- board
-def build_board(snap: dict, hist: dict, cal_pairs: dict) -> dict:
+def grade(hs_fixtures: list[dict], hist: dict, track: dict) -> dict:
+    """Grade every pick this board published while a fixture was open, once HotSpawn reports a
+    winner (status 'ended' with unequal scores). Persisted so results survive snapshot trimming."""
+    for fx in hs_fixtures:
+        h = hist.get(fx["fixture_id"])
+        if not h or not fx.get("winner") or fx["fixture_id"] in track:
+            continue
+        ln = h["line"]
+        p_a = ln["prob_a"]
+        won_a = 1.0 if fx["winner"] == "a" else 0.0
+        track[fx["fixture_id"]] = {
+            "fixture_id": fx["fixture_id"], "teams": [fx["team_a"], fx["team_b"]],
+            "competition": fx.get("competition"), "start_utc": fx["start_utc"],
+            "pick_team": ln["pick_team"], "pick_prob": ln["pick_prob"], "basis": ln["basis"],
+            "winner_team": fx["team_a"] if fx["winner"] == "a" else fx["team_b"],
+            "correct": ln["pick_side"] == fx["winner"], "brier": round((p_a - won_a) ** 2, 4),
+            "line_observed_utc": h["observed_utc"]}
+    rows = list(track.values())
+
+    def agg(rs):
+        if not rs:
+            return {"n": 0, "correct": 0, "accuracy": None, "brier": None, "mean_pick_prob": None}
+        return {"n": len(rs), "correct": sum(1 for r in rs if r["correct"]),
+                "accuracy": sum(1 for r in rs if r["correct"]) / len(rs),
+                "brier": sum(r["brier"] for r in rs) / len(rs),
+                "mean_pick_prob": sum(r["pick_prob"] for r in rs) / len(rs)}
+    return {"all": agg(rows), "by_basis": {b: agg([r for r in rows if r["basis"] == b])
+                                           for b in ("market+model", "market", "model")}}
+
+
+def build_board(snap: dict, hist: dict, cal_pairs: dict, track: dict | None = None) -> dict:
     now = core.parse_iso(snap["collected_to_utc"]) or core.now_utc()
     hs = snap["hotspawn"]
     permalinks = hs.get("permalinks") or {}
@@ -95,17 +126,24 @@ def build_board(snap: dict, hist: dict, cal_pairs: dict) -> dict:
     pre_quotes = [qq for qq in quotes if not qq.get("live")]
     used_quote_ids: set[str] = set()
 
-    open_rows, recent_rows, stale = [], [], []
+    open_rows, recent_rows, stale, conflicts = [], [], [], []
     for fx in hs["fixtures"]:
         lock = core.parse_iso(fx.get("lock_utc")) or core.parse_iso(fx["start_utc"])
         start = core.parse_iso(fx["start_utc"])
         listed_on_page = "lobby_page" in fx.get("seen_in", [])
-        if lock and lock > now:
+        status = str(fx.get("status") or "")
+        if lock and lock > now and status == "scheduled":
             state = "open"
-        elif start and now - start <= timedelta(hours=RECENT_LOCK_H):
+        elif lock and lock > now and status != "scheduled":
+            # e.g. status 'started' while the published start time is weeks away
+            conflicts.append(fx)
+            continue
+        elif status in ("scheduled", "started") and start and now - start <= timedelta(hours=RECENT_LOCK_H):
+            state = "locked_recent"
+        elif status == "ended" and start and now - start <= timedelta(hours=RECENT_LOCK_H) and fx["fixture_id"] in hist:
             state = "locked_recent"
         else:
-            if listed_on_page:
+            if listed_on_page and status in ("scheduled", "started"):
                 stale.append(fx)
             continue
         if state == "locked_recent" and not listed_on_page and fx["fixture_id"] not in hist:
@@ -126,6 +164,14 @@ def build_board(snap: dict, hist: dict, cal_pairs: dict) -> dict:
         for qq in pre_quotes:
             j = core.match_quote(fx, qq)
             if not j:
+                continue
+            if j.get("rejected"):
+                row.setdefault("rejected_joins", []).append({
+                    "source_key": qq["source_key"], "source_name": qq["source_name"],
+                    "public_url": qq["public_url"], "event_id": qq["event_id"],
+                    "names_at_source": [qq["team_a"], qq["team_b"]], "start_utc_at_source": qq.get("start_utc"),
+                    "start_diff_h": round(j["start_diff_h"], 1), "decimal": [qq["decimal_a"], qq["decimal_b"]]})
+                row["flags"].append(f"start_time_mismatch_not_joined:{qq['source_key']}")
                 continue
             cand = {**qq, "join": j, "prob_team_a": core.oriented_prob(qq, j["swapped"])}
             cur = per_source.get(qq["source_key"])
@@ -222,6 +268,7 @@ def build_board(snap: dict, hist: dict, cal_pairs: dict) -> dict:
                                                           "age_header", "quotes", "looks_like_challenge",
                                                           "rows", "fixtures_in_transfer_state", "crash")},
                             "ok": ok}
+    track_summary = grade(hs["fixtures"], hist, track if track is not None else {})
     n_open = len(open_rows)
     summary = {
         "open": n_open,
@@ -249,6 +296,10 @@ def build_board(snap: dict, hist: dict, cal_pairs: dict) -> dict:
         "open": open_rows, "locked_recent": recent_rows,
         "stale_listed": [{k2: f.get(k2) for k2 in ("fixture_id", "competition", "team_a", "team_b",
                                                    "start_utc", "lock_utc", "status")} for f in stale],
+        "status_conflicts": [{k2: f.get(k2) for k2 in ("fixture_id", "competition", "team_a", "team_b",
+                                                       "start_utc", "lock_utc", "status", "seen_in")}
+                             for f in conflicts],
+        "track_record": track_summary,
         "unmatched_quotes": unmatched, "rejected_quotes": snap.get("rejected_quotes", []),
         "access": access,
     }
@@ -324,7 +375,7 @@ JS = """
 })();
 """
 
-NAV = [("index.html", "Picks"), ("sources.html", "Lines &amp; sources"),
+NAV = [("index.html", "Picks"), ("results.html", "Track record"), ("sources.html", "Lines &amp; sources"),
        ("flagged.html", "Flagged for review"), ("method.html", "Method"), ("../index.html", "Main dashboard")]
 
 
@@ -448,6 +499,7 @@ rating model calibrated to those prices. The <b>PICK</b> is the team our line ma
 <div class="stat"><b>{s["market_based"]}</b><span>priced by bookmakers</span></div>
 <div class="stat"><b>{s["model_only"]}</b><span>VRS model only</span></div>
 <div class="stat"><b>{s["no_line"]}</b><span>no line (flagged)</span></div>
+<div class="stat"><b>{(str(b["track_record"]["all"]["correct"]) + "/" + str(b["track_record"]["all"]["n"])) if b["track_record"]["all"]["n"] else "—"}</b><span><a href="results.html">picks correct so far</a></span></div>
 <div class="stat"><b><span data-r="{esc(b["generated_utc"])}">{esc(b["generated_utc"])}</span></b><span>last update</span></div>
 </div>
 <div class="tools"><input id="q" type="search" placeholder="Search team or tournament…" aria-label="Search">{"".join(chips)}</div>
@@ -512,6 +564,7 @@ FLAG_TXT = {
     "model_and_market_pick_different_teams": "VRS model and bookmaker market favour different teams.",
     "api_only_not_on_cached_lobby_page": "Fixture is in the lobby's public fixtures API but not yet in the (cached) lobby page.",
     "in_play_price_seen_and_excluded": "An in-play price was seen and excluded (pre-match prices only).",
+    "start_time_mismatch_not_joined": "A price for the same teams exists but its start time differs from HotSpawn's by more than 14 h; not used (see table below).",
     "vrs_duplicate_resolved_by_latest_match": "VRS lists this name twice (two rosters); the row whose official details file shows the most recent counted match was used.",
 }
 
@@ -519,7 +572,7 @@ FLAG_TXT = {
 def flag_text(f: str) -> str:
     key = f.split(":")[0]
     if key.startswith("start_time_differs"):
-        return f"Source start time differs from HotSpawn by {key.split('_')[-1]} ({f.split(':')[1]}). Joined because the same pairing is unique within ±36 h."
+        return f"Source start time differs from HotSpawn by {key.split('_')[-1]} ({f.split(':')[1]}). Joined because the same pairing is within ±14 h."
     if key.startswith("model_market_gap"):
         return f"VRS model and market differ by {key.split('_')[-1]}."
     if key.startswith("sources_disagree"):
@@ -561,6 +614,19 @@ def render_flagged(b: dict, review: dict) -> str:
                    f'<td data-l="Detail">{esc(a.get("quotes") if a.get("quotes") is not None else (a.get("rows") or a.get("fixtures_in_transfer_state") or ""))}'
                    f'{" · cache Age " + esc(a.get("age_header")) + " s" if a.get("age_header") else ""}</td>'
                    f'<td data-l="URL"><a href="{esc(a.get("url"))}">{esc((a.get("url") or "")[:70])}</a></td></tr>')
+    rj = []
+    for r in b["open"]:
+        for x in r.get("rejected_joins", []):
+            rj.append(f'<tr><td data-l="HotSpawn match"><a href="index.html#m-{esc(r["fixture_id"])}">{esc(r["team_a"])} vs {esc(r["team_b"])}</a>'
+                      f'<div class="small">HotSpawn start {esc(r["start_utc"])}</div></td>'
+                      f'<td data-l="Source"><a href="{esc(x["public_url"])}">{esc(x["source_name"])}</a> event {esc(x["event_id"])}</td>'
+                      f'<td data-l="Source start (UTC)">{esc(x["start_utc_at_source"])} ({x["start_diff_h"]} h apart)</td>'
+                      f'<td data-l="Price not used">{esc(x["decimal"][0])} / {esc(x["decimal"][1])}</td></tr>')
+    sc = []
+    for f in b.get("status_conflicts", []):
+        sc.append(f'<tr><td data-l="Fixture">{esc(f["fixture_id"])}</td><td data-l="Match">{esc(f["team_a"])} vs {esc(f["team_b"])}<div class="small">{esc(f["competition"])}</div></td>'
+                  f'<td data-l="Status at source">{esc(f["status"])}</td><td data-l="Scheduled start (UTC)">{esc(f["start_utc"])}</td>'
+                  f'<td data-l="Source"><a href="{HS_API_PUBLIC}">HotSpawn fixtures API</a></td></tr>')
     rej = []
     for x in b["rejected_quotes"]:
         rej.append(f'<tr><td data-l="Exchange event"><a href="{esc(x["public_url"])}">{esc(x["event_id"])}</a></td>'
@@ -573,7 +639,8 @@ def render_flagged(b: dict, review: dict) -> str:
     rv = []
     for it in review.get("findings", []):
         links = " · ".join(f'<a href="{esc(u)}">{esc(t)}</a>' for t, u in it.get("links", []))
-        rv.append(f'<tr><td data-l="ID">{esc(it["id"])}</td><td data-l="Finding">{esc(it["finding"])}</td>'
+        rv.append(f'<tr><td data-l="ID">{esc(it["id"])}</td><td data-l="Finding">{esc(it["finding"])}'
+                  + (f'<br><b>Update:</b> {esc(it["update_2026_10_14"])}' if it.get("update_2026_10_14") else "") + '</td>'
                   f'<td data-l="Status">{esc(it["status"])}</td><td data-l="Evidence">{links}</td></tr>')
     body = f"""
 <h1>Flagged for review</h1>
@@ -584,6 +651,13 @@ an unverifiable probability stays blank. Flagged items do not block publication.
 <tbody>{"".join(rows) or "<tr><td colspan=4>None.</td></tr>"}</tbody></table>
 <h2 id="access">Source access on this run</h2>
 <table class="cards"><thead><tr><th>Source</th><th>Result</th><th>HTTP</th><th>Detail</th><th>URL</th></tr></thead><tbody>{"".join(acc)}</tbody></table>
+<h2>Prices not joined: same teams but start time too far apart ({len(rj)})</h2>
+<p class="mut">The pairing matches but the source's start time differs from HotSpawn's by more than {core.TIME_TOLERANCE_H:.0f} h, so it could be a
+different meeting of the same teams. The price is shown here and not used.</p>
+<table class="cards"><thead><tr><th>HotSpawn match</th><th>Source</th><th>Source start (UTC)</th><th>Price not used</th></tr></thead><tbody>{"".join(rj) or "<tr><td colspan=4>None.</td></tr>"}</tbody></table>
+<h2>Status conflicts in HotSpawn data ({len(sc)})</h2>
+<p class="mut">Fixtures whose HotSpawn status is not "scheduled" although their lock time is still in the future. Not treated as open.</p>
+<table class="cards"><thead><tr><th>Fixture</th><th>Match</th><th>Status at source</th><th>Scheduled start (UTC)</th><th>Source</th></tr></thead><tbody>{"".join(sc) or "<tr><td colspan=5>None.</td></tr>"}</tbody></table>
 <h2>Exchange books rejected as too thin ({len(rej)})</h2>
 <table class="cards"><thead><tr><th>Exchange event</th><th>Teams</th><th>Reason</th></tr></thead><tbody>{"".join(rej) or "<tr><td colspan=3>None.</td></tr>"}</tbody></table>
 <h2>Listed by the lobby page but lock time long past ({len(b["stale_listed"])})</h2>
@@ -596,6 +670,40 @@ an unverifiable probability stays blank. Flagged items do not block publication.
 <table class="cards"><thead><tr><th>ID</th><th>Finding</th><th>Status</th><th>Evidence</th></tr></thead><tbody>{"".join(rv)}</tbody></table>
 """
     return page("Flagged for review", "flagged.html", body, b)
+
+
+def render_results(b: dict, track: dict) -> str:
+    tr = b["track_record"]
+    def line(label, a):
+        if not a["n"]:
+            return f"<tr><td data-l='Basis'>{esc(label)}</td><td data-l='Graded' colspan=4>no graded picks yet</td></tr>"
+        return (f"<tr><td data-l='Basis'>{esc(label)}</td><td data-l='Graded'>{a['n']}</td>"
+                f"<td data-l='Correct'>{a['correct']} ({pct(a['accuracy'])})</td>"
+                f"<td data-l='Avg. pick probability'>{pct(a['mean_pick_prob'])}</td>"
+                f"<td data-l='Brier score'>{a['brier']:.3f}</td></tr>")
+    rows = []
+    for r in sorted(track.values(), key=lambda x: x["start_utc"], reverse=True)[:400]:
+        rows.append(f"<tr><td data-l='Started'><span data-t='{esc(r['start_utc'])}'>{esc(r['start_utc'])}</span></td>"
+                    f"<td data-l='Match'>{esc(r['teams'][0])} vs {esc(r['teams'][1])}<div class='small'>{esc(r.get('competition'))}</div></td>"
+                    f"<td data-l='Our pick'>{esc(r['pick_team'])} {pct(r['pick_prob'])}<div class='small'>{esc(BASIS_TXT.get(r['basis'], r['basis']))}</div></td>"
+                    f"<td data-l='Winner (HotSpawn result)'>{esc(r['winner_team'])}</td>"
+                    f"<td data-l='Result'>{'✅ correct' if r['correct'] else '❌ wrong'}</td>"
+                    f"<td data-l='Source'><a href='{HS_API_PUBLIC}'>HotSpawn fixtures API</a></td></tr>")
+    body = f"""
+<h1>Track record</h1>
+<p class="mut">Every pick this board published while a match was open is graded once HotSpawn's own fixture data reports the match as
+<i>ended</i> with a winner. The line graded is the last one published before the match locked. Tracking started with this board on
+2026-10-14, so early numbers are based on few matches and say little yet.</p>
+<table class="cards"><thead><tr><th>Basis</th><th>Graded</th><th>Correct</th><th>Avg. pick probability</th><th>Brier score</th></tr></thead><tbody>
+{line("All picks", tr["all"])}{line(BASIS_TXT["market+model"], tr["by_basis"]["market+model"])}
+{line(BASIS_TXT["market"], tr["by_basis"]["market"])}{line(BASIS_TXT["model"], tr["by_basis"]["model"])}</tbody></table>
+<p class="small">Brier score = mean of (our probability for team A − 1 if A won else 0)²; lower is better, 0.25 equals always saying 50%.
+If our probabilities are well calibrated, "Correct" should be close to "Avg. pick probability" over many matches.</p>
+<h2>Graded matches ({len(track)})</h2>
+<table class="cards"><thead><tr><th>Started</th><th>Match</th><th>Our pick</th><th>Winner (HotSpawn result)</th><th>Result</th><th>Source</th></tr></thead>
+<tbody>{"".join(rows) or "<tr><td colspan=6>No graded matches yet — results appear here automatically after matches end.</td></tr>"}</tbody></table>
+"""
+    return page("Track record", "results.html", body, b)
 
 
 def render_method(b: dict) -> str:
@@ -662,7 +770,9 @@ def main() -> int:
         return 1
     hist = load(DATA / "line_history.json", {})
     cal_pairs = load(DATA / "calibration_pairs.json", {})
-    board = build_board(snap, hist, cal_pairs)
+    track = load(DATA / "track_record.json", {})
+    board = build_board(snap, hist, cal_pairs, track)
+    (DATA / "track_record.json").write_text(json.dumps(track, indent=1, sort_keys=True) + "\n")
     # bound history files
     if len(hist) > HIST_LIMIT:
         hist = dict(sorted(hist.items(), key=lambda kv: kv[1]["observed_utc"])[-HIST_LIMIT:])
@@ -677,6 +787,7 @@ def main() -> int:
     (SITE / "sources.html").write_text(render_sources(board))
     (SITE / "flagged.html").write_text(render_flagged(board, review))
     (SITE / "method.html").write_text(render_method(board))
+    (SITE / "results.html").write_text(render_results(board, track))
     print(json.dumps(board["summary"], indent=1), "k=", round(board["calibration"]["k"], 3))
     return 0
 

@@ -316,12 +316,27 @@ def fixture_from_hotspawn(f: dict) -> dict | None:
         "lock_utc": to_iso(lock),
         "team_a": str(a).strip(),
         "team_b": str(b).strip(),
+        "winner": result_winner(f),
     }
 
 
+def result_winner(f: dict) -> str | None:
+    """'a' / 'b' when HotSpawn reports the fixture as ended with unequal scores, else None."""
+    if str(f.get("status") or "") != "ended":
+        return None
+    try:
+        s0, s1 = int(f.get("participants0_score")), int(f.get("participants1_score"))
+    except (TypeError, ValueError):
+        return None
+    if s0 == s1:
+        return None
+    return "a" if s0 > s1 else "b"
+
+
 # ------------------------------------------------------------------------------ joining
-TIME_TOLERANCE_H = 36.0   # same pairing must start within this many hours of HotSpawn's time
+TIME_TOLERANCE_H = 14.0   # same pairing must start within this many hours of HotSpawn's time
 TIME_WARN_H = 3.0         # larger differences are joined but flagged
+TIME_REJECT_LOG_H = 72.0  # same pairing 14-72 h apart: not joined, but published as a rejected join
 
 
 def match_quote(fixture: dict, quote: dict) -> dict | None:
@@ -338,6 +353,8 @@ def match_quote(fixture: dict, quote: dict) -> dict | None:
         return None
     diff = hours_apart(parse_iso(fixture["start_utc"]), parse_iso(quote.get("start_utc")))
     if diff is not None and diff > TIME_TOLERANCE_H:
+        if diff <= TIME_REJECT_LOG_H:
+            return {"rejected": True, "swapped": swapped, "alias_notes": notes, "start_diff_h": diff}
         return None
     return {"swapped": swapped, "alias_notes": notes, "start_diff_h": diff}
 

@@ -8,55 +8,222 @@
    "id": "R1",
    "finding": "GitHub 'schedule' triggers have almost never fired in this repository: at review time the Actions API reported 1 scheduled run of update-data.yml (01:15 UTC) and 1 of pages.yml, and 0 scheduled runs of live-coverage.yml, fresh-dd2b7fee.yml, 961-collect.yml, expanded-lines.yml and picks-ac475c09.yml. Boards that rely only on cron are therefore stale (e.g. data/live/board.json generated_at_utc 2026-10-13T23:44:46Z, ~2 h old at review). This board uses a self-dispatch chain plus cron plus an update-data hook so it does not depend on cron alone.",
    "status": "needs review",
-   "links": [["live-coverage runs", "https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/live-coverage.yml"], ["update-data runs", "https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/update-data.yml"], ["GitHub docs: schedule may be delayed/dropped", "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule"], ["data/live/board.json", "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/data/live/board.json"]]
+   "links": [
+    [
+     "live-coverage runs",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/live-coverage.yml"
+    ],
+    [
+     "update-data runs",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/update-data.yml"
+    ],
+    [
+     "GitHub docs: schedule may be delayed/dropped",
+     "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule"
+    ],
+    [
+     "data/live/board.json",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/data/live/board.json"
+    ]
+   ]
   },
   {
    "id": "R2",
    "finding": "The root VRS 'originated estimate' (live/ board) uses p = 1/(1+10^(-(Ra-Rb)/400)) on raw VRS points with no calibration. Valve's own readme says its curve 'tends to underestimate win rates at the low end and overestimate at the high end'. Example: EAC vs BOJONG (fixture 1080282) is published at 96.4% from a 572-point gap, with no bookmaker price. This board instead fits the slope to observed bookmaker prices (see Method).",
    "status": "needs review",
-   "links": [["Valve readme (model fit)", "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/readme.md"], ["live_core.py VRS_SCALE", "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/scripts/live/live_core.py#L258"], ["Valve model/glicko.js", "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/glicko.js"]]
+   "links": [
+    [
+     "Valve readme (model fit)",
+     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/readme.md"
+    ],
+    [
+     "live_core.py VRS_SCALE",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/scripts/live/live_core.py#L258"
+    ],
+    [
+     "Valve model/glicko.js",
+     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/glicko.js"
+    ]
+   ]
   },
   {
    "id": "R3",
    "finding": "Valve VRS lists 31 organisation names twice in the 2026-10-05 global standings (an older roster kept as its own row, e.g. 6666 #127/923 pts and #368/425 pts; Zomblers #254 and #259). The live/ pipeline keeps the row with the most points (live_core.vrs_markdown_rows). That rule is not verified against which roster is active; for 6666 it happens to coincide with the roster whose last counted match is most recent (2026-09-23 vs 2026-06-28 per Valve's details files). This board resolves duplicates only by the latest counted match in Valve's details files, otherwise leaves the rating blank.",
    "status": "needs review",
-   "links": [["VRS global 2026-10-05", "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"], ["6666 #127 details", "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0127--6666--amster-denzy-kl1o-rendysky-skch.md"], ["6666 #368 details", "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0368--6666--auth0ri-m4d4ra-rickangel-skch.md"], ["live_core.py", "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/scripts/live/live_core.py#L273"]]
+   "links": [
+    [
+     "VRS global 2026-10-05",
+     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+    ],
+    [
+     "6666 #127 details",
+     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0127--6666--amster-denzy-kl1o-rendysky-skch.md"
+    ],
+    [
+     "6666 #368 details",
+     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0368--6666--auth0ri-m4d4ra-rickangel-skch.md"
+    ],
+    [
+     "live_core.py",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/scripts/live/live_core.py#L273"
+    ]
+   ]
   },
   {
    "id": "R4",
    "finding": "The live/ Kalshi collector requests the first 200 open Kalshi events across all categories (events?limit=200&status=open) and filters for Counter-Strike afterwards; the committed quotes.json contains 0 Kalshi quotes (63 quotes: 36 Melbet, 14 Bovada, 13 Pinnacle). CS2 match markets live in series KXCS2GAME, which this board queries directly.",
    "status": "needs review",
-   "links": [["collect_live.py Kalshi URL", "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/scripts/live/collect_live.py#L624"], ["data/live/quotes.json", "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/data/live/quotes.json"], ["Kalshi KXCS2GAME", "https://kalshi.com/markets/kxcs2game"], ["Kalshi API docs (market data quick start)", "https://docs.kalshi.com/getting_started/quick_start_market_data"]]
+   "links": [
+    [
+     "collect_live.py Kalshi URL",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/scripts/live/collect_live.py#L624"
+    ],
+    [
+     "data/live/quotes.json",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/data/live/quotes.json"
+    ],
+    [
+     "Kalshi KXCS2GAME",
+     "https://kalshi.com/markets/kxcs2game"
+    ],
+    [
+     "Kalshi API docs (market data quick start)",
+     "https://docs.kalshi.com/getting_started/quick_start_market_data"
+    ]
+   ]
   },
   {
    "id": "R5",
    "finding": "Fragmentation: the shared navigation lists 16 sections and at least 9 parallel pick boards (root CS2/Probabilities, pickem/, current/, site/42580809, picks/, verify961/, fresh/, reconcile/, market/, live/) with different eligibility rules, so the same fixture can show different numbers or no number depending on the page (e.g. Enjoy vs B8 Academy: live/ 79.9% Enjoy as an uncalibrated estimate, root Probabilities blank). Consolidation is a shared-navigation decision for the integration owner; this session only adds one clearly labelled entry.",
-   "status": "needs review",
-   "links": [["build_site.py NAV", "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/scripts/build_site.py#L71"], ["data/current_probabilities.json", "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/data/current_probabilities.json"]]
+   "status": "partly resolved",
+   "links": [
+    [
+     "build_site.py NAV",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/scripts/build_site.py#L71"
+    ],
+    [
+     "data/current_probabilities.json",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/data/current_probabilities.json"
+    ],
+    [
+     "build_site.py NAV @ c634725",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/c634725/scripts/build_site.py#L74-L82"
+    ],
+    [
+     "PR #74",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/pull/74"
+    ]
+   ],
+   "update_2026_10_14": "Partly addressed on main by PR #74 (session 58cb2600, merge 138047e): the shared NAV now has 7 entries and alternate boards (fresh/, live/, picks/, ...) are listed on research.html as dated research, not current picks. Different boards can still show different numbers for the same fixture; ourline/ states its own method and is not linked from the root NAV unless the integration owner adds it."
   },
   {
    "id": "R6",
    "finding": "README states update-data.yml runs 'every 3 hours'; the workflow's cron is '17 * * * *' (hourly).",
-   "status": "needs review",
-   "links": [["README.md line 36", "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/README.md?plain=1#L36"], ["update-data.yml", "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/.github/workflows/update-data.yml"]]
+   "status": "resolved",
+   "links": [
+    [
+     "README.md line 36",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/README.md?plain=1#L36"
+    ],
+    [
+     "update-data.yml",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/.github/workflows/update-data.yml"
+    ],
+    [
+     "README.md L39 @ c634725",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/c634725/README.md?plain=1#L39"
+    ]
+   ],
+   "update_2026_10_14": "Resolved on main: README now says update-data.yml runs hourly (README L39 @ c634725), matching cron '17 * * * *'."
   },
   {
    "id": "R7",
    "finding": "COORDINATION.md is ~375 KB / 3,260 lines and repeats whole earlier boards several times (the ef111e02 task row appears 12 times), with several rows still 'in progress' whose owners later recorded completion elsewhere. The current status of a task cannot be read from one place. This session appends only its own section.",
    "status": "needs review",
-   "links": [["COORDINATION.md", "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/COORDINATION.md"]]
+   "links": [
+    [
+     "COORDINATION.md",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/3b3d731d2ec191615bc21d6210d98d2f3fdcec06/COORDINATION.md"
+    ]
+   ]
   },
   {
    "id": "R8",
    "finding": "PR #62 (session a0586093, HotSpawn permalink fix for market/) is still open and GitHub reports it as CONFLICTING with main.",
    "status": "needs review",
-   "links": [["PR #62", "https://github.com/buffedlizard55-lab/MaltaProj2/pull/62"]]
+   "links": [
+    [
+     "PR #62",
+     "https://github.com/buffedlizard55-lab/MaltaProj2/pull/62"
+    ]
+   ]
   },
   {
    "id": "R9",
    "finding": "The HotSpawn lobby page still serves fixtures from June 2026 with status 'scheduled' (lock long past) inside its own fixture data, and its header counter ('68 matches this week') differs from its tier filter total (89 at 01:46 UTC). This board counts only fixtures whose lock time is in the future and lists the stale ones separately on this page.",
    "status": "needs review",
-   "links": [["HotSpawn lobby", "https://play.hotspawn.com/lobby"]]
+   "links": [
+    [
+     "HotSpawn lobby",
+     "https://play.hotspawn.com/lobby"
+    ]
+   ]
+  },
+  {
+   "id": "R10",
+   "finding": "HotSpawn's public fixtures API (the endpoint embedded in the lobby's ng-state) returns the full CS2 history, 10,213 rows on 2026-10-14 01:55Z (ended 9269, forfeited 770, scheduled 88, cancelled 84, started 2). Any collector that treats every 'scheduled' row as current will list stale fixtures (see R9). This board keeps only lobby-listed, scheduled/started, or last-4-day rows and logs the full status counts in snapshot.json.",
+   "status": "handled here",
+   "links": [
+    [
+     "HotSpawn fixtures API",
+     "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
+    ],
+    [
+     "HotSpawn lobby",
+     "https://play.hotspawn.com/lobby"
+    ]
+   ]
+  },
+  {
+   "id": "R11",
+   "finding": "Fixture 1080200 Wildcard vs DENDELE (FRAG University 2026) has status 'started' in the API but a start time of 2026-11-12T00:00Z, and it is not in the lobby page state. It is not offered as an open pick; it is listed under 'Status conflicts' on this page.",
+   "status": "needs review",
+   "links": [
+    [
+     "HotSpawn fixtures API",
+     "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
+    ]
+   ]
+  },
+  {
+   "id": "R12",
+   "finding": "mellren vs Privateer: HotSpawn lists 2026-10-16T14:00Z while Bovada's event (id 32211970, URL slug ...202610151000) starts 2026-10-15T14:00Z — 24 h apart. Which time is right could not be confirmed, so Bovada's price is NOT used (join window tightened from 36 h to 14 h); the row uses the VRS model only and the rejected price is shown under 'Prices not joined'.",
+   "status": "needs review",
+   "links": [
+    [
+     "Bovada event",
+     "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-12/mellren-privateer-gaming-202610151000"
+    ],
+    [
+     "HotSpawn lobby",
+     "https://play.hotspawn.com/lobby"
+    ]
+   ]
+  },
+  {
+   "id": "V1",
+   "finding": "Manual spot-check (2026-10-14 ~01:58Z): Bovada's public CS2 coupon lists '9Z Globant vs Team AURORA', start 1791966600000 ms = 2026-10-14T08:30Z, moneyline 3.500 / 1.285714 — identical to the board's captured Bovada quote. Kalshi KXCS2GAME-26OCT140430AUR9Z page shows Aurora 74% (Yes 76¢), consistent with the captured 0.755.",
+   "status": "verified",
+   "links": [
+    [
+     "Bovada CS2 coupon JSON",
+     "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2"
+    ],
+    [
+     "Kalshi market",
+     "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct140430aur9z"
+    ]
+   ]
   }
  ]
 }

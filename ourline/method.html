@@ -45,7 +45,7 @@ code{background:#11151c;padding:1px 5px;border-radius:4px}
  .wide{overflow-x:auto}
 }
 </style></head><body>
-<header><div class="bar"><div class="brand">🎯 Our line · CS2 Pick'ems</div><nav><a href="index.html">Picks</a><a href="sources.html">Lines &amp; sources</a><a href="flagged.html">Flagged for review</a><a href="method.html" class=on>Method</a><a href="../index.html">Main dashboard</a></nav></div></header>
+<header><div class="bar"><div class="brand">🎯 Our line · CS2 Pick'ems</div><nav><a href="index.html">Picks</a><a href="results.html">Track record</a><a href="sources.html">Lines &amp; sources</a><a href="flagged.html">Flagged for review</a><a href="method.html" class=on>Method</a><a href="../index.html">Main dashboard</a></nav></div></header>
 <main>
 <h1>Method</h1>
 <div class="note">Short version: we take every bookmaker price for the match, remove the bookmaker's margin, average them, and
@@ -69,7 +69,7 @@ HotSpawn data is used only to know <i>which</i> matches exist and when they lock
 (implied-probability arithmetic as documented by <a href="https://help.smarkets.com/hc/en-gb/articles/214058369-How-to-calculate-implied-probability-in-betting">Smarkets</a>).
 In-play prices are excluded. Market consensus = weighted mean of the per-source probabilities with weights pinnacle 2, bovada 1, melbet 1, kalshi 1 (stated modelling choice: Pinnacle is weighted higher as a low-margin bookmaker).</p>
 <p><b>Joining a price to a HotSpawn match</b> requires both team names to be equal after normalisation (case, accents, punctuation, and the
-generic words <i>team / the / esports / gaming / club</i> at the start or end removed) and the source start time to be within ±36 h.
+generic words <i>team / the / esports / gaming / club</i> at the start or end removed) and the source start time to be within ±14 h.
 No prefix/substring matching ("B8" never matches "B8 Academy"). Explicit aliases:</p>
 <table class="cards"><thead><tr><th>Source spelling (normalised)</th><th>HotSpawn team</th><th>Basis</th></tr></thead><tbody><tr><td data-l='Source spelling (normalised)'><code>bb</code></td><td data-l='HotSpawn team'><code>betboom</code></td><td data-l='Basis'>BetBoom Team is listed as &#x27;BB Team&#x27; by some bookmakers; the alias is only applied together with an agreeing opponent and start time.</td></tr><tr><td data-l='Source spelling (normalised)'><code>nip</code></td><td data-l='HotSpawn team'><code>ninjasinpyjamas</code></td><td data-l='Basis'>NIP is the official abbreviation of Ninjas in Pyjamas.</td></tr><tr><td data-l='Source spelling (normalised)'><code>pvision</code></td><td data-l='HotSpawn team'><code>parivision</code></td><td data-l='Basis'>PARIVISION is listed as &#x27;PVISION&#x27; on some feeds.</td></tr><tr><td data-l='Source spelling (normalised)'><code>9zglobant</code></td><td data-l='HotSpawn team'><code>9z</code></td><td data-l='Basis'>9z Team is sponsored as &#x27;9z Globant&#x27; on some feeds.</td></tr></tbody></table>
 <h2>3. Valve VRS rating model</h2>
@@ -78,9 +78,9 @@ Valve's own code defines expected win rate from a points difference Δ: <a href=
 <code>ev = 1/(1+10^(g·Δ/−400))</code>) evaluated with a fixed RD of 75 in <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js">model/fit.js</a>, giving g = 0.9728.
 Valve's <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/readme.md">readme</a> notes the curve is steeper than observed results, so we fit a slope factor <b>k</b>:
 <code>p_A = 1/(1+10^(−k·g·Δ/400))</code>, by least squares of logit(market) on Δ over every fixture seen with both a market price and two ratings.</p>
-<p>Current fit: k = <b>0.426</b> (raw 0.426) on 15 fixtures
+<p>Current fit: k = <b>0.368</b> (raw 0.368) on 14 fixtures
 (minimum 6 to fit, otherwise k = 1, Valve's own curve; k is bounded to 0.25–1.5).
-Mean absolute error vs market: calibrated 8.5%, Valve default 13.7%.</p>
+Mean absolute error vs market: calibrated 7.7%, Valve default 14.5%.</p>
 <h2>4. Our line and the pick</h2>
 <p><code>logit(p_ours) = w·logit(p_market) + (1−w)·logit(p_model)</code> with w = 0.85 when two or more sources price the match, 0.75 with one
 (stated modelling choice). Market only when a team lacks a rating; model only when no price exists. Fair odds = 1/p.
