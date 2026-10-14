@@ -3494,3 +3494,7 @@ Arena requires branch `arena/ae75c5c3-maltaproj2`; no other branch is used.
 - Source inspection: officially re-read Valve standings and model code via GitHub Contents API; preserved responses under `audits/ae75c5c3/`. All 380 standings rows inspected; every used roster/points tuple is present. Dated 02:30 source snapshot: 28 open fixtures; 14 eligible market picks + 6 VRS fallbacks + 8 intentionally blank rows. Previously 22 picks included unsupported duplicate-roster inference and permissive time joins.
 - Local validation: 283 tests pass, staged site/local links pass, and all 28 open board rows pass independent input/arithmetic audit. Hosted browser tests still required before merge.
 - New audit and all irregularities linked from `ourline/flagged.html` and its executive summary. Root landing ownership of recent session `7cd2e67a` respected (no edits).
+
+### ae75c5c3 — hosted refresh
+- PR #82 opened: https://github.com/buffedlizard55-lab/MaltaProj2/pull/82 . Full hosted validation/browser checks running.
+- Manual workflow dispatch is denied by the GitHub integration (HTTP 403), so use a scoped push trigger on this session branch for its own collector; no other branch is pushed. Added bounded public bookmaker/exchange response evidence (official URL, read time, raw-byte hash and parsed payload; no request headers or credentials) so future quotes can be traced beyond normalized snapshots. Max 2 MB per response / 8 MB total, excludes the unbounded fixture-history API.

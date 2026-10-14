@@ -20,6 +20,7 @@ Sources (all public, unauthenticated, read-only):
 from __future__ import annotations
 
 import base64
+import hashlib
 import json
 import re
 import ssl
@@ -51,6 +52,9 @@ HLTV = "https://www.hltv.org/matches"
 VRS_REPO = "ValveSoftware/counter-strike_regional_standings"
 PROP_RE = re.compile(r"\(|\)|\byes\b|\bno\b|kills?|\bmaps?\b|total|handicap|rounds?|pistol", re.I)
 LOG: dict = {}
+SOURCE_PAYLOADS: dict = {}
+MAX_PAYLOAD_BYTES = 2_000_000
+MAX_TOTAL_PAYLOAD_BYTES = 8_000_000
 
 
 def fetch(url: str, headers: dict | None = None, timeout: int = 45) -> tuple[bytes, dict]:
@@ -69,13 +73,25 @@ def fetch(url: str, headers: dict | None = None, timeout: int = 45) -> tuple[byt
     except Exception as exc:  # noqa: BLE001 - network failures are evidence
         meta["error"] = f"{type(exc).__name__}: {exc}"[:300]
     meta["bytes"] = len(body)
+    if body:
+        meta["sha256"] = hashlib.sha256(body).hexdigest()
     return body, meta
 
 
 def fetch_json(url, headers=None, timeout=45):
     body, meta = fetch(url, headers, timeout)
     try:
-        return json.loads(body.decode("utf-8", "replace")) if body else None, meta
+        data = json.loads(body.decode("utf-8", "replace")) if body else None
+        from urllib.parse import urlsplit
+        trusted = {"guest.api.arcadia.pinnacle.com", "www.bovada.lv", "melbet.com",
+                   "api.elections.kalshi.com"}
+        if (urlsplit(url).hostname in trusted and data is not None
+                and len(body) <= MAX_PAYLOAD_BYTES
+                and sum(p["response_bytes"] for p in SOURCE_PAYLOADS.values()) + len(body) <= MAX_TOTAL_PAYLOAD_BYTES):
+            SOURCE_PAYLOADS[url] = {"retrieved_utc": meta["at_utc"], "http_status": meta["status"],
+                                    "response_bytes": len(body), "raw_sha256": meta.get("sha256"),
+                                    "payload": data}
+        return data, meta
     except ValueError:
         meta["error"] = (meta["error"] or "") + " invalid JSON"
         return None, meta
@@ -412,6 +428,8 @@ def main() -> int:
             # Preserve original observation and cache age across repeated failures.
             LOG["hotspawn_failed_refresh"] = LOG.get("hotspawn_lobby_page", {})
             LOG["hotspawn_lobby_page"] = previous_meta
+    (OUT / "source_payloads.json").write_text(json.dumps({"collected_to_utc": snap["collected_to_utc"],
+                                                          "sources": SOURCE_PAYLOADS}, indent=1) + "\n")
     (OUT / "snapshot.json").write_text(json.dumps(snap, indent=1, ensure_ascii=False) + "\n")
     print(json.dumps({k: {kk: vv for kk, vv in v.items() if kk in ("status", "error", "quotes", "rows",
                                                                      "fixtures_in_transfer_state",
