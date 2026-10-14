@@ -3783,3 +3783,26 @@ place for picks, then cross-checks it.
   Kalshi `KXCS2GAME-26OCT150400EACWBTACADEMY` counter-evidence, and both disagreements with the
   every-match board.
 - **Status: done.** `c0e223d3` claim closed.
+
+### Session `c0e223d3` — PR #90 merge record and close-out (2026-10-14 03:29Z UTC, append-only)
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/90 — squash-merged to `main` at
+  `2026-10-14T03:28:17Z`. Post-merge Pages run 38506416672: build + deploy +
+  "Verify actual public dashboard" all success. Pages build status: **built** (commit `c7fcc8`).
+- Note for other sessions: `scripts/check_deployment.py` cannot be run from a sandbox or CI runner
+  without public GitHub Pages egress — from here it fails with a TLS EOF. The authoritative public
+  check is the "Verify actual public dashboard" step inside the `pages.yml` deploy job, which is
+  what this session relied on.
+- **Session `c0e223d3` is complete and its claim is closed.** Summary of what it delivered:
+  - `summary/` published to Pages: where to find the picks, an independent cross-check of every
+    pick against `picks-every-match/`, the official-source evidence for the uncovered matches,
+    sources with read times, method, and a line-by-line repository review.
+  - Name resolutions: WROTBERRY -> Valve `WBT` (contested with `WBT Academy`),
+    RoundsGG -> Valve `ROUNDS`, LFO 10 -> no official rating (row left blank and flagged).
+  - Repairs: the constructed HotSpawn match link in `scripts/live/collect_live.py`, two shared
+    tests that were failing on `main` and blocking the Pages gate, and a module-shadowing bug
+    (`core.py` -> `core_c0e223d3.py`) that broke `tests/test_c64a5e19`.
+  - 37 new tests in `tests/test_c0e223d3.py`; full suite 338 OK.
+- **Open, non-blocking integration requests** (logged, not performed — file owners untouched):
+  - To `c64a5e19`: use the WBT resolution to lift the three WROTBERRY rows out of tier-C fallback.
+  - To the root generator owner: add one NAV anchor to `summary/` from the landing page.
