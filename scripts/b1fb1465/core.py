@@ -132,16 +132,19 @@ ALIASES: dict[str, dict] = {
 OPPONENT_LABEL_DISAGREEMENTS: dict[tuple[str, str, str], dict] = {
     ("kalshi", "6666", "loskogutos"): {
         "fixture_pair": ("6666", "bandachuya"),
-        "note": "Kalshi trades 6666's 11:00Z fixture as '6666 vs los kogutos'. HLTV's official CCT "
-                "2026 Europe Series 12 Closed Qualifier bracket lists 6666's group A opening-round "
-                "opponent as Banda Chuya, which is also HotSpawn's title, and Valve's standings "
-                "carry Banda Chuya (#165) and los kogutos (#276) as two separate Polish rosters "
-                "sharing two players. The fixture is identical on all three listings: same opponent "
-                "slot, same kick-off minute. Published as 'Banda chuya vs 6666'.",
+        "note": "Kalshi and bo3.gg trade 6666's 11:00Z CCT Series 12 Play-In fixture as 'los "
+                "kogutos vs 6666', while HotSpawn and HLTV's official bracket title the same "
+                "kick-off 'Banda chuya vs 6666'. The roster settles it: bo3.gg's own match page "
+                "lists the players maaryy, tomiko, AdrieN, showk and ezox, which is exactly the "
+                "five Valve's standings publish for Banda Chuya (#165), while Valve's separate "
+                "los kogutos entry (#276) is a different five. Published under HotSpawn's title, "
+                "Banda chuya.",
         "evidence": [
+            "https://bo3.gg/matches/los-kogutos-vs-sixsixsixsix-14-10-2026",
             "https://www.hltv.org/events/9456/cct-2026-europe-series-12-closed-qualifier",
             "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct140700unklk",
-            "https://play.hotspawn.com/lobby",
+            "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/"
+            "2026/standings_global_2026_10_05.md",
         ],
     },
     ("kalshi", "forzereload", "sokerorg"): {
@@ -154,6 +157,7 @@ OPPONENT_LABEL_DISAGREEMENTS: dict[tuple[str, str, str], dict] = {
         "evidence": [
             "https://www.hltv.org/matches/2399301/forze-reload-vs-lfo-10-cct-2026-europe-series-11",
             "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct141300skrforzer",
+            "https://bo3.gg/matches/forze-reload-vs-sokerorg-14-10-2026",
             "https://bo3.gg/teams/forze-reload/matches",
         ],
     },
