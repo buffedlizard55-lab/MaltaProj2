@@ -578,7 +578,7 @@ def render_method(b):
 </ul>
 <p>Every C pick is confidence-capped (“Low”), ranged, flagged, and listed on <a href="flagged.html">Flagged for review</a> with its evidence links. If no evidence of any kind exists (tier D), the probability is left blank — never invented.</p>
 <h2>Verification</h2>
-<p>Unit tests (<code>tests/test_c64a5e19.py</code> and <code>tests/test_57e26db7.py</code>) independently derive the open inventory from the committed HotSpawn snapshot, parse captured Gamma-shaped records, re-check every probability/tier, require source links, and enforce the identity fail-closed rules above. The workflow runs them before publishing.</p>
+<p>Unit tests (<code>tests/test_c64a5e19.py</code> and <code>tests/test_57e26db7.py</code>) independently derive the open inventory from the committed HotSpawn snapshot, parse captured Gamma-shaped records, re-check every probability/tier, require source links, and enforce the identity fail-closed rules above. The workflow runs them before publishing. The reproducible <a href="../audits/57e26db7/index.html">line-by-line independent audit</a> publishes every check and row.</p>
 <h2>Limitations and unresolved picks</h2>
 <p>Probabilities are estimates, not verified outcomes or betting advice. Prices move; prediction-market books can have little volume or wide spreads, both shown where available. Elisa group matches are Bo1, so variance is higher. WROTBERRY↔WBT and LFO 10↔Sökerorg remain name-identity irregularities rather than confirmed renames. Every affected pick stays tier C on <a href="flagged.html">Flagged for Review</a>. Fallback picks are materially weaker than A/B picks; if no documented evidence exists at all, tier D leaves the probability blank rather than inventing it.</p>
 """
