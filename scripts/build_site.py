@@ -653,6 +653,7 @@ Probabilities tables.</div>
 <div class="archive-grid">
   <article class="card"><h2>Independent verification</h2><p><a href="verify/8e7a652d/index.html">Market verification &amp; cross-check</a><br>
   <a href="verify/0f71ea59/index.html">Line-by-line verification report</a><br>
+  <a href="verify/7cd2e67a/index.html">Board re-verification (7cd2e67a)</a><br>
   <a href="audits/d4ec32a9/REPORT.md">Current-pipeline audit</a></p></article>
   <article class="card"><h2>Preserved pick boards</h2><p><a href="pickem/index.html">Pick'em board</a><br>
   <a href="picks/index.html">Source-linked live-lines snapshot</a><br>

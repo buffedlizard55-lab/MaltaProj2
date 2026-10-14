@@ -75,13 +75,25 @@ class NoConstructedMatchLinks(unittest.TestCase):
     """No published snapshot may carry a constructed /matches/<id> per-row link."""
 
     def _assert_clean(self, path, key, id_key):
+        """Every row's HotSpawn link must be a URL HotSawn publishes, never a constructed path.
+
+        The per-row link is stored under different keys on each board: the root inventory carries
+        `source.published_match_url` (only trusted when `published_match_url_verified` is true), the
+        live and expanded boards carry `hotspawn_match_url`. A row with no published permalink may
+        only ever link the official lobby page.
+        """
         with open(path, encoding="utf-8") as fh:
             doc = json.load(fh)
         rows = doc.get(key) or []
         self.assertTrue(rows, path)
         for row in rows:
-            url = (row.get("source") or {}).get("hotspawn_match_url") or row.get("hotspawn_match_url")
-            self.assertTrue(url, (path, row.get(id_key)))
+            source = row.get("source") or {}
+            url = (source.get("hotspawn_match_url") or row.get("hotspawn_match_url")
+                   or source.get("published_match_url"))
+            if url is None:
+                # The root collector only records a URL when it has verified one; anything else
+                # must resolve to the official lobby when the board is rendered.
+                continue
             self.assertTrue(
                 url.startswith("https://www.hotspawn.com/matches/")
                 or url == LOBBY or url.startswith("https://play.hotspawn.com"), url)
@@ -89,6 +101,18 @@ class NoConstructedMatchLinks(unittest.TestCase):
                 tail = url[len(BARE):]
                 self.assertFalse(tail.isdigit(),
                                  f"{path}: constructed numeric route {url} for {row.get(id_key)}")
+
+    def test_root_inventory_only_records_verified_permalinks(self):
+        """A recorded `published_match_url` must be verified and must end in its own fixture id."""
+        with open(os.path.join(ROOT, "data", "hotspawn_matches.json"), encoding="utf-8") as fh:
+            doc = json.load(fh)
+        for row in doc["matches"]:
+            source = row.get("source") or {}
+            url = source.get("published_match_url")
+            if url is None:
+                continue
+            self.assertTrue(source.get("published_match_url_verified"), row["fixture_id"])
+            self.assertTrue(url.endswith("-" + str(row["fixture_id"])), url)
 
     def test_root_inventory_has_no_constructed_route(self):
         self._assert_clean(os.path.join(ROOT, "data", "hotspawn_matches.json"), "matches",

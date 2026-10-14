@@ -1,6 +1,6 @@
 # Independent verification — session 7cd2e67a
 
-Generated 2026-10-14T02:04:44Z. Task INT-1 independent line-by-line verification of the published boards.
+Generated 2026-10-14T02:11:08Z. Task INT-1 independent line-by-line verification of the published boards.
 
 Every check below names the official source it was read from and the UTC time it was read.
 A value that could not be confirmed is published as a flag, never filled in.
@@ -9,17 +9,17 @@ A value that could not be confirmed is published as a flag, never filled in.
 
 | ID | Check | Scope | Rows | Result |
 |---|---|---|---|---|
-| V1 | Root board: every published no-vig probability re-derived from its quoted odds | data/lines.json | 8 | **pass** |
+| V1 | Root board: every published no-vig probability re-derived from its quoted odds | data/lines.json | 10 | **pass** |
 | V2 | Live board: every market probability re-derived from its quoted odds | data/live/board.json | 16 | **pass_with_note** |
 | V3 | Live board: pick side, pick team and edge re-derived | data/live/board.json | 123 | **pass** |
 | V4 | Originated-estimate ratings are real rows of Valve's official standings | data/live/board.json vs ValveSoftware/counter-strike_regional_standings | 214 | **pass** |
 | V5 | Blank rows for a missing rating are flagged, never estimated | data/live/board.json | 351 | **flag** |
-| V6 | Every per-row HotSpawn link is an official URL HotSawn publishes | data/lines.json, data/live/board.json, data/hotspawn_matches.json | 26 | **repaired** |
-| V7 | Committed lobby snapshot cross-checked against an independent re-read | data/hotspawn_matches.json vs play.hotspawn.com/lobby | 398 | **flag** |
+| V6 | Every per-row HotSpawn link is an official URL HotSawn publishes | data/lines.json, data/live/board.json, data/expanded/lines.json | 51 | **repaired** |
+| V7 | Committed lobby snapshot cross-checked against an independent re-read | data/hotspawn_matches.json vs play.hotspawn.com/lobby | 89 | **flag** |
 
 ## Arithmetic
 
-- Root board: 8 priced rows, 0 mismatches.
+- Root board: 10 priced rows, 0 mismatches.
 - Live board: 16 market rows, 107 originated-estimate rows, 351 blank rows, 1 mismatches.
 - Valve ratings: 214 team ratings checked against 349 distinct team names, 0 mismatches, 37 ambiguous duplicate team names.
 - Blank rows missing a flag: 1.

@@ -1,5 +1,5 @@
 {
- "generated_at_utc": "2026-10-14T02:04:44Z",
+ "generated_at_utc": "2026-10-14T02:11:08Z",
  "session": "7cd2e67a",
  "task": "INT-1 independent line-by-line verification of the published boards",
  "sources": {
@@ -23,9 +23,9 @@
    "id": "V1",
    "check": "Root board: every published no-vig probability re-derived from its quoted odds",
    "scope": "data/lines.json",
-   "rows": 8,
+   "rows": 10,
    "result": "pass",
-   "detail": "8 priced rows; per-source probabilities, overrounds, consensus means and min/max ranges all reproduce exactly."
+   "detail": "10 priced rows; per-source probabilities, overrounds, consensus means and min/max ranges all reproduce exactly."
   },
   {
    "id": "V2",
@@ -62,16 +62,16 @@
   {
    "id": "V6",
    "check": "Every per-row HotSpawn link is an official URL HotSawn publishes",
-   "scope": "data/lines.json, data/live/board.json, data/hotspawn_matches.json",
-   "rows": 26,
+   "scope": "data/lines.json, data/live/board.json, data/expanded/lines.json",
+   "rows": 51,
    "result": "repaired",
-   "detail": "The inherited collectors used https://www.hotspawn.com/matches/<fixture id> on every row; OBS-02 shows that route resolves to the general matches index. Repaired to published permalinks where HotSawn publishes one and to the official lobby page otherwise."
+   "detail": "The inherited collectors used https://www.hotspawn.com/matches/<fixture id> on every row; OBS-02 shows that route resolves to the general matches index. Repaired to published permalinks where HotSawn publishes one and to the official lobby page otherwise: 25 published permalinks + 64 lobby fallbacks on the root board, 26 + 448 on the live board, and 26 + 1184 on the expanded market board. No row links a constructed path."
   },
   {
    "id": "V7",
    "check": "Committed lobby snapshot cross-checked against an independent re-read",
    "scope": "data/hotspawn_matches.json vs play.hotspawn.com/lobby",
-   "rows": 398,
+   "rows": 89,
    "result": "flag",
    "detail": "The committed snapshot (90 fixtures, tiers s4/b26/c60) and the independent re-read (89 fixtures, tiers s4/b25/c60) are different observations 32 minutes apart: the lobby changed between them. The lobby's own \"68 matches this week\" counter is still not reproduced by any rule applied to either observation and stays published as unexplained rather than guessed."
   }
@@ -80,32 +80,62 @@
   "root_board": {
    "rows": [
     {
+     "fixture_id": "1079621",
+     "match": "Gothic vs Lavked",
+     "start_time_utc": "2026-10-14T08:00:00Z",
+     "per_source": {
+      "bovada": {
+       "decimal_a": 2.1,
+       "decimal_b": 1.69,
+       "recomputed_pa": 0.4459,
+       "recomputed_pb": 0.5541,
+       "recomputed_overround": 0.06791,
+       "published_pa": 0.4459,
+       "published_pb": 0.5541,
+       "published_overround": 0.06791,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+      }
+     },
+     "recomputed_consensus_a": 0.4459,
+     "published_consensus_a": 0.4459,
+     "recomputed_range": [
+      0.4459,
+      0.4459
+     ],
+     "published_range": [
+      0.4459,
+      0.4459
+     ],
+     "matches": true
+    },
+    {
      "fixture_id": "1080176",
      "match": "9z vs Aurora",
      "start_time_utc": "2026-10-14T08:30:00Z",
      "per_source": {
       "pinnacle": {
-       "decimal_a": 3.55,
-       "decimal_b": 1.3067,
-       "recomputed_pa": 0.2691,
-       "recomputed_pb": 0.7309,
-       "recomputed_overround": 0.04698,
-       "published_pa": 0.2691,
-       "published_pb": 0.7309,
-       "published_overround": 0.04698,
+       "decimal_a": 3.41,
+       "decimal_b": 1.3257,
+       "recomputed_pa": 0.2799,
+       "recomputed_pb": 0.7201,
+       "recomputed_overround": 0.04757,
+       "published_pa": 0.2799,
+       "published_pb": 0.7201,
+       "published_overround": 0.04757,
        "matches": true,
        "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111785/markets/related/straight"
       }
      },
-     "recomputed_consensus_a": 0.2691,
-     "published_consensus_a": 0.2691,
+     "recomputed_consensus_a": 0.2799,
+     "published_consensus_a": 0.2799,
      "recomputed_range": [
-      0.2691,
-      0.2691
+      0.2799,
+      0.2799
      ],
      "published_range": [
-      0.2691,
-      0.2691
+      0.2799,
+      0.2799
      ],
      "matches": true
     },
@@ -182,19 +212,49 @@
      "matches": true
     },
     {
+     "fixture_id": "1079622",
+     "match": "ex-RUSTEC vs mellren",
+     "start_time_utc": "2026-10-14T11:00:00Z",
+     "per_source": {
+      "bovada": {
+       "decimal_a": 1.588235,
+       "decimal_b": 2.3,
+       "recomputed_pa": 0.5915,
+       "recomputed_pb": 0.4085,
+       "recomputed_overround": 0.06441,
+       "published_pa": 0.5915,
+       "published_pb": 0.4085,
+       "published_overround": 0.06441,
+       "matches": true,
+       "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
+      }
+     },
+     "recomputed_consensus_a": 0.5915,
+     "published_consensus_a": 0.5915,
+     "recomputed_range": [
+      0.5915,
+      0.5915
+     ],
+     "published_range": [
+      0.5915,
+      0.5915
+     ],
+     "matches": true
+    },
+    {
      "fixture_id": "1080177",
      "match": "Falcons vs Ninjas in Pyjamas",
      "start_time_utc": "2026-10-14T11:00:00Z",
      "per_source": {
       "bovada": {
-       "decimal_a": 1.235294,
-       "decimal_b": 3.85,
-       "recomputed_pa": 0.7571,
-       "recomputed_pb": 0.2429,
-       "recomputed_overround": 0.06926,
-       "published_pa": 0.7571,
-       "published_pb": 0.2429,
-       "published_overround": 0.06926,
+       "decimal_a": 1.266667,
+       "decimal_b": 3.6,
+       "recomputed_pa": 0.7397,
+       "recomputed_pb": 0.2603,
+       "recomputed_overround": 0.06725,
+       "published_pa": 0.7397,
+       "published_pb": 0.2603,
+       "published_overround": 0.06725,
        "matches": true,
        "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
       },
@@ -211,15 +271,15 @@
        "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638111674/markets/related/straight"
       }
      },
-     "recomputed_consensus_a": 0.7545,
-     "published_consensus_a": 0.7545,
+     "recomputed_consensus_a": 0.7458,
+     "published_consensus_a": 0.7458,
      "recomputed_range": [
-      0.7519,
-      0.7571
+      0.7397,
+      0.7519
      ],
      "published_range": [
-      0.7519,
-      0.7571
+      0.7397,
+      0.7519
      ],
      "matches": true
     },
@@ -301,27 +361,27 @@
        "source_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports"
       },
       "pinnacle": {
-       "decimal_a": 1.6369,
-       "decimal_b": 2.23,
-       "recomputed_pa": 0.5767,
-       "recomputed_pb": 0.4233,
-       "recomputed_overround": 0.05934,
-       "published_pa": 0.5767,
-       "published_pb": 0.4233,
-       "published_overround": 0.05934,
+       "decimal_a": 1.6494,
+       "decimal_b": 2.22,
+       "recomputed_pa": 0.5737,
+       "recomputed_pb": 0.4263,
+       "recomputed_overround": 0.05673,
+       "published_pa": 0.5737,
+       "published_pb": 0.4263,
+       "published_overround": 0.05673,
        "matches": true,
        "source_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1637936745/markets/related/straight"
       }
      },
-     "recomputed_consensus_a": 0.5744,
-     "published_consensus_a": 0.5744,
+     "recomputed_consensus_a": 0.5729,
+     "published_consensus_a": 0.5729,
      "recomputed_range": [
       0.5721,
-      0.5767
+      0.5737
      ],
      "published_range": [
       0.5721,
-      0.5767
+      0.5737
      ],
      "matches": true
     },
@@ -369,7 +429,7 @@
     }
    ],
    "mismatches": [],
-   "rows_checked": 8
+   "rows_checked": 10
   },
   "live_board": {
    "market_rows": [
@@ -6524,8 +6584,8 @@
  },
  "lobby_listing": {
   "committed_snapshot": {
-   "generated_at_utc": "2026-10-14T01:15:53Z",
-   "match_count": 398,
+   "generated_at_utc": "2026-10-14T01:54:37Z",
+   "match_count": 89,
    "permalinks_published": 0
   },
   "independent_reread": {
@@ -6543,20 +6603,7 @@
   "irregularity": "The committed snapshot (90 fixtures, tiers s4/b26/c60) and the independent re-read (89 fixtures, tiers s4/b25/c60) are different observations 32 minutes apart: the lobby changed between them. The lobby's own \"68 matches this week\" counter is still not reproduced by any rule applied to either observation and stays published as unexplained rather than guessed."
  },
  "link_repair": {
-  "root": {
-   "repaired_by": "scripts/7cd2e67a/repair_hotspawn_links.py",
-   "rule": "published lobby permalink when HotSawn publishes one, otherwise the official lobby page; a constructed /matches/<id> path is never used",
-   "permalinks_available": 26,
-   "rows_by_kind": {
-    "official_lobby_fallback": 373,
-    "lobby_published_permalink": 25
-   },
-   "rows_changed": 398,
-   "sources": [
-    "data/picks_permalinks.json (captured 2026-10-13T21:58:17Z)",
-    "data/live/samples/lobby_page.txt (raw lobby HTML capture)"
-   ]
-  },
+  "root": null,
   "live": {
    "repaired_by": "scripts/7cd2e67a/repair_hotspawn_links.py",
    "rule": "published lobby permalink when HotSawn publishes one, otherwise the official lobby page; a constructed /matches/<id> path is never used",
@@ -6570,7 +6617,12 @@
     "data/picks_permalinks.json (captured 2026-10-13T21:58:17Z)",
     "data/live/samples/lobby_page.txt (raw lobby HTML capture)"
    ]
-  }
+  },
+  "root_kinds": {
+   "lobby_published_permalink": 25,
+   "official_lobby_fallback": 64
+  },
+  "expanded_kinds": null
  },
  "observations": [
   {
