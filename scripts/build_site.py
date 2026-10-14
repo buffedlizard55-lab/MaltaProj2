@@ -92,6 +92,126 @@ NAV = [
 ]
 
 
+def _board_stamp(rel, *keys):
+    """UTC build stamp of a board.json, or None. Never raises on a missing board."""
+    data = load(rel) or {}
+    for key in keys:
+        value = data.get(key)
+        if value:
+            return str(value).replace("T", " ").replace("Z", " UTC")
+    return None
+
+
+def executive_summary_html():
+    """Evidence-first entry point; unresolved strict rows stay blank.
+
+    Alternate boards remain linked as provisional research. Counts come from the
+    strict inventory, not incompatible per-board summary totals.
+    """
+    lines = load("data/lines.json") or {}
+    fixtures = [r for r in lines.get("fixtures", []) if r.get("pick_status") == "open"]
+    gaps = [r for r in fixtures if not r.get("bookmaker_lines")]
+    every_data = load("data/c64a5e19/board.json") or {}
+    provisional = {str(r.get("fixture_id")): r for r in every_data.get("open", [])}
+    coverage = (
+        f"<strong>{len(fixtures) - len(gaps)} of {len(fixtures)}</strong> open fixtures in the "
+        f"strict snapshot have eligible external bookmaker lines; <strong>{len(gaps)}</strong> "
+        "remain unresolved under that standard. Model/research boards may cover more, but a "
+        "published estimate is not a verified bookmaker probability."
+        if lines.get("fixtures") is not None else
+        "Strict snapshot unavailable — coverage is unverified, not zero."
+    )
+    gap_rows = []
+    for row in gaps:
+        research = provisional.get(str(row.get("fixture_id"))) or {}
+        flags = research.get("flags") or []
+        reason = "No eligible two-sided primary-bookmaker quote in this snapshot."
+        if any("sibling_vrs" in flag for flag in flags):
+            reason += " Research uses other LFO rosters' ratings; this does not verify LFO 10."
+        if any("slot_price_label" in flag for flag in flags):
+            reason += " Research uses a differently named team in the same slot; identity remains unverified."
+        if row.get("review_flags"):
+            reason += " Flags: " + ", ".join(row["review_flags"]).replace("_", " ") + "."
+        url = row.get("hotspawn_match_url") or "https://play.hotspawn.com/lobby"
+        # Evidence links are escaped and restricted to HTTP(S), including in malformed input.
+        if not str(url).startswith(("https://", "http://")):
+            url = "https://play.hotspawn.com/lobby"
+        gap_rows.append(
+            f'<tr><td data-label="Match">{esc(row.get("team_a"))} vs {esc(row.get("team_b"))}'
+            f'<br><a href="{esc(url)}">Official fixture source</a></td>'
+            f'<td data-label="Verified probability">{BLANK} · unverified</td>'
+            f'<td data-label="Limitation">{esc(reason)}</td></tr>')
+    unresolved = (
+        '<details class="archive"><summary>See every unresolved match and limitation</summary>'
+        '<div class="tablewrap"><table><thead><tr><th>Match</th><th>Verified probability</th>'
+        '<th>Limitation</th></tr></thead><tbody>' + ''.join(gap_rows) + '</tbody></table></div></details>'
+        if gap_rows else '<p>No unresolved rows in the available strict snapshot; this is not a guarantee of global coverage.</p>'
+    )
+    stamp_map = [
+        ("picks-every-match/index.html", "Every-match picks at a glance",
+         "Every open match; supported probabilities or blank + flagged. Start here on mobile.",
+         _board_stamp("data/c64a5e19/board.json", "generated_utc")),
+        ("board/picks.html", "All picks · every match",
+         "Expanded market/model research; inspect identity flags and source times before using estimates.",
+         _board_stamp("data/fe803b80/board.json", "generated_utc")),
+        ("ourline/index.html", "Our line",
+         "Separate market-first / historical-rating fallback board, plus a graded track record.",
+         _board_stamp("data/f7279a54/board.json", "generated_utc")),
+        ("coverage/index.html", "Coverage board",
+         "Every lobby fixture: external line, exchange quote, originated estimate, or blank + flagged.",
+         _board_stamp("data/coverage/board.json", "generated_at_utc")),
+        ("live/index.html", "Live coverage board",
+         "Current-lobby board with per-row source links.",
+         _board_stamp("data/live/board.json", "generated_at_utc")),
+        ("fresh/index.html", "Fresh board",
+         "Mobile board priced only from Bovada / Pinnacle / Kalshi captures.",
+         _board_stamp("data/dd2b7fee/board.json", "generated_at_utc", "inventory_generated_at_utc")),
+        ("cs2.html", "CS2 picks (strict)",
+         "Root table: only eligible primary-bookmaker prices; unverified rows stay blank.",
+         None),
+        ("summary/index.html", "Where the picks are — verification hub",
+         "Independent cross-checks, sources with read times, gaps and the repository review.",
+         None),
+        ("flagged.html", "Flagged for review",
+         "Every unverified or irregular item with its source links.",
+         None),
+    ]
+    items = []
+    for href, title, blurb, stamp in stamp_map:
+        when = f' <span style="color:#8fa3c8;font-size:12.5px">built {esc(stamp)}</span>' if stamp else ""
+        items.append(
+            f'<li style="margin:8px 0"><a href="{href}"><strong>{esc(title)}</strong></a>'
+            f'&mdash; {esc(blurb)}{when}</li>')
+    return f"""
+<div class="cards" id="where-the-picks" style="display:block;background:#12203a;border:1px solid #2b3752;border-radius:14px;padding:14px;margin:16px 0">
+  <h2 style="margin-top:0">Executive summary — where the picks are</h2>
+  <p>{coverage}</p>
+  <p><a class="btn" href="cs2.html">Start here: source-linked CS2 picks</a>
+     <a class="btn ghost" href="#unresolved-picks">Unresolved matches</a>
+     <a class="btn ghost" href="board/picks.html">Expanded picks · models included</a></p>
+  <p class="note">Fixture capture: {esc(fmt_time(lines.get('fixture_list_collected_at_utc')) or 'unverified')}. 
+  Odds collection: {esc(fmt_time(lines.get('odds_collected_at_utc')) or 'unverified')}.
+  These are snapshots, not streaming odds. Check each quote time before using a pick.</p>
+  <h3 id="unresolved-picks">Unresolved picks &amp; limitations</h3>
+  <p>Missing prices do not mean a 50/50 match. No probability is filled in here without eligible
+  evidence. HLTV rankings and form can guide research but are not betting lines. Disputed aliases,
+  sparse results, thin exchange books and inaccessible bookmakers can prevent a defensible pick.</p>
+  {unresolved}
+  <p><a href="flagged.html">Flagged for Review: all strict gaps</a> ·
+  <a href="audits/5cd24fb4/index.html">Flagged for Review: fallback-source audit</a> ·
+  <a href="summary/gaps.html">Cross-board disagreements</a></p>
+  <details class="archive"><summary>Other pick boards and research (different evidence standards)</summary>
+  <ul style="margin:8px 0 8px 18px;padding:0">{''.join(items)}</ul>
+  </details>
+  <p class="note">Automatic refresh workflows are configured more frequently than the requested
+  4–8 hours; scheduling and source availability can delay updates. Board build times are not quote
+  times. Boards may use different fixture snapshots; do not add their counts together.
+  Use eligible external lines first and consult fallback research only for unresolved matches.
+  HotSpawn's crowd pick percentage is never used as a probability input. Model probabilities are
+  estimates, not verified facts or guarantees. 18+; gamble responsibly.</p>
+</div>"""
+
+
 def page(title, subtitle, body, generated_at, active=None, banner=None):
     nav_bits = []
     for href, label in NAV:
@@ -333,6 +453,7 @@ Earlier inferred sibling-roster and ambiguous-slot picks have been removed from 
 <p class="note">Manual source review: <a href="https://github.com/ValveSoftware/counter-strike_regional_standings">Official Valve standings</a> ·
 <a href="verify/8e7a652d/index.html">Independent market verification</a>. Each alternate board has its own observation time and eligibility rules; none overrides blanks on this source-verified board.</p>
 <details class="archive"><summary>Primary-bookmaker-only coverage and table</summary>
+{executive_summary_html()}
 <h2>Every CS2 match currently open for picks — primary sources only</h2>
 <div class="cards">{cards}</div>
 <p class="note">This is a separate stricter source subset, not the total number of supported picks above.</p>
@@ -468,6 +589,7 @@ fixtures with the same verification columns as the main table.</p>
     flagged_body = f"""
 <div class="banner warn"><strong>These items are published for review, not as verified facts.</strong>
 <a href="picks-every-match/flagged.html">Every-match picks: source, identity and fallback review</a>.
+<a href="audits/5cd24fb4/index.html">Independent fallback audit</a> · <a href="audits/8723ad37/REVIEW.md">Source-safety review</a>.
 Nothing on this page blocks the analysis; it exists so every gap, irregularity and failed access attempt is
 visible instead of being silently filled in.</div>
 

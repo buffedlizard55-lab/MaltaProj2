@@ -17,6 +17,8 @@ finally:
     sys.path[:] = previous_path
 
 
+core = B.core
+
 def snapshot():
     return json.loads((ROOT / 'data/f7279a54/snapshot.json').read_text())
 

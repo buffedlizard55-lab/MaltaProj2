@@ -2,6 +2,12 @@
 
 **Live dashboard: https://buffedlizard55-lab.github.io/MaltaProj2/**
 
+**Start with [source-linked CS2 picks](https://buffedlizard55-lab.github.io/MaltaProj2/cs2.html).**
+The landing executive summary separately lists every unresolved strict row, with a blank probability
+and its limitation. Expanded model boards are research with different standards, not verified
+coverage. See the [fallback-source audit](https://buffedlizard55-lab.github.io/MaltaProj2/audits/5cd24fb4/)
+for disputed identities and the unsupported use of other LFO rosters as a proxy for LFO 10.
+
 An evidence-first table of every CS2 fixture currently offered by the HotSpawn Pick'ems lobby,
 with **external betting lines** (never HotSpawn) and **derived no-vig probabilities**, plus an
 explicit *Flagged for review* page for everything that could not be confirmed.
