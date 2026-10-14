@@ -6,6 +6,7 @@ Session: `ef111e02` (final integration session). This environment requires all w
 |---|---|---|---|---|
 | Repository audit, source investigation, data pipeline, dashboard, tests and Pages integration | done | ef111e02 | 2026-10-13 17:50 | COORDINATION.md, README.md, docs/**, scripts/**, tests/**, .github/workflows/**, .gitignore |
 | Independent audit of inherited TWC model, current field/fixture sources and published state | done | ca621beb | 2026-10-13 18:10 | audits/ca621beb/**, COORDINATION.md |
+| T-FULLCOV: a pick and a probability for **every** open CS2 fixture listed on the HotSpawn pick'em lobby (including tier-C matches no bookmaker prices), mobile-first site section, executive summary + in-site navigation, verification and publication | in progress | fe803b80 | 2026-10-14 03:05 | scripts/fe803b80/**, board/**, data/fe803b80/**, tests/test_fe803b80.py, .github/workflows/board-fe803b80.yml, COORDINATION.md, README.md, and (integration handoff only) scripts/stage_site.py + the executive-summary block of scripts/build_site.py |
 
 ## Log
 - Initial checkout contains only README.md (`# MaltaProj2`), no application, data, tests, or existing task board. No other task claims exist.
@@ -3594,3 +3595,48 @@ Also fixed a module-shadowing bug in my own `tests/test_c64a5e19.py` (`sys.path`
 - **Status: done.** Flagged irregularities remain published on picks-every-match/flagged.html for post-live review (non-blocking, per instructions).
 - Preserved final coordination record from parallel PR #85 (no application changes). All other session namespaces remain untouched; this branch now includes their completed publication records. Final combined suite is 301 tests (one intentional archived-artifact skip), plus hosted mobile/source/expiry checks and staged-link validation.
 - Main's legacy OURLINE bot refreshed at 02:56 before #82 merged, conflicting with stricter generated outputs. Preserved its full incoming source snapshot under `audits/ae75c5c3/incoming_0256_source_snapshot.json`; integrated its newer official lobby observation (88 listed / 28 open), retaining the proven 02:46 provider quote inputs and exact quote read times until the new collector publishes full response evidence. Rebuilt derived artifacts under strict-fallback-v2 rather than accepting legacy blended/ambiguous outputs. No source capture discarded; full 301-test suite and staging pass.
+---
+
+## Session `fe803b80` — T-FULLCOV claim (2026-10-14 ~03:05 UTC)
+
+**Branch:** `arena/fe803b80-maltaproj2` (this environment fixes the branch name; the `session-<id>/<task>`
+naming requested in the brief is therefore realised as the single session branch above, as recorded by
+earlier sessions too). Repo root `/home/user/MaltaProj2`.
+
+### Task board (this session)
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-FULLCOV-COLLECT — collect the full HotSpawn CS2 lobby inventory plus external market prices **and** non-market rating sources | in progress | fe803b80 | 2026-10-14 03:05 | `scripts/fe803b80/collect.py`, `data/fe803b80/**` |
+| T-FULLCOV-BUILD — originate a pick + probability for **every** open CS2 fixture, label the basis, keep blanks where no source exists | in progress | fe803b80 | 2026-10-14 03:05 | `scripts/fe803b80/build.py`, `data/fe803b80/board.json` |
+| T-FULLCOV-SITE — mobile-first board section + executive summary with in-site links | in progress | fe803b80 | 2026-10-14 03:05 | `board/**`, `scripts/fe803b80/site.py` |
+| T-FULLCOV-CI — hourly refresh workflow | in progress | fe803b80 | 2026-10-14 03:05 | `.github/workflows/board-fe803b80.yml` |
+| T-FULLCOV-VERIFY — tests, line-by-line re-derivation, flagged page | in progress | fe803b80 | 2026-10-14 03:05 | `tests/test_fe803b80.py` |
+| T-FULLCOV-INTEGRATE — stage the new section, add the executive-summary landing block and nav entry, PR → merge → Pages | in progress | fe803b80 | 2026-10-14 03:05 | `scripts/stage_site.py`, `scripts/build_site.py` (executive summary block only), `README.md`, `COORDINATION.md` |
+
+### Scope notes
+* New session-owned directories only (`scripts/fe803b80/**`, `board/**`, `data/fe803b80/**`), plus the
+  two integration touches named above. No other session's files are edited; requests are logged here.
+* Reused read-only: `scripts/f7279a54/core.py` (pure normalisation / no-vig / Valve-VRS mathematics)
+  imported by this session's scripts. Nothing under `scripts/f7279a54/**` or `data/f7279a54/**` is modified.
+* Why: the root board currently publishes a probability for 10 of 28 open fixtures and the `ourline/`
+  board for 22 of 28. The brief requires a pick for **every** listed match, including tier-C fixtures no
+  bookmaker prices, with the basis labelled and every row carrying a source link.
+* Handoff/conflict rule: `ourline/`, `current/`, `live/`, `market/`, `picks/`, `fresh/`, `docs/`,
+  `pickem/` stay untouched and keep publishing; the new `board/` section is additive.
+
+### Log — evidence found before the claim
+* HotSpawn lobby re-read 2026-10-14 (public `play.hotspawn.com/lobby`, Angular transfer state): 89 CS2
+  cards listed this week; the lobby page itself publishes per-match permalinks, which are used verbatim.
+* Reachable external price sources on a runner (verified in earlier sessions' probes and samples):
+  Pinnacle guest API, Bovada coupon JSON, Melbet/22bet/Betwinner LineFeed JSON, Kalshi exchange API.
+* **New for this session:** `bo3.gg` (external esports aggregator) serves, per fixture, the
+  **Thunderpick** two-way decimal coefficients in `bet_updates` — including the tier-C fixtures no other
+  reachable bookmaker lists (e.g. tournament 6197 "Elisa BreakOut Series 2": WBT v EAC 2.00/1.72,
+  ENCE v BOJONG 1.30/3.20, WBT v ENCE 1.62/2.15). Source evidence is captured per row with the bo3.gg
+  match URL and the Thunderpick path it mirrors.
+* Alias lead (flagged for review, never silently applied): HotSpawn's `WROTBERRY` occupies exactly the
+  same three start times and opponents as bo3.gg/Thunderpick's `WBT` in the same event
+  (2026-10-15 08:00 v EAC, 12:00 v ENCE, 16:00 v BOJONG). Any alias use is published with this evidence
+  on the flagged page.
+* `hltv.org` returns HTTP 403 to runner automation (earlier probe, re-probed by this session): HLTV
+  cannot be a live input; it is reported as unavailable, never cited as if it had been read.
