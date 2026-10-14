@@ -72,6 +72,43 @@ ALIASES: dict[str, dict] = {
             "https://play.hotspawn.com/lobby",
         ],
     },
+    # Melbet's shared 1xBet LineFeed titles the three Elisa BreakOut fixtures "WhiteBIT Team" and
+    # "EA Copenhagen" where bo3.gg's Thunderpick feed titles them "WBT" and "EAC" at the identical
+    # kick-offs (2026-10-15T08:00:00Z, 12:00:00Z and 16:00:00Z). bo3.gg's own team slug for EAC is
+    # esport-academy-copenhagen, which is also how Kalshi spells it.
+    "whitebitteam": {
+        "canonical": "wbt",
+        "note": "Melbet/1xBet list 'WhiteBIT Team vs EA Copenhagen' at 2026-10-15T08:00:00Z, "
+                "'WhiteBIT Team vs ENCE' at 12:00:00Z and 'WhiteBIT Team vs BOJONG' at 16:00:00Z; "
+                "bo3.gg's feed lists the same three kick-offs as WBT vs EAC, WBT vs ENCE and "
+                "WBT vs BOJONG. Same three fixtures, one roster, two org titles.",
+        "evidence": [
+            "https://melbet.com/en/line/esports",
+            "https://bo3.gg/matches/wbt-vs-esport-academy-copenhagen-15-10-2026",
+            "https://bo3.gg/matches/wbt-vs-ence-15-10-2026",
+            "https://bo3.gg/matches/wbt-vs-bojong-15-10-2026",
+        ],
+    },
+    "eacopenhagen": {
+        "canonical": "eac",
+        "note": "Melbet/1xBet spell the academy out as 'EA Copenhagen'; bo3.gg's own team slug is "
+                "esport-academy-copenhagen (acronym EAC) and its feed, Kalshi and HotSpawn all use "
+                "EAC for the same fixtures and kick-offs.",
+        "evidence": [
+            "https://melbet.com/en/line/esports",
+            "https://bo3.gg/matches/esport-academy-copenhagen-vs-bojong-15-10-2026",
+            "https://api.bo3.gg/api/v1/teams/?filter%5Bteams.id%5D%5Beq%5D=23942",
+        ],
+    },
+    "esportacademycopenhagen": {
+        "canonical": "eac",
+        "note": "Kalshi titles the roster 'Esport Academy Copenhagen'; bo3.gg's team slug of the "
+                "same id is esport-academy-copenhagen and its acronym is EAC.",
+        "evidence": [
+            "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct151000bojeac",
+            "https://api.bo3.gg/api/v1/teams/?filter%5Bteams.id%5D%5Beq%5D=23942",
+        ],
+    },
     # Kalshi titles the roster "Privateer Gaming"; HotSpawn and Bovada's own URL slug say
     # "Privateer" / "Privateer Gaming" for the same fixture against mellren.
     "privateergaming": {
@@ -84,6 +121,75 @@ ALIASES: dict[str, dict] = {
         ],
     },
 }
+
+
+# ------------------------------------------------------------------------ label disagreements
+# A price source can publish the SAME fixture under a different opponent name, and that is not a
+# team rename: Valve's standings list the two names as separate rosters, so aliasing them globally
+# would join a price to the wrong fixture. Each entry below therefore applies to ONE fixture pair
+# only, and carries the URLs a reviewer needs to check the call. Key:
+# (source_key, canonical_team_1, canonical_team_2) with the two team keys sorted.
+OPPONENT_LABEL_DISAGREEMENTS: dict[tuple[str, str, str], dict] = {
+    ("kalshi", "6666", "loskogutos"): {
+        "fixture_pair": ("6666", "bandachuya"),
+        "note": "Kalshi trades 6666's 11:00Z fixture as '6666 vs los kogutos'. HLTV's official CCT "
+                "2026 Europe Series 12 Closed Qualifier bracket lists 6666's group A opening-round "
+                "opponent as Banda Chuya, which is also HotSpawn's title, and Valve's standings "
+                "carry Banda Chuya (#165) and los kogutos (#276) as two separate Polish rosters "
+                "sharing two players. The fixture is identical on all three listings: same opponent "
+                "slot, same kick-off minute. Published as 'Banda chuya vs 6666'.",
+        "evidence": [
+            "https://www.hltv.org/events/9456/cct-2026-europe-series-12-closed-qualifier",
+            "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct140700unklk",
+            "https://play.hotspawn.com/lobby",
+        ],
+    },
+    ("kalshi", "forzereload", "sokerorg"): {
+        "fixture_pair": ("forzereload", "lfo10"),
+        "note": "Kalshi trades FORZE Reload's 17:00Z fixture as 'Sokerorg vs FORZE Reload' and "
+                "bo3.gg publishes the identical kick-off as forze-reload-vs-sokerorg. HLTV's "
+                "official CCT 2026 Europe Series 11 bracket lists FORZE Reload's 14 October opponent "
+                "as LFO 10, which is also HotSpawn's title. One team cannot play twice at the same "
+                "minute, so both titles describe one fixture; the HLTV title is what is published.",
+        "evidence": [
+            "https://www.hltv.org/matches/2399301/forze-reload-vs-lfo-10-cct-2026-europe-series-11",
+            "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct141300skrforzer",
+            "https://bo3.gg/teams/forze-reload/matches",
+        ],
+    },
+}
+
+# Kalshi lists the three 2026-10-15 Elisa BreakOut fixtures of the WBT roster as "WBT Academy".
+# The roster in those fixtures is WBT, not WBT Academy: bo3.gg's own match page for the 08:00Z game
+# prints a lineup of Psycho, DemQQ, Smash and s4ltovsk1yy, which is four of the five players Valve's
+# standings list for WBT (#60), while Valve lists a completely different five for WBT Academy (#130).
+# The call stays scoped to these three fixture pairs and is never applied to any other fixture.
+for _opp_key, _opp_link in (("eac", "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct150400eacwbtacadem"),
+                            ("ence", "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct150800encewbtacade"),
+                            ("bojong", "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct151200bojwbtacadem")):
+    OPPONENT_LABEL_DISAGREEMENTS[("kalshi", _opp_key, "wbtacademy")] = {
+        "fixture_pair": (_opp_key, "wbt"),
+        "note": "Kalshi trades this 2026-10-15T08:00Z/12:00Z/16:00Z fixture as 'WBT Academy'. "
+                "bo3.gg's match page for the same kick-off prints WBT's official lineup "
+                "(Psycho, DemQQ, Smash, s4ltovsk1yy) and Valve's standings list those four under WBT "
+                "(#60) while WBT Academy (#130) is a different five. Published under HotSpawn's and "
+                "bo3.gg's title, WBT.",
+        "evidence": [
+            _opp_link,
+            "https://bo3.gg/matches/wbt-vs-esport-academy-copenhagen-15-10-2026",
+            "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/"
+            "2026/standings_global_2026_10_05.md",
+        ],
+    }
+
+
+def label_disagreement(source_key: str, team_a: str | None, team_b: str | None) -> dict | None:
+    """The reviewed label record for this source's team pair, or None."""
+    ka, _, _ = canon(team_a)
+    kb, _, _ = canon(team_b)
+    if not ka or not kb:
+        return None
+    return OPPONENT_LABEL_DISAGREEMENTS.get((source_key, *sorted((ka, kb))))
 
 
 def norm(name: str | None) -> str:

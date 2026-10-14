@@ -50,6 +50,14 @@ class CoreMath(unittest.TestCase):
         self.assertTrue(core.confidence(0.9, "exchange").startswith("Moderate"))
         self.assertEqual(core.confidence(0.9, "market"), "Strong")
 
+    def test_parse_any_reads_epoch_milliseconds_and_seconds(self):
+        # Bovada publishes startTime as epoch milliseconds; reading it as seconds gave 1792.
+        self.assertEqual(core.iso(core.parse_any(1791966600000)), "2026-10-14T08:30:00Z")
+        self.assertEqual(core.iso(core.parse_any("1791966600")), "2026-10-14T08:30:00Z")
+        self.assertEqual(core.iso(core.parse_any("2026-10-14T08:30:00Z")), "2026-10-14T08:30:00Z")
+        self.assertIsNone(core.parse_any(None))
+        self.assertIsNone(core.parse_any("soon"))
+
 
 class NamesAndAliases(unittest.TestCase):
     def test_norm_does_not_merge_distinct_rosters(self):
@@ -71,6 +79,35 @@ class NamesAndAliases(unittest.TestCase):
 
     def test_unknown_names_are_not_merged(self):
         self.assertNotEqual(core.canon("Ryvex")[0], core.canon("PCIFIC")[0])
+
+    def test_whitebit_and_eac_aliases(self):
+        self.assertEqual(core.canon("WhiteBIT Team")[0], "wbt")
+        self.assertEqual(core.canon("EA Copenhagen")[0], "eac")
+        self.assertEqual(core.canon("Esport Academy Copenhagen")[0], "eac")
+        self.assertEqual(core.canon("WROTBERRY")[0], "wbt")
+
+    def test_wbt_academy_is_not_merged_with_wbt(self):
+        # Valve's standings list WBT (#60) and WBT Academy (#130) as two rosters, so the names are
+        # never merged; Kalshi's "WBT Academy" titles for three fixtures are handled by a per-fixture
+        # label call instead.
+        self.assertEqual(core.canon("WBT Academy")[0], "wbtacademy")
+        self.assertNotEqual(core.canon("WBT Academy")[0], core.canon("WBT")[0])
+
+    def test_every_name_decision_carries_evidence(self):
+        for key, entry in core.ALIASES.items():
+            self.assertTrue(entry["note"], key)
+            self.assertTrue([u for u in entry["evidence"] if str(u).startswith("http")], key)
+        for key, rec in core.OPPONENT_LABEL_DISAGREEMENTS.items():
+            self.assertEqual(len(rec["fixture_pair"]), 2, key)
+            self.assertTrue(rec["note"], key)
+            self.assertGreaterEqual(
+                len([u for u in rec["evidence"] if str(u).startswith("http")]), 2, key)
+        # the two real label calls this build can make, and the fixture they belong to
+        self.assertEqual(core.label_disagreement("kalshi", "6666", "los kogutos")["fixture_pair"],
+                         ("6666", "bandachuya"))
+        self.assertEqual(
+            core.label_disagreement("kalshi", "Sokerorg", "FORZE Reload")["fixture_pair"],
+            ("forzereload", "lfo10"))
 
 
 class HotspawnParsing(unittest.TestCase):
@@ -161,6 +198,58 @@ class JoinRules(unittest.TestCase):
         self.assertLessEqual(cal["k"], build.CAL_K_BOUNDS[1])
         self.assertGreaterEqual(cal["k"], build.CAL_K_BOUNDS[0])
 
+    def _label(self, key, fixture_pair):
+        """Install a synthetic reviewed name decision for the duration of one test."""
+        saved = dict(core.OPPONENT_LABEL_DISAGREEMENTS)
+        core.OPPONENT_LABEL_DISAGREEMENTS[key] = {
+            "fixture_pair": fixture_pair, "note": "synthetic decision for the test suite",
+            "evidence": ["https://example.invalid/listing-a", "https://example.invalid/listing-b"]}
+        self.addCleanup(lambda: (core.OPPONENT_LABEL_DISAGREEMENTS.clear(),
+                                 core.OPPONENT_LABEL_DISAGREEMENTS.update(saved)))
+
+    def test_reviewed_label_call_joins_the_same_fixture(self):
+        self._label(("kalshi", "6666", "loskogutos"), ("6666", "bandachuya"))
+        quote = {"source_key": "kalshi", "team_a": "6666", "team_b": "los kogutos", "prob_a": 0.55,
+                 "start_utc": "2026-10-14T11:00:00Z", "decimal_a": 1.9, "decimal_b": 2.0,
+                 "event_id": "26oct140700unklk", "public_url": "https://example.invalid/market"}
+        fx = self._fixture("Banda chuya", "6666", "2026-10-14T11:00:00Z")
+        rejected: list = []
+        joined = build.join_quotes(fx, self._index(quote), rejected)
+        self.assertEqual(rejected, [])
+        self.assertEqual(len(joined), 1)
+        self.assertTrue(joined[0]["pair_mismatch"])
+        self.assertTrue(joined[0]["swapped"])                 # 6666 is the fixture's second team
+        self.assertAlmostEqual(joined[0]["prob_a"], 0.45, places=6)
+        self.assertEqual(joined[0]["label_disagreement"]["source_key"], "kalshi")
+        self.assertEqual(joined[0]["label_disagreement"]["fixture_pair"], ["6666", "bandachuya"])
+
+    def test_label_call_still_refuses_a_missing_kick_off(self):
+        self._label(("kalshi", "6666", "loskogutos"), ("6666", "bandachuya"))
+        quote = {"source_key": "kalshi", "team_a": "6666", "team_b": "los kogutos", "prob_a": 0.55,
+                 "start_utc": None, "decimal_a": 1.9, "decimal_b": 2.0, "event_id": "x",
+                 "public_url": "https://example.invalid/market"}
+        rejected: list = []
+        joined = build.join_quotes(self._fixture("Banda chuya", "6666", "2026-10-14T11:00:00Z"),
+                                   self._index(quote), rejected)
+        self.assertEqual(joined, [])
+        self.assertEqual(rejected[0]["via"], "reviewed name decision")
+        self.assertIn("no kick-off", rejected[0]["reason"])
+
+    def test_a_different_name_without_a_decision_is_refused(self):
+        # With the reviewed table emptied, an unmatched opponent name must not join silently.
+        saved = dict(core.OPPONENT_LABEL_DISAGREEMENTS)
+        core.OPPONENT_LABEL_DISAGREEMENTS.clear()
+        self.addCleanup(lambda: (core.OPPONENT_LABEL_DISAGREEMENTS.clear(),
+                                 core.OPPONENT_LABEL_DISAGREEMENTS.update(saved)))
+        quote = {"source_key": "kalshi", "team_a": "6666", "team_b": "los kogutos", "prob_a": 0.55,
+                 "start_utc": "2026-10-14T11:00:00Z", "decimal_a": 1.9, "decimal_b": 2.0,
+                 "event_id": "x", "public_url": "https://example.invalid/market"}
+        rejected: list = []
+        joined = build.join_quotes(self._fixture("Banda chuya", "6666", "2026-10-14T11:00:00Z"),
+                                   self._index(quote), rejected)
+        self.assertEqual(joined, [])
+        self.assertEqual(rejected, [])
+
 
 class EndToEnd(unittest.TestCase):
     """build → render → verify on a synthetic snapshot, in a temporary tree."""
@@ -189,9 +278,19 @@ class EndToEnd(unittest.TestCase):
             "hotspawn_url": "https://play.hotspawn.com/lobby",
             "hotspawn_url_kind": "official lobby page (no permalink)",
         }
+        fixture_label = {
+            "fixture_id": "3", "competition": "CCT Europe 2026 Series #11", "tier": "B",
+            "stage": "group swiss", "status": "scheduled",
+            "start_utc": core.iso(core.now_utc() + timedelta(hours=10)),
+            "lock_utc": core.iso(core.now_utc() + timedelta(hours=9, minutes=54)),
+            "team_a": "FORZE Reload", "team_b": "LFO 10",
+            "hotspawn_url": "https://play.hotspawn.com/lobby",
+            "hotspawn_url_kind": "official lobby page (no permalink)",
+        }
         snapshot = {
             "session": "b1fb1465", "generated_utc": core.iso(core.now_utc()),
-            "hotspawn": {"fixtures": [fixture_open, fixture_model], "week": {}, "permalinks": {}},
+            "hotspawn": {"fixtures": [fixture_open, fixture_model, fixture_label], "week": {},
+                         "permalinks": {}},
             "quotes": [
                 {"source_key": "bovada", "source_name": "Bovada", "public_url": "https://bovada.lv/x",
                  "api_url": "https://bovada.lv/api", "event_id": "42", "team_a": "Wraith Pcific",
@@ -199,6 +298,21 @@ class EndToEnd(unittest.TestCase):
                  "raw_format": "decimal", "raw_a": "1.6", "raw_b": "2.4",
                  "start_utc": fixture_open["start_utc"], "league": "Series 12", "live": False,
                  "retrieved_utc": core.iso(core.now_utc())},
+                # Kalshi titles this fixture "Sokerorg vs FORZE Reload" while HotSpawn (and HLTV)
+                # title it "FORZE Reload vs LFO 10"; the reviewed record in core resolves the name.
+                {"source_key": "kalshi", "source_name": "Kalshi (exchange)",
+                 "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct141300skrforzer",
+                 "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME",
+                 "event_id": "KXCS2GAME-26OCT141300SKRFORZER", "team_a": "Sokerorg",
+                 "team_b": "FORZE Reload", "decimal_a": 3.333333, "decimal_b": 1.428571,
+                 "prob_a": 0.30, "raw_format": "exchange mid", "raw_a": "0.29/0.31",
+                 "raw_b": "0.69/0.71", "thin_book": False, "spread": 0.02,
+                 "legs": [{"team": "Sokerorg", "bid": 0.29, "ask": 0.31, "spread": 0.02,
+                           "volume": 120, "open_interest": 60},
+                          {"team": "FORZE Reload", "bid": 0.69, "ask": 0.71, "spread": 0.02,
+                           "volume": 300, "open_interest": 90}],
+                 "start_utc": fixture_label["start_utc"], "league": "Series 11", "live": False,
+                 "start_is_approx": True, "retrieved_utc": core.iso(core.now_utc())},
             ],
             "kalshi_not_usable": [],
             "vrs": {"snapshot": "live/2026/standings_global_2026_10_05.md",
@@ -241,7 +355,7 @@ class EndToEnd(unittest.TestCase):
     def test_pipeline_publishes_and_verifies(self):
         self.assertEqual(build.main(), 0)
         board = json.loads((self.root / "data" / "b1fb1465" / "board.json").read_text())
-        self.assertEqual(board["summary"]["open_for_picks"], 2)
+        self.assertEqual(board["summary"]["open_for_picks"], 3)
         rows = {r["fixture_id"]: r for r in board["open"]}
         self.assertEqual(rows["1"]["basis"], "market")
         # The Bovada quote names "Wraith Pcific" first with p=0.60; after side alignment the
@@ -253,6 +367,14 @@ class EndToEnd(unittest.TestCase):
         self.assertEqual(rows["2"]["unresolved_category"], "resolved_by_originated_line")
         self.assertEqual(board["summary"]["unresolved"], 0)
         self.assertEqual(board["summary"]["resolved_by_originated_line"], 1)
+        # The third fixture is priced only by the exchange, under a different opponent title.
+        self.assertEqual(rows["3"]["basis"], "exchange")
+        self.assertEqual(rows["3"]["pick"], "FORZE Reload")
+        self.assertAlmostEqual(rows["3"]["prob_a"], 0.7, places=6)
+        self.assertIn("opponent_label_disagreement", rows["3"]["flags"])
+        self.assertEqual(board["summary"]["rows_with_reviewed_name_decisions"], 1)
+        self.assertEqual([rec["fixture_id"] for rec in board["label_disagreements"]], ["3"])
+        self.assertTrue(board["label_disagreements"][0]["note"])
         self.assertEqual(render.main(), 0)
         for name in ("index.html", "picks.html", "unresolved.html", "sources.html", "flagged.html",
                      "method.html"):
@@ -261,7 +383,34 @@ class EndToEnd(unittest.TestCase):
         self.assertIn("Unresolved picks", index)
         self.assertIn("picks.html", index)
         self.assertIn("HLTV", index)
+        sources_page = (self.root / "exec" / "sources.html").read_text()
+        self.assertIn("Reviewed name decisions in this build", sources_page)
+        self.assertIn("Sokerorg vs FORZE Reload", sources_page)
         self.assertEqual(verify.main(), 0)
+
+    def test_verify_catches_an_unflagged_name_decision(self):
+        build.main()
+        render.main()
+        path = self.root / "data" / "b1fb1465" / "board.json"
+        board = json.loads(path.read_text())
+        for row in board["open"]:
+            if row.get("label_disagreements"):
+                row["flags"] = [f for f in row["flags"] if f != "opponent_label_disagreement"]
+        path.write_text(json.dumps(board), encoding="utf-8")
+        self.assertEqual(verify.main(), 1)
+
+    def test_verify_catches_an_unevidenced_name_decision(self):
+        build.main()
+        render.main()
+        path = self.root / "data" / "b1fb1465" / "board.json"
+        board = json.loads(path.read_text())
+        for rec in board["label_disagreements"]:
+            rec["evidence"] = []
+        for row in board["open"]:
+            for ld in row.get("label_disagreements") or []:
+                ld["evidence"] = []
+        path.write_text(json.dumps(board), encoding="utf-8")
+        self.assertEqual(verify.main(), 1)
 
     def test_verify_catches_a_tampered_probability(self):
         build.main()
@@ -300,7 +449,7 @@ class EndToEnd(unittest.TestCase):
         snapshot_path.write_text(json.dumps(snap), encoding="utf-8")
         self.assertEqual(build.main(), 0)
         board = json.loads((self.root / "data" / "b1fb1465" / "board.json").read_text())
-        self.assertEqual(board["summary"]["unresolved"], 2)
+        self.assertEqual(board["summary"]["unresolved"], 3)
         for row in board["open"]:
             self.assertIsNone(row["prob_a"])
             self.assertIsNone(row["pick"])

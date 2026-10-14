@@ -65,41 +65,87 @@ def load_snapshot() -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _side_flip(qa: str, qb: str, ka: str, kb: str) -> bool | None:
+    """Whether the quote's two sides must be flipped to line up with the fixture, or None.
+
+    Two shapes are supported: the same two canonical teams in either order, and a reviewed name
+    decision where one side is the fixture's team under another title. Anything else is refused.
+    """
+    if {qa, qb} == {ka, kb}:
+        return qa != ka
+    shared = {qa, qb} & {ka, kb}
+    if len(shared) != 1:
+        return None
+    team = next(iter(shared))
+    if qa == team:                      # the source lists the shared team first
+        return team == kb               # flip iff that team is the fixture's second team
+    return team != kb                   # source lists it second: flip iff it is the fixture's first
+
+
 def join_quotes(fixture: dict, quotes_by_pair: dict, rejected: list) -> list[dict]:
-    """All quotes that belong to this fixture, with side alignment resolved and the time gap kept."""
+    """All quotes that belong to this fixture, with side alignment resolved and the time gap kept.
+
+    Two ways in, and both keep their time check: the exact canonical pair, or a reviewed
+    ``OPPONENT_LABEL_DISAGREEMENTS`` record that ties a specific source title to this fixture pair.
+    A name that differs without such a record is refused and published in ``rejected_joins``.
+    """
     ka, ea, na = core.canon(fixture["team_a"])
     kb, eb, nb = core.canon(fixture["team_b"])
     start = core.parse_iso(fixture["start_utc"])
     joined: list[dict] = []
-    for q in quotes_by_pair.get(frozenset((ka, kb)), []):
+
+    def attach(q: dict, label: dict | None) -> None:
         qa, _, _ = core.canon(q.get("team_a"))
         qb, _, _ = core.canon(q.get("team_b"))
-        if {qa, qb} != {ka, kb}:
-            continue
+        swap = _side_flip(qa, qb, ka, kb)
         diff = core.hours_between(start, core.parse_iso(q.get("start_utc")))
-        if diff is None or abs(diff) > MATCH_WINDOW_H:
-            rejected.append({"fixture_id": fixture["fixture_id"], "match": f"{fixture['team_a']} vs "
-                             f"{fixture['team_b']}", "source_key": q.get("source_key"),
-                             "source_event": q.get("event_id"), "source_url": q.get("public_url"),
+        reasons = []
+        if swap is None:
+            reasons.append("the listed teams cannot be aligned with this fixture")
+        if diff is None:
+            reasons.append("source publishes no kick-off time")
+        elif abs(diff) > MATCH_WINDOW_H:
+            reasons.append("same team pair but the kick-off times disagree")
+        if reasons:
+            rejected.append({"fixture_id": fixture["fixture_id"],
+                             "match": f"{fixture['team_a']} vs {fixture['team_b']}",
+                             "source_key": q.get("source_key"), "source_event": q.get("event_id"),
+                             "source_url": q.get("public_url"),
                              "source_match": f"{q.get('team_a')} vs {q.get('team_b')}",
                              "fixture_start_utc": fixture["start_utc"],
                              "source_start_utc": q.get("start_utc"),
                              "start_diff_h": diff,
-                             "reason": "same team pair but the kick-off times disagree"
-                                       if diff is not None else "source publishes no kick-off time"})
-            continue
-        swapped = qa == kb and ka != kb
+                             "via": "reviewed name decision" if label else "canonical team names",
+                             "reason": "; ".join(reasons)})
+            return
         prob_a = q.get("prob_a")
         if prob_a is None:
-            continue
-        row = {**q, "swapped": swapped, "start_diff_h": diff,
-               "prob_a": round(prob_a if not swapped else 1 - prob_a, 6),
-               "source_prob_a": prob_a}
-        notes = [n for n in (na, nb) if n]
-        evidence = sorted(set(ea + eb))
-        row["alias_notes"] = notes
-        row["alias_evidence"] = evidence
+            return
+        row = {**q, "swapped": swap, "start_diff_h": diff,
+               "prob_a": round(prob_a if not swap else 1 - prob_a, 6),
+               "source_prob_a": prob_a,
+               "pair_mismatch": bool(label)}
+        if label:
+            row["label_disagreement"] = {**label, "source_key": q.get("source_key"),
+                                         "source_match": f"{q.get('team_a')} vs {q.get('team_b')}",
+                                         "source_pair": sorted((qa, qb)),
+                                         "fixture_match": f"{fixture['team_a']} vs {fixture['team_b']}",
+                                         "fixture_pair": sorted((ka, kb))}
+        row["alias_notes"] = [n for n in (na, nb) if n]
+        row["alias_evidence"] = sorted(set(ea + eb))
         joined.append(row)
+
+    for q in quotes_by_pair.get(frozenset((ka, kb)), []):
+        attach(q, None)
+
+    # Reviewed name decisions: a price source that titles this same fixture differently.
+    fixture_pair = sorted((ka, kb))
+    for (source_key, *entry_pair), rec in core.OPPONENT_LABEL_DISAGREEMENTS.items():
+        if sorted(rec.get("fixture_pair") or ()) != fixture_pair:
+            continue
+        for q in quotes_by_pair.get(frozenset(entry_pair), []):
+            if q.get("source_key") == source_key:
+                attach(q, rec)
     return joined
 
 
@@ -197,7 +243,10 @@ def build_row(fixture: dict, joined: list[dict], vrs_teams: dict, calibration: d
                  "points_a": vrs["team_a"]["points"], "points_b": vrs["team_b"]["points"],
                  "standing_a": vrs["team_a"]["standing"], "standing_b": vrs["team_b"]["standing"],
                  "vrs_name_a": vrs["team_a"]["name"], "vrs_name_b": vrs["team_b"]["name"]}
+    labels = [q["label_disagreement"] for q in joined if q.get("label_disagreement")]
     flags: list[str] = []
+    if labels:
+        flags.append("opponent_label_disagreement")
     if market:
         basis, prob_a = "market", market["prob_a"]
         if market["spread_a"] > 0.10:
@@ -235,6 +284,10 @@ def build_row(fixture: dict, joined: list[dict], vrs_teams: dict, calibration: d
                                   f"{q.get('team_b')} {q.get('decimal_b')}"
                                   + (f" · spread {q.get('spread')}" if q.get("spread") is not None
                                      else "")})
+    for ld in labels:
+        sources.append({"label": f"Name decision · {ld['source_match']} = {ld['fixture_match']}",
+                        "url": (ld.get("evidence") or [None])[0], "kind": "label",
+                        "detail": ld.get("note")})
     if model:
         sources.append({"label": f"Valve VRS global standings · {model['vrs_name_a']} "
                                  f"#{model['standing_a']} ({model['points_a']} pts) / "
@@ -258,12 +311,18 @@ def build_row(fixture: dict, joined: list[dict], vrs_teams: dict, calibration: d
         "flags": flags, "sources": [s for s in sources if s.get("url")],
         "alias_evidence": sorted({u for q in joined for u in q.get("alias_evidence", [])}),
         "alias_notes": sorted({n for q in joined for n in q.get("alias_notes", []) if n}),
+        "label_disagreements": labels,
     }
 
 
 def limitations_for(row: dict, attempts: list[dict], generated_utc: str) -> list[str]:
     """Plain-language limitations for every fixture without a bookmaker price."""
     notes: list[str] = []
+    for ld in row.get("label_disagreements") or []:
+        notes.append(f"Name check: {ld['source_key']} titles this fixture "
+                     f"\"{ld['source_match']}\" while HotSpawn titles it \"{ld['fixture_match']}\". "
+                     f"The price is for this fixture (identical kick-off), and the call is published "
+                     f"with its evidence on the sources page.")
     if row["basis"] == "market":
         return notes
     if row["basis"] == "exchange":
@@ -350,6 +409,16 @@ def main() -> int:
             "resolved_by_originated_line" if row["basis"] == "model" else
             "not_resolved")
 
+    label_records: list[dict] = []
+    seen_labels: set = set()
+    for row in open_rows:
+        for ld in row.get("label_disagreements") or []:
+            key = (row["fixture_id"], ld.get("source_key"), tuple(ld.get("source_pair") or []))
+            if key in seen_labels:
+                continue
+            seen_labels.add(key)
+            label_records.append({"fixture_id": row["fixture_id"], "fixture": ld["fixture_match"],
+                                  **{k: v for k, v in ld.items() if k != "fixture_match"}})
     summary = {
         "fixtures_listed_cs2": len(fixtures),
         "open_for_picks": len(open_rows),
@@ -364,6 +433,8 @@ def main() -> int:
         "quotes_collected": len(quotes),
         "quotes_joined": sum(len(r["market"]["quotes"]) if r.get("market") else 0 for r in open_rows),
         "quotes_rejected_on_time": len(rejected),
+        "rows_with_reviewed_name_decisions": sum(1 for r in open_rows
+                                                 if r.get("label_disagreements")),
         "sources_by_key": dict(Counter(q.get("source_key") for q in quotes)),
     }
     board = {
@@ -385,6 +456,7 @@ def main() -> int:
         "no_market": no_market,
         "unresolved": unresolved,
         "rejected_joins": rejected,
+        "label_disagreements": label_records,
         "source_attempts": attempts,
         "kalshi_not_usable": snap.get("kalshi_not_usable") or [],
         "access": snap.get("access") or {},

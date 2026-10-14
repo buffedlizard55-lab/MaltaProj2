@@ -15,7 +15,11 @@ R8  the open list matches the lobby fixture list in the snapshot;
 R9  no crowd-pick ("picked %") field is present anywhere in the board;
 R10 every local link in every generated page resolves to a staged file;
 R11 every table row in the generated HTML carries at least one external source link;
-R12 the refresh cadence recorded in the method page matches the workflow's cron.
+R12 the refresh cadence recorded in the method page matches the workflow's cron;
+R13 every name-decision entry (team alias and per-fixture label call) carries a note and an evidence
+    URL, and every label call names a fixture pair;
+R14 a source quote that reaches a fixture under a different opponent name than HotSpawn's is flagged
+    on the row and published with at least two evidence URLs.
 
 Exit code 0 only when every check passes; the workflow refuses to publish otherwise.
 """
@@ -169,6 +173,38 @@ def main() -> int:
             if "http" not in block:
                 failures.append(f"R11 {page.name}: a table row carries no source link")
 
+    # R13 - every name decision this build can make is evidence-backed.
+    for key, entry in core.ALIASES.items():
+        if not entry.get("note") or not entry.get("canonical"):
+            failures.append(f"R13 alias {key}: missing note or canonical key")
+        if not [u for u in entry.get("evidence") or [] if str(u).startswith("http")]:
+            failures.append(f"R13 alias {key}: no evidence URL")
+    for key, rec in core.OPPONENT_LABEL_DISAGREEMENTS.items():
+        pair = rec.get("fixture_pair") or ()
+        if len(pair) != 2 or any(not p for p in pair):
+            failures.append(f"R13 label {key}: fixture pair is incomplete")
+        if not rec.get("note"):
+            failures.append(f"R13 label {key}: missing note")
+        if len([u for u in rec.get("evidence") or [] if str(u).startswith("http")]) < 2:
+            failures.append(f"R13 label {key}: fewer than two evidence URLs")
+
+    # R14 - a reviewed name call must be flagged, linked and evidenced on the row that used it.
+    for row in board["open"]:
+        for group in ("market", "exchange"):
+            for q in ((row.get(group) or {}).get("quotes") or []):
+                if not q.get("pair_mismatch"):
+                    continue
+                tag = f"{row['fixture_id']} {row['team_a']} vs {row['team_b']}"
+                if "opponent_label_disagreement" not in (row.get("flags") or []):
+                    failures.append(f"R14 {tag}: source listed under a different opponent name "
+                                    f"without the flag")
+                ld = q.get("label_disagreement") or {}
+                if len([u for u in ld.get("evidence") or [] if str(u).startswith("http")]) < 2:
+                    failures.append(f"R14 {tag}: name decision without two evidence URLs")
+    for rec in board.get("label_disagreements") or []:
+        if len([u for u in rec.get("evidence") or [] if str(u).startswith("http")]) < 2:
+            failures.append(f"R14 {rec.get('fixture')}: published name decision without evidence")
+
     # R12
     workflow = (ROOT / ".github/workflows/exec-b1fb1465.yml")
     if workflow.exists():
@@ -186,7 +222,7 @@ def main() -> int:
         failures.append("R12: the refresh workflow is missing")
 
     out = {"session": "b1fb1465", "verified_utc": core.iso(core.now_utc()),
-           "checks_run": 12, "failures": failures, "board_generated_utc": board["generated_utc"],
+           "checks_run": 14, "failures": failures, "board_generated_utc": board["generated_utc"],
            "open_fixtures": len(board["open"]),
            "summary": board.get("summary")}
     (DATA / "verification.json").write_text(json.dumps(out, indent=1) + "\n", encoding="utf-8")
@@ -195,7 +231,7 @@ def main() -> int:
             print(f"::error title=verification::{f}")
         print(f"VERIFICATION FAILED with {len(failures)} finding(s)")
         return 1
-    print(f"PASS: R1-R12 verified for {len(board['open'])} open fixtures and {len(pages)} pages")
+    print(f"PASS: R1-R14 verified for {len(board['open'])} open fixtures and {len(pages)} pages")
     return 0
 
 

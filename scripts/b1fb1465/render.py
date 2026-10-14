@@ -513,6 +513,15 @@ def render_sources(board: dict) -> str:
         f'<td>{e(a["bytes"])}</td><td>{e(a["at_utc"])}</td><td>{e(a["note"])}</td></tr>'
         for a in attempts)
     vrs = board.get("vrs") or {}
+    labels = board.get("label_disagreements") or []
+    fallback_label_row = (
+        "<tr><td>none at this build</td><td>no source title differed from HotSpawn's teams</td>"
+        '<td>The lobby is re-read every run: '
+        '<a href="https://play.hotspawn.com/lobby" rel="noopener">play.hotspawn.com/lobby</a></td></tr>')
+    label_rows = "".join(
+        f'<tr><td>{e(r.get("fixture"))}</td>'
+        f'<td>{e(r.get("source_key"))} — {e(r.get("source_match"))}</td>'
+        f'<td>{label_line(r)}</td></tr>' for r in labels) or fallback_label_row
     body = f"""
 <h1>Sources, and how this build read them</h1>
 <p class="sub">Every source used or attempted in the build at {e(board['generated_utc'])}, with the
@@ -530,6 +539,16 @@ listed as a refusal.</p>
 <tr><td><a href="https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&amp;status=open&amp;with_nested_markets=true&amp;limit=200" rel="noopener">Kalshi</a></td><td>{quotes.get('kalshi', 0)}</td><td>CFTC-regulated exchange, series KXCS2GAME; bid/ask kept per leg</td></tr>
 <tr><td><a href="{e(vrs.get('source_url') or 'https://github.com/ValveSoftware/counter-strike_regional_standings')}" rel="noopener">Valve VRS</a></td><td>{vrs.get('teams')} teams</td><td>Official global standings ({e(vrs.get('snapshot'))}) used only to originate a line</td></tr>
 </tbody></table></div>
+
+<h2>Reviewed name decisions in this build ({len(labels)})</h2>
+<p class="sub">A price source sometimes titles the same fixture with a different opponent name. The
+join accepts such a quote only when a reviewed record below ties that exact title to this exact
+fixture pair, and the row that uses it is flagged <em>opponent_label_disagreement</em>. A name that
+differs without a record is refused and published under rejected joins instead.</p>
+<div class="tablewrap"><table>
+<thead><tr><th scope="col">HotSpawn fixture</th><th scope="col">Source title</th>
+<th scope="col">Why this is the same fixture, and the evidence</th></tr></thead>
+<tbody>{label_rows}</tbody></table></div>
 
 <h2>Every request in this build</h2>
 <div class="tablewrap"><table>
@@ -559,6 +578,13 @@ automated probability.</p>
                 "Source ledger for the HotSpawn CS2 picks build, including refused sources.")
 
 
+def label_line(rec: dict) -> str:
+    """One reviewed name decision: the note plus every evidence link, escaped."""
+    links = " · ".join(f'<a href="{e(u)}" rel="noopener">{e(u)}</a>'
+                       for u in (rec.get("evidence") or []))
+    return f'{e(rec.get("note"))} <span class="blank">Evidence: {links}</span>'
+
+
 def inline_sources(row: dict, limit: int = 4) -> str:
     """Compact, escaped source links for a flag line."""
     links = []
@@ -586,6 +612,13 @@ def render_flagged(board: dict) -> str:
                              f'disagreement wider than 10 probability points '
                              f'({pct((r.get("market") or {}).get("min_a"))} to '
                              f'{pct((r.get("market") or {}).get("max_a"))}). Re-check before use.</li>')
+    for r in board["open"]:
+        if "opponent_label_disagreement" not in (r.get("flags") or []):
+            continue
+        for ld in r.get("label_disagreements") or []:
+            items.append(f'<li><strong>{e(r["team_a"])} vs {e(r["team_b"])}</strong> — '
+                         f'{e(ld.get("source_key"))} titles this fixture '
+                         f'"{e(ld.get("source_match"))}" instead. {label_line(ld)}</li>')
     thin = [k for k in board.get("kalshi_not_usable", [])]
     for t in thin[:20]:
         items.append(f'<li><strong>{e(t.get("team_a"))} vs {e(t.get("team_b"))}</strong> — Kalshi '
