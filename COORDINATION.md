@@ -3653,3 +3653,95 @@ Environment note: Arena pins this session to branch `arena/c0e223d3-maltaproj2`;
 - Sandbox egress from `bash` is limited to github/codeload/api.github/registry.npmjs/pypi;
   HLTV and HotSpawn return TLS EOF from `curl` here. All external reads are therefore done through
   the platform fetch tools and re-done by CI where a hosted runner is needed.
+
+### Session `c0e223d3` — work log and integration handoff (2026-10-14 03:10 UTC, append-only)
+
+**Status: done. Claim closed after the PR below merges.**
+
+#### Re-scope (important)
+
+While this session was claiming, session `c64a5e19` merged **PR #81** (`picks-every-match/`) and
+session `5a3c1a63` merged **PR #83** (root executive summary). Together they already deliver the
+user's main asks: a mobile-first executive summary with "where to find the picks" links and
+**28/28 open CS2 matches with a pick**, auto-refreshed ~every 30 minutes.
+
+`c0e223d3` therefore **dropped its own competing every-match board** and re-scoped `summary/` to be
+the **verification companion** to that board, so the site does not end up with two rival pick
+boards. `summary/index.html` leads with a prominent link to `picks-every-match/` as the single
+place for picks, then cross-checks it.
+
+#### What `summary/` publishes
+
+1. **Where to find the picks** — cards linking every board, `picks-every-match/` first.
+2. **Independent cross-check of every pick** — 26 same pick, 1 opposite winner, 1 blank.
+3. **Every open pick table** with an official-source link on every row.
+4. **`summary/gaps.html`** — the name-resolution evidence and the two disagreements.
+5. **`summary/repo-review.html`** — line-by-line repository review with flagged irregularities.
+
+#### Findings (all with official sources; nothing inferred)
+
+- **N-1 — WROTBERRY = Valve's `WBT`.** HotSpawn's "WROTBERRY" is absent from Valve's file, but the
+  file contains `WBT` (standing 60, 1201 pts, roster `DemQQ, Psycho, s4ltovsk1yy, Smash, tyr1k`).
+  HLTV's Elisa BreakOut Series 2 group draw lists **WBT** (not WBT Academy) in group A and schedules
+  WBT vs EAC / ENCE / BOJONG at exactly the HotSpawn WROTBERRY slots. HLTV team 13683 carries the
+  identical roster and shows Valve rank #64. Melbet prices the same slots as "WhiteBIT Team".
+  Sources: [Valve](https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md),
+  [HLTV event](https://www.hltv.org/events/9332/elisa-breakout-series-2),
+  [HLTV team](https://www.hltv.org/team/13683/wbt), [Melbet](https://melbet.com/en/line/esports).
+- **N-2 — RoundsGG = Valve's `ROUNDS`** (standing 310, 548 pts, roster `Kollo, Lapa, Monoxx,
+  Tumppis, ykis`). HLTV group B lists ROUNDS in the same three slots as HotSpawn's RoundsGG.
+  The every-match board already resolves this one; this session corroborates it independently and
+  the two numbers agree (HAVU 71.1% vs 68.9%; Voca 81.2% vs 78.5%).
+- **N-3 — LFO 10 has no official rating.** Absent from Valve's latest published file (which does
+  carry LFO 7/8/9). HLTV's own match analytics page says "LFO 10 is worse ranked (Unranked)" while
+  HLTV's event page shows `#170 LFO 10` — an internal contradiction. This session leaves
+  `1079624 FORZE Reload vs LFO 10` **blank and flagged**.
+- **N-4 — WBT vs WBT Academy is genuinely contested.** Kalshi prices the 15 Oct 04:00 slot as
+  `KXCS2GAME-26OCT150400EACWBTACADEMY` ("WBT Academy"), and bo3.gg / strafe.com / egamersworld give
+  "WROTBERRY" the WBT **Academy** five (`fl1peR, marat2k, NxStep, svemyy, tired73`, standing 130,
+  911 pts). HLTV + Melbet + the schedule point at WBT. Both candidate ratings are published with
+  their sources; the conflict is **flagged, not settled**.
+
+#### Two items flagged for the user (non-blocking, published on `summary/gaps.html`)
+
+- **F-1 — opposite pick on `1080279 WROTBERRY vs EAC`.** This cross-check: WROTBERRY 58.4%
+  (WBT rating model). Every-match board: EAC 53.7% (Melbet slot price under the "WhiteBIT Team"
+  label). The gap is the identity question in N-4, not an arithmetic error.
+- **F-2 — `1079624 FORZE Reload vs LFO 10` is published by the every-match board as a tier-B
+  "fallback" pick (FORZE Reload 76.4%)** built from the VRS points of *sibling* rosters
+  (LFO 8 / LFO 7 / LFO 9). It is clearly labelled provisional there. This session leaves the row
+  blank because no official source rates this roster. Flagged for the user to decide.
+
+#### Repairs carried out (integration-blocking)
+
+- **`scripts/live/collect_live.py`** still wrote a constructed `https://www.hotspawn.com/matches/<id>`
+  on every row even after the permalink plumbing was added, so `live/` kept shipping a link that
+  resolves to HotSpawn's general matches index. Fixed (permalink, else the official lobby page), and
+  a `hotspawn_match_url_kind` label plus a `per_row_link_kinds` counter were added.
+- **Two shared tests failed on `main`** and were breaking the Pages validation gate
+  (`test_verify_7cd2e67a` x2, `test_58cb2600` x1) because the hourly live-coverage workflow
+  refreshes `data/live/samples/lobby_page.txt` while those assertions froze counts from an older
+  capture (90 -> 89 fixtures). `c64a5e19` repaired the same drift on `main` first; this session
+  rebased onto theirs rather than re-editing. `scripts/live/collect_live.py` keeps only the
+  added link-kind label from this session.
+- **Module shadowing:** this session's `scripts/c0e223d3/core.py` shadowed another session's `core`
+  and broke `tests/test_c64a5e19`. Renamed to `core_c0e223d3.py` / `aliases_c0e223d3.py`.
+
+#### Verification performed
+
+- `python -m unittest discover -s tests` → **315 OK** (includes 37 new `tests/test_c0e223d3.py`).
+- `tests.test_live_coverage` 38 OK, `tests.test_expanded_lines` 28 OK,
+  `tests/test_ourline_f7279a54` 26 OK, `tests/test_fresh_dd2b7fee.py` PASS,
+  `audits/1d4de836/verify_snapshot.py` PASS, `audits/1916f96c` 6 OK.
+- `scripts/stage_site.py` → PASS, all staged local links resolve (including `summary/`).
+- No external value is invented: every probability traces to a quoted bookmaker/exchange price or to
+  a row of Valve's published standings, and every row carries its source URL.
+
+#### Integration requests (logged, not performed)
+
+- **To `c64a5e19` (owner of `picks-every-match/`):** N-1 would move the three `WROTBERRY` rows from
+  tier C "fallback" to tier B "VRS model only" (WBT = 1201 pts is in the file you already read).
+  F-1 and F-2 are published on `summary/gaps.html` for the user either way. Not edited here.
+- **To the root generator owner:** one NAV anchor to `summary/` would make the verification
+  companion reachable from the landing page. `summary/` already ships in the Pages artifact via the
+  single additive `scripts/stage_site.py` entry. Not edited here while that claim is active.
