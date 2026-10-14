@@ -1,0 +1,89 @@
+name: ourline (f7279a54)
+
+# Session f7279a54 / OURLINE. Refreshes the "Our line" pick board for every open HotSpawn CS2
+# fixture with no manual input. Scope guard: this workflow writes only data/f7279a54/** and
+# ourline/**.
+#
+# Why a self-dispatch chain: GitHub's `schedule` trigger is best-effort. In this repository only
+# two scheduled runs had ever fired across all workflows when this was written (see
+# ourline/flagged.html#repo, finding R1). On `main`, each run therefore waits ~25 minutes after
+# publishing and then dispatches the next run itself (workflow_dispatch is the one event a
+# GITHUB_TOKEN may trigger). The cron entry and the update-data hook restart the chain if it
+# ever breaks; a guard prevents two chains from running at once.
+on:
+  push:
+    branches: ['arena/f7279a54-maltaproj2', 'main']
+    paths:
+      - 'scripts/f7279a54/**'
+      - 'tests/test_ourline_f7279a54.py'
+      - '.github/workflows/ourline-f7279a54.yml'
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_run:
+    workflows: ['update-data']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: ourline-f7279a54-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Collect lobby fixtures, external prices and official Valve VRS
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/f7279a54/collect.py
+      - name: Build board and pages (re-derives every number from the raw snapshot)
+        run: python3 scripts/f7279a54/build.py
+      - name: Tests
+        run: python3 -m unittest tests.test_ourline_f7279a54 -v
+      - name: Commit and push (rebase before every push; never discards other sessions' work)
+        env:
+          REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+        run: |
+          set -euo pipefail
+          git config user.name "ourline-bot (f7279a54)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/f7279a54 ourline
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "ourline(f7279a54): refresh picks $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME" && exit 0
+            sleep $((attempt * 7))
+          done
+          exit 1
+
+  next:
+    needs: refresh
+    if: always() && (github.ref == 'refs/heads/main' || github.event_name == 'workflow_run')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Wait, then dispatch the next refresh unless another run is already queued/running
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          sleep 1500
+          others=$(gh api "repos/$GH_REPO/actions/workflows/ourline-f7279a54.yml/runs?per_page=30" \
+            --jq "[.workflow_runs[] | select(.id != $RUN_ID) | select(.status==\"queued\" or .status==\"in_progress\" or .status==\"waiting\" or .status==\"pending\")] | length")
+          echo "other active runs: $others"
+          if [ "$others" = "0" ]; then
+            gh workflow run ourline-f7279a54.yml --ref main
+          fi
