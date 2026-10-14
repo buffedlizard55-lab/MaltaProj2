@@ -1,7 +1,9 @@
 {
- "generated_at_utc": "2026-10-14T01:16:08Z",
- "odds_collected_at_utc": "2026-10-14T01:16:08Z",
- "fixture_list_collected_at_utc": "2026-10-14T01:15:53Z",
+ "generated_at_utc": "2026-10-14T01:50:19Z",
+ "odds_collected_at_utc": "2026-10-14T01:49:30Z",
+ "fixture_list_collected_at_utc": "2026-10-14T01:49:14Z",
+ "fixture_source_observed_at_utc": "2026-10-14T00:50:45Z",
+ "fixture_source_cache_age_seconds": 3509,
  "method": {
   "match_rule": "both teams, explicit CS2, exact UTC start, unique fixture and source quote",
   "max_age_seconds": 14400,
@@ -10,26 +12,36 @@
   "note": "Derived estimates, not verified win probabilities. Prematch and unlocked only."
  },
  "summary": {
-  "fixtures_total": 90,
-  "fixtures_with_external_line": 8,
-  "fixtures_without_external_line": 82,
+  "fixtures_total": 89,
+  "fixtures_with_external_line": 10,
+  "fixtures_without_external_line": 79,
+  "fixtures_open_for_picks": 28,
+  "fixtures_open_with_external_line": 10,
+  "fixtures_open_without_external_line": 18,
+  "fixtures_locked_or_past": 61,
   "by_tier": {
    "c": {
-    "total": 61,
-    "with_line": 0
+    "total": 60,
+    "with_line": 0,
+    "open": 16,
+    "open_with_line": 0
    },
    "b": {
     "total": 25,
-    "with_line": 5
+    "with_line": 7,
+    "open": 8,
+    "open_with_line": 7
    },
    "s": {
     "total": 4,
-    "with_line": 3
+    "with_line": 3,
+    "open": 4,
+    "open_with_line": 3
    }
   },
   "by_source": {
-   "pinnacle": 5,
-   "bovada": 7
+   "bovada": 9,
+   "pinnacle": 5
   }
  },
  "fixtures": [
@@ -38,29 +50,103 @@
    "competition": "CCT Europe 2026 Series #11",
    "tier": "b",
    "start_time_utc": "2026-10-14T08:00:00Z",
+   "lock_time_utc": "2026-10-14T07:54:00Z",
    "team_a": "Gothic",
    "team_b": "Lavked",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
-   "bookmaker_lines": [],
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/gothic-vs-lavked-cct-europe-2026-series-11-1079621",
+   "hotspawn_source_kind": "published_match_permalink",
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/gothic-lavked-202610140400",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "32179588",
+     "source_market_id": "535433630",
+     "source_market_key": "2W-12",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-14T01:49:19Z",
+     "start_time_utc": "2026-10-14T08:00:00Z",
+     "team_a_name": "Gothic",
+     "team_b_name": "Lavked",
+     "raw_price_format": "decimal",
+     "raw_price_a": "2.100",
+     "raw_price_b": "1.690",
+     "decimal_odds_a": 2.1,
+     "decimal_odds_b": 1.69,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "Gothic",
+       "Lavked"
+      ],
+      "decimal": [
+       "2.100",
+       "1.690"
+      ],
+      "american": [
+       "+110",
+       "-145"
+      ]
+     },
+     "derived_probability_a": 0.4459,
+     "derived_probability_b": 0.5541,
+     "overround": 0.06791,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Gothic",
+      "Lavked"
+     ],
+     "source_start_time_utc": "2026-10-14T08:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.4459,
+      "derived_probability_b": 0.5541,
+      "overround": 0.06791
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.4459,
+     "derived_probability_b_mean": 0.5541,
+     "derived_probability_a_min": 0.4459,
+     "derived_probability_a_max": 0.4459
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1081111",
    "competition": "CCT Europe 2026 Series #12 Play-In",
    "tier": "c",
    "start_time_utc": "2026-10-14T08:00:00Z",
+   "lock_time_utc": "2026-10-14T07:54:00Z",
    "team_a": "Enjoy",
    "team_b": "B8 Academy",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -68,7 +154,8 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found"
+    "external_odds_not_found",
+    "official_match_permalink_unavailable"
    ]
   },
   {
@@ -76,10 +163,13 @@
    "competition": "Thunderpick World Championship 2026",
    "tier": "s",
    "start_time_utc": "2026-10-14T08:30:00Z",
+   "lock_time_utc": "2026-10-14T08:24:00Z",
    "team_a": "9z",
    "team_b": "Aurora",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/9z-vs-aurora-thunderpick-world-championship-2026-1080176",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [
     {
      "source_key": "pinnacle",
@@ -98,29 +188,29 @@
      "outcome_alignment_verified": true,
      "market_status": "open",
      "source_reported_status": "pending",
-     "retrieved_at_utc": "2026-10-14T01:15:57Z",
+     "retrieved_at_utc": "2026-10-14T01:49:17Z",
      "start_time_utc": "2026-10-14T08:30:00Z",
      "team_a_name": "9z",
      "team_b_name": "Aurora",
      "raw_price_format": "american",
-     "raw_price_a": 255,
-     "raw_price_b": -326,
-     "decimal_odds_a": 3.55,
-     "decimal_odds_b": 1.3067,
+     "raw_price_a": 241,
+     "raw_price_b": -307,
+     "decimal_odds_a": 3.41,
+     "decimal_odds_b": 1.3257,
      "decimal_odds_derived": true,
      "raw_prices": [
       {
        "designation": "home",
-       "price": 255
+       "price": 241
       },
       {
        "designation": "away",
-       "price": -326
+       "price": -307
       }
      ],
-     "derived_probability_a": 0.2691,
-     "derived_probability_b": 0.7309,
-     "overround": 0.04698,
+     "derived_probability_a": 0.2799,
+     "derived_probability_b": 0.7201,
+     "overround": 0.04757,
      "order_as_quoted": "same",
      "bookmaker_order": [
       "9z",
@@ -134,9 +224,9 @@
    "derived": {
     "per_source": {
      "pinnacle": {
-      "derived_probability_a": 0.2691,
-      "derived_probability_b": 0.7309,
-      "overround": 0.04698
+      "derived_probability_a": 0.2799,
+      "derived_probability_b": 0.7201,
+      "overround": 0.04757
      }
     },
     "consensus": {
@@ -145,10 +235,10 @@
       "pinnacle"
      ],
      "n_sources": 1,
-     "derived_probability_a_mean": 0.2691,
-     "derived_probability_b_mean": 0.7309,
-     "derived_probability_a_min": 0.2691,
-     "derived_probability_a_max": 0.2691
+     "derived_probability_a_mean": 0.2799,
+     "derived_probability_b_mean": 0.7201,
+     "derived_probability_a_min": 0.2799,
+     "derived_probability_a_max": 0.2799
     }
    },
    "verification": "source_linked_current_quote",
@@ -159,10 +249,13 @@
    "competition": "Stake Pulse Beat III",
    "tier": "b",
    "start_time_utc": "2026-10-14T10:00:00Z",
+   "lock_time_utc": "2026-10-14T09:54:00Z",
    "team_a": "Astralis",
    "team_b": "Sashi",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/astralis-vs-sashi-stake-pulse-beat-iii-1079438",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [
     {
      "source_key": "bovada",
@@ -181,7 +274,7 @@
      "outcome_alignment_verified": true,
      "market_status": "O",
      "source_reported_status": "scheduled",
-     "retrieved_at_utc": "2026-10-14T01:15:59Z",
+     "retrieved_at_utc": "2026-10-14T01:49:19Z",
      "start_time_utc": "2026-10-14T10:00:00Z",
      "team_a_name": "Astralis",
      "team_b_name": "Sashi Esport",
@@ -246,10 +339,13 @@
    "competition": "Stake Pulse Beat III",
    "tier": "b",
    "start_time_utc": "2026-10-14T10:00:00Z",
+   "lock_time_utc": "2026-10-14T09:54:00Z",
    "team_a": "HOTU",
    "team_b": "Fnatic",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/hotu-vs-fnatic-stake-pulse-beat-iii-1079439",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [
     {
      "source_key": "bovada",
@@ -268,7 +364,7 @@
      "outcome_alignment_verified": true,
      "market_status": "O",
      "source_reported_status": "scheduled",
-     "retrieved_at_utc": "2026-10-14T01:15:59Z",
+     "retrieved_at_utc": "2026-10-14T01:49:19Z",
      "start_time_utc": "2026-10-14T10:00:00Z",
      "team_a_name": "HOTU",
      "team_b_name": "Fnatic",
@@ -321,7 +417,7 @@
      "outcome_alignment_verified": true,
      "market_status": "open",
      "source_reported_status": "pending",
-     "retrieved_at_utc": "2026-10-14T01:15:55Z",
+     "retrieved_at_utc": "2026-10-14T01:49:16Z",
      "start_time_utc": "2026-10-14T10:00:00Z",
      "team_a_name": "HOTU",
      "team_b_name": "fnatic",
@@ -388,29 +484,103 @@
    "competition": "CCT Europe 2026 Series #11",
    "tier": "b",
    "start_time_utc": "2026-10-14T11:00:00Z",
+   "lock_time_utc": "2026-10-14T10:54:00Z",
    "team_a": "ex-RUSTEC",
    "team_b": "mellren",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
-   "bookmaker_lines": [],
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/ex-rustec-vs-mellren-cct-europe-2026-series-11-1079622",
+   "hotspawn_source_kind": "published_match_permalink",
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/ex-rustec-mellren-202610140700",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "32228767",
+     "source_market_id": "535702140",
+     "source_market_key": "2W-12",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-14T01:49:19Z",
+     "start_time_utc": "2026-10-14T11:00:00Z",
+     "team_a_name": "Ex-Rustec",
+     "team_b_name": "Mellren",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.588235",
+     "raw_price_b": "2.300",
+     "decimal_odds_a": 1.588235,
+     "decimal_odds_b": 2.3,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "Ex-Rustec",
+       "Mellren"
+      ],
+      "decimal": [
+       "1.588235",
+       "2.300"
+      ],
+      "american": [
+       "-170",
+       "+130"
+      ]
+     },
+     "derived_probability_a": 0.5915,
+     "derived_probability_b": 0.4085,
+     "overround": 0.06441,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Ex-Rustec",
+      "Mellren"
+     ],
+     "source_start_time_utc": "2026-10-14T11:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.5915,
+      "derived_probability_b": 0.4085,
+      "overround": 0.06441
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.5915,
+     "derived_probability_b_mean": 0.4085,
+     "derived_probability_a_min": 0.5915,
+     "derived_probability_a_max": 0.5915
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1080177",
    "competition": "Thunderpick World Championship 2026",
    "tier": "s",
    "start_time_utc": "2026-10-14T11:00:00Z",
+   "lock_time_utc": "2026-10-14T10:54:00Z",
    "team_a": "Falcons",
    "team_b": "Ninjas in Pyjamas",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/falcons-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026-1080177",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [
     {
      "source_key": "bovada",
@@ -429,15 +599,15 @@
      "outcome_alignment_verified": true,
      "market_status": "O",
      "source_reported_status": "scheduled",
-     "retrieved_at_utc": "2026-10-14T01:15:59Z",
+     "retrieved_at_utc": "2026-10-14T01:49:19Z",
      "start_time_utc": "2026-10-14T11:00:00Z",
      "team_a_name": "Team Falcons",
      "team_b_name": "Ninjas in Pyjamas",
      "raw_price_format": "decimal",
-     "raw_price_a": "1.235294",
-     "raw_price_b": "3.850",
-     "decimal_odds_a": 1.235294,
-     "decimal_odds_b": 3.85,
+     "raw_price_a": "1.266667",
+     "raw_price_b": "3.600",
+     "decimal_odds_a": 1.266667,
+     "decimal_odds_b": 3.6,
      "decimal_odds_derived": false,
      "raw_prices": {
       "outcomes": [
@@ -445,17 +615,17 @@
        "Ninjas in Pyjamas"
       ],
       "decimal": [
-       "1.235294",
-       "3.850"
+       "1.266667",
+       "3.600"
       ],
       "american": [
-       "-425",
-       "+285"
+       "-375",
+       "+260"
       ]
      },
-     "derived_probability_a": 0.7571,
-     "derived_probability_b": 0.2429,
-     "overround": 0.06926,
+     "derived_probability_a": 0.7397,
+     "derived_probability_b": 0.2603,
+     "overround": 0.06725,
      "order_as_quoted": "same",
      "bookmaker_order": [
       "Team Falcons",
@@ -482,7 +652,7 @@
      "outcome_alignment_verified": true,
      "market_status": "open",
      "source_reported_status": "pending",
-     "retrieved_at_utc": "2026-10-14T01:15:58Z",
+     "retrieved_at_utc": "2026-10-14T01:49:15Z",
      "start_time_utc": "2026-10-14T11:00:00Z",
      "team_a_name": "Falcons",
      "team_b_name": "Ninjas In Pyjamas",
@@ -518,9 +688,9 @@
    "derived": {
     "per_source": {
      "bovada": {
-      "derived_probability_a": 0.7571,
-      "derived_probability_b": 0.2429,
-      "overround": 0.06926
+      "derived_probability_a": 0.7397,
+      "derived_probability_b": 0.2603,
+      "overround": 0.06725
      },
      "pinnacle": {
       "derived_probability_a": 0.7519,
@@ -535,10 +705,10 @@
       "pinnacle"
      ],
      "n_sources": 2,
-     "derived_probability_a_mean": 0.7545,
-     "derived_probability_b_mean": 0.2455,
-     "derived_probability_a_min": 0.7519,
-     "derived_probability_a_max": 0.7571
+     "derived_probability_a_mean": 0.7458,
+     "derived_probability_b_mean": 0.2542,
+     "derived_probability_a_min": 0.7397,
+     "derived_probability_a_max": 0.7519
     }
    },
    "verification": "source_linked_current_quote",
@@ -549,10 +719,13 @@
    "competition": "CCT Europe 2026 Series #12 Play-In",
    "tier": "c",
    "start_time_utc": "2026-10-14T11:00:00Z",
+   "lock_time_utc": "2026-10-14T10:54:00Z",
    "team_a": "Banda chuya",
    "team_b": "6666",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -560,7 +733,8 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found"
+    "external_odds_not_found",
+    "official_match_permalink_unavailable"
    ]
   },
   {
@@ -568,10 +742,13 @@
    "competition": "Thunderpick World Championship 2026",
    "tier": "s",
    "start_time_utc": "2026-10-14T13:30:00Z",
+   "lock_time_utc": "2026-10-14T13:24:00Z",
    "team_a": "Legacy",
    "team_b": "PARIVISION",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/legacy-vs-parivision-thunderpick-world-championship-2026-1080178",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [
     {
      "source_key": "bovada",
@@ -590,7 +767,7 @@
      "outcome_alignment_verified": true,
      "market_status": "O",
      "source_reported_status": "scheduled",
-     "retrieved_at_utc": "2026-10-14T01:15:59Z",
+     "retrieved_at_utc": "2026-10-14T01:49:19Z",
      "start_time_utc": "2026-10-14T13:30:00Z",
      "team_a_name": "Legacy",
      "team_b_name": "Parivision",
@@ -655,10 +832,13 @@
    "competition": "CCT Europe 2026 Series #11",
    "tier": "b",
    "start_time_utc": "2026-10-14T14:00:00Z",
+   "lock_time_utc": "2026-10-14T13:54:00Z",
    "team_a": "G2 Ares",
    "team_b": "The Last Resort",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/g2-ares-vs-the-last-resort-cct-europe-2026-series-11-1079623",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [
     {
      "source_key": "bovada",
@@ -677,7 +857,7 @@
      "outcome_alignment_verified": true,
      "market_status": "O",
      "source_reported_status": "scheduled",
-     "retrieved_at_utc": "2026-10-14T01:15:59Z",
+     "retrieved_at_utc": "2026-10-14T01:49:19Z",
      "start_time_utc": "2026-10-14T14:00:00Z",
      "team_a_name": "G2 Ares",
      "team_b_name": "The Last Resort",
@@ -742,10 +922,13 @@
    "competition": "CCT Europe 2026 Series #12 Play-In",
    "tier": "c",
    "start_time_utc": "2026-10-14T14:00:00Z",
+   "lock_time_utc": "2026-10-14T13:54:00Z",
    "team_a": "Ryvex",
    "team_b": "PCIFIC",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -753,7 +936,8 @@
    },
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
-    "external_odds_not_found"
+    "external_odds_not_found",
+    "official_match_permalink_unavailable"
    ]
   },
   {
@@ -761,10 +945,13 @@
    "competition": "Thunderpick World Championship 2026",
    "tier": "s",
    "start_time_utc": "2026-10-14T16:00:00Z",
+   "lock_time_utc": "2026-10-14T15:54:00Z",
    "team_a": "FURIA",
    "team_b": "BetBoom",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/furia-vs-betboom-thunderpick-world-championship-2026-1080179",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -780,10 +967,13 @@
    "competition": "CCT Europe 2026 Series #11",
    "tier": "b",
    "start_time_utc": "2026-10-14T17:00:00Z",
+   "lock_time_utc": "2026-10-14T16:54:00Z",
    "team_a": "FORZE Reload",
    "team_b": "LFO 10",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/forze-reload-vs-lfo-10-cct-europe-2026-series-11-1079624",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -799,10 +989,13 @@
    "competition": "Elisa BreakOut Series #2",
    "tier": "c",
    "start_time_utc": "2026-10-15T08:00:00Z",
+   "lock_time_utc": "2026-10-15T07:54:00Z",
    "team_a": "WROTBERRY",
    "team_b": "EAC",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/wrotberry-vs-eac-elisa-breakout-series-2-1080279",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -818,10 +1011,13 @@
    "competition": "Stake Pulse Beat III",
    "tier": "b",
    "start_time_utc": "2026-10-15T10:00:00Z",
+   "lock_time_utc": "2026-10-15T09:54:00Z",
    "team_a": "MIBR",
    "team_b": "BC.Game",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/mibr-vs-bc-game-stake-pulse-beat-iii-1079440",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [
     {
      "source_key": "bovada",
@@ -840,7 +1036,7 @@
      "outcome_alignment_verified": true,
      "market_status": "O",
      "source_reported_status": "scheduled",
-     "retrieved_at_utc": "2026-10-14T01:15:59Z",
+     "retrieved_at_utc": "2026-10-14T01:49:19Z",
      "start_time_utc": "2026-10-15T10:00:00Z",
      "team_a_name": "MIBR",
      "team_b_name": "BC.Game",
@@ -893,29 +1089,29 @@
      "outcome_alignment_verified": true,
      "market_status": "open",
      "source_reported_status": "pending",
-     "retrieved_at_utc": "2026-10-14T01:15:56Z",
+     "retrieved_at_utc": "2026-10-14T01:49:17Z",
      "start_time_utc": "2026-10-15T10:00:00Z",
      "team_a_name": "MIBR",
      "team_b_name": "BC.Game",
      "raw_price_format": "american",
-     "raw_price_a": -157,
-     "raw_price_b": 123,
-     "decimal_odds_a": 1.6369,
-     "decimal_odds_b": 2.23,
+     "raw_price_a": -154,
+     "raw_price_b": 122,
+     "decimal_odds_a": 1.6494,
+     "decimal_odds_b": 2.22,
      "decimal_odds_derived": true,
      "raw_prices": [
       {
        "designation": "home",
-       "price": -157
+       "price": -154
       },
       {
        "designation": "away",
-       "price": 123
+       "price": 122
       }
      ],
-     "derived_probability_a": 0.5767,
-     "derived_probability_b": 0.4233,
-     "overround": 0.05934,
+     "derived_probability_a": 0.5737,
+     "derived_probability_b": 0.4263,
+     "overround": 0.05673,
      "order_as_quoted": "same",
      "bookmaker_order": [
       "MIBR",
@@ -934,9 +1130,9 @@
       "overround": 0.06239
      },
      "pinnacle": {
-      "derived_probability_a": 0.5767,
-      "derived_probability_b": 0.4233,
-      "overround": 0.05934
+      "derived_probability_a": 0.5737,
+      "derived_probability_b": 0.4263,
+      "overround": 0.05673
      }
     },
     "consensus": {
@@ -946,10 +1142,10 @@
       "pinnacle"
      ],
      "n_sources": 2,
-     "derived_probability_a_mean": 0.5744,
-     "derived_probability_b_mean": 0.4256,
+     "derived_probability_a_mean": 0.5729,
+     "derived_probability_b_mean": 0.4271,
      "derived_probability_a_min": 0.5721,
-     "derived_probability_a_max": 0.5767
+     "derived_probability_a_max": 0.5737
     }
    },
    "verification": "source_linked_current_quote",
@@ -960,10 +1156,13 @@
    "competition": "Stake Pulse Beat III",
    "tier": "b",
    "start_time_utc": "2026-10-15T10:00:00Z",
+   "lock_time_utc": "2026-10-15T09:54:00Z",
    "team_a": "Heroic",
    "team_b": "Envy",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/heroic-vs-envy-stake-pulse-beat-iii-1079442",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [
     {
      "source_key": "bovada",
@@ -982,7 +1181,7 @@
      "outcome_alignment_verified": true,
      "market_status": "O",
      "source_reported_status": "scheduled",
-     "retrieved_at_utc": "2026-10-14T01:15:59Z",
+     "retrieved_at_utc": "2026-10-14T01:49:19Z",
      "start_time_utc": "2026-10-15T10:00:00Z",
      "team_a_name": "Heroic",
      "team_b_name": "Envy",
@@ -1035,7 +1234,7 @@
      "outcome_alignment_verified": true,
      "market_status": "open",
      "source_reported_status": "pending",
-     "retrieved_at_utc": "2026-10-14T01:15:57Z",
+     "retrieved_at_utc": "2026-10-14T01:49:18Z",
      "start_time_utc": "2026-10-15T10:00:00Z",
      "team_a_name": "HEROIC",
      "team_b_name": "Envy",
@@ -1102,10 +1301,13 @@
    "competition": "Elisa BreakOut Series #2",
    "tier": "c",
    "start_time_utc": "2026-10-15T10:00:00Z",
+   "lock_time_utc": "2026-10-15T09:54:00Z",
    "team_a": "ENCE",
    "team_b": "BOJONG",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/ence-vs-bojong-elisa-breakout-series-2-1080280",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1121,10 +1323,13 @@
    "competition": "Elisa BreakOut Series #2",
    "tier": "c",
    "start_time_utc": "2026-10-15T12:00:00Z",
+   "lock_time_utc": "2026-10-15T11:54:00Z",
    "team_a": "WROTBERRY",
    "team_b": "ENCE",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/wrotberry-vs-ence-elisa-breakout-series-2-1080281",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1140,10 +1345,13 @@
    "competition": "Elisa BreakOut Series #2",
    "tier": "c",
    "start_time_utc": "2026-10-15T14:00:00Z",
+   "lock_time_utc": "2026-10-15T13:54:00Z",
    "team_a": "EAC",
    "team_b": "BOJONG",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/eac-vs-bojong-elisa-breakout-series-2-1080282",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1159,10 +1367,13 @@
    "competition": "Elisa BreakOut Series #2",
    "tier": "c",
    "start_time_utc": "2026-10-15T16:00:00Z",
+   "lock_time_utc": "2026-10-15T15:54:00Z",
    "team_a": "WROTBERRY",
    "team_b": "BOJONG",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/wrotberry-vs-bojong-elisa-breakout-series-2-1080283",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1178,10 +1389,13 @@
    "competition": "Elisa BreakOut Series #2",
    "tier": "c",
    "start_time_utc": "2026-10-15T18:00:00Z",
+   "lock_time_utc": "2026-10-15T17:54:00Z",
    "team_a": "EAC",
    "team_b": "ENCE",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/eac-vs-ence-elisa-breakout-series-2-1080284",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1197,10 +1411,13 @@
    "competition": "Elisa BreakOut Series #2",
    "tier": "c",
    "start_time_utc": "2026-10-16T08:00:00Z",
+   "lock_time_utc": "2026-10-16T07:54:00Z",
    "team_a": "Voca",
    "team_b": "Phantom",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/voca-vs-phantom-elisa-breakout-series-2-1080285",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1216,10 +1433,13 @@
    "competition": "Elisa BreakOut Series #2",
    "tier": "c",
    "start_time_utc": "2026-10-16T10:00:00Z",
+   "lock_time_utc": "2026-10-16T09:54:00Z",
    "team_a": "HAVU",
    "team_b": "RoundsGG",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/havu-vs-roundsgg-elisa-breakout-series-2-1080286",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1235,10 +1455,13 @@
    "competition": "Elisa BreakOut Series #2",
    "tier": "c",
    "start_time_utc": "2026-10-16T12:00:00Z",
+   "lock_time_utc": "2026-10-16T11:54:00Z",
    "team_a": "Voca",
    "team_b": "HAVU",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/voca-vs-havu-elisa-breakout-series-2-1080287",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1254,10 +1477,13 @@
    "competition": "Elisa BreakOut Series #2",
    "tier": "c",
    "start_time_utc": "2026-10-16T14:00:00Z",
+   "lock_time_utc": "2026-10-16T13:54:00Z",
    "team_a": "Phantom",
    "team_b": "RoundsGG",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/phantom-vs-roundsgg-elisa-breakout-series-2-1080288",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1273,10 +1499,13 @@
    "competition": "CCT Europe 2026 Series #12 Play-In",
    "tier": "c",
    "start_time_utc": "2026-10-16T14:00:00Z",
+   "lock_time_utc": "2026-10-16T13:54:00Z",
    "team_a": "mellren",
    "team_b": "Privateer",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1285,6 +1514,7 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
+    "official_match_permalink_unavailable",
     "start_time_mismatch"
    ]
   },
@@ -1293,10 +1523,13 @@
    "competition": "Elisa BreakOut Series #2",
    "tier": "c",
    "start_time_utc": "2026-10-16T16:00:00Z",
+   "lock_time_utc": "2026-10-16T15:54:00Z",
    "team_a": "RoundsGG",
    "team_b": "Voca",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/roundsgg-vs-voca-elisa-breakout-series-2-1080289",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1312,29 +1545,13 @@
    "competition": "Elisa BreakOut Series #2",
    "tier": "c",
    "start_time_utc": "2026-10-16T18:00:00Z",
+   "lock_time_utc": "2026-10-16T17:54:00Z",
    "team_a": "Phantom",
    "team_b": "HAVU",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
-   "bookmaker_lines": [],
-   "derived": {
-    "per_source": {},
-    "consensus": null
-   },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found"
-   ]
-  },
-  {
-   "fixture_id": "1080200",
-   "competition": "FRAG University 2026",
-   "tier": "c",
-   "start_time_utc": "2026-11-12T00:00:00Z",
-   "team_a": "Wildcard",
-   "team_b": "DENDELE",
-   "source_reported_status": "started",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "open",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/phantom-vs-havu-elisa-breakout-series-2-1080290",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1350,10 +1567,13 @@
    "competition": "European Pro League Series 8 Play-In",
    "tier": "c",
    "start_time_utc": "2026-06-26T10:30:00Z",
+   "lock_time_utc": "2026-06-26T10:24:00Z",
    "team_a": "Fortress",
    "team_b": "Endless Journey",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1362,7 +1582,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1370,10 +1592,13 @@
    "competition": "DraculaN Season 7",
    "tier": "b",
    "start_time_utc": "2026-06-26T12:00:00Z",
+   "lock_time_utc": "2026-06-26T11:54:00Z",
    "team_a": "Acend",
    "team_b": "Infinite",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1382,7 +1607,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1390,10 +1617,13 @@
    "competition": "LG UltraGear Tournament 2026",
    "tier": "c",
    "start_time_utc": "2026-06-26T13:00:00Z",
+   "lock_time_utc": "2026-06-26T12:54:00Z",
    "team_a": "CYBERSHOKE Prospects",
    "team_b": "PCIFIC",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1402,7 +1632,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1410,10 +1642,13 @@
    "competition": "Svenska CS-Ligan 2026",
    "tier": "c",
    "start_time_utc": "2026-06-26T13:00:00Z",
+   "lock_time_utc": "2026-06-26T12:54:00Z",
    "team_a": "Johnny Speeds",
    "team_b": "ReThink",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1422,7 +1657,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1430,10 +1667,13 @@
    "competition": "European Pro League Series 8 Play-In",
    "tier": "c",
    "start_time_utc": "2026-06-26T13:10:00Z",
+   "lock_time_utc": "2026-06-26T13:04:00Z",
    "team_a": "Sashi Academy",
    "team_b": "eternal premium",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1442,7 +1682,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1450,10 +1692,13 @@
    "competition": "Rainhas do Clutch 2026",
    "tier": "b",
    "start_time_utc": "2026-06-26T14:00:00Z",
+   "lock_time_utc": "2026-06-26T13:54:00Z",
    "team_a": "Atrix",
    "team_b": "Clutchain",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1462,7 +1707,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1470,10 +1717,13 @@
    "competition": "DraculaN Season 7",
    "tier": "b",
    "start_time_utc": "2026-06-26T15:00:00Z",
+   "lock_time_utc": "2026-06-26T14:54:00Z",
    "team_a": "Walczaki",
    "team_b": "Inner Circle",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1482,7 +1732,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1490,10 +1742,13 @@
    "competition": "Svenska CS-Ligan 2026",
    "tier": "c",
    "start_time_utc": "2026-06-26T16:45:00Z",
+   "lock_time_utc": "2026-06-26T16:39:00Z",
    "team_a": "roamsfiest",
    "team_b": "train launcher",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1502,7 +1757,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1510,10 +1767,13 @@
    "competition": "Rainhas do Clutch 2026",
    "tier": "b",
    "start_time_utc": "2026-06-26T17:45:00Z",
+   "lock_time_utc": "2026-06-26T17:39:00Z",
    "team_a": "shimmer",
    "team_b": "MIBR fe",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1522,7 +1782,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1530,10 +1792,13 @@
    "competition": "Thunderpick World Championship 2026: South American Series #1",
    "tier": "c",
    "start_time_utc": "2026-06-26T18:00:00Z",
+   "lock_time_utc": "2026-06-26T17:54:00Z",
    "team_a": "MIBR Academy",
    "team_b": "Isurus",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1542,7 +1807,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1550,10 +1817,13 @@
    "competition": "Svenska CS-Ligan 2026",
    "tier": "c",
    "start_time_utc": "2026-06-26T19:00:00Z",
+   "lock_time_utc": "2026-06-26T18:54:00Z",
    "team_a": "ReThink",
    "team_b": "train launcher",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1562,7 +1832,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1570,10 +1842,13 @@
    "competition": "Thunderpick World Championship 2026: South American Series #1",
    "tier": "c",
    "start_time_utc": "2026-06-26T21:00:00Z",
+   "lock_time_utc": "2026-06-26T20:54:00Z",
    "team_a": "Keyd",
    "team_b": "Yawara",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1582,7 +1857,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1590,10 +1867,13 @@
    "competition": "European Pro League Series 8 Play-In",
    "tier": "c",
    "start_time_utc": "2026-06-27T08:00:00Z",
+   "lock_time_utc": "2026-06-27T07:54:00Z",
    "team_a": "Inner Circle Academy",
    "team_b": "sAw",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1602,7 +1882,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1610,10 +1892,13 @@
    "competition": "Svenska CS-Ligan 2026",
    "tier": "c",
    "start_time_utc": "2026-06-27T10:00:00Z",
+   "lock_time_utc": "2026-06-27T09:54:00Z",
    "team_a": "Johnny Speeds",
    "team_b": "roamsfiest",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1622,7 +1907,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1630,10 +1917,13 @@
    "competition": "European Pro League Series 8 Play-In",
    "tier": "c",
    "start_time_utc": "2026-06-27T10:30:00Z",
+   "lock_time_utc": "2026-06-27T10:24:00Z",
    "team_a": "Misa",
    "team_b": "WROTBERRY",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1642,7 +1932,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1650,10 +1942,13 @@
    "competition": "CCT Europe 2026 Challengers #4",
    "tier": "c",
    "start_time_utc": "2026-06-27T11:00:00Z",
+   "lock_time_utc": "2026-06-27T10:54:00Z",
    "team_a": "NEW VISION",
    "team_b": "Julie&Cie",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1662,7 +1957,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1670,10 +1967,13 @@
    "competition": "CCT Europe 2026 Challengers #4",
    "tier": "c",
    "start_time_utc": "2026-06-27T11:00:00Z",
+   "lock_time_utc": "2026-06-27T10:54:00Z",
    "team_a": "Just Players",
    "team_b": "OlyBet",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1682,7 +1982,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1690,10 +1992,13 @@
    "competition": "Thunderpick World Championship 2026: South American Series #1",
    "tier": "c",
    "start_time_utc": "2026-06-27T13:00:00Z",
+   "lock_time_utc": "2026-06-27T12:54:00Z",
    "team_a": "ShindeN",
    "team_b": "MIBR Academy",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1702,7 +2007,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1710,10 +2017,13 @@
    "competition": "CCT South America 2026 Series #3",
    "tier": "b",
    "start_time_utc": "2026-06-27T13:00:00Z",
+   "lock_time_utc": "2026-06-27T12:54:00Z",
    "team_a": "Vasco",
    "team_b": "Red Feet",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1722,7 +2032,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1730,10 +2042,13 @@
    "competition": "CCT Europe 2026 Challengers #4",
    "tier": "c",
    "start_time_utc": "2026-06-27T13:45:00Z",
+   "lock_time_utc": "2026-06-27T13:39:00Z",
    "team_a": "Misa",
    "team_b": "Wampirki",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1742,7 +2057,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1750,10 +2067,13 @@
    "competition": "DraculaN Season 7",
    "tier": "b",
    "start_time_utc": "2026-06-27T13:50:00Z",
+   "lock_time_utc": "2026-06-27T13:44:00Z",
    "team_a": "Sharks",
    "team_b": "Inner Circle",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1762,7 +2082,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1770,10 +2092,13 @@
    "competition": "CCT Europe 2026 Challengers #4",
    "tier": "c",
    "start_time_utc": "2026-06-27T14:00:00Z",
+   "lock_time_utc": "2026-06-27T13:54:00Z",
    "team_a": "Mai Tai",
    "team_b": "Megoshort",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1782,7 +2107,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1790,10 +2117,13 @@
    "competition": "Svenska CS-Ligan 2026",
    "tier": "c",
    "start_time_utc": "2026-06-27T14:10:00Z",
+   "lock_time_utc": "2026-06-27T14:04:00Z",
    "team_a": "train launcher",
    "team_b": "roamsfiest",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1802,7 +2132,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1810,10 +2142,13 @@
    "competition": "DACH CS Masters Season 5",
    "tier": "c",
    "start_time_utc": "2026-06-27T15:00:00Z",
+   "lock_time_utc": "2026-06-27T14:54:00Z",
    "team_a": "BIG Academy",
    "team_b": "BERG",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1822,7 +2157,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1830,10 +2167,13 @@
    "competition": "Thunderpick World Championship 2026: South American Series #1",
    "tier": "c",
    "start_time_utc": "2026-06-27T16:00:00Z",
+   "lock_time_utc": "2026-06-27T15:54:00Z",
    "team_a": "Bounty Hunters",
    "team_b": "UNO MILLE",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1842,7 +2182,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1850,10 +2192,13 @@
    "competition": "CCT South America 2026 Series #3",
    "tier": "b",
    "start_time_utc": "2026-06-27T16:00:00Z",
+   "lock_time_utc": "2026-06-27T15:54:00Z",
    "team_a": "GameHunters",
    "team_b": "VEXA",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1862,7 +2207,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1870,10 +2217,13 @@
    "competition": "DraculaN Season 7",
    "tier": "b",
    "start_time_utc": "2026-06-27T17:00:00Z",
+   "lock_time_utc": "2026-06-27T16:54:00Z",
    "team_a": "ex-Tricked",
    "team_b": "Acend",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1882,7 +2232,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1890,10 +2242,13 @@
    "competition": "Svenska CS-Ligan 2026",
    "tier": "c",
    "start_time_utc": "2026-06-27T17:00:00Z",
+   "lock_time_utc": "2026-06-27T16:54:00Z",
    "team_a": "roamsfiest",
    "team_b": "ReThink",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1902,7 +2257,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1910,10 +2267,13 @@
    "competition": "CCT South America 2026 Series #3",
    "tier": "b",
    "start_time_utc": "2026-06-27T19:00:00Z",
+   "lock_time_utc": "2026-06-27T18:54:00Z",
    "team_a": "paiN Academy",
    "team_b": "Alka",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1922,7 +2282,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1930,10 +2292,13 @@
    "competition": "Thunderpick World Championship 2026: South American Series #1",
    "tier": "c",
    "start_time_utc": "2026-06-27T19:00:00Z",
+   "lock_time_utc": "2026-06-27T18:54:00Z",
    "team_a": "Fake do Biru",
    "team_b": "LP",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1942,7 +2307,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1950,10 +2317,13 @@
    "competition": "Thunderpick World Championship 2026: South American Series #1",
    "tier": "c",
    "start_time_utc": "2026-06-27T22:00:00Z",
+   "lock_time_utc": "2026-06-27T21:54:00Z",
    "team_a": "Fluxo",
    "team_b": "Keyd",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1962,7 +2332,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1970,10 +2342,13 @@
    "competition": "CCT South America 2026 Series #3",
    "tier": "b",
    "start_time_utc": "2026-06-27T22:00:00Z",
+   "lock_time_utc": "2026-06-27T21:54:00Z",
    "team_a": "Procyon",
    "team_b": "BESTIA Academy",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -1982,7 +2357,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -1990,10 +2367,13 @@
    "competition": "European Pro League Series 8 Play-In",
    "tier": "c",
    "start_time_utc": "2026-06-28T08:00:00Z",
+   "lock_time_utc": "2026-06-28T07:54:00Z",
    "team_a": "Honvéd",
    "team_b": "OlyBet",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2002,7 +2382,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2010,10 +2392,13 @@
    "competition": "European Pro League Series 8 Play-In",
    "tier": "c",
    "start_time_utc": "2026-06-28T10:50:00Z",
+   "lock_time_utc": "2026-06-28T10:44:00Z",
    "team_a": "ex-MANA",
    "team_b": "Subtop De France",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2022,7 +2407,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2030,10 +2417,13 @@
    "competition": "CCT Europe 2026 Challengers #4",
    "tier": "c",
    "start_time_utc": "2026-06-28T11:00:00Z",
+   "lock_time_utc": "2026-06-28T10:54:00Z",
    "team_a": "sAw",
    "team_b": "Entropy",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2042,7 +2432,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2050,10 +2442,13 @@
    "competition": "Urban Riga Open #5",
    "tier": "c",
    "start_time_utc": "2026-06-28T11:00:00Z",
+   "lock_time_utc": "2026-06-28T10:54:00Z",
    "team_a": "GAMEHARMONY",
    "team_b": "Coalesce",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2062,7 +2457,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2070,10 +2467,13 @@
    "competition": "Urban Riga Open #5",
    "tier": "c",
    "start_time_utc": "2026-06-28T11:00:00Z",
+   "lock_time_utc": "2026-06-28T10:54:00Z",
    "team_a": "Leo",
    "team_b": "Aimhaus",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2082,7 +2482,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2090,10 +2492,13 @@
    "competition": "Urban Riga Open #5",
    "tier": "c",
    "start_time_utc": "2026-06-28T12:00:00Z",
+   "lock_time_utc": "2026-06-28T11:54:00Z",
    "team_a": "GAMEHARMONY",
    "team_b": "Aimhaus",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2102,7 +2507,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2110,10 +2517,13 @@
    "competition": "Urban Riga Open #5",
    "tier": "c",
    "start_time_utc": "2026-06-28T12:00:00Z",
+   "lock_time_utc": "2026-06-28T11:54:00Z",
    "team_a": "Leo",
    "team_b": "Coalesce",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2122,7 +2532,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2130,10 +2542,13 @@
    "competition": "CCT South America 2026 Series #3",
    "tier": "b",
    "start_time_utc": "2026-06-28T13:00:00Z",
+   "lock_time_utc": "2026-06-28T12:54:00Z",
    "team_a": "ex-KRÜ",
    "team_b": "MAGICOS",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2142,7 +2557,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2150,10 +2567,13 @@
    "competition": "Urban Riga Open #5",
    "tier": "c",
    "start_time_utc": "2026-06-28T13:00:00Z",
+   "lock_time_utc": "2026-06-28T12:54:00Z",
    "team_a": "GAMEHARMONY",
    "team_b": "Leo",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2162,7 +2582,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2170,10 +2592,13 @@
    "competition": "Urban Riga Open #5",
    "tier": "c",
    "start_time_utc": "2026-06-28T13:00:00Z",
+   "lock_time_utc": "2026-06-28T12:54:00Z",
    "team_a": "Aimhaus",
    "team_b": "Coalesce",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2182,7 +2607,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2190,10 +2617,13 @@
    "competition": "DraculaN Season 7",
    "tier": "b",
    "start_time_utc": "2026-06-28T13:35:00Z",
+   "lock_time_utc": "2026-06-28T13:29:00Z",
    "team_a": "Sharks",
    "team_b": "ex-Tricked",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2202,7 +2632,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2210,10 +2642,13 @@
    "competition": "CCT Europe 2026 Challengers #4",
    "tier": "c",
    "start_time_utc": "2026-06-28T13:45:00Z",
+   "lock_time_utc": "2026-06-28T13:39:00Z",
    "team_a": "Lilmix",
    "team_b": "Subtop De France",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2222,7 +2657,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2230,10 +2667,13 @@
    "competition": "CCT Europe 2026 Challengers #4",
    "tier": "c",
    "start_time_utc": "2026-06-28T13:45:00Z",
+   "lock_time_utc": "2026-06-28T13:39:00Z",
    "team_a": "BIG Academy",
    "team_b": "Endless Journey",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2242,7 +2682,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2250,10 +2692,13 @@
    "competition": "CCT Europe 2026 Challengers #4",
    "tier": "c",
    "start_time_utc": "2026-06-28T14:05:00Z",
+   "lock_time_utc": "2026-06-28T13:59:00Z",
    "team_a": "Atreides",
    "team_b": "Donstu",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2262,7 +2707,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2270,10 +2717,13 @@
    "competition": "CCT South America 2026 Series #3",
    "tier": "b",
    "start_time_utc": "2026-06-28T16:00:00Z",
+   "lock_time_utc": "2026-06-28T15:54:00Z",
    "team_a": "Yawara",
    "team_b": "Blitzkrieg",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2282,7 +2732,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2290,10 +2742,13 @@
    "competition": "Urban Riga Open #5",
    "tier": "c",
    "start_time_utc": "2026-06-28T16:00:00Z",
+   "lock_time_utc": "2026-06-28T15:54:00Z",
    "team_a": "6666",
    "team_b": "ASTRAL",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2302,7 +2757,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2310,10 +2767,13 @@
    "competition": "Urban Riga Open #5",
    "tier": "c",
    "start_time_utc": "2026-06-28T16:00:00Z",
+   "lock_time_utc": "2026-06-28T15:54:00Z",
    "team_a": "BERG",
    "team_b": "SINQU REHTI",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2322,7 +2782,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2330,10 +2792,13 @@
    "competition": "Urban Riga Open #5",
    "tier": "c",
    "start_time_utc": "2026-06-28T17:00:00Z",
+   "lock_time_utc": "2026-06-28T16:54:00Z",
    "team_a": "ASTRAL",
    "team_b": "BERG",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2342,7 +2807,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2350,10 +2817,13 @@
    "competition": "Urban Riga Open #5",
    "tier": "c",
    "start_time_utc": "2026-06-28T17:00:00Z",
+   "lock_time_utc": "2026-06-28T16:54:00Z",
    "team_a": "6666",
    "team_b": "SINQU REHTI",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2362,7 +2832,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2370,10 +2842,13 @@
    "competition": "DraculaN Season 7",
    "tier": "b",
    "start_time_utc": "2026-06-28T17:30:00Z",
+   "lock_time_utc": "2026-06-28T17:24:00Z",
    "team_a": "Inner Circle",
    "team_b": "Acend",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2382,7 +2857,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2390,10 +2867,13 @@
    "competition": "Thunderpick World Championship 2026: South American Series #1",
    "tier": "c",
    "start_time_utc": "2026-06-28T18:00:00Z",
+   "lock_time_utc": "2026-06-28T17:54:00Z",
    "team_a": "Fluxo",
    "team_b": "UNO MILLE",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2402,7 +2882,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2410,10 +2892,13 @@
    "competition": "Urban Riga Open #5",
    "tier": "c",
    "start_time_utc": "2026-06-28T18:00:00Z",
+   "lock_time_utc": "2026-06-28T17:54:00Z",
    "team_a": "6666",
    "team_b": "BERG",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2422,7 +2907,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2430,10 +2917,13 @@
    "competition": "Urban Riga Open #5",
    "tier": "c",
    "start_time_utc": "2026-06-28T18:00:00Z",
+   "lock_time_utc": "2026-06-28T17:54:00Z",
    "team_a": "ASTRAL",
    "team_b": "SINQU REHTI",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2442,7 +2932,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2450,10 +2942,13 @@
    "competition": "CCT South America 2026 Series #3",
    "tier": "b",
    "start_time_utc": "2026-06-28T19:05:00Z",
+   "lock_time_utc": "2026-06-28T18:59:00Z",
    "team_a": "METANOIA Wolves",
    "team_b": "Guara",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2462,7 +2957,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2470,10 +2967,13 @@
    "competition": "Thunderpick World Championship 2026: South American Series #1",
    "tier": "c",
    "start_time_utc": "2026-06-28T21:15:00Z",
+   "lock_time_utc": "2026-06-28T21:09:00Z",
    "team_a": "ShindeN",
    "team_b": "LP",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2482,7 +2982,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2490,10 +2992,13 @@
    "competition": "CCT South America 2026 Series #3",
    "tier": "b",
    "start_time_utc": "2026-06-28T22:00:00Z",
+   "lock_time_utc": "2026-06-28T21:54:00Z",
    "team_a": "MIBR Academy",
    "team_b": "Patins de Ferrari",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2502,7 +3007,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2510,10 +3017,13 @@
    "competition": "European Pro League Series 8",
    "tier": "c",
    "start_time_utc": "2026-07-10T08:00:00Z",
+   "lock_time_utc": "2026-07-10T07:54:00Z",
    "team_a": "illwill",
    "team_b": "Lavked",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2522,7 +3032,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2530,10 +3042,13 @@
    "competition": "CCT South America 2026 Series #7",
    "tier": "c",
    "start_time_utc": "2026-10-13T22:00:00Z",
+   "lock_time_utc": "2026-10-13T21:54:00Z",
    "team_a": "SUKEBAN",
    "team_b": "your end",
    "source_reported_status": "scheduled",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_source_kind": "official_lobby_fallback",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2542,7 +3057,9 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "official_match_permalink_unavailable",
+    "picks_locked_past_or_unverified"
    ]
   },
   {
@@ -2550,10 +3067,13 @@
    "competition": "ESL Challenger League Season 52: North America - Cup #3",
    "tier": "b",
    "start_time_utc": "2026-10-14T01:00:00Z",
+   "lock_time_utc": "2026-10-14T00:54:00Z",
    "team_a": "Zomblers",
    "team_b": "Overtake Sector",
-   "source_reported_status": "started",
-   "hotspawn_match_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+   "source_reported_status": "scheduled",
+   "pick_status": "closed_or_unverified",
+   "hotspawn_match_url": "https://www.hotspawn.com/matches/zomblers-vs-overtake-sector-esl-challenger-league-season-52-north-america-cup-3-1079546",
+   "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [],
    "derived": {
     "per_source": {},
@@ -2562,7 +3082,8 @@
    "verification": "unverified_no_eligible_external_line",
    "review_flags": [
     "external_odds_not_found",
-    "fixture_start_time_in_the_past_or_stale_source_status"
+    "fixture_start_time_in_the_past_or_stale_source_status",
+    "picks_locked_past_or_unverified"
    ]
   }
  ]

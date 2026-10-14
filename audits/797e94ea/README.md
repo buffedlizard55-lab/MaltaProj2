@@ -7,9 +7,11 @@
 This is a **read-only** audit of the root CS2 probability snapshot generated at
 `2026-10-14T01:16:08Z`:
 
-- `data/lines.json` — captured external odds, joins, no-vig shares and consensus;
-- `data/current_probabilities.json` — root table mirror; and
-- `cs2.html` — rendered root page.
+- [`snapshot_lines.json`](snapshot_lines.json) — immutable copy of the captured external odds, joins, no-vig shares and consensus;
+- [`snapshot_current_probabilities.json`](snapshot_current_probabilities.json) — immutable copy of the root table mirror; and
+- [`snapshot_cs2.txt`](snapshot_cs2.txt) — immutable copy of the rendered root page.
+
+These copies pin the audit to its stated observation. The live root files refresh automatically and are intentionally not inputs when this historical audit is rebuilt.
 
 It does **not** change a collector, regenerate a market, add a probability,
 or validate every independent research board in this repository. It is not a

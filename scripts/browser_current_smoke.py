@@ -12,12 +12,12 @@ try:
         page.on('pageerror', lambda error: errors.append(str(error)))
         for width in (1280, 390, 320):
             page.set_viewport_size({'width': width, 'height': 844})
-            for name in ('index', 'cs2', 'lol', 'probabilities', 'tournaments', 'flagged', 'methodology'):
+            for name in ('index', 'cs2', 'probabilities', 'tournaments', 'flagged', 'methodology', 'research'):
                 r = page.goto(f'http://127.0.0.1:8766/{name}.html', wait_until='networkidle')
                 assert r.status == 200, name
                 assert page.locator('h1').count() == 1, name
                 assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth'), (name, width)
-                if name in ('cs2', 'lol', 'probabilities'):
+                if name in ('cs2', 'probabilities'):
                     assert page.locator('table tbody tr').count() > 0, name
                     page.locator('#filter').fill('no-such-team-xyz')
                     assert page.locator('table tbody tr:visible').count() == 0, name

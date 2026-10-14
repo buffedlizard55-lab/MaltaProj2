@@ -104,17 +104,41 @@ def eligibility(fixture, quote, fixtures_time, now):
 
 
 def fixture_source_url(fixture):
-    # The inherited /matches/{id} path is synthesized, not an observed permalink.
-    # Use the actual official JSON endpoint recorded by fixture discovery instead.
-    api = (fixture.get("source") or {}).get("api")
-    known = "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
-    return api if api == known else "https://play.hotspawn.com/lobby"
+    """Use only a permalink observed in the official lobby state, else the lobby itself."""
+    source = fixture.get("source") or {}
+    candidate = source.get("published_match_url")
+    parsed = urlsplit(str(candidate or ""))
+    fixture_id = str(fixture.get("fixture_id") or "")
+    if (source.get("published_match_url_verified") is True and parsed.scheme == "https"
+            and parsed.hostname == "www.hotspawn.com" and parsed.path.startswith("/matches/")
+            and parsed.path.rstrip("/").endswith("-" + fixture_id)):
+        return candidate
+    return "https://play.hotspawn.com/lobby"
+
+
+def fixture_source_kind(fixture):
+    return "published_match_permalink" if fixture_source_url(fixture) != "https://play.hotspawn.com/lobby" else "official_lobby_fallback"
+
+
+def fixture_observed_time(fixtures_doc):
+    """Use the cache-adjusted observation time when the collector publishes one."""
+    return fixtures_doc.get("source_observed_at_utc") or fixtures_doc.get("generated_at_utc")
+
+
+def is_open_for_picks(fixture, now):
+    start = parse_iso(fixture.get("scheduled_start_time"))
+    lock = parse_iso(fixture.get("lock_time"))
+    status = str(fixture.get("status", "")).lower()
+    return start is not None and lock is not None and start > now and lock > now and status in {
+        "scheduled", "upcoming", "open", "pending"
+    }
 
 
 def build_document(fixtures_doc, odds_doc, now=None):
     now = now or datetime.now(timezone.utc)
     fixtures = [f for f in fixtures_doc["matches"] if f.get("sport") == "cs2"
                 and str(f.get("status", "")).lower() not in {"cancelled", "ended"}]
+    fixtures_time = fixture_observed_time(fixtures_doc)
     quotes = odds_doc.get("lines", [])
     candidates, rejects, consumed = {}, [], set()
     matched = {f["fixture_id"]: [] for f in fixtures}
@@ -125,7 +149,7 @@ def build_document(fixtures_doc, odds_doc, now=None):
             order = pair_order(fx, quote)
             if not order:
                 continue
-            reason = eligibility(fx, quote, fixtures_doc.get("generated_at_utc"), now)
+            reason = eligibility(fx, quote, fixtures_time, now)
             if reason:
                 flags_by_id[fx["fixture_id"]].add(reason)
                 rejects.append({"fixture_id": fx["fixture_id"], "fixture": f"{fx['team_a']} vs {fx['team_b']}",
@@ -168,17 +192,23 @@ def build_document(fixtures_doc, odds_doc, now=None):
         consumed.add(index)
     output, decisions = [], []
     summary = {"fixtures_total": len(fixtures), "fixtures_with_external_line": 0,
-               "fixtures_without_external_line": 0, "by_tier": {}, "by_source": {}}
+               "fixtures_without_external_line": 0, "fixtures_open_for_picks": 0,
+               "fixtures_open_with_external_line": 0, "fixtures_open_without_external_line": 0,
+               "fixtures_locked_or_past": 0, "by_tier": {}, "by_source": {}}
     for fx in fixtures:
         found = sorted(matched[fx["fixture_id"]], key=lambda x: x["source_key"])
         flags = flags_by_id[fx["fixture_id"]]
+        open_for_picks = is_open_for_picks(fx, now)
         if not found:
             flags.add("external_odds_not_found")
+        if not open_for_picks:
+            flags.add("picks_locked_past_or_unverified")
         start = parse_iso(fx.get("scheduled_start_time"))
         if start is None or start <= now:
             flags.add("fixture_start_time_in_the_past_or_stale_source_status")
-        if not fresh(fixtures_doc.get("generated_at_utc"), now):
+        if not fresh(fixtures_time, now):
             flags.add("fixture_snapshot_stale_or_unverified_timestamp")
+        flags.update(fx.get("source_flags") or [])
         consensus = None
         if found:
             ps = [q["derived_probability_a"] for q in found]
@@ -189,9 +219,12 @@ def build_document(fixtures_doc, odds_doc, now=None):
                          "derived_probability_a_min": min(ps), "derived_probability_a_max": max(ps)}
         output.append({"fixture_id": fx["fixture_id"], "competition": fx.get("competition_name"),
                        "tier": fx.get("tier"), "start_time_utc": fx.get("scheduled_start_time"),
+                       "lock_time_utc": fx.get("lock_time"),
                        "team_a": fx.get("team_a"), "team_b": fx.get("team_b"),
                        "source_reported_status": fx.get("status"),
+                       "pick_status": "open" if open_for_picks else "closed_or_unverified",
                        "hotspawn_match_url": fixture_source_url(fx),
+                       "hotspawn_source_kind": fixture_source_kind(fx),
                        "bookmaker_lines": found,
                        "derived": {"per_source": {q["source_key"]: {k: q[k] for k in
                                     ("derived_probability_a", "derived_probability_b", "overround")} for q in found},
@@ -201,15 +234,24 @@ def build_document(fixtures_doc, odds_doc, now=None):
         decisions.append({"fixture_id": fx["fixture_id"], "fixture": f"{fx['team_a']} vs {fx['team_b']}",
                           "lines_matched": len(found), "sources": [q["source_key"] for q in found]})
         summary["fixtures_with_external_line" if found else "fixtures_without_external_line"] += 1
-        tier = summary["by_tier"].setdefault(fx.get("tier") or "none", {"total": 0, "with_line": 0})
+        if open_for_picks:
+            summary["fixtures_open_for_picks"] += 1
+            summary["fixtures_open_with_external_line" if found else "fixtures_open_without_external_line"] += 1
+        else:
+            summary["fixtures_locked_or_past"] += 1
+        tier = summary["by_tier"].setdefault(
+            fx.get("tier") or "none", {"total": 0, "with_line": 0, "open": 0, "open_with_line": 0})
         tier["total"] += 1
         tier["with_line"] += bool(found)
+        tier["open"] += bool(open_for_picks)
+        tier["open_with_line"] += bool(open_for_picks and found)
         for q in found:
             summary["by_source"][q["source_key"]] = summary["by_source"].get(q["source_key"], 0) + 1
-    output.sort(key=lambda f: (parse_iso(f.get("start_time_utc")) is None or parse_iso(f.get("start_time_utc")) <= now,
-                               f.get("start_time_utc") or "", f["fixture_id"]))
+    output.sort(key=lambda f: (f.get("pick_status") != "open", f.get("start_time_utc") or "", f["fixture_id"]))
     doc = {"generated_at_utc": iso(now), "odds_collected_at_utc": odds_doc.get("generated_at_utc"),
            "fixture_list_collected_at_utc": fixtures_doc.get("generated_at_utc"),
+           "fixture_source_observed_at_utc": fixtures_time,
+           "fixture_source_cache_age_seconds": fixtures_doc.get("source_cache_age_seconds"),
            "method": {"match_rule": "both teams, explicit CS2, exact UTC start, unique fixture and source quote",
                       "max_age_seconds": MAX_AGE_SECONDS,
                       "probability_rule": "proportional no-vig: (1/odds_i) / sum(1/odds_j)",
