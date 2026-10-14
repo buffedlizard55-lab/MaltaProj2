@@ -493,7 +493,7 @@ def open_table(rows: list[dict]) -> str:
                           f'{len(flags)} flag{"s" if len(flags) > 1 else ""}</a></div>')
         src = [f'<a href="{esc(r["hotspawn_url"])}" rel="noopener">HotSpawn {esc(r["hotspawn_url_kind"])}</a>']
         for qq in r.get("quotes", []):
-            src.append(f'<a href="{esc(qq["public_url"])}" rel="noopener">{esc(qq["source_name"])}</a>')
+            src.append(f'<a href="{esc(qq["api_url"])}" rel="noopener">{esc(qq["source_name"])} quote</a>')
         if r["vrs"].get("page_url") and (r["vrs"].get("team_a") or r["vrs"].get("team_b")):
             src.append(f'<a href="{esc(r["vrs"]["page_url"])}" rel="noopener">Valve VRS</a>')
         meta = (f'<span data-t="{esc(r["start_utc"])}">{esc(r["start_utc"])}</span>'
@@ -595,7 +595,7 @@ def render_sources(b: dict) -> str:
                           f'<td data-l="Standing">#{t["standing"]}</td><td data-l="Points">{t["points"]}</td>'
                           f'<td data-l="Source"><a href="{esc(b["vrs"]["page_url"])}">Valve VRS {esc(b["vrs"]["snapshot"])}</a></td></tr>')
     body = f"""
-<h1>Lines &amp; sources</h1>
+<h1>Lines &amp; sources</h1><p class="note">These are timestamped captured inputs, not continuously live prices. <a href="../data/f7279a54/source_payloads.json">Official response payloads and hashes</a> · <a href="../data/f7279a54/snapshot.json">Normalized source snapshot</a>. Exact API endpoints appear on each row.</p>
 <p class="mut">Every external price used on the Picks page, exactly as read from the source, with the margin-free probability derived from it.
 Each row links to the official bookmaker/exchange page and the public endpoint it was read from.</p>
 <h2>Prices used ({len(rows)})</h2>

@@ -174,7 +174,8 @@ def rederive_quote(quote: dict) -> dict | None:
     nv = no_vig(da, db)
     if not nv:
         return None
-    return {**quote, "decimal_a": da, "decimal_b": db, "prob_a": nv["prob_a"],
+    return {**quote, "start_utc": None if quote.get("start_is_approx") else quote.get("start_utc"),
+            "decimal_a": da, "decimal_b": db, "prob_a": nv["prob_a"],
             "overround": nv["overround"]}
 
 
@@ -355,7 +356,7 @@ def result_winner(f: dict) -> str | None:
 # ------------------------------------------------------------------------------ joining
 TIME_TOLERANCE_H = 5 / 60   # at most five minutes; modelling policy, not source evidence
 TIME_WARN_H = 3.0         # larger differences are joined but flagged
-TIME_REJECT_LOG_H = 72.0  # same pairing 14-72 h apart: not joined, but published as a rejected join
+TIME_REJECT_LOG_H = 72.0  # near-time mismatches are published for review, never joined
 
 
 def match_quote(fixture: dict, quote: dict) -> dict | None:

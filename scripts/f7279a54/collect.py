@@ -204,11 +204,12 @@ def collect_bovada(quotes: list) -> None:
             for dg in ev.get("displayGroups") or []:
                 for mk in dg.get("markets") or []:
                     if (str(mk.get("description", "")).strip().casefold() != "moneyline"
-                            or not (mk.get("period") or {}).get("main")):
+                            or not (mk.get("period") or {}).get("main") or mk.get("status") != "O"
+                            or (mk.get("period") or {}).get("live")):
                         continue
                     outs = {str(o.get("competitorId")): o for o in mk.get("outcomes") or []}
                     oh, oa = outs.get(str(home.get("id"))), outs.get(str(away.get("id")))
-                    if not oh or not oa:
+                    if not oh or not oa or oh.get("status") != "O" or oa.get("status") != "O":
                         continue
                     dh, da = (oh.get("price") or {}).get("decimal"), (oa.get("price") or {}).get("decimal")
                     if not dh or not da:
@@ -265,22 +266,12 @@ KALSHI_TICKER_TIME = re.compile(r"-(\d{2})([A-Z]{3})(\d{2})(\d{2})(\d{2})")
 
 
 def kalshi_start(event_ticker: str):
-    """Event tickers encode the scheduled time in US Eastern time (e.g. 26OCT140430 = 04:30 ET).
+    """Ticker timestamps have no verified timezone/kickoff semantics in this feed.
 
-    The UTC offset is not stated in the ticker, so this value is used ONLY to disambiguate the
-    join window (±36 h), never displayed as a kickoff time.
+    Never turn a guessed Eastern offset into a sourced kickoff. Leave blank until an
+    explicit official kickoff timestamp is available; such quotes cannot enter picks.
     """
-    m = KALSHI_TICKER_TIME.search(event_ticker or "")
-    if not m:
-        return None
-    from datetime import datetime, timedelta, timezone
-    months = "JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC".split()
-    try:
-        dt = datetime(2000 + int(m.group(1)), months.index(m.group(2)) + 1, int(m.group(3)),
-                      int(m.group(4)), int(m.group(5)), tzinfo=timezone.utc)
-    except ValueError:
-        return None
-    return dt + timedelta(hours=4)  # EDT approximation for the join window only
+    return None
 
 
 def collect_kalshi(quotes: list, rejected: list) -> None:

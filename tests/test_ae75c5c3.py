@@ -111,6 +111,14 @@ class Eligibility(unittest.TestCase):
         for r in b['open']:
             self.assertIsNotNone(core.parse_iso(r['valid_until_utc']))
 
+class OfficialPayloadReplay(unittest.TestCase):
+    @unittest.skipUnless((ROOT / 'data/f7279a54/source_payloads.json').exists(), 'no retained responses yet')
+    def test_every_consumed_quote_replays_from_official_response(self):
+        verifier = module('ae_payload_verifier', ROOT / 'scripts/ae75c5c3/verify_source_payloads.py')
+        result = verifier.verify()
+        self.assertFalse(result['failures'], result['failures'])
+        self.assertGreater(result['provider_responses'], 0)
+
 class CollectorPermalinks(unittest.TestCase):
     def test_real_collector_cannot_reintroduce_numeric_routes(self):
         path = str(ROOT / 'scripts/live')
