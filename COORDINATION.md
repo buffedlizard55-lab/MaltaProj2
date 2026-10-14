@@ -4207,3 +4207,17 @@ These contradict the user's no-invented-values requirement and will be corrected
 - PR: https://github.com/buffedlizard55-lab/MaltaProj2/pull/97 . Concurrent PRs #94–#96 changed the same completed scopes before its hosted gate could start. Reconciled the overlaps rather than overwriting them: kept the 5cd24fb4 executive-summary audit helper and tests, all 8723ad37 source-safety/mobile tests and audit pages, all new board/coverage/summary sections, and their coordination records. Reused the shared strict engine rather than maintaining two divergent engines. Preserved incoming legacy source captures under `data/c64a5e19/legacy_pre_verification_snapshot.json`; current normalized data remains paired with its official response evidence.
 - Kept browser-test DOM hooks compatible across both sessions, preserving expiry, 44px navigation targets, source links, filtering, and markup escaping. Combined local suite: **431 OK (one inherited archive skip)**. Full source replay continues to pass.
 - An attempted `pull --rebase` tried flattening merged parallel history despite the remote session head already being an ancestor. Aborted that rebase without losing any work; preserved the explicit integration merge and used a normal fast-forward push. No force push or other session branch change.
+
+### 479ef53e — completion / PR #97 merged and Pages verified (2026-10-14 04:58 UTC)
+
+| Task | Status | Owner | Result |
+|---|---|---|---|
+| Source-replayed every-match coverage and strict fallback consolidation | done | 479ef53e | PR #97 merged; live collector and official-input replay succeeded |
+| Mobile executive summary, final integration, build and Pages verification | done | 479ef53e | 431 local tests pass (one inherited skip); hosted desktop/mobile/source/link checks and public read-back pass |
+| Missing odds, unresolved roster identities, source availability and historic alternate assumptions | needs review | 479ef53e | Published on `picks-every-match/flagged.html`, with official row links and retained parallel audit links; missing probabilities remain blank |
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/97 — merged without an approval wait at `2026-10-14T04:55:46Z`, merge commit `197ec52d5b18c8449f45f83c53fe15e1cb44dbf0`.
+- **Pre-merge hosted gate:** https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38513792413 — build successful (full tests, both sessions' mobile expiry/source tests, complete staged local links).
+- **Post-merge Pages:** https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38513942045 — build, deployment and `Verify actual public dashboard` all successful. This checks the root executive summary and all five every-match pages, their policy marker, published inventory counts and line-by-line source replay report, not merely the legacy `/docs/` subsite.
+- **Live site:** https://buffedlizard55-lab.github.io/MaltaProj2/ ; primary picks: https://buffedlizard55-lab.github.io/MaltaProj2/picks-every-match/ . Automatic collection is configured every four hours; GitHub scheduling/provider access remain best effort. No user input required.
+- Parallel sessions' published boards, complete claim logs, source captures and evidence-safety/browser regressions are preserved. Unsupported numerical completeness is not claimed. This final record is appended on the fixed session branch after merge; the merged PR and Actions links are the public publication record.
