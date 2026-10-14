@@ -4104,8 +4104,8 @@ Read the existing main task board and fetched the boards for open PRs #80 (`6ddd
 
 | Task | Status | Owner | File scope |
 |---|---|---|---|
-| Harden existing every-match board against unsupported ratings, ambiguous identities, stale/missing kickoff/quotes; audit fallback-only sources; mobile expiry and readable evidence | in progress | 8723ad37 | `scripts/c64a5e19/**`, `picks-every-match/**`, `data/c64a5e19/board.json`, `tests/test_c64a5e19.py`, `tests/test_8723ad37.py`, `audits/8723ad37/**` |
-| Final integration after above: truthful executive summary, public flags, tests, PR merge and Pages verification | in progress | 8723ad37 | `scripts/build_site.py` (landing prose only, NOT NAV), generated root HTML/assets, README.md (existing board description only), `.github/workflows/every-match-c64a5e19.yml`, `.github/workflows/pages.yml` (validation additions only), COORDINATION.md (append only) |
+| Harden existing every-match board against unsupported ratings, ambiguous identities, stale/missing kickoff/quotes; audit fallback-only sources; mobile expiry and readable evidence | done | 8723ad37 | `scripts/c64a5e19/**`, `picks-every-match/**`, `data/c64a5e19/board.json`, `tests/test_c64a5e19.py`, `tests/test_8723ad37.py`, `audits/8723ad37/**` |
+| Final integration after above: truthful executive summary, public flags, tests, PR merge and Pages verification | done | 8723ad37 | `scripts/build_site.py` (landing prose only, NOT NAV), generated root HTML/assets, README.md (existing board description only), `.github/workflows/every-match-c64a5e19.yml`, `.github/workflows/pages.yml` (validation additions only), COORDINATION.md (append only) |
 
 Previous every-match owner c64a5e19 completed PR #81; no active claim overlaps that section.
 Root prose takeover: previous 5a3c1a63 integration completed PR #83; 7cd2e67a's old root claim
@@ -4159,3 +4159,19 @@ These contradict the user's no-invented-values requirement and will be corrected
   and an unclosed probability container hid the expiry notice along with expired numbers. Fixed
   wrapping and DOM nesting. Reproduced locally with Chromium; all four viewport sizes, search,
   tap-target and expiry tests now pass. No gate was bypassed.
+
+### 8723ad37 — merged and deployed (2026-10-14 04:49 UTC)
+
+- PR https://github.com/buffedlizard55-lab/MaltaProj2/pull/95 **merged** at
+  2026-10-14T04:47:34Z; merge commit `c8bef564f41b08e0c480253be194d4e015791c50`.
+- Exact PR-head validation: https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38513090143
+  success: 424 tests (one skip), independent evidence handoffs, Chromium mobile/desktop checks,
+  source-deadline rebuild and complete staged-link validation. Earlier browser failures were fixed.
+- Post-merge Pages: https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38513225379
+  **success**: build, deploy, and Verify actual public dashboard all passed.
+- Public read-back: https://buffedlizard55-lab.github.io/MaltaProj2/picks-every-match/ serves
+  “Your CS2 picks, in one place.” with 28 snapshot fixtures, 23 supported picks, 5 blank/flagged,
+  explicit evidence deadlines and the evidence-table / Flagged for Review links. Text extraction
+  includes hidden expiry notices; actual browser visibility/expiry behaviour was tested in Chromium.
+- Both scoped tasks done. Remaining source gaps are published, not silently filled. Other sessions'
+  independent archives remain untouched. This completion record is retained on the session branch.
