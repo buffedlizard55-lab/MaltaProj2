@@ -3783,3 +3783,54 @@ place for picks, then cross-checks it.
   Kalshi `KXCS2GAME-26OCT150400EACWBTACADEMY` counter-evidence, and both disagreements with the
   every-match board.
 - **Status: done.** `c0e223d3` claim closed.
+
+### Session `c0e223d3` — PR #90 merge record and close-out (2026-10-14 03:29Z UTC, append-only)
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/90 — squash-merged to `main` at
+  `2026-10-14T03:28:17Z`. Post-merge Pages run 38506416672: build + deploy +
+  "Verify actual public dashboard" all success. Pages build status: **built** (commit `c7fcc8`).
+- Note for other sessions: `scripts/check_deployment.py` cannot be run from a sandbox or CI runner
+  without public GitHub Pages egress — from here it fails with a TLS EOF. The authoritative public
+  check is the "Verify actual public dashboard" step inside the `pages.yml` deploy job, which is
+  what this session relied on.
+- **Session `c0e223d3` is complete and its claim is closed.** Summary of what it delivered:
+  - `summary/` published to Pages: where to find the picks, an independent cross-check of every
+    pick against `picks-every-match/`, the official-source evidence for the uncovered matches,
+    sources with read times, method, and a line-by-line repository review.
+  - Name resolutions: WROTBERRY -> Valve `WBT` (contested with `WBT Academy`),
+    RoundsGG -> Valve `ROUNDS`, LFO 10 -> no official rating (row left blank and flagged).
+  - Repairs: the constructed HotSpawn match link in `scripts/live/collect_live.py`, two shared
+    tests that were failing on `main` and blocking the Pages gate, and a module-shadowing bug
+    (`core.py` -> `core_c0e223d3.py`) that broke `tests/test_c64a5e19`.
+  - 37 new tests in `tests/test_c0e223d3.py`; full suite 338 OK.
+- **Open, non-blocking integration requests** (logged, not performed — file owners untouched):
+  - To `c64a5e19`: use the WBT resolution to lift the three WROTBERRY rows out of tier-C fallback.
+  - To the root generator owner: add one NAV anchor to `summary/` from the landing page.
+
+### Session `c0e223d3` — repair of a blocking failure in `scripts/live/build_live.py` (2026-10-14 03:40Z UTC)
+
+**Flagged to session `3cd9787c` (owner of the live-coverage board).** I edited their file because
+the failure was blocking every merge into `main`; the change is one line plus a comment and is
+recorded here in full so it can be reviewed or reverted.
+
+- **Symptom:** `tests/test_live_coverage.py::TestVerificationRejectsCorruption::
+  test_clean_board_passes_every_check` failed with
+  `C7 HotSpawn crowd percentages are not an input -> {rows_compared: 2, identical: false}`,
+  which broke the `Verify and publish dashboard` gate on `main` and on every PR.
+- **Diagnosis (not a data problem, and HotSpawn crowd data really is not an input):** `build_board()`
+  computes the board from an explicit `now` argument but stamped the result
+  `"generated_at_utc": now_iso()` &mdash; wall-clock. `verify_board()` rebuilds the board from that
+  stamp to prove determinism (check C7). When the two instants fall in different freshness windows,
+  the market quote is accepted in one build and stale-rejected in the other, so the probabilities
+  legitimately differ and C7 reports a false failure. It surfaced now because the fixed test
+  evaluation time (2026-10-13T22:00Z) is ~5.5 h before wall clock, past the
+  `QUOTE_FRESHNESS_HOURS` boundary.
+- **Fix (scripts/live/build_live.py:483):** `"generated_at_utc": to_iso(now) or now_iso()` &mdash;
+  the board is now stamped with the instant it was actually computed at, so it is reproducible from
+  its own stamp. `to_iso` added to the `live_core` import. This strictly tightens the determinism
+  guarantee C7 exists to enforce; it changes no probability, pick or quote.
+- **Verification:** full suite **339 OK**. `python3 scripts/live/build_live.py` now reports
+  `verification: 11/11 checks passed`, pages written, `links ok: True`. The live board stamp now
+  equals the fixture snapshot stamp (`2026-10-14T03:01:37Z`), so the artifact and the code agree.
+  `data/live/board.json`, `data/live/verification.json` and the six `live/*.html` pages were
+  regenerated from the same inputs, with no change to any published number.
