@@ -18,9 +18,12 @@ from typing import Any
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-LINES_PATH = ROOT / "data" / "lines.json"
-CURRENT_PATH = ROOT / "data" / "current_probabilities.json"
-ROOT_CS2_PATH = ROOT / "cs2.html"
+# This is a dated audit, so rebuild against its immutable copies rather than the
+# automatically refreshed root files.  Otherwise a later legitimate root
+# refresh silently rewrites the historical audit and invalidates its findings.
+LINES_PATH = HERE / "snapshot_lines.json"
+CURRENT_PATH = HERE / "snapshot_current_probabilities.json"
+ROOT_CS2_PATH = HERE / "snapshot_cs2.txt"
 REPORT_PATH = HERE / "report.json"
 LEDGER_PATH = HERE / "source_check_ledger.json"
 PAGE_PATH = HERE / "index.html"
