@@ -1,5 +1,15 @@
 # Pick'ems betting-line dashboard — HotSpawn lobby fixtures
 
+## Start here
+
+- **[Current CS2 picks](https://buffedlizard55-lab.github.io/MaltaProj2/picks-every-match/)** — one mobile-friendly list; both probabilities, the pick, evidence basis and official source links.
+- **[Unresolved picks & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/picks-every-match/unresolved.html)** — every gap, in plain language, with HLTV access results, esportsbook/exchange attempts and rating eligibility from the same capture. Missing values are blank, not forced 50/50s.
+- **[Executive summary](https://buffedlizard55-lab.github.io/MaltaProj2/)** — the canonical entry point; alternate research is collapsed and never combined with its coverage totals.
+- **[Source research / Flagged for Review](https://buffedlizard55-lab.github.io/MaltaProj2/audits/dc741cc1/)** — dated findings and explicit limits of verification.
+
+The canonical collector runs every four hours. Source/quote timestamps, expiry, provider failures and complete lobby inventory are retained. Markets take precedence; a unique, current Valve rating pair supports a labelled model fallback only where no accepted market exists. No HotSpawn or HLTV crowd votes enter the calculation. Source outages can legitimately leave every probability blank; tests must not require fabricated numeric coverage.
+
+
 **Live dashboard: https://buffedlizard55-lab.github.io/MaltaProj2/**
 
 **Start with [source-linked CS2 picks](https://buffedlizard55-lab.github.io/MaltaProj2/cs2.html).**
