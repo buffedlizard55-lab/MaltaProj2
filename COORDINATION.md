@@ -3467,3 +3467,22 @@ is still open against an older `main`, so it is carried into this integration ra
 - **Cross-session request (logged, not edited):** session `a0586093` may want to refresh
   `data/expanded/**` and `market/**` once more from a runner; the next `expanded-lines` run on `main`
   regenerates them from the carried fix. No action required from them.
+
+# Session `c64a5e19` — every-match picks + executive summary (claim 2026-10-14 02:34 UTC)
+
+Environment note: Arena pins this session to branch `arena/c64a5e19-maltaproj2`; the `session-<id>/<task>` naming cannot be used. Branched from `main` @ `de2f4ef` (2026-10-14 02:30Z ourline refresh).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| E1: fallback origination research for matches with no eligible bookmaker line (low-tier / not on Polymarket etc.) — additional verified sources only for those matches | in progress | c64a5e19 | 2026-10-14 02:34 | `scripts/c64a5e19/**`, `data/c64a5e19/**`, `tests/test_c64a5e19.py`, COORDINATION.md (this appended section only) |
+| E2: unified every-match CS2 pick board (a pick + win % for EVERY open HotSpawn CS2 fixture, tiered basis labelled per row, mobile-first) + executive-summary landing that links to it | in progress | c64a5e19 | 2026-10-14 02:34 | `picks-every-match/**` (new dir), `scripts/c64a5e19/**`, `data/c64a5e19/**` |
+| E3: auto-refresh workflow for the every-match board (no manual input; re-checks HotSpawn lobby for new matches) | in progress | c64a5e19 | 2026-10-14 02:34 | `.github/workflows/every-match-c64a5e19.yml`, `scripts/c64a5e19/**` |
+| E4: final integration — link the new board from root dashboard/README via the shared generator only if non-conflicting, otherwise log request; PR to main, merge, Pages verification | in progress | c64a5e19 | 2026-10-14 02:34 | COORDINATION.md, plus shared files ONLY at final integration step after re-checking claims |
+
+## Non-overlap statement (checked 2026-10-14 02:34 UTC)
+- All prior sections in this file are marked done/closed. No live in-progress claim overlaps the new `picks-every-match/**`, `scripts/c64a5e19/**`, `data/c64a5e19/**` scope.
+- This session does NOT edit other sessions' owned dirs (`ourline/**`, `fresh/**`, `live/**`, `market/**`, `pickem/**`, `docs/**`, `verify/**`, `data/f7279a54/**`, `data/dd2b7fee/**`, `data/expanded/**`) and does not hand-edit generated root `*.html`. Root linkage, if needed, is done only at final integration via `scripts/build_site.py` + `scripts/stage_site.py` (additive staging entry) and recorded here.
+- Starting point (verified from committed data, 2026-10-14T02:30Z): root strict board prices 10/28 open CS2 fixtures; `ourline` board prices/models 22/28; 6 open fixtures have no pick at all (FORZE Reload–LFO 10, WROTBERRY–EAC, WROTBERRY–ENCE, WROTBERRY–BOJONG, HAVU–RoundsGG, RoundsGG–Voca). E1 researches exactly those first.
+
+## Log — c64a5e19
+- 2026-10-14 02:34 UTC: claim written; will commit + push this claim before starting E1.
