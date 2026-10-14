@@ -1,5 +1,18 @@
 # Coordination
 
+Session: `b5436cf0` (research + every-match picks session). Environment fixes work to branch `arena/b5436cf0-maltaproj2`.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-RESEARCH-PICKS: resolve a pick for every HotSpawn CS2 fixture that featured market picks cannot resolve (low-tier / unpriced matches) using HLTV, esportsbooks and esports betting lines; publish a dedicated mobile "Complete picks" section with a separate Unresolved picks + limitations section; executive-summary links; 4-hourly refresh | in progress | b5436cf0 | 2026-10-14 04:35 | scripts/b5436cf0/**, data/b5436cf0/**, picks-all/**, tests/test_b5436cf0.py, .github/workflows/allpicks-b5436cf0.yml, COORDINATION.md, README.md, and (integration handoff only) the executive-summary block of scripts/build_site.py + scripts/stage_site.py section list |
+
+## Log
+- 2026-10-14 04:35 UTC, `b5436cf0`: Claim posted before any work. No other session claims T-RESEARCH-PICKS or the `picks-all/**` / `data/b5436cf0/**` scope. Branch is `arena/b5436cf0-maltaproj2` (environment-fixed). Existing boards (`board/`, `picks-every-match/`, `coverage/`, `ourline/`, `fresh/`, `summary/`, `live/`) are read-only inputs for cross-checking; none of their files will be edited.
+
+---
+
+# Coordination
+
 Session: `ef111e02` (final integration session). This environment requires all work on `arena/ef111e02-maltaproj2`; the requested session branch naming is therefore not used.
 
 | Task | Status | Owner | Claimed UTC | File scope |
