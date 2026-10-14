@@ -89,8 +89,16 @@ def collect_fixtures(log: dict, listed_ids: set[str] | None = None,
             skipped += 1
             continue
         kept += 1 if in_window else 0
+        # Per-row match link: the permalink HotSpawn publishes for this fixture, or the official
+        # lobby page. Never a constructed /matches/<id> path.
+        fixture_key = str(f.get("id"))
+        published_match_url = permalinks.get(fixture_key)
+        link_kind = "lobby-published permalink" if published_match_url else "official lobby page"
+        if not published_match_url:
+            published_match_url = LOBBY_PAGE
+        link_kinds[link_kind] = link_kinds.get(link_kind, 0) + 1
         out.append({
-            "fixture_id": str(f.get("id")),
+            "fixture_id": fixture_key,
             "game": GAMES.get(game) if game else None,
             "sport_alias": sport,
             "competition_id": str(f.get("competition_id") or ""),
@@ -117,16 +125,13 @@ def collect_fixtures(log: dict, listed_ids: set[str] | None = None,
             "source": {
                 "api": url,
                 "page": LOBBY_PAGE,
-                "hotspawn_match_url": permalinks.get(str(f.get("id"))) or LOBBY_PAGE,
-                "hotspawn_match_url_kind": ("lobby_published_permalink"
-                                            if str(f.get("id")) in permalinks
-                                            else "official_lobby_fallback"),
             },
         })
     log["hotspawn_fixtures"].update({
         "status_counts_all_rows": statuses,
         "game_counts_all_rows": games,
         "kept_in_snapshot": kept,
+        "per_row_link_kinds": link_kinds,
         "force_kept_from_lobby_listing": sum(1 for r in out if r.get("listed_in_lobby_hint")),
         "omitted_outside_window": skipped,
         "window": {"from": to_iso(lo), "to": to_iso(hi),
@@ -849,3 +854,16 @@ def _main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+                "hotspawn_match_url": permalinks.get(str(f.get("id"))) or LOBBY_PAGE,
+                "hotspawn_match_url_kind": ("lobby_published_permalink"
+                                            if str(f.get("id")) in permalinks
+                                            else "official_lobby_fallback"),
+                # A per-row match link must be a URL HotSpawn publishes. `https://www.hotspawn.com/
+                # matches/<numeric id>` is NOT published by HotSpawn - it resolves to the general
+                # matches index - so it is never constructed here. When the lobby publishes no
+                # permalink for a fixture the row links the official lobby page instead.
+                # (Defect found by 7cd2e67a; repaired on this collector by c64a5e19 and c0e223d3.)
+                "hotspawn_match_url": permalinks.get(str(f.get("id"))) or LOBBY_PAGE,
+                "hotspawn_match_url_kind": (
+                    "lobby-published permalink"
+                    if str(f.get("id")) in permalinks else "official lobby page"),

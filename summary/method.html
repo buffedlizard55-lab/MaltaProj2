@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method</title>
+<meta name="description" content="HotSpawn Pick'ems CS2 pick hub with probabilities derived from external betting lines and official Valve / HLTV sources.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand"><span>&#9679;</span> CS2 pick hub</div>
+  <nav class="topnav"><a href="index.html" class="">Start here</a><a href="gaps.html" class="">Uncovered</a><a href="sources.html" class="">Sources</a><a href="method.html" class="on">Method</a><a href="repo-review.html" class="">Repo review</a>
+    <a href="../index.html">Main dashboard</a>
+  </nav>
+</div></header>
+<main class="wrap">
+  <h1>Method</h1>
+  <p class='sub'>Where every number comes from, and where the model stops.</p>
+  
+<h2>Where the match list comes from</h2>
+<p>The public <a href="https://play.hotspawn.com/lobby" rel="nofollow noopener" target="_blank">
+HotSpawn Pick'ems lobby</a> embeds its fixture list in the page. That list is the inventory.
+HotSpawn is used for <b>fixture discovery only</b>; its crowd &ldquo;picked %&rdquo; is never used
+as a probability, so our numbers are independent of what other players picked.</p>
+<h2>Where the probabilities come from</h2>
+<ol class="tight">
+<li><b>Bookmaker and exchange prices.</b> Pinnacle, Bovada, Melbet and Kalshi full-match prices,
+read by the OURLINE collector. Each side's implied probability is de-vigged proportionally
+(<code>p = (1/odds) / sum(1/odds)</code>) and the sources are averaged. Every priced row links to
+the bookmaker page it came from.</li>
+<li><b>Rating model (when there is no price).</b> Valve's own published standings give every team a
+points total. Valve's repository documents the win-expectancy curve
+(<code>Q = ln(10)/400</code>, <code>g = 1/sqrt(1 + 3*Q^2*RD^2/pi^2)</code>, RD fixed at 75), so
+<code>P(A beats B) = sigmoid(k &middot; g &middot; ln(10)/400 &middot; (ptsA - ptsB))</code>.
+Valve's README warns their curve is too steep, so <code>k</code> is not assumed: it is fitted by
+least squares against observed bookmaker lines. The value used here is the one the OURLINE board
+published, <code>k = 0.3646</code>, fitted on
+<code>14</code> market/model pairs with a mean absolute
+error of <code>0.0775</code>.</li>
+<li><b>Blend.</b> Where both exist, market and model are blended in logit space with the market
+weighted <code>0.85</code> when two or more independent sources agree, <code>0.75</code> otherwise.
+That weighting and the blend are the OURLINE board's published choices; this section does not
+change them.</li>
+</ol>
+<h2>Name resolution</h2>
+<p>Some teams appear under different names at HotSpawn, Valve and HLTV. Resolutions are only made
+when two independent official sources agree through the same event, the same opponents and the same
+kickoff offsets, and every one is published with its evidence on the
+<a href="gaps.html">Uncovered matches</a> page.</p>
+<h2>Limits</h2>
+<ul class="tight">
+<li>A rating-model pick is our own estimate, not a bookmaker line. No bookmaker is quoting these
+matches, which is exactly why they were uncovered.</li>
+<li>Valve's standings are a snapshot (2026_10_05); rosters
+and ratings move between snapshots.</li>
+<li>Where a team has no official rating at all in the sources we could read, the row stays blank
+and is flagged. It is never filled in.</li>
+<li>Probabilities are estimates, not predictions with any validated accuracy, and not betting
+advice.</li>
+</ul>
+
+  <footer>
+    Built by session <code>c0e223d3</code>. Fixture discovery: the public
+    <a href="https://play.hotspawn.com/lobby">HotSpawn Pick'ems lobby</a>. HotSpawn's own crowd
+    &ldquo;picked %&rdquo; is never used as a probability. Probabilities are model estimates, not
+    guarantees, and are not betting advice. 18+.
+  </footer>
+</main>
+</body>
+</html>
