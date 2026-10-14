@@ -1,0 +1,161 @@
+{
+  "scope": "Line-by-line review performed by session `6ddde224` (T-COVERAGE-FULL) on 2026-10-14. Every claim carries the exact source link used for it; anything that could not be confirmed stays blank. `read_at_utc` is when this session read the source.",
+  "generated_at_utc": "2026-10-14T02:10:00Z",
+  "items": [
+    {
+      "id": "R-01",
+      "area": "collector / bo3.gg paging",
+      "claim": "bo3.gg /api/v1/matches pages by `page[limit]` + `page[offset]`; a plain `page` parameter is ignored.",
+      "method": "Three direct reads of the live feed: `page=2` and `page[number]=2` returned page 1 unchanged, while `page[offset]=20` advanced to the 21st record.",
+      "result": "Confirmed; contract corrected in scripts/coverage/collect_coverage.py.",
+      "evidence_url": "https://bo3.gg/api/v1/matches?filter[matches.status][in]=finished&filter[matches.discipline_id][in]=1&sort=-start_date&page[limit]=10&page[offset]=20",
+      "note": "The first crawl (built with plain `page`) held 5,000 rows for only 10 distinct matches. That snapshot is deleted and re-crawled; the collector now refuses to reuse a corpus that fails a distinct-id/span check."
+    },
+    {
+      "id": "R-02",
+      "area": "model / evaluation",
+      "claim": "The book price pair bo3.gg keeps for a finished match is a closing (pre-match) line usable as a benchmark.",
+      "method": "Scored the committed corpus: the pair implied the eventual winner in 100% of 4,000 settled matches (Brier 0.047).",
+      "result": "REFUTED - the pair is the last price held (updated in-play) and leaks the result; withdrawn from the method page.",
+      "evidence_url": "https://bo3.gg/api/v1/matches?filter[matches.status][in]=finished&filter[matches.discipline_id][in]=1&sort=-start_date&page[limit]=10",
+      "note": "The evaluation now publishes only the out-of-sample Bradley-Terry and Valve VRS rows; see irregularity IR-01."
+    },
+    {
+      "id": "R-03",
+      "area": "lobby inventory",
+      "claim": "Every fixture the lobby lists is captured.",
+      "method": "Parsed the fixture ids out of the lobby page's own transfer state and compared them with the lobby counters read the same minute.",
+      "result": "90 fixture ids captured; the lobby's own 'All tiers (89)' counter disagrees and is flagged (IR-02) rather than reconciled.",
+      "evidence_url": "https://play.hotspawn.com/lobby",
+      "note": "Counters: All 89 / B 25 / C 60 / S 4 and '68 matches this week'."
+    },
+    {
+      "id": "R-04",
+      "area": "Kalshi exchange gate",
+      "claim": "Exchange quotes are only published inside the 0.20 spread limit and with volume or open interest.",
+      "method": "Read KXCS2GAME-26OCT161400HAVUPHA (HAVU vs Phantom, stated start Oct 16 2:00 PM EDT = 18:00Z): HAVU yes 0.10/0.61, Phantom yes 0.42/0.82.",
+      "result": "Refused as designed (spreads 0.51 / 0.40); the book stays on the flagged page as reference only.",
+      "evidence_url": "https://kalshi.com/markets/kxcs2game/cs2-game/kxcs2game-26oct161400havupha",
+      "note": "Settlement sources published by Kalshi for this series: bo3.gg, hltv.org, egamersworld.com."
+    },
+    {
+      "id": "R-05",
+      "area": "originated estimate coverage",
+      "claim": "A probability exists for every pickable fixture.",
+      "method": "Compared data/coverage/ratings.json (349 rated teams) with the open fixtures whose teams are absent from the Valve snapshot.",
+      "result": "REFUTED for those teams (WROTBERRY, RoundsGG, SUKEBAN, LFO 10): the rows stay blank and are published on the flagged page - never inferred.",
+      "evidence_url": "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_global_2026_10_05.md",
+      "note": "The originated Bradley-Terry model needs at least 8 corpus matches per team, so it cannot cover them either yet (IR-05)."
+    },
+    {
+      "id": "R-06",
+      "area": "workflow scope guard",
+      "claim": "The hourly job writes only session-owned paths.",
+      "method": "Read .github/workflows/coverage-6ddde224.yml step by step: the commit step stages only `data/coverage/**` and `coverage/**`.",
+      "result": "Confirmed.",
+      "evidence_url": "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/coverage-6ddde224.yml",
+      "note": "Collect step is tolerant by design (set +e) and always persists its log to data/coverage/collector_stdout.log."
+    },
+    {
+      "id": "R-07",
+      "area": "crowd % exclusion",
+      "claim": "HotSpawn's crowd percentages are never a probability input.",
+      "method": "Read the collector and builder line by line and ran the unit test that greps the collector for the crowd field and asserts no published probability can carry it.",
+      "result": "Confirmed.",
+      "evidence_url": "https://play.hotspawn.com/lobby",
+      "note": "The field is stored with a `_reference_only` suffix in the evidence files."
+    }
+  ],
+  "rereads": [
+    {
+      "id": "RR-01",
+      "what": "bo3.gg finished CS2 feed, page[offset]=20",
+      "observed": "ids 131260 PCIFIC esport-STATE (2.47/1.49), 131429 BakS-Spirit Academy (1.588/2.159), 131388, 131387 ...; total published: 75,950 finished CS2 matches",
+      "board_value": "committed corpus held 10 distinct ids (each repeated 500x)",
+      "url": "https://bo3.gg/api/v1/matches?filter[matches.status][in]=finished&filter[matches.discipline_id][in]=1&sort=-start_date&page[limit]=10&page[offset]=20",
+      "read_at_utc": "2026-10-14T02:05:00Z"
+    },
+    {
+      "id": "RR-02",
+      "what": "bo3.gg upcoming feed, page[offset]=10&page[limit]=5",
+      "observed": "131160 Bushido Wildcats-BakS (Oct 14 11:00Z, no book), 131667 Falcons-NiP (1.22/3.8, 351 markets), 131877 Los Kogutos-6666 (no book), 131333 (team ids null), 131914 Blitzkrieg-realgotis22; total 344 upcoming",
+      "board_value": "same window; the upcoming collector had also returned page 1 for every step before the fix",
+      "url": "https://bo3.gg/api/v1/matches?filter[matches.status][in]=upcoming&filter[matches.discipline_id][in]=1&sort=start_date&page[limit]=5&page[offset]=10",
+      "read_at_utc": "2026-10-14T02:07:00Z"
+    },
+    {
+      "id": "RR-03",
+      "what": "HotSpawn Pick'ems lobby counters and listing",
+      "observed": "All tiers 89 / B 25 / C 60 / S 4; '68 matches this week'; 90 fixture ids rendered in the page state",
+      "board_value": "listed_by_lobby = 90",
+      "url": "https://play.hotspawn.com/lobby",
+      "read_at_utc": "2026-10-14T01:40:00Z"
+    },
+    {
+      "id": "RR-04",
+      "what": "Kalshi KXCS2GAME market for HAVU vs Phantom",
+      "observed": "HAVU yes 0.10/0.61 (last 0.75, open interest 25); Phantom yes 0.42/0.82 (ask size 100)",
+      "board_value": "refused by the 0.20 spread gate; reference only",
+      "url": "https://kalshi.com/markets/kxcs2game/cs2-game/kxcs2game-26oct161400havupha",
+      "read_at_utc": "2026-10-14T01:47:00Z"
+    },
+    {
+      "id": "RR-05",
+      "what": "Valve CS2 Regional Standings snapshot 2026_10_05 (global)",
+      "observed": "FORZE Reload 1100, EAC 1035, HAVU 937; WROTBERRY, RoundsGG, SUKEBAN and LFO 10 absent from the table",
+      "board_value": "same values; blanks for the absent teams",
+      "url": "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_global_2026_10_05.md",
+      "read_at_utc": "2026-10-14T01:30:00Z"
+    },
+    {
+      "id": "RR-06",
+      "what": "bo3.gg finished feed with a narrow start_date window",
+      "observed": "the narrow (gt/lt) window returned count 0, while the paged form returned data",
+      "board_value": "not used; the paged 90-day crawl is the only supported form",
+      "url": "https://bo3.gg/api/v1/matches?filter[matches.status][in]=finished&filter[matches.discipline_id][in]=1&filter[matches.start_date][gt]=2026-10-13T00:00:00Z&filter[matches.start_date][lt]=2026-10-14T00:00:00Z",
+      "read_at_utc": "2026-10-14T01:44:00Z"
+    }
+  ],
+  "irregularities": [
+    {
+      "id": "IR-01",
+      "severity": "high",
+      "finding": "The first results crawl paginated wrong (the API ignored the plain `page` parameter): the committed corpus held 5,000 rows for 10 distinct matches, so the model evaluation carried by that snapshot is meaningless.",
+      "evidence": "distinct ids 10 / rows 5,000 (checked locally); bo3.gg `page[offset]` returns different matches per page",
+      "url": "https://bo3.gg/api/v1/matches?filter[matches.status][in]=finished&filter[matches.discipline_id][in]=1&sort=-start_date&page[limit]=10&page[offset]=20",
+      "affects": "board model + evaluation of commit fdd22a0; the corpus is deleted, the collector now re-crawls such a snapshot, and the next run republishes the board"
+    },
+    {
+      "id": "IR-02",
+      "severity": "medium",
+      "finding": "The lobby's own counters and the captured inventory disagree: 'All tiers (89)' vs 90 fixture ids rendered, and '68 matches this week' matches neither.",
+      "evidence": "lobby page read 2026-10-14 01:40Z",
+      "url": "https://play.hotspawn.com/lobby",
+      "affects": "the listed_by_lobby figure; kept as captured and flagged, not silently reconciled"
+    },
+    {
+      "id": "IR-03",
+      "severity": "medium",
+      "finding": "Elisa BreakOut start times drift up to ~2 h between the last committed data/live board and the current lobby listing.",
+      "evidence": "e.g. WROTBERRY vs BOJONG: committed board 16:00Z vs lobby display 'Oct 15 14:00' (US-Eastern)",
+      "url": "https://play.hotspawn.com/lobby",
+      "affects": "start-time display and lock reminders; the board always keeps the source's own stated time and the next refresh is compared against it"
+    },
+    {
+      "id": "IR-04",
+      "severity": "low",
+      "finding": "Two legacy Pages builds errored (2026-10-14T01:54:23Z / 01:54:34Z) while the site still reported 'built'.",
+      "evidence": "Pages builds API (buffedlizard55-lab/MaltaProj2)",
+      "url": "https://github.com/buffedlizard55-lab/MaltaProj2/deployments",
+      "affects": "deployment only; rechecked after this branch merges"
+    },
+    {
+      "id": "IR-05",
+      "severity": "low",
+      "finding": "RoundsGG and WROTBERRY have no Valve standing and too few results in the corpus for the fitted model, so some of their fixtures cannot be priced at all yet.",
+      "evidence": "ratings.json (349 teams); open fixtures still blank",
+      "url": "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_global_2026_10_05.md",
+      "affects": "six open fixture rows stay blank and are published on the flagged page"
+    }
+  ]
+}

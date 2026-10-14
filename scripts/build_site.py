@@ -73,13 +73,114 @@ def pct(value):
 # available from Research archive rather than crowding every mobile header.
 NAV = [
     ("index.html", "Dashboard"),
+    ("board/picks.html", "All picks · every match"),
     ("cs2.html", "CS2 picks"),
     ("probabilities.html", "Probabilities"),
     ("tournaments.html", "Tournaments"),
     ("flagged.html", "Flagged for review"),
     ("methodology.html", "Method &amp; sources"),
     ("research.html", "Research archive"),
+    # integration link added by session 6ddde224 (T-COVERAGE-INTEG, single additive anchor,
+    # documented in COORDINATION.md): full-lobby coverage board with external bookmaker/exchange
+    # lines, originated Bradley-Terry estimates or a blank+flagged row, plus a repo-review page.
+    # Kept during 53220a1b final integration; the pre-compaction historical session entries stay
+    # reachable from Research archive (research.html), per the compact-NAV policy on main.
+    ("coverage/index.html", "Coverage board (6ddde224)"),
+    # integration link requested by session c0e223d3 (logged in COORDINATION.md) and added by the
+    # 53220a1b final integration: the mobile "where the picks are" verification hub.
+    ("summary/index.html", "Where the picks are"),
 ]
+
+
+def _board_stamp(rel, *keys):
+    """UTC build stamp of a board.json, or None. Never raises on a missing board."""
+    data = load(rel) or {}
+    for key in keys:
+        value = data.get(key)
+        if value:
+            return str(value).replace("T", " ").replace("Z", " UTC")
+    return None
+
+
+def executive_summary_html():
+    """Landing-page executive summary: where an updated list of picks can be found.
+
+    Session 53220a1b integration rework (logged in COORDINATION.md): this block now links every
+    pick board on the site, with each board's own last-build stamp, instead of only the
+    fe803b80 board. Counts come from data/c64a5e19/board.json (every-match board) and
+    data/fe803b80/board.json (full-coverage board). A missing board file must never break the
+    root build — links render with or without the data files.
+    """
+    every = (load("data/c64a5e19/board.json") or {}).get("summary") or {}
+    full = (load("data/fe803b80/board.json") or {}).get("summary") or {}
+    bits = []
+    if every.get("open"):
+        bits.append(
+            f"<strong>{every.get('with_pick', 0)} of {every.get('open', 0)}</strong> open CS2 "
+            f"fixtures on the every-match board carry a pick and a win probability")
+    if full.get("open"):
+        bits.append(
+            f"{full.get('open_with_market', 0)} of {full.get('open', 0)} open fixtures are priced "
+            f"by an external bookmaker or exchange, {full.get('open_model_only', 0)} carry an "
+            f"explicitly labelled originated line (official Valve VRS ratings or this project's "
+            f"own Elo over published results), {full.get('open_blank', 0)} left blank and flagged")
+    coverage = ("; ".join(bits) + ".") if bits else (
+        "The pick lists are generated automatically from the HotSpawn lobby; open any board below "
+        "for its current coverage numbers.")
+    stamp_map = [
+        ("picks-every-match/index.html", "Every-match picks at a glance",
+         "Pick + win % for every open CS2 match on one phone-friendly page. Start here.",
+         _board_stamp("data/c64a5e19/board.json", "generated_utc")),
+        ("board/picks.html", "All picks · every match",
+         "Every open fixture with its line basis labelled (bookmaker price or originated line).",
+         _board_stamp("data/fe803b80/board.json", "generated_utc")),
+        ("ourline/index.html", "Our line",
+         "Market consensus blended with a calibrated Valve VRS model, plus a graded track record.",
+         _board_stamp("data/f7279a54/board.json", "generated_utc")),
+        ("coverage/index.html", "Coverage board",
+         "Every lobby fixture: external line, exchange quote, originated estimate, or blank + flagged.",
+         _board_stamp("data/coverage/board.json", "generated_at_utc")),
+        ("live/index.html", "Live coverage board",
+         "Current-lobby board with per-row source links.",
+         _board_stamp("data/live/board.json", "generated_at_utc")),
+        ("fresh/index.html", "Fresh board",
+         "Mobile board priced only from Bovada / Pinnacle / Kalshi captures.",
+         _board_stamp("data/dd2b7fee/board.json", "generated_at_utc", "inventory_generated_at_utc")),
+        ("cs2.html", "CS2 picks (strict)",
+         "Root table: only eligible primary-bookmaker prices; unverified rows stay blank.",
+         None),
+        ("summary/index.html", "Where the picks are — verification hub",
+         "Independent cross-checks, sources with read times, gaps and the repository review.",
+         None),
+        ("flagged.html", "Flagged for review",
+         "Every unverified or irregular item with its source links.",
+         None),
+    ]
+    items = []
+    for href, title, blurb, stamp in stamp_map:
+        when = f' <span style="color:#8fa3c8;font-size:12.5px">updated {esc(stamp)}</span>' if stamp else ""
+        items.append(
+            f'<li style="margin:8px 0"><a href="{href}"><strong>{esc(title)}</strong></a>'
+            f'&mdash; {esc(blurb)}{when}</li>')
+    return f"""
+<div class="cards" id="where-the-picks" style="display:block;background:#12203a;border:1px solid #2b3752;border-radius:14px;padding:14px;margin:16px 0">
+  <h2 style="margin-top:0">Executive summary — where the picks are</h2>
+  <p>{coverage}</p>
+  <p><a class="btn" href="picks-every-match/index.html">Every-match picks at a glance</a>
+     <a class="btn" href="board/picks.html">All picks · every match</a>
+     <a class="btn ghost" href="summary/index.html">Where the picks are (hub)</a>
+     <a class="btn ghost" href="flagged.html">Flagged for review</a></p>
+  <ul style="margin:8px 0 8px 18px;padding:0">
+    {''.join(items)}
+  </ul>
+  <p class="note" style="border-left-color:#3ea6ff">Every board above is mobile-first, refreshed
+  automatically (no manual input) and gives every open CS2 fixture a pick where a source exists:
+  external bookmaker/exchange prices first (Pinnacle, Bovada, Melbet, Kalshi, and the Thunderpick
+  prices bo3.gg publishes per match, including tier-C events), and a clearly labelled originated line
+  from the official Valve VRS rating or this project's own Elo where no bookmaker prices the match.
+  HotSpawn's crowd pick percentage is never used as a probability input. Estimates are not guarantees.
+  18+; gamble responsibly.</p>
+</div>"""
 
 
 def page(title, subtitle, body, generated_at, active=None, banner=None):
@@ -281,7 +382,8 @@ def main() -> int:
     open_fixtures = [f for f in fixtures if f.get("pick_status") == "open"]
     closed_fixtures = [f for f in fixtures if f.get("pick_status") != "open"]
     top_table, _ = fixtures_table(open_fixtures)
-    idx_body = f"""
+    idx_body = executive_summary_html() + f"""
+
 <div class="cards">{cards}</div>
 
 <div class="banner" id="executive-summary" style="border-left-color: var(--acc); background: var(--panel2);">
@@ -307,11 +409,15 @@ Prediction-market snapshots are excluded from current picks. For each match wher
 was found, the table shows the quoted odds, bookmaker margin and derived no-vig probability with the exact
 source link and read time. Matches where no eligible external line could be confirmed stay
 <strong>blank and flagged</strong> — they are never filled from HotSpawn or guessed.</p>
-<p class="note"><strong>Want a pick for every open match?</strong> The separate <a href="ourline/index.html">Our line</a>
-board (session f7279a54) gives a probability and a pick for every open CS2 fixture, including ones with no
-eligible bookmaker price. It blends Pinnacle, Bovada, Melbet and Kalshi prices with a Valve VRS rating model,
-labels which basis each pick uses, and grades its past picks on a track-record page. It is a model estimate, so
-it is kept apart from the strictly source-priced tables here.</p>
+<p class="note"><strong>Want a pick for every open match?</strong> The
+<a href="board/picks.html">All picks · every match</a> board (session fe803b80) publishes a pick and a
+probability for <strong>every</strong> fixture in the lobby's CS2 list — external bookmaker/exchange prices
+where they exist, plus a clearly labelled originated line (official Valve VRS rating, or this project's own
+Elo over published bo3.gg results) for the tier-C matches no reachable bookmaker prices. Every row carries
+its source link and the basis it uses, and there is a <a href="board/results.html">track record</a>. The
+earlier <a href="ourline/index.html">Our line</a> board (session f7279a54) stays available as preserved
+research with its own method and track record; model estimates are kept apart from the strictly
+source-priced tables here.</p>
 <p class="note"><strong>Executive summary — fastest route to all picks (mobile):</strong>
 <a href="picks-every-match/index.html">Every-match picks at a glance</a> (session c64a5e19) lists
 <strong>every</strong> open CS2 match with a pick and win probability on one phone-friendly page, including
