@@ -4235,3 +4235,4 @@ Arena fixes this session to `arena/49a181f8-maltaproj2`; only that branch will b
 - Final scope reduced to source-linked audit publication and integration verification; earlier local implementation is superseded by equivalent PR #95 fixes. Original snapshot counts above are dated, not current coverage claims.
 
 - PR gate run 38513813261 passed all 424 tests, browser checks and staged links. Concurrent PR #97 advanced main before the merge; reconciled its newer shared builder/flagged output, retaining both audits and all coordination records.
+- A scheduled source refresh changed the generated flagged page during the second passing PR gate. Kept its newest generated output unchanged; the additive link remains in the generator and will publish on the next normal render. This avoids hand-edited/generated-output conflicts and preserves the latest source data. Hosted gate run 38513981920 succeeded.
