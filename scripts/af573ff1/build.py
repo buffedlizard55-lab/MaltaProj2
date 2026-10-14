@@ -155,8 +155,8 @@ def build_board(featured: dict, expanded: dict, egw: dict, fresh: dict | None) -
                                "detail": f"{q['names_at_source'][0]} {q['decimal_a']} / {q['names_at_source'][1]} {q['decimal_b']} · read {q['retrieved_utc']}"}
                               for q in row["featured"]["quotes"]]
                            + ([{"name": "Valve VRS (featured board rating input)",
-                                "url": fx["vrs"]["page_url"], "kind": "official Valve rating"}]
-                              if (fx.get("vrs") or {}).get("page_url") and fx.get("model") else []),
+                                "url": row["featured"]["vrs"]["page_url"], "kind": "official Valve rating"}]
+                              if (row["featured"].get("vrs") or {}).get("page_url") and row["featured"].get("model") else []),
                 "flags": [f for f in row["featured"]["flags"] if not f.startswith("no_line")]}
             continue
         row["resolution"] = resolve_fallback(row, expanded_by_id, egw_by_id, fresh_quotes,
