@@ -21,6 +21,7 @@ clearly dated archive sections preserve it as reference evidence.
 | `flagged.html` | Open gaps, stale fixtures, unused lines, rejected joins, access failures and discrepancies |
 | `methodology.html` | Sources with links, formulas, strict matching rules and limitations |
 | `research.html` | Dated audits and alternate session boards, separated from current picks |
+| `ourline/` (sub-site) | Session `f7279a54` board: a probability and a pick for every open CS2 fixture (no-vig Pinnacle/Bovada/Melbet/Kalshi consensus blended with a market-calibrated Valve VRS model; the basis is labelled per row), plus a track record graded from HotSpawn final scores, a source link for every quote, and its own Flagged for review page. Refreshed about every 27 min by `.github/workflows/ourline-f7279a54.yml`, which then dispatches Pages |
 | `fresh/` (sub-site) | Session `dd2b7fee` mobile-first pick board (landing + CS2 board + flagged + method). Probabilities originate exclusively from Bovada / Pinnacle / Kalshi lines captured in-session (see `data/dd2b7fee/lines_snapshot.json`); HotSpawn crowd % is not even displayed there. Re-rendered hourly by `.github/workflows/fresh-dd2b7fee.yml` |
 
 ## Data and evidence
