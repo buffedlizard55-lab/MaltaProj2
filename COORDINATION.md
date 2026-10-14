@@ -3475,3 +3475,17 @@ is still open against an older `main`, so it is carried into this integration ra
 - **HotSpawn Match Link Audit:** Re-verified that no constructed numeric match routes (`/matches/<id>`) exist across root, live, and expanded boards.
 - **Regression Tests:** All 271 unit tests in `tests/` pass cleanly (100% OK).
 - **Site Staging:** `scripts/stage_site.py` passes cleanly (31 files generated, 0 broken internal links).
+# Session `af573ff1` — picks for EVERY match + executive summary / mobile (claim 2026-10-14 02:40 UTC)
+
+Environment note: Arena pins this session to branch `arena/af573ff1-maltaproj2`; the `session-<id>/<task>` branch naming cannot be used. Branched from `main` @ `de2f4ef`. All prior sessions above are marked done/closed, so this session also acts as the final integration session for its own scope.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| EVERY-1: fallback pick cascade for open CS2 matches the featured boards leave blank (expanded-alias bookmaker market → alias-resolved Valve VRS model → single-rating estimate → labelled no-information), with a fresh collector (HotSpawn lobby/API, Melbet LineFeed, Valve VRS global+regional, bo3.gg, EGamersWorld/HLTV probes recorded, never bypassed) | in progress | af573ff1 | 2026-10-14 02:40 | `scripts/af573ff1/**`, `data/af573ff1/**`, `.github/workflows/picks-every-match-af573ff1.yml` |
+| EVERY-2: mobile-first "picks for every match" board + method + flagged pages; executive summary with in-site links on that board and on the root landing page | in progress | af573ff1 | 2026-10-14 02:40 | `picks-every-match/**`, `tests/test_picks_every_match_af573ff1.py`, plus integration-only edits: `scripts/build_site.py` (root executive summary + nav entry), `scripts/stage_site.py` (stage the new section), `README.md` (one table row), COORDINATION.md (this section only) |
+| EVERY-3: final integration — tests, staged-link audit, PR to main, merge without approval wait, Pages deploy confirmation | unclaimed→af573ff1 | af573ff1 | 2026-10-14 02:40 | PR/merge only; no other session's data or generators edited |
+
+## Non-overlap statement (checked 2026-10-14 02:40 UTC)
+- No session above holds an open/in-progress claim; root `*.html` is regenerated only through the shared `scripts/build_site.py` generator, never hand-edited.
+- Featured picks are **read, never modified**: `data/f7279a54/**`, `ourline/**`, `data/expanded/**`, `market/**`, `live/**`, `data/live/**` are inputs only. Fallback sources are applied **only** where the featured Our-line board publishes no line.
+- Alias evidence gathered before building (verified 2026-10-14): HotSpawn `WROTBERRY` = `WBT` = WhiteBIT Team — HLTV team page https://www.hltv.org/team/13683/wbt lists its next matches as 15 Oct vs EAC, ENCE and BOJONG (the exact HotSpawn WROTBERRY fixtures) and roster Psycho/Smash/s4ltovsk1yy/DemQQ/tyr1k, identical to Valve VRS team `WBT` (#60, 1201 pts); Liquipedia Elisa BreakOut Series 2 lists WhiteBIT Team (WBT) and EA Copenhagen (EAC). HotSpawn `RoundsGG` = `ROUNDS`/`Rounds` — HLTV https://www.hltv.org/team/12457/rounds roster Kollo/Lapa/Monoxx/Tumppis/ykis is identical to Valve VRS `ROUNDS` (#310, 548 pts); EGamersWorld's team page slug is `roundsgg`. `LFO 10` has no Valve VRS row (LFO 7/8/9 are different rosters and are **not** used) and its only EGamersWorld quote is the excluded 1.80/1.80 placeholder — it is the expected single-rating-estimate case.
