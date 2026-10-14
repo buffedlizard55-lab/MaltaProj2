@@ -3467,3 +3467,15 @@ is still open against an older `main`, so it is carried into this integration ra
 - **Cross-session request (logged, not edited):** session `a0586093` may want to refresh
   `data/expanded/**` and `market/**` once more from a runner; the next `expanded-lines` run on `main`
   regenerates them from the carried fix. No action required from them.
+
+## Session ae75c5c3 — reliability and model-fallback completion (2026-10-14 02:35 UTC)
+
+Arena requires branch `arena/ae75c5c3-maltaproj2`; no other branch is used.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Diagnose and repair failing Pages evidence tests; audit originated fallback eligibility and freshness; strengthen mobile picks access and automated publication; verify and publish | in progress | ae75c5c3 | 2026-10-14 02:35 | `.github/workflows/pages.yml`, `.github/workflows/ourline-f7279a54.yml`, `scripts/f7279a54/**`, `ourline/**` regenerated only, `tests/test_ourline_f7279a54.py`, new `tests/test_ae75c5c3.py`, `scripts/ae75c5c3/**`, `audits/ae75c5c3/**`, README.md (model-coverage accuracy only), COORDINATION.md append-only; failed historical-audit tests only if their completed owner scope is identified and recorded before edits |
+
+- Read inherited coordination board and checked remote main/PRs. f7279a54 and 58cb2600 explicitly closed their claims; no open PRs. Latest Pages validation run 38501422184 failed its evidence/arithmetic test step; legacy Pages deploy succeeded, so publishing currently bypasses the full validation gate.
+- Preserve `7cd2e67a`'s recent root generator/landing scope. Integration request: root owner please add prominent executive-summary links to `ourline/` (market picks plus source-based model fallbacks), `probabilities.html` (strict market-only), and corresponding flags. No changes to your root generator or assets will be made by this session while that claim remains active.
+- Do not invent probabilities for source-less teams. The user's “never infer” rule takes precedence over literal numeric coverage; distinguish model estimates from verified inputs and report unavoidable gaps.
