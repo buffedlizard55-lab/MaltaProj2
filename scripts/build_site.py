@@ -310,8 +310,9 @@ uniquely by both teams and exact UTC start. Blank means unverified, not 50/50.</
 <p>The primary navigation stays focused on the current fail-closed board. Dated experiments, independent
 audits and alternate models remain preserved on the <a href="research.html">Research archive</a>; they do
 not enter current picks. Start with the
-<a href="verify/8e7a652d/index.html">independent market verification and cross-check</a> or inspect the
-<a href="evidence/odds_collection.json">raw bookmaker payload evidence</a>.</p>
+<a href="verify/8e7a652d/index.html">independent market verification and cross-check</a>, inspect the
+<a href="evidence/odds_collection.json">raw bookmaker payload evidence</a>, or review the preserved
+<a href="data/fixtures_verified.json">fixture-verification snapshot</a>.</p>
 
 <h2>Timestamps</h2>
 {market_data_notes(lines_doc, odds_doc)}
