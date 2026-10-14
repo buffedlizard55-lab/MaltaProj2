@@ -4369,3 +4369,55 @@ https://www.hltv.org/events/9332/matches ; https://www.hltv.org/events/9456/matc
 https://www.hltv.org/events/9442/matches ; https://www.hltv.org/events/8932/matches ;
 https://www.hltv.org/events/9223/matches ;
 https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md .
+
+### 7177d07f PR and merge record (2026-10-14, append-only)
+
+**PR #104** — https://github.com/buffedlizard55-lab/MaltaProj2/pull/104 —
+"Picks for every HotSpawn CS2 match: research-resolved unresolved section + limitations".
+Head run `38517100931` **success**; **merged to `main` at 2026-10-14T05:56:07Z**.
+
+**First deploy attempt failed and was repaired (not skipped).** The `main` push run `38519325302`
+failed at its first gate, `Validate preserved evidence and arithmetic`. Diagnosis: my
+`test_featured_rows_are_not_replaced_by_originated_lines` compared the board committed by my
+workflow against `data/lines.json` *after* the hourly root refresh had advanced it, so a fixture the
+strict route had since priced looked like a row my ladder had wrongly overridden — a cross-snapshot
+comparison, not a defect. Two repairs:
+1. The contract now compares the two files' own `generated_at_utc` stamps: strict assertion when they
+   match, weaker (no fabricated featured claim) assertion plus an explicit skip naming both timestamps
+   when they do not.
+2. `.github/workflows/unresolved-7177d07f.yml` gained a `workflow_run` trigger on `update-data`, so
+   the board is rebuilt whenever the root fixture/line snapshot changes instead of drifting for up to
+   four hours. The 4-hourly cron remains as a backstop.
+
+**PR #105** — https://github.com/buffedlizard55-lab/MaltaProj2/pull/105 —
+"Fix the Pages build: staleness-aware contract + rebuild the unresolved board on root data refresh".
+Head run `38519735053` **success**; **merged to `main` at 2026-10-14T06:02:1xZ**.
+Post-merge `main` run `38520003766`: **build success + deploy success**.
+
+**Live read-back (public, verified through the deployed Pages site, not the repository):**
+- https://buffedlizard55-lab.github.io/MaltaProj2/unresolved/index.html — 28 open CS2 fixtures,
+  **28 with a pick**, 12 featured bookmaker line / 8 esportsbook-exchange price / 7 originated from
+  official Valve VRS / 1 originated from a published VRS standing / **0 unresolved**; every row shows
+  its pick, both probabilities, the evidence list with source URLs and read times, and how the other
+  four published boards picked the same fixture.
+- https://buffedlizard55-lab.github.io/MaltaProj2/ — the landing executive summary now links
+  "Picks for every match (research-resolved)" → `unresolved/index.html` and
+  "Unresolved & contested rows" → `unresolved/flagged.html` in its Unresolved picks & limitations
+  block, and lists the section with its own build stamp under "Other pick boards and research".
+- GitHub Pages API: status **built**, no error.
+
+**Runner-verified collector results (HTTP 200 from GitHub-hosted runners, recorded in
+`data/7177d07f/snapshot.json`):** HLTV probe 200; Melbet 200 → 39 two-sided quotes; bo3.gg 200 → 38
+Thunderpick two-way coefficients; Kalshi 200 → 156 markets; Valve standings 200 → 380 rows.
+Three parser defects were found by reading what the runner actually returned and were fixed rather
+than worked around: Melbet publishes the moneyline under outcome keys 1/3 (not 1/2); bo3.gg ignores a
+plain `status=upcoming` parameter and needs `filter[matches.status][in]=upcoming` plus a `/teams/`
+lookup for names; and `gh api` needs a token inside Actions, so a public REST fallback was added.
+
+**Merge-conflict log (kept for the next session):** rebasing produced (a) an append conflict in
+`COORDINATION.md` with session `8723ad37`'s section and (b) additive-vs-additive conflicts in
+`scripts/build_site.py` / `scripts/stage_site.py` with session `b5436cf0`'s `picks-all` entries
+(merged into `main` by PR #103). All were resolved by **union, never overwrite**, and bot-regenerated
+artifacts were reset to `origin/main` and regenerated locally. Other sessions' scheduled workflows
+also push to this branch, so the workflow's commit step rebases and retries up to five times; that
+repair is what made run `38517096471`'s push succeed.
