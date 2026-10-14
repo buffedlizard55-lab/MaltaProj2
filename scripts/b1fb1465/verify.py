@@ -184,12 +184,14 @@ def main() -> int:
         failures.append("R12: the refresh workflow is missing")
 
     out = {"session": "b1fb1465", "verified_utc": core.iso(core.now_utc()),
-           "checks_run": 12, "failures": failures, "board_generated_utc": board["generated_utc"]}
+           "checks_run": 12, "failures": failures, "board_generated_utc": board["generated_utc"],
+           "open_fixtures": len(board["open"]),
+           "summary": board.get("summary")}
     (DATA / "verification.json").write_text(json.dumps(out, indent=1) + "\n", encoding="utf-8")
     if failures:
-        print("VERIFICATION FAILED")
         for f in failures:
-            print(" -", f)
+            print(f"::error title=verification::{f}")
+        print(f"VERIFICATION FAILED with {len(failures)} finding(s)")
         return 1
     print(f"PASS: R1-R12 verified for {len(board['open'])} open fixtures and {len(pages)} pages")
     return 0

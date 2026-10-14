@@ -49,6 +49,15 @@ jobs:
         run: python scripts/b1fb1465/verify.py
       - name: Regression tests for this section
         run: python -m unittest tests.test_b1fb1465 -v
+      - name: Keep the build for review even when verification fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: exec-b1fb1465-build
+          path: |
+            data/b1fb1465
+            exec
+          retention-days: 7
       - name: Commit the refreshed data and pages atomically
         env:
           REF_NAME: ${{ github.ref_name }}
