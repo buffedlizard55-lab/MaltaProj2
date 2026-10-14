@@ -99,8 +99,8 @@ def collect_hotspawn() -> dict:
             if not fx:
                 continue
             cur = fixtures.setdefault(fx["fixture_id"], {**fx, "seen_in": []})
-            if origin == "api":  # the API response is fresher than the cached page
-                cur.update(fx)
+            if origin == "api" and "lobby_page" not in cur["seen_in"]:
+                cur.update(fx)  # API-only history can be used for results, not lobby membership
             cur["seen_in"].append(origin)
     # The API returns the full fixture history (>10,000 CS2 rows). Keep only what the board needs:
     # every row the lobby page lists, every scheduled/started row, rows that started in the last
@@ -344,8 +344,8 @@ def collect_vrs(fixture_names: set[str]) -> dict:
                       "roster": m.group(4).strip(), "details_path": f"{base_dir}/{m.group(5).strip()}"})
     # Duplicate team names (VRS keeps an older roster of the same organisation as a separate row).
     # For names that appear in the HotSpawn fixture list, read each candidate's official details
-    # file and record the date of its most recent counted match, so the builder can use the roster
-    # that is actually playing now. The cache is keyed by snapshot so each file is read once.
+    # file and record the date of its most recent counted match, for source review. They do not establish which roster plays the fixture,
+    # so the builder refuses duplicate names regardless of latest match date. The cache is keyed by snapshot so each file is read once.
     cache_path = OUT / "vrs_details_cache.json"
     try:
         cache = json.loads(cache_path.read_text())
@@ -400,13 +400,18 @@ def main() -> int:
     snap = {"session": "f7279a54", "collected_from_utc": started,
             "collected_to_utc": core.to_iso(core.now_utc()), "hotspawn": hs, "quotes": quotes,
             "rejected_quotes": rejected, "vrs": vrs, "access_log": LOG}
-    if not hs["fixtures"]:
+    if not any("lobby_page" in f.get("seen_in", []) for f in hs["fixtures"]):
         # keep the previous inventory instead of publishing an empty board; the failure is logged
         prev = OUT / "snapshot.json"
         if prev.exists():
             old = json.loads(prev.read_text())
             snap["hotspawn"] = old.get("hotspawn", hs)
-            snap["hotspawn_fallback_from"] = old.get("collected_to_utc")
+            previous_meta = (old.get("access_log") or {}).get("hotspawn_lobby_page") or {}
+            snap["hotspawn_fallback_from"] = (old.get("hotspawn_fallback_from")
+                                               or previous_meta.get("at_utc") or old.get("collected_to_utc"))
+            # Preserve original observation and cache age across repeated failures.
+            LOG["hotspawn_failed_refresh"] = LOG.get("hotspawn_lobby_page", {})
+            LOG["hotspawn_lobby_page"] = previous_meta
     (OUT / "snapshot.json").write_text(json.dumps(snap, indent=1, ensure_ascii=False) + "\n")
     print(json.dumps({k: {kk: vv for kk, vv in v.items() if kk in ("status", "error", "quotes", "rows",
                                                                      "fixtures_in_transfer_state",

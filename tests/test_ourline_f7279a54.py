@@ -110,7 +110,8 @@ class ValveModel(unittest.TestCase):
         self.assertEqual(core.blend(0.7, 1, None)["basis"], "market")
         self.assertEqual(core.blend(None, 0, 0.6)["prob_a"], 0.6)
         b = core.blend(0.7, 3, 0.5)
-        self.assertAlmostEqual(b["prob_a"], core.sigmoid(0.85 * core.logit(0.7)))
+        self.assertEqual(b["prob_a"], 0.7)
+        self.assertEqual(b["basis"], "market")
 
 
 class HotSpawnParsing(unittest.TestCase):
@@ -168,13 +169,13 @@ class Joining(unittest.TestCase):
 class JoinWindowAndResults(unittest.TestCase):
     FX = {"team_a": "mellren", "team_b": "Privateer", "start_utc": "2026-10-16T14:00:00Z"}
 
-    def test_14h_tolerance_and_rejected_join(self):
+    def test_five_minute_tolerance_and_rejected_join(self):
         q = {"team_a": "Mellren", "team_b": "Privateer Gaming", "start_utc": "2026-10-15T14:00:00Z"}
         j = core.match_quote(self.FX, q)          # same pairing, 24 h earlier -> not joined
         self.assertTrue(j["rejected"])
         self.assertAlmostEqual(j["start_diff_h"], 24.0)
         q["start_utc"] = "2026-10-16T04:00:00Z"   # 10 h -> joined (flagged downstream)
-        self.assertNotIn("rejected", core.match_quote(self.FX, q))
+        self.assertTrue(core.match_quote(self.FX, q)["rejected"])
 
     def test_result_winner(self):
         self.assertEqual(core.result_winner({"status": "ended", "participants0_score": 2,
@@ -207,14 +208,15 @@ class JoinWindowAndResults(unittest.TestCase):
 
 
 class VrsDuplicates(unittest.TestCase):
-    def test_duplicate_resolved_only_by_strictly_later_match(self):
+    def test_duplicate_never_inferred_from_latest_match(self):
         vrs = {"teams": [
             {"team": "Zomblers", "points": 639, "standing": 254, "latest_match_date": "2026-09-14", "details_path": "a"},
             {"team": "Zomblers", "points": 631, "standing": 259, "latest_match_date": "2026-09-20", "details_path": "b"},
             {"team": "6666", "points": 923, "standing": 127, "latest_match_date": None, "details_path": "c"},
             {"team": "6666", "points": 425, "standing": 368, "latest_match_date": "2026-09-01", "details_path": "d"}]}
         idx, dup = build.rating_index(vrs)
-        self.assertEqual(idx["zomblers"]["points"], 631)
+        self.assertNotIn("zomblers", idx)
+        self.assertIn("zomblers", dup)
         self.assertIn("6666", dup)
         self.assertEqual(build.rating_for("6666", idx, dup), (None, "ambiguous_vrs_name"))
 

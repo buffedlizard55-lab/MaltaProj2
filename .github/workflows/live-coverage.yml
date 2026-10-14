@@ -54,7 +54,7 @@ jobs:
         run: python3 scripts/live/build_live.py --data data/live --site live --allow-blank-quotes
 
       - name: Tests (arithmetic, join rules, published-artifact invariants)
-        run: python3 -m unittest tests.test_live_coverage -v
+        run: python3 -m unittest tests.test_live_coverage tests.test_ae75c5c3 -v
 
       - name: Publish a compact run summary as a workflow annotation
         if: always()
@@ -83,7 +83,7 @@ jobs:
           PY
 
       - name: Commit refreshed evidence, board and pages
-        if: always()
+        if: success()
         run: |
           git config user.name "live-coverage-bot"
           git config user.email "live-coverage-bot@users.noreply.github.com"

@@ -5,6 +5,9 @@
 <style>
 :root{--bg:#0f1218;--card:#171b23;--line:#262c38;--txt:#e8ebf1;--mut:#9aa3b2;--acc:#3ddc97;
 --acc2:#5aa9ff;--warn:#ffb547;--bad:#ff6b6b}
+[hidden]{display:none!important}.quick{display:flex;flex-wrap:wrap;gap:8px}.quick a{display:block;padding:12px;background:#202938;border-radius:8px;text-decoration:none;min-height:44px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--acc2);outline-offset:3px}
+button,.bar nav a{min-height:44px}.nm,td,.small{overflow-wrap:anywhere}
 *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 a{color:var(--acc2)}header{position:sticky;top:0;z-index:5;background:#0b0e13;border-bottom:1px solid var(--line)}
@@ -46,16 +49,15 @@ code{background:#11151c;padding:1px 5px;border-radius:4px}
 }
 </style></head><body>
 <header><div class="bar"><div class="brand">🎯 Our line · CS2 Pick'ems</div><nav><a href="index.html">Picks</a><a href="results.html">Track record</a><a href="sources.html">Lines &amp; sources</a><a href="flagged.html">Flagged for review</a><a href="method.html" class=on>Method</a><a href="../index.html">Main dashboard</a></nav></div></header>
-<main>
+<main data-observed="2026-10-14T02:30:48Z">
 <h1>Method</h1>
-<div class="note">Short version: we take every bookmaker price for the match, remove the bookmaker's margin, average them, and
-blend that with a rating model built on Valve's official CS2 standings. The model's steepness is learned from the bookmaker prices.
+<div class="note">Short version: eligible external prices are de-vigged and averaged. Only matches without eligible prices use a model built on Valve's official CS2 standings. The model's steepness is learned from the bookmaker prices.
 If no bookmaker prices the match, the calibrated model alone gives the line. If a team has no official rating and no bookmaker prices
 the match, the row stays blank and is flagged.</div>
 <h2>1. Which matches</h2>
 <p>The fixture list comes from the public HotSpawn lobby (<a href="https://play.hotspawn.com/lobby">play.hotspawn.com/lobby</a>): the page embeds the response of
 the lobby's own <code>/api/v1/fixtures</code> call in its Angular transfer state, and the same public endpoint is also read directly each run because the page is
-served from a cache (its <code>Age</code> header is recorded on the Flagged page). A match is <b>open</b> while its HotSpawn lock time is in the future.
+served from a cache (its <code>Age</code> header is recorded on the Flagged page). Only page-listed scheduled matches with a future lock are open. API-only fixtures are not advertised as lobby coverage.
 HotSpawn data is used only to know <i>which</i> matches exist and when they lock — crowd pick percentages are not read.</p>
 <h2>2. Bookmaker and exchange prices</h2>
 <ul>
@@ -69,7 +71,7 @@ HotSpawn data is used only to know <i>which</i> matches exist and when they lock
 (implied-probability arithmetic as documented by <a href="https://help.smarkets.com/hc/en-gb/articles/214058369-How-to-calculate-implied-probability-in-betting">Smarkets</a>).
 In-play prices are excluded. Market consensus = weighted mean of the per-source probabilities with weights pinnacle 2, bovada 1, melbet 1, kalshi 1 (stated modelling choice: Pinnacle is weighted higher as a low-margin bookmaker).</p>
 <p><b>Joining a price to a HotSpawn match</b> requires both team names to be equal after normalisation (case, accents, punctuation, and the
-generic words <i>team / the / esports / gaming / club</i> at the start or end removed) and the source start time to be within ±14 h.
+generic words <i>team / the / esports / gaming / club</i> at the start or end removed) and the source start time to be within ±5 minutes. Missing or approximate start times are rejected; fixture and price observations must each be at most four hours old.
 No prefix/substring matching ("B8" never matches "B8 Academy"). Explicit aliases:</p>
 <table class="cards"><thead><tr><th>Source spelling (normalised)</th><th>HotSpawn team</th><th>Basis</th></tr></thead><tbody><tr><td data-l='Source spelling (normalised)'><code>bb</code></td><td data-l='HotSpawn team'><code>betboom</code></td><td data-l='Basis'>BetBoom Team is listed as &#x27;BB Team&#x27; by some bookmakers; the alias is only applied together with an agreeing opponent and start time.</td></tr><tr><td data-l='Source spelling (normalised)'><code>nip</code></td><td data-l='HotSpawn team'><code>ninjasinpyjamas</code></td><td data-l='Basis'>NIP is the official abbreviation of Ninjas in Pyjamas.</td></tr><tr><td data-l='Source spelling (normalised)'><code>pvision</code></td><td data-l='HotSpawn team'><code>parivision</code></td><td data-l='Basis'>PARIVISION is listed as &#x27;PVISION&#x27; on some feeds.</td></tr><tr><td data-l='Source spelling (normalised)'><code>9zglobant</code></td><td data-l='HotSpawn team'><code>9z</code></td><td data-l='Basis'>9z Team is sponsored as &#x27;9z Globant&#x27; on some feeds.</td></tr></tbody></table>
 <h2>3. Valve VRS rating model</h2>
@@ -77,13 +79,12 @@ No prefix/substring matching ("B8" never matches "B8 Academy"). Explicit aliases
 Valve's own code defines expected win rate from a points difference Δ: <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/glicko.js">model/glicko.js</a> ("rank delta of 400 points = 90% chance of victory",
 <code>ev = 1/(1+10^(g·Δ/−400))</code>) evaluated with a fixed RD of 75 in <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js">model/fit.js</a>, giving g = 0.9728.
 Valve's <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/readme.md">readme</a> notes the curve is steeper than observed results, so we fit a slope factor <b>k</b>:
-<code>p_A = 1/(1+10^(−k·g·Δ/400))</code>, by least squares of logit(market) on Δ over every fixture seen with both a market price and two ratings.</p>
-<p>Current fit: k = <b>0.365</b> (raw 0.365) on 14 fixtures
+<code>p_A = 1/(1+10^(−k·g·Δ/400))</code>, by least squares of logit(market) on Δ over eligible fixtures with a price and two unambiguous ratings. A duplicate team name remains unverified even if one roster has a more recent counted match. Ratings older than 14 days are excluded. These freshness thresholds and the fitted model are our policy choices, not official forecasts.</p>
+<p>Current fit: k = <b>0.360</b> (raw 0.360) on 12 fixtures
 (minimum 6 to fit, otherwise k = 1, Valve's own curve; k is bounded to 0.25–1.5).
-Mean absolute error vs market: calibrated 7.7%, Valve default 14.6%.</p>
+Mean absolute error vs market: calibrated 8.2%, Valve default 14.8%.</p>
 <h2>4. Our line and the pick</h2>
-<p><code>logit(p_ours) = w·logit(p_market) + (1−w)·logit(p_model)</code> with w = 0.85 when two or more sources price the match, 0.75 with one
-(stated modelling choice). Market only when a team lacks a rating; model only when no price exists. Fair odds = 1/p.
+<p>Use the eligible market consensus unchanged when available. Only otherwise use the source-backed VRS model. We do not blend a fallback model into featured market picks. Fair odds = 1/p.
 The <b>PICK</b> is the team with p ≥ 50%. Confidence: Strong ≥ 70%, Solid ≥ 60%, Lean ≥ 53%, otherwise Toss-up.</p>
 <h2>5. Automation</h2>
 <p><code>.github/workflows/ourline-f7279a54.yml</code> runs every 30 minutes and after each run of the repository's hourly <code>update-data</code> workflow:
@@ -91,7 +92,7 @@ The <b>PICK</b> is the team with p ≥ 50%. Confidence: Strong ≥ 70%, Solid �
 which GitHub Pages publishes. Raw evidence: <code>data/f7279a54/snapshot.json</code>; derived board: <code>data/f7279a54/board.json</code>.</p>
 <h2>Limits</h2>
 <ul><li>These are estimates, not guarantees. A model-only line is weaker than a priced one and is labelled as such.</li>
-<li>Bookmaker start times sometimes differ from HotSpawn's; joins with differences over 3 h are flagged.</li>
+<li>Bookmaker start-time discrepancies greater than five minutes are rejected and flagged, never treated as the same verified fixture.</li>
 <li>Low-tier teams are often absent from both bookmakers and VRS; those rows stay blank.</li></ul>
 
 <p class="foot">Data collected 2026-10-14T02:30:48Z UTC (<span data-r="2026-10-14T02:30:48Z"></span>) by an automated GitHub Actions run — no manual input.
@@ -110,14 +111,31 @@ Not affiliated with HotSpawn or any bookmaker. Not betting advice. Section owner
  function apply(){var s=(q&&q.value||'').toLowerCase(),n=0,now=Date.now();
   document.querySelectorAll('tr[data-row]').forEach(function(r){
    var ok=!s||r.dataset.s.indexOf(s)>=0;
-   if(mode==='24h')ok=ok&&(new Date(r.dataset.lock)-now)<864e5;
+   if(mode==='24h')ok=ok&&(new Date(r.dataset.lock)-now)>0&&(new Date(r.dataset.lock)-now)<864e5;
    else if(mode==='line')ok=ok&&r.dataset.line!=='none';
    else if(mode==='noline')ok=ok&&r.dataset.line==='none';
+   else if(mode==='market')ok=ok&&r.dataset.line==='market';
+   else if(mode==='model')ok=ok&&r.dataset.line==='model';
    else if(mode.indexOf('tier-')===0)ok=ok&&r.dataset.tier===mode.slice(5);
    r.style.display=ok?'':'none';if(ok)n++;});
   var c=document.getElementById('count');if(c)c.textContent=n;}
  if(q)q.addEventListener('input',apply);
  chips.forEach(function(c){c.addEventListener('click',function(){chips.forEach(function(x){x.classList.remove('on')});
   c.classList.add('on');mode=c.dataset.m;apply();});});
+ function expire(){var now=Date.now(),n=0;
+  document.querySelectorAll('tr[data-row]').forEach(function(r){
+   if(now>=new Date(r.dataset.validUntil).getTime() || now>=new Date(r.dataset.lock).getTime()){
+    if(r.dataset.expired)return;n++;r.dataset.expired='true';r.dataset.line='none';
+    r.querySelectorAll('.pct').forEach(function(x){x.textContent='—';});
+    r.querySelectorAll('.b-pick,.meter').forEach(function(x){x.remove();});
+    r.querySelectorAll('.pk').forEach(function(x){x.classList.remove('pk');});
+    r.querySelector('.pickcell').textContent=now>=new Date(r.dataset.lock).getTime()?'Locked — no current pick':'Expired — awaiting source refresh';
+    r.querySelector('[data-l="Fair odds (pick)"]').textContent='';
+    r.querySelector('[data-l="Inputs"]').textContent='Historical inputs expired. See source evidence; do not treat as current.';
+   }
+  });
+  if(n){var a=document.getElementById('freshness-alert');if(a){a.hidden=false;a.textContent='Some picks have locked or expired since this snapshot. Their probabilities are hidden. Reload to check for a newer automated update.';}apply();}
+ }
+ expire();setInterval(expire,60000);
 })();
 </script></body></html>

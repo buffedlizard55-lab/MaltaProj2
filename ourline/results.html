@@ -5,6 +5,9 @@
 <style>
 :root{--bg:#0f1218;--card:#171b23;--line:#262c38;--txt:#e8ebf1;--mut:#9aa3b2;--acc:#3ddc97;
 --acc2:#5aa9ff;--warn:#ffb547;--bad:#ff6b6b}
+[hidden]{display:none!important}.quick{display:flex;flex-wrap:wrap;gap:8px}.quick a{display:block;padding:12px;background:#202938;border-radius:8px;text-decoration:none;min-height:44px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--acc2);outline-offset:3px}
+button,.bar nav a{min-height:44px}.nm,td,.small{overflow-wrap:anywhere}
 *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 a{color:var(--acc2)}header{position:sticky;top:0;z-index:5;background:#0b0e13;border-bottom:1px solid var(--line)}
@@ -46,7 +49,7 @@ code{background:#11151c;padding:1px 5px;border-radius:4px}
 }
 </style></head><body>
 <header><div class="bar"><div class="brand">🎯 Our line · CS2 Pick'ems</div><nav><a href="index.html">Picks</a><a href="results.html" class=on>Track record</a><a href="sources.html">Lines &amp; sources</a><a href="flagged.html">Flagged for review</a><a href="method.html">Method</a><a href="../index.html">Main dashboard</a></nav></div></header>
-<main>
+<main data-observed="2026-10-14T02:30:48Z">
 <h1>Track record</h1>
 <p class="mut">Every pick this board published while a match was open is graded once HotSpawn's own fixture data reports the match as
 <i>ended</i> with a winner. The line graded is the last one published before the match locked. Tracking started with this board on
@@ -76,14 +79,31 @@ Not affiliated with HotSpawn or any bookmaker. Not betting advice. Section owner
  function apply(){var s=(q&&q.value||'').toLowerCase(),n=0,now=Date.now();
   document.querySelectorAll('tr[data-row]').forEach(function(r){
    var ok=!s||r.dataset.s.indexOf(s)>=0;
-   if(mode==='24h')ok=ok&&(new Date(r.dataset.lock)-now)<864e5;
+   if(mode==='24h')ok=ok&&(new Date(r.dataset.lock)-now)>0&&(new Date(r.dataset.lock)-now)<864e5;
    else if(mode==='line')ok=ok&&r.dataset.line!=='none';
    else if(mode==='noline')ok=ok&&r.dataset.line==='none';
+   else if(mode==='market')ok=ok&&r.dataset.line==='market';
+   else if(mode==='model')ok=ok&&r.dataset.line==='model';
    else if(mode.indexOf('tier-')===0)ok=ok&&r.dataset.tier===mode.slice(5);
    r.style.display=ok?'':'none';if(ok)n++;});
   var c=document.getElementById('count');if(c)c.textContent=n;}
  if(q)q.addEventListener('input',apply);
  chips.forEach(function(c){c.addEventListener('click',function(){chips.forEach(function(x){x.classList.remove('on')});
   c.classList.add('on');mode=c.dataset.m;apply();});});
+ function expire(){var now=Date.now(),n=0;
+  document.querySelectorAll('tr[data-row]').forEach(function(r){
+   if(now>=new Date(r.dataset.validUntil).getTime() || now>=new Date(r.dataset.lock).getTime()){
+    if(r.dataset.expired)return;n++;r.dataset.expired='true';r.dataset.line='none';
+    r.querySelectorAll('.pct').forEach(function(x){x.textContent='—';});
+    r.querySelectorAll('.b-pick,.meter').forEach(function(x){x.remove();});
+    r.querySelectorAll('.pk').forEach(function(x){x.classList.remove('pk');});
+    r.querySelector('.pickcell').textContent=now>=new Date(r.dataset.lock).getTime()?'Locked — no current pick':'Expired — awaiting source refresh';
+    r.querySelector('[data-l="Fair odds (pick)"]').textContent='';
+    r.querySelector('[data-l="Inputs"]').textContent='Historical inputs expired. See source evidence; do not treat as current.';
+   }
+  });
+  if(n){var a=document.getElementById('freshness-alert');if(a){a.hidden=false;a.textContent='Some picks have locked or expired since this snapshot. Their probabilities are hidden. Reload to check for a newer automated update.';}apply();}
+ }
+ expire();setInterval(expire,60000);
 })();
 </script></body></html>
