@@ -205,3 +205,52 @@ class RefreshAutomation(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ExchangeJoin(unittest.TestCase):
+    """The Kalshi join must only fire when both sides are genuinely quoted."""
+
+    @staticmethod
+    def _module():
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "board_7177d07f", ROOT / "scripts" / "7177d07f" / "build.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod
+
+    def test_two_sided_book_is_joined_and_oriented(self):
+        mod = self._module()
+        snap = {"exchange_books": [
+            {"event_id": "EV", "title": "Alpha", "subtitle": "", "public_url": "u1",
+             "yes_bid_dollars": 0.30, "yes_ask_dollars": 0.32},
+            {"event_id": "EV", "title": "Beta", "subtitle": "", "public_url": "u2",
+             "yes_bid_dollars": 0.68, "yes_ask_dollars": 0.70},
+        ]}
+        out = mod.match_exchange_book(snap, {"team_a": "Alpha", "team_b": "Beta"})
+        self.assertIsNotNone(out)
+        # Alpha is quoted around 31c, so its implied decimal price must be the larger of the two.
+        self.assertGreater(out["decimal_a"], out["decimal_b"])
+        self.assertAlmostEqual(1.0 / out["decimal_a"] + 1.0 / out["decimal_b"], 1.0, places=3)
+
+    def test_thin_or_one_sided_books_are_rejected(self):
+        mod = self._module()
+        thin = {"exchange_books": [
+            {"event_id": "EV", "title": "Alpha", "subtitle": "", "public_url": "u1",
+             "yes_bid_dollars": 0.10, "yes_ask_dollars": 0.90},
+            {"event_id": "EV", "title": "Beta", "subtitle": "", "public_url": "u2",
+             "yes_bid_dollars": 0.10, "yes_ask_dollars": 0.90},
+        ]}
+        self.assertIsNone(mod.match_exchange_book(thin, {"team_a": "Alpha", "team_b": "Beta"}))
+        one_sided = {"exchange_books": [
+            {"event_id": "EV", "title": "Alpha", "subtitle": "", "public_url": "u1",
+             "yes_bid_dollars": 0.40, "yes_ask_dollars": 0.42},
+        ]}
+        self.assertIsNone(mod.match_exchange_book(one_sided, {"team_a": "Alpha", "team_b": "Beta"}))
+        unrelated = {"exchange_books": [
+            {"event_id": "EV", "title": "Gamma", "subtitle": "", "public_url": "u1",
+             "yes_bid_dollars": 0.40, "yes_ask_dollars": 0.42},
+            {"event_id": "EV", "title": "Delta", "subtitle": "", "public_url": "u2",
+             "yes_bid_dollars": 0.40, "yes_ask_dollars": 0.42},
+        ]}
+        self.assertIsNone(mod.match_exchange_book(unrelated, {"team_a": "Alpha", "team_b": "Beta"}))

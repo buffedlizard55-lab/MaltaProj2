@@ -37,6 +37,7 @@ UA = "MaltaProj2-7177d07f/1.0 (research collector; contact via repository issues
 TIMEOUT = 20
 
 VALVE_REPO = "ValveSoftware/counter-strike_regional_standings"
+BO3 = "https://api.bo3.gg/api/v1"
 
 
 def now_iso() -> str:
@@ -219,7 +220,13 @@ def _norm(name: str) -> str:
 
 
 def collect_melbet():
-    """Melbet (1xBet platform) public LineFeed - two-sided 1x2 esports prices."""
+    """Melbet (1xBet platform) public LineFeed - two-sided 1x2 esports prices.
+
+    Payload shape observed on 2026-10-14: {"Value": [{"I":…, "O1":"<team A>", "O2":"<team B>",
+    "E":[{"T":1,"C":<price>,"G":1}, {"T":2,"C":<price>,"G":1}, …], "S":<unix start>}]}.
+    T=1 / T=2 are the two match-winner outcomes; other T values are map or handicap markets and are
+    ignored rather than guessed at.
+    """
     url = ("https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40"
            "&count=1000&lng=en&mode=4&country=1")
     status, body, err = fetch(url, accept="*/*")
@@ -229,30 +236,37 @@ def collect_melbet():
             payload = json.loads(body.decode("utf-8", "replace"))
             events = ((payload.get("Value") or []) if isinstance(payload, dict) else payload) or []
             for ev in events:
-                name = ev.get("O1") or ev.get("N") or ev.get("O1N") or ""
-                if " vs " not in str(name):
+                if not isinstance(ev, dict):
                     continue
-                a, b = [part.strip() for part in str(name).split(" vs ", 1)]
-                prices = ev.get("E") or []
-                if len(prices) < 2:
+                name_a = str(ev.get("O1") or "").strip()
+                name_b = str(ev.get("O2") or "").strip()
+                if not name_a or not name_b:
+                    combined = str(ev.get("N") or "")
+                    if " vs " in combined:
+                        name_a, name_b = [p.strip() for p in combined.split(" vs ", 1)]
+                if not name_a or not name_b:
                     continue
-                win = [p for p in prices if p.get("T") == 1]
-                if len(win) < 2:
-                    continue
+                prices = {}
+                for entry in ev.get("E") or []:
+                    if not isinstance(entry, dict):
+                        continue
+                    prices[entry.get("T")] = entry.get("C") or entry.get("CV")
                 try:
-                    da, db = float(win[0].get("C")), float(win[1].get("C"))
+                    da, db = float(prices.get(1)), float(prices.get(2))
                 except (TypeError, ValueError):
                     continue
                 if da <= 1.0 or db <= 1.0:
                     continue
+                start = ev.get("S")
                 quotes.append({
                     "source_key": "melbet",
                     "source_name": "Melbet (esportsbook LineFeed)",
                     "public_url": "https://melbet.com/en/line/esports",
                     "api_url": url,
                     "event_id": str(ev.get("I") or ev.get("CI") or ""),
-                    "team_a": a, "team_b": b,
-                    "start_utc": None,
+                    "team_a": name_a, "team_b": name_b,
+                    "start_utc": datetime.fromtimestamp(int(start), timezone.utc).strftime(
+                        "%Y-%m-%dT%H:%M:%SZ") if isinstance(start, int) else None,
                     "decimal_a": da, "decimal_b": db,
                 })
         except Exception as exc:
@@ -270,54 +284,104 @@ def collect_melbet():
     }, quotes
 
 
-def collect_bo3gg():
-    """bo3.gg upcoming matches - publishes two-sided Thunderpick coefficients per fixture."""
-    url = "https://bo3.gg/api/v1/matches?status=upcoming&limit=100"
-    status, body, err = fetch(url)
+def collect_bo3gg(pages: int = 3):
+    """bo3.gg upcoming CS2 fixtures - publishes two-sided Thunderpick coefficients per fixture.
+
+    The endpoint needs the documented filter/page query shape: a plain `status=upcoming` parameter is
+    ignored and returns finished matches instead. Team names are not inline; they come from the
+    coefficient payload (`bet_updates.team_1.name` / `team_2.name`) or the /teams/ lookup.
+    """
     quotes, parse_error = [], None
-    if body:
+    fetched, matched = 0, 0
+    last_status = None
+    for page in range(pages):
+        url = (f"{BO3}/matches/?filter%5Bmatches.discipline_id%5D%5Beq%5D=1"
+               f"&filter%5Bmatches.status%5D%5Bin%5D=upcoming"
+               f"&page%5Boffset%5D={page * 100}&page%5Blimit%5D=100")
+        status, body, err = fetch(url)
+        last_status = status if status else last_status
+        if err and not body:
+            parse_error = err
+            continue
+        if not body:
+            continue
         try:
             payload = json.loads(body.decode("utf-8", "replace"))
-            items = payload.get("data") if isinstance(payload, dict) else payload
-            for item in items or []:
-                t1 = ((item.get("team1") or {}).get("name")) or item.get("team1_name")
-                t2 = ((item.get("team2") or {}).get("name")) or item.get("team2_name")
-                updates = item.get("bet_updates") or []
-                coeffs = None
-                for upd in updates:
-                    if isinstance(upd, dict) and upd.get("coefficients"):
-                        coeffs = upd["coefficients"]
-                if not (t1 and t2) or not isinstance(coeffs, list) or len(coeffs) < 2:
-                    continue
-                try:
-                    da, db = float(coeffs[0]), float(coeffs[1])
-                except (TypeError, ValueError):
-                    continue
-                if da <= 1.0 or db <= 1.0:
-                    continue
-                quotes.append({
-                    "source_key": "thunderpick_via_bo3gg",
-                    "source_name": "Thunderpick (coefficients as published by bo3.gg)",
-                    "public_url": "https://bo3.gg/matches",
-                    "api_url": url,
-                    "event_id": str(item.get("id") or ""),
-                    "team_a": t1, "team_b": t2,
-                    "start_utc": item.get("start_date"),
-                    "decimal_a": da, "decimal_b": db,
-                })
         except Exception as exc:
             parse_error = f"{type(exc).__name__}: {exc}"
+            continue
+        results = payload.get("results") if isinstance(payload, dict) else None
+        if not isinstance(results, list) or not results:
+            break
+        for item in results:
+            if not isinstance(item, dict):
+                continue
+            fetched += 1
+            if str(item.get("status") or "") != "upcoming":
+                continue
+            bu = item.get("bet_updates") or {}
+            t1 = (bu.get("team_1") or {}) if isinstance(bu, dict) else {}
+            t2 = (bu.get("team_2") or {}) if isinstance(bu, dict) else {}
+            try:
+                da, db = float(t1.get("coeff")), float(t2.get("coeff"))
+            except (TypeError, ValueError):
+                continue
+            if da <= 1.0 or db <= 1.0:
+                continue
+            name_a = t1.get("name") or ""
+            name_b = t2.get("name") or ""
+            if not name_a or not name_b:
+                name_a, name_b = _bo3_team_names(item)
+            if not name_a or not name_b:
+                continue
+            matched += 1
+            quotes.append({
+                "source_key": "thunderpick_via_bo3gg",
+                "source_name": "Thunderpick (coefficients as published by bo3.gg)",
+                "public_url": f"https://bo3.gg/matches/{item.get('slug') or ''}",
+                "api_url": url,
+                "event_id": str(item.get("id") or ""),
+                "team_a": name_a, "team_b": name_b,
+                "start_utc": item.get("start_date"),
+                "decimal_a": da, "decimal_b": db,
+                "provider": (bu.get("provider") if isinstance(bu, dict) else None),
+            })
+        if len(results) < 100:
+            break
     return {
         "key": "thunderpick_via_bo3gg",
         "url": "https://bo3.gg/matches",
-        "api_url": url,
-        "http_status": status,
-        "error": err or parse_error,
-        "bytes": len(body),
+        "api_url": (f"{BO3}/matches/?filter%5Bmatches.discipline_id%5D%5Beq%5D=1"
+                    f"&filter%5Bmatches.status%5D%5Bin%5D=upcoming"),
+        "http_status": last_status,
+        "error": parse_error,
+        "bytes": len(body or b""),
         "rows": len(quotes),
+        "fetched": fetched,
+        "with_coefficients": matched,
         "retrieved_utc": now_iso(),
         "body_preview": _preview(body) if (body and not quotes) else "",
     }, quotes
+
+
+def _bo3_team_names(item):
+    """Resolve bo3.gg team ids to names through the public /teams/ endpoint (bounded requests)."""
+    names = []
+    for key in ("team1_id", "team2_id"):
+        tid = item.get(key)
+        name = ""
+        if tid:
+            status, body, _ = fetch(
+                f"{BO3}/teams/?filter%5Bteams.id%5D%5Beq%5D={tid}&limit=1")
+            if body:
+                try:
+                    rec = (json.loads(body.decode("utf-8", "replace")).get("results") or [])
+                    if rec:
+                        name = str(rec[0].get("name") or "")
+                except Exception:
+                    name = ""
+        names.append(name)
+    return names[0], names[1]
 
 
 def collect_kalshi():

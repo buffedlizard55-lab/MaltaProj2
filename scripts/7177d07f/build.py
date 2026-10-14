@@ -456,7 +456,70 @@ def match_quote(snapshot, fixture):
             continue
         if best is None:
             best = cand
+    if best is None:
+        best = match_exchange_book(snapshot, fixture)
     return best
+
+
+def match_exchange_book(snapshot, fixture):
+    """Kalshi market whose title names both fixture teams, priced from the two order books.
+
+    Kalshi lists each side as its own market, so the pair is found by matching both team names
+    across the two market titles of the same event, then normalising the two bid/ask midpoints.
+    A market is only used when both sides quote a bid and an ask and the spread is <= 10c, the same
+    gate the coverage board uses; otherwise the book is too thin to price the fixture.
+    """
+    a, b = norm(fixture.get("team_a")), norm(fixture.get("team_b"))
+    if not a or not b:
+        return None
+    books = snapshot.get("exchange_books") or []
+    by_event = {}
+    for book in books:
+        text = norm(f"{book.get('title') or ''} {book.get('subtitle') or ''}")
+        if not text:
+            continue
+        by_event.setdefault(str(book.get("event_id") or ""), []).append((text, book))
+
+    for event_id, entries in by_event.items():
+        if len(entries) < 2:
+            continue
+        side_a = next((bk for txt, bk in entries if a and a in txt), None)
+        side_b = next((bk for txt, bk in entries if b and b in txt), None)
+        if not side_a or not side_b or side_a is side_b:
+            continue
+        mids = []
+        for book in (side_a, side_b):
+            try:
+                bid = float(book.get("yes_bid_dollars"))
+                ask = float(book.get("yes_ask_dollars"))
+            except (TypeError, ValueError):
+                mids = []
+                break
+            if bid <= 0 or ask <= 0 or ask < bid or (ask - bid) > 0.10:
+                mids = []
+                break
+            mids.append((bid + ask) / 2.0)
+        if len(mids) != 2 or sum(mids) <= 0:
+            continue
+        pa = mids[0] / (mids[0] + mids[1])
+        if pa <= 0 or pa >= 1:
+            continue
+        return {
+            "source_key": "kalshi",
+            "source_name": "Kalshi (regulated exchange)",
+            "public_url": side_a.get("public_url"),
+            "api_url": side_a.get("api_url"),
+            "event_id": event_id,
+            "team_a": fixture.get("team_a"),
+            "team_b": fixture.get("team_b"),
+            # implied decimal prices: 1/p, kept so the row shows a real two-sided number
+            "decimal_a": round(1.0 / pa, 4),
+            "decimal_b": round(1.0 / (1.0 - pa), 4),
+            "start_utc": None,
+            "swapped": False,
+            "from_exchange_midpoints": True,
+        }
+    return None
 
 
 def calibration_k(lines_doc, idx):
