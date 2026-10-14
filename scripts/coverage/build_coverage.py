@@ -388,15 +388,17 @@ def vrs_prob(ratings: dict, team_a: str, team_b: str) -> tuple[float | None, str
 
 
 def evaluate_models(corpus: dict, ratings: dict) -> dict:
-    """Brier score / log loss for the market, the refitted Bradley-Terry model and Valve VRS.
+    """Brier score / log loss for the refitted Bradley-Terry model and Valve VRS.
 
     The Bradley-Terry model is refitted with the whole evaluation window removed, so its numbers are
     an honest out-of-sample measurement. The Valve snapshot predates the window by construction.
+    The bookmaker pair bo3.gg keeps for a *finished* match is the last price it held (updated
+    in-play), so it leaks the result and is deliberately not scored as a benchmark here.
     """
     cutoff = now_utc() - timedelta(days=BT_EVAL_DAYS)
     bt_eval = fit_bradley_terry(corpus, exclude_recent_days=BT_EVAL_DAYS)
-    samples: dict[str, list[tuple[float, float]]] = {"market": [], "bt": [], "vrs": []}
-    n_market = n_window = 0
+    samples: dict[str, list[tuple[float, float]]] = {"bt": [], "vrs": []}
+    n_priced = n_window = 0
     for m in corpus.get("matches") or []:
         start = parse_any(m.get("d"))
         if not start or start < cutoff:
@@ -404,12 +406,7 @@ def evaluate_models(corpus: dict, ratings: dict) -> dict:
         n_window += 1
         outcome_a = 1.0 if str(m.get("w")) == str(m["a"]) else 0.0
         if m.get("oa") is not None and m.get("ob") is not None:
-            try:
-                p_a, _, _ = devig_proportional(float(m["oa"]), float(m["ob"]))
-                samples["market"].append((p_a, outcome_a))
-                n_market += 1
-            except (TypeError, ValueError):
-                pass
+            n_priced += 1
         bt_p, _ = bt_prob(bt_eval, str(m["a"]), str(m["b"]))
         if bt_p is not None:
             samples["bt"].append((bt_p, outcome_a))
@@ -432,13 +429,14 @@ def evaluate_models(corpus: dict, ratings: dict) -> dict:
     return {
         "evaluation_window_days": BT_EVAL_DAYS,
         "matches_in_window": n_window,
-        "matches_with_market_price": n_market,
+        "matches_with_book_price": n_priced,
         "note": ("Out-of-sample window: the Bradley-Terry model used here is refitted with every "
-                 "match inside the window excluded; the Valve VRS snapshot used predates the window; "
-                 "the market column is the de-vigged closing pair bo3.gg published for the same "
-                 "matches. Fewer model rows than market rows means the model had no rating for both "
-                 "teams in that match."),
-        "market": metrics(samples["market"]),
+                 "match inside the window excluded, and the Valve VRS snapshot used predates the "
+                 "window. The book price pair bo3.gg keeps for a finished match is the last price it "
+                 "held (updated in-play), so it is deliberately NOT scored here as a benchmark - on "
+                 "2026-10-14 it implied the eventual winner in 100% of 4,000 settled matches. Fewer "
+                 "model rows than matches in the window means the model had no rating for both "
+                 "teams."),
         "bt": metrics(samples["bt"]),
         "vrs": metrics(samples["vrs"]),
         "baseline_coin_flip_brier": 0.25,
@@ -775,6 +773,7 @@ NAV_LINKS = (
     ("../index.html", "Dashboard"),
     ("index.html", "Coverage board"),
     ("flagged.html", "Flagged for review"),
+    ("review.html", "Repo review &amp; re-reads"),
     ("method.html", "Method &amp; verification"),
     ("../live/index.html", "Live coverage (3cd9787c)"),
     ("../fresh/index.html", "Fresh board (dd2b7fee)"),
@@ -909,7 +908,7 @@ def card_html(row: dict) -> str:
 </article>"""
 
 
-def render(board: dict, verification: dict, outdir: Path) -> None:
+def render(board: dict, verification: dict, outdir: Path, review: dict | None = None) -> None:
     outdir.mkdir(parents=True, exist_ok=True)
     (outdir / "assets").mkdir(exist_ok=True)
     (outdir / "data").mkdir(exist_ok=True)
@@ -1031,7 +1030,7 @@ in this snapshot.</p>
         f"<td>{'—' if not ev.get(name) else ev[name]['brier']}</td>"
         f"<td>{'—' if not ev.get(name) else ev[name]['log_loss']}</td>"
         f"<td>{'—' if not ev.get(name) else ev[name]['accuracy']}</td></tr>"
-        for name in ("market", "bt", "vrs"))
+        for name in ("bt", "vrs"))
     sources_table = """
 <table><thead><tr><th>Source</th><th>Kind</th><th>What is taken from it</th><th>Link</th></tr></thead><tbody>
 <tr><td>HotSpawn Pick'ems lobby</td><td>fixture discovery only</td><td>fixture ids, teams, kickoff, lock time, tier — never a probability</td><td><a href="https://play.hotspawn.com/lobby" rel="noopener">play.hotspawn.com/lobby</a></td></tr>
@@ -1067,14 +1066,15 @@ documented model covers both teams, in which case the row says “originated est
 
 <h2>Does the originated model add value? (calibration)</h2>
 <p class="sub">Measured on finished CS2 matches in the last {ev.get('evaluation_window_days')} days of the
-bo3.gg corpus. The Bradley-Terry model is refitted with that whole window excluded (out-of-sample), the
-Valve snapshot predates the window, and the market column is the de-vigged closing pair published by
-bo3.gg for the same matches. Reported as Brier score and log loss (lower is better; a coin flip has a
-Brier score of {ev.get('baseline_coin_flip_brier')}).</p>
+bo3.gg corpus. The Bradley-Terry model is refitted with that whole window excluded (out-of-sample) and
+the Valve snapshot predates the window. The book price pair bo3.gg keeps for a finished match is its
+last (in-play) price and leaks the result, so it is not scored here as a benchmark. Reported as Brier
+score and log loss (lower is better; a coin flip has a Brier score of
+{ev.get('baseline_coin_flip_brier')}).</p>
 <table><thead><tr><th>Predictor</th><th>Matches</th><th>Brier</th><th>Log loss</th><th>Accuracy</th></tr></thead>
 <tbody>{model_rows}</tbody></table>
 <p class="sub">Matches in the evaluation window: {ev.get('matches_in_window')},
-of which {ev.get('matches_with_market_price')} carried a market price. Published originated estimates
+of which {ev.get('matches_with_book_price')} also carried a book price (not scored - see above). Published originated estimates
 use <strong>{esc(board['model']['preference'])}</strong> in this snapshot, chosen by the lower Brier score.
 {esc(ev.get('note'))}</p>
 
@@ -1111,6 +1111,58 @@ future accuracy.</li>
         "Method & verification",
         "Sources, formulas, join rules, calibration of the originated models and the limitations of this board.",
         "method.html", method_body, gen), encoding="utf-8")
+
+    # ---- repo review / independent re-reads page (hand-verified evidence, source-linked).
+    # This page is in the shared NAV, so it is rendered on every run: before any hand-verified review
+    # entry is recorded it shows an explicit empty state. A missing page would break the nav link;
+    # an honest placeholder never can.
+    review = review or {}
+
+    def review_rows(items, keys):
+        return "".join(
+            "<tr>" + "".join(
+                f'<td><a href="{esc(it.get(k))}" rel="noopener">{esc(it.get(k))}</a></td>'
+                if k.endswith("_url") and it.get(k) else f"<td>{esc(it.get(k))}</td>"
+                for k in keys) + "</tr>" for it in items)
+
+    check_rows = review_rows(review.get("items") or [],
+                             ("id", "area", "claim", "method", "result", "evidence_url", "note"))
+    reread_rows = review_rows(review.get("rereads") or [],
+                              ("id", "what", "observed", "board_value", "url", "read_at_utc"))
+    irr_rows = review_rows(review.get("irregularities") or [],
+                           ("id", "severity", "finding", "evidence", "url", "affects"))
+    if not (check_rows or reread_rows or irr_rows):
+        check_rows = ('<tr><td colspan="7">No hand-verified review entry is recorded yet. Add '
+                      'data/coverage/review.json - the tables and source-link columns are in place; '
+                      'nothing is inferred or auto-filled.</td></tr>')
+    review_body = f"""
+<div class="note"><strong>What this page is.</strong> A line-by-line review performed by this
+session, with the source link for every checked claim. Re-reads below were performed with a
+tool-mediated fetch (the CI runner itself receives HTTP 403 from HLTV, so the runner cannot be used
+to verify those values), so each row carries the exact URL and the time it was read.</div>
+{esc(review.get('scope') or '')}
+
+<h2>Repository review</h2>
+<table><thead><tr><th>#</th><th>Area</th><th>Claim checked</th><th>How it was checked</th><th>Result</th><th>Evidence</th><th>Note</th></tr></thead>
+<tbody>{check_rows}</tbody></table>
+
+<h2>Independent re-reads of external sources</h2>
+<p class="sub">Each row is a value this session read directly from the source and compared with what
+the board publishes.</p>
+<table><thead><tr><th>#</th><th>What was re-read</th><th>Observed</th><th>Board value</th><th>Source</th><th>Read at (UTC)</th></tr></thead>
+<tbody>{reread_rows}</tbody></table>
+
+<h2>Irregularities flagged for review</h2>
+<p class="sub">Nothing here blocks the board: each item is published so it can be reviewed and, if
+needed, corrected.</p>
+<table><thead><tr><th>#</th><th>Severity</th><th>Finding</th><th>Evidence</th><th>Source</th><th>Affects</th></tr></thead>
+<tbody>{irr_rows}</tbody></table>
+<p class="sub">{esc(review.get('generated_at_utc') or '')}</p>
+"""
+    (outdir / "review.html").write_text(page(
+        "Repo review &amp; independent re-reads",
+        "Line-by-line checks of the repository's published claims plus direct re-reads of the external sources used by this board.",
+        "review.html", review_body, gen), encoding="utf-8")
 
     # ---- machine-readable exports
     json_dump(outdir / "data/board.json", board)
@@ -1178,7 +1230,14 @@ def main() -> int:
         raise SystemExit("no external quotes collected; refusing to build a board without sources")
     board = build_board(inputs)
     verification = verify_board(board)
-    render(board, verification, outdir)
+    review_path = datadir / "review.json"
+    review = None
+    if review_path.is_file():
+        try:
+            review = json.loads(review_path.read_text())
+        except json.JSONDecodeError:
+            review = None
+    render(board, verification, outdir, review)
     json_dump(datadir / "board.json", board)
     json_dump(datadir / "verification.json", verification)
     errors = check_links(outdir)

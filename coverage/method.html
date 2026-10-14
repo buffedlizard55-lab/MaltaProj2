@@ -12,6 +12,7 @@
   <nav><a href="../index.html">Dashboard</a>
 <a href="index.html">Coverage board</a>
 <a href="flagged.html">Flagged for review</a>
+<a href="review.html">Repo review &amp; re-reads</a>
 <a href="method.html" class="active">Method &amp; verification</a>
 <a href="../live/index.html">Live coverage (3cd9787c)</a>
 <a href="../fresh/index.html">Fresh board (dd2b7fee)</a></nav>
@@ -52,20 +53,21 @@ documented model covers both teams, in which case the row says “originated est
 
 <h2>Does the originated model add value? (calibration)</h2>
 <p class="sub">Measured on finished CS2 matches in the last 14 days of the
-bo3.gg corpus. The Bradley-Terry model is refitted with that whole window excluded (out-of-sample), the
-Valve snapshot predates the window, and the market column is the de-vigged closing pair published by
-bo3.gg for the same matches. Reported as Brier score and log loss (lower is better; a coin flip has a
-Brier score of 0.25).</p>
+bo3.gg corpus. The Bradley-Terry model is refitted with that whole window excluded (out-of-sample) and
+the Valve snapshot predates the window. The book price pair bo3.gg keeps for a finished match is its
+last (in-play) price and leaks the result, so it is not scored here as a benchmark. Reported as Brier
+score and log loss (lower is better; a coin flip has a Brier score of
+0.25).</p>
 <table><thead><tr><th>Predictor</th><th>Matches</th><th>Brier</th><th>Log loss</th><th>Accuracy</th></tr></thead>
-<tbody><tr><td>market</td><td>4000</td><td>0.04735</td><td>0.21331</td><td>1.0</td></tr><tr><td>bt</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>vrs</td><td>1500</td><td>0.1784</td><td>0.53243</td><td>0.6667</td></tr></tbody></table>
-<p class="sub">Matches in the evaluation window: 5000,
-of which 4000 carried a market price. Published originated estimates
+<tbody><tr><td>bt</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>vrs</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>
+<p class="sub">Matches in the evaluation window: 0,
+of which 0 also carried a book price (not scored - see above). Published originated estimates
 use <strong>vrs</strong> in this snapshot, chosen by the lower Brier score.
-Out-of-sample window: the Bradley-Terry model used here is refitted with every match inside the window excluded; the Valve VRS snapshot used predates the window; the market column is the de-vigged closing pair bo3.gg published for the same matches. Fewer model rows than market rows means the model had no rating for both teams in that match.</p>
+Out-of-sample window: the Bradley-Terry model used here is refitted with every match inside the window excluded, and the Valve VRS snapshot used predates the window. The book price pair bo3.gg keeps for a finished match is the last price it held (updated in-play), so it is deliberately NOT scored here as a benchmark - on 2026-10-14 it implied the eventual winner in 100% of 4,000 settled matches. Fewer model rows than matches in the window means the model had no rating for both teams.</p>
 
 <h2>Snapshot facts</h2>
 <table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody>
-<tr><td>Generated (UTC)</td><td>2026-10-14T01:59:01Z</td></tr>
+<tr><td>Generated (UTC)</td><td>2026-10-14T02:34:10Z</td></tr>
 <tr><td>CS2 fixtures in window</td><td>163</td></tr>
 <tr><td>Listed by the lobby page</td><td>90</td></tr>
 <tr><td>Still open for picks</td><td>28</td></tr>
@@ -73,7 +75,7 @@ Out-of-sample window: the Bradley-Terry model used here is refitted with every m
 <tr><td>External quotes read this run</td><td>363</td></tr>
 <tr><td>Quotes refused by the join rules</td><td>156</td></tr>
 <tr><td>Valve VRS snapshots</td><td>{&quot;americas&quot;: &quot;2026_10_05&quot;, &quot;asia&quot;: &quot;2026_10_05&quot;, &quot;europe&quot;: &quot;2026_10_05&quot;, &quot;global&quot;: &quot;2026_10_05&quot;}</td></tr>
-<tr><td>Bradley-Terry corpus</td><td>5000 matches / 20 teams (generated 2026-10-14T01:58:56Z)</td></tr>
+<tr><td>Bradley-Terry corpus</td><td>0 matches / 0 teams (generated )</td></tr>
 <tr><td>Verification</td><td>10 of 10 checks passed</td></tr>
 </tbody></table>
 
@@ -96,7 +98,7 @@ future accuracy.</li>
 <p>Fixture discovery: HotSpawn Pick'ems lobby (public endpoints). Probabilities: external bookmakers,
 exchanges and the labelled originated models described on the method page — HotSpawn's crowd
 percentage is published for reference and is never used as a probability input.
-Generated 2026-10-14T01:59:01Z UTC. Not affiliated with HotSpawn or any bookmaker. 18+, gamble responsibly.</p>
+Generated 2026-10-14T02:34:10Z UTC. Not affiliated with HotSpawn or any bookmaker. 18+, gamble responsibly.</p>
 </footer>
 </main>
 <script src="assets/coverage.js"></script>

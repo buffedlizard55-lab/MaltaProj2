@@ -55,9 +55,18 @@ LIVE_BOARD = ROOT / "data/live/board.json"
 KEEP_PAST_DAYS = 10
 KEEP_FUTURE_DAYS = 21
 BO3G_MAX_UPCOMING_PAGES = 60
-CORPUS_MAX_PAGES = 500
-CORPUS_CAP_MATCHES = 8000
+CORPUS_MAX_PAGES = 420
+CORPUS_CAP_MATCHES = 4000
+# bo3.gg pages 10 records per request and ignores the plain `page` parameter entirely — pagination
+# is `page[offset]`. Measured 2026-10-14: requests with `page=2`, `page[number]=2` and `page[limit]=25`
+# all returned the first page again, while `page[offset]=20` advanced the window.
+PAGE_SIZE = 10
 CORPUS_REFRESH_DAYS = 7
+# A reused corpus must look like a real crawl. The first crawl of this feed was silently broken
+# (the API ignored the `page` parameter, so every request returned page 1) and produced 5,000 rows
+# for only 10 distinct matches; such a snapshot is re-crawled instead of being trusted for a week.
+CORPUS_REUSE_MIN_ROWS = 100
+CORPUS_REUSE_MIN_DAYS = 7
 
 
 # ----------------------------------------------------------------------------- HotSpawn lobby
@@ -292,11 +301,11 @@ def collect_bo3gg(quotes: list[dict], log: dict, sample_dir: Path | None, budget
     """Upcoming matches -> market quotes (two-sided Thunderpick prices republished by bo3.gg)."""
     started = time.time()
     base = ("?filter[matches.status][in]=upcoming&filter[matches.discipline_id][in]=1"
-            "&sort=start_date&limit=10&page=")
+            "&sort=start_date&page[limit]=10&page[offset]=")
     horizon = now_utc() + timedelta(days=KEEP_FUTURE_DAYS)
     entry: dict = {"pages_read": 0, "quotes": 0, "errors": []}
     log.setdefault("bo3gg", {})["upcoming"] = entry
-    page = 1
+    page = 0
     while page <= BO3G_MAX_UPCOMING_PAGES and time.time() - started < budget_s:
         batch = bo3g_fetch_pages(lambda p: f"{BO3G_API}{base}{p}", list(range(page, page + 5)))
         stop = False
@@ -309,7 +318,7 @@ def collect_bo3gg(quotes: list[dict], log: dict, sample_dir: Path | None, budget
                 stop = True
                 continue
             entry["pages_read"] += 1
-            if number == 1 and sample_dir is not None:
+            if number == 0 and sample_dir is not None:
                 save_sample(sample_dir, "bo3gg_upcoming_p1.json",
                             {"url": payload["url"], "results": payload["results"][:3]}, limit=90_000)
             for m in payload["results"]:
@@ -322,7 +331,7 @@ def collect_bo3gg(quotes: list[dict], log: dict, sample_dir: Path | None, budget
                     entry["quotes"] += 1
         if stop:
             break
-        page += 5
+        page += 5 * PAGE_SIZE
     entry["seconds"] = round(time.time() - started, 1)
 
 
@@ -331,20 +340,35 @@ def collect_bo3gg_corpus(log: dict, sample_dir: Path | None, corpus_days: int,
     """Distilled finished-match corpus (model input + closing-price benchmark)."""
     if existing and existing.get("generated_at_utc"):
         age = (now_utc() - (parse_any(existing["generated_at_utc"]) or now_utc())).days
-        if age < CORPUS_REFRESH_DAYS and existing.get("matches"):
+        rows = existing.get("matches") or []
+        ids = {str(m.get("id")) for m in rows if m.get("id") is not None}
+        days = sorted(str(m.get("d")) for m in rows if m.get("d"))
+        span = 0
+        if len(days) >= 2:
+            first, last = parse_any(days[0]), parse_any(days[-1])
+            if first and last:
+                span = max((last - first).days, 0)
+        if (age < CORPUS_REFRESH_DAYS and len(rows) >= CORPUS_REUSE_MIN_ROWS
+                and len(ids) >= CORPUS_REUSE_MIN_ROWS and span >= CORPUS_REUSE_MIN_DAYS):
             log.setdefault("bo3gg", {})["corpus"] = {"reused": True, "age_days": age,
-                                                     "matches": len(existing["matches"])}
+                                                     "matches": len(rows),
+                                                     "distinct_ids": len(ids), "span_days": span}
             return existing
+        log.setdefault("bo3gg", {})["corpus_reuse_refused"] = {
+            "age_days": age, "matches": len(rows), "distinct_ids": len(ids), "span_days": span,
+            "rule": (f"reuse needs age < {CORPUS_REFRESH_DAYS}d, >= {CORPUS_REUSE_MIN_ROWS} rows, "
+                     f">= {CORPUS_REUSE_MIN_ROWS} distinct ids and a span >= "
+                     f"{CORPUS_REUSE_MIN_DAYS} days; a snapshot failing this is re-crawled")}
     started = time.time()
     base = ("?filter[matches.status][in]=finished&filter[matches.discipline_id][in]=1"
-            "&sort=-start_date&limit=10&page=")
+            "&sort=-start_date&page[limit]=10&page[offset]=")
     cutoff = now_utc() - timedelta(days=corpus_days)
     matches: list[dict] = []
     names: dict[str, str] = {}
     entry: dict = {"reused": False, "pages_read": 0, "errors": [], "stopped": None}
     log.setdefault("bo3gg", {})["corpus"] = entry
-    page = 1
-    while page <= CORPUS_MAX_PAGES:
+    page = 0
+    while page <= CORPUS_MAX_PAGES * PAGE_SIZE:
         if time.time() - started > budget_s:
             entry["stopped"] = f"time budget {budget_s}s reached"
             break
@@ -359,7 +383,7 @@ def collect_bo3gg_corpus(log: dict, sample_dir: Path | None, corpus_days: int,
                 done = True
                 continue
             entry["pages_read"] += 1
-            if number == 1 and sample_dir is not None:
+            if number == 0 and sample_dir is not None:
                 save_sample(sample_dir, "bo3gg_finished_p1.json",
                             {"url": payload["url"], "results": payload["results"][:3]}, limit=90_000)
             for m in payload["results"]:
@@ -389,17 +413,24 @@ def collect_bo3gg_corpus(log: dict, sample_dir: Path | None, corpus_days: int,
                     break
         if done:
             break
-        page += 5
+        page += 5 * PAGE_SIZE
     entry.update({"matches": len(matches), "team_names": len(names),
-                  "seconds": round(time.time() - started, 1), "window_days": corpus_days})
+                  "seconds": round(time.time() - started, 1), "window_days": corpus_days,
+                  "pagination": "page[offset] steps of 10 (the API ignores a plain page parameter)"})
+    deduped: dict = {}
+    for rec in matches:
+        deduped.setdefault(str(rec["id"]), rec)
+    matches = list(deduped.values())
     corpus = {
         "generated_at_utc": now_iso(),
         "source": BO3G_API,
         "source_public": "https://bo3.gg/matches/finished",
         "window_days": corpus_days,
         "note": ("Distilled finished CS2 matches: id, UTC start, team ids, winner id, best-of, tier, "
-                 "and the last bookmaker price pair published by bo3.gg for that match (used only as "
-                 "the market benchmark on the method page)."),
+                 "and the last bookmaker price pair published by bo3.gg for that match. Caution: for "
+                 "finished matches that pair is the last price the provider held, which is updated "
+                 "in-play, so it is NOT used as a market benchmark (measured 2026-10-14: it implies "
+                 "the eventual winner in 100% of 4,000 settled matches)."),
         "pages_read": entry["pages_read"],
         "stopped_reason": entry["stopped"],
         "matches": matches,
