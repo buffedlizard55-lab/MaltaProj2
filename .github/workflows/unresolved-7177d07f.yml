@@ -38,13 +38,29 @@ jobs:
           python scripts/stage_site.py
       - name: Commit refreshed data and pages
         run: |
+          set -x
           git config user.name "arena-agent"
           git config user.email "297053741+arena-agent@users.noreply.github.com"
           git add data/7177d07f unresolved
-          if git diff --cached --quiet; then echo "no unresolved-board changes"; else
-            git commit -m "unresolved(7177d07f): refresh picks $(date -u +%Y-%m-%dT%H:%MZ)"
-            git push origin HEAD:arena/7177d07f-maltaproj2
+          if git diff --cached --quiet; then
+            echo "no unresolved-board changes"
+            exit 0
           fi
+          git commit -m "unresolved(7177d07f): refresh picks $(date -u +%Y-%m-%dT%H:%MZ)"
+          # Other sessions' scheduled workflows also push to this branch, so a plain push can lose a
+          # race. Rebase onto the latest remote tip and retry a bounded number of times.
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin arena/7177d07f-maltaproj2 || true
+            if [ -z "$(git status --porcelain)" ] && \
+               git push origin HEAD:arena/7177d07f-maltaproj2; then
+              echo "pushed on attempt ${attempt}"
+              exit 0
+            fi
+            echo "push attempt ${attempt} failed; retrying"
+            sleep 15
+          done
+          echo "::error title=unresolved-7177d07f::could not publish the refreshed board after 5 attempts"
+          exit 1
       - name: Request a Pages rebuild
         env:
           GH_TOKEN: ${{ github.token }}
