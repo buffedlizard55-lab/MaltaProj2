@@ -40,6 +40,14 @@ class LobbyTransferStateTests(unittest.TestCase):
                 self.assertEqual(parsed_url.hostname, "www.hotspawn.com")
                 self.assertTrue(parsed_url.path.rstrip("/").endswith("-" + row["fixture_id"]))
 
+    def test_current_capture_counter_consistency(self):
+        # Preserve c64a5e19's live-capture invariant alongside the pinned parser fixture.
+        current = (ROOT / "data/live/samples/lobby_page.txt").read_text()
+        parsed = parse_lobby(current)
+        self.assertEqual(len(parsed["fixtures"]), parsed["counters"]["all_tiers"])
+        self.assertEqual(sum(parsed["counters"][k] for k in ("tier_s", "tier_b", "tier_c")),
+                         parsed["counters"]["all_tiers"])
+
     def test_parser_fails_closed_on_missing_malformed_and_ambiguous_state(self):
         bad_pages = [
             "",
