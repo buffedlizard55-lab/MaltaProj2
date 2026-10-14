@@ -3291,3 +3291,20 @@ Environment note: Arena pins this session to `arena/6ddde224-maltaproj2`; the re
   two-sided exchange book). Both are cited per row when used.
 - Nothing is invented: a row without a confirmed external price and without a documented rating for
   **both** teams stays blank and is published on the flagged page with the reason and the source checks.
+
+## Session `6ddde224` — implementation complete + integration (append-only, continues the claim above)
+
+- `T-COVERAGE-FULL` implemented and running hourly (commits `06c7797`, `d2e02c1`, `e5ef6f7`): the collector
+  reads the HotSpawn lobby inventory (with a fallback to the committed `data/live` artifact if HotSpawn is
+  unreachable), reuses the Pinnacle / Bovada / LineFeed quotes already collected by `3cd9787c` (read-only),
+  adds the bo3.gg two-sided Thunderpick feed and Kalshi exchange books, fits a Bradley-Terry model on the
+  bo3.gg results corpus and renders a mobile-first board where every row is either a two-sided market quote,
+  an exchange quote inside the spread gate, an explicitly labelled *originated estimate*, or blank + flagged.
+  Pages: `coverage/index.html`, `coverage/flagged.html`, `coverage/method.html`, `coverage/review.html`.
+- Correction recorded on the review page: the first crawl of the bo3.gg feed used a plain `page` parameter
+  that the API ignores, so its corpus held 5,000 rows for 10 distinct matches; the snapshot is deleted, the
+  collector now refuses to reuse a corpus that fails a distinct-id/span check, and the contaminated "market"
+  benchmark was withdrawn from the method page (R-01/R-02, IR-01 on `coverage/review.html`).
+- `T-COVERAGE-INTEG` (additive only, no other session's file edited): one root NAV anchor
+  `coverage/index.html` in `scripts/build_site.py`, one `'coverage'` entry in `scripts/stage_site.py`,
+  one row in `README.md`. Staging link check re-run locally: PASS.

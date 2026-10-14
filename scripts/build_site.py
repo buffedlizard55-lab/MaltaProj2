@@ -106,6 +106,10 @@ NAV = [
     # COORDINATION.md): current-lobby coverage board — every lobby fixture with an external-market
     # probability or a labelled originated estimate.
     ("live/index.html", "Live coverage board (3cd9787c)"),
+    # integration link added by session 6ddde224 (T-COVERAGE-INTEG, single additive anchor,
+    # documented in COORDINATION.md): full-lobby coverage board with external bookmaker/exchange
+    # lines, originated Bradley-Terry estimates or a blank+flagged row, plus a repo-review page
+    ("coverage/index.html", "Coverage board (6ddde224)"),
 ]
 
 
