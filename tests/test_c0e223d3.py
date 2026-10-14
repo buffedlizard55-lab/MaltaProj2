@@ -20,8 +20,8 @@ import sys
 if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
-import core  # noqa: E402
-import aliases  # noqa: E402
+import core_c0e223d3 as core  # noqa: E402
+import aliases_c0e223d3 as aliases  # noqa: E402
 
 
 def _board():

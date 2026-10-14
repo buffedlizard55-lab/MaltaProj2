@@ -6,7 +6,7 @@ another session's directory):
 
   * `data/f7279a54/board.json`  - the OURLINE pick board (market lines + rating model)
   * `data/expanded/vrs/*.md`    - Valve's official regional standings capture
-  * `scripts/c0e223d3/aliases.py` - team-name resolutions verified against official sources
+  * `scripts/c0e223d3/aliases_c0e223d3.py` - team-name resolutions verified against official sources
 
 Writes `summary/**` and `data/c0e223d3/board.json`.
 
@@ -25,8 +25,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "c0e223d3"))
 
-import core  # noqa: E402
-import aliases  # noqa: E402
+import core_c0e223d3 as core  # noqa: E402
+import aliases_c0e223d3 as aliases  # noqa: E402
 
 OUT = ROOT / "summary"
 DATA = ROOT / "data" / "c0e223d3"
