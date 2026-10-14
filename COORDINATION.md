@@ -4080,3 +4080,19 @@ earlier sessions too). Repo root `/home/user/MaltaProj2`.
   Flagged for Review pages (`flagged.html`, `summary/gaps.html`, `board/flagged.html`,
   `coverage/flagged.html`, `audits/797e94ea/`) with source links for post-live review; they do not
   block anything and no unverified value was ever filled in.
+
+---
+
+## Session `57e26db7` — final current-state audit, every-match picks and mobile executive-summary verification (2026-10-14 UTC)
+
+Arena fixes this session to branch `arena/57e26db7-maltaproj2`; the requested `session-<id>/<task>` branch naming is not available, so no other branch will be created or used.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| F57-1: independently re-verify the current HotSpawn CS2 inventory, every-match pick/probability coverage, per-row source provenance and all unresolved/low-confidence limitations against the committed official-source evidence; publish a reproducible audit | in progress | 57e26db7 | 2026-10-14 | `audits/57e26db7/**` (new), `tests/test_57e26db7.py` (new), `COORDINATION.md` (this section) |
+| F57-2: audit and, if needed, repair the mobile executive summary, canonical every-match board, scheduled refresh and Pages publication without weakening fail-closed verification | in progress | 57e26db7 | 2026-10-14 | `scripts/c64a5e19/**`, `data/c64a5e19/**`, `picks-every-match/**`, `.github/workflows/every-match-c64a5e19.yml`, `scripts/build_site.py` (executive-summary integration only), `scripts/stage_site.py`, `README.md`, current generated root pages |
+| F57-3: run the complete repository test/build/link/browser gates, open a PR, merge only a passing build, and confirm the public GitHub Pages content | in progress | 57e26db7 | 2026-10-14 | `.github/workflows/pages.yml` only if a verified publication defect requires repair; otherwise audit/coordination outputs only |
+
+### Coordination check
+- Read the complete inherited board before claiming. All recorded implementation/integration claims are marked done/closed; the latest integration (session `53220a1b`, PR #92/#93) is complete, and GitHub reports no open pull requests at claim time.
+- The checkout is current `origin/main` commit `dd309e9` (2026-10-14T04:23:26Z). Historical session namespaces and evidence are read-only unless explicitly listed above. No probability will use HotSpawn crowd-pick percentages. Unsupported values remain clearly provisional/flagged or blank; the audit will not silently certify prior fallback assumptions.
