@@ -149,13 +149,13 @@ def executive_summary_html():
     )
     stamp_map = [
         ("picks-every-match/index.html", "Every-match picks at a glance",
-         "Provisional research, including disputed aliases and other-roster rating proxies. Not fully verified.",
+         "Every open match; supported probabilities or blank + flagged. Start here on mobile.",
          _board_stamp("data/c64a5e19/board.json", "generated_utc")),
         ("board/picks.html", "All picks · every match",
          "Expanded market/model research; inspect identity flags and source times before using estimates.",
          _board_stamp("data/fe803b80/board.json", "generated_utc")),
         ("ourline/index.html", "Our line",
-         "Market consensus blended with a calibrated Valve VRS model, plus a graded track record.",
+         "Separate market-first / historical-rating fallback board, plus a graded track record.",
          _board_stamp("data/f7279a54/board.json", "generated_utc")),
         ("coverage/index.html", "Coverage board",
          "Every lobby fixture: external line, exchange quote, originated estimate, or blank + flagged.",
@@ -425,28 +425,14 @@ def main() -> int:
     <a class="btn ghost" href="board/results.html" style="margin: 0;">All-picks track record</a>
   </div>
 </div>
-
 <h2>What this is</h2>
-<p>This dashboard reads the exact CS2 fixture response embedded in the public HotSpawn Pick'ems lobby,
-then looks up <strong>external betting lines</strong> for every listed match at Pinnacle and Bovada.
-Prediction-market snapshots are excluded from current picks. For each match where an eligible external price
-was found, the table shows the quoted odds, bookmaker margin and derived no-vig probability with the exact
-source link and read time. Matches where no eligible external line could be confirmed stay
-<strong>blank and flagged</strong> — they are never filled from HotSpawn or guessed.</p>
-<p class="note"><strong>Want a pick for every open match?</strong> The
-<a href="board/picks.html">All picks · every match</a> board (session fe803b80) publishes a pick and a
-probability for <strong>every</strong> fixture in the lobby's CS2 list — external bookmaker/exchange prices
-where they exist, plus a clearly labelled originated line (official Valve VRS rating, or this project's own
-Elo over published bo3.gg results) for the tier-C matches no reachable bookmaker prices. Every row carries
-its source link and the basis it uses, and there is a <a href="board/results.html">track record</a>. The
-earlier <a href="ourline/index.html">Our line</a> board (session f7279a54) stays available as preserved
-research with its own method and track record; model estimates are kept apart from the strictly
-source-priced tables here.</p>
-<p class="note"><strong>Executive summary — fastest route to all picks (mobile):</strong>
-<a href="picks-every-match/index.html">Every-match picks at a glance</a> (session c64a5e19) lists
-<strong>every</strong> open CS2 match with a pick and win probability on one phone-friendly page, including
-low-tier matches with no normal bookmaker price, which are resolved there only from documented fallback
-sources and flagged individually. Start there if you just want the picks; return here for the strict view.</p>
+<p>HotSpawn supplies fixture discovery only. External prices are used to derive no-vig probabilities;
+where prices are unavailable, the mobile board can originate clearly labelled estimates from unique,
+source-linked historical Valve ratings. No HotSpawn crowd-pick percentage enters the analysis.</p>
+<p class="note">The tables below are the separate strict Pinnacle/Bovada view, not the complete
+market-plus-fallback board. <a href="picks-every-match/index.html">Use the mobile board for all picks</a>.
+The <a href="ourline/index.html">Our Line board</a> and its <a href="ourline/results.html">track record</a>
+remain available for comparison; models are estimates, not officially verified forecasts.</p>
 
 <h2>Derived probabilities — the short version</h2>
 <p>Raw quoted decimal odds are converted to implied shares <code>q = 1 / odds</code>, normalised to remove

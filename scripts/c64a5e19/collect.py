@@ -67,7 +67,7 @@ def collect_hotspawn():
             fx = core.fixture_from_hotspawn(raw)
             if not fx: continue
             cur = fixtures.setdefault(fx["fixture_id"], {**fx, "seen_in": []})
-            if origin == "api": cur.update(fx)
+            # Keep the lobby entry authoritative; API-only entries are inventory research.
             cur["seen_in"].append(origin)
     from datetime import timedelta
     cutoff = core.to_iso(core.now_utc() - timedelta(days=4))
@@ -111,13 +111,15 @@ def collect_bovada(quotes):
     for group in data if isinstance(data, list) else []:
         league = ((group.get("path") or [{}])[0]).get("description")
         for ev in group.get("events") or []:
+            if ev.get("status") != "O" or ev.get("live"): continue
             comps = ev.get("competitors") or []
             if len(comps) != 2 or any(PROP_RE.search(str(c.get("name"))) for c in comps): continue
             home = next((c for c in comps if c.get("home")), comps[0]); away = next((c for c in comps if c is not home), comps[1])
             for dg in ev.get("displayGroups") or []:
                 for mk in dg.get("markets") or []:
                     if (str(mk.get("description", "")).strip().casefold() != "moneyline" or not (mk.get("period") or {}).get("main")): continue
-                    outs = {str(o.get("competitorId")): o for o in mk.get("outcomes") or []}
+                    if mk.get("status") != "O": continue
+                    outs = {str(o.get("competitorId")): o for o in mk.get("outcomes") or [] if o.get("status") == "O"}
                     oh, oa = outs.get(str(home.get("id"))), outs.get(str(away.get("id")))
                     if not oh or not oa: continue
                     dh, da = (oh.get("price") or {}).get("decimal"), (oa.get("price") or {}).get("decimal")
@@ -153,13 +155,8 @@ def _kalshi_mid(mk):
 
 KALSHI_TICKER_TIME = re.compile(r"-(\d{2})([A-Z]{3})(\d{2})(\d{2})(\d{2})")
 def kalshi_start(event_ticker):
-    m = KALSHI_TICKER_TIME.search(event_ticker or "")
-    if not m: return None
-    from datetime import datetime, timedelta, timezone
-    months = "JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC".split()
-    try: dt = datetime(2000 + int(m.group(1)), months.index(m.group(2)) + 1, int(m.group(3)), int(m.group(4)), int(m.group(5)), tzinfo=timezone.utc)
-    except ValueError: return None
-    return dt + timedelta(hours=4)
+    # No officially verified timezone-qualified kickoff in this event ticker.
+    return None
 
 def collect_kalshi(quotes, rejected):
     data, meta = fetch_json(KALSHI, {"Accept": "application/json"}); LOG["kalshi"] = meta
@@ -234,10 +231,12 @@ def main():
     probe("polymarket_probe", POLY, {"Accept": "application/json"}); probe("hltv_probe", HLTV, {"Accept": "text/html"}); probe("liquipedia_elisa_probe", LIQUIPEDIA_ELISA, {"Accept": "text/html"})
     names = {n for f in hs["fixtures"] for n in (f["team_a"], f["team_b"])}; vrs = collect_vrs(names)
     snap = {"session": "c64a5e19", "collected_from_utc": started, "collected_to_utc": core.to_iso(core.now_utc()), "hotspawn": hs, "quotes": quotes, "rejected_quotes": rejected, "vrs": vrs, "access_log": LOG}
-    if not hs["fixtures"]:
+    if not any("lobby_page" in f.get("seen_in", []) for f in hs["fixtures"]):
         prev = OUT / "snapshot.json"
         if prev.exists():
-            old = json.loads(prev.read_text()); snap["hotspawn"] = old.get("hotspawn", hs); snap["hotspawn_fallback_from"] = old.get("collected_to_utc")
+            old = json.loads(prev.read_text()); snap["hotspawn"] = old.get("hotspawn", hs); snap["hotspawn_fallback_from"] = old.get("hotspawn_fallback_from") or (old.get("access_log", {}).get("hotspawn_lobby_page", {}).get("at_utc")) or old.get("collected_to_utc")
+            old_meta = old.get("access_log", {}).get("hotspawn_lobby_page", {})
+            snap["access_log"]["hotspawn_lobby_page"]["age_header"] = old_meta.get("age_header")
     (OUT / "snapshot.json").write_text(json.dumps(snap, indent=1, ensure_ascii=False) + "\n")
     print("fixtures", len(snap["hotspawn"]["fixtures"]), "quotes", len(quotes), "rejected", len(rejected), "vrs teams", len(vrs.get("teams", [])))
     return 0
