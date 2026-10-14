@@ -12,11 +12,17 @@ if OUT.exists():
 OUT.mkdir(parents=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current',
+              'verify961','picks','site','market','live','fresh','ourline',
+              'picks-every-match','board'):
 # 'picks-every-match' added by session c64a5e19 (every-match board) as an additive single entry.
+# 'board' added by session fe803b80 (T-FULLCOV full-coverage picks board).
 # 'ourline' added by session f7279a54 (OURLINE board) as an additive single entry so /ourline/ is
 # published; requested in COORDINATION.md. f7279a54 does not touch NAV, README or other entries.
 # 'live' added by session 3cd9787c (T-COVER current-lobby coverage board), additive single entry.
+# 'board' added by session fe803b80 (T-FULLCOV full-coverage picks board). Additive single entry;
+# the root NAV and the executive summary on the landing page link into it, so the artifact must
+# carry the directory or every root page fails the staged-link check.
 # 'fresh' added by session 3cd9787c as an integration unblock: the shared root NAV links
 # fresh/index.html (section dd2b7fee landed on main), so the artifact must carry the directory or
 # every root page fails the staged-link check and no site is published. Additive single entry.

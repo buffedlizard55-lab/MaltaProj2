@@ -1,0 +1,438 @@
+#!/usr/bin/env python3
+"""T-FULLCOV board builder (session fe803b80). Reads the snapshot, writes ``data/fe803b80/board.json``.
+
+The board gives **every** open CS2 fixture listed in the HotSpawn pick'em lobby a pick and a
+probability, and labels where that number comes from:
+
+1. ``market``        — a two-way price from Pinnacle / Bovada / Kalshi / Melbet / Thunderpick-via-bo3.gg
+2. ``market+model``  — the market consensus blended with the official Valve-VRS rating model
+3. ``model``         — no reachable bookmaker prices this fixture, so the line is **originated**
+                       from ratings: official Valve VRS when both teams are listed, otherwise this
+                       project's own Elo computed from bo3.gg published match results
+
+Every row carries the exact source URL(s) and read time; nothing is inferred. A row that has no
+source at all stays blank with a flag rather than being filled.
+"""
+from __future__ import annotations
+
+import json
+import sys
+from datetime import datetime, timedelta
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import core  # noqa: E402
+
+ROOT = Path(__file__).resolve().parents[2]
+DATA = ROOT / "data" / "fe803b80"
+
+
+def load(name, default=None):
+    path = DATA / name
+    if not path.exists():
+        return default if default is not None else {}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def vrs_lookup(vrs_regions: dict) -> tuple[dict, list[str]]:
+    """canonical team key -> {"points","standing","region"}; global first, then regions."""
+    out: dict[str, dict] = {}
+    ambiguous: list[str] = []
+    for region in ("global", "europe", "americas", "asia"):
+        for name, row in (vrs_regions.get(region) or {}).items():
+            key, _, _ = core.canon(name)
+            if not key:
+                continue
+            if key in out:
+                if out[key]["points"] != row["points"]:
+                    ambiguous.append(f"{key}:{region}:{name}")
+                continue
+            out[key] = {"points": float(row["points"]), "standing": int(row["standing"]),
+                        "region": region, "vrs_name": name}
+    return out, sorted(set(ambiguous))
+
+
+def build_quotes_index(quotes: list[dict]) -> dict:
+    idx: dict[str, list[dict]] = {}
+    for qt in quotes:
+        for name in (qt.get("team_a"), qt.get("team_b")):
+            key, _, _ = core.canon(name)
+            if key:
+                idx.setdefault(key, []).append(qt)
+    return idx
+
+
+def resolve_market(fixture: dict, quote_index: dict) -> tuple[list[dict], list[dict]]:
+    """Return (joined entries, rejected joins) for one fixture."""
+    joined, rejected = [], []
+    candidates: list[dict] = []
+    for name in (fixture["team_a"], fixture["team_b"]):
+        key, _, _ = core.canon(name)
+        for qt in quote_index.get(key, []):
+            if qt not in candidates:
+                candidates.append(qt)
+    for qt in candidates:
+        info = core.match_quote(fixture, qt)
+        if info is None:
+            continue
+        if info.get("rejected"):
+            rejected.append({"quote": qt, "info": info})
+            continue
+        if qt.get("prob_a") is None:
+            continue
+        pa = core.oriented_prob(qt, info["swapped"])
+        if pa is None:
+            continue
+        joined.append({
+            "source_key": qt["source_key"], "source_name": qt["source_name"],
+            "public_url": qt["public_url"], "event_id": qt["event_id"],
+            "team_a": qt["team_a"], "team_b": qt["team_b"],
+            "decimal_a": qt["decimal_a"] if not info["swapped"] else qt["decimal_b"],
+            "decimal_b": qt["decimal_b"] if not info["swapped"] else qt["decimal_a"],
+            "prob_a": pa, "overround": qt.get("overround"), "raw_format": qt.get("raw_format"),
+            "retrieved_utc": qt.get("retrieved_utc"), "league": qt.get("league"),
+            "live": qt.get("live"), "start_utc": qt.get("start_utc"),
+            "alias_notes": info.get("alias_notes") or [], "alias_evidence": info.get("alias_evidence") or [],
+            "start_diff_h": info.get("start_diff_h"), "swapped": info["swapped"],
+            "lock_evidence": "no",
+        })
+    return joined, rejected
+
+
+def calibration_pairs(rows: list[dict]) -> list[dict]:
+    pairs = []
+    for row in rows:
+        if not row["market"] or not row["model"].get("vrs"):
+            continue
+        pairs.append({"delta": row["model"]["vrs"]["delta"],
+                      "market_prob_a": row["market"]["prob_a"],
+                      "fixture_id": row["fixture_id"]})
+    return pairs
+
+
+def elo_for(rows: list[dict], history: dict, vrs_teams: dict, bo3_ids: dict) -> tuple[dict, dict]:
+    """Our own Elo over bo3.gg published results, anchored to the official Valve VRS scale.
+
+    Anchoring: every team that has an official VRS row *and* a bo3.gg id is seeded to
+    ``1500 + (points - anchor)``, where ``anchor`` is the median VRS point value over the teams
+    in this snapshot. 400 VRS points therefore equal 400 Elo points, which matches the shape of
+    Valve's own published curve (a 400-point gap is worth ~90% win probability). This is a
+    documented modelling choice, not a source value.
+    """
+    matches = []
+    seen = set()
+    for tid in history:
+        for m in history.get(tid) or []:
+            a, b, w = m.get("team1_id"), m.get("team2_id"), m.get("winner_team_id")
+            if not a or not b or not w or m.get("id") in seen:
+                continue
+            seen.add(m.get("id"))
+            matches.append({"key_a": f"bo3:{a}", "key_b": f"bo3:{b}",
+                            "winner": "a" if str(w) == str(a) else "b",
+                            "start_utc": m.get("start_date")})
+    anchor = 1500.0
+    points = [rec["points"] for key, rec in vrs_teams.items() if bo3_ids.get(key)]
+    if points:
+        anchor = sorted(points)[len(points) // 2]
+    seed = {f"bo3:{bo3_ids[key]}": core.ELO_BASE + (rec["points"] - anchor)
+            for key, rec in vrs_teams.items() if bo3_ids.get(key)}
+    ratings = core.elo_run(matches, seed=seed)
+    info = {"matches": len(matches), "teams_seeded": len(seed), "anchor_vrs_points": anchor,
+            "k": core.ELO_K, "passes": 8}
+    return ratings, info
+
+
+def mark_first_seen(rows: list[dict], build_utc: str) -> dict:
+    """Record when each fixture id was first listed here, so the board can show what is new."""
+    path = DATA / "fixtures_seen.json"
+    seen = {}
+    if path.exists():
+        try:
+            seen = json.loads(path.read_text(encoding="utf-8"))
+        except ValueError:
+            seen = {}
+    changed = False
+    for row in rows:
+        fid = row["fixture_id"]
+        if fid not in seen:
+            seen[fid] = {"first_seen_utc": build_utc, "competition": row.get("competition"),
+                         "team_a": row["team_a"], "team_b": row["team_b"],
+                         "start_utc": row["start_utc"]}
+            changed = True
+        row["first_seen_utc"] = seen[fid]["first_seen_utc"]
+        row["new_since_first_build"] = seen[fid]["first_seen_utc"] == build_utc
+    if changed:
+        keep = {k: v for k, v in seen.items()}
+        path.write_text(json.dumps(keep, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    return seen
+
+
+def main() -> int:
+    snap = load("snapshot.json")
+    if not snap:
+        raise SystemExit("no data/fe803b80/snapshot.json — run collect.py first")
+    fixtures = snap["hotspawn"]["fixtures"]
+    permalinks = snap["hotspawn"].get("permalinks") or {}
+    quotes = snap.get("quotes") or []
+    rejected_quotes = snap.get("rejected_quotes") or []
+    vrs_teams, vrs_ambiguous = vrs_lookup(snap.get("vrs_regions") or {})
+    bo3 = snap.get("bo3gg") or {}
+
+    # canonical bo3.gg team id per canonical name (from the team records collected upstream)
+    bo3_ids: dict[str, str] = {}
+    for tid, rec in (bo3.get("teams") or {}).items():
+        for candidate in (rec.get("name"), rec.get("acronym"), rec.get("slug")):
+            key, _, _ = core.canon(candidate)
+            if key and key not in bo3_ids:
+                bo3_ids[key] = str(tid)
+
+    quote_index = build_quotes_index(quotes)
+
+    rows: list[dict] = []
+    for fx in fixtures:
+        key_a, evidence_a, note_a = core.canon(fx["team_a"])
+        key_b, evidence_b, note_b = core.canon(fx["team_b"])
+        joined, rejected = resolve_market(fx, quote_index)
+        market = core.consensus(joined)
+        vrs_a, vrs_b = vrs_teams.get(key_a), vrs_teams.get(key_b)
+        model = {}
+        if vrs_a and vrs_b:
+            model["vrs"] = {"delta": vrs_a["points"] - vrs_b["points"],
+                            "points_a": vrs_a["points"], "points_b": vrs_b["points"],
+                            "standing_a": vrs_a["standing"], "standing_b": vrs_b["standing"],
+                            "region_a": vrs_a["region"], "region_b": vrs_b["region"],
+                            "vrs_name_a": vrs_a["vrs_name"], "vrs_name_b": vrs_b["vrs_name"]}
+        rows.append({
+            "fixture_id": fx["fixture_id"], "competition": fx.get("competition"),
+            "tier": fx.get("tier"), "stage": fx.get("stage"), "best_of": fx.get("best_of"),
+            "points": fx.get("points"), "status": fx.get("status"),
+            "start_utc": fx["start_utc"], "lock_utc": fx.get("lock_utc"),
+            "team_a": fx["team_a"], "team_b": fx["team_b"], "winner": fx.get("winner"),
+            "seen_in": fx.get("seen_in") or [],
+            "hotspawn_url": permalinks.get(fx["fixture_id"], "https://play.hotspawn.com/lobby"),
+            "hotspawn_url_kind": ("match page" if fx["fixture_id"] in permalinks
+                                  else "official lobby page (no published permalink)"),
+            "key_a": key_a, "key_b": key_b,
+            "alias_note": " ".join(x for x in (note_a, note_b) if x) or None,
+            "alias_evidence": sorted(set(evidence_a + evidence_b)),
+            "market": market, "quotes": joined, "rejected_joins": rejected,
+            "model": model, "vrs_a": ({**vrs_a, "bo3_id": bo3_ids.get(key_a)} if vrs_a else None),
+            "vrs_b": ({**vrs_b, "bo3_id": bo3_ids.get(key_b)} if vrs_b else None),
+        })
+
+    mark_first_seen(rows, snap["generated_utc"])
+
+    pairs = calibration_pairs(rows)
+    calib = core.fit_calibration(pairs)
+
+    # ---------------- model probability: official VRS first, our own Elo as the last resort ----
+    for row in rows:
+        v = row["model"].get("vrs")
+        if v:
+            row["model"]["prob_a"] = core.vrs_prob(v["points_a"], v["points_b"], k=calib["k"])
+            row["model"]["basis"] = "valve_vrs"
+    needed_keys = sorted({r["key_a"] for r in rows if not r["model"].get("prob_a")} |
+                         {r["key_b"] for r in rows if not r["model"].get("prob_a")})
+    history = snap.get("bo3gg_history") or {}
+    elo_info = {"matches": 0, "teams_seeded": 0}
+    if history:
+        ratings, elo_info = elo_for(rows, history, vrs_teams, bo3_ids)
+        for row in rows:
+            if row["model"].get("prob_a") is not None:
+                continue
+            ida, idb = bo3_ids.get(row["key_a"]), bo3_ids.get(row["key_b"])
+            if not ida or not idb:
+                continue
+            ra, rb = ratings.get(f"bo3:{ida}"), ratings.get(f"bo3:{idb}")
+            if ra is None or rb is None:
+                continue
+            pa = core.elo_expected(ra, rb)
+            row["model"]["prob_a"] = pa
+            row["model"]["basis"] = "originated_elo"
+            row["model"]["elo"] = {"rating_a": round(ra, 1), "rating_b": round(rb, 1),
+                                   "matches": elo_info["matches"]}
+
+    # --------------------------------------------------------------- final line, pick, flags --
+    for row in rows:
+        market_pa = row["market"]["prob_a"] if row["market"] else None
+        n_sources = row["market"]["n_sources"] if row["market"] else 0
+        model_pa = row["model"].get("prob_a")
+        line = core.blend(market_pa, n_sources, model_pa)
+        if line:
+            pick_a = line["prob_a"] >= 0.5
+            row["line"] = {**line,
+                           "pick": row["team_a"] if pick_a else row["team_b"],
+                           "pick_probability": line["prob_a"] if pick_a else line["prob_b"],
+                           "confidence": core.confidence_label(
+                               line["prob_a"] if pick_a else line["prob_b"])}
+        else:
+            row["line"] = None
+        flags = []
+        if row["market"] is None:
+            flags.append("no_external_price_for_this_fixture")
+        if row["model"].get("basis") == "originated_elo":
+            flags.append("originated_elo_line_no_official_rating")
+        if row["model"].get("basis") == "valve_vrs" and row["market"] is None:
+            flags.append("originated_vrs_line")
+        if row["tier"] == "C":
+            flags.append("tier_c_event_low_coverage")
+        if row["line"] is None:
+            flags.append("no_source_input_available_row_left_blank")
+        if len(row["quotes"]) >= 1 and max(q["start_diff_h"] or 0 for q in row["quotes"]) > 3:
+            flags.append("joined_price_start_time_differs_more_than_3h")
+        if row["alias_note"]:
+            flags.append("alias_applied_see_evidence")
+        if row.get("new_since_first_build"):
+            flags.append("new_fixture_since_this_board_started")
+        row["flags"] = flags
+        row["sources"] = []
+        for qt in row["quotes"]:
+            row["sources"].append({"label": f"{qt['source_name']} · {qt['raw_format']}",
+                                   "url": qt["public_url"], "read_utc": qt["retrieved_utc"],
+                                   "note": f"event {qt['event_id']}"})
+        if row["model"].get("basis") == "valve_vrs":
+            for region, name, standing, pts in (
+                    (row["vrs_a"]["region"], row["vrs_a"]["vrs_name"], row["vrs_a"]["standing"],
+                     row["vrs_a"]["points"]),
+                    (row["vrs_b"]["region"], row["vrs_b"]["vrs_name"], row["vrs_b"]["standing"],
+                     row["vrs_b"]["points"])):
+                url = next((e["page_url"] for e in (snap.get("vrs") or {}).get("evidence", [])
+                            if e["region"] == region), None)
+                row["sources"].append({"label": f"Valve VRS {region} standings · {name} "
+                                                f"#{standing} ({pts:g} pts)",
+                                       "url": url, "read_utc": snap.get("generated_utc"),
+                                       "note": "official Valve regional standings snapshot"})
+        if row["model"].get("basis") == "originated_elo":
+            row["sources"].append({"label": "bo3.gg published match results (Elo input)",
+                                   "url": "https://bo3.gg/matches",
+                                   "read_utc": snap.get("generated_utc"),
+                                   "note": f"{row['model'].get('elo', {}).get('matches', 0)} "
+                                           "finished matches"})
+        if row["hotspawn_url_kind"] == "match page":
+            row["sources"].append({"label": "HotSpawn lobby match page (fixture + settlement)",
+                                   "url": row["hotspawn_url"],
+                                   "read_utc": snap["access"]["hotspawn_lobby_page"]["at_utc"],
+                                   "note": "fixture discovery and final score only"})
+
+    open_rows, closed_rows = core.close_rows(rows)
+    for row in open_rows:
+        row["state"] = "open"
+    for row in closed_rows:
+        row["state"] = "closed"
+
+    # -------------------------------------------------------------------- track record (history)
+    hist_path = DATA / "history.jsonl"
+    existing = {}
+    if hist_path.exists():
+        for line in hist_path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            rec = json.loads(line)
+            key = (rec["fixture_id"], rec.get("published_utc"))
+            existing[key] = rec
+    now = core.now_utc()
+    by_id = {r["fixture_id"]: r for r in rows}
+    for rec in existing.values():
+        fx = by_id.get(rec["fixture_id"])
+        if not fx or rec.get("settled") is not None:
+            continue
+        if fx.get("winner") in ("a", "b") and fx["line"]:
+            won = (fx["winner"] == "a") == (rec["pick"] == fx["team_a"])
+            rec["settled"] = "won" if won else "lost"
+            rec["winner"] = fx["team_a"] if fx["winner"] == "a" else fx["team_b"]
+            rec["settled_utc"] = core.to_iso(now)
+            rec["settlement_source"] = fx["hotspawn_url"]
+    new_records = []
+    for row in open_rows:
+        if not row["line"] or row["lock_utc"] is None:
+            continue
+        key = (row["fixture_id"], snap["generated_utc"])
+        if key in existing:
+            continue
+        new_records.append({
+            "fixture_id": row["fixture_id"], "published_utc": snap["generated_utc"],
+            "competition": row["competition"], "start_utc": row["start_utc"],
+            "team_a": row["team_a"], "team_b": row["team_b"], "pick": row["line"]["pick"],
+            "pick_probability": round(row["line"]["pick_probability"], 4),
+            "basis": row["line"]["basis"], "settled": None, "winner": None,
+        })
+    all_records = list(existing.values()) + new_records
+    if new_records or any(r.get("settled") for r in existing.values()):
+        hist_path.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in all_records),
+                             encoding="utf-8")
+    settled = [r for r in all_records if r.get("settled") in ("won", "lost")]
+    track = {"settled": len(settled), "won": sum(1 for r in settled if r["settled"] == "won"),
+             "pending": sum(1 for r in all_records if not r.get("settled")),
+             "brier": (sum((r["pick_probability"] - (1.0 if r["settled"] == "won" else 0.0)) ** 2
+                           for r in settled) / len(settled)) if settled else None,
+             "by_basis": {}}
+    for basis in ("market", "market+model", "model"):
+        sub = [r for r in settled if r["basis"] == basis]
+        track["by_basis"][basis] = {
+            "n": len(sub), "won": sum(1 for r in sub if r["settled"] == "won"),
+            "accuracy": (sum(1 for r in sub if r["settled"] == "won") / len(sub)) if sub else None}
+
+    # -------------------------------------------------------------- unmatched / rejected quotes
+    matched_ids = {q["event_id"] for row in rows for q in row["quotes"]}
+    unmatched = [qt for qt in quotes if qt["event_id"] not in matched_ids]
+
+    summary = {
+        "fixtures_total": len(rows),
+        "open": len(open_rows),
+        "closed": len(closed_rows),
+        "open_with_market": sum(1 for r in open_rows if r["market"]),
+        "open_market_only": sum(1 for r in open_rows if r["line"] and r["line"]["basis"] == "market"),
+        "open_market_model": sum(1 for r in open_rows if r["line"] and r["line"]["basis"] == "market+model"),
+        "open_model_only": sum(1 for r in open_rows if r["line"] and r["line"]["basis"] == "model"),
+        "open_with_pick": sum(1 for r in open_rows if r["line"]),
+        "open_blank": sum(1 for r in open_rows if not r["line"]),
+        "quotes_total": len(quotes),
+        "quotes_joined_events": len(matched_ids),
+        "quotes_unmatched": len(unmatched),
+        "rejected_quotes": len(rejected_quotes),
+        "sources": {},
+    }
+    for qt in quotes:
+        summary["sources"][qt["source_key"]] = summary["sources"].get(qt["source_key"], 0) + 1
+
+    doc = {
+        "session": "fe803b80",
+        "generated_utc": core.to_iso(now),
+        "snapshot_utc": snap.get("generated_utc"),
+        "fixture_source_read_utc": snap["access"]["hotspawn_lobby_page"]["at_utc"],
+        "week": snap["hotspawn"].get("week"),
+        "summary": summary,
+        "calibration": calib,
+        "vrs": {k: v for k, v in (snap.get("vrs") or {}).items() if k != "teams_global"},
+        "vrs_ambiguous_keys": vrs_ambiguous,
+        "elo": elo_info,
+        "track_record": track,
+        "history": all_records,
+        "open": open_rows,
+        "closed": closed_rows,
+        "unmatched_quotes": unmatched,
+        "rejected_quotes": rejected_quotes,
+        "quotes": quotes,
+        "bo3gg_teams": bo3.get("teams") or {},
+        "bo3gg_tournaments": bo3.get("tournaments") or {},
+        "access": snap.get("access") or {},
+        "notes": [
+            "HotSpawn is used for fixture discovery and final scores only; its crowd pick "
+            "percentage is never read, never stored and never an input.",
+            "A probability exists for every open fixture: from market quotes, from the official "
+            "Valve VRS model, or from this project's own Elo over bo3.gg published results.",
+            "Values that no source supports stay blank and flagged.",
+        ],
+    }
+    (DATA / "board.json").write_text(json.dumps(doc, ensure_ascii=False, allow_nan=False) + "\n",
+                                     encoding="utf-8")
+    print(json.dumps({k: summary[k] for k in ("open", "open_with_pick", "open_blank",
+                                              "open_with_market", "quotes_total",
+                                              "quotes_unmatched")}, indent=1))
+    print(f"calibration k={calib['k']:.4f} fitted={calib['fitted']} pairs={calib['n_pairs']}")
+    print(f"track record: {track['settled']} settled, {track['pending']} pending")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

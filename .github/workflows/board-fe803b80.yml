@@ -1,0 +1,97 @@
+name: board (fe803b80)
+
+# Session fe803b80 / T-FULLCOV. Refreshes the full-coverage pick board: the complete HotSpawn CS2
+# lobby inventory with external betting lines and a labelled, originated line for the matches no
+# bookmaker prices. No manual input. Scope guard: this workflow writes only data/fe803b80/** and
+# board/** (plus this workflow's own dispatch of the shared Pages workflow).
+#
+# Why the dispatch chain: GitHub's `schedule` trigger is best-effort, so on `main` each run waits
+# ~25 minutes after publishing and then dispatches the next run itself (workflow_dispatch is the one
+# event a GITHUB_TOKEN may trigger). The cron entry and the update-data hook restart the chain if it
+# ever breaks; a guard prevents two chains from running at once.
+on:
+  push:
+    branches: ['arena/fe803b80-maltaproj2', 'main']
+    paths:
+      - 'scripts/fe803b80/**'
+      - 'tests/test_fe803b80.py'
+      - '.github/workflows/board-fe803b80.yml'
+  schedule:
+    - cron: '11,41 * * * *'
+  workflow_run:
+    workflows: ['update-data']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: board-fe803b80-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Collect lobby fixtures, external prices and official rating snapshots
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/fe803b80/collect.py
+      - name: Build the board (re-derives every number from the raw snapshot)
+        run: python3 scripts/fe803b80/build.py
+      - name: Render the mobile-first section
+        run: python3 scripts/fe803b80/site.py
+      - name: Tests
+        run: python3 -m unittest tests.test_fe803b80 -v
+      - name: Commit and push (rebase before every push; never discards another session's work)
+        env:
+          REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config user.name "board-bot (fe803b80)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/fe803b80 board
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "board(fe803b80): refresh full-coverage picks $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then
+              # Pushes made with GITHUB_TOKEN do not trigger other workflows, so on main explicitly
+              # dispatch the shared Pages workflow (it re-runs every test before deploying).
+              if [ "$REF_NAME" = "main" ]; then gh workflow run pages.yml --ref main || echo "pages dispatch failed"; fi
+              exit 0
+            fi
+            sleep $((attempt * 7))
+          done
+          exit 1
+
+  next:
+    needs: refresh
+    if: always() && (github.ref == 'refs/heads/main' || github.event_name == 'workflow_run')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Wait, then dispatch the next refresh unless another run is already queued/running
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          sleep 1500
+          others=$(gh api "repos/$GH_REPO/actions/workflows/board-fe803b80.yml/runs?per_page=30" \
+            --jq "[.workflow_runs[] | select(.id != $RUN_ID) | select(.status==\"queued\" or .status==\"in_progress\" or .status==\"waiting\" or .status==\"pending\")] | length")
+          echo "other active runs: $others"
+          if [ "$others" = "0" ]; then
+            gh workflow run board-fe803b80.yml --ref main
+          fi

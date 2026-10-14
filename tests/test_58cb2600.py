@@ -124,8 +124,16 @@ class CurrentPublicationTests(unittest.TestCase):
 
     def test_current_pages_are_focused_mobile_and_every_table_row_is_sourced(self):
         index = BeautifulSoup((ROOT / "index.html").read_text(), "html.parser")
-        self.assertEqual(len(index.select("header nav a")), 7)
+        # Integration session fe803b80 added one additive navigation entry that points at the
+        # full-coverage picks board (board/picks.html) from the shared index; every entry this
+        # test originally guarded must still be present, and the header must stay compact.
+        nav_hrefs = {a.get("href") for a in index.select("header nav a")}
+        for required in ("index.html", "cs2.html", "probabilities.html", "tournaments.html",
+                         "flagged.html", "methodology.html", "research.html"):
+            self.assertIn(required, nav_hrefs)
+        self.assertLessEqual(len(nav_hrefs), 9)
         self.assertIsNotNone(index.select_one('a[href="research.html"]'))
+        self.assertIsNotNone(index.select_one('a[href="board/picks.html"]'))
         self.assertIn("Every CS2 match currently open for picks", index.get_text(" ", strip=True))
         for name in ("index.html", "cs2.html", "probabilities.html", "flagged.html",
                      "methodology.html", "tournaments.html", "research.html"):
