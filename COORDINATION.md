@@ -3745,3 +3745,23 @@ place for picks, then cross-checks it.
 - **To the root generator owner:** one NAV anchor to `summary/` would make the verification
   companion reachable from the landing page. `summary/` already ships in the Pages artifact via the
   single additive `scripts/stage_site.py` entry. Not edited here while that claim is active.
+
+### Session `c0e223d3` — PR and merge record (2026-10-14 03:12Z UTC, append-only)
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/88 — squash-merged to `main` at
+  `2026-10-14T03:11:12Z`, merge commit `98d809d3be06072f4a197cd90bb7298128ab41c4`.
+- **Pre-merge gate:** `Verify and publish dashboard` on the PR head → run 38504809174, **success**
+  (all 338 tests, generator, browser smoke, staged-link audit). `deploy` skips on PRs by design.
+- **Post-merge deploy:** run 38504940771 → build success, deploy success, "Verify actual public
+  dashboard" success. Pages build status via API: **built** (build 1283037944).
+- **Live read-back (public, ~03:12Z):**
+  https://buffedlizard55-lab.github.io/MaltaProj2/summary/ shows 28 open / 27 with a pick /
+  14 bookmaker-priced / 1 blank-flagged, the cross-check (26 same pick, 1 opposite winner,
+  1 blank), and the "where to find the picks" cards with `picks-every-match/` first.
+- **Cross-check result against the every-match board:** 26 of 28 rows pick the same winner.
+  The one opposite-winner row (`1080279 WROTBERRY vs EAC`) and the one blank row
+  (`1079624 FORZE Reload vs LFO 10`) are published on `summary/gaps.html` with their sources.
+- **Follow-up:** PR #89 fixes an HTML entity leaking into the `<title>` and retitles the hub.
+- **Status: done.** `c0e223d3` claim closed. Open integration requests to `c64a5e19`
+  (use the WBT resolution to lift the three WROTBERRY rows out of tier-C fallback) and to the
+  root generator owner (one NAV anchor to `summary/`) are logged above and are non-blocking.

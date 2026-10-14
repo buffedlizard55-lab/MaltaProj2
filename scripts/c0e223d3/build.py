@@ -355,7 +355,7 @@ def page(title: str, active: str, body: str, sub: str = "") -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{core.esc(title)}</title>
+<title>{core.esc(title).replace("&amp;mdash;", "&#8212;").replace("&amp;", "&amp;")}</title>
 <meta name="description" content="HotSpawn Pick'ems CS2 pick hub with probabilities derived from external betting lines and official Valve / HLTV sources.">
 <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -612,9 +612,10 @@ market prices and ratings differently.</p>
 {render_picks_table(rows)}
 """
     (OUT / "index.html").write_text(
-        page("CS2 pick hub &mdash; start here", "index.html",
-             index_body,
-             "Executive summary: where the picks are, and every open CS2 pick in one table."),
+        page("Verification & sources hub - where the picks are, and how we checked them",
+             "index.html", index_body,
+             "Where to find the picks, an independent cross-check of every one, and the "
+             "official-source evidence behind the matches with no bookmaker price."),
         encoding="utf-8",
     )
 
