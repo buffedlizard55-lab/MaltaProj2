@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -47,8 +48,21 @@ def norm(name: str) -> str:
     return "".join(ch for ch in str(name or "").lower() if ch.isalnum())
 
 
-def parse_iso(value):
-    return core.parse_iso(value) if hasattr(core, "parse_iso") else None
+def _parse_time(value):
+    """Parse the ISO-8601 timestamps several public feeds use. Returns None when not parseable."""
+    if not value:
+        return None
+    text = str(value).strip().replace("Z", "+00:00")
+    try:
+        parsed = datetime.fromisoformat(text)
+    except ValueError:
+        try:
+            parsed = datetime.strptime(text[:19], "%Y-%m-%dT%H:%M:%S")
+        except ValueError:
+            return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
 
 
 def now_utc_iso() -> str:
@@ -232,6 +246,8 @@ def main() -> int:
                 })
                 if price.get("swapped"):
                     row["flags"].append("price_orientation_swapped_to_match_fixture")
+                if price.get("from_exchange_midpoints"):
+                    row["flags"].append("probability_from_exchange_bid_ask_midpoints")
                 rows.append(finalize(row))
                 continue
 
@@ -287,6 +303,8 @@ def main() -> int:
                     })
         if pa is not None:
             row["prob_a"], row["prob_b"] = round(pa, 4), round(pb, 4)
+        if row["basis"] in ("originated_vrs", "originated_rank"):
+            row["evidence"].extend(slot_corroboration(snapshot, m))
         rows.append(finalize(row))
 
     # ------------------------------------------- cross-check against the other published boards
@@ -435,6 +453,8 @@ def finalize(row):
         row["confidence"] = confidence(row["pick_prob"])
         if row["basis"] in ("originated_vrs", "originated_rank"):
             row["confidence"] = f"{row['confidence']} (originated)"
+        elif "probability_from_exchange_bid_ask_midpoints" in row["flags"]:
+            row["confidence"] = f"{row['confidence']} (exchange)"
     row["flags"] = sorted(set(row["flags"]))
     return row
 
@@ -501,6 +521,11 @@ def match_exchange_book(snapshot, fixture):
             mids.append((bid + ask) / 2.0)
         if len(mids) != 2 or sum(mids) <= 0:
             continue
+        # The two sides are complements in a genuine two-outcome market, so the raw midpoints must
+        # add up to about 1.0. A book where they do not is quoting stale or placeholder prices on
+        # an untraded market, and normalising it would manufacture a confident-looking number.
+        if not (0.85 <= (mids[0] + mids[1]) <= 1.15):
+            continue
         pa = mids[0] / (mids[0] + mids[1])
         if pa <= 0 or pa >= 1:
             continue
@@ -520,6 +545,65 @@ def match_exchange_book(snapshot, fixture):
             "from_exchange_midpoints": True,
         }
     return None
+
+
+def slot_corroboration(snapshot, fixture):
+    """Esportsbook prices for the same slot under a different team label - shown, never joined.
+
+    Several low-tier events are priced by esportsbooks under a label that differs from HotSpawn's
+    (for example Melbet lists 'WhiteBIT Team' where HotSpawn says 'WROTBERRY'). Those prices are
+    published next to the originated line as direction corroboration only: they are not joined and
+    never enter the arithmetic, because the identity is exactly what is in dispute.
+    """
+    a, b = norm(fixture.get("team_a")), norm(fixture.get("team_b"))
+    if not a or not b:
+        return []
+    start = _parse_time(fixture.get("scheduled_start_time"))
+    if start is None:
+        return []
+    out = []
+    seen = set()
+    for q in snapshot.get("quotes") or []:
+        qa, qb = norm(q.get("team_a")), norm(q.get("team_b"))
+        key = (q.get("source_key"), q.get("event_id"))
+        if key in seen:
+            continue
+        matches_a, matches_b = (qa == a or qb == a), (qa == b or qb == b)
+        if matches_a == matches_b:  # need exactly one side to line up
+            continue
+        q_start = _parse_time(q.get("start_utc"))
+        # Fail closed: without a published start time on both sides this cannot be shown to be the
+        # same slot, and a neighbouring fixture that merely shares one team must never be attached.
+        if q_start is None or abs((q_start - start).total_seconds()) > 1800:
+            continue
+        seen.add(key)
+        pa, pb = no_vig(q["decimal_a"], q["decimal_b"])
+        if pa is None:
+            continue
+        # orient the probability onto the fixture's team A
+        prob_a = pa if qa == a else pb
+        out.append({
+            "kind": "esportsbook_same_slot_not_joined",
+            "source": q.get("source_name"),
+            "url": q.get("public_url"),
+            "detail": (f"{q.get('team_a')} {q.get('decimal_a')} / {q.get('team_b')} "
+                       f"{q.get('decimal_b')} -> {prob_a:.3f} for {fixture.get('team_a')} "
+                       f"if the label is the same team. NOT joined: the identity is what is in "
+                       f"dispute on this event."),
+            "read_utc": (snapshot.get("sources") or [{}])[0].get("retrieved_utc")
+                        or snapshot.get("collected_utc"),
+        })
+    if out:
+        out.append({
+            "kind": "note",
+            "source": "7177d07f rule",
+            "url": "https://play.hotspawn.com/lobby",
+            "detail": ("Slot prices above are published for comparison only. They are excluded from "
+                       "the probability because joining them would assume the identity they are "
+                       "meant to test."),
+            "read_utc": None,
+        })
+    return out
 
 
 def calibration_k(lines_doc, idx):
