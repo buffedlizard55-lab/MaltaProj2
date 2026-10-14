@@ -89,6 +89,10 @@ NAV = [
     # integration link requested by session c0e223d3 (logged in COORDINATION.md) and added by the
     # 53220a1b final integration: the mobile "where the picks are" verification hub.
     ("summary/index.html", "Where the picks are"),
+    # integration link added by session b1fb1465 (T-EXEC-B1FB1465-INTEGRATE, single additive anchor
+    # documented in COORDINATION.md): the section's mobile executive summary, its picks list and the
+    # separate unresolved-picks & limitations page. Additive entry only; no other NAV item changes.
+    ("exec/index.html", "Executive summary (b1fb1465)"),
 ]
 
 
@@ -149,6 +153,9 @@ def executive_summary_html():
         ("cs2.html", "CS2 picks (strict)",
          "Root table: only eligible primary-bookmaker prices; unverified rows stay blank.",
          None),
+        ("exec/index.html", "Executive summary & picks (b1fb1465)",
+         "Coverage, every open match's pick and the separate unresolved-picks & limitations section.",
+         _board_stamp("data/b1fb1465/board.json", "generated_utc")),
         ("summary/index.html", "Where the picks are — verification hub",
          "Independent cross-checks, sources with read times, gaps and the repository review.",
          None),
@@ -166,6 +173,15 @@ def executive_summary_html():
 <div class="cards" id="where-the-picks" style="display:block;background:#12203a;border:1px solid #2b3752;border-radius:14px;padding:14px;margin:16px 0">
   <h2 style="margin-top:0">Executive summary — where the picks are</h2>
   <p>{coverage}</p>
+  <p id="executive-summary-b1fb1465"><strong>Session b1fb1465 executive summary.</strong> A second,
+  independent route to the same requirement: <a href="exec/index.html">coverage and every open match</a>,
+  plus its own separate <a href="exec/unresolved.html">Unresolved picks &amp; limitations</a> section that
+  lists what was tried per fixture (HLTV first, then esportsbooks and esports betting lines, then the
+  documented Valve VRS fallback), the HTTP status every source answered with, and every quote that was
+  refused for a kick-off or naming disagreement. Its counts are published against its own snapshot time
+  and are never merged into the numbers above.
+  <a class="btn" href="exec/index.html">Executive summary &amp; picks (b1fb1465)</a>
+  <a class="btn ghost" href="exec/unresolved.html">Unresolved &amp; limitations</a></p>
   <p><a class="btn" href="picks-every-match/index.html">Every-match picks at a glance</a>
      <a class="btn" href="board/picks.html">All picks · every match</a>
      <a class="btn ghost" href="summary/index.html">Where the picks are (hub)</a>
