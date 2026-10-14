@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import base64
 import json
+import os
 import re
 import subprocess
 import sys
@@ -42,9 +43,12 @@ def now_iso() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def fetch(url: str, accept: str = "application/json"):
+def fetch(url: str, accept: str = "application/json", headers: dict | None = None):
     """Return (status, body_bytes, error). Never raises."""
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": accept})
+    hdrs = {"User-Agent": UA, "Accept": accept}
+    if headers:
+        hdrs.update(headers)
+    req = urllib.request.Request(url, headers=hdrs)
     try:
         with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
             return int(resp.status), resp.read(), None
@@ -52,6 +56,14 @@ def fetch(url: str, accept: str = "application/json"):
         return int(exc.code), b"", f"HTTPError {exc.code}"
     except Exception as exc:  # pragma: no cover - network dependent
         return None, b"", f"{type(exc).__name__}: {exc}"
+
+
+def _preview(body: bytes, limit: int = 700) -> str:
+    """Short, printable preview of a raw response, published as parser diagnostics."""
+    try:
+        return body[:limit].decode("utf-8", "replace")
+    except Exception:  # pragma: no cover
+        return ""
 
 
 # --------------------------------------------------------------------- Valve VRS
@@ -82,9 +94,58 @@ def valve_latest_path():
         return None, f"{type(exc).__name__}: {exc}"
 
 
+def _github_contents(path: str):
+    """Read one file from a public GitHub repository.
+
+    Tries the GitHub CLI (which uses GH_TOKEN when it is set) and falls back to the public REST API,
+    so the collector works both on a runner (with a token) and anywhere else without one.
+    """
+    if os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN"):
+        try:
+            proc = subprocess.run(
+                ["gh", "api", f"repos/{VALVE_REPO}/contents/{path}"],
+                capture_output=True, text=True, timeout=60,
+            )
+            if proc.returncode == 0 and proc.stdout.strip():
+                return json.loads(proc.stdout), None
+            err = f"gh api exited {proc.returncode}: {proc.stderr.strip()[:200]}"
+        except Exception as exc:
+            err = f"{type(exc).__name__}: {exc}"
+    else:
+        err = "no GH_TOKEN/GITHUB_TOKEN in the environment"
+    status, body, api_err = fetch(f"https://api.github.com/repos/{VALVE_REPO}/contents/{path}")
+    if body:
+        try:
+            return json.loads(body.decode("utf-8", "replace")), None
+        except Exception as exc:
+            return None, f"{err}; REST parse failed: {type(exc).__name__}: {exc}"
+    return None, f"{err}; REST failed: {api_err}"
+
+
+def valve_latest_path_rest():
+    status, body, err = fetch(f"https://api.github.com/repos/{VALVE_REPO}/contents/live/2026")
+    if not body:
+        return None, f"REST listing failed: {err}"
+    try:
+        names = [
+            entry.get("name")
+            for entry in json.loads(body.decode("utf-8", "replace"))
+            if isinstance(entry, dict)
+            and re.fullmatch(r"standings_global_\d{4}_\d{2}_\d{2}\.md", entry.get("name") or "")
+        ]
+    except Exception as exc:
+        return None, f"REST listing parse failed: {type(exc).__name__}: {exc}"
+    if not names:
+        return None, "no standings_global_*.md listed in live/2026"
+    return sorted(names)[-1], None
+
+
 def collect_valve():
     name, err = valve_latest_path()
-    if err:
+    if not name:
+        name, err2 = valve_latest_path_rest()
+        err = f"{err}; {err2}" if (err and err2) else (err or err2)
+    if not name:
         return {
             "key": "valve_vrs",
             "url": f"https://github.com/{VALVE_REPO}",
@@ -96,20 +157,28 @@ def collect_valve():
             "standings": [],
             "snapshot": None,
         }
+    payload, perr = _github_contents(f"live/2026/{name}")
+    if not payload:
+        return {
+            "key": "valve_vrs",
+            "url": f"https://github.com/{VALVE_REPO}/blob/main/live/2026/{name}",
+            "api_url": f"https://api.github.com/repos/{VALVE_REPO}/contents/live/2026/{name}",
+            "http_status": None,
+            "error": perr,
+            "bytes": 0,
+            "rows": 0,
+            "retrieved_utc": now_iso(),
+            "standings": [],
+            "snapshot": None,
+        }
     try:
-        proc = subprocess.run(
-            ["gh", "api", f"repos/{VALVE_REPO}/contents/live/2026/{name}"],
-            capture_output=True, text=True, timeout=60,
-        )
-        if proc.returncode != 0:
-            raise RuntimeError(f"gh api exited {proc.returncode}: {proc.stderr.strip()[:200]}")
-        payload = json.loads(proc.stdout)
         raw = base64.b64decode(payload.get("content") or "")
         text = raw.decode("utf-8", "replace")
     except Exception as exc:
         return {
             "key": "valve_vrs",
             "url": f"https://github.com/{VALVE_REPO}/blob/main/live/2026/{name}",
+            "api_url": f"https://api.github.com/repos/{VALVE_REPO}/contents/live/2026/{name}",
             "http_status": None,
             "error": f"{type(exc).__name__}: {exc}",
             "bytes": 0,
@@ -197,6 +266,7 @@ def collect_melbet():
         "bytes": len(body),
         "rows": len(quotes),
         "retrieved_utc": now_iso(),
+        "body_preview": _preview(body) if (body and not quotes) else "",
     }, quotes
 
 
@@ -246,6 +316,7 @@ def collect_bo3gg():
         "bytes": len(body),
         "rows": len(quotes),
         "retrieved_utc": now_iso(),
+        "body_preview": _preview(body) if (body and not quotes) else "",
     }, quotes
 
 
@@ -265,6 +336,8 @@ def collect_kalshi():
                     "api_url": url,
                     "event_id": mkt.get("event_ticker") or mkt.get("ticker") or "",
                     "ticker": mkt.get("ticker") or "",
+                    "title": mkt.get("title") or "",
+                    "subtitle": mkt.get("subtitle") or mkt.get("yes_sub_title") or "",
                     "yes_bid_dollars": mkt.get("yes_bid_dollars"),
                     "yes_ask_dollars": mkt.get("yes_ask_dollars"),
                     "close_time": mkt.get("close_time"),

@@ -26,6 +26,8 @@ jobs:
           python-version: '3.11'
       - run: pip install -r scripts/requirements.txt
       - name: Collect evidence for unresolved fixtures (HLTV -> esportsbooks -> Valve VRS)
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: python scripts/7177d07f/collect.py
       - name: Build the resolved board
         run: python scripts/7177d07f/build.py
