@@ -11,9 +11,28 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts" / "f7279a54"))
-import core  # noqa: E402
-import build  # noqa: E402
+_HERE = str(ROOT / "scripts" / "f7279a54")
+
+
+def _load(name, filename):
+    # Load under a unique module name: other suites import scripts/build.py as plain `build`
+    # and scripts/collect.py as `collect`, so this test must not leave those names cached.
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(name, str(Path(_HERE) / filename))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+sys.path.insert(0, _HERE)
+try:
+    core = _load("ourline_core", "core.py")
+    sys.modules["core"] = core          # build.py does `import core`
+    build = _load("ourline_build", "build.py")
+finally:
+    while _HERE in sys.path:
+        sys.path.remove(_HERE)
+    sys.modules.pop("core", None)
 
 BOARD = ROOT / "data" / "f7279a54" / "board.json"
 SITE = ROOT / "ourline"
