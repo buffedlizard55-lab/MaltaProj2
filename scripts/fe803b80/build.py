@@ -186,6 +186,30 @@ def main() -> int:
             if key and key not in bo3_ids:
                 bo3_ids[key] = str(tid)
 
+    # Second route to the same ids: bo3.gg publishes the two teams of a fixture together, so a
+    # fixture whose individual team name is not resolvable can still be resolved by its pairing
+    # (either orientation, and only when both sides agree). Used only to feed the rating history;
+    # it never creates a price.
+    pair_ids: dict[tuple[str, str], tuple[str, str]] = {}
+    for m in bo3.get("matches") or []:
+        id1, id2 = m.get("team1_id"), m.get("team2_id")
+        if not id1 or not id2:
+            continue
+        name1 = ((bo3.get("teams") or {}).get(str(id1)) or {}).get("name")
+        name2 = ((bo3.get("teams") or {}).get(str(id2)) or {}).get("name")
+        key1, _, _ = core.canon(name1)
+        key2, _, _ = core.canon(name2)
+        if key1 and key2:
+            pair_ids.setdefault((key1, key2), (str(id1), str(id2)))
+
+    def resolve_pair(key_a: str, key_b: str) -> tuple[str | None, str | None]:
+        for (x, y), (i1, i2) in pair_ids.items():
+            if x == key_a and y == key_b:
+                return i1, i2
+            if x == key_b and y == key_a:
+                return i2, i1
+        return None, None
+
     quote_index = build_quotes_index(quotes)
 
     rows: list[dict] = []
@@ -241,6 +265,10 @@ def main() -> int:
             if row["model"].get("prob_a") is not None:
                 continue
             ida, idb = bo3_ids.get(row["key_a"]), bo3_ids.get(row["key_b"])
+            if not ida or not idb:
+                # fall back to the published pairing of the same two teams
+                pa_id, pb_id = resolve_pair(row["key_a"], row["key_b"])
+                ida, idb = ida or pa_id, idb or pb_id
             if not ida or not idb:
                 continue
             ra, rb = ratings.get(f"bo3:{ida}"), ratings.get(f"bo3:{idb}")
