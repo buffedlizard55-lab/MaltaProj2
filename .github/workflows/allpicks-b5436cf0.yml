@@ -1,0 +1,72 @@
+name: picks-all (every-match complete picks)
+
+# Session b5436cf0 — complete picks for EVERY open CS2 fixture on the HotSpawn
+# pick'em lobby (incl. low-tier matches without bookmaker coverage), resolved
+# market → research (HLTV, esportsbooks, betting lines) → own model. HotSpawn is
+# fixture discovery only; its crowd percentages are never probability inputs.
+# Cadence: every 4 hours (well within the required 4-8h refresh window).
+
+on:
+  schedule:
+    - cron: "23 */4 * * *"
+  workflow_dispatch:
+  push:
+    branches: ["**"]
+    paths:
+      - "picks-all/**"
+      - "data/b5436cf0/**"
+      - "scripts/b5436cf0/**"
+      - "tests/test_b5436cf0.py"
+      - ".github/workflows/allpicks-b5436cf0.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: allpicks-b5436cf0
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the firing ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Collect best-effort live probes (fail-open, recorded only)
+        run: python3 scripts/b5436cf0/collect.py
+
+      - name: Build picks-all + board (fail-closed link check)
+        run: python3 scripts/b5436cf0/build.py
+
+      - name: Run session tests
+        run: python3 -m unittest tests.test_b5436cf0 -v
+
+      - name: Commit refreshed picks
+        run: |
+          git config user.name "malta-proj2 automation"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/b5436cf0 picks-all
+          if git diff --cached --quiet; then
+            echo "No content change to publish."
+            exit 0
+          fi
+          git commit -m "chore(b5436cf0): refresh complete picks board $(date -u +%Y-%m-%dT%H:%MZ)"
+
+      - name: Push (rebase onto latest branch tip)
+        run: |
+          if [ "${GITHUB_REF_NAME}" = "main" ] || [[ "${GITHUB_REF_NAME}" == arena/* ]]; then
+            git pull --rebase origin "${GITHUB_REF_NAME}" || true
+            git push origin "HEAD:${GITHUB_REF_NAME}" || echo "push skipped (no new commit or tip moved)"
+          else
+            echo "Non-tracked ref ${GITHUB_REF_NAME} — not pushing."
+          fi
