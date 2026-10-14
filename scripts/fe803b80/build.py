@@ -313,11 +313,19 @@ def main() -> int:
         if row.get("new_since_first_build"):
             flags.append("new_fixture_since_this_board_started")
         row["flags"] = flags
-        row["sources"] = []
+        # Every row cites how the fixture itself was discovered, and HotSpawn is named as discovery
+        # only: it is never the source of a probability.
+        row["sources"] = [{
+            "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+            "url": row["hotspawn_url"],
+            "read_utc": snap["access"]["hotspawn_lobby_page"]["at_utc"],
+            "note": "listing and kick-off time; not used as a probability source",
+            "kind": "discovery",
+        }]
         for qt in row["quotes"]:
             row["sources"].append({"label": f"{qt['source_name']} · {qt['raw_format']}",
                                    "url": qt["public_url"], "read_utc": qt["retrieved_utc"],
-                                   "note": f"event {qt['event_id']}"})
+                                   "note": f"event {qt['event_id']}", "kind": "price"})
         if row["model"].get("basis") == "valve_vrs":
             for region, name, standing, pts in (
                     (row["vrs_a"]["region"], row["vrs_a"]["vrs_name"], row["vrs_a"]["standing"],
@@ -329,18 +337,21 @@ def main() -> int:
                 row["sources"].append({"label": f"Valve VRS {region} standings · {name} "
                                                 f"#{standing} ({pts:g} pts)",
                                        "url": url, "read_utc": snap.get("generated_utc"),
-                                       "note": "official Valve regional standings snapshot"})
+                                       "note": "official Valve regional standings snapshot",
+                                       "kind": "rating"})
         if row["model"].get("basis") == "originated_elo":
             row["sources"].append({"label": "bo3.gg published match results (Elo input)",
                                    "url": "https://bo3.gg/matches",
                                    "read_utc": snap.get("generated_utc"),
                                    "note": f"{row['model'].get('elo', {}).get('matches', 0)} "
-                                           "finished matches"})
-        if row["hotspawn_url_kind"] == "match page":
-            row["sources"].append({"label": "HotSpawn lobby match page (fixture + settlement)",
+                                           "finished matches",
+                                   "kind": "rating"})
+        if row["winner"] in ("a", "b") and row["hotspawn_url_kind"] == "match page":
+            row["sources"].append({"label": "HotSpawn match page (final score, settlement only)",
                                    "url": row["hotspawn_url"],
                                    "read_utc": snap["access"]["hotspawn_lobby_page"]["at_utc"],
-                                   "note": "fixture discovery and final score only"})
+                                   "note": "result settlement for the track record; never a probability",
+                                   "kind": "settlement"})
 
     open_rows, closed_rows = core.close_rows(rows)
     for row in open_rows:

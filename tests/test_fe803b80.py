@@ -125,6 +125,21 @@ class BoardTests(unittest.TestCase):
                 self.assertTrue(str(s.get("url") or "").startswith("http"),
                                 (row["fixture_id"], s))
                 self.assertTrue(s.get("read_utc"), (row["fixture_id"], s))
+            # a published probability must be backed by a price or rating source;
+            # the HotSpawn listing alone is discovery evidence, never a probability.
+            if row.get("line"):
+                kinds = {s.get("kind") for s in row["sources"]}
+                self.assertTrue(kinds & {"price", "rating"},
+                                (row["fixture_id"], row["sources"]))
+
+    def test_hotspawn_is_labelled_discovery_only(self):
+        for row in self.open_rows:
+            discovery = [s for s in row["sources"] if s.get("kind") == "discovery"]
+            self.assertEqual(len(discovery), 1, row["fixture_id"])
+            self.assertIn("hotspawn.com", discovery[0]["url"])
+            self.assertIn("not used as a probability", discovery[0]["note"])
+            self.assertEqual(discovery[0]["label"],
+                             "HotSpawn Pick'ems lobby (fixture discovery only)")
 
     def test_market_probability_is_reproducible_from_the_stored_quotes(self):
         for row in self.open_rows:
