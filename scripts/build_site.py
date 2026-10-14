@@ -108,6 +108,10 @@ NAV = [
     # COORDINATION.md): current-lobby coverage board — every lobby fixture with an external-market
     # probability or a labelled originated estimate.
     ("live/index.html", "Live coverage board (3cd9787c)"),
+    # integration link added by session 7cd2e67a (INT-1, single-anchor edit documented in
+    # COORDINATION.md): this session's independent line-by-line re-verification of every published
+    # probability and every per-row source link, with the official URL and read time per check.
+    ("verify/7cd2e67a/index.html", "Independent verification (7cd2e67a)"),
 ]
 
 
