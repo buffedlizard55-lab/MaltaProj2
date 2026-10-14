@@ -3612,3 +3612,44 @@ Also fixed a module-shadowing bug in my own `tests/test_c64a5e19.py` (`sys.path`
 - **Official sources independently read:** https://play.hotspawn.com/lobby ; https://github.com/ValveSoftware/counter-strike_regional_standings (380 standings rows + model code preserved); official Pinnacle/Bovada/Melbet/Kalshi provider URLs linked per quote and retained in `data/f7279a54/source_payloads.json`. 31/31 consumed quotes reconstructed from their official JSON responses. HotSpawn crowd percentages never enter this probability pipeline.
 - **HLTV access distinction:** public `fetch_page` reads of https://www.hltv.org/team/12457/roundsgg (redirects to `/rounds`) and https://www.hltv.org/team/13999/wbt-academy succeeded near 03:00Z; the automated runner probe remains blocked. These reads do not establish WROTBERRY identity or a complete current ROUNDS five-player roster, so no new numeric input/alias is inferred from them.
 - Main integrations preserved parallel PRs #81/#83/#84/#85 and their audits. This work is not superseded by their full-numeric boards: it specifically adds fail-closed eligibility, raw-response replay, expiry, rejects unverified identities/times/duplicate rosters and preserves missing probabilities rather than forcing coverage.
+# Session `c0e223d3` — executive-summary hub, full-coverage pick research and repo review (claim 2026-10-14 02:40 UTC)
+
+Environment note: Arena pins this session to branch `arena/c0e223d3-maltaproj2`; the requested
+`session-<id>/<task>` branch naming cannot be used in this environment. Branched from `main` @ `de2f4ef`.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| `T-HUB`: mobile-first **executive summary / "Where to find picks" hub** that links to every picks board on the site, with live counts, last-updated timestamps and a plain-language explanation of which board to use | in progress | c0e223d3 | 2026-10-14 02:40 | `scripts/c0e223d3/**`, `data/c0e223d3/**`, `summary/**`, `tests/test_c0e223d3.py`, `.github/workflows/summary-c0e223d3.yml` |
+| `T-SRCEV`: independent external-information research for the CS2 fixtures that currently have **no pick** (uncovered / low-tier rows), published as a source-evidence pack with official links for manual review | in progress | c0e223d3 | 2026-10-14 02:40 | `data/c0e223d3/**`, `summary/sources.html`, `summary/allpicks.html` |
+| `T-REPO`: line-by-line repository review with irregularities flagged for manual review | in progress | c0e223d3 | 2026-10-14 02:40 | `summary/repo-review.html` |
+| `T-HUB-INTEG` (integration, additive-only): one NAV entry + one staging entry + one README row so `summary/` ships in the Pages artifact | requested/queued | c0e223d3 | 2026-10-14 02:40 | `scripts/build_site.py` (NAV list), `scripts/stage_site.py`, `README.md`, `COORDINATION.md` |
+
+## Non-overlap statement (checked against every remote board at 2026-10-14 02:38 UTC)
+
+- **`6ddde224`** (`T-COVERAGE-FULL`, last commit 02:34Z) owns `scripts/coverage/**`, `data/coverage/**`,
+  `coverage/**`, `tests/test_coverage_6ddde224.py`, `coverage-6ddde224.yml`, and a **single additive NAV
+  anchor** in `scripts/build_site.py`. **This session does not edit any of those files.** Its
+  `coverage/` board is treated as the authoritative "picks for every match" board and will be linked
+  from the hub as soon as it exists. Session `c0e223d3` will **not** build a competing coverage board.
+- **`ae75c5c3`** (last commit 02:34Z) owns `.github/workflows/pages.yml`,
+  `.github/workflows/ourline-f7279a54.yml`, `scripts/f7279a54/**`, `ourline/**`,
+  `tests/test_ourline_f7279a54.py`, `scripts/ae75c5c3/**`, `audits/ae75c5c3/**` and README
+  model-coverage wording. **None of those files are edited by this session.** Its published
+  integration request (prominent executive-summary links to `ourline/` and `probabilities.html`) is
+  answered by this hub, which links both, without touching their files.
+- **`7cd2e67a`** (last commit 02:16Z) owns root `index.html`/`assets/**` via `scripts/build_site.py`
+  and `verify/7cd2e67a/**`. Its INT-3 landing-page scope is respected: **this session does not rewrite
+  the landing page or its NAV.** `T-HUB-INTEG` is logged as a request, not performed, for as long as
+  that claim is active.
+- All earlier sessions are marked `done` or closed; none is edited.
+- Nothing is invented. Any team, match, price or probability this session publishes is copied from an
+  official source read during this session, with the URL and the UTC read time stored next to it.
+  Rows that cannot be confirmed stay blank and are published on the flagged page.
+
+## Log — c0e223d3
+
+- 02:38 UTC: read the inherited board and every remote branch's COORDINATION.md. Two sessions are
+  live (`6ddde224`, `ae75c5c3`); no open PRs; `main` = `de2f4ef` (02:30Z).
+- Sandbox egress from `bash` is limited to github/codeload/api.github/registry.npmjs/pypi;
+  HLTV and HotSpawn return TLS EOF from `curl` here. All external reads are therefore done through
+  the platform fetch tools and re-done by CI where a hosted runner is needed.
