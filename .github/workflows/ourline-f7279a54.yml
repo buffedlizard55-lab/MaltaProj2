@@ -12,7 +12,7 @@ name: ourline (f7279a54)
 # ever breaks; a guard prevents two chains from running at once.
 on:
   push:
-    branches: ['arena/f7279a54-maltaproj2', 'main']
+    branches: ['arena/f7279a54-maltaproj2', 'arena/ae75c5c3-maltaproj2', 'main']
     paths:
       - 'scripts/f7279a54/**'
       - 'tests/test_ourline_f7279a54.py'
@@ -51,7 +51,7 @@ jobs:
       - name: Build board and pages (re-derives every number from the raw snapshot)
         run: python3 scripts/f7279a54/build.py
       - name: Tests
-        run: python3 -m unittest tests.test_ourline_f7279a54 -v
+        run: python3 -m unittest tests.test_ourline_f7279a54 tests.test_ae75c5c3 -v
       - name: Commit and push (rebase before every push; never discards other sessions' work)
         env:
           REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}

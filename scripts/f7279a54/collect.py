@@ -20,6 +20,7 @@ Sources (all public, unauthenticated, read-only):
 from __future__ import annotations
 
 import base64
+import hashlib
 import json
 import re
 import ssl
@@ -51,6 +52,9 @@ HLTV = "https://www.hltv.org/matches"
 VRS_REPO = "ValveSoftware/counter-strike_regional_standings"
 PROP_RE = re.compile(r"\(|\)|\byes\b|\bno\b|kills?|\bmaps?\b|total|handicap|rounds?|pistol", re.I)
 LOG: dict = {}
+SOURCE_PAYLOADS: dict = {}
+MAX_PAYLOAD_BYTES = 2_000_000
+MAX_TOTAL_PAYLOAD_BYTES = 8_000_000
 
 
 def fetch(url: str, headers: dict | None = None, timeout: int = 45) -> tuple[bytes, dict]:
@@ -69,13 +73,25 @@ def fetch(url: str, headers: dict | None = None, timeout: int = 45) -> tuple[byt
     except Exception as exc:  # noqa: BLE001 - network failures are evidence
         meta["error"] = f"{type(exc).__name__}: {exc}"[:300]
     meta["bytes"] = len(body)
+    if body:
+        meta["sha256"] = hashlib.sha256(body).hexdigest()
     return body, meta
 
 
 def fetch_json(url, headers=None, timeout=45):
     body, meta = fetch(url, headers, timeout)
     try:
-        return json.loads(body.decode("utf-8", "replace")) if body else None, meta
+        data = json.loads(body.decode("utf-8", "replace")) if body else None
+        from urllib.parse import urlsplit
+        trusted = {"guest.api.arcadia.pinnacle.com", "www.bovada.lv", "melbet.com",
+                   "api.elections.kalshi.com"}
+        if (urlsplit(url).hostname in trusted and data is not None
+                and len(body) <= MAX_PAYLOAD_BYTES
+                and sum(p["response_bytes"] for p in SOURCE_PAYLOADS.values()) + len(body) <= MAX_TOTAL_PAYLOAD_BYTES):
+            SOURCE_PAYLOADS[url] = {"retrieved_utc": meta["at_utc"], "http_status": meta["status"],
+                                    "response_bytes": len(body), "raw_sha256": meta.get("sha256"),
+                                    "payload": data}
+        return data, meta
     except ValueError:
         meta["error"] = (meta["error"] or "") + " invalid JSON"
         return None, meta
@@ -99,8 +115,8 @@ def collect_hotspawn() -> dict:
             if not fx:
                 continue
             cur = fixtures.setdefault(fx["fixture_id"], {**fx, "seen_in": []})
-            if origin == "api":  # the API response is fresher than the cached page
-                cur.update(fx)
+            if origin == "api" and "lobby_page" not in cur["seen_in"]:
+                cur.update(fx)  # API-only history can be used for results, not lobby membership
             cur["seen_in"].append(origin)
     # The API returns the full fixture history (>10,000 CS2 rows). Keep only what the board needs:
     # every row the lobby page lists, every scheduled/started row, rows that started in the last
@@ -188,11 +204,12 @@ def collect_bovada(quotes: list) -> None:
             for dg in ev.get("displayGroups") or []:
                 for mk in dg.get("markets") or []:
                     if (str(mk.get("description", "")).strip().casefold() != "moneyline"
-                            or not (mk.get("period") or {}).get("main")):
+                            or not (mk.get("period") or {}).get("main") or mk.get("status") != "O"
+                            or (mk.get("period") or {}).get("live")):
                         continue
                     outs = {str(o.get("competitorId")): o for o in mk.get("outcomes") or []}
                     oh, oa = outs.get(str(home.get("id"))), outs.get(str(away.get("id")))
-                    if not oh or not oa:
+                    if not oh or not oa or oh.get("status") != "O" or oa.get("status") != "O":
                         continue
                     dh, da = (oh.get("price") or {}).get("decimal"), (oa.get("price") or {}).get("decimal")
                     if not dh or not da:
@@ -249,22 +266,12 @@ KALSHI_TICKER_TIME = re.compile(r"-(\d{2})([A-Z]{3})(\d{2})(\d{2})(\d{2})")
 
 
 def kalshi_start(event_ticker: str):
-    """Event tickers encode the scheduled time in US Eastern time (e.g. 26OCT140430 = 04:30 ET).
+    """Ticker timestamps have no verified timezone/kickoff semantics in this feed.
 
-    The UTC offset is not stated in the ticker, so this value is used ONLY to disambiguate the
-    join window (±36 h), never displayed as a kickoff time.
+    Never turn a guessed Eastern offset into a sourced kickoff. Leave blank until an
+    explicit official kickoff timestamp is available; such quotes cannot enter picks.
     """
-    m = KALSHI_TICKER_TIME.search(event_ticker or "")
-    if not m:
-        return None
-    from datetime import datetime, timedelta, timezone
-    months = "JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC".split()
-    try:
-        dt = datetime(2000 + int(m.group(1)), months.index(m.group(2)) + 1, int(m.group(3)),
-                      int(m.group(4)), int(m.group(5)), tzinfo=timezone.utc)
-    except ValueError:
-        return None
-    return dt + timedelta(hours=4)  # EDT approximation for the join window only
+    return None
 
 
 def collect_kalshi(quotes: list, rejected: list) -> None:
@@ -344,8 +351,8 @@ def collect_vrs(fixture_names: set[str]) -> dict:
                       "roster": m.group(4).strip(), "details_path": f"{base_dir}/{m.group(5).strip()}"})
     # Duplicate team names (VRS keeps an older roster of the same organisation as a separate row).
     # For names that appear in the HotSpawn fixture list, read each candidate's official details
-    # file and record the date of its most recent counted match, so the builder can use the roster
-    # that is actually playing now. The cache is keyed by snapshot so each file is read once.
+    # file and record the date of its most recent counted match, for source review. They do not establish which roster plays the fixture,
+    # so the builder refuses duplicate names regardless of latest match date. The cache is keyed by snapshot so each file is read once.
     cache_path = OUT / "vrs_details_cache.json"
     try:
         cache = json.loads(cache_path.read_text())
@@ -400,13 +407,20 @@ def main() -> int:
     snap = {"session": "f7279a54", "collected_from_utc": started,
             "collected_to_utc": core.to_iso(core.now_utc()), "hotspawn": hs, "quotes": quotes,
             "rejected_quotes": rejected, "vrs": vrs, "access_log": LOG}
-    if not hs["fixtures"]:
+    if not any("lobby_page" in f.get("seen_in", []) for f in hs["fixtures"]):
         # keep the previous inventory instead of publishing an empty board; the failure is logged
         prev = OUT / "snapshot.json"
         if prev.exists():
             old = json.loads(prev.read_text())
             snap["hotspawn"] = old.get("hotspawn", hs)
-            snap["hotspawn_fallback_from"] = old.get("collected_to_utc")
+            previous_meta = (old.get("access_log") or {}).get("hotspawn_lobby_page") or {}
+            snap["hotspawn_fallback_from"] = (old.get("hotspawn_fallback_from")
+                                               or previous_meta.get("at_utc") or old.get("collected_to_utc"))
+            # Preserve original observation and cache age across repeated failures.
+            LOG["hotspawn_failed_refresh"] = LOG.get("hotspawn_lobby_page", {})
+            LOG["hotspawn_lobby_page"] = previous_meta
+    (OUT / "source_payloads.json").write_text(json.dumps({"collected_to_utc": snap["collected_to_utc"],
+                                                          "sources": SOURCE_PAYLOADS}, indent=1) + "\n")
     (OUT / "snapshot.json").write_text(json.dumps(snap, indent=1, ensure_ascii=False) + "\n")
     print(json.dumps({k: {kk: vv for kk, vv in v.items() if kk in ("status", "error", "quotes", "rows",
                                                                      "fixtures_in_transfer_state",

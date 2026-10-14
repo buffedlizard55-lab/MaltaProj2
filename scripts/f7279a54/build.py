@@ -45,10 +45,9 @@ def load(path: Path, default):
 def rating_index(vrs: dict) -> tuple[dict, dict]:
     """Index VRS rows by normalised name.
 
-    VRS sometimes lists the same organisation twice (an older roster is kept as its own row).
-    Such a name is resolved ONLY when Valve's own details files show one candidate has a strictly
-    more recent counted match (that roster is the one currently playing); otherwise it stays
-    ambiguous and no rating is used.
+    Duplicate organisation names have no verified current-roster join to HotSpawn.
+    A more recent counted match alone does not prove which roster plays this fixture.
+    Refuse all duplicates rather than inferring the current roster.
     """
     groups: dict[str, list] = {}
     for t in vrs.get("teams", []):
@@ -61,16 +60,9 @@ def rating_index(vrs: dict) -> tuple[dict, dict]:
         if len(rows) == 1:
             idx[key] = rows[0]
             continue
-        dated = sorted((r for r in rows if r.get("latest_match_date")),
-                       key=lambda r: r["latest_match_date"], reverse=True)
-        if len(dated) == len(rows) and dated[0]["latest_match_date"] > dated[1]["latest_match_date"]:
-            idx[key] = {**dated[0], "resolved_from_duplicates": [
-                {k: r.get(k) for k in ("standing", "points", "roster", "latest_match_date", "details_path")}
-                for r in rows]}
-        else:
-            dup[key] = {"candidates": [{k: r.get(k) for k in ("standing", "points", "roster",
-                                                               "latest_match_date", "details_path")}
-                                       for r in rows]}
+        dup[key] = {"candidates": [{k: r.get(k) for k in ("standing", "points", "roster",
+                                                           "latest_match_date", "details_path")}
+                                   for r in rows]}
     return idx, dup
 
 
@@ -117,11 +109,25 @@ def grade(hs_fixtures: list[dict], hist: dict, track: dict) -> dict:
 
 def build_board(snap: dict, hist: dict, cal_pairs: dict, track: dict | None = None) -> dict:
     now = core.parse_iso(snap["collected_to_utc"]) or core.now_utc()
+    # Discard calibration observations generated under the older ambiguous-roster policy.
+    for fid in list(cal_pairs):
+        if cal_pairs[fid].get("policy") != "strict-fallback-v2":
+            del cal_pairs[fid]
+    lobby_meta = (snap.get("access_log") or {}).get("hotspawn_lobby_page") or {}
+    observed = core.parse_iso(snap.get("hotspawn_fallback_from") or lobby_meta.get("at_utc"))
+    try:
+        cache_age = max(0, int(lobby_meta.get("age_header") or 0))
+    except (TypeError, ValueError):
+        cache_age = 14401  # unknown cache age cannot establish fresh fixture evidence
+    fixture_age = (now - observed).total_seconds() + cache_age if observed else float("inf")
+    fixture_fresh = 0 <= fixture_age <= 4 * 3600
+    vrs_date = core.parse_iso(str((snap.get("vrs") or {}).get("snapshot") or "").replace("_", "-") + "T00:00:00Z")
+    vrs_fresh = vrs_date is not None and 0 <= (now - vrs_date).total_seconds() <= 14 * 86400
     hs = snap["hotspawn"]
     permalinks = hs.get("permalinks") or {}
     vrs = snap.get("vrs") or {}
     idx, dup = rating_index(vrs)
-    quotes = [qq for qq in snap.get("quotes", []) if qq.get("prob_a") is not None]
+    quotes = [q for raw in snap.get("quotes", []) if (q := core.rederive_quote(raw)) is not None]
     live_quotes = [qq for qq in quotes if qq.get("live")]
     pre_quotes = [qq for qq in quotes if not qq.get("live")]
     used_quote_ids: set[str] = set()
@@ -132,7 +138,7 @@ def build_board(snap: dict, hist: dict, cal_pairs: dict, track: dict | None = No
         start = core.parse_iso(fx["start_utc"])
         listed_on_page = "lobby_page" in fx.get("seen_in", [])
         status = str(fx.get("status") or "")
-        if lock and lock > now and status == "scheduled":
+        if lock and lock > now and status == "scheduled" and listed_on_page:
             state = "open"
         elif lock and lock > now and status != "scheduled":
             # e.g. status 'started' while the published start time is weeks away
@@ -148,6 +154,8 @@ def build_board(snap: dict, hist: dict, cal_pairs: dict, track: dict | None = No
             continue
         if state == "locked_recent" and not listed_on_page and fx["fixture_id"] not in hist:
             continue
+        if not listed_on_page and state == "open":
+            continue
         row = {**fx, "state": state,
                "hotspawn_url": permalinks.get(fx["fixture_id"]) or LOBBY,
                "hotspawn_url_kind": "match page" if fx["fixture_id"] in permalinks else "lobby",
@@ -159,18 +167,27 @@ def build_board(snap: dict, hist: dict, cal_pairs: dict, track: dict | None = No
             row["last_open_line"] = prev
             recent_rows.append(row)
             continue
+        if not fixture_fresh:
+            row["flags"].append("fixture_observation_stale_or_unverified")
+        if not vrs_fresh:
+            row["flags"].append("vrs_snapshot_stale_or_unverified")
         # ---- market
         per_source: dict[str, dict] = {}
         for qq in pre_quotes:
             j = core.match_quote(fx, qq)
             if not j:
                 continue
+            retrieved = core.parse_iso(qq.get("retrieved_utc"))
+            quote_fresh = retrieved and 0 <= (now - retrieved).total_seconds() <= 4 * 3600
+            if not quote_fresh or not fixture_fresh:
+                row["flags"].append("stale_or_unverified_quote:" + qq["source_key"])
+                continue
             if j.get("rejected"):
                 row.setdefault("rejected_joins", []).append({
                     "source_key": qq["source_key"], "source_name": qq["source_name"],
                     "public_url": qq["public_url"], "event_id": qq["event_id"],
                     "names_at_source": [qq["team_a"], qq["team_b"]], "start_utc_at_source": qq.get("start_utc"),
-                    "start_diff_h": round(j["start_diff_h"], 1), "decimal": [qq["decimal_a"], qq["decimal_b"]]})
+                    "start_diff_h": round(j["start_diff_h"], 1) if j["start_diff_h"] is not None else None, "decimal": [qq["decimal_a"], qq["decimal_b"]]})
                 row["flags"].append(f"start_time_mismatch_not_joined:{qq['source_key']}")
                 continue
             cand = {**qq, "join": j, "prob_team_a": core.oriented_prob(qq, j["swapped"])}
@@ -212,12 +229,13 @@ def build_board(snap: dict, hist: dict, cal_pairs: dict, track: dict | None = No
                 row["flags"].append(f"{err}:{fx[side]}")
             if err == "ambiguous_vrs_name":
                 row.setdefault("vrs_ambiguous", {})[side] = dup.get(core.canon(fx[side])[0])
-        row["_delta"] = (ra["points"] - rb["points"]) if ra and rb else None
+        row["_delta"] = (ra["points"] - rb["points"]) if ra and rb and vrs_fresh and fixture_fresh else None
         if mkt and row["_delta"] is not None:
             cal_pairs[fx["fixture_id"]] = {
                 "fixture_id": fx["fixture_id"], "teams": [fx["team_a"], fx["team_b"]],
                 "delta": row["_delta"], "market_prob_a": mkt["prob_a"], "n_sources": mkt["n_sources"],
-                "observed_utc": snap["collected_to_utc"], "start_utc": fx["start_utc"]}
+                "observed_utc": snap["collected_to_utc"], "start_utc": fx["start_utc"],
+                "policy": "strict-fallback-v2"}
         open_rows.append(row)
 
     # ---- calibration (bounded history of distinct fixtures, latest pre-lock observation each)
@@ -245,6 +263,8 @@ def build_board(snap: dict, hist: dict, cal_pairs: dict, track: dict | None = No
                 "fair_decimal_a": round(fair_a, 3), "fair_decimal_b": round(fair_b, 3),
                 "fair_american_a": core.decimal_to_american(fair_a),
                 "fair_american_b": core.decimal_to_american(fair_b)}
+            if abs(line["prob_a"] - 0.5) < 1e-9:
+                row["flags"].append("equal_probability_no_edge")
             if mkt and model is not None:
                 if (mkt["prob_a"] - 0.5) * (model - 0.5) < 0:
                     row["flags"].append("model_and_market_pick_different_teams")
@@ -257,6 +277,9 @@ def build_board(snap: dict, hist: dict, cal_pairs: dict, track: dict | None = No
         else:
             row["line"] = None
             row["flags"].append("no_line_unverified")
+        deadlines = [observed - timedelta(seconds=cache_age) + timedelta(hours=4)] if observed else [now]
+        deadlines += [core.parse_iso(q["retrieved_utc"]) + timedelta(hours=4) for q in row["quotes"]]
+        row["valid_until_utc"] = core.to_iso(min(deadlines))
         row["flags"] = sorted(set(row["flags"]))
 
     unmatched = [qq for qq in pre_quotes if f"{qq['source_key']}:{qq['event_id']}" not in used_quote_ids]
@@ -289,6 +312,8 @@ def build_board(snap: dict, hist: dict, cal_pairs: dict, track: dict | None = No
         "session": "f7279a54", "generated_utc": snap["collected_to_utc"],
         "collected_from_utc": snap["collected_from_utc"], "week": hs.get("week"),
         "hotspawn_fallback_from": snap.get("hotspawn_fallback_from"),
+        "fixture_observation_age_seconds": fixture_age if observed else None,
+        "freshness_limit_hours": 4, "policy": "strict-fallback-v2",
         "summary": summary, "calibration": {**cal, "pairs_used": len(pairs)},
         "vrs": {k2: vrs.get(k2) for k2 in ("snapshot", "page_url", "api_url")},
         "vrs_ambiguous_keys": sorted(dup),
@@ -309,6 +334,9 @@ def build_board(snap: dict, hist: dict, cal_pairs: dict, track: dict | None = No
 CSS = """
 :root{--bg:#0f1218;--card:#171b23;--line:#262c38;--txt:#e8ebf1;--mut:#9aa3b2;--acc:#3ddc97;
 --acc2:#5aa9ff;--warn:#ffb547;--bad:#ff6b6b}
+[hidden]{display:none!important}.quick{display:flex;flex-wrap:wrap;gap:8px}.quick a{display:block;padding:12px;background:#202938;border-radius:8px;text-decoration:none;min-height:44px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--acc2);outline-offset:3px}
+button,.bar nav a{min-height:44px}.nm,td,.small{overflow-wrap:anywhere}
 *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 a{color:var(--acc2)}header{position:sticky;top:0;z-index:5;background:#0b0e13;border-bottom:1px solid var(--line)}
@@ -363,15 +391,32 @@ JS = """
  function apply(){var s=(q&&q.value||'').toLowerCase(),n=0,now=Date.now();
   document.querySelectorAll('tr[data-row]').forEach(function(r){
    var ok=!s||r.dataset.s.indexOf(s)>=0;
-   if(mode==='24h')ok=ok&&(new Date(r.dataset.lock)-now)<864e5;
+   if(mode==='24h')ok=ok&&(new Date(r.dataset.lock)-now)>0&&(new Date(r.dataset.lock)-now)<864e5;
    else if(mode==='line')ok=ok&&r.dataset.line!=='none';
    else if(mode==='noline')ok=ok&&r.dataset.line==='none';
+   else if(mode==='market')ok=ok&&r.dataset.line==='market';
+   else if(mode==='model')ok=ok&&r.dataset.line==='model';
    else if(mode.indexOf('tier-')===0)ok=ok&&r.dataset.tier===mode.slice(5);
    r.style.display=ok?'':'none';if(ok)n++;});
   var c=document.getElementById('count');if(c)c.textContent=n;}
  if(q)q.addEventListener('input',apply);
  chips.forEach(function(c){c.addEventListener('click',function(){chips.forEach(function(x){x.classList.remove('on')});
   c.classList.add('on');mode=c.dataset.m;apply();});});
+ function expire(){var now=Date.now(),n=0;
+  document.querySelectorAll('tr[data-row]').forEach(function(r){
+   if(now>=new Date(r.dataset.validUntil).getTime() || now>=new Date(r.dataset.lock).getTime()){
+    if(r.dataset.expired)return;n++;r.dataset.expired='true';r.dataset.line='none';
+    r.querySelectorAll('.pct').forEach(function(x){x.textContent='—';});
+    r.querySelectorAll('.b-pick,.meter').forEach(function(x){x.remove();});
+    r.querySelectorAll('.pk').forEach(function(x){x.classList.remove('pk');});
+    r.querySelector('.pickcell').textContent=now>=new Date(r.dataset.lock).getTime()?'Locked — no current pick':'Expired — awaiting source refresh';
+    r.querySelector('[data-l="Fair odds (pick)"]').textContent='';
+    r.querySelector('[data-l="Inputs"]').textContent='Historical inputs expired. See source evidence; do not treat as current.';
+   }
+  });
+  if(n){var a=document.getElementById('freshness-alert');if(a){a.hidden=false;a.textContent='Some picks have locked or expired since this snapshot. Their probabilities are hidden. Reload to check for a newer automated update.';}apply();}
+ }
+ expire();setInterval(expire,60000);
 })();
 """
 
@@ -388,7 +433,7 @@ def page(title: str, active: str, body: str, board: dict) -> str:
 <title>{esc(title)} · Our line · HotSpawn CS2 Pick'ems</title>
 <style>{CSS}</style></head><body>
 <header><div class="bar"><div class="brand">🎯 Our line · CS2 Pick'ems</div><nav>{nav}</nav></div></header>
-<main>{body}
+<main data-observed="{esc(gen)}">{body}
 <p class="foot">Data collected {esc(gen)} UTC (<span data-r="{esc(gen)}"></span>) by an automated GitHub Actions run — no manual input.
 Probabilities are estimates derived from external bookmaker/exchange prices and Valve's official VRS ratings; HotSpawn crowd picks are never used.
 Not affiliated with HotSpawn or any bookmaker. Not betting advice. Section owner: session <code>f7279a54</code>.</p>
@@ -433,7 +478,7 @@ def open_table(rows: list[dict]) -> str:
             odds = (f'{ln["fair_decimal_" + side]:.2f} <span class="small">({amer(ln["fair_american_" + side])})</span>'
                     f'<div class="small">other side {ln["fair_decimal_" + ("b" if side == "a" else "a")]:.2f}</div>')
         else:
-            pick = '<span class="empty">No pick — unverified</span><div class="small">no bookmaker line and no VRS rating for both teams</div>'
+            pick = '<span class="empty">No pick — unverified</span><div class="small">eligible fresh lines or unambiguous ratings unavailable; see flags</div>'
             odds = ""
         inputs = [f'<span class="badge b-basis">{esc(BASIS_TXT.get(ln["basis"], "")) if ln else "No line"}</span>']
         if mk:
@@ -448,14 +493,17 @@ def open_table(rows: list[dict]) -> str:
                           f'{len(flags)} flag{"s" if len(flags) > 1 else ""}</a></div>')
         src = [f'<a href="{esc(r["hotspawn_url"])}" rel="noopener">HotSpawn {esc(r["hotspawn_url_kind"])}</a>']
         for qq in r.get("quotes", []):
-            src.append(f'<a href="{esc(qq["public_url"])}" rel="noopener">{esc(qq["source_name"])}</a>')
+            src.append(f'<a href="{esc(qq["api_url"])}" rel="noopener">{esc(qq["source_name"])} quote</a>')
         if r["vrs"].get("page_url") and (r["vrs"].get("team_a") or r["vrs"].get("team_b")):
             src.append(f'<a href="{esc(r["vrs"]["page_url"])}" rel="noopener">Valve VRS</a>')
         meta = (f'<span data-t="{esc(r["start_utc"])}">{esc(r["start_utc"])}</span>'
                 f'<div class="small">locks <span data-r="{esc(r["lock_utc"])}">{esc(r["lock_utc"])}</span></div>'
                 f'<div class="small">{esc(r.get("competition"))} · Tier {esc(r.get("tier") or "?")} · {esc(r.get("points"))} pts</div>')
+        expiry = core.parse_iso(r["start_utc"])  # lock is additionally checked in the browser
+        if r.get("valid_until_utc"):
+            expiry = core.parse_iso(r["valid_until_utc"])
         out.append(
-            f'<tr data-row data-s="{esc(s)}" data-lock="{esc(r["lock_utc"])}" data-tier="{esc(r.get("tier") or "")}" '
+            f'<tr data-valid-until="{esc(core.to_iso(expiry))}" data-row data-s="{esc(s)}" data-lock="{esc(r["lock_utc"])}" data-tier="{esc(r.get("tier") or "")}" '
             f'data-line="{esc(ln["basis"] if ln else "none")}" id="m-{esc(r["fixture_id"])}">'
             f'<td data-l="When">{meta}</td><td data-l="Win probability">{teams}</td>'
             f'<td data-l="Pick" class="pickcell">{pick}</td><td data-l="Fair odds (pick)">{odds}</td>'
@@ -469,7 +517,7 @@ def render_index(b: dict) -> str:
     cal = b["calibration"]
     tiers = sorted({r.get("tier") for r in b["open"] if r.get("tier")})
     chips = ['<button class="chip on" data-m="all">All</button>', '<button class="chip" data-m="24h">Locks &lt; 24h</button>',
-             '<button class="chip" data-m="line">Has pick</button>', '<button class="chip" data-m="noline">No line</button>']
+             '<button class="chip" data-m="line">Has pick</button>', '<button class="chip" data-m="market">Market</button>', '<button class="chip" data-m="model">Fallback</button>', '<button class="chip" data-m="noline">No line</button>']
     chips += [f'<button class="chip" data-m="tier-{esc(t)}">Tier {esc(t)}</button>' for t in tiers]
     fallback = ""
     if b.get("hotspawn_fallback_from"):
@@ -488,10 +536,17 @@ def render_index(b: dict) -> str:
                   'published while the match was still open.</p><table class="cards"><thead><tr><th>Started</th><th>Match</th>'
                   '<th>Our last line before lock</th><th>Source</th></tr></thead><tbody>' + "".join(rows) + "</tbody></table>")
     body = f"""
-<h1>Pick &amp; win probability for every open HotSpawn CS2 match</h1>
-<p class="mut">Every CS2 fixture currently open for picks in the <a href="{LOBBY}">HotSpawn Pick'ems lobby</a>, with our
-originated line: bookmaker prices (Pinnacle, Bovada, Melbet, Kalshi) with the margin removed, blended with Valve's official VRS
-rating model calibrated to those prices. The <b>PICK</b> is the team our line makes more likely to win. Refreshed automatically.</p>
+<h1>All open CS2 picks &amp; research gaps</h1>
+<section class="note" aria-label="Executive summary"><h2 style="margin-top:0">Executive summary</h2>
+<p><b>{s["with_line"]} of {s["open"]} open matches have a researched pick:</b> {s["market_based"]} from eligible external prices,
+{s["model_only"]} from labelled Valve-rating fallbacks. {s["no_line"]} are unverified and intentionally blank. Listed coverage is complete for this captured lobby, not a promise that every source offers odds.</p>
+<div class="quick"><a href="#picks">See all match picks ↓</a><a href="../probabilities.html">Strict market-only picks</a>
+<a href="flagged.html">Review missing data</a><a href="sources.html">Prices &amp; source links</a><a href="../audits/ae75c5c3/index.html">Reliability audit</a></div>
+<p class="small">Observed {esc(b["generated_utc"])} UTC. Refresh is automated; GitHub schedules and source caches can delay updates.
+Model percentages are our estimates, not values officially confirmed by Valve, HLTV, or HotSpawn. Never substituted with crowd picks or arbitrary 50/50.</p></section>
+<div id="freshness-alert" class="note" role="status" hidden></div>
+<p class="mut">Every CS2 fixture currently open for picks in the <a href="{LOBBY}">HotSpawn Pick'ems lobby</a>, with source-based analysis: bookmaker prices (Pinnacle, Bovada, Melbet, Kalshi) with the margin removed, with Valve's official VRS
+rating model used only when no eligible bookmaker price is found. The <b>PICK</b> is the team our line makes more likely to win. Refreshed automatically.</p>
 {fallback}
 <div class="stats">
 <div class="stat"><b>{s["open"]}</b><span>open matches</span></div>
@@ -505,6 +560,7 @@ rating model calibrated to those prices. The <b>PICK</b> is the team our line ma
 <div class="tools"><input id="q" type="search" placeholder="Search team or tournament…" aria-label="Search">{"".join(chips)}</div>
 <p class="small">Showing <span id="count">{s["open"]}</span> of {s["open"]} · times shown in your local time zone (hover/tap for UTC) ·
 model slope k = {cal["k"]:.2f} ({"fitted on " + str(cal["n_pairs"]) + " priced fixtures" if cal["fitted"] else "Valve default — fewer than " + str(cal["min_pairs"]) + " priced fixtures so far"})</p>
+<h2 id="picks">Match picks</h2>
 {open_table(b["open"]) if b["open"] else '<p class="empty">No open CS2 fixtures were found in the lobby on this run.</p>'}
 {recent}
 """
@@ -539,7 +595,7 @@ def render_sources(b: dict) -> str:
                           f'<td data-l="Standing">#{t["standing"]}</td><td data-l="Points">{t["points"]}</td>'
                           f'<td data-l="Source"><a href="{esc(b["vrs"]["page_url"])}">Valve VRS {esc(b["vrs"]["snapshot"])}</a></td></tr>')
     body = f"""
-<h1>Lines &amp; sources</h1>
+<h1>Lines &amp; sources</h1><p class="note">These are timestamped captured inputs, not continuously live prices. <a href="../data/f7279a54/source_payloads.json">Official response payloads and hashes</a> · <a href="../data/f7279a54/snapshot.json">Normalized source snapshot</a>. Exact API endpoints appear on each row.</p>
 <p class="mut">Every external price used on the Picks page, exactly as read from the source, with the margin-free probability derived from it.
 Each row links to the official bookmaker/exchange page and the public endpoint it was read from.</p>
 <h2>Prices used ({len(rows)})</h2>
@@ -652,7 +708,7 @@ an unverifiable probability stays blank. Flagged items do not block publication.
 <h2 id="access">Source access on this run</h2>
 <table class="cards"><thead><tr><th>Source</th><th>Result</th><th>HTTP</th><th>Detail</th><th>URL</th></tr></thead><tbody>{"".join(acc)}</tbody></table>
 <h2>Prices not joined: same teams but start time too far apart ({len(rj)})</h2>
-<p class="mut">The pairing matches but the source's start time differs from HotSpawn's by more than {core.TIME_TOLERANCE_H:.0f} h, so it could be a
+<p class="mut">The pairing matches but the source's start time differs from HotSpawn's by more than {core.TIME_TOLERANCE_H * 60:.0f} minutes, so it could be a
 different meeting of the same teams. The price is shown here and not used.</p>
 <table class="cards"><thead><tr><th>HotSpawn match</th><th>Source</th><th>Source start (UTC)</th><th>Price not used</th></tr></thead><tbody>{"".join(rj) or "<tr><td colspan=4>None.</td></tr>"}</tbody></table>
 <h2>Status conflicts in HotSpawn data ({len(sc)})</h2>
@@ -665,6 +721,7 @@ different meeting of the same teams. The price is shown here and not used.</p>
 {RECENT_LOCK_H} h ago. They cannot be picked, so they are excluded from the Picks page.</p>
 <table class="cards"><thead><tr><th>Fixture</th><th>Match</th><th>Competition</th><th>Scheduled (UTC)</th><th>Status at source</th><th>Source</th></tr></thead>
 <tbody>{"".join(stale) or "<tr><td colspan=6>None.</td></tr>"}</tbody></table>
+<p><a href="../audits/ae75c5c3/index.html">Additional reliability flags: ambiguous roster inference, stale data, and publication regression</a></p>
 <h2 id="repo">Repository review findings (session f7279a54)</h2>
 <p class="mut">{esc(review.get("intro", ""))}</p>
 <table class="cards"><thead><tr><th>ID</th><th>Finding</th><th>Status</th><th>Evidence</th></tr></thead><tbody>{"".join(rv)}</tbody></table>
@@ -714,14 +771,13 @@ def render_method(b: dict) -> str:
     wt = ", ".join(f"{esc(k)} {v:g}" for k, v in SOURCE_WEIGHTS.items())
     body = f"""
 <h1>Method</h1>
-<div class="note">Short version: we take every bookmaker price for the match, remove the bookmaker's margin, average them, and
-blend that with a rating model built on Valve's official CS2 standings. The model's steepness is learned from the bookmaker prices.
+<div class="note">Short version: eligible external prices are de-vigged and averaged. Only matches without eligible prices use a model built on Valve's official CS2 standings. The model's steepness is learned from the bookmaker prices.
 If no bookmaker prices the match, the calibrated model alone gives the line. If a team has no official rating and no bookmaker prices
 the match, the row stays blank and is flagged.</div>
 <h2>1. Which matches</h2>
 <p>The fixture list comes from the public HotSpawn lobby (<a href="{LOBBY}">play.hotspawn.com/lobby</a>): the page embeds the response of
 the lobby's own <code>/api/v1/fixtures</code> call in its Angular transfer state, and the same public endpoint is also read directly each run because the page is
-served from a cache (its <code>Age</code> header is recorded on the Flagged page). A match is <b>open</b> while its HotSpawn lock time is in the future.
+served from a cache (its <code>Age</code> header is recorded on the Flagged page). Only page-listed scheduled matches with a future lock are open. API-only fixtures are not advertised as lobby coverage.
 HotSpawn data is used only to know <i>which</i> matches exist and when they lock — crowd pick percentages are not read.</p>
 <h2>2. Bookmaker and exchange prices</h2>
 <ul>
@@ -735,7 +791,7 @@ HotSpawn data is used only to know <i>which</i> matches exist and when they lock
 (implied-probability arithmetic as documented by <a href="https://help.smarkets.com/hc/en-gb/articles/214058369-How-to-calculate-implied-probability-in-betting">Smarkets</a>).
 In-play prices are excluded. Market consensus = weighted mean of the per-source probabilities with weights {wt} (stated modelling choice: Pinnacle is weighted higher as a low-margin bookmaker).</p>
 <p><b>Joining a price to a HotSpawn match</b> requires both team names to be equal after normalisation (case, accents, punctuation, and the
-generic words <i>team / the / esports / gaming / club</i> at the start or end removed) and the source start time to be within ±{TIME_TOLERANCE_H:.0f} h.
+generic words <i>team / the / esports / gaming / club</i> at the start or end removed) and the source start time to be within ±{TIME_TOLERANCE_H * 60:.0f} minutes. Missing or approximate start times are rejected; fixture and price observations must each be at most four hours old.
 No prefix/substring matching ("B8" never matches "B8 Academy"). Explicit aliases:</p>
 <table class="cards"><thead><tr><th>Source spelling (normalised)</th><th>HotSpawn team</th><th>Basis</th></tr></thead><tbody>{al}</tbody></table>
 <h2>3. Valve VRS rating model</h2>
@@ -743,13 +799,12 @@ No prefix/substring matching ("B8" never matches "B8 Academy"). Explicit aliases
 Valve's own code defines expected win rate from a points difference Δ: <a href="{VALVE_GLICKO}">model/glicko.js</a> ("rank delta of 400 points = 90% chance of victory",
 <code>ev = 1/(1+10^(g·Δ/−400))</code>) evaluated with a fixed RD of 75 in <a href="{VALVE_FIT}">model/fit.js</a>, giving g = {VALVE_G:.4f}.
 Valve's <a href="{VALVE_README}">readme</a> notes the curve is steeper than observed results, so we fit a slope factor <b>k</b>:
-<code>p_A = 1/(1+10^(−k·g·Δ/400))</code>, by least squares of logit(market) on Δ over every fixture seen with both a market price and two ratings.</p>
+<code>p_A = 1/(1+10^(−k·g·Δ/400))</code>, by least squares of logit(market) on Δ over eligible fixtures with a price and two unambiguous ratings. A duplicate team name remains unverified even if one roster has a more recent counted match. Ratings older than 14 days are excluded. These freshness thresholds and the fitted model are our policy choices, not official forecasts.</p>
 <p>Current fit: k = <b>{cal["k"]:.3f}</b> {"(raw " + format(cal["k_raw"], ".3f") + ")" if cal.get("k_raw") is not None else ""} on {cal["n_pairs"]} fixtures
 (minimum {cal["min_pairs"]} to fit, otherwise k = 1, Valve's own curve; k is bounded to {cal["bounds"][0]}–{cal["bounds"][1]}).
 Mean absolute error vs market: calibrated {pct(cal.get("mae_prob"))}, Valve default {pct(cal.get("mae_prob_valve"))}.</p>
 <h2>4. Our line and the pick</h2>
-<p><code>logit(p_ours) = w·logit(p_market) + (1−w)·logit(p_model)</code> with w = 0.85 when two or more sources price the match, 0.75 with one
-(stated modelling choice). Market only when a team lacks a rating; model only when no price exists. Fair odds = 1/p.
+<p>Use the eligible market consensus unchanged when available. Only otherwise use the source-backed VRS model. We do not blend a fallback model into featured market picks. Fair odds = 1/p.
 The <b>PICK</b> is the team with p ≥ 50%. Confidence: Strong ≥ 70%, Solid ≥ 60%, Lean ≥ 53%, otherwise Toss-up.</p>
 <h2>5. Automation</h2>
 <p><code>.github/workflows/ourline-f7279a54.yml</code> runs every 30 minutes and after each run of the repository's hourly <code>update-data</code> workflow:
@@ -757,7 +812,7 @@ The <b>PICK</b> is the team with p ≥ 50%. Confidence: Strong ≥ 70%, Solid �
 which GitHub Pages publishes. Raw evidence: <code>data/f7279a54/snapshot.json</code>; derived board: <code>data/f7279a54/board.json</code>.</p>
 <h2>Limits</h2>
 <ul><li>These are estimates, not guarantees. A model-only line is weaker than a priced one and is labelled as such.</li>
-<li>Bookmaker start times sometimes differ from HotSpawn's; joins with differences over 3 h are flagged.</li>
+<li>Bookmaker start-time discrepancies greater than five minutes are rejected and flagged, never treated as the same verified fixture.</li>
 <li>Low-tier teams are often absent from both bookmakers and VRS; those rows stay blank.</li></ul>
 """
     return page("Method", "method.html", body, b)
