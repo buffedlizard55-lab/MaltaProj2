@@ -52,6 +52,26 @@ ALIASES: dict[str, dict] = {
             "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct160600rgghavu",
         ],
     },
+    # HotSpawn lists the Ukrainian roster WROTBERRY; bo3.gg's published Thunderpick feed and its own
+    # match slugs call the same roster WBT (bo3.gg team id 22734, acronym WBT). Three fixtures agree
+    # on BOTH the opponent and the kick-off minute, which is the evidence used here:
+    #   WROTBERRY vs EAC    2026-10-15T08:00:00Z  <-> wbt-vs-esport-academy-copenhagen-15-10-2026
+    #   WROTBERRY vs ENCE   2026-10-15T12:00:00Z  <-> wbt-vs-ence-15-10-2026
+    #   WROTBERRY vs BOJONG 2026-10-15T16:00:00Z  <-> wbt-vs-bojong-15-10-2026
+    # "WBT Academy" is a DIFFERENT roster (Valve VRS lists WBT and WBT Academy separately) and is
+    # never merged with WBT.
+    "wrotberry": {
+        "canonical": "wbt",
+        "note": "Three fixtures match bo3.gg's published listings on both opponent and kick-off: "
+                "WROTBERRY vs EAC / wbt-vs-esport-academy-copenhagen, WROTBERRY vs ENCE / "
+                "wbt-vs-ence and WROTBERRY vs BOJONG / wbt-vs-bojong (all 2026-10-15).",
+        "evidence": [
+            "https://bo3.gg/matches/wbt-vs-esport-academy-copenhagen-15-10-2026",
+            "https://bo3.gg/matches/wbt-vs-ence-15-10-2026",
+            "https://bo3.gg/matches/wbt-vs-bojong-15-10-2026",
+            "https://play.hotspawn.com/lobby",
+        ],
+    },
     # Kalshi titles the roster "Privateer Gaming"; HotSpawn and Bovada's own URL slug say
     # "Privateer" / "Privateer Gaming" for the same fixture against mellren.
     "privateergaming": {
@@ -175,6 +195,31 @@ def parse_iso(value: str | None) -> datetime | None:
     except ValueError:
         return None
     return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+
+
+def parse_any(value) -> datetime | None:
+    """A timestamp as ISO text, epoch seconds or epoch milliseconds (used for source payloads)."""
+    if value in (None, ""):
+        return None
+    if isinstance(value, str):
+        iso_dt = parse_iso(value)
+        if iso_dt:
+            return iso_dt
+        try:
+            value = float(value)
+        except ValueError:
+            return None
+    try:
+        num = float(value)
+    except (TypeError, ValueError):
+        return None
+    if num <= 0:
+        return None
+    if num > 1e11:          # milliseconds
+        return datetime.fromtimestamp(num / 1000.0, tz=timezone.utc)
+    if num > 1e8:           # seconds
+        return datetime.fromtimestamp(num, tz=timezone.utc)
+    return None
 
 
 def parse_ms(value) -> datetime | None:

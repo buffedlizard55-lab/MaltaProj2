@@ -215,7 +215,7 @@ def collect_bovada(quotes: list) -> None:
                                         "https://www.bovada.lv" + str(ev.get("link") or "/sports/esports"),
                                         BOVADA, ev.get("id"), home.get("name"), away.get("name"),
                                         float(dh), float(da),
-                                        core.parse_iso(str(ev.get("startTime") or "")),
+                                        core.parse_any(ev.get("startTime")),
                                         league, "decimal", dh, da, live=ev.get("live")))
                     written += 1
                     break
@@ -247,7 +247,7 @@ def collect_linefeed(quotes: list) -> None:
             seen.add(key)
             quotes.append(quote("melbet", "Melbet (1xBet platform)", "https://melbet.com/en/line/esports",
                                 url, key, a, b, float(prices[1]), float(prices[3]),
-                                core.parse_iso(_epoch_to_iso(ev.get("S"))), league, "decimal",
+                                core.parse_any(ev.get("S")), league, "decimal",
                                 prices[1], prices[3], extra={"mirror": mirror}))
             written += 1
         LOG[f"linefeed_{mirror}"]["quotes"] = written

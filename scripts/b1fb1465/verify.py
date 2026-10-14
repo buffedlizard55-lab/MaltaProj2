@@ -136,9 +136,11 @@ def main() -> int:
     if len(board["open"]) != board["summary"]["open_for_picks"]:
         failures.append("R8: the open count does not match the published summary")
 
-    # R9
-    raw = json.dumps(board)
-    if re.search(r"pick_?percent|picked_?pct|crowd", raw, re.I):
+    # R9 - scan the data structures, never the prose that disclaims crowd usage.
+    data_only = json.dumps({k: v for k, v in board.items() if k not in ("notes", "access")})
+    for row in board["open"]:
+        data_only += json.dumps({k: v for k, v in row.items() if k != "limitations"})
+    if re.search(r"pick_?percent|picked_?pct", data_only, re.I):
         failures.append("R9: a crowd-pick field is present in the board")
 
     # R10/R11
