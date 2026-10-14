@@ -3511,3 +3511,17 @@ Arena requires branch `arena/ae75c5c3-maltaproj2`; no other branch is used.
 - The current landing scope of session 7cd2e67a is still respected; its completed integration PR #79 is merged, but its task-board claim is not closed and is <60 minutes old. This session's canonical mobile executive-summary URL is `/ourline/`; root wording discrepancy A8 is needs review, non-blocking, source-linked and published.
 - This task-board-only commit requests a full hosted gate on the exact data-refreshed head (bot refresh pushes do not automatically run pull-request checks). No further collector code changes are planned before merge.
 - GitHub labels PR synchronizations from the Actions refresh bot `action_required` rather than running a gate. Added this session branch to the Pages workflow's existing trusted push-branch list (build only; deployment still main-only), so the exact combined source/data head gets a hosted gate without asking the user for approvals or broadening other sessions' write scopes.
+
+## Session 5a3c1a63 Log & Verification (2026-10-14)
+- **Session Claim:** Integration, mobile UX executive summary & picks accessibility, and full suite verification.
+- **Executive Summary:** Added prominent executive summary banner and quick-link hub on the landing page (with jump links to `ourline/` full-coverage pick board, verified bookmaker lines, inventory, flagged review page, and track record) to make finding picks fast and accessible on phone and mobile devices.
+- **Full Coverage & Originated Lines:** Audited coverage across the repo. High-tier and covered matches derive win probabilities from external bookmakers (Pinnacle, Bovada, Melbet, Kalshi) with margin removed. Lower-tier matches not quoted on standard books are resolved using calibrated Valve Regional Standings (VRS) rating model originated lines (under `ourline/`), while unverified/unrated low-tier matches remain flagged for review with reasons and official source links, never hallucinated.
+- **HotSpawn Match Link Audit:** Re-verified that no constructed numeric match routes (`/matches/<id>`) exist across root, live, and expanded boards.
+- **Regression Tests:** All 271 unit tests in `tests/` pass cleanly (100% OK).
+- **Site Staging:** `scripts/stage_site.py` passes cleanly (31 files generated, 0 broken internal links).
+
+### ae75c5c3 — parallel integration reconciliation
+- Main advanced with session `5a3c1a63`'s PR #83 and bot refreshes during verification. Stopped on append-only/task-board and generated-live-output conflicts. Aborted the transactional rebase before altering any content, then merged current main on this fixed session branch to preserve its published history (no force push, no branch switch).
+- Preserved both complete task-board records and all upstream root/mobile-summary work verbatim. Generated `live/**` / board / verification conflicts resolved by re-rendering from merged official input snapshots with the fixed collector's link policy. No other session's code was replaced and no evidence was discarded.
+- Root now has the prominent executive summary supplied by `5a3c1a63`; its hard-coded 22-pick count and old blending wording remain A8 review items. Requested factual/dynamic summary correction from that owner rather than editing its freshly claimed root generator.
+- Combined main + this session passes 284 tests and staging/link audit; a fresh hosted gate is required after this integration merge.
