@@ -1,17 +1,16 @@
 {
- "generated_at_utc": "2026-10-14T12:25:46Z",
+ "generated_at_utc": "2026-10-14T17:40:44Z",
  "checks": [
   {
    "id": "R1",
    "claim": "data/hotspawn_matches.json matches the live lobby fixture list",
    "source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
    "snapshot_file": "data/hotspawn_matches.json",
-   "snapshot_generated_at_utc": "2026-10-14T12:05:00Z",
+   "snapshot_generated_at_utc": "2026-10-14T17:16:29Z",
    "live_count_all_sports": 11570,
-   "live_window_rows": 260,
-   "snapshot_count": 84,
+   "live_window_rows": 254,
+   "snapshot_count": 79,
    "window_ids_missing_from_snapshot": [
-    "1071186",
     "1071191",
     "1071203",
     "1071208",
@@ -30,11 +29,12 @@
     "1074646",
     "1074647",
     "1074648",
-    "1074649"
+    "1074649",
+    "1074650"
    ],
    "stale_in_snapshot": [],
    "status": "discrepancy",
-   "detail": "84 snapshot rows vs 260 live window rows; 235 live window fixture(s) missing from the snapshot, 0 snapshot row(s) no longer served"
+   "detail": "79 snapshot rows vs 254 live window rows; 234 live window fixture(s) missing from the snapshot, 0 snapshot row(s) no longer served"
   },
   {
    "id": "R2",
@@ -153,10 +153,38 @@
      ]
     },
     {
+     "fixture_id": "1079622",
+     "teams": [
+      "ex-RUSTEC",
+      "mellren"
+     ]
+    },
+    {
+     "fixture_id": "1079623",
+     "teams": [
+      "G2 Ares",
+      "The Last Resort"
+     ]
+    },
+    {
      "fixture_id": "1081111",
      "teams": [
       "Enjoy",
       "B8 Academy"
+     ]
+    },
+    {
+     "fixture_id": "1081112",
+     "teams": [
+      "Banda chuya",
+      "6666"
+     ]
+    },
+    {
+     "fixture_id": "1081113",
+     "teams": [
+      "Ryvex",
+      "PCIFIC"
      ]
     },
     {
@@ -167,74 +195,47 @@
      ]
     },
     {
-     "fixture_id": "1079438",
+     "fixture_id": "1080177",
      "teams": [
-      "Astralis",
-      "Sashi"
-     ]
-    },
-    {
-     "fixture_id": "1079439",
-     "teams": [
-      "HOTU",
-      "Fnatic"
+      "Falcons",
+      "Ninjas in Pyjamas"
      ]
     }
    ],
-   "detail": "32 priced rows joined to the lobby snapshot by fixture id and team name; 0 mismatch(es), 7 row(s) whose fixture has since left the lobby window"
+   "detail": "32 priced rows joined to the lobby snapshot by fixture id and team name; 0 mismatch(es), 12 row(s) whose fixture has since left the lobby window"
   },
   {
    "id": "R5",
    "claim": "data/lines.json summary counters match its own row list",
-   "declared_fixtures_total": 84,
-   "rows": 84,
+   "declared_fixtures_total": 79,
+   "rows": 79,
    "status": "verified",
-   "detail": "declared fixtures_total=84 vs 84 rows; fixtures_with_external_line=5"
+   "detail": "declared fixtures_total=79 vs 79 rows; fixtures_with_external_line=5"
   },
   {
    "id": "R6",
    "claim": "every price published on the board carries a source link, a market label and a retrieval timestamp",
-   "priced_rows": 24,
-   "distinct_source_pages": 13,
+   "priced_rows": 20,
+   "distinct_source_pages": 9,
    "links_listed_for_manual_review": [
     "https://melbet.com/en/line/esports/",
-    "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/ex-rustec-mellren-202610140700",
-    "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-the-last-resort-202610141000",
     "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/heroic-envy-202610150600",
     "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-bc-game-202610150600",
-    "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-bb-team-202610141200",
-    "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610140930",
-    "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-ninjas-in-pyjamas-202610140815",
-    "https://www.bovada.lv/esports/league-of-legends/demacia-cup-global-invitational/bnk-fearx-kt-rolster-202610140510",
+    "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-bb-team-202610141400",
+    "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610141140",
     "https://www.bovada.lv/esports/league-of-legends/emea-masters-summer/solary-anubis-gaming-202610141200",
     "https://www.bovada.lv/esports/league-of-legends/world-championship-play-in/cloud9-karmine-corp-202610151400",
     "https://www.bovada.lv/esports/league-of-legends/world-championship-play-in/furia-esports-mvk-esports-202610151900",
     "https://www.pinnacle.com/en/esports/"
    ],
    "reachability_from_this_host": {
-    "reachable": 2,
-    "not_reachable": 11,
+    "reachable": 1,
+    "not_reachable": 8,
     "note": "bookmaker pages commonly refuse datacenter clients, so a failure here is not treated as a broken link \u2014 the reviewer clicks them",
     "not_reachable_examples": [
      {
       "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/league-of-legends/demacia-cup-global-invitational/bnk-fearx-kt-rolster-202610140510"
-     },
-     {
-      "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/ex-rustec-mellren-202610140700"
-     },
-     {
-      "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-ninjas-in-pyjamas-202610140815"
-     },
-     {
-      "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610140930"
-     },
-     {
-      "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-the-last-resort-202610141000"
+      "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-parivision-202610141140"
      },
      {
       "source": "Bovada",
@@ -242,7 +243,11 @@
      },
      {
       "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-bb-team-202610141200"
+      "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-bb-team-202610141400"
+     },
+     {
+      "source": "Melbet (1xBet platform, LineFeed)",
+      "url": "https://melbet.com/en/line/esports/"
      },
      {
       "source": "Bovada",
@@ -255,20 +260,24 @@
      {
       "source": "Bovada",
       "url": "https://www.bovada.lv/esports/league-of-legends/world-championship-play-in/cloud9-karmine-corp-202610151400"
+     },
+     {
+      "source": "Bovada",
+      "url": "https://www.bovada.lv/esports/league-of-legends/world-championship-play-in/furia-esports-mvk-esports-202610151900"
      }
     ]
    },
    "status": "verified",
    "mismatches": [],
-   "detail": "24 priced rows, 13 distinct source pages, 0 row(s) missing provenance; 2 link(s) answered automatically"
+   "detail": "20 priced rows, 9 distinct source pages, 0 row(s) missing provenance; 1 link(s) answered automatically"
   },
   {
    "id": "R7",
    "claim": "where two or more independent sources price the same fixture, their no-vig probabilities agree within 12 points",
-   "fixtures_with_two_or_more_sources": 9,
+   "fixtures_with_two_or_more_sources": 10,
    "status": "verified",
    "mismatches": [],
-   "detail": "9 fixture(s) priced by 2+ sources compared source by source; 0 with a spread wider than 12 points"
+   "detail": "10 fixture(s) priced by 2+ sources compared source by source; 0 with a spread wider than 12 points"
   }
  ],
  "irregularities": [
