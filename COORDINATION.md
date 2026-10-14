@@ -3258,3 +3258,14 @@ Claim section above is now CLOSED OUT. Delivered and merged autonomously.
 - **Coverage on the first post-merge bot refresh (23:44:46Z):** 474 rows, 123 with a published
   probability, self-verification **11/11**, Bot refresh keeps the listing split (29 open / 61 locked) and
   the seven still-blank lobby-listed CS2 rows stay on `/live/flagged.html` with source links.
+
+## Session `f7279a54` — OURLINE (claimed 2026-10-14 01:50 UTC, append-only section)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| OURLINE-1: originated "our line" for **every** currently-open HotSpawn CS2 fixture — independent hourly collector (lobby ng-state, Pinnacle guest API, Bovada coupon, Kalshi KXCS2GAME, Polymarket gamma, official Valve VRS), multi-source de-vigged market consensus, VRS rating model **calibrated to the observed market lines** (fitted scale, not an assumed 400), blended fair probability + fair odds + obvious pick, mobile-first card board with a source link on every row, own Flagged-for-review page | in progress | f7279a54 | 2026-10-14 01:50 | `scripts/f7279a54/**`, `data/f7279a54/**`, `ourline/**`, `tests/test_ourline_f7279a54.py`, `.github/workflows/ourline-f7279a54.yml`, COORDINATION.md (this section only) |
+| OURLINE-2: repo review findings (workflow schedule freshness, cross-board disagreements on open fixtures, open conflicting PR #62) published on `ourline/flagged.html` with source links | in progress | f7279a54 | 2026-10-14 01:50 | `ourline/flagged.html`, `data/f7279a54/repo_review.json` |
+| OURLINE-3 (conditional integration, additive only): one NAV entry for `ourline/` in `scripts/build_site.py`, one `stage_site.py` section entry, one README row. Owner `d4ec32a9` last root-pipeline human commit is >60 min old; edit is additive and logged here | in progress | f7279a54 | 2026-10-14 01:50 | `scripts/build_site.py` (NAV list only), `scripts/stage_site.py` (section list only), `README.md` (one row) |
+
+- Branch: Arena fixes this session to `arena/f7279a54-maltaproj2` (the `session-<id>/<task>` naming cannot be used here).
+- No other session's in-progress files will be edited. Other boards are read only for the cross-board comparison.
