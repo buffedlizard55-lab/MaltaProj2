@@ -4096,3 +4096,21 @@ Prior final integrator 53220a1b explicitly closed INT-A/INT-B above; no active c
 - Corrected landing: strict current inventory counts, one primary mobile CTA, capture/collection timestamps, unresolved row table with blank probabilities and official fixture links, alternate boards collapsed as research. Missing snapshot is unverified, not zero. No assertion that every inherited repository file/source was independently verified.
 - Local verification: 411 unittest cases passed (1 skipped); complete site staging passed all local-link checks. Six new regression tests cover blank/missing data, escaping, unsafe URL rejection, no fallback promotion, and open-row counts. Test-generated timestamp changes outside scope were reverted.
 - Sources: https://play.hotspawn.com/lobby ; https://www.hltv.org/betting/analytics ; https://melbet.com/en/line/esports (redirected to /en/block); https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md . Read times and limitations are published in the audit.
+## Session `8723ad37` — claim (2026-10-14 04:05 UTC)
+
+Arena fixes this session to `arena/8723ad37-maltaproj2`; no other branch is created or pushed.
+Read the existing main task board and fetched the boards for open PRs #80 (`6ddde224`) and #86
+(`fe803b80`). Their new coverage/board sections remain untouched. No additional rival board planned.
+
+| Task | Status | Owner | File scope |
+|---|---|---|---|
+| Harden existing every-match board against unsupported ratings, ambiguous identities, stale/missing kickoff/quotes; audit fallback-only sources; mobile expiry and readable evidence | in progress | 8723ad37 | `scripts/c64a5e19/**`, `picks-every-match/**`, `data/c64a5e19/board.json`, `tests/test_c64a5e19.py`, `tests/test_8723ad37.py`, `audits/8723ad37/**` |
+| Final integration after above: truthful executive summary, public flags, tests, PR merge and Pages verification | in progress | 8723ad37 | `scripts/build_site.py` (landing prose only, NOT NAV), generated root HTML/assets, README.md (existing board description only), `.github/workflows/every-match-c64a5e19.yml`, `.github/workflows/pages.yml` (validation additions only), COORDINATION.md (append only) |
+
+Previous every-match owner c64a5e19 completed PR #81; no active claim overlaps that section.
+Root prose takeover: previous 5a3c1a63 integration completed PR #83; 7cd2e67a's old root claim
+has no recent commits (>60 minutes). Respect 6ddde224's additive NAV/staging/README-row scope.
+Open PR #86 edits separate board files plus historical test/URL repairs already on main; do not edit them.
+Current verified repository defects: sibling/floor VRS inference in `scripts/c64a5e19/build.py`,
+14-hour/missing-time joins in `core.py`, hard-coded landing coverage in `scripts/build_site.py`.
+These contradict the user's no-invented-values requirement and will be corrected, not labelled verified.
