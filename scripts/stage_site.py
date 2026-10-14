@@ -12,7 +12,7 @@ if OUT.exists():
 OUT.mkdir(parents=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','picks-all'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all'):
 # 'picks-all' added by session b5436cf0 (complete every-match picks) as an additive single entry.
 # 'picks-every-match' added by session c64a5e19 (every-match board) as an additive single entry.
 # 'summary' added by session c0e223d3 (T-HUB-INTEG) as an additive single entry so the
@@ -26,6 +26,10 @@ for name in ('assets','data','docs','pickem','evidence','audits','verify','curre
 # 'board' added by session fe803b80 (T-FULLCOV full-coverage picks board). Additive single entry;
 # the root NAV and the executive summary on the landing page link into it, so the artifact must
 # carry the directory or every root page fails the staged-link check.
+# 'exec' added by session b1fb1465 (T-EXEC-B1FB1465-INTEGRATE), additive single entry: the root
+# NAV and the landing-page executive summary link exec/index.html, so the artifact must carry
+# the directory or every root page fails the staged-link check. No other session's files are
+# modified here.
 # 'fresh' added by session 3cd9787c as an integration unblock: the shared root NAV links
 # fresh/index.html (section dd2b7fee landed on main), so the artifact must carry the directory or
 # every root page fails the staged-link check and no site is published. Additive single entry.

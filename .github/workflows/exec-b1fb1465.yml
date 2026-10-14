@@ -1,0 +1,107 @@
+name: exec-b1fb1465 (executive summary + picks for every HotSpawn CS2 fixture)
+
+# Session b1fb1465. Rebuilds the exec/ section every four hours with no manual input:
+#   1. collect  - HotSpawn lobby (discovery only) + Pinnacle / Bovada / Melbet-1xBet / Kalshi /
+#                 Thunderpick-via-bo3.gg prices + official Valve VRS ratings + access evidence for
+#                 every source that was tried, including the ones that refuse the runner (HLTV).
+#   2. build    - join by canonical team pair and kick-off time, derive the no-vig probability, and
+#                 classify each open fixture: market / exchange-only / originated line / unresolved.
+#   3. render   - rebuild exec/*.html (mobile-first executive summary, all picks, the separate
+#                 "Unresolved picks & limitations" section, sources, flagged, method).
+#   4. verify   - twelve line-by-line checks (R1-R12). A failure blocks the commit, so the previous
+#                 good build stays published instead of a broken one.
+# Prices never come from HotSpawn; its crowd pick percentage is refused by the parser.
+on:
+  schedule:
+    - cron: '23 */4 * * *'      # every 4 hours (inside the 4-8 hour requirement)
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/b1fb1465/**'
+      - 'tests/test_b1fb1465.py'
+      - '.github/workflows/exec-b1fb1465.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: exec-b1fb1465
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Collect fixtures, prices, ratings and access evidence
+        run: python scripts/b1fb1465/collect.py
+      - name: Join, derive probabilities and classify every open fixture
+        run: python scripts/b1fb1465/build.py
+      - name: Render the mobile-first exec section
+        run: python scripts/b1fb1465/render.py
+      - name: "Verify line by line (R1-R12: sources, arithmetic, join rules, links, cadence)"
+        run: python scripts/b1fb1465/verify.py
+      - name: Regression tests for this section
+        run: python -m unittest tests.test_b1fb1465 -v
+      - name: Keep the build for review even when verification fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: exec-b1fb1465-build
+          path: |
+            data/b1fb1465
+            exec
+          retention-days: 7
+      - name: Publish a diagnostic copy on a session branch (never on main)
+        if: failure()
+        env:
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          if [ "$REF_NAME" = "main" ]; then
+            echo "main is never given a failed build; nothing is committed"
+            exit 0
+          fi
+          git config user.name "malta-exec-bot"
+          git config user.email "malta-exec-bot@users.noreply.github.com"
+          mkdir -p data/b1fb1465/diagnostic
+          for f in board.json verification.json snapshot.json; do
+            [ -f "data/b1fb1465/$f" ] && cp -f "data/b1fb1465/$f" data/b1fb1465/diagnostic/
+          done
+          git add -f data/b1fb1465/diagnostic
+          git diff --cached --quiet && exit 0
+          git commit -m "exec(b1fb1465): diagnostic build (verification failed)"
+          for attempt in 1 2 3; do
+            git pull --rebase origin "$REF_NAME"
+            if git push origin "HEAD:$REF_NAME"; then exit 0; fi
+            sleep 5
+          done
+          exit 0
+      - name: Commit the refreshed data and pages atomically
+        env:
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          git config user.name "malta-exec-bot"
+          git config user.email "malta-exec-bot@users.noreply.github.com"
+          git add data/b1fb1465 exec tests/test_b1fb1465.py scripts/b1fb1465
+          if git diff --cached --quiet; then
+            echo "No changes to publish"
+            exit 0
+          fi
+          git commit -m "exec(b1fb1465): refresh picks, unresolved section and executive summary"
+          for attempt in 1 2 3; do
+            git pull --rebase origin "$REF_NAME"
+            if git push origin "HEAD:$REF_NAME"; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "push failed after three attempts" >&2
+          exit 1

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Formulas, join rules, refresh cadence and limits for the HotSpawn CS2 picks section.">
+<meta name="theme-color" content="#0a1526">
+<title>Method · HotSpawn CS2 picks</title>
+<link rel="stylesheet" href="assets/exec.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span>HotSpawn CS2 · picks &amp; probabilities</a>
+    <nav aria-label="Section"><a class="navlink" href="index.html">Executive summary</a><a class="navlink" href="picks.html">All picks</a><a class="navlink" href="unresolved.html">Unresolved &amp; limits</a><a class="navlink" href="sources.html">Sources</a><a class="navlink" href="flagged.html">Flagged</a><a class="navlink active" href="method.html">Method</a></nav>
+  </div>
+</header>
+<main class="wrap">
+
+<h1>Method, formulas and limits</h1>
+<p class="sub">Short enough to check by hand. Every number on this site is reproduced from the
+sources listed on the row that shows it.</p>
+
+<h2>1. Fixtures</h2>
+<p>The open list is read from the exact fixture response the public HotSpawn lobby page embeds. A
+fixture is <em>open</em> while its published lock time has not passed and it has no winner. The
+crowd "picked %" that the lobby also publishes is refused by the parser: it never reaches a table, a
+model or a percentage.</p>
+
+<h2>2. Prices</h2>
+<p>Quotes are collected from public, unauthenticated endpoints only: Pinnacle's guest odds API,
+Bovada's coupon JSON, the 1xBet-platform LineFeed (Melbet / 22bet / Betwinner), Kalshi's trade API
+and the Thunderpick coefficient bo3.gg publishes per fixture. American odds are converted with
+<span class="blank">decimal = 1 + price/100</span> (positive) or
+<span class="blank">1 + 100/|price|</span> (negative); decimal prices are used as published.</p>
+
+<h2>3. From a price to a probability</h2>
+<p>For a two-way market the implied shares are <span class="blank">q = 1/odds</span> and the
+bookmaker margin is removed proportionally:
+<span class="blank">p = q<sub>a</sub> / (q<sub>a</sub> + q<sub>b</sub>)</span>. Where several
+sources quote the same fixture the published market number is the <strong>median</strong> of the
+per-source no-vig probabilities, and the minimum, maximum and width are printed. Quotes are joined
+only when the canonical team names match as a pair <em>and</em> the kick-off times agree inside
+three hours; anything else is refused and listed on
+<a href="unresolved.html">Unresolved &amp; limits</a>.</p>
+
+<h2>4. The originated line (only where no market exists)</h2>
+<p>Where no reachable market prices a fixture, the line is originated from Valve's official global
+standings: <span class="blank">p<sub>a</sub> = σ(k · C · (Pa − Pb))</span> with Valve's own Glicko
+constants and a slope <span class="blank">k</span> fitted through the origin on the market pairs seen
+in the same run (bounds [0.25, 1.5], minimum 6 pairs). This run used
+<strong>k = 0.407163</strong> from 21 pair(s)
+(fitted).
+The result is labelled an <em>originated model line</em> on every row; it is not a bookmaker price and
+no bookmaker is quoting it.</p>
+
+<h2>5. What the pick is</h2>
+<p>The pick is the team with the higher probability. Confidence labels are derived from the distance
+to 50%: ≥30 points Strong, ≥15 Solid, ≥5 Lean, otherwise Toss-up; an exchange-only row is capped at
+"thin exchange book".</p>
+
+<h2>6. Refresh cadence and no manual input</h2>
+<p>The GitHub Actions workflow <span class="blank">exec-b1fb1465</span> runs every 4 hours and
+commits the refreshed data and pages in one commit; nothing in this section needs to be typed in.
+This build: 28 open fixtures, 190 quotes collected,
+28 picks published, 0 left blank and flagged.</p>
+
+<h2>7. Reconciliation with the other boards on this site</h2>
+<p>Different sessions publish different counts for the same lobby, because each counts "priced" by its
+own rule and its own snapshot time. This section states its rule explicitly: <strong>market</strong> =
+at least one licensed bookmaker two-way price joined by team pair plus kick-off inside three hours;
+<strong>exchange</strong> = Kalshi order book only; <strong>originated</strong> = no price;
+<strong>unresolved</strong> = no price and no official rating. Rows that another board publishes as
+blank may therefore appear here as an originated line, and rows another board prices from a source
+that refuses this runner may appear here as exchange-only or originated. Both facts are printed per
+row rather than reconciled into a single opaque number.</p>
+
+<h2>8. Standing limitations</h2>
+<ul>
+  <li>HLTV refuses the collection runner (HTTP 403), so its odds cannot refresh automatically; the
+  refusal is republished on <a href="sources.html">Sources</a> every run.</li>
+  <li>Tier-C events have structurally thin coverage; single-source rows are flagged.</li>
+  <li>Probabilities derived from prices are market observations, not forecasts; originated lines are
+  this project's own numbers.</li>
+  <li>No value is inferred. A missing source leaves the cell blank and the row flagged.</li>
+</ul>
+
+<footer class="foot">
+  <p><strong>Not affiliated with HotSpawn or any bookmaker.</strong> HotSpawn is used to discover
+  fixtures and, for the track record, to read the final score. Its crowd pick percentage is never
+  read, stored or used as an input. Estimates are not guarantees. 18+; gamble responsibly.</p>
+  <p>Built 2026-10-14T05:06:33Z · rebuilt automatically every 4 hours · every row links to its source.</p>
+</footer>
+</main>
+</body>
+</html>

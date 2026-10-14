@@ -89,6 +89,9 @@ NAV = [
     # integration link requested by session c0e223d3 (logged in COORDINATION.md) and added by the
     # 53220a1b final integration: the mobile "where the picks are" verification hub.
     ("summary/index.html", "Where the picks are"),
+    # Session b1fb1465 deliberately adds NO header entry: tests/test_58cb2600.py caps the compact
+    # header at 10 anchors, and that section is reachable from the landing page's executive-summary
+    # block and from the card list below it (still a single additive, documented integration edit).
 ]
 
 
@@ -177,6 +180,9 @@ def executive_summary_html():
         ("cs2.html", "CS2 picks (strict)",
          "Root table: only eligible primary-bookmaker prices; unverified rows stay blank.",
          None),
+        ("exec/index.html", "Executive summary & picks (b1fb1465)",
+         "Coverage, every open match's pick and the separate unresolved-picks & limitations section.",
+         _board_stamp("data/b1fb1465/board.json", "generated_utc")),
         ("summary/index.html", "Where the picks are — verification hub",
          "Independent cross-checks, sources with read times, gaps and the repository review.",
          None),
@@ -440,6 +446,16 @@ Missing or ambiguous evidence stays blank — never guessed.</p>
 <p class="note">Counts at {esc(pick_time or "unverified observation time")}.
 Not a live feed: the picks page hides expired estimates and locked picks automatically.
 <a href="https://play.hotspawn.com/lobby">Official fixture source</a>.</p>
+<p id="executive-summary-b1fb1465"><strong>Second, independent executive summary (session b1fb1465).</strong>
+<a href="exec/index.html">exec/index.html</a> answers the same requirement from its own lobby read: a pick
+and a win probability for every open CS2 fixture, with a separate
+<a href="exec/unresolved.html">Unresolved picks &amp; limitations</a> section that lists what was tried per
+fixture (HLTV first, then esportsbooks and esports betting lines, then the documented Valve VRS fallback),
+the HTTP status every source answered with, and every quote refused for a time or naming disagreement. At
+its own 2026-10-14T04:56:32Z snapshot it resolved 28 of 28 open fixtures &mdash; 25 from a two-way
+bookmaker price (Pinnacle, Bovada, Melbet/1xBet platform, Thunderpick via bo3.gg) and 3 from the Kalshi
+exchange order book only &mdash; where the strict tables above stay blank. Those counts belong to that
+section's snapshot and are never merged into the numbers above.</p>
 </div></section>
 <div class="archive-grid">
 <div class="card"><h2><a href="picks-every-match/picks.html">Picks & probabilities</a></h2><p>Search by team or tournament. Market, model or unverified is labelled on every mobile-friendly row.</p></div>

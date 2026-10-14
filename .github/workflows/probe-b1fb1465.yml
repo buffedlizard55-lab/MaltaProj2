@@ -1,0 +1,55 @@
+name: probe-b1fb1465 (source investigation for unpriced HotSpawn CS2 fixtures)
+
+# Session b1fb1465. Runs only the source probe and commits its evidence.
+# Purpose: document, with an HTTP status and a UTC read time per request, which public sources can
+# resolve a pick for the open HotSpawn CS2 fixtures that no bookmaker or exchange prices, in the
+# order the project requires: HLTV -> esportsbooks / esports betting lines -> official Valve VRS.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/b1fb1465/probe*.py'
+      - '.github/workflows/probe-b1fb1465.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: probe-b1fb1465
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: arena/b1fb1465-maltaproj2
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run source probe (round 1)
+        run: python scripts/b1fb1465/probe.py
+      - name: "Run source probe round 2 (HLTV access paths, odds aggregators, exchange depth)"
+        run: python scripts/b1fb1465/probe_round2.py
+      - name: Commit probe evidence
+        run: |
+          set -euo pipefail
+          git config user.name "malta-probe-bot"
+          git config user.email "malta-probe-bot@users.noreply.github.com"
+          git add data/b1fb1465/probe.json data/b1fb1465/probe_round2.json
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "probe(b1fb1465): source coverage evidence for unpriced fixtures"
+          for attempt in 1 2 3; do
+            git pull --rebase origin arena/b1fb1465-maltaproj2
+            if git push origin HEAD:arena/b1fb1465-maltaproj2; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "push failed" >&2
+          exit 1

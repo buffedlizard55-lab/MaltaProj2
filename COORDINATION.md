@@ -4252,3 +4252,67 @@ Arena fixes this session to `arena/49a181f8-maltaproj2`; only that branch will b
 
 - PR gate run 38513813261 passed all 424 tests, browser checks and staged links. Concurrent PR #97 advanced main before the merge; reconciled its newer shared builder/flagged output, retaining both audits and all coordination records.
 - A scheduled source refresh changed the generated flagged page during the second passing PR gate. Kept its newest generated output unchanged; the additive link remains in the generator and will publish on the next normal render. This avoids hand-edited/generated-output conflicts and preserves the latest source data. Hosted gate run 38513981920 succeeded.
+
+## Session b1fb1465 — executive summary + unresolved-pick resolution (claimed 2026-10-14 04:5x UTC)
+
+Session: `b1fb1465` (this environment requires branch `arena/b1fb1465-maltaproj2`; the requested
+`session-<id>/<task>` naming is therefore not used, and no other branch is touched).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-EXEC-B1FB1465: (1) resolve a pick for every open HotSpawn CS2 fixture that no bookmaker/exchange prices, using extra external sources in this order — HLTV → esportsbooks / esports betting lines → documented originated line; (2) publish a separate **Unresolved picks & limitations** section and surface it in a single mobile-first **executive summary** that links to the picks pages inside the site; (3) refresh every 4–8 h with no manual input | in progress | b1fb1465 | 2026-10-14 04:55 | `scripts/b1fb1465/**`, `data/b1fb1465/**`, `exec/**`, `tests/test_b1fb1465.py`, `.github/workflows/exec-b1fb1465.yml`, `COORDINATION.md` (claim + log only) |
+
+Integration handoff requested (not edited by this session until integration): root `index.html`
+executive-summary block + header nav, `README.md` page table row, `scripts/stage_site.py` staging
+list. These are owned by the earlier integration sessions; this session publishes `exec/**` first and
+only touches the shared landing/nav at integration time, after pulling the other sessions' branches.
+
+Scope note: no other session's files are edited. The board/ourline/coverage/fresh/summary/picks-every-match
+sections stay owned by their sessions; this session reads their published JSON as cross-check evidence
+only and publishes its own `data/b1fb1465/**` and `exec/**`.
+
+Log:
+- 2026-10-14 04:55 UTC, `b1fb1465`: claim published before any work, per the board rules. `git pull --rebase` before push; no conflicts at claim time (branch was fast-forwarded to `origin/main` at `b9efe7f`).
+- Findings at claim time (verified by reading the published boards, not assumed): the landing page carries two different executive summaries with different counts (28/28 picks vs 28 open / 10 eligible / 18 blank) because each section counts a different snapshot and a different acceptance rule; "market-priced" open fixtures are reported as 13, 14, 15 and 23 by four different boards for the same lobby. Fixtures `1081112`, `1081113`, `1080286`, `1081120`, `1080289`, `1080200` carried **no** external price at 2026-10-14T04:18Z in `data/fe803b80/board.json` (basis `model`).
+
+| T-EXEC-B1FB1465-INTEGRATE: stage `exec/**` into the published site, add the executive-summary block and header nav entry to the root landing page, README page-table row, then PR → merge → Pages check and log the result | in progress | b1fb1465 | 2026-10-14 05:05 | `scripts/stage_site.py`, root `index.html` (exec block + nav only), `README.md`, `COORDINATION.md` |
+
+- 2026-10-14 05:05 UTC, `b1fb1465`: integration claimed after the pipeline went green end to end; the
+  shared landing/nav is only touched for this section\'s own block, nothing of another session is
+  rewritten. Evidence for the claim: run 38513940305 (exec workflow) succeeded — collect → build →
+  render → 14 verifier checks → 34 unit tests → committed `data/b1fb1465/**` + `exec/**` to the
+  session branch.
+- Resolution result at 2026-10-14T04:56Z: **28 of 28 open HotSpawn CS2 fixtures carry a pick**
+  (was 24 of 28 at 04:18Z on the other board). 25 resolve from a two-way bookmaker price (Pinnacle /
+  Bovada / Melbet-1xBet LineFeed / Thunderpick coefficients via bo3.gg), 3 from the Kalshi exchange
+  order book only, 0 originated model lines, **0 blank and flagged**. `data/b1fb1465/board.json`,
+  `data/b1fb1465/verification.json`, `exec/*.html`.
+- Two root causes behind the earlier blanks, both fixed and unit-tested, not guessed:
+  1. Bovada publishes `startTime` as epoch **milliseconds**; reading it as seconds stamped prices
+     1 792-07-28 and the join refused every Bovada quote. `core.parse_any` now reads ISO, seconds and
+     milliseconds; the one remaining refusal is genuine (Bovada times Mellren–Privateer Gaming 24 h
+     earlier than HotSpawn — published under rejected joins, not silently joined).
+  2. Three price sources title fixtures with a different opponent name than HotSpawn/HLTV. Names are
+     never aliased globally: `core.OPPONENT_LABEL_DISAGREEMENTS` carries five reviewed, per-fixture
+     records, each with note + evidence URLs, and every row that uses one is flagged
+     `opponent_label_disagreement` and prints both titles. Verifier rules R13/R14 fail the build if a
+     name decision loses its evidence or a row loses its flag.
+- Sources used for the five name calls (all in the records, published on `exec/sources.html`):
+  Kalshi `26OCT140700UNKLK` vs bo3.gg `los-kogutos-vs-sixsixsixsix-14-10-2026` — the roster on that
+  page (maaryy, tomiko, AdrieN, showk, ezox) is exactly Valve\'s Banda Chuya five, so the fixture is
+  HotSpawn/HLTV\'s "Banda chuya vs 6666"; Kalshi `26OCT141300SKRFORZER` vs HLTV match 2399301 —
+  HLTV\'s official CCT Series 11 bracket titles the same 17:00Z fixture FORZE Reload vs **LFO 10**
+  while Kalshi/bo3.gg call that opponent Sökerorg; Kalshi `26OCT150400EACWBTACADEM`, `26OCT150800ENCEWBTACADE`,
+  `26OCT151200BOJWBTACADEM` — three Elisa BreakOut fixtures Kalshi titles "WBT Academy" against
+  bo3.gg\'s published WBT lineup, and Valve lists WBT (#60) and WBT Academy (#130) as different fives.
+  New aliases with the same standard: WROTBERRY→WBT, WhiteBIT Team→WBT, EA Copenhagen / Esport
+  Academy Copenhagen→EAC.
+- HLTV stays a **dated cross-check, never an automated input**: from the collection runner every
+  HLTV URL answers 403 (Cloudflare), which the build publishes per run in `exec/unresolved.html`
+  ("what was tried, and what answered") instead of claiming "no price exists". HH
+  readings are cited with their own read times where they are used in the name decisions.
+- Irregularities published for reviewers: the Bovada 24 h kick-off disagreement above; HotSpawn lists
+  `FORZE Reload vs LFO 10` where Kalshi/bo3.gg use another opponent title for the same minute; the
+  same lobby is counted differently by the other boards (28 vs 29 fixtures, 13/14/15/23 market
+  priced) because each session combines a different snapshot with a different acceptance rule —
+  this section publishes its own snapshot time and never merges another board\'s numbers.
