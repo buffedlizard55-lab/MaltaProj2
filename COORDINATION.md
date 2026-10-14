@@ -3368,6 +3368,26 @@ Arena pins this session to `arena/58cb2600-maltaproj2`; the requested `session-<
 
 No other session's text, data or tests were modified. Full suite: 251 OK. `build_site.py`: no broken links. `stage_site.py`: PASS.
 
+### Session `f7279a54` — OURLINE completion record (2026-10-14 ~02:12Z UTC, append-only)
+
+**Status: done. f7279a54 claim closed.**
+
+- **PR:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/77, squash-merged without approval wait at `2026-10-14T02:04:47Z`; merge commit `24aeb5a103fc4ae9c918f0c5794965e4715a1284`.
+- **Pre-merge gate:** `Verify and publish dashboard` on PR head `d4632d6` → https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38499052199 **success** (all tests, generator, hosted browser smoke, staged-link audit).
+- **Post-merge deploy:** https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38499144285 → build success, deploy success.
+- **Self-refresh chain:** main OURLINE run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38499144270 refreshed (commit `34cbae6`). It then dispatched Pages run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38499188113 → build success, deploy success. Its `next` job re-dispatches the refresh after ~25 min.
+- **Live pages verified (public read, about 02:10Z):**
+  - https://buffedlizard55-lab.github.io/MaltaProj2/ourline/ shows 28 open, 22 with a pick, 16 bookmaker-priced, 6 VRS-only and 6 no line (flagged).
+  - …/ourline/results.html shows the track record (0 graded so far).
+  - The root dashboard links Our line.
+- **Sources:**
+  - HotSpawn lobby `ng-state` and its embedded `/api/v1/fixtures`.
+  - Prices: Pinnacle guest API, Bovada coupon JSON, Kalshi KXCS2GAME, Melbet line feed.
+  - Valve VRS (github.com/ValveSoftware/counter-strike_regional_standings).
+  - HLTV returns 403 to automation, so it is flagged and none of its numbers are used.
+  - HotSpawn crowd % is never used.
+- **Open flags for review (ourline/flagged.html#repo):** R1–R4, R5 (partly resolved), R7–R12. R6 is resolved; V1 (spot-check) is verified.
+
 # Session `7cd2e67a` — integration, line-by-line re-verification and publication (claim 2026-10-14 01:45 UTC)
 
 Environment note: Arena pins this session to branch `arena/7cd2e67a-maltaproj2`; the `session-<id>/<task>` branch

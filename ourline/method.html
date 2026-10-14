@@ -78,9 +78,9 @@ Valve's own code defines expected win rate from a points difference Δ: <a href=
 <code>ev = 1/(1+10^(g·Δ/−400))</code>) evaluated with a fixed RD of 75 in <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js">model/fit.js</a>, giving g = 0.9728.
 Valve's <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/readme.md">readme</a> notes the curve is steeper than observed results, so we fit a slope factor <b>k</b>:
 <code>p_A = 1/(1+10^(−k·g·Δ/400))</code>, by least squares of logit(market) on Δ over every fixture seen with both a market price and two ratings.</p>
-<p>Current fit: k = <b>0.367</b> (raw 0.367) on 14 fixtures
+<p>Current fit: k = <b>0.365</b> (raw 0.365) on 14 fixtures
 (minimum 6 to fit, otherwise k = 1, Valve's own curve; k is bounded to 0.25–1.5).
-Mean absolute error vs market: calibrated 7.7%, Valve default 14.5%.</p>
+Mean absolute error vs market: calibrated 7.8%, Valve default 14.6%.</p>
 <h2>4. Our line and the pick</h2>
 <p><code>logit(p_ours) = w·logit(p_market) + (1−w)·logit(p_model)</code> with w = 0.85 when two or more sources price the match, 0.75 with one
 (stated modelling choice). Market only when a team lacks a rating; model only when no price exists. Fair odds = 1/p.
@@ -94,7 +94,7 @@ which GitHub Pages publishes. Raw evidence: <code>data/f7279a54/snapshot.json</c
 <li>Bookmaker start times sometimes differ from HotSpawn's; joins with differences over 3 h are flagged.</li>
 <li>Low-tier teams are often absent from both bookmakers and VRS; those rows stay blank.</li></ul>
 
-<p class="foot">Data collected 2026-10-14T02:01:20Z UTC (<span data-r="2026-10-14T02:01:20Z"></span>) by an automated GitHub Actions run — no manual input.
+<p class="foot">Data collected 2026-10-14T02:05:16Z UTC (<span data-r="2026-10-14T02:05:16Z"></span>) by an automated GitHub Actions run — no manual input.
 Probabilities are estimates derived from external bookmaker/exchange prices and Valve's official VRS ratings; HotSpawn crowd picks are never used.
 Not affiliated with HotSpawn or any bookmaker. Not betting advice. Section owner: session <code>f7279a54</code>.</p>
 </main><script>
