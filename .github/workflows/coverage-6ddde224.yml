@@ -40,12 +40,19 @@ jobs:
           python-version: '3.11'
 
       - name: Collect lobby inventory, external lines, exchange books, results corpus and ratings
-        continue-on-error: true
         run: |
           mkdir -p data/coverage
+          set +e
           python3 scripts/coverage/collect_coverage.py --outdir data/coverage \
-            --corpus-days 90 2>&1 | tee /tmp/coverage_collect.log
-          echo "collector exit=${PIPESTATUS[0]}"
+            --corpus-days 90 > /tmp/coverage_collect.log 2>&1
+          code=$?
+          echo "collector exit=$code"
+          tail -c 12000 /tmp/coverage_collect.log
+          cp /tmp/coverage_collect.log data/coverage/collector_stdout.log
+          if [ ! -s data/coverage/fixtures.json ]; then
+            echo "::warning::coverage: no fixture snapshot was produced (all inventory sources failed)"
+          fi
+          exit 0
 
       - name: Build the board, re-derive every number and render the pages
         run: |
@@ -83,7 +90,9 @@ jobs:
         run: |
           git config user.name "coverage-bot"
           git config user.email "coverage-bot@users.noreply.github.com"
-          git add -A data/coverage coverage
+          mkdir -p data/coverage
+          git add -A data/coverage 2>/dev/null || true
+          [ -d coverage ] && git add -A coverage || true
           if git diff --cached --quiet; then
             echo "no changes"
           else

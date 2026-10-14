@@ -29,6 +29,7 @@ import base64
 import json
 import re
 import sys
+import time
 from datetime import timedelta
 from pathlib import Path
 
@@ -53,19 +54,67 @@ LIVE_BOARD = ROOT / "data/live/board.json"
 
 KEEP_PAST_DAYS = 10
 KEEP_FUTURE_DAYS = 21
-BO3G_MAX_UPCOMING_PAGES = 25
+BO3G_MAX_UPCOMING_PAGES = 60
+CORPUS_MAX_PAGES = 500
 CORPUS_CAP_MATCHES = 8000
 CORPUS_REFRESH_DAYS = 7
 
 
 # ----------------------------------------------------------------------------- HotSpawn lobby
+def fixtures_from_live_artifact(log: dict) -> list[dict]:
+    """Fallback inventory: the repository's own hourly live-coverage snapshot (session 3cd9787c).
+
+    Used only when HotSpawn cannot be reached from the runner. The provenance of every row is
+    rewritten to name that artifact, so the board never claims a direct HotSpawn read it did not make.
+    """
+    path = ROOT / "data/live/fixtures.json"
+    if not path.is_file():
+        return []
+    try:
+        payload = json.loads(path.read_text())
+    except json.JSONDecodeError:
+        return []
+    rows = payload.get("fixtures") if isinstance(payload, dict) else None
+    if not isinstance(rows, list):
+        return []
+    log["hotspawn_fixtures_fallback"] = {
+        "path": str(path.relative_to(ROOT)),
+        "generated_at_utc": payload.get("generated_at_utc"),
+        "rows": len(rows),
+        "reason": "direct HotSpawn request failed from this runner",
+    }
+    out = []
+    for r in rows:
+        out.append({
+            "fixture_id": str(r.get("fixture_id")), "game": r.get("game"),
+            "sport_alias": r.get("sport_alias"), "competition": r.get("competition"),
+            "competition_id": r.get("competition_id"), "tier": r.get("tier"), "stage": r.get("stage"),
+            "status": r.get("status"), "start_time_utc": r.get("start_time_utc"),
+            "lock_time_utc": r.get("lock_time_utc"), "lock_offset_sec": r.get("lock_offset_sec"),
+            "best_of": r.get("best_of"), "team_a": r.get("team_a"), "team_b": r.get("team_b"),
+            "team_a_id": r.get("team_a_id"), "team_b_id": r.get("team_b_id"),
+            "listed_in_lobby": bool(r.get("listed_in_lobby_hint")),
+            "hotspawn_crowd_pct_reference_only": r.get("hotspawn_pick_pct_reference_only"),
+            "source": {
+                "api": r.get("source", {}).get("api") or f"{LOBBY_API}/fixtures",
+                "page": r.get("source", {}).get("page") or LOBBY_PAGE,
+                "match": r.get("source", {}).get("hotspawn_match_url")
+                         or f"https://www.hotspawn.com/matches/{r.get('fixture_id')}",
+                "inventory_via": str(path.relative_to(ROOT)),
+            },
+        })
+    return out
+
+
 def collect_fixtures(log: dict, sample_dir: Path | None) -> tuple[list[dict], dict]:
     url = f"{LOBBY_API}/fixtures"
     data, meta = fetch_json(url, {"Referer": LOBBY_PAGE}, timeout=90)
     rows = data if isinstance(data, list) else []
     log["hotspawn_fixtures"] = {**meta, "rows": len(rows)}
     if not rows:
-        return [], {}
+        fallback = fixtures_from_live_artifact(log)
+        if fallback:
+            return [r for r in fallback if _in_window(r, log)], {}
 
     # The lobby page renders its fixture ids into the Angular transfer state; read them from the
     # public HTML (never from an authenticated/admin endpoint).
@@ -86,6 +135,10 @@ def collect_fixtures(log: dict, sample_dir: Path | None) -> tuple[list[dict], di
     log["lobby_page"]["listed_ids_found"] = len(listed_ids)
     log["lobby_page"]["counters"] = lobby_counters
 
+    if not listed_ids:
+        # the lobby page could not be read: reuse the listing hint recorded by the fallback / by
+        # the live snapshot instead of inventing a second definition of "listed"
+        pass
     listed = set(listed_ids)
     now = now_utc()
     lo, hi = now - timedelta(days=KEEP_PAST_DAYS), now + timedelta(days=KEEP_FUTURE_DAYS)
@@ -147,6 +200,30 @@ def collect_fixtures(log: dict, sample_dir: Path | None) -> tuple[list[dict], di
 
 
 # --------------------------------------------------------------------------------------- bo3.gg
+def bo3g_fetch_page(url: str) -> dict:
+    """Fetch one bo3.gg page; safe to call from several threads at once."""
+    data, meta = fetch_json(url, {"Accept": "application/json", "Referer": "https://bo3.gg/"}, timeout=45)
+    results = (data or {}).get("results") if isinstance(data, dict) else None
+    return {"url": url, "meta": meta, "results": results if isinstance(results, list) else []}
+
+
+def bo3g_fetch_pages(url_fn, pages: list[int], workers: int = 5) -> dict[int, dict]:
+    """Fetch several pages concurrently — the bo3.gg feed pages 10 records at a time, so a results
+    corpus needs hundreds of requests and sequential fetching would not fit an hourly job."""
+    import concurrent.futures as cf
+    out: dict[int, dict] = {}
+    with cf.ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = {pool.submit(bo3g_fetch_page, url_fn(page)): page for page in pages}
+        for future in cf.as_completed(futures):
+            page = futures[future]
+            try:
+                out[page] = future.result()
+            except Exception as exc:  # noqa: BLE001
+                out[page] = {"url": url_fn(page), "meta": {"error": f"{type(exc).__name__}: {exc}"},
+                             "results": []}
+    return out
+
+
 def bo3g_get(url: str, log: dict, sample_dir: Path | None, name: str) -> list[dict]:
     data, meta = fetch_json(url, {"Accept": "application/json", "Referer": "https://bo3.gg/"}, timeout=60)
     log.setdefault("bo3gg", {})[name] = {**meta, "url": url}
@@ -211,82 +288,110 @@ def bo3g_quote_from_match(m: dict, log: dict) -> dict | None:
     }
 
 
-def collect_bo3gg(quotes: list[dict], log: dict, sample_dir: Path | None) -> None:
+def collect_bo3gg(quotes: list[dict], log: dict, sample_dir: Path | None, budget_s: float = 120.0) -> None:
+    """Upcoming matches -> market quotes (two-sided Thunderpick prices republished by bo3.gg)."""
+    started = time.time()
     base = ("?filter[matches.status][in]=upcoming&filter[matches.discipline_id][in]=1"
-            "&sort=start_date&limit=50&page=")
+            "&sort=start_date&limit=10&page=")
     horizon = now_utc() + timedelta(days=KEEP_FUTURE_DAYS)
-    pages = 0
-    for page in range(1, BO3G_MAX_UPCOMING_PAGES + 1):
-        results = bo3g_get(f"{BO3G_API}{base}{page}", log, sample_dir, f"upcoming_p{page}")
-        if not results:
-            break
-        pages += 1
-        stop = True
-        for m in results:
-            start = parse_any(str(m.get("start_date")))
-            if start is None or start <= horizon:
-                stop = False
-            quote = bo3g_quote_from_match(m, log)
-            if quote:
-                quotes.append(quote)
+    entry: dict = {"pages_read": 0, "quotes": 0, "errors": []}
+    log.setdefault("bo3gg", {})["upcoming"] = entry
+    page = 1
+    while page <= BO3G_MAX_UPCOMING_PAGES and time.time() - started < budget_s:
+        batch = bo3g_fetch_pages(lambda p: f"{BO3G_API}{base}{p}", list(range(page, page + 5)))
+        stop = False
+        for number in sorted(batch):
+            payload = batch[number]
+            if payload["meta"].get("error") or payload["meta"].get("status") != 200:
+                entry["errors"].append({number: payload["meta"].get("error") or payload["meta"].get("status")})
+                continue
+            if not payload["results"]:
+                stop = True
+                continue
+            entry["pages_read"] += 1
+            if number == 1 and sample_dir is not None:
+                save_sample(sample_dir, "bo3gg_upcoming_p1.json",
+                            {"url": payload["url"], "results": payload["results"][:3]}, limit=90_000)
+            for m in payload["results"]:
+                start = parse_any(str(m.get("start_date")))
+                if start is None or start <= horizon:
+                    stop = False
+                quote = bo3g_quote_from_match(m, log)
+                if quote:
+                    quotes.append(quote)
+                    entry["quotes"] += 1
         if stop:
             break
-        sleep(0.2)
-    log.setdefault("bo3gg", {})["upcoming_pages_read"] = pages
-    log["bo3gg"]["upcoming_quotes"] = len(quotes)
+        page += 5
+    entry["seconds"] = round(time.time() - started, 1)
 
 
 def collect_bo3gg_corpus(log: dict, sample_dir: Path | None, corpus_days: int,
-                         existing: dict | None) -> dict:
-    """Distilled finished-match corpus (results for the model, closing prices for calibration)."""
+                         existing: dict | None, budget_s: float = 300.0) -> dict:
+    """Distilled finished-match corpus (model input + closing-price benchmark)."""
     if existing and existing.get("generated_at_utc"):
         age = (now_utc() - (parse_any(existing["generated_at_utc"]) or now_utc())).days
         if age < CORPUS_REFRESH_DAYS and existing.get("matches"):
             log.setdefault("bo3gg", {})["corpus"] = {"reused": True, "age_days": age,
                                                      "matches": len(existing["matches"])}
             return existing
+    started = time.time()
     base = ("?filter[matches.status][in]=finished&filter[matches.discipline_id][in]=1"
-            "&sort=-start_date&limit=50&page=")
+            "&sort=-start_date&limit=10&page=")
     cutoff = now_utc() - timedelta(days=corpus_days)
     matches: list[dict] = []
     names: dict[str, str] = {}
-    pages = 0
-    for page in range(1, 400):
-        results = bo3g_get(f"{BO3G_API}{base}{page}", log, sample_dir, f"finished_p{page}")
-        if not results:
+    entry: dict = {"reused": False, "pages_read": 0, "errors": [], "stopped": None}
+    log.setdefault("bo3gg", {})["corpus"] = entry
+    page = 1
+    while page <= CORPUS_MAX_PAGES:
+        if time.time() - started > budget_s:
+            entry["stopped"] = f"time budget {budget_s}s reached"
             break
-        pages += 1
+        batch = bo3g_fetch_pages(lambda p: f"{BO3G_API}{base}{p}", list(range(page, page + 5)))
         done = False
-        for m in results:
-            start = parse_any(str(m.get("start_date")))
-            if start is None or start < cutoff:
+        for number in sorted(batch):
+            payload = batch[number]
+            if payload["meta"].get("error") or payload["meta"].get("status") != 200:
+                entry["errors"].append({number: payload["meta"].get("error") or payload["meta"].get("status")})
+                continue
+            if not payload["results"]:
                 done = True
                 continue
-            winner, loser = m.get("winner_team_id"), m.get("loser_team_id")
-            a, b = m.get("team1_id"), m.get("team2_id")
-            if not winner or not a or not b or winner not in (a, b):
-                continue
-            rec = {"id": m.get("id"), "d": to_iso(start), "a": str(a), "b": str(b),
-                   "w": str(winner), "bo": m.get("bo_type"), "t": m.get("tier")}
-            bet = m.get("bet_updates") or {}
-            t1, t2 = (bet.get("team_1") or {}), (bet.get("team_2") or {})
-            try:
-                if t1.get("coeff") and t2.get("coeff"):
-                    rec["oa"], rec["ob"] = float(t1["coeff"]), float(t2["coeff"])
-                for side, tid in ((t1, a), (t2, b)):
-                    if side.get("name") and tid:
-                        names[str(tid)] = str(side["name"])
-            except (TypeError, ValueError):
-                pass
-            matches.append(rec)
-            if len(matches) >= CORPUS_CAP_MATCHES:
-                done = True
-                break
+            entry["pages_read"] += 1
+            if number == 1 and sample_dir is not None:
+                save_sample(sample_dir, "bo3gg_finished_p1.json",
+                            {"url": payload["url"], "results": payload["results"][:3]}, limit=90_000)
+            for m in payload["results"]:
+                start = parse_any(str(m.get("start_date")))
+                if start is None or start < cutoff:
+                    done = True
+                    continue
+                winner, loser = m.get("winner_team_id"), m.get("loser_team_id")
+                a, b = m.get("team1_id"), m.get("team2_id")
+                if not winner or not a or not b or str(winner) not in (str(a), str(b)):
+                    continue
+                rec = {"id": m.get("id"), "d": to_iso(start), "a": str(a), "b": str(b),
+                       "w": str(winner), "bo": m.get("bo_type"), "t": m.get("tier")}
+                bet = m.get("bet_updates") or {}
+                t1, t2 = (bet.get("team_1") or {}), (bet.get("team_2") or {})
+                try:
+                    if t1.get("coeff") and t2.get("coeff"):
+                        rec["oa"], rec["ob"] = float(t1["coeff"]), float(t2["coeff"])
+                    for side, tid in ((t1, a), (t2, b)):
+                        if side.get("name") and tid:
+                            names[str(tid)] = str(side["name"])
+                except (TypeError, ValueError):
+                    pass
+                matches.append(rec)
+                if len(matches) >= CORPUS_CAP_MATCHES:
+                    done = True
+                    break
         if done:
             break
-        if pages % 20 == 0:
-            sleep(0.5)
-        sleep(0.15)
+        page += 5
+    entry.update({"matches": len(matches), "team_names": len(names),
+                  "seconds": round(time.time() - started, 1), "window_days": corpus_days})
     corpus = {
         "generated_at_utc": now_iso(),
         "source": BO3G_API,
@@ -295,17 +400,17 @@ def collect_bo3gg_corpus(log: dict, sample_dir: Path | None, corpus_days: int,
         "note": ("Distilled finished CS2 matches: id, UTC start, team ids, winner id, best-of, tier, "
                  "and the last bookmaker price pair published by bo3.gg for that match (used only as "
                  "the market benchmark on the method page)."),
-        "pages_read": pages,
+        "pages_read": entry["pages_read"],
+        "stopped_reason": entry["stopped"],
         "matches": matches,
         "team_names": names,
     }
-    log.setdefault("bo3gg", {})["corpus"] = {"reused": False, "age_days": 0, "pages": pages,
-                                             "matches": len(matches), "names": len(names)}
     return corpus
 
 
 # ---------------------------------------------------------------------------------------- Kalshi
 def collect_kalshi(events: list[dict], log: dict, sample_dir: Path | None) -> None:
+    """Two-sided exchange books for CS2 match markets (published only inside the spread limit)."""
     data, meta = fetch_json(KALSHI_EVENTS, {"Accept": "application/json"}, timeout=60)
     log["kalshi"] = {**meta}
     evs = (data or {}).get("events") if isinstance(data, dict) else None
@@ -318,46 +423,34 @@ def collect_kalshi(events: list[dict], log: dict, sample_dir: Path | None) -> No
         ticker = str(ev.get("event_ticker") or "")
         if not ticker.startswith("KXCS2GAME-"):
             continue
+        markets = ev.get("markets") or []
         sides = []
-        for mk in ev.get("markets") or []:
+        rules = ""
+        expected_end = None
+        for mk in markets:
             def num(key):
                 try:
                     return float(mk.get(key))
                 except (TypeError, ValueError):
                     return None
-            sides.append({
-                "ticker": mk.get("ticker"),
-                "team": mk.get("yes_sub_title"),
-                "yes_bid": num("yes_bid_dollars"),
-                "yes_ask": num("yes_ask_dollars"),
-                "last_price": num("last_price_dollars"),
-                "bid_size": num("yes_bid_size_fp"),
-                "ask_size": num("yes_ask_size_fp"),
-                "volume": num("volume_fp"),
-                "open_interest": num("open_interest_fp"),
-                "status": mk.get("status"),
-            })
+            rules = rules or str(mk.get("rules_primary") or "")
+            expected_end = expected_end or mk.get("expected_expiration_time")
+            sides.append({"ticker": mk.get("ticker"), "team": mk.get("yes_sub_title"),
+                          "yes_bid": num("yes_bid_dollars"), "yes_ask": num("yes_ask_dollars"),
+                          "last_price": num("last_price_dollars"), "bid_size": num("yes_bid_size_fp"),
+                          "ask_size": num("yes_ask_size_fp"), "volume": num("volume_fp"),
+                          "open_interest": num("open_interest_fp"), "status": mk.get("status")})
         if len(sides) != 2 or not all(s.get("team") for s in sides):
             continue
-        start = None
-        rules = ""
-        for mk in ev.get("markets") or []:
-            start = start or parse_any(str(mk.get("occurrence_datetime") or mk.get("open_time") or ""))
-            rules = rules or str(mk.get("rules_primary") or "")
         events.append({
-            "source_key": "kalshi",
-            "source_name": "Kalshi (regulated exchange)",
+            "source_key": "kalshi", "source_name": "Kalshi (regulated exchange)",
             "source_kind": "exchange (reference; never averaged with bookmaker prices)",
-            "event_ticker": ticker,
-            "title": ev.get("title"),
-            "sub_title": ev.get("sub_title"),
+            "event_ticker": ticker, "title": ev.get("title"), "sub_title": ev.get("sub_title"),
             "source_public_url": f"https://kalshi.com/markets/{ticker.split('-')[0].lower()}",
-            "source_api_url": KALSHI_EVENTS,
-            "retrieved_at_utc": now_iso(),
-            "start_time_utc": to_iso(start),
-            "occurrence_datetime_raw": str((ev.get("markets") or [{}])[0].get("occurrence_datetime") or ""),
-            "rules_primary": rules,
-            "sides": sides,
+            "source_api_url": KALSHI_EVENTS, "retrieved_at_utc": now_iso(),
+            # NOTE: Kalshi's own occurrence/expiration timestamps describe the market, not the
+            # kickoff; the builder parses the kickoff out of `rules_primary` instead.
+            "expected_end_utc": expected_end, "rules_primary": rules, "sides": sides,
         })
         written += 1
     log["kalshi"]["cs2_events_written"] = written
@@ -479,6 +572,18 @@ def collect_supplementary(log: dict) -> dict:
     return {"meta": entry, "quotes": quotes}
 
 
+def _in_window(row: dict, log: dict) -> bool:
+    """Keep CS2 fixtures within the collection window, plus everything the lobby is listing."""
+    if row.get("game") not in ("CS2", "LoL"):
+        row["game"] = row.get("game") or "CS2"
+    start = parse_any(row.get("start_time_utc"))
+    now = now_utc()
+    lo, hi = now - timedelta(days=KEEP_PAST_DAYS), now + timedelta(days=KEEP_FUTURE_DAYS)
+    if row.get("listed_in_lobby"):
+        return True
+    return bool(start and lo <= start <= hi)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--outdir", default=str(ROOT / "data/coverage"))
@@ -554,7 +659,12 @@ def main() -> int:
     ratings = collect_vrs(log, sample_dir)
     json_dump(outdir / "ratings.json", ratings)
 
+    log["ok"] = bool(fixtures)
     json_dump(outdir / "collection_log.json", log)
+    (outdir / "collector_run.log").write_text(
+        "coverage collector run\n" + json.dumps({k: log.get(k) for k in
+        ("generated_at_utc", "hotspawn_fixtures", "hotspawn_fixtures_fallback", "bo3gg", "kalshi",
+         "valve_vrs", "live_pipeline_quotes", "lobby_page", "ok")}, indent=1) + "\n", encoding="utf-8")
     print(f"fixtures={len(fixtures)} quotes={len(quotes)} kalshi_events={len(events)} "
           f"corpus_matches={len(corpus.get('matches') or [])} vrs_teams={len(ratings.get('ratings') or {})}")
     return 0
