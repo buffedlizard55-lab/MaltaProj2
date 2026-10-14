@@ -35,16 +35,26 @@ def load(name, default=None):
 
 
 def vrs_lookup(vrs_regions: dict) -> tuple[dict, list[str]]:
-    """canonical team key -> {"points","standing","region"}; global first, then regions."""
+    """canonical team key -> {"points","standing","region"}; global first, then the regions.
+
+    Region keys are normalised to their bare name, so a snapshot whose keys carry the standings date
+    (``global_2026_10``) joins exactly like ``global``. A team that appears in two regions with
+    different points is recorded as ambiguous and published on the flagged page.
+    """
+    ordered: dict[str, dict] = {}
+    for raw_region, rows in (vrs_regions or {}).items():
+        region = str(raw_region).split("_")[0]
+        if region in ("global", "europe", "americas", "asia"):
+            ordered.setdefault(region, {}).update(rows or {})
     out: dict[str, dict] = {}
     ambiguous: list[str] = []
     for region in ("global", "europe", "americas", "asia"):
-        for name, row in (vrs_regions.get(region) or {}).items():
+        for name, row in (ordered.get(region) or {}).items():
             key, _, _ = core.canon(name)
             if not key:
                 continue
             if key in out:
-                if out[key]["points"] != row["points"]:
+                if abs(float(out[key]["points"]) - float(row["points"])) > 1e-9:
                     ambiguous.append(f"{key}:{region}:{name}")
                 continue
             out[key] = {"points": float(row["points"]), "standing": int(row["standing"]),
@@ -377,7 +387,7 @@ def main() -> int:
                     (row["vrs_b"]["region"], row["vrs_b"]["vrs_name"], row["vrs_b"]["standing"],
                      row["vrs_b"]["points"])):
                 url = next((e["page_url"] for e in (snap.get("vrs") or {}).get("evidence", [])
-                            if e["region"] == region), None)
+                            if str(e.get("region", "")).split("_")[0] == region), None)
                 row["sources"].append({"label": f"Valve VRS {region} standings · {name} "
                                                 f"#{standing} ({pts:g} pts)",
                                        "url": url, "read_utc": snap.get("generated_utc"),

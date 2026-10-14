@@ -137,6 +137,21 @@ ALIASES: dict[str, dict] = {
     "9zglobant": {"canonical": "9z",
                   "note": "9z Team is sponsored as '9z Globant' on some feeds.",
                   "evidence": ["https://bo3.gg/teams/9z"]},
+    # HotSpawn lists the 17:00 CCT Europe 2026 Series #11 fixture as "FORZE Reload vs LFO 10".
+    # bo3.gg's CCT Europe 2026 Series #11 (tournament 5625) lists the same 17:00 slot as
+    # "Forze Reload vs Sokerorg", and Kalshi (a regulated exchange) prices the same pairing at the
+    # same kick-off. bo3.gg has no team named "LFO 10" (its LFO teams are LFO, LFO 2/3/5/7/8/9), so
+    # the two listings are treated as the same fixture under one published alias. Flagged for
+    # review on the board: the alias is visible on the row and in the flagged table.
+    "lfo10": {
+        "canonical": "sokerorg",
+        "note": "Same kick-off (2026-10-14T17:00Z) and same CCT Europe 2026 Series #11 slot as "
+                "bo3.gg's 'Forze Reload vs Sokerorg' and Kalshi's Sokerorg vs FORZE Reload market; "
+                "bo3.gg publishes no team called 'LFO 10'.",
+        "evidence": ["https://bo3.gg/matches/forze-reload-vs-sokerorg-14-10-2026",
+                     "https://bo3.gg/teams/sokerorg",
+                     "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct141300skrforzer"],
+    },
     # HotSpawn 'EAC' == bo3.gg/Thunderpick 'EAC' (Esport Academy Copenhagen) - same spelling,
     # no alias needed. Kept out of the table on purpose: no undocumented expansion is applied.
 }

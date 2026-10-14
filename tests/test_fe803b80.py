@@ -189,6 +189,15 @@ class BoardTests(unittest.TestCase):
         for match in re.finditer(r"[^\"]*crowd[^\"]*", blob):
             self.assertIn("never", match.group(0))
 
+    def test_coverage_is_published_honestly(self):
+        """The board states its own coverage: a blank row is only allowed if it is counted as one."""
+        s = self.board["summary"]
+        self.assertIn("open_blank", s)
+        self.assertEqual(s["open_blank"], s["open"] - s["open_with_pick"], self.board["summary"])
+        for row in self.open_rows:
+            if not row.get("line"):
+                self.assertIn("no_source_input_available_row_left_blank", row["flags"])
+
     def test_summary_counts_match_the_rows(self):
         s = self.board["summary"]
         self.assertEqual(s["open"], len(self.open_rows))

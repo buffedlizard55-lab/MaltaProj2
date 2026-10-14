@@ -513,7 +513,7 @@ def collect_vrs() -> dict:
     for f in sorted(files):
         if newest_date not in f:
             continue
-        region = re.search(r"standings_(\w+)_", f).group(1)
+        region = re.search(r"standings_([a-z]+)_\d{4}_\d{2}_\d{2}\.md$", f).group(1)
         api_url = f"https://api.github.com/repos/{VRS_REPO}/contents/{f}"
         blob, meta2 = fetch_json(api_url, gh_headers())
         LOG[f"valve_vrs_{region}"] = meta2
