@@ -12,7 +12,8 @@ if OUT.exists():
 OUT.mkdir(parents=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all'):
+# 'picks-all' added by session b5436cf0 (complete every-match picks) as an additive single entry.
 # 'picks-every-match' added by session c64a5e19 (every-match board) as an additive single entry.
 # 'summary' added by session c0e223d3 (T-HUB-INTEG) as an additive single entry so the
 # source/verification hub ships in the Pages artifact. Additive single entry only.

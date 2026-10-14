@@ -151,6 +151,14 @@ def executive_summary_html():
         if gap_rows else '<p>No unresolved rows in the available strict snapshot; this is not a guarantee of global coverage.</p>'
     )
     stamp_map = [
+        ("picks-all/index.html", "Complete picks — every match",
+         "Pick + win probability for every open CS2 match on the pick'em lobby (incl. low-tier), "
+         "each number linked to its source. The complete updated picks list.",
+         _board_stamp("data/b5436cf0/board.json", "generated_utc")),
+        ("picks-all/unresolved.html", "Unresolved picks + limitations",
+         "Matches no source can settle yet: what was tried, why it cannot be resolved, and the "
+         "limitation of each gap — never guessed, never filled.",
+         _board_stamp("data/b5436cf0/board.json", "generated_utc")),
         ("picks-every-match/index.html", "Every-match picks at a glance",
          "Every open match; supported probabilities or blank + flagged. Start here on mobile.",
          _board_stamp("data/c64a5e19/board.json", "generated_utc")),
@@ -193,7 +201,9 @@ def executive_summary_html():
   <h2 style="margin-top:0">Executive summary — where the picks are</h2>
   <p>{coverage}</p>
   <p><a class="btn" href="cs2.html">Start here: source-linked CS2 picks</a>
+     <a class="btn" href="picks-all/index.html">Complete picks · all matches</a>
      <a class="btn ghost" href="#unresolved-picks">Unresolved matches</a>
+     <a class="btn ghost" href="picks-all/unresolved.html">Unresolved + limitations (complete list)</a>
      <a class="btn ghost" href="board/picks.html">Expanded picks · models included</a></p>
   <p class="note">Fixture capture: {esc(fmt_time(lines.get('fixture_list_collected_at_utc')) or 'unverified')}. 
   Odds collection: {esc(fmt_time(lines.get('odds_collected_at_utc')) or 'unverified')}.
