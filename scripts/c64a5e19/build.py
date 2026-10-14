@@ -11,6 +11,7 @@ import importlib.util
 import json
 from pathlib import Path
 from verified_engine import load_engine
+from research import fallback_review, limitations
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / 'data/c64a5e19'
@@ -61,6 +62,7 @@ def build_board(snap, snap_source, now=None):
                 line['pick_team'] = None
                 line['pick_side'] = None
         row['fallback'] = None
+        row['research'] = fallback_review(row, snap, core)
         row['flags'] = sorted(set(row['flags']))
     by_id = {r['fixture_id']: r for r in board['open']}
     inventory = []
@@ -111,7 +113,7 @@ JS = '''
 })();
 '''
 NAV = [('index.html', 'Overview'), ('picks.html', 'All picks'), ('inventory.html', 'Full inventory'),
-       ('flagged.html', 'Flagged for Review'), ('method.html', 'Method & sources')]
+       ('unresolved.html', 'Unresolved picks'), ('flagged.html', 'Flagged for Review'), ('method.html', 'Method & sources')]
 
 
 def page(title, active, body, b):
@@ -152,9 +154,9 @@ def picks_table(b):
 def render_index(b):
     s = b['summary']
     stats = ''.join(f'<div class="stat"><b>{n}</b><span>{label}</span></div>' for n, label in [(s['open'],'Open fixtures'), (s['tier_a_market'],'Market-derived'), (s['tier_b_model'],'Model fallback'), (s['tier_d_none'],'Unverified / blank')])
-    return page('Executive summary', 'index.html', f'''<section class="hero"><div class="eyebrow">Executive summary · Updated automatically</div><h1>Every match. One picks board.</h1><p class="muted">Start here for all open HotSpawn CS2 matches. See both teams’ win estimates, the pick, and the source behind it. No bookmaker coverage? We try verified Valve ratings only for those gaps.</p><div class="actions"><a class="button primary" href="#picks">See all picks ↓</a><a class="button" href="flagged.html">Review missing evidence</a></div></section>{stats}
+    return page('Executive summary', 'index.html', f'''<section class="hero"><div class="eyebrow">Executive summary · Updated automatically</div><h1>Every match. One picks board.</h1><p class="muted">Start here for all open HotSpawn CS2 matches. See both teams’ win estimates, the pick, and the source behind it. No bookmaker coverage? We try verified Valve ratings only for those gaps.</p><div class="actions"><a class="button primary" href="#picks">See all picks ↓</a><a class="button" href="unresolved.html">Unresolved picks & limitations</a></div></section>{stats}
 <p class="small">Inventory: {s['listed']} lobby-listed CS2 fixtures. {s['with_pick']} open fixtures have a supported pick. <a href="{LOBBY}">Official lobby</a> · <a href="inventory.html">Open, locked & past inventory</a>.</p><div class="notice">Complete fixture coverage does not mean confirmed odds for every match. Missing prices or uncertain team identities stay blank and flagged — never filled using HotSpawn popularity, sibling rosters, or an invented 50/50.</div>
-<h2 id="picks">All open CS2 picks</h2>{picks_table(b)}<h2>Where to go next</h2><div class="cards"><div class="panel"><a href="picks.html">Full picks table</a><p class="small">The same matches, inputs and source links. Bookmark this page on your phone.</p></div><div class="panel"><a href="inventory.html">Full lobby inventory</a><p class="small">Every listed fixture, including locked, past and unverified source states.</p></div><div class="panel"><a href="method.html">How estimates are made</a><p class="small">No-vig market prices first; a clearly labelled rating model only when prices are missing.</p></div></div>''', b)
+<h2>Unresolved picks &amp; limitations</h2><p>{s['tier_d_none']} open fixtures have no supported pick. <a href="unresolved.html">See every unresolved match, source attempt and reason</a>. {s['tier_b_model']} further fixtures use labelled model estimates, not bookmaker odds.</p><h2 id="picks">All open CS2 picks</h2>{picks_table(b)}<h2>Where to go next</h2><div class="cards"><div class="panel"><a href="picks.html">Full picks table</a><p class="small">The same matches, inputs and source links. Bookmark this page on your phone.</p></div><div class="panel"><a href="inventory.html">Full lobby inventory</a><p class="small">Every listed fixture, including locked, past and unverified source states.</p></div><div class="panel"><a href="method.html">How estimates are made</a><p class="small">No-vig market prices first; a clearly labelled rating model only when prices are missing.</p></div></div>''', b)
 
 
 def render_picks(b):
@@ -166,6 +168,21 @@ def render_inventory(b):
     return page('Full inventory', 'inventory.html', '<h1>Full CS2 lobby inventory</h1><p class="muted">All fixtures in the captured public lobby response, not just featured cards. Closed fixtures are retained here without pretending a past price is a current pick. API-only records are excluded because current lobby membership is unconfirmed.</p><table><thead><tr><th>Fixture</th><th>Start (UTC)</th><th>Source status</th><th>Eligibility</th><th>Official source</th></tr></thead><tbody>' + rows + '</tbody></table>', b)
 
 
+def render_unresolved(b):
+    rows = []
+    models = []
+    for r in b['open']:
+        if r.get('market'):
+            continue
+        review = r.get('research') or {'steps': [], 'limitations': limitations(r)}
+        steps = ''.join(f'<li><a href="{esc(x["url"])}">{esc(x["label"])}</a><br>{esc(x["result"])}<br><span class="small">Read: {esc(x.get("at_utc") or "unverified")} · HTTP {esc(x.get("http_status") or "unverified")}</span></li>' for x in review['steps'])
+        item = f'<tr id="u-{esc(r["fixture_id"])}"><td data-label="Match"><b>{esc(r["team_a"])} vs {esc(r["team_b"])}</b><br>#{esc(r["fixture_id"])} · {esc(r.get("competition"))}<br>{source_links(r)}</td><td data-label="Pick / probability">' + ('<a href="picks.html#m-' + esc(r['fixture_id']) + '">Labelled model estimate on picks page</a>' if r['line'] else '—<br>Unverified · no supported pick') + '</td><td data-label="Limitation">' + '<br>'.join(esc(x) for x in review['limitations']) + f'<details><summary>Source attempts &amp; next steps</summary><ol>{steps}</ol><p>Retry automatically on the next four-hour capture. A verified two-sided price or unique, current rating pair is required; there is no manual input.</p></details></td></tr>'
+        (models if r['line'] else rows).append(item)
+    def table(items):
+        return '<table><thead><tr><th>Match / official source</th><th>Pick / probability</th><th>Limitation &amp; research</th></tr></thead><tbody>' + ''.join(items) + '</tbody></table>' if items else '<p>No rows in this category at the stated evaluation time. This is not a coverage guarantee.</p>'
+    return page('Unresolved picks & limitations', 'unresolved.html', f'''<h1>Unresolved picks &amp; limitations</h1><p>Every open match remains in the picks list. Only matches without an accepted market line appear here. We do not replace featured picks with research.</p><p><a class="button primary" href="picks.html">Back to all picks</a> <a class="button" href="../audits/dc741cc1/index.html">Source research &amp; review findings</a></p><div class="notice">A blank is not 50/50. HLTV user votes are not betting lines; rankings are not win probabilities. Blocked access, unverified aliases and duplicate rosters are not evidence for a forced pick.</div><h2>{len(rows)} unresolved matches</h2>{table(rows)}<h2>{len(models)} rating-model fallbacks</h2><p>These have supported model inputs, but no eligible market quote. The probabilities are our estimates, not officially confirmed win chances. Check expiry on the picks page.</p>{table(models)}<p>Source-attempt times come from the same captured snapshot as these picks. HLTV access checks are explicitly distinguished from a verified match-specific odds extraction. A successful endpoint response does not establish that it prices a particular match. See <a href="method.html">method and evidence</a>.</p>''', b)
+
+
 def render_flagged(b):
     rows = []
     for r in b['open']:
@@ -173,7 +190,7 @@ def render_flagged(b):
         flags = r['flags'] or ['No eligibility irregularity detected; estimate remains uncertain.']
         rows.append(f'<tr id="f-{esc(r["fixture_id"])}"><td data-label="Fixture">{esc(r["team_a"])} vs {esc(r["team_b"])}<div class="small">#{esc(r["fixture_id"])}</div></td><td data-label="Review">{"<br>".join(esc(f) for f in flags)}</td><td data-label="Official source" class="sources">{source_links(r)}</td></tr>')
     health = ''.join(f'<tr><td data-label="Provider">{esc(name)}</td><td data-label="Collection result">{esc(meta.get("status"))} {esc(meta.get("error"))} · read {esc(meta.get("at_utc"))}</td><td data-label="Source"><a href="{esc(meta.get("url") or LOBBY)}">Official endpoint</a></td></tr>' for name, meta in b['access'].items())
-    return page('Flagged for Review', 'flagged.html', f'''<h1>Flagged for Review</h1><p><a href="../audits/49a181f8/index.html">Independent source-integrity review and parallel integration notes</a></p><div class="notice"><b>Unsupported numeric coverage removed.</b> Earlier versions used LFO sibling/floor ratings and WROTBERRY slot prices despite unresolved identity. Those assumptions are no longer current picks. <a href="../summary/gaps.html">Preserved conflicting-source research</a> is a dated review, not verified identity evidence.</div><p>Official <a href="{esc(b['vrs'].get('page_url') or 'https://github.com/ValveSoftware/counter-strike_regional_standings')}">Valve standings</a> do not justify transferring one roster’s strength to another. <a href="https://www.hltv.org/team/13999/wbt-academy">HLTV WBT Academy</a> and <a href="https://www.hltv.org/team/12457/roundsgg">HLTV Rounds</a> are research links only; this session has not verified a current fixture-roster join from them. Approximate exchange ticker times and thin books are not accepted odds.</p><p>Preserved independent reviews: <a href="../audits/5cd24fb4/index.html">Fallback identity audit</a> · <a href="../audits/8723ad37/REVIEW.md">Source-safety review</a>. These documents record their own read times, not current verified prices.</p><h2>Line-by-line fixture review</h2><table><thead><tr><th>Fixture</th><th>Review</th><th>Official source</th></tr></thead><tbody>{''.join(rows)}</tbody></table><h2>Collection health</h2><p>HTTP success does not mean a usable market exists. Blocked/unavailable sources never produce invented values. Original observation/cache times are retained across collection failures.</p><table><thead><tr><th>Provider</th><th>Collection result</th><th>Official source</th></tr></thead><tbody>{health}</tbody></table><h2>Coverage and freshness limitations</h2><p>Four-hour scheduled collection is best effort, not an uptime guarantee. Cache age counts toward the four-hour eligibility limit. Estimates expire in the browser at that limit or the match lock. Full inventory means the entire captured lobby response, not a guarantee that HotSpawn’s cached response contains every newly added fixture.</p><p>Historical alternate boards elsewhere in the repository may use different assumptions. They remain preserved for audit and are not inputs to this board. External-link reachability is not universally certified.</p>''', b)
+    return page('Flagged for Review', 'flagged.html', f'''<h1>Flagged for Review</h1><p><a href="unresolved.html">Unresolved picks &amp; per-match limitations</a> · <a href="../audits/dc741cc1/index.html">Latest source research and repository review</a></p><p><a href="../audits/49a181f8/index.html">Independent source-integrity review and parallel integration notes</a></p><div class="notice"><b>Unsupported numeric coverage removed.</b> Earlier versions used LFO sibling/floor ratings and WROTBERRY slot prices despite unresolved identity. Those assumptions are no longer current picks. <a href="../summary/gaps.html">Preserved conflicting-source research</a> is a dated review, not verified identity evidence.</div><p>Official <a href="{esc(b['vrs'].get('page_url') or 'https://github.com/ValveSoftware/counter-strike_regional_standings')}">Valve standings</a> do not justify transferring one roster’s strength to another. <a href="https://www.hltv.org/team/13999/wbt-academy">HLTV WBT Academy</a> and <a href="https://www.hltv.org/team/12457/roundsgg">HLTV Rounds</a> are research links only; this session has not verified a current fixture-roster join from them. Approximate exchange ticker times and thin books are not accepted odds.</p><p>Preserved independent reviews: <a href="../audits/5cd24fb4/index.html">Fallback identity audit</a> · <a href="../audits/8723ad37/REVIEW.md">Source-safety review</a>. These documents record their own read times, not current verified prices.</p><h2>Line-by-line fixture review</h2><table><thead><tr><th>Fixture</th><th>Review</th><th>Official source</th></tr></thead><tbody>{''.join(rows)}</tbody></table><h2>Collection health</h2><p>HTTP success does not mean a usable market exists. Blocked/unavailable sources never produce invented values. Original observation/cache times are retained across collection failures.</p><table><thead><tr><th>Provider</th><th>Collection result</th><th>Official source</th></tr></thead><tbody>{health}</tbody></table><h2>Coverage and freshness limitations</h2><p>Four-hour scheduled collection is best effort, not an uptime guarantee. Cache age counts toward the four-hour eligibility limit. Estimates expire in the browser at that limit or the match lock. Full inventory means the entire captured lobby response, not a guarantee that HotSpawn’s cached response contains every newly added fixture.</p><p>Historical alternate boards elsewhere in the repository may use different assumptions. They remain preserved for audit and are not inputs to this board. External-link reachability is not universally certified.</p>''', b)
 
 
 def render_method(b):
@@ -201,7 +218,7 @@ def main():
     if verification['failures']:
         raise SystemExit('Provider evidence replay failed: ' + str(verification['failures']))
     SITE.mkdir(parents=True, exist_ok=True)
-    for filename, render in [('index', render_index), ('picks', render_picks), ('inventory', render_inventory), ('flagged', render_flagged), ('method', render_method)]:
+    for filename, render in [('index', render_index), ('picks', render_picks), ('inventory', render_inventory), ('unresolved', render_unresolved), ('flagged', render_flagged), ('method', render_method)]:
         (SITE / (filename + '.html')).write_text(render(board))
     print(json.dumps(board['summary'], indent=1))
     return 0

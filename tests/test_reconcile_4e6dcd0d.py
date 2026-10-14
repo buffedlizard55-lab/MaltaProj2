@@ -52,7 +52,9 @@ class ReconcileTests(unittest.TestCase):
                 self.assertAlmostEqual(f["pick_p"], max(f["consensus_p_a"], f["consensus_p_b"]), places=3)
             else:
                 self.assertAlmostEqual(f["consensus_p_a"], 0.5, places=6)
-        self.assertGreater(n, 0)
+        # Zero priced rows is valid during a source outage or after expiry.
+        self.assertTrue(self.model['fixtures'], 'inventory must remain available')
+        self.assertEqual(n, sum(bool(f['n_book_sources']) for f in self.model['fixtures']))
 
     def test_every_priced_fixture_has_eligible_sourced_quotes(self):
         for f in self.model["fixtures"]:
