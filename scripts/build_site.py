@@ -73,9 +73,9 @@ def pct(value):
 # available from Research archive rather than crowding every mobile header.
 NAV = [
     ("index.html", "Dashboard"),
-    ("board/picks.html", "All picks · every match"),
-    ("cs2.html", "CS2 picks"),
-    ("probabilities.html", "Probabilities"),
+    ("board/picks.html", "Alternate estimates"),
+    ("cs2.html", "Bookmaker lines"),
+    ("picks-every-match/index.html", "Verified CS2 picks"),
     ("tournaments.html", "Tournaments"),
     ("flagged.html", "Flagged for review"),
     ("methodology.html", "Method &amp; sources"),
@@ -85,13 +85,13 @@ NAV = [
     # lines, originated Bradley-Terry estimates or a blank+flagged row, plus a repo-review page.
     # Kept during 53220a1b final integration; the pre-compaction historical session entries stay
     # reachable from Research archive (research.html), per the compact-NAV policy on main.
-    ("coverage/index.html", "Coverage board (6ddde224)"),
+    ("probabilities.html", "Bookmaker probabilities"),
     # integration link requested by session c0e223d3 (logged in COORDINATION.md) and added by the
     # 53220a1b final integration: the mobile "where the picks are" verification hub.
     ("summary/index.html", "Where the picks are"),
     # integration link added by session b1fb1465 (T-EXEC-B1FB1465-INTEGRATE, single additive anchor
-    # documented in COORDINATION.md): the section's mobile executive summary, its picks list and the
-    # separate unresolved-picks & limitations page. Additive entry only; no other NAV item changes.
+    # documented in COORDINATION.md): that section's executive summary, its picks list and the separate
+    # unresolved-picks & limitations page. Additive entry only; no other NAV item changes.
     ("exec/index.html", "Executive summary (b1fb1465)"),
 ]
 
@@ -107,39 +107,59 @@ def _board_stamp(rel, *keys):
 
 
 def executive_summary_html():
-    """Landing-page executive summary: where an updated list of picks can be found.
+    """Evidence-first entry point; unresolved strict rows stay blank.
 
-    Session 53220a1b integration rework (logged in COORDINATION.md): this block now links every
-    pick board on the site, with each board's own last-build stamp, instead of only the
-    fe803b80 board. Counts come from data/c64a5e19/board.json (every-match board) and
-    data/fe803b80/board.json (full-coverage board). A missing board file must never break the
-    root build — links render with or without the data files.
+    Alternate boards remain linked as provisional research. Counts come from the
+    strict inventory, not incompatible per-board summary totals.
     """
-    every = (load("data/c64a5e19/board.json") or {}).get("summary") or {}
-    full = (load("data/fe803b80/board.json") or {}).get("summary") or {}
-    bits = []
-    if every.get("open"):
-        bits.append(
-            f"<strong>{every.get('with_pick', 0)} of {every.get('open', 0)}</strong> open CS2 "
-            f"fixtures on the every-match board carry a pick and a win probability")
-    if full.get("open"):
-        bits.append(
-            f"{full.get('open_with_market', 0)} of {full.get('open', 0)} open fixtures are priced "
-            f"by an external bookmaker or exchange, {full.get('open_model_only', 0)} carry an "
-            f"explicitly labelled originated line (official Valve VRS ratings or this project's "
-            f"own Elo over published results), {full.get('open_blank', 0)} left blank and flagged")
-    coverage = ("; ".join(bits) + ".") if bits else (
-        "The pick lists are generated automatically from the HotSpawn lobby; open any board below "
-        "for its current coverage numbers.")
+    lines = load("data/lines.json") or {}
+    fixtures = [r for r in lines.get("fixtures", []) if r.get("pick_status") == "open"]
+    gaps = [r for r in fixtures if not r.get("bookmaker_lines")]
+    every_data = load("data/c64a5e19/board.json") or {}
+    provisional = {str(r.get("fixture_id")): r for r in every_data.get("open", [])}
+    coverage = (
+        f"<strong>{len(fixtures) - len(gaps)} of {len(fixtures)}</strong> open fixtures in the "
+        f"strict snapshot have eligible external bookmaker lines; <strong>{len(gaps)}</strong> "
+        "remain unresolved under that standard. Model/research boards may cover more, but a "
+        "published estimate is not a verified bookmaker probability."
+        if lines.get("fixtures") is not None else
+        "Strict snapshot unavailable — coverage is unverified, not zero."
+    )
+    gap_rows = []
+    for row in gaps:
+        research = provisional.get(str(row.get("fixture_id"))) or {}
+        flags = research.get("flags") or []
+        reason = "No eligible two-sided primary-bookmaker quote in this snapshot."
+        if any("sibling_vrs" in flag for flag in flags):
+            reason += " Research uses other LFO rosters' ratings; this does not verify LFO 10."
+        if any("slot_price_label" in flag for flag in flags):
+            reason += " Research uses a differently named team in the same slot; identity remains unverified."
+        if row.get("review_flags"):
+            reason += " Flags: " + ", ".join(row["review_flags"]).replace("_", " ") + "."
+        url = row.get("hotspawn_match_url") or "https://play.hotspawn.com/lobby"
+        # Evidence links are escaped and restricted to HTTP(S), including in malformed input.
+        if not str(url).startswith(("https://", "http://")):
+            url = "https://play.hotspawn.com/lobby"
+        gap_rows.append(
+            f'<tr><td data-label="Match">{esc(row.get("team_a"))} vs {esc(row.get("team_b"))}'
+            f'<br><a href="{esc(url)}">Official fixture source</a></td>'
+            f'<td data-label="Verified probability">{BLANK} · unverified</td>'
+            f'<td data-label="Limitation">{esc(reason)}</td></tr>')
+    unresolved = (
+        '<details class="archive"><summary>See every unresolved match and limitation</summary>'
+        '<div class="tablewrap"><table><thead><tr><th>Match</th><th>Verified probability</th>'
+        '<th>Limitation</th></tr></thead><tbody>' + ''.join(gap_rows) + '</tbody></table></div></details>'
+        if gap_rows else '<p>No unresolved rows in the available strict snapshot; this is not a guarantee of global coverage.</p>'
+    )
     stamp_map = [
         ("picks-every-match/index.html", "Every-match picks at a glance",
-         "Pick + win % for every open CS2 match on one phone-friendly page. Start here.",
+         "Every open match; supported probabilities or blank + flagged. Start here on mobile.",
          _board_stamp("data/c64a5e19/board.json", "generated_utc")),
         ("board/picks.html", "All picks · every match",
-         "Every open fixture with its line basis labelled (bookmaker price or originated line).",
+         "Expanded market/model research; inspect identity flags and source times before using estimates.",
          _board_stamp("data/fe803b80/board.json", "generated_utc")),
         ("ourline/index.html", "Our line",
-         "Market consensus blended with a calibrated Valve VRS model, plus a graded track record.",
+         "Separate market-first / historical-rating fallback board, plus a graded track record.",
          _board_stamp("data/f7279a54/board.json", "generated_utc")),
         ("coverage/index.html", "Coverage board",
          "Every lobby fixture: external line, exchange quote, originated estimate, or blank + flagged.",
@@ -165,7 +185,7 @@ def executive_summary_html():
     ]
     items = []
     for href, title, blurb, stamp in stamp_map:
-        when = f' <span style="color:#8fa3c8;font-size:12.5px">updated {esc(stamp)}</span>' if stamp else ""
+        when = f' <span style="color:#8fa3c8;font-size:12.5px">built {esc(stamp)}</span>' if stamp else ""
         items.append(
             f'<li style="margin:8px 0"><a href="{href}"><strong>{esc(title)}</strong></a>'
             f'&mdash; {esc(blurb)}{when}</li>')
@@ -173,29 +193,29 @@ def executive_summary_html():
 <div class="cards" id="where-the-picks" style="display:block;background:#12203a;border:1px solid #2b3752;border-radius:14px;padding:14px;margin:16px 0">
   <h2 style="margin-top:0">Executive summary — where the picks are</h2>
   <p>{coverage}</p>
-  <p id="executive-summary-b1fb1465"><strong>Session b1fb1465 executive summary.</strong> A second,
-  independent route to the same requirement: <a href="exec/index.html">coverage and every open match</a>,
-  plus its own separate <a href="exec/unresolved.html">Unresolved picks &amp; limitations</a> section that
-  lists what was tried per fixture (HLTV first, then esportsbooks and esports betting lines, then the
-  documented Valve VRS fallback), the HTTP status every source answered with, and every quote that was
-  refused for a kick-off or naming disagreement. Its counts are published against its own snapshot time
-  and are never merged into the numbers above.
-  <a class="btn" href="exec/index.html">Executive summary &amp; picks (b1fb1465)</a>
-  <a class="btn ghost" href="exec/unresolved.html">Unresolved &amp; limitations</a></p>
-  <p><a class="btn" href="picks-every-match/index.html">Every-match picks at a glance</a>
-     <a class="btn" href="board/picks.html">All picks · every match</a>
-     <a class="btn ghost" href="summary/index.html">Where the picks are (hub)</a>
-     <a class="btn ghost" href="flagged.html">Flagged for review</a></p>
-  <ul style="margin:8px 0 8px 18px;padding:0">
-    {''.join(items)}
-  </ul>
-  <p class="note" style="border-left-color:#3ea6ff">Every board above is mobile-first, refreshed
-  automatically (no manual input) and gives every open CS2 fixture a pick where a source exists:
-  external bookmaker/exchange prices first (Pinnacle, Bovada, Melbet, Kalshi, and the Thunderpick
-  prices bo3.gg publishes per match, including tier-C events), and a clearly labelled originated line
-  from the official Valve VRS rating or this project's own Elo where no bookmaker prices the match.
-  HotSpawn's crowd pick percentage is never used as a probability input. Estimates are not guarantees.
-  18+; gamble responsibly.</p>
+  <p><a class="btn" href="cs2.html">Start here: source-linked CS2 picks</a>
+     <a class="btn ghost" href="#unresolved-picks">Unresolved matches</a>
+     <a class="btn ghost" href="board/picks.html">Expanded picks · models included</a></p>
+  <p class="note">Fixture capture: {esc(fmt_time(lines.get('fixture_list_collected_at_utc')) or 'unverified')}. 
+  Odds collection: {esc(fmt_time(lines.get('odds_collected_at_utc')) or 'unverified')}.
+  These are snapshots, not streaming odds. Check each quote time before using a pick.</p>
+  <h3 id="unresolved-picks">Unresolved picks &amp; limitations</h3>
+  <p>Missing prices do not mean a 50/50 match. No probability is filled in here without eligible
+  evidence. HLTV rankings and form can guide research but are not betting lines. Disputed aliases,
+  sparse results, thin exchange books and inaccessible bookmakers can prevent a defensible pick.</p>
+  {unresolved}
+  <p><a href="flagged.html">Flagged for Review: all strict gaps</a> ·
+  <a href="audits/5cd24fb4/index.html">Flagged for Review: fallback-source audit</a> ·
+  <a href="summary/gaps.html">Cross-board disagreements</a></p>
+  <details class="archive"><summary>Other pick boards and research (different evidence standards)</summary>
+  <ul style="margin:8px 0 8px 18px;padding:0">{''.join(items)}</ul>
+  </details>
+  <p class="note">Automatic refresh workflows are configured more frequently than the requested
+  4–8 hours; scheduling and source availability can delay updates. Board build times are not quote
+  times. Boards may use different fixture snapshots; do not add their counts together.
+  Use eligible external lines first and consult fallback research only for unresolved matches.
+  HotSpawn's crowd pick percentage is never used as a probability input. Model probabilities are
+  estimates, not verified facts or guarantees. 18+; gamble responsibly.</p>
 </div>"""
 
 
@@ -225,8 +245,8 @@ def page(title, subtitle, body, generated_at, active=None, banner=None):
   <h1>{esc(title)}</h1>
   <p class="sub">{subtitle}</p>
   <div class="banner"><strong>Current picks vs. research snapshots.</strong> The CS2 and Probabilities tables use
-  eligible primary-bookmaker quotes only; unverified values stay blank. Other linked sections preserve dated research,
-  not live prices. Estimates are not guarantees. 18+; gamble responsibly.</div>
+  eligible primary-bookmaker quotes only. <a href="picks-every-match/index.html">All CS2 picks</a> also tries a labelled
+  rating-model fallback for uncovered matches; unverified values stay blank. Research archives are not live prices. Estimates are not guarantees. 18+; gamble responsibly.</div>
   {banner_html}
   {body}
 </main>
@@ -398,70 +418,67 @@ def main() -> int:
     open_fixtures = [f for f in fixtures if f.get("pick_status") == "open"]
     closed_fixtures = [f for f in fixtures if f.get("pick_status") != "open"]
     top_table, _ = fixtures_table(open_fixtures)
-    idx_body = executive_summary_html() + f"""
-
-<div class="cards">{cards}</div>
-
-<div class="banner" id="executive-summary" style="border-left-color: var(--acc); background: var(--panel2);">
-  <h2 style="margin: 0 0 8px; border-bottom: 0; padding-bottom: 0; font-size: 19px;">Quick jumps</h2>
-  <p style="margin: 0 0 10px; font-size: 14.5px;">The full list of where the picks are is at the top of this page.
-  Two more shortcuts:</p>
-  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-    <a class="btn ghost" href="#fixtures" style="margin: 0;">View verified bookmaker lines &#8595;</a>
-    <a class="btn ghost" href="ourline/results.html" style="margin: 0;">Track record &amp; results</a>
-    <a class="btn ghost" href="board/results.html" style="margin: 0;">All-picks track record</a>
-  </div>
+    pick_board = load("data/c64a5e19/board.json")
+    pick_summary = pick_board.get("summary") or {}
+    pick_time = pick_board.get("generated_utc")
+    pick_counts = "".join(
+        f'<div class="card"><div class="card-num">{esc(pick_summary.get(key, "—"))}</div><div class="card-label">{label}</div></div>'
+        for key, label in [("open", "Open CS2 fixtures"), ("tier_a_market", "Market-derived picks"),
+                           ("tier_b_model", "Model fallbacks"), ("tier_d_none", "Unverified / blank")])
+    idx_body = f"""
+<section id="where-the-picks" aria-labelledby="summary-title"><div id="executive-summary">
+<h2 id="summary-title">Executive summary — start with the picks</h2>
+<p>One place for every open HotSpawn CS2 fixture, both teams’ win estimates, and a clear pick.
+External betting lines come first. For uncovered matches only, we try verified Valve ratings.
+Missing or ambiguous evidence stays blank — never guessed.</p>
+<p><a class="btn" href="picks-every-match/index.html">Open all CS2 picks →</a>
+<a class="btn ghost" href="picks-every-match/flagged.html">Flagged for Review</a></p>
+<div class="cards">{pick_counts}</div>
+<p class="note">Counts at {esc(pick_time or "unverified observation time")}.
+Not a live feed: the picks page hides expired estimates and locked picks automatically.
+<a href="https://play.hotspawn.com/lobby">Official fixture source</a>.</p>
+<p id="executive-summary-b1fb1465"><strong>Second, independent executive summary (session b1fb1465).</strong>
+<a href="exec/index.html">exec/index.html</a> answers the same requirement from its own lobby read: a pick
+and a win probability for every open CS2 fixture, with a separate
+<a href="exec/unresolved.html">Unresolved picks &amp; limitations</a> section that lists what was tried per
+fixture (HLTV first, then esportsbooks and esports betting lines, then the documented Valve VRS fallback),
+the HTTP status every source answered with, and every quote refused for a time or naming disagreement. At
+its own 2026-10-14T04:56:32Z snapshot it resolved 28 of 28 open fixtures &mdash; 25 from a two-way
+bookmaker price (Pinnacle, Bovada, Melbet/1xBet platform, Thunderpick via bo3.gg) and 3 from the Kalshi
+exchange order book only &mdash; where the strict tables above stay blank. Those counts belong to that
+section's snapshot and are never merged into the numbers above.</p>
+</div></section>
+<div class="archive-grid">
+<div class="card"><h2><a href="picks-every-match/picks.html">Picks & probabilities</a></h2><p>Search by team or tournament. Market, model or unverified is labelled on every mobile-friendly row.</p></div>
+<div class="card"><h2><a href="picks-every-match/inventory.html">Complete lobby inventory</a></h2><p>Open, locked, past and uncertain source states. Every listed fixture is retained with its official link.</p></div>
+<div class="card"><h2><a href="picks-every-match/method.html">Method & sources</a></h2><p>How we remove bookmaker margin, originate fallback lines, and verify inputs. Full evidence exports included.</p></div>
 </div>
-
-<h2>What this is</h2>
-<p>This dashboard reads the exact CS2 fixture response embedded in the public HotSpawn Pick'ems lobby,
-then looks up <strong>external betting lines</strong> for every listed match at Pinnacle and Bovada.
-Prediction-market snapshots are excluded from current picks. For each match where an eligible external price
-was found, the table shows the quoted odds, bookmaker margin and derived no-vig probability with the exact
-source link and read time. Matches where no eligible external line could be confirmed stay
-<strong>blank and flagged</strong> — they are never filled from HotSpawn or guessed.</p>
-<p class="note"><strong>Want a pick for every open match?</strong> The
-<a href="board/picks.html">All picks · every match</a> board (session fe803b80) publishes a pick and a
-probability for <strong>every</strong> fixture in the lobby's CS2 list — external bookmaker/exchange prices
-where they exist, plus a clearly labelled originated line (official Valve VRS rating, or this project's own
-Elo over published bo3.gg results) for the tier-C matches no reachable bookmaker prices. Every row carries
-its source link and the basis it uses, and there is a <a href="board/results.html">track record</a>. The
-earlier <a href="ourline/index.html">Our line</a> board (session f7279a54) stays available as preserved
-research with its own method and track record; model estimates are kept apart from the strictly
-source-priced tables here.</p>
-<p class="note"><strong>Executive summary — fastest route to all picks (mobile):</strong>
-<a href="picks-every-match/index.html">Every-match picks at a glance</a> (session c64a5e19) lists
-<strong>every</strong> open CS2 match with a pick and win probability on one phone-friendly page, including
-low-tier matches with no normal bookmaker price, which are resolved there only from documented fallback
-sources and flagged individually. Start there if you just want the picks; return here for the strict view.</p>
-
-<h2>Derived probabilities — the short version</h2>
-<p>Raw quoted decimal odds are converted to implied shares <code>q = 1 / odds</code>, normalised to remove
-the bookmaker margin: <code>p = q / (q<sub>a</sub> + q<sub>b</sub>)</code>. Where two sources quote the same
-match, the dashboard shows their mean and the min–max range. These probabilities are <em>derived from
-market prices</em>, not forecasts, and the rule is published on every row.</p>
-<p class="note">HotSpawn's own "picked %" is a crowd pick percentage. It is excluded from this table and is
-<strong>never</strong> used as a probability input, per the project requirements.</p>
-
-<h2>Every CS2 match currently open for picks ({len(open_fixtures)})</h2>
-<p class="note">A probability appears only when a fresh, open, prematch, full-series bookmaker quote joins
-uniquely by both teams and exact UTC start. Blank means unverified, not 50/50.</p>
+<h2>Automatic updates, no manual entry</h2>
+<p>The picks collector checks the public lobby and external sources every four hours using GitHub Actions.
+New listed matches are included automatically. GitHub scheduling and source availability are best effort;
+source failures and missing odds are published on <a href="picks-every-match/flagged.html">Flagged for Review</a>.
+HotSpawn’s crowd percentages are never used to estimate a winner.</p>
+<h2>Additional categories</h2>
+<p><a href="board/picks.html">Alternate full-coverage estimates</a> · <a href="coverage/index.html">Coverage research</a> ·
+<a href="ourline/index.html">Shared-engine research view</a> · <a href="live/index.html">Live coverage research</a> ·
+<a href="fresh/index.html">Fresh source snapshot</a></p>
+<p><a href="cs2.html">Primary-bookmaker-only tables</a> · <a href="tournaments.html">Tournaments</a> ·
+<a href="summary/index.html">Verification & sources hub</a> · <a href="research.html">Dated research archive</a></p>
+<p class="note">Archive boards may use different assumptions and collection times. They are retained for audit, not combined into current picks.
+Earlier inferred sibling-roster and ambiguous-slot picks have been removed from the every-match board;
+<a href="picks-every-match/flagged.html">review the limitations</a>.</p>
+<p class="note">Manual source review: <a href="https://github.com/ValveSoftware/counter-strike_regional_standings">Official Valve standings</a> ·
+<a href="verify/8e7a652d/index.html">Independent market verification</a>. Each alternate board has its own observation time and eligibility rules; none overrides blanks on this source-verified board.</p>
+<details class="archive"><summary>Primary-bookmaker-only coverage and table</summary>
+{executive_summary_html()}
+<h2>Every CS2 match currently open for picks — primary sources only</h2>
+<div class="cards">{cards}</div>
+<p class="note">This is a separate stricter source subset, not the total number of supported picks above.</p>
 {top_table}
-<p><a class="btn" href="cs2.html">Open all {len(fixtures)} lobby-listed CS2 rows</a>
-<a class="btn ghost" href="flagged.html">Review {summary.get("fixtures_open_without_external_line", 0)} open gaps</a></p>
-
-<h2>Audit trail and prior research</h2>
-<p>The primary navigation stays focused on the current fail-closed board. Dated experiments, independent
-audits and alternate models remain preserved on the <a href="research.html">Research archive</a>; they do
-not enter current picks. Start with the
-<a href="verify/8e7a652d/index.html">independent market verification and cross-check</a>, inspect the
-<a href="evidence/odds_collection.json">raw bookmaker payload evidence</a>, or review the preserved
-<a href="data/fixtures_verified.json">fixture-verification snapshot</a>.</p>
-
-<h2>Timestamps</h2>
 {market_data_notes(lines_doc, odds_doc)}
+</details>
 """
-    write("index.html", page("Pick'em betting-line dashboard",
+    write("index.html", page("CS2 picks dashboard",
                              "External betting lines, derived no-vig probabilities and explicit unverified gaps "
                              "for every CS2 fixture in the HotSpawn Pick'ems lobby.",
                              idx_body, generated_at, active="index.html"))
@@ -588,6 +605,8 @@ fixtures with the same verification columns as the main table.</p>
 
     flagged_body = f"""
 <div class="banner warn"><strong>These items are published for review, not as verified facts.</strong>
+<a href="picks-every-match/flagged.html">Every-match picks: source, identity and fallback review</a>.
+<a href="audits/5cd24fb4/index.html">Independent fallback audit</a> · <a href="audits/8723ad37/REVIEW.md">Source-safety review</a>.
 Nothing on this page blocks the analysis; it exists so every gap, irregularity and failed access attempt is
 visible instead of being silently filled in.</div>
 
@@ -954,6 +973,8 @@ body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.6 -apple-system,
 .dot{width:10px;height:10px;border-radius:50%;background:var(--acc);box-shadow:0 0 12px var(--acc)}
 nav{display:flex;flex-wrap:wrap;gap:5px;max-width:100%}
 nav a{color:var(--mut);text-decoration:none;padding:6px 9px;border-radius:8px;font-size:14px}
+nav a{min-height:44px;display:inline-flex;align-items:center}
+a:focus-visible{outline:3px solid var(--warn);outline-offset:3px}
 nav a:hover{color:var(--txt);background:var(--panel)}
 nav a.active{color:var(--txt);background:var(--panel2)}
 main{padding:26px 18px 40px}
