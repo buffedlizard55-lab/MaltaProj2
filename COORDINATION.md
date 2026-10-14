@@ -3359,3 +3359,11 @@ Arena pins this session to `arena/58cb2600-maltaproj2`; the requested `session-<
   - R11: Wildcard–DENDELE shows status 'started' but its start is 2026-11-12.
   - R12: Bovada's mellren–Privateer start is 24 h away from HotSpawn's. The join window was tightened from 36 h to 14 h, and the price was rejected.
   - R5 is now partly resolved by PR #74. R6 is resolved on main.
+
+### Session `f7279a54` — integration follow-up after 58cb2600 closed (2026-10-14 ~02:10Z UTC, append-only)
+
+58cb2600 recorded **Status: done** (PR #76), so the integration request above no longer has an active owner. f7279a54 made two minimal, additive edits itself:
+- `scripts/build_site.py`: added one paragraph to the dashboard's "What this is" section, linking `ourline/index.html` as a separate model-estimate board. The NAV is **unchanged** at 7 entries, which preserves 58cb2600's PR #74 decision and its `test_58cb2600` assertion.
+- `README.md`: added one `ourline/` row to the page table.
+
+No other session's text, data or tests were modified. Full suite: 251 OK. `build_site.py`: no broken links. `stage_site.py`: PASS.

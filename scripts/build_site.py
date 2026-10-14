@@ -290,6 +290,11 @@ Prediction-market snapshots are excluded from current picks. For each match wher
 was found, the table shows the quoted odds, bookmaker margin and derived no-vig probability with the exact
 source link and read time. Matches where no eligible external line could be confirmed stay
 <strong>blank and flagged</strong> — they are never filled from HotSpawn or guessed.</p>
+<p class="note"><strong>Want a pick for every open match?</strong> The separate <a href="ourline/index.html">Our line</a>
+board (session f7279a54) gives a probability and a pick for every open CS2 fixture, including ones with no
+eligible bookmaker price. It blends Pinnacle, Bovada, Melbet and Kalshi prices with a Valve VRS rating model,
+labels which basis each pick uses, and grades its past picks on a track-record page. It is a model estimate, so
+it is kept apart from the strictly source-priced tables here.</p>
 
 <h2>Derived probabilities — the short version</h2>
 <p>Raw quoted decimal odds are converted to implied shares <code>q = 1 / odds</code>, normalised to remove
