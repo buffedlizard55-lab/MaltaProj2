@@ -4317,3 +4317,19 @@ Log:
   same lobby is counted differently by the other boards (28 vs 29 fixtures, 13/14/15/23 market
   priced) because each session combines a different snapshot with a different acceptance rule —
   this section publishes its own snapshot time and never merges another board\'s numbers.
+
+---
+
+## Session `7177d07f` — unresolved/fallback CS2 picks resolution, limitations analysis, mobile executive summary & repo verification (2026-10-14 04:38 UTC, append-only)
+
+Environment note: Arena pins this session to `arena/7177d07f-maltaproj2`; the requested `session-<id>/<task>` branch naming cannot be used in this environment, so all work stays on `arena/7177d07f-maltaproj2`.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| `T-UNRESOLVED-7177D07F`: (1) resolve a pick and win probability for every open HotSpawn CS2 fixture, applying HLTV, external esportsbooks/betting lines (Melbet, Thunderpick-via-bo3.gg, Kalshi exchange) and official Valve VRS disambiguation **only** to matches that cannot be resolved in the same way as featured picks; (2) publish a dedicated **Unresolved Picks & Limitations** section (`unresolved/**`) and include it in the mobile Executive Summary with in-site navigation to every updated pick list; (3) conduct line-by-line repo & source verification (`unresolved/repo-audit.html`, `unresolved/flagged.html`); (4) configure 4-hourly automated refresh (`.github/workflows/unresolved-7177d07f.yml`) | in progress | 7177d07f | 2026-10-14 04:38 | `scripts/7177d07f/**`, `data/7177d07f/**`, `unresolved/**`, `tests/test_7177d07f.py`, `.github/workflows/unresolved-7177d07f.yml`, `COORDINATION.md` (this appended section only) |
+| `T-INTEG-7177D07F` (final integration handoff, additive-only): stage `unresolved/` in `scripts/stage_site.py`, surface the `unresolved/` entry and unresolved-picks limitation summary in `scripts/build_site.py` (`executive_summary_html`) and `README.md` without altering any other session's test contracts, open PR to `main`, merge, and confirm GitHub Pages deployment |claimed (pending completion of `T-UNRESOLVED-7177D07F`) | 7177d07f | 2026-10-14 04:38 | `scripts/stage_site.py` (single additive list entry `'unresolved'`), `scripts/build_site.py` (additive link in `executive_summary_html`), `README.md` (single additive table row), regenerated root `index.html` / `flagged.html`, `COORDINATION.md` |
+
+### Non-overlap & coordination log
+- Read `COORDINATION.md` and checked all remote branches before starting. Active parallel claims (`b1fb1465` on `exec/**`, `b5436cf0` on `picks-all/**`, `57e26db7` on `audits/57e26db7/**` and `picks-every-match/**`, and merged `5cd24fb4` on `audits/5cd24fb4/**`) are respected; none of their session-owned files are edited.
+- Existing published snapshots (`data/lines.json`, `data/hotspawn_matches.json`, `data/f7279a54/board.json`, `data/c64a5e19/board.json`, `data/fe803b80/board.json`, `data/coverage/board.json`, `data/live/board.json`) are read-only inputs for cross-verification.
+- Official source verification is mandatory: every table row carries an official `https://` source link; HotSpawn crowd `picked %` is never read or used as a probability input; any value that cannot be confirmed from an official source is left blank under strict verification and flagged with its exact limitation.
