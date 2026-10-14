@@ -16,12 +16,38 @@ from datetime import timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts" / "b1fb1465"))
+HERE = ROOT / "scripts" / "b1fb1465"
+sys.path.insert(0, str(HERE))
 
-import build  # noqa: E402
-import core  # noqa: E402
-import render  # noqa: E402
-import verify  # noqa: E402
+# Load this session's modules under their own file paths and hand the plain names back to
+# sys.modules afterwards. Several sessions keep a module literally called `core` (and
+# `build`/`render`/`verify`) next to their scripts; a bare `import core` here would leave this
+# session's copy in sys.modules and silently hand it to whichever test module is discovered
+# next, which is how a whole-suite run used to break another session's tests.
+import importlib.util  # noqa: E402
+
+_SAVED = {_name: sys.modules.get(_name) for _name in ("core", "build", "render", "verify")}
+
+
+def _load_local(_name: str):
+    spec = importlib.util.spec_from_file_location(f"b1fb1465_{_name}", HERE / f"{_name}.py")
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[_name] = module  # intra-package `import core` during exec resolves to this one
+    spec.loader.exec_module(module)
+    return module
+
+
+core = _load_local("core")
+build = _load_local("build")
+render = _load_local("render")
+verify = _load_local("verify")
+
+for _name, _previous in _SAVED.items():
+    if _previous is None:
+        sys.modules.pop(_name, None)
+    else:
+        sys.modules[_name] = _previous
 
 
 class CoreMath(unittest.TestCase):

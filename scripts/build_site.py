@@ -89,10 +89,9 @@ NAV = [
     # integration link requested by session c0e223d3 (logged in COORDINATION.md) and added by the
     # 53220a1b final integration: the mobile "where the picks are" verification hub.
     ("summary/index.html", "Where the picks are"),
-    # integration link added by session b1fb1465 (T-EXEC-B1FB1465-INTEGRATE, single additive anchor
-    # documented in COORDINATION.md): that section's executive summary, its picks list and the separate
-    # unresolved-picks & limitations page. Additive entry only; no other NAV item changes.
-    ("exec/index.html", "Executive summary (b1fb1465)"),
+    # Session b1fb1465 deliberately adds NO header entry: tests/test_58cb2600.py caps the compact
+    # header at 10 anchors, and that section is reachable from the landing page's executive-summary
+    # block and from the card list below it (still a single additive, documented integration edit).
 ]
 
 
