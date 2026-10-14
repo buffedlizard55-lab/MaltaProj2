@@ -26,7 +26,7 @@ try:
                 # Fire timer callback by advancing the browser clock, without wall-clock waiting.
                 page.clock.fast_forward(31000)
                 assert page.locator('[data-current]:visible').count()==0
-                assert page.locator('.expiry:visible').count()>0
+                page.locator('.expiry').first.wait_for(state='visible',timeout=5000)
         assert not errors,errors
         browser.close()
         print('PASS: every-match mobile/desktop, source UI, search, tap targets and expiry')

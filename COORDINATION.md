@@ -4155,3 +4155,7 @@ These contradict the user's no-invented-values requirement and will be corrected
   evidence-first root summary and independent audit were preserved during rebase; its canonical
   strict CTA remains. Updated only the every-match description now that unsupported proxies are
   removed. Full combined suite: 424 OK (one inherited skip). Hosted gate running.
+- Browser gate caught two real mobile issues: long machine-readable flags overflowed at 320px,
+  and an unclosed probability container hid the expiry notice along with expired numbers. Fixed
+  wrapping and DOM nesting. Reproduced locally with Chromium; all four viewport sizes, search,
+  tap-target and expiry tests now pass. No gate was bypassed.
