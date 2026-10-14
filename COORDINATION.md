@@ -4146,3 +4146,8 @@ These contradict the user's no-invented-values requirement and will be corrected
 - Completed 53220a1b's new tests assume fabricated full coverage. Taking over only its three
   every-match assertions to require picked OR explicitly blank-and-flagged, with sourced model inputs;
   its link, normalization, source and schedule checks remain. Owner's PR #92 claim is closed.
+- Combined main integration verification: 418 tests OK (one inherited skip), staged links PASS.
+  Source-safety tests now cover raw arithmetic, stale fixtures/quotes/ratings, approximate kickoff,
+  duplicate ratings, fallback isolation, API-only coverage exclusion, source rows and expiry anchors.
+- Rebasing the claim onto current main rewrote this session's own two commits. Updating only this
+  session branch with force-with-lease (no other branch touched) preserves the initial claim content.
