@@ -73,13 +73,22 @@ def pct(value):
 # available from Research archive rather than crowding every mobile header.
 NAV = [
     ("index.html", "Dashboard"),
-    ("picks-every-match/index.html", "All CS2 picks"),
+    ("board/picks.html", "Alternate estimates"),
     ("cs2.html", "Bookmaker lines"),
-    ("probabilities.html", "Probabilities"),
+    ("picks-every-match/index.html", "Verified CS2 picks"),
     ("tournaments.html", "Tournaments"),
     ("flagged.html", "Flagged for review"),
     ("methodology.html", "Method &amp; sources"),
     ("research.html", "Research archive"),
+    # integration link added by session 6ddde224 (T-COVERAGE-INTEG, single additive anchor,
+    # documented in COORDINATION.md): full-lobby coverage board with external bookmaker/exchange
+    # lines, originated Bradley-Terry estimates or a blank+flagged row, plus a repo-review page.
+    # Kept during 53220a1b final integration; the pre-compaction historical session entries stay
+    # reachable from Research archive (research.html), per the compact-NAV policy on main.
+    ("probabilities.html", "Bookmaker probabilities"),
+    # integration link requested by session c0e223d3 (logged in COORDINATION.md) and added by the
+    # 53220a1b final integration: the mobile "where the picks are" verification hub.
+    ("summary/index.html", "Where the picks are"),
 ]
 
 
@@ -290,7 +299,7 @@ def main() -> int:
         for key, label in [("open", "Open CS2 fixtures"), ("tier_a_market", "Market-derived picks"),
                            ("tier_b_model", "Model fallbacks"), ("tier_d_none", "Unverified / blank")])
     idx_body = f"""
-<section id="executive-summary" aria-labelledby="summary-title">
+<section id="where-the-picks" aria-labelledby="summary-title"><div id="executive-summary">
 <h2 id="summary-title">Executive summary — start with the picks</h2>
 <p>One place for every open HotSpawn CS2 fixture, both teams’ win estimates, and a clear pick.
 External betting lines come first. For uncovered matches only, we try verified Valve ratings.
@@ -301,7 +310,7 @@ Missing or ambiguous evidence stays blank — never guessed.</p>
 <p class="note">Counts at {esc(pick_time or "unverified observation time")}.
 Not a live feed: the picks page hides expired estimates and locked picks automatically.
 <a href="https://play.hotspawn.com/lobby">Official fixture source</a>.</p>
-</section>
+</div></section>
 <div class="archive-grid">
 <div class="card"><h2><a href="picks-every-match/picks.html">Picks & probabilities</a></h2><p>Search by team or tournament. Market, model or unverified is labelled on every mobile-friendly row.</p></div>
 <div class="card"><h2><a href="picks-every-match/inventory.html">Complete lobby inventory</a></h2><p>Open, locked, past and uncertain source states. Every listed fixture is retained with its official link.</p></div>
@@ -313,12 +322,18 @@ New listed matches are included automatically. GitHub scheduling and source avai
 source failures and missing odds are published on <a href="picks-every-match/flagged.html">Flagged for Review</a>.
 HotSpawn’s crowd percentages are never used to estimate a winner.</p>
 <h2>Additional categories</h2>
+<p><a href="board/picks.html">Alternate full-coverage estimates</a> · <a href="coverage/index.html">Coverage research</a> ·
+<a href="ourline/index.html">Shared-engine research view</a> · <a href="live/index.html">Live coverage research</a> ·
+<a href="fresh/index.html">Fresh source snapshot</a></p>
 <p><a href="cs2.html">Primary-bookmaker-only tables</a> · <a href="tournaments.html">Tournaments</a> ·
 <a href="summary/index.html">Verification & sources hub</a> · <a href="research.html">Dated research archive</a></p>
 <p class="note">Archive boards may use different assumptions and collection times. They are retained for audit, not combined into current picks.
 Earlier inferred sibling-roster and ambiguous-slot picks have been removed from the every-match board;
 <a href="picks-every-match/flagged.html">review the limitations</a>.</p>
+<p class="note">Manual source review: <a href="https://github.com/ValveSoftware/counter-strike_regional_standings">Official Valve standings</a> ·
+<a href="verify/8e7a652d/index.html">Independent market verification</a>. Each alternate board has its own observation time and eligibility rules; none overrides blanks on this source-verified board.</p>
 <details class="archive"><summary>Primary-bookmaker-only coverage and table</summary>
+<h2>Every CS2 match currently open for picks — primary sources only</h2>
 <div class="cards">{cards}</div>
 <p class="note">This is a separate stricter source subset, not the total number of supported picks above.</p>
 {top_table}

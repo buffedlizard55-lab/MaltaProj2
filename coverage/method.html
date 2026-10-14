@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method &amp; verification · CS2 coverage board</title>
+<link rel="stylesheet" href="assets/coverage.css">
+</head>
+<body>
+<header><div class="wrap">
+  <div class="brand">CS2 pick coverage · every HotSpawn-listed match, external lines only</div>
+  <nav><a href="../index.html">Dashboard</a>
+<a href="index.html">Coverage board</a>
+<a href="flagged.html">Flagged for review</a>
+<a href="review.html">Repo review &amp; re-reads</a>
+<a href="method.html" class="active">Method &amp; verification</a>
+<a href="../live/index.html">Live coverage (3cd9787c)</a>
+<a href="../fresh/index.html">Fresh board (dd2b7fee)</a></nav>
+</div></header>
+<main class="wrap">
+<h1>Method &amp; verification</h1>
+<p class="sub">Sources, formulas, join rules, calibration of the originated models and the limitations of this board.</p>
+
+<div class="note"><strong>Two rules drive every number on this site.</strong>
+(1) A probability is only published when an external, non-HotSpawn source confirms it — or when a
+documented model covers both teams, in which case the row says “originated estimate”.
+(2) If neither holds, the value stays blank and the row is published on
+<a href="flagged.html">Flagged for review</a>. Values are never inferred or filled in.</div>
+
+<h2>Sources</h2>
+
+<table><thead><tr><th>Source</th><th>Kind</th><th>What is taken from it</th><th>Link</th></tr></thead><tbody>
+<tr><td>HotSpawn Pick'ems lobby</td><td>fixture discovery only</td><td>fixture ids, teams, kickoff, lock time, tier — never a probability</td><td><a href="https://play.hotspawn.com/lobby" rel="noopener">play.hotspawn.com/lobby</a></td></tr>
+<tr><td>bo3.gg public match feed</td><td>esports results/odds site</td><td>two-sided Thunderpick moneyline coefficients, team names, UTC start time; finished matches form the model corpus</td><td><a href="https://bo3.gg/matches/current" rel="noopener">bo3.gg/matches/current</a></td></tr>
+<tr><td>Kalshi</td><td>regulated exchange</td><td>two-sided bid/ask for CS2 match markets (published only inside the spread limit)</td><td><a href="https://kalshi.com/markets/kxcs2game" rel="noopener">kalshi.com/markets/kxcs2game</a></td></tr>
+<tr><td>Valve CS2 Regional Standings</td><td>official rating</td><td>team points used by the logistic estimate</td><td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings" rel="noopener">github.com/ValveSoftware/counter-strike_regional_standings</a></td></tr>
+<tr><td>Repository live-coverage artifact</td><td>internal, attributed</td><td>Pinnacle / Bovada / LineFeed prices already collected hourly by session 3cd9787c (read-only; not re-requested)</td><td><a href="../live/index.html" rel="noopener">live coverage board</a></td></tr>
+<tr><td>HLTV</td><td>cross-check</td><td>match context cited on the flagged page for manual review (the runner receives HTTP 403 from HLTV, so no value is scraped from it)</td><td><a href="https://www.hltv.org/matches" rel="noopener">hltv.org/matches</a></td></tr>
+</tbody></table>
+
+<h2>Formulas</h2>
+<table><thead><tr><th>Step</th><th>Rule</th></tr></thead><tbody>
+<tr><td>Implied probability</td><td>raw = 1 / decimal odds for each side</td></tr>
+<tr><td>Overround</td><td>raw_a + raw_b</td></tr>
+<tr><td>No-vig</td><td>p_a = raw_a / overround, p_b = raw_b / overround (proportional method)</td></tr>
+<tr><td>Consensus</td><td>arithmetic mean of the per-source no-vig probabilities (bookmakers only; the exchange is never averaged in)</td></tr>
+<tr><td>Valve standings estimate</td><td>p = 1 / (1 + 10^(−(points_a − points_b)/400)); the 400-point scale is a stated modelling assumption, not a Valve-published number</td></tr>
+<tr><td>Fitted model</td><td>Bradley-Terry (logistic) on finished bo3.gg matches: p = 1 / (1 + exp(−(r_a − r_b))), half-life 60.0 days, L2 ridge 0.02, 600 gradient steps, a team is only used with at least 8 matches in the corpus</td></tr>
+<tr><td>Pick</td><td>the higher of the two published probabilities; an edge below 0.005 is published as a coin flip with no pick</td></tr>
+<tr><td>Join rule</td><td>both team labels must match after canonicalisation (case, accents, punctuation, leading “team”/“the”, trailing “esports”/“esport”/“gaming”/“team” only), and any published start time must be within ±240 minutes</td></tr>
+<tr><td>Freshness</td><td>market quotes older than 6 hours and in-play prices are excluded and listed as refused candidates</td></tr>
+</tbody></table>
+
+<h2>Does the originated model add value? (calibration)</h2>
+<p class="sub">Measured on finished CS2 matches in the last 14 days of the
+bo3.gg corpus. The Bradley-Terry model is refitted with that whole window excluded (out-of-sample) and
+the Valve snapshot predates the window. The book price pair bo3.gg keeps for a finished match is its
+last (in-play) price and leaks the result, so it is not scored here as a benchmark. Reported as Brier
+score and log loss (lower is better; a coin flip has a Brier score of
+0.25).</p>
+<table><thead><tr><th>Predictor</th><th>Matches</th><th>Brier</th><th>Log loss</th><th>Accuracy</th></tr></thead>
+<tbody><tr><td>bt</td><td>13</td><td>0.14228</td><td>0.42861</td><td>0.6923</td></tr><tr><td>vrs</td><td>128</td><td>0.20136</td><td>0.60378</td><td>0.6719</td></tr></tbody></table>
+<p class="sub">Matches in the evaluation window: 199,
+of which 122 also carried a book price (not scored - see above). Published originated estimates
+use <strong>vrs</strong> in this snapshot, chosen by the lower Brier score.
+Out-of-sample window: the Bradley-Terry model used here is refitted with every match inside the window excluded, and the Valve VRS snapshot used predates the window. The book price pair bo3.gg keeps for a finished match is the last price it held (updated in-play), so it is deliberately NOT scored here as a benchmark - on 2026-10-14 it implied the eventual winner in 100% of 4,000 settled matches. Fewer model rows than matches in the window means the model had no rating for both teams.</p>
+
+<h2>Snapshot facts</h2>
+<table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody>
+<tr><td>Generated (UTC)</td><td>2026-10-14T04:17:13Z</td></tr>
+<tr><td>CS2 fixtures in window</td><td>155</td></tr>
+<tr><td>Listed by the lobby page</td><td>88</td></tr>
+<tr><td>Still open for picks</td><td>28</td></tr>
+<tr><td>Market / exchange / estimate / blank</td><td>14 / 2 / 97 / 42</td></tr>
+<tr><td>External quotes read this run</td><td>120</td></tr>
+<tr><td>Quotes refused by the join rules</td><td>71</td></tr>
+<tr><td>Valve VRS snapshots</td><td>{&quot;americas&quot;: &quot;2026_10_05&quot;, &quot;asia&quot;: &quot;2026_10_05&quot;, &quot;europe&quot;: &quot;2026_10_05&quot;, &quot;global&quot;: &quot;2026_10_05&quot;}</td></tr>
+<tr><td>Bradley-Terry corpus</td><td>1105 matches / 447 teams (generated 2026-10-14T02:35:39Z)</td></tr>
+<tr><td>Verification</td><td>10 of 10 checks passed</td></tr>
+</tbody></table>
+
+<h2>Limitations</h2>
+<ul>
+<li>Bookmaker coverage of tier-3 matches is genuinely thin; where no book prices a match the row stays
+blank rather than borrowing another match's price or a crowd percentage.</li>
+<li>Start times are those HotSpawn publishes (UTC, from the lobby API). Where a source publishes a
+different time the difference is flagged on the row and the same price is listed as a refused candidate
+if it exceeds ±240 minutes.</li>
+<li>An exchange mid price is not a bookmaker quote: it is published with its spread and never averaged
+into a bookmaker consensus.</li>
+<li>Originated estimates are model output, clearly labelled, and are not guarantees or official
+forecasts. The calibration table is an out-of-sample measurement on recent matches, not a promise of
+future accuracy.</li>
+<li>HotSpawn's crowd “picked %” is displayed for context only and is never a probability input.</li>
+</ul>
+
+<footer>
+<p>Fixture discovery: HotSpawn Pick'ems lobby (public endpoints). Probabilities: external bookmakers,
+exchanges and the labelled originated models described on the method page — HotSpawn's crowd
+percentage is published for reference and is never used as a probability input.
+Generated 2026-10-14T04:17:13Z UTC. Not affiliated with HotSpawn or any bookmaker. 18+, gamble responsibly.</p>
+</footer>
+</main>
+<script src="assets/coverage.js"></script>
+</body>
+</html>
