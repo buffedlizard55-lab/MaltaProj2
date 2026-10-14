@@ -213,6 +213,30 @@ class TestPublishedBoard(unittest.TestCase):
         self.assertGreaterEqual(cal["n_pairs"], 6)
         self.assertGreater(0.25 <= cal["k"] <= 1.5, 0)
 
+    def test_cross_check_compares_against_the_published_board(self):
+        """Every row is compared with the every-match board (session c64a5e19) where it exists."""
+        compared = [r for r in self.board["rows"] if r.get("canonical")]
+        self.assertTrue(compared, "no cross-check baseline was attached")
+        for row in compared:
+            ref = row["canonical"]
+            self.assertIsNotNone(ref["pick_team"])
+            self.assertAlmostEqual(ref["prob_a"] + ref["prob_b"], 1.0, places=9)
+
+    def test_agreement_flag_only_set_when_both_have_a_pick(self):
+        for row in self.board["rows"]:
+            if row["prob_a"] is None or not row.get("canonical"):
+                self.assertIsNone(row.get("agrees"), row["fixture_id"])
+            else:
+                self.assertIsInstance(row["agrees"], bool, row["fixture_id"])
+
+    def test_disagreements_are_published_not_hidden(self):
+        text = (SUMMARY / "gaps.html").read_text(encoding="utf-8")
+        rows = [r for r in self.board["rows"] if r.get("agrees") is False]
+        for row in rows:
+            self.assertIn(core.esc(row["team_a"]), text)
+        if rows:
+            self.assertIn("opposite winners", text)
+
     def test_board_records_where_it_came_from(self):
         self.assertEqual(self.board["session"], "c0e223d3")
         self.assertEqual(self.board["source_board"], "data/f7279a54/board.json")

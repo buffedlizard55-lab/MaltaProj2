@@ -99,10 +99,29 @@ RESOLUTIONS = [
         "conflict": (
             "bo3.gg, egamersworld and strafe.com all publish a 'WROTBERRY' roster of "
             "fl1peR / svemyy / aRTYSAN / tired73 / lyoli. That five is Valve's 'WBT Academy' row "
-            "(standing 130, 911 points), not the 'WBT' row that HotSpawn's schedule actually matches. "
-            "HotSpawn's fixture list follows WBT, so WBT is used here; the naming conflict is flagged."
+            "(standing 130, 911 points), not the 'WBT' row (standing 60, 1201 points). HotSpawn's "
+            "fixture list follows WBT, so WBT is used here - but the two candidate rosters imply "
+            "OPPOSITE picks on one match, so the conflict is published rather than settled."
         ),
         "conflict_links": [BO3GG_WROTBERRY, EGAMERSWORLD_WROTBERRY, STRAFE_WROTBERRY, VALVE_FILE_PAGE],
+        # Both candidate ratings, straight from Valve's official file, so a reviewer can see what
+        # each resolution implies for every affected match.
+        "candidates": [
+            {"valve_name": "WBT", "standing": 60, "points": 1201,
+             "roster": "DemQQ, Psycho, s4ltovsk1yy, Smash, tyr1k",
+             "supported_by": [HLTV_ELISA_EVENT, HLTV_WBT_TEAM, MELBET_ESPROTS]},
+            {"valve_name": "WBT Academy", "standing": 130, "points": 911,
+             "roster": "fl1peR, marat2k, NxStep, svemyy, tired73",
+             "supported_by": [BO3GG_WROTBERRY, STRAFE_WROTBERRY, EGAMERSWORLD_WROTBERRY]},
+        ],
+        # Direct counter-evidence to the WBT resolution: Kalshi prices the very same Elisa
+        # BreakOut slot under the "WBT Academy" label.
+        "counter_evidence": {
+            "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct150400eacwbtacademy",
+            "source": "Kalshi (exchange) market KXCS2GAME-26OCT150400EACWBTACADEMY",
+            "quote": "names the two sides 'Esport Academy Copenhagen' and 'WBT Academy' for the "
+                     "15 Oct 04:00 slot that HotSpawn publishes as WROTBERRY vs EAC",
+        },
     },
     {
         "hotspawn_name": "RoundsGG",

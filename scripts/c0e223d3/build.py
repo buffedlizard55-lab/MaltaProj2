@@ -43,11 +43,18 @@ HLTV_ELISA = aliases.HLTV_ELISA_EVENT
 # existence at build time and only rendered when the page really ships.
 SITE_SECTIONS = [
     {
-        "href": "index.html",
-        "title": "Every open pick",
-        "blurb": "One row per CS2 match that is still open on HotSpawn, with the pick, the "
-                 "probability and the official source link.",
+        "href": "../picks-every-match/index.html",
+        "title": "Every-match picks (official board)",
+        "blurb": "THE place for picks: every open CS2 match with a pick and a win probability, "
+                 "mobile cards, refreshed automatically about every 30 minutes. Go here first.",
         "badge": "Start here",
+    },
+    {
+        "href": "index.html",
+        "title": "Verification & sources hub",
+        "blurb": "This section: independent cross-check of every pick, the team-name evidence "
+                 "behind the uncovered matches, sources and the repository review.",
+        "badge": "This page",
     },
     {
         "href": "../ourline/index.html",
@@ -428,6 +435,96 @@ def render_picks_table(rows: list[dict]) -> str:
 
 
 # -------------------------------------------------------------------------------------- pages
+EVERY_MATCH_BOARD = ROOT / "data" / "c64a5e19" / "board.json"
+
+
+def load_canonical_picks():
+    """The published every-match board (session c64a5e19), read as a comparison baseline.
+
+    Nothing here is written back to it. Where we disagree, both numbers are published.
+    """
+    doc = core.read_json(EVERY_MATCH_BOARD)
+    if not doc:
+        return {}
+    out = {}
+    for fx in doc.get("open", []):
+        line = fx.get("line") or {}
+        prob_a = line.get("prob_a")
+        if prob_a is None:
+            continue
+        out[str(fx.get("fixture_id"))] = {
+            "pick_team": line.get("pick_team"),
+            "prob_a": prob_a,
+            "prob_b": line.get("prob_b"),
+            "basis": line.get("basis"),
+            "tier": line.get("tier"),
+            "generated_utc": doc.get("generated_utc"),
+        }
+    return out
+
+
+def cross_check(rows, canonical):
+    """Attach the canonical board's pick to each row and mark agreement."""
+    n_same = n_diff = n_missing = 0
+    for r in rows:
+        ref = canonical.get(str(r["fixture_id"]))
+        if not ref:
+            r["canonical"] = None
+            r["agrees"] = None
+            n_missing += 1
+            continue
+        r["canonical"] = ref
+        if r["prob_a"] is None:
+            r["agrees"] = None
+            n_missing += 1
+            continue
+        # Same winner = agreement, whatever the exact percentage says.
+        mine = r["team_a"] if r["prob_a"] >= r["prob_b"] else r["team_b"]
+        theirs = ref["pick_team"]
+        r["agrees"] = (mine == theirs)
+        if r["agrees"]:
+            n_same += 1
+        else:
+            n_diff += 1
+    return {"agree": n_same, "disagree": n_diff, "no_baseline": n_missing}
+
+
+def render_cross_check(rows, canonical, meta):
+    body = []
+    for r in rows:
+        ref = r.get("canonical")
+        if r["prob_a"] is None:
+            mine = '<span class="small">No pick &mdash; flagged</span>'
+        else:
+            mine = (f'<span class="pick">{core.esc(r["pick_team"])}</span> '
+                    f'{r["pick_prob"] * 100:.1f}%')
+        if not ref:
+            theirs = '<span class="small">not published</span>'
+            verdict = '<span class="small">&mdash;</span>'
+        else:
+            theirs = (f'{core.esc(ref["pick_team"])} '
+                      f'{max(ref["prob_a"], ref["prob_b"]) * 100:.1f}%'
+                      f'<br><span class="small">{core.esc(core.basis_label(ref["basis"]))}</span>')
+            verdict = ("<span class='small'>same pick</span>" if r["agrees"]
+                       else "<b style='color:var(--warn)'>PICK DIFFERS</b>")
+            if r["prob_a"] is None:
+                verdict = "<b style='color:var(--warn)'>flag</b>"
+        body.append(
+            "<tr>"
+            f'<td class="hd" data-l="Match">{core.esc(r["team_a"])} vs {core.esc(r["team_b"])}'
+            f'<br><span class="small">{core.esc(r["competition"])}</span></td>'
+            f'<td data-l="This cross-check">{mine}'
+            f'<br><span class="small">{core.esc(core.basis_label(r["basis"]))}</span></td>'
+            f'<td data-l="Published board">{theirs}</td>'
+            f'<td data-l="Result">{verdict}</td>'
+            "</tr>")
+    return (
+        '<div class="tbl-wrap"><table><thead><tr>'
+        "<th>Match</th><th>This cross-check</th><th>Every-match board</th><th>Result</th>"
+        f"</tr></thead><tbody>{''.join(body)}</tbody></table></div>"
+    )
+
+
 def build(rows, our_board, valve_meta, k, calibration, sections):
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "assets").mkdir(exist_ok=True)
@@ -439,6 +536,9 @@ def build(rows, our_board, valve_meta, k, calibration, sections):
     market = sum(1 for r in rows if r["basis"] in {"market", "market+model"})
     vrs_only = sum(1 for r in rows if r["basis"] in {"model", "vrs-resolved"})
     blank = total - with_pick
+
+    canonical = load_canonical_picks()
+    xcheck = cross_check(rows, canonical)
 
     board = {
         "session": "c0e223d3",
@@ -476,22 +576,38 @@ def build(rows, our_board, valve_meta, k, calibration, sections):
     )
     src_age = core.hours_since(our_board.get("generated_utc"))
     age_txt = f"{src_age:.1f} h old" if src_age is not None else "unknown age"
+    canon_age = ""
+    if canonical:
+        any_ref = next((r["canonical"] for r in rows if r.get("canonical")), None)
+        hours = core.hours_since((any_ref or {}).get("generated_utc"))
+        canon_age = (f"The every-match board was last refreshed "
+                     f"{core.esc((any_ref or {}).get('generated_utc') or 'unknown')}"
+                     + (f" ({hours:.1f} h ago)" if hours is not None else "") + ").")
+    disagree = [r for r in rows if r.get("agrees") is False]
     index_body = f"""
-<p class="sub">Every CS2 match currently open for picks in the
-<a href="https://play.hotspawn.com/lobby" rel="nofollow noopener" target="_blank">HotSpawn
-Pick'ems lobby</a>, with the pick, the win probability and the official source behind it.
-Built {core.esc(generated)} from the Our line board published
-{core.esc(our_board.get("generated_utc") or "unknown")} ({core.esc(age_txt)}).</p>
+<p class="sub">Where the picks are, and an independent cross-check of every one of them.</p>
+<div class="note">
+<b>Looking for the picks?</b> They live on the
+<a href="../picks-every-match/index.html">every-match picks board</a> &mdash; every open CS2 match
+with a pick and a win probability, in mobile-friendly cards, refreshed automatically.
+{canon_age}
+<b>This section is the verification companion to that board:</b> it re-derives every pick
+independently, publishes where the two agree and where they do not, and shows the official-source
+evidence behind the matches that had no bookmaker price.
+</div>
 {kpis}
-<div class="note"><b>What changed in this section.</b> Six open matches had no pick at all because
-the team names HotSpawn shows are not the names Valve and HLTV publish. Those names are now
-resolved from official sources and shown with the evidence on the
-<a href="gaps.html">Uncovered matches</a> page, so five of the six now carry a rating-model pick.
-One match (<b>FORZE Reload vs LFO 10</b>) still has no official rating for LFO 10 anywhere we could
-verify, so it stays blank and flagged &mdash; it is not guessed.</div>
-<h2>Where to find the picks</h2>
+<h2>1. Where to find the picks</h2>
 <div class="cards">{cards}</div>
-<h2>Every open pick</h2>
+<h2>2. Independent cross-check of every pick</h2>
+<p class="small">Each row is re-derived here from the published OURLINE board plus Valve's official
+standings, then compared with what the every-match board publishes. "Same pick" means both
+methods pick the same winner; the percentages can still differ slightly because the models blend
+market prices and ratings differently.</p>
+<p><b>{core.esc(str(xcheck["agree"]))} same pick</b> &middot;
+<b>{core.esc(str(xcheck["disagree"]))} differ</b> &middot;
+{core.esc(str(xcheck["no_baseline"]))} that this cross-check leaves blank and flags.</p>
+{render_cross_check(rows, canonical, xcheck)}
+<h2>3. Every open pick, with the official source behind it</h2>
 <p class="small">Sorted by start time. On a phone each row stacks into a card.</p>
 {render_picks_table(rows)}
 """
@@ -544,6 +660,59 @@ verify, so it stays blank and flagged &mdash; it is not guessed.</div>
             + res
             + f"<p class='small'><b>Flags:</b> <code>{core.esc(', '.join(r['flags']))}</code></p>"
         )
+    # ---------------------------------------------------- explicit disagreements / flags
+    disagree_html = ""
+    for r in gap_rows:
+        ref = r.get("canonical")
+        if not ref:
+            continue
+        if r["prob_a"] is None:
+            # We left it blank; the published board did not. Say why, with their evidence.
+            disagree_html += (
+                f"<h3>{core.esc(r['team_a'])} vs {core.esc(r['team_b'])} &mdash; "
+                f"published as a pick, left blank here</h3>"
+                f"<p>The every-match board publishes <b>{core.esc(ref['pick_team'])} "
+                f"{max(ref['prob_a'], ref['prob_b']) * 100:.1f}%</b> "
+                f"(basis: {core.esc(ref['basis'])}, tier {core.esc(ref['tier'])}). "
+                f"We leave it blank. Reason: no official source we could read publishes a rating "
+                f"for {core.esc(r['team_b'] if 'LFO' in r['team_b'] else r['team_a'])}, so any "
+                f"number here is a stand-in rather than a measurement. The published figure uses "
+                f"the official VRS points of <i>sibling</i> rosters from the same organisation, "
+                f"which is a documented, clearly-labelled provisional &mdash; useful context, but "
+                f"not evidence about this five.</p>")
+        elif r.get("agrees") is False:
+            # Same match, opposite winner. Show both numbers and the identity question behind it.
+            ent = aliases.by_hotspawn_name(r["team_a"]) or aliases.by_hotspawn_name(r["team_b"])
+            cand = ""
+            if ent and ent.get("candidates"):
+                rows_html = "".join(
+                    f"<tr><td>{core.esc(c['valve_name'])}</td><td>{core.esc(str(c['standing']))}"
+                    f"</td><td>{core.esc(str(c['points']))}</td>"
+                    f"<td class='small'>{core.esc(c['roster'])}</td></tr>"
+                    for c in ent["candidates"])
+                counter = ent.get("counter_evidence") or {}
+                counter_html = (
+                    f"<p class='small'><b>Counter-evidence:</b> "
+                    f"<a href=\"{core.esc(counter.get('url', ''))}\" rel=\"nofollow noopener\" "
+                    f"target=\"_blank\">{core.esc(counter.get('source', ''))}</a> &mdash; "
+                    f"&ldquo;{core.esc(counter.get('quote', ''))}&rdquo;</p>"
+                    if counter else "")
+                cand = (
+                    "<p>The two candidate rosters in Valve's official file, and what each implies:</p>"
+                    "<div class='tbl-wrap'><table><thead><tr><th>Valve row</th><th>Standing</th>"
+                    f"<th>Points</th><th>Roster</th></tr></thead><tbody>{rows_html}</tbody></table></div>"
+                    + counter_html)
+            disagree_html += (
+                f"<h3>{core.esc(r['team_a'])} vs {core.esc(r['team_b'])} &mdash; the two methods "
+                f"pick opposite winners</h3>"
+                f"<p>This cross-check: <b>{core.esc(r['pick_team'])} "
+                f"{r['pick_prob'] * 100:.1f}%</b> (rating model, Valve VRS). "
+                f"Every-match board: <b>{core.esc(ref['pick_team'])} "
+                f"{max(ref['prob_a'], ref['prob_b']) * 100:.1f}%</b> "
+                f"(basis: {core.esc(ref['basis'])}). "
+                f"The disagreement is not arithmetic &mdash; it is an identity question about which "
+                f"roster HotSpawn's name refers to.</p>" + cand)
+
     conflict_blocks = []
     for e in aliases.RESOLUTIONS:
         if e.get("conflict"):
@@ -564,6 +733,8 @@ row stays blank.</p>
 from Valve's published points. It is not a bookmaker line and no bookmaker is quoting these
 matches. Treat it as a model estimate and check the linked source yourself.</div>
 {''.join(gap_body)}
+<h2>Where this cross-check disagrees with the published board</h2>
+{disagree_html if disagree_html else "<p class='small'>No disagreement at build time.</p>"}
 <h2>Name and data conflicts found</h2>
 {''.join(conflict_blocks)}
 """
