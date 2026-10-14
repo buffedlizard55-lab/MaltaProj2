@@ -179,8 +179,10 @@ def sigmoid(x: float) -> float:
 
 # --------------------------------------------------------------------- market consensus
 # Weighting is a stated modelling choice (published on the method page), not a source value.
-SOURCE_WEIGHTS = {"pinnacle": 2.0, "bovada": 1.0, "melbet": 1.0, "kalshi": 1.0}
-KALSHI_MAX_SPREAD = 0.10   # a wider bid/ask on either side means "no usable price"
+SOURCE_WEIGHTS = {"pinnacle": 2.0, "bovada": 1.0, "melbet": 1.0,
+                  "kalshi": 1.0, "polymarket": 1.0}
+KALSHI_MAX_SPREAD = 0.10       # a wider bid/ask on either side means "no usable price"
+POLYMARKET_MAX_SPREAD = 0.10   # same fail-closed threshold for binary match contracts
 
 
 def consensus(entries: list[dict]) -> dict | None:

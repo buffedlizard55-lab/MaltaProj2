@@ -127,6 +127,14 @@ def executive_summary_html():
     coverage = ("; ".join(bits) + ".") if bits else (
         "The pick lists are generated automatically from the HotSpawn lobby; open any board below "
         "for its current coverage numbers.")
+    provisional = int(every.get("tier_c_fallback") or 0)
+    blank = int(every.get("tier_d_none") or 0)
+    limitations = (
+        f"{provisional} tier-C pick(s) remain provisional because source identity or market-quality "
+        f"evidence is irregular; {blank} tier-D row(s) have no documented line and remain blank. "
+        "The every-match Flagged for Review page preserves the conflicting names, spread/volume "
+        "limitations and source links rather than silently certifying them."
+    )
     stamp_map = [
         ("picks-every-match/index.html", "Every-match picks at a glance",
          "Pick + win % for every open CS2 match on one phone-friendly page. Start here.",
@@ -166,6 +174,7 @@ def executive_summary_html():
 <div class="cards" id="where-the-picks" style="display:block;background:#12203a;border:1px solid #2b3752;border-radius:14px;padding:14px;margin:16px 0">
   <h2 style="margin-top:0">Executive summary — where the picks are</h2>
   <p>{coverage}</p>
+  <p class="note" style="border-left-color:#ffb547"><strong>Unresolved / provisional limitations:</strong> {esc(limitations)} <a href="picks-every-match/flagged.html">Review every tier-C/D row and its evidence →</a></p>
   <p><a class="btn" href="picks-every-match/index.html">Every-match picks at a glance</a>
      <a class="btn" href="board/picks.html">All picks · every match</a>
      <a class="btn ghost" href="summary/index.html">Where the picks are (hub)</a>
@@ -174,11 +183,12 @@ def executive_summary_html():
     {''.join(items)}
   </ul>
   <p class="note" style="border-left-color:#3ea6ff">Every board above is mobile-first, refreshed
-  automatically (no manual input) and gives every open CS2 fixture a pick where a source exists:
-  external bookmaker/exchange prices first (Pinnacle, Bovada, Melbet, Kalshi, and the Thunderpick
-  prices bo3.gg publishes per match, including tier-C events), and a clearly labelled originated line
-  from the official Valve VRS rating or this project's own Elo where no bookmaker prices the match.
-  HotSpawn's crowd pick percentage is never used as a probability input. Estimates are not guarantees.
+  automatically (no manual input) and gives every open CS2 fixture a pick where documented evidence exists:
+  external bookmaker/exchange prices first (Pinnacle, Bovada, Melbet, Kalshi, Polymarket, and the
+  Thunderpick prices bo3.gg publishes per match), then clearly labelled Valve-VRS/result research for
+  uncovered matches. Identity-irregular and wide-book values stay tier C with their source labels;
+  unsupported values stay blank. HotSpawn's crowd pick percentage is never a probability input.
+  Estimates are not guarantees.
   18+; gamble responsibly.</p>
 </div>"""
 

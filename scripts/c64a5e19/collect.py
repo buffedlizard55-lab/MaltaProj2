@@ -5,11 +5,14 @@ Writes ``data/c64a5e19/snapshot.json`` in the same schema as the proven f7279a54
 HotSpawn CS2 fixture inventory, every external two-way match-winner price found (including
 Kalshi thin books, retained as *fallback-only* evidence in ``rejected_quotes``), the official
 Valve VRS ratings, and a per-source access log. HotSpawn is fixture discovery ONLY; its crowd
-picked % is never copied. Additional probes (Liquipedia Elisa page, HLTV) record reachability
-for the fallback identity evidence used only on matches with no featured line.
+picked % is never copied. Polymarket CS2 match-winner contracts are discovered through the
+numeric match tag, with wide (>10 percentage point) books retained as fallback-only evidence.
+Additional probes (Liquipedia Elisa page, HLTV) record reachability for the fallback identity
+evidence used only on matches with no featured line.
 """
 from __future__ import annotations
-import base64, json, re, ssl, sys, time, urllib.error, urllib.request
+import base64, json, re, ssl, sys, time, urllib.error, urllib.parse, urllib.request
+from datetime import timedelta
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import core  # noqa: E402
@@ -23,7 +26,13 @@ PIN_HEADERS = {"X-API-Key": "CmX2KcMrXuFmNg6YFbmTxE0y9CIrOi0R", "Referer": "http
 BOVADA = "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2"
 MELBET = "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"
 KALSHI = ("https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200")
-POLY = "https://gamma-api.polymarket.com/events?closed=false&limit=200&tag_slug=counter-strike"
+# Polymarket has two similarly named CS2 tags. 100780 (counter-strike-2) is attached to
+# match markets; 100677 (cs2) also contains season props and was the source of the former
+# false "no coverage" result. The URL is assembled at collection time so expired markets
+# can be excluded with end_date_min.
+POLY_BASE = "https://gamma-api.polymarket.com/markets"
+POLY_MATCH_TAG_ID = 100780
+POLY_PAGE_SIZE = 500
 HLTV = "https://www.hltv.org/matches"
 LIQUIPEDIA_ELISA = "https://liquipedia.net/counterstrike/Elisa/BreakOut_Series/2"
 VRS_REPO = "ValveSoftware/counter-strike_regional_standings"
@@ -176,6 +185,142 @@ def collect_kalshi(quotes, rejected):
         quotes.append({**q("kalshi", "Kalshi (exchange)", rec["public_url"], KALSHI, tick, names[0], names[1], dec_a, dec_b, kalshi_start(tick), ev.get("title"), "yes mid ($)", round(mids[0][0], 4), round(mids[1][0], 4)), "prob_a": pa, "overround": mids[0][0] + mids[1][0] - 1.0, "start_is_approx": True}); written += 1
     LOG["kalshi"]["quotes"] = written
 
+
+def _json_array(value):
+    """Gamma encodes outcomes/prices as JSON strings; tolerate already-decoded arrays."""
+    if isinstance(value, list):
+        return value
+    if not isinstance(value, str):
+        return None
+    try:
+        parsed = json.loads(value)
+    except ValueError:
+        return None
+    return parsed if isinstance(parsed, list) else None
+
+
+def polymarket_quote(market):
+    """Parse one Gamma market into a two-team match-winner quote.
+
+    Returns ``(quote, quality_rejection_reason)``. A ``None`` quote means the row is not a
+    usable CS2 full-match moneyline. Wide/missing books return a quote plus a reason so the
+    exact external price remains available to tier-C fallback logic without being promoted
+    to the featured market consensus.
+    """
+    if not isinstance(market, dict):
+        return None, None
+    if str(market.get("sportsMarketType") or "").casefold() != "moneyline":
+        return None, None
+    if str(market.get("groupItemTitle") or "").strip().casefold() != "match winner":
+        return None, None
+    if not market.get("active") or market.get("closed") or market.get("acceptingOrders") is False:
+        return None, None
+    if not str(market.get("question") or "").casefold().startswith("counter-strike:"):
+        return None, None
+    outcomes, prices = _json_array(market.get("outcomes")), _json_array(market.get("outcomePrices"))
+    if not outcomes or not prices or len(outcomes) != 2 or len(prices) != 2:
+        return None, None
+    names = [str(v or "").strip() for v in outcomes]
+    if not all(names) or {n.casefold() for n in names} in ({"yes", "no"}, {"over", "under"}):
+        return None, None
+    try:
+        probs = [float(v) for v in prices]
+    except (TypeError, ValueError):
+        return None, None
+    if any(p <= 0 or p >= 1 for p in probs) or not 0.95 <= sum(probs) <= 1.05:
+        return None, None
+    start = core.parse_any(market.get("gameStartTime") or market.get("eventStartTime"))
+    if start is None:
+        return None, None
+    events = market.get("events") or []
+    event = events[0] if events and isinstance(events[0], dict) else {}
+    event_slug = str(event.get("slug") or market.get("slug") or "").strip()
+    if not event_slug:
+        return None, None
+    public_url = f"https://polymarket.com/event/{event_slug}"
+    api_url = "https://gamma-api.polymarket.com/events?" + urllib.parse.urlencode({"slug": event_slug})
+    league = str(event.get("title") or market.get("question") or "")
+    rec = q("polymarket", "Polymarket (prediction market)", public_url, api_url,
+            market.get("id") or event_slug, names[0], names[1], 1 / probs[0], 1 / probs[1],
+            start, league, "outcome probability ($1 contract)", probs[0], probs[1],
+            live=bool(event.get("live")))
+    try:
+        spread = float(market["spread"]) if market.get("spread") is not None else None
+    except (TypeError, ValueError):
+        spread = None
+    def number(key):
+        try:
+            return float(market[key]) if market.get(key) is not None else None
+        except (TypeError, ValueError):
+            return None
+    rec.update({
+        "bid_ask_spread": spread,
+        "best_bid_a": number("bestBid"),
+        "best_ask_a": number("bestAsk"),
+        "volume_usd": number("volumeNum") if number("volumeNum") is not None else number("volume"),
+        "liquidity_usd": number("liquidityNum") if number("liquidityNum") is not None else number("liquidity"),
+        "source_updated_utc": market.get("updatedAt"),
+        "event_slug": event_slug,
+    })
+    if spread is None:
+        return rec, "missing bid/ask spread; fallback-only"
+    if spread > core.POLYMARKET_MAX_SPREAD:
+        return rec, f"wide Polymarket order book ({spread:.3f} > {core.POLYMARKET_MAX_SPREAD:.2f}); fallback-only"
+    return rec, None
+
+
+def collect_polymarket(quotes, rejected):
+    """Discover active CS2 full-match moneylines through Gamma's numeric match tag."""
+    collected_at = core.now_utc()
+    base_params = {
+        "active": "true",
+        "closed": "false",
+        "tag_id": str(POLY_MATCH_TAG_ID),
+        "sports_market_types": "moneyline",
+        "end_date_min": core.to_iso(collected_at),
+        "limit": str(POLY_PAGE_SIZE),
+        "order": "gameStartTime",
+        "ascending": "true",
+    }
+    pages = []; total_rows = accepted = wide = candidates = 0
+    for offset in range(0, POLY_PAGE_SIZE * 5, POLY_PAGE_SIZE):
+        params = {**base_params, "offset": str(offset)}
+        url = POLY_BASE + "?" + urllib.parse.urlencode(params)
+        data, meta = fetch_json(url, {"Accept": "application/json"}, timeout=90)
+        pages.append(meta)
+        if not isinstance(data, list):
+            break
+        total_rows += len(data)
+        for market in data:
+            rec, reason = polymarket_quote(market)
+            if rec is None:
+                continue
+            candidates += 1
+            if reason:
+                rejected.append({"source_key": "polymarket", "event_id": rec["event_id"],
+                                 "team_a": rec["team_a"], "team_b": rec["team_b"],
+                                 "public_url": rec["public_url"], "reason": reason, "quote": rec})
+                wide += 1
+            else:
+                quotes.append(rec); accepted += 1
+        if len(data) < POLY_PAGE_SIZE:
+            break
+    LOG["polymarket"] = {
+        "url": pages[0]["url"] if pages else None,
+        "tag_id": POLY_MATCH_TAG_ID,
+        "pages": pages,
+        "status": pages[0].get("status") if pages else None,
+        "bytes": sum(p.get("bytes") or 0 for p in pages),
+        "error": next((p.get("error") for p in pages if p.get("error")), None),
+        "at_utc": core.to_iso(collected_at),
+        "market_rows": total_rows,
+        "match_winner_candidates": candidates,
+        "quotes": accepted,
+        "fallback_only_wide_books": wide,
+        "truncated": bool(pages and total_rows >= POLY_PAGE_SIZE * 5),
+    }
+
+
 def probe(name, url, headers=None):
     body, meta = fetch(url, headers); meta["looks_like_challenge"] = bool(re.search(rb"cf-chl|challenge-platform|Just a moment", body[:20000])); LOG[name] = meta
 
@@ -231,7 +376,9 @@ def main():
         except Exception as exc: LOG.setdefault(fn.__name__, {})["crash"] = f"{type(exc).__name__}: {exc}"[:300]
     try: collect_kalshi(quotes, rejected)
     except Exception as exc: LOG.setdefault("kalshi", {})["crash"] = f"{type(exc).__name__}: {exc}"[:300]
-    probe("polymarket_probe", POLY, {"Accept": "application/json"}); probe("hltv_probe", HLTV, {"Accept": "text/html"}); probe("liquipedia_elisa_probe", LIQUIPEDIA_ELISA, {"Accept": "text/html"})
+    try: collect_polymarket(quotes, rejected)
+    except Exception as exc: LOG.setdefault("polymarket", {})["crash"] = f"{type(exc).__name__}: {exc}"[:300]
+    probe("hltv_probe", HLTV, {"Accept": "text/html"}); probe("liquipedia_elisa_probe", LIQUIPEDIA_ELISA, {"Accept": "text/html"})
     names = {n for f in hs["fixtures"] for n in (f["team_a"], f["team_b"])}; vrs = collect_vrs(names)
     snap = {"session": "c64a5e19", "collected_from_utc": started, "collected_to_utc": core.to_iso(core.now_utc()), "hotspawn": hs, "quotes": quotes, "rejected_quotes": rejected, "vrs": vrs, "access_log": LOG}
     if not hs["fixtures"]:

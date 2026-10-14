@@ -2,15 +2,17 @@
 """EVERY-MATCH builder (session c64a5e19): snapshot -> board.json + picks-every-match/*.html.
 
 Offline step. Every open HotSpawn CS2 fixture gets a pick tier:
-  A Market  - accepted external price(s) (Pinnacle/Bovada/Melbet/Kalshi tight book), no-vig,
-              blended with the calibrated Valve VRS model when both teams are rated.
+  A Market  - accepted external price(s) (Pinnacle/Bovada/Melbet or a tight Kalshi/
+              Polymarket book), no-vig, blended with the calibrated Valve VRS model when
+              both teams are rated.
   B Model   - no accepted price, but both teams Valve-VRS rated (calibrated VRS probability).
   C Fallback- ONLY for matches that cannot be resolved as A/B. Documented extra evidence:
-              slot-priced Melbet/Kalshi books for the Elisa BreakOut slot whose HotSpawn label
-              (WROTBERRY) differs from source labels (WhiteBIT Team / WBT Academy), Kalshi thin
-              books (spread >10c, indicative only), the RoundsGG=ROUNDS VRS alias, and - for
-              FORZE Reload vs LFO 10 - the VRS points of sibling LFO 7/8/9 rosters as a
-              provisional range. Every C pick is flagged, confidence-capped, and ranged.
+              same-slot Melbet/Polymarket prices for the Elisa BreakOut slot whose HotSpawn
+              label (WROTBERRY) is contradicted by WBT at trusted schedules; wide exchange
+              books (spread >10c, indicative only); the RoundsGG=ROUNDS VRS alias; and a
+              fallback-only exact-roster identity link for LFO 10/Sökerorg. Every C pick is
+              flagged, confidence-capped, and ranged. Conflicting WBT Academy prices are
+              identity evidence only and never averaged into a WROTBERRY probability.
   D None    - no evidence at all: probability left blank, flagged (never invented).
 HotSpawn crowd picked % is never read. If data/c64a5e19/snapshot.json does not exist yet
 (local/offline build), the proven f7279a54 snapshot is used and that provenance is published.
@@ -26,9 +28,18 @@ DATA = ROOT / "data" / "c64a5e19"
 SITE = ROOT / "picks-every-match"
 LOBBY = "https://play.hotspawn.com/lobby"
 LIQUIPEDIA_ELISA = "https://liquipedia.net/counterstrike/Elisa/BreakOut_Series/2"
+HLTV_ELISA = "https://www.hltv.org/events/9332/elisa-breakout-series-2"
 HLTV_ROUNDS = "https://www.hltv.org/team/12457/roundsgg"
 HLTV_EAC = "https://www.hltv.org/team/13838/eac"
 HLTV_WBT_ACAD = "https://www.hltv.org/team/13999/wbt-academy"
+HLTV_LFO10_MAYBE = "https://www.hltv.org/matches/2399348/lfo-10-vs-maybe-esl-challenger-league-season-52-europe-cup-8"
+HLTV_LFO10_ENCE = "https://www.hltv.org/matches/2399361/ence-vs-lfo-10-esl-challenger-league-season-52-europe-cup-8"
+LIQUIPEDIA_SOKERORG = "https://liquipedia.net/counterstrike/European_Pro_League/Regular/Season_7"
+# This is deliberately NOT a global team alias. Independent pages show the same five-player
+# core (dottie, flaw, tvs, Sapec, Jackinho), but no explicit rename announcement was found.
+# It may therefore orient a direct external line only inside tier-C fallback, with both source
+# names and the unresolved naming discrepancy published.
+FALLBACK_ROSTER_IDENTITY = frozenset(("lfo10", "sokerorg"))
 
 def esc(v): return html.escape("" if v is None else str(v), quote=True)
 def load(p, d):
@@ -73,13 +84,89 @@ def kalshi_start_from_ticker(event_id):
     except ValueError: return None
     return dt + timedelta(hours=4)  # EDT approximation, join window only (as in collector)
 
-import re
+
+def _near_start(a, b, tolerance_h=0.25):
+    da, db = core.parse_iso(a), core.parse_iso(b)
+    return bool(da and db and abs((da - db).total_seconds()) <= tolerance_h * 3600)
+
+
+def _elisa_slot_orientation(row, quote):
+    """Orient a trusted WBT/WhiteBIT quote to a HotSpawn WROTBERRY slot.
+
+    Requires the exact Elisa family, near-identical start, and exactly one named fixture team.
+    Returns ``(prob_team_a, source_slot_name, identity_conflict)``. WBT Academy is recognized
+    as a conflict but never returned as a usable probability because its published roster differs.
+    """
+    comp = str(row.get("competition") or "").casefold()
+    league = str(quote.get("league") or "").casefold()
+    if not ("elisa" in comp and "breakout" in comp and "elisa" in league and "breakout" in league):
+        return None
+    if not _near_start(row.get("start_utc"), quote.get("start_utc")):
+        return None
+    qa, qb = quote.get("team_a"), quote.get("team_b")
+    fa_a = core.same_team(row["team_a"], qa)[0]; fa_b = core.same_team(row["team_a"], qb)[0]
+    fb_a = core.same_team(row["team_b"], qa)[0]; fb_b = core.same_team(row["team_b"], qb)[0]
+    if not ((fa_a or fa_b) ^ (fb_a or fb_b)):
+        return None
+    if fa_a or fb_a:
+        slot_name = qb
+    else:
+        slot_name = qa
+    slot_key = core.norm(slot_name)
+    if slot_key == "wbtacademy":
+        return None, slot_name, True
+    if slot_key not in {"wbt", "whitebit"}:
+        return None
+    if fa_a: prob = quote["prob_a"]
+    elif fa_b: prob = 1 - quote["prob_a"]
+    elif fb_a: prob = 1 - quote["prob_a"]
+    else: prob = quote["prob_a"]
+    return prob, slot_name, False
+
+
+def _fallback_roster_join(row, quote):
+    """Orient the fallback-only LFO 10/Sökerorg exact-roster identity, if applicable."""
+    if not _near_start(row.get("start_utc"), quote.get("start_utc"), tolerance_h=2.0):
+        return None
+    rc, qc = str(row.get("competition") or "").casefold(), str(quote.get("league") or "").casefold()
+    if not ("cct" in rc and "europe" in rc and "cct" in qc and "europe" in qc):
+        return None
+    used_alias = False
+    def eq(left, right):
+        nonlocal used_alias
+        if core.same_team(left, right)[0]:
+            return True
+        pair = frozenset((core.norm(left), core.norm(right)))
+        if pair == FALLBACK_ROSTER_IDENTITY:
+            used_alias = True
+            return True
+        return False
+    direct = eq(row["team_a"], quote.get("team_a")) and eq(row["team_b"], quote.get("team_b"))
+    direct_alias = used_alias
+    used_alias = False
+    swapped = eq(row["team_a"], quote.get("team_b")) and eq(row["team_b"], quote.get("team_a"))
+    swapped_alias = used_alias
+    if direct and direct_alias:
+        return quote["prob_a"], False
+    if swapped and swapped_alias:
+        return 1 - quote["prob_a"], True
+    return None
+
+
 def build_board(snap, snap_source):
     now = core.parse_iso(snap["collected_to_utc"]) or core.now_utc()
     hs = snap["hotspawn"]; permalinks = hs.get("permalinks") or {}
     vrs = snap.get("vrs") or {}; idx, dup = rating_index(vrs)
     quotes = [q for q in snap.get("quotes", []) if q.get("prob_a") is not None]
     pre = [q for q in quotes if not q.get("live")]
+    # Rejected Polymarket quotes retain a fully parsed line for fallback/corroboration, but
+    # never enter the featured market consensus because their spread is missing or >10 points.
+    rejected_market_quotes = []
+    for rejected in snap.get("rejected_quotes", []):
+        qq = rejected.get("quote") if rejected.get("source_key") == "polymarket" else None
+        if isinstance(qq, dict) and qq.get("prob_a") is not None and not qq.get("live"):
+            rejected_market_quotes.append({**qq, "quality_rejection_reason": rejected.get("reason"),
+                                           "featured_eligible": False})
     # thin (rejected) Kalshi books -> fallback evidence records
     thin = []
     for r in snap.get("rejected_quotes", []):
@@ -112,7 +199,7 @@ def build_board(snap, snap_source):
             if cur is None or kn < ko: per_source[qq["source_key"]] = cand
         entries = [{"source_key": k, "prob_a": v["prob_team_a"]} for k, v in per_source.items()]
         mkt = core.consensus(entries)
-        row["quotes"] = [{"source_key": v["source_key"], "source_name": v["source_name"], "public_url": v["public_url"], "api_url": v["api_url"], "event_id": v["event_id"], "names_at_source": [v["team_a"], v["team_b"]], "raw_format": v["raw_format"], "raw_a": v["raw_a"], "raw_b": v["raw_b"], "decimal_a": v["decimal_a"], "decimal_b": v["decimal_b"], "no_vig_prob_team_a": round(v["prob_team_a"], 4), "swapped": v["join"]["swapped"], "start_utc_at_source": v.get("start_utc"), "start_diff_h": v["join"]["start_diff_h"], "retrieved_utc": v["retrieved_utc"], "alias_notes": v["join"]["alias_notes"]} for v in sorted(per_source.values(), key=lambda x: x["source_key"])]
+        row["quotes"] = [{"source_key": v["source_key"], "source_name": v["source_name"], "public_url": v["public_url"], "api_url": v["api_url"], "event_id": v["event_id"], "names_at_source": [v["team_a"], v["team_b"]], "raw_format": v["raw_format"], "raw_a": v["raw_a"], "raw_b": v["raw_b"], "decimal_a": v["decimal_a"], "decimal_b": v["decimal_b"], "no_vig_prob_team_a": round(v["prob_team_a"], 4), "swapped": v["join"]["swapped"], "start_utc_at_source": v.get("start_utc"), "start_diff_h": v["join"]["start_diff_h"], "retrieved_utc": v["retrieved_utc"], "alias_notes": v["join"]["alias_notes"], "bid_ask_spread": v.get("bid_ask_spread"), "volume_usd": v.get("volume_usd"), "liquidity_usd": v.get("liquidity_usd")} for v in sorted(per_source.values(), key=lambda x: x["source_key"])]
         row["market"] = ({**mkt, "prob_a": round(mkt["prob_a"], 4), "prob_b": round(mkt["prob_b"], 4)} if mkt else None)
         for v in per_source.values():
             if v["join"]["alias_notes"]: row["flags"].append(f"alias_join:{v['source_key']}")
@@ -144,27 +231,70 @@ def build_board(snap, snap_source):
         else:
             # ---------------- Fallback C: only where A/B impossible ----------------
             tier = "D"; prob_a = None; ev = []
-            # The generic slot orientation above is fragile; Elisa-specific explicit handling:
-            slot_prob_a = None; slot_q = None
-            if "elisa" in str(row.get("competition") or "").lower():
-                for qq in pre:
-                    if qq.get("start_utc") != row["start_utc"]: continue
-                    qa, qb = qq["team_a"], qq["team_b"]
-                    # fixture team that appears in quote (via canon, incl EAC alias)
-                    fa_in_a, _ = core.same_team(row["team_a"], qa); fa_in_b, _ = core.same_team(row["team_a"], qb)
-                    fb_in_a, _ = core.same_team(row["team_b"], qa); fb_in_b, _ = core.same_team(row["team_b"], qb)
-                    if (fa_in_a or fa_in_b) ^ (fb_in_a or fb_in_b):
-                        # exactly one fixture team named at source; the other source label is the slot label
-                        if fa_in_a: slot_prob_a = qq["prob_a"]
-                        elif fa_in_b: slot_prob_a = 1 - qq["prob_a"]
-                        elif fb_in_a: slot_prob_a = 1 - qq["prob_a"]
-                        else: slot_prob_a = qq["prob_a"]
-                        slot_q = qq; break
-            if slot_q is not None:
-                prob_a = slot_prob_a; tier = "C"
-                ev.append({"kind": "slot_bookmaker_price", "source": slot_q["source_name"], "public_url": slot_q["public_url"], "api_url": slot_q["api_url"], "event_id": slot_q["event_id"], "names_at_source": [slot_q["team_a"], slot_q["team_b"]], "decimal": [slot_q["decimal_a"], slot_q["decimal_b"]], "prob_team_a": round(prob_a, 4), "note": "Price for the same Elisa BreakOut slot (same competition, same UTC start, same opponent) under a different team label at source. Not joined as a featured price; used only as fallback guidance."})
-                flags.append("fallback_slot_price_label_differs_at_source")
-            # C1b thin Kalshi books (direct or Elisa slot)
+            all_fallback_market_quotes = pre + rejected_market_quotes
+
+            # C1a: a direct market under a different name, allowed only for the independently
+            # documented LFO 10/Sökerorg exact five-player core. This never becomes a global alias.
+            roster_lines = []
+            for qq in all_fallback_market_quotes:
+                joined = _fallback_roster_join(row, qq)
+                if joined is not None:
+                    roster_lines.append((qq, joined[0], joined[1]))
+            if roster_lines:
+                primary = [x for x in roster_lines if x[0].get("featured_eligible", True)] or roster_lines
+                con = core.consensus([{"source_key": q0["source_key"], "prob_a": p0} for q0, p0, _ in primary])
+                if con:
+                    prob_a = con["prob_a"]; tier = "C"
+                    for qq, pa, swapped in roster_lines:
+                        wide = not qq.get("featured_eligible", True)
+                        ev.append({"kind": "wide_exchange_exact_roster_price" if wide else "exact_roster_market_price",
+                                   "source": qq["source_name"], "public_url": qq["public_url"],
+                                   "api_url": qq.get("api_url"), "event_id": qq["event_id"],
+                                   "names_at_source": [qq["team_a"], qq["team_b"]],
+                                   "prob_team_a": round(pa, 4), "bid_ask_spread": qq.get("bid_ask_spread"),
+                                   "volume_usd": qq.get("volume_usd"),
+                                   "note": "Direct match-winner price, oriented only in fallback because source says Sökerorg while HotSpawn says LFO 10. Independent roster pages show the same five players; no explicit rename announcement was found." + (" The order book failed the <=10-point spread rule." if wide else "")})
+                    ev.extend([
+                        {"kind": "exact_roster_identity", "source": "HLTV — LFO 10 vs MAYBE roster", "public_url": HLTV_LFO10_MAYBE,
+                         "note": "LFO 10 lineup: dottie, flaw, tvs, Sapec, Jackinho."},
+                        {"kind": "exact_roster_identity", "source": "HLTV — ENCE vs LFO 10 roster", "public_url": HLTV_LFO10_ENCE,
+                         "note": "Second LFO 10 match confirms the same five-player lineup."},
+                        {"kind": "exact_roster_identity", "source": "Liquipedia — Sökerorg roster", "public_url": LIQUIPEDIA_SOKERORG,
+                         "note": "Sökerorg lineup: dottie, flaw, tvs, Sapec, Jackinho. Same core; explicit rename still unconfirmed."},
+                    ])
+                    flags.append("fallback_exact_roster_identity_name_unconfirmed")
+                    if any(not q0.get("featured_eligible", True) for q0, _, _ in roster_lines):
+                        flags.append("fallback_wide_exchange_book_indicative")
+
+            # C1b: Elisa WROTBERRY rows. Trusted schedules and direct markets call the slot
+            # WBT/WhiteBIT Team, so the source label is preserved and the join remains fallback-only.
+            slot_lines = []
+            for qq in all_fallback_market_quotes:
+                oriented = _elisa_slot_orientation(row, qq)
+                if oriented and not oriented[2] and oriented[0] is not None:
+                    slot_lines.append((qq, oriented[0], oriented[1]))
+            if tier == "D" and slot_lines:
+                primary = [x for x in slot_lines if x[0].get("featured_eligible", True)] or slot_lines
+                con = core.consensus([{"source_key": q0["source_key"], "prob_a": p0} for q0, p0, _ in primary])
+                if con:
+                    prob_a = con["prob_a"]; tier = "C"
+                    for qq, pa, slot_name in slot_lines:
+                        wide = not qq.get("featured_eligible", True)
+                        ev.append({"kind": "wide_exchange_slot_price" if wide else "slot_market_price",
+                                   "source": qq["source_name"], "public_url": qq["public_url"],
+                                   "api_url": qq.get("api_url"), "event_id": qq["event_id"],
+                                   "names_at_source": [qq["team_a"], qq["team_b"]],
+                                   "decimal": [qq["decimal_a"], qq["decimal_b"]],
+                                   "prob_team_a": round(pa, 4), "bid_ask_spread": qq.get("bid_ask_spread"),
+                                   "volume_usd": qq.get("volume_usd"),
+                                   "note": f"Price for the same Elisa BreakOut slot (same competition, start and opponent) under source label {slot_name}, not HotSpawn's WROTBERRY. Identity is not silently converted; fallback guidance only." + (" This exchange book failed the <=10-point spread rule and is range/corroboration only." if wide else "")})
+                    flags.append("fallback_slot_price_source_calls_team_wbt_not_wrotberry")
+                    if any(not q0.get("featured_eligible", True) for q0, _, _ in slot_lines):
+                        flags.append("fallback_wide_exchange_book_indicative")
+
+            # C1c: thin Kalshi books. Exact-name books may guide an otherwise unresolved row.
+            # WBT Academy is a different published roster and is evidence of the identity conflict
+            # only: its midpoint is deliberately not used or included in the probability range.
             thin_probs = []
             for th in thin:
                 th_start = core.parse_iso(th.get("start_approx")); fx_start = core.parse_iso(row["start_utc"])
@@ -172,34 +302,28 @@ def build_board(snap, snap_source):
                 ta, tb = th["team_a"], th["team_b"]
                 direct = (core.same_team(row["team_a"], ta)[0] and core.same_team(row["team_b"], tb)[0])
                 swapped = (core.same_team(row["team_a"], tb)[0] and core.same_team(row["team_b"], ta)[0])
-                slot_thin = False; p_thin = None
-                if direct: p_thin = th["prob_a_norm"]
-                elif swapped: p_thin = 1 - th["prob_a_norm"]
-                elif "elisa" in str(row.get("competition") or "").lower():
-                    fa = core.same_team(row["team_a"], ta)[0] or core.same_team(row["team_a"], tb)[0]
-                    fb = core.same_team(row["team_b"], ta)[0] or core.same_team(row["team_b"], tb)[0]
-                    if fa ^ fb:
-                        slot_thin = True
-                        # orient: if fixture team_a is quote team_a -> prob_a_norm; team_b in quote a -> 1-; etc.
-                        if core.same_team(row["team_a"], ta)[0]: p_thin = th["prob_a_norm"]
-                        elif core.same_team(row["team_a"], tb)[0]: p_thin = 1 - th["prob_a_norm"]
-                        elif core.same_team(row["team_b"], ta)[0]: p_thin = 1 - th["prob_a_norm"]
-                        else: p_thin = th["prob_a_norm"]
+                p_thin = th["prob_a_norm"] if direct else (1 - th["prob_a_norm"] if swapped else None)
+                if p_thin is None and "elisa" in str(row.get("competition") or "").casefold() and "wbtacademy" in {core.norm(ta), core.norm(tb)}:
+                    opponent_matches = any(core.same_team(nm, src)[0] for nm in (row["team_a"], row["team_b"]) for src in (ta, tb) if core.norm(src) != "wbtacademy")
+                    if opponent_matches:
+                        ev.append({"kind": "identity_conflict_price_not_used", "source": "Kalshi (exchange)",
+                                   "public_url": th["public_url"], "event_id": th["event_id"],
+                                   "names_at_source": [ta, tb],
+                                   "note": "Kalshi calls this slot WBT Academy. Trusted schedules call it WBT/WhiteBIT Team and published rosters differ, so this book is not used numerically."})
+                        flags.append("kalshi_wbt_academy_identity_conflict_not_used")
+                    continue
                 if p_thin is None: continue
-                # time check via ticker (approx, +-36h window like collector)
                 thin_probs.append(p_thin)
-                ev.append({"kind": "kalshi_thin_book_slot" if slot_thin else "kalshi_thin_book", "source": "Kalshi (exchange)", "public_url": th["public_url"], "event_id": th["event_id"], "names_at_source": [ta, tb], "mids": [round(th["mid_a"], 3), round(th["mid_b"], 3)], "prob_team_a_normalised_mid": round(p_thin, 4), "note": "Thin book rejected from featured prices (spread >10c). Indicative only."})
+                ev.append({"kind": "kalshi_thin_book", "source": "Kalshi (exchange)", "public_url": th["public_url"], "event_id": th["event_id"], "names_at_source": [ta, tb], "mids": [round(th["mid_a"], 3), round(th["mid_b"], 3)], "prob_team_a_normalised_mid": round(p_thin, 4), "note": "Thin exact-name book rejected from featured prices (spread >10c). Indicative only."})
                 flags.append("fallback_kalshi_thin_book_indicative")
             if tier != "C" and thin_probs:
-                # thin + alias model (RoundsGG) or thin alone
-                if model_p is not None:
-                    prob_a = (model_p + sum(thin_probs) / len(thin_probs)) / 2; flags.append("fallback_model_plus_thin_book")
-                else:
-                    prob_a = sum(thin_probs) / len(thin_probs)
+                prob_a = ((model_p + sum(thin_probs) / len(thin_probs)) / 2
+                          if model_p is not None else sum(thin_probs) / len(thin_probs))
+                if model_p is not None: flags.append("fallback_model_plus_thin_book")
                 tier = "C"
-            elif tier == "C" and thin_probs and slot_q is not None:
-                pass  # slot price stays primary; thin listed as corroboration range
-            # C2 originated sibling/floor rating
+            # C2 originated sibling/floor rating — last resort only, after real market research.
+            # It remains available for future genuinely uncovered inventory but is no longer used
+            # for LFO 10 when the direct Sökerorg line plus exact-roster evidence is present.
             if tier == "D" and (ra or rb):
                 rated, other_name = (ra, row["team_b"]) if ra and not rb else ((rb, row["team_a"]) if rb and not ra else (None, None))
                 if rated:
@@ -220,14 +344,14 @@ def build_board(snap, snap_source):
                         prob_a = p_rated if rated is ra else 1 - p_rated; tier = "C"
                         ev.append({"kind": "originated_floor_vrs", "source": "Valve VRS (official)", "public_url": vrs.get("page_url"), "rated_team_points": rated["points"], "floor_points": min_pts, "note": "Opponent has no VRS row; provisional floor = lowest points in the official file. Originated upper-bound estimate."})
                         flags.append("fallback_originated_floor_rating_unverified")
-            # corroboration: same-start quote with one team matching but opponent label differing (not joined)
-            for qq in pre:
-                if qq.get("start_utc") != row["start_utc"]: continue
+            # Remaining same-start one-team matches are transparent corroboration only.
+            for qq in all_fallback_market_quotes:
+                if not _near_start(qq.get("start_utc"), row["start_utc"]): continue
                 if any(e.get("event_id") == qq["event_id"] for e in ev): continue
                 ma = core.same_team(row["team_a"], qq["team_a"])[0] or core.same_team(row["team_a"], qq["team_b"])[0]
                 mb = core.same_team(row["team_b"], qq["team_a"])[0] or core.same_team(row["team_b"], qq["team_b"])[0]
                 if ma ^ mb:
-                    ev.append({"kind": "corroboration_opponent_label_differs_not_joined", "source": qq["source_name"], "public_url": qq["public_url"], "event_id": qq["event_id"], "names_at_source": [qq["team_a"], qq["team_b"]], "note": "Same UTC start and one team matches, but the opponent label differs from HotSpawn's. Shown as direction corroboration only; NOT joined and NOT averaged into the probability."})
+                    ev.append({"kind": "corroboration_opponent_label_differs_not_joined", "source": qq["source_name"], "public_url": qq["public_url"], "event_id": qq["event_id"], "names_at_source": [qq["team_a"], qq["team_b"]], "note": "Same start and one team matches, but the opponent label differs from HotSpawn's. Shown only for review; NOT joined or averaged."})
                     flags.append("corroboration_opponent_label_differs_not_joined")
             if tier == "C" and prob_a is not None:
                 line = {"basis": "fallback", "market_weight": 0.0, "prob_a": prob_a, "prob_b": 1 - prob_a}
@@ -275,7 +399,9 @@ def build_board(snap, snap_source):
                 u = e.get("public_url")
                 if u and u not in seen: srcs.append({"label": e.get("source", "evidence"), "url": u}); seen.add(u)
         if row["vrs"].get("page_url") and (ra or rb): srcs.append({"label": "Valve VRS (official)", "url": row["vrs"]["page_url"]})
-        if "elisa" in str(row.get("competition") or "").lower(): srcs.append({"label": "Liquipedia — Elisa BreakOut #2 (participants/fixtures)", "url": LIQUIPEDIA_ELISA})
+        if "elisa" in str(row.get("competition") or "").lower():
+            srcs.append({"label": "Liquipedia — Elisa BreakOut #2 (participants/fixtures)", "url": LIQUIPEDIA_ELISA})
+            srcs.append({"label": "HLTV — Elisa BreakOut #2 schedule", "url": HLTV_ELISA})
         row["sources"] = srcs
     open_rows.sort(key=lambda r: (r["lock_utc"] or r["start_utc"], r["fixture_id"]))
     summary = {"open": len(open_rows), "tier_a_market": sum(1 for r in open_rows if r["line"] and r["line"]["tier"] == "A"), "tier_b_model": sum(1 for r in open_rows if r["line"] and r["line"]["tier"] == "B"), "tier_c_fallback": sum(1 for r in open_rows if r["line"] and r["line"]["tier"] == "C"), "tier_d_none": sum(1 for r in open_rows if not r["line"]), "with_pick": sum(1 for r in open_rows if r["line"]), "locked_or_past_listed": locked_n}
@@ -307,7 +433,7 @@ document.querySelectorAll('[data-t]').forEach(function(e){e.textContent=fmt(e.da
 document.querySelectorAll('[data-r]').forEach(function(e){e.textContent=rel(e.dataset.r);});})();
 """
 NAV = [("index.html", "⭐ Picks at a glance"), ("picks.html", "All picks (full table)"), ("flagged.html", "Flagged for review"), ("method.html", "Method & sources"), ("../index.html", "Main dashboard"), ("../ourline/index.html", "Our line board")]
-BASIS_TXT = {"A": "A · Bookmaker market", "B": "B · VRS model only", "C": "C · Fallback (see flags)", "D": "D · No evidence"}
+BASIS_TXT = {"A": "A · External market", "B": "B · VRS model only", "C": "C · Fallback (see flags)", "D": "D · No evidence"}
 def page(title, active, body, board):
     nav = "".join(f'<a href="{h}"{" class=on" if h == active else ""}>{t}</a>' for h, t in NAV)
     return f"""<!DOCTYPE html>
@@ -335,18 +461,21 @@ def glance_card(r):
 def render_index(b):
     s = b["summary"]
     cards = "".join(glance_card(r) for r in b["open"])
+    unresolved = [r for r in b["open"] if not r.get("line") or r["line"].get("tier") in ("C", "D")]
+    unresolved_names = ", ".join(f'{r["team_a"]}–{r["team_b"]}' for r in unresolved) or "none"
     body = f"""
 <h1>Executive summary — where the picks are</h1>
 <p class="mut">You want one place that tells you, on your phone, who to pick in every HotSpawn CS2 Pick'ems match. <b>This page is that place.</b> Every currently-open CS2 match is listed below with a pick and a win probability. It refreshes automatically (about every 30 minutes) — no manual input.</p>
 <div class="stats">
 <div class="stat"><b>{s["open"]}</b><span>matches open for picks</span></div>
 <div class="stat"><b>{s["with_pick"]}</b><span>with a pick on this page</span></div>
-<div class="stat"><b>{s["tier_a_market"]}</b><span>A · priced by bookmakers</span></div>
+<div class="stat"><b>{s["tier_a_market"]}</b><span>A · external market price</span></div>
 <div class="stat"><b>{s["tier_b_model"]}</b><span>B · VRS model only</span></div>
 <div class="stat"><b>{s["tier_c_fallback"]}</b><span>C · fallback sources (flagged)</span></div>
 <div class="stat"><b>{s["tier_d_none"]}</b><span>D · no evidence (blank)</span></div>
 <div class="stat"><b><span data-r="{esc(b["generated_utc"])}">{esc(b["generated_utc"])}</span></b><span>last update ({esc(b["generated_utc"])} UTC)</span></div>
 </div>
+<div class="warnbox"><b>Unresolved / provisional identity limitations ({len(unresolved)}):</b> {esc(unresolved_names)}. Tier C gives the requested pick from documented external lines/research, but keeps contradictory source names, wide-book quality and missing rename confirmation visible. Tier D (if any) stays blank. <a href="flagged.html">Review every limitation and source →</a></div>
 <h2>📱 On your phone — do this</h2>
 <div class="note"><b>1.</b> Read the pick cards below (biggest, boldest team = our pick, % = win probability). <b>2.</b> Tap <i>details &amp; sources</i> on any match to see exactly which bookmaker prices / ratings produced the number. <b>3.</b> Matches marked <span class="badge b-C">C · Fallback</span> had no normal bookmaker price (low-tier or not listed on the usual sites) — they use only the extra documented sources on the <a href="method.html">method page</a> and are also listed on <a href="flagged.html">Flagged for review</a>. Treat them as low-confidence.</div>
 <h2>Where to find updated picks (all pages on this site)</h2>
@@ -382,8 +511,13 @@ def render_picks(b):
             if r["fallback"].get("prob_a_range"): inputs.append(f'Fallback range {esc(r["team_a"])}: {pct(r["fallback"]["prob_a_range"][0])}–{pct(r["fallback"]["prob_a_range"][1])}')
         flags = "".join(f'<div><a class="badge b-flag" href="flagged.html#f-{esc(r["fixture_id"])}">{esc(f)}</a></div>' for f in r["flags"])
         src = "<br>".join(f'<a href="{esc(s["url"])}" rel="noopener">{esc(s["label"])}</a>' for s in r["sources"])
-        quotes = "<br>".join(f'{esc(q["source_name"])}: {esc(q["names_at_source"][0])} {esc(q["decimal_a"])} / {esc(q["names_at_source"][1])} {esc(q["decimal_b"])} → {pct(q["no_vig_prob_team_a"])}' for q in r["quotes"])
-        rows.append(f'<tr id="m-{esc(r["fixture_id"])}"><td data-l="When"><span data-t="{esc(r["start_utc"])}">{esc(r["start_utc"])}</span><div class="small">{esc(r.get("competition"))} · Tier {esc(r.get("tier") or "?")} · #{esc(r["fixture_id"])}</div></td><td data-l="Win probability">{teams}<div class="small">{esc(quotes)}</div></td><td data-l="Pick">{pick}<div class="small">fair odds (pick) {esc(odds)}</div></td><td data-l="Inputs"><div class="small">{"<br>".join(esc(i) for i in inputs) if inputs else "—"}</div>{flags}</td><td data-l="Sources"><div class="small">{src}</div></td></tr>')
+        quote_lines = []
+        for q0 in r["quotes"]:
+            quality = (f' · spread {float(q0["bid_ask_spread"])*100:.0f}pp' if q0.get("bid_ask_spread") is not None else "")
+            if q0.get("volume_usd") is not None: quality += f' · vol ${float(q0["volume_usd"]):,.0f}'
+            quote_lines.append(f'{q0["source_name"]}: {q0["names_at_source"][0]} {q0["decimal_a"]} / {q0["names_at_source"][1]} {q0["decimal_b"]} → {pct(q0["no_vig_prob_team_a"])}{quality}')
+        quotes = "<br>".join(esc(x) for x in quote_lines)
+        rows.append(f'<tr id="m-{esc(r["fixture_id"])}"><td data-l="When"><span data-t="{esc(r["start_utc"])}">{esc(r["start_utc"])}</span><div class="small">{esc(r.get("competition"))} · Tier {esc(r.get("tier") or "?")} · #{esc(r["fixture_id"])}</div></td><td data-l="Win probability">{teams}<div class="small">{quotes}</div></td><td data-l="Pick">{pick}<div class="small">fair odds (pick) {esc(odds)}</div></td><td data-l="Inputs"><div class="small">{"<br>".join(esc(i) for i in inputs) if inputs else "—"}</div>{flags}</td><td data-l="Sources"><div class="small">{src}</div></td></tr>')
     body = f'<h1>All picks — full table</h1><p class="mut">Every CS2 fixture currently open in the HotSpawn lobby, with the inputs behind each probability and a source link on every row. A/B = featured resolution (bookmaker market / VRS model). C = fallback sources only (flagged, low confidence). D = no evidence, left blank.</p><div style="overflow-x:auto"><table class="cards"><thead><tr><th>When</th><th>Win probability</th><th>Pick</th><th>Inputs</th><th>Sources</th></tr></thead><tbody>{"".join(rows)}</tbody></table></div>'
     return page("All picks (full table)", "picks.html", body, b)
 
@@ -394,13 +528,29 @@ def render_flagged(b):
         if not r["flags"] and r["line"]: continue
         ev_html = ""
         if r.get("fallback") and r["fallback"].get("evidence"):
-            lis = "".join(f'<li><b>{esc(e.get("kind"))}</b> — {esc(e.get("note"))} <a href="{esc(e.get("public_url") or "#")}" rel="noopener">{esc(e.get("source"))}</a> <span class="small">names at source: {esc("/".join(e.get("names_at_source") or []))} event {esc(e.get("event_id"))}</span></li>' for e in r["fallback"]["evidence"])
-            ev_html = f"<ul>{lis}</ul>"
+            lis_parts = []
+            for e in r["fallback"]["evidence"]:
+                details = []
+                if e.get("names_at_source"): details.append("names at source: " + "/".join(e["names_at_source"]))
+                if e.get("event_id"): details.append("event " + str(e["event_id"]))
+                if e.get("prob_team_a") is not None: details.append(f'{r["team_a"]} source probability {pct(e["prob_team_a"])}')
+                if e.get("prob_team_a_normalised_mid") is not None: details.append(f'{r["team_a"]} normalized mid {pct(e["prob_team_a_normalised_mid"])}')
+                if e.get("bid_ask_spread") is not None: details.append(f'bid/ask spread {float(e["bid_ask_spread"])*100:.0f}pp')
+                if e.get("volume_usd") is not None: details.append(f'volume ${float(e["volume_usd"]):,.0f}')
+                detail_html = " · ".join(esc(x) for x in details)
+                lis_parts.append(f'<li><b>{esc(e.get("kind"))}</b> — {esc(e.get("note"))} <a href="{esc(e.get("public_url") or "#")}" rel="noopener">{esc(e.get("source"))}</a> <span class="small">{detail_html}</span></li>')
+            ev_html = f"<ul>{''.join(lis_parts)}</ul>"
         src_links = " &middot; ".join('<a href="' + esc(s["url"]) + '">' + esc(s["label"]) + "</a>" for s in r["sources"])
         pick_txt = (r["line"]["pick_team"] + " " + pct(r["line"]["pick_prob"])) if r["line"] else "none - blank"
         basis_txt = BASIS_TXT[r["line"]["tier"]] if r["line"] else "D - No evidence"
         items.append(f'<div class="pickcard" id="f-{esc(r["fixture_id"])}"><b>{esc(r["team_a"])} vs {esc(r["team_b"])}</b> <span class="small">{esc(r.get("competition"))} &middot; <span data-t="{esc(r["start_utc"])}">{esc(r["start_utc"])}</span> &middot; #{esc(r["fixture_id"])}</span><div>Pick: <b>{esc(pick_txt)}</b> &middot; basis {esc(basis_txt)}</div><div class="small">Flags: {esc(", ".join(r["flags"]) or "none")}</div>{ev_html}<div class="small">Sources: {src_links}</div></div>')
-    body = f'<h1>Flagged for review</h1><p class="mut">Every fallback (C) pick, identity mismatch, thin book and unverified item behind the every-match board. These do not block publication; review them here and request changes. Featured (A/B) picks are not listed unless flagged.</p>{"".join(items) if items else "<p>No flagged items on this run.</p>"}<h2>Known identity irregularities (verified 2026-10-14)</h2><div class="warnbox"><b>Elisa BreakOut Series #2 Group A slot:</b> HotSpawn lists <b>WROTBERRY</b>; Melbet prices the same slots (same competition, UTC start and opponent) as <b>WhiteBIT Team</b>; Kalshi books them as <b>WBT Academy</b>; Liquipedia/HLTV list the event participant as <b>WBT (WhiteBIT Team)</b>. Rosters differ between WBT (Valve VRS #60, 1201 pts) and WBT Academy (#130, 911 pts), so <b>no VRS rating is used</b> for this slot — only the slot prices, flagged. Sources: <a href="{LIQUIPEDIA_ELISA}">Liquipedia Elisa BreakOut #2</a>, <a href="{HLTV_WBT_ACAD}">HLTV WBT Academy</a>, <a href="{HLTV_EAC}">HLTV EAC</a>.</div><div class="warnbox"><b>FORZE Reload vs LFO 10:</b> LFO 10 has no row in Valve\'s official VRS file (sibling rosters LFO 7/8/9 do: 595/602/574 pts). The fallback range uses those siblings only, and is labelled originated/unverified. A same-start Kalshi book names the opponent “Sokerorg” — identity unverified, so it is corroboration only, never joined.</div><div class="warnbox"><b>RoundsGG:</b> priced/modelled as Valve VRS “ROUNDS” (#310, 548 pts) via the documented alias; HLTV team 12457 is “Rounds” (roundsgg). Fallback flag remains on both RoundsGG picks. Source: <a href="{HLTV_ROUNDS}">HLTV Rounds</a>.</div>'
+    body = f'''<h1>Flagged for review</h1>
+<p class="mut">Every fallback (C) pick, identity mismatch, thin book and unverified item behind the every-match board. These do not block publication; review them here and request changes. Featured (A/B) picks are not listed unless flagged.</p>
+{"".join(items) if items else "<p>No flagged items on this run.</p>"}
+<h2>Known identity irregularities (verified 2026-10-14)</h2>
+<div class="warnbox"><b>Elisa BreakOut Series #2 Group A slot:</b> HotSpawn lists <b>WROTBERRY</b>, while the official tournament schedules and direct external markets call all three slots <b>WBT / WhiteBIT Team</b>. The board does not silently rename either side: WBT/WhiteBIT market values remain tier-C, preserve their source names, and are ranged when a wide exchange book exists. Kalshi instead says <b>WBT Academy</b>; because the published WBT and WBT Academy rosters differ, that midpoint is shown only as an identity conflict and is <b>not used numerically</b>. No VRS row is assigned to WROTBERRY. Sources: <a href="{LIQUIPEDIA_ELISA}">Liquipedia schedule</a>, <a href="{HLTV_ELISA}">HLTV schedule</a>, <a href="{HLTV_WBT_ACAD}">HLTV WBT Academy</a>, <a href="{HLTV_EAC}">HLTV EAC</a>.</div>
+<div class="warnbox"><b>FORZE Reload vs LFO 10:</b> Polymarket calls the scheduled opponent <b>Sökerorg</b>. Two HLTV LFO 10 match pages and Liquipedia's Sökerorg page list the exact same core — dottie, flaw, tvs, Sapec and Jackinho. That is strong roster identity evidence, but no explicit rename announcement was found. The direct price is therefore fallback-only and flagged; the former LFO 7/8/9 sibling-rating estimate is not used when this market is available. Sources: <a href="{HLTV_LFO10_MAYBE}">HLTV LFO 10–MAYBE</a>, <a href="{HLTV_LFO10_ENCE}">HLTV ENCE–LFO 10</a>, <a href="{LIQUIPEDIA_SOKERORG}">Liquipedia Sökerorg roster</a>.</div>
+<div class="warnbox"><b>RoundsGG:</b> priced/modelled as Valve VRS “ROUNDS” (#310, 548 pts) via the documented alias; HLTV team 12457 is “Rounds” (roundsgg). The alias remains visible in row flags. Source: <a href="{HLTV_ROUNDS}">HLTV Rounds</a>.</div>'''
     return page("Flagged for review", "flagged.html", body, b)
 
 def render_method(b):
@@ -411,24 +561,26 @@ def render_method(b):
 <p>Fixtures come from the public HotSpawn Pick'ems lobby (<a href="{LOBBY}">play.hotspawn.com/lobby</a>): the Angular transfer-state embedded in the page (its <code>/api/v1/fixtures</code> response) merged with the same public fixtures API the lobby calls, CS2 only, <code>scheduled</code> with lock time in the future at collection time. HotSpawn is used for discovery only. Its crowd “picked %” is never copied into the snapshot and never used as a probability. The collector re-runs automatically on GitHub Actions (about every 30 min); a failed HotSpawn fetch keeps the previous inventory and flags it, never an empty board.</p>
 <h2>Featured resolution (tiers A/B) — tried first for every match</h2>
 <ul>
-<li><b>Bookmaker/exchange prices:</b> Pinnacle guest API (licensed bookmaker), Bovada coupon JSON (licensed bookmaker), Melbet LineFeed (licensed bookmaker), Kalshi KXCS2GAME (CFTC-regulated exchange; only books with bid/ask spread ≤ 10c on both sides). A price joins a fixture only when both team names match after the published normalisation/aliases <i>and</i> the source start time is within the tolerance window. No substring matches.</li>
-<li><b>No-vig:</b> <code>p_i = (1/odds_i) / Σ(1/odds_j)</code> per source; consensus = weighted mean (Pinnacle ×2, others ×1).</li>
+<li><b>Bookmaker/exchange prices:</b> Pinnacle guest API, Bovada coupon JSON, Melbet LineFeed, Kalshi KXCS2GAME and Polymarket Gamma. Kalshi and Polymarket books enter tier A only when the bid/ask spread is ≤10 percentage points; wider books are retained as labelled fallback/corroboration. A featured price joins only when both team names match after published normalisation/aliases and source start time is within tolerance. No substring matches.</li>
+<li><b>Polymarket discovery:</b> the collector queries Gamma's numeric Counter-Strike match tag <code>100780</code>, filters to active full-match <code>sportsMarketType=moneyline</code> / “Match Winner” contracts, rejects Yes/No props and map markets, and stores each exact event URL, source labels, outcome prices, spread, volume and retrieval time. The older <code>tag_slug=counter-strike</code> probe was incomplete and is no longer used.</li>
+<li><b>No-vig / normalization:</b> bookmaker odds use <code>p_i = (1/odds_i) / Σ(1/odds_j)</code>; binary exchange prices are normalized by the same two-way formula. Consensus = weighted mean (Pinnacle ×2, others ×1).</li>
 <li><b>Valve VRS model:</b> official points from <a href="{esc(b["vrs"].get("page_url"))}">ValveSoftware/counter-strike_regional_standings {esc(b["vrs"].get("snapshot"))}</a>, Valve's own Glicko expected-win formula with its slope re-fitted to observed market prices (k = {cal["k"]:.3f}, fitted on {cal.get("pairs_used")} priced fixtures this snapshot; k=1 would be uncalibrated Valve). Market+model blend: 85% market / 15% model (≥2 sources) or 75/25 (1 source), in logit space — a stated modelling choice, not a source value.</li>
-<li><b>HLTV:</b> probed every run; it returns 403 to automation, so no HLTV number is ever used as a price. HLTV team pages are linked only as identity evidence for fallback aliases (Rounds, EAC, WBT Academy).</li>
-<li><b>Polymarket:</b> probed every run; no open CS2 match markets have been observed, so nothing is taken from it. Low-tier matches are therefore resolved by B/C below, not by waiting for Polymarket.</li>
+<li><b>HLTV first for uncovered identity research:</b> direct HLTV fixture/team pages are linked as schedule/roster evidence, never interpreted as betting probabilities. Automated reachability is logged; a block or 403 leaves values blank rather than fabricating data.</li>
 </ul>
 <h2>Fallback resolution (tier C) — only where A/B is impossible</h2>
 <ul>
-<li><b>Slot prices (Elisa BreakOut):</b> where Melbet/Kalshi price the same competition + UTC start + opponent under a different team label (WhiteBIT Team / WBT Academy for HotSpawn's WROTBERRY; EA Copenhagen = EAC per Liquipedia/HLTV), the slot price's no-vig probability is used as indicative guidance. Identity is flagged; no VRS rating is used for the ambiguous slot.</li>
-<li><b>Kalshi thin books:</b> books rejected from featured prices for spread &gt; 10c are used, fallback-only, as normalised bid/ask mids. Raw bid/ask is stored in the snapshot evidence.</li>
-<li><b>RoundsGG alias:</b> RoundsGG → Valve VRS ROUNDS (548 pts) only in fallback, blended with the thin book where one exists.</li>
-<li><b>Sibling/floor VRS (originated):</b> where one roster has no VRS row (LFO 10), the official points of sibling rosters in the same VRS file (LFO 7/8/9) give a probability range; the midpoint is published, labelled originated and unverified. If no siblings exist, the file's lowest points are used as a provisional floor.</li>
+<li><b>Elisa slot prices:</b> HotSpawn's WROTBERRY label conflicts with HLTV/Liquipedia schedules and direct markets that say WBT/WhiteBIT Team. A line may guide tier C only when competition family, start and the other opponent all match. Source names are preserved on the row; no WBT VRS row is assigned to WROTBERRY. Wide Polymarket prices contribute only to the displayed evidence range when a tighter Melbet line exists.</li>
+<li><b>Identity conflict excluded:</b> Kalshi calls those slots WBT Academy. Since published WBT and WBT Academy rosters differ, its midpoint is shown on Flagged for Review but is not averaged and does not expand the probability range.</li>
+<li><b>LFO 10 / Sökerorg exact-roster line:</b> two HLTV LFO 10 match pages and a Liquipedia Sökerorg roster page independently list dottie, flaw, tvs, Sapec and Jackinho. A direct market under Sökerorg may therefore orient a tier-C LFO 10 pick, but the missing explicit rename statement remains flagged and prevents a featured join.</li>
+<li><b>Thin books:</b> exact-name Kalshi books and Polymarket contracts rejected from featured prices for spread &gt;10 points may be used only in tier C, with raw market quality retained. They are never described as tight/featured lines.</li>
+<li><b>RoundsGG alias:</b> RoundsGG → Valve VRS ROUNDS (548 pts) is a documented roster/name mapping and every affected row is flagged; it may support a VRS-model row.</li>
+<li><b>Originated sibling/floor VRS (last resort):</b> if real HLTV/market research still leaves one side unrated, a same-prefix sibling range or the official file floor can keep the user-requested every-match list complete. Such a value is confidence-capped and explicitly originated. It is not used for LFO 10 while the direct exact-roster market is available.</li>
 </ul>
 <p>Every C pick is confidence-capped (“Low”), ranged, flagged, and listed on <a href="flagged.html">Flagged for review</a> with its evidence links. If no evidence of any kind exists (tier D), the probability is left blank — never invented.</p>
 <h2>Verification</h2>
-<p>Unit tests (<code>tests/test_c64a5e19.py</code>) re-derive every probability from the stored odds/ratings, check that every open fixture has exactly one tier, that fallback is used only when no accepted market exists, that slot joins require competition+start+opponent, and that every rendered row carries a source link. The workflow runs them before publishing.</p>
-<h2>Limitations</h2>
-<p>Probabilities are estimates, not verified win probabilities or betting advice. Bookmaker prices move; the board shows the collection time on every page. Elisa group matches are Bo1 per Liquipedia, so single-map variance is higher. Fallback picks are materially weaker than A/B picks — that is why they are labelled and ranged.</p>
+<p>Unit tests (<code>tests/test_c64a5e19.py</code> and <code>tests/test_57e26db7.py</code>) independently derive the open inventory from the committed HotSpawn snapshot, parse captured Gamma-shaped records, re-check every probability/tier, require source links, and enforce the identity fail-closed rules above. The workflow runs them before publishing.</p>
+<h2>Limitations and unresolved picks</h2>
+<p>Probabilities are estimates, not verified outcomes or betting advice. Prices move; prediction-market books can have little volume or wide spreads, both shown where available. Elisa group matches are Bo1, so variance is higher. WROTBERRY↔WBT and LFO 10↔Sökerorg remain name-identity irregularities rather than confirmed renames. Every affected pick stays tier C on <a href="flagged.html">Flagged for Review</a>. Fallback picks are materially weaker than A/B picks; if no documented evidence exists at all, tier D leaves the probability blank rather than inventing it.</p>
 """
     return page("Method & sources", "method.html", body, b)
 
