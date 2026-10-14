@@ -87,6 +87,10 @@ class FallbackResearch(unittest.TestCase):
             self.assertIsNone(row['line'])
             self.assertIsNotNone(row['research'])
 
+    def test_overview_counts_use_responsive_grid(self):
+        soup = BeautifulSoup(B.render_index(self.board), 'html.parser')
+        self.assertEqual(len(soup.select('.stats > .stat')), 4)
+
     def test_mobile_navigation_has_direct_unresolved_page(self):
         soup = BeautifulSoup(B.render_unresolved(self.board), 'html.parser')
         self.assertIsNotNone(soup.select_one('meta[name="viewport"]'))
