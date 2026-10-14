@@ -159,13 +159,35 @@ def no_vig(dec_a, dec_b) -> dict | None:
         da, db = float(dec_a), float(dec_b)
     except (TypeError, ValueError):
         return None
-    if da <= 1.0 or db <= 1.0:
+    if not math.isfinite(da) or not math.isfinite(db) or da <= 1.0 or db <= 1.0:
         return None
     ia, ib = 1.0 / da, 1.0 / db
     book = ia + ib
     if not 0.95 <= book <= 1.30:  # outside any plausible two-way book -> treat as bad data
         return None
     return {"prob_a": ia / book, "prob_b": ib / book, "overround": book - 1.0}
+
+
+def rederive_quote(quote: dict) -> dict | None:
+    """Stored derived probabilities are not evidence. Recompute from the quoted raw prices."""
+    try:
+        raw_a, raw_b = float(quote["raw_a"]), float(quote["raw_b"])
+    except (KeyError, ValueError, TypeError):
+        return None
+    if quote.get("raw_format") == "american":
+        da, db = american_to_decimal(raw_a), american_to_decimal(raw_b)
+    elif quote.get("raw_format") == "decimal":
+        da, db = raw_a, raw_b
+    elif quote.get("raw_format") == "yes mid ($)" and 0 < raw_a < 1 and 0 < raw_b < 1:
+        da, db = 1 / raw_a, 1 / raw_b
+    else:
+        return None
+    nv = no_vig(da, db)
+    if not nv:
+        return None
+    return {**quote, "start_utc": None if quote.get("start_is_approx") else quote.get("start_utc"),
+            "decimal_a": da, "decimal_b": db, "prob_a": nv["prob_a"],
+            "overround": nv["overround"]}
 
 
 def logit(p: float) -> float:
@@ -345,7 +367,7 @@ def result_winner(f: dict) -> str | None:
 
 
 # ------------------------------------------------------------------------------ joining
-TIME_TOLERANCE_H = 14.0   # same pairing must start within this many hours of HotSpawn's time
+TIME_TOLERANCE_H = 5 / 60   # same pairing must start within this many hours of HotSpawn's time
 TIME_WARN_H = 3.0         # larger differences are joined but flagged
 TIME_REJECT_LOG_H = 72.0  # same pairing 14-72 h apart: not joined, but published as a rejected join
 
@@ -363,7 +385,10 @@ def match_quote(fixture: dict, quote: dict) -> dict | None:
     else:
         return None
     diff = hours_apart(parse_iso(fixture["start_utc"]), parse_iso(quote.get("start_utc")))
-    if diff is not None and diff > TIME_TOLERANCE_H:
+    if diff is None or quote.get("start_is_approx"):
+        return {"rejected": True, "swapped": swapped, "alias_notes": notes,
+                "start_diff_h": diff, "reason": "unverified_start_time"}
+    if diff > TIME_TOLERANCE_H:
         if diff <= TIME_REJECT_LOG_H:
             return {"rejected": True, "swapped": swapped, "alias_notes": notes, "start_diff_h": diff}
         return None
