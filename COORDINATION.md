@@ -4080,3 +4080,25 @@ earlier sessions too). Repo root `/home/user/MaltaProj2`.
   Flagged for Review pages (`flagged.html`, `summary/gaps.html`, `board/flagged.html`,
   `coverage/flagged.html`, `audits/797e94ea/`) with source links for post-live review; they do not
   block anything and no unverified value was ever filled in.
+
+## Session b1fb1465 — executive summary + unresolved-pick resolution (claimed 2026-10-14 04:5x UTC)
+
+Session: `b1fb1465` (this environment requires branch `arena/b1fb1465-maltaproj2`; the requested
+`session-<id>/<task>` naming is therefore not used, and no other branch is touched).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-EXEC-B1FB1465: (1) resolve a pick for every open HotSpawn CS2 fixture that no bookmaker/exchange prices, using extra external sources in this order — HLTV → esportsbooks / esports betting lines → documented originated line; (2) publish a separate **Unresolved picks & limitations** section and surface it in a single mobile-first **executive summary** that links to the picks pages inside the site; (3) refresh every 4–8 h with no manual input | in progress | b1fb1465 | 2026-10-14 04:55 | `scripts/b1fb1465/**`, `data/b1fb1465/**`, `exec/**`, `tests/test_b1fb1465.py`, `.github/workflows/exec-b1fb1465.yml`, `COORDINATION.md` (claim + log only) |
+
+Integration handoff requested (not edited by this session until integration): root `index.html`
+executive-summary block + header nav, `README.md` page table row, `scripts/stage_site.py` staging
+list. These are owned by the earlier integration sessions; this session publishes `exec/**` first and
+only touches the shared landing/nav at integration time, after pulling the other sessions' branches.
+
+Scope note: no other session's files are edited. The board/ourline/coverage/fresh/summary/picks-every-match
+sections stay owned by their sessions; this session reads their published JSON as cross-check evidence
+only and publishes its own `data/b1fb1465/**` and `exec/**`.
+
+Log:
+- 2026-10-14 04:55 UTC, `b1fb1465`: claim published before any work, per the board rules. `git pull --rebase` before push; no conflicts at claim time (branch was fast-forwarded to `origin/main` at `b9efe7f`).
+- Findings at claim time (verified by reading the published boards, not assumed): the landing page carries two different executive summaries with different counts (28/28 picks vs 28 open / 10 eligible / 18 blank) because each section counts a different snapshot and a different acceptance rule; "market-priced" open fixtures are reported as 13, 14, 15 and 23 by four different boards for the same lobby. Fixtures `1081112`, `1081113`, `1080286`, `1081120`, `1080289`, `1080200` carried **no** external price at 2026-10-14T04:18Z in `data/fe803b80/board.json` (basis `model`).
