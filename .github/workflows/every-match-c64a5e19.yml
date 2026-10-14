@@ -45,7 +45,7 @@ jobs:
       - name: Build every-match board (re-derives every number from the snapshot)
         run: python3 scripts/c64a5e19/build.py
       - name: Tests
-        run: python3 -m unittest tests.test_c64a5e19 -v
+        run: python3 -m unittest tests.test_c64a5e19 tests.test_8723ad37 -v
       - name: Commit and push (rebase before every push)
         env:
           REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
