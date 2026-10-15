@@ -1,7 +1,7 @@
 name: Verify and publish dashboard
 on:
   push:
-    branches: [main, arena/3faf40e8-maltaproj2, arena/ef111e02-maltaproj2, arena/d4ec32a9-maltaproj2, arena/ae75c5c3-maltaproj2, arena/8723ad37-maltaproj2, arena/479ef53e-maltaproj2]
+    branches: [main, arena/778756a1-maltaproj2, arena/3faf40e8-maltaproj2, arena/ef111e02-maltaproj2, arena/d4ec32a9-maltaproj2, arena/ae75c5c3-maltaproj2, arena/8723ad37-maltaproj2, arena/479ef53e-maltaproj2]
   pull_request:
     branches: [main]
   schedule:
@@ -46,6 +46,7 @@ jobs:
           python scripts/browser_479ef53e.py
           python scripts/ae75c5c3/browser_smoke.py
           python scripts/c64a5e19/browser_smoke.py
+          python scripts/browser_778756a1.py
       - name: Stage all session-owned published sections
         run: python scripts/stage_site.py
       - uses: actions/upload-pages-artifact@v3

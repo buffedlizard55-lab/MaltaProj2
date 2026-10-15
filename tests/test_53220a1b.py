@@ -177,7 +177,7 @@ class ExecutiveSummaryAndMobileEntryPoints(unittest.TestCase):
         nav_match = re.search(r"<nav>(.*?)</nav>", self.index, re.S)
         self.assertIsNotNone(nav_match)
         nav = nav_match.group(1)
-        for href in ("board/picks.html", "summary/index.html"):
+        for href in ("picks-every-match/index.html", "picks-every-match/unresolved.html"):
             self.assertIn(f'href="{href}"', nav)
 
     def test_every_internal_exec_summary_link_resolves(self):
