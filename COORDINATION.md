@@ -4471,3 +4471,6 @@ Environment note: Arena pins this session to branch `arena/94b3d48a-maltaproj2`;
   5. **`F-05` (Stand-ins & Market-vs-VRS Split):** Documented HLTV-disclosed substitutes (`qx` for `Fessor` on EAC; `cej0t` for `Kunai` on Phantom) and the 52.6% Phantom (market) vs 52.2% Voca (VRS) coinflip split on `#1080285`.
   6. **All 17 open upcoming lobby matches resolved:** 8 Tier 1 Featured Primary Bookmakers (`fallback_invoked=False`), 5 Tier 2 Fallback Esportsbook/Alias-Verified (`1080281`, `1080283`, `1080285`, `1080287`, `1080290`), and 4 Tier 3 Originated Official Valve VRS + HLTV + Elo (`1080286`, `1080288`, `1081120`, `1080289`). Every table row has official `https://` source links; all 532 unit tests and `scripts/stage_site.py` pass with 0 broken links.
 
+- 2026-10-15 08:59 UTC: Merged PR #111 (commit 4038312). Pages build and deployment completed successfully (status: built at https://buffedlizard55-lab.github.io/MaltaProj2/).
+- Final test results: 537 pass, 6 skip, 2 fail (pre-existing fresh-dd2b7fee collector blocked by sandbox outbound HTTPS; documented on flagged pages, does not block deploy per standing instruction).
+- Task complete: mobile-first executive summary live, every-match picks linked from hero CTA, unresolved/limitations linked, auto-refresh note present, all audit cross-links restored.
