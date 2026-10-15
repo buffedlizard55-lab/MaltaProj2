@@ -303,7 +303,11 @@ def build_board(fixtures, quotes, link_results=None):
             f["flags"].append("live_market_only_no_prematch_line" if live else "no_external_line")
         if f.get("lock_time_utc") and not f.get("open_for_picks"):
             f["flags"].append("past_lock_not_pickable")
-        if not f.get("lock_time_utc") and not f.get("start_time_utc"):
+        # Any not-pickable row without a lock time must disclose that the lock time is unknown in
+        # the source API — even when the start time is known (e.g. status "started"): the row is
+        # closed either way, and the test contract requires the disclosure flag. (Repair by session
+        # 4cf64ea3, logged takeover: ac475c09 scope, gate-red incident 2026-10-15.)
+        if not f.get("lock_time_utc") and (not f.get("start_time_utc") or not f.get("open_for_picks")):
             f["flags"].append("lock_time_unknown_in_source_api")
         if f.get("status") == "cancelled":
             f["flags"].append("source_status_cancelled")
