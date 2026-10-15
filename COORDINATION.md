@@ -4876,3 +4876,19 @@ naming cannot be used here, so all commits and pushes stay on `arena/4cf64ea3-ma
   `scripts/stage_site.py` section list += `day3`, `scripts/build_site.py` executive-summary block += day-3
   rows/buttons only (NAV untouched), `README.md` += one row. All logged below.
 - Claim posted before any work. No other session claims T-DAY3-4CF64EA3 or the `day3/**` scope.
+
+---
+
+## Session `69e4c06a` — TWC day-2 → day-3 research and final canonical integration (claim 2026-10-15 22:28 UTC)
+
+Arena fixes this session to `arena/69e4c06a-maltaproj2`; no other branch will be created, checked out or pushed. Read the coordination board and open PRs before claiming. Prior canonical/root integration and strategy sessions have explicit completion/merge records (latest human close-outs 10:40–14:25 UTC); their scheduled bot refreshes are not active human claims. PRs #98/#107 are left untouched. This session is the final integration session for the work below, not a new competing picks dashboard.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-DAY2-69E4C06A — independently source all four TWC day-2 results, verify Aurora roster context, publish what those results do and do not establish for day 3; current day-3 picks read from the canonical board; evidence, limitations and source links per row | in progress | 69e4c06a | 2026-10-15 22:28 | `scripts/69e4c06a/**`, `data/69e4c06a/**`, `twc-2026/**`, `tests/test_69e4c06a.py` |
+| T-COVERAGE-69E4C06A — final canonical coverage refresh and gap research (HLTV first, then external esportsbooks/lines, then explicitly labelled originated estimates only with verified inputs); preserve market-first policy, blanks where evidence fails, source timestamps and complete same-capture lobby membership | in progress | 69e4c06a | 2026-10-15 22:28 | conditional stale completed-scope takeover: `scripts/c64a5e19/{build,collect,research,verify_inputs}.py`, `.github/workflows/every-match-c64a5e19.yml`; generated `data/c64a5e19/**`, `picks-every-match/**` via their builder/collector only; new implementation/evidence/tests under this session's unique paths |
+| T-INTEGRATE-69E4C06A — final mobile executive-summary links and category integration, source and link verification, full tests/browser checks, PR → main merge and verified Pages deployment | in progress | 69e4c06a | 2026-10-15 22:28 | completed-scope final integration: `scripts/build_site.py` (summary/review links only), `scripts/stage_site.py` (one additive section), `scripts/check_deployment.py` (new section semantic verification if needed), `.github/workflows/pages.yml` (this session's acceptance gate only if needed), generated root HTML/assets, `README.md` (additive documentation), this appended section of `COORDINATION.md` |
+
+- Before any edits beyond this claim: source tools have read the public HotSpawn lobby and identified a current Aurora–9z rematch on 16 October, and HLTV search results distinguish the 14 October upset from the 15 October elimination/winners matches. These are discovery observations, not yet a verified results ledger or fresh numeric quote input.
+- Current canonical board and strategy board use different lobby captures (canonical 7 open vs strategy 22 open). This mismatch must be investigated, not silently presented as full live coverage. No current line will be replaced with a crowd percentage or invented value.
+- Existing `strategy/**`, `scripts/f28afd9e/**`, other alternate boards and their research remain read-only. Any discovered defect outside the scopes above will be logged with evidence before a narrow takeover is considered.
