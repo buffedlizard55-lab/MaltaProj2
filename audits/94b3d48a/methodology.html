@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Origination Methodology &amp; Source Hierarchy · CS2 Pick'em Resolution &amp; Audit (94b3d48a)</title>
+<style>
+:root {
+  --bg: #0b1220;
+  --panel: #121d33;
+  --card: #162440;
+  --border: #283a5e;
+  --text: #eef4ff;
+  --muted: #9cb0d4;
+  --accent: #38bdf8;
+  --green: #22c55e;
+  --amber: #f59e0b;
+  --purple: #c084fc;
+  --red: #f87171;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  font-size: 15px;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 14px; }
+header.top {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 14px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.top-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand { font-weight: 800; font-size: 16px; color: #fff; }
+nav.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+nav.tabs a {
+  padding: 7px 11px;
+  border-radius: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+}
+nav.tabs a.active {
+  background: var(--accent);
+  color: #061224;
+  border-color: var(--accent);
+}
+.exec-box {
+  background: linear-gradient(145deg, #132342, #0f1a30);
+  border: 1px solid #314b7a;
+  border-radius: 14px;
+  padding: 16px;
+  margin: 14px 0;
+}
+.exec-box h1, .exec-box h2 { margin-top: 0; }
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+.kpi {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+}
+.kpi .num { font-size: 24px; font-weight: 800; color: #fff; }
+.kpi .lbl { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.btn {
+  display: inline-block;
+  padding: 9px 14px;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 13.5px;
+  background: var(--accent);
+  color: #041022;
+}
+.btn.sec {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.pick-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 12px;
+  margin: 14px 0;
+}
+.pcard {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pcard-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--muted);
+  gap: 6px;
+}
+.pcard-teams {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+.pick-banner {
+  background: rgba(34, 197, 94, 0.13);
+  border: 1px solid rgba(34, 197, 94, 0.45);
+  border-radius: 9px;
+  padding: 8px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pick-banner .pk-name { font-weight: 800; font-size: 15px; color: #4ade80; }
+.pick-banner .pk-prob { font-weight: 800; font-size: 16px; color: #fff; }
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.b-t1 { background: rgba(34, 197, 94, 0.18); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
+.b-t2 { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+.b-t3 { background: rgba(192, 132, 252, 0.18); color: #d8b4fe; border: 1px solid rgba(192, 132, 252, 0.4); }
+.b-anom { background: rgba(248, 113, 113, 0.18); color: #fca5a5; border: 1px solid rgba(248, 113, 113, 0.4); }
+.src-pills { display: flex; flex-wrap: wrap; gap: 5px; font-size: 11.5px; }
+.src-pills a {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+.table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--border); border-radius: 11px; }
+table { width: 100%; border-collapse: collapse; background: var(--panel); font-size: 13.5px; }
+th, td { padding: 9px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+th { background: var(--card); color: #fff; font-weight: 700; font-size: 12.5px; }
+.blank { color: var(--muted); font-style: italic; }
+.mini { font-size: 12px; color: var(--muted); }
+@media (max-width: 640px) {
+  .pick-cards { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">CS2 Pick'ems · Every-Match Resolution &amp; Line-by-Line Audit</div>
+    <nav class="tabs" aria-label="Section navigation"><a href="index.html" class="">Executive Summary &amp; All Picks</a><a href="unresolved.html" class="">Unresolved Picks &amp; Limitations</a><a href="flagged.html" class="">Flagged for Review (Line-by-Line Audit)</a><a href="methodology.html" class="active">Origination &amp; Hierarchy</a><a href="../../picks-every-match/index.html" class="">Canonical Every-Match Board</a><a href="../../index.html" class="">← Main Dashboard</a></nav>
+  </div>
+</header>
+<main class="wrap">
+
+<section class="exec-box">
+  <h1>Methodology, Source Hierarchy &amp; 4-Hour Automated Refresh</h1>
+  <p>How we generate source-verified picks and win probabilities for <strong>every</strong> CS2 match on HotSpawn without ever using HotSpawn's crowd pick percentage or fabricating unverified quotes.</p>
+</section>
+
+<h2>1. Strict 3-Tier Source Hierarchy (Fallbacks Used ONLY When Primary Route Cannot Resolve)</h2>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Tier</th>
+        <th>When Invoked</th>
+        <th>Sources &amp; Mathematical Formula</th>
+        <th>Official Verification Anchor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Tier 1 · Featured Primary Bookmakers</strong><br><span class="mini">(8 open matches)</span></td>
+        <td>Always tried first. Used whenever Pinnacle or Bovada lists a prematch series/match-winner line with exact team &amp; UTC kickoff match.</td>
+        <td>Proportional no-vig normalization: <code>q_i = 1 / odds_i</code>, <code>p_i = q_i / (q_a + q_b)</code>. Multi-book consensus uses the arithmetic mean of per-book no-vig probabilities. <strong>Fallback sources are never invoked on Tier 1 matches.</strong></td>
+        <td><div class="src-pills"><a href="https://www.pinnacle.com/en/esports-hub/counter-strike-2/" rel="noopener">Pinnacle CS2</a> <a href="https://www.bovada.lv/sports/esports/counter-strike-2" rel="noopener">Bovada CS2</a></div></td>
+      </tr>
+      <tr>
+        <td><strong>Tier 2 · Fallback Esportsbooks &amp; Exchanges + HLTV</strong><br><span class="mini">(5 open matches)</span></td>
+        <td>Invoked <strong>only</strong> when a fixture is not resolved by Tier 1 strict primary-bookmaker matching.</td>
+        <td>Step 2a verifies team identity and 5/5 starting lineups on official HLTV match pages (resolving <code>WROTBERRY = WBT #60 VRS</code> and <code>RoundsGG = ROUNDS #310 VRS</code>). Step 2b computes the no-vig probability from alias-verified Pinnacle lines, Melbet LineFeed, Thunderpick (bo3.gg), and Kalshi CFTC exchange quotes.</td>
+        <td><div class="src-pills"><a href="https://www.hltv.org/betting/analytics" rel="noopener">HLTV Analytics</a> <a href="https://bo3.gg/matches/current" rel="noopener">bo3.gg / Thunderpick</a> <a href="https://kalshi.com/category/esports/counter-strike-2" rel="noopener">Kalshi CS2</a></div></td>
+      </tr>
+      <tr>
+        <td><strong>Tier 3 · Originated CS2 Lines (Valve VRS + HLTV + Elo)</strong><br><span class="mini">(4 open matches)</span></td>
+        <td>Invoked <strong>only</strong> when neither primary bookmakers nor fallback esportsbooks/exchanges have opened a prematch market yet.</td>
+        <td>Map win probability from official Valve VRS points: <code>p_map = 1 / (1 + 10^(-(Pts_A - Pts_B) / 600))</code>. For BO3 series: <code>p_bo3 = p_map^2 * (3 - 2 * p_map)</code>. Fair decimal line: <code>d_i = 1 / p_i</code>. Cross-checked against HLTV world rank, recent form, and 809-match historical Elo.</td>
+        <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve VRS 2026-10-05</a> <a href="https://www.hltv.org/ranking/teams" rel="noopener">HLTV World Ranking</a></div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>2. Automated 4-Hour Refresh Pipeline</h2>
+<div class="exec-box" style="background:var(--panel)">
+  <p>This section is refreshed automatically every 4 hours by <code>.github/workflows/refresh-94b3d48a.yml</code> (cron <code>25 */4 * * *</code>, plus <code>workflow_run</code> after upstream fixture/odds collection and manual <code>workflow_dispatch</code>). Each run rebuilds <code>data/94b3d48a/board.json</code>, <code>data/94b3d48a/audit.json</code>, and <code>audits/94b3d48a/*.html</code>, executes <code>tests/test_94b3d48a.py</code> and <code>scripts/stage_site.py</code>, and publishes to GitHub Pages.</p>
+</div>
+
+<footer class="mini" style="margin-top:28px;padding-top:14px;border-top:1px solid var(--border)">
+  Generated: 2026-10-15T08:44:28Z · Source capture: 2026-10-15T08:29:49Z ·
+  Automated refresh: every 4 hours (<code>.github/workflows/refresh-94b3d48a.yml</code>) ·
+  Raw JSON: <a href="../../data/94b3d48a/board.json">board.json</a> ·
+  <a href="../../data/94b3d48a/audit.json">audit.json</a> ·
+  Official lobby: <a href="https://play.hotspawn.com/lobby" rel="noopener">play.hotspawn.com/lobby</a> ·
+  HotSpawn crowd pick % is never used as a probability indicator.
+</footer>
+</main>
+</body>
+</html>

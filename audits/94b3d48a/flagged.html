@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flagged for Review — Line-by-Line Audit · CS2 Pick'em Resolution &amp; Audit (94b3d48a)</title>
+<style>
+:root {
+  --bg: #0b1220;
+  --panel: #121d33;
+  --card: #162440;
+  --border: #283a5e;
+  --text: #eef4ff;
+  --muted: #9cb0d4;
+  --accent: #38bdf8;
+  --green: #22c55e;
+  --amber: #f59e0b;
+  --purple: #c084fc;
+  --red: #f87171;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  font-size: 15px;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 14px; }
+header.top {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 14px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.top-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand { font-weight: 800; font-size: 16px; color: #fff; }
+nav.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+nav.tabs a {
+  padding: 7px 11px;
+  border-radius: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+}
+nav.tabs a.active {
+  background: var(--accent);
+  color: #061224;
+  border-color: var(--accent);
+}
+.exec-box {
+  background: linear-gradient(145deg, #132342, #0f1a30);
+  border: 1px solid #314b7a;
+  border-radius: 14px;
+  padding: 16px;
+  margin: 14px 0;
+}
+.exec-box h1, .exec-box h2 { margin-top: 0; }
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+.kpi {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+}
+.kpi .num { font-size: 24px; font-weight: 800; color: #fff; }
+.kpi .lbl { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.btn {
+  display: inline-block;
+  padding: 9px 14px;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 13.5px;
+  background: var(--accent);
+  color: #041022;
+}
+.btn.sec {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.pick-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 12px;
+  margin: 14px 0;
+}
+.pcard {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pcard-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--muted);
+  gap: 6px;
+}
+.pcard-teams {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+.pick-banner {
+  background: rgba(34, 197, 94, 0.13);
+  border: 1px solid rgba(34, 197, 94, 0.45);
+  border-radius: 9px;
+  padding: 8px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pick-banner .pk-name { font-weight: 800; font-size: 15px; color: #4ade80; }
+.pick-banner .pk-prob { font-weight: 800; font-size: 16px; color: #fff; }
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.b-t1 { background: rgba(34, 197, 94, 0.18); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
+.b-t2 { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+.b-t3 { background: rgba(192, 132, 252, 0.18); color: #d8b4fe; border: 1px solid rgba(192, 132, 252, 0.4); }
+.b-anom { background: rgba(248, 113, 113, 0.18); color: #fca5a5; border: 1px solid rgba(248, 113, 113, 0.4); }
+.src-pills { display: flex; flex-wrap: wrap; gap: 5px; font-size: 11.5px; }
+.src-pills a {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+.table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--border); border-radius: 11px; }
+table { width: 100%; border-collapse: collapse; background: var(--panel); font-size: 13.5px; }
+th, td { padding: 9px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+th { background: var(--card); color: #fff; font-weight: 700; font-size: 12.5px; }
+.blank { color: var(--muted); font-style: italic; }
+.mini { font-size: 12px; color: var(--muted); }
+@media (max-width: 640px) {
+  .pick-cards { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">CS2 Pick'ems · Every-Match Resolution &amp; Line-by-Line Audit</div>
+    <nav class="tabs" aria-label="Section navigation"><a href="index.html" class="">Executive Summary &amp; All Picks</a><a href="unresolved.html" class="">Unresolved Picks &amp; Limitations</a><a href="flagged.html" class="active">Flagged for Review (Line-by-Line Audit)</a><a href="methodology.html" class="">Origination &amp; Hierarchy</a><a href="../../picks-every-match/index.html" class="">Canonical Every-Match Board</a><a href="../../index.html" class="">← Main Dashboard</a></nav>
+  </div>
+</header>
+<main class="wrap">
+
+<section class="exec-box">
+  <h1>Flagged for Review — Line-by-Line Repository &amp; Source Audit</h1>
+  <p>Every table, board, and JSON artifact in the repository was cross-checked line by line against live official
+  sources (<a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn Pick'ems Lobby</a>,
+  <a href="https://www.hltv.org/betting/analytics" rel="noopener">HLTV Betting Analytics &amp; Match Pages</a>,
+  <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" rel="noopener">Official Valve Regional Standings</a>, Pinnacle, Bovada, Melbet,
+  Thunderpick, and Kalshi). Below are the <strong>6 repository irregularities and new official verifications</strong>
+  uncovered during this audit, followed by the complete roster verification ledger for every open team.</p>
+</section>
+
+<h2>1. Repository Irregularities, Audit Corrections &amp; Flagged Items (6 Findings)</h2>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>ID &amp; Severity</th>
+        <th>Subject &amp; Affected Repository Files</th>
+        <th>Official Source Verification Finding</th>
+        <th>Resolution &amp; Safeguard Applied</th>
+        <th>Official Verification Links</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+<tr id="F-01">
+  <td><strong>F-01</strong><div class="mini">critical_schedule_anomaly</div></td>
+  <td><strong>Fixture #1080200 — Wildcard vs DENDELE (FRAG University 2026)</strong><div class="mini">Files: <code>data/fe803b80/board.json, data/b5436cf0/board.json, data/6ddde224/board.json, data/9a873ea7/hltv_corroboration.json</code></div></td>
+  <td>Official HLTV match page 2399407 proves Wildcard vs DENDELE was the FRAG University 2026 BO5 Grand Final played on 2026-10-11 at 19:20 UTC (Wildcard won 3:2: Default 1-0, Mirage 4-13, Nuke 13-8, Inferno 8-13, Anubis 16-14). HotSpawn&#x27;s API row 1080200 carries scheduled_start_time=2026-11-12T00:00:00Z (a 1-month date typo) and is omitted from the rendered lobby cards. Multiple prior boards treated it as an open future match on Nov 12 and published a live pick for DENDELE.</td>
+  <td>Moved 1080200 out of active playable picks into the Completed Match Anomaly ledger; left live bookmaker odds blank and linked official HLTV result 2399407.</td>
+  <td><div class="src-pills"><a href="https://www.hltv.org/matches/2399407/wildcard-vs-dendele-frag-university-2026" target="_blank" rel="noopener">www.hltv.org/2399407</a> <a href="https://www.hltv.org/events/9413/frag-university-2026" target="_blank" rel="noopener">www.hltv.org</a> <a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">play.hotspawn.com</a></div></td>
+</tr>
+<tr id="F-02">
+  <td><strong>F-02</strong><div class="mini">new_5of5_roster_corroboration</div></td>
+  <td><strong>Fixtures #1080286, #1080288, #1080289 — RoundsGG (HotSpawn) = ROUNDS (HLTV #237 / Valve VRS #310)</strong><div class="mini">Files: <code>data/c64a5e19/board.json, data/f7279a54/board.json, audits/3faf40e8/sources.json, data/9a873ea7/hltv_corroboration.json</code></div></td>
+  <td>Prior sessions left RoundsGG unmapped (vrs: None) because HLTV&#x27;s team profile page showed 4 players + 1 unknown yesterday. Live line-by-line verification of today&#x27;s official HLTV Elisa BreakOut Series 2 match pages (2399425, 2399427, 2399428) shows HLTV now publishes all 5 starters for ROUNDS (team/12457/rounds, HLTV #237, live Oct 15 VRS #316): Tumppis, Kollo, ykis, Lapa, Monoxx — which is 5/5 character-identical to Valve&#x27;s 2026-10-05 standing #310 ROUNDS (548 pts).</td>
+  <td>Bound RoundsGG to official Valve VRS #310 ROUNDS (548 pts) with 5/5 HLTV match-page lineup proof and originated VRS + Elo probabilities for 1080286 and 1080288 (plus Kalshi + VRS for 1080289).</td>
+  <td><div class="src-pills"><a href="https://www.hltv.org/matches/2399425/havu-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">www.hltv.org/2399425</a> <a href="https://www.hltv.org/matches/2399427/phantom-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">www.hltv.org/2399427</a> <a href="https://www.hltv.org/matches/2399428/voca-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">www.hltv.org/2399428</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0310--rounds--kollo-lapa-monoxx-tumppis-ykis.md" target="_blank" rel="noopener">github.com</a></div></td>
+</tr>
+<tr id="F-03">
+  <td><strong>F-03</strong><div class="mini">new_5of5_roster_corroboration</div></td>
+  <td><strong>Fixtures #1080281, #1080283 — WROTBERRY (HotSpawn) = WBT (HLTV #109 / Valve VRS #60, NOT #130 WBT Academy)</strong><div class="mini">Files: <code>data/c64a5e19/board.json, audits/3faf40e8/sources.json, data/9a873ea7/hltv_corroboration.json</code></div></td>
+  <td>Prior strict boards left WROTBERRY vs ENCE (1080281) and WROTBERRY vs BOJONG (1080283) blank because Kalshi labeled an earlier Group A ticker &#x27;WBT Academy&#x27; (#130 VRS: fl1peR, marat2k, NxStep, svemyy, tired73). Official HLTV match pages 2399420 and 2399422 prove the team in Elisa Group A is main WBT (team/13683/wbt, HLTV #109, live VRS #66) with starting 5 Psycho, Smash, s4ltovsk1yy, DemQQ, tyr1k — matching Valve VRS #60 WBT (1201 pts) 5-for-5 and unlocking Pinnacle (1.645/2.22 &amp; 1.186/4.31) + Thunderpick odds.</td>
+  <td>Resolved 1080281 (WROTBERRY 59.5%) and 1080283 (WROTBERRY 77.7%) via 5/5 roster-corroborated Pinnacle + Thunderpick lines while keeping strict exact-name column blank.</td>
+  <td><div class="src-pills"><a href="https://www.hltv.org/matches/2399420/wbt-vs-ence-elisa-breakout-series-2" target="_blank" rel="noopener">www.hltv.org/2399420</a> <a href="https://www.hltv.org/matches/2399422/wbt-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">www.hltv.org/2399422</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0060--wbt--demqq-psycho-s4ltovsk1yy-smash-tyr1k.md" target="_blank" rel="noopener">github.com</a></div></td>
+</tr>
+<tr id="F-04">
+  <td><strong>F-04</strong><div class="mini">audit_correction</div></td>
+  <td><strong>Fixture #1081120 — mellren vs Privateer (CCT Europe 2026 Series #12 Closed Qualifier)</strong><div class="mini">Files: <code>data/9a873ea7/hltv_corroboration.json</code></div></td>
+  <td>Prior audit data/9a873ea7/hltv_corroboration.json claimed &#x27;Neither team appears on HLTV&#x27;s betting analytics page... No public HLTV team pages found for Privateer&#x27;. Live verification on 2026-10-15 proves both teams, the match page (2399471), and the betting analytics page (2399471) are live on HLTV: mellren is HLTV #94 / VRS #125 (lollipop21k 1.19 rating, 4/5 form) and Privateer is HLTV #226 / VRS #242 (Frazehh, Prime, moz, M1n1maL, Amqn).</td>
+  <td>Linked official HLTV match 2399471, analytics 2399471, and both HLTV team pages alongside Valve VRS #125 vs #271.</td>
+  <td><div class="src-pills"><a href="https://www.hltv.org/matches/2399471/mellren-vs-privateer-cct-2026-europe-series-12-closed-qualifier" target="_blank" rel="noopener">www.hltv.org/2399471</a> <a href="https://www.hltv.org/betting/analytics/2399471/mellren-vs-privateer-cct-2026-europe-series-12-closed-qualifier" target="_blank" rel="noopener">www.hltv.org</a> <a href="https://www.hltv.org/team/13759/mellren" target="_blank" rel="noopener">www.hltv.org</a> <a href="https://www.hltv.org/team/13914/privateer" target="_blank" rel="noopener">www.hltv.org</a></div></td>
+</tr>
+<tr id="F-05">
+  <td><strong>F-05</strong><div class="mini">lineup_and_market_divergence</div></td>
+  <td><strong>Fixtures #1080282, #1080284 (EAC stand-in qx) &amp; #1080285 (Phantom substitute cej0t; Market vs VRS split)</strong><div class="mini">Files: <code>data/lines.json, data/c64a5e19/board.json</code></div></td>
+  <td>Official HLTV analytics and match pages disclose two active roster substitutions not reflected in the 2026-10-05 Valve VRS snapshot: (1) EAC fields stand-in qx in place of Fessor on matches 2399421 and 2399423; (2) Phantom fields substitute Jan &#x27;cej0t&#x27; Dyl in place of Kunai on match 2399424 (Voca vs Phantom), where Melbet/Thunderpick price Phantom at 52.6% while Valve VRS (#68 Voca 1182 vs #72 Phantom 1147) slightly favors Voca (52.2%).</td>
+  <td>Flagged both lineup substitutions and the 52.6% vs 47.8% Market-vs-VRS coinflip split on Voca vs Phantom with direct HLTV links.</td>
+  <td><div class="src-pills"><a href="https://www.hltv.org/betting/analytics/2399421/eac-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">www.hltv.org</a> <a href="https://www.hltv.org/matches/2399424/voca-vs-phantom-elisa-breakout-series-2" target="_blank" rel="noopener">www.hltv.org/2399424</a></div></td>
+</tr>
+<tr id="F-06">
+  <td><strong>F-06</strong><div class="mini">workflow_pipeline_defect</div></td>
+  <td><strong>.github/workflows/unresolved-7177d07f.yml — hardcoded branch rebase/push failure on main</strong><div class="mini">Files: <code>.github/workflows/unresolved-7177d07f.yml</code></div></td>
+  <td>Scheduled workflow run 38706099971 passed collection, build, rendering, and all 525 unit tests on main, but failed at step &#x27;Commit refreshed data and pages&#x27; because BRANCH was hardcoded to arena/7177d07f-maltaproj2.</td>
+  <td>Documented workflow failure and added .github/workflows/refresh-94b3d48a.yml with 4-hour cron + branch-safe commit step.</td>
+  <td><div class="src-pills"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38706099971" target="_blank" rel="noopener">github.com</a></div></td>
+</tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>2. Line-by-Line Team &amp; Roster Verification Ledger (All 20 Open Lobby Teams)</h2>
+<p class="mini">Every unique CS2 team across all 18 open lobby fixtures is verified below against both official Valve VRS (<code>standings_global_2026_10_05.md</code>) and official HLTV team/match pages.</p>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>HotSpawn Team Name</th>
+        <th>Official Valve VRS Standing &amp; Points</th>
+        <th>HLTV World Rank</th>
+        <th>Official 5-Man Roster (Valve VRS / HLTV)</th>
+        <th>Verification Basis</th>
+        <th>Official Source Links</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+<tr>
+  <td><strong>Legacy</strong></td>
+  <td><strong>#2 Legacy</strong> (1931.0 pts)</td>
+  <td>#7</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #2</a> <a href="https://www.hltv.org/team/12468/legacy" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399411/legacy-vs-furia-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>Falcons</strong></td>
+  <td><strong>#6 Falcons</strong> (1843.0 pts)</td>
+  <td>#5</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #6</a> <a href="https://www.hltv.org/team/11283/falcons" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399409/9z-vs-falcons-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>FURIA</strong></td>
+  <td><strong>#7 FURIA</strong> (1829.0 pts)</td>
+  <td>#4</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #7</a> <a href="https://www.hltv.org/team/8297/furia" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399411/legacy-vs-furia-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>BetBoom</strong></td>
+  <td><strong>#11 BetBoom</strong> (1596.0 pts)</td>
+  <td>#14</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #11</a> <a href="https://www.hltv.org/team/12334/betboom" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399410/parivision-vs-betboom-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>MIBR</strong></td>
+  <td><strong>#12 MIBR</strong> (1585.0 pts)</td>
+  <td>#12</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #12</a> <a href="https://www.hltv.org/team/9215/mibr" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399136/mibr-vs-bcgame-stake-pulse-beat-iii" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>Heroic</strong></td>
+  <td><strong>#15 Heroic</strong> (1550.0 pts)</td>
+  <td>#30</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #15</a> <a href="https://www.hltv.org/team/7175/heroic" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399137/heroic-vs-envy-stake-pulse-beat-iii" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>9z</strong></td>
+  <td><strong>#17 9z</strong> (1543.0 pts)</td>
+  <td>#17</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #17</a> <a href="https://www.hltv.org/team/9996/9z" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399409/9z-vs-falcons-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>Envy</strong></td>
+  <td><strong>#21 3DMAX (signed by Envy)</strong> (1500 pts)</td>
+  <td>#20</td>
+  <td><code>Graviti, Kursy, Lucky, Maka, misutaaa</code></td>
+  <td>5/5 character-identical starting lineup on HLTV match 2399137 (Graviti, Kursy, Maka, misutaaa, Lucky) and Valve VRS #21 3DMAX.</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0021--3dmax--graviti-kursy-lucky-maka-misutaaa.md" target="_blank" rel="noopener">Valve VRS #21</a> <a href="https://www.hltv.org/team/13912/envy" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399137/heroic-vs-envy-stake-pulse-beat-iii" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>PARIVISION</strong></td>
+  <td><strong>#36 PARIVISION</strong> (1411.0 pts)</td>
+  <td>#11</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #36</a> <a href="https://www.hltv.org/team/12467/parivision" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399410/parivision-vs-betboom-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>BC.Game</strong></td>
+  <td><strong>#50 BC.Game</strong> (1318.0 pts)</td>
+  <td>#70</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #50</a> <a href="https://www.hltv.org/team/12878/bcgame" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399136/mibr-vs-bcgame-stake-pulse-beat-iii" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>WROTBERRY</strong></td>
+  <td><strong>#60 WBT</strong> (1201 pts)</td>
+  <td>#109</td>
+  <td><code>DemQQ, Psycho, s4ltovsk1yy, Smash, tyr1k</code></td>
+  <td>5/5 character-identical starting lineup on HLTV match 2399420/2399422 (Psycho, Smash, s4ltovsk1yy, DemQQ, tyr1k) and Valve VRS #60 WBT.</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0060--wbt--demqq-psycho-s4ltovsk1yy-smash-tyr1k.md" target="_blank" rel="noopener">Valve VRS #60</a> <a href="https://www.hltv.org/team/13683/wbt" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399420/wbt-vs-ence-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>Voca</strong></td>
+  <td><strong>#68 Voca</strong> (1182.0 pts)</td>
+  <td>#59</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #68</a> <a href="https://www.hltv.org/team/13499/voca" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399424/voca-vs-phantom-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>Phantom</strong></td>
+  <td><strong>#72 Phantom</strong> (1147.0 pts)</td>
+  <td>#88</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #72</a> <a href="https://www.hltv.org/team/13173/phantom" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399424/voca-vs-phantom-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>EAC</strong></td>
+  <td><strong>#103 EAC</strong> (1035.0 pts)</td>
+  <td>#110</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #103</a> <a href="https://www.hltv.org/team/13998/eac" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399421/eac-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>ENCE</strong></td>
+  <td><strong>#105 ENCE</strong> (1025.0 pts)</td>
+  <td>#114</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #105</a> <a href="https://www.hltv.org/team/4869/ence" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399419/ence-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>HAVU</strong></td>
+  <td><strong>#124 HAVU</strong> (937.0 pts)</td>
+  <td>#118</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #124</a> <a href="https://www.hltv.org/team/7865/havu" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399425/havu-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>mellren</strong></td>
+  <td><strong>#125 mellren</strong> (932.0 pts)</td>
+  <td>#94</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #125</a> <a href="https://www.hltv.org/team/13759/mellren" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399471/mellren-vs-privateer-cct-2026-europe-series-12-closed-qualifier" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>Privateer</strong></td>
+  <td><strong>#271 Privateer</strong> (608.0 pts)</td>
+  <td>#226</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #271</a> <a href="https://www.hltv.org/team/13914/privateer" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399471/mellren-vs-privateer-cct-2026-europe-series-12-closed-qualifier" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>RoundsGG</strong></td>
+  <td><strong>#310 ROUNDS</strong> (548 pts)</td>
+  <td>#237</td>
+  <td><code>Kollo, Lapa, Monoxx, Tumppis, ykis</code></td>
+  <td>5/5 character-identical starting lineup on HLTV match 2399425/2399427/2399428 (Tumppis, Kollo, ykis, Lapa, Monoxx) and Valve VRS #310 ROUNDS.</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0310--rounds--kollo-lapa-monoxx-tumppis-ykis.md" target="_blank" rel="noopener">Valve VRS #310</a> <a href="https://www.hltv.org/team/12457/rounds" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399425/havu-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+<tr>
+  <td><strong>BOJONG</strong></td>
+  <td><strong>#363 BOJONG</strong> (463.0 pts)</td>
+  <td>#220</td>
+  <td><code></code></td>
+  <td>Exact team &amp; roster match in official Valve VRS standings_global_2026_10_05.md</td>
+  <td><div class="src-pills"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #363</a> <a href="https://www.hltv.org/team/14019/bojong" target="_blank" rel="noopener">HLTV Team</a> <a href="https://www.hltv.org/matches/2399419/ence-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a></div></td>
+</tr>
+    </tbody>
+  </table>
+</div>
+
+<footer class="mini" style="margin-top:28px;padding-top:14px;border-top:1px solid var(--border)">
+  Generated: 2026-10-15T08:44:28Z · Source capture: 2026-10-15T08:29:49Z ·
+  Automated refresh: every 4 hours (<code>.github/workflows/refresh-94b3d48a.yml</code>) ·
+  Raw JSON: <a href="../../data/94b3d48a/board.json">board.json</a> ·
+  <a href="../../data/94b3d48a/audit.json">audit.json</a> ·
+  Official lobby: <a href="https://play.hotspawn.com/lobby" rel="noopener">play.hotspawn.com/lobby</a> ·
+  HotSpawn crowd pick % is never used as a probability indicator.
+</footer>
+</main>
+</body>
+</html>

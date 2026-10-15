@@ -438,7 +438,9 @@ def main() -> int:
 External betting lines come first. For uncovered matches only, we try verified Valve ratings.
 Missing or ambiguous evidence stays blank — never guessed.</p>
 <p><a class="btn" href="picks-every-match/index.html">Open all CS2 picks →</a>
-<a class="btn ghost" href="picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a></p>
+<a class="btn ghost" href="picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a>
+<a class="btn ghost" href="audits/94b3d48a/index.html">5/5 HLTV + VRS resolved picks (94b3d48a) →</a>
+<a class="btn ghost" href="audits/94b3d48a/unresolved.html">Fallback &amp; limitations ledger (94b3d48a)</a></p>
 <div class="cards">{pick_counts}</div>
 <p class="note">Counts at {esc(pick_time or "unverified observation time")}.
 Not a live feed: the picks page hides expired estimates and locked picks automatically.
@@ -475,7 +477,7 @@ Earlier inferred sibling-roster and ambiguous-slot picks have been removed from 
 <p class="note">Manual source review: <a href="https://github.com/ValveSoftware/counter-strike_regional_standings">Official Valve standings</a> ·
 <a href="verify/8e7a652d/index.html">Independent market verification</a>. Each alternate board has its own observation time and eligibility rules; none overrides blanks on this source-verified board.</p>
 </details>
-<p><a href="audits/3faf40e8/index.html">Flagged for Review: source research &amp; repository review</a> · <a href="audits/dc741cc1/index.html">Earlier research</a> · <a href="picks-every-match/flagged.html">Flagged for Review</a></p>
+<p><a href="audits/3faf40e8/index.html">Flagged for Review: source research &amp; repository review</a> · <a href="audits/94b3d48a/flagged.html">Flagged for Review: 5/5 HLTV &amp; VRS line-by-line audit (94b3d48a)</a> · <a href="audits/dc741cc1/index.html">Earlier research</a> · <a href="picks-every-match/flagged.html">Flagged for Review</a></p>
 <details class="archive"><summary>Primary-bookmaker-only coverage and table</summary>
 {executive_summary_html()}
 <h2>Every CS2 match currently open for picks — primary sources only</h2>
@@ -612,7 +614,8 @@ fixtures with the same verification columns as the main table.</p>
 
     flagged_body = f"""
 <div class="banner warn"><strong>These items are published for review, not as verified facts.</strong>
-<a href="picks-every-match/flagged.html">Every-match picks: source, identity and fallback review</a>.
+<a href="picks-every-match/flagged.html">Every-match picks: source, identity and fallback review</a> ·
+<a href="audits/94b3d48a/flagged.html">Line-by-line 5/5 HLTV &amp; VRS audit (94b3d48a)</a> ·
 <a href="audits/5cd24fb4/index.html">Independent fallback audit</a> · <a href="audits/8723ad37/REVIEW.md">Source-safety review</a>.
 Nothing on this page blocks the analysis; it exists so every gap, irregularity and failed access attempt is
 visible instead of being silently filled in.</div>
