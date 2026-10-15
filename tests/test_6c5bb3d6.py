@@ -52,6 +52,18 @@ def load(path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+VOLATILE_KEYS = {"generated_utc", "fetched_utc", "ran_utc", "refetch_attempt_utc"}
+
+
+def strip_volatile(obj):
+    """Drop run timestamps at any depth so reproducibility compares substance, not the clock."""
+    if isinstance(obj, dict):
+        return {k: strip_volatile(v) for k, v in obj.items() if k not in VOLATILE_KEYS}
+    if isinstance(obj, list):
+        return [strip_volatile(v) for v in obj]
+    return obj
+
+
 class AuditRan(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -388,20 +400,11 @@ class HarnessIntegrity(unittest.TestCase):
             for c in report["checks"]:
                 if c["id"] != "C11":
                     self.assertNotEqual(c["status"], "fail", c["id"])
-            # same substantive result as the committed evidence, ignoring timestamps
+            # same substantive result as the committed evidence, ignoring run timestamps
             for t in targets:
-                again = json.loads(t.read_text(encoding="utf-8"))
-                for key in ("generated_utc", "fetched_utc", "ran_utc"):
-                    again.pop(key, None)
-                expected = dict(before[t])
-                for key in ("generated_utc", "fetched_utc", "ran_utc"):
-                    expected.pop(key, None)
-                if "official_vrs" in expected and isinstance(expected["official_vrs"], dict):
-                    expected["official_vrs"] = {k: v for k, v in expected["official_vrs"].items()
-                                                if k != "fetched_utc"}
-                    again["official_vrs"] = {k: v for k, v in again["official_vrs"].items()
-                                             if k != "fetched_utc"}
-                self.assertEqual(again, expected, f"{t.name} is not reproducible")
+                self.assertEqual(strip_volatile(json.loads(t.read_text(encoding="utf-8"))),
+                                 strip_volatile(before[t]),
+                                 f"{t.name} is not reproducible")
         finally:
             for t, blob in saved.items():
                 t.write_bytes(blob)

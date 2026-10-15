@@ -774,6 +774,31 @@ def cross_session_findings(research: dict, irregularities: list) -> None:
         })
 
 
+def normalized_gate(gate):
+    """The gate record, stripped of machine-specific and per-run volatile fields.
+
+    `run_gate.py` stores the interpreter's absolute path (which differs between a laptop and a
+    hosted runner) and the raw log tail. Neither belongs in published evidence, and both made the
+    report unreproducible across environments. The substance - green/red, counts, which tests are
+    red and when it ran - is kept verbatim.
+    """
+    if not gate:
+        return None
+    command = str(gate.get("command") or "")
+    if command:
+        parts = command.split()
+        command = " ".join(["python"] + parts[1:]) if parts and parts[0].lower().endswith(("python", "python3")) else command
+    return {
+        "ran_utc": gate.get("ran_utc"),
+        "command": command,
+        "gate": gate.get("gate"),
+        "green": gate.get("green"),
+        "returncode": gate.get("returncode"),
+        "counts": gate.get("counts"),
+        "failing_tests": gate.get("failing_tests"),
+    }
+
+
 def main() -> int:
     os.makedirs(OUT_DIR, exist_ok=True)
     os.makedirs(AUDIT_DIR, exist_ok=True)
@@ -818,7 +843,7 @@ def main() -> int:
     report = {
         "session": "6c5bb3d6",
         "task": "T-VERIFY-6C5BB3D6 independent line-by-line verification",
-        "gate": load("data/6c5bb3d6/gate.json"),
+        "gate": normalized_gate(load("data/6c5bb3d6/gate.json")),
         "generated_utc": utcnow(),
         "verified_board": {
             "file": "data/f28afd9e/board.json",

@@ -49,8 +49,11 @@ jobs:
       - name: Re-fetch the official Valve regional standings
         run: python scripts/6c5bb3d6/fetch_vrs.py
 
-      # Recorded before the audit so check C11 reports the state of the shared Pages gate
-      # (pages.yml deploys only when the whole repository suite is green).
+      # Recorded exactly once, before the audit, so check C11 reports the state of the shared
+      # Pages gate (pages.yml deploys only when the whole repository suite is green) and the
+      # committed evidence stays internally consistent: verification.json and the rendered pages
+      # both embed this same gate record. Re-recording it after the build is what left main red
+      # on 2026-10-15T12:54Z (commit ebccda8), because the report then disagreed with gate.json.
       - name: Record the shared publication gate
         run: python scripts/6c5bb3d6/run_gate.py
 
@@ -64,9 +67,6 @@ jobs:
         run: |
           python -m unittest tests.test_6c5bb3d6 -v
           python scripts/stage_site.py
-
-      - name: Re-record the publication gate after this session's own tests
-        run: python scripts/6c5bb3d6/run_gate.py
 
       - name: Commit refreshed verification evidence and pages
         run: |
