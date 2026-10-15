@@ -4849,3 +4849,30 @@ naming cannot be used here, so all commits and pushes stay on `arena/6c5bb3d6-ma
   C11 now exists to catch it when it happens. (3) Concurrent `pages.yml` runs on `main` can race at the
   deploy step; a failed `Deploy to GitHub Pages` with a green build and a green sibling run means the site
   is live, and the sibling run's `Verify actual public dashboard` step is the evidence to cite.
+
+---
+
+## Session `4cf64ea3` — TWC day-2 review → day-3 picks, contrarian ladder, every-match coverage check (2026-10-15 22:50 UTC, append-only)
+
+Environment note: Arena pins this session to branch `arena/4cf64ea3-maltaproj2`; the `session-<id>/<task>`
+naming cannot be used here, so all commits and pushes stay on `arena/4cf64ea3-maltaproj2`.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| `T-DAY3-4CF64EA3`: verified line-by-line review of TWC 2026 day 1 (9z 2-0 Aurora upset, Aurora roster-change/onboarding context) and **day 2** (Aurora-NIP, 9z-Falcons, PARI-BetBoom, Legacy-FURIA) → **day 3 picks** (Aurora-9z group decider 14:00Z; BETBOOM-Legacy group decider 17:00Z) with a contrarian-but-not-stupid leaderboard layer (context gates: roster change, onboarding, rest, H2H); a pick + win probability for **every** open HotSpawn CS2 fixture incl. low-tier unpriced rows (HLTV → esportsbooks/lines → originated Valve-VRS line), plus pre-emptive pick for BETBOOM-Legacy until HotSpawn lists it; separate **Unresolved picks & limitations** section surfaced in a mobile executive summary linking every updated picks list; 4-hourly automated refresh | in progress | 4cf64ea3 | 2026-10-15 22:50 | `day3/**` (new section), `scripts/4cf64ea3/**` (new), `data/4cf64ea3/**` (new), `tests/test_4cf64ea3.py` (new), `.github/workflows/day3-4cf64ea3.yml` (new), additive integration handoff only: one `day3` entry in `scripts/stage_site.py` section list + additive exec-summary rows in `scripts/build_site.py` + one `README.md` table row, `COORDINATION.md` (this section, append-only) |
+
+### Coordination log (`4cf64ea3`)
+- Read `COORDINATION.md` (all prior boards) before starting. Day-1 review + contrarian strategy layer is
+  `f28afd9e`'s done work (`strategy/`, PRs #114–#116) and is **verified and linked, not duplicated or edited**;
+  `6c5bb3d6` audited it (`audits/6c5bb3d6/`); `fe803b80` owns `board/`, `b5436cf0` `picks-all/`, `c64a5e19`
+  `picks-every-match/`, `3cd9787c` `live/`, `b1fb1465` `exec/`, `7177d07f` `unresolved/`, `778756a1` the
+  canonical `scripts/build_site.py`. **No other session's files are edited here.** The remaining unowned
+  mandate from the user request is the **day-2 → day-3 turn**: review day 2 results and use them (with
+  roster-change / onboarding / rest / H2H context) to pick day 3, where the leaderboard can still be
+  climbed on the 7-point TWC deciders.
+- New, uniquely named paths only: `day3/**`, `scripts/4cf64ea3/**`, `data/4cf64ea3/**`,
+  `tests/test_4cf64ea3.py`, `.github/workflows/day3-4cf64ea3.yml`. Additive integration touches follow the
+  established pattern (b5436cf0 / 94b3d48a / f28afd9e each added one additive entry + exec-summary rows):
+  `scripts/stage_site.py` section list += `day3`, `scripts/build_site.py` executive-summary block += day-3
+  rows/buttons only (NAV untouched), `README.md` += one row. All logged below.
+- Claim posted before any work. No other session claims T-DAY3-4CF64EA3 or the `day3/**` scope.
