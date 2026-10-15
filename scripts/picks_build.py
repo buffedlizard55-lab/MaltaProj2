@@ -307,7 +307,8 @@ def build_board(fixtures, quotes, link_results=None):
         # the source API — even when the start time is known (e.g. status "started"): the row is
         # closed either way, and the test contract requires the disclosure flag. (Repair by session
         # 4cf64ea3, logged takeover: ac475c09 scope, gate-red incident 2026-10-15.)
-        if not f.get("lock_time_utc") and (not f.get("start_time_utc") or not f.get("open_for_picks")):
+        # A known start/status does not establish an unpublished pick lock.
+        if not f.get("lock_time_utc"):
             f["flags"].append("lock_time_unknown_in_source_api")
         if f.get("status") == "cancelled":
             f["flags"].append("source_status_cancelled")

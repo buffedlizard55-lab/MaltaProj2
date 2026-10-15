@@ -12,7 +12,7 @@ if OUT.exists():
 OUT.mkdir(parents=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026'):
 # 'twc' added by session 869a5375 (T-TWC-DAY3 Day 1-3 review + Day 3 picks), additive single entry:
 # the landing executive summary links twc/index.html, so the artifact must carry the directory.
 # 'day3' added by session 4cf64ea3 (TWC day-2 review -> day-3 picks desk, every-match coverage);
@@ -49,6 +49,13 @@ for name in ('assets','data','docs','pickem','evidence','audits','verify','curre
     source=ROOT/name
     if source.exists():
         shutil.copytree(source,OUT/name,ignore=shutil.ignore_patterns('__pycache__','*.pyc','.git'))
+# TWC day-two/day-three category (69e4c06a): render from the staged canonical batch,
+# so a scheduled data refresh cannot leave the category's probabilities stale.
+import importlib.util
+_twc_spec=importlib.util.spec_from_file_location('staged_twc_69e4c06a',ROOT/'scripts/69e4c06a/build.py')
+_twc=importlib.util.module_from_spec(_twc_spec)
+_twc_spec.loader.exec_module(_twc)
+_twc.build(OUT)
 # RECONCILE-4E6 (session 4e6dcd0d): rebuild the cross-board section from the staged data batch (additive, read-only).
 import reconcile_4e6dcd0d
 reconcile_4e6dcd0d.build(OUT/'reconcile', write_json=False)

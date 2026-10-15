@@ -21,6 +21,10 @@ ENGINE = load_engine('build.py')
 core = ENGINE.core
 rating_index = ENGINE.rating_index
 POLICY = 'verified-every-match-v3'
+# Canonical-only extension; shared-engine files and sibling boards are unchanged.
+_rule_spec = importlib.util.spec_from_file_location('canonical_rule_kickoffs', ROOT / 'scripts/69e4c06a/kalshi.py')
+RULES = importlib.util.module_from_spec(_rule_spec)
+_rule_spec.loader.exec_module(RULES)
 
 
 def esc(value):
@@ -44,7 +48,14 @@ def build_board(snap, snap_source, now=None):
     evaluated = core.to_iso(now) if now else snap['collected_to_utc']
     inputs = copy.deepcopy(snap)
     inputs['collected_to_utc'] = evaluated
+    primary_inputs = copy.deepcopy(inputs)
+    primary_inputs['quotes'] = [q for q in inputs.get('quotes', []) if not q.get('fallback_only')]
+    primary = ENGINE.build_board(primary_inputs, {}, {}, {})
+    inputs['quotes'], exclusions = RULES.select_for_gaps(inputs, primary, core)
     board = ENGINE.build_board(inputs, {}, {}, {})
+    primary_rows = {r['fixture_id']: r for r in primary['open']}
+    retained = {(q['source_key'], q['event_id']): q for q in inputs['quotes']}
+    board['source_policy_exclusions'] = exclusions
     board.update(policy=POLICY, snapshot_source=snap_source,
                  collected_to_utc=snap['collected_to_utc'], generated_utc=evaluated)
     # Use fallback research only for rows without accepted prices: strict engine.blend
@@ -53,6 +64,17 @@ def build_board(snap, snap_source, now=None):
         line = row['line']
         row['sources'] = [{'label': 'HotSpawn fixture', 'url': row['hotspawn_url']}]
         row['sources'] += [{'label': q['source_name'], 'url': q['api_url']} for q in row['quotes']]
+        rule_quotes = []
+        for quote in row['quotes']:
+            proof = retained.get((quote['source_key'], quote['event_id']), {}).get('kickoff_evidence')
+            if proof:
+                quote['kickoff_evidence'] = copy.deepcopy(proof)
+                rule_quotes.append(quote)
+        if rule_quotes:
+            row['gap_research'] = fallback_review(primary_rows[row['fixture_id']], snap, core)
+            row['market_gap_resolution'] = 'Explicit full-match Kalshi rules verify kickoff; normalized exchange midpoints only.'
+            row['flags'] += ['rule_backed_exchange_fallback', 'exchange_midpoints_not_executable_bookmaker_odds',
+                             'exchange_volume_may_be_low_or_zero']
         if line:
             line['tier'] = 'B' if line['basis'] == 'model' else 'A'
             if line['tier'] == 'B':
@@ -74,7 +96,9 @@ def build_board(snap, snap_source, now=None):
                           'hotspawn_url': snap['hotspawn'].get('permalinks', {}).get(fid) or LOBBY})
     board['inventory'] = sorted(inventory, key=lambda r: (r['start_utc'], r['fixture_id']))
     s = board['summary']
-    s.update(with_pick=sum(bool(r['line'] and r['line']['pick_team']) for r in board['open']),
+    s.update(captured_quotes_total=len(snap.get('quotes', [])),
+             rule_backed_quotes_excluded_by_gap_policy=len(exclusions),
+             with_pick=sum(bool(r['line'] and r['line']['pick_team']) for r in board['open']),
              tier_a_market=s['market_based'], tier_b_model=s['model_only'], tier_c_fallback=0,
              tier_d_none=s['no_line'], listed=len(inventory))
     return board
@@ -138,7 +162,13 @@ def picks_table(b):
             # Show prices in fixture order, not silently reversed provider order.
             da, db = q['decimal_a'], q['decimal_b']
             if q['swapped']: da, db = db, da
-            inputs.append(f'{esc(q["source_name"])}: {da:g} / {db:g} · observed {esc(q["retrieved_utc"])}')
+            price_label = 'reciprocal yes midpoints' if q.get('kickoff_evidence') else 'decimal odds'
+            inputs.append(f'{esc(q["source_name"])} {price_label}: {da:g} / {db:g} · observed {esc(q["retrieved_utc"])}')
+            if q.get('kickoff_evidence'):
+                proof = q['kickoff_evidence']
+                inputs.append('Exchange fallback only · kickoff from both explicit contract rules: ' + esc(proof['start_utc']) +
+                    '. Midpoints are not executable prices; volume may be low or zero. '
+                    '<a href="../data/c64a5e19/board.json">Bid/ask, volume and verbatim rules</a>.')
         if ln and basis == 'model':
             va, vb = r['vrs']['team_a'], r['vrs']['team_b']
             inputs.append(f'Valve points: {va["points"]} / {vb["points"]}; snapshot {esc(b["vrs"]["snapshot"])}. Model estimate, not bookmaker odds.')
@@ -190,12 +220,12 @@ def render_flagged(b):
         flags = r['flags'] or ['No eligibility irregularity detected; estimate remains uncertain.']
         rows.append(f'<tr id="f-{esc(r["fixture_id"])}"><td data-label="Fixture">{esc(r["team_a"])} vs {esc(r["team_b"])}<div class="small">#{esc(r["fixture_id"])}</div></td><td data-label="Review">{"<br>".join(esc(f) for f in flags)}</td><td data-label="Official source" class="sources">{source_links(r)}</td></tr>')
     health = ''.join(f'<tr><td data-label="Provider">{esc(name)}</td><td data-label="Collection result">{esc(meta.get("status"))} {esc(meta.get("error"))} · read {esc(meta.get("at_utc"))}</td><td data-label="Source"><a href="{esc(meta.get("url") or LOBBY)}">Official endpoint</a></td></tr>' for name, meta in b['access'].items())
-    return page('Flagged for Review', 'flagged.html', f'''<h1>Flagged for Review</h1><p><a href="unresolved.html">Unresolved picks &amp; per-match limitations</a> · <a href="../audits/3faf40e8/index.html">Latest source research and repository review</a></p><p><a href="../audits/49a181f8/index.html">Independent source-integrity review and parallel integration notes</a></p><div class="notice"><b>Unsupported numeric coverage removed.</b> Earlier versions used LFO sibling/floor ratings and WROTBERRY slot prices despite unresolved identity. Those assumptions are no longer current picks. <a href="../summary/gaps.html">Preserved conflicting-source research</a> is a dated review, not verified identity evidence.</div><p>Official <a href="{esc(b['vrs'].get('page_url') or 'https://github.com/ValveSoftware/counter-strike_regional_standings')}">Valve standings</a> do not justify transferring one roster’s strength to another. <a href="https://www.hltv.org/team/13999/wbt-academy">HLTV WBT Academy</a> and <a href="https://www.hltv.org/team/12457/roundsgg">HLTV Rounds</a> are research links only; this session has not verified a current fixture-roster join from them. Approximate exchange ticker times and thin books are not accepted odds.</p><p>Preserved independent reviews: <a href="../audits/5cd24fb4/index.html">Fallback identity audit</a> · <a href="../audits/8723ad37/REVIEW.md">Source-safety review</a>. These documents record their own read times, not current verified prices.</p><h2>Line-by-line fixture review</h2><table><thead><tr><th>Fixture</th><th>Review</th><th>Official source</th></tr></thead><tbody>{''.join(rows)}</tbody></table><h2>Collection health</h2><p>HTTP success does not mean a usable market exists. Blocked/unavailable sources never produce invented values. Original observation/cache times are retained across collection failures.</p><table><thead><tr><th>Provider</th><th>Collection result</th><th>Official source</th></tr></thead><tbody>{health}</tbody></table><h2>Coverage and freshness limitations</h2><p>Four-hour scheduled collection is best effort, not an uptime guarantee. Cache age counts toward the four-hour eligibility limit. Estimates expire in the browser at that limit or the match lock. Full inventory means the entire captured lobby response, not a guarantee that HotSpawn’s cached response contains every newly added fixture.</p><p>Historical alternate boards elsewhere in the repository may use different assumptions. They remain preserved for audit and are not inputs to this board. External-link reachability is not universally certified.</p>''', b)
+    return page('Flagged for Review', 'flagged.html', f'''<h1>Flagged for Review</h1><p><a href="unresolved.html">Unresolved picks &amp; per-match limitations</a> · <a href="../audits/3faf40e8/index.html">Latest source research and repository review</a></p><p><a href="../audits/49a181f8/index.html">Independent source-integrity review and parallel integration notes</a></p><div class="notice"><b>Unsupported numeric coverage removed.</b> Earlier versions used LFO sibling/floor ratings and WROTBERRY slot prices despite unresolved identity. Those assumptions are no longer current picks. <a href="../summary/gaps.html">Preserved conflicting-source research</a> is a dated review, not verified identity evidence.</div><p>Official <a href="{esc(b['vrs'].get('page_url') or 'https://github.com/ValveSoftware/counter-strike_regional_standings')}">Valve standings</a> do not justify transferring one roster’s strength to another. <a href="https://www.hltv.org/team/13999/wbt-academy">HLTV WBT Academy</a> and <a href="https://www.hltv.org/team/12457/roundsgg">HLTV Rounds</a> are research links only; this session has not verified a current fixture-roster join from them. Approximate exchange ticker times and thin books are not accepted odds. A separate canonical-only fallback can use explicit, agreeing full-match contract rules; it retains bid/ask, volume and verbatim kickoff statements and does not infer a roster alias. See the per-row exchange flags and JSON evidence.</p><p>Preserved independent reviews: <a href="../audits/5cd24fb4/index.html">Fallback identity audit</a> · <a href="../audits/8723ad37/REVIEW.md">Source-safety review</a>. These documents record their own read times, not current verified prices.</p><p>Rule-backed exchange resolutions retain their HLTV-first attempt history in the board JSON under gap_research. Existing accepted bookmaker picks are not repriced.</p><h2>Line-by-line fixture review</h2><table><thead><tr><th>Fixture</th><th>Review</th><th>Official source</th></tr></thead><tbody>{''.join(rows)}</tbody></table><h2>Collection health</h2><p>HTTP success does not mean a usable market exists. Blocked/unavailable sources never produce invented values. Original observation/cache times are retained across collection failures.</p><table><thead><tr><th>Provider</th><th>Collection result</th><th>Official source</th></tr></thead><tbody>{health}</tbody></table><h2>Coverage and freshness limitations</h2><p>Four-hour scheduled collection is best effort, not an uptime guarantee. Cache age counts toward the four-hour eligibility limit. Estimates expire in the browser at that limit or the match lock. Full inventory means the entire captured lobby response, not a guarantee that HotSpawn’s cached response contains every newly added fixture.</p><p>Historical alternate boards elsewhere in the repository may use different assumptions. They remain preserved for audit and are not inputs to this board. External-link reachability is not universally certified.</p>''', b)
 
 
 def render_method(b):
     cal = b['calibration']
-    return page('Method & sources', 'method.html', f'''<h1>Method & sources</h1><h2>1. Every fixture, not just featured matches</h2><p>Read the Angular transfer-state fixtures embedded in the public <a href="{LOBBY}">HotSpawn lobby</a>. Use the published CS2 game identifier and preserve all lobby-listed rows. A scheduled match is open only before its published lock. HotSpawn is never a probability input.</p><h2>2. Market first</h2><p>Try public Pinnacle, Bovada and Melbet full-match, two-team prices. Join both participants and source kickoff (maximum five-minute discrepancy); reject live markets, props, unknown/approximate times and stale quotes. The retained provider response must reproduce every consumed price and participant pair before publication.</p><p>For decimal odds dA and dB, our fair estimate is pA = (1/dA) / ((1/dA) + (1/dB)); pB = 1 − pA. Combine accepted sources with a declared weight of 2 for Pinnacle and 1 for others. This weighting is a modelling choice, not an official win probability. Market picks are not blended with rating estimates.</p><h2>3. Fallback research only for market gaps</h2><p>Use two uniquely identified teams in <a href="{esc(b['vrs'].get('page_url') or 'https://github.com/ValveSoftware/counter-strike_regional_standings')}">Valve’s official VRS standings</a> (snapshot {esc(b['vrs'].get('snapshot'))}; refuse duplicate roster names and unproven aliases. Standings older than 14 days are ineligible. Apply a logistic rating-difference model using <a href="{ENGINE.VALVE_GLICKO}">Valve’s Glicko code</a> and <a href="{ENGINE.VALVE_FIT}">fit parameters</a>; fit the slope to eligible priced fixtures in this snapshot when at least six pairs exist.</p><p>Current slope k={cal['k']:.4f}; eligible calibration pairs={cal['pairs_used']}; fitted={esc(cal['fitted'])}. A model-only estimate is not a bookmaker line, not a verified probability, and has no claimed out-of-sample accuracy. No sibling/floor ratings, ambiguous tournament-slot joins, or default 50/50s. Missing inputs stay blank.</p><h2>4. Expire, flag, retry</h2><p>Quotes and cache-adjusted fixture observations must be at most four hours old. Preserve last-known inventory on fetch failure, but never reset its evidence age. Recheck all sources every four hours with GitHub Actions, and publish only after tests and source replay succeed. Schedule delays, caches and provider blocks are reported, not hidden.</p><h2>Evidence for manual review</h2><ul><li><a href="../data/c64a5e19/snapshot.json">Normalized source snapshot with read times and endpoints</a></li><li><a href="../data/c64a5e19/source_payloads.json">Official provider response payloads and hashes</a></li><li><a href="../data/c64a5e19/verification.json">Line-by-line provider replay results</a></li><li><a href="../data/c64a5e19/board.json">Derived board and all flags</a></li></ul><p>HLTV and Polymarket are checked for accessibility/coverage but no unsupported number is taken from either. Their absence does not prevent a verified rating fallback for an otherwise identified match.</p>''', b)
+    return page('Method & sources', 'method.html', f'''<h1>Method & sources</h1><h2>1. Every fixture, not just featured matches</h2><p>Read the Angular transfer-state fixtures embedded in the public <a href="{LOBBY}">HotSpawn lobby</a>. Use the published CS2 game identifier and preserve all lobby-listed rows. A scheduled match is open only before its published lock. HotSpawn is never a probability input.</p><h2>2. Market first</h2><p>Try public Pinnacle, Bovada and Melbet full-match, two-team prices. Join both participants and source kickoff (maximum five-minute discrepancy); reject live markets, props, unknown/approximate times and stale quotes. The retained provider response must reproduce every consumed price and participant pair before publication.</p><p>For decimal odds dA and dB, our fair estimate is pA = (1/dA) / ((1/dA) + (1/dB)); pB = 1 − pA. Combine accepted sources with a declared weight of 2 for Pinnacle and 1 for others. This weighting is a modelling choice, not an official win probability. Market picks are not blended with rating estimates.</p><h2>3. Fallback research only for market gaps</h2><p>Research HLTV first; the captured probe and manual research limitations remain visible. Then try other esportsbooks/exchanges. A Kalshi full-match fallback requires two active binary outcome contracts, matching teams, consistent explicit originally-scheduled CS2 match rules, a verified EDT/EST/UTC timezone, and two usable bid/ask books (spread at most 10 cents each). A ticker, occurrence time, expected expiration or settlement deadline is never a kickoff. Retained official JSON must reproduce both rules and prices offline. These normalized yes midpoints are estimates, not executable odds; volume can be low or zero. This fallback is used only for market gaps and never changes an accepted featured/bookmaker estimate.</p><p>Use two uniquely identified teams in <a href="{esc(b['vrs'].get('page_url') or 'https://github.com/ValveSoftware/counter-strike_regional_standings')}">Valve’s official VRS standings</a> (snapshot {esc(b['vrs'].get('snapshot'))}; refuse duplicate roster names and unproven aliases. Standings older than 14 days are ineligible. Apply a logistic rating-difference model using <a href="{ENGINE.VALVE_GLICKO}">Valve’s Glicko code</a> and <a href="{ENGINE.VALVE_FIT}">fit parameters</a>; fit the slope to eligible priced fixtures in this snapshot when at least six pairs exist.</p><p>Current slope k={cal['k']:.4f}; eligible calibration pairs={cal['pairs_used']}; fitted={esc(cal['fitted'])}. A model-only estimate is not a bookmaker line, not a verified probability, and has no claimed out-of-sample accuracy. No sibling/floor ratings, ambiguous tournament-slot joins, or default 50/50s. Missing inputs stay blank.</p><h2>4. Expire, flag, retry</h2><p>Quotes and cache-adjusted fixture observations must be at most four hours old. Preserve last-known inventory on fetch failure, but never reset its evidence age. Recheck all sources every four hours with GitHub Actions, and publish only after tests and source replay succeed. Schedule delays, caches and provider blocks are reported, not hidden.</p><h2>Evidence for manual review</h2><ul><li><a href="../data/c64a5e19/snapshot.json">Normalized source snapshot with read times and endpoints</a></li><li><a href="../data/c64a5e19/source_payloads.json">Official provider response payloads and hashes</a></li><li><a href="../data/c64a5e19/verification.json">Line-by-line provider replay results</a></li><li><a href="../data/c64a5e19/board.json">Derived board and all flags</a></li></ul><p>HLTV and Polymarket are checked for accessibility/coverage but no unsupported number is taken from either. Their absence does not prevent a verified rating fallback for an otherwise identified match.</p>''', b)
 
 
 def main():
@@ -209,7 +239,7 @@ def main():
     spec = importlib.util.spec_from_file_location('every_match_payload_check', ROOT / 'scripts/ae75c5c3/verify_source_payloads.py')
     verifier = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(verifier)
-    verification = verifier.verify(DATA)
+    verification = verifier.verify(DATA, quote_normalizer=RULES.enrich_quotes)
     from verify_inputs import verify
     inputs_check = verify(snap, load(DATA / 'official_inputs.json', {}), core)
     verification['official_inputs'] = inputs_check

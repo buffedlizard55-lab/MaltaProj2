@@ -62,11 +62,15 @@ def fallback_review(row, snapshot, core):
         candidates = [q for q in snapshot.get('quotes', [])
                       if q.get('source_key') == key and
                       sorted(core.canon(q[k])[0] for k in ('team_a', 'team_b')) == pair]
+        rejected = [q for q in snapshot.get('rejected_quotes', [])
+                    if q.get('source_key') == key and q.get('team_a') and q.get('team_b') and
+                    sorted(core.canon(q[k])[0] for k in ('team_a', 'team_b')) == pair]
+        rejected_note = (' Rejected same-pair contract(s): ' + '; '.join(sorted(set(q.get('reason') or 'unverified' for q in rejected)))) if rejected else ''
         steps.append({'label': '2 · ' + name, 'url': meta.get('url') or url,
                       'at_utc': meta.get('at_utc'), 'http_status': meta.get('status'),
-                      'candidate_count': len(candidates),
+                      'candidate_count': len(candidates), 'rejected_candidate_count': len(rejected),
                       'result': access_result(meta) + (f' {len(candidates)} same-pair candidate(s), but none passed all identity, time, freshness and market gates.' if candidates else
-                                 ' No same-pair usable quote retained. This is capture coverage, not proof of market absence.')})
+                                 ' No same-pair usable quote retained. This is capture coverage, not proof of market absence.') + rejected_note})
     vrs = snapshot.get('vrs') or {}
     steps.append({'label': '3 · Official Valve rating fallback', 'url': vrs.get('page_url') or VALVE,
                   'at_utc': log.get('valve_vrs_file', {}).get('at_utc'), 'http_status': log.get('valve_vrs_file', {}).get('status'),
