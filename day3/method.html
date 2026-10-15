@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method &amp; sources · TWC 2026 day-3 desk</title>
+<meta name="description" content="Mobile-first day-3 picks for the Thunderpick World Championship 2026 and every open HotSpawn CS2 match.">
+<style>
+:root{--bg:#0d1524;--card:#142138;--txt:#e8eefc;--mut:#93a4c3;--line:#27354f;--acc:#3d7dff;--good:#1f9d63;--warn:#c9861b;--bad:#c4453c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:16px}
+header.site{position:sticky;top:0;background:rgba(13,21,36,.96);border-bottom:1px solid var(--line);z-index:20}
+header.site .wrap{padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+header.site a{color:var(--mut);text-decoration:none;font-size:13.5px;padding:6px 8px;border-radius:8px}
+header.site a.on,header.site a:hover{background:var(--card);color:var(--txt)}
+h1{font-size:24px;line-height:1.2;margin:10px 0}h2{font-size:19px;margin:26px 0 8px}h3{font-size:16.5px;margin:18px 0 6px}
+p{margin:8px 0}.mut{color:var(--mut);font-size:13.5px}.eyebrow{color:#7fa7ff;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:11.5px;margin:0}
+.cards{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.card{flex:1 1 150px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.card-num{font-size:22px;font-weight:800}.card-label{color:var(--mut);font-size:12.5px}
+.btn{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:700;border-radius:12px;padding:13px 16px;margin:6px 6px 6px 0;min-height:44px}
+.btn.ghost{background:transparent;border:1.5px solid var(--acc);color:#9cc0ff}
+.btn.alt{background:var(--good)} .btn.alt2{background:#5b3fd6}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:#b9c8e4;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.tag{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:700}
+.tag.pick{background:var(--good);color:#fff}.tag.climb{background:#5b3fd6;color:#fff}
+.tag.mkt{background:#1d4ed8;color:#fff}.tag.mdl{background:#334155;color:#dbe7ff}
+.tag.ori{background:var(--warn);color:#221602}.tag.blank{background:#3a2530;color:#ffb4ae}
+a{color:#8db6ff}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0;margin:10px 0}
+details>summary{cursor:pointer;padding:12px 14px;font-weight:700}
+details[open]>summary{border-bottom:1px solid var(--line)}
+details .inner{padding:6px 14px 12px}
+.tablewrap{overflow-x:auto}
+@media (max-width:640px){
+  h1{font-size:20px} .wrap{padding:12px}
+  table.responsive thead{display:none}
+  table.responsive tr{display:block;border:1px solid var(--line);border-radius:12px;margin:10px 0;padding:6px 4px;background:var(--card)}
+  table.responsive td{display:flex;justify-content:space-between;gap:12px;border:0;padding:5px 10px}
+  table.responsive td:before{content:attr(data-label);color:#9db1d4;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;font-weight:700;flex:0 0 42%}
+  .btn{display:block;text-align:center}
+}
+</style></head>
+<body><header class="site"><div class="wrap"><strong style="font-size:14px">Day-3 desk</strong><a href="index.html" class="">Start here</a><a href="picks.html" class="">Day-3 picks · all matches</a><a href="day1-day2.html" class="">Day 1–2 review</a><a href="unresolved.html" class="">Unresolved + limits</a><a href="flagged.html" class="">Flagged</a><a href="method.html" class="on">Method &amp; sources</a></div></header>
+<main class="wrap">
+<p class="eyebrow">Method · formulas · sources</p>
+<h1>How every number on this desk is made</h1>
+<h2>Our line</h2>
+<ol>
+<li><strong>Market rows (M):</strong> take the retained raw quotes (Melbet, Kalshi exchange mid,
+Thunderpick via bo3.gg), convert to implied probabilities, remove each book's overround (de-vig),
+and average. The arithmetic is re-executed by <code>scripts/4cf64ea3/build.py</code> on every build —
+the page never copies a probability it has not re-derived.</li>
+<li><strong>Model rows (O · VRS):</strong> no eligible price exists → Valve's own Glicko expectation
+(ValveSoftware/counter-strike_regional_standings <code>model/glicko.js</code>: Q = ln(10)/400, RD = 75,
+g = 1/√(1+3Q²RD²/π²)), slope calibrated against real bookmaker lines (k = 0.27984917580739777 from
+17 priced pairs, session fe803b80). P(A) = sigmoid(k · g · ln(10)/400 · (pts<sub>A</sub> − pts<sub>B</sub>)).</li>
+<li><strong>Never:</strong> HotSpawn crowd %, HLTV fan votes, or placeholder quotes (see rejected below).</li>
+</ol>
+<h2>The pick ladder (contrarian but not stupid)</h2>
+<ul>
+<li><strong>Safe pick</strong> = argmax our probability (maximises expected points).</li>
+<li><strong>Climb pick</strong> = safe pick unless one of the two swing rules fires:
+<ul>
+<li><strong>C1 coinflip fade:</strong> market within ±8 pts of 50/50 and ≥70% of the field on one side →
+take the other (nearly free leverage).</li>
+<li><strong>C2 upset shot:</strong> underdog ≥ <strong>30% (the “not stupid” floor — never swing below it)</strong>,
+crowd differential ≥ +0.7 expected points on the row, and <strong>≥ 2 verified context flags</strong>
+(underdog beat this opponent in the last 12 months; favourite changed roster/IGL/coach within 120 days;
+stand-in; documented rest edge). Context gates the swing; it never moves a probability.</li>
+</ul></li>
+<li>Both picks are always published with the arithmetic: leverage (win chance ÷ crowd share),
+expected points of each side, and the cost of the swing.</li>
+</ul>
+<h2>Verification rules</h2>
+<ul>
+<li>Every table row carries an https source to an official page (HLTV, Liquipedia, Valve's GitHub,
+the book/exchange quote page, or the HotSpawn fixture listing for discovery only).</li>
+<li>A value that cannot be confirmed is left <strong>blank and flagged</strong> — never inferred.</li>
+<li>Research window for this build: 2026-10-15T22:22:00Z/2026-10-15T23:10:00Z.</li>
+</ul>
+<h2>Rejected sources</h2>
+<ul><li><strong>egamersworld uniform 1.80/1.80 micro-match widget prices</strong> — placeholder-looking equal prices on unpriced matches; never used as a line (same rejection as sessions b5436cf0/6c5bb3d6)</li><li><strong>HLTV fan vote / &#x27;win probability&#x27; widgets</strong> — crowd-style percentages, not betting lines</li><li><strong>HotSpawn crowd pick %</strong> — used only for leaderboard differential; never a probability input</li></ul>
+<h2>All sources read this session</h2>
+<div class="tablewrap"><table class="responsive"><thead><tr><th>Source</th><th>URL</th></tr></thead><tbody><tr><td data-label="Source">HotSpawn Pick&#x27;ems lobby (fixture discovery, settlement, crowd ownership — never a probability input)</td><td data-label="URL"><a href="https://play.hotspawn.com/lobby">https://play.hotspawn.com/lobby</a></td></tr><tr><td data-label="Source">HLTV event 8932 (Thunderpick World Championship 2026)</td><td data-label="URL"><a href="https://www.hltv.org/events/8932/thunderpick-world-championship-2026">https://www.hltv.org/events/8932/thunderpick-world-championship-2026</a></td></tr><tr><td data-label="Source">HLTV event 8932 results</td><td data-label="URL"><a href="https://www.hltv.org/results?event=8932">https://www.hltv.org/results?event=8932</a></td></tr><tr><td data-label="Source">HLTV news 45718 — 9z beat Aurora 2-0 (day 1)</td><td data-label="URL"><a href="https://www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026">https://www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026</a></td></tr><tr><td data-label="Source">HLTV news 45723 — day-1 wrap (four 2-0 sweeps)</td><td data-label="URL"><a href="https://www.hltv.org/news/45723/furia-fend-off-betboom-to-end-day-one-of-twc">https://www.hltv.org/news/45723/furia-fend-off-betboom-to-end-day-one-of-twc</a></td></tr><tr><td data-label="Source">HLTV news 45728 — Falcons secure playoff berth (day 2)</td><td data-label="URL"><a href="https://www.hltv.org/news/45728/falcons-secure-playoff-berth-at-twc-2026">https://www.hltv.org/news/45728/falcons-secure-playoff-berth-at-twc-2026</a></td></tr><tr><td data-label="Source">HLTV news 45730 — FURIA make TWC playoffs over Legacy (day 2)</td><td data-label="URL"><a href="https://www.hltv.org/news/45730/furia-make-twc-playoffs-over-legacy">https://www.hltv.org/news/45730/furia-make-twc-playoffs-over-legacy</a></td></tr><tr><td data-label="Source">HLTV match 2399408 — Aurora vs NIP</td><td data-label="URL"><a href="https://www.hltv.org/matches/2399408/aurora-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026">https://www.hltv.org/matches/2399408/aurora-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026</a></td></tr><tr><td data-label="Source">HLTV match 2399409 — 9z vs Falcons</td><td data-label="URL"><a href="https://www.hltv.org/matches/2399409/9z-vs-falcons-thunderpick-world-championship-2026">https://www.hltv.org/matches/2399409/9z-vs-falcons-thunderpick-world-championship-2026</a></td></tr><tr><td data-label="Source">HLTV match 2399410 — PARIVISION vs BETBOOM</td><td data-label="URL"><a href="https://www.hltv.org/matches/2399410/parivision-vs-betboom-thunderpick-world-championship-2026">https://www.hltv.org/matches/2399410/parivision-vs-betboom-thunderpick-world-championship-2026</a></td></tr><tr><td data-label="Source">HLTV match 2399411 — Legacy vs FURIA</td><td data-label="URL"><a href="https://www.hltv.org/matches/2399411/legacy-vs-furia-thunderpick-world-championship-2026">https://www.hltv.org/matches/2399411/legacy-vs-furia-thunderpick-world-championship-2026</a></td></tr><tr><td data-label="Source">HLTV match 2399412 — Aurora vs 9z (day 3 decider)</td><td data-label="URL"><a href="https://www.hltv.org/matches/2399412/aurora-vs-9z-thunderpick-world-championship-2026">https://www.hltv.org/matches/2399412/aurora-vs-9z-thunderpick-world-championship-2026</a></td></tr><tr><td data-label="Source">Liquipedia — Thunderpick World Championship 2026</td><td data-label="URL"><a href="https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026">https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026</a></td></tr><tr><td data-label="Source">HotSpawn day-2 review</td><td data-label="URL"><a href="https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-day-2-review">https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-day-2-review</a></td></tr><tr><td data-label="Source">HotSpawn day-3 preview (editorial predictions, never used as lines)</td><td data-label="URL"><a href="https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-day-3-preview">https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-day-3-preview</a></td></tr><tr><td data-label="Source">esports.gg results hub</td><td data-label="URL"><a href="https://esports.gg/news/counter-strike-2/cs2-thunderpick-world-championship-2026-results/">https://esports.gg/news/counter-strike-2/cs2-thunderpick-world-championship-2026-results/</a></td></tr><tr><td data-label="Source">Field Level Media day-1 wrap (via Yardbarker)</td><td data-label="URL"><a href="https://www.yardbarker.com/entertainment/articles/thunderpick_world_championship_opens_with_4_group_stage_sweeps/s1_17061_44430445">https://www.yardbarker.com/entertainment/articles/thunderpick_world_championship_opens_with_4_group_stage_sweeps/s1_17061_44430445</a></td></tr><tr><td data-label="Source">EGamersWorld — Falcons defeat NiP</td><td data-label="URL"><a href="https://egamersworld.com/counterstrike/news/37819/falcons-defeat-nip-and-advance-to-the-upper-bracke-rXGhRKG7a">https://egamersworld.com/counterstrike/news/37819/falcons-defeat-nip-and-advance-to-the-upper-bracke-rXGhRKG7a</a></td></tr><tr><td data-label="Source">Offstage.ru — PARIVISION eliminated by BetBoom</td><td data-label="URL"><a href="https://www.offstage.ru/cs2/news/parivision-pokinula-thunderpick-world-championship-2026">https://www.offstage.ru/cs2/news/parivision-pokinula-thunderpick-world-championship-2026</a></td></tr><tr><td data-label="Source">pley.gg — TWC 2026 schedule (CEST)</td><td data-label="URL"><a href="https://pley.gg/cs2/thunderpick-world-championship-2026/">https://pley.gg/cs2/thunderpick-world-championship-2026/</a></td></tr><tr><td data-label="Source">Valve VRS global standings 2026_10_05 (official)</td><td data-label="URL"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md</a></td></tr><tr><td data-label="Source">Melbet esports line feed</td><td data-label="URL"><a href="https://melbet.com/en/line/esports">https://melbet.com/en/line/esports</a></td></tr><tr><td data-label="Source">Kalshi KXCS2GAME market (Aurora vs 9z)</td><td data-label="URL"><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct1610009zaur">https://kalshi.com/markets/kxcs2game/kxcs2game-26oct1610009zaur</a></td></tr><tr><td data-label="Source">bo3.gg (Thunderpick quotes) — Aurora vs 9z</td><td data-label="URL"><a href="https://bo3.gg/matches/aurora-gaming-vs-9z-16-10-2026">https://bo3.gg/matches/aurora-gaming-vs-9z-16-10-2026</a></td></tr><tr><td data-label="Source">stavka.tv — Aurora vs 9z preview line (cross-check)</td><td data-label="URL"><a href="https://stavka.tv/matches/csgo/16-10-2026-aurora-gaming-9z">https://stavka.tv/matches/csgo/16-10-2026-aurora-gaming-9z</a></td></tr><tr><td data-label="Source">tips.gg — TWC outright board</td><td data-label="URL"><a href="https://tips.gg/article/thunderpick-wc2026-winner-odds/">https://tips.gg/article/thunderpick-wc2026-winner-odds/</a></td></tr><tr><td data-label="Source">tribuna.com — TWC outright board</td><td data-label="URL"><a href="https://tribuna.com/amp/en/betting/blogs/thunderpick-world-championship-2026-odds-favorites-our-predi/">https://tribuna.com/amp/en/betting/blogs/thunderpick-world-championship-2026-odds-favorites-our-predi/</a></td></tr><tr><td data-label="Source">Strafe — Aurora roster report</td><td data-label="URL"><a href="https://www.strafe.com/news/read/aurora-locks-in-new-cs2-roster-with-kyxsan-and-jimpphat/">https://www.strafe.com/news/read/aurora-locks-in-new-cs2-roster-with-kyxsan-and-jimpphat/</a></td></tr><tr><td data-label="Source">TechTimes — Aurora rebuild report</td><td data-label="URL"><a href="https://www.techtimes.com/articles/319928/20260708/kyxsan-joins-aurora-igl-complete-six-day-counter-strike-2-rebuild.htm">https://www.techtimes.com/articles/319928/20260708/kyxsan-joins-aurora-igl-complete-six-day-counter-strike-2-rebuild.htm</a></td></tr><tr><td data-label="Source">HLTV team page — Aurora</td><td data-label="URL"><a href="https://www.hltv.org/team/11861/aurora">https://www.hltv.org/team/11861/aurora</a></td></tr></tbody></table></div>
+<p class="mut">Built 2026-10-15T22:20:02Z · Sources are linked on every row · HotSpawn crowd % is used only for
+leaderboard differentials, never as a probability · 18+; gamble responsibly.</p>
+</main></body></html>
