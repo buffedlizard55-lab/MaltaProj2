@@ -550,5 +550,39 @@
       "reason": "The retained quote is a yes-mid pair summing to 96.5 cents (an underround) with a recorded max spread of 0.43; depth was not re-read. The row stays flagged as a thin exchange book.",
       "official_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct161000pgmel"
     }
+  ],
+  "cross_session_findings": [
+    {
+      "id": "XF-01",
+      "severity": "high",
+      "title": "Shared Pages publication gate was red: three TWC day-2 rows published a lobby filter URL as a \"published permalink\"",
+      "detail": "Found by this audit while re-running the repository's publication gate. data/picks_fixtures.json (session ac475c09, collected 2026-10-15T11:37:43Z) labelled fixtures 1080202 (9z vs Falcons), 1080203 (PARIVISION vs BetBoom) and 1080204 (Legacy vs FURIA) as hotspawn_match_url_kind='lobby_published_permalink' while the URL was 'https://www.hotspawn.com/?fixtures=waiting-for-information-<id>' - the lobby's own stage-filter link, which opens a listing rather than the fixture, and which also carried a stale stage string (the lobby now reports 'group stage and playoffs'). Their own contract test tests/test_picks_ac475c09.py::test_every_row_links_to_the_official_fixture_page requires a permalink of that kind to be /matches/<slug>-<id>, so the full suite went red, and because .github/workflows/pages.yml gates deployment on that suite, the site stopped publishing (five consecutive failed Pages runs, the last success ~55 minutes before this audit). Cause: the lobby payload has no match page for these three fixtures (data/hotspawn_matches.json records source_flags=['official_match_permalink_unavailable'], published_match_url=null), and scripts/picks_collect.py accepted whatever URL the payload carried. Repair (logged takeover, session task recorded done and claim >60 min old with only bot commits): a shape guard in scripts/picks_collect.py so only a /matches/<slug>-<fixture_id> URL may be labelled a published permalink, the three rows reset to the honest lobby_listing_fallback (https://play.hotspawn.com/lobby, verified=false, flagged on the row), and picks/ + data/picks_board.json regenerated offline with their own builder. No model, price, pick or test assertion was changed; their 16 tests pass and the gate is green again.",
+      "links": [
+        "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/tests/test_picks_ac475c09.py",
+        "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/scripts/picks_collect.py",
+        "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml",
+        "https://play.hotspawn.com/lobby"
+      ]
+    },
+    {
+      "id": "XF-02",
+      "severity": "info",
+      "title": "Retained Kalshi / bo3.gg quote records store names in source order but the normalized probability in fixture order",
+      "detail": "Re-deriving every row showed the published values are correct, but the retained quote objects are internally inconsistent: for fixture 1081120 (mellren vs Privateer) the quote records team_a='Privateer Gaming' with decimal_a=4.1667 while prob_a=0.751295 is mellren's normalized share; for 1080289 (RoundsGG vs Voca) the quote records team_a='Voca' with decimal_a=1.10 while prob_a=0.15942 is ROUNDS' share. Each board resolves the orientation correctly at row level (verified: mellren 0.725/0.965=0.7513 and Voca 0.909091/1.081505=0.84058), so no published pick is affected, but the stored evidence reads reversed and this audit now records both the raw side probability and the orientation per quote so the join can be re-checked without guessing. Session b5436cf0 flagged the same pattern on 2026-10-14.",
+      "links": [
+        "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct161000pgmel",
+        "https://bo3.gg/matches/voca-vs-roundsgg-16-10-2026"
+      ]
+    },
+    {
+      "id": "XF-03",
+      "severity": "low",
+      "title": "Rank chips for the same team disagree across sources; only Valve's file and HLTV's played lineups were used",
+      "detail": "WBT appears as #60 in Valve's official standings of 2026-10-05, as #66 on the HLTV event 9332 group chip, and as #109 in an earlier session's note; ROUNDS appears as #310 (Valve) and #237 (HLTV chip). These are different ranking systems and different dates, not a data error, but they are easy to mis-cite. This audit re-checks every citation against Valve's own file only, and proves identity from played lineups rather than from a rank chip.",
+      "links": [
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+        "https://www.hltv.org/events/9332/elisa-breakout-series-2"
+      ]
+    }
   ]
 }

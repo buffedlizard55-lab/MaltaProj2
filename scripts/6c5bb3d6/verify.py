@@ -726,6 +726,54 @@ def market_divergence_irregularities(strategy: dict, vrs: dict, irregularities: 
             })
 
 
+def c11_publication_gate(checks: list, irregularities: list) -> None:
+    """The site only publishes if the whole repository suite is green (pages.yml gates on it)."""
+    gate = load("data/6c5bb3d6/gate.json")
+    if not gate or not gate.get("ran_utc"):
+        checks.append({
+            "id": "C11", "name": "Shared publication gate (Pages deploys only on a green suite)",
+            "status": "skipped",
+            "detail": "data/6c5bb3d6/gate.json not present in this environment; run "
+                      "scripts/6c5bb3d6/run_gate.py to record it. Not guessed.",
+            "evidence": ["https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml"],
+            "rows_checked": 0, "rows_failed": 0, "failures": [],
+        })
+        return
+    failing = gate.get("failing_tests") or []
+    green = bool(gate.get("green")) and not failing
+    checks.append({
+        "id": "C11", "name": "Shared publication gate (Pages deploys only on a green suite)",
+        "status": "pass" if green else "fail",
+        "detail": (f"`{gate.get('command')}` at {gate.get('ran_utc')}: "
+                   f"{(gate.get('counts') or {}).get('ran')} tests, "
+                   f"{(gate.get('counts') or {}).get('failures')} failures, "
+                   f"{(gate.get('counts') or {}).get('errors')} errors, "
+                   f"{(gate.get('counts') or {}).get('skipped')} skipped -> "
+                   f"{'GREEN, the site can publish' if green else 'RED, Pages deployment is blocked'}"),
+        "evidence": ["https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml",
+                     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/gate.json"],
+        "rows_checked": (gate.get("counts") or {}).get("ran") or 0,
+        "rows_failed": len(failing), "failures": failing,
+    })
+    if not green:
+        irregularities.append({
+            "id": "IR-C11", "severity": "high",
+            "title": "Shared Pages publication gate is red - the site cannot deploy",
+            "detail": (f"{len(failing)} failing test(s): {', '.join(failing[:8])}. pages.yml gates "
+                       f"deployment on the full suite, so this blocks publication for every session."),
+            "links": ["https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml"],
+        })
+
+
+def cross_session_findings(research: dict, irregularities: list) -> None:
+    for item in research.get("cross_session_findings") or []:
+        irregularities.append({
+            "id": f"IR-{item.get('id')}", "severity": item.get("severity") or "info",
+            "title": item.get("title"), "detail": item.get("detail"),
+            "links": item.get("links") or [],
+        })
+
+
 def main() -> int:
     os.makedirs(OUT_DIR, exist_ok=True)
     os.makedirs(AUDIT_DIR, exist_ok=True)
@@ -754,6 +802,8 @@ def main() -> int:
     diff_table = c8_differential(strategy, checks, irregularities)
     c9_identities(research, vrs, checks, irregularities)
     c10_context(strategy, research, checks, irregularities)
+    c11_publication_gate(checks, irregularities)
+    cross_session_findings(research, irregularities)
     market_divergence_irregularities(strategy, vrs, irregularities)
     for item in research.get("unverified") or []:
         irregularities.append({
@@ -768,6 +818,7 @@ def main() -> int:
     report = {
         "session": "6c5bb3d6",
         "task": "T-VERIFY-6C5BB3D6 independent line-by-line verification",
+        "gate": load("data/6c5bb3d6/gate.json"),
         "generated_utc": utcnow(),
         "verified_board": {
             "file": "data/f28afd9e/board.json",
