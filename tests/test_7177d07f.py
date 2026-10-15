@@ -61,7 +61,11 @@ class BoardContracts(unittest.TestCase):
             for m in (self.inventory.get("matches") or [])
             if m.get("sport") == "cs2"
             and str(m.get("status")) == "scheduled"
-            and str(m.get("lock_time") or m.get("scheduled_start_time") or "") > generated
+            # Openness is evaluated at the instant the board was built (board.generated_utc), which
+            # is what the builder uses; the capture stamp can be earlier (cache-adjusted), so using it
+            # here expected fixtures that had already locked (f28afd9e repair, same capture compared).
+            and str(m.get("lock_time") or m.get("scheduled_start_time") or "")
+            > str(self.board.get("generated_utc") or generated)
         }
         self.assertTrue(open_ids, "inventory has no open CS2 fixtures")
         board_ids = [r["fixture_id"] for r in self.rows]
