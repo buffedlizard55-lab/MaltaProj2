@@ -4421,3 +4421,13 @@ lookup for names; and `gh api` needs a token inside Actions, so a public REST fa
 artifacts were reset to `origin/main` and regenerated locally. Other sessions' scheduled workflows
 also push to this branch, so the workflow's commit step rebases and retries up to five times; that
 repair is what made run `38517096471`'s push succeed.
+
+## Session 3faf40e8 — 2026-10-15 final integration and publication repair
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| Integrate existing PR #107's canonical mobile summary and unresolved-source ledger (no duplicate board); repair failing publication contracts; refresh, verify, PR and deploy | in progress | 3faf40e8 | 2026-10-15 08:22 | scripts/build_site.py, scripts/c64a5e19/**, picks-every-match/** generated, data/c64a5e19/** generated, tests/test_dc741cc1.py adopted, tests/test_3faf40e8.py new, tests/test_7177d07f.py, tests/test_b5436cf0.py, tests/test_expanded_lines.py, tests/test_picks_ac475c09.py, scripts/build_picks.py if needed, .github/workflows/pages.yml and every-match-c64a5e19.yml, README.md, audits/3faf40e8/**, audits/dc741cc1/** adopted, root HTML generated, COORDINATION.md append-only |
+
+- Environment fixes this session to `arena/3faf40e8-maltaproj2`; all local work and pushes stay there, including integration.
+- Prior integration/engine claims and PR #107 have had no human commits since 2026-10-14 08:42 (>60 min). Taking over their unfinished integration under the user’s handoff rule. Preserve other sections and generated source evidence; do not invent another board. PR #107 is read-only input; reviewed changes will be incorporated on this branch and re-tested against today's evidence, not blindly merged with its older snapshots.
+- Initial inspection: current main e5ed86b; verified Pages run 38702913944 fails its first unit-test gate. Local baseline reveals cross-snapshot archive coverage assertions, a changed Pinnacle response shape and a non-deterministic archive rebuild test; install the declared requirements before completing diagnosis. Existing canonical snapshot collected 2026-10-15 04:31, 76 listed / 15 open / 8 market / 1 model / 6 unresolved at that observation time. These are dated counts, not current verified coverage.
