@@ -475,7 +475,7 @@ Earlier inferred sibling-roster and ambiguous-slot picks have been removed from 
 <p class="note">Manual source review: <a href="https://github.com/ValveSoftware/counter-strike_regional_standings">Official Valve standings</a> ·
 <a href="verify/8e7a652d/index.html">Independent market verification</a>. Each alternate board has its own observation time and eligibility rules; none overrides blanks on this source-verified board.</p>
 </details>
-<p><a href="audits/dc741cc1/index.html">Latest source research and repository review</a> · <a href="picks-every-match/flagged.html">Flagged for Review</a></p>
+<p><a href="audits/3faf40e8/index.html">Flagged for Review: source research &amp; repository review</a> · <a href="audits/dc741cc1/index.html">Earlier research</a> · <a href="picks-every-match/flagged.html">Flagged for Review</a></p>
 <details class="archive"><summary>Primary-bookmaker-only coverage and table</summary>
 {executive_summary_html()}
 <h2>Every CS2 match currently open for picks — primary sources only</h2>

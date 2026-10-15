@@ -1,0 +1,106 @@
+{
+  "session": "3faf40e8",
+  "review_date_utc": "2026-10-15",
+  "manual_read_method": "fetch_page and official GitHub contents API; source observation time not established by text rendering",
+  "source_observation_utc": null,
+  "valve_git_blob_sha": "2aa2805394fbc68f36a5752a5b16026f2ab2fed5",
+  "valve_rows": [
+    "| 60       |   1201 | WBT                  | DemQQ, Psycho, s4ltovsk1yy, Smash, tyr1k              | [details](details/2026_10_05/0060--wbt--demqq-psycho-s4ltovsk1yy-smash-tyr1k.md)                     |",
+    "| 125      |    932 | mellren              | lollipop21k, Maksilvl, mdl, menddel, shootic          | [details](details/2026_10_05/0125--mellren--lollipop21k-maksilvl-mdl-menddel-shootic.md)             |",
+    "| 130      |    911 | WBT Academy          | fl1peR, marat2k, NxStep, svemyy, tired73              | [details](details/2026_10_05/0130--wbt_academy--fl1per-marat2k-nxstep-svemyy-tired73.md)             |",
+    "| 271      |    608 | Privateer            | Ariant0, Frazehh, JAUSTERE, M1n1maL, Prime            | [details](details/2026_10_05/0271--privateer--ariant0-frazehh-jaustere-m1n1mal-prime.md)             |",
+    "| 310      |    548 | ROUNDS               | Kollo, Lapa, Monoxx, Tumppis, ykis                    | [details](details/2026_10_05/0310--rounds--kollo-lapa-monoxx-tumppis-ykis.md)                        |"
+  ],
+  "findings": [
+    {
+      "title": "HLTV first: no verified prices",
+      "finding": "Inspected the analytics page and HAVU\u2013ROUNDS match page. The accessible analytics render shows dashes under Best Odds for WBT\u2013EAC and WBT\u2013ENCE; the HAVU\u2013ROUNDS betting table contains advertising but no two-sided numeric line. User-vote percentages are not odds and were not consumed. This is a limitation of the inspected render, not proof that no bookmaker offers the match.",
+      "sources": [
+        "https://www.hltv.org/betting/analytics",
+        "https://www.hltv.org/matches/2399425/havu-vs-rounds-elisa-breakout-series-2"
+      ],
+      "status": "documented limitation"
+    },
+    {
+      "title": "ROUNDS / RoundsGG roster gap",
+      "finding": "HLTV\u2019s ROUNDS page shows ykis, Monoxx, Kollo and Lapa, with an unknown fifth position. Valve\u2019s 2026-10-05 ROUNDS row additionally contains Tumppis. The current complete fixture roster and a primary-source mapping from HotSpawn\u2019s RoundsGG label remain unverified. A similar schedule is not enough to assign a different name\u2019s rating automatically.",
+      "sources": [
+        "https://www.hltv.org/team/12457/rounds",
+        "https://play.hotspawn.com/lobby",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "status": "needs review"
+    },
+    {
+      "title": "WBT / WBT Academy identity conflict",
+      "finding": "HLTV\u2019s WBT roster is Psycho, Smash, s4ltovsk1yy, DemQQ and tyr1k, matching Valve\u2019s WBT row. Valve separately lists WBT Academy with fl1peR, marat2k, NxStep, svemyy and tired73. The Kalshi page returned for EAC labels the opponent WBT Academy; HotSpawn labels its fixture WROTBERRY. No cross-source fixture-roster identity is established here, so these names are not silently merged.",
+      "sources": [
+        "https://www.hltv.org/team/13683/wbt",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+        "https://kalshi.com/markets/kxcs2game/counterstrike-2-game/kxcs2game-26oct150400eacwbtacademy",
+        "https://play.hotspawn.com/lobby"
+      ],
+      "status": "needs review"
+    },
+    {
+      "title": "Esportsbook accessibility",
+      "finding": "Melbet\u2019s public esports page redirected to /en/block and stated that it is unavailable in the request country. No price was obtained from that page. This is not a claim about availability in Malta or about the API response on GitHub\u2019s runners. No regional access controls were bypassed.",
+      "sources": [
+        "https://melbet.com/en/line/esports",
+        "https://melbet.com/en/block"
+      ],
+      "status": "documented limitation"
+    },
+    {
+      "title": "Betting lines: visible page is not a joined quote",
+      "finding": "Bovada\u2019s CS2 page displayed full-game moneylines with named teams and linked fixtures. It also displayed Whitebit Team\u2013EA Copenhagen as LIVE; live lines are not eligible for pre-match picks. The automated canonical board consumes retained API responses with exact pair, kickoff and freshness checks, not manually copied webpage percentages.",
+      "sources": [
+        "https://www.bovada.lv/sports/esports/counter-strike-2"
+      ],
+      "status": "documented limitation"
+    },
+    {
+      "title": "Kalshi maintenance and inconsistent display",
+      "finding": "The returned EAC\u2013WBT Academy page announced scheduled maintenance. Its displayed Chance percentages and Yes/No order entry prices were inconsistent. No probability is derived from that render. The canonical collector requires a timestamped two-sided order book within its spread gate and an unambiguous fixture join.",
+      "sources": [
+        "https://kalshi.com/markets/kxcs2game/counterstrike-2-game/kxcs2game-26oct150400eacwbtacademy"
+      ],
+      "status": "documented limitation"
+    },
+    {
+      "title": "Valve primary-source verification",
+      "finding": "Read the official GitHub contents API for the 2026-10-05 global standings. Git blob SHA 2aa2805394fbc68f36a5752a5b16026f2ab2fed5 exactly matches the retained canonical evidence. The complete markdown is replay-checked against all normalized team, points, standing and roster fields; successful replay verifies transcription, not real-world win chances.",
+      "sources": [
+        "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md?ref=main",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "status": "documented limitation"
+    },
+    {
+      "title": "Freshness is not build time",
+      "finding": "A page fetch can return cached content. The tool-rendered HotSpawn countdowns do not establish an HTTP observation timestamp. Today\u2019s manual reads therefore do not re-date the canonical snapshot or enter model inputs. Every source record below has a review date, not an invented source-observation time.",
+      "sources": [
+        "https://play.hotspawn.com/lobby"
+      ],
+      "status": "documented limitation"
+    },
+    {
+      "title": "Repository defects and repair",
+      "finding": "Initial verified Pages run 38702913944 failed. Reproduced failures included comparisons between independently refreshed archive snapshots, a trimmed Pinnacle evidence envelope treated as a list, and comparing a committed page to a wall-clock rebuild as a determinism test. Repairs retain the canonical provider replay gate, explicitly skip incomparable archived snapshots, validate the envelope, and test deterministic rebuilds in an isolated tree at a fixed evaluation time. A duplicate landing ID and competing summary recommendations were removed by integrating prior PR #107\u2019s source changes.",
+      "sources": [
+        "https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38702913944",
+        "https://github.com/buffedlizard55-lab/MaltaProj2/pull/107"
+      ],
+      "status": "documented limitation"
+    },
+    {
+      "title": "GitHub permissions and legacy publication",
+      "finding": "The installed GitHub integration permits branch pushes, but workflow dispatch and changing Pages settings returned 403 Resource not accessible by integration. Pages remains configured for legacy branch publication as well as the existing checked Actions artifact. Branch-push triggers run hosted verification without manual dispatch. The legacy path can publish independently; its configuration could not be changed with this integration.",
+      "sources": [
+        "https://api.github.com/repos/buffedlizard55-lab/MaltaProj2/pages",
+        "https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/pages.yml"
+      ],
+      "status": "needs review"
+    }
+  ]
+}

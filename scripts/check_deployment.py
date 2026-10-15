@@ -61,6 +61,10 @@ for attempt in range(12):
                 assert body.count('data-match data-search=') == len(live['open'])
                 for row in live['open']:
                     assert 'id="m-' + row['fixture_id'] + '"' in body
+        unresolved = public_get('picks-every-match/unresolved.html')
+        assert 'Source attempts &amp; next steps' in unresolved or not live['summary']['tier_d_none']
+        audit = json.loads(public_get('audits/3faf40e8/sources.json'))
+        assert audit['session'] == '3faf40e8' and audit['findings']
         verification = json.loads(public_get('data/c64a5e19/verification.json'))
         assert not verification['failures'], verification['failures']
         assert verification['official_inputs']['fixture_rows_checked'] == len(live['inventory'])
