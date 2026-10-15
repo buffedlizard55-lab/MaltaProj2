@@ -1,7 +1,7 @@
 name: every-match picks (c64a5e19)
 
 # Refreshes the every-match CS2 pick board (picks-every-match/) with no manual input.
-# Scope guard: writes only data/c64a5e19/** and picks-every-match/**.
+# Scope guard: canonical data/pages plus session 69e4c06a derived TWC category only.
 # Every four hours, plus policy changes and manual dispatch. No sleeping runner chain.
 
 on:
@@ -10,6 +10,7 @@ on:
     paths:
       - 'scripts/c64a5e19/**'
       - 'scripts/69e4c06a/**'
+      - 'data/69e4c06a/research.json'
       - 'scripts/f7279a54/**'
       - 'scripts/ae75c5c3/verify_source_payloads.py'
       - 'tests/test_c64a5e19.py'
@@ -46,7 +47,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 scripts/c64a5e19/collect.py
       - name: Build every-match board (re-derives every number from the snapshot)
-        run: python3 scripts/c64a5e19/build.py
+        run: |
+          python3 scripts/c64a5e19/build.py
+          python3 scripts/69e4c06a/build.py
       - name: Install verification dependencies
         run: pip install -r scripts/requirements.txt
       - name: Tests
@@ -60,7 +63,7 @@ jobs:
           set -euo pipefail
           git config user.name "every-match-bot (c64a5e19)"
           git config user.email "malta-data-bot@users.noreply.github.com"
-          git add data/c64a5e19 picks-every-match
+          git add data/c64a5e19 picks-every-match data/69e4c06a/day3.json twc-2026
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -m "every-match(c64a5e19): refresh picks $(date -u +%Y-%m-%dT%H:%MZ)"
           for attempt in 1 2 3 4 5; do

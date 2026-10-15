@@ -76,6 +76,7 @@ NAV = [
     ("picks-every-match/index.html", "All CS2 picks"),
     ("picks-every-match/unresolved.html", "Unresolved"),
     ("day-one.html", "Day-one review"),
+    ("twc-2026/index.html", "Day 2 → Day 3"),
     ("flagged.html", "Flagged for Review"),
     ("picks-every-match/method.html", "Method & sources"),
     ("research.html", "Research archive"),
@@ -272,8 +273,8 @@ def page(title, subtitle, body, generated_at, active=None, banner=None, hero=Fal
 </main>
 <footer class="wrap">
   <p>Page generated <strong>{esc(generated_at)}</strong>. Fixture list and every quoted price are read from the
-  public sources linked on each row; HotSpawn is used for fixture discovery only and is never used as a
-  probability source. Values that could not be confirmed against an external source are left blank and
+  public sources linked on each row; HotSpawn supplies fixtures and separate contest context, never
+  a match-win probability. Values that could not be confirmed against an external source are left blank and
   listed on the <a href="flagged.html">Flagged for review</a> page.</p>
 </footer>
 <script src="assets/app.js"></script>
@@ -430,15 +431,13 @@ source times and limitations. All matches in the captured HotSpawn lobby are ret
 including low-tier matches. <strong>Unsupported probabilities stay blank, not 50/50.</strong></p>
 <div class="actions">
 <a class="btn btn-primary" href="picks-every-match/index.html">Open all CS2 picks →</a>
-<a class="btn ghost" href="day3/index.html">TWC day-3 picks &amp; day-2 review</a>
 <a class="btn ghost" href="picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a>
-<a class="btn ghost" href="strategy/index.html">Every match + leaderboard picks</a>
-<a class="btn ghost" href="twc/index.html">TWC Day 1–3 review &amp; Day 3 picks</a>
-<a class="btn ghost" href="twc/unresolved.html">TWC unresolved &amp; limitations</a>
+<a class="btn ghost" href="twc-2026/index.html">Day 2 → Day 3: results &amp; leaderboard risk</a>
 </div>
 <p class="note">Snapshot counts below are evaluated at {esc(pick_time or 'unverified')}.
 Source capture ended {esc(pick_board.get('collected_to_utc') or 'unverified')}.
 A page rebuild is not a new source observation. Open the picks list for per-match expiry checks.</p>
+<p><a href="twc-2026/results.html">Verified day-two results</a> → <a href="twc-2026/index.html">day-three decisions</a> · <a href="twc-2026/roster.html">Original Aurora announcements &amp; unknown rest</a> · <a href="twc-2026/flagged.html">Research flags</a>. The upset watchlist never changes the canonical match probabilities.</p>
 <div class="cards">{pick_counts}</div>
 <section id="canonical-unresolved">
 <h2>What remains unresolved?</h2>
@@ -451,6 +450,9 @@ HLTV → esportsbooks/exchanges → uniquely identified official Valve ratings.
 An endpoint responding successfully is not proof it prices a match. Model estimates are our
 calculations, not officially verified win chances. <strong>HotSpawn crowd picks never price a match.</strong></p>
 </section>
+<details class="archive"><summary>Independent parallel TWC review (different capture/policy)</summary>
+<p>Additional preserved work: <a href="day3/index.html">Independent day-three desk (4cf64ea3)</a> · <a href="day3/unresolved.html">Its unresolved picks / limitations</a>. Its alternative source/identity and risk gates are not blended into the canonical board.</p>
+<p>Preserved from session 869a5375: <a href="twc/index.html">TWC Day 1–3 review &amp; Day 3 picks</a> · <a href="twc/unresolved.html">TWC unresolved &amp; limitations</a>. Its rounded forecasts and ownership come from a different capture and strategy. Do not substitute them for the current canonical line or use them to fill a canonical blank.</p></details>
 <details class="archive"><summary>Independent dated roster review</summary>
 <p>Not a current price feed: <a href="audits/94b3d48a/index.html">Audit 94b3d48a</a> ·
 <a href="audits/94b3d48a/unresolved.html">Dated unresolved research</a> ·
@@ -461,10 +463,11 @@ calculations, not officially verified win chances. <strong>HotSpawn crowd picks 
 <div class="pick-boards-grid" id="where-the-picks">
 <a class="board-card board-card-primary" href="picks-every-match/picks.html"><div class="board-card-title">Match picks &amp; probabilities</div><div class="board-card-desc">Both teams, clear pick, market/model label and source evidence. Search by team or tournament.</div></a>
 <a class="board-card" href="picks-every-match/inventory.html"><div class="board-card-title">Full lobby inventory</div><div class="board-card-desc">Every retained CS2 fixture, including locked/past rows. Coverage refers to the captured lobby, not unseen additions.</div></a>
-<a class="board-card" href="strategy/index.html"><div class="board-card-title">Every match: safe + leaderboard (contrarian) picks</div><div class="board-card-desc">Best available line for every listed match (blanks on the strict list shown with their limitation), plus a contrarian-but-not-stupid leaderboard pick using crowd ownership. Includes unresolved &amp; limits and a day-1 backtest.</div></a>
-<a class="board-card" href="day3/index.html"><div class="board-card-title">TWC day-3 desk: day-2 review → day-3 picks</div><div class="board-card-desc">Verified day-1 (9z upset) and day-2 review, the day-3 group deciders with safe + climb picks, a pick for every open match, and the separate unresolved + limitations section. Mobile-first.</div></a>
+<a class="board-card" href="twc-2026/index.html"><div class="board-card-title">Day 2 → Day 3: a credible upset, not blind underdogs</div><div class="board-card-desc">All eight TWC results, primary-confirmed July signings, a canonical day-three decision sheet and explicit expected-points tradeoffs. No invented rest penalty.</div></a>
+<a class="board-card" href="strategy/index.html"><div class="board-card-title">Independent safe + leaderboard research</div><div class="board-card-desc">Preserved alternative strategy snapshot, with a different source/identity policy and a dated day-one retrospective. Do not use it to fill a canonical blank or add its coverage count to this one.</div></a>
+<a class="board-card" href="day3/index.html"><div class="board-card-title">Independent day-three desk</div><div class="board-card-desc">Preserved session 4cf64ea3 results, all-match research and climb heuristics. Its independent capture/source/risk policy may differ; do not use it to replace canonical prices or fill unsupported canonical rows. Includes its own unresolved section.</div></a>
 <a class="board-card" href="day-one.html"><div class="board-card-title">Day one &amp; sensible contrarian strategy</div><div class="board-card-desc">9z–Aurora, all four opening results, roster context and what the evidence does not prove.</div></a>
-<a class="board-card" href="twc/index.html"><div class="board-card-title">TWC Day 1–3 review &amp; Day 3 picks</div><div class="board-card-desc">Day 1 upset + Day 2 results verified on HLTV, derived group standings, and a safe + contrarian-but-not-stupid pick for every Day 3 decider (16 Oct). Blank/unresolved rows are in the linked limitations section.</div></a>
+<a class="board-card" href="twc/index.html"><div class="board-card-title">Independent parallel TWC review</div><div class="board-card-desc">Preserved session 869a5375 results, group standings and strategy snapshot with its own limitations. Different source capture/policy, not a replacement for the current canonical picks or day-three decision sheet above.</div></a>
 <a class="board-card" href="flagged.html"><div class="board-card-title">Flagged for Review</div><div class="board-card-desc">Source failures, disputed identities and competing historical boards. No silent assumptions.</div></a>
 </div>
 <h2>Automatic updates</h2>
@@ -501,14 +504,16 @@ def day_one_review():
     ]
     rows = [[esc(a + ' vs ' + b), esc(a + ' 2–0'), esc(note),
              f'<a href="https://www.hltv.org/matches/{slug}-thunderpick-world-championship-2026">HLTV match record</a> · '
-             '<a href="https://www.hltv.org/results?event=8932">HLTV event results</a>']
+             '<a href="https://www.hltv.org/results?event=8932">HLTV event results</a> · '
+             '<a href="https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-day-1-review">Official HotSpawn report</a>']
             for a, b, slug, note in results]
     return '''
-<p><a class="btn btn-primary" href="picks-every-match/index.html">Back to current CS2 picks</a></p>
+<p><a class="btn btn-primary" href="picks-every-match/index.html">Back to current CS2 picks</a> <a class="btn ghost" href="twc-2026/index.html">Day two → day three update</a></p>
 <h2>All four day-one results</h2>
 <p>Results below were checked on HLTV’s own event-results page on 15 October 2026.
-HLTV is the requested specialist source, not the event organizer; organizer-level verification
-has not been established in this review. Pre-match odds are intentionally not reconstructed from results.</p>
+The official HotSpawn day-one report was also cross-checked in the day-two/day-three review.
+HLTV is a specialist source, not the event organizer. These publisher records do not claim organizer-level certification.
+Pre-match odds are intentionally not reconstructed from results.</p>
 ''' + table(['Match', 'Result (HLTV)', 'Analysis — not a probability input', 'Source'], rows) + '''
 <h2>9z–Aurora: what we can actually learn</h2>
 <p><a href="https://www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026">HLTV’s match report</a>
@@ -525,8 +530,7 @@ lists XANTARES, woxic, Wicadia, Jimpphat and kyxsan, with ash coaching.</p>
 <p><strong>Analysis:</strong> review role changes, language transition and map-pool evidence, but do not
 subtract an arbitrary percentage for “onboarding.” The subsequent EPL result is counterevidence to
 an unconditional roster-change fade. Verified travel/rest or illness evidence is absent here;
-its numeric effect stays blank. HLTV reports an announcement; the original team announcement was
-not independently checked, so this is labelled reported roster context rather than team-verified data.</p>
+its numeric effect stays blank. The original announcements are now independently checked: <a href="https://x.com/AuroraCS2_GG/status/2073104510189228086">Jimpphat, 3 July</a>, <a href="https://x.com/AuroraCS2_GG/status/2073089404143271946">ash, 3 July</a>, and <a href="https://x.com/AuroraCS2_GG/status/2074841104046825746">captain kyxsan, 8 July</a>. <a href="twc-2026/roster.html">Full primary-source timeline and unconfirmed rest values</a>. Confirmed signings do not prove a causal onboarding penalty.</p>
 <h2>Contrarian, but not reckless</h2>
 <ol>
 <li><strong>Keep the best-supported win probability separate from a contest strategy.</strong>
@@ -550,7 +554,7 @@ unsupported roster narratives. HotSpawn popularity is not used as a win-probabil
 <h2 id="review-limitations">Flagged for Review — unresolved evidence</h2>
 ''' + table(['Item', 'Confirmed value', 'Limitation', 'Review source'], [
     ['Day-one pre-match value advantage', BLANK, 'Unverified: this review has no timestamped pre-lock price comparison. The final score cannot supply it.', '<a href="https://www.hltv.org/results?event=8932">HLTV results</a>'],
-    ['Roster onboarding / rest adjustment', BLANK, 'Unverified: no measured causal effect or original team confirmation. No probability adjustment applied.', '<a href="https://www.hltv.org/news/45082/official-aurora-complete-rebuild-with-kyxsan">HLTV reported announcement</a>'],
+    ['Roster onboarding / rest adjustment', BLANK, 'Unverified causal effect/rest hours; July signings are now primary-confirmed. No numeric probability adjustment applied.', '<a href="https://x.com/AuroraCS2_GG/status/2074841104046825746">Official captain announcement</a> · <a href="twc-2026/roster.html">Verified timeline / unknowns</a>'],
     ['Leaderboard-optimal upset selection', BLANK, 'Unverified: reward rules, player position and rival selections are not validated inputs to this engine.', '<a href="https://play.hotspawn.com/lobby">Official HotSpawn lobby</a>'],
 ]) + '<p><a href="flagged.html">All flagged findings</a> · <a href="picks-every-match/unresolved.html">Current unresolved matches &amp; source attempts</a></p>'
 
@@ -723,20 +727,10 @@ visible instead of being silently filled in.</div>
 <p>The homepage previously promoted an alternate board as complete coverage while the strict board
 retained unresolved matches. The primary navigation and counts now use only the canonical board.
 Historical alternate boards are preserved for audit, not endorsed as verified current picks.</p>
-<p><a href="day-one.html#review-limitations">Day-one evidence limitations</a>: roster reporting is
-HLTV-sourced; team/organizer confirmation, causal rest/onboarding effects and a hindsight-free
-pre-match advantage have not been established. No numeric adjustment is invented.
-<a href="https://www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026">HLTV match report</a> ·
-<a href="https://www.hltv.org/news/45082/official-aurora-complete-rebuild-with-kyxsan">HLTV roster report</a>.</p>
+<p><a href="twc-2026/results.html">Day-two results and day-three bracket</a>, <a href="twc-2026/roster.html">primary Aurora signing announcements</a> and <a href="twc-2026/flagged.html">research limitations</a> now supplement the <a href="day-one.html#review-limitations">day-one review</a>. Captain kyxsan joined on 8 July; Jimpphat and coach ash were announced on 3 July. This does not establish rest hours or a causal onboarding penalty.</p>
 <h3>Fallback-only source checks · reviewed 15 October 2026</h3>
-<p>For the unresolved HAVU–RoundsGG fixture, the
-<a href="https://www.hltv.org/matches/2399425/havu-vs-rounds-elisa-breakout-series-2">HLTV HAVU–ROUNDS match page</a>
-shows a BO1 LAN match and a betting area, but no usable two-sided decimal price in the inspected render.
-The <a href="https://www.hltv.org/betting/analytics/2399425/havu-vs-rounds-elisa-breakout-series-2">HLTV analytics page</a>
-shows five ROUNDS players, including Tumppis, plus historical handicap statistics. Those statistics,
-user votes and repeated 1.23 handicap links are not accepted full-match two-sided odds.
-The RoundsGG-to-ROUNDS identity is still not a captured, automated join in the canonical engine;
-manual research does not silently override its blank.</p>
+<p>HLTV was inspected first for uncovered matches. Its rendered betting areas did not expose usable two-sided lines in the reviewed examples; votes, handicap statistics and social-casino promotions were not accepted. <a href="https://www.hltv.org/matches/2399425/havu-vs-rounds-elisa-breakout-series-2">HLTV HAVU–ROUNDS</a> · <a href="twc-2026/flagged.html">Per-fixture research ledger</a>.</p>
+<p>The retained <a href="https://kalshi.com/markets/kxcs2game">official Kalshi contracts</a> can explicitly state both full-match participants and an originally scheduled CS2 kickoff with a timezone. Only when both outcome rules agree, both books pass bid/ask gates, and the exact kickoff/freshness joins pass, may the canonical market-gap fallback use normalized yes midpoints. It never guesses from a ticker or settlement time, never invents a global RoundsGG/ROUNDS rating alias, and never reprices an already accepted bookmaker/featured match. A later thin or one-sided book can correctly make a previously supported fixture blank again. <a href="data/c64a5e19/board.json">Verbatim rules, books, reported volume and per-row flags</a> · <a href="picks-every-match/unresolved.html">Current unresolved picks</a>.</p>
 <p>Next, <a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle’s linked CS2 hub</a>
 returned “Page Not Found”; the general esports page could not be fetched by this research tool.
 <a href="https://melbet.com/en/line/esports">Melbet’s public esports page</a> returned a country access denial.

@@ -241,5 +241,204 @@ class CanonicalGapAdmission(unittest.TestCase):
             self.assertTrue(any('rule evidence differs' in f for f in result['failures']))
 
 
+TWC = module('test_twc_category_69', 'scripts/69e4c06a/build.py')
+
+
+class ThinBookReporting(unittest.TestCase):
+    def test_same_pair_rejection_is_explicit_in_the_fallback_ladder(self):
+        from tests.test_c64a5e19 import B
+        row = {'team_a': 'Alpha', 'team_b': 'Beta', 'market': None, 'line': None, 'flags': ['no_line_unverified']}
+        snap = {'access_log': {}, 'quotes': [], 'vrs': {}, 'rejected_quotes': [
+            {'source_key': 'kalshi', 'team_a': 'Alpha', 'team_b': 'Beta', 'reason': 'thin or one-sided order book'}]}
+        review = B.fallback_review(row, snap, B.core)
+        kalshi = [step for step in review['steps'] if step['label'] == '2 · Kalshi exchange'][0]
+        self.assertEqual(kalshi['rejected_candidate_count'], 1)
+        self.assertIn('thin or one-sided order book', kalshi['result'])
+
+
+class DatedResearchAndDecisions(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.canonical = json.loads((ROOT / 'data/c64a5e19/board.json').read_text())
+        cls.evaluated = TWC.core.parse_iso(cls.canonical['generated_utc'])
+        cls.data = TWC.derive(ROOT, cls.evaluated)
+
+    def test_all_eight_results_maps_and_primary_publisher_links_are_consistent(self):
+        from urllib.parse import urlsplit
+        results = self.data['facts']['results']
+        self.assertEqual([sum(r['day'] == day for r in results) for day in (1, 2)], [4, 4])
+        for result in results:
+            self.assertEqual(urlsplit(result['official_publisher_url']).hostname, 'www.hotspawn.com')
+            self.assertEqual(urlsplit(result['specialist_url']).hostname, 'www.hltv.org')
+            self.assertEqual(sum(m['score_a'] > m['score_b'] for m in result['maps']), result['series_a'])
+            self.assertEqual(sum(m['score_b'] > m['score_a'] for m in result['maps']), result['series_b'])
+            self.assertTrue(all(m['score_a'] != m['score_b'] for m in result['maps']))
+        aurora = [r for r in results if r['day'] == 2 and r['team_a'] == 'Aurora'][0]
+        self.assertEqual([(m['name'], m['score_a'], m['score_b']) for m in aurora['maps']], [('Cache', 13, 9), ('Dust2', 13, 7)])
+        nine_z = [r for r in results if r['day'] == 2 and r['team_a'] == '9z'][0]
+        self.assertEqual((nine_z['series_a'], nine_z['series_b']), (1, 2))
+        self.assertEqual([(m['name'], m['score_a'], m['score_b']) for m in nine_z['maps']], [('Nuke', 9, 13), ('Mirage', 13, 8), ('Dust2', 9, 13)])
+
+    def test_primary_july_announcements_do_not_become_causal_rest_values(self):
+        announcements = self.data['roster_announcements']
+        self.assertEqual(len(announcements), 3)
+        self.assertEqual(sorted(a['calendar_days_before_day_one'] for a in announcements), [98, 103, 103])
+        self.assertTrue(all(a['primary_url'].startswith('https://x.com/AuroraCS2_GG/status/') for a in announcements))
+        self.assertTrue(all(a['announcement_utc'].startswith('2026-07-') for a in announcements))
+        self.assertTrue(all(u['value'] is None and u['reason'] for u in self.data['facts']['unknowns']))
+        self.assertIsNone(self.data['facts']['source_observation_utc'])
+
+    def test_listed_probabilities_are_copied_exactly_in_canonical_order(self):
+        indexed = {r['fixture_id']: r for r in self.canonical['open']}
+        for row in self.data['day_three']:
+            if not row['listed_on_hotspawn']:
+                continue
+            source = indexed[row['fixture_id']]
+            self.assertEqual([row['team_a'], row['team_b']], [source['team_a'], source['team_b']])
+            if row['line']:
+                for key in ('prob_a', 'prob_b', 'pick_team'):
+                    self.assertEqual(row['line'][key], source['line'][key])
+            self.assertEqual(row['offered_points'], source['points'])
+            self.assertEqual(row['valid_until_utc'], source['valid_until_utc'])
+
+    def test_unlisted_preview_cannot_invent_a_hotspawn_fixture_ownership_or_points(self):
+        for row in self.data['day_three']:
+            if row['listed_on_hotspawn']:
+                continue
+            for key in ('fixture_id', 'ownership', 'offered_points', 'lock_utc'):
+                self.assertIsNone(row[key])
+            self.assertFalse(row['decision']['qualified'])
+            self.assertIsNone(row['decision']['pick_team'])
+            if row['line']:
+                self.assertAlmostEqual(row['line']['prob_a'] + row['line']['prob_b'], 1, places=5)
+                self.assertTrue(all(q['source_key'] in ('pinnacle', 'bovada', 'melbet') for q in row['quotes']))
+
+    def test_raw_quote_labels_preserve_provider_outcome_order(self):
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup(TWC.render_index(self.data), 'html.parser')
+        for row in self.data['day_three']:
+            text = soup.select_one('#' + row['key']).get_text()
+            for quote in row['quotes']:
+                names = quote.get('names_at_source') or [quote['team_a'], quote['team_b']]
+                self.assertIn(f"{names[0]}: {quote['raw_a']} / {names[1]}: {quote['raw_b']}", text)
+
+    def test_source_expiry_cannot_be_reset_by_rerendering(self):
+        expired = TWC.derive(ROOT, self.evaluated + timedelta(hours=5))
+        self.assertEqual(expired['source_collected_utc'], self.data['source_collected_utc'])
+        self.assertTrue(all(row['line'] is None for row in expired['day_three']))
+        self.assertTrue(all(not row['decision']['qualified'] for row in expired['day_three']))
+        self.assertTrue(all(row['start_utc'] is None for row in expired['day_three'] if not row['listed_on_hotspawn']))
+        self.assertEqual(expired['canonical_unresolved'], self.data['canonical_unresolved'])
+
+    def test_crowd_changes_cannot_change_any_probability(self):
+        import shutil
+        with tempfile.TemporaryDirectory() as temp:
+            directory = Path(temp)
+            for relative in ('data/69e4c06a/research.json', 'data/c64a5e19/board.json',
+                             'data/c64a5e19/official_inputs.json', 'data/c64a5e19/source_payloads.json'):
+                destination = directory / relative
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(ROOT / relative, destination)
+            evidence = json.loads((directory / 'data/c64a5e19/official_inputs.json').read_text())
+            for fixture in evidence['lobby']['transfer_state']['fixtures']:
+                fixture['participants0_picked_percent'], fixture['participants1_picked_percent'] = 1, 99
+            (directory / 'data/c64a5e19/official_inputs.json').write_text(json.dumps(evidence))
+            changed = TWC.derive(directory, self.evaluated)
+            self.assertEqual([r['line'] for r in changed['day_three']], [r['line'] for r in self.data['day_three']])
+            self.assertEqual([r['quotes'] for r in changed['day_three']], [r['quotes'] for r in self.data['day_three']])
+
+    def test_every_category_table_row_has_https_source_and_mobile_chrome(self):
+        from bs4 import BeautifulSoup
+        for renderer in (TWC.render_index, TWC.render_results, TWC.render_roster, TWC.render_flagged, TWC.render_method):
+            soup = BeautifulSoup(renderer(self.data), 'html.parser')
+            self.assertEqual(len(soup.select('h1')), 1)
+            self.assertTrue(soup.select_one('meta[name="viewport"]'))
+            self.assertTrue(soup.select_one('nav a[href="../picks-every-match/index.html"]'))
+            self.assertIn('Skip to content', soup.get_text())
+            for row in soup.select('tbody tr'):
+                self.assertTrue(row.select('a[href^="https://"]'), row.get_text())
+
+    def test_results_have_no_unverified_finish_or_rest_timestamps(self):
+        for result in self.data['facts']['results']:
+            self.assertNotIn('finish_utc', result)
+            self.assertNotIn('rest_hours', result)
+        self.assertIn('not a new IGL this week', TWC.render_roster(self.data))
+        self.assertIn('class="expiry"', TWC.render_index(self.data))
+
+    def test_root_executive_links_category_without_replacing_canonical_primary(self):
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup((ROOT / 'index.html').read_text(), 'html.parser')
+        summary = soup.select_one('#executive-summary')
+        self.assertEqual(summary.select_one('a.btn-primary')['href'], 'picks-every-match/index.html')
+        link = summary.select_one('a[href="twc-2026/index.html"]')
+        self.assertIsNotNone(link)
+        self.assertIsNone(link.find_parent('details'))
+        self.assertLessEqual(len(soup.select('header nav a')), 10)
+
+    def test_category_is_in_scheduled_build_publication_and_staged_link_gate(self):
+        refresh = (ROOT / '.github/workflows/every-match-c64a5e19.yml').read_text()
+        pages = (ROOT / '.github/workflows/pages.yml').read_text()
+        stage = (ROOT / 'scripts/stage_site.py').read_text()
+        self.assertIn("cron: '12 */4 * * *'", refresh)
+        self.assertIn('python3 scripts/69e4c06a/build.py', refresh)
+        self.assertIn('data/69e4c06a/day3.json twc-2026', refresh)
+        self.assertIn('python scripts/69e4c06a/build.py', pages)
+        self.assertIn('scripts/69e4c06a/browser_smoke.py', pages)
+        self.assertIn("'twc-2026'", stage)
+        self.assertIn('_twc.build(OUT)', stage)
+
+
+class DeclaredLeaderboardRisk(unittest.TestCase):
+    def row(self):
+        return {'listed_on_hotspawn': True, 'team_a': 'Alpha', 'team_b': 'Beta',
+                'line': {'basis': 'market', 'prob_a': .65, 'prob_b': .35},
+                'ownership': {'team_a': .83, 'team_b': .17}, 'offered_points': 7,
+                'quotes': [{'source_key': 'pinnacle'}, {'source_key': 'melbet'}]}
+
+    def test_qualifying_swing_exposes_cost_without_changing_the_line(self):
+        row = self.row()
+        original = copy.deepcopy(row)
+        pick = TWC.decision(row)
+        self.assertTrue(pick['qualified'])
+        self.assertEqual(pick['pick_team'], 'Beta')
+        self.assertAlmostEqual(pick['expected_points_sacrificed'], 2.1)
+        self.assertAlmostEqual(pick['favorite_expected_points'], 4.55)
+        self.assertAlmostEqual(pick['underdog_expected_points'], 2.45)
+        self.assertEqual(row, original)
+
+    def test_below_floor_never_tunes_threshold_to_force_an_underdog(self):
+        row = self.row()
+        row['line'].update(prob_a=.6522, prob_b=.3478)
+        choice = TWC.decision(row)
+        self.assertFalse(choice['qualified'])
+        self.assertIsNone(choice['pick_team'])
+        self.assertEqual(TWC.POLICY['minimum_underdog_probability'], .35)
+
+    def test_missing_zero_or_overowned_ownership_is_not_an_infinite_edge(self):
+        for ownership in (None, {'team_a': 1, 'team_b': 0}, {'team_a': .7, 'team_b': .3}):
+            row = self.row()
+            row['ownership'] = ownership
+            self.assertFalse(TWC.decision(row)['qualified'])
+            if ownership and ownership['team_b'] == 0:
+                self.assertIsNone(TWC.decision(row)['probability_to_ownership_ratio'])
+
+    def test_model_one_book_or_exchange_only_is_not_a_two_book_swing(self):
+        row = self.row()
+        row['line']['basis'] = 'model'
+        self.assertFalse(TWC.decision(row)['qualified'])
+        for quotes in ([{'source_key': 'melbet'}], [{'source_key': 'kalshi'}],
+                       [{'source_key': 'pinnacle'}, {'source_key': 'kalshi'}]):
+            row = self.row()
+            row['quotes'] = quotes
+            self.assertFalse(TWC.decision(row)['qualified'])
+
+    def test_mismatched_ownership_order_is_blank_not_reversed_by_guess(self):
+        row = {'fixture_id': 'test', 'team_a': 'Alpha', 'team_b': 'Beta'}
+        evidence = {'lobby': {'transfer_state': {'fixtures': [
+            {'id': 'test', 'participants0_name': 'Beta', 'participants1_name': 'Alpha',
+             'participants0_picked_percent': 20, 'participants1_picked_percent': 80}]}}}
+        self.assertIsNone(TWC.canonical_ownership(row, evidence))
+
+
 if __name__ == '__main__':
     unittest.main()

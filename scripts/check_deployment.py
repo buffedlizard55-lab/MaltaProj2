@@ -75,3 +75,45 @@ for attempt in range(12):
         time.sleep(10)
 print('PASS: live root executive summary and all six every-match pages; policy, source replay, inventory and picks agree')
 print('Live every-match summary:', json.dumps(live['summary'], sort_keys=True))
+
+# Session 69e4c06a: the focused TWC category must ship with the same canonical
+# data batch. A green deployment API result alone does not prove these pages exist.
+for attempt in range(12):
+    try:
+        root = public_get('index.html')
+        assert 'twc-2026/index.html' in root and 'twc-2026/results.html' in root
+        current = json.loads(public_get('data/c64a5e19/board.json'))
+        twc = json.loads(public_get('data/69e4c06a/day3.json'))
+        assert twc['session'] == '69e4c06a' and twc['schema_version'] == 1
+        assert twc['canonical_generated_utc'] == current['generated_utc']
+        assert twc['source_collected_utc'] == current['collected_to_utc']
+        assert twc['canonical_summary'] == current['summary']
+        assert len(twc['facts']['results']) == 8 and len(twc['roster_announcements']) == 3
+        assert all(item['value'] is None for item in twc['facts']['unknowns'])
+        indexed = {row['fixture_id']: row for row in current['open']}
+        for row in twc['day_three']:
+            if row['listed_on_hotspawn']:
+                original = indexed[row['fixture_id']]
+                assert [row['team_a'], row['team_b']] == [original['team_a'], original['team_b']]
+                if row['line']:
+                    assert row['line']['prob_a'] == original['line']['prob_a']
+                    assert row['line']['prob_b'] == original['line']['prob_b']
+            else:
+                assert all(row[key] is None for key in ('fixture_id', 'ownership', 'offered_points'))
+                assert not row['decision']['qualified']
+        for name in ('index', 'results', 'roster', 'flagged', 'method'):
+            body = public_get('twc-2026/' + name + '.html')
+            assert 'TWC 2026 evidence' in body and 'name="viewport"' in body, name
+            assert 'assets.css' in body and 'app.js' in body, name
+            if name == 'index':
+                for row in twc['day_three']:
+                    assert 'id="' + row['key'] + '"' in body
+        for asset in ('assets.css', 'app.js'):
+            assert public_get('twc-2026/' + asset).strip(), asset
+        break
+    except Exception as exc:
+        if attempt == 11:
+            raise RuntimeError('Public TWC category did not pass source/canonical consistency checks') from exc
+        time.sleep(10)
+print('PASS: live TWC results, original roster timeline, source-linked decisions, assets and canonical consistency')
+print('TWC source collection:', twc['source_collected_utc'])
