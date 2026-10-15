@@ -1,0 +1,55 @@
+name: twc-day3 (869a5375)
+# Rebuilds twc/ (TWC 2026 Day 1-3 review + Day 3 picks) from data/869a5375/twc.json.
+# Every 4 hours (inside the required 4-8 h window). Deterministic rebuild only:
+# a rebuild never makes an old quote fresh; live fixture/line refresh is done by
+# the repo's 4-hourly collectors behind strategy/ and picks-every-match/.
+on:
+  schedule:
+    - cron: '41 */4 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/869a5375/**'
+      - 'data/869a5375/**'
+      - 'tests/test_869a5375.py'
+      - '.github/workflows/twc-869a5375.yml'
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: twc-869a5375
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build TWC Day 3 pages (fail-closed internal-link check in tests)
+        run: python scripts/869a5375/build.py
+      - name: Contract tests and staged link check
+        run: |
+          python -m unittest tests.test_869a5375 -v
+          python scripts/stage_site.py
+      - name: Commit refreshed pages
+        run: |
+          set -euo pipefail
+          git config user.name "malta-data-bot"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add twc data/869a5375
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -m "twc(869a5375): refresh Day 3 picks $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep 10
+          done
+          echo "::error::could not push refreshed twc pages"; exit 1
+      - name: Request a Pages rebuild
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --repo "${{ github.repository }}" --ref main || echo "dispatch not permitted; next scheduled Pages run publishes"

@@ -150,3 +150,9 @@ not certified by the canonical verifier and never override its blank rows.
 - **Flagged for Review (Line-by-Line Audit & 36-Team VRS Ledger):** [`audits/94b3d48a/flagged.html`](audits/94b3d48a/flagged.html)
 - **Methodology & 4-Hour Refresh Schedule:** [`audits/94b3d48a/methodology.html`](audits/94b3d48a/methodology.html) (`scripts/94b3d48a/build.py`, `.github/workflows/refresh-94b3d48a.yml`, `tests/test_94b3d48a.py`).
 
+
+## TWC 2026 Day 1–3 review & Day 3 picks (session 869a5375)
+
+- **Executive summary & Day 3 picks:** [`twc/index.html`](twc/index.html) — Day 1 (9z 2–0 Aurora upset, Aurora July 2026 rebuild) and Day 2 results verified line-by-line on HLTV (event 8932), derived group standings, and a safe + contrarian-but-not-stupid leaderboard pick for every Day 3 decider (16 Oct 2026): Aurora vs 9z (HotSpawn card 1080205, market 65/35, leaderboard pick 9z) and BetBoom vs Legacy (research pick Legacy, probability blank — see unresolved).
+- **Unresolved picks & limitations:** [`twc/unresolved.html`](twc/unresolved.html) (U-TWC1–U-TWC7: no verified BetBoom–Legacy line, no HotSpawn card for that match in the captured lobby, kick-off-time and ranking-system conflicts, TBD playoff fixtures, roster/rest limits, leaderboard-optimality limits).
+- **Method & contrarian rules:** [`twc/method.html`](twc/method.html) (`data/869a5375/twc.json`, `scripts/869a5375/build.py`, `tests/test_869a5375.py`, `.github/workflows/twc-869a5375.yml` — rebuilt every 4 hours; live lines refresh via the strategy/picks-every-match collectors).
