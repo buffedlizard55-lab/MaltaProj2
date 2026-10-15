@@ -12,9 +12,13 @@ if OUT.exists():
 OUT.mkdir(parents=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3'):
 # 'twc' added by session 869a5375 (T-TWC-DAY3 Day 1-3 review + Day 3 picks), additive single entry:
 # the landing executive summary links twc/index.html, so the artifact must carry the directory.
+# 'day3' added by session 4cf64ea3 (TWC day-2 review -> day-3 picks desk, every-match coverage);
+# additive single entry: the landing executive summary links day3/index.html, so the artifact must
+# carry the directory or every root page fails the staged-link check. No other session's files are
+# modified here.
 # 'strategy' added by session f28afd9e (every-match safe + leaderboard picks); additive single entry: the
 # landing executive summary links strategy/index.html, so the artifact must carry the directory.
 # 'picks-all' added by session b5436cf0 (complete every-match picks) as an additive single entry.

@@ -138,6 +138,13 @@ def executive_summary_html():
         if gap_rows else '<p>No unresolved rows in the available strict snapshot; this is not a guarantee of global coverage.</p>'
     )
     stamp_map = [
+        # 4cf64ea3 integration (additive): the TWC day-2 review -> day-3 picks desk. Its own
+        # executive summary links every updated picks list on the site, so one row here is enough.
+        ("day3/index.html", "TWC day-3 picks &amp; day-1/2 review (4cf64ea3)",
+         "Verified day-1 (9z 2-0 Aurora upset) and day-2 review, then the day-3 picks with the "
+         "contrarian-but-not-stupid climb ladder (safe + leaderboard pick per match) and a pick for "
+         "every open CS2 match; unresolved picks + limitations linked from its executive summary.",
+         _board_stamp("data/4cf64ea3/board.json", "generated_utc")),
         ("picks-all/index.html", "Complete picks — every match",
          "Pick + win probability for every open CS2 match on the pick'em lobby (incl. low-tier), "
          "each number linked to its source. The complete updated picks list.",
@@ -196,6 +203,7 @@ def executive_summary_html():
   <p>{coverage}</p>
   <p><a class="btn" href="cs2.html">Start here: source-linked CS2 picks</a>
      <a class="btn" href="picks-all/index.html">Complete picks · all matches</a>
+     <a class="btn" href="day3/index.html">TWC day-3 picks &amp; day-2 review</a>
      <a class="btn ghost" href="#unresolved-picks">Unresolved matches</a>
      <a class="btn ghost" href="picks-all/unresolved.html">Unresolved + limitations (complete list)</a>
      <a class="btn ghost" href="board/picks.html">Expanded picks · models included</a></p>
@@ -422,6 +430,7 @@ source times and limitations. All matches in the captured HotSpawn lobby are ret
 including low-tier matches. <strong>Unsupported probabilities stay blank, not 50/50.</strong></p>
 <div class="actions">
 <a class="btn btn-primary" href="picks-every-match/index.html">Open all CS2 picks →</a>
+<a class="btn ghost" href="day3/index.html">TWC day-3 picks &amp; day-2 review</a>
 <a class="btn ghost" href="picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a>
 <a class="btn ghost" href="strategy/index.html">Every match + leaderboard picks</a>
 <a class="btn ghost" href="twc/index.html">TWC Day 1–3 review &amp; Day 3 picks</a>
@@ -445,13 +454,15 @@ calculations, not officially verified win chances. <strong>HotSpawn crowd picks 
 <details class="archive"><summary>Independent dated roster review</summary>
 <p>Not a current price feed: <a href="audits/94b3d48a/index.html">Audit 94b3d48a</a> ·
 <a href="audits/94b3d48a/unresolved.html">Dated unresolved research</a> ·
-<a href="audits/94b3d48a/flagged.html">Audit limitations</a>.</p></details>
+<a href="audits/94b3d48a/flagged.html">Audit limitations</a> ·
+<a href="audits/6c5bb3d6/index.html">Independent line-by-line verification (every probability re-derived from raw quotes and Valve's standings; day-1 upset review and leaderboard-differential cross-check)</a>.</p></details>
 </div>
 </section>
 <div class="pick-boards-grid" id="where-the-picks">
 <a class="board-card board-card-primary" href="picks-every-match/picks.html"><div class="board-card-title">Match picks &amp; probabilities</div><div class="board-card-desc">Both teams, clear pick, market/model label and source evidence. Search by team or tournament.</div></a>
 <a class="board-card" href="picks-every-match/inventory.html"><div class="board-card-title">Full lobby inventory</div><div class="board-card-desc">Every retained CS2 fixture, including locked/past rows. Coverage refers to the captured lobby, not unseen additions.</div></a>
 <a class="board-card" href="strategy/index.html"><div class="board-card-title">Every match: safe + leaderboard (contrarian) picks</div><div class="board-card-desc">Best available line for every listed match (blanks on the strict list shown with their limitation), plus a contrarian-but-not-stupid leaderboard pick using crowd ownership. Includes unresolved &amp; limits and a day-1 backtest.</div></a>
+<a class="board-card" href="day3/index.html"><div class="board-card-title">TWC day-3 desk: day-2 review → day-3 picks</div><div class="board-card-desc">Verified day-1 (9z upset) and day-2 review, the day-3 group deciders with safe + climb picks, a pick for every open match, and the separate unresolved + limitations section. Mobile-first.</div></a>
 <a class="board-card" href="day-one.html"><div class="board-card-title">Day one &amp; sensible contrarian strategy</div><div class="board-card-desc">9z–Aurora, all four opening results, roster context and what the evidence does not prove.</div></a>
 <a class="board-card" href="twc/index.html"><div class="board-card-title">TWC Day 1–3 review &amp; Day 3 picks</div><div class="board-card-desc">Day 1 upset + Day 2 results verified on HLTV, derived group standings, and a safe + contrarian-but-not-stupid pick for every Day 3 decider (16 Oct). Blank/unresolved rows are in the linked limitations section.</div></a>
 <a class="board-card" href="flagged.html"><div class="board-card-title">Flagged for Review</div><div class="board-card-desc">Source failures, disputed identities and competing historical boards. No silent assumptions.</div></a>
