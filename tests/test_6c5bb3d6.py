@@ -366,18 +366,45 @@ class Pages(unittest.TestCase):
 
 class HarnessIntegrity(unittest.TestCase):
     def test_verify_reruns_clean(self):
-        proc = subprocess.run([sys.executable, str(ROOT / "scripts" / "6c5bb3d6" / "verify.py")],
-                              capture_output=True, text=True, cwd=str(ROOT))
-        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
-        report = json.loads((SITE / "report.json").read_text(encoding="utf-8"))
-        # eleven checks: C1-C10 over the published boards plus C11, the shared publication gate
-        self.assertEqual(len(report["checks"]), 11)
-        self.assertEqual({c["id"] for c in report["checks"]},
-                         {f"C{i}" for i in range(1, 12)})
-        self.assertIn("verification: 11 checks", proc.stdout)
-        for c in report["checks"]:
-            if c["id"] != "C11":
-                self.assertNotEqual(c["status"], "fail", c["id"])
+        """The harness re-runs, and re-running must not disturb the committed evidence.
+
+        verify.py rewrites verification.json / report.json with a fresh timestamp, and the page
+        tests that run afterwards compare the committed HTML against those files. Restoring them
+        here removes that ordering hazard (it made the shared CI gate intermittently red) and the
+        substantive comparison below is a stronger determinism claim than byte equality.
+        """
+        targets = [ROOT / "data" / "6c5bb3d6" / "verification.json", SITE / "report.json"]
+        saved = {t: t.read_bytes() for t in targets}
+        before = {t: json.loads(saved[t]) for t in targets}
+        try:
+            proc = subprocess.run([sys.executable, str(ROOT / "scripts" / "6c5bb3d6" / "verify.py")],
+                                  capture_output=True, text=True, cwd=str(ROOT))
+            self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+            report = json.loads((SITE / "report.json").read_text(encoding="utf-8"))
+            # eleven checks: C1-C10 over the published boards plus C11, the shared publication gate
+            self.assertEqual(len(report["checks"]), 11)
+            self.assertEqual({c["id"] for c in report["checks"]}, {f"C{i}" for i in range(1, 12)})
+            self.assertIn("verification: 11 checks", proc.stdout)
+            for c in report["checks"]:
+                if c["id"] != "C11":
+                    self.assertNotEqual(c["status"], "fail", c["id"])
+            # same substantive result as the committed evidence, ignoring timestamps
+            for t in targets:
+                again = json.loads(t.read_text(encoding="utf-8"))
+                for key in ("generated_utc", "fetched_utc", "ran_utc"):
+                    again.pop(key, None)
+                expected = dict(before[t])
+                for key in ("generated_utc", "fetched_utc", "ran_utc"):
+                    expected.pop(key, None)
+                if "official_vrs" in expected and isinstance(expected["official_vrs"], dict):
+                    expected["official_vrs"] = {k: v for k, v in expected["official_vrs"].items()
+                                                if k != "fetched_utc"}
+                    again["official_vrs"] = {k: v for k, v in again["official_vrs"].items()
+                                             if k != "fetched_utc"}
+                self.assertEqual(again, expected, f"{t.name} is not reproducible")
+        finally:
+            for t, blob in saved.items():
+                t.write_bytes(blob)
 
     def test_rejected_sources_are_recorded_with_reasons(self):
         research = load(RESEARCH)
