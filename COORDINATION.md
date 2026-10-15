@@ -4529,3 +4529,42 @@ Environment note: Arena pins this session to branch `arena/f28afd9e-maltaproj2`;
 - **PR #115 merged:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/115 at 2026-10-15T10:27:52Z, merge commit `7dede3b57928e4d2bcbe9ce72476b08fe61760d4`; PR check run 38720229190 success. Post-merge `Verify and publish dashboard` run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38720446144 **success** (build + deploy + live public verification); `pages-build-deployment` 38720446066 success.
 - The last red `unresolved picks (7177d07f)` run (38719784386) ran on `3126c32`, before the fix; its next `workflow_run`/cron execution exercises the repaired contract. If it still fails, the next session should check its annotations first (no log access from the sandbox).
 - **Task status:** `T-STRAT-F28AFD9E` **done**; `T-CIFIX-F28AFD9E` **done** (update-data + Pages verify green; 7177d07f fix merged, awaiting next scheduled run); `T-FRONT-F28AFD9E` **done** (integrated additively into 778756a1's canonical landing). Flagged items are published at `strategy/unresolved.html#flagged` and are **needs review** (non-blocking).
+---
+
+## Session `6c5bb3d6` — day-1 upset review, contrarian leaderboard strategy, gap-resolution cross-check, mobile "start here" entry point (2026-10-15 11:15 UTC, append-only)
+
+Environment note: Arena pins this session to branch `arena/6c5bb3d6-maltaproj2`; the `session-<id>/<task>`
+naming cannot be used here, so all commits and pushes stay on `arena/6c5bb3d6-maltaproj2`.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| `T-CONTRARIAN-6C5BB3D6`: (1) review TWC 2026 day-1 results incl. the 9z 2-0 Aurora upset against the HotSpawn crowd split, and publish a **contrarian-but-not-stupid leaderboard strategy** (differential-EV vs crowd pick %, roster-change / onboarding / rest intel for Aurora, NiP, Falcons, Legacy, 9z, BetBoom, PARIVISION); (2) cross-check that **every currently pickable CS2 fixture has a pick**, resolving the 5 rows the strict canonical board leaves blank (WROTBERRY→WBT, RoundsGG→ROUNDS) from official evidence only; (3) publish a mobile-first `climb/` section with executive summary + in-site links to every updated picks list, a separate **Unresolved picks & limitations** page, flagged items and method; (4) 4-hourly automated refresh | in progress | 6c5bb3d6 | 2026-10-15 11:15 | `climb/**` (new), `scripts/6c5bb3d6/**`, `data/6c5bb3d6/**`, `tests/test_6c5bb3d6.py`, `.github/workflows/climb-6c5bb3d6.yml`, `COORDINATION.md` (this section only); additive integration handoff only: one entry in the `scripts/stage_site.py` section list, one stamp_map row + one button in the executive-summary block of `scripts/build_site.py`, one `README.md` table row |
+
+### Non-overlap & coordination log (`6c5bb3d6`)
+- Read `COORDINATION.md` before starting. `94b3d48a` (PR #110, merged) already owns every-match gap
+  resolution at `audits/94b3d48a/**`; `3cd9787c` owns `data/live/**` + `live/**`; `c64a5e19` owns the
+  canonical `picks-every-match/**`; `b5436cf0` owns `picks-all/**`; `fe803b80` owns `board/**`;
+  `b1fb1465` owns `exec/**`; `7177d07f` owns `unresolved/**`. **None of those files are edited here.**
+  They are read-only inputs, and `climb/` links to them rather than duplicating them.
+- New, uniquely named paths only: `climb/**`, `scripts/6c5bb3d6/**`, `data/6c5bb3d6/**`,
+  `tests/test_6c5bb3d6.py`, `.github/workflows/climb-6c5bb3d6.yml`. The only shared-file touches are
+  the two additive integration-handoff entries named above (established pattern: `b5436cf0`,
+  `94b3d48a`, `961e163a` each added one additive line/row), plus this append-only section.
+- Verified official sources read this session (all URLs published per row in `climb/`):
+  Valve VRS `standings_global_2026_10_05.md` via api.github.com (Legacy #2 1931, Falcons #6 1843,
+  FURIA #7 1829, Aurora #9 1716 roster Jimpphat/kyxsan/Wicadia/woxic/XANTARES, BETBOOM #11 1596,
+  9z #17 1543, NiP #18 1534, PARIVISION #36 1411, WBT #60 1201, ROUNDS #310 548, WBT Academy #130 911);
+  HLTV event 9332 (Elisa BreakOut Series 2 groups/match ids), HLTV match 2399418 (WBT 13-5 EAC, WBT
+  lineup = official VRS WBT roster 5/5), HLTV match 2399425 (HAVU vs ROUNDS, Bo1 LAN, no two-sided
+  book price on page), HLTV news 45718 (9z beat Aurora 2-0, luchov 1.61, +62 VRS), HLTV news 45723
+  (day-1 wrap: four 2-0 sweeps), HLTV news 45082 (Aurora rebuild: kyxsan/Jimpphat/ash in, MAJ3R/
+  soulfly/Fabre out); fieldlevelmedia day-1 scores (13-11 Inferno, 13-1 Nuke; 16-13 OT Ancient,
+  13-6 Dust II); hotspawn day-1 review + day-2 preview (NiP added Krimbo; Falcons karrigan
+  overperforming); strafe/pley.gg/cs2news Aurora rebuild timeline + coach ash interview;
+  sportsgambler Elisa lines (HAVU -476/ROUNDS +300, Phantom -1250/ROUNDS +600, Voca -233/HAVU +175,
+  Phantom -263/HAVU +190); Polymarket CS2 Elisa BreakOut Series #2 Group B quotes; egamersworld
+  HAVU-Rounds H2H 6-0 and placeholder 1.80/1.80 (rejected); stavka.tv Legacy-FURIA (Legacy won both
+  2026 H2H: EWC 2-1, Suzhou 2-0; FURIA 1.70 / Legacy 2.10) and metaratings PARIVISION-BetBoom
+  (BetBoom leads current-roster H2H 2-0; PARI 1.79-1.83 / BB 1.91-2.04).
+- HotSpawn is fixture discovery + settlement only. Its crowd pick % is published **for reference and
+  for the differential-EV leaderboard calculation only** and is never an input to any win probability.
