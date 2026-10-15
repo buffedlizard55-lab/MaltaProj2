@@ -4471,3 +4471,17 @@ Environment note: Arena pins this session to branch `arena/94b3d48a-maltaproj2`;
   5. **`F-05` (Stand-ins & Market-vs-VRS Split):** Documented HLTV-disclosed substitutes (`qx` for `Fessor` on EAC; `cej0t` for `Kunai` on Phantom) and the 52.6% Phantom (market) vs 52.2% Voca (VRS) coinflip split on `#1080285`.
   6. **All 17 open upcoming lobby matches resolved:** 8 Tier 1 Featured Primary Bookmakers (`fallback_invoked=False`), 5 Tier 2 Fallback Esportsbook/Alias-Verified (`1080281`, `1080283`, `1080285`, `1080287`, `1080290`), and 4 Tier 3 Originated Official Valve VRS + HLTV + Elo (`1080286`, `1080288`, `1081120`, `1080289`). Every table row has official `https://` source links; all 532 unit tests and `scripts/stage_site.py` pass with 0 broken links.
 
+
+---
+
+## Session `f28afd9e` — day-1 upset review, contrarian (leaderboard) picks for every lobby match, CI repair, simpler mobile front door (claim 2026-10-15 10:10 UTC)
+
+Environment note: Arena pins this session to branch `arena/f28afd9e-maltaproj2`; the `session-<id>/<task>` naming cannot be used here.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| `T-STRAT-F28AFD9E`: verified review of TWC 2026 day 1 (9z 2-0 Aurora upset, Aurora roster/onboarding context), a contrarian-but-not-stupid leaderboard strategy layer on top of the existing market/model probabilities, a pick for every CS2 match listed on the HotSpawn lobby, a separate unresolved-picks + limitations section, 4-hourly refresh | in progress | f28afd9e | 2026-10-15 10:10 | `scripts/f28afd9e/**`, `data/f28afd9e/**`, `strategy/**`, `tests/test_f28afd9e.py`, `.github/workflows/strategy-f28afd9e.yml` |
+| `T-CIFIX-F28AFD9E`: repair the three red pipelines on `main` (update-data validation, 7177d07f contract tests, Pages public-verify step) without relaxing source/arithmetic checks | in progress | f28afd9e | 2026-10-15 10:10 | narrowly: failing test files / check script only, each logged below |
+| `T-FRONT-F28AFD9E` (integration): simplify the landing executive summary so a phone user sees one "picks" button and one "unresolved" button first; other boards collapsed | in progress | f28afd9e | 2026-10-15 10:10 | `scripts/build_site.py` (executive summary block only), `scripts/stage_site.py` (one additive entry), regenerated root HTML, README.md (one row), COORDINATION.md append-only |
+
+- No other claim is in progress (latest sessions 3faf40e8, 94b3d48a, 8d1d91ad all done; PRs #98/#107 idle >24 h and not touched).
