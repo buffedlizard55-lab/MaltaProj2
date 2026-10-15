@@ -2,8 +2,9 @@
 
 **Live dashboard: https://buffedlizard55-lab.github.io/MaltaProj2/**
 
-**Start with [source-linked CS2 picks](https://buffedlizard55-lab.github.io/MaltaProj2/cs2.html).**
-The landing executive summary separately lists every unresolved strict row, with a blank probability
+**Start with [all CS2 picks](https://buffedlizard55-lab.github.io/MaltaProj2/picks-every-match/).**
+Use the [unresolved picks & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/picks-every-match/unresolved.html) page for every unsupported row and its source-attempt ledger.
+The landing executive summary links the canonical picks and unresolved list, with a blank probability
 and its limitation. Expanded model boards are research with different standards, not verified
 coverage. See the [fallback-source audit](https://buffedlizard55-lab.github.io/MaltaProj2/audits/5cd24fb4/)
 for disputed identities and the unsupported use of other LFO rosters as a proxy for LFO 10.
@@ -124,3 +125,18 @@ Regression tests: `python -m unittest tests.test_verify_7cd2e67a -v`. They do **
 and are not universally re-verified by this session. LoL inventory is retained,
 but current primary-bookmaker LoL probabilities remain blank in this CS2-focused
 pipeline. Full fixture coverage does not mean every match has a confirmed price.
+
+## 15 October 2026 integration audit
+
+One canonical mobile entry point is published at `picks-every-match/`; alternative boards
+remain available under collapsed research navigation, not as competing recommendations.
+Source attempts are attached only to rows without an accepted market line. HLTV first,
+then esportsbooks/exchange evidence, then an eligible uniquely identified Valve rating pair;
+unsupported rows retain blank probabilities and a limitation, never an invented percentage.
+
+[Flagged for Review: source and repository audit](https://buffedlizard55-lab.github.io/MaltaProj2/audits/3faf40e8/)
+records the ROUNDS roster gap, WBT/Academy conflict, blocked pages, cached-render limitations,
+and restricted GitHub Pages-settings permissions. The four-hour collector preserves source
+observations; a rebuild does not make old odds fresh. Unit contracts, primary-response replay
+and 320/390/768/1280px browser checks gate the checked Pages artifact. Archived boards are
+not certified by the canonical verifier and never override its blank rows.

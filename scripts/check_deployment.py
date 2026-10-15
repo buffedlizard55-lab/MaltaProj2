@@ -50,9 +50,10 @@ for attempt in range(12):
     try:
         root = public_get('index.html')
         assert 'Open all CS2 picks' in root and 'picks-every-match/index.html' in root
+        assert 'picks-every-match/unresolved.html' in root and 'canonical-unresolved' in root
         live = json.loads(public_get('data/c64a5e19/board.json'))
         assert live['policy'] == 'verified-every-match-v3'
-        for name in ('index', 'picks', 'inventory', 'flagged', 'method'):
+        for name in ('index', 'picks', 'inventory', 'unresolved', 'flagged', 'method'):
             body = public_get('picks-every-match/' + name + '.html')
             assert 'data-policy="verified-every-match-v3"' in body, name
             assert 'name="viewport"' in body, name
@@ -60,6 +61,10 @@ for attempt in range(12):
                 assert body.count('data-match data-search=') == len(live['open'])
                 for row in live['open']:
                     assert 'id="m-' + row['fixture_id'] + '"' in body
+        unresolved = public_get('picks-every-match/unresolved.html')
+        assert 'Source attempts &amp; next steps' in unresolved or not live['summary']['tier_d_none']
+        audit = json.loads(public_get('audits/3faf40e8/sources.json'))
+        assert audit['session'] == '3faf40e8' and audit['findings']
         verification = json.loads(public_get('data/c64a5e19/verification.json'))
         assert not verification['failures'], verification['failures']
         assert verification['official_inputs']['fixture_rows_checked'] == len(live['inventory'])
@@ -68,5 +73,5 @@ for attempt in range(12):
         if attempt == 11:
             raise RuntimeError('Public every-match dashboard did not pass semantic checks') from exc
         time.sleep(10)
-print('PASS: live root executive summary and all five every-match pages; policy, source replay, inventory and picks agree')
+print('PASS: live root executive summary and all six every-match pages; policy, source replay, inventory and picks agree')
 print('Live every-match summary:', json.dumps(live['summary'], sort_keys=True))

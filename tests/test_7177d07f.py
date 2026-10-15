@@ -48,6 +48,14 @@ class BoardContracts(unittest.TestCase):
 
     def test_every_open_cs2_fixture_is_present_exactly_once(self):
         generated = str((self.board.get("inventory_source") or {}).get("generated_at_utc") or "")
+        # This historical board is refreshed independently. Comparing it with a
+        # different day's root inventory is not a coverage verification.
+        current = str(self.inventory.get("generated_at_utc") or "")
+        board_ids = [r["fixture_id"] for r in self.rows]
+        self.assertEqual(len(board_ids), len(set(board_ids)), "duplicate fixture ids")
+        self.assertTrue(generated, "archive must identify its inventory capture")
+        if generated != current:
+            self.skipTest(f"Different inventory captures: archive {generated}, root {current}; canonical replay tests enforce current coverage")
         open_ids = {
             str(m.get("fixture_id"))
             for m in (self.inventory.get("matches") or [])

@@ -73,25 +73,15 @@ def pct(value):
 # available from Research archive rather than crowding every mobile header.
 NAV = [
     ("index.html", "Dashboard"),
-    ("board/picks.html", "Alternate estimates"),
+    ("picks-every-match/index.html", "All CS2 picks"),
+    ("probabilities.html", "Bookmaker probabilities"),
     ("cs2.html", "Bookmaker lines"),
-    ("picks-every-match/index.html", "Verified CS2 picks"),
     ("tournaments.html", "Tournaments"),
     ("flagged.html", "Flagged for review"),
     ("methodology.html", "Method &amp; sources"),
+    ("board/picks.html", "Alternate research"),
+    ("summary/index.html", "Sources hub"),
     ("research.html", "Research archive"),
-    # integration link added by session 6ddde224 (T-COVERAGE-INTEG, single additive anchor,
-    # documented in COORDINATION.md): full-lobby coverage board with external bookmaker/exchange
-    # lines, originated Bradley-Terry estimates or a blank+flagged row, plus a repo-review page.
-    # Kept during 53220a1b final integration; the pre-compaction historical session entries stay
-    # reachable from Research archive (research.html), per the compact-NAV policy on main.
-    ("probabilities.html", "Bookmaker probabilities"),
-    # integration link requested by session c0e223d3 (logged in COORDINATION.md) and added by the
-    # 53220a1b final integration: the mobile "where the picks are" verification hub.
-    ("summary/index.html", "Where the picks are"),
-    # Session b1fb1465 deliberately adds NO header entry: tests/test_58cb2600.py caps the compact
-    # header at 10 anchors, and that section is reachable from the landing page's executive-summary
-    # block and from the card list below it (still a single additive, documented integration edit).
 ]
 
 
@@ -152,8 +142,8 @@ def executive_summary_html():
     )
     stamp_map = [
         ("picks-all/index.html", "Complete picks — every match",
-         "Pick + win probability for every open CS2 match on the pick'em lobby (incl. low-tier), "
-         "each number linked to its source. The complete updated picks list.",
+         "Alternate market and research estimates for open CS2 matches, "
+         "using different eligibility rules. Not the canonical current picks list.",
          _board_stamp("data/b5436cf0/board.json", "generated_utc")),
         ("picks-all/unresolved.html", "Unresolved picks + limitations",
          "Matches no source can settle yet: what was tried, why it cannot be resolved, and the "
@@ -204,14 +194,11 @@ def executive_summary_html():
             f'<li style="margin:8px 0"><a href="{href}"><strong>{esc(title)}</strong></a>'
             f'&mdash; {esc(blurb)}{when}</li>')
     return f"""
-<div class="cards" id="where-the-picks" style="display:block;background:#12203a;border:1px solid #2b3752;border-radius:14px;padding:14px;margin:16px 0">
-  <h2 style="margin-top:0">Executive summary — where the picks are</h2>
+<div class="cards" id="primary-bookmaker-coverage" style="display:block;background:#12203a;border:1px solid #2b3752;border-radius:14px;padding:14px;margin:16px 0">
+  <h2 style="margin-top:0">Primary-bookmaker-only coverage</h2>
   <p>{coverage}</p>
-  <p><a class="btn" href="cs2.html">Start here: source-linked CS2 picks</a>
-     <a class="btn" href="picks-all/index.html">Complete picks · all matches</a>
-     <a class="btn ghost" href="#unresolved-picks">Unresolved matches</a>
-     <a class="btn ghost" href="picks-all/unresolved.html">Unresolved + limitations (complete list)</a>
-     <a class="btn ghost" href="board/picks.html">Expanded picks · models included</a></p>
+  <p><a href="cs2.html">Inspect the primary-bookmaker tables</a> ·
+     <a href="picks-every-match/index.html">Start here: source-linked CS2 picks</a></p>
   <p class="note">Fixture capture: {esc(fmt_time(lines.get('fixture_list_collected_at_utc')) or 'unverified')}. 
   Odds collection: {esc(fmt_time(lines.get('odds_collected_at_utc')) or 'unverified')}.
   These are snapshots, not streaming odds. Check each quote time before using a pick.</p>
@@ -451,21 +438,19 @@ def main() -> int:
 External betting lines come first. For uncovered matches only, we try verified Valve ratings.
 Missing or ambiguous evidence stays blank — never guessed.</p>
 <p><a class="btn" href="picks-every-match/index.html">Open all CS2 picks →</a>
-<a class="btn ghost" href="picks-every-match/flagged.html">Flagged for Review</a></p>
+<a class="btn ghost" href="picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a></p>
 <div class="cards">{pick_counts}</div>
 <p class="note">Counts at {esc(pick_time or "unverified observation time")}.
 Not a live feed: the picks page hides expired estimates and locked picks automatically.
 <a href="https://play.hotspawn.com/lobby">Official fixture source</a>.</p>
-<p id="executive-summary-b1fb1465"><strong>Second, independent executive summary (session b1fb1465).</strong>
-<a href="exec/index.html">exec/index.html</a> answers the same requirement from its own lobby read: a pick
-and a win probability for every open CS2 fixture, with a separate
-<a href="exec/unresolved.html">Unresolved picks &amp; limitations</a> section that lists what was tried per
-fixture (HLTV first, then esportsbooks and esports betting lines, then the documented Valve VRS fallback),
-the HTTP status every source answered with, and every quote refused for a time or naming disagreement. At
-its own 2026-10-14T04:56:32Z snapshot it resolved 28 of 28 open fixtures &mdash; 25 from a two-way
-bookmaker price (Pinnacle, Bovada, Melbet/1xBet platform, Thunderpick via bo3.gg) and 3 from the Kalshi
-exchange order book only &mdash; where the strict tables above stay blank. Those counts belong to that
-section's snapshot and are never merged into the numbers above.</p>
+<h3 id="canonical-unresolved">Unresolved picks &amp; limitations</h3>
+<p><strong>{esc(pick_summary.get('tier_d_none', '—'))} open fixtures remain unverified</strong> in this snapshot.
+No eligible market line or uniquely identified, current rating pair supports a pick for them.
+<a href="picks-every-match/unresolved.html">Open the dedicated unresolved list</a> for every affected match,
+HLTV access results, esportsbook/exchange attempts, rating eligibility and the exact limitation.</p>
+<p class="note">Source collection: {esc(pick_board.get('collected_to_utc') or 'unverified')}.
+The four-hour capture is automatic; build time alone does not make a quote fresh.
+Model fallbacks are estimates, not verified win probabilities.</p>
 </div></section>
 <div class="archive-grid">
 <div class="card"><h2><a href="picks-every-match/picks.html">Picks & probabilities</a></h2><p>Search by team or tournament. Market, model or unverified is labelled on every mobile-friendly row.</p></div>
@@ -477,7 +462,8 @@ section's snapshot and are never merged into the numbers above.</p>
 New listed matches are included automatically. GitHub scheduling and source availability are best effort;
 source failures and missing odds are published on <a href="picks-every-match/flagged.html">Flagged for Review</a>.
 HotSpawn’s crowd percentages are never used to estimate a winner.</p>
-<h2>Additional categories</h2>
+<details class="archive"><summary>Alternate research &amp; historical boards — different evidence standards</summary>
+<p id="executive-summary-b1fb1465"><a href="exec/index.html">Alternate executive summary</a> · <a href="exec/unresolved.html">Alternate unresolved research</a>. These use their own snapshot and eligibility rules; they do not override blanks on the canonical board.</p>
 <p><a href="board/picks.html">Alternate full-coverage estimates</a> · <a href="coverage/index.html">Coverage research</a> ·
 <a href="ourline/index.html">Shared-engine research view</a> · <a href="live/index.html">Live coverage research</a> ·
 <a href="fresh/index.html">Fresh source snapshot</a></p>
@@ -488,6 +474,8 @@ Earlier inferred sibling-roster and ambiguous-slot picks have been removed from 
 <a href="picks-every-match/flagged.html">review the limitations</a>.</p>
 <p class="note">Manual source review: <a href="https://github.com/ValveSoftware/counter-strike_regional_standings">Official Valve standings</a> ·
 <a href="verify/8e7a652d/index.html">Independent market verification</a>. Each alternate board has its own observation time and eligibility rules; none overrides blanks on this source-verified board.</p>
+</details>
+<p><a href="audits/3faf40e8/index.html">Flagged for Review: source research &amp; repository review</a> · <a href="audits/dc741cc1/index.html">Earlier research</a> · <a href="picks-every-match/flagged.html">Flagged for Review</a></p>
 <details class="archive"><summary>Primary-bookmaker-only coverage and table</summary>
 {executive_summary_html()}
 <h2>Every CS2 match currently open for picks — primary sources only</h2>

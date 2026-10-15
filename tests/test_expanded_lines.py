@@ -109,6 +109,13 @@ class TestParsing(unittest.TestCase):
         if not path.exists():
             self.skipTest("no committed Pinnacle sample")
         rows = json.loads(path.read_text(encoding="utf-8"))
+        # Collector bounds large evidence with an explicit envelope. Verify the
+        # retained real rows, not the envelope's string keys.
+        if isinstance(rows, dict):
+            self.assertTrue(rows.get("_trimmed_list"))
+            self.assertGreaterEqual(rows["_original_length"], len(rows["_items"]))
+            rows = rows["_items"]
+        self.assertIsInstance(rows, list)
         matchups = [m for m in rows if m.get("type") == "matchup"]
         self.assertTrue(matchups)
         for m in matchups:

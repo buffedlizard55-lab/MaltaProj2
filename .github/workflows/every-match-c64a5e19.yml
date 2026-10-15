@@ -6,12 +6,14 @@ name: every-match picks (c64a5e19)
 
 on:
   push:
-    branches: ['main']
+    branches: ['main', 'arena/3faf40e8-maltaproj2']
     paths:
       - 'scripts/c64a5e19/**'
       - 'scripts/f7279a54/**'
       - 'scripts/ae75c5c3/verify_source_payloads.py'
       - 'tests/test_c64a5e19.py'
+      - 'tests/test_dc741cc1.py'
+      - 'tests/test_3faf40e8.py'
       - '.github/workflows/every-match-c64a5e19.yml'
   schedule:
     - cron: '12 */4 * * *'
@@ -43,8 +45,10 @@ jobs:
         run: python3 scripts/c64a5e19/collect.py
       - name: Build every-match board (re-derives every number from the snapshot)
         run: python3 scripts/c64a5e19/build.py
+      - name: Install verification dependencies
+        run: pip install -r scripts/requirements.txt
       - name: Tests
-        run: python3 -m unittest tests.test_c64a5e19 tests.test_479ef53e -v
+        run: python3 -m unittest tests.test_c64a5e19 tests.test_479ef53e tests.test_dc741cc1 tests.test_3faf40e8 -v
       - name: Commit and push (rebase before every push)
         env:
           REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}

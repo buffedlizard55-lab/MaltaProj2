@@ -197,11 +197,38 @@ class TestPicksSite(unittest.TestCase):
     def test_builder_is_deterministic(self):
         """Re-running the builder twice must produce byte-identical pages (excluding the timestamp
         of the *source* data, which is not rewritten)."""
-        before = open(os.path.join(ROOT, "picks", "cs2.html"), encoding="utf-8").read()
-        subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "picks_build.py")],
-                       check=True, capture_output=True)
-        after = open(os.path.join(ROOT, "picks", "cs2.html"), encoding="utf-8").read()
-        self.assertEqual(before, after)
+        # A committed artifact is not a first build at the same wall clock.
+        # Rebuild twice from identical inputs and an explicit evaluation time in
+        # an isolated output tree; never mutate another section during tests.
+        import importlib.util
+        import tempfile
+        from unittest.mock import patch
+        from datetime import datetime, timezone
+        spec = importlib.util.spec_from_file_location("isolated_picks_build", os.path.join(ROOT, "scripts", "picks_build.py"))
+        builder = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(builder)
+        real_load = builder.load
+        fixed = datetime(2026, 10, 14, 12, tzinfo=timezone.utc)
+        class Clock(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return fixed
+        with tempfile.TemporaryDirectory() as tmp:
+            os.makedirs(os.path.join(tmp, "data"))
+            with patch.object(builder, "ROOT", tmp), patch.object(builder, "OUT", os.path.join(tmp, "picks")), \
+                 patch.object(builder, "load", real_load), patch.object(builder, "datetime", Clock), \
+                 patch.object(builder, "check_links", return_value=[]):
+                # Real source inputs resolve against the repository, not tmp.
+                def source_load(rel, default=None):
+                    path = os.path.join(ROOT, rel)
+                    return load(path) if os.path.exists(path) else default
+                with patch.object(builder, "load", source_load):
+                    self.assertEqual(builder.main(), 0)
+                    before = open(os.path.join(tmp, "picks", "cs2.html"), encoding="utf-8").read()
+                    self.assertEqual(builder.main(), 0)
+                    after = open(os.path.join(tmp, "picks", "cs2.html"), encoding="utf-8").read()
+                    self.assertEqual(before, after)
+
 
 
 if __name__ == "__main__":

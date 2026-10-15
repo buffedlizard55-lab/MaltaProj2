@@ -94,6 +94,10 @@ class BoardData(unittest.TestCase):
 
     def test_board_covers_research_and_upstream_open_sets(self):
         upstream = load(ROOT / "data" / "fe803b80" / "board.json")
+        stamp = self.board.get("upstream_stamps", {}).get("fe803b80")
+        self.assertTrue(stamp, "archive must identify its upstream capture")
+        if stamp != upstream.get("generated_utc"):
+            self.skipTest(f"Different upstream captures: archive {stamp}, upstream {upstream.get('generated_utc')}; canonical replay tests enforce current coverage")
         upstream_ids = {str(r["fixture_id"]) for r in upstream["open"]}
         board_ids = {r["fixture_id"] for r in self.rows}
         missing = upstream_ids - board_ids
