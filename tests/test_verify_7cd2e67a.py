@@ -193,7 +193,16 @@ class PublishedArithmetic(unittest.TestCase):
             if pub["basis"] == "market":
                 market += 1
                 ps = []
-                for q in row["quotes"]:
+                # Consensus includes one eligible quote per source, not rejected
+                # live/stale candidates retained in the audit's row["quotes"].
+                accepted = row["market"]["sources_detail"]
+                self.assertEqual(len(accepted), row["market"]["n_sources"])
+                self.assertEqual(len({q["source_key"] for q in accepted}), len(accepted))
+                for q in accepted:
+                    self.assertTrue(any(all(q.get(k) == raw.get(k) for k in
+                        ("source_key", "source_event_id", "decimal_odds_a", "decimal_odds_b"))
+                        and not raw.get("market_is_live") and not raw.get("stale")
+                        for raw in row["quotes"]), row["fixture_id"])
                     pa, pb, ov = devig(q["decimal_odds_a"], q["decimal_odds_b"])
                     self.assertEqual(pa, round(q["prob_a"], 4), row["fixture_id"])
                     self.assertEqual(pb, round(q["prob_b"], 4), row["fixture_id"])
