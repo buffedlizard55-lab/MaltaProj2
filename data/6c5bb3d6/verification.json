@@ -3,35 +3,37 @@
  "task": "T-VERIFY-6C5BB3D6 independent line-by-line verification",
  "gate": {
   "session": "6c5bb3d6",
-  "ran_utc": "2026-10-15T12:54:18Z",
+  "ran_utc": "2026-10-15T13:27:18Z",
   "command": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests",
   "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
-  "returncode": 0,
-  "green": true,
-  "failing_tests": [],
+  "returncode": 1,
+  "green": false,
+  "failing_tests": [
+   "test_verify_reruns_clean"
+  ],
   "counts": {
    "ran": 584,
-   "ok": true,
-   "skipped": 5,
-   "failures": 0,
+   "ok": false,
+   "skipped": 0,
+   "failures": 1,
    "errors": 0
   },
   "tail": [
-   "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
-   "........s................................................./home/runner/work/MaltaProj2/MaltaProj2/tests/test_verify_8e7a652d.py:81: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/runner/work/MaltaProj2/MaltaProj2/verify/8e7a652d/index.html' mode='r' encoding='utf-8'>",
-   "  html = open(page, encoding=\"utf-8\").read()",
-   "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
-   ".../home/runner/work/MaltaProj2/MaltaProj2/tests/test_verify_8e7a652d.py:99: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/runner/work/MaltaProj2/MaltaProj2/index.html' mode='r' encoding='utf-8'>",
-   "  html = open(os.path.join(ROOT, \"index.html\"), encoding=\"utf-8\").read()",
-   "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
-   ".",
+   "The harness re-runs, and re-running must not disturb the committed evidence.",
    "----------------------------------------------------------------------",
-   "Ran 584 tests in 5.715s",
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/MaltaProj2/MaltaProj2/tests/test_6c5bb3d6.py\", line 404, in test_verify_reruns_clean",
+   "    self.assertEqual(again, expected, f\"{t.name} is not reproducible\")",
+   "AssertionError: {'ses[142 chars]2:54:25Z', 'command': '/opt/hostedtoolcache/Py[83772 chars]se}]} != {'ses[142 chars]2:54:18Z', 'command': '/opt/hostedtoolcache/Py[84214 chars]se}]}",
+   "Diff is 193484 characters long. Set self.maxDiff to None to see it. : verification.json is not reproducible",
    "",
-   "OK (skipped=5)"
+   "----------------------------------------------------------------------",
+   "Ran 584 tests in 5.691s",
+   "",
+   "FAILED (failures=1, skipped=5)"
   ]
  },
- "generated_utc": "2026-10-15T12:54:18Z",
+ "generated_utc": "2026-10-15T13:27:18Z",
  "verified_board": {
   "file": "data/f28afd9e/board.json",
   "generated_utc": "2026-10-15T12:05:27Z",
@@ -49,7 +51,7 @@
  },
  "official_vrs": {
   "snapshot": "2026_10_05",
-  "fetched_utc": "2026-10-15T12:54:11Z",
+  "fetched_utc": "2026-10-15T13:27:12Z",
   "http_status": 200,
   "teams_parsed": 349,
   "human_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
@@ -61,16 +63,17 @@
   "match_count": 78,
   "pickable_at_board_instant": 12
  },
- "quotes_re_derived": 242,
+ "quotes_re_derived": 248,
  "summary": {
   "checks": 11,
   "by_status": {
-   "pass": 10,
-   "info": 1
+   "pass": 9,
+   "info": 1,
+   "fail": 1
   },
-  "irregularities": 16,
+  "irregularities": 17,
   "by_severity": {
-   "high": 1,
+   "high": 2,
    "info": 7,
    "low": 2,
    "medium": 2,
@@ -107,7 +110,7 @@
    "id": "C3",
    "name": "No-vig arithmetic re-derived from every retained raw quote",
    "status": "pass",
-   "detail": "17/17 rows re-derived from 242 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 0 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct",
+   "detail": "17/17 rows re-derived from 248 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 0 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct",
    "evidence": [
     "data/live/quotes.json",
     "data/fe803b80/snapshot.json",
@@ -122,8 +125,8 @@
      "fixture_id": "1079440",
      "match": "MIBR vs BC.Game",
      "published_market_prob_a": 0.538554,
-     "rederived_mean_prob_a": 0.537854,
-     "rederived_spread": 0.063314,
+     "rederived_mean_prob_a": 0.536701,
+     "rederived_spread": 0.05409,
      "quotes": [
       {
        "source": "pinnacle",
@@ -172,13 +175,13 @@
        "event_id": "31805765",
        "quote_team_a": "MIBR",
        "quote_team_b": "BC.Game",
-       "decimal_a": 1.6667,
-       "decimal_b": 2.15,
-       "raw_side_a_prob": 0.563314,
+       "decimal_a": 1.69,
+       "decimal_b": 2.1,
+       "raw_side_a_prob": 0.55409,
        "orientation": "straight",
-       "rederived_prob_a": 0.563314,
+       "rederived_prob_a": 0.55409,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-15T12:33:01Z",
+       "retrieved_utc": "2026-10-15T13:00:18Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -244,8 +247,8 @@
      "fixture_id": "1079442",
      "match": "Heroic vs Envy",
      "published_market_prob_a": 0.6241055,
-     "rederived_mean_prob_a": 0.628469,
-     "rederived_spread": 0.089615,
+     "rederived_mean_prob_a": 0.67225,
+     "rederived_spread": 0.374372,
      "quotes": [
       {
        "source": "pinnacle",
@@ -294,13 +297,13 @@
        "event_id": "31804602",
        "quote_team_a": "Heroic",
        "quote_team_b": "Envy",
-       "decimal_a": 1.6667,
-       "decimal_b": 2.15,
-       "raw_side_a_prob": 0.563314,
+       "decimal_a": 1.4545,
+       "decimal_b": 2.65,
+       "raw_side_a_prob": 0.645633,
        "orientation": "straight",
-       "rederived_prob_a": 0.563314,
+       "rederived_prob_a": 0.645633,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-15T12:33:01Z",
+       "retrieved_utc": "2026-10-15T13:00:18Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -308,13 +311,13 @@
        "event_id": "KXCS2GAME-26OCT150600ENVYHERO",
        "quote_team_a": "Envy",
        "quote_team_b": "Heroic",
-       "decimal_a": 2.7397,
-       "decimal_b": 1.6129,
-       "raw_side_a_prob": 0.37056,
+       "decimal_a": 66.6667,
+       "decimal_b": 1.0204,
+       "raw_side_a_prob": 0.015075,
        "orientation": "swapped",
-       "rederived_prob_a": 0.62944,
+       "rederived_prob_a": 0.984925,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-15T12:33:04Z",
+       "retrieved_utc": "2026-10-15T13:00:21Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -512,8 +515,8 @@
      "fixture_id": "1080281",
      "match": "WROTBERRY vs ENCE",
      "published_market_prob_a": 0.6096044285714285,
-     "rederived_mean_prob_a": 0.578798,
-     "rederived_spread": 0.105258,
+     "rederived_mean_prob_a": 0.592533,
+     "rederived_spread": 0.047021,
      "quotes": [
       {
        "source": "pinnacle",
@@ -542,20 +545,6 @@
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
        "retrieved_utc": "2026-10-15T09:55:09Z",
        "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
-      },
-      {
-       "source": "bovada",
-       "event_id": "32128167",
-       "quote_team_a": "Whitebit Team",
-       "quote_team_b": "Ence",
-       "decimal_a": 1.8333,
-       "decimal_b": 1.9091,
-       "raw_side_a_prob": 0.510127,
-       "orientation": "straight",
-       "rederived_prob_a": 0.510127,
-       "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-15T12:33:01Z",
-       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
        "source": "pinnacle",
@@ -620,7 +609,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.520213,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-15T12:33:04Z",
+       "retrieved_utc": "2026-10-15T13:00:21Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -634,7 +623,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.527027,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131664",
-       "retrieved_utc": "2026-10-15T12:34:01Z",
+       "retrieved_utc": "2026-10-15T13:01:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       }
      ],
@@ -644,8 +633,8 @@
      "fixture_id": "1080282",
      "match": "EAC vs BOJONG",
      "published_market_prob_a": 0.789946,
-     "rederived_mean_prob_a": 0.776554,
-     "rederived_spread": 0.075322,
+     "rederived_mean_prob_a": 0.777773,
+     "rederived_spread": 0.086292,
      "quotes": [
       {
        "source": "pinnacle",
@@ -686,7 +675,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.742857,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-15T12:33:02Z",
+       "retrieved_utc": "2026-10-15T13:00:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -694,13 +683,13 @@
        "event_id": "KXCS2GAME-26OCT151000BOJEAC",
        "quote_team_a": "BOJONG",
        "quote_team_b": "Esport Academy Copenhagen",
-       "decimal_a": 5.5556,
-       "decimal_b": 1.2346,
-       "raw_side_a_prob": 0.181821,
+       "decimal_a": 5.8824,
+       "decimal_b": 1.2121,
+       "raw_side_a_prob": 0.170851,
        "orientation": "swapped",
-       "rederived_prob_a": 0.818179,
+       "rederived_prob_a": 0.829149,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-15T12:33:04Z",
+       "retrieved_utc": "2026-10-15T13:00:21Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -714,7 +703,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.789946,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131776",
-       "retrieved_utc": "2026-10-15T12:34:01Z",
+       "retrieved_utc": "2026-10-15T13:01:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -780,8 +769,8 @@
      "fixture_id": "1080204",
      "match": "Legacy vs FURIA",
      "published_market_prob_a": 0.4269245714285715,
-     "rederived_mean_prob_a": 0.424254,
-     "rederived_spread": 0.020614,
+     "rederived_mean_prob_a": 0.419847,
+     "rederived_spread": 0.024701,
      "quotes": [
       {
        "source": "pinnacle",
@@ -816,13 +805,13 @@
        "event_id": "1638406843",
        "quote_team_a": "Legacy",
        "quote_team_b": "FURIA",
-       "decimal_a": 2.25,
-       "decimal_b": 1.6579,
-       "raw_side_a_prob": 0.424243,
+       "decimal_a": 2.31,
+       "decimal_b": 1.625,
+       "raw_side_a_prob": 0.412961,
        "orientation": "straight",
-       "rederived_prob_a": 0.424243,
+       "rederived_prob_a": 0.412961,
        "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638406843/markets/related/straight",
-       "retrieved_utc": "2026-10-15T12:33:00Z",
+       "retrieved_utc": "2026-10-15T13:00:16Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -830,13 +819,13 @@
        "event_id": "761644915",
        "quote_team_a": "Legacy",
        "quote_team_b": "FURIA",
-       "decimal_a": 2.235,
-       "decimal_b": 1.68,
-       "raw_side_a_prob": 0.429119,
+       "decimal_a": 2.283,
+       "decimal_b": 1.64,
+       "raw_side_a_prob": 0.418047,
        "orientation": "straight",
-       "rederived_prob_a": 0.429119,
+       "rederived_prob_a": 0.418047,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-15T12:33:02Z",
+       "retrieved_utc": "2026-10-15T13:00:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -844,13 +833,13 @@
        "event_id": "KXCS2GAME-26OCT151200FURIALGC",
        "quote_team_a": "FURIA",
        "quote_team_b": "Legacy",
-       "decimal_a": 1.7094,
+       "decimal_a": 1.6807,
        "decimal_b": 2.4691,
-       "raw_side_a_prob": 0.590906,
+       "raw_side_a_prob": 0.594993,
        "orientation": "swapped",
-       "rederived_prob_a": 0.409094,
+       "rederived_prob_a": 0.405007,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-15T12:33:04Z",
+       "retrieved_utc": "2026-10-15T13:00:21Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -864,7 +853,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.429708,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131663",
-       "retrieved_utc": "2026-10-15T12:34:01Z",
+       "retrieved_utc": "2026-10-15T13:01:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       }
      ],
@@ -916,7 +905,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.780622,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-15T12:33:02Z",
+       "retrieved_utc": "2026-10-15T13:00:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -930,7 +919,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.769231,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131777",
-       "retrieved_utc": "2026-10-15T12:34:01Z",
+       "retrieved_utc": "2026-10-15T13:01:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -982,7 +971,7 @@
      "fixture_id": "1080284",
      "match": "EAC vs ENCE",
      "published_market_prob_a": 0.5983604285714286,
-     "rederived_mean_prob_a": 0.602091,
+     "rederived_mean_prob_a": 0.601289,
      "rederived_spread": 0.052962,
      "quotes": [
       {
@@ -1024,7 +1013,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.585591,
        "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638339335/markets/related/straight",
-       "retrieved_utc": "2026-10-15T12:32:59Z",
+       "retrieved_utc": "2026-10-15T13:00:17Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1038,7 +1027,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.580761,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-15T12:33:02Z",
+       "retrieved_utc": "2026-10-15T13:00:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1046,13 +1035,13 @@
        "event_id": "KXCS2GAME-26OCT151400ENCEEAC",
        "quote_team_a": "ENCE",
        "quote_team_b": "Esport Academy Copenhagen",
-       "decimal_a": 2.5,
-       "decimal_b": 1.6949,
-       "raw_side_a_prob": 0.404038,
+       "decimal_a": 2.439,
+       "decimal_b": 1.7094,
+       "raw_side_a_prob": 0.412062,
        "orientation": "swapped",
-       "rederived_prob_a": 0.595962,
+       "rederived_prob_a": 0.587938,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-15T12:33:04Z",
+       "retrieved_utc": "2026-10-15T13:00:21Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1066,7 +1055,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.615385,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131778",
-       "retrieved_utc": "2026-10-15T12:34:01Z",
+       "retrieved_utc": "2026-10-15T13:01:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1160,7 +1149,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.462366,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-15T12:33:02Z",
+       "retrieved_utc": "2026-10-15T13:00:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1174,7 +1163,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.486486,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131779",
-       "retrieved_utc": "2026-10-15T12:34:01Z",
+       "retrieved_utc": "2026-10-15T13:01:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1226,7 +1215,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.769231,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131780",
-       "retrieved_utc": "2026-10-15T12:34:01Z",
+       "retrieved_utc": "2026-10-15T13:01:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1264,23 +1253,9 @@
      "fixture_id": "1080287",
      "match": "Voca vs HAVU",
      "published_market_prob_a": 0.6547608,
-     "rederived_mean_prob_a": 0.666823,
+     "rederived_mean_prob_a": 0.663559,
      "rederived_spread": 0.024658,
      "quotes": [
-      {
-       "source": "kalshi",
-       "event_id": "KXCS2GAME-26OCT160800HAVUVOC",
-       "quote_team_a": "HAVU",
-       "quote_team_b": "Voca",
-       "decimal_a": 3.0769,
-       "decimal_b": 1.4706,
-       "raw_side_a_prob": 0.323386,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.676614,
-       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-15T12:33:04Z",
-       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      },
       {
        "source": "thunderpick",
        "event_id": "131781",
@@ -1292,7 +1267,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.65534,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131781",
-       "retrieved_utc": "2026-10-15T12:34:01Z",
+       "retrieved_utc": "2026-10-15T13:01:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1330,9 +1305,23 @@
      "fixture_id": "1080288",
      "match": "Phantom vs RoundsGG",
      "published_market_prob_a": 0.868486,
-     "rederived_mean_prob_a": 0.871714,
-     "rederived_spread": 0.009683,
+     "rederived_mean_prob_a": 0.879174,
+     "rederived_spread": 0.03307,
      "quotes": [
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT161000RGGPHA",
+       "quote_team_a": "RoundsGG",
+       "quote_team_b": "Phantom",
+       "decimal_a": 10.5263,
+       "decimal_b": 1.1494,
+       "raw_side_a_prob": 0.098444,
+       "orientation": "swapped",
+       "rederived_prob_a": 0.901556,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-15T13:00:21Z",
+       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
       {
        "source": "thunderpick",
        "event_id": "131782",
@@ -1344,7 +1333,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.868486,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131782",
-       "retrieved_utc": "2026-10-15T12:34:01Z",
+       "retrieved_utc": "2026-10-15T13:01:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1434,7 +1423,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.11,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-15T12:33:04Z",
+       "retrieved_utc": "2026-10-15T13:00:21Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1448,7 +1437,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.15942,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131783",
-       "retrieved_utc": "2026-10-15T12:34:01Z",
+       "retrieved_utc": "2026-10-15T13:01:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1500,7 +1489,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.682353,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131784",
-       "retrieved_utc": "2026-10-15T12:34:01Z",
+       "retrieved_utc": "2026-10-15T13:01:19Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -2397,15 +2386,17 @@
   {
    "id": "C11",
    "name": "Shared publication gate (Pages deploys only on a green suite)",
-   "status": "pass",
-   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-15T12:54:18Z: 584 tests, 0 failures, 0 errors, 5 skipped -> GREEN, the site can publish",
+   "status": "fail",
+   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-15T13:27:18Z: 584 tests, 1 failures, 0 errors, 0 skipped -> RED, Pages deployment is blocked",
    "evidence": [
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml",
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/gate.json"
    ],
    "rows_checked": 584,
-   "rows_failed": 0,
-   "failures": []
+   "rows_failed": 1,
+   "failures": [
+    "test_verify_reruns_clean"
+   ]
   }
  ],
  "irregularities": [
@@ -2451,6 +2442,15 @@
     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
     "https://polymarket.com/esports/cs2",
     "https://esports.pallomeri.net/elisa-breakout-series-2-joukkueet-lohkot-havu-ence/"
+   ]
+  },
+  {
+   "id": "IR-C11",
+   "severity": "high",
+   "title": "Shared Pages publication gate is red - the site cannot deploy",
+   "detail": "1 failing test(s): test_verify_reruns_clean. pages.yml gates deployment on the full suite, so this blocks publication for every session.",
+   "links": [
+    "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml"
    ]
   },
   {
