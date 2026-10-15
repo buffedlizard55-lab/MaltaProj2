@@ -4832,3 +4832,11 @@ naming cannot be used here, so all commits and pushes stay on `arena/6c5bb3d6-ma
   C11 now exists to catch it when it happens. (3) Concurrent `pages.yml` runs on `main` can race at the
   deploy step; a failed `Deploy to GitHub Pages` with a green build and a green sibling run means the site
   is live, and the sibling run's `Verify actual public dashboard` step is the evidence to cite.
+
+### Session `4b915077` — TWC day-two results / day-three pick review
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| `T-TWC-DAY2-4B915077`: verify Thunderpick World Championship 2026 day-two results against HLTV; review what they change (and do not change) about the October 16 decider picks; publish a mobile-friendly, source-linked review and surface it from the landing executive summary without changing the market probabilities or unresolved-pick policy | in progress | 4b915077 | 2026-10-15 22:20 | `strategy/day2.html`, `data/4b915077/day2-review.json`, `scripts/4b915077/**`, `tests/test_4b915077.py`, `scripts/build_site.py` (one additive executive-summary link only), generated `index.html`, this appended log only |
+
+- This Arena session is fixed to `arena/4b915077-maltaproj2`; the user-requested alternate `session-<id>/<task>` branch cannot be used in this environment. No active task claim in this scope was found before claiming. Strategy and root landing work by earlier sessions is complete; this is a distinct day-two addendum, not a duplicate or rewrite of their completed task.
