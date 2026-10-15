@@ -1,0 +1,106 @@
+{
+  "session_id": "94b3d48a",
+  "generated_utc": "2026-10-15T08:44:28Z",
+  "source_captured_utc": "2026-10-15T08:29:49Z",
+  "findings_count": 6,
+  "findings": [
+    {
+      "finding_id": "F-01",
+      "severity": "critical_schedule_anomaly",
+      "subject": "Fixture #1080200 — Wildcard vs DENDELE (FRAG University 2026)",
+      "affected_files": [
+        "data/fe803b80/board.json",
+        "data/b5436cf0/board.json",
+        "data/6ddde224/board.json",
+        "data/9a873ea7/hltv_corroboration.json"
+      ],
+      "verified_fact": "Official HLTV match page 2399407 proves Wildcard vs DENDELE was the FRAG University 2026 BO5 Grand Final played on 2026-10-11 at 19:20 UTC (Wildcard won 3:2: Default 1-0, Mirage 4-13, Nuke 13-8, Inferno 8-13, Anubis 16-14). HotSpawn's API row 1080200 carries scheduled_start_time=2026-11-12T00:00:00Z (a 1-month date typo) and is omitted from the rendered lobby cards. Multiple prior boards treated it as an open future match on Nov 12 and published a live pick for DENDELE.",
+      "action_taken": "Moved 1080200 out of active playable picks into the Completed Match Anomaly ledger; left live bookmaker odds blank and linked official HLTV result 2399407.",
+      "official_sources": [
+        "https://www.hltv.org/matches/2399407/wildcard-vs-dendele-frag-university-2026",
+        "https://www.hltv.org/events/9413/frag-university-2026",
+        "https://play.hotspawn.com/lobby"
+      ]
+    },
+    {
+      "finding_id": "F-02",
+      "severity": "new_5of5_roster_corroboration",
+      "subject": "Fixtures #1080286, #1080288, #1080289 — RoundsGG (HotSpawn) = ROUNDS (HLTV #237 / Valve VRS #310)",
+      "affected_files": [
+        "data/c64a5e19/board.json",
+        "data/f7279a54/board.json",
+        "audits/3faf40e8/sources.json",
+        "data/9a873ea7/hltv_corroboration.json"
+      ],
+      "verified_fact": "Prior sessions left RoundsGG unmapped (vrs: None) because HLTV's team profile page showed 4 players + 1 unknown yesterday. Live line-by-line verification of today's official HLTV Elisa BreakOut Series 2 match pages (2399425, 2399427, 2399428) shows HLTV now publishes all 5 starters for ROUNDS (team/12457/rounds, HLTV #237, live Oct 15 VRS #316): Tumppis, Kollo, ykis, Lapa, Monoxx — which is 5/5 character-identical to Valve's 2026-10-05 standing #310 ROUNDS (548 pts).",
+      "action_taken": "Bound RoundsGG to official Valve VRS #310 ROUNDS (548 pts) with 5/5 HLTV match-page lineup proof and originated VRS + Elo probabilities for 1080286 and 1080288 (plus Kalshi + VRS for 1080289).",
+      "official_sources": [
+        "https://www.hltv.org/matches/2399425/havu-vs-rounds-elisa-breakout-series-2",
+        "https://www.hltv.org/matches/2399427/phantom-vs-rounds-elisa-breakout-series-2",
+        "https://www.hltv.org/matches/2399428/voca-vs-rounds-elisa-breakout-series-2",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0310--rounds--kollo-lapa-monoxx-tumppis-ykis.md"
+      ]
+    },
+    {
+      "finding_id": "F-03",
+      "severity": "new_5of5_roster_corroboration",
+      "subject": "Fixtures #1080281, #1080283 — WROTBERRY (HotSpawn) = WBT (HLTV #109 / Valve VRS #60, NOT #130 WBT Academy)",
+      "affected_files": [
+        "data/c64a5e19/board.json",
+        "audits/3faf40e8/sources.json",
+        "data/9a873ea7/hltv_corroboration.json"
+      ],
+      "verified_fact": "Prior strict boards left WROTBERRY vs ENCE (1080281) and WROTBERRY vs BOJONG (1080283) blank because Kalshi labeled an earlier Group A ticker 'WBT Academy' (#130 VRS: fl1peR, marat2k, NxStep, svemyy, tired73). Official HLTV match pages 2399420 and 2399422 prove the team in Elisa Group A is main WBT (team/13683/wbt, HLTV #109, live VRS #66) with starting 5 Psycho, Smash, s4ltovsk1yy, DemQQ, tyr1k — matching Valve VRS #60 WBT (1201 pts) 5-for-5 and unlocking Pinnacle (1.645/2.22 & 1.186/4.31) + Thunderpick odds.",
+      "action_taken": "Resolved 1080281 (WROTBERRY 59.5%) and 1080283 (WROTBERRY 77.7%) via 5/5 roster-corroborated Pinnacle + Thunderpick lines while keeping strict exact-name column blank.",
+      "official_sources": [
+        "https://www.hltv.org/matches/2399420/wbt-vs-ence-elisa-breakout-series-2",
+        "https://www.hltv.org/matches/2399422/wbt-vs-bojong-elisa-breakout-series-2",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0060--wbt--demqq-psycho-s4ltovsk1yy-smash-tyr1k.md"
+      ]
+    },
+    {
+      "finding_id": "F-04",
+      "severity": "audit_correction",
+      "subject": "Fixture #1081120 — mellren vs Privateer (CCT Europe 2026 Series #12 Closed Qualifier)",
+      "affected_files": [
+        "data/9a873ea7/hltv_corroboration.json"
+      ],
+      "verified_fact": "Prior audit data/9a873ea7/hltv_corroboration.json claimed 'Neither team appears on HLTV's betting analytics page... No public HLTV team pages found for Privateer'. Live verification on 2026-10-15 proves both teams, the match page (2399471), and the betting analytics page (2399471) are live on HLTV: mellren is HLTV #94 / VRS #125 (lollipop21k 1.19 rating, 4/5 form) and Privateer is HLTV #226 / VRS #242 (Frazehh, Prime, moz, M1n1maL, Amqn).",
+      "action_taken": "Linked official HLTV match 2399471, analytics 2399471, and both HLTV team pages alongside Valve VRS #125 vs #271.",
+      "official_sources": [
+        "https://www.hltv.org/matches/2399471/mellren-vs-privateer-cct-2026-europe-series-12-closed-qualifier",
+        "https://www.hltv.org/betting/analytics/2399471/mellren-vs-privateer-cct-2026-europe-series-12-closed-qualifier",
+        "https://www.hltv.org/team/13759/mellren",
+        "https://www.hltv.org/team/13914/privateer"
+      ]
+    },
+    {
+      "finding_id": "F-05",
+      "severity": "lineup_and_market_divergence",
+      "subject": "Fixtures #1080282, #1080284 (EAC stand-in qx) & #1080285 (Phantom substitute cej0t; Market vs VRS split)",
+      "affected_files": [
+        "data/lines.json",
+        "data/c64a5e19/board.json"
+      ],
+      "verified_fact": "Official HLTV analytics and match pages disclose two active roster substitutions not reflected in the 2026-10-05 Valve VRS snapshot: (1) EAC fields stand-in qx in place of Fessor on matches 2399421 and 2399423; (2) Phantom fields substitute Jan 'cej0t' Dyl in place of Kunai on match 2399424 (Voca vs Phantom), where Melbet/Thunderpick price Phantom at 52.6% while Valve VRS (#68 Voca 1182 vs #72 Phantom 1147) slightly favors Voca (52.2%).",
+      "action_taken": "Flagged both lineup substitutions and the 52.6% vs 47.8% Market-vs-VRS coinflip split on Voca vs Phantom with direct HLTV links.",
+      "official_sources": [
+        "https://www.hltv.org/betting/analytics/2399421/eac-vs-bojong-elisa-breakout-series-2",
+        "https://www.hltv.org/matches/2399424/voca-vs-phantom-elisa-breakout-series-2"
+      ]
+    },
+    {
+      "finding_id": "F-06",
+      "severity": "workflow_pipeline_defect",
+      "subject": ".github/workflows/unresolved-7177d07f.yml — hardcoded branch rebase/push failure on main",
+      "affected_files": [
+        ".github/workflows/unresolved-7177d07f.yml"
+      ],
+      "verified_fact": "Scheduled workflow run 38706099971 passed collection, build, rendering, and all 525 unit tests on main, but failed at step 'Commit refreshed data and pages' because BRANCH was hardcoded to arena/7177d07f-maltaproj2.",
+      "action_taken": "Documented workflow failure and added .github/workflows/refresh-94b3d48a.yml with 4-hour cron + branch-safe commit step.",
+      "official_sources": [
+        "https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38706099971"
+      ]
+    }
+  ]
+}

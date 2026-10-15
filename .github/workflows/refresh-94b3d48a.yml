@@ -1,0 +1,61 @@
+name: every-match resolution & audit (94b3d48a)
+
+on:
+  schedule:
+    - cron: '25 */4 * * *'
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "every-match picks (c64a5e19)"
+      - "Refresh HotSpawn odds and rebuild dashboard"
+    types:
+      - completed
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-94b3d48a
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch || github.ref_name }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install requirements
+        run: pip install -r scripts/requirements.txt
+
+      - name: Rebuild 94b3d48a every-match board, unresolved ledger & line-by-line audit
+        run: python3 scripts/94b3d48a/build.py
+
+      - name: Run 94b3d48a contract tests & staged link check
+        run: |
+          python3 -m unittest tests/test_94b3d48a.py
+          PYTHONPATH=scripts python3 scripts/stage_site.py
+
+      - name: Commit and push updated 94b3d48a artifacts
+        run: |
+          BRANCH="${{ github.event.workflow_run.head_branch || github.ref_name }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/94b3d48a/ audits/94b3d48a/
+          if git diff --cached --quiet; then
+            echo "No changes in 94b3d48a artifacts."
+            exit 0
+          fi
+          git commit -m "audit(94b3d48a): refresh every-match picks & unresolved ledger $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin "$BRANCH" && git push origin "HEAD:$BRANCH" && break
+            sleep 3
+          done

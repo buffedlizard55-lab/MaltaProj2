@@ -140,3 +140,11 @@ and restricted GitHub Pages-settings permissions. The four-hour collector preser
 observations; a rebuild does not make old odds fresh. Unit contracts, primary-response replay
 and 320/390/768/1280px browser checks gate the checked Pages artifact. Archived boards are
 not certified by the canonical verifier and never override its blank rows.
+
+## Every-match 5/5 HLTV & Valve VRS resolution & line-by-line audit (session 94b3d48a, 2026-10-15)
+
+- **Executive Summary & Every-Match CS2 Picks:** [`audits/94b3d48a/index.html`](audits/94b3d48a/index.html)
+- **Unresolved Picks & Limitations Ledger:** [`audits/94b3d48a/unresolved.html`](audits/94b3d48a/unresolved.html)
+- **Flagged for Review (Line-by-Line Audit & 36-Team VRS Ledger):** [`audits/94b3d48a/flagged.html`](audits/94b3d48a/flagged.html)
+- **Methodology & 4-Hour Refresh Schedule:** [`audits/94b3d48a/methodology.html`](audits/94b3d48a/methodology.html) (`scripts/94b3d48a/build.py`, `.github/workflows/refresh-94b3d48a.yml`, `tests/test_94b3d48a.py`).
+

@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Executive Summary &amp; Every-Match CS2 Picks · CS2 Pick'em Resolution &amp; Audit (94b3d48a)</title>
+<style>
+:root {
+  --bg: #0b1220;
+  --panel: #121d33;
+  --card: #162440;
+  --border: #283a5e;
+  --text: #eef4ff;
+  --muted: #9cb0d4;
+  --accent: #38bdf8;
+  --green: #22c55e;
+  --amber: #f59e0b;
+  --purple: #c084fc;
+  --red: #f87171;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  font-size: 15px;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 14px; }
+header.top {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 14px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.top-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand { font-weight: 800; font-size: 16px; color: #fff; }
+nav.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+nav.tabs a {
+  padding: 7px 11px;
+  border-radius: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+}
+nav.tabs a.active {
+  background: var(--accent);
+  color: #061224;
+  border-color: var(--accent);
+}
+.exec-box {
+  background: linear-gradient(145deg, #132342, #0f1a30);
+  border: 1px solid #314b7a;
+  border-radius: 14px;
+  padding: 16px;
+  margin: 14px 0;
+}
+.exec-box h1, .exec-box h2 { margin-top: 0; }
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+.kpi {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+}
+.kpi .num { font-size: 24px; font-weight: 800; color: #fff; }
+.kpi .lbl { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.btn {
+  display: inline-block;
+  padding: 9px 14px;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 13.5px;
+  background: var(--accent);
+  color: #041022;
+}
+.btn.sec {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.pick-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 12px;
+  margin: 14px 0;
+}
+.pcard {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pcard-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--muted);
+  gap: 6px;
+}
+.pcard-teams {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+.pick-banner {
+  background: rgba(34, 197, 94, 0.13);
+  border: 1px solid rgba(34, 197, 94, 0.45);
+  border-radius: 9px;
+  padding: 8px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pick-banner .pk-name { font-weight: 800; font-size: 15px; color: #4ade80; }
+.pick-banner .pk-prob { font-weight: 800; font-size: 16px; color: #fff; }
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.b-t1 { background: rgba(34, 197, 94, 0.18); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
+.b-t2 { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+.b-t3 { background: rgba(192, 132, 252, 0.18); color: #d8b4fe; border: 1px solid rgba(192, 132, 252, 0.4); }
+.b-anom { background: rgba(248, 113, 113, 0.18); color: #fca5a5; border: 1px solid rgba(248, 113, 113, 0.4); }
+.src-pills { display: flex; flex-wrap: wrap; gap: 5px; font-size: 11.5px; }
+.src-pills a {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+.table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--border); border-radius: 11px; }
+table { width: 100%; border-collapse: collapse; background: var(--panel); font-size: 13.5px; }
+th, td { padding: 9px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+th { background: var(--card); color: #fff; font-weight: 700; font-size: 12.5px; }
+.blank { color: var(--muted); font-style: italic; }
+.mini { font-size: 12px; color: var(--muted); }
+@media (max-width: 640px) {
+  .pick-cards { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">CS2 Pick'ems · Every-Match Resolution &amp; Line-by-Line Audit</div>
+    <nav class="tabs" aria-label="Section navigation"><a href="index.html" class="active">Executive Summary &amp; All Picks</a><a href="unresolved.html" class="">Unresolved Picks &amp; Limitations</a><a href="flagged.html" class="">Flagged for Review (Line-by-Line Audit)</a><a href="methodology.html" class="">Origination &amp; Hierarchy</a><a href="../../picks-every-match/index.html" class="">Canonical Every-Match Board</a><a href="../../index.html" class="">← Main Dashboard</a></nav>
+  </div>
+</header>
+<main class="wrap">
+
+<section class="exec-box" id="executive-summary">
+  <h1>Executive Summary — Every HotSpawn CS2 Match Pick &amp; Win Probability</h1>
+  <p>This mobile-first hub provides a verified pick and win probability for <strong>all 17 open CS2 matches</strong>
+  currently listed on the <a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn Pick'ems lobby</a>,
+  strictly enforcing the source hierarchy: <strong>featured primary bookmakers first</strong> (Pinnacle &amp; Bovada),
+  and <strong>fallback research sources</strong> (<a href="https://www.hltv.org/betting/analytics" rel="noopener">HLTV match &amp; analytics pages</a>,
+  secondary esportsbooks Melbet &amp; Thunderpick, Kalshi exchange, and originated <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" rel="noopener">official Valve VRS</a> / Elo lines)
+  <strong>invoked only for the 9 matches not resolved by primary strict bookmakers</strong>.
+  HotSpawn crowd pick percentages are never used.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="num">17 / 17</div><div class="lbl">Open Lobby Matches with Pick &amp; Win Prob</div></div>
+    <div class="kpi"><div class="num">8</div><div class="lbl">Tier 1: Featured Primary Bookmakers (Pinnacle/Bovada)</div></div>
+    <div class="kpi"><div class="num">5</div><div class="lbl">Tier 2: Fallback Esportsbooks / Exchange + HLTV</div></div>
+    <div class="kpi"><div class="num">4</div><div class="lbl">Tier 3: Originated Valve VRS + HLTV + Elo</div></div>
+    <div class="kpi"><div class="num">36 / 36</div><div class="lbl">Teams Verified 5/5 on Official Valve VRS + HLTV</div></div>
+    <div class="kpi"><div class="num">6</div><div class="lbl">Line-by-Line Repo Audit Findings Flagged</div></div>
+  </div>
+
+  <div class="cta-row">
+    <a class="btn" href="#mobile-picks">Jump to Mobile Pick Cards ↓</a>
+    <a class="btn sec" href="unresolved.html">Unresolved Picks &amp; Limitations (9 Fallback Rows) →</a>
+    <a class="btn sec" href="flagged.html">Flagged for Review (Line-by-Line Repo Audit) →</a>
+    <a class="btn sec" href="methodology.html">Origination Math &amp; 4h Refresh Schedule →</a>
+  </div>
+
+  <h2 id="where-updated-picks-live" style="font-size:16px;margin-top:14px">Where to Find Updated Picks Across the Site</h2>
+  <ul class="mini" style="margin:6px 0 0 18px;color:var(--text)">
+    <li><strong><a href="index.html">This Page (<code>audits/94b3d48a/index.html</code>)</a>:</strong> 18/18 open lobby picks with 5/5 HLTV + Valve VRS roster corroboration (including <code>WROTBERRY = WBT #60 VRS</code> and <code>RoundsGG = ROUNDS #310 VRS</code>) plus strict-blank comparison column.</li>
+    <li><strong><a href="unresolved.html">Unresolved Picks &amp; Limitations (<code>audits/94b3d48a/unresolved.html</code>)</a>:</strong> Dedicated breakdown of the 9 matches lacking strict primary-bookmaker lines, why each is unresolved under strict rules, how fallback research resolves it, and the exact limitations (plus completed-match anomaly <code>#1080200 Wildcard vs DENDELE</code>).</li>
+    <li><strong><a href="../../picks-every-match/index.html">Canonical Strict-First Board (<code>picks-every-match/index.html</code>)</a> &amp; <a href="../../picks-every-match/unresolved.html">Strict Unresolved Ledger (<code>picks-every-match/unresolved.html</code>)</a>:</strong> Primary-bookmaker + strict VRS board where unconfirmed alias rows remain blank (<code>—</code>).</li>
+    <li><strong><a href="../../unresolved/index.html">Research-Resolved Board (<code>unresolved/index.html</code>)</a>, <a href="../../picks-all/index.html">Complete Picks (<code>picks-all/index.html</code>)</a>, <a href="../../ourline/index.html">OurLine (<code>ourline/index.html</code>)</a> &amp; <a href="../../board/picks.html">Full-Coverage Board (<code>board/picks.html</code>)</a>:</strong> Preserved parallel session boards.</li>
+  </ul>
+</section>
+
+<h2 id="mobile-picks">Mobile Quick-Pick Cards — All 17 Open HotSpawn CS2 Matches</h2>
+<p class="mini">Tap any source chip below a card to inspect the official HotSpawn lobby, HLTV match/analytics page, bookmaker quote, or official Valve VRS roster file.</p>
+<div class="pick-cards">
+
+<article class="pcard" id="card-1079440">
+  <div class="pcard-head">
+    <span>2026-10-15 10:00:00 UTC · Tier B · BO3 (Online)</span>
+    <span>#1079440</span>
+  </div>
+  <div class="pcard-teams">MIBR vs BC.Game</div>
+  <div class="mini">Stake Pulse Beat III</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ MIBR</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">55.1%</div>
+      <div class="mini">Fair: 1.81 / 2.23</div>
+    </div>
+  </div>
+  <div><span class="badge b-t1">Tier 1 · Featured Bookmaker (Bovada, Pinnacle)</span></div>
+  <div class="mini"><strong>MIBR:</strong> 55.1% (1.81) · <strong>BC.Game:</strong> 44.9% (2.23)</div>
+  <div class="mini">#12 MIBR (1585.0 pts) vs #50 BC.Game (1318.0 pts) · HLTV #12 vs #70</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/mibr-vs-bc-game-stake-pulse-beat-iii-1079440" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399136/mibr-vs-bcgame-stake-pulse-beat-iii" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399136/mibr-vs-bcgame-stake-pulse-beat-iii" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #12 (MIBR)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #50 (BC.Game)</a> <a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-bc-game-202610150600" target="_blank" rel="noopener">Bovada Odds</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Odds</a></div>
+</article>
+<article class="pcard" id="card-1079442">
+  <div class="pcard-head">
+    <span>2026-10-15 10:00:00 UTC · Tier B · BO3 (Online)</span>
+    <span>#1079442</span>
+  </div>
+  <div class="pcard-teams">Heroic vs Envy</div>
+  <div class="mini">Stake Pulse Beat III</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ Heroic</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">64.9%</div>
+      <div class="mini">Fair: 1.54 / 2.85</div>
+    </div>
+  </div>
+  <div><span class="badge b-t1">Tier 1 · Featured Bookmaker (Bovada, Pinnacle)</span></div>
+  <div class="mini"><strong>Heroic:</strong> 64.9% (1.54) · <strong>Envy:</strong> 35.1% (2.85)</div>
+  <div class="mini">#15 Heroic (1550.0 pts) vs #21 3DMAX (signed by Envy) (1500 pts) · HLTV #30 vs #20</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/heroic-vs-envy-stake-pulse-beat-iii-1079442" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399137/heroic-vs-envy-stake-pulse-beat-iii" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399137/heroic-vs-envy-stake-pulse-beat-iii" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #15 (Heroic)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0021--3dmax--graviti-kursy-lucky-maka-misutaaa.md" target="_blank" rel="noopener">Valve VRS #21 (3DMAX (signed by Envy))</a> <a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/heroic-envy-202610150600" target="_blank" rel="noopener">Bovada Odds</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Odds</a></div>
+</article>
+<article class="pcard" id="card-1080280">
+  <div class="pcard-head">
+    <span>2026-10-15 10:00:00 UTC · Tier C · BO1 (LAN, Group A)</span>
+    <span>#1080280</span>
+  </div>
+  <div class="pcard-teams">ENCE vs BOJONG</div>
+  <div class="mini">Elisa BreakOut Series #2</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ ENCE</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">71.7%</div>
+      <div class="mini">Fair: 1.39 / 3.54</div>
+    </div>
+  </div>
+  <div><span class="badge b-t1">Tier 1 · Featured Bookmaker (Pinnacle)</span></div>
+  <div class="mini"><strong>ENCE:</strong> 71.7% (1.39) · <strong>BOJONG:</strong> 28.3% (3.54)</div>
+  <div class="mini">#105 ENCE (1025.0 pts) vs #363 BOJONG (463.0 pts) · HLTV #114 vs #220</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/ence-vs-bojong-elisa-breakout-series-2-1080280" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399419/ence-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399419/ence-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #105 (ENCE)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #363 (BOJONG)</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Odds</a></div>
+</article>
+<article class="pcard" id="card-1080202">
+  <div class="pcard-head">
+    <span>2026-10-15 11:00:00 UTC · Tier S · BO3 (Online)</span>
+    <span>#1080202</span>
+  </div>
+  <div class="pcard-teams">9z vs Falcons</div>
+  <div class="mini">Thunderpick World Championship 2026</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ Falcons</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">75.0%</div>
+      <div class="mini">Fair: 4.00 / 1.33</div>
+    </div>
+  </div>
+  <div><span class="badge b-t1">Tier 1 · Featured Bookmaker (Bovada)</span></div>
+  <div class="mini"><strong>9z:</strong> 25.0% (4.00) · <strong>Falcons:</strong> 75.0% (1.33)</div>
+  <div class="mini">#17 9z (1543.0 pts) vs #6 Falcons (1843.0 pts) · HLTV #17 vs #5</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/9z-vs-falcons-thunderpick-world-championship-2026-1080202" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399409/9z-vs-falcons-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399409/9z-vs-falcons-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #17 (9z)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #6 (Falcons)</a> <a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/9z-globant-team-falcons-202610150700" target="_blank" rel="noopener">Bovada Odds</a></div>
+</article>
+<article class="pcard" id="card-1080281">
+  <div class="pcard-head">
+    <span>2026-10-15 12:00:00 UTC · Tier C · BO1 (LAN, Group A)</span>
+    <span>#1080281</span>
+  </div>
+  <div class="pcard-teams">WROTBERRY vs ENCE</div>
+  <div class="mini">Elisa BreakOut Series #2</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ WROTBERRY</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">59.5%</div>
+      <div class="mini">Fair: 1.68 / 2.47</div>
+    </div>
+  </div>
+  <div><span class="badge b-t2">Tier 2 · Fallback Esportsbook/Exchange (Pinnacle, Thunderpick (via bo3.gg)) + HLTV</span></div>
+  <div class="mini"><strong>WROTBERRY:</strong> 59.5% (1.68) · <strong>ENCE:</strong> 40.5% (2.47)</div>
+  <div class="mini">#60 WBT (1201 pts) vs #105 ENCE (1025.0 pts) · HLTV #109 vs #114</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/wrotberry-vs-ence-elisa-breakout-series-2-1080281" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399420/wbt-vs-ence-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399420/wbt-vs-ence-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0060--wbt--demqq-psycho-s4ltovsk1yy-smash-tyr1k.md" target="_blank" rel="noopener">Valve VRS #60 (WBT)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #105 (ENCE)</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Quote</a> <a href="https://bo3.gg/matches/wbt-vs-ence-15-10-2026" target="_blank" rel="noopener">Thunderpick (via bo3.gg) Quote</a></div>
+</article>
+<article class="pcard" id="card-1080203">
+  <div class="pcard-head">
+    <span>2026-10-15 13:30:00 UTC · Tier S · BO3 (Online)</span>
+    <span>#1080203</span>
+  </div>
+  <div class="pcard-teams">PARIVISION vs BetBoom</div>
+  <div class="mini">Thunderpick World Championship 2026</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ PARIVISION</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">53.1%</div>
+      <div class="mini">Fair: 1.88 / 2.13</div>
+    </div>
+  </div>
+  <div><span class="badge b-t1">Tier 1 · Featured Bookmaker (Bovada, Pinnacle)</span></div>
+  <div class="mini"><strong>PARIVISION:</strong> 53.1% (1.88) · <strong>BetBoom:</strong> 46.9% (2.13)</div>
+  <div class="mini">#36 PARIVISION (1411.0 pts) vs #11 BetBoom (1596.0 pts) · HLTV #11 vs #14</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/parivision-vs-betboom-thunderpick-world-championship-2026-1080203" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399410/parivision-vs-betboom-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399410/parivision-vs-betboom-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #36 (PARIVISION)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #11 (BetBoom)</a> <a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/parivision-bb-team-202610150930" target="_blank" rel="noopener">Bovada Odds</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Odds</a></div>
+</article>
+<article class="pcard" id="card-1080282">
+  <div class="pcard-head">
+    <span>2026-10-15 14:00:00 UTC · Tier C · BO1 (LAN, Group A)</span>
+    <span>#1080282</span>
+  </div>
+  <div class="pcard-teams">EAC vs BOJONG</div>
+  <div class="mini">Elisa BreakOut Series #2</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ EAC</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">76.6%</div>
+      <div class="mini">Fair: 1.31 / 4.27</div>
+    </div>
+  </div>
+  <div><span class="badge b-t1">Tier 1 · Featured Bookmaker (Pinnacle)</span></div>
+  <div class="mini"><strong>EAC:</strong> 76.6% (1.31) · <strong>BOJONG:</strong> 23.4% (4.27)</div>
+  <div class="mini">#103 EAC (1035.0 pts) vs #363 BOJONG (463.0 pts) · HLTV #110 vs #220</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/eac-vs-bojong-elisa-breakout-series-2-1080282" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399421/eac-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399421/eac-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #103 (EAC)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #363 (BOJONG)</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Odds</a></div>
+</article>
+<article class="pcard" id="card-1080204">
+  <div class="pcard-head">
+    <span>2026-10-15 16:00:00 UTC · Tier S · BO3 (Online)</span>
+    <span>#1080204</span>
+  </div>
+  <div class="pcard-teams">Legacy vs FURIA</div>
+  <div class="mini">Thunderpick World Championship 2026</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ FURIA</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">57.5%</div>
+      <div class="mini">Fair: 2.35 / 1.74</div>
+    </div>
+  </div>
+  <div><span class="badge b-t1">Tier 1 · Featured Bookmaker (Bovada, Pinnacle)</span></div>
+  <div class="mini"><strong>Legacy:</strong> 42.5% (2.35) · <strong>FURIA:</strong> 57.5% (1.74)</div>
+  <div class="mini">#2 Legacy (1931.0 pts) vs #7 FURIA (1829.0 pts) · HLTV #7 vs #4</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/legacy-vs-furia-thunderpick-world-championship-2026-1080204" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399411/legacy-vs-furia-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399411/legacy-vs-furia-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #2 (Legacy)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #7 (FURIA)</a> <a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-furia-esports-202610151200" target="_blank" rel="noopener">Bovada Odds</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Odds</a></div>
+</article>
+<article class="pcard" id="card-1080283">
+  <div class="pcard-head">
+    <span>2026-10-15 16:00:00 UTC · Tier C · BO1 (LAN, Group A)</span>
+    <span>#1080283</span>
+  </div>
+  <div class="pcard-teams">WROTBERRY vs BOJONG</div>
+  <div class="mini">Elisa BreakOut Series #2</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ WROTBERRY</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">77.7%</div>
+      <div class="mini">Fair: 1.29 / 4.48</div>
+    </div>
+  </div>
+  <div><span class="badge b-t2">Tier 2 · Fallback Esportsbook/Exchange (Pinnacle, Thunderpick (via bo3.gg)) + HLTV</span></div>
+  <div class="mini"><strong>WROTBERRY:</strong> 77.7% (1.29) · <strong>BOJONG:</strong> 22.3% (4.48)</div>
+  <div class="mini">#60 WBT (1201 pts) vs #363 BOJONG (463.0 pts) · HLTV #109 vs #220</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/wrotberry-vs-bojong-elisa-breakout-series-2-1080283" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399422/wbt-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399422/wbt-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0060--wbt--demqq-psycho-s4ltovsk1yy-smash-tyr1k.md" target="_blank" rel="noopener">Valve VRS #60 (WBT)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #363 (BOJONG)</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Quote</a> <a href="https://bo3.gg/matches/wbt-vs-bojong-15-10-2026" target="_blank" rel="noopener">Thunderpick (via bo3.gg) Quote</a></div>
+</article>
+<article class="pcard" id="card-1080284">
+  <div class="pcard-head">
+    <span>2026-10-15 18:00:00 UTC · Tier C · BO1 (LAN, Group A)</span>
+    <span>#1080284</span>
+  </div>
+  <div class="pcard-teams">EAC vs ENCE</div>
+  <div class="mini">Elisa BreakOut Series #2</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ EAC</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">58.6%</div>
+      <div class="mini">Fair: 1.71 / 2.41</div>
+    </div>
+  </div>
+  <div><span class="badge b-t1">Tier 1 · Featured Bookmaker (Pinnacle)</span></div>
+  <div class="mini"><strong>EAC:</strong> 58.6% (1.71) · <strong>ENCE:</strong> 41.4% (2.41)</div>
+  <div class="mini">#103 EAC (1035.0 pts) vs #105 ENCE (1025.0 pts) · HLTV #110 vs #114</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/eac-vs-ence-elisa-breakout-series-2-1080284" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399423/eac-vs-ence-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399423/eac-vs-ence-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #103 (EAC)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #105 (ENCE)</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Odds</a></div>
+</article>
+<article class="pcard" id="card-1080285">
+  <div class="pcard-head">
+    <span>2026-10-16 08:00:00 UTC · Tier C · BO1 (LAN, Group B)</span>
+    <span>#1080285</span>
+  </div>
+  <div class="pcard-teams">Voca vs Phantom</div>
+  <div class="mini">Elisa BreakOut Series #2</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ Phantom</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">52.6%</div>
+      <div class="mini">Fair: 2.11 / 1.90</div>
+    </div>
+  </div>
+  <div><span class="badge b-t2">Tier 2 · Fallback Esportsbook/Exchange (Melbet (1xBet platform), Thunderpick (via bo3.gg)) + HLTV</span></div>
+  <div class="mini"><strong>Voca:</strong> 47.4% (2.11) · <strong>Phantom:</strong> 52.6% (1.90)</div>
+  <div class="mini">#68 Voca (1182.0 pts) vs #72 Phantom (1147.0 pts) · HLTV #59 vs #88</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/voca-vs-phantom-elisa-breakout-series-2-1080285" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399424/voca-vs-phantom-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399424/voca-vs-phantom-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #68 (Voca)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #72 (Phantom)</a> <a href="https://melbet.com/en/line/esports" target="_blank" rel="noopener">Melbet (1xBet platform) Quote</a> <a href="https://bo3.gg/matches/voca-vs-phantom-esports-16-10-2026" target="_blank" rel="noopener">Thunderpick (via bo3.gg) Quote</a></div>
+</article>
+<article class="pcard" id="card-1080286">
+  <div class="pcard-head">
+    <span>2026-10-16 10:00:00 UTC · Tier C · BO1 (LAN, Group B)</span>
+    <span>#1080286</span>
+  </div>
+  <div class="pcard-teams">HAVU vs RoundsGG</div>
+  <div class="mini">Elisa BreakOut Series #2</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ HAVU</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">68.3%</div>
+      <div class="mini">Fair: 1.46 / 3.16</div>
+    </div>
+  </div>
+  <div><span class="badge b-t3">Tier 3 · Originated CS2 Line (Official Valve VRS + HLTV + Elo)</span></div>
+  <div class="mini"><strong>HAVU:</strong> 68.3% (1.46) · <strong>RoundsGG:</strong> 31.6% (3.16)</div>
+  <div class="mini">#124 HAVU (937.0 pts) vs #310 ROUNDS (548 pts) · HLTV #118 vs #237</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/havu-vs-roundsgg-elisa-breakout-series-2-1080286" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399425/havu-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399425/havu-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #124 (HAVU)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0310--rounds--kollo-lapa-monoxx-tumppis-ykis.md" target="_blank" rel="noopener">Valve VRS #310 (ROUNDS)</a></div>
+</article>
+<article class="pcard" id="card-1080287">
+  <div class="pcard-head">
+    <span>2026-10-16 12:00:00 UTC · Tier C · BO1 (LAN, Group B)</span>
+    <span>#1080287</span>
+  </div>
+  <div class="pcard-teams">Voca vs HAVU</div>
+  <div class="mini">Elisa BreakOut Series #2</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ Voca</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">65.5%</div>
+      <div class="mini">Fair: 1.53 / 2.90</div>
+    </div>
+  </div>
+  <div><span class="badge b-t2">Tier 2 · Fallback Esportsbook/Exchange (Melbet (1xBet platform), Thunderpick (via bo3.gg)) + HLTV</span></div>
+  <div class="mini"><strong>Voca:</strong> 65.5% (1.53) · <strong>HAVU:</strong> 34.5% (2.90)</div>
+  <div class="mini">#68 Voca (1182.0 pts) vs #124 HAVU (937.0 pts) · HLTV #59 vs #118</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/voca-vs-havu-elisa-breakout-series-2-1080287" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399426/voca-vs-havu-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399426/voca-vs-havu-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #68 (Voca)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #124 (HAVU)</a> <a href="https://melbet.com/en/line/esports" target="_blank" rel="noopener">Melbet (1xBet platform) Quote</a> <a href="https://bo3.gg/matches/voca-vs-havu-16-10-2026" target="_blank" rel="noopener">Thunderpick (via bo3.gg) Quote</a></div>
+</article>
+<article class="pcard" id="card-1080288">
+  <div class="pcard-head">
+    <span>2026-10-16 14:00:00 UTC · Tier C · BO1 (LAN, Group B)</span>
+    <span>#1080288</span>
+  </div>
+  <div class="pcard-teams">Phantom vs RoundsGG</div>
+  <div class="mini">Elisa BreakOut Series #2</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ Phantom</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">76.6%</div>
+      <div class="mini">Fair: 1.31 / 4.27</div>
+    </div>
+  </div>
+  <div><span class="badge b-t3">Tier 3 · Originated CS2 Line (Official Valve VRS + HLTV + Elo)</span></div>
+  <div class="mini"><strong>Phantom:</strong> 76.6% (1.31) · <strong>RoundsGG:</strong> 23.4% (4.27)</div>
+  <div class="mini">#72 Phantom (1147.0 pts) vs #310 ROUNDS (548 pts) · HLTV #88 vs #237</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/phantom-vs-roundsgg-elisa-breakout-series-2-1080288" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399427/phantom-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399427/phantom-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #72 (Phantom)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0310--rounds--kollo-lapa-monoxx-tumppis-ykis.md" target="_blank" rel="noopener">Valve VRS #310 (ROUNDS)</a></div>
+</article>
+<article class="pcard" id="card-1081120">
+  <div class="pcard-head">
+    <span>2026-10-16 14:00:00 UTC · Tier C · BO3 (Online, Group D opening match)</span>
+    <span>#1081120</span>
+  </div>
+  <div class="pcard-teams">mellren vs Privateer</div>
+  <div class="mini">CCT Europe 2026 Series #12 Play-In</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ mellren</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">65.5%</div>
+      <div class="mini">Fair: 1.53 / 2.90</div>
+    </div>
+  </div>
+  <div><span class="badge b-t3">Tier 3 · Originated CS2 Line (Official Valve VRS + HLTV + Elo)</span></div>
+  <div class="mini"><strong>mellren:</strong> 65.5% (1.53) · <strong>Privateer:</strong> 34.5% (2.90)</div>
+  <div class="mini">#125 mellren (932.0 pts) vs #271 Privateer (608.0 pts) · HLTV #94 vs #226</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/mellren-vs-privateer-cct-europe-2026-series-12-play-in-1081120" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399471/mellren-vs-privateer-cct-2026-europe-series-12-closed-qualifier" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399471/mellren-vs-privateer-cct-2026-europe-series-12-closed-qualifier" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #125 (mellren)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #271 (Privateer)</a></div>
+</article>
+<article class="pcard" id="card-1080289">
+  <div class="pcard-head">
+    <span>2026-10-16 16:00:00 UTC · Tier C · BO1 (LAN, Group B)</span>
+    <span>#1080289</span>
+  </div>
+  <div class="pcard-teams">RoundsGG vs Voca</div>
+  <div class="mini">Elisa BreakOut Series #2</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ Voca</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">77.8%</div>
+      <div class="mini">Fair: 4.51 / 1.29</div>
+    </div>
+  </div>
+  <div><span class="badge b-t3">Tier 3 · Originated CS2 Line (Official Valve VRS + HLTV + Elo)</span></div>
+  <div class="mini"><strong>RoundsGG:</strong> 22.2% (4.51) · <strong>Voca:</strong> 77.8% (1.29)</div>
+  <div class="mini">#310 ROUNDS (548 pts) vs #68 Voca (1182.0 pts) · HLTV #237 vs #59</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/roundsgg-vs-voca-elisa-breakout-series-2-1080289" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399428/voca-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399428/voca-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0310--rounds--kollo-lapa-monoxx-tumppis-ykis.md" target="_blank" rel="noopener">Valve VRS #310 (ROUNDS)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #68 (Voca)</a></div>
+</article>
+<article class="pcard" id="card-1080290">
+  <div class="pcard-head">
+    <span>2026-10-16 18:00:00 UTC · Tier C · BO1 (LAN, Group B)</span>
+    <span>#1080290</span>
+  </div>
+  <div class="pcard-teams">Phantom vs HAVU</div>
+  <div class="mini">Elisa BreakOut Series #2</div>
+  <div class="pick-banner">
+    <div>
+      <div class="mini">RECOMMENDED PICK</div>
+      <div class="pk-name">✓ Phantom</div>
+    </div>
+    <div style="text-align:right">
+      <div class="pk-prob">68.2%</div>
+      <div class="mini">Fair: 1.47 / 3.14</div>
+    </div>
+  </div>
+  <div><span class="badge b-t2">Tier 2 · Fallback Esportsbook/Exchange (Melbet (1xBet platform), Thunderpick (via bo3.gg)) + HLTV</span></div>
+  <div class="mini"><strong>Phantom:</strong> 68.2% (1.47) · <strong>HAVU:</strong> 31.8% (3.14)</div>
+  <div class="mini">#72 Phantom (1147.0 pts) vs #124 HAVU (937.0 pts) · HLTV #88 vs #118</div>
+  <div class="src-pills"><a href="https://www.hotspawn.com/matches/phantom-vs-havu-elisa-breakout-series-2-1080290" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399429/phantom-vs-havu-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399429/phantom-vs-havu-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #72 (Phantom)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #124 (HAVU)</a> <a href="https://melbet.com/en/line/esports" target="_blank" rel="noopener">Melbet (1xBet platform) Quote</a> <a href="https://bo3.gg/matches/phantom-esports-vs-havu-16-10-2026" target="_blank" rel="noopener">Thunderpick (via bo3.gg) Quote</a></div>
+</article>
+</div>
+
+<h2 id="full-verification-table">Line-by-Line Verification Table — Every Open CS2 Match</h2>
+<p class="mini">Every row links its official sources. Under the <strong>Strict Primary Bookmaker</strong> column, any match without an exact-name Pinnacle/Bovada quote is left explicitly blank (<code>—</code>) and resolved in the <strong>Hierarchy Pick &amp; Win Prob</strong> column via fallback research.</p>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Start (UTC) &amp; Event</th>
+        <th>Match</th>
+        <th>Hierarchy Pick &amp; Win Prob</th>
+        <th>Resolution Tier &amp; Method</th>
+        <th>Strict Primary Bookmaker Column</th>
+        <th>Official Valve VRS &amp; HLTV Rank</th>
+        <th>Official Source Links</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+<tr id="row-1079440">
+  <td>2026-10-15 10:00:00 UTC<div class="mini">#1079440 · Stake Pulse Beat III (BO3 (Online))</div></td>
+  <td><strong>MIBR</strong> vs <strong>BC.Game</strong></td>
+  <td><strong style="color:#4ade80">MIBR (55.1%)</strong><div class="mini">55.1% / 44.9% · Fair 1.81 / 2.23</div></td>
+  <td><span class="badge b-t1">Tier 1 · Featured Bookmaker (Bovada, Pinnacle)</span><div class="mini">Proportional no-vig normalization of strict primary bookmaker moneyline(s): Bovada, Pinnacle. Fallback sources not invoked.</div></td>
+  <td><strong>MIBR (55.1%)</strong><div class='mini'>55.1% / 44.9% · Bovada, Pinnacle</div></td>
+  <td>#12 MIBR (1585.0 pts) vs #50 BC.Game (1318.0 pts)<div class='mini'>HLTV #12 vs #70 · VRS p(A)=62.9%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/mibr-vs-bc-game-stake-pulse-beat-iii-1079440" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399136/mibr-vs-bcgame-stake-pulse-beat-iii" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399136/mibr-vs-bcgame-stake-pulse-beat-iii" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #12 (MIBR)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #50 (BC.Game)</a> <a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-bc-game-202610150600" target="_blank" rel="noopener">Bovada Odds</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Odds</a></div></td>
+</tr>
+<tr id="row-1079442">
+  <td>2026-10-15 10:00:00 UTC<div class="mini">#1079442 · Stake Pulse Beat III (BO3 (Online))</div></td>
+  <td><strong>Heroic</strong> vs <strong>Envy</strong></td>
+  <td><strong style="color:#4ade80">Heroic (64.9%)</strong><div class="mini">64.9% / 35.1% · Fair 1.54 / 2.85</div></td>
+  <td><span class="badge b-t1">Tier 1 · Featured Bookmaker (Bovada, Pinnacle)</span><div class="mini">Proportional no-vig normalization of strict primary bookmaker moneyline(s): Bovada, Pinnacle. Fallback sources not invoked.</div></td>
+  <td><strong>Heroic (64.9%)</strong><div class='mini'>64.9% / 35.1% · Bovada, Pinnacle</div></td>
+  <td>#15 Heroic (1550.0 pts) vs #21 3DMAX (signed by Envy) (1500 pts)<div class='mini'>HLTV #30 vs #20 · VRS p(A)=52.5%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/heroic-vs-envy-stake-pulse-beat-iii-1079442" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399137/heroic-vs-envy-stake-pulse-beat-iii" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399137/heroic-vs-envy-stake-pulse-beat-iii" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #15 (Heroic)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0021--3dmax--graviti-kursy-lucky-maka-misutaaa.md" target="_blank" rel="noopener">Valve VRS #21 (3DMAX (signed by Envy))</a> <a href="https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/heroic-envy-202610150600" target="_blank" rel="noopener">Bovada Odds</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Odds</a></div></td>
+</tr>
+<tr id="row-1080280">
+  <td>2026-10-15 10:00:00 UTC<div class="mini">#1080280 · Elisa BreakOut Series #2 (BO1 (LAN, Group A))</div></td>
+  <td><strong>ENCE</strong> vs <strong>BOJONG</strong></td>
+  <td><strong style="color:#4ade80">ENCE (71.7%)</strong><div class="mini">71.7% / 28.3% · Fair 1.39 / 3.54</div></td>
+  <td><span class="badge b-t1">Tier 1 · Featured Bookmaker (Pinnacle)</span><div class="mini">Proportional no-vig normalization of strict primary bookmaker moneyline(s): Pinnacle. Fallback sources not invoked.</div></td>
+  <td><strong>ENCE (71.7%)</strong><div class='mini'>71.7% / 28.3% · Pinnacle</div></td>
+  <td>#105 ENCE (1025.0 pts) vs #363 BOJONG (463.0 pts)<div class='mini'>HLTV #114 vs #220 · VRS p(A)=75.3%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/ence-vs-bojong-elisa-breakout-series-2-1080280" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399419/ence-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399419/ence-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #105 (ENCE)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #363 (BOJONG)</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Odds</a></div></td>
+</tr>
+<tr id="row-1080202">
+  <td>2026-10-15 11:00:00 UTC<div class="mini">#1080202 · Thunderpick World Championship 2026 (BO3 (Online))</div></td>
+  <td><strong>9z</strong> vs <strong>Falcons</strong></td>
+  <td><strong style="color:#4ade80">Falcons (75.0%)</strong><div class="mini">25.0% / 75.0% · Fair 4.00 / 1.33</div></td>
+  <td><span class="badge b-t1">Tier 1 · Featured Bookmaker (Bovada)</span><div class="mini">Proportional no-vig normalization of strict primary bookmaker moneyline(s): Bovada. Fallback sources not invoked.</div></td>
+  <td><strong>Falcons (75.0%)</strong><div class='mini'>25.0% / 75.0% · Bovada</div></td>
+  <td>#17 9z (1543.0 pts) vs #6 Falcons (1843.0 pts)<div class='mini'>HLTV #17 vs #5 · VRS p(A)=35.6%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/9z-vs-falcons-thunderpick-world-championship-2026-1080202" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399409/9z-vs-falcons-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399409/9z-vs-falcons-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #17 (9z)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #6 (Falcons)</a> <a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/9z-globant-team-falcons-202610150700" target="_blank" rel="noopener">Bovada Odds</a></div></td>
+</tr>
+<tr id="row-1080281">
+  <td>2026-10-15 12:00:00 UTC<div class="mini">#1080281 · Elisa BreakOut Series #2 (BO1 (LAN, Group A))</div></td>
+  <td><strong>WROTBERRY</strong> vs <strong>ENCE</strong></td>
+  <td><strong style="color:#4ade80">WROTBERRY (59.5%)</strong><div class="mini">59.5% / 40.5% · Fair 1.68 / 2.47</div></td>
+  <td><span class="badge b-t2">Tier 2 · Fallback Esportsbook/Exchange (Pinnacle, Thunderpick (via bo3.gg)) + HLTV</span><div class="mini">Fallback Step 1 (HLTV match 2399420 confirms 5/5 WBT starting lineup Psycho, Smash, s4ltovsk1yy, DemQQ, tyr1k = Valve VRS #60 WBT) + Fallback Step 2 (no-vig mean of Pinnacle, Thunderpick (via bo3.gg)).</div></td>
+  <td><span class="blank">— (Blank under strict primary-bookmaker rule)</span><div class="mini"><a href="unresolved.html#u-1080281">See fallback &amp; limitation →</a></div></td>
+  <td>#60 WBT (1201 pts) vs #105 ENCE (1025.0 pts)<div class='mini'>HLTV #109 vs #114 · VRS p(A)=58.6%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/wrotberry-vs-ence-elisa-breakout-series-2-1080281" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399420/wbt-vs-ence-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399420/wbt-vs-ence-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0060--wbt--demqq-psycho-s4ltovsk1yy-smash-tyr1k.md" target="_blank" rel="noopener">Valve VRS #60 (WBT)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #105 (ENCE)</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Quote</a> <a href="https://bo3.gg/matches/wbt-vs-ence-15-10-2026" target="_blank" rel="noopener">Thunderpick (via bo3.gg) Quote</a></div></td>
+</tr>
+<tr id="row-1080203">
+  <td>2026-10-15 13:30:00 UTC<div class="mini">#1080203 · Thunderpick World Championship 2026 (BO3 (Online))</div></td>
+  <td><strong>PARIVISION</strong> vs <strong>BetBoom</strong></td>
+  <td><strong style="color:#4ade80">PARIVISION (53.1%)</strong><div class="mini">53.1% / 46.9% · Fair 1.88 / 2.13</div></td>
+  <td><span class="badge b-t1">Tier 1 · Featured Bookmaker (Bovada, Pinnacle)</span><div class="mini">Proportional no-vig normalization of strict primary bookmaker moneyline(s): Bovada, Pinnacle. Fallback sources not invoked.</div></td>
+  <td><strong>PARIVISION (53.1%)</strong><div class='mini'>53.1% / 46.9% · Bovada, Pinnacle</div></td>
+  <td>#36 PARIVISION (1411.0 pts) vs #11 BetBoom (1596.0 pts)<div class='mini'>HLTV #11 vs #14 · VRS p(A)=40.9%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/parivision-vs-betboom-thunderpick-world-championship-2026-1080203" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399410/parivision-vs-betboom-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399410/parivision-vs-betboom-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #36 (PARIVISION)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #11 (BetBoom)</a> <a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/parivision-bb-team-202610150930" target="_blank" rel="noopener">Bovada Odds</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Odds</a></div></td>
+</tr>
+<tr id="row-1080282">
+  <td>2026-10-15 14:00:00 UTC<div class="mini">#1080282 · Elisa BreakOut Series #2 (BO1 (LAN, Group A))</div></td>
+  <td><strong>EAC</strong> vs <strong>BOJONG</strong></td>
+  <td><strong style="color:#4ade80">EAC (76.6%)</strong><div class="mini">76.6% / 23.4% · Fair 1.31 / 4.27</div></td>
+  <td><span class="badge b-t1">Tier 1 · Featured Bookmaker (Pinnacle)</span><div class="mini">Proportional no-vig normalization of strict primary bookmaker moneyline(s): Pinnacle. Fallback sources not invoked.</div></td>
+  <td><strong>EAC (76.6%)</strong><div class='mini'>76.6% / 23.4% · Pinnacle</div></td>
+  <td>#103 EAC (1035.0 pts) vs #363 BOJONG (463.0 pts)<div class='mini'>HLTV #110 vs #220 · VRS p(A)=75.6%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/eac-vs-bojong-elisa-breakout-series-2-1080282" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399421/eac-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399421/eac-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #103 (EAC)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #363 (BOJONG)</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Odds</a></div></td>
+</tr>
+<tr id="row-1080204">
+  <td>2026-10-15 16:00:00 UTC<div class="mini">#1080204 · Thunderpick World Championship 2026 (BO3 (Online))</div></td>
+  <td><strong>Legacy</strong> vs <strong>FURIA</strong></td>
+  <td><strong style="color:#4ade80">FURIA (57.5%)</strong><div class="mini">42.5% / 57.5% · Fair 2.35 / 1.74</div></td>
+  <td><span class="badge b-t1">Tier 1 · Featured Bookmaker (Bovada, Pinnacle)</span><div class="mini">Proportional no-vig normalization of strict primary bookmaker moneyline(s): Bovada, Pinnacle. Fallback sources not invoked.</div></td>
+  <td><strong>FURIA (57.5%)</strong><div class='mini'>42.5% / 57.5% · Bovada, Pinnacle</div></td>
+  <td>#2 Legacy (1931.0 pts) vs #7 FURIA (1829.0 pts)<div class='mini'>HLTV #7 vs #4 · VRS p(A)=55.0%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/legacy-vs-furia-thunderpick-world-championship-2026-1080204" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399411/legacy-vs-furia-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399411/legacy-vs-furia-thunderpick-world-championship-2026" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #2 (Legacy)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #7 (FURIA)</a> <a href="https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/legacy-furia-esports-202610151200" target="_blank" rel="noopener">Bovada Odds</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Odds</a></div></td>
+</tr>
+<tr id="row-1080283">
+  <td>2026-10-15 16:00:00 UTC<div class="mini">#1080283 · Elisa BreakOut Series #2 (BO1 (LAN, Group A))</div></td>
+  <td><strong>WROTBERRY</strong> vs <strong>BOJONG</strong></td>
+  <td><strong style="color:#4ade80">WROTBERRY (77.7%)</strong><div class="mini">77.7% / 22.3% · Fair 1.29 / 4.48</div></td>
+  <td><span class="badge b-t2">Tier 2 · Fallback Esportsbook/Exchange (Pinnacle, Thunderpick (via bo3.gg)) + HLTV</span><div class="mini">Fallback Step 1 (HLTV match 2399422 confirms 5/5 WBT starting lineup Psycho, Smash, s4ltovsk1yy, DemQQ, tyr1k = Valve VRS #60 WBT) + Fallback Step 2 (no-vig mean of Pinnacle, Thunderpick (via bo3.gg)).</div></td>
+  <td><span class="blank">— (Blank under strict primary-bookmaker rule)</span><div class="mini"><a href="unresolved.html#u-1080283">See fallback &amp; limitation →</a></div></td>
+  <td>#60 WBT (1201 pts) vs #363 BOJONG (463.0 pts)<div class='mini'>HLTV #109 vs #220 · VRS p(A)=81.2%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/wrotberry-vs-bojong-elisa-breakout-series-2-1080283" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399422/wbt-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399422/wbt-vs-bojong-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0060--wbt--demqq-psycho-s4ltovsk1yy-smash-tyr1k.md" target="_blank" rel="noopener">Valve VRS #60 (WBT)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #363 (BOJONG)</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Quote</a> <a href="https://bo3.gg/matches/wbt-vs-bojong-15-10-2026" target="_blank" rel="noopener">Thunderpick (via bo3.gg) Quote</a></div></td>
+</tr>
+<tr id="row-1080284">
+  <td>2026-10-15 18:00:00 UTC<div class="mini">#1080284 · Elisa BreakOut Series #2 (BO1 (LAN, Group A))</div></td>
+  <td><strong>EAC</strong> vs <strong>ENCE</strong></td>
+  <td><strong style="color:#4ade80">EAC (58.6%)</strong><div class="mini">58.6% / 41.4% · Fair 1.71 / 2.41</div></td>
+  <td><span class="badge b-t1">Tier 1 · Featured Bookmaker (Pinnacle)</span><div class="mini">Proportional no-vig normalization of strict primary bookmaker moneyline(s): Pinnacle. Fallback sources not invoked.</div></td>
+  <td><strong>EAC (58.6%)</strong><div class='mini'>58.6% / 41.4% · Pinnacle</div></td>
+  <td>#103 EAC (1035.0 pts) vs #105 ENCE (1025.0 pts)<div class='mini'>HLTV #110 vs #114 · VRS p(A)=50.5%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/eac-vs-ence-elisa-breakout-series-2-1080284" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399423/eac-vs-ence-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399423/eac-vs-ence-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #103 (EAC)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #105 (ENCE)</a> <a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle Odds</a></div></td>
+</tr>
+<tr id="row-1080285">
+  <td>2026-10-16 08:00:00 UTC<div class="mini">#1080285 · Elisa BreakOut Series #2 (BO1 (LAN, Group B))</div></td>
+  <td><strong>Voca</strong> vs <strong>Phantom</strong></td>
+  <td><strong style="color:#4ade80">Phantom (52.6%)</strong><div class="mini">47.4% / 52.6% · Fair 2.11 / 1.90</div></td>
+  <td><span class="badge b-t2">Tier 2 · Fallback Esportsbook/Exchange (Melbet (1xBet platform), Thunderpick (via bo3.gg)) + HLTV</span><div class="mini">Fallback Step 1 (HLTV match 2399424 rank &amp; lineup corroboration) + Fallback Step 2 (no-vig consensus across Melbet (1xBet platform), Thunderpick (via bo3.gg)).</div></td>
+  <td><span class="blank">— (Blank under strict primary-bookmaker rule)</span><div class="mini"><a href="unresolved.html#u-1080285">See fallback &amp; limitation →</a></div></td>
+  <td>#68 Voca (1182.0 pts) vs #72 Phantom (1147.0 pts)<div class='mini'>HLTV #59 vs #88 · VRS p(A)=51.7%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/voca-vs-phantom-elisa-breakout-series-2-1080285" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399424/voca-vs-phantom-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399424/voca-vs-phantom-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #68 (Voca)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #72 (Phantom)</a> <a href="https://melbet.com/en/line/esports" target="_blank" rel="noopener">Melbet (1xBet platform) Quote</a> <a href="https://bo3.gg/matches/voca-vs-phantom-esports-16-10-2026" target="_blank" rel="noopener">Thunderpick (via bo3.gg) Quote</a></div></td>
+</tr>
+<tr id="row-1080286">
+  <td>2026-10-16 10:00:00 UTC<div class="mini">#1080286 · Elisa BreakOut Series #2 (BO1 (LAN, Group B))</div></td>
+  <td><strong>HAVU</strong> vs <strong>RoundsGG</strong></td>
+  <td><strong style="color:#4ade80">HAVU (68.3%)</strong><div class="mini">68.3% / 31.6% · Fair 1.46 / 3.16</div></td>
+  <td><span class="badge b-t3">Tier 3 · Originated CS2 Line (Official Valve VRS + HLTV + Elo)</span><div class="mini">Fallback Step 1 (HLTV match 2399425 confirms 5/5 ROUNDS starting lineup Tumppis, Kollo, ykis, Lapa, Monoxx = Valve VRS #310 ROUNDS, 548 pts) + Fallback Step 3 (Market-calibrated Official Valve VRS logistic origination #124 937.0 pts vs #310 548 pts; corroborated by 809-match Elo 84.0%).</div></td>
+  <td><span class="blank">— (Blank under strict primary-bookmaker rule)</span><div class="mini"><a href="unresolved.html#u-1080286">See fallback &amp; limitation →</a></div></td>
+  <td>#124 HAVU (937.0 pts) vs #310 ROUNDS (548 pts)<div class='mini'>HLTV #118 vs #237 · VRS p(A)=68.3%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/havu-vs-roundsgg-elisa-breakout-series-2-1080286" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399425/havu-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399425/havu-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #124 (HAVU)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0310--rounds--kollo-lapa-monoxx-tumppis-ykis.md" target="_blank" rel="noopener">Valve VRS #310 (ROUNDS)</a></div></td>
+</tr>
+<tr id="row-1080287">
+  <td>2026-10-16 12:00:00 UTC<div class="mini">#1080287 · Elisa BreakOut Series #2 (BO1 (LAN, Group B))</div></td>
+  <td><strong>Voca</strong> vs <strong>HAVU</strong></td>
+  <td><strong style="color:#4ade80">Voca (65.5%)</strong><div class="mini">65.5% / 34.5% · Fair 1.53 / 2.90</div></td>
+  <td><span class="badge b-t2">Tier 2 · Fallback Esportsbook/Exchange (Melbet (1xBet platform), Thunderpick (via bo3.gg)) + HLTV</span><div class="mini">Fallback Step 1 (HLTV match 2399426 rank &amp; lineup corroboration) + Fallback Step 2 (no-vig consensus across Melbet (1xBet platform), Thunderpick (via bo3.gg)).</div></td>
+  <td><span class="blank">— (Blank under strict primary-bookmaker rule)</span><div class="mini"><a href="unresolved.html#u-1080287">See fallback &amp; limitation →</a></div></td>
+  <td>#68 Voca (1182.0 pts) vs #124 HAVU (937.0 pts)<div class='mini'>HLTV #59 vs #118 · VRS p(A)=61.9%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/voca-vs-havu-elisa-breakout-series-2-1080287" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399426/voca-vs-havu-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399426/voca-vs-havu-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #68 (Voca)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #124 (HAVU)</a> <a href="https://melbet.com/en/line/esports" target="_blank" rel="noopener">Melbet (1xBet platform) Quote</a> <a href="https://bo3.gg/matches/voca-vs-havu-16-10-2026" target="_blank" rel="noopener">Thunderpick (via bo3.gg) Quote</a></div></td>
+</tr>
+<tr id="row-1080288">
+  <td>2026-10-16 14:00:00 UTC<div class="mini">#1080288 · Elisa BreakOut Series #2 (BO1 (LAN, Group B))</div></td>
+  <td><strong>Phantom</strong> vs <strong>RoundsGG</strong></td>
+  <td><strong style="color:#4ade80">Phantom (76.6%)</strong><div class="mini">76.6% / 23.4% · Fair 1.31 / 4.27</div></td>
+  <td><span class="badge b-t3">Tier 3 · Originated CS2 Line (Official Valve VRS + HLTV + Elo)</span><div class="mini">Fallback Step 1 (HLTV match 2399427 confirms 5/5 ROUNDS starting lineup Tumppis, Kollo, ykis, Lapa, Monoxx = Valve VRS #310 ROUNDS, 548 pts) + Fallback Step 3 (Market-calibrated Official Valve VRS logistic origination #72 1147.0 pts vs #310 548 pts; corroborated by 809-match Elo 92.9%).</div></td>
+  <td><span class="blank">— (Blank under strict primary-bookmaker rule)</span><div class="mini"><a href="unresolved.html#u-1080288">See fallback &amp; limitation →</a></div></td>
+  <td>#72 Phantom (1147.0 pts) vs #310 ROUNDS (548 pts)<div class='mini'>HLTV #88 vs #237 · VRS p(A)=76.6%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/phantom-vs-roundsgg-elisa-breakout-series-2-1080288" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399427/phantom-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399427/phantom-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #72 (Phantom)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0310--rounds--kollo-lapa-monoxx-tumppis-ykis.md" target="_blank" rel="noopener">Valve VRS #310 (ROUNDS)</a></div></td>
+</tr>
+<tr id="row-1081120">
+  <td>2026-10-16 14:00:00 UTC<div class="mini">#1081120 · CCT Europe 2026 Series #12 Play-In (BO3 (Online, Group D opening match))</div></td>
+  <td><strong>mellren</strong> vs <strong>Privateer</strong></td>
+  <td><strong style="color:#4ade80">mellren (65.5%)</strong><div class="mini">65.5% / 34.5% · Fair 1.53 / 2.90</div></td>
+  <td><span class="badge b-t3">Tier 3 · Originated CS2 Line (Official Valve VRS + HLTV + Elo)</span><div class="mini">Fallback Step 1 (HLTV match 2399471 &amp; analytics confirm #94 mellren vs #226 Privateer) + Fallback Step 3 (Official Valve VRS BO3 logistic origination: #125 mellren 932 pts vs #271 Privateer 608 pts).</div></td>
+  <td><span class="blank">— (Blank under strict primary-bookmaker rule)</span><div class="mini"><a href="unresolved.html#u-1081120">See fallback &amp; limitation →</a></div></td>
+  <td>#125 mellren (932.0 pts) vs #271 Privateer (608.0 pts)<div class='mini'>HLTV #94 vs #226 · VRS p(A)=65.5%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/mellren-vs-privateer-cct-europe-2026-series-12-play-in-1081120" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399471/mellren-vs-privateer-cct-2026-europe-series-12-closed-qualifier" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399471/mellren-vs-privateer-cct-2026-europe-series-12-closed-qualifier" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #125 (mellren)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #271 (Privateer)</a></div></td>
+</tr>
+<tr id="row-1080289">
+  <td>2026-10-16 16:00:00 UTC<div class="mini">#1080289 · Elisa BreakOut Series #2 (BO1 (LAN, Group B))</div></td>
+  <td><strong>RoundsGG</strong> vs <strong>Voca</strong></td>
+  <td><strong style="color:#4ade80">Voca (77.8%)</strong><div class="mini">22.2% / 77.8% · Fair 4.51 / 1.29</div></td>
+  <td><span class="badge b-t3">Tier 3 · Originated CS2 Line (Official Valve VRS + HLTV + Elo)</span><div class="mini">Fallback Step 1 (HLTV match 2399428 confirms 5/5 ROUNDS starting lineup Tumppis, Kollo, ykis, Lapa, Monoxx = Valve VRS #310 ROUNDS, 548 pts) + Fallback Step 3 (Market-calibrated Official Valve VRS logistic origination #310 548 pts vs #68 1182.0 pts; corroborated by 809-match Elo 94.9%).</div></td>
+  <td><span class="blank">— (Blank under strict primary-bookmaker rule)</span><div class="mini"><a href="unresolved.html#u-1080289">See fallback &amp; limitation →</a></div></td>
+  <td>#310 ROUNDS (548 pts) vs #68 Voca (1182.0 pts)<div class='mini'>HLTV #237 vs #59 · VRS p(A)=22.2%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/roundsgg-vs-voca-elisa-breakout-series-2-1080289" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399428/voca-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399428/voca-vs-rounds-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0310--rounds--kollo-lapa-monoxx-tumppis-ykis.md" target="_blank" rel="noopener">Valve VRS #310 (ROUNDS)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #68 (Voca)</a></div></td>
+</tr>
+<tr id="row-1080290">
+  <td>2026-10-16 18:00:00 UTC<div class="mini">#1080290 · Elisa BreakOut Series #2 (BO1 (LAN, Group B))</div></td>
+  <td><strong>Phantom</strong> vs <strong>HAVU</strong></td>
+  <td><strong style="color:#4ade80">Phantom (68.2%)</strong><div class="mini">68.2% / 31.8% · Fair 1.47 / 3.14</div></td>
+  <td><span class="badge b-t2">Tier 2 · Fallback Esportsbook/Exchange (Melbet (1xBet platform), Thunderpick (via bo3.gg)) + HLTV</span><div class="mini">Fallback Step 1 (HLTV match 2399429 rank &amp; lineup corroboration) + Fallback Step 2 (no-vig consensus across Melbet (1xBet platform), Thunderpick (via bo3.gg)).</div></td>
+  <td><span class="blank">— (Blank under strict primary-bookmaker rule)</span><div class="mini"><a href="unresolved.html#u-1080290">See fallback &amp; limitation →</a></div></td>
+  <td>#72 Phantom (1147.0 pts) vs #124 HAVU (937.0 pts)<div class='mini'>HLTV #88 vs #118 · VRS p(A)=60.2%</div></td>
+  <td><div class="src-pills"><a href="https://www.hotspawn.com/matches/phantom-vs-havu-elisa-breakout-series-2-1080290" target="_blank" rel="noopener">HotSpawn Lobby</a> <a href="https://www.hltv.org/matches/2399429/phantom-vs-havu-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Match</a> <a href="https://www.hltv.org/betting/analytics/2399429/phantom-vs-havu-elisa-breakout-series-2" target="_blank" rel="noopener">HLTV Analytics</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #72 (Phantom)</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS #124 (HAVU)</a> <a href="https://melbet.com/en/line/esports" target="_blank" rel="noopener">Melbet (1xBet platform) Quote</a> <a href="https://bo3.gg/matches/phantom-esports-vs-havu-16-10-2026" target="_blank" rel="noopener">Thunderpick (via bo3.gg) Quote</a></div></td>
+</tr>
+    </tbody>
+  </table>
+</div>
+
+<footer class="mini" style="margin-top:28px;padding-top:14px;border-top:1px solid var(--border)">
+  Generated: 2026-10-15T08:44:28Z · Source capture: 2026-10-15T08:29:49Z ·
+  Automated refresh: every 4 hours (<code>.github/workflows/refresh-94b3d48a.yml</code>) ·
+  Raw JSON: <a href="../../data/94b3d48a/board.json">board.json</a> ·
+  <a href="../../data/94b3d48a/audit.json">audit.json</a> ·
+  Official lobby: <a href="https://play.hotspawn.com/lobby" rel="noopener">play.hotspawn.com/lobby</a> ·
+  HotSpawn crowd pick % is never used as a probability indicator.
+</footer>
+</main>
+</body>
+</html>
