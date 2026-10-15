@@ -1,0 +1,43 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Method · TWC 2026 picks</title><style>
+:root{--bg:#0d1117;--card:#161b22;--line:#30363d;--text:#e6edf3;--mut:#9aa7b4;--ok:#3fb950;--warn:#d29922;--bad:#f85149;--acc:#58a6ff}
+*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
+a{color:var(--acc)}main{max-width:860px;margin:0 auto;padding:12px}
+nav{display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px;background:#010409;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:2}
+nav a{min-height:44px;display:inline-flex;align-items:center;padding:0 12px;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--text);font-size:15px}
+nav a.on{background:#1f6feb;border-color:#1f6feb}
+h1{font-size:1.45rem;margin:14px 0 6px}h2{font-size:1.15rem;margin:24px 0 8px}
+.mut{color:var(--mut);font-size:.9rem}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.btn{min-height:48px;display:inline-flex;align-items:center;padding:0 16px;border-radius:10px;background:#1f6feb;color:#fff;text-decoration:none;font-weight:600}
+.btn.alt{background:var(--card);border:1px solid var(--line);color:var(--text)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:12px 0}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}.tile b{display:block;font-size:1.4rem}
+.m{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0}
+.m.contra{border-left:5px solid var(--warn)}
+.top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.85rem;color:var(--mut)}
+.teams{display:grid;grid-template-columns:1fr auto;gap:4px 10px;margin:8px 0;font-size:1.05rem}
+.teams .p{font-weight:700;text-align:right}.fav{color:var(--ok)}
+.bar{height:8px;border-radius:4px;background:#30363d;overflow:hidden;margin:4px 0 8px}.bar i{display:block;height:100%;background:var(--ok)}
+.picks{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pk{background:#0d1117;border:1px solid var(--line);border-radius:8px;padding:8px}
+.pk small{display:block;color:var(--mut);font-size:.78rem}.pk b{font-size:1.05rem}.pk.lb b{color:var(--warn)}
+.why{font-size:.9rem;color:var(--mut)}details{margin-top:8px}summary{cursor:pointer;min-height:36px;color:var(--acc)}
+.src{font-size:.85rem;word-break:break-word}.tag{display:inline-block;font-size:.75rem;padding:2px 7px;border-radius:999px;border:1px solid var(--line);margin:2px 4px 0 0;color:var(--mut)}
+.tag.w{border-color:var(--warn);color:var(--warn)}.tag.b{border-color:var(--bad);color:var(--bad)}.tag.g{border-color:var(--ok);color:var(--ok)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{border-bottom:1px solid var(--line);padding:7px 5px;text-align:left;vertical-align:top}
+.tw{overflow-x:auto}.blank{color:var(--bad);font-weight:700}
+footer{color:var(--mut);font-size:.8rem;margin:30px 0 20px}
+@media(max-width:480px){.picks{grid-template-columns:1fr}h1{font-size:1.3rem}}
+</style></head><body><nav><a href="../index.html">← Home / all picks</a><a href="index.html">TWC Day 1–3</a><a href="unresolved.html">Unresolved &amp; limits</a><a href="method.html" class=on>Method</a></nav><main><h1>Method, probability rules &amp; contrarian rules</h1>
+<h2>Where the numbers come from</h2><ul><li>HotSpawn is used for fixture discovery and pick&#x27;em points only; its crowd % is shown as ownership and is never a win probability.</li><li>Win probabilities come only from external two-sided betting lines already captured on the repo&#x27;s market boards (Melbet, Kalshi, Thunderpick via bo3.gg), cross-checked against a second published line where one exists.</li><li>Where no two-sided line was retrieved, the probability is left blank (never 50/50, never invented) and the row is published in the Unresolved picks &amp; limitations section with the source attempts.</li><li>Editorial predictions (e.g. the official HotSpawn Day 3 preview) are labelled editorial and are never converted into a probability.</li></ul>
+<h2>Resolution ladder for a match with no featured market pick</h2>
+<ol><li><b>HLTV first</b> — event/match/analytics pages for fixtures, results, rankings and form.</li>
+<li><b>Then esportsbooks and exchanges</b> — the repo market boards' captured two-sided lines (Pinnacle, Bovada, Melbet, Kalshi, Thunderpick via bo3.gg); a second published line is used as a cross-check, and suspected placeholder quotes (e.g. uniform 1.80/1.80) are rejected.</li>
+<li><b>Then an originated estimate</b> — only from uniquely identified official Valve VRS ratings, clearly labelled as our model, never presented as a bookmaker price.</li>
+<li><b>Otherwise blank</b> — published on the <a href="unresolved.html">Unresolved</a> page with the attempts and the limitation.</li></ol>
+<h2>Contrarian-but-not-stupid rules (leaderboard picks)</h2><ol><li>Start from the external market probability, never from the result you want. The safe pick is always the higher verified probability.</li><li>A leaderboard (contrarian) pick must clear three gates: (1) verified win probability at least 25% — a live underdog, not a lottery ticket; (2) low HotSpawn ownership, so a correct call gains on the field (leverage = win % ÷ ownership %); (3) a concrete, dated reason the underdog&#x27;s chance is real (same-event head-to-head, current-event form, a verified roster/rest edge) — not just &#x27;favourites sometimes lose&#x27;.</li><li>Recent roster changes cut both ways: a new IGL/coach/language (Aurora, July 2026) is a reason to check integration evidence, not an automatic fade — especially 100 days and a top-3 EPL finish later. Count a roster or rest factor only when it is dated, sourced, and not already reflected in the market line.</li><li>Cap the number of contrarian swings per day and never spend one where there is no verified probability or no ownership data (BetBoom vs Legacy fails both gates today).</li><li>Grade picks after the event with the pre-lock probability logged (calibration over many matches), not with post-match stories. Day 1&#x27;s 9z win proves the crowd can over-own a favourite; it does not prove any single Day 3 underdog will win.</li></ol>
+<h2>Updates</h2>
+<p>This section is rebuilt automatically every 4 hours by <code>.github/workflows/twc-869a5375.yml</code> from
+<code>data/869a5375/twc.json</code> (fail-closed internal-link check). Live fixture/line refresh for all CS2 matches is handled by the
+repo's 4-hourly collectors behind the <a href="../strategy/index.html">every-match board</a> and the
+<a href="../picks-every-match/index.html">strict board</a>; a rebuild never makes an old quote fresh — every card shows its read time.</p>
+<h2>Sources used for this section</h2>
+<ul class="src"><li><a href="https://www.hltv.org/events/8932/thunderpick-world-championship-2026">HLTV TWC 2026 event</a> · <a href="https://www.hltv.org/results?event=8932">HLTV results</a> · <a href="https://www.hltv.org/events/8932/matches">HLTV matches</a> · <a href="https://play.hotspawn.com/lobby">HotSpawn lobby (discovery only)</a> · <a href="https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-day-3-preview">HotSpawn Day 3 preview (editorial)</a></li></ul><footer>Built 2026-10-15T22:25:00Z UTC by scripts/869a5375/build.py from data/869a5375/twc.json · HotSpawn crowd % is ownership only, never a probability · Probabilities are external market estimates, not guarantees · Not affiliated with HotSpawn · 18+, gamble responsibly.</footer></main></body></html>

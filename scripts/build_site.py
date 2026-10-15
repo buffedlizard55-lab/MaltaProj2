@@ -424,6 +424,8 @@ including low-tier matches. <strong>Unsupported probabilities stay blank, not 50
 <a class="btn btn-primary" href="picks-every-match/index.html">Open all CS2 picks →</a>
 <a class="btn ghost" href="picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a>
 <a class="btn ghost" href="strategy/index.html">Every match + leaderboard picks</a>
+<a class="btn ghost" href="twc/index.html">TWC Day 1–3 review &amp; Day 3 picks</a>
+<a class="btn ghost" href="twc/unresolved.html">TWC unresolved &amp; limitations</a>
 </div>
 <p class="note">Snapshot counts below are evaluated at {esc(pick_time or 'unverified')}.
 Source capture ended {esc(pick_board.get('collected_to_utc') or 'unverified')}.
@@ -451,6 +453,7 @@ calculations, not officially verified win chances. <strong>HotSpawn crowd picks 
 <a class="board-card" href="picks-every-match/inventory.html"><div class="board-card-title">Full lobby inventory</div><div class="board-card-desc">Every retained CS2 fixture, including locked/past rows. Coverage refers to the captured lobby, not unseen additions.</div></a>
 <a class="board-card" href="strategy/index.html"><div class="board-card-title">Every match: safe + leaderboard (contrarian) picks</div><div class="board-card-desc">Best available line for every listed match (blanks on the strict list shown with their limitation), plus a contrarian-but-not-stupid leaderboard pick using crowd ownership. Includes unresolved &amp; limits and a day-1 backtest.</div></a>
 <a class="board-card" href="day-one.html"><div class="board-card-title">Day one &amp; sensible contrarian strategy</div><div class="board-card-desc">9z–Aurora, all four opening results, roster context and what the evidence does not prove.</div></a>
+<a class="board-card" href="twc/index.html"><div class="board-card-title">TWC Day 1–3 review &amp; Day 3 picks</div><div class="board-card-desc">Day 1 upset + Day 2 results verified on HLTV, derived group standings, and a safe + contrarian-but-not-stupid pick for every Day 3 decider (16 Oct). Blank/unresolved rows are in the linked limitations section.</div></a>
 <a class="board-card" href="flagged.html"><div class="board-card-title">Flagged for Review</div><div class="board-card-desc">Source failures, disputed identities and competing historical boards. No silent assumptions.</div></a>
 </div>
 <h2>Automatic updates</h2>
