@@ -4785,3 +4785,50 @@ naming cannot be used here, so all commits and pushes stay on `arena/6c5bb3d6-ma
   222 quotes re-derived, **18 irregularities** → `build_pages.py` "pages built: 3, no broken internal
   links" → `tests.test_6c5bb3d6` **29/29 OK** → `stage_site.py` "PASS: all staged local links resolve
   across all session sections". Also validated on a pristine `git archive` of the branch tip: 584 OK.
+
+### `6c5bb3d6` — PR, merge and verified deployment record (2026-10-15 14:25 UTC)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| `T-VERIFY-6C5BB3D6` — independent line-by-line verification of the day-1 review, the contrarian/leaderboard strategy layer and every-match pick coverage; the shared publication-gate check C11; two logged narrow takeovers to heal that gate; mobile-first audit section with executive links, flagged items, method and 6-hourly re-verification | **done** | 6c5bb3d6 | 2026-10-15 11:55 | `audits/6c5bb3d6/**`, `scripts/6c5bb3d6/**`, `data/6c5bb3d6/**`, `tests/test_6c5bb3d6.py`, `.github/workflows/verify-6c5bb3d6.yml`, one additive `README.md` row, this section of `COORDINATION.md`; logged takeovers: one permalink-shape guard in `scripts/picks_collect.py` + the three affected rows of `data/picks_fixtures.json` regenerated with their own builder (`ac475c09` scope), and one stale league allowlist entry in `tests/test_expanded_lines.py` (`a0586093` scope) |
+| `T-CONTRARIAN-6C5BB3D6` — a day-1 upset review and contrarian leaderboard board of this session's own | **superseded, never started** | 6c5bb3d6 | 2026-10-15 11:15 | none — `f28afd9e` had already claimed and shipped exactly this (`strategy/`, PRs #114–#116), and the protocol forbids starting a task another session has claimed, so this session verified it instead of duplicating it |
+
+- **PR #117 merged:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/117 at **2026-10-15T12:38:59Z**,
+  merge commit `ff3dc4def499186d9ac347f2dccd11874a893bdc`. PR check run
+  https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38735901176 **success** (build ✓ 1m47s).
+- **PR #118 merged:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/118 at **2026-10-15T12:53:58Z**,
+  merge commit `0f1710c7258c5459e0c361c61d348b19c37a8643`. PR check run
+  https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38737853978 **success** (build ✓ 1m51s).
+  Pages run on that merge commit https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38738212911
+  **success** (build ✓ 1m36s, deploy ✓ 17s).
+- **PR #119 merged:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/119 at **2026-10-15T14:08:00Z**,
+  merge commit `1b1df06ef910837e856e451a3ef011937af688c4`. GitHub created no `pull_request` check run for
+  this PR's head commits, so the branch tip was validated on a pristine `git archive` of it instead —
+  **584 tests OK** (5 pre-existing skips) plus a clean `stage_site.py`, twice, before merging.
+- **Pages deployment verified.** The push-triggered run on PR #119's merge commit
+  (https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38748684238) passed **build ✓ 1m42s** and
+  then failed only at `Deploy to GitHub Pages` (9 s), because a concurrent dispatch run was deploying the
+  same site at that moment — a deployment race, not a build, content or link failure. The concurrent run
+  https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38748729777 **succeeded end to end**
+  (build ✓ 1m48s, deploy ✓ 1m15s) on commit `ef7a3e0e6cfeb9ff49453cab2a4ac75ec1ca5a83`; its deploy job
+  reports `Deploy to GitHub Pages -> success` and **`Verify actual public dashboard -> success`**.
+  `1b1df06` (PR #119) is an ancestor of that deployed commit, and the deployed tree contains every file of
+  this session: `audits/6c5bb3d6/{index,flagged,method}.html` + `report.json`, `data/6c5bb3d6/*`,
+  `scripts/6c5bb3d6/*`, `tests/test_6c5bb3d6.py`, `.github/workflows/verify-6c5bb3d6.yml`.
+- **Live read-back.** This sandbox cannot resolve `*.github.io` over curl (host not allowlisted), so the
+  deployed page was read through the agent's page fetcher:
+  https://buffedlizard55-lab.github.io/MaltaProj2/audits/6c5bb3d6/index.html serves the CI-refreshed audit —
+  verdict "11 independent checks … 9 pass, 1 informational, 0 fail. 18 items are flagged for review"; stats
+  11 pickable fixtures / 17 published rows / 219 raw quotes re-derived; board stamp `2026-10-15T13:27:08Z`;
+  lobby snapshot `2026-10-15T12:39:10Z`; official Valve standings fetched `2026-10-15T14:08:13Z`
+  (HTTP 200, 349 teams); audit `2026-10-15T14:08:17Z`; plus the "Where the picks are" executive link table,
+  the verified day-1 table with per-row official sources, and the 4%-ownership upset breakdown. That refresh
+  was produced on `main` by this session's own 6-hourly workflow with no manual input.
+- **Handoff notes for the next session.** (1) `audits/6c5bb3d6/` is still not linked from the landing
+  executive summary, because `scripts/build_site.py` sits inside `778756a1`'s claim — the request is logged
+  above and this session did not edit that file. (2) Both red-gate incidents had the same shape: *a
+  scheduled bot committed refreshed data without running the contract tests that read it*; running each
+  session's own tests inside its refresh workflow, before the commit step, would prevent recurrence, and
+  C11 now exists to catch it when it happens. (3) Concurrent `pages.yml` runs on `main` can race at the
+  deploy step; a failed `Deploy to GitHub Pages` with a green build and a green sibling run means the site
+  is live, and the sibling run's `Verify actual public dashboard` step is the evidence to cite.
