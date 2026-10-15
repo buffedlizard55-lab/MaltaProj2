@@ -7,6 +7,7 @@ access-control bypasses. Run on GitHub Actions, where source access is available
 """
 import base64
 import json
+import importlib.util
 from pathlib import Path
 from verified_engine import load_engine
 
@@ -20,9 +21,15 @@ def main():
     except (OSError, ValueError):
         evidence = {}
     original_fetch = collector.fetch
+    # Session 69e4c06a: a cached lobby omitted newly listed fixtures. Retain cache
+    # metadata; requesting revalidation is not itself a fresh-evidence assertion.
+    support_path = Path(__file__).resolve().parents[1] / '69e4c06a/refresh.py'
+    spec = importlib.util.spec_from_file_location('canonical_lobby_refresh', support_path)
+    support = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(support)
 
     def retain_inputs(url, *args, **kwargs):
-        body, meta = original_fetch(url, *args, **kwargs)
+        body, meta = support.fetch_recent_lobby(original_fetch, url, *args, **kwargs)
         if meta.get('status') == 200 and body:
             if url == collector.LOBBY_PAGE:
                 state = collector.core.lobby_state(body.decode('utf-8', 'replace'))
