@@ -45,6 +45,13 @@ def main():
     collector.fetch = retain_inputs
     result = collector.main()
     evidence_path.write_text(json.dumps(evidence, indent=1, ensure_ascii=False) + '\n')
+    # A separate, replayable extension reads explicit contract rules, never tickers
+    # or settlement clocks. The builder admits it only for existing market gaps.
+    spec = importlib.util.spec_from_file_location('canonical_rule_kickoffs',
+        Path(__file__).resolve().parents[1] / '69e4c06a/kalshi.py')
+    rules = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(rules)
+    rules.normalize_saved_capture(collector.OUT)
     return result
 
 

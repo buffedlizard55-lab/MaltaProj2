@@ -11,7 +11,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[2]
 HERE = ROOT / 'scripts/f7279a54'
 
-def verify(data_dir=None):
+def verify(data_dir=None, quote_normalizer=None):
     data_dir = Path(data_dir or ROOT / 'data/f7279a54')
     def load(name, filename):
         spec = importlib.util.spec_from_file_location(name, HERE / filename)
@@ -41,6 +41,10 @@ def verify(data_dir=None):
         collect.collect_bovada(parsed)
         collect.collect_melbet(parsed)
         collect.collect_kalshi(parsed, rejected)
+    # Optional canonical-only, source-backed normalization; all legacy callers keep
+    # exactly the original replay behavior. Callback must derive from these payloads.
+    if quote_normalizer is not None:
+        parsed = quote_normalizer(parsed, payloads)
     def key(q):
         names = q.get('names_at_source') or [q['team_a'], q['team_b']]
         return (q['source_key'], q['event_id'], tuple(names), q['raw_format'],
@@ -58,6 +62,8 @@ def verify(data_dir=None):
                 failures.append(f"{row['fixture_id']} kickoff differs from official response")
             elif source.get('live'):
                 failures.append(f"{row['fixture_id']} live quote entered prematch picks")
+            elif quote.get('kickoff_evidence') != source.get('kickoff_evidence'):
+                failures.append(f"{row['fixture_id']} explicit kickoff rule evidence differs from official response")
             rows.append({'fixture_id': row['fixture_id'], 'source': quote['api_url'],
                          'event_id': quote['event_id'], 'confirmed': source is not None})
     return {'source_observed_utc': payloads['collected_to_utc'], 'provider_responses': len(payloads['sources']),

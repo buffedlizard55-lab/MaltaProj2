@@ -15,6 +15,7 @@ on:
       - 'tests/test_c64a5e19.py'
       - 'tests/test_dc741cc1.py'
       - 'tests/test_3faf40e8.py'
+      - 'tests/test_69e4c06a.py'
       - '.github/workflows/every-match-c64a5e19.yml'
   schedule:
     - cron: '12 */4 * * *'
@@ -49,7 +50,7 @@ jobs:
       - name: Install verification dependencies
         run: pip install -r scripts/requirements.txt
       - name: Tests
-        run: python3 -m unittest tests.test_c64a5e19 tests.test_479ef53e tests.test_dc741cc1 tests.test_3faf40e8 -v
+        run: python3 -m unittest tests.test_c64a5e19 tests.test_479ef53e tests.test_dc741cc1 tests.test_3faf40e8 tests.test_69e4c06a -v
       - name: Commit and push (rebase before every push)
         env:
           REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
