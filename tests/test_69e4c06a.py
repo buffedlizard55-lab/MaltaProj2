@@ -83,6 +83,38 @@ class PublicLobbyRevalidation(unittest.TestCase):
         self.assertEqual(calls, [('https://example.test/api', {'Accept': 'application/json'}, 45)])
 
 
+class RetainedFixtureClocks(unittest.TestCase):
+    def clock_input(self):
+        return {'collected_to_utc': '2026-10-15T22:30:00Z', 'hotspawn_fallback_from': '2026-10-15T22:00:00Z',
+                'access_log': {'hotspawn_lobby_page': {'status': 200, 'at_utc': '2026-10-15T22:00:00Z', 'age_header': '300'}}}
+
+    def test_backup_cannot_replace_missing_failed_invalid_or_future_http_metadata(self):
+        from tests.test_c64a5e19 import B
+        for metadata in ({}, {'status': 403, 'at_utc': '2026-10-15T22:00:00Z'},
+                         {'status': 200, 'at_utc': 'bad'}, {'status': 200, 'at_utc': '2026-10-15T23:00:00Z', 'age_header': '7200'}):
+            snap = self.clock_input()
+            snap['access_log']['hotspawn_lobby_page'] = metadata
+            review = REFRESH.scope_fixture_clock(snap, B.core)
+            self.assertFalse(review['eligible_clock'])
+            self.assertIsNone(snap['hotspawn_fallback_from'])
+            self.assertIsNone(snap['access_log']['hotspawn_lobby_page']['at_utc'])
+
+    def test_newer_backup_never_overrides_older_http_clock_or_cache_age(self):
+        from tests.test_c64a5e19 import B
+        snap = self.clock_input()
+        snap['access_log']['hotspawn_lobby_page']['at_utc'] = '2026-10-15T17:00:00Z'
+        REFRESH.scope_fixture_clock(snap, B.core)
+        self.assertEqual(snap['hotspawn_fallback_from'], '2026-10-15T17:00:00Z')
+        self.assertEqual(snap['access_log']['hotspawn_lobby_page']['age_header'], '300')
+
+    def test_matching_retained_clock_is_preserved_without_refresh_or_input_mutation(self):
+        from tests.test_c64a5e19 import B
+        snap = self.clock_input()
+        original = copy.deepcopy(snap)
+        self.assertTrue(REFRESH.scope_fixture_clock(snap, B.core)['eligible_clock'])
+        self.assertEqual(snap, original)
+
+
 class ExplicitContractRules(unittest.TestCase):
     def test_explicit_edt_converts_to_utc_not_occurrence_or_ticker(self):
         event = synthetic_event()
