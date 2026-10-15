@@ -1,5 +1,18 @@
 # Coordination
 
+Session: `869a5375` (TWC Day 1–3 review + Day 3 picks session). Environment fixes work to branch `arena/869a5375-maltaproj2`.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-TWC-DAY3: review TWC 2026 Day 1 (9z–Aurora upset, Aurora July rebuild) + Day 2 results (HLTV event 8932), publish mobile Day 3 picks (safe + contrarian-but-not-stupid leaderboard) for every Day 3 match, separate Unresolved picks & limitations section, executive-summary link, 4-hourly refresh | in progress | 869a5375 | 2026-10-15 22:25 | twc/**, data/869a5375/**, scripts/869a5375/**, tests/test_869a5375.py, .github/workflows/twc-869a5375.yml, COORDINATION.md, README.md (additive link only), and (integration, additive only) root index.html executive-summary link + scripts/stage_site.py section list |
+
+## Log
+- 2026-10-15 22:25 UTC, `869a5375`: Claim posted before any work in this scope. No other session claims `twc/**` / `data/869a5375/**`. Existing boards (`picks-every-match/`, `strategy/`, `board/`, root `day-one.html`) are read-only inputs. Branch is `arena/869a5375-maltaproj2` (environment-fixed).
+
+---
+
+# Coordination
+
 Session: `b5436cf0` (research + every-match picks session). Environment fixes work to branch `arena/b5436cf0-maltaproj2`.
 
 | Task | Status | Owner | Claimed UTC | File scope |
