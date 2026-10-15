@@ -50,9 +50,10 @@ for attempt in range(12):
     try:
         root = public_get('index.html')
         assert 'Open all CS2 picks' in root and 'picks-every-match/index.html' in root
+        assert 'picks-every-match/unresolved.html' in root and 'canonical-unresolved' in root
         live = json.loads(public_get('data/c64a5e19/board.json'))
         assert live['policy'] == 'verified-every-match-v3'
-        for name in ('index', 'picks', 'inventory', 'flagged', 'method'):
+        for name in ('index', 'picks', 'inventory', 'unresolved', 'flagged', 'method'):
             body = public_get('picks-every-match/' + name + '.html')
             assert 'data-policy="verified-every-match-v3"' in body, name
             assert 'name="viewport"' in body, name

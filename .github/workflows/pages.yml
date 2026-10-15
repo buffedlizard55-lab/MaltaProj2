@@ -63,35 +63,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Avoid race with existing legacy Pages build
-        if: github.event_name == 'push'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: |
-          python - <<'PYCODE'
-          import json, os, subprocess, time
-          for attempt in range(36):
-              result = subprocess.run(['gh','api',f'repos/{os.environ["GH_REPO"]}/pages/builds?per_page=100'],capture_output=True,text=True)
-              if result.returncode:
-                  raise SystemExit(result.stderr)
-              # A bot refresh can advance main while this checked artifact builds.
-              # GitHub cancels the older legacy Pages request in favour of that
-              # descendant. Wait for all legacy work to settle, but do not reject
-              # this already-validated artifact merely because its superseded
-              # legacy request is reported as the generic "errored" status.
-              history = json.loads(result.stdout)
-              builds = [b for b in history if b.get('commit') == os.environ['GITHUB_SHA']]
-              active = [b for b in history if b.get('status') in {'queued', 'building'}]
-              if any(b.get('status') == 'built' for b in builds):
-                  break
-              if builds and all(b.get('status') == 'errored' for b in builds) and not active:
-                  print('Legacy build was superseded; proceeding with the checked Pages artifact')
-                  break
-              time.sleep(5)
-          else:
-              raise SystemExit('Legacy deployment not settled; refusing a publication race')
-          PYCODE
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

@@ -161,8 +161,11 @@ class PublishedArithmetic(unittest.TestCase):
         for fx in doc["fixtures"]:
             lines = fx.get("bookmaker_lines") or []
             consensus = (fx.get("derived") or {}).get("consensus")
-            if not lines or not consensus:
+            if not lines:
+                self.assertIsNone(consensus, fx['fixture_id'])
+                self.assertIn('external_odds_not_found', fx['review_flags'])
                 continue
+            self.assertIsNotNone(consensus, fx['fixture_id'])
             checked += 1
             ps = []
             for line in lines:
@@ -176,7 +179,10 @@ class PublishedArithmetic(unittest.TestCase):
             self.assertEqual(round(1 - mean, 4), consensus["derived_probability_b_mean"])
             self.assertEqual(min(ps), consensus["derived_probability_a_min"])
             self.assertEqual(max(ps), consensus["derived_probability_a_max"])
-        self.assertGreater(checked, 0, "no priced root rows to verify")
+        # All quotes can expire or fail to join. A source-backed blank is valid;
+        # demanding a price would contradict the fail-closed publication policy.
+        self.assertTrue(doc['fixtures'], 'fixture inventory must not disappear')
+        self.assertEqual(checked, doc['summary']['fixtures_with_external_line'])
 
     def test_live_board_probabilities_reproduce(self):
         with open(os.path.join(ROOT, "data", "live", "board.json"), encoding="utf-8") as fh:
