@@ -1,0 +1,88 @@
+name: verify audit (6c5bb3d6)
+
+# Session 6c5bb3d6 / task T-VERIFY-6C5BB3D6.
+#
+# Re-runs the independent line-by-line verification of the published HotSpawn CS2 pick boards:
+# official Valve standings are re-fetched from Valve's own repository, every published probability
+# is re-derived from its retained raw bookmaker quote, the day-1 backtest is recomputed from its
+# settled rows, and the leaderboard differential is recomputed independently. Runs every 6 hours
+# (inside the required 4-8 h window) and after the boards it audits are refreshed, so the audit
+# always follows the data. Scope guard: writes only data/6c5bb3d6/** and audits/6c5bb3d6/**.
+on:
+  schedule:
+    - cron: '47 */6 * * *'
+  workflow_run:
+    workflows: ["strategy picks (f28afd9e)", "live-coverage (3cd9787c)", "board (fe803b80)"]
+    types: [completed]
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/6c5bb3d6/**'
+      - 'data/6c5bb3d6/research.json'
+      - 'tests/test_6c5bb3d6.py'
+      - '.github/workflows/verify-6c5bb3d6.yml'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: verify-6c5bb3d6
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - run: pip install -r scripts/requirements.txt
+
+      - name: Re-fetch the official Valve regional standings
+        run: python scripts/6c5bb3d6/fetch_vrs.py
+
+      # Recorded before the audit so check C11 reports the state of the shared Pages gate
+      # (pages.yml deploys only when the whole repository suite is green).
+      - name: Record the shared publication gate
+        run: python scripts/6c5bb3d6/run_gate.py
+
+      - name: Re-run the eleven verification checks
+        run: python scripts/6c5bb3d6/verify.py
+
+      - name: Render the audit pages (fails closed on a broken internal link)
+        run: python scripts/6c5bb3d6/build_pages.py
+
+      - name: Contract tests and staged link check
+        run: |
+          python -m unittest tests.test_6c5bb3d6 -v
+          python scripts/stage_site.py
+
+      - name: Re-record the publication gate after this session's own tests
+        run: python scripts/6c5bb3d6/run_gate.py
+
+      - name: Commit refreshed verification evidence and pages
+        run: |
+          set -euo pipefail
+          git config user.name "malta-data-bot"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/6c5bb3d6 audits/6c5bb3d6
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -m "verify(6c5bb3d6): re-run independent audit $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep 10
+          done
+          echo "::error::could not push refreshed audit"; exit 1
+
+      - name: Request a Pages rebuild
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --repo "${{ github.repository }}" --ref main || echo "dispatch not permitted; next scheduled Pages run publishes"

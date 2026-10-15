@@ -4529,3 +4529,198 @@ Environment note: Arena pins this session to branch `arena/f28afd9e-maltaproj2`;
 - **PR #115 merged:** https://github.com/buffedlizard55-lab/MaltaProj2/pull/115 at 2026-10-15T10:27:52Z, merge commit `7dede3b57928e4d2bcbe9ce72476b08fe61760d4`; PR check run 38720229190 success. Post-merge `Verify and publish dashboard` run https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38720446144 **success** (build + deploy + live public verification); `pages-build-deployment` 38720446066 success.
 - The last red `unresolved picks (7177d07f)` run (38719784386) ran on `3126c32`, before the fix; its next `workflow_run`/cron execution exercises the repaired contract. If it still fails, the next session should check its annotations first (no log access from the sandbox).
 - **Task status:** `T-STRAT-F28AFD9E` **done**; `T-CIFIX-F28AFD9E` **done** (update-data + Pages verify green; 7177d07f fix merged, awaiting next scheduled run); `T-FRONT-F28AFD9E` **done** (integrated additively into 778756a1's canonical landing). Flagged items are published at `strategy/unresolved.html#flagged` and are **needs review** (non-blocking).
+---
+
+## Session `6c5bb3d6` — day-1 upset review, contrarian leaderboard strategy, gap-resolution cross-check, mobile "start here" entry point (2026-10-15 11:15 UTC, append-only)
+
+Environment note: Arena pins this session to branch `arena/6c5bb3d6-maltaproj2`; the `session-<id>/<task>`
+naming cannot be used here, so all commits and pushes stay on `arena/6c5bb3d6-maltaproj2`.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| `T-CONTRARIAN-6C5BB3D6` **superseded before any work by the non-overlap rule** — see the pivot note below | superseded | 6c5bb3d6 | 2026-10-15 11:15 | none (no file was created under this claim) |
+| `T-VERIFY-6C5BB3D6`: independent **line-by-line verification** of the published day-1 review, the contrarian/leaderboard strategy layer and the every-match pick coverage: re-fetch the official Valve standings and re-check every VRS citation, re-derive every published probability from its retained raw bookmaker quote, re-prove the two contested team identities (WROTBERRY→WBT, RoundsGG→ROUNDS) from official rosters, recompute the day-1 backtest and the leaderboard differential independently, publish every irregularity and every value left blank, mobile-first, with an executive summary that links every updated picks list; 6-hourly automated re-verification | done | 6c5bb3d6 | 2026-10-15 11:55 | `audits/6c5bb3d6/**` (new published section), `scripts/6c5bb3d6/**`, `data/6c5bb3d6/**`, `tests/test_6c5bb3d6.py`, `.github/workflows/verify-6c5bb3d6.yml`, `COORDINATION.md` (this section only), one additive `README.md` table row |
+
+### Non-overlap & coordination log (`6c5bb3d6`)
+- Read `COORDINATION.md` before starting. `94b3d48a` (PR #110, merged) already owns every-match gap
+  resolution at `audits/94b3d48a/**`; `3cd9787c` owns `data/live/**` + `live/**`; `c64a5e19` owns the
+  canonical `picks-every-match/**`; `b5436cf0` owns `picks-all/**`; `fe803b80` owns `board/**`;
+  `b1fb1465` owns `exec/**`; `7177d07f` owns `unresolved/**`. **None of those files are edited here.**
+  They are read-only inputs, and `climb/` links to them rather than duplicating them.
+- New, uniquely named paths only: `climb/**`, `scripts/6c5bb3d6/**`, `data/6c5bb3d6/**`,
+  `tests/test_6c5bb3d6.py`, `.github/workflows/climb-6c5bb3d6.yml`. The only shared-file touches are
+  the two additive integration-handoff entries named above (established pattern: `b5436cf0`,
+  `94b3d48a`, `961e163a` each added one additive line/row), plus this append-only section.
+- Verified official sources read this session (all URLs published per row in `climb/`):
+  Valve VRS `standings_global_2026_10_05.md` via api.github.com (Legacy #2 1931, Falcons #6 1843,
+  FURIA #7 1829, Aurora #9 1716 roster Jimpphat/kyxsan/Wicadia/woxic/XANTARES, BETBOOM #11 1596,
+  9z #17 1543, NiP #18 1534, PARIVISION #36 1411, WBT #60 1201, ROUNDS #310 548, WBT Academy #130 911);
+  HLTV event 9332 (Elisa BreakOut Series 2 groups/match ids), HLTV match 2399418 (WBT 13-5 EAC, WBT
+  lineup = official VRS WBT roster 5/5), HLTV match 2399425 (HAVU vs ROUNDS, Bo1 LAN, no two-sided
+  book price on page), HLTV news 45718 (9z beat Aurora 2-0, luchov 1.61, +62 VRS), HLTV news 45723
+  (day-1 wrap: four 2-0 sweeps), HLTV news 45082 (Aurora rebuild: kyxsan/Jimpphat/ash in, MAJ3R/
+  soulfly/Fabre out); fieldlevelmedia day-1 scores (13-11 Inferno, 13-1 Nuke; 16-13 OT Ancient,
+  13-6 Dust II); hotspawn day-1 review + day-2 preview (NiP added Krimbo; Falcons karrigan
+  overperforming); strafe/pley.gg/cs2news Aurora rebuild timeline + coach ash interview;
+  sportsgambler Elisa lines (HAVU -476/ROUNDS +300, Phantom -1250/ROUNDS +600, Voca -233/HAVU +175,
+  Phantom -263/HAVU +190); Polymarket CS2 Elisa BreakOut Series #2 Group B quotes; egamersworld
+  HAVU-Rounds H2H 6-0 and placeholder 1.80/1.80 (rejected); stavka.tv Legacy-FURIA (Legacy won both
+  2026 H2H: EWC 2-1, Suzhou 2-0; FURIA 1.70 / Legacy 2.10) and metaratings PARIVISION-BetBoom
+  (BetBoom leads current-roster H2H 2-0; PARI 1.79-1.83 / BB 1.91-2.04).
+- HotSpawn is fixture discovery + settlement only. Its crowd pick % is published **for reference and
+  for the differential-EV leaderboard calculation only** and is never an input to any win probability.
+
+### `6c5bb3d6` — pivot: the requested work was already claimed, so this session verifies it instead of duplicating it
+
+- **Non-overlap decision (2026-10-15 11:45 UTC).** After posting the claim above, this session read
+  `COORDINATION.md` in full and found that session `f28afd9e` claimed `T-STRAT-F28AFD9E` at 10:10 UTC —
+  the day-1 upset review, the contrarian leaderboard layer, a pick for every lobby match and the separate
+  unresolved section — and had already **merged and deployed it** (PRs #114/#115/#116, close-out 10:40 UTC,
+  `strategy/` live). Session `94b3d48a` had likewise already resolved the five strict-board gaps
+  (PR #110, `audits/94b3d48a/`). The protocol forbids starting a task another session has claimed, so the
+  `climb/` board was **not built** and no file was created under that claim. The user's remaining explicit
+  mandate that nobody owns is **VERIFICATION** ("verify line by line; every table row must have a source
+  link to an official site; if a value can't be confirmed leave it blank and flag it"), so this session
+  pivoted to an independent audit of those publications.
+- **Delivered:** `audits/6c5bb3d6/` (`index.html` verification summary + executive links to every picks
+  board, `flagged.html` 13 items with source links, `method.html` formulas + all 40 sources with UTC read
+  times, `report.json` machine-readable), harness `scripts/6c5bb3d6/{fetch_vrs,verify,build_pages}.py`,
+  evidence `data/6c5bb3d6/{vrs_official,research,verification}.json`, 29 contract tests
+  (`tests/test_6c5bb3d6.py`), 6-hourly re-verification workflow `.github/workflows/verify-6c5bb3d6.yml`
+  (scope-guarded: writes only `data/6c5bb3d6/**` and `audits/6c5bb3d6/**`). No other session's file was
+  edited; `scripts/stage_site.py` already stages `audits/`, so no staging entry was needed.
+- **Ten checks, all re-run from committed evidence (result: 9 pass, 1 informational, 0 fail):**
+  C1 every one of the 14 CS2 fixtures still pickable at the board instant `2026-10-15T10:44:23Z` carries a
+  pick (78 listed, 64 locked/past) · C2 all 17 rows normalize (`p_a+p_b=1`) with pick = argmax ·
+  **C3 all 17 published probabilities re-derived here from 253 retained raw quotes** (Pinnacle, Bovada,
+  Melbet LineFeed, Kalshi, Thunderpick-via-bo3.gg), quote orientation recorded per row ·
+  **C4 all 20 "Valve VRS #N (M pts)" citations re-read from Valve's own file fetched in this run**
+  (api.github.com, HTTP 200, 349 teams, snapshot `2026_10_05`) · C5 every row and every audited fact
+  carries an https source · **C6 all 17 probabilities are identical to the upstream board's, so the
+  HotSpawn crowd split cannot have entered them** · C7 day-1 backtest recomputes exactly
+  (safe 11/13 = 41 pts, leaderboard 9/13 = 41 pts), 6 winners independently re-read from official pages,
+  7 disclosed as inherited settlement · C8 leaderboard differential recomputed independently ·
+  C9 both contested identities re-proven · C10 the contrarian context claim re-sourced.
+- **Independent confirmations of the day-1 / contrarian claims (official sources, read this session):**
+  9z 2-0 Aurora (13-11 Inferno, 13-1 Nuke; luchov 38-20, 1.61 rating, 97.4 ADR; 9z +62 VRS) —
+  HLTV news 45718 + match 2399384 + Field Level Media; **pre-lock crowd ownership 4% 9z / 96% Aurora
+  re-read from the exact commit the backtest cites** (`8f66ce4`, board generated 2026-10-14T04:55:36Z,
+  retrieved through the GitHub contents API) — so the 7-point match paid 7 points to 4% of the field and
+  zero to 96%; Falcons 2-0 NiP (16-13 OT Ancient, 13-6 Dust II), Legacy 2-0 PARIVISION, FURIA 2-0 BetBoom —
+  HLTV news 45723; HOTU 2-0 fnatic (Ancient 13-10, Dust2 13-10) — HLTV match 2399135 + Liquipedia;
+  **the R3 context claim "9z beat Falcons" is true** — HLTV news 44548 (2026-05-10, PGL Astana, Mirage 13-8 /
+  Nuke 9-13 / Dust2 13-1, "first defeat of karrigan's reign") + HLTV match 2399409 H2H (9z lead 2-1);
+  Aurora's latest roster change is the 2026-07-03/07-08 rebuild (Jimpphat + coach ash, then kyxsan as IGL;
+  MAJ3R/soulfly/Fabre out) with the coach's own August statement that officials lagged practice —
+  HLTV news 45082 + Liquipedia timeline + Valve's standings (Aurora #9, roster Jimpphat/kyxsan/Wicadia/
+  woxic/XANTARES); NiP are also rebuilt (Krimbo in — Valve #18 roster adamb/Krimbo/sjuush/stavn/xKacpersky).
+- **Identity resolutions re-proven from official rosters (not from a name guess):** WROTBERRY → **WBT**
+  (WhiteBIT Team main, HLTV 13683): WBT's *played* lineup in HLTV match 2399418 (WBT 13-5 EAC, today) is
+  s4ltovsk1yy/Psycho/DemQQ/Smash/tyr1k = **5/5** Valve's official WBT row (#60, 1201 pts) and **0/5**
+  WBT Academy (#130, 911 pts); Pinnacle prices "WBT vs ENCE" at exactly `2026-10-15T12:00:00Z` and
+  "WBT vs BOJONG" at exactly `16:00:00Z` (the two fixtures the strict board left blank); bo3.gg's slug is
+  `wbt-vs-ence-15-10-2026`; Bovada's slug is `whitebit-team-ea-copenhagen-…`. RoundsGG → **ROUNDS**
+  (Finnish, HLTV 12457): HLTV event 9332 Group B is exactly Voca/Phantom/HAVU/ROUNDS with matches
+  2399425/2399427/2399428 in HotSpawn's three slots, Valve lists ROUNDS #310 (548 pts) with roster
+  Kollo/Lapa/Monoxx/Tumppis/ykis (**5/5**), the Thunderpick feed names team 5440 "ROUNDS", and Polymarket
+  titles the same markets "…vs RoundsGG". Residual limitation published, not hidden: the literal strings
+  "WROTBERRY"/"RoundsGG" never appear on HLTV or in Valve's file, so the join rests on event slot +
+  identical UTC kick-offs + bookmaker naming + roster match.
+- **New analysis contributed (verification layer, not a competing board):** the leaderboard differential
+  `points × (probability − crowd ownership)` recomputed for all 14 open fixtures. It **agrees with the
+  published strategy layer on all six plays carrying ≥ +0.50 expected points versus the field** —
+  9z (+1.45), BetBoom (+1.41), Legacy (+1.39), WROTBERRY/WBT (+0.88), EAC (+0.87), Voca (+0.63) — and the
+  three 7-point S-tier matches are where the leaderboard is decided. It **diverges on 8 two-point tier-C
+  rows** where the crowd over-owns a heavy favourite (e.g. 98% on Phantom against a 67% market price, so
+  pure differential math would fade to HAVU for +0.61). Published as an informational irregularity with the
+  full arithmetic: the published layer's cap on swings is the "not stupid" guard, and its cost is now
+  quantified rather than assumed. Five rows where Valve's official standings and the market disagree
+  materially (BetBoom ≈74% by VRS vs a near-even market; Legacy ≈64% by VRS vs FURIA 55% by market) are
+  flagged with both numbers shown — never averaged away silently.
+- **Irregularities published on `audits/6c5bb3d6/flagged.html` (none blocks publication):** 2 medium
+  (the two alias joins with their residual limitations), 6 informational (the 8-row differential
+  divergence set + 5 market-vs-VRS divergences), 1 low (7 day-1 settlements inherited rather than
+  independently re-read), **4 values deliberately left blank**: FURIA-BetBoom per-map scores, the final
+  score of Aurora vs NiP (live at read time, Aurora 13-9 on Cache; its pick window had locked so no pick
+  depends on it), 6 day-1 settlement winners not re-read inside this session's window, and Kalshi
+  order-book depth behind the mellren-Privateer mid prices (retained quote is a yes-mid pair summing to
+  96.5¢ with a recorded max spread of 0.43). Rejected sources are recorded with reasons: egamersworld's
+  uniform 1.80/1.80 Elisa placeholder prices and HLTV's fan vote are never used as probabilities.
+- **Verification performed:** `python3 scripts/6c5bb3d6/fetch_vrs.py` (HTTP 200, 349 teams) →
+  `verify.py` (10 checks, 0 fail, 253 quotes re-derived) → `build_pages.py` ("pages built: 3, no broken
+  internal links") → `python3 -m unittest tests.test_6c5bb3d6` **29/29 OK** → full repository suite
+  `python3 -m unittest discover -s tests` **584 tests OK** (5 pre-existing skips; `scripts/requirements.txt`
+  installed first — without `beautifulsoup4` this sandbox reproduces 7 pre-existing loader errors that are
+  also present on pristine `origin/main`, so they are environmental, not regressions) →
+  `python3 scripts/stage_site.py` "site built: 31 files, no broken internal links" +
+  "PASS: all staged local links resolve across all session sections".
+- **Integration request (not an edit):** `scripts/build_site.py` is inside session `778756a1`'s claimed
+  scope and was edited by `f28afd9e`'s `T-FRONT-F28AFD9E`, so this session did **not** touch it.
+  Request to whoever owns the landing executive summary next: add one row/button for
+  `audits/6c5bb3d6/index.html` — "Independent verification of every pick (re-derived from raw quotes and
+  Valve's own standings), the day-1 upset review and the leaderboard-differential cross-check" — next to
+  the existing `audits/94b3d48a/` links. Until then the section is reachable directly at
+  https://buffedlizard55-lab.github.io/MaltaProj2/audits/6c5bb3d6/ and links out to every picks board.
+- **Merge-conflict log:** the initial claim commit hit an append/append conflict in `COORDINATION.md`
+  against session `778756a1`'s new section during `git pull --rebase`. Resolved by **union** (their
+  section kept verbatim above mine), no work discarded, then pushed.
+
+### `6c5bb3d6` — cross-session finding and logged narrow takeover: the shared Pages gate was red (2026-10-15 12:35 UTC)
+
+- **Found by this audit, not by a build of my own.** Check **C11** (added for exactly this purpose: it
+  runs `.github/workflows/pages.yml`'s own gate command, `python -m unittest discover -s tests`, and
+  records the result in `data/6c5bb3d6/gate.json`) went **RED**: 584 tests, 1 failure —
+  `tests/test_picks_ac475c09.py::test_every_row_links_to_the_official_fixture_page`,
+  `AssertionError: False is not true : https://www.hotspawn.com/?fixtures=waiting-for-information-1080202`.
+  Reproduced on a **pristine `git archive origin/main` checkout**: identical failure, so it is pre-existing
+  on `main` and not caused by this session. `gh run list --workflow=pages.yml` confirms the consequence:
+  **five consecutive failed `Verify and publish dashboard` runs** (3m/16m/18m/29m/43m ago at the time of
+  reading), last success ~55m earlier — i.e. the site had stopped republishing for everybody.
+- **Diagnosis (line by line).** `data/picks_fixtures.json` (session `ac475c09`, collected
+  2026-10-15T11:37:43Z) labelled three TWC day-2 fixtures — 1080202 9z vs Falcons, 1080203 PARIVISION vs
+  BetBoom, 1080204 Legacy vs FURIA — as `hotspawn_match_url_kind: "lobby_published_permalink"` while the
+  URL was `https://www.hotspawn.com/?fixtures=waiting-for-information-<id>`, which is the lobby's own
+  *stage-filter* link (and carries a stale stage string; the lobby now reports "group stage and playoffs").
+  Their own contract requires that kind to be `/matches/<slug>-<id>`. Root cause in
+  `scripts/picks_collect.py`: the lobby payload has **no match page** for these fixtures
+  (`data/hotspawn_matches.json` 10:21:53Z records `source_flags: ["official_match_permalink_unavailable"]`,
+  `published_match_url: null`), and the collector trusted whatever URL the payload carried, labelling it a
+  permalink. Their next cron (15:23Z) would have reproduced it, so waiting was not a fix.
+- **Takeover justification.** `ac475c09`'s T-LIVE is recorded **done** (this file, 2026-10-13 22:15 record),
+  the claim is ~2 days old, and the only commits in its scope since are automated bot refreshes (last
+  11:39:40Z) — the >60-minutes-no-session-commits handoff condition. Precedent in this repository:
+  `f28afd9e` took over `tests/test_7177d07f.py` the same way one hour earlier and logged it.
+- **Repair, kept minimal and in their own intent.** (1) A shape guard in `scripts/picks_collect.py`: only a
+  `https://www.hotspawn.com/matches/<slug>-<fixture_id>` URL may be labelled `lobby_published_permalink`;
+  anything else falls through to the constructed slug or the honest `lobby_listing_fallback` (durable —
+  their cron now produces correct rows). (2) The three affected rows in `data/picks_fixtures.json` reset to
+  `lobby_listing_fallback` / `https://play.hotspawn.com/lobby` / `verified: false`, which their builder then
+  flags on the row. (3) `picks/**` and `data/picks_board.json` regenerated **with their own offline builder**
+  `scripts/picks_build.py`. **No model, price, pick, probability or test assertion was changed, weakened or
+  deleted.** Result: `tests.test_picks_ac475c09` 16/16 OK, full suite **584 tests, 0 failures, 0 errors**
+  (5 pre-existing skips), gate recorded GREEN in `data/6c5bb3d6/gate.json`.
+- **Request to `ac475c09` / whoever owns that scope next:** the guard lives in your collector; please keep it.
+  If your cron re-collects and the lobby has published real `/matches/…` permalinks for those three fixtures
+  by then, they will be labelled correctly and the fallback disappears on its own. Nothing else in your scope
+  was touched.
+- **Also recorded as irregularities on `audits/6c5bb3d6/flagged.html`:** `IR-XF-02` retained Kalshi / bo3.gg
+  quote objects store candidate names in source order but the normalized probability in fixture order
+  (1081120 `team_a: "Privateer Gaming"` with `prob_a = 0.751295` = mellren's share; 1080289
+  `team_a: "Voca"` with `prob_a = 0.15942` = ROUNDS' share). Every published row resolves the orientation
+  correctly — re-derived here: mellren 0.725/0.965 = 0.7513, Voca 0.909091/1.081505 = 0.84058 — so no pick
+  is affected, but the stored evidence reads reversed; this audit now records the raw-side probability **and**
+  the orientation per quote so the join is re-checkable without guessing. `IR-XF-03` rank chips disagree
+  across sources for the same team (WBT: #60 Valve / #66 HLTV event chip / #109 in an earlier note;
+  ROUNDS: #310 Valve / #237 HLTV chip) — different systems and dates, so identity here is proven from
+  **played lineups and Valve's own file**, never from a rank chip.
+- **Final verification state (re-run after the repair, against the fresh `strategy` board of 12:05Z):**
+  `fetch_vrs.py` HTTP 200 / 349 teams → `run_gate.py` GREEN → `verify.py` **11 checks: 10 pass, 1 informational
+  (C8 differential divergence), 0 fail**, 16 irregularities, 242 quotes re-derived → `build_pages.py`
+  "pages built: 3, no broken internal links" → `tests.test_6c5bb3d6` **29/29 OK** → full suite **584 OK** →
+  `stage_site.py` "site built: 31 files, no broken internal links" + "PASS: all staged local links resolve
+  across all session sections". C11 is published as `skipped` (never `pass`) when no gate run has been
+  recorded, so it can never claim coverage it does not have.
+- **Self-reference guard:** because C11 audits the suite that audits C11, the check is decoupled — a red C11
+  is published as a finding (`IR-C11` on the flagged page) rather than failing this session's tests, and the
+  workflow records the gate before and after the audit. Verified convergent and stable over three
+  consecutive runs.

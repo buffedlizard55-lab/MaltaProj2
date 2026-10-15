@@ -781,10 +781,24 @@ def main() -> int:
             "attempted": len(candidates), "resolved": len(constructed),
         }
 
+    # The lobby's own payload also carries its *filter* links for fixtures that have no match page
+    # yet (https://www.hotspawn.com/?fixtures=<stage>-<id>). Those open a listing, not the fixture,
+    # so they must never be labelled a published permalink: only a /matches/<slug>-<id> URL that ends
+    # with this fixture's id qualifies (the contract tests/test_picks_ac475c09.py enforces). Anything
+    # else falls through to the constructed slug or the honest lobby-listing fallback.
+    # Repair 2026-10-15 by session 6c5bb3d6 (logged takeover in COORDINATION.md): three TWC day-2 rows
+    # were published as permalinks while carrying a ?fixtures= filter URL, which red-dened the shared
+    # Pages gate for every session.
+    def _is_fixture_permalink(url, fixture_id) -> bool:
+        return bool(PERMALINK_RE.search(url or "")
+                    and str(url).startswith("https://www.hotspawn.com/matches/")
+                    and str(url).endswith("-" + str(fixture_id)))
+
     for f in fixtures:
         fixture_id = f["fixture_id"]
-        if fixture_id in permalinks:
-            f["hotspawn_match_url"] = permalinks[fixture_id]
+        published = permalinks.get(fixture_id)
+        if published and _is_fixture_permalink(published, fixture_id):
+            f["hotspawn_match_url"] = published
             f["hotspawn_match_url_kind"] = "lobby_published_permalink"
         elif fixture_id in constructed:
             f["hotspawn_match_url"] = constructed[fixture_id]

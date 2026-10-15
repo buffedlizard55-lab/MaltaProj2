@@ -1,0 +1,245 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method &amp; sources · session 6c5bb3d6</title><style>
+:root{color-scheme:dark;--bg:#0c131c;--panel:#141f2c;--line:#2d3c4d;--text:#edf3fa;--muted:#b2c0d0;
+--green:#69e4bd;--amber:#ffce80;--red:#ff9c9c;--blue:#92caff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+a{color:var(--blue);text-underline-offset:3px}
+a:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+header{border-bottom:1px solid var(--line);background:#101a26;position:sticky;top:0;z-index:5}
+.wrap{max-width:1120px;margin:auto;padding:16px}
+.brand{font-weight:750;letter-spacing:.02em}
+nav{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:6px}
+nav a{padding:10px 0;min-height:44px;text-decoration:none}
+nav a[aria-current]{color:var(--green);font-weight:700}
+.skip{position:absolute;left:-9999px}.skip:focus{position:static}
+h1{font-size:clamp(1.7rem,5vw,2.5rem);line-height:1.15;margin:10px 0 12px}
+h2{font-size:1.25rem;margin:26px 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px}
+h3{font-size:1.05rem;margin:18px 0 6px}
+.eyebrow{color:var(--green);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+.muted,.small{color:var(--muted)}.small{font-size:.85rem}
+.notice{border-left:3px solid var(--amber);padding:12px 14px;background:#282215;color:#ffe3b4;margin:14px 0;border-radius:0 8px 8px 0}
+.ok{border-left:3px solid var(--green);padding:12px 14px;background:#12241f;color:#c8f5e6;margin:14px 0;border-radius:0 8px 8px 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
+.stat{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:12px}
+.stat b{display:block;font-size:1.6rem}
+.stat span{font-size:.8rem;color:var(--muted)}
+.panel{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:14px;margin:12px 0}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.button{padding:13px 16px;border-radius:9px;display:inline-block;border:1px solid var(--line);
+text-decoration:none;font-weight:700;min-height:48px;background:#1b2836;color:var(--text)}
+.button.primary{background:var(--green);color:#09241e;border-color:var(--green)}
+.button.ghost{background:transparent}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+caption{text-align:left;padding:6px 0;color:var(--muted);font-size:.85rem}
+th{text-align:left;color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+td,th{padding:13px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+td{overflow-wrap:anywhere}
+.badge{display:inline-block;border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:.75rem;font-weight:700}
+.pass{color:#0d2a20;background:var(--green);border-color:var(--green)}
+.info{color:#2a2110;background:var(--amber);border-color:var(--amber)}
+.fail{color:#2a1414;background:var(--red);border-color:var(--red)}
+.warn{color:#2a2110;background:var(--amber);border-color:var(--amber)}
+.unverified{color:#ffe3b4;background:#3a2f18;border-color:#6b5524}
+.num{font-variant-numeric:tabular-nums;font-weight:700}
+.pos{color:var(--green)}.neg{color:var(--red)}
+.srcs a{display:inline-block;padding:6px 0;min-height:32px;margin-right:10px;font-size:.85rem}
+footer{border-top:1px solid var(--line);margin-top:30px;padding-top:16px}
+ul{padding-left:20px}li{margin:6px 0}
+details{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:10px 12px;margin:10px 0}
+summary{cursor:pointer;font-weight:700;min-height:32px}
+@media(max-width:700px){
+ .wrap{padding:12px}.stats{grid-template-columns:repeat(2,1fr);gap:8px}
+ table,tbody,tr,td{display:block;width:100%}thead{display:none}
+ tr{border:1px solid var(--line);border-radius:12px;margin-bottom:12px;background:var(--panel);padding:6px}
+ td{border:0;padding:8px}
+ td:before{content:attr(data-label);display:block;text-transform:uppercase;font-size:.68rem;
+ color:var(--muted);letter-spacing:.04em;margin-bottom:3px}
+ .srcs a{min-height:44px}nav{font-size:.9rem}.stat{padding:10px}
+}
+</style></head><body>
+<a class="skip" href="#main">Skip to content</a>
+<header><div class="wrap"><div class="brand">HOTSPAWN / CS2 <span class="small">Independent verification · session 6c5bb3d6</span></div>
+<nav aria-label="Section"><a href="index.html">Verification summary</a><a href="flagged.html">Flagged for review</a><a href="method.html" aria-current="page">Method &amp; sources</a></nav></div></header>
+<main id="main" class="wrap">
+<div class="eyebrow">How this audit was verified</div><h1>Method, formulas and every source read</h1>
+<h2>What this audit is</h2>
+<p>An independent, line-by-line re-verification of the published HotSpawn CS2 pick boards — the every-match
+strategy board, its day-1 review and backtest, and the two contested team identities — performed by session
+<code>6c5bb3d6</code> against official sources only. It does not replace any board; it re-derives their numbers
+from raw evidence and publishes what agrees, what diverges and what could not be confirmed.</p>
+<h2>Formulas</h2>
+<ul>
+<li><strong>Proportional no-vig.</strong> From a two-sided decimal line, <code>p_A = (1/d_A) / (1/d_A + 1/d_B)</code>.
+Every retained raw quote in this repository was re-derived with this formula and compared with the published
+market probability (tolerance ±6 points at the row mean, and the row must fall inside the
+quote range).</li>
+<li><strong>Leaderboard differential.</strong> <code>edge_X = points × (p_X − c_X)</code> where <code>c_X</code> is
+the HotSpawn crowd ownership of side X. Derivation: your point margin against the field is
+<code>points × [(1−c)·1{X wins} − c·1{X loses}]</code>, whose expectation is <code>points × (p − c)</code>.
+The differential-optimal pick is <code>argmax</code> of that edge.</li>
+<li><strong>Official-standings model (reference only).</strong>
+<code>p = 1 / (1 + 10^(−(R_A − R_B)/400))</code> on Valve's published regional-standings points. The 400-point
+scale is a stated modelling assumption, not a Valve-published quantity; it is used to expose divergence from the
+market, never to overwrite a market price.</li>
+</ul>
+<h2>Source policy</h2>
+<ul>
+<li><strong>HotSpawn</strong> (<a href="https://play.hotspawn.com/lobby" rel="noopener">play.hotspawn.com/lobby</a>)
+is fixture discovery and settlement only. Its crowd pick percentage is published as ownership for the differential
+arithmetic and is never an input to a win probability — check C6 proves the published probabilities are identical
+to the upstream market/model values.</li>
+<li><strong>Prices</strong> come from licensed bookmakers and exchanges: Pinnacle (public guest odds API), Bovada
+(public coupon JSON), the Melbet/1xBet-platform LineFeed, Kalshi, and the Thunderpick coefficients bo3.gg publishes
+per fixture.</li>
+<li><strong>Ratings</strong> come from Valve's own publication,
+<a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">ValveSoftware/counter-strike_regional_standings</a>
+(snapshot 2026_10_05, fetched in this run over the GitHub contents API:
+HTTP 200, 349 teams).</li>
+<li><strong>Results, rosters and context</strong> come from HLTV match/news/event/team pages, Liquipedia, and
+named esports press, each recorded with its URL and UTC read time in
+<code>data/6c5bb3d6/research.json</code>.</li>
+<li><strong>Rejected sources</strong> are recorded with the reason — egamersworld's uniform 1.80/1.80 placeholder
+prices and HLTV's fan vote are never used as probabilities.</li>
+</ul>
+<h2>The ten checks</h2>
+<div class="tablewrap"><table><caption>Harness: <code>scripts/6c5bb3d6/verify.py</code>; result:
+<a href="report.json">report.json</a>.</caption>
+<thead><tr><th>Check</th><th>How it is verified</th><th>Result</th><th>Evidence</th></tr></thead><tbody><tr><td data-label="Check"><b>C1</b> Inventory coverage of every pickable CS2 fixture</td>
+<td data-label="How it is verified">78 CS2 fixtures in the official lobby snapshot; 12 still pickable at the board instant 2026-10-15T12:05:27Z; 66 locked/past; 12/12 carry a pick</td>
+<td data-label="Result"><span class="badge pass">PASS</span>
+<div class="small">12 checked · 0 failed</div></td>
+<td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/hotspawn_matches.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/board.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C2</b> Probability normalization and pick = argmax</td>
+<td data-label="How it is verified">17 published rows re-checked (p_a+p_b=1, safe pick = higher probability, stated pick probabilities equal the row&#x27;s side values)</td>
+<td data-label="Result"><span class="badge pass">PASS</span>
+<div class="small">17 checked · 0 failed</div></td>
+<td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/board.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C3</b> No-vig arithmetic re-derived from every retained raw quote</td>
+<td data-label="How it is verified">17/17 rows re-derived from 242 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 0 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct</td>
+<td data-label="Result"><span class="badge pass">PASS</span>
+<div class="small">17 checked · 0 failed</div></td>
+<td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/live/quotes.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/fe803b80/snapshot.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/b1fb1465/board.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C4</b> Every official Valve VRS citation re-read from Valve&#x27;s own file</td>
+<td data-label="How it is verified">18 VRS citations across the published rows re-checked against 2026_10_05 as fetched in this run (HTTP 200, 349 teams); alias rosters re-matched WBT 5/5; ROUNDS 5/5; WBT Academy 5/5</td>
+<td data-label="Result"><span class="badge pass">PASS</span>
+<div class="small">18 checked · 0 failed</div></td>
+<td data-label="Evidence"><span class="srcs"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/vrs_official.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C5</b> Every published row and every audited fact carries an https source link</td>
+<td data-label="How it is verified">17 published rows and 21 ledger items checked</td>
+<td data-label="Result"><span class="badge pass">PASS</span>
+<div class="small">17 checked · 0 failed</div></td>
+<td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/board.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/research.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C6</b> HotSpawn crowd % is ownership-only and never a probability</td>
+<td data-label="How it is verified">17/17 rows publish exactly the upstream board&#x27;s market/model probability (so the crowd split cannot have entered them); 0 rows have a probability numerically equal to the crowd share</td>
+<td data-label="Result"><span class="badge pass">PASS</span>
+<div class="small">17 checked · 0 failed</div></td>
+<td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/board.json" rel="noopener">evidence</a> <a href="https://play.hotspawn.com/lobby" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C7</b> Day-1 review: results and backtest arithmetic</td>
+<td data-label="How it is verified">13 settled rows recomputed: safe 11/13 = 41 pts, leaderboard 9/13 = 41 pts. 6 winners independently re-read from official pages this session (1080176, 1079439, 1080177, 1080178, 1080179, 1080279); 7 inherited from the board&#x27;s settlement source and not re-read here</td>
+<td data-label="Result"><span class="badge pass">PASS</span>
+<div class="small">13 checked · 0 failed</div></td>
+<td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/day1_review.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/research.json" rel="noopener">evidence</a> <a href="https://www.hltv.org/results?event=8932" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C8</b> Contrarian (differential) pick recomputed independently</td>
+<td data-label="How it is verified">17 rows recomputed with points x (probability - crowd ownership); 8 agree with the published leaderboard pick, 7 open rows diverge. Divergence is a methodology difference (the published layer caps swings and only fades near coin-flips), not an arithmetic error.</td>
+<td data-label="Result"><span class="badge info">INFO</span>
+<div class="small">17 checked · 0 failed</div></td>
+<td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/board.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/live/board.json (crowd reference field)" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C9</b> Contested team identities (WROTBERRY, RoundsGG) re-checked</td>
+<td data-label="How it is verified">2 alias joins re-verified against the official standings and their published evidence chains (event slot, identical UTC kick-offs, bookmaker naming, 5/5 roster match)</td>
+<td data-label="Result"><span class="badge pass">PASS</span>
+<div class="small">2 checked · 0 failed</div></td>
+<td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/research.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/vrs_official.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C10</b> Contrarian context claims matched to independently sourced evidence</td>
+<td data-label="How it is verified">1 published context claims checked; 1 confirmed from official sources re-read this session; 0 not independently sourced here</td>
+<td data-label="Result"><span class="badge pass">PASS</span>
+<div class="small">1 checked · 0 failed</div></td>
+<td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/context.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/research.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C11</b> Shared publication gate (Pages deploys only on a green suite)</td>
+<td data-label="How it is verified">`/usr/bin/python3 -m unittest discover -s tests` at 2026-10-15T12:34:08Z: 584 tests, 0 failures, 0 errors, 5 skipped -&gt; GREEN, the site can publish</td>
+<td data-label="Result"><span class="badge pass">PASS</span>
+<div class="small">584 checked · 0 failed</div></td>
+<td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/gate.json" rel="noopener">evidence</a></span></td></tr></tbody></table></div>
+<h2>Every source read in this session</h2>
+<div class="tablewrap"><table><caption>37 distinct sources, each with its UTC read time.</caption>
+<thead><tr><th>URL</th><th>What it was used for</th><th>Read (UTC)</th></tr></thead><tbody><tr><td data-label="Source"><a href="https://www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026" rel="noopener">https://www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026</a></td>
+<td data-label="What it was used for">2-0 result, map scores 13-11 Inferno / 13-1 Nuke, luchov 1.61 rating 38-20 97.4 ADR 86.8% KAST, Aurora = VRS #5, 9z +62 VRS points</td>
+<td data-label="Read (UTC)">2026-10-15T10:12:00Z</td></tr><tr><td data-label="Source"><a href="https://www.hltv.org/matches/2399384/9z-vs-aurora-thunderpick-world-championship-2026" rel="noopener">https://www.hltv.org/matches/2399384/9z-vs-aurora-thunderpick-world-championship-2026</a></td>
+<td data-label="What it was used for">per-map player stats for the 2-0</td>
+<td data-label="Read (UTC)">2026-10-15T10:12:00Z</td></tr><tr><td data-label="Source"><a href="https://fieldlevelmedia.com/esports/thunderpick-world-championship-opens-with-4-group-stage-sweeps/" rel="noopener">https://fieldlevelmedia.com/esports/thunderpick-world-championship-opens-with-4-group-stage-sweeps/</a></td>
+<td data-label="What it was used for">13-11 Inferno then 13-1 Nuke; all four day-1 series were 2-0 sweeps</td>
+<td data-label="Read (UTC)">2026-10-15T11:20:00Z</td></tr><tr><td data-label="Source"><a href="https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-day-1-review" rel="noopener">https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-day-1-review</a></td>
+<td data-label="What it was used for">9z upset Aurora; Aurora were the in-form favourites</td>
+<td data-label="Read (UTC)">2026-10-15T10:10:00Z</td></tr><tr><td data-label="Source"><a href="https://www.hltv.org/news/45723/furia-fend-off-betboom-to-end-day-one-of-twc" rel="noopener">https://www.hltv.org/news/45723/furia-fend-off-betboom-to-end-day-one-of-twc</a></td>
+<td data-label="What it was used for">Falcons beat NiP; all four series ended 2-0; five maps were embattled; Falcons needed overtime on Ancient after leading 8-4</td>
+<td data-label="Read (UTC)">2026-10-15T10:12:00Z</td></tr><tr><td data-label="Source"><a href="https://esports.gg/news/counter-strike-2/cs2-thunderpick-world-championship-2026-results/" rel="noopener">https://esports.gg/news/counter-strike-2/cs2-thunderpick-world-championship-2026-results/</a></td>
+<td data-label="What it was used for">day-1 Group A/B results table incl. Falcons 2:0 NiP 16:13 Ancient, 13:6 Dust II</td>
+<td data-label="Read (UTC)">2026-10-15T10:10:00Z</td></tr><tr><td data-label="Source"><a href="https://www.hltv.org/matches/2399135/hotu-vs-fnatic-stake-pulse-beat-iii" rel="noopener">https://www.hltv.org/matches/2399135/hotu-vs-fnatic-stake-pulse-beat-iii</a></td>
+<td data-label="What it was used for">2:0, Ancient 13-10 and Dust2 13-10 with half scores, match over</td>
+<td data-label="Read (UTC)">2026-10-15T11:35:00Z</td></tr><tr><td data-label="Source"><a href="https://liquipedia.net/counterstrike/Stake_Pulse/Beat_III" rel="noopener">https://liquipedia.net/counterstrike/Stake_Pulse/Beat_III</a></td>
+<td data-label="What it was used for">HOTU 2:0 Fnatic in the opener and Fnatic 2:0 HOTU in the decider</td>
+<td data-label="Read (UTC)">2026-10-15T11:35:00Z</td></tr><tr><td data-label="Source"><a href="https://www.hltv.org/matches/2399418/wbt-vs-eac-elisa-breakout-series-2" rel="noopener">https://www.hltv.org/matches/2399418/wbt-vs-eac-elisa-breakout-series-2</a></td>
+<td data-label="What it was used for">13:5 on Mirage, match over, WBT starting five and veto</td>
+<td data-label="Read (UTC)">2026-10-15T11:00:00Z</td></tr><tr><td data-label="Source"><a href="https://api.github.com/repos/buffedlizard55-lab/MaltaProj2/commits/8f66ce4705f8e7581fd32031945b038033eab739" rel="noopener">https://api.github.com/repos/buffedlizard55-lab/MaltaProj2/commits/8f66ce4705f8e7581fd32031945b038033eab739</a></td>
+<td data-label="What it was used for">HTTP 200, committed 2026-10-14T04:55:37Z, message &#x27;live-coverage: refresh lobby board, external quotes and verification&#x27;</td>
+<td data-label="Read (UTC)">2026-10-15T11:15:00Z</td></tr><tr><td data-label="Source"><a href="https://api.github.com/repos/buffedlizard55-lab/MaltaProj2/contents/data/live/board.json?ref=8f66ce4705f8e7581fd32031945b038033eab739" rel="noopener">https://api.github.com/repos/buffedlizard55-lab/MaltaProj2/contents/data/live/board.json?ref=8f66ce4705f8e7581fd32031945b038033eab739</a></td>
+<td data-label="What it was used for">fixture 1080176 crowd 4/96; fixture 1079439 crowd 8/92; both status &#x27;scheduled&#x27; (pre-lock capture)</td>
+<td data-label="Read (UTC)">2026-10-15T11:16:00Z</td></tr><tr><td data-label="Source"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/live/board.json" rel="noopener">https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/live/board.json</a></td>
+<td data-label="What it was used for">post-settlement crowd for 1080176 reads 7/93 — the crowd figure drifts after the lock, so the pre-lock commit is the correct ownership evidence</td>
+<td data-label="Read (UTC)">2026-10-15T10:20:00Z</td></tr><tr><td data-label="Source"><a href="https://www.hltv.org/news/45082/official-aurora-complete-rebuild-with-kyxsan" rel="noopener">https://www.hltv.org/news/45082/official-aurora-complete-rebuild-with-kyxsan</a></td>
+<td data-label="What it was used for">kyxsan/Jimpphat/ash in; MAJ3R/soulfly/Fabre out; full new roster listing</td>
+<td data-label="Read (UTC)">2026-10-15T10:15:00Z</td></tr><tr><td data-label="Source"><a href="https://liquipedia.net/counterstrike/Aurora_Gaming" rel="noopener">https://liquipedia.net/counterstrike/Aurora_Gaming</a></td>
+<td data-label="What it was used for">dated timeline: 2026-06-29 Fabre benched, 2026-07-02 MAJ3R/soulfly, 2026-07-03 Jimpphat + ashhh, 2026-07-08 kyxsan</td>
+<td data-label="Read (UTC)">2026-10-15T10:15:00Z</td></tr><tr><td data-label="Source"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md</a></td>
+<td data-label="What it was used for">Aurora roster of record Jimpphat, kyxsan, Wicadia, woxic, XANTARES — the rebuilt lineup is the one Valve ranks</td>
+<td data-label="Read (UTC)">2026-10-15T10:40:00Z</td></tr><tr><td data-label="Source"><a href="https://cs2news.com/news/ash-aurora-new-system-ewc-2026" rel="noopener">https://cs2news.com/news/ash-aurora-new-system-ewc-2026</a></td>
+<td data-label="What it was used for">ash on nerves, new systems, communication and cultural integration; kyxsan as IGL; Jimpphat&#x27;s role; rebuild timeline June 29 - July 21</td>
+<td data-label="Read (UTC)">2026-10-15T10:18:00Z</td></tr><tr><td data-label="Source"><a href="https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-day-2-preview" rel="noopener">https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-day-2-preview</a></td>
+<td data-label="What it was used for">&#x27;Since adding Karim Krimbo Moussa, NIP have undeniably impressed, while Aurora looked limp&#x27; vs 9z</td>
+<td data-label="Read (UTC)">2026-10-15T11:22:00Z</td></tr><tr><td data-label="Source"><a href="https://csgo-news.com/en/news/cs2-summer-transfers-summary-who-went-where/" rel="noopener">https://csgo-news.com/en/news/cs2-summer-transfers-summary-who-went-where/</a></td>
+<td data-label="What it was used for">Krimbo listed among the summer moves to NiP</td>
+<td data-label="Read (UTC)">2026-10-15T10:18:00Z</td></tr><tr><td data-label="Source"><a href="https://www.hltv.org/news/44548/9z-keep-astana-upset-run-alive-at-expense-of-lacklustre-falcons" rel="noopener">https://www.hltv.org/news/44548/9z-keep-astana-upset-run-alive-at-expense-of-lacklustre-falcons</a></td>
+<td data-label="What it was used for">2026-05-10: &#x27;Falcons suffered the first defeat of karrigan&#x27;s reign&#x27; — dates the IGL change to before May 2026</td>
+<td data-label="Read (UTC)">2026-10-15T11:30:00Z</td></tr><tr><td data-label="Source"><a href="https://stavka.tv/matches/csgo/15-10-2026-legacy-furia" rel="noopener">https://stavka.tv/matches/csgo/15-10-2026-legacy-furia</a></td>
+<td data-label="What it was used for">Legacy won both 2026 H2H (EWC 2-1, Suzhou 2-0); FURIA 1.70 (~55%) vs Legacy 2.10 (~45%); arT&#x27;s return credited; FURIA &#x27;still looks unsure&#x27; with a heavy schedule</td>
+<td data-label="Read (UTC)">2026-10-15T11:05:00Z</td></tr><tr><td data-label="Source"><a href="https://egamersworld.com/counterstrike/match/5X5sFiL7H/legacy-vs-furia-r4PiiIRVj" rel="noopener">https://egamersworld.com/counterstrike/match/5X5sFiL7H/legacy-vs-furia-r4PiiIRVj</a></td>
+<td data-label="What it was used for">Legacy 2.13 / FURIA 1.66 (best 2.17 / 1.67) for the 15.10.2026 16:00 TWC match</td>
+<td data-label="Read (UTC)">2026-10-15T11:05:00Z</td></tr><tr><td data-label="Source"><a href="https://cybersport.metaratings.ru/prognozy/cs2/prognoz-na-match-parivision-betboom-team-nizhnyaya-setka-bez-prava-na-oshibku/" rel="noopener">https://cybersport.metaratings.ru/prognozy/cs2/prognoz-na-match-parivision-betboom-team-nizhnyaya-setka-bez-prava-na-oshibku/</a></td>
+<td data-label="What it was used for">PARI ~1.79-1.83 / BetBoom ~1.91-2.04; current-roster H2H 2-0 BetBoom; editorial pick BetBoom at 2.00</td>
+<td data-label="Read (UTC)">2026-10-15T11:08:00Z</td></tr><tr><td data-label="Source"><a href="https://cyber.sports.ru/betting/1117401785-betboom-sklonyaetsya-k-pobede-parivision-nad-betboom-team-na-thunderpi.html" rel="noopener">https://cyber.sports.ru/betting/1117401785-betboom-sklonyaetsya-k-pobede-parivision-nad-betboom-team-na-thunderpi.html</a></td>
+<td data-label="What it was used for">PARIVISION 1.85 / BetBoom 1.95; 9z 3.80 / Falcons 1.28</td>
+<td data-label="Read (UTC)">2026-10-15T11:08:00Z</td></tr><tr><td data-label="Source"><a href="https://www.hltv.org/matches/2399409/9z-vs-falcons-thunderpick-world-championship-2026" rel="noopener">https://www.hltv.org/matches/2399409/9z-vs-falcons-thunderpick-world-championship-2026</a></td>
+<td data-label="What it was used for">head to head: 9z 2 wins, Falcons 1 win; 10/5/26 PGL Astana maps Dust2 13-1, Mirage 9-13, Nuke 13-8</td>
+<td data-label="Read (UTC)">2026-10-15T11:30:00Z</td></tr><tr><td data-label="Source"><a href="https://www.hltv.org/team/9996/9z" rel="noopener">https://www.hltv.org/team/9996/9z</a></td>
+<td data-label="What it was used for">&#x27;They lead Falcons 2-1 by series; their last meeting was a 2-1 win with a 13-1 Dust2 decider&#x27;</td>
+<td data-label="Read (UTC)">2026-10-15T11:30:00Z</td></tr><tr><td data-label="Source"><a href="https://www.hltv.org/events/9332/elisa-breakout-series-2" rel="noopener">https://www.hltv.org/events/9332/elisa-breakout-series-2</a></td>
+<td data-label="What it was used for">Group A WBT #66 (team 13683), ENCE #113, BOJONG #389, EAC #116; matches 2399418/2399420/2399422</td>
+<td data-label="Read (UTC)">2026-10-15T10:35:00Z</td></tr><tr><td data-label="Source"><a href="https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638352459/markets/related/straight" rel="noopener">https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638352459/markets/related/straight</a></td>
+<td data-label="What it was used for">team_a &#x27;WBT&#x27; vs team_b &#x27;ENCE&#x27;, start 2026-10-15T12:00:00Z, -179/+139; and event 1638350111 &#x27;WBT&#x27; vs &#x27;BOJONG&#x27;, 16:00:00Z, -538/+331</td>
+<td data-label="Read (UTC)">2026-10-15T09:55:01Z</td></tr><tr><td data-label="Source"><a href="https://www.hltv.org/matches/2399425/havu-vs-rounds-elisa-breakout-series-2" rel="noopener">https://www.hltv.org/matches/2399425/havu-vs-rounds-elisa-breakout-series-2</a></td>
+<td data-label="What it was used for">ROUNDS = HLTV team 12457, Finland, Bo1 LAN Group B; no two-sided bookmaker price on the page (only a Stake promo and the HLTV fan vote 90.9/9.1)</td>
+<td data-label="Read (UTC)">2026-10-15T10:45:00Z</td></tr><tr><td data-label="Source"><a href="https://polymarket.com/esports/cs2" rel="noopener">https://polymarket.com/esports/cs2</a></td>
+<td data-label="What it was used for">&#x27;HAVU vs RoundsGG (BO1) - Elisa BreakOut Series #2 Group B&#x27;, &#x27;Phantom vs RoundsGG&#x27;, &#x27;Voca vs RoundsGG&#x27; quote tiles</td>
+<td data-label="Read (UTC)">2026-10-15T11:10:00Z</td></tr><tr><td data-label="Source"><a href="https://esports.pallomeri.net/elisa-breakout-series-2-joukkueet-lohkot-havu-ence/" rel="noopener">https://esports.pallomeri.net/elisa-breakout-series-2-joukkueet-lohkot-havu-ence/</a></td>
+<td data-label="What it was used for">Group B = HAVU, Voca (USA), Phantom (Poland), ROUNDS; four Finnish and four international teams; Group B plays Friday</td>
+<td data-label="Read (UTC)">2026-10-15T11:12:00Z</td></tr><tr><td data-label="Source"><a href="https://www.hltv.org/matches/2399408/aurora-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026" rel="noopener">https://www.hltv.org/matches/2399408/aurora-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026</a></td>
+<td data-label="What it was used for">LIVE badge, veto (NiP removed Anubis, Aurora removed Ancient, NiP picked Cache, Aurora picked Dust2, NiP removed Mirage, Aurora removed Inferno, Nuke left over), Cache 13-9 Aurora (7:5; 6:4), HLTV fan vote 97.8% Aurora</td>
+<td data-label="Read (UTC)">2026-10-15T10:06:00Z</td></tr><tr><td data-label="Source"><a href="https://www.hotspawn.com/matches/aurora-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026-1080201" rel="noopener">https://www.hotspawn.com/matches/aurora-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026-1080201</a></td>
+<td data-label="What it was used for">fixture listing and lock time used to classify the row as locked</td>
+<td data-label="Read (UTC)">2026-10-15T10:20:00Z</td></tr><tr><td data-label="Source"><a href="https://www.hltv.org/events/8932/thunderpick-world-championship-2026" rel="noopener">https://www.hltv.org/events/8932/thunderpick-world-championship-2026</a></td>
+<td data-label="What it was used for">Malta event page, day-1 results and day-2 schedule (Aurora-NiP 10:30 CEST, 9z-Falcons 13:00 CEST)</td>
+<td data-label="Read (UTC)">2026-10-15T10:12:00Z</td></tr><tr><td data-label="Source"><a href="https://tips.gg/article/thunderpick-wc2026-winner-odds/" rel="noopener">https://tips.gg/article/thunderpick-wc2026-winner-odds/</a></td>
+<td data-label="What it was used for">Oct 14-18, BLAST Arena Studios Attard Malta, 8 invited teams by VRS, GSL groups, Bo3 group matches, Bo5 final on Oct 18, $1m</td>
+<td data-label="Read (UTC)">2026-10-15T11:05:00Z</td></tr><tr><td data-label="Source"><a href="https://www.freetips.com/esports/thunderpick-world-championship-2026-betting-odds-20261011-0007/" rel="noopener">https://www.freetips.com/esports/thunderpick-world-championship-2026-betting-odds-20261011-0007/</a></td>
+<td data-label="What it was used for">Oct 14-18 Malta, two GSL groups of four, outright prices Falcons 2.40 / Legacy 3.80 / FURIA 4.40 / Aurora 6.30</td>
+<td data-label="Read (UTC)">2026-10-15T11:06:00Z</td></tr><tr><td data-label="Source"><a href="https://egamersworld.com/counterstrike/match/4yn491uUVl/havu-vs-rounds-rg48QwsiJ9" rel="noopener">https://egamersworld.com/counterstrike/match/4yn491uUVl/havu-vs-rounds-rg48QwsiJ9</a></td>
+<td data-label="What it was used for">Uniform 1.80 / 1.80 prices on every Elisa micro-match (HAVU-Rounds, Phantom-Rounds, Phantom-HAVU) — a placeholder pattern, not a two-sided market. Rejected as a price source; its H2H record (HAVU 6-0 Rounds) is kept as directional research only.</td>
+<td data-label="Read (UTC)">2026-10-15T11:10:00Z</td></tr><tr><td data-label="Source"><a href="https://play.hotspawn.com/lobby" rel="noopener">https://play.hotspawn.com/lobby</a></td>
+<td data-label="What it was used for">Never a probability input. Used only as pick&#x27;em ownership for the differential (leaderboard) arithmetic, exactly as the published strategy layer states.</td>
+<td data-label="Read (UTC)">2026-10-15T10:20:00Z</td></tr></tbody></table></div>
+<h2>Reproduce</h2>
+<pre class="small" style="overflow-x:auto;background:#0a1119;border:1px solid var(--line);border-radius:10px;padding:12px">python3 scripts/6c5bb3d6/fetch_vrs.py    # official Valve standings -&gt; data/6c5bb3d6/vrs_official.json
+python3 scripts/6c5bb3d6/verify.py       # ten checks -&gt; data/6c5bb3d6/verification.json + audits/6c5bb3d6/report.json
+python3 scripts/6c5bb3d6/build_pages.py  # these pages
+python3 -m unittest tests.test_6c5bb3d6 -v</pre>
+<div class="actions"><a class="button" href="index.html">Verification summary</a>
+<a class="button ghost" href="flagged.html">Flagged for review</a></div>
+<footer><p class="small">Independent audit by session <code>6c5bb3d6</code>. Not affiliated with HotSpawn, Valve,
+HLTV or any bookmaker. HotSpawn is used for fixture discovery and settlement only; its crowd pick percentage is
+published as pick'em ownership and is never an input to any win probability. Values that could not be confirmed
+from an official source are left blank and flagged.</p>
+<p class="small">Machine-readable: <a href="report.json">report.json</a> ·
+evidence: <code>data/6c5bb3d6/</code> · harness: <code>scripts/6c5bb3d6/</code></p></footer>
+</main></body></html>
