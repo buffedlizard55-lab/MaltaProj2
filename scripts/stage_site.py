@@ -12,7 +12,9 @@ if OUT.exists():
 OUT.mkdir(parents=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy'):
+# 'strategy' added by session f28afd9e (every-match safe + leaderboard picks); additive single entry: the
+# landing executive summary links strategy/index.html, so the artifact must carry the directory.
 # 'picks-all' added by session b5436cf0 (complete every-match picks) as an additive single entry.
 # 'unresolved' added by session 7177d07f (T-UNRESOLVED-7177D07F / T-INTEG-7177D07F) as an additive
 # single entry: the executive summary on the landing page links into unresolved/index.html, so the

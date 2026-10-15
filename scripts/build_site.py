@@ -423,6 +423,7 @@ including low-tier matches. <strong>Unsupported probabilities stay blank, not 50
 <div class="actions">
 <a class="btn btn-primary" href="picks-every-match/index.html">Open all CS2 picks →</a>
 <a class="btn ghost" href="picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a>
+<a class="btn ghost" href="strategy/index.html">Every match + leaderboard picks</a>
 </div>
 <p class="note">Snapshot counts below are evaluated at {esc(pick_time or 'unverified')}.
 Source capture ended {esc(pick_board.get('collected_to_utc') or 'unverified')}.
@@ -448,6 +449,7 @@ calculations, not officially verified win chances. <strong>HotSpawn crowd picks 
 <div class="pick-boards-grid" id="where-the-picks">
 <a class="board-card board-card-primary" href="picks-every-match/picks.html"><div class="board-card-title">Match picks &amp; probabilities</div><div class="board-card-desc">Both teams, clear pick, market/model label and source evidence. Search by team or tournament.</div></a>
 <a class="board-card" href="picks-every-match/inventory.html"><div class="board-card-title">Full lobby inventory</div><div class="board-card-desc">Every retained CS2 fixture, including locked/past rows. Coverage refers to the captured lobby, not unseen additions.</div></a>
+<a class="board-card" href="strategy/index.html"><div class="board-card-title">Every match: safe + leaderboard (contrarian) picks</div><div class="board-card-desc">Best available line for every listed match (blanks on the strict list shown with their limitation), plus a contrarian-but-not-stupid leaderboard pick using crowd ownership. Includes unresolved &amp; limits and a day-1 backtest.</div></a>
 <a class="board-card" href="day-one.html"><div class="board-card-title">Day one &amp; sensible contrarian strategy</div><div class="board-card-desc">9z–Aurora, all four opening results, roster context and what the evidence does not prove.</div></a>
 <a class="board-card" href="flagged.html"><div class="board-card-title">Flagged for Review</div><div class="board-card-desc">Source failures, disputed identities and competing historical boards. No silent assumptions.</div></a>
 </div>
