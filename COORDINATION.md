@@ -4471,3 +4471,11 @@ Environment note: Arena pins this session to branch `arena/94b3d48a-maltaproj2`;
   5. **`F-05` (Stand-ins & Market-vs-VRS Split):** Documented HLTV-disclosed substitutes (`qx` for `Fessor` on EAC; `cej0t` for `Kunai` on Phantom) and the 52.6% Phantom (market) vs 52.2% Voca (VRS) coinflip split on `#1080285`.
   6. **All 17 open upcoming lobby matches resolved:** 8 Tier 1 Featured Primary Bookmakers (`fallback_invoked=False`), 5 Tier 2 Fallback Esportsbook/Alias-Verified (`1080281`, `1080283`, `1080285`, `1080287`, `1080290`), and 4 Tier 3 Originated Official Valve VRS + HLTV + Elo (`1080286`, `1080288`, `1081120`, `1080289`). Every table row has official `https://` source links; all 532 unit tests and `scripts/stage_site.py` pass with 0 broken links.
 
+
+## Session 778756a1 — canonical dashboard integration (2026-10-15 10:05 UTC)
+
+| Task | Status | Owner | File scope |
+|---|---|---|---|
+| Repair conflicting landing-page pick destinations and unsupported complete-coverage claims; verify strict canonical board, existing day-one evidence and refresh/deployment; regression tests and publication | in progress | 778756a1 | scripts/build_site.py, generated root HTML/assets, tests/test_778756a1.py, scripts/check_deployment.py if required, .github/workflows/pages.yml if required, COORDINATION.md append-only |
+
+Read existing task board and open PRs (#98, #107). Prior integration claims above are over 60 minutes old and their completed handoffs are recorded; taking over only final root integration, not their source engines, research or datasets. Existing canonical strict board is scripts/c64a5e19 and picks-every-match; competing board engines remain read-only. Session branch is environment-fixed arena/778756a1-maltaproj2. External source access is restricted in this sandbox; hosted existing collectors and retained source replay will be used, with access limitations reported rather than invented facts.
