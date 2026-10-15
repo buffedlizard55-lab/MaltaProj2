@@ -1,30 +1,32 @@
 {
  "session": "6c5bb3d6",
- "ran_utc": "2026-10-15T14:49:07Z",
+ "ran_utc": "2026-10-15T15:03:41Z",
  "command": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests",
  "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
- "returncode": 0,
- "green": true,
- "failing_tests": [],
+ "returncode": 1,
+ "green": false,
+ "failing_tests": [
+  "test_matches_the_independently_captured_permalink_map"
+ ],
  "counts": {
   "ran": 584,
-  "ok": true,
-  "skipped": 3,
-  "failures": 0,
+  "ok": false,
+  "skipped": 0,
+  "failures": 1,
   "errors": 0
  },
  "tail": [
-  "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
-  "........s................................................./home/runner/work/MaltaProj2/MaltaProj2/tests/test_verify_8e7a652d.py:81: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/runner/work/MaltaProj2/MaltaProj2/verify/8e7a652d/index.html' mode='r' encoding='utf-8'>",
-  "  html = open(page, encoding=\"utf-8\").read()",
-  "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
-  ".../home/runner/work/MaltaProj2/MaltaProj2/tests/test_verify_8e7a652d.py:99: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/runner/work/MaltaProj2/MaltaProj2/index.html' mode='r' encoding='utf-8'>",
-  "  html = open(os.path.join(ROOT, \"index.html\"), encoding=\"utf-8\").read()",
-  "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
-  ".",
+  "======================================================================",
+  "FAIL: test_matches_the_independently_captured_permalink_map (test_verify_7cd2e67a.PermalinkExtraction.test_matches_the_independently_captured_permalink_map)",
   "----------------------------------------------------------------------",
-  "Ran 584 tests in 2.977s",
+  "Traceback (most recent call last):",
+  "  File \"/home/runner/work/MaltaProj2/MaltaProj2/tests/test_verify_7cd2e67a.py\", line 74, in test_matches_the_independently_captured_permalink_map",
+  "    self.assertGreater(len(shared), 10)",
+  "AssertionError: 10 not greater than 10",
   "",
-  "OK (skipped=3)"
+  "----------------------------------------------------------------------",
+  "Ran 584 tests in 3.036s",
+  "",
+  "FAILED (failures=1, skipped=5)"
  ]
 }
