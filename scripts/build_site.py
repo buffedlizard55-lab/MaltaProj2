@@ -452,36 +452,58 @@ def main() -> int:
     b1fb_stamp = _board_stamp("data/b1fb1465/board.json", "generated_utc")
     unres_stamp = _board_stamp("data/7177d07f/board.json", "generated_utc")
 
+    # Session f28afd9e: executive summary reads the every-match strategy board (strategy/).
+    st_board = load("data/f28afd9e/board.json") or {}
+    st_sum = st_board.get("summary") or {}
+    st_priced = (st_sum.get("market_priced") or 0) + (st_sum.get("exchange_priced") or 0) if st_sum else "—"
+    st_stamp = _board_stamp("data/f28afd9e/board.json", "generated_utc")
+    st_bullets = ""
+    _contra = [r for r in st_board.get("rows", []) if r.get("state") == "open"
+               and (r.get("strategy") or {}).get("leaderboard_pick") != (r.get("strategy") or {}).get("safe_pick")]
+    if _contra:
+        st_bullets += "<li>Contrarian spots now: " + ", ".join(
+            f'<a href="strategy/index.html#m-{esc(r["fixture_id"])}">{esc(r["strategy"]["leaderboard_pick"])}</a>'
+            for r in _contra) + ".</li>"
+    st_bullets += ('<li>Day 1: 9z beat Aurora 2-0 while ~4% of players picked 9z (market ~30%). '
+                   '<a href="strategy/day1.html">Review &amp; backtest</a>.</li>')
+    st_bullets += ('<li>Matches priced only by a model, a single quote or with a contested team identity are listed in '
+                   '<a href="strategy/unresolved.html">Unresolved &amp; limitations</a>.</li>')
+
     idx_body = f"""
 <section id="executive-summary" aria-labelledby="summary-title">
 <div class="hero-card">
-  <p class="eyebrow">📱 Mobile-friendly · Updated automatically</p>
-  <h1 id="summary-title" style="font-size:clamp(1.5rem,5vw,2.2rem);margin:8px 0 12px">Every CS2 pick. One place.</h1>
-  <p style="color:#b2c0d0;font-size:1.05rem;max-width:680px;margin:0 0 20px">
-    Every CS2 match currently open for picks on the HotSpawn lobby gets a pick and win probability here.
-    Bookmaker lines first (Pinnacle, Bovada, Melbet); verified Valve VRS rating model only for matches without a listed price.
-    <strong>HotSpawn crowd picks are never used.</strong>
+  <p class="eyebrow">📱 Executive summary · updated automatically every 4 hours</p>
+  <h1 id="summary-title" style="font-size:clamp(1.5rem,5vw,2.2rem);margin:8px 0 12px">CS2 pick'em: every match, one tap away</h1>
+  <p style="color:#b2c0d0;font-size:1.05rem;max-width:680px;margin:0 0 16px">
+    Every CS2 match currently open for picks on the <a href="https://play.hotspawn.com/lobby">HotSpawn lobby</a> gets a <strong>safe pick</strong>
+    (most likely winner from betting lines) and a <strong>leaderboard pick</strong> (contrarian, but only on underdogs the market rates as live).
+    HotSpawn crowd % is used only as ownership, never as a probability.
   </p>
-  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px">
-    <a class="btn btn-primary" href="board/picks.html" style="padding:14px 22px;font-size:1.05rem">🎯 See all picks now →</a>
-    <a class="btn ghost" href="board/flagged.html" style="padding:14px 20px">⚠️ Unresolved & limitations</a>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px">
+    <a class="btn btn-primary" href="strategy/index.html" style="padding:14px 22px;font-size:1.1rem">🎯 Open all CS2 picks →</a>
+    <a class="btn ghost" href="strategy/unresolved.html" style="padding:14px 20px">⚠️ Unresolved &amp; limitations</a>
+    <a class="btn ghost" href="strategy/day1.html" style="padding:14px 20px">📅 Day 1 review (9z upset)</a>
   </div>
   <div class="cards" style="margin:8px 0 0">
-    <div class="card"><div class="card-num" style="color:#69e4bd">{full_open}</div><div class="card-label">Open matches</div></div>
-    <div class="card"><div class="card-num">{full_market}</div><div class="card-label">Bookmaker-quoted</div></div>
-    <div class="card"><div class="card-num" style="color:#ffce80">{full_model}</div><div class="card-label">Model-estimated</div></div>
-    <div class="card"><div class="card-num" style="color:#ff8080">{full_blank}</div><div class="card-label">Unverified / blank</div></div>
+    <div class="card"><div class="card-num" style="color:#69e4bd">{st_sum.get("listed_open", "—")}</div><div class="card-label">Open matches</div></div>
+    <div class="card"><div class="card-num">{st_sum.get("with_pick", "—")}</div><div class="card-label">With a pick</div></div>
+    <div class="card"><div class="card-num">{st_priced}</div><div class="card-label">Priced by books / exchange</div></div>
+    <div class="card"><div class="card-num" style="color:#ffce80">{st_sum.get("contrarian", "—")}</div><div class="card-label">Contrarian picks</div></div>
+    <div class="card"><div class="card-num" style="color:#ff8080">{st_sum.get("unresolved", "—")}</div><div class="card-label">No pick (unresolved)</div></div>
   </div>
-  <p class="note" style="margin-top:12px">Last updated: {esc(full_stamp or "unverified")}.
-  Automatic refresh every 4–8 hours via GitHub Actions.
-  <a href="https://play.hotspawn.com/lobby">Official HotSpawn lobby</a>.</p>
-  <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;font-size:13px">
-    <a href="picks-every-match/index.html">Verified every-match picks</a>
-    <a href="picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a>
-    <a href="audits/94b3d48a/index.html">Audit 94b3d48a</a>
+  <p class="note" style="margin-top:12px">Picks page built {esc(st_stamp or "unverified")}. Lobby re-read hourly; picks page rebuilt every 4 hours and after each refresh.</p>
+  <ul style="color:#b2c0d0;margin:10px 0 0;padding-left:20px">{st_bullets}</ul>
+  <div id="canonical-unresolved" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;font-size:13px">
+    <span>Other views:</span>
+    <a href="picks-every-match/index.html">Strict verified board (market-only, blanks kept)</a>
+    <a href="picks-every-match/unresolved.html">Strict board: unresolved list</a>
+    <a href="board/picks.html">All-picks board (raw lines)</a>
+    <a href="flagged.html">Flagged for review</a>
+    <span>Evidence audits:</span>
+    <a href="audits/3faf40e8/index.html">3faf40e8</a>
+    <a href="audits/94b3d48a/index.html">94b3d48a</a>
     <a href="audits/94b3d48a/unresolved.html">94b3d48a unresolved</a>
     <a href="audits/94b3d48a/flagged.html">94b3d48a flagged</a>
-    <a href="audits/3faf40e8/index.html">Current evidence audit</a>
   </div>
 </div>
 </section>

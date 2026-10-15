@@ -199,6 +199,18 @@ class PublishedArithmetic(unittest.TestCase):
                     self.assertEqual(pb, round(q["prob_b"], 4), row["fixture_id"])
                     self.assertEqual(ov, round(q["overround"], 5), row["fixture_id"])
                     ps.append(pa)
+                # Raw quotes can include duplicate reads and live/in-play prices that the builder
+                # deliberately excludes (flags duplicate_quote:* / live_market_excluded:*). The
+                # consensus must reproduce from the sources it actually consumed (f28afd9e repair).
+                consumed = (row.get("market") or {}).get("sources_detail") or []
+                if consumed:
+                    ps = []
+                    for d in consumed:
+                        # sources_detail decimals are already aligned to the fixture's side order.
+                        pa, _, _ = devig(d["decimal_odds_a"], d["decimal_odds_b"])
+                        self.assertAlmostEqual(pa, d["prob_a"], delta=0.0001, msg=row["fixture_id"])
+                        ps.append(pa)
+                    self.assertEqual(len(consumed), row["market"]["n_sources"], row["fixture_id"])
                 mean = round(sum(ps) / len(ps), 4)
                 # The published consensus averages unrounded per-source probabilities; the stored
                 # per-source values are rounded to 4 dp, so allow one rounding step of slack.
