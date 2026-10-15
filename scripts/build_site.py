@@ -1130,7 +1130,7 @@ tr:hover td{background:#182030}
 .banner{background:#1d2433;border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:10px;padding:12px 14px;margin:14px 0}
 .banner.warn{border-left-color:var(--warn)}
 .filter{width:100%;max-width:420px;margin:10px 0;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--txt)}
-.btn{display:inline-block;background:var(--acc);color:#04101f;font-weight:700;text-decoration:none;padding:9px 14px;border-radius:10px;margin:6px 8px 6px 0}
+.btn{display:inline-block;min-height:48px;background:var(--acc);color:#04101f;font-weight:700;text-decoration:none;padding:12px 14px;border-radius:10px;margin:6px 8px 6px 0}
 .btn.ghost{background:transparent;color:var(--acc);border:1px solid var(--acc)}
 code{background:#111827;border:1px solid var(--line);border-radius:6px;padding:1px 5px}
 @media(max-width:640px){
