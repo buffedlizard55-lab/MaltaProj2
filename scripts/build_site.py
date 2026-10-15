@@ -424,6 +424,7 @@ including low-tier matches. <strong>Unsupported probabilities stay blank, not 50
 <a class="btn btn-primary" href="picks-every-match/index.html">Open all CS2 picks →</a>
 <a class="btn ghost" href="picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a>
 <a class="btn ghost" href="strategy/index.html">Every match + leaderboard picks</a>
+<a class="btn ghost" href="strategy/day2.html">TWC day 2 → day 3 review</a>
 </div>
 <p class="note">Snapshot counts below are evaluated at {esc(pick_time or 'unverified')}.
 Source capture ended {esc(pick_board.get('collected_to_utc') or 'unverified')}.
