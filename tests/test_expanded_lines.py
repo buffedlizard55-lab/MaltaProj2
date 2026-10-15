@@ -120,8 +120,14 @@ class TestParsing(unittest.TestCase):
         self.assertTrue(matchups)
         for m in matchups:
             self.assertEqual(len(m.get("participants") or []), 2)
+            # Every retained row must be a real two-participant matchup from an esports league the
+            # collector covers. "Mobi" (Mobile Legends - MPL Indonesia) was added 2026-10-15 by
+            # session 6c5bb3d6 as a logged narrow takeover: the session's own evidence refresh
+            # (commit 4db03da, "evidence: expanded external source capture") started retaining that
+            # league, which this allowlist did not yet name, so the shared Pages gate went red for
+            # every session. The assertion's intent is unchanged - a known league, two participants.
             self.assertIn((m.get("league") or {}).get("name", "")[:4],
-                          ("CS2 ", "Dota", "Leag", "Rain", "Valo"))
+                          ("CS2 ", "Dota", "Leag", "Rain", "Valo", "Mobi"))
 
 
 class TestProbabilityMath(unittest.TestCase):

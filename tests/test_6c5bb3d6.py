@@ -131,21 +131,41 @@ class PublishedBoardArithmetic(unittest.TestCase):
         cls.v = load(VERIF)
 
     def test_rows_normalize_and_pick_is_argmax(self):
+        """Priced rows normalize; blank rows must disclose why and publish no pick."""
+        priced = blank = 0
         for r in self.board["rows"]:
             pa, pb = r["prob_a"], r["prob_b"]
-            self.assertAlmostEqual(pa + pb, 1.0, places=9, msg=r["fixture_id"])
+            fid = r["fixture_id"]
+            if pa is None or pb is None:
+                blank += 1
+                self.assertIsNone(pa if pb is None else pb, fid)   # blank means both sides blank
+                disclosed = (str(r.get("basis") or "").lower() in ("unresolved", "none", "")
+                             or bool(r.get("flags")))
+                self.assertTrue(disclosed, f"{fid} is blank with no basis and no flag")
+                st = r.get("strategy") or {}
+                self.assertFalse(st.get("safe_pick") or st.get("leaderboard_pick"),
+                                 f"{fid} publishes a pick with no probability")
+                continue
+            priced += 1
+            self.assertAlmostEqual(pa + pb, 1.0, places=9, msg=fid)
             st = r.get("strategy") or {}
             if st.get("safe_pick"):
                 best = r["team_a"] if pa >= pb else r["team_b"]
-                self.assertEqual(st["safe_pick"], best, r["fixture_id"])
+                self.assertEqual(st["safe_pick"], best, fid)
+        self.assertGreater(priced, 0, "no priced rows to audit")
+        c2 = next(c for c in load(VERIF)["checks"] if c["id"] == "C2")
+        self.assertEqual(sorted(c2.get("blank_rows") or []),
+                         sorted(r["fixture_id"] for r in self.board["rows"] if r["prob_a"] is None))
 
     def test_c3_rederived_every_row_from_raw_quotes(self):
         """Every row is either re-derived from a retained quote or published as not re-derivable."""
         c3 = next(c for c in self.v["checks"] if c["id"] == "C3")
         priced = [row for row in c3["per_row"] if row["quotes"]]
         unjoined = set(c3.get("unjoined_rows") or [])
-        self.assertEqual(len(priced) + len(unjoined), len(self.board["rows"]),
-                         "some rows were neither re-derived nor disclosed as unjoined")
+        blank = set(c3.get("blank_rows") or [])
+        self.assertEqual(len(priced) + len(unjoined) + len(blank), len(self.board["rows"]),
+                         "some rows were neither re-derived, disclosed as unjoined, nor blank")
+        self.assertFalse(unjoined & blank)
         if unjoined:
             flagged = json.dumps(self.v["irregularities"])
             self.assertIn("IR-C3", flagged)
@@ -221,8 +241,8 @@ class CrowdPolicy(unittest.TestCase):
     def test_crowd_never_equals_a_probability(self):
         for r in self.board["rows"]:
             crowd = (r.get("crowd") or {}).get("pct_a")
-            if crowd is None:
-                continue
+            if crowd is None or r.get("prob_a") is None:
+                continue                      # a blank row publishes no probability to compare
             self.assertNotAlmostEqual(r["prob_a"], crowd / 100.0, places=9,
                                       msg=f"{r['fixture_id']} probability equals crowd share")
 
@@ -236,6 +256,8 @@ class CrowdPolicy(unittest.TestCase):
         self.assertGreater(c6["rows_checked"], 0)
         compared = 0
         for r in self.board["rows"]:
+            if r.get("prob_a") is None:
+                continue
             board = (r.get("line") or {}).get("board")
             upstream = [cc["prob_a"] for cc in r.get("cross_check") or [] if cc.get("board") == board]
             if not upstream:
@@ -292,18 +314,28 @@ class DifferentialMath(unittest.TestCase):
     def setUpClass(cls):
         cls.v = load(VERIF)
         cls.table = {d["fixture_id"]: d for d in cls.v["differential_table"] if d.get("points")}
+        names = {str(r.get("fixture_id")): (r.get("team_a"), r.get("team_b"))
+                 for r in load(BOARD).get("rows") or []}
+        for fid, row in cls.table.items():
+            row["_team_a"], row["_team_b"] = names.get(fid, (None, None))
 
-    def test_edge_formula_on_a_known_row(self):
-        row = self.table["1080202"]          # 9z vs Falcons, 7 points, crowd 5/95
-        self.assertEqual((row["points"], row["crowd_a"], row["crowd_b"]), (7.0, 5, 95))
-        # the harness rounds the differential before scaling; allow that rounding chain
-        self.assertAlmostEqual(row["ev_a"], 7.0 * (row["prob_a"] - 0.05), delta=0.002)
-        self.assertAlmostEqual(row["ev_b"], 7.0 * (row["prob_b"] - 0.95), delta=0.002)
-        self.assertEqual(row["differential_optimal"], "9z")
+    def test_edge_formula_on_every_priced_open_row(self):
+        """points x (probability - ownership) on every priced open row, no fixture hardcoded."""
+        checked = 0
+        for fid, row in self.table.items():
+            if row.get("state") != "open" or row.get("prob_a") is None:
+                continue
+            pts, ca, cb = row["points"], row["crowd_a"], row["crowd_b"]
+            self.assertAlmostEqual(row["ev_a"], pts * (row["prob_a"] - ca / 100.0), delta=0.002, msg=fid)
+            self.assertAlmostEqual(row["ev_b"], pts * (row["prob_b"] - cb / 100.0), delta=0.002, msg=fid)
+            expected = row["_team_a"] if row["diff_a"] >= row["diff_b"] else row["_team_b"]
+            self.assertEqual(row["differential_optimal"], expected, fid)
+            checked += 1
+        self.assertGreater(checked, 0, "no priced open row to check the differential formula on")
 
     def test_every_open_row_has_both_edges_and_a_side(self):
         for fid, row in self.table.items():
-            if row.get("state") != "open":
+            if row.get("state") != "open" or row.get("status") == "no_published_probability":
                 continue
             for key in ("prob_a", "prob_b", "diff_a", "diff_b", "ev_a", "ev_b"):
                 self.assertIsNotNone(row.get(key), f"{fid} missing {key}")
