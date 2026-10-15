@@ -1,19 +1,19 @@
 {
   "session_id": "94b3d48a",
-  "generated_utc": "2026-10-15T08:44:28Z",
-  "source_captured_utc": "2026-10-15T08:29:49Z",
+  "generated_utc": "2026-10-15T10:12:54Z",
+  "source_captured_utc": "2026-10-15T10:12:30Z",
   "refresh_cadence_hours": 4,
   "hotspawn_lobby_url": "https://play.hotspawn.com/lobby",
   "hotspawn_probability_used": false,
   "fallback_only_for_unpriced_featured": true,
   "summary": {
-    "lobby_listed_cs2": 80,
+    "lobby_listed_cs2": 78,
     "open_lobby_matches": 17,
     "resolved_open_matches": 17,
-    "tier_1_primary_bookmaker": 8,
-    "tier_2_fallback_esportsbook_exchange": 5,
+    "tier_1_primary_bookmaker": 5,
+    "tier_2_fallback_esportsbook_exchange": 8,
     "tier_3_originated_vrs_hltv": 4,
-    "strict_primary_blank_gaps": 9,
+    "strict_primary_blank_gaps": 12,
     "non_lobby_api_anomalies": 1,
     "all_36_lobby_teams_vrs_verified_5of5": true
   },
@@ -59,39 +59,36 @@
         "verification_basis": "Exact team & roster match in official Valve VRS standings_global_2026_10_05.md"
       },
       "strict_primary": {
-        "verified": true,
-        "prob_a": 0.551,
-        "prob_b": 0.449,
-        "pick": "MIBR",
-        "sources": [
-          "Bovada",
-          "Pinnacle"
-        ],
-        "blank_reason": null
+        "verified": false,
+        "prob_a": null,
+        "prob_b": null,
+        "pick": null,
+        "sources": [],
+        "blank_reason": "No strict primary-bookmaker (Pinnacle/Bovada exact-name) quote in current capture."
       },
       "resolution": {
-        "tier_code": "TIER_1_PRIMARY_BOOKMAKER",
-        "tier_label": "Tier 1 · Featured Bookmaker (Bovada, Pinnacle)",
-        "fallback_invoked": false,
+        "tier_code": "TIER_2_FALLBACK_ESPORTSBOOK",
+        "tier_label": "Tier 2 · Fallback Esportsbook/Exchange (Pinnacle, Bovada, Melbet (1xBet platform), Kalshi (exchange), Thunderpick (via bo3.gg)) + HLTV",
+        "fallback_invoked": true,
         "pick": "MIBR",
-        "prob_a": 0.551,
-        "prob_b": 0.449,
-        "pick_prob": 0.551,
-        "fair_odds_a": 1.81,
-        "fair_odds_b": 2.23,
-        "method": "Proportional no-vig normalization of strict primary bookmaker moneyline(s): Bovada, Pinnacle. Fallback sources not invoked.",
-        "limitation": "Resolved directly by primary featured bookmaker line(s); no fallback source needed."
+        "prob_a": 0.540488,
+        "prob_b": 0.459512,
+        "pick_prob": 0.540488,
+        "fair_odds_a": 1.85,
+        "fair_odds_b": 2.18,
+        "method": "Fallback Step 1 (HLTV match 2399136 rank & lineup corroboration) + Fallback Step 2 (no-vig consensus across Pinnacle, Bovada, Melbet (1xBet platform), Kalshi (exchange), Thunderpick (via bo3.gg)).",
+        "limitation": "Pinnacle and Bovada have not listed Elisa BreakOut Series #2 Group B BO1s yet (>24h before start). Resolved via secondary esportsbook moneylines (Pinnacle, Bovada, Melbet (1xBet platform), Kalshi (exchange), Thunderpick (via bo3.gg)) corroborated by HLTV match page and Valve VRS."
       },
       "quotes": [
         {
           "source": "pinnacle",
           "book": "Pinnacle",
           "url": "https://www.pinnacle.com/en/esports/cs2-hub",
-          "odds_a": 1.7246,
-          "odds_b": 2.09,
-          "prob_a": 0.54789,
-          "prob_b": 0.45211,
-          "retrieved_utc": "2026-10-15T08:28:37Z"
+          "odds_a": 1.7937,
+          "odds_b": 2.0,
+          "prob_a": 0.527197,
+          "prob_b": 0.472803,
+          "retrieved_utc": "2026-10-15T09:49:55Z"
         },
         {
           "source": "bovada",
@@ -101,27 +98,27 @@
           "odds_b": 2.1,
           "prob_a": 0.55409,
           "prob_b": 0.44591,
-          "retrieved_utc": "2026-10-15T08:28:38Z"
+          "retrieved_utc": "2026-10-15T09:49:57Z"
         },
         {
           "source": "melbet",
           "book": "Melbet (1xBet platform)",
           "url": "https://melbet.com/en/line/esports",
-          "odds_a": 1.793,
-          "odds_b": 1.991,
-          "prob_a": 0.526163,
-          "prob_b": 0.473837,
-          "retrieved_utc": "2026-10-15T08:28:39Z"
+          "odds_a": 1.837,
+          "odds_b": 1.954,
+          "prob_a": 0.515431,
+          "prob_b": 0.484569,
+          "retrieved_utc": "2026-10-15T09:49:58Z"
         },
         {
           "source": "kalshi",
           "book": "Kalshi (exchange)",
           "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct150600bcgmibr",
-          "odds_a": 1.7699,
-          "odds_b": 2.3256,
-          "prob_a": 0.567839,
-          "prob_b": 0.432161,
-          "retrieved_utc": "2026-10-15T08:28:41Z"
+          "odds_a": 1.8349,
+          "odds_b": 2.2989,
+          "prob_a": 0.556122,
+          "prob_b": 0.443878,
+          "retrieved_utc": "2026-10-15T09:50:00Z"
         },
         {
           "source": "thunderpick",
@@ -131,18 +128,21 @@
           "odds_b": 2.05,
           "prob_a": 0.549598,
           "prob_b": 0.450402,
-          "retrieved_utc": "2026-10-15T08:29:35Z"
+          "retrieved_utc": "2026-10-15T09:51:18Z"
         }
       ],
       "vrs_model": {
-        "prob_a": 0.6292,
-        "prob_b": 0.3708
+        "prob_a": 0.649,
+        "prob_b": 0.351
       },
       "elo_model": {
         "prob_a": null,
         "prob_b": null
       },
-      "flags": [],
+      "flags": [
+        "no_strict_primary_bookmaker_line",
+        "secondary_esportsbook_consensus_melbet_thunderpick"
+      ],
       "source_links": [
         {
           "label": "HotSpawn Lobby",
@@ -165,12 +165,24 @@
           "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md"
         },
         {
-          "label": "Bovada Odds",
+          "label": "Pinnacle Quote",
+          "url": "https://www.pinnacle.com/en/esports/cs2-hub"
+        },
+        {
+          "label": "Bovada Quote",
           "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-bc-game-202610150600"
         },
         {
-          "label": "Pinnacle Odds",
-          "url": "https://www.pinnacle.com/en/esports/cs2-hub"
+          "label": "Melbet (1xBet platform) Quote",
+          "url": "https://melbet.com/en/line/esports"
+        },
+        {
+          "label": "Kalshi (exchange) Quote",
+          "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct150600bcgmibr"
+        },
+        {
+          "label": "Thunderpick (via bo3.gg) Quote",
+          "url": "https://bo3.gg/matches/mibr-vs-bc-game-15-10-2026"
         }
       ]
     },
@@ -222,28 +234,25 @@
         "verification_basis": "5/5 character-identical starting lineup on HLTV match 2399137 (Graviti, Kursy, Maka, misutaaa, Lucky) and Valve VRS #21 3DMAX."
       },
       "strict_primary": {
-        "verified": true,
-        "prob_a": 0.64925,
-        "prob_b": 0.35075,
-        "pick": "Heroic",
-        "sources": [
-          "Bovada",
-          "Pinnacle"
-        ],
-        "blank_reason": null
+        "verified": false,
+        "prob_a": null,
+        "prob_b": null,
+        "pick": null,
+        "sources": [],
+        "blank_reason": "No strict primary-bookmaker (Pinnacle/Bovada exact-name) quote in current capture."
       },
       "resolution": {
-        "tier_code": "TIER_1_PRIMARY_BOOKMAKER",
-        "tier_label": "Tier 1 · Featured Bookmaker (Bovada, Pinnacle)",
-        "fallback_invoked": false,
+        "tier_code": "TIER_2_FALLBACK_ESPORTSBOOK",
+        "tier_label": "Tier 2 · Fallback Esportsbook/Exchange (Pinnacle, Bovada, Melbet (1xBet platform), Kalshi (exchange), Thunderpick (via bo3.gg)) + HLTV",
+        "fallback_invoked": true,
         "pick": "Heroic",
-        "prob_a": 0.64925,
-        "prob_b": 0.35075,
-        "pick_prob": 0.64925,
+        "prob_a": 0.647277,
+        "prob_b": 0.352723,
+        "pick_prob": 0.647277,
         "fair_odds_a": 1.54,
-        "fair_odds_b": 2.85,
-        "method": "Proportional no-vig normalization of strict primary bookmaker moneyline(s): Bovada, Pinnacle. Fallback sources not invoked.",
-        "limitation": "Resolved directly by primary featured bookmaker line(s); no fallback source needed."
+        "fair_odds_b": 2.84,
+        "method": "Fallback Step 1 (HLTV match 2399137 rank & lineup corroboration) + Fallback Step 2 (no-vig consensus across Pinnacle, Bovada, Melbet (1xBet platform), Kalshi (exchange), Thunderpick (via bo3.gg)).",
+        "limitation": "Pinnacle and Bovada have not listed Elisa BreakOut Series #2 Group B BO1s yet (>24h before start). Resolved via secondary esportsbook moneylines (Pinnacle, Bovada, Melbet (1xBet platform), Kalshi (exchange), Thunderpick (via bo3.gg)) corroborated by HLTV match page and Valve VRS."
       },
       "quotes": [
         {
@@ -254,7 +263,7 @@
           "odds_b": 2.71,
           "prob_a": 0.652929,
           "prob_b": 0.347071,
-          "retrieved_utc": "2026-10-15T08:28:36Z"
+          "retrieved_utc": "2026-10-15T09:49:56Z"
         },
         {
           "source": "bovada",
@@ -264,7 +273,7 @@
           "odds_b": 2.65,
           "prob_a": 0.645626,
           "prob_b": 0.354374,
-          "retrieved_utc": "2026-10-15T08:28:38Z"
+          "retrieved_utc": "2026-10-15T09:49:57Z"
         },
         {
           "source": "melbet",
@@ -274,7 +283,7 @@
           "odds_b": 2.703,
           "prob_a": 0.650855,
           "prob_b": 0.349145,
-          "retrieved_utc": "2026-10-15T08:28:39Z"
+          "retrieved_utc": "2026-10-15T09:49:58Z"
         },
         {
           "source": "kalshi",
@@ -284,7 +293,7 @@
           "odds_b": 2.8169,
           "prob_a": 0.645,
           "prob_b": 0.355,
-          "retrieved_utc": "2026-10-15T08:28:41Z"
+          "retrieved_utc": "2026-10-15T09:50:00Z"
         },
         {
           "source": "thunderpick",
@@ -294,19 +303,20 @@
           "odds_b": 2.6,
           "prob_a": 0.641975,
           "prob_b": 0.358025,
-          "retrieved_utc": "2026-10-15T08:29:35Z"
+          "retrieved_utc": "2026-10-15T09:51:18Z"
         }
       ],
       "vrs_model": {
-        "prob_a": 0.5247,
-        "prob_b": 0.4753
+        "prob_a": 0.5287,
+        "prob_b": 0.4713
       },
       "elo_model": {
         "prob_a": null,
         "prob_b": null
       },
       "flags": [
-        "market_vs_hltv_rank_inversion_heroic_over_envy"
+        "no_strict_primary_bookmaker_line",
+        "secondary_esportsbook_consensus_melbet_thunderpick"
       ],
       "source_links": [
         {
@@ -330,12 +340,24 @@
           "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/details/2026_10_05/0021--3dmax--graviti-kursy-lucky-maka-misutaaa.md"
         },
         {
-          "label": "Bovada Odds",
+          "label": "Pinnacle Quote",
+          "url": "https://www.pinnacle.com/en/esports/cs2-hub"
+        },
+        {
+          "label": "Bovada Quote",
           "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/heroic-envy-202610150600"
         },
         {
-          "label": "Pinnacle Odds",
-          "url": "https://www.pinnacle.com/en/esports/cs2-hub"
+          "label": "Melbet (1xBet platform) Quote",
+          "url": "https://melbet.com/en/line/esports"
+        },
+        {
+          "label": "Kalshi (exchange) Quote",
+          "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct150600envyhero"
+        },
+        {
+          "label": "Thunderpick (via bo3.gg) Quote",
+          "url": "https://bo3.gg/matches/heroic-vs-envyus-15-10-2026"
         }
       ]
     },
@@ -380,27 +402,25 @@
         "verification_basis": "Exact team & roster match in official Valve VRS standings_global_2026_10_05.md"
       },
       "strict_primary": {
-        "verified": true,
-        "prob_a": 0.7174,
-        "prob_b": 0.2826,
-        "pick": "ENCE",
-        "sources": [
-          "Pinnacle"
-        ],
-        "blank_reason": null
+        "verified": false,
+        "prob_a": null,
+        "prob_b": null,
+        "pick": null,
+        "sources": [],
+        "blank_reason": "No strict primary-bookmaker (Pinnacle/Bovada exact-name) quote in current capture."
       },
       "resolution": {
-        "tier_code": "TIER_1_PRIMARY_BOOKMAKER",
-        "tier_label": "Tier 1 · Featured Bookmaker (Pinnacle)",
-        "fallback_invoked": false,
+        "tier_code": "TIER_2_FALLBACK_ESPORTSBOOK",
+        "tier_label": "Tier 2 · Fallback Esportsbook/Exchange (Pinnacle, Melbet (1xBet platform), Kalshi (exchange), Thunderpick (via bo3.gg)) + HLTV",
+        "fallback_invoked": true,
         "pick": "ENCE",
-        "prob_a": 0.7174,
-        "prob_b": 0.2826,
-        "pick_prob": 0.7174,
-        "fair_odds_a": 1.39,
-        "fair_odds_b": 3.54,
-        "method": "Proportional no-vig normalization of strict primary bookmaker moneyline(s): Pinnacle. Fallback sources not invoked.",
-        "limitation": "Resolved directly by primary featured bookmaker line(s); no fallback source needed."
+        "prob_a": 0.738128,
+        "prob_b": 0.261872,
+        "pick_prob": 0.738128,
+        "fair_odds_a": 1.35,
+        "fair_odds_b": 3.82,
+        "method": "Fallback Step 1 (HLTV match 2399419 rank & lineup corroboration) + Fallback Step 2 (no-vig consensus across Pinnacle, Melbet (1xBet platform), Kalshi (exchange), Thunderpick (via bo3.gg)).",
+        "limitation": "Pinnacle and Bovada have not listed Elisa BreakOut Series #2 Group B BO1s yet (>24h before start). Resolved via secondary esportsbook moneylines (Pinnacle, Melbet (1xBet platform), Kalshi (exchange), Thunderpick (via bo3.gg)) corroborated by HLTV match page and Valve VRS."
       },
       "quotes": [
         {
@@ -411,7 +431,7 @@
           "odds_b": 3.31,
           "prob_a": 0.717389,
           "prob_b": 0.282611,
-          "retrieved_utc": "2026-10-15T08:28:35Z"
+          "retrieved_utc": "2026-10-15T09:49:56Z"
         },
         {
           "source": "melbet",
@@ -421,7 +441,17 @@
           "odds_b": 3.295,
           "prob_a": 0.715527,
           "prob_b": 0.284473,
-          "retrieved_utc": "2026-10-15T08:28:39Z"
+          "retrieved_utc": "2026-10-15T09:49:58Z"
+        },
+        {
+          "source": "kalshi",
+          "book": "Kalshi (exchange)",
+          "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct150600bojence",
+          "odds_a": 1.3245,
+          "odds_b": 4.2553,
+          "prob_a": 0.762626,
+          "prob_b": 0.237374,
+          "retrieved_utc": "2026-10-15T09:50:00Z"
         },
         {
           "source": "thunderpick",
@@ -431,18 +461,21 @@
           "odds_b": 3.8,
           "prob_a": 0.756972,
           "prob_b": 0.243028,
-          "retrieved_utc": "2026-10-15T08:29:35Z"
+          "retrieved_utc": "2026-10-15T09:51:18Z"
         }
       ],
       "vrs_model": {
-        "prob_a": 0.7526,
-        "prob_b": 0.2474
+        "prob_a": 0.7848,
+        "prob_b": 0.2152
       },
       "elo_model": {
         "prob_a": null,
         "prob_b": null
       },
-      "flags": [],
+      "flags": [
+        "no_strict_primary_bookmaker_line",
+        "secondary_esportsbook_consensus_melbet_thunderpick"
+      ],
       "source_links": [
         {
           "label": "HotSpawn Lobby",
@@ -465,8 +498,20 @@
           "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/03122720a73bd2dc7fb4fb9bc4efd5ed8bc3fb86/live/2026/standings_global_2026_10_05.md"
         },
         {
-          "label": "Pinnacle Odds",
+          "label": "Pinnacle Quote",
           "url": "https://www.pinnacle.com/en/esports/cs2-hub"
+        },
+        {
+          "label": "Melbet (1xBet platform) Quote",
+          "url": "https://melbet.com/en/line/esports"
+        },
+        {
+          "label": "Kalshi (exchange) Quote",
+          "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct150600bojence"
+        },
+        {
+          "label": "Thunderpick (via bo3.gg) Quote",
+          "url": "https://bo3.gg/matches/ence-vs-bojong-15-10-2026"
         }
       ]
     },
@@ -480,7 +525,7 @@
       "lock_utc": "2026-10-15T10:54:00Z",
       "team_a": "9z",
       "team_b": "Falcons",
-      "hotspawn_url": "https://www.hotspawn.com/matches/9z-vs-falcons-thunderpick-world-championship-2026-1080202",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
       "hltv": {
         "match_url": "https://www.hltv.org/matches/2399409/9z-vs-falcons-thunderpick-world-championship-2026",
         "analytics_url": "https://www.hltv.org/betting/analytics/2399409/9z-vs-falcons-thunderpick-world-championship-2026",
@@ -538,11 +583,11 @@
           "source": "pinnacle",
           "book": "Pinnacle",
           "url": "https://www.pinnacle.com/en/esports/cs2-hub",
-          "odds_a": 3.92,
-          "odds_b": 1.2632,
-          "prob_a": 0.243704,
-          "prob_b": 0.756296,
-          "retrieved_utc": "2026-10-15T08:28:38Z"
+          "odds_a": 3.95,
+          "odds_b": 1.2604,
+          "prob_a": 0.241903,
+          "prob_b": 0.758097,
+          "retrieved_utc": "2026-10-15T09:49:55Z"
         },
         {
           "source": "bovada",
@@ -552,27 +597,27 @@
           "odds_b": 1.25,
           "prob_a": 0.25,
           "prob_b": 0.75,
-          "retrieved_utc": "2026-10-15T08:28:38Z"
+          "retrieved_utc": "2026-10-15T09:49:57Z"
         },
         {
           "source": "melbet",
           "book": "Melbet (1xBet platform)",
           "url": "https://melbet.com/en/line/esports",
-          "odds_a": 3.86,
+          "odds_a": 3.905,
           "odds_b": 1.27,
-          "prob_a": 0.247563,
-          "prob_b": 0.752437,
-          "retrieved_utc": "2026-10-15T08:28:39Z"
+          "prob_a": 0.245411,
+          "prob_b": 0.754589,
+          "retrieved_utc": "2026-10-15T09:49:58Z"
         },
         {
           "source": "kalshi",
           "book": "Kalshi (exchange)",
           "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct150700fal9z",
           "odds_a": 4.0816,
-          "odds_b": 1.3889,
-          "prob_a": 0.253886,
-          "prob_b": 0.746114,
-          "retrieved_utc": "2026-10-15T08:28:41Z"
+          "odds_b": 1.3245,
+          "prob_a": 0.245,
+          "prob_b": 0.755,
+          "retrieved_utc": "2026-10-15T09:50:00Z"
         },
         {
           "source": "thunderpick",
@@ -582,12 +627,12 @@
           "odds_b": 1.22,
           "prob_a": 0.243028,
           "prob_b": 0.756972,
-          "retrieved_utc": "2026-10-15T08:29:35Z"
+          "retrieved_utc": "2026-10-15T09:51:18Z"
         }
       ],
       "vrs_model": {
-        "prob_a": 0.3557,
-        "prob_b": 0.6443
+        "prob_a": 0.3339,
+        "prob_b": 0.6661
       },
       "elo_model": {
         "prob_a": null,
@@ -597,7 +642,7 @@
       "source_links": [
         {
           "label": "HotSpawn Lobby",
-          "url": "https://www.hotspawn.com/matches/9z-vs-falcons-thunderpick-world-championship-2026-1080202"
+          "url": "https://play.hotspawn.com/lobby"
         },
         {
           "label": "HLTV Match",
@@ -682,11 +727,11 @@
         "tier_label": "Tier 2 · Fallback Esportsbook/Exchange (Pinnacle, Thunderpick (via bo3.gg)) + HLTV",
         "fallback_invoked": true,
         "pick": "WROTBERRY",
-        "prob_a": 0.594874,
-        "prob_b": 0.405126,
-        "pick_prob": 0.594874,
-        "fair_odds_a": 1.68,
-        "fair_odds_b": 2.47,
+        "prob_a": 0.610327,
+        "prob_b": 0.389673,
+        "pick_prob": 0.610327,
+        "fair_odds_a": 1.64,
+        "fair_odds_b": 2.57,
         "method": "Fallback Step 1 (HLTV match 2399420 confirms 5/5 WBT starting lineup Psycho, Smash, s4ltovsk1yy, DemQQ, tyr1k = Valve VRS #60 WBT) + Fallback Step 2 (no-vig mean of Pinnacle, Thunderpick (via bo3.gg)).",
         "limitation": "Unresolved on strict exact-name boards because HotSpawn writes 'WROTBERRY' while Pinnacle, Thunderpick, HLTV, and Valve VRS write 'WBT' (and Kalshi wrote 'WBT Academy'). HLTV match page 5/5 starting lineup proves this is main WBT (#60 VRS), unlocking Pinnacle + Thunderpick odds."
       },
@@ -695,11 +740,11 @@
           "source": "pinnacle",
           "book": "Pinnacle",
           "url": "https://www.pinnacle.com/en/esports/cs2-hub",
-          "odds_a": 1.6452,
-          "odds_b": 2.22,
-          "prob_a": 0.574362,
-          "prob_b": 0.425638,
-          "retrieved_utc": "2026-10-15T08:28:36Z"
+          "odds_a": 1.5587,
+          "odds_b": 2.39,
+          "prob_a": 0.605269,
+          "prob_b": 0.394731,
+          "retrieved_utc": "2026-10-15T09:49:56Z"
         },
         {
           "source": "thunderpick",
@@ -709,12 +754,12 @@
           "odds_b": 2.4,
           "prob_a": 0.615385,
           "prob_b": 0.384615,
-          "retrieved_utc": "2026-10-15T08:29:35Z"
+          "retrieved_utc": "2026-10-15T09:51:18Z"
         }
       ],
       "vrs_model": {
-        "prob_a": 0.5862,
-        "prob_b": 0.4138
+        "prob_a": 0.5999,
+        "prob_b": 0.4001
       },
       "elo_model": {
         "prob_a": null,
@@ -765,7 +810,7 @@
       "lock_utc": "2026-10-15T13:24:00Z",
       "team_a": "PARIVISION",
       "team_b": "BetBoom",
-      "hotspawn_url": "https://www.hotspawn.com/matches/parivision-vs-betboom-thunderpick-world-championship-2026-1080203",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
       "hltv": {
         "match_url": "https://www.hltv.org/matches/2399410/parivision-vs-betboom-thunderpick-world-championship-2026",
         "analytics_url": "https://www.hltv.org/betting/analytics/2399410/parivision-vs-betboom-thunderpick-world-championship-2026",
@@ -797,8 +842,8 @@
       },
       "strict_primary": {
         "verified": true,
-        "prob_a": 0.53135,
-        "prob_b": 0.46865,
+        "prob_a": 0.5324,
+        "prob_b": 0.4676,
         "pick": "PARIVISION",
         "sources": [
           "Bovada",
@@ -811,11 +856,11 @@
         "tier_label": "Tier 1 · Featured Bookmaker (Bovada, Pinnacle)",
         "fallback_invoked": false,
         "pick": "PARIVISION",
-        "prob_a": 0.53135,
-        "prob_b": 0.46865,
-        "pick_prob": 0.53135,
+        "prob_a": 0.5324,
+        "prob_b": 0.4676,
+        "pick_prob": 0.5324,
         "fair_odds_a": 1.88,
-        "fair_odds_b": 2.13,
+        "fair_odds_b": 2.14,
         "method": "Proportional no-vig normalization of strict primary bookmaker moneyline(s): Bovada, Pinnacle. Fallback sources not invoked.",
         "limitation": "Resolved directly by primary featured bookmaker line(s); no fallback source needed."
       },
@@ -824,11 +869,11 @@
           "source": "pinnacle",
           "book": "Pinnacle",
           "url": "https://www.pinnacle.com/en/esports/cs2-hub",
-          "odds_a": 1.7937,
-          "odds_b": 2.04,
-          "prob_a": 0.53213,
-          "prob_b": 0.46787,
-          "retrieved_utc": "2026-10-15T08:28:37Z"
+          "odds_a": 1.7874,
+          "odds_b": 2.05,
+          "prob_a": 0.534216,
+          "prob_b": 0.465784,
+          "retrieved_utc": "2026-10-15T09:49:54Z"
         },
         {
           "source": "bovada",
@@ -838,17 +883,27 @@
           "odds_b": 2.0,
           "prob_a": 0.530612,
           "prob_b": 0.469388,
-          "retrieved_utc": "2026-10-15T08:28:38Z"
+          "retrieved_utc": "2026-10-15T09:49:57Z"
         },
         {
           "source": "melbet",
           "book": "Melbet (1xBet platform)",
           "url": "https://melbet.com/en/line/esports",
           "odds_a": 1.79,
-          "odds_b": 2.04,
-          "prob_a": 0.532637,
-          "prob_b": 0.467363,
-          "retrieved_utc": "2026-10-15T08:28:39Z"
+          "odds_b": 2.05,
+          "prob_a": 0.533854,
+          "prob_b": 0.466146,
+          "retrieved_utc": "2026-10-15T09:49:58Z"
+        },
+        {
+          "source": "kalshi",
+          "book": "Kalshi (exchange)",
+          "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct150930bbprv",
+          "odds_a": 1.9417,
+          "odds_b": 2.1053,
+          "prob_a": 0.520202,
+          "prob_b": 0.479798,
+          "retrieved_utc": "2026-10-15T09:50:00Z"
         },
         {
           "source": "thunderpick",
@@ -858,12 +913,12 @@
           "odds_b": 1.92,
           "prob_a": 0.518919,
           "prob_b": 0.481081,
-          "retrieved_utc": "2026-10-15T08:29:35Z"
+          "retrieved_utc": "2026-10-15T09:51:18Z"
         }
       ],
       "vrs_model": {
-        "prob_a": 0.4095,
-        "prob_b": 0.5905
+        "prob_a": 0.3951,
+        "prob_b": 0.6049
       },
       "elo_model": {
         "prob_a": null,
@@ -873,7 +928,7 @@
       "source_links": [
         {
           "label": "HotSpawn Lobby",
-          "url": "https://www.hotspawn.com/matches/parivision-vs-betboom-thunderpick-world-championship-2026-1080203"
+          "url": "https://play.hotspawn.com/lobby"
         },
         {
           "label": "HLTV Match",
@@ -973,7 +1028,7 @@
           "odds_b": 3.98,
           "prob_a": 0.765976,
           "prob_b": 0.234024,
-          "retrieved_utc": "2026-10-15T08:28:37Z"
+          "retrieved_utc": "2026-10-15T09:49:54Z"
         },
         {
           "source": "thunderpick",
@@ -983,12 +1038,12 @@
           "odds_b": 4.4,
           "prob_a": 0.789946,
           "prob_b": 0.210054,
-          "retrieved_utc": "2026-10-15T08:29:35Z"
+          "retrieved_utc": "2026-10-15T09:51:18Z"
         }
       ],
       "vrs_model": {
-        "prob_a": 0.7563,
-        "prob_b": 0.2437
+        "prob_a": 0.7887,
+        "prob_b": 0.2113
       },
       "elo_model": {
         "prob_a": null,
@@ -1034,7 +1089,7 @@
       "lock_utc": "2026-10-15T15:54:00Z",
       "team_a": "Legacy",
       "team_b": "FURIA",
-      "hotspawn_url": "https://www.hotspawn.com/matches/legacy-vs-furia-thunderpick-world-championship-2026-1080204",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
       "hltv": {
         "match_url": "https://www.hltv.org/matches/2399411/legacy-vs-furia-thunderpick-world-championship-2026",
         "analytics_url": "https://www.hltv.org/betting/analytics/2399411/legacy-vs-furia-thunderpick-world-championship-2026",
@@ -1066,8 +1121,8 @@
       },
       "strict_primary": {
         "verified": true,
-        "prob_a": 0.4249,
-        "prob_b": 0.5751,
+        "prob_a": 0.42605,
+        "prob_b": 0.57395,
         "pick": "FURIA",
         "sources": [
           "Bovada",
@@ -1080,9 +1135,9 @@
         "tier_label": "Tier 1 · Featured Bookmaker (Bovada, Pinnacle)",
         "fallback_invoked": false,
         "pick": "FURIA",
-        "prob_a": 0.4249,
-        "prob_b": 0.5751,
-        "pick_prob": 0.5751,
+        "prob_a": 0.42605,
+        "prob_b": 0.57395,
+        "pick_prob": 0.57395,
         "fair_odds_a": 2.35,
         "fair_odds_b": 1.74,
         "method": "Proportional no-vig normalization of strict primary bookmaker moneyline(s): Bovada, Pinnacle. Fallback sources not invoked.",
@@ -1093,11 +1148,11 @@
           "source": "pinnacle",
           "book": "Pinnacle",
           "url": "https://www.pinnacle.com/en/esports/cs2-hub",
-          "odds_a": 2.26,
-          "odds_b": 1.6494,
-          "prob_a": 0.421899,
-          "prob_b": 0.578101,
-          "retrieved_utc": "2026-10-15T08:28:36Z"
+          "odds_a": 2.25,
+          "odds_b": 1.6579,
+          "prob_a": 0.424242,
+          "prob_b": 0.575758,
+          "retrieved_utc": "2026-10-15T09:49:55Z"
         },
         {
           "source": "bovada",
@@ -1107,17 +1162,27 @@
           "odds_b": 1.6452,
           "prob_a": 0.427852,
           "prob_b": 0.572148,
-          "retrieved_utc": "2026-10-15T08:28:38Z"
+          "retrieved_utc": "2026-10-15T09:49:57Z"
         },
         {
           "source": "melbet",
           "book": "Melbet (1xBet platform)",
           "url": "https://melbet.com/en/line/esports",
           "odds_a": 2.235,
-          "odds_b": 1.67,
-          "prob_a": 0.427657,
-          "prob_b": 0.572343,
-          "retrieved_utc": "2026-10-15T08:28:39Z"
+          "odds_b": 1.68,
+          "prob_a": 0.429119,
+          "prob_b": 0.570881,
+          "retrieved_utc": "2026-10-15T09:49:58Z"
+        },
+        {
+          "source": "kalshi",
+          "book": "Kalshi (exchange)",
+          "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct151200furialgc",
+          "odds_a": 2.3529,
+          "odds_b": 1.7391,
+          "prob_a": 0.425,
+          "prob_b": 0.575,
+          "retrieved_utc": "2026-10-15T09:50:00Z"
         },
         {
           "source": "thunderpick",
@@ -1127,12 +1192,12 @@
           "odds_b": 1.65,
           "prob_a": 0.44,
           "prob_b": 0.56,
-          "retrieved_utc": "2026-10-15T08:29:35Z"
+          "retrieved_utc": "2026-10-15T09:51:18Z"
         }
       ],
       "vrs_model": {
-        "prob_a": 0.5503,
-        "prob_b": 0.4497
+        "prob_a": 0.5584,
+        "prob_b": 0.4416
       },
       "elo_model": {
         "prob_a": null,
@@ -1144,7 +1209,7 @@
       "source_links": [
         {
           "label": "HotSpawn Lobby",
-          "url": "https://www.hotspawn.com/matches/legacy-vs-furia-thunderpick-world-championship-2026-1080204"
+          "url": "https://play.hotspawn.com/lobby"
         },
         {
           "label": "HLTV Match",
@@ -1250,7 +1315,7 @@
           "odds_b": 4.31,
           "prob_a": 0.784225,
           "prob_b": 0.215775,
-          "retrieved_utc": "2026-10-15T08:28:37Z"
+          "retrieved_utc": "2026-10-15T09:49:55Z"
         },
         {
           "source": "thunderpick",
@@ -1260,12 +1325,12 @@
           "odds_b": 4.0,
           "prob_a": 0.769231,
           "prob_b": 0.230769,
-          "retrieved_utc": "2026-10-15T08:29:35Z"
+          "retrieved_utc": "2026-10-15T09:51:18Z"
         }
       ],
       "vrs_model": {
-        "prob_a": 0.8117,
-        "prob_b": 0.1883
+        "prob_a": 0.8454,
+        "prob_b": 0.1546
       },
       "elo_model": {
         "prob_a": null,
@@ -1378,7 +1443,7 @@
           "odds_b": 2.28,
           "prob_a": 0.585592,
           "prob_b": 0.414408,
-          "retrieved_utc": "2026-10-15T08:28:35Z"
+          "retrieved_utc": "2026-10-15T09:49:56Z"
         },
         {
           "source": "thunderpick",
@@ -1388,12 +1453,12 @@
           "odds_b": 2.4,
           "prob_a": 0.615385,
           "prob_b": 0.384615,
-          "retrieved_utc": "2026-10-15T08:29:35Z"
+          "retrieved_utc": "2026-10-15T09:51:18Z"
         }
       ],
       "vrs_model": {
-        "prob_a": 0.5049,
-        "prob_b": 0.4951
+        "prob_a": 0.5058,
+        "prob_b": 0.4942
       },
       "elo_model": {
         "prob_a": null,
@@ -1499,7 +1564,7 @@
           "odds_b": 1.72,
           "prob_a": 0.462366,
           "prob_b": 0.537634,
-          "retrieved_utc": "2026-10-15T08:28:39Z"
+          "retrieved_utc": "2026-10-15T09:49:58Z"
         },
         {
           "source": "thunderpick",
@@ -1509,12 +1574,12 @@
           "odds_b": 1.8,
           "prob_a": 0.486486,
           "prob_b": 0.513514,
-          "retrieved_utc": "2026-10-15T08:29:35Z"
+          "retrieved_utc": "2026-10-15T09:51:18Z"
         }
       ],
       "vrs_model": {
-        "prob_a": 0.5173,
-        "prob_b": 0.4827
+        "prob_a": 0.5201,
+        "prob_b": 0.4799
       },
       "elo_model": {
         "prob_a": null,
@@ -1618,22 +1683,22 @@
         "tier_label": "Tier 3 · Originated CS2 Line (Official Valve VRS + HLTV + Elo)",
         "fallback_invoked": true,
         "pick": "HAVU",
-        "prob_a": 0.6835,
-        "prob_b": 0.3165,
-        "pick_prob": 0.6835,
-        "fair_odds_a": 1.46,
-        "fair_odds_b": 3.16,
-        "method": "Fallback Step 1 (HLTV match 2399425 confirms 5/5 ROUNDS starting lineup Tumppis, Kollo, ykis, Lapa, Monoxx = Valve VRS #310 ROUNDS, 548 pts) + Fallback Step 3 (Market-calibrated Official Valve VRS logistic origination #124 937.0 pts vs #310 548 pts; corroborated by 809-match Elo 84.0%).",
+        "prob_a": 0.71,
+        "prob_b": 0.29,
+        "pick_prob": 0.71,
+        "fair_odds_a": 1.41,
+        "fair_odds_b": 3.45,
+        "method": "Fallback Step 1 (HLTV match 2399425 confirms 5/5 ROUNDS starting lineup Tumppis, Kollo, ykis, Lapa, Monoxx = Valve VRS #310 ROUNDS, 548 pts) + Fallback Step 3 (Market-calibrated Official Valve VRS logistic origination #124 937.0 pts vs #310 548 pts; corroborated by 809-match Elo 83.7%).",
         "limitation": "No primary bookmaker or secondary esportsbook has an active prematch moneyline for this Elisa Group B BO1 yet (>25–31h before start; Kalshi's earlier thin-book quote on 1080289 entered scheduled maintenance). Prior strict boards left RoundsGG blank because HLTV's team profile showed 4/5 players yesterday; today's official HLTV match page publishes all 5 starters (Tumppis, Kollo, ykis, Lapa, Monoxx), matching Valve VRS #310 ROUNDS (548 pts) 5-for-5."
       },
       "quotes": [],
       "vrs_model": {
-        "prob_a": 0.6835,
-        "prob_b": 0.3165
+        "prob_a": 0.71,
+        "prob_b": 0.29
       },
       "elo_model": {
-        "prob_a": 0.840028,
-        "prob_b": 0.159972
+        "prob_a": 0.837459,
+        "prob_b": 0.162541
       },
       "flags": [
         "no_strict_primary_bookmaker_line",
@@ -1733,7 +1798,7 @@
           "odds_b": 2.747,
           "prob_a": 0.653892,
           "prob_b": 0.346108,
-          "retrieved_utc": "2026-10-15T08:28:39Z"
+          "retrieved_utc": "2026-10-15T09:49:58Z"
         },
         {
           "source": "thunderpick",
@@ -1743,12 +1808,12 @@
           "odds_b": 2.7,
           "prob_a": 0.65534,
           "prob_b": 0.34466,
-          "retrieved_utc": "2026-10-15T08:29:35Z"
+          "retrieved_utc": "2026-10-15T09:51:18Z"
         }
       ],
       "vrs_model": {
-        "prob_a": 0.6189,
-        "prob_b": 0.3811
+        "prob_a": 0.6374,
+        "prob_b": 0.3626
       },
       "elo_model": {
         "prob_a": null,
@@ -1850,22 +1915,22 @@
         "tier_label": "Tier 3 · Originated CS2 Line (Official Valve VRS + HLTV + Elo)",
         "fallback_invoked": true,
         "pick": "Phantom",
-        "prob_a": 0.766,
-        "prob_b": 0.234,
-        "pick_prob": 0.766,
-        "fair_odds_a": 1.31,
-        "fair_odds_b": 4.27,
-        "method": "Fallback Step 1 (HLTV match 2399427 confirms 5/5 ROUNDS starting lineup Tumppis, Kollo, ykis, Lapa, Monoxx = Valve VRS #310 ROUNDS, 548 pts) + Fallback Step 3 (Market-calibrated Official Valve VRS logistic origination #72 1147.0 pts vs #310 548 pts; corroborated by 809-match Elo 92.9%).",
+        "prob_a": 0.7988,
+        "prob_b": 0.2012,
+        "pick_prob": 0.7988,
+        "fair_odds_a": 1.25,
+        "fair_odds_b": 4.97,
+        "method": "Fallback Step 1 (HLTV match 2399427 confirms 5/5 ROUNDS starting lineup Tumppis, Kollo, ykis, Lapa, Monoxx = Valve VRS #310 ROUNDS, 548 pts) + Fallback Step 3 (Market-calibrated Official Valve VRS logistic origination #72 1147.0 pts vs #310 548 pts; corroborated by 809-match Elo 92.8%).",
         "limitation": "No primary bookmaker or secondary esportsbook has an active prematch moneyline for this Elisa Group B BO1 yet (>25–31h before start; Kalshi's earlier thin-book quote on 1080289 entered scheduled maintenance). Prior strict boards left RoundsGG blank because HLTV's team profile showed 4/5 players yesterday; today's official HLTV match page publishes all 5 starters (Tumppis, Kollo, ykis, Lapa, Monoxx), matching Valve VRS #310 ROUNDS (548 pts) 5-for-5."
       },
       "quotes": [],
       "vrs_model": {
-        "prob_a": 0.766,
-        "prob_b": 0.234
+        "prob_a": 0.7988,
+        "prob_b": 0.2012
       },
       "elo_model": {
-        "prob_a": 0.929264,
-        "prob_b": 0.070736
+        "prob_a": 0.927967,
+        "prob_b": 0.072033
       },
       "flags": [
         "no_strict_primary_bookmaker_line",
@@ -1949,18 +2014,18 @@
         "tier_label": "Tier 3 · Originated CS2 Line (Official Valve VRS + HLTV + Elo)",
         "fallback_invoked": true,
         "pick": "mellren",
-        "prob_a": 0.6551,
-        "prob_b": 0.3449,
-        "pick_prob": 0.6551,
-        "fair_odds_a": 1.53,
-        "fair_odds_b": 2.9,
+        "prob_a": 0.6783,
+        "prob_b": 0.3217,
+        "pick_prob": 0.6783,
+        "fair_odds_a": 1.47,
+        "fair_odds_b": 3.11,
         "method": "Fallback Step 1 (HLTV match 2399471 & analytics confirm #94 mellren vs #226 Privateer) + Fallback Step 3 (Official Valve VRS BO3 logistic origination: #125 mellren 932 pts vs #271 Privateer 608 pts).",
         "limitation": "CCT Europe Series #12 Closed Qualifier opening BO3 (>29h before start); neither primary nor secondary esportsbooks have posted prematch odds yet. Originated from official Valve VRS (#125 mellren 932 pts vs #271 Privateer 608 pts) and corroborated by HLTV match 2399471 (#94 vs #226, mellren 4/5 recent form)."
       },
       "quotes": [],
       "vrs_model": {
-        "prob_a": 0.6551,
-        "prob_b": 0.3449
+        "prob_a": 0.6783,
+        "prob_b": 0.3217
       },
       "elo_model": {
         "prob_a": null,
@@ -2055,22 +2120,22 @@
         "tier_label": "Tier 3 · Originated CS2 Line (Official Valve VRS + HLTV + Elo)",
         "fallback_invoked": true,
         "pick": "Voca",
-        "prob_a": 0.2218,
-        "prob_b": 0.7782,
-        "pick_prob": 0.7782,
-        "fair_odds_a": 4.51,
-        "fair_odds_b": 1.29,
-        "method": "Fallback Step 1 (HLTV match 2399428 confirms 5/5 ROUNDS starting lineup Tumppis, Kollo, ykis, Lapa, Monoxx = Valve VRS #310 ROUNDS, 548 pts) + Fallback Step 3 (Market-calibrated Official Valve VRS logistic origination #310 548 pts vs #68 1182.0 pts; corroborated by 809-match Elo 94.9%).",
+        "prob_a": 0.1885,
+        "prob_b": 0.8115,
+        "pick_prob": 0.8115,
+        "fair_odds_a": 5.31,
+        "fair_odds_b": 1.23,
+        "method": "Fallback Step 1 (HLTV match 2399428 confirms 5/5 ROUNDS starting lineup Tumppis, Kollo, ykis, Lapa, Monoxx = Valve VRS #310 ROUNDS, 548 pts) + Fallback Step 3 (Market-calibrated Official Valve VRS logistic origination #310 548 pts vs #68 1182.0 pts; corroborated by 809-match Elo 94.8%).",
         "limitation": "No primary bookmaker or secondary esportsbook has an active prematch moneyline for this Elisa Group B BO1 yet (>25–31h before start; Kalshi's earlier thin-book quote on 1080289 entered scheduled maintenance). Prior strict boards left RoundsGG blank because HLTV's team profile showed 4/5 players yesterday; today's official HLTV match page publishes all 5 starters (Tumppis, Kollo, ykis, Lapa, Monoxx), matching Valve VRS #310 ROUNDS (548 pts) 5-for-5."
       },
       "quotes": [],
       "vrs_model": {
-        "prob_a": 0.2218,
-        "prob_b": 0.7782
+        "prob_a": 0.1885,
+        "prob_b": 0.8115
       },
       "elo_model": {
-        "prob_a": 0.05055,
-        "prob_b": 0.94945
+        "prob_a": 0.051582,
+        "prob_b": 0.948418
       },
       "flags": [
         "no_strict_primary_bookmaker_line",
@@ -2170,7 +2235,7 @@
           "odds_b": 2.911,
           "prob_a": 0.681573,
           "prob_b": 0.318427,
-          "retrieved_utc": "2026-10-15T08:28:39Z"
+          "retrieved_utc": "2026-10-15T09:49:58Z"
         },
         {
           "source": "thunderpick",
@@ -2180,12 +2245,12 @@
           "odds_b": 2.9,
           "prob_a": 0.682353,
           "prob_b": 0.317647,
-          "retrieved_utc": "2026-10-15T08:29:35Z"
+          "retrieved_utc": "2026-10-15T09:51:18Z"
         }
       ],
       "vrs_model": {
-        "prob_a": 0.6025,
-        "prob_b": 0.3975
+        "prob_a": 0.6186,
+        "prob_b": 0.3814
       },
       "elo_model": {
         "prob_a": null,
@@ -2284,18 +2349,18 @@
         "tier_label": "Completed Match Anomaly (HLTV Verified 3:2 Wildcard; Pre-match VRS Reference Only)",
         "fallback_invoked": true,
         "pick": "DENDELE (pre-match VRS) / Wildcard (actual 3-2 winner)",
-        "prob_a": 0.4365,
-        "prob_b": 0.5635,
-        "pick_prob": 0.5635,
-        "fair_odds_a": 2.29,
-        "fair_odds_b": 1.77,
+        "prob_a": 0.4263,
+        "prob_b": 0.5737,
+        "pick_prob": 0.5737,
+        "fair_odds_a": 2.35,
+        "fair_odds_b": 1.74,
         "method": "Official HLTV final result verification + Valve VRS pre-match reference (#39 DENDELE 1368 pts vs #58 Wildcard 1239 pts)",
         "limitation": "CRITICAL SCHEDULE ANOMALY: HotSpawn API row 1080200 lists scheduled_start_time=2026-11-12T00:00:00Z (1-month date entry error) and is omitted from the rendered lobby cards. Official HLTV match 2399407 proves FRAG University 2026 Grand Final finished on 2026-10-11 (Wildcard 3:2 DENDELE). Prematch bookmaker line is left blank; VRS pre-match reference (#58 Wildcard 1239 vs #39 DENDELE 1368 -> DENDELE 56.2%) and actual HLTV result are disclosed for audit."
       },
       "quotes": [],
       "vrs_model": {
-        "prob_a": 0.4365,
-        "prob_b": 0.5635
+        "prob_a": 0.4263,
+        "prob_b": 0.5737
       },
       "elo_model": {
         "prob_a": null,

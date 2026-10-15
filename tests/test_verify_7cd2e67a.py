@@ -193,24 +193,21 @@ class PublishedArithmetic(unittest.TestCase):
             if pub["basis"] == "market":
                 market += 1
                 ps = []
-                for q in row["quotes"]:
+                # Consensus includes one eligible quote per source, not rejected
+                # live/stale candidates retained in the audit's row["quotes"].
+                accepted = row["market"]["sources_detail"]
+                self.assertEqual(len(accepted), row["market"]["n_sources"])
+                self.assertEqual(len({q["source_key"] for q in accepted}), len(accepted))
+                for q in accepted:
+                    self.assertTrue(any(all(q.get(k) == raw.get(k) for k in
+                        ("source_key", "source_event_id", "decimal_odds_a", "decimal_odds_b"))
+                        and not raw.get("market_is_live") and not raw.get("stale")
+                        for raw in row["quotes"]), row["fixture_id"])
                     pa, pb, ov = devig(q["decimal_odds_a"], q["decimal_odds_b"])
                     self.assertEqual(pa, round(q["prob_a"], 4), row["fixture_id"])
                     self.assertEqual(pb, round(q["prob_b"], 4), row["fixture_id"])
                     self.assertEqual(ov, round(q["overround"], 5), row["fixture_id"])
                     ps.append(pa)
-                # Raw quotes can include duplicate reads and live/in-play prices that the builder
-                # deliberately excludes (flags duplicate_quote:* / live_market_excluded:*). The
-                # consensus must reproduce from the sources it actually consumed (f28afd9e repair).
-                consumed = (row.get("market") or {}).get("sources_detail") or []
-                if consumed:
-                    ps = []
-                    for d in consumed:
-                        # sources_detail decimals are already aligned to the fixture's side order.
-                        pa, _, _ = devig(d["decimal_odds_a"], d["decimal_odds_b"])
-                        self.assertAlmostEqual(pa, d["prob_a"], delta=0.0001, msg=row["fixture_id"])
-                        ps.append(pa)
-                    self.assertEqual(len(consumed), row["market"]["n_sources"], row["fixture_id"])
                 mean = round(sum(ps) / len(ps), 4)
                 # The published consensus averages unrounded per-source probabilities; the stored
                 # per-source values are rounded to 4 dp, so allow one rounding step of slack.

@@ -416,6 +416,7 @@ def render(board, day1, hist):
 <li><b>Day 1 lesson:</b> 9z beat Aurora 2-0 although {_d1own(day1, '1080176', '9z')} of players picked 9z while the betting market gave them about 30%. Aurora rebuilt in July (new IGL kyxsan, Jimpphat, coach ash; first international lineup). The crowd piles 90%+ onto favourites the market rates only ~70%. <a href="day1.html">Full review</a>.</li>
 <li><b>Backtest of the leaderboard rules on day 1:</b> {d1.get('leaderboard_correct', '?')}/{d1.get('settled', '?')} correct, {d1.get('leaderboard_points', '?'):g} points — same points as the safe card ({d1.get('safe_correct', '?')}/{d1.get('settled', '?')}, {d1.get('safe_points', '?'):g} pts), but its points came where most players scored zero (9z, HOTU). Small sample; treat as illustration, not proof.</li>
 <li><b>Today's contrarian spots:</b> {', '.join(f'<a href="#m-{esc(r["fixture_id"])}">{esc(r["strategy"]["leaderboard_pick"])}</a> ({pct(r["strategy"]["leaderboard_prob"])})' for r in contra) or 'none qualify right now'}.</li>
+<li><b>Strict list:</b> the canonical <a href="../picks-every-match/index.html">strict board</a> keeps unsupported numbers blank; this page gives a best-available pick for those too and labels the limitation. Root <a href="../day-one.html">day-one review</a>.</li>
 <li><b>Unresolved / limited:</b> {sm['unresolved']} with no pick, {sm['model_only']} priced only by our rating model, plus contested identities — <a href="unresolved.html">see the separate section</a>.</li></ul>"""
     body = exec_html + '<h2 id="picks">All open matches</h2>' + ("".join(card(r) for r in open_rows) or "<p>No open matches in the current lobby read.</p>")
     if locked:
@@ -463,7 +464,8 @@ def render(board, day1, hist):
 <li><b>Wildcard vs DENDELE (1080200):</b> present in HotSpawn's fixture API dated 12 Nov but not on the lobby; session 94b3d48a reports HLTV shows it was played 11 Oct. Not re-verified here; no pick published.</li>
 <li><b>Secondary source:</b> the ash onboarding interview is cited via cs2news.com, not the HLTV original.</li>
 <li><b>Fallback-board rows:</b> some low-tier rows are priced only by the executive board's older single-source (Melbet) quote; they are listed in the table above.</li>
-<li><b>Pipeline repairs made by this session:</b> three red workflows on main (hourly data refresh, unresolved-board contract tests, Pages public check) — causes and fixes are logged in COORDINATION.md.</li></ul>
+<li><b>Strict board vs this page:</b> the canonical strict list (<a href="../picks-every-match/index.html">picks-every-match</a>) withholds a number when roster identity or evidence freshness fails its rules (e.g. WROTBERRY and RoundsGG rows). This page shows the best available line from the repository's other automatically refreshed boards for those matches and lists every such row in the table above, so you always have a pick plus its limitation.</li>
+<li><b>Pipeline repairs:</b> the red hourly data refresh and Pages public check were repaired in parallel by session 778756a1 (PR #112) and this session; the merge keeps 778756a1's stricter test versions. Details in COORDINATION.md.</li></ul>
 <h2>General limitations</h2><ul><li>Polymarket lists no current CS2 match markets for these events; it is not used.</li>
 <li>HotSpawn's lobby is read by GitHub-hosted runners every hour; between reads, new matches can appear. This page refreshes every 4 hours and after each data refresh.</li>
 <li>HotSpawn crowd % is ownership, not probability.</li></ul>"""
@@ -484,6 +486,7 @@ def render(board, day1, hist):
                        + (f" <span class='tag w'>secondary source</span>" if e.get('secondary') else "") + "</li>" for e in aur)
     db = f"""<h1>Day 1 review (14–15 Oct): the 9z upset</h1>
 <p><b>9z 2-0 Aurora</b> (<a href="https://www.hltv.org/matches/2399384/9z-vs-aurora-thunderpick-world-championship-2026">HLTV match</a>, <a href="https://www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026">HLTV report</a>): Inferno 13-11, Nuke 13-1. Before the match the betting line gave 9z about {pct(next((r['prelock_prob_a'] for r in (day1 or {}).get('rows', []) if r['fixture_id'] == '1080176'), None))} while {_d1own(day1, '1080176', '9z')} of HotSpawn players picked them.</p>
+<p class=mut>See also the root <a href="../day-one.html">day-one review</a> (session 778756a1), which covers all four TWC openers with specialist sources; this page adds the pre-lock crowd ownership and the leaderboard backtest.</p>
 <h2>Aurora context (verified)</h2><ul>{ctx_html}</ul>
 <p class=mut>The user brief mentions a recent Aurora roster change. The most recent change found on official/primary pages is the July 2026 rebuild; HLTV's team page read today shows the same five (XANTARES, woxic, Jimpphat, kyxsan, Wicadia; coach ash). No October change was found — flagged for review rather than assumed.</p>
 <h2>What it teaches about climbing the leaderboard</h2><ul>
