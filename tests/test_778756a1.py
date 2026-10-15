@@ -20,11 +20,19 @@ class CanonicalIntegration(unittest.TestCase):
 
     def test_counts_reproduce_one_board_not_competing_totals(self):
         board = json.loads((ROOT / 'data/c64a5e19/board.json').read_text())
+        # Render the exact board being tested: the root and collector are separate
+        # artifacts between refresh and Pages staging, so never compare their times.
+        import sys
+        sys.path.insert(0, str(ROOT / 'scripts'))
+        from build_site import canonical_home
+        rendered = BeautifulSoup(canonical_home(board), 'html.parser')
         expected = [str(board['summary'][key]) for key in ('open', 'tier_a_market', 'tier_b_model', 'tier_d_none')]
-        self.assertEqual([e.get_text() for e in self.soup.select('#executive-summary .card-num')], expected)
-        self.assertIn(board['collected_to_utc'], self.soup.get_text())
-        self.assertIn(board['generated_utc'], self.soup.get_text())
-        self.assertNotIn('gets a pick and win probability here', self.soup.get_text())
+        self.assertEqual([e.get_text() for e in rendered.select('.card-num')], expected)
+        self.assertIn(board['collected_to_utc'], rendered.get_text())
+        self.assertIn(board['generated_utc'], rendered.get_text())
+        self.assertNotIn('gets a pick and win probability here', rendered.get_text())
+        missing = BeautifulSoup(canonical_home({}), 'html.parser')
+        self.assertEqual([e.get_text() for e in missing.select('.card-num')], ['—'] * 4)
 
     def test_day_one_rows_have_direct_specialist_sources_and_blank_limits(self):
         soup = BeautifulSoup((ROOT / 'day-one.html').read_text(), 'html.parser')

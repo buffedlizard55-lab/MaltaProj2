@@ -404,6 +404,77 @@ def source_health_table(odds_evidence, probe_evidence):
     return table(["Source", "Probed URL", "Result", "Response preview"], out)
 
 
+def canonical_home(pick_board):
+    """Render counts and destinations from one explicitly dated board only."""
+    pick_summary = pick_board.get("summary") or {}
+    pick_time = pick_board.get("generated_utc")
+    pick_counts = "".join(
+        f'<div class="card"><div class="card-num">{esc(pick_summary.get(key, "—"))}</div><div class="card-label">{label}</div></div>'
+        for key, label in [("open", "Open CS2 fixtures"), ("tier_a_market", "Market-derived picks"),
+                           ("tier_b_model", "Model fallbacks"), ("tier_d_none", "Unverified / blank")])
+    return f"""
+<section id="executive-summary" aria-labelledby="summary-title">
+<div class="hero-card">
+<p class="eyebrow">CS2 Pick’em dashboard · Executive summary</p>
+<h1 id="summary-title">Every listed match. Evidence before picks.</h1>
+<p>One primary list for your phone: both teams’ win probabilities, the recommended pick,
+source times and limitations. All matches in the captured HotSpawn lobby are retained,
+including low-tier matches. <strong>Unsupported probabilities stay blank, not 50/50.</strong></p>
+<div class="actions">
+<a class="btn btn-primary" href="picks-every-match/index.html">Open all CS2 picks →</a>
+<a class="btn ghost" href="picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a>
+</div>
+<p class="note">Snapshot counts below are evaluated at {esc(pick_time or 'unverified')}.
+Source capture ended {esc(pick_board.get('collected_to_utc') or 'unverified')}.
+A page rebuild is not a new source observation. Open the picks list for per-match expiry checks.</p>
+<div class="cards">{pick_counts}</div>
+<section id="canonical-unresolved">
+<h2>What remains unresolved?</h2>
+<p><strong>{esc(pick_summary.get('tier_d_none', '—'))} open matches have no supported line</strong>
+in this evaluated snapshot. Missing prices, uncertain roster identity, stale evidence or mismatched
+kickoff times are reasons to withhold a pick, not exclude the match. Each row on the
+<a href="picks-every-match/unresolved.html">dedicated unresolved page</a> explains source attempts and limitations.</p>
+<p>Primary markets come first. Only uncovered matches use the fallback research ladder:
+HLTV → esportsbooks/exchanges → uniquely identified official Valve ratings.
+An endpoint responding successfully is not proof it prices a match. Model estimates are our
+calculations, not officially verified win chances. <strong>HotSpawn crowd picks never price a match.</strong></p>
+</section>
+<details class="archive"><summary>Independent dated roster review</summary>
+<p>Not a current price feed: <a href="audits/94b3d48a/index.html">Audit 94b3d48a</a> ·
+<a href="audits/94b3d48a/unresolved.html">Dated unresolved research</a> ·
+<a href="audits/94b3d48a/flagged.html">Audit limitations</a>.</p></details>
+</div>
+</section>
+<div class="pick-boards-grid" id="where-the-picks">
+<a class="board-card board-card-primary" href="picks-every-match/picks.html"><div class="board-card-title">Match picks &amp; probabilities</div><div class="board-card-desc">Both teams, clear pick, market/model label and source evidence. Search by team or tournament.</div></a>
+<a class="board-card" href="picks-every-match/inventory.html"><div class="board-card-title">Full lobby inventory</div><div class="board-card-desc">Every retained CS2 fixture, including locked/past rows. Coverage refers to the captured lobby, not unseen additions.</div></a>
+<a class="board-card" href="day-one.html"><div class="board-card-title">Day one &amp; sensible contrarian strategy</div><div class="board-card-desc">9z–Aurora, all four opening results, roster context and what the evidence does not prove.</div></a>
+<a class="board-card" href="flagged.html"><div class="board-card-title">Flagged for Review</div><div class="board-card-desc">Source failures, disputed identities and competing historical boards. No silent assumptions.</div></a>
+</div>
+<h2>Automatic updates</h2>
+<p>The canonical collector is scheduled every four hours at 00:12, 04:12, 08:12, 12:12,
+16:12 and 20:12 UTC. It rediscovers lobby fixtures and retries external markets without manual input.
+GitHub scheduling, caches and provider blocks can delay updates; this is not an uptime guarantee.
+Quotes expire after four hours or at pick lock. Source failures preserve inventory without resetting evidence age.</p>
+<p><a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/every-match-c64a5e19.yml">Refresh status</a> ·
+<a href="https://play.hotspawn.com/lobby">Official HotSpawn lobby</a> ·
+<a href="picks-every-match/method.html">Probability method &amp; retained source payloads</a></p>
+<details class="archive"><summary>Historical research and independent audits</summary>
+<p>Alternate boards have different captures and assumptions; they are not interchangeable current pick lists.
+Do not add their counts together or use an older estimate to fill a current blank.</p>
+<p><a href="research.html">Research archive</a> · <a href="audits/3faf40e8/index.html">Source integrity audit</a> ·
+<a href="audits/94b3d48a/index.html">Independent roster research (dated)</a> ·
+<a href="summary/gaps.html">Cross-board disagreements</a></p>
+<p>Alternate snapshots: <a href="board/picks.html">Expanded board</a> ·
+<a href="ourline/index.html">Originated lines</a> · <a href="coverage/index.html">Coverage</a> ·
+<a href="live/index.html">Live collector</a> · <a href="fresh/index.html">Independent capture</a> ·
+<a href="cs2.html">Primary bookmaker table</a> · <a href="summary/index.html">Audit hub</a> ·
+<a href="verify/8e7a652d/index.html">Market verification</a> ·
+<a href="https://github.com/ValveSoftware/counter-strike_regional_standings">Official Valve model inputs</a>.</p></details>
+<p class="note">Estimates are not guarantees. 18+; gamble responsibly. Not affiliated with HotSpawn.</p>
+"""
+
+
 def day_one_review():
     """Dated editorial research, deliberately never passed to the pricing engine."""
     results = [
@@ -495,73 +566,7 @@ def main() -> int:
     closed_fixtures = [f for f in fixtures if f.get("pick_status") != "open"]
     top_table, _ = fixtures_table(open_fixtures)
     pick_board = load("data/c64a5e19/board.json")
-    pick_summary = pick_board.get("summary") or {}
-    pick_time = pick_board.get("generated_utc")
-    pick_counts = "".join(
-        f'<div class="card"><div class="card-num">{esc(pick_summary.get(key, "—"))}</div><div class="card-label">{label}</div></div>'
-        for key, label in [("open", "Open CS2 fixtures"), ("tier_a_market", "Market-derived picks"),
-                           ("tier_b_model", "Model fallbacks"), ("tier_d_none", "Unverified / blank")])
-    idx_body = f"""
-<section id="executive-summary" aria-labelledby="summary-title">
-<div class="hero-card">
-<p class="eyebrow">CS2 Pick’em dashboard · Executive summary</p>
-<h1 id="summary-title">Every listed match. Evidence before picks.</h1>
-<p>One primary list for your phone: both teams’ win probabilities, the recommended pick,
-source times and limitations. All matches in the captured HotSpawn lobby are retained,
-including low-tier matches. <strong>Unsupported probabilities stay blank, not 50/50.</strong></p>
-<div class="actions">
-<a class="btn btn-primary" href="picks-every-match/index.html">Open all CS2 picks →</a>
-<a class="btn ghost" href="picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a>
-</div>
-<p class="note">Snapshot counts below are evaluated at {esc(pick_time or 'unverified')}.
-Source capture ended {esc(pick_board.get('collected_to_utc') or 'unverified')}.
-A page rebuild is not a new source observation. Open the picks list for per-match expiry checks.</p>
-<div class="cards">{pick_counts}</div>
-<section id="canonical-unresolved">
-<h2>What remains unresolved?</h2>
-<p><strong>{esc(pick_summary.get('tier_d_none', '—'))} open matches have no supported line</strong>
-in this evaluated snapshot. Missing prices, uncertain roster identity, stale evidence or mismatched
-kickoff times are reasons to withhold a pick, not exclude the match. Each row on the
-<a href="picks-every-match/unresolved.html">dedicated unresolved page</a> explains source attempts and limitations.</p>
-<p>Primary markets come first. Only uncovered matches use the fallback research ladder:
-HLTV → esportsbooks/exchanges → uniquely identified official Valve ratings.
-An endpoint responding successfully is not proof it prices a match. Model estimates are our
-calculations, not officially verified win chances. <strong>HotSpawn crowd picks never price a match.</strong></p>
-</section>
-<details class="archive"><summary>Independent dated roster review</summary>
-<p>Not a current price feed: <a href="audits/94b3d48a/index.html">Audit 94b3d48a</a> ·
-<a href="audits/94b3d48a/unresolved.html">Dated unresolved research</a> ·
-<a href="audits/94b3d48a/flagged.html">Audit limitations</a>.</p></details>
-</div>
-</section>
-<div class="pick-boards-grid" id="where-the-picks">
-<a class="board-card board-card-primary" href="picks-every-match/picks.html"><div class="board-card-title">Match picks &amp; probabilities</div><div class="board-card-desc">Both teams, clear pick, market/model label and source evidence. Search by team or tournament.</div></a>
-<a class="board-card" href="picks-every-match/inventory.html"><div class="board-card-title">Full lobby inventory</div><div class="board-card-desc">Every retained CS2 fixture, including locked/past rows. Coverage refers to the captured lobby, not unseen additions.</div></a>
-<a class="board-card" href="day-one.html"><div class="board-card-title">Day one &amp; sensible contrarian strategy</div><div class="board-card-desc">9z–Aurora, all four opening results, roster context and what the evidence does not prove.</div></a>
-<a class="board-card" href="flagged.html"><div class="board-card-title">Flagged for Review</div><div class="board-card-desc">Source failures, disputed identities and competing historical boards. No silent assumptions.</div></a>
-</div>
-<h2>Automatic updates</h2>
-<p>The canonical collector is scheduled every four hours at 00:12, 04:12, 08:12, 12:12,
-16:12 and 20:12 UTC. It rediscovers lobby fixtures and retries external markets without manual input.
-GitHub scheduling, caches and provider blocks can delay updates; this is not an uptime guarantee.
-Quotes expire after four hours or at pick lock. Source failures preserve inventory without resetting evidence age.</p>
-<p><a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/every-match-c64a5e19.yml">Refresh status</a> ·
-<a href="https://play.hotspawn.com/lobby">Official HotSpawn lobby</a> ·
-<a href="picks-every-match/method.html">Probability method &amp; retained source payloads</a></p>
-<details class="archive"><summary>Historical research and independent audits</summary>
-<p>Alternate boards have different captures and assumptions; they are not interchangeable current pick lists.
-Do not add their counts together or use an older estimate to fill a current blank.</p>
-<p><a href="research.html">Research archive</a> · <a href="audits/3faf40e8/index.html">Source integrity audit</a> ·
-<a href="audits/94b3d48a/index.html">Independent roster research (dated)</a> ·
-<a href="summary/gaps.html">Cross-board disagreements</a></p>
-<p>Alternate snapshots: <a href="board/picks.html">Expanded board</a> ·
-<a href="ourline/index.html">Originated lines</a> · <a href="coverage/index.html">Coverage</a> ·
-<a href="live/index.html">Live collector</a> · <a href="fresh/index.html">Independent capture</a> ·
-<a href="cs2.html">Primary bookmaker table</a> · <a href="summary/index.html">Audit hub</a> ·
-<a href="verify/8e7a652d/index.html">Market verification</a> ·
-<a href="https://github.com/ValveSoftware/counter-strike_regional_standings">Official Valve model inputs</a>.</p></details>
-<p class="note">Estimates are not guarantees. 18+; gamble responsibly. Not affiliated with HotSpawn.</p>
-"""
+    idx_body = canonical_home(pick_board)
     write("day-one.html", page("Day-one review & contrarian strategy",
           "14 October 2026 · Thunderpick World Championship · source review 15 October 2026",
           day_one_review(), generated_at, active="day-one.html"))
@@ -707,6 +712,24 @@ HLTV-sourced; team/organizer confirmation, causal rest/onboarding effects and a 
 pre-match advantage have not been established. No numeric adjustment is invented.
 <a href="https://www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026">HLTV match report</a> ·
 <a href="https://www.hltv.org/news/45082/official-aurora-complete-rebuild-with-kyxsan">HLTV roster report</a>.</p>
+<h3>Fallback-only source checks · reviewed 15 October 2026</h3>
+<p>For the unresolved HAVU–RoundsGG fixture, the
+<a href="https://www.hltv.org/matches/2399425/havu-vs-rounds-elisa-breakout-series-2">HLTV HAVU–ROUNDS match page</a>
+shows a BO1 LAN match and a betting area, but no usable two-sided decimal price in the inspected render.
+The <a href="https://www.hltv.org/betting/analytics/2399425/havu-vs-rounds-elisa-breakout-series-2">HLTV analytics page</a>
+shows five ROUNDS players, including Tumppis, plus historical handicap statistics. Those statistics,
+user votes and repeated 1.23 handicap links are not accepted full-match two-sided odds.
+The RoundsGG-to-ROUNDS identity is still not a captured, automated join in the canonical engine;
+manual research does not silently override its blank.</p>
+<p>Next, <a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle’s linked CS2 hub</a>
+returned “Page Not Found”; the general esports page could not be fetched by this research tool.
+<a href="https://melbet.com/en/line/esports">Melbet’s public esports page</a> returned a country access denial.
+These are access limitations, not proof that the books have no lines. The hosted collector separately
+retains official API responses and per-match rejection reasons. No manually observed page was assigned
+a fabricated quote timestamp or used to reprice a featured pick.</p>
+<p>Publication administration: the integration token cannot change the repository’s legacy Pages mode
+or dispatch workflows through the API (HTTP 403). Branch-push checks and the existing Pages workflow
+remain the publication route. <a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/pages.yml">Build/deploy status</a>.</p>
 <h2>0. Current pipeline safety and archived-source limitations</h2>
 <p>Current picks require fresh primary-bookmaker quotes, exact kickoff identity, explicit game/market state,
 confirmed outcome ordering, an unlocked upcoming fixture and unique joins. A rejected quote is not a confirmed line.
