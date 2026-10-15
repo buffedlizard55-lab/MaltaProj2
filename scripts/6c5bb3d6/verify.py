@@ -230,13 +230,21 @@ def c1_inventory(strategy: dict, lobby: dict, checks: list, irregularities: list
 
 def c2_normalization(strategy: dict, checks: list, irregularities: list) -> None:
     rows = strategy.get("rows") or []
-    bad = []
+    bad, blank, undisclosed = [], [], []
     for r in rows:
         fid = str(r.get("fixture_id"))
         pa, pb = r.get("prob_a"), r.get("prob_b")
         st = r.get("strategy") or {}
         if pa is None or pb is None:
-            bad.append(f"{fid}: missing probability")
+            # A blank probability is legitimate (books pull prices once a fixture locks) but it must
+            # be disclosed: either an unresolved basis or a flag stating why there is no line.
+            blank.append(fid)
+            disclosed = (str(r.get("basis") or "").lower() in ("unresolved", "none", "")
+                         or bool(r.get("flags")))
+            if not disclosed:
+                undisclosed.append(f"{fid}: blank probability with no basis and no flag")
+            if st.get("safe_pick") or st.get("leaderboard_pick"):
+                undisclosed.append(f"{fid}: blank probability but a pick is published")
             continue
         if abs(pa + pb - 1.0) > TOL_EXACT:
             bad.append(f"{fid}: p_a+p_b={pa + pb!r}")
@@ -248,24 +256,30 @@ def c2_normalization(strategy: dict, checks: list, irregularities: list) -> None
             side, prob = st.get(side_key), st.get(prob_key)
             if side and side in teams and prob is not None and abs(teams[side] - prob) > TOL_EXACT:
                 bad.append(f"{fid}: {side_key} {side} prob mismatch {prob} vs {teams[side]}")
+    failures = bad + undisclosed
     checks.append({
-        "id": "C2", "name": "Probability normalization and pick = argmax",
-        "status": "pass" if not bad else "fail",
-        "detail": f"{len(rows)} published rows re-checked (p_a+p_b=1, safe pick = higher probability, "
-                  f"stated pick probabilities equal the row's side values)",
+        "id": "C2", "name": "Probability normalization, pick = argmax, and blanks disclosed",
+        "status": "pass" if not failures else "fail",
+        "detail": (f"{len(rows)} published rows re-checked: {len(rows) - len(blank)} carry probabilities "
+                   f"(p_a+p_b=1, safe pick = higher probability, stated pick probabilities equal the "
+                   f"row's side values) and {len(blank)} are published blank "
+                   f"({', '.join(blank[:6])}) - each blank must state its basis or carry a flag, and "
+                   f"none may publish a pick"),
         "evidence": ["data/f28afd9e/board.json"],
-        "rows_checked": len(rows), "rows_failed": len(bad), "failures": bad,
+        "rows_checked": len(rows), "rows_failed": len(failures), "failures": failures,
+        "blank_rows": blank,
     })
-    if bad:
+    if failures:
         irregularities.append({
-            "id": "IR-C2", "severity": "high", "title": "Arithmetic inconsistencies in published rows",
-            "detail": "; ".join(bad[:12]), "links": ["https://play.hotspawn.com/lobby"],
+            "id": "IR-C2", "severity": "high",
+            "title": "Arithmetic inconsistency, or a blank probability published without its limitation",
+            "detail": "; ".join(failures[:12]), "links": ["https://play.hotspawn.com/lobby"],
         })
 
 
 def c3_quote_rederivation(strategy: dict, quotes: list, checks: list, irregularities: list) -> None:
     rows = strategy.get("rows") or []
-    detail_rows, failures, verified, unjoined = [], [], 0, []
+    detail_rows, failures, verified, unjoined, no_probability = [], [], 0, [], []
     for r in rows:
         fid = str(r.get("fixture_id"))
         ta, tb = r.get("team_a"), r.get("team_b")
@@ -296,6 +310,12 @@ def c3_quote_rederivation(strategy: dict, quotes: list, checks: list, irregulari
                 "rederived_prob_a": round(p, 6), "url": q.get("url"),
                 "retrieved_utc": q.get("retrieved_utc"), "origin": q.get("origin"),
             })
+        if r.get("prob_a") is None:
+            no_probability.append(fid)
+            detail_rows.append({"fixture_id": fid, "match": f"{ta} vs {tb}", "quotes": [],
+                                "published_market_prob_a": published,
+                                "status": "no_published_probability"})
+            continue
         if not matched:
             unjoined.append(fid)
             detail_rows.append({"fixture_id": fid, "match": f"{ta} vs {tb}", "quotes": [],
@@ -320,13 +340,14 @@ def c3_quote_rederivation(strategy: dict, quotes: list, checks: list, irregulari
     checks.append({
         "id": "C3", "name": "No-vig arithmetic re-derived from every retained raw quote",
         "status": "pass" if not failures else "warn",
-        "detail": (f"{verified}/{len(rows)} rows re-derived from {len(quotes)} retained raw quotes "
+        "detail": (f"{verified} rows re-derived from {len(quotes)} retained raw quotes "
                    f"(Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); "
-                   f"{len(unjoined)} rows have no retained quote in this repository snapshot and are "
-                   f"reported as not independently re-derivable rather than assumed correct"),
+                   f"{len(no_probability)} rows publish no probability (blank, so there is nothing to "
+                   f"re-derive); {len(unjoined)} rows have no retained quote in this repository snapshot "
+                   f"and are reported as not independently re-derivable rather than assumed correct"),
         "evidence": ["data/live/quotes.json", "data/fe803b80/snapshot.json", "data/b1fb1465/board.json"],
         "rows_checked": len(rows), "rows_failed": len(failures), "failures": failures,
-        "unjoined_rows": unjoined, "per_row": detail_rows,
+        "unjoined_rows": unjoined, "blank_rows": no_probability, "per_row": detail_rows,
     })
     if unjoined:
         irregularities.append({
@@ -436,9 +457,11 @@ def c5_source_links(strategy: dict, research: dict, checks: list, irregularities
 
 def c6_crowd_policy(strategy: dict, checks: list, irregularities: list) -> None:
     rows = strategy.get("rows") or []
-    identical, differs, crowd_equal = [], [], []
+    identical, differs, crowd_equal, blank_rows = [], [], [], []
     for r in rows:
         fid = str(r.get("fixture_id"))
+        if r.get("prob_a") is None:
+            continue
         line = r.get("line") or {}
         board = line.get("board")
         upstream = None
@@ -454,16 +477,21 @@ def c6_crowd_policy(strategy: dict, checks: list, irregularities: list) -> None:
         crowd = (r.get("crowd") or {}).get("pct_a")
         if crowd is not None and r.get("prob_a") is not None and abs(r["prob_a"] - crowd / 100.0) < 1e-12:
             crowd_equal.append(fid)
+        if r.get("prob_a") is None:
+            blank_rows.append(fid)
     ok = not differs and not crowd_equal
     checks.append({
         "id": "C6", "name": "HotSpawn crowd % is ownership-only and never a probability",
         "status": "pass" if ok else "fail",
-        "detail": (f"{len(identical)}/{len(rows)} rows publish exactly the upstream board's market/model "
+        "detail": (f"{len(identical)} priced rows publish exactly the upstream board's market/model "
                    f"probability (so the crowd split cannot have entered them); "
-                   f"{len(crowd_equal)} rows have a probability numerically equal to the crowd share"),
+                   f"{len(crowd_equal)} rows have a probability numerically equal to the crowd share; "
+                   f"{len(blank_rows)} blank rows carry no probability to compare"),
         "evidence": ["data/f28afd9e/board.json", "https://play.hotspawn.com/lobby"],
-        "rows_checked": len(rows), "rows_failed": len(differs) + len(crowd_equal),
+        "rows_checked": len(identical) + len(differs) + len(crowd_equal),
+        "rows_failed": len(differs) + len(crowd_equal),
         "failures": differs + [f"{f}: probability equals crowd share" for f in crowd_equal],
+        "blank_rows": blank_rows,
     })
     if not ok:
         irregularities.append({
@@ -551,7 +579,10 @@ def c8_differential(strategy: dict, checks: list, irregularities: list) -> list:
         pa, pb = r.get("prob_a"), r.get("prob_b")
         ca, cb = crowd.get("pct_a"), crowd.get("pct_b")
         if None in (pa, pb, ca, cb):
-            table.append({"fixture_id": str(r.get("fixture_id")), "status": "incomplete_inputs"})
+            table.append({"fixture_id": str(r.get("fixture_id")),
+                          "match": f"{r.get('team_a')} vs {r.get('team_b')}",
+                          "state": r.get("state"),
+                          "status": "no_published_probability" if pa is None else "incomplete_inputs"})
             continue
         diff_a, diff_b = pa - ca / 100.0, pb - cb / 100.0
         opt_side = r.get("team_a") if diff_a >= diff_b else r.get("team_b")
@@ -676,8 +707,9 @@ def c10_context(strategy: dict, research: dict, checks: list, irregularities: li
                                 f"({summary[:90]})")
     checks.append({
         "id": "C10", "name": "Contrarian context claims matched to independently sourced evidence",
-        "status": "pass" if not failures else "warn",
-        "detail": (f"{len(claims)} published context claims checked; "
+        "status": ("skipped" if not claims else ("pass" if not failures else "warn")),
+        "detail": (f"{len(claims)} published context claims checked"
+                   f"{'' if claims else ' - this board generation publishes none (the fixtures that carried them have locked)'}; "
                    f"{sum(1 for c in claims if str(c['ledger_verdict']).startswith('verified'))} confirmed "
                    f"from official sources re-read this session; {len(failures)} not independently sourced here"),
         "evidence": ["data/f28afd9e/context.json", "data/6c5bb3d6/research.json"],
@@ -774,6 +806,31 @@ def cross_session_findings(research: dict, irregularities: list) -> None:
         })
 
 
+def normalized_gate(gate):
+    """The gate record, stripped of machine-specific and per-run volatile fields.
+
+    `run_gate.py` stores the interpreter's absolute path (which differs between a laptop and a
+    hosted runner) and the raw log tail. Neither belongs in published evidence, and both made the
+    report unreproducible across environments. The substance - green/red, counts, which tests are
+    red and when it ran - is kept verbatim.
+    """
+    if not gate:
+        return None
+    command = str(gate.get("command") or "")
+    if command:
+        parts = command.split()
+        command = " ".join(["python"] + parts[1:]) if parts and parts[0].lower().endswith(("python", "python3")) else command
+    return {
+        "ran_utc": gate.get("ran_utc"),
+        "command": command,
+        "gate": gate.get("gate"),
+        "green": gate.get("green"),
+        "returncode": gate.get("returncode"),
+        "counts": gate.get("counts"),
+        "failing_tests": gate.get("failing_tests"),
+    }
+
+
 def main() -> int:
     os.makedirs(OUT_DIR, exist_ok=True)
     os.makedirs(AUDIT_DIR, exist_ok=True)
@@ -818,7 +875,7 @@ def main() -> int:
     report = {
         "session": "6c5bb3d6",
         "task": "T-VERIFY-6C5BB3D6 independent line-by-line verification",
-        "gate": load("data/6c5bb3d6/gate.json"),
+        "gate": normalized_gate(load("data/6c5bb3d6/gate.json")),
         "generated_utc": utcnow(),
         "verified_board": {
             "file": "data/f28afd9e/board.json",

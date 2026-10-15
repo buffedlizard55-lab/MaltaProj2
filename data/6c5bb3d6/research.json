@@ -583,6 +583,28 @@
         "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
         "https://www.hltv.org/events/9332/elisa-breakout-series-2"
       ]
+    },
+    {
+      "id": "XF-04",
+      "severity": "high",
+      "title": "Shared Pages gate red a second time: an evidence refresh retained a new league its own contract test did not allow",
+      "detail": "Found by check C11 after rebasing onto main at 4db03da. Session a0586093's own bot commit 4db03da 'evidence: expanded external source capture' (2026-10-15T13:46:55Z) started retaining a Mobile Legends - MPL Indonesia matchup in data/expanded/samples/pinnacle_esports_matchups.json, while tests/test_expanded_lines.py::test_pinnacle_sample_carries_matchup_and_price_shape still allowed only the league prefixes ('CS2 ', 'Dota', 'Leag', 'Rain', 'Valo'). The assertion failed with \"'Mobi' not found in (...)\", the full suite went red, and because pages.yml gates deployment on that suite the site again stopped publishing (three more failed dispatch runs, 21-30s each). Takeover justification: T-EXPAND is claimed 'in progress' since 2026-10-13 21:22 and this file's own coordination log already recorded it as take-over eligible from 22:56 that day if no commits; only bot commits have touched the scope since. Repair: one line - add 'Mobi' to the allowlist, with a comment recording who added it and why. The assertion's intent is unchanged (a known esports league, two participants); no sample, parser, collector, price or probability was altered. Their 28 tests pass. Structural note for whoever owns CI next: both red-gate incidents this session had the same shape - a scheduled bot commits refreshed data without running the contract tests that read it. Running each session's own tests inside its refresh workflow, before the commit step, would stop one session's cron from taking the whole site down.",
+      "links": [
+        "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/tests/test_expanded_lines.py",
+        "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/expanded-lines.yml",
+        "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml",
+        "https://github.com/buffedlizard55-lab/MaltaProj2/commit/4db03da81006902c823a018b7ac3c7f12f0168aa"
+      ]
+    },
+    {
+      "id": "XF-05",
+      "severity": "info",
+      "title": "Locked fixtures publish no probability at all, so six rows are blank by design and the audit now verifies the disclosure",
+      "detail": "The strategy board refreshed at 2026-10-15T13:27:08Z publishes 11 open rows (all with a pick) and 6 locked rows whose bookmaker prices were withdrawn at the lock: 1079440 MIBR vs BC.Game, 1079442 Heroic vs Envy, 1080280 ENCE vs BOJONG, 1080202 9z vs Falcons, 1080281 WROTBERRY vs ENCE and one more, each with basis 'unresolved' and the flag 'no_line_from_any_board'. That is honest - a locked fixture cannot be picked and no price survives to verify - but it means checks C2/C3/C6/C8 must treat a blank row as a disclosure to audit rather than a missing value to crash on, and C10 legitimately finds no published context claims once the fixtures carrying them have locked (published as 'skipped', never as a pass over zero rows). Side effect worth stating plainly: the R3 contrarian swing on 9z vs Falcons, whose context this audit confirmed from HLTV, is no longer published because that match locked at 10:54Z; the confirmation stands as evidence, not as a live pick.",
+      "links": [
+        "https://play.hotspawn.com/lobby",
+        "https://www.hltv.org/matches/2399409/9z-vs-falcons-thunderpick-world-championship-2026"
+      ]
     }
   ]
 }
