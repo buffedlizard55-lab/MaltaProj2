@@ -73,5 +73,5 @@ for attempt in range(12):
         if attempt == 11:
             raise RuntimeError('Public every-match dashboard did not pass semantic checks') from exc
         time.sleep(10)
-print('PASS: live root executive summary and all five every-match pages; policy, source replay, inventory and picks agree')
+print('PASS: live root executive summary and all six every-match pages; policy, source replay, inventory and picks agree')
 print('Live every-match summary:', json.dumps(live['summary'], sort_keys=True))
