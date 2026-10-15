@@ -43,6 +43,8 @@ jobs:
         run: python3 scripts/c64a5e19/collect.py
       - name: Build every-match board (re-derives every number from the snapshot)
         run: python3 scripts/c64a5e19/build.py
+      - name: Install verification dependencies
+        run: pip install -r scripts/requirements.txt
       - name: Tests
         run: python3 -m unittest tests.test_c64a5e19 tests.test_479ef53e tests.test_dc741cc1 -v
       - name: Commit and push (rebase before every push)
