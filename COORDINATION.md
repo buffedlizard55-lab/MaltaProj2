@@ -4538,7 +4538,8 @@ naming cannot be used here, so all commits and pushes stay on `arena/6c5bb3d6-ma
 
 | Task | Status | Owner | Claimed UTC | File scope |
 |---|---|---|---|---|
-| `T-CONTRARIAN-6C5BB3D6`: (1) review TWC 2026 day-1 results incl. the 9z 2-0 Aurora upset against the HotSpawn crowd split, and publish a **contrarian-but-not-stupid leaderboard strategy** (differential-EV vs crowd pick %, roster-change / onboarding / rest intel for Aurora, NiP, Falcons, Legacy, 9z, BetBoom, PARIVISION); (2) cross-check that **every currently pickable CS2 fixture has a pick**, resolving the 5 rows the strict canonical board leaves blank (WROTBERRY→WBT, RoundsGG→ROUNDS) from official evidence only; (3) publish a mobile-first `climb/` section with executive summary + in-site links to every updated picks list, a separate **Unresolved picks & limitations** page, flagged items and method; (4) 4-hourly automated refresh | in progress | 6c5bb3d6 | 2026-10-15 11:15 | `climb/**` (new), `scripts/6c5bb3d6/**`, `data/6c5bb3d6/**`, `tests/test_6c5bb3d6.py`, `.github/workflows/climb-6c5bb3d6.yml`, `COORDINATION.md` (this section only); additive integration handoff only: one entry in the `scripts/stage_site.py` section list, one stamp_map row + one button in the executive-summary block of `scripts/build_site.py`, one `README.md` table row |
+| `T-CONTRARIAN-6C5BB3D6` **superseded before any work by the non-overlap rule** — see the pivot note below | superseded | 6c5bb3d6 | 2026-10-15 11:15 | none (no file was created under this claim) |
+| `T-VERIFY-6C5BB3D6`: independent **line-by-line verification** of the published day-1 review, the contrarian/leaderboard strategy layer and the every-match pick coverage: re-fetch the official Valve standings and re-check every VRS citation, re-derive every published probability from its retained raw bookmaker quote, re-prove the two contested team identities (WROTBERRY→WBT, RoundsGG→ROUNDS) from official rosters, recompute the day-1 backtest and the leaderboard differential independently, publish every irregularity and every value left blank, mobile-first, with an executive summary that links every updated picks list; 6-hourly automated re-verification | done | 6c5bb3d6 | 2026-10-15 11:55 | `audits/6c5bb3d6/**` (new published section), `scripts/6c5bb3d6/**`, `data/6c5bb3d6/**`, `tests/test_6c5bb3d6.py`, `.github/workflows/verify-6c5bb3d6.yml`, `COORDINATION.md` (this section only), one additive `README.md` table row |
 
 ### Non-overlap & coordination log (`6c5bb3d6`)
 - Read `COORDINATION.md` before starting. `94b3d48a` (PR #110, merged) already owns every-match gap
@@ -4568,3 +4569,98 @@ naming cannot be used here, so all commits and pushes stay on `arena/6c5bb3d6-ma
   (BetBoom leads current-roster H2H 2-0; PARI 1.79-1.83 / BB 1.91-2.04).
 - HotSpawn is fixture discovery + settlement only. Its crowd pick % is published **for reference and
   for the differential-EV leaderboard calculation only** and is never an input to any win probability.
+
+### `6c5bb3d6` — pivot: the requested work was already claimed, so this session verifies it instead of duplicating it
+
+- **Non-overlap decision (2026-10-15 11:45 UTC).** After posting the claim above, this session read
+  `COORDINATION.md` in full and found that session `f28afd9e` claimed `T-STRAT-F28AFD9E` at 10:10 UTC —
+  the day-1 upset review, the contrarian leaderboard layer, a pick for every lobby match and the separate
+  unresolved section — and had already **merged and deployed it** (PRs #114/#115/#116, close-out 10:40 UTC,
+  `strategy/` live). Session `94b3d48a` had likewise already resolved the five strict-board gaps
+  (PR #110, `audits/94b3d48a/`). The protocol forbids starting a task another session has claimed, so the
+  `climb/` board was **not built** and no file was created under that claim. The user's remaining explicit
+  mandate that nobody owns is **VERIFICATION** ("verify line by line; every table row must have a source
+  link to an official site; if a value can't be confirmed leave it blank and flag it"), so this session
+  pivoted to an independent audit of those publications.
+- **Delivered:** `audits/6c5bb3d6/` (`index.html` verification summary + executive links to every picks
+  board, `flagged.html` 13 items with source links, `method.html` formulas + all 40 sources with UTC read
+  times, `report.json` machine-readable), harness `scripts/6c5bb3d6/{fetch_vrs,verify,build_pages}.py`,
+  evidence `data/6c5bb3d6/{vrs_official,research,verification}.json`, 29 contract tests
+  (`tests/test_6c5bb3d6.py`), 6-hourly re-verification workflow `.github/workflows/verify-6c5bb3d6.yml`
+  (scope-guarded: writes only `data/6c5bb3d6/**` and `audits/6c5bb3d6/**`). No other session's file was
+  edited; `scripts/stage_site.py` already stages `audits/`, so no staging entry was needed.
+- **Ten checks, all re-run from committed evidence (result: 9 pass, 1 informational, 0 fail):**
+  C1 every one of the 14 CS2 fixtures still pickable at the board instant `2026-10-15T10:44:23Z` carries a
+  pick (78 listed, 64 locked/past) · C2 all 17 rows normalize (`p_a+p_b=1`) with pick = argmax ·
+  **C3 all 17 published probabilities re-derived here from 253 retained raw quotes** (Pinnacle, Bovada,
+  Melbet LineFeed, Kalshi, Thunderpick-via-bo3.gg), quote orientation recorded per row ·
+  **C4 all 20 "Valve VRS #N (M pts)" citations re-read from Valve's own file fetched in this run**
+  (api.github.com, HTTP 200, 349 teams, snapshot `2026_10_05`) · C5 every row and every audited fact
+  carries an https source · **C6 all 17 probabilities are identical to the upstream board's, so the
+  HotSpawn crowd split cannot have entered them** · C7 day-1 backtest recomputes exactly
+  (safe 11/13 = 41 pts, leaderboard 9/13 = 41 pts), 6 winners independently re-read from official pages,
+  7 disclosed as inherited settlement · C8 leaderboard differential recomputed independently ·
+  C9 both contested identities re-proven · C10 the contrarian context claim re-sourced.
+- **Independent confirmations of the day-1 / contrarian claims (official sources, read this session):**
+  9z 2-0 Aurora (13-11 Inferno, 13-1 Nuke; luchov 38-20, 1.61 rating, 97.4 ADR; 9z +62 VRS) —
+  HLTV news 45718 + match 2399384 + Field Level Media; **pre-lock crowd ownership 4% 9z / 96% Aurora
+  re-read from the exact commit the backtest cites** (`8f66ce4`, board generated 2026-10-14T04:55:36Z,
+  retrieved through the GitHub contents API) — so the 7-point match paid 7 points to 4% of the field and
+  zero to 96%; Falcons 2-0 NiP (16-13 OT Ancient, 13-6 Dust II), Legacy 2-0 PARIVISION, FURIA 2-0 BetBoom —
+  HLTV news 45723; HOTU 2-0 fnatic (Ancient 13-10, Dust2 13-10) — HLTV match 2399135 + Liquipedia;
+  **the R3 context claim "9z beat Falcons" is true** — HLTV news 44548 (2026-05-10, PGL Astana, Mirage 13-8 /
+  Nuke 9-13 / Dust2 13-1, "first defeat of karrigan's reign") + HLTV match 2399409 H2H (9z lead 2-1);
+  Aurora's latest roster change is the 2026-07-03/07-08 rebuild (Jimpphat + coach ash, then kyxsan as IGL;
+  MAJ3R/soulfly/Fabre out) with the coach's own August statement that officials lagged practice —
+  HLTV news 45082 + Liquipedia timeline + Valve's standings (Aurora #9, roster Jimpphat/kyxsan/Wicadia/
+  woxic/XANTARES); NiP are also rebuilt (Krimbo in — Valve #18 roster adamb/Krimbo/sjuush/stavn/xKacpersky).
+- **Identity resolutions re-proven from official rosters (not from a name guess):** WROTBERRY → **WBT**
+  (WhiteBIT Team main, HLTV 13683): WBT's *played* lineup in HLTV match 2399418 (WBT 13-5 EAC, today) is
+  s4ltovsk1yy/Psycho/DemQQ/Smash/tyr1k = **5/5** Valve's official WBT row (#60, 1201 pts) and **0/5**
+  WBT Academy (#130, 911 pts); Pinnacle prices "WBT vs ENCE" at exactly `2026-10-15T12:00:00Z` and
+  "WBT vs BOJONG" at exactly `16:00:00Z` (the two fixtures the strict board left blank); bo3.gg's slug is
+  `wbt-vs-ence-15-10-2026`; Bovada's slug is `whitebit-team-ea-copenhagen-…`. RoundsGG → **ROUNDS**
+  (Finnish, HLTV 12457): HLTV event 9332 Group B is exactly Voca/Phantom/HAVU/ROUNDS with matches
+  2399425/2399427/2399428 in HotSpawn's three slots, Valve lists ROUNDS #310 (548 pts) with roster
+  Kollo/Lapa/Monoxx/Tumppis/ykis (**5/5**), the Thunderpick feed names team 5440 "ROUNDS", and Polymarket
+  titles the same markets "…vs RoundsGG". Residual limitation published, not hidden: the literal strings
+  "WROTBERRY"/"RoundsGG" never appear on HLTV or in Valve's file, so the join rests on event slot +
+  identical UTC kick-offs + bookmaker naming + roster match.
+- **New analysis contributed (verification layer, not a competing board):** the leaderboard differential
+  `points × (probability − crowd ownership)` recomputed for all 14 open fixtures. It **agrees with the
+  published strategy layer on all six plays carrying ≥ +0.50 expected points versus the field** —
+  9z (+1.45), BetBoom (+1.41), Legacy (+1.39), WROTBERRY/WBT (+0.88), EAC (+0.87), Voca (+0.63) — and the
+  three 7-point S-tier matches are where the leaderboard is decided. It **diverges on 8 two-point tier-C
+  rows** where the crowd over-owns a heavy favourite (e.g. 98% on Phantom against a 67% market price, so
+  pure differential math would fade to HAVU for +0.61). Published as an informational irregularity with the
+  full arithmetic: the published layer's cap on swings is the "not stupid" guard, and its cost is now
+  quantified rather than assumed. Five rows where Valve's official standings and the market disagree
+  materially (BetBoom ≈74% by VRS vs a near-even market; Legacy ≈64% by VRS vs FURIA 55% by market) are
+  flagged with both numbers shown — never averaged away silently.
+- **Irregularities published on `audits/6c5bb3d6/flagged.html` (none blocks publication):** 2 medium
+  (the two alias joins with their residual limitations), 6 informational (the 8-row differential
+  divergence set + 5 market-vs-VRS divergences), 1 low (7 day-1 settlements inherited rather than
+  independently re-read), **4 values deliberately left blank**: FURIA-BetBoom per-map scores, the final
+  score of Aurora vs NiP (live at read time, Aurora 13-9 on Cache; its pick window had locked so no pick
+  depends on it), 6 day-1 settlement winners not re-read inside this session's window, and Kalshi
+  order-book depth behind the mellren-Privateer mid prices (retained quote is a yes-mid pair summing to
+  96.5¢ with a recorded max spread of 0.43). Rejected sources are recorded with reasons: egamersworld's
+  uniform 1.80/1.80 Elisa placeholder prices and HLTV's fan vote are never used as probabilities.
+- **Verification performed:** `python3 scripts/6c5bb3d6/fetch_vrs.py` (HTTP 200, 349 teams) →
+  `verify.py` (10 checks, 0 fail, 253 quotes re-derived) → `build_pages.py` ("pages built: 3, no broken
+  internal links") → `python3 -m unittest tests.test_6c5bb3d6` **29/29 OK** → full repository suite
+  `python3 -m unittest discover -s tests` **584 tests OK** (5 pre-existing skips; `scripts/requirements.txt`
+  installed first — without `beautifulsoup4` this sandbox reproduces 7 pre-existing loader errors that are
+  also present on pristine `origin/main`, so they are environmental, not regressions) →
+  `python3 scripts/stage_site.py` "site built: 31 files, no broken internal links" +
+  "PASS: all staged local links resolve across all session sections".
+- **Integration request (not an edit):** `scripts/build_site.py` is inside session `778756a1`'s claimed
+  scope and was edited by `f28afd9e`'s `T-FRONT-F28AFD9E`, so this session did **not** touch it.
+  Request to whoever owns the landing executive summary next: add one row/button for
+  `audits/6c5bb3d6/index.html` — "Independent verification of every pick (re-derived from raw quotes and
+  Valve's own standings), the day-1 upset review and the leaderboard-differential cross-check" — next to
+  the existing `audits/94b3d48a/` links. Until then the section is reachable directly at
+  https://buffedlizard55-lab.github.io/MaltaProj2/audits/6c5bb3d6/ and links out to every picks board.
+- **Merge-conflict log:** the initial claim commit hit an append/append conflict in `COORDINATION.md`
+  against session `778756a1`'s new section during `git pull --rebase`. Resolved by **union** (their
+  section kept verbatim above mine), no work discarded, then pushed.
