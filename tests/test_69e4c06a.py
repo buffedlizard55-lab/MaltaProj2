@@ -358,6 +358,26 @@ class DatedResearchAndDecisions(unittest.TestCase):
             for row in soup.select('tbody tr'):
                 self.assertTrue(row.select('a[href^="https://"]'), row.get_text())
 
+    def test_future_group_b_listing_is_not_still_flagged_as_unlisted(self):
+        data = copy.deepcopy(self.data)
+        row = next(r for r in data['day_three'] if r['key'] == 'legacy-betboom')
+        row.update(listed_on_hotspawn=True, fixture_id='synthetic-listed-fixture')
+        rendered = TWC.render_flagged(data)
+        self.assertIn('Listed in this canonical capture as #synthetic-listed-fixture', rendered)
+        self.assertNotIn('Unlisted Group B decider', rendered)
+
+    def test_missing_ownership_is_not_mislabelled_as_a_missing_fixture(self):
+        data = copy.deepcopy(self.data)
+        row = next(r for r in data['day_three'] if r['key'] == 'aurora-9z')
+        row.update(listed_on_hotspawn=True, ownership=None)
+        self.assertIn('Ownership unverified for this listed fixture.', TWC.render_index(data))
+
+    def test_a_model_fallback_cannot_be_displayed_as_a_bookmaker_estimate(self):
+        data = copy.deepcopy(self.data)
+        row = data['day_three'][0]
+        row['line'] = {'prob_a': .6, 'prob_b': .4, 'basis': 'model', 'pick_team': row['team_a']}
+        self.assertIn('Originated model estimate', TWC.render_index(data))
+
     def test_results_have_no_unverified_finish_or_rest_timestamps(self):
         for result in self.data['facts']['results']:
             self.assertNotIn('finish_utc', result)
