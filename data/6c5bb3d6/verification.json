@@ -2,27 +2,24 @@
  "session": "6c5bb3d6",
  "task": "T-VERIFY-6C5BB3D6 independent line-by-line verification",
  "gate": {
-  "ran_utc": "2026-10-15T22:20:26Z",
+  "ran_utc": "2026-10-15T22:30:54Z",
   "command": "python -m unittest discover -s tests",
   "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
   "green": false,
   "returncode": 1,
   "counts": {
-   "ran": 584,
+   "ran": 592,
    "ok": false,
    "skipped": 0,
-   "failures": 5,
+   "failures": 2,
    "errors": 0
   },
   "failing_tests": [
-   "test_c3_rederived_every_row_from_raw_quotes",
-   "test_edge_formula_on_every_priced_open_row",
    "test_locked_fixtures_are_marked_not_pickable",
-   "test_matches_the_independently_captured_permalink_map",
-   "test_rows_normalize_and_pick_is_argmax"
+   "test_matches_the_independently_captured_permalink_map"
   ]
  },
- "generated_utc": "2026-10-15T22:20:26Z",
+ "generated_utc": "2026-10-15T22:30:54Z",
  "verified_board": {
   "file": "data/f28afd9e/board.json",
   "generated_utc": "2026-10-15T22:20:02Z",
@@ -40,7 +37,7 @@
  },
  "official_vrs": {
   "snapshot": "2026_10_05",
-  "fetched_utc": "2026-10-15T22:20:22Z",
+  "fetched_utc": "2026-10-15T22:30:50Z",
   "http_status": 200,
   "teams_parsed": 349,
   "human_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
@@ -48,9 +45,9 @@
  },
  "lobby_snapshot": {
   "file": "data/hotspawn_matches.json",
-  "generated_at_utc": "2026-10-15T19:12:22Z",
-  "match_count": 70,
-  "pickable_at_board_instant": 7
+  "generated_at_utc": "2026-10-15T22:30:14Z",
+  "match_count": 86,
+  "pickable_at_board_instant": 22
  },
  "quotes_re_derived": 166,
  "summary": {
@@ -75,12 +72,12 @@
    "id": "C1",
    "name": "Inventory coverage of every pickable CS2 fixture",
    "status": "pass",
-   "detail": "70 CS2 fixtures in the official lobby snapshot; 7 still pickable at the board instant 2026-10-15T22:20:02Z; 63 locked/past; 7/7 carry a pick",
+   "detail": "86 CS2 fixtures in the official lobby snapshot; 22 still pickable at the board instant 2026-10-15T22:20:02Z; 64 locked/past; 22/22 carry a pick",
    "evidence": [
     "data/hotspawn_matches.json",
     "data/f28afd9e/board.json"
    ],
-   "rows_checked": 7,
+   "rows_checked": 22,
    "rows_failed": 0,
    "failures": []
   },
@@ -2334,19 +2331,16 @@
    "id": "C11",
    "name": "Shared publication gate (Pages deploys only on a green suite)",
    "status": "fail",
-   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-15T22:20:26Z: 584 tests, 5 failures, 0 errors, 0 skipped -> RED, Pages deployment is blocked",
+   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-15T22:30:54Z: 592 tests, 2 failures, 0 errors, 0 skipped -> RED, Pages deployment is blocked",
    "evidence": [
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml",
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/gate.json"
    ],
-   "rows_checked": 584,
-   "rows_failed": 5,
+   "rows_checked": 592,
+   "rows_failed": 2,
    "failures": [
-    "test_c3_rederived_every_row_from_raw_quotes",
-    "test_edge_formula_on_every_priced_open_row",
     "test_locked_fixtures_are_marked_not_pickable",
-    "test_matches_the_independently_captured_permalink_map",
-    "test_rows_normalize_and_pick_is_argmax"
+    "test_matches_the_independently_captured_permalink_map"
    ]
   }
  ],
@@ -2417,7 +2411,7 @@
    "id": "IR-C11",
    "severity": "high",
    "title": "Shared Pages publication gate is red - the site cannot deploy",
-   "detail": "5 failing test(s): test_c3_rederived_every_row_from_raw_quotes, test_edge_formula_on_every_priced_open_row, test_locked_fixtures_are_marked_not_pickable, test_matches_the_independently_captured_permalink_map, test_rows_normalize_and_pick_is_argmax. pages.yml gates deployment on the full suite, so this blocks publication for every session.",
+   "detail": "2 failing test(s): test_locked_fixtures_are_marked_not_pickable, test_matches_the_independently_captured_permalink_map. pages.yml gates deployment on the full suite, so this blocks publication for every session.",
    "links": [
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml"
    ]

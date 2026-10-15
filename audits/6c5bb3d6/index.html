@@ -71,15 +71,15 @@ published boards — 8 pass, 1 informational,
 (high: 3, info: 9, low: 2, medium: 4, unverified: 4); none blocks publication.
 Every published probability in the every-match board was re-derived here from its raw bookmaker quote,
 and every official Valve-standings citation was re-read from Valve's own file in this run.</div><div class="stats">
-<div class="stat"><b>7</b><span>Pickable CS2 fixtures, all with a pick</span></div>
+<div class="stat"><b>22</b><span>Pickable CS2 fixtures, all with a pick</span></div>
 <div class="stat"><b>25</b><span>Published rows re-checked</span></div>
 <div class="stat"><b>166</b><span>Raw quotes re-derived</span></div>
 <div class="stat"><b>22</b><span>Flagged for review</span></div></div><p class="small">Board verified: <code>data/f28afd9e/board.json</code> generated
 2026-10-15T22:20:02Z · lobby snapshot <code>data/hotspawn_matches.json</code> generated
-2026-10-15T19:12:22Z (70 CS2 fixtures) ·
-official Valve standings 2026_10_05 fetched 2026-10-15T22:20:22Z
+2026-10-15T22:30:14Z (86 CS2 fixtures) ·
+official Valve standings 2026_10_05 fetched 2026-10-15T22:30:50Z
 (HTTP 200, 349 teams) ·
-this audit 2026-10-15T22:20:26Z.</p><div class="panel" id="where-the-picks">
+this audit 2026-10-15T22:30:54Z.</p><div class="panel" id="where-the-picks">
 <h2 style="margin-top:0;border:0">Where the picks are (in-site links)</h2>
 <p class="small">Updated automatically. On a phone, start with the first button — it lists every open CS2
 match with a pick, both win probabilities, the crowd split and the source behind each number.</p>
@@ -430,10 +430,10 @@ Divergence is treated as information, never averaged away silently.</li>
 <div class="tablewrap"><table><caption>Each check re-runs from the committed evidence; the harness is
 <code>scripts/6c5bb3d6/verify.py</code> and the machine-readable result is <a href="report.json">report.json</a>.</caption>
 <thead><tr><th>Check</th><th>Result</th><th>Evidence</th></tr></thead><tbody><tr><td data-label="Check"><b>C1 · Inventory coverage of every pickable CS2 fixture</b>
-<div class="small">70 CS2 fixtures in the official lobby snapshot; 7 still pickable at the board instant 2026-10-15T22:20:02Z; 63 locked/past; 7/7 carry a pick</div>
+<div class="small">86 CS2 fixtures in the official lobby snapshot; 22 still pickable at the board instant 2026-10-15T22:20:02Z; 64 locked/past; 22/22 carry a pick</div>
 </td>
 <td data-label="Result"><span class="badge pass">PASS</span>
-<div class="small">7 checked · 0 failed</div></td>
+<div class="small">22 checked · 0 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/hotspawn_matches.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/board.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C2 · Probability normalization, pick = argmax, and blanks disclosed</b>
 <div class="small">25 published rows re-checked: 22 carry probabilities (p_a+p_b=1, safe pick = higher probability, stated pick probabilities equal the row&#x27;s side values) and 3 are published blank (1079626, 1080204, 1079628) - each blank must state its basis or carry a flag, and none may publish a pick</div>
 </td>
@@ -480,10 +480,10 @@ Divergence is treated as information, never averaged away silently.</li>
 <td data-label="Result"><span class="badge warn">WARN</span>
 <div class="small">1 checked · 1 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/context.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/research.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C11 · Shared publication gate (Pages deploys only on a green suite)</b>
-<div class="small">`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-15T22:20:26Z: 584 tests, 5 failures, 0 errors, 0 skipped -&gt; RED, Pages deployment is blocked</div>
-<div class="notice small" style="margin:8px 0 0">Failures: test_c3_rederived_every_row_from_raw_quotes; test_edge_formula_on_every_priced_open_row; test_locked_fixtures_are_marked_not_pickable; test_matches_the_independently_captured_permalink_map; test_rows_normalize_and_pick_is_argmax</div></td>
+<div class="small">`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-15T22:30:54Z: 592 tests, 2 failures, 0 errors, 0 skipped -&gt; RED, Pages deployment is blocked</div>
+<div class="notice small" style="margin:8px 0 0">Failures: test_locked_fixtures_are_marked_not_pickable; test_matches_the_independently_captured_permalink_map</div></td>
 <td data-label="Result"><span class="badge fail">FAIL</span>
-<div class="small">584 checked · 5 failed</div></td>
+<div class="small">592 checked · 2 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/gate.json" rel="noopener">evidence</a></span></td></tr></tbody></table></div><h2 id="unresolved">Unresolved picks &amp; limitations</h2>
 <p>Nothing on this page is filled in by guesswork. These are the values this audit could not confirm from an
 official source, and the residual limitation on each resolved alias. The every-match pick boards publish their
