@@ -1,0 +1,69 @@
+name: audit 1b35a4a2 — TWC Day-4 + every-match research audit
+
+# Refreshes the 1b35a4a2 audit every 4 hours (within 4–8h requirement).
+# Scope guard: this workflow writes only data/1b35a4a2/** and audits/1b35a4a2/**
+# plus its own workflow file. It never touches canonical data/c64a5e19 or
+# other sessions' boards. The pages it renders are copied by stage_site.py
+# via the audits/ glob, so no stage_site edit is needed.
+
+on:
+  schedule:
+    - cron: '19 */4 * * *'
+  workflow_dispatch:
+  push:
+    branches: ['arena/1b35a4a2-maltaproj2', 'main']
+    paths:
+      - 'scripts/1b35a4a2/**'
+      - 'tests/test_1b35a4a2.py'
+      - '.github/workflows/audit-1b35a4a2.yml'
+      - 'data/c64a5e19/board.json'
+      - 'data/c64a5e19/snapshot.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audit-1b35a4a2-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the firing ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Build audit board (from canonical snapshot)
+        run: python3 scripts/1b35a4a2/build.py
+
+      - name: Run session tests
+        run: python3 -m unittest tests.test_1b35a4a2 -v
+
+      - name: Commit refreshed audit
+        run: |
+          git config user.name "audit-1b35a4a2-bot"
+          git config user.email "1b35a4a2@users.noreply.github.com"
+          git add data/1b35a4a2 audits/1b35a4a2
+          if git diff --cached --quiet; then
+            echo "No content change to publish."
+            exit 0
+          fi
+          git commit -m "audit(1b35a4a2): refresh TWC Day-4 + every-match audit $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push && break || sleep 5
+          done
+
+      - name: Verify staged site still builds
+        run: python3 scripts/stage_site.py

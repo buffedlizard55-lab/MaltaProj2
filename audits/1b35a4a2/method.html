@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method · 1b35a4a2 audit</title>
+<meta name="description" content="TWC 2026 day-4 review — 9z upset, Aurora roster, day 2/3 → day 4 picks — plus a pick for every open HotSpawn CS2 match, source-linked.">
+<style>
+:root{--bg:#0d1524;--card:#142138;--txt:#e8eefc;--mut:#93a4c3;--line:#27354f;--acc:#3d7dff;--good:#1f9d63;--warn:#c9861b;--bad:#c4453c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:16px}
+header.site{position:sticky;top:0;background:rgba(13,21,36,.97);border-bottom:1px solid var(--line);z-index:20}
+header.site .wrap{padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+header.site a{color:var(--mut);text-decoration:none;font-size:13.5px;padding:6px 8px;border-radius:8px}
+header.site a.on,header.site a:hover{background:var(--card);color:var(--txt)}
+h1{font-size:clamp(1.9rem,5vw,2.6rem);line-height:1.15;margin:10px 0 8px}
+h2{font-size:1.25rem;margin:28px 0 8px}
+h3{font-size:1.05rem;margin:18px 0 6px}
+p{margin:8px 0}.mut{color:var(--mut);font-size:13.5px}
+.eyebrow{color:#7fa7ff;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:11.5px;margin:0}
+.cards{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.card{flex:1 1 150px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.card-num{font-size:22px;font-weight:800}.card-label{color:var(--mut);font-size:12.5px}
+.btn{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:700;border-radius:12px;padding:13px 16px;margin:6px 6px 6px 0;min-height:44px}
+.btn.ghost{background:transparent;border:1.5px solid var(--acc);color:#9cc0ff}
+.btn.alt{background:var(--good)} .btn.alt2{background:#5b3fd6}
+.tag{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:700}
+.tag.mkt{background:#1d4ed8;color:#fff}.tag.mdl{background:#334155;color:#dbe7ff}.tag.res{background:#0f766e;color:#fff}
+.tag.blank{background:#3a2530;color:#ffb4ae}.tag.pick{background:var(--good);color:#fff}
+.tag.safe{background:#0f766e;color:#fff}.tag.climb{background:#5b3fd6;color:#fff}
+a{color:#8db6ff}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:#b9c8e4;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.tablewrap{overflow-x:auto}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0;margin:10px 0}
+details>summary{cursor:pointer;padding:12px 14px;font-weight:700}
+details[open]>summary{border-bottom:1px solid var(--line)}
+details .inner{padding:6px 14px 12px}
+.notice{border-left:3px solid var(--warn);padding:12px 16px;background:#282215;color:#ffe3b4;margin:16px 0}
+@media (max-width:700px){
+  h1{font-size:22px}.wrap{padding:12px}
+  table.responsive thead{display:none}
+  table.responsive tr{display:block;border:1px solid var(--line);border-radius:12px;margin:10px 0;padding:6px 4px;background:var(--card)}
+  table.responsive td{display:flex;justify-content:space-between;gap:12px;border:0;padding:5px 10px}
+  table.responsive td:before{content:attr(data-label);color:#9db1d4;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;font-weight:700;flex:0 0 42%}
+  .btn{display:block;text-align:center}
+}
+</style></head>
+<body><a class="skip" href="#main" style="position:absolute;left:-9999px">Skip to content</a>
+<header class="site"><div class="wrap"><strong style="font-size:14px">Audit 1b35a4a2</strong><a href="index.html">Executive summary</a><a href="picks.html">All picks · every match</a><a href="twc.html">TWC Day 1–3 → Day 4</a><a href="unresolved.html">Unresolved & limits</a><a href="flagged.html">Flagged</a><a href="method.html" class="on">Method & sources</a></div></header>
+<main class="wrap" id="main">
+
+<h1>Method & sources</h1>
+<h2>1. Fixture discovery (reverse-engineered HotSpawn lobby)</h2>
+<p>Read the Angular <code>script#ng-state</code> fixtures embedded in the public <a href="https://play.hotspawn.com/lobby">HotSpawn lobby</a> (the <code>/api/v1/fixtures</code> response the lobby itself renders). Only the <code>lobby_page</code> + <code>api</code> <code>seen_in</code> rows are the current pickable inventory; an <code>api</code>-only row is not same-capture evidence. The response includes epoch ms <code>scheduled_start_time</code> and <code>lock_time</code> (lock = start − 6 min, verified <code>lock_offset_sec: 360</code>) and the published permalink map — we use only the permalink HotSpawn itself published for that fixture id, otherwise the lobby URL and the row is flagged. HotSpawn never supplies a probability.</p>
+<h2>2. Market first (no-vig, source-linked)</h2>
+<p>Try public Pinnacle (sport 12, series-winner), Bovada (coupon JSON, match moneyline), Melbet (LineFeed Get1x2, sport 40) and the Kalshi exchange (series KXCS2GAME, explicit full-match rules + two-sided books). Join both participants and source kickoff (max 5-min discrepancy); reject live markets, props, unknown times and stale quotes (quote age & cache-adjusted fixture age ≤4h). For decimal odds dA,dB: <code>pA = (1/dA)/((1/dA)+(1/dB))</code>, <code>pB = 1−pA</code>. Combine accepted sources with declared weight 2 for Pinnacle and 1 for others — a modelling choice, not an official win probability. Market picks are never blended with rating estimates.</p>
+<h2>3. Fallback research only for market gaps (HLTV → esportsbooks → originated line)</h2>
+<p>Where no two-sided market price is joined, read <a href="https://www.hltv.org/betting/analytics">HLTV betting analytics</a> first (ranking, form, H2H, roster/stand-in notes), then egamersworld odds widgets / Polymarket listings / bo3.gg coefficients. A Kalshi full-match fallback requires two active binary contracts, matching teams, consistent explicit originally-scheduled CS2 match rules, verified EDT/EST/UTC timezone and two usable bid/ask books (spread ≤10c). Retained official JSON must reproduce both rules and prices offline. These normalized yes midpoints are estimates, not executable odds; volume can be 0. This fallback is used only for market gaps and never changes an accepted bookmaker estimate. For the 7 former gaps in this audit we provide a <b>research-resolved</b> pick (e.g. BET-M 66%, Nemesis 64%, Enjoy 55% …) — each is an <b>estimate from cited HLTV/EGW facts</b>, not a bookmaker price, with the limitation published per row.</p>
+<p>Use two uniquely identified teams in <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve’s official VRS standings</a> (snapshot <code>2026_10_05</code>; refuse duplicate roster names and unproven aliases). Standings older than 14 days are ineligible. Where a research pick still needs a numeric estimate and both teams have a unique VRS row, apply a logistic rating-difference model using <a href="https://github.com/ValveSoftware/counter-strike_regional_standings">Valve’s Glicko code</a> with fitted slope <code>k=0.25</code> (calibrated on the market board’s 5 eligible pairs): <code>pA = sigmoid(k·G·ln(10)/400·(ptsA−ptsB))</code>, <code>RD=75, Q=ln10/400, G=1/√(1+3Q²RD²/π²)</code>. Fitted <code>k=0.25</code>, pairs_used=5, fitted=False. A model-only estimate is not a bookmaker line and has no claimed out-of-sample accuracy. No sibling/floor ratings, ambiguous-slot joins or default 50/50s. Missing inputs stay flagged.</p>
+<h2>4. Expire, flag, retry (4–8h)</h2>
+<p>Quotes and cache-adjusted fixture observations must be ≤4h old. Preserve last-known inventory on fetch failure but never reset its evidence age. A backup timestamp cannot replace missing/failed/invalid/future retained HTTP metadata. When both HTTP and backup clocks exist, the earlier one and unchanged cache Age bound eligibility. Recheck all sources every four hours with GitHub Actions (<code>every-match-c64a5e19.yml</code> at <code>12 */4</code>) and publish only after tests and source replay succeed. Schedule delays, caches and provider blocks are reported, not hidden. This audit rebuilds from the same snapshot — a page rebuild is not a new source observation. HLTV reads are manual (403 in automated capture) with URL and UTC read time cited per fact.</p>
+<h2>5. Contrarian-but-not-stupid ladder</h2>
+<p>Safe pick is always the highest fair probability. An optional <b>climb</b> pick is declared: underdog fair probability ≥30% floor, HotSpawn ownership on that side ≤20%, leverage ≥2.0×, and at least 2 verified context flags (H2H, form, roster, VRS gap, streak). Max 3 climbs, cheapest expected-points sacrifice first (cost = points·(fav−underdog)). Crowd never enters the probability — only the climb comparison. For TWC semis not on HotSpawn there is no ownership, so only the floor + flags apply (published as watchlist).</p>
+<h2>Evidence for manual review</h2>
+<ul>
+<li><a href="../../data/c64a5e19/snapshot.json">Normalized source snapshot with read times and endpoints</a> (canonical)</li>
+<li><a href="../../data/c64a5e19/source_payloads.json">Official provider response payloads and hashes</a></li>
+<li><a href="../../data/c64a5e19/verification.json">Line-by-line provider replay results</a></li>
+<li><a href="../../data/c64a5e19/board.json">Canonical derived board and all flags</a></li>
+<li><a href="../../data/1b35a4a2/board.json">This audit’s derived board (research-resolved gaps + TWC semis)</a></li>
+</ul>
+<p class="mut">HotSpawn crowd % is displayed strictly as leaderboard leverage context and is never used as a win probability anywhere on this board (asserted by tests). 18+; gamble responsibly. Not affiliated with HotSpawn or any bookmaker.</p>
+
+<p class="mut">Generated 2026-10-16T23:55:18Z · session 1b35a4a2 · canonical snapshot 2026-10-16T23:55:18Z · <a href="method.html">method & sources</a> · <a href="https://play.hotspawn.com/lobby">HotSpawn lobby</a> · <a href="../../picks-every-match/index.html">Canonical every-match board</a></p>
+</main></body></html>
