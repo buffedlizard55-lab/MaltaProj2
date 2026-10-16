@@ -167,3 +167,11 @@ not certified by the canonical verifier and never override its blank rows.
 - Original Aurora announcements confirm Jimpphat/ash on 3 July and captain kyxsan on 8 July. Calendar elapsed time is not measured onboarding or rest, and no numerical narrative penalty is applied.
 - Ownership is separately labelled, source-ordered and excluded from probability derivation. A declared one-swing/two-book rule may correctly select no active underdog when its thresholds are not met; a retrospective upset is not a successful pre-match backtest.
 - Verification: `python -m unittest tests.test_69e4c06a -v`; full suite: `python -m unittest discover -s tests -v`; staged-link check: `python scripts/stage_site.py`; browser acceptance: `python scripts/69e4c06a/browser_smoke.py`.
+
+## 16 October 2026 TWC Day 3 live deciders, every-match refresh & CI gate verification (5468b0ba)
+
+- **Line-by-line verification & TWC Day 1–3 audit:** [`audits/5468b0ba/index.html`](audits/5468b0ba/index.html) (`data/5468b0ba/audit.json`, `scripts/5468b0ba/build_audit.py`, `tests/test_5468b0ba.py`).
+- **Both TWC Day 3 deciders listed & market-priced on HotSpawn (`2026-10-16T04:35:44Z`):** `#1080205 Aurora vs 9z` (`66.61% / 33.39%`, safe pick **Aurora**, watchlist **9z** at `3.04×` leverage) and `#1081775 BetBoom vs Legacy` (`39.23% / 60.77%`, safe pick **Legacy**, qualified contrarian swing **BetBoom** at `39.23% >= 35%`, `17% <= 20%` crowd ownership, `2.31×` leverage across 2 primary books).
+- **31 open CS2 fixtures verified:** 24 Tier A market lines (including 4 rule-backed Kalshi fallbacks and 2 exact 50/50 ties with `pick_team=None`), 3 Tier B official Valve VRS model fallbacks, and 4 Tier D unresolved/blank rows with per-step fallback logs on [`picks-every-match/unresolved.html`](picks-every-match/unresolved.html).
+- **CI & Pages smoke gate fixes:** Preserved `not a HotSpawn pick` disclosure outside `[data-live]` on expired unlisted-preview rows in `scripts/69e4c06a/build.py`, aligned 50/50 tie comparison in `tests/test_69e4c06a.py`, and added a 3.5-hour `workflow_run` cadence gate to `.github/workflows/every-match-c64a5e19.yml`.
+
