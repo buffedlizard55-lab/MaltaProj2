@@ -160,6 +160,14 @@ def executive_summary_html():
          "contrarian-but-not-stupid climb ladder (safe + leaderboard pick per match) and a pick for "
          "every open CS2 match; unresolved picks + limitations linked from its executive summary.",
          _board_stamp("data/4cf64ea3/board.json", "generated_utc")),
+        # 1c8f79f8 integration (additive): the TWC day-4 desk. Its own executive
+        # summary links every updated picks list on the site, so one row here is enough.
+        ("day4/index.html", "TWC day-4 semifinal picks + every-match refresh (1c8f79f8)",
+         "Verified day-1/2/3 TWC review (incl. the disproven October Aurora roster-change premise), "
+         "both playoff semifinal picks with external lines, a pick and probability for all 21 open "
+         "lobby fixtures, three documented contrarian climb swings, and its own unresolved/"
+         "limitations, flagged and method sections.",
+         _board_stamp("data/1c8f79f8/board.json", "generated_utc")),
         ("picks-all/index.html", "Complete picks — every match",
          "Pick + win probability for every open CS2 match on the pick'em lobby (incl. low-tier), "
          "each number linked to its source. The complete updated picks list.",
@@ -219,6 +227,7 @@ def executive_summary_html():
   <p><a class="btn" href="cs2.html">Start here: source-linked CS2 picks</a>
      <a class="btn" href="picks-all/index.html">Complete picks · all matches</a>
      <a class="btn" href="day3/index.html">TWC day-3 picks &amp; day-2 review</a>
+     <a class="btn alt2" href="day4/index.html">TWC day-4 semifinals + all 21 open matches</a>
      <a class="btn ghost" href="#unresolved-picks">Unresolved matches</a>
      <a class="btn ghost" href="picks-all/unresolved.html">Unresolved + limitations (complete list)</a>
      <a class="btn ghost" href="board/picks.html">Expanded picks · models included</a></p>

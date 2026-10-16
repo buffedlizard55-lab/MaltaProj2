@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method &amp; sources</title>
+<meta name="description" content="TWC 2026 day-4 desk: verified playoff review, semifinal picks, and a pick plus probability for every open HotSpawn CS2 match, all source-linked.">
+<style>
+:root{--bg:#0d1524;--card:#142138;--txt:#e8eefc;--mut:#93a4c3;--line:#27354f;--acc:#3d7dff;--good:#1f9d63;--warn:#c9861b;--bad:#c4453c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:16px}
+header.site{position:sticky;top:0;background:rgba(13,21,36,.96);border-bottom:1px solid var(--line);z-index:20}
+header.site .wrap{padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+header.site a{color:var(--mut);text-decoration:none;font-size:13.5px;padding:6px 8px;border-radius:8px}
+header.site a.on,header.site a:hover{background:var(--card);color:var(--txt)}
+h1{font-size:24px;line-height:1.2;margin:10px 0}h2{font-size:19px;margin:26px 0 8px}h3{font-size:16.5px;margin:18px 0 6px}
+p{margin:8px 0}.mut{color:var(--mut);font-size:13.5px}.eyebrow{color:#7fa7ff;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:11.5px;margin:0}
+.cards{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.card{flex:1 1 150px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.card-num{font-size:22px;font-weight:800}.card-label{color:var(--mut);font-size:12.5px}
+.btn{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:700;border-radius:12px;padding:13px 16px;margin:6px 6px 6px 0;min-height:44px}
+.btn.ghost{background:transparent;border:1.5px solid var(--acc);color:#9cc0ff}
+.btn.alt{background:var(--good)} .btn.alt2{background:#5b3fd6}
+.btn.warn{background:var(--warn);color:#221602}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:#b9c8e4;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.tag{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:700}
+.tag.pick{background:var(--good);color:#fff}.tag.climb{background:#5b3fd6;color:#fff}
+.tag.mkt{background:#1d4ed8;color:#fff}.tag.mdl{background:#334155;color:#dbe7ff}
+.tag.ori{background:var(--warn);color:#221602}.tag.blank{background:#3a2530;color:#ffb4ae}
+.tag.contra{background:#7c3aed;color:#fff}.tag.safe{background:#0f766e;color:#fff}
+a{color:#8db6ff}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0;margin:10px 0}
+details>summary{cursor:pointer;padding:12px 14px;font-weight:700}
+details[open]>summary{border-bottom:1px solid var(--line)}
+details .inner{padding:6px 14px 12px}
+.tablewrap{overflow-x:auto}
+@media (max-width:640px){
+  h1{font-size:20px} .wrap{padding:12px}
+  table.responsive thead{display:none}
+  table.responsive tr{display:block;border:1px solid var(--line);border-radius:12px;margin:10px 0;padding:6px 4px;background:var(--card)}
+  table.responsive td{display:flex;justify-content:space-between;gap:12px;border:0;padding:5px 10px}
+  table.responsive td:before{content:attr(data-label);color:#9db1d4;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;font-weight:700;flex:0 0 42%}
+  .btn{display:block;text-align:center}
+}
+</style></head>
+<body><header class="site"><div class="wrap"><strong style="font-size:14px">Day-4 desk · 1c8f79f8</strong><a href="index.html">Start here</a><a href="picks.html">All picks · every match</a><a href="twc-review.html">TWC day 1–3 review</a><a href="unresolved.html">Unresolved + limits</a><a href="flagged.html">Flagged</a><a href="method.html" class="on">Method & sources</a></div></header>
+<main class="wrap">
+
+<p class="eyebrow">How every number on this desk is produced</p>
+<h1>Method &amp; sources</h1>
+<h2>Fixture discovery (the lobby, reverse-engineered)</h2>
+<p>The HotSpawn pick'em lobby renders from a JSON state bundle; the underlying fixtures API
+(<code>phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures</code>) accepts exactly three filter
+parameters — <code>sport_alias</code>, <code>status</code> and <code>competition_id</code> (discovered this
+session; <code>from</code>, <code>limit</code> and <code>tier</code> are rejected with 400 "property should
+not exist"). The <code>competition_id</code> filter returns a small single-chunk JSON per tournament, which
+is how this desk captures cleanly: seven per-competition captures cover all 21 open fixtures. The unfiltered
+response spans 9 chunks and mixes in stale rows. Every raw response is retained verbatim under
+<code>data/1c8f79f8/evidence/</code> before any derivation.</p>
+<p>Verified API fields per row: <code>id</code>, <code>competition_id/name</code>,
+<code>scheduled_start_time</code>/<code>lock_time</code> (ms epochs; lock = start − 360 000 ms,
+i.e. the 6-minute lock verified via <code>lock_offset_sec=360</code>), <code>offered_points</code>/<code>base_points</code>
+(tier B = 3 offered, tier C = 2; points_breakdown = game 1.25 × tier (B 1.5 / C 1) × series/stage/tournament 1),
+<code>tier</code> (a/b/c), <code>stage</code>, <code>total_picks</code>, and per-participant
+<code>id/name/picked_percent/score</code>. Epoch anchor re-verified this session: 2026-10-17T00:00Z =
+1792195200 s; the lobby renders times in US-Eastern, so "Oct 17, 04:00" on a card is 08:00Z.</p>
+<h2>Probability policy (three bases, never blended silently)</h2>
+<ol>
+<li><strong>Market</strong> — a real two-sided price from a venue (Polymarket exchange moneyline; bc.game /
+bookmaker averages via egamersworld; stavka.tv Russian bookmaker consensus; kushvsporte aggregate). The
+published fair share is the de-vigged price: p = (1/dec) / Σ(1/dec). Volume is recorded; $0.00-volume
+Polymarket seeds are evidence, never lines.</li>
+<li><strong>Model</strong> — the canonical site Valve-VRS model, identical arithmetic to
+<code>scripts/fe803b80/core.py</code> (Valve's glicko constants: a 400-point rank delta = 90% win chance,
+Q = ln(10)/400, fixed RD = 75) with the fitted scale k = 0.25 from the fe803b80 calibration block. Used only
+when both teams are unambiguously present in Valve's official standings with matching rosters.</li>
+<li><strong>Blank</strong> — where neither basis is eligible, the probability stays empty and the row says
+why. A pick direction may still be given from verified context and is labelled directional.</li>
+</ol>
+<p><strong>HotSpawn crowd percentages are ownership context only.</strong> They are stored on every row,
+displayed next to the line, and never enter any probability — asserted by tests. Where the crowd and the
+line disagree, that disagreement is the contrarian signal and is documented as such.</p>
+<h2>The contrarian ladder (gates, applied per row)</h2>
+<ul>
+<li><strong>Safe pick</strong> — the best available line (market if it exists, else model).</li>
+<li><strong>Climb pick</strong> — a leaderboard swing, activated only when ALL gates hold: underdog fair
+probability ≥ 30–35%; crowd ownership of the picked side ≤ 20%; fair-probability/ownership ratio ≥ 2×;
+≥ 2 verified context flags; capped swings per day. Three climbs activated today: Donstu, Enjoy, WBT.</li>
+<li><strong>Contrarian lean</strong> — gates documented but not all passed (e.g. ASTRAL at 24% ownership
+misses the 20% gate); published as a lean, never as an activated swing.</li>
+</ul>
+<h2>Source hierarchy</h2>
+<ol>
+<li>Official: Valve VRS repo (github.com/ValveSoftware/counter-strike_regional_standings), HLTV match/event
+pages (results, lineups, live VRS forecast), tournament organizer pages.</li>
+<li>Prices: Polymarket exchange moneylines, egamersworld bookmaker averages (bc.game et al.), stavka.tv and
+kushvsporte bookmaker aggregates, bo3.gg (Thunderpick coefficients).</li>
+<li>Context: strafe (brackets, form, user votes — sentiment only), tips.gg, tribuna.com, esports.gg,
+Field Level Media/Reuters, dust2.us, Liquipedia.</li>
+<li>Never used as prices: HotSpawn crowd %, HLTV fan-vote widgets, strafe user votes, egamersworld
+prediction-bot votes, placeholder 1.8/1.8 pairs, $0-volume Polymarket seeds.</li>
+</ol>
+<h2>Refresh cadence and evidence</h2>
+<p><code>.github/workflows/day4-1c8f79f8.yml</code> re-runs the collector and this builder every 4 hours
+(cron <code>23 */4 * * *</code>, inside the required 4–8 h window) and after upstream board refreshes.
+The collector re-captures each competition, re-applies the client-side time filter, and refuses to publish
+if any row's lock-time arithmetic or crowd-percentage sum fails its self-check. The builder is deterministic
+and network-free; tests re-derive every published number from the retained raw inputs.</p>
+<h2>Session scope and protocol</h2>
+<p>Claimed in COORDINATION.md before any file edit (2026-10-16 19:35Z). File scope:
+<code>day4/**</code>, <code>scripts/1c8f79f8/**</code>, <code>data/1c8f79f8/**</code>,
+<code>tests/test_1c8f79f8.py</code>, <code>.github/workflows/day4-1c8f79f8.yml</code>, this section of
+COORDINATION.md. Integration into the landing page is additive only (one NAV/exec-summary row in
+<code>scripts/build_site.py</code>, one directory entry in <code>scripts/stage_site.py</code>).</p>
+
+<p class="mut">Generated 2026-10-16T22:51:25Z · session 1c8f79f8 · fixtures API snapshot 2026-10-16T20:50Z · all external lines read 2026-10-16T19:35–20:50Z · <a href="method.html">method &amp; sources</a> · <a href="https://play.hotspawn.com/lobby">HotSpawn lobby</a></p>
+</main></body></html>

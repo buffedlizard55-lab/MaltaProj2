@@ -2,6 +2,20 @@
 
 ---
 
+---
+
+# Coordination — session `1c8f79f8` (TWC Day-4 playoff picks + every-match refresh, 2026-10-16 ~19:30Z)
+
+Session: `1c8f79f8` (fixed to branch `arena/1c8f79f8-maltaproj2`).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-DAY4-1C8F79F8: TWC 2026 day-1/2/3 verified review (9z–Aurora upset, Aurora roster-change premise incl. possible October `deko` move, day-3 decider results) → day-4 (Oct 17 playoff semifinal) picks with safe + contrarian-but-not-stupid layers, external betting-line probabilities from non-HotSpawn sources; a pick + win probability for **every** open CS2 fixture on the current HotSpawn lobby (HLTV → esportsbooks → betting lines → documented originated line); separate Unresolved picks & limitations section surfaced in a mobile executive summary with in-site links to every picks list; 4-hourly automated refresh | claimed | 1c8f79f8 | 2026-10-16 19:35 | `day4/**`, `scripts/1c8f79f8/**`, `data/1c8f79f8/**`, `tests/test_1c8f79f8.py`, `.github/workflows/day4-1c8f79f8.yml`, `COORDINATION.md` (this section only); integration handoff (additive only, logged not edited): `scripts/build_site.py` exec-summary/NAV entries, `scripts/stage_site.py` section list, `README.md` row |
+
+## Log
+- 2026-10-16 19:35 UTC, `1c8f79f8`: Claim posted before any file edits. Read COORDINATION.md top-to-bottom: all prior tasks (ef111e02, 1d4de836, 1916f96c, 0c90448b, a0fcf175, 8e7a652d, 188aaa4f, 778756a1, f28afd9e, 6c5bb3d6, 4cf64ea3, 69e4c06a, 7c2622db, 5468b0ba, 6ffacd40, 98dcfc7e, 169d010a, b3b89eec, b5436cf0, 869a5375, e0882a56) are recorded done; no other session claims a day-4/TWC-playoff or every-match-refresh task right now. Live lobby re-read at claim: TWC group stage has left the rendered lobby (day-3 deciders consumed); current open CS2 cards are NODWIN Clutch #13, PGL Bucharest 2027 CQ, CCT EU Challengers #8, CCT EU S12 Play-In, DraculaN S7 etc. Read-only inputs: every existing board (`picks-every-match/`, `hub/`, `twc/`, `twc-2026/`, `day3/`, `strategy/`, `board/`, `ourline/`, `unresolved/`, `picks-all/`, root `index.html`).
+- 2026-10-16 19:35 UTC, `1c8f79f8`: Verified from HLTV news 45736 + egamersworld: **Aurora 2-0 9z (Cache 13-11, Inferno 13-4) on Oct 16** — the day-1 upset was avenged; 9z eliminated (5th straight group exit); Aurora meet FURIA in semifinal 1 (HLTV 2399414, Oct 17 16:00 CEST = 14:00Z). Semifinal 2: Falcons vs BetBoom/Legacy decider winner (Oct 17 19:00 CEST = 17:00Z). Day-3 decider results and the reported October Aurora roster move (`deko` on the HLTV team timeline) still to be verified line-by-line in this session's scope.
+
 # Coordination — session `169d010a` (TWC Day 3 contrarian check + phone-first landing de-clutter request)
 
 Session: `169d010a` (fixed to branch `arena/169d010a-maltaproj2`).
