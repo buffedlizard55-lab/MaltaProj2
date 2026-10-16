@@ -1,9 +1,9 @@
 {
- "generated_at_utc": "2026-10-16T04:44:32Z",
- "odds_collected_at_utc": "2026-10-16T04:44:32Z",
- "fixture_list_collected_at_utc": "2026-10-16T04:44:18Z",
- "fixture_source_observed_at_utc": "2026-10-16T01:34:14Z",
- "fixture_source_cache_age_seconds": 11404,
+ "generated_at_utc": "2026-10-16T04:54:26Z",
+ "odds_collected_at_utc": "2026-10-16T04:54:25Z",
+ "fixture_list_collected_at_utc": "2026-10-16T04:54:12Z",
+ "fixture_source_observed_at_utc": "2026-10-16T01:34:15Z",
+ "fixture_source_cache_age_seconds": 11997,
  "method": {
   "match_rule": "both teams, explicit CS2, exact UTC start, unique fixture and source quote",
   "max_age_seconds": 14400,
@@ -13,24 +13,24 @@
  },
  "summary": {
   "fixtures_total": 95,
-  "fixtures_with_external_line": 7,
-  "fixtures_without_external_line": 88,
+  "fixtures_with_external_line": 11,
+  "fixtures_without_external_line": 84,
   "fixtures_open_for_picks": 31,
-  "fixtures_open_with_external_line": 7,
-  "fixtures_open_without_external_line": 24,
+  "fixtures_open_with_external_line": 11,
+  "fixtures_open_without_external_line": 20,
   "fixtures_locked_or_past": 64,
   "by_tier": {
    "c": {
     "total": 54,
-    "with_line": 1,
+    "with_line": 3,
     "open": 10,
-    "open_with_line": 1
+    "open_with_line": 3
    },
    "b": {
     "total": 38,
-    "with_line": 5,
+    "with_line": 7,
     "open": 19,
-    "open_with_line": 5
+    "open_with_line": 7
    },
    "s": {
     "total": 3,
@@ -40,7 +40,7 @@
    }
   },
   "by_source": {
-   "bovada": 4,
+   "bovada": 9,
    "pinnacle": 7
   }
  },
@@ -75,7 +75,7 @@
      "outcome_alignment_verified": true,
      "market_status": "O",
      "source_reported_status": "scheduled",
-     "retrieved_at_utc": "2026-10-16T04:44:24Z",
+     "retrieved_at_utc": "2026-10-16T04:54:18Z",
      "start_time_utc": "2026-10-16T08:00:00Z",
      "team_a_name": "Ninjas in Pyjamas",
      "team_b_name": "Team Liquid",
@@ -128,7 +128,7 @@
      "outcome_alignment_verified": true,
      "market_status": "open",
      "source_reported_status": "pending",
-     "retrieved_at_utc": "2026-10-16T04:44:21Z",
+     "retrieved_at_utc": "2026-10-16T04:54:14Z",
      "start_time_utc": "2026-10-16T08:00:00Z",
      "team_a_name": "Ninjas In Pyjamas",
      "team_b_name": "Liquid",
@@ -268,15 +268,83 @@
    "pick_status": "open",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/ex-rustec-vs-saint-sinners-cct-europe-2026-series-11-1079630",
    "hotspawn_source_kind": "published_match_permalink",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/ex-rustec-saint-sinners-202610160700",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "32271168",
+     "source_market_id": "535970777",
+     "source_market_key": "2W-12",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-16T04:54:18Z",
+     "start_time_utc": "2026-10-16T11:00:00Z",
+     "team_a_name": "Ex-Rustec",
+     "team_b_name": "Saint Sinners",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.454545",
+     "raw_price_b": "2.650",
+     "decimal_odds_a": 1.454545,
+     "decimal_odds_b": 2.65,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "Ex-Rustec",
+       "Saint Sinners"
+      ],
+      "decimal": [
+       "1.454545",
+       "2.650"
+      ],
+      "american": [
+       "-220",
+       "+165"
+      ]
+     },
+     "derived_probability_a": 0.6456,
+     "derived_probability_b": 0.3544,
+     "overround": 0.06486,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Ex-Rustec",
+      "Saint Sinners"
+     ],
+     "source_start_time_utc": "2026-10-16T11:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.6456,
+      "derived_probability_b": 0.3544,
+      "overround": 0.06486
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.6456,
+     "derived_probability_b_mean": 0.3544,
+     "derived_probability_a_min": 0.6456,
+     "derived_probability_a_max": 0.6456
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1081712",
@@ -308,15 +376,15 @@
      "outcome_alignment_verified": true,
      "market_status": "O",
      "source_reported_status": "scheduled",
-     "retrieved_at_utc": "2026-10-16T04:44:24Z",
+     "retrieved_at_utc": "2026-10-16T04:54:18Z",
      "start_time_utc": "2026-10-16T11:00:00Z",
      "team_a_name": "Fnatic",
      "team_b_name": "Heroic",
      "raw_price_format": "decimal",
-     "raw_price_a": "2.450",
-     "raw_price_b": "1.526316",
-     "decimal_odds_a": 2.45,
-     "decimal_odds_b": 1.526316,
+     "raw_price_a": "2.550",
+     "raw_price_b": "1.487805",
+     "decimal_odds_a": 2.55,
+     "decimal_odds_b": 1.487805,
      "decimal_odds_derived": false,
      "raw_prices": {
       "outcomes": [
@@ -324,17 +392,17 @@
        "Heroic"
       ],
       "decimal": [
-       "2.450",
-       "1.526316"
+       "2.550",
+       "1.487805"
       ],
       "american": [
-       "+145",
-       "-190"
+       "+155",
+       "-205"
       ]
      },
-     "derived_probability_a": 0.3839,
-     "derived_probability_b": 0.6161,
-     "overround": 0.06334,
+     "derived_probability_a": 0.3685,
+     "derived_probability_b": 0.6315,
+     "overround": 0.06429,
      "order_as_quoted": "same",
      "bookmaker_order": [
       "Fnatic",
@@ -361,7 +429,7 @@
      "outcome_alignment_verified": true,
      "market_status": "open",
      "source_reported_status": "pending",
-     "retrieved_at_utc": "2026-10-16T04:44:22Z",
+     "retrieved_at_utc": "2026-10-16T04:54:16Z",
      "start_time_utc": "2026-10-16T11:00:00Z",
      "team_a_name": "fnatic",
      "team_b_name": "HEROIC",
@@ -397,9 +465,9 @@
    "derived": {
     "per_source": {
      "bovada": {
-      "derived_probability_a": 0.3839,
-      "derived_probability_b": 0.6161,
-      "overround": 0.06334
+      "derived_probability_a": 0.3685,
+      "derived_probability_b": 0.6315,
+      "overround": 0.06429
      },
      "pinnacle": {
       "derived_probability_a": 0.3512,
@@ -414,10 +482,10 @@
       "pinnacle"
      ],
      "n_sources": 2,
-     "derived_probability_a_mean": 0.3676,
-     "derived_probability_b_mean": 0.6324,
+     "derived_probability_a_mean": 0.3599,
+     "derived_probability_b_mean": 0.6401,
      "derived_probability_a_min": 0.3512,
-     "derived_probability_a_max": 0.3839
+     "derived_probability_a_max": 0.3685
     }
    },
    "verification": "source_linked_current_quote",
@@ -453,7 +521,7 @@
      "outcome_alignment_verified": true,
      "market_status": "open",
      "source_reported_status": "pending",
-     "retrieved_at_utc": "2026-10-16T04:44:20Z",
+     "retrieved_at_utc": "2026-10-16T04:54:14Z",
      "start_time_utc": "2026-10-16T12:00:00Z",
      "team_a_name": "Voca",
      "team_b_name": "HAVU",
@@ -521,15 +589,83 @@
    "pick_status": "open",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/joga-de-terno-vs-your-end-cct-south-america-2026-series-7-1081498",
    "hotspawn_source_kind": "published_match_permalink",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/joga-de-terno-your-end-202610160900",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "32282783",
+     "source_market_id": "536030577",
+     "source_market_key": "2W-12",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-16T04:54:18Z",
+     "start_time_utc": "2026-10-16T13:00:00Z",
+     "team_a_name": "Joga De Terno",
+     "team_b_name": "Your End",
+     "raw_price_format": "decimal",
+     "raw_price_a": "2.00",
+     "raw_price_b": "1.769230",
+     "decimal_odds_a": 2.0,
+     "decimal_odds_b": 1.76923,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "Joga De Terno",
+       "Your End"
+      ],
+      "decimal": [
+       "2.00",
+       "1.769230"
+      ],
+      "american": [
+       "EVEN",
+       "-130"
+      ]
+     },
+     "derived_probability_a": 0.4694,
+     "derived_probability_b": 0.5306,
+     "overround": 0.06522,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Joga De Terno",
+      "Your End"
+     ],
+     "source_start_time_utc": "2026-10-16T13:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.4694,
+      "derived_probability_b": 0.5306,
+      "overround": 0.06522
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.4694,
+     "derived_probability_b_mean": 0.5306,
+     "derived_probability_a_min": 0.4694,
+     "derived_probability_a_max": 0.4694
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1079588",
@@ -561,15 +697,15 @@
      "outcome_alignment_verified": true,
      "market_status": "O",
      "source_reported_status": "scheduled",
-     "retrieved_at_utc": "2026-10-16T04:44:24Z",
+     "retrieved_at_utc": "2026-10-16T04:54:18Z",
      "start_time_utc": "2026-10-16T14:00:00Z",
      "team_a_name": "Astralis",
      "team_b_name": "MIBR",
      "raw_price_format": "decimal",
-     "raw_price_a": "1.666667",
-     "raw_price_b": "2.150",
-     "decimal_odds_a": 1.666667,
-     "decimal_odds_b": 2.15,
+     "raw_price_a": "1.800",
+     "raw_price_b": "1.952381",
+     "decimal_odds_a": 1.8,
+     "decimal_odds_b": 1.952381,
      "decimal_odds_derived": false,
      "raw_prices": {
       "outcomes": [
@@ -577,17 +713,17 @@
        "MIBR"
       ],
       "decimal": [
-       "1.666667",
-       "2.150"
+       "1.800",
+       "1.952381"
       ],
       "american": [
-       "-150",
-       "+115"
+       "-125",
+       "-105"
       ]
      },
-     "derived_probability_a": 0.5633,
-     "derived_probability_b": 0.4367,
-     "overround": 0.06512,
+     "derived_probability_a": 0.5203,
+     "derived_probability_b": 0.4797,
+     "overround": 0.06775,
      "order_as_quoted": "same",
      "bookmaker_order": [
       "Astralis",
@@ -614,7 +750,7 @@
      "outcome_alignment_verified": true,
      "market_status": "open",
      "source_reported_status": "pending",
-     "retrieved_at_utc": "2026-10-16T04:44:20Z",
+     "retrieved_at_utc": "2026-10-16T04:54:13Z",
      "start_time_utc": "2026-10-16T14:00:00Z",
      "team_a_name": "Astralis",
      "team_b_name": "MIBR",
@@ -650,9 +786,9 @@
    "derived": {
     "per_source": {
      "bovada": {
-      "derived_probability_a": 0.5633,
-      "derived_probability_b": 0.4367,
-      "overround": 0.06512
+      "derived_probability_a": 0.5203,
+      "derived_probability_b": 0.4797,
+      "overround": 0.06775
      },
      "pinnacle": {
       "derived_probability_a": 0.4979,
@@ -667,10 +803,10 @@
       "pinnacle"
      ],
      "n_sources": 2,
-     "derived_probability_a_mean": 0.5306,
-     "derived_probability_b_mean": 0.4694,
+     "derived_probability_a_mean": 0.5091,
+     "derived_probability_b_mean": 0.4909,
      "derived_probability_a_min": 0.4979,
-     "derived_probability_a_max": 0.5633
+     "derived_probability_a_max": 0.5203
     }
    },
    "verification": "source_linked_current_quote",
@@ -690,6 +826,59 @@
    "hotspawn_source_kind": "published_match_permalink",
    "bookmaker_lines": [
     {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/forze-reload-lavked-202610161000",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "32270207",
+     "source_market_id": "535971280",
+     "source_market_key": "2W-12",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-16T04:54:18Z",
+     "start_time_utc": "2026-10-16T14:00:00Z",
+     "team_a_name": "Forze Reload",
+     "team_b_name": "Lavked",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.260",
+     "raw_price_b": "3.650",
+     "decimal_odds_a": 1.26,
+     "decimal_odds_b": 3.65,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "Forze Reload",
+       "Lavked"
+      ],
+      "decimal": [
+       "1.260",
+       "3.650"
+      ],
+      "american": [
+       "-385",
+       "+265"
+      ]
+     },
+     "derived_probability_a": 0.7434,
+     "derived_probability_b": 0.2566,
+     "overround": 0.06762,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Forze Reload",
+      "Lavked"
+     ],
+     "source_start_time_utc": "2026-10-16T14:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    },
+    {
      "source_key": "pinnacle",
      "source_name": "Pinnacle",
      "source_kind": "bookmaker",
@@ -706,7 +895,7 @@
      "outcome_alignment_verified": true,
      "market_status": "open",
      "source_reported_status": "pending",
-     "retrieved_at_utc": "2026-10-16T04:44:20Z",
+     "retrieved_at_utc": "2026-10-16T04:54:13Z",
      "start_time_utc": "2026-10-16T14:00:00Z",
      "team_a_name": "FORZE Reload",
      "team_b_name": "Lavked",
@@ -741,6 +930,11 @@
    ],
    "derived": {
     "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.7434,
+      "derived_probability_b": 0.2566,
+      "overround": 0.06762
+     },
      "pinnacle": {
       "derived_probability_a": 0.7354,
       "derived_probability_b": 0.2646,
@@ -750,13 +944,14 @@
     "consensus": {
      "rule": "arithmetic mean of per-source proportional no-vig probabilities",
      "sources": [
+      "bovada",
       "pinnacle"
      ],
-     "n_sources": 1,
-     "derived_probability_a_mean": 0.7354,
-     "derived_probability_b_mean": 0.2646,
+     "n_sources": 2,
+     "derived_probability_a_mean": 0.7394,
+     "derived_probability_b_mean": 0.2606,
      "derived_probability_a_min": 0.7354,
-     "derived_probability_a_max": 0.7354
+     "derived_probability_a_max": 0.7434
     }
    },
    "verification": "source_linked_current_quote",
@@ -792,7 +987,7 @@
      "outcome_alignment_verified": true,
      "market_status": "open",
      "source_reported_status": "pending",
-     "retrieved_at_utc": "2026-10-16T04:44:21Z",
+     "retrieved_at_utc": "2026-10-16T04:54:14Z",
      "start_time_utc": "2026-10-16T14:00:00Z",
      "team_a_name": "Aurora",
      "team_b_name": "9z",
@@ -948,15 +1143,83 @@
    "pick_status": "open",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/procyon-vs-los-ninos-cct-south-america-2026-series-7-1081502",
    "hotspawn_source_kind": "published_match_permalink",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/procyon-gaming-los-ninos-202610161200",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "32282782",
+     "source_market_id": "536031167",
+     "source_market_key": "2W-12",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-16T04:54:18Z",
+     "start_time_utc": "2026-10-16T16:00:00Z",
+     "team_a_name": "Procyon Gaming",
+     "team_b_name": "Los Ninos",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.266667",
+     "raw_price_b": "3.600",
+     "decimal_odds_a": 1.266667,
+     "decimal_odds_b": 3.6,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "Procyon Gaming",
+       "Los Ninos"
+      ],
+      "decimal": [
+       "1.266667",
+       "3.600"
+      ],
+      "american": [
+       "-375",
+       "+260"
+      ]
+     },
+     "derived_probability_a": 0.7397,
+     "derived_probability_b": 0.2603,
+     "overround": 0.06725,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "Procyon Gaming",
+      "Los Ninos"
+     ],
+     "source_start_time_utc": "2026-10-16T16:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.7397,
+      "derived_probability_b": 0.2603,
+      "overround": 0.06725
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.7397,
+     "derived_probability_b_mean": 0.2603,
+     "derived_probability_a_min": 0.7397,
+     "derived_probability_a_max": 0.7397
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1079589",
@@ -988,7 +1251,7 @@
      "outcome_alignment_verified": true,
      "market_status": "O",
      "source_reported_status": "scheduled",
-     "retrieved_at_utc": "2026-10-16T04:44:24Z",
+     "retrieved_at_utc": "2026-10-16T04:54:18Z",
      "start_time_utc": "2026-10-16T17:00:00Z",
      "team_a_name": "Sangal Esports",
      "team_b_name": "100 Thieves",
@@ -1041,7 +1304,7 @@
      "outcome_alignment_verified": true,
      "market_status": "open",
      "source_reported_status": "pending",
-     "retrieved_at_utc": "2026-10-16T04:44:23Z",
+     "retrieved_at_utc": "2026-10-16T04:54:16Z",
      "start_time_utc": "2026-10-16T17:00:00Z",
      "team_a_name": "Sangal",
      "team_b_name": "100 Thieves",
@@ -1115,15 +1378,83 @@
    "pick_status": "open",
    "hotspawn_match_url": "https://www.hotspawn.com/matches/baks-vs-g2-ares-cct-europe-2026-series-11-1079632",
    "hotspawn_source_kind": "published_match_permalink",
-   "bookmaker_lines": [],
+   "bookmaker_lines": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "bookmaker",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/baks-esports-g2-ares-202610161300",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "source_event_id": "32271363",
+     "source_market_id": "535970795",
+     "source_market_key": "2W-12",
+     "source_league": "Game Lines",
+     "market_type": "match winner (moneyline, full match)",
+     "market_period": "Game",
+     "market_is_live": false,
+     "sport": "cs2",
+     "outcome_alignment_verified": true,
+     "market_status": "O",
+     "source_reported_status": "scheduled",
+     "retrieved_at_utc": "2026-10-16T04:54:18Z",
+     "start_time_utc": "2026-10-16T17:00:00Z",
+     "team_a_name": "BakS eSports",
+     "team_b_name": "G2 Ares",
+     "raw_price_format": "decimal",
+     "raw_price_a": "1.588235",
+     "raw_price_b": "2.300",
+     "decimal_odds_a": 1.588235,
+     "decimal_odds_b": 2.3,
+     "decimal_odds_derived": false,
+     "raw_prices": {
+      "outcomes": [
+       "BakS eSports",
+       "G2 Ares"
+      ],
+      "decimal": [
+       "1.588235",
+       "2.300"
+      ],
+      "american": [
+       "-170",
+       "+130"
+      ]
+     },
+     "derived_probability_a": 0.5915,
+     "derived_probability_b": 0.4085,
+     "overround": 0.06441,
+     "order_as_quoted": "same",
+     "bookmaker_order": [
+      "BakS eSports",
+      "G2 Ares"
+     ],
+     "source_start_time_utc": "2026-10-16T17:00:00Z",
+     "start_time_agrees_with_fixture": true,
+     "derivation": "p_i = (1/odds_i) / sum(1/odds_j) [proportional no-vig]"
+    }
+   ],
    "derived": {
-    "per_source": {},
-    "consensus": null
+    "per_source": {
+     "bovada": {
+      "derived_probability_a": 0.5915,
+      "derived_probability_b": 0.4085,
+      "overround": 0.06441
+     }
+    },
+    "consensus": {
+     "rule": "arithmetic mean of per-source proportional no-vig probabilities",
+     "sources": [
+      "bovada"
+     ],
+     "n_sources": 1,
+     "derived_probability_a_mean": 0.5915,
+     "derived_probability_b_mean": 0.4085,
+     "derived_probability_a_min": 0.5915,
+     "derived_probability_a_max": 0.5915
+    }
    },
-   "verification": "unverified_no_eligible_external_line",
-   "review_flags": [
-    "external_odds_not_found"
-   ]
+   "verification": "source_linked_current_quote",
+   "review_flags": []
   },
   {
    "fixture_id": "1081775",
