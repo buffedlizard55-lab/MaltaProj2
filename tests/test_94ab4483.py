@@ -78,6 +78,9 @@ class TestDayFourAudit(unittest.TestCase):
             source = data["sources"][quote["source_url_key"]]
             self.assertTrue(source["url"].startswith("https://"))
             self.assertNotIn("hotspawn", source["url"].lower())
+            snapshot = data["sources"][quote["source_snapshot_key"]]
+            self.assertIn("/data/fe803b80/board.json", snapshot["url"])
+            self.assertTrue(snapshot["url"].startswith("https://github.com/"))
 
     def test_all_result_rows_have_sources_and_expected_day_counts(self) -> None:
         data = read_data()
@@ -101,6 +104,17 @@ class TestDayFourAudit(unittest.TestCase):
         self.assertIsNone(data["live_match"]["result"])
         self.assertEqual(data["strategy"]["published_probability"], None)
 
+    def test_pickem_lobby_state_change_keeps_semifinal_membership_unverified(self) -> None:
+        data = read_data()
+        lobby = data["coverage_observations"]["pickem_lobby"]
+        previous = lobby["previous_same_day_observation"]
+        self.assertFalse(lobby["main_twc_filter_visible"])
+        self.assertFalse(lobby["twc_match_rows_visible"])
+        self.assertTrue(previous["main_twc_filter_visible"])
+        self.assertFalse(previous["twc_match_rows_visible"])
+        self.assertFalse(lobby["ownership_visible"])
+        self.assertTrue(all(fixture["pickem_membership"] == "unverified" for fixture in data["day4_fixtures"]))
+
     def test_snapshot_gap_is_rederived_and_capture_policies_are_distinct(self) -> None:
         data = read_data()["board_freshness"]
         canonical = data["canonical"]["capture_utc"].replace("Z", "+00:00")
@@ -109,7 +123,7 @@ class TestDayFourAudit(unittest.TestCase):
         delta = int((datetime.fromisoformat(independent) - datetime.fromisoformat(canonical)).total_seconds())
         self.assertEqual(delta, data["capture_gap_seconds"])
         self.assertNotEqual(data["canonical"]["policy"], data["independent"]["policy"])
-        self.assertEqual(delta, 6 * 3600 + 8 * 60 + 56)
+        self.assertEqual(delta, 6 * 3600 + 36 * 60 + 2)
 
     def test_generated_pages_are_mobile_accessible_source_linked_and_resolve_local_links(self) -> None:
         pages = ["index.html", "unresolved.html", "flagged.html", "method.html"]

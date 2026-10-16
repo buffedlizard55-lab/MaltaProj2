@@ -99,7 +99,7 @@
     },
     "coverage_board": {
       "label": "Independent full-coverage board source record",
-      "url": "https://github.com/buffedlizard55-lab/MaltaProj2/blob/706b427997d63abf5bb9ba285270f4fe95178dd3/data/fe803b80/board.json",
+      "url": "https://github.com/buffedlizard55-lab/MaltaProj2/blob/24e745fe049f673e2771e626e587a69d3d02bb72/data/fe803b80/board.json",
       "kind": "repository snapshot with distinct coverage and model policy"
     },
     "canonical_refresh_workflow": {
@@ -109,12 +109,12 @@
     },
     "dashboard_check_run": {
       "label": "Verify and publish dashboard run (failed recheck step)",
-      "url": "https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38956904516",
+      "url": "https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38957728524",
       "kind": "GitHub Actions run"
     },
     "pages_deploy_run": {
       "label": "GitHub Pages deployment run (success)",
-      "url": "https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38956905198",
+      "url": "https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38957727854",
       "kind": "GitHub Actions run"
     },
     "aurora_jimpphat": {
@@ -233,7 +233,11 @@
     "result": null,
     "observation_date_utc": "2026-10-16",
     "observation_time_precision": "date-only; exact HTTP response time was not exposed",
-    "sources": ["hltv_betboom_legacy", "hotspawn_betboom_legacy"]
+    "latest_check_started_after_utc": "2026-10-16T19:54:51Z",
+    "latest_hltv_status_observed": "LIVE at 1-1 in maps; Mirage still not started in this fetched view",
+    "latest_hotspawn_match_page_observed": "0-0 at the listed 17:00 start with 'Waiting for information'; its embedded stream widget also displayed LIVE, which is not treated as a match score",
+    "latest_tournament_page_observed": "Aurora-9z still labelled LIVE after the reported result; BetBoom-Legacy labelled UPCOMING despite HLTV's live 1-1 series; semifinal slots remain generic placeholders",
+    "sources": ["hltv_betboom_legacy", "hotspawn_betboom_legacy", "hotspawn_tournament"]
   },
   "day4_fixtures": [
     {
@@ -247,7 +251,7 @@
       "probability": {"FURIA": 0.5, "Aurora": 0.5},
       "pick": "NO DIRECTIONAL EDGE",
       "decision_note": "Two observed bookmaker-labelled lines are even after no-vig normalization. No HotSpawn ownership value was verified; do not invent a contrarian advantage.",
-      "sources": ["hotspawn_tournament", "hotspawn_aurora_day3", "hltv_furia_aurora", "melbet_feed", "thunderpick_mirror", "hotspawn_pickems"]
+      "sources": ["hotspawn_tournament", "hotspawn_aurora_day3", "hltv_furia_aurora", "melbet_feed", "thunderpick_mirror", "coverage_board", "hotspawn_pickems"]
     },
     {
       "fixture_id": "1080208",
@@ -281,10 +285,11 @@
         "overround": 0.069519,
         "no_vig_a": 0.5,
         "no_vig_b": 0.5,
-        "retrieved_utc": "2026-10-16T19:20:59Z",
+        "retrieved_utc": "2026-10-16T19:47:45Z",
         "event_id": "762156600",
         "source_url_key": "melbet_feed",
         "public_url_key": "melbet_public",
+        "source_snapshot_key": "coverage_board",
         "access_note": "The official feed record is retained from the raw repository snapshot. A direct human-page fetch was country-restricted in this session; do not call this a fresh manual re-read."
       },
       {
@@ -299,18 +304,20 @@
         "overround": 0.081081,
         "no_vig_a": 0.5,
         "no_vig_b": 0.5,
-        "retrieved_utc": "2026-10-16T19:21:46Z",
+        "retrieved_utc": "2026-10-16T19:48:48Z",
         "event_id": "131671",
         "source_url_key": "thunderpick_mirror",
         "api_url_key": "thunderpick_api",
+        "source_snapshot_key": "coverage_board",
         "access_note": "The mirror page displayed the quote and named Thunderpick; this is corroboration, not an independently authenticated direct Thunderpick page capture."
       }
     ],
     "same_day_recheck": {
       "observation_date_utc": "2026-10-16",
-      "melbet_feed": {"event_id": "762156600", "main_1x2_decimal": {"FURIA": 1.87, "Aurora": 1.87}, "exact_fetch_time_utc": null},
-      "thunderpick_via_bo3gg": {"main_decimal": {"FURIA": 1.85, "Aurora": 1.85}, "exact_fetch_time_utc": null},
-      "note": "A subsequent same-day direct feed/page check showed the same even prices. The web tool did not expose exact retrieval timestamps; keep the exact UTC timestamps above as the reproducible repository-capture times."
+      "melbet_feed": {"event_id": "762156600", "main_1x2_decimal": {"FURIA": 1.87, "Aurora": 1.87}, "captured_utc": "2026-10-16T19:47:45Z"},
+      "thunderpick_via_bo3gg": {"main_decimal": {"FURIA": 1.85, "Aurora": 1.85}, "captured_utc": "2026-10-16T19:48:48Z"},
+      "source_snapshot_key": "coverage_board",
+      "note": "The latest exact source-board capture in this audit contains the same even prices, with retrieval times preserved by the collector."
     },
     "directional_summary": {"FURIA": 0.5, "Aurora": 0.5},
     "summary_method": "Both source-specific no-vig pairs are exactly 50/50. No directional pick is supported. The two records are shown separately rather than presented as a broad independent-book consensus.",
@@ -352,10 +359,19 @@
   "coverage_observations": {
     "pickem_lobby": {
       "observation_date_utc": "2026-10-16",
-      "rendered_text": "Thunderpick World Championship 2026 (1); BetBoom (1); Legacy (1); 'Check back in a minute!' / 'Fresh info is on the way.'",
-      "match_rows_visible": false,
+      "fetched_after_utc": "2026-10-16T19:54:51Z",
+      "rendered_text": "Latest general weekly lobby: 159 matches this week; 83 tournament filters and 83 team filters. The main Thunderpick World Championship 2026 and BetBoom/Legacy are absent; the only TWC-named filter is Thunderpick World Championship 2026: South American Series #1 (8). All displayed cards across both fetched page chunks were from other competitions; no main-TWC semifinal card appeared.",
+      "twc_match_rows_visible": false,
+      "main_twc_filter_visible": false,
+      "general_lobby_rows_visible": true,
       "ownership_visible": false,
-      "meaning": "The visible TWC and team filter counts are consistent with one BetBoom/Legacy row, but the fixture list itself did not load. This is not enough to verify the row mapping, either semifinal's Pick'ems membership, or ownership; semifinal membership remains unverified.",
+      "previous_same_day_observation": {
+        "time_precision": "same-day earlier fetch; exact retrieval time not exposed",
+        "rendered_text": "Thunderpick World Championship 2026 (1); BetBoom (1); Legacy (1); 'Check back in a minute!' / 'Fresh info is on the way.'",
+        "main_twc_filter_visible": true,
+        "twc_match_rows_visible": false
+      },
+      "meaning": "The latest rendered lobby no longer shows a main-TWC filter or fixture row, while an earlier same-day render showed one TWC count and BetBoom/Legacy counts but no fixture row. The lobby states conflict/change during review; neither proves current semifinal membership or absence. Leave Pick'ems membership unverified and do not use crowd shares as match probabilities.",
       "source_url_key": "hotspawn_pickems"
     },
     "tournament_page": {
@@ -379,7 +395,7 @@
       "policy": "canonical market-first all-match board"
     },
     "independent": {
-      "capture_utc": "2026-10-16T19:22:09Z",
+      "capture_utc": "2026-10-16T19:49:15Z",
       "path": "data/fe803b80/board.json",
       "fixtures_total": 208,
       "open": 22,
@@ -391,19 +407,20 @@
       "open_blank": 2,
       "policy": "separate full-coverage board with a different inventory and fallback/model policy"
     },
-    "capture_gap_seconds": 22136,
-    "comparison_note": "The independent capture is 6h 8m 56s newer than the canonical capture. Counts and policies are not interchangeable; the newer board does not replace the canonical source.",
+    "capture_gap_seconds": 23762,
+    "comparison_note": "The independent capture is 6h 36m 2s newer than the canonical capture. Counts and policies are not interchangeable; the newer board does not replace the canonical source.",
     "canonical_refresh_workflow_url_key": "canonical_refresh_workflow"
   },
   "ci_observation": {
-    "main_sha": "911594240896a516afb898da03888debb022c2ef",
-    "observed_utc": "2026-10-16T19:43:46Z",
+    "main_sha": "24e745fe049f673e2771e626e587a69d3d02bb72",
+    "observed_utc": "2026-10-16T19:49:47Z",
     "dashboard_check": "failed at 'Recheck generated site and every source-linked row' (step 10)",
     "dashboard_check_url_key": "dashboard_check_run",
     "pages_deployment": "success",
+    "pages_deploy_observed_utc": "2026-10-16T19:49:47Z",
     "pages_deployment_url_key": "pages_deploy_run",
-    "local_tests": "731 tests passed; 3 skipped on the checked-out 7622396 tree; 8 session tests passed",
-    "log_note": "The hosted step failure is recorded as observed; detailed job-log retrieval returned EOF in this environment. The local suite passed on the checked-out tree, but the remote recheck is not claimed as resolved and no cause is inferred."
+    "local_tests": "740 tests passed; 3 skipped on the rebased 24e745f tree; 9 session tests passed",
+    "log_note": "The hosted step failure is recorded as observed; detailed job-log retrieval returned EOF in this environment. The local suite passed on the rebased tree, but the remote recheck is not claimed as resolved and no cause is inferred."
   },
   "strategy": {
     "conclusion": "No forced contrarian selection is justified for FURIA vs Aurora at the observed prices.",
@@ -420,7 +437,7 @@
     "decision": "NO DIRECTIONAL EDGE; leave the pick blank if the platform requires choosing a team until the user/team owner policy defines how to break exact market ties."
   },
   "limitations": [
-    "The day-four HotSpawn tournament page used a generic placeholder for both semifinal opponents; the Pick'ems lobby rendered no fixture card.",
+    "The day-four HotSpawn tournament page used a generic placeholder for both semifinal opponents. The latest lobby render omitted the main TWC filter and semifinal rows, while an earlier same-day render showed TWC/team counts but no row; Pick'ems membership remains unverified.",
     "The FURIA-Aurora market evidence is a dated capture, not a live quote; Melbet was country-restricted to a direct page fetch and Thunderpick was observed through bo3.gg.",
     "EGamersWorld odds lacked an identified bookmaker and are excluded; Kalshi spreads were above the stated liquidity threshold.",
     "The in-progress BetBoom-Legacy series had not produced a verified winner at the latest HLTV observation; do not state a finalist or semifinal opponent yet.",
