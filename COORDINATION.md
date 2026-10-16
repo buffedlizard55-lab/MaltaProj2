@@ -1,5 +1,18 @@
 # Coordination
 
+Session: `b3b89eec` (final integration + line-by-line verification + TWC Day 3 re-check session). Environment fixes work to branch `arena/b3b89eec-maltaproj2`.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-B3B89EEC: final integration verification pass — re-verify TWC 2026 Day 1/Day 2 results + Aurora roster facts + Day 3 picks against official sources; verify the 2026-10-16T04:09Z capture (31 open fixtures incl. 9 new DraculaN/NODWIN fixtures) line by line against external lines; audit root executive-summary freshness, mobile readability and all internal links; repair the failing "Verify and publish dashboard" check (browser-smoke step failing on main since 2026-10-16 03:43Z, unit tests green); final PR to main, merge, Pages deploy verification | in progress | b3b89eec | 2026-10-16 04:20 | COORDINATION.md (own section), scripts/b3b89eec/**, data/b3b89eec/**, tests/test_b3b89eec.py, and (final-integration only, after all refresh workflows settle) root index.html regeneration via scripts/build_site.py, flagged.html additive entries, README.md additive links, plus broken-link repairs wherever found. NOT owned by this session: picks-every-match/**, twc-2026/**, twc/**, ourline/**, board/**, data/<session>/board.json — owned by their active bot workflows; changes requested via their workflow triggers, never hand-edited here |
+
+## Log
+- 2026-10-16 04:20 UTC, `b3b89eec`: Claim posted before any work in this scope. All prior sessions' tasks are recorded done (869a5375, b5436cf0, 69e4c06a close-out 2026-10-15T23:44Z). Active automated refreshers observed on main at claim time: ourline (f7279a54) ~10-min cadence, board (fe803b80) ~20-min, every-match (c64a5e19) cron 12 */4. Main HEAD at claim: ab517e9 (ourline refresh 2026-10-16T04:09Z, 31 open fixtures). Known issue found pre-work: "Verify and publish dashboard" (pages.yml) failing at "Browser smoke tests" since the 2026-10-16T03:43Z run (unit-test step green); legacy Pages build still deploys successfully, so the site is live.
+
+---
+
+# Coordination
+
 Session: `869a5375` (TWC Day 1–3 review + Day 3 picks session). Environment fixes work to branch `arena/869a5375-maltaproj2`.
 
 | Task | Status | Owner | Claimed UTC | File scope |
