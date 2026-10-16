@@ -49,31 +49,42 @@ details .inner{padding:6px 14px 12px}
 
 <p class="eyebrow">Unresolved picks &amp; limitations — nothing here is guessed</p>
 <h1>Unresolved picks and limitations</h1>
-<p>Two of 21 lobby fixtures keep a <strong>blank probability</strong> by policy, and several other gaps are
-documented rather than filled. Each blank lists everything that was tried and the exact reason no number
-can be published.</p>
+<p>2 of 21 open lobby fixtures keep a <strong>blank probability</strong> by
+policy, and several other gaps are documented rather than filled. Each blank lists everything that was tried
+and the exact reason no number can be published. A blank is never a 50/50 estimate.</p>
 <h2>Probability blanks (2 of 21)</h2>
+
+<h2>Rows generated automatically from the live capture</h2>
+<p>Last local rebuild 2026-10-16T23:54:02Z against the fresh_capture capture <code>data/1c8f79f8/fixtures_raw.json</code> (captured 2026-10-16T20:50:00Z), covering 21 listed fixtures.</p>
+<p>No fixture outside the curated ledger was listed in this capture. The path that adds them (exact fixture-id quote reuse → Valve-VRS model → blank + flag) is exercised by tests/test_1c8f79f8.py.</p>
+<p>Every fixture the lobby lists stays on the <a href="picks.html">picks table</a>: a new listing is either
+priced from an exact fixture-id quote retained in another published board, priced by the canonical Valve-VRS
+model when both teams are in Valve's official standings, or published as a blank row with its reason. Nothing
+is dropped for being low-tier.</p>
+
 
 <details open><summary>Lynn Vision vs Morningstar — MaceMedia VOID Autumn Cup 2026 (2026-10-20 03:00Z) — probability BLANK</summary>
 <div class="inner">
 <p><span class="tag blank">no_external_price_and_opponent_absent_from_valve_vrs</span></p>
-<p><strong>What was tried</strong> (all read 2026-10-16T19:35–20:50Z):</p>
+<p><strong>What was tried</strong> (source reads ledger read 2026-10-16T20:45:00Z):</p>
 <ul><li>No published two-sided price exists (egamersworld shows the 1.8/1.8 placeholder pair; Polymarket lists no VOID Autumn Cup market)</li><li>Morningstar is absent from Valve&#x27;s global standings table, so the site&#x27;s VRS-origination policy (both teams unambiguously rated) cannot be satisfied — the probability stays BLANK by policy, not by oversight</li><li>Context (directional only): egamersworld ratings #32 Lynn Vision vs #547 Morningstar; head-to-head Lynn Vision 3-0 (Mar 11 CAC closed qualifier 2-0, Mar 21 LOOP Cup playoffs 2-0, Mar 22 Asia Championships playoffs 2-0); Lynn Vision on a 3-match win streak, Morningstar on a 2-match losing streak</li><li>Lynn Vision&#x27;s lineup (C4LLM3SU3, EmiliaQAQ, Starry, Westmelon, z4KR) verified 5/5 against the Oct-5 Valve row (#64, 1190 pt)</li></ul>
-<p><strong>Why no number is published:</strong> no venue publishes a two-sided price for this match, and the
-site's origination policy requires both teams to be unambiguously present in Valve's official VRS table —
-the opponent is absent, so a model line cannot be originated. The pick direction above comes from verified
-context only and carries no probability.</p>
+<p><strong>Why no number is published:</strong> the row records its own reason
+(<code>no_external_price_and_opponent_absent_from_valve_vrs</code>). Either no venue publishes an accepted two-sided price for this
+match, or at least one team is absent from Valve's official standings so no model pair is eligible. A
+probability is withheld rather than invented; any pick direction shown comes from verified context only and
+carries no probability.</p>
 <p>Sources: <a href="https://egamersworld.com/counterstrike/match/EJcHRdr5Vx/lynn-vision-vs-morningstar-7AWA3eTHD" target="_blank" rel="noopener">egamersworld Lynn Vision vs Morningstar match page (H2H, ratings, lineups, placeholder odds)</a> <a href="https://www.hltv.org/events/9435/macemedia-void-autumn-cup-2026" target="_blank" rel="noopener">HLTV MaceMedia VOID Autumn Cup 2026 event page</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve regional standings 2026-10-05 (Lynn Vision #64; Morningstar absent)</a></p>
 </div></details>
 <details open><summary>Chinggis Warriors vs WXM — MaceMedia VOID Autumn Cup 2026 (2026-10-20 07:00Z) — probability BLANK</summary>
 <div class="inner">
 <p><span class="tag blank">no_external_price_and_opponent_absent_from_valve_vrs</span></p>
-<p><strong>What was tried</strong> (all read 2026-10-16T19:35–20:50Z):</p>
+<p><strong>What was tried</strong> (source reads ledger read 2026-10-16T20:45:00Z):</p>
 <ul><li>No published two-sided price exists (egamersworld 1.8/1.8 placeholder; no Polymarket market)</li><li>WXM (Wept Xyloid Melancholy, per the Mais Esports VOID Autumn Cup team list) is absent from Valve&#x27;s global standings table and egamersworld carries no roster for them (all-noName lineup) — origination is blocked on the opponent side, so the probability stays BLANK by policy</li><li>Chinggis Warriors are Valve-rated #87 (1084 pt; cool4st, fury5k, ROUX, sk0R + one unverified substitution: egamersworld lists tikuak where the Oct-5 Valve row carries yAmi)</li></ul>
-<p><strong>Why no number is published:</strong> no venue publishes a two-sided price for this match, and the
-site's origination policy requires both teams to be unambiguously present in Valve's official VRS table —
-the opponent is absent, so a model line cannot be originated. The pick direction above comes from verified
-context only and carries no probability.</p>
+<p><strong>Why no number is published:</strong> the row records its own reason
+(<code>no_external_price_and_opponent_absent_from_valve_vrs</code>). Either no venue publishes an accepted two-sided price for this
+match, or at least one team is absent from Valve's official standings so no model pair is eligible. A
+probability is withheld rather than invented; any pick direction shown comes from verified context only and
+carries no probability.</p>
 <p>Sources: <a href="https://egamersworld.com/counterstrike/match/EJcHRdr5Vx/chinggis-warriors-vs-wxm-_ddme1I7dZ" target="_blank" rel="noopener">egamersworld Chinggis Warriors vs WXM match page (lineup evidence + placeholder odds)</a> <a href="https://maisesports.com.br/campeonatos/cs-go-void-autumn-cup-2026" target="_blank" rel="noopener">Mais Esports VOID Autumn Cup 2026 (WXM = Wept Xyloid Melancholy identity)</a> <a href="https://www.hltv.org/events/9435/macemedia-void-autumn-cup-2026" target="_blank" rel="noopener">HLTV MaceMedia VOID Autumn Cup 2026 event page</a></p>
 </div></details>
 <h2>Other documented limitations</h2>
@@ -105,13 +116,14 @@ the widget discrepancy is flagged on the row.</p></div></details>
 Ownership percentages are recorded at the 20:50Z snapshot as context only; they never enter any probability.
 The 4-hour refresh re-captures them.</p></div></details>
 <details><summary>Staleness bound</summary><div class="inner">
-<p>Fixture snapshot 2026-10-16T20:50Z; external lines read 19:35–20:50Z. The desk refreshes every 4 hours
-(workflow <code>day4-1c8f79f8.yml</code>, cron <code>23 */4 * * *</code>). Matches lock 6 minutes before
-kickoff (verified lock_offset_sec=360); the earliest lock in this set is 2026-10-17T07:54Z.</p></div></details>
+<p>Fixture snapshot 2026-10-16T20:50Z; external lines read ledger read 2026-10-16T20:45:00Z. The desk refreshes
+every 4 hours (workflow <code>day4-1c8f79f8.yml</code>, cron <code>23 */4 * * *</code>). Matches lock
+6 minutes before kickoff (verified lock_offset_sec=360); the next lock in this snapshot is
+2026-10-17T07:54:00Z.</p></div></details>
 <h2>In-site links</h2>
 <p><a href="index.html">Executive summary</a> · <a href="picks.html">All picks with per-row sources</a> ·
 <a href="twc-review.html">TWC day 1–3 verified review</a> · <a href="flagged.html">Flagged irregularities</a> ·
 <a href="method.html">Method &amp; sources</a></p>
 
-<p class="mut">Generated 2026-10-16T22:51:25Z · session 1c8f79f8 · fixtures API snapshot 2026-10-16T20:50Z · all external lines read 2026-10-16T19:35–20:50Z · <a href="method.html">method &amp; sources</a> · <a href="https://play.hotspawn.com/lobby">HotSpawn lobby</a></p>
+<p class="mut">Generated 2026-10-16T23:54:02Z · session 1c8f79f8 · fixtures API snapshot 2026-10-16T20:50Z · external lines read ledger read 2026-10-16T20:45:00Z · <a href="method.html">method &amp; sources</a> · <a href="https://play.hotspawn.com/lobby">HotSpawn lobby</a></p>
 </main></body></html>

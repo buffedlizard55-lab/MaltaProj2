@@ -85,8 +85,17 @@ class MobileHandoff(unittest.TestCase):
 
     def test_only_canonical_actions_come_before_archives(self):
         soup = BeautifulSoup(HOME.canonical_home(board()), 'html.parser')
+        # Integration session 1fac4be2 moved the two CURRENT lists above the fold
+        # (every-match picks and the day-4 desk) and made the unresolved action an
+        # in-page anchor to this page's own unresolved section. Archived boards stay
+        # collapsed; the anchor must resolve on the landing page itself.
         self.assertEqual([a['href'] for a in soup.select('.primary-actions a')], [
-            'picks-every-match/index.html', 'picks-every-match/unresolved.html', 'twc-2026/index.html'])
+            'picks-every-match/index.html', 'day4/index.html', '#canonical-unresolved'])
+        landing = BeautifulSoup((ROOT / 'index.html').read_text(), 'html.parser')
+        self.assertIsNotNone(landing.select_one('.primary-actions a[href="#canonical-unresolved"]'))
+        self.assertIsNotNone(landing.select_one('#canonical-unresolved'))
+        # twc-2026/ and day-one.html remain reachable as current-era cards in the
+        # picks grid; the preserved parallel boards stay collapsed in the archive.
         for href in ('strategy/index.html', 'day3/index.html', 'hub/index.html'):
             a = soup.select_one(f'a[href="{href}"]')
             self.assertIsNotNone(a.find_parent('details'), href)

@@ -491,7 +491,12 @@ TWC = dict(
 # read 2026-10-16 ~19:55Z) — the day-1/2/3 record the semifinal picks rest on.
 # ---------------------------------------------------------------------------
 TWC_RESULTS = [
-    ("Oct 14", "Group A opening", "9z", "2-0", "Aurora", "Inferno 13-11, Nuke 13-4"),
+    # CORRECTED 2026-10-16 by the integration session (1fac4be2): the day-1 Nuke
+    # score first recorded here as 13-4 was wrong -- eight independent retained
+    # captures in this repository carry 13-1 for 9z (with half scores 11:1/2:0 in
+    # b3b89eec), and 13-4 collides with the day-3 Inferno result in the same table.
+    # The discrepancy is published on day4/flagged.html and verify/1fac4be2/.
+    ("Oct 14", "Group A opening", "9z", "2-0", "Aurora", "Inferno 13-11, Nuke 13-1"),
     ("Oct 14", "Group A opening", "Falcons", "2-0", "Ninjas in Pyjamas", "Ancient 16-13, Dust2 13-6"),
     ("Oct 14", "Group B opening", "Legacy", "2-0", "PARIVISION", "Dust2 13-11, Mirage 16-14"),
     ("Oct 14", "Group B opening", "FURIA", "2-0", "BETBOOM", "Ancient 13-10, Mirage 13-9"),

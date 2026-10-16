@@ -44,6 +44,11 @@ VALVE_G = 1.0 / math.sqrt(1.0 + 3.0 * VALVE_Q ** 2 * VALVE_RD ** 2 / math.pi ** 
 VALVE_C = VALVE_G * math.log(10) / 400.0
 K_FIT = 0.25  # fitted on bookmaker pairs (data/fe803b80/board.json calibration)
 
+# Rendered stamps. Set from the retained capture + ledger by main() so a refresh
+# publishes the timestamps it actually used instead of a frozen literal.
+SNAPSHOT_STAMP = "2026-10-16T20:50Z"
+LINES_READ_STAMP = "2026-10-16T19:35-20:50Z"
+
 
 def sigmoid(x: float) -> float:
     return 1.0 / (1.0 + math.exp(-x))
@@ -68,142 +73,491 @@ def esc(s) -> str:
 
 
 # ---------------------------------------------------------------- board rows
-def build_rows() -> list[dict]:
-    raw = json.loads((DATA / "fixtures_raw.json").read_text())
-    api_rows = {r["id"]: r for r in raw["fixtures"]}
-    rows = []
-    for fx in research.FIXTURES:
-        fid = fx["fixture_id"]
-        api = api_rows[fid]
-        # the retained capture must agree with the curated ledger
-        # (case-insensitive: the API renders some names differently, e.g. 'Heroic')
-        assert api["participants0_name"].casefold() == fx["team_a"].casefold(), (fid, api["participants0_name"], fx["team_a"])
-        assert api["participants1_name"].casefold() == fx["team_b"].casefold(), (fid, api["participants1_name"], fx["team_b"])
-        assert api["participants0_picked_percent"] == fx["crowd_a"] and api["participants1_picked_percent"] == fx["crowd_b"], (fid, "crowd drift between capture and ledger")
-        assert int(api["scheduled_start_time"]) == int(
-            datetime.strptime(fx["start_utc"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc).timestamp() * 1000)
-        pick = research.PICKS[fid]
-        line_entry = research.LINES.get(fid)
+# Inventory policy (added 2026-10-16 by the integration session, repair of the
+# broken refresh path): the board is rebuilt from the *fresh* fixtures capture,
+# never from the curated ledger alone.
+#
+#   * every open fixture in the capture gets a row, including fixtures the
+#     curated ledger has never seen (new lobby listings),
+#   * the curated ledger supplies context, picks and source links for the
+#     fixtures it covers,
+#   * a new fixture is priced from an exact fixture-id match in another
+#     session's published board (retained quote + public URL + read time), else
+#     from the canonical Valve-VRS model, else it stays blank and is flagged,
+#   * live drift (crowd percentages, kickoff/lock times, name rendering) is
+#     recorded instead of aborting the rebuild: ownership is context only and
+#     the capture is authoritative for it,
+#   * a capture that comes back empty or truncated keeps the retained
+#     inventory and flags the degradation rather than publishing a partial board.
+SIBLING_BOARDS = (
+    ("c64a5e19", "data/c64a5e19/board.json", "canonical every-match board"),
+    ("fe803b80", "data/fe803b80/board.json", "full-coverage board"),
+    ("f7279a54", "data/f7279a54/board.json", "ourline board"),
+    ("b1fb1465", "data/b1fb1465/board.json", "exec board"),
+    ("7177d07f", "data/7177d07f/board.json", "research-resolved board"),
+)
+VALVE_STANDINGS_URL = ("https://github.com/ValveSoftware/counter-strike_regional_standings/"
+                       "blob/main/live/2026/standings_global_2026_10_05.md")
 
-        market = None
-        quotes = []
-        if line_entry and line_entry.get("kind") == "market":
-            da, db = line_entry["decimals"]
-            pa, pb, over = devig(da, db)
-            market = {
-                "prob_a": round(pa, 4), "prob_b": round(pb, 4),
-                "overround": round(over, 4),
-                "n_sources": 2 if line_entry.get("url2") else 1,
-                "sources": [line_entry["basis"]],
-                "volume_usd": line_entry.get("volume_usd"),
-                "note": line_entry["note"],
+
+def _ms(value):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _iso(ms):
+    if not ms:
+        return None
+    return datetime.fromtimestamp(ms / 1000, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def load_capture(capture_path=None) -> dict:
+    path = Path(capture_path) if capture_path else (DATA / "fixtures_raw.json")
+    return json.loads(path.read_text())
+
+
+def model_block(team_a: str, team_b: str):
+    """Canonical Valve-VRS model block, or None when a rating pair is not eligible."""
+    key_a = research.vrs_key(team_a)
+    key_b = research.vrs_key(team_b)
+    va = research.VRS.get(key_a) if key_a else None
+    vb = research.VRS.get(key_b) if key_b else None
+    if not (va and vb and key_a not in research.VRS_ABSENT and key_b not in research.VRS_ABSENT):
+        return None
+    delta = va["points"] - vb["points"]
+    return {
+        "vrs": {"delta": delta, "points_a": va["points"], "points_b": vb["points"],
+                "standing_a": va["standing"], "standing_b": vb["standing"],
+                "region_a": "global", "region_b": "global",
+                "vrs_name_a": key_a, "vrs_name_b": key_b,
+                "snapshot_a": va.get("snapshot", "2026_10_05"),
+                "snapshot_b": vb.get("snapshot", "2026_10_05")},
+        "prob_a": round(vrs_prob(va["points"], vb["points"]), 4),
+        "prob_b": round(vrs_prob(vb["points"], va["points"]), 4),
+        "basis": "valve_vrs_k0.25",
+    }
+
+
+def sibling_market(fixture_id):
+    """Exact fixture-id match in another session's published board.
+
+    Only stored values are reused: the sibling board's no-vig pair and its raw
+    quote (decimals when it retained them) with the public URL and read time.
+    No alias is joined and no number is derived here.
+    """
+    for session, rel, label in SIBLING_BOARDS:
+        path = ROOT / rel
+        if not path.exists():
+            continue
+        try:
+            doc = json.loads(path.read_text())
+        except (OSError, ValueError):
+            continue
+        for row in (doc.get("open") or []):
+            if str(row.get("fixture_id")) != str(fixture_id):
+                continue
+            market = row.get("market") or {}
+            if not market.get("prob_a") or not market.get("prob_b"):
+                continue
+            quote = None
+            for q in (row.get("quotes") or []):
+                if q.get("public_url"):
+                    quote = q
+                    if q.get("decimal_a") and q.get("decimal_b"):
+                        break
+            if quote is None or not quote.get("public_url"):
+                continue
+            return {
+                "session": session, "board": rel, "label": label,
+                "prob_a": market["prob_a"], "prob_b": market["prob_b"],
+                "decimals": ((quote.get("decimal_a"), quote.get("decimal_b"))
+                             if quote.get("decimal_a") and quote.get("decimal_b") else None),
+                "url": quote["public_url"],
+                "retrieved_utc": quote.get("retrieved_utc") or doc.get("generated_utc"),
+                "source_key": quote.get("source_key") or label,
+                "board_generated_utc": doc.get("generated_utc"),
             }
+    return None
+
+
+def auto_row(api: dict, drift: list) -> dict:
+    """Row for a capture fixture the curated ledger does not cover."""
+    fid = str(api.get("id"))
+    team_a = api.get("participants0_name")
+    team_b = api.get("participants1_name")
+    start = _iso(_ms(api.get("scheduled_start_time")))
+    lock = _iso(_ms(api.get("lock_time")))
+    comp = api.get("competition_name")
+    stage = api.get("stage") or "not published by the fixtures API"
+    tier = (api.get("tier") or "").upper() or None
+    points = api.get("offered_points")
+    sib = sibling_market(fid)
+    model = model_block(team_a, team_b)
+
+    market = None
+    quotes = []
+    if sib:
+        quote = {
+            "source_key": sib["source_key"],
+            "public_url": sib["url"],
+            "retrieved_utc": sib["retrieved_utc"],
+            "note": (f"Retained quote reused verbatim from the {sib['session']} {sib['label']} "
+                     f"(exact HotSpawn fixture id {fid}); that board derived the no-vig pair and "
+                     f"this row republishes it with the same source link and read time."),
+        }
+        if sib["decimals"]:
+            da, db = sib["decimals"]
+            pa, pb, over = devig(da, db)
+            quote.update({"decimal_a": da, "decimal_b": db, "prob_a": round(pa, 4),
+                          "prob_b": round(pb, 4), "overround": round(over, 4)})
+            market = {"prob_a": round(pa, 4), "prob_b": round(pb, 4),
+                      "overround": round(over, 4), "n_sources": 1,
+                      "sources": [sib["source_key"]], "volume_usd": None,
+                      "note": (f"Market line inherited from the {sib['session']} board quote "
+                               f"({sib['url']}) captured {sib['retrieved_utc']}; re-de-vigged here "
+                               f"from the retained decimals.")}
+        else:
+            quote.update({"prob_a": sib["prob_a"], "prob_b": sib["prob_b"]})
+            market = {"prob_a": sib["prob_a"], "prob_b": sib["prob_b"],
+                      "overround": None, "n_sources": 1, "sources": [sib["source_key"]],
+                      "volume_usd": None,
+                      "note": (f"No-vig pair inherited from the {sib['session']} board "
+                               f"({sib['url']}, captured {sib['retrieved_utc']}); that board "
+                               f"retained no raw decimals on this row.")}
+        quotes.append(quote)
+
+    flags = ["auto_row_new_listing"]
+    fair_a = fair_b = pick = pick_prob = None
+    basis = None
+    confidence = "Low"
+    blank_reason = None
+    role = "directional"
+    context = [
+        f"This fixture is in the {datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%MZ')} fixtures "
+        f"capture but was not in the curated research ledger, so the row is generated automatically "
+        f"from the retained capture and the site's existing evidence only.",
+    ]
+    sources = []
+    # No slug is ever constructed: HotSpawn publishes no per-match permalink for a
+    # fixture the collector has not seen before, so the row links the official lobby.
+    hotspawn_url = "https://play.hotspawn.com/lobby"
+    if market:
+        fair_a, fair_b = market["prob_a"], market["prob_b"]
+        basis = "market"
+        pick = team_a if fair_a >= fair_b else team_b
+        pick_prob = max(fair_a, fair_b)
+        confidence = "Medium"
+        role = "safe"
+        flags.append("market_line_inherited_from_sibling_board")
+        context.append(f"Line inherited from the {sib['session']} board: {sib['url']} "
+                       f"(read {sib['retrieved_utc']}).")
+        sources.append((f"{sib['label']} quote ({sib['session']})", sib["url"]))
+    elif model:
+        fair_a, fair_b = model["prob_a"], model["prob_b"]
+        basis = "model"
+        pick = team_a if fair_a >= fair_b else team_b
+        pick_prob = max(fair_a, fair_b)
+        confidence = "Lean"
+        role = "safe"
+        flags.append("model_only_no_market_line")
+        context.append("No market quote for this fixture was found in the retained captures, so the "
+                       "line is the canonical Valve-VRS model.")
+        sources.append(("Valve regional standings (official, snapshot 2026-10-05)", VALVE_STANDINGS_URL))
+    else:
+        blank_reason = "new_listing_no_retained_line_and_no_eligible_rating_pair"
+        flags.extend(["probability_blank", "needs_research_next_refresh"])
+        context.append("No retained market quote exists for this fixture and at least one team is "
+                       "absent from Valve's official standings, so no model pair is eligible. "
+                       "A probability is withheld rather than invented.")
+        context.append("The four-hourly collector retries external venues for every open fixture; "
+                       "this row will be priced as soon as one publishes an accepted two-sided line.")
+        sources.append(("Valve regional standings (identity check, official)", VALVE_STANDINGS_URL))
+    sources.append((
+        "HotSpawn fixtures API (official listing for this competition)",
+        "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
+        f"?sport_alias=cs2&status=scheduled&competition_id={api.get('competition_id')}"))
+
+    if start is None or lock is None:
+        drift.append({"fixture_id": fid, "issue": "capture row without parsable start/lock time"})
+
+    return {
+        "fixture_id": fid,
+        "competition": comp, "competition_id": api.get("competition_id"),
+        "tier": tier, "stage": stage, "best_of": api.get("best_of"),
+        "points": points,
+        "status": "scheduled", "start_utc": start, "lock_utc": lock,
+        "team_a": team_a, "team_b": team_b,
+        "participant_a_id": api.get("participants0_id"),
+        "participant_b_id": api.get("participants1_id"),
+        "winner": None,
+        "seen_in": ["api", "auto_row"],
+        "hotspawn_url": hotspawn_url,
+        "hotspawn_url_kind": "official lobby listing (no per-match permalink captured)",
+        "crowd_a": api.get("participants0_picked_percent"),
+        "crowd_b": api.get("participants1_picked_percent"),
+        "crowd_note": "HotSpawn pick'em ownership — context only, never a probability input",
+        "total_picks": api.get("total_picks"),
+        "alias_note": None,
+        "market": market, "quotes": quotes,
+        "model": model,
+        "line": {"prob_a": fair_a, "prob_b": fair_b, "basis": basis,
+                 "pick": pick, "pick_probability": pick_prob,
+                 "confidence": confidence},
+        "ladder": {"safe": pick, "safe_prob": pick_prob, "climb": None, "climb_prob": None,
+                   "climb_odds": None, "swing_cost_pts": None},
+        "role": role,
+        "flags": flags,
+        "blank_reason": blank_reason,
+        "context": context,
+        "sources": sources,
+        "row_origin": "auto_from_capture",
+    }
+
+
+def ledger_row(fx: dict, api, drift: list) -> dict:
+    """Curated row, reconciled against the fresh capture (live ownership wins)."""
+    fid = fx["fixture_id"]
+    team_a, team_b = fx["team_a"], fx["team_b"]
+    crowd_a, crowd_b = fx["crowd_a"], fx["crowd_b"]
+    total_picks = fx.get("total_picks")
+    start_utc, lock_utc = fx["start_utc"], fx["lock_utc"]
+    flags = list(research.PICKS[fid]["flags"])
+    context = list(research.PICKS[fid]["context"])
+    if api is not None:
+        cap_a = api.get("participants0_name")
+        cap_b = api.get("participants1_name")
+        if cap_a and cap_a.casefold() != team_a.casefold():
+            drift.append({"fixture_id": fid, "issue": "capture name variant (team A)",
+                          "ledger": team_a, "capture": cap_a})
+            flags.append("capture_name_variant_verified_same_fixture")
+        if cap_b and cap_b.casefold() != team_b.casefold():
+            drift.append({"fixture_id": fid, "issue": "capture name variant (team B)",
+                          "ledger": team_b, "capture": cap_b})
+            flags.append("capture_name_variant_verified_same_fixture")
+        live_a = api.get("participants0_picked_percent")
+        live_b = api.get("participants1_picked_percent")
+        if live_a is not None and live_b is not None:
+            if (live_a, live_b) != (crowd_a, crowd_b):
+                drift.append({"fixture_id": fid, "issue": "crowd ownership moved",
+                              "ledger": [crowd_a, crowd_b], "capture": [live_a, live_b]})
+                context.append(f"Crowd ownership moved since the research ledger capture: "
+                               f"{team_a} {crowd_a}%/{team_b} {crowd_b}% → "
+                               f"{team_a} {live_a}%/{team_b} {live_b}% (ownership only; it never "
+                               f"enters the probability).")
+            crowd_a, crowd_b = live_a, live_b
+        if api.get("total_picks") is not None:
+            total_picks = api.get("total_picks")
+        cap_start = _iso(_ms(api.get("scheduled_start_time")))
+        cap_lock = _iso(_ms(api.get("lock_time")))
+        if cap_start and cap_start != start_utc:
+            drift.append({"fixture_id": fid, "issue": "kickoff rescheduled",
+                          "ledger": start_utc, "capture": cap_start})
+            flags.append("kickoff_rescheduled_after_research")
+        if cap_start:
+            start_utc = cap_start
+        if cap_lock:
+            lock_utc = cap_lock
+    return ledger_row_body(fx, team_a, team_b, crowd_a, crowd_b, total_picks,
+                           start_utc, lock_utc, flags, context)
+
+
+def ledger_row_body(fx, team_a, team_b, crowd_a, crowd_b, total_picks,
+                    start_utc, lock_utc, flags, context) -> dict:
+    fid = fx["fixture_id"]
+    pick = research.PICKS[fid]
+    line_entry = research.LINES.get(fid)
+    market = None
+    quotes = []
+    if line_entry and line_entry.get("kind") == "market":
+        da, db = line_entry["decimals"]
+        pa, pb, over = devig(da, db)
+        market = {
+            "prob_a": round(pa, 4), "prob_b": round(pb, 4),
+            "overround": round(over, 4),
+            "n_sources": 2 if line_entry.get("url2") else 1,
+            "sources": [line_entry["basis"]],
+            "volume_usd": line_entry.get("volume_usd"),
+            "note": line_entry["note"],
+        }
+        quotes.append({
+            "source_key": line_entry["basis"], "decimal_a": da, "decimal_b": db,
+            "prob_a": round(pa, 4), "prob_b": round(pb, 4),
+            "overround": round(over, 4),
+            "public_url": line_entry["url"],
+            "retrieved_utc": research.RETRIEVED_UTC,
+        })
+        if line_entry.get("url2"):
             quotes.append({
-                "source_key": line_entry["basis"], "decimal_a": da, "decimal_b": db,
-                "prob_a": round(pa, 4), "prob_b": round(pb, 4),
-                "overround": round(over, 4),
-                "public_url": line_entry["url"],
+                "source_key": line_entry["basis"] + "-second",
+                "public_url": line_entry["url2"],
+                "note": "second independent source; see market note",
                 "retrieved_utc": research.RETRIEVED_UTC,
             })
-            if line_entry.get("url2"):
-                quotes.append({
-                    "source_key": line_entry["basis"] + "-second",
-                    "public_url": line_entry["url2"],
-                    "note": "second independent source; see market note",
-                    "retrieved_utc": research.RETRIEVED_UTC,
-                })
-            if line_entry.get("decimals2"):
-                da2, db2 = line_entry["decimals2"]
-                pa2, pb2, over2 = devig(da2, db2)
-                quotes[-1].update({
-                    "decimal_a": da2, "decimal_b": db2,
-                    "prob_a": round(pa2, 4), "prob_b": round(pb2, 4),
-                    "overround": round(over2, 4),
-                })
+        if line_entry.get("decimals2"):
+            da2, db2 = line_entry["decimals2"]
+            pa2, pb2, over2 = devig(da2, db2)
+            quotes[-1].update({
+                "decimal_a": da2, "decimal_b": db2,
+                "prob_a": round(pa2, 4), "prob_b": round(pb2, 4),
+                "overround": round(over2, 4),
+            })
 
-        model = None
-        key_a = research.vrs_key(fx["team_a"])
-        key_b = research.vrs_key(fx["team_b"])
-        va = research.VRS.get(key_a) if key_a else None
-        vb = research.VRS.get(key_b) if key_b else None
-        if va and vb and key_a not in research.VRS_ABSENT and key_b not in research.VRS_ABSENT:
-            delta = va["points"] - vb["points"]
-            model = {
-                "vrs": {"delta": delta, "points_a": va["points"], "points_b": vb["points"],
-                        "standing_a": va["standing"], "standing_b": vb["standing"],
-                        "region_a": "global", "region_b": "global",
-                        "vrs_name_a": key_a, "vrs_name_b": key_b,
-                        "snapshot_a": va.get("snapshot", "2026_10_05"),
-                        "snapshot_b": vb.get("snapshot", "2026_10_05")},
-                "prob_a": round(vrs_prob(va["points"], vb["points"]), 4),
-                "prob_b": round(vrs_prob(vb["points"], va["points"]), 4),
-                "basis": "valve_vrs_k0.25",
-            }
+    model = model_block(team_a, team_b)
+    fair_a, fair_b = pick["fair_a"], pick["fair_b"]
+    if fair_a is not None:
+        assert abs((fair_a + fair_b) - 1.0) < 1e-9, fid
+    real_market = bool(market) and (
+        (market.get("volume_usd") is None)
+        or (market.get("volume_usd") or 0) > 0
+        or market["n_sources"] >= 2)
+    if real_market and (market["n_sources"] >= 2
+                        or (model and abs(market["prob_a"] - model["prob_a"]) < 0.08)):
+        confidence = "High"
+    elif real_market:
+        confidence = "Medium"
+    elif model:
+        confidence = "Lean"
+    else:
+        confidence = "Low"
 
-        fair_a, fair_b = pick["fair_a"], pick["fair_b"]
-        if fair_a is not None:
-            assert abs((fair_a + fair_b) - 1.0) < 1e-9, fid
-        # A real market has traded volume or a non-Polymarket (bookmaker) source;
-        # $0.00-volume Polymarket AMM seeds are evidence, never lines.
-        real_market = bool(market) and (
-            (market.get("volume_usd") is None)  # bookmaker aggregate (stavka/egw/kushvsporte)
-            or (market.get("volume_usd") or 0) > 0
-            or market["n_sources"] >= 2)
-        if real_market and (market["n_sources"] >= 2
-                            or (model and abs(market["prob_a"] - model["prob_a"]) < 0.08)):
-            confidence = "High"
-        elif real_market:
-            confidence = "Medium"
-        elif model:
-            confidence = "Lean"
-        else:
-            confidence = "Low"
+    ladder = {"safe": pick["pick"], "safe_prob": pick["pick_prob"],
+              "climb": None, "climb_prob": None, "climb_odds": None,
+              "swing_cost_pts": None}
+    if pick.get("climb"):
+        ladder.update({"climb": pick["climb"]["pick"],
+                       "climb_prob": pick["climb"]["pick_prob"],
+                       "climb_odds": pick["climb"]["odds_ref"],
+                       "climb_side": pick["climb"].get("side"),
+                       "climb_gates": pick["climb"].get("gates"),
+                       "swing_cost_pts": pick["climb"]["swing_cost_pts"]})
 
-        ladder = {"safe": pick["pick"], "safe_prob": pick["pick_prob"],
-                  "climb": None, "climb_prob": None, "climb_odds": None,
-                  "swing_cost_pts": None}
-        if pick.get("climb"):
-            ladder.update({"climb": pick["climb"]["pick"],
-                           "climb_prob": pick["climb"]["pick_prob"],
-                           "climb_odds": pick["climb"]["odds_ref"],
-                           "climb_side": pick["climb"].get("side"),
-                           "climb_gates": pick["climb"].get("gates"),
-                           "swing_cost_pts": pick["climb"]["swing_cost_pts"]})
-
-        rows.append({
-            "fixture_id": fid,
-            "competition": fx["competition"], "competition_id": fx["competition_id"],
-            "tier": fx["tier"], "stage": fx["stage"], "best_of": fx["best_of"],
-            "points": fx["points"],
-            "status": "scheduled", "start_utc": fx["start_utc"], "lock_utc": fx["lock_utc"],
-            "team_a": fx["team_a"], "team_b": fx["team_b"],
-            "participant_a_id": fx.get("participants_a_id"), "participant_b_id": fx.get("participants_b_id"),
-            "winner": None,
-            "seen_in": ["lobby_page", "api"],
-            "hotspawn_url": fx["hotspawn_url"], "hotspawn_url_kind": "match page",
-            "crowd_a": fx["crowd_a"], "crowd_b": fx["crowd_b"],
-            "crowd_note": "HotSpawn pick'em ownership — context only, never a probability input",
-            "total_picks": fx["total_picks"],
-            "alias_note": fx.get("alias_note"),
-            "market": market, "quotes": quotes,
-            "model": model,
-            "line": {"prob_a": fair_a, "prob_b": fair_b, "basis": pick["basis"],
-                     "pick": pick["pick"], "pick_probability": pick["pick_prob"],
-                     "confidence": confidence},
-            "ladder": ladder,
-            "role": pick["role"],
-            "flags": pick["flags"],
-            "blank_reason": pick.get("blank_reason"),
-            "context": pick["context"],
-            "sources": pick["sources"],
-        })
-    return rows
+    return {
+        "fixture_id": fid,
+        "competition": fx["competition"], "competition_id": fx["competition_id"],
+        "tier": fx["tier"], "stage": fx["stage"], "best_of": fx["best_of"],
+        "points": fx["points"],
+        "status": "scheduled", "start_utc": start_utc, "lock_utc": lock_utc,
+        "team_a": team_a, "team_b": team_b,
+        "participant_a_id": fx.get("participants_a_id"), "participant_b_id": fx.get("participants_b_id"),
+        "winner": None,
+        "seen_in": ["lobby_page", "api"],
+        "hotspawn_url": fx["hotspawn_url"], "hotspawn_url_kind": "match page",
+        "crowd_a": crowd_a, "crowd_b": crowd_b,
+        "crowd_note": "HotSpawn pick'em ownership — context only, never a probability input",
+        "total_picks": total_picks,
+        "alias_note": fx.get("alias_note"),
+        "market": market, "quotes": quotes,
+        "model": model,
+        "line": {"prob_a": fair_a, "prob_b": fair_b, "basis": pick["basis"],
+                 "pick": pick["pick"], "pick_probability": pick["pick_prob"],
+                 "confidence": confidence},
+        "ladder": ladder,
+        "role": pick["role"],
+        "flags": flags,
+        "blank_reason": pick.get("blank_reason"),
+        "context": context,
+        "sources": pick["sources"],
+        "row_origin": "curated_ledger_reconciled",
+    }
 
 
-def build_board(rows: list[dict]) -> dict:
+def open_for_picks(start_utc, lock_utc, now) -> bool:
+    reference = lock_utc or start_utc
+    if not reference:
+        return False
+    try:
+        when = datetime.strptime(reference, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except ValueError:
+        return False
+    return when > now
+
+
+def build_rows(capture_path=None, now=None) -> tuple[list[dict], dict]:
+    """Rebuild every row from the fresh capture; return (rows, inventory report)."""
+    now = now or datetime.now(timezone.utc)
+    raw = load_capture(capture_path)
+    fixtures = [f for f in (raw.get("fixtures") or []) if f.get("id")]
+    api_rows = {str(r["id"]): r for r in fixtures}
+    capture_utc = (raw.get("meta") or {}).get("captured_utc")
+    drift: list[dict] = []
+    rows: list[dict] = []
+    dropped: list[dict] = []
+    ledger_ids = [fx["fixture_id"] for fx in research.FIXTURES]
+    present = [fid for fid in ledger_ids if fid in api_rows]
+    degraded_reasons = []
+    if not fixtures:
+        degraded_reasons.append("capture returned no fixtures")
+    elif len(present) * 2 < len(ledger_ids):
+        degraded_reasons.append(
+            f"capture covers only {len(present)} of {len(ledger_ids)} researched fixtures")
+    degraded = bool(degraded_reasons)
+
+    for fx in research.FIXTURES:
+        fid = fx["fixture_id"]
+        api = api_rows.get(fid)
+        if api is None and not degraded:
+            if open_for_picks(fx["start_utc"], fx["lock_utc"], now):
+                dropped.append({"fixture_id": fid, "reason": "absent from the fresh capture"})
+            else:
+                dropped.append({"fixture_id": fid, "reason": "lock time has passed"})
+            continue
+        if api is None and degraded and not open_for_picks(fx["start_utc"], fx["lock_utc"], now):
+            dropped.append({"fixture_id": fid, "reason": "lock time has passed (retained inventory)"})
+            continue
+        row = ledger_row(fx, None if degraded else api, drift)
+        if degraded:
+            row["flags"] = list(row["flags"]) + ["retained_inventory_capture_degraded"]
+        if not open_for_picks(row["start_utc"], row["lock_utc"], now):
+            dropped.append({"fixture_id": fid, "reason": "lock time has passed"})
+            continue
+        rows.append(row)
+
+    auto_added = []
+    if not degraded:
+        for fid in sorted(api_rows):
+            if fid in ledger_ids:
+                continue
+            api = api_rows[fid]
+            start, lock = _iso(_ms(api.get("scheduled_start_time"))), _iso(_ms(api.get("lock_time")))
+            if not open_for_picks(start, lock, now):
+                dropped.append({"fixture_id": fid, "reason": "lock time has passed"})
+                continue
+            row = auto_row(api, drift)
+            rows.append(row)
+            auto_added.append({"fixture_id": fid, "teams": f"{row['team_a']} vs {row['team_b']}",
+                               "basis": row["line"]["basis"], "pick": row["line"]["pick"],
+                               "blank_reason": row["blank_reason"]})
+
+    rows.sort(key=lambda r: (r["start_utc"] or "9999", r["fixture_id"]))
+    inventory = {
+        "mode": "retained_inventory" if degraded else "fresh_capture",
+        "capture_utc": capture_utc,
+        "capture_path": ("data/1c8f79f8/fixtures_raw.json" if capture_path is None
+                         else str(Path(capture_path))),
+        "capture_fixtures": len(fixtures),
+        "researched_fixtures_present": len(present),
+        "open_rows": len(rows),
+        "auto_rows": len(auto_added),
+        "auto_added": auto_added,
+        "dropped": dropped,
+        "drift": drift,
+        "degraded_reasons": degraded_reasons,
+        "evaluated_utc": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "policy": ("Every fixture in the fresh capture stays on the board. New listings are priced "
+                   "from an exact fixture-id quote retained in another session's published board, "
+                   "else from the canonical Valve-VRS model, else blank + flagged. Ownership drift "
+                   "is recorded, never fatal."),
+    }
+    return rows, inventory
+
+
+def build_board(rows: list[dict], inventory: dict | None = None) -> dict:
     # count by the PUBLISHED basis, not by the presence of a market dict
     # (some rows carry an untrained $0-volume Polymarket seed that is
     # retained as evidence but never weighted as a line)
+    inventory = inventory or {}
     n_market = sum(1 for r in rows if r["line"]["basis"] in ("market", "blend"))
     n_model_only = sum(1 for r in rows if r["line"]["basis"] == "model")
     n_blank = sum(1 for r in rows if r["line"]["basis"] is None)
@@ -213,21 +567,25 @@ def build_board(rows: list[dict]) -> dict:
         (r["market"].get("volume_usd") is None)
         or (r["market"].get("volume_usd") or 0) > 0
         or r["market"]["n_sources"] >= 2))
+    n_blank_pick = sum(1 for r in rows if r["line"]["basis"] is None and not r["line"]["pick"])
     return {
         "session": "1c8f79f8",
         "generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "snapshot_utc": "2026-10-16T20:50:00Z",
-        "fixture_source_read_utc": "2026-10-16T20:50:00Z",
+        "snapshot_utc": inventory.get("capture_utc") or "2026-10-16T20:50:00Z",
+        "fixture_source_read_utc": inventory.get("capture_utc") or "2026-10-16T20:50:00Z",
         "week": "TWC 2026 day 4 (2026-10-17)",
         "summary": {
             "fixtures_total": len(rows), "open": len(rows),
             "open_with_market": n_market, "open_real_market": n_real_market,
         "open_model_only": n_model_only,
             "open_blank": n_blank, "open_with_pick": n_pick,
+            "open_auto_rows": inventory.get("auto_rows", 0),
+            "open_without_direction": n_blank_pick,
             "climb_picks": n_climb,
             "contrarian_picks": sum(1 for r in rows if r["role"] == "contrarian"),
             "twc_semifinals": 2, "twc_not_listed_on_hotspawn": True,
         },
+        "inventory": inventory,
         "calibration": {"k": K_FIT, "fitted": True,
                         "source": "data/fe803b80/board.json calibration block "
                                   "(fitted on 15 bookmaker pairs; bounds [0.25, 1.5])"},
@@ -335,7 +693,7 @@ def page(title: str, active: str, body: str, generated: str) -> str:
 <body><header class="site"><div class="wrap"><strong style="font-size:14px">Day-4 desk · 1c8f79f8</strong>{nav}</div></header>
 <main class="wrap">
 {body}
-<p class="mut">Generated {esc(generated)} · session 1c8f79f8 · fixtures API snapshot {esc('2026-10-16T20:50Z')} · all external lines read 2026-10-16T19:35–20:50Z · <a href="method.html">method &amp; sources</a> · <a href="https://play.hotspawn.com/lobby">HotSpawn lobby</a></p>
+<p class="mut">Generated {esc(generated)} · session 1c8f79f8 · fixtures API snapshot {esc(SNAPSHOT_STAMP)} · external lines read {esc(LINES_READ_STAMP)} · <a href="method.html">method &amp; sources</a> · <a href="https://play.hotspawn.com/lobby">HotSpawn lobby</a></p>
 </main></body></html>"""
 
 
@@ -376,19 +734,20 @@ def index_html(board: dict) -> str:
                 r["crowd_b"] if r["line"]["pick"].casefold() == r["team_b"].casefold() else r["crowd_a"]))
     body = f"""
 <p class="eyebrow">Thunderpick World Championship 2026 · Malta · day 4 (Oct 17) + every open HotSpawn CS2 match</p>
-<h1>Day-4 picks: two semifinals, 21 lobby matches, every row sourced</h1>
+<h1>Day-4 picks: two semifinals, {s['open']} open lobby matches, every row sourced</h1>
 <p>BetBoom beat Legacy 2-1 in the Group B decider (Mirage 13-11; Magnojez 1.17) —
 <strong>semifinal 2 is Falcons vs BETBOOM</strong>, 17:00 UTC. Semifinal 1 is
 <strong>FURIA vs Aurora</strong>, 14:00 UTC. Neither semifinal is listed on the
 HotSpawn pick'em lobby (verified: the fixtures API has no TWC Malta competition),
 so both are originated externally and flagged not-listed. The lobby itself carries
-<strong>21 open CS2 fixtures</strong> across seven tournaments, Oct 17–20.</p>
+<strong>{s['open']} open CS2 fixtures</strong> across the tournaments in the {esc(SNAPSHOT_STAMP)} snapshot.</p>
 <div class="cards">
-  <div class="card"><div class="card-num">21</div><div class="card-label">open lobby fixtures — a pick for every one</div></div>
+  <div class="card"><div class="card-num">{s['open']}</div><div class="card-label">open lobby fixtures — every one on the board</div></div>
   <div class="card"><div class="card-num">{s['open_with_market']}</div><div class="card-label">priced from external market lines</div></div>
   <div class="card"><div class="card-num">{s['open_model_only']}</div><div class="card-label">originated from the Valve-VRS model</div></div>
   <div class="card"><div class="card-num">{s['open_blank']}</div><div class="card-label">probability blank + flagged (policy)</div></div>
   <div class="card"><div class="card-num">{s['climb_picks']}</div><div class="card-label">contrarian climb swings (gates passed)</div></div>
+  <div class="card"><div class="card-num">{s.get('open_auto_rows', 0)}</div><div class="card-label">rows auto-added from the live capture (new listings)</div></div>
 </div>
 <h2>The two day-4 semifinal picks (TWC Malta — not on HotSpawn)</h2>
 <p><a class="btn" href="picks.html#twc">Semifinal picks + probabilities</a>
@@ -430,8 +789,8 @@ and the unpriced TWC Sunday matches.</p>
 
 # ---------------------------------------------------------------- picks.html
 def picks_html(board: dict) -> str:
-    parts = ["""
-<p class="eyebrow">Every open match · 2026-10-16T20:50Z snapshot</p>
+    parts = [f"""
+<p class="eyebrow">Every open match · {esc(SNAPSHOT_STAMP)} snapshot</p>
 <h1>All picks: every open HotSpawn CS2 match</h1>
 <p>One row per open fixture. Fair probability is the de-vigged external market price where a real
 two-sided market exists, the canonical Valve-VRS model (k=0.25) where it does not, and a documented
@@ -469,7 +828,7 @@ semifinals resolve — the opponents are TBD. Documented in <a href="unresolved.
 """)
 
     # lobby block
-    parts.append('<h2 id="lobby">HotSpawn pick\'em lobby — all 21 open fixtures</h2>')
+    parts.append(f'<h2 id="lobby">HotSpawn pick\'em lobby — all {len(board["open"])} open fixtures</h2>')
     parts.append('<div class="tablewrap"><table class="responsive"><thead><tr><th>Match</th><th>When (UTC)</th><th>Crowd ownership (context)</th><th>Line basis</th><th>Fair probabilities</th><th>Pick</th><th>Prob</th><th>Role</th><th>Sources</th></tr></thead><tbody>')
     for r in board["open"]:
         a, b = r["team_a"], r["team_b"]
@@ -589,27 +948,64 @@ opponents are TBD. This is a limitation, not a blank to fill later without evide
 # ---------------------------------------------------------------- unresolved.html
 def unresolved_html(board: dict) -> str:
     blanks = [r for r in board["open"] if r["line"]["prob_a"] is None]
+    locks = sorted(r["lock_utc"] for r in board["open"] if r.get("lock_utc"))
+    next_lock = locks[0] if locks else "unpublished"
     bits = []
     for r in blanks:
         bits.append(f"""
 <details open><summary>{esc(r['team_a'])} vs {esc(r['team_b'])} — {esc(r['competition'])} ({esc(r['start_utc'][:16].replace('T',' '))}Z) — probability BLANK</summary>
 <div class="inner">
 <p><span class="tag blank">{esc(r['blank_reason'])}</span></p>
-<p><strong>What was tried</strong> (all read 2026-10-16T19:35–20:50Z):</p>
+<p><strong>What was tried</strong> (source reads {esc(LINES_READ_STAMP)}):</p>
 <ul>{''.join(f'<li>{esc(c)}</li>' for c in r['context'])}</ul>
-<p><strong>Why no number is published:</strong> no venue publishes a two-sided price for this match, and the
-site's origination policy requires both teams to be unambiguously present in Valve's official VRS table —
-the opponent is absent, so a model line cannot be originated. The pick direction above comes from verified
-context only and carries no probability.</p>
+<p><strong>Why no number is published:</strong> the row records its own reason
+(<code>{esc(r['blank_reason'])}</code>). Either no venue publishes an accepted two-sided price for this
+match, or at least one team is absent from Valve's official standings so no model pair is eligible. A
+probability is withheld rather than invented; any pick direction shown comes from verified context only and
+carries no probability.</p>
 <p>Sources: {source_links(r['sources'])}</p>
 </div></details>""")
+    inv = board.get("inventory") or {}
+    auto_rows = [r for r in board["open"] if r.get("row_origin") == "auto_from_capture"]
+    auto_bits = "".join(
+        f"<li><strong>{esc(r['team_a'])} vs {esc(r['team_b'])}</strong> — {esc(r['competition'] or 'competition not in capture')}, "
+        f"starts {esc((r['start_utc'] or 'unpublished')[:16].replace('T',' '))}Z — "
+        f"basis <code>{esc(r['line']['basis'] or 'blank')}</code>, "
+        f"pick <code>{esc(r['line']['pick'] or 'none — see the blank row above')}</code></li>"
+        for r in auto_rows)
+    gen = (f"<p>Last local rebuild {esc(inv.get('evaluated_utc') or board.get('generated_utc') or 'unverified')} "
+           f"against the {esc(inv.get('mode') or 'unrecorded')} capture "
+           f"<code>{esc(inv.get('capture_path') or 'unrecorded')}</code>"
+           + (f" (captured {esc(inv.get('capture_utc'))})" if inv.get("capture_utc") else "")
+           + f", covering {esc(inv.get('capture_fixtures', 'unverified'))} listed fixtures.</p>")
+    if inv.get("degraded_reasons"):
+        gen += ("<p class='mut'><strong>Retained-inventory mode:</strong> "
+                + esc("; ".join(inv["degraded_reasons"]))
+                + ". The board keeps the last researched fixtures with a flag instead of shrinking "
+                  "silently; every retained row carries "
+                  "<code>retained_inventory_capture_degraded</code>.</p>")
+    if inv.get("drift"):
+        gen += ("<p class='mut'>Live drift recorded this rebuild: "
+                + esc("; ".join(f"{d['fixture_id']} {d['issue']}" for d in inv["drift"][:12]))
+                + (f" (+{len(inv['drift']) - 12} more)" if len(inv["drift"]) > 12 else "")
+                + ". Ownership and kickoff drift are context; they never change a probability.</p>")
+    auto_section = f"""
+<h2>Rows generated automatically from the live capture</h2>
+{gen}
+{'<ul>' + auto_bits + '</ul>' if auto_bits else '<p>No fixture outside the curated ledger was listed in this capture. The path that adds them (exact fixture-id quote reuse → Valve-VRS model → blank + flag) is exercised by tests/test_1c8f79f8.py.</p>'}
+<p>Every fixture the lobby lists stays on the <a href="picks.html">picks table</a>: a new listing is either
+priced from an exact fixture-id quote retained in another published board, priced by the canonical Valve-VRS
+model when both teams are in Valve's official standings, or published as a blank row with its reason. Nothing
+is dropped for being low-tier.</p>
+"""
     body = f"""
 <p class="eyebrow">Unresolved picks &amp; limitations — nothing here is guessed</p>
 <h1>Unresolved picks and limitations</h1>
-<p>Two of 21 lobby fixtures keep a <strong>blank probability</strong> by policy, and several other gaps are
-documented rather than filled. Each blank lists everything that was tried and the exact reason no number
-can be published.</p>
-<h2>Probability blanks (2 of 21)</h2>
+<p>{len(blanks)} of {len(board['open'])} open lobby fixtures keep a <strong>blank probability</strong> by
+policy, and several other gaps are documented rather than filled. Each blank lists everything that was tried
+and the exact reason no number can be published. A blank is never a 50/50 estimate.</p>
+<h2>Probability blanks ({len(blanks)} of {len(board['open'])})</h2>
+{auto_section}
 {''.join(bits)}
 <h2>Other documented limitations</h2>
 <details><summary>Semifinal 2 has no published line anywhere</summary><div class="inner">
@@ -640,9 +1036,10 @@ the widget discrepancy is flagged on the row.</p></div></details>
 Ownership percentages are recorded at the 20:50Z snapshot as context only; they never enter any probability.
 The 4-hour refresh re-captures them.</p></div></details>
 <details><summary>Staleness bound</summary><div class="inner">
-<p>Fixture snapshot 2026-10-16T20:50Z; external lines read 19:35–20:50Z. The desk refreshes every 4 hours
-(workflow <code>day4-1c8f79f8.yml</code>, cron <code>23 */4 * * *</code>). Matches lock 6 minutes before
-kickoff (verified lock_offset_sec=360); the earliest lock in this set is 2026-10-17T07:54Z.</p></div></details>
+<p>Fixture snapshot {esc(SNAPSHOT_STAMP)}; external lines read {esc(LINES_READ_STAMP)}. The desk refreshes
+every 4 hours (workflow <code>day4-1c8f79f8.yml</code>, cron <code>23 */4 * * *</code>). Matches lock
+6 minutes before kickoff (verified lock_offset_sec=360); the next lock in this snapshot is
+{esc(next_lock)}.</p></div></details>
 <h2>In-site links</h2>
 <p><a href="index.html">Executive summary</a> · <a href="picks.html">All picks with per-row sources</a> ·
 <a href="twc-review.html">TWC day 1–3 verified review</a> · <a href="flagged.html">Flagged irregularities</a> ·
@@ -705,6 +1102,20 @@ def flagged_html(board: dict) -> str:
          "it explains the 22-vs-21 open-row difference between boards and is not a day-4 fixture.",
          [("Fixtures API (per-competition capture, evidence retained in data/1c8f79f8/evidence/)", "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&status=scheduled&competition_id=36412"),
           ("fe803b80 board (the 22-open capture being diffed)", "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/fe803b80/board.json")]),
+        ("CORRECTED: the day-1 9z-Aurora Nuke map score (13-1, not 13-4)",
+         "The first published version of this desk's day-1 table read 'Nuke 13-4'. That value is wrong. "
+         "Eight independent captures retained in this repository carry Nuke 13-1 for 9z (the "
+         "b3b89eec verification even retains the half scores 11:1 and 2:0), and 13-4 is the day-3 "
+         "Inferno score in the same table -- the two were transposed. The row is corrected to "
+         "13-1 and the discrepancy is recorded here, in the integration verification page and in "
+         "the research ledger comment. No probability was ever derived from the map score: results "
+         "are editorial context and never enter the line.",
+         [("HLTV match page for the day-1 series (result source cited by every prior session)",
+           "https://www.hltv.org/matches/2399384/9z-vs-aurora-thunderpick-world-championship-2026"),
+          ("HLTV report 45718 - 9z beat Aurora to kick off TWC 2026",
+           "https://www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026"),
+          ("Official HotSpawn day-1 review (publisher report)",
+           "https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-day-1-review")]),
         ("HLTV's match-page percentage widget is a fan vote, not a price",
          "The 'Pick a winner — please login to vote' widget on HLTV match pages (e.g. Aurora 73.5% on the "
          "FURIA match, NIP 52.7% on the HEROIC match) is a crowd vote. It is recorded as sentiment context "
@@ -744,7 +1155,7 @@ def method_html(board: dict) -> str:
 parameters — <code>sport_alias</code>, <code>status</code> and <code>competition_id</code> (discovered this
 session; <code>from</code>, <code>limit</code> and <code>tier</code> are rejected with 400 "property should
 not exist"). The <code>competition_id</code> filter returns a small single-chunk JSON per tournament, which
-is how this desk captures cleanly: seven per-competition captures cover all 21 open fixtures. The unfiltered
+is how this desk captures cleanly: seven per-competition captures cover every open fixture. The unfiltered
 response spans 9 chunks and mixes in stale rows. Every raw response is retained verbatim under
 <code>data/1c8f79f8/evidence/</code> before any derivation.</p>
 <p>Verified API fields per row: <code>id</code>, <code>competition_id/name</code>,
@@ -790,6 +1201,24 @@ Field Level Media/Reuters, dust2.us, Liquipedia.</li>
 <li>Never used as prices: HotSpawn crowd %, HLTV fan-vote widgets, strafe user votes, egamersworld
 prediction-bot votes, placeholder 1.8/1.8 pairs, $0-volume Polymarket seeds.</li>
 </ol>
+<h2>New listings the ledger has never seen (repair, 2026-10-16)</h2>
+<p>The board is rebuilt from the fresh fixtures capture, not from the curated ledger alone. A fixture that
+appears in the capture but not in the ledger gets a row automatically, priced in this order:</p>
+<ol>
+<li>an <strong>exact fixture-id quote</strong> retained in another published board on this site (the
+canonical every-match board, the full-coverage board, the o<em>urline</em> board, the exec board or the
+research-resolved board) — the sibling board's raw decimals and its public URL and read time are republished
+verbatim and re-de-vigged here;</li>
+<li>otherwise the <strong>canonical Valve-VRS model</strong>, when both teams are unambiguously present in
+Valve's official standings;</li>
+<li>otherwise a <strong>blank probability with a published reason</strong> and a note that the four-hourly
+collector retries every external venue.</li>
+</ol>
+<p>Fixture-id equality is the join key, so no alias, sibling rating or tournament-slot guess is introduced.
+Live drift between the ledger and the capture — ownership percentages, rescheduled kickoffs, name rendering
+— is recorded on the row (<code>inventory.drift</code>) instead of aborting the rebuild, and a capture that
+returns empty or truncated keeps the last researched inventory with a
+<code>retained_inventory_capture_degraded</code> flag rather than publishing a silently smaller board.</p>
 <h2>Refresh cadence and evidence</h2>
 <p><code>.github/workflows/day4-1c8f79f8.yml</code> re-runs the collector and this builder every 4 hours
 (cron <code>23 */4 * * *</code>, inside the required 4–8 h window) and after upstream board refreshes.
@@ -807,9 +1236,13 @@ COORDINATION.md. Integration into the landing page is additive only (one NAV/exe
 
 # ---------------------------------------------------------------- main
 def main() -> int:
+    global SNAPSHOT_STAMP, LINES_READ_STAMP
     OUT.mkdir(parents=True, exist_ok=True)
-    rows = build_rows()
-    board = build_board(rows)
+    rows, inventory = build_rows()
+    board = build_board(rows, inventory)
+    if inventory.get("capture_utc"):
+        SNAPSHOT_STAMP = inventory["capture_utc"][:16].replace("T", "T") + "Z"
+    LINES_READ_STAMP = f"ledger read {research.RETRIEVED_UTC}"
     (DATA / "board.json").write_text(json.dumps(board, indent=1), encoding="utf-8")
     generated = board["generated_utc"]
     (OUT / "index.html").write_text(page("Start here · TWC day-4 desk", "index.html", index_html(board), generated), encoding="utf-8")
@@ -819,7 +1252,9 @@ def main() -> int:
     (OUT / "flagged.html").write_text(page("Flagged irregularities", "flagged.html", flagged_html(board), generated), encoding="utf-8")
     (OUT / "method.html").write_text(page("Method & sources", "method.html", method_html(board), generated), encoding="utf-8")
     print(f"board.json: {len(board['open'])} open rows; "
-          f"{board['summary']['open_with_market']} market / {board['summary']['open_model_only']} model / {board['summary']['open_blank']} blank")
+          f"{board['summary']['open_with_market']} market / {board['summary']['open_model_only']} model / "
+          f"{board['summary']['open_blank']} blank; "
+          f"{inventory.get('auto_rows', 0)} auto-added from the capture; mode={inventory.get('mode')}")
     print(f"pages written to {OUT}")
     return 0
 
