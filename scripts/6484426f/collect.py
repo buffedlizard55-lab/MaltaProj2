@@ -288,12 +288,11 @@ def collect_bo3gg(pages: int = 4) -> dict:
         url = (f"{BO3}/matches/?filter%5Bmatches.discipline_id%5D%5Beq%5D=1"
                f"&filter%5Bmatches.status%5D%5Bin%5D=upcoming"
                f"&page%5Boffset%5D={page * 100}&page%5Blimit%5D=100")
-        status, body, err = fetch(url)
-        last_status = status or last_status
-        LOG[f"bo3gg_page_{page}"] = {"url": url, "status": status, "bytes": len(body or b""),
-                                     "error": err, "read_utc": iso_now()}
-        if err and not body:
-            error = error or err
+        body, meta = fetch(url)
+        last_status = meta.get("status") or last_status
+        LOG[f"bo3gg_page_{page}"] = dict(meta)
+        if meta.get("error") or not body:
+            error = error or meta.get("error") or "empty response"
             continue
         if not body:
             continue
@@ -510,8 +509,11 @@ def main() -> int:
               "kalshi_rejected": kalshi.get("rejected") or [],
               "valve": {"commit": (valve.get("commit") or {}).get("sha") if isinstance(valve.get("commit"), dict)
                         else valve.get("commit"), "files": sorted(valve.get("files") or {})},
-              "http": {k: {"status": v.get("status"), "bytes": v.get("bytes"), "error": v.get("error"),
-                           "read_utc": v.get("read_utc")} for k, v in LOG.items()}}
+              # A collector that crashed must be visible in the committed evidence, not silently
+              # reported as zero rows.
+              "http": {k: {key: v.get(key) for key in ("status", "bytes", "error", "crash", "read_utc",
+                                                       "rows", "cs2_matchups", "fixtures_in_transfer_state")
+                           if v.get(key) is not None} for k, v in LOG.items()}}
     (SRC / "capture_digest.json").write_text(json.dumps(digest, indent=1, ensure_ascii=False) + "\n")
     (SRC / "capture.json").write_text(json.dumps(capture, indent=1, ensure_ascii=False) + "\n")
     (SRC / "access_log.json").write_text(json.dumps({"session": "6484426f", "log": LOG},
