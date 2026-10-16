@@ -75,6 +75,9 @@ NAV = [
     ("index.html", "Home"),
     # 'hub' entry added by session 7c2622db (mobile pick'em hub); additive single entry.
     ("hub/index.html", "Pick'em hub (every match)"),
+    # 'desk' entry added by session 6484426f (every-match picks desk) during its integration pass;
+    # additive single entry so the desk's executive summary is reachable from the landing nav.
+    ("desk/index.html", "Picks desk (6484426f)"),
     ("picks-every-match/index.html", "All CS2 picks"),
     ("picks-every-match/unresolved.html", "Unresolved"),
     ("day-one.html", "Day-one review"),
@@ -148,6 +151,21 @@ def executive_summary_html():
          "Pick + both win probabilities for every open match in its dated capture, with the crowd "
          "share shown as ownership only; separate Unresolved picks &amp; limitations section.",
          _board_stamp("data/7c2622db/hub.json", "generated_utc")),
+        # 6484426f integration (additive): the every-match picks desk. It re-derives one pick and
+        # both win probabilities from retained external prices, publishes an originated line only
+        # where no external price exists, and carries its own unresolved / flagged / verification
+        # pages; its executive summary links every list on it.
+        ("desk/index.html", "Picks desk &amp; Thunderpick day-3 calls (6484426f)",
+         "Mobile executive summary: one pick and both win probabilities per open HotSpawn fixture "
+         "(bookmaker / esportsbook / exchange / originated), plus the day-1 upset review, the sourced "
+         "Aurora roster check and a separate unresolved &amp; limitations section.",
+         _board_stamp("data/6484426f/board.json", "generated_utc")),
+        ("desk/picks.html", "Desk: every open match as one card",
+         "Both probabilities, the pick, the basis label, the crowd share as ownership only, and the "
+         "source links behind each row.", None),
+        ("desk/unresolved.html", "Desk: unresolved picks &amp; limitations",
+         "The separate ledger: what was attempted per row, the ambiguity/alias decisions and the "
+         "limits of the originated-line tier.", None),
         ("hub/twc.html", "Day 1 &amp; day 2 review → day 3 desk",
          "Every result and line with its own source link, the dated Aurora roster timeline "
          "(premise could not be verified) and the day-3 safe + leaderboard picks.",
@@ -477,6 +495,7 @@ calculations, not officially verified win chances. <strong>HotSpawn crowd picks 
 </div>
 </section>
 <div class="pick-boards-grid" id="where-the-picks">
+<a class="board-card" href="desk/index.html"><div class="board-card-title">Picks desk &amp; day-3 calls (6484426f)</div><div class="board-card-desc">Every open fixture with one pick and both win probabilities, the basis for each (bookmaker, esportsbook, exchange or a labelled originated line), the Thunderpick day-1 upset review and day-3 calls, and its own unresolved &amp; flagged pages. HotSpawn crowd share is ownership only.</div></a>
 <a class="board-card" href="hub/index.html"><div class="board-card-title">Every-match hub &amp; TWC day-3 desk</div><div class="board-card-desc">Mobile front door (session 7c2622db): one card per open match with pick, both probabilities and the crowd share as ownership only, plus the day-1/2 review, its own unresolved &amp; limitations section, flags and verification.</div></a>
 <a class="board-card board-card-primary" href="picks-every-match/picks.html"><div class="board-card-title">Match picks &amp; probabilities</div><div class="board-card-desc">Both teams, clear pick, market/model label and source evidence. Search by team or tournament.</div></a>
 <a class="board-card" href="picks-every-match/inventory.html"><div class="board-card-title">Full lobby inventory</div><div class="board-card-desc">Every retained CS2 fixture, including locked/past rows. Coverage refers to the captured lobby, not unseen additions.</div></a>

@@ -12,9 +12,12 @@ if OUT.exists():
 OUT.mkdir(parents=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','desk'):
 # 'twc' added by session 869a5375 (T-TWC-DAY3 Day 1-3 review + Day 3 picks), additive single entry:
 # the landing executive summary links twc/index.html, so the artifact must carry the directory.
+# 'desk' added by session 6484426f (T-INTEG-6484426F) as an additive single entry: the root landing
+# page links desk/index.html from the executive summary, so the Pages artifact must carry the
+# directory or every root page fails the staged-link check. No other session's files are modified.
 # 'day3' added by session 4cf64ea3 (TWC day-2 review -> day-3 picks desk, every-match coverage);
 # additive single entry: the landing executive summary links day3/index.html, so the artifact must
 # carry the directory or every root page fails the staged-link check. No other session's files are

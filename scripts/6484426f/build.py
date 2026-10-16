@@ -202,6 +202,7 @@ def build() -> dict:
     rows = board["rows"]
     summary = board["summary"]
     twc = board.get("twc") or {}
+    cov = board.get("coverage") or {}
     deciders = twc.get("rows") or {}
 
     idx_rows = "".join(
@@ -235,6 +236,7 @@ Prices come from external bookmakers and the Kalshi exchange; matches no bookmak
 explicitly labelled line originated from Valve's official ratings. HotSpawn supplies fixtures, points and
 crowd shares only — its crowd % is never a probability.</p>
 <div class="kpis">
+<div class="kpi"><span class="muted">In lobby capture</span><b>{cov.get('capture_fixtures')}</b></div>
 <div class="kpi"><span class="muted">Open fixtures</span><b>{summary['open']}</b></div>
 <div class="kpi"><span class="muted">With a pick</span><b>{summary['with_pick']}</b></div>
 <div class="kpi"><span class="muted">External line</span><b>{summary['market']}</b></div>
@@ -264,6 +266,15 @@ favourite.</p>
 <h2>Every open match</h2>
 <div class="card"><table class="cards"><thead><tr><th>Match</th><th>Pick</th><th>Probability</th>
 <th>Climb</th><th>Sources</th></tr></thead><tbody>{idx_rows}</tbody></table></div>
+<h2>Lobby scope — why 95 fixtures become 31 picks</h2>
+<p class="muted">The dated lobby capture behind this desk held <b>{cov.get('capture_fixtures')}</b> Counter-Strike 2
+fixtures: <b>{summary['open']}</b> were still open for picking when the prices were read and
+<b>{cov.get('listed_locked')}</b> had already locked - the lobby locks picks 360 s (6 min) before kick-off, so
+no pick can be entered on them any more. Every open fixture has a pick above; the locked ones are
+out of scope by the rules of the game, not by missing research. Their ids stay in
+<code>data/6484426f/board.json → coverage.locked_ids</code> and are re-checked on every refresh, so a fixture
+that reopens appears here automatically. Settled results captured so far: {summary.get('ended_fixtures')} ended,
+{summary.get('graded')} graded against a pick.</p>
 <p class="muted">Coverage note: {summary['market']} rows are priced by at least one external bookmaker,
 {summary['exchange']} by the Kalshi exchange with a two-sided book, {summary['model']} by a line this
 session originates from Valve's official ratings, and {summary['unresolved']} remain unresolved with a
@@ -305,12 +316,13 @@ Crowd percentages are ownership, never probabilities.</p>
 rel="noopener">HLTV event 8932</a> — LAN, Malta, 14–18 October 2026, 8 teams, $1,000,000.
 Both day-3 matches are the group deciders; the winners reach Saturday's semifinals.</p>
 <h2>Day 1 (14 Oct) — the upset</h2>
-<ul>{"".join(f'<li><b>{esc(r["match"])}</b> — <a href="{esc(r["url"])}" rel="noopener">HLTV match page</a></li>' for r in day1)}</ul>
+<ul>{"".join(f'<li><b>{esc(r["match"])}</b> — <a href="{esc(r["url"])}" rel="noopener">HLTV match page</a>' + (f'<br><span class="muted">{esc(r["detail"])}</span>' if r.get("detail") else "") + '</li>' for r in day1)}</ul>
 <p class="muted">9z beat Aurora 2–0 in the opening group match, which the crowd had priced at roughly
 9 in 10 in Aurora's favour (HotSpawn ownership, read 07:29Z). That single result is why day 3 exists in
 this group.</p>
 <h2>Day 2 (15 Oct)</h2>
-<ul>{"".join(f'<li><b>{esc(r["match"])}</b> — <a href="{esc(r["url"])}" rel="noopener">HLTV match page</a></li>' for r in day2)}</ul>
+<ul>{"".join(f'<li><b>{esc(r["match"])}</b> — <a href="{esc(r["url"])}" rel="noopener">HLTV match page</a>' + (f'<br><span class="muted">{esc(r["detail"])}</span>' if r.get("detail") else "") + '</li>' for r in day2)}</ul>
+<p class="muted">Both days re-checked against <a href="{(twc.get("research") or {}).get("results_index_url") or "https://www.hltv.org/results?event=8932"}" rel="noopener">HLTV's own results index for event 8932</a> at the read timestamp below.</p>
 <h2>Day 3 (16 Oct) — safe pick and climb pick</h2>
 {"".join(decider_card(deciders[fid]) for fid in ("1080205", "1081775") if fid in deciders)}
 <h3>Why these climb calls are contrarian but not stupid</h3>
@@ -443,6 +455,8 @@ players" is applied and both candidates are published above so the reader can di
                               "detail": f"alias applied: {note.get('hotspawn_label')} → {note.get('official_name')} "
                                         f"(independent audit evidence)",
                               "url": (note.get("sources") or [{}])[0].get("url")})
+    for irr in (board.get("research_irregularities") or (twc.get("research") or {}).get("irregularities") or []):
+        flag_rows.append({"item": irr.get("item"), "detail": irr.get("detail"), "url": irr.get("url")})
     flag_rows.append({"item": "Aurora roster premise",
                       "detail": "the brief's 'recent roster change' premise is not confirmed by any source "
                                 "read in this session; the last documented moves are 2026-07-03/07-08 "

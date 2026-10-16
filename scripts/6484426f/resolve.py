@@ -626,6 +626,8 @@ def build() -> dict:
         "rows": rows,
         "summary": summary,
         "twc": {"rows": twc, "research": research.get("twc_2026") or {}},
+        # Source-quality findings belong on the flagged page, so they travel with the board.
+        "research_irregularities": research.get("irregularities") or [],
         "grading": grading,
         "sources": research.get("sources") or [],
         "research_read_utc": {"lobby": "2026-10-16T07:26Z", "hltv_event": "2026-10-16T07:35Z",
