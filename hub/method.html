@@ -1,0 +1,132 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Every open HotSpawn CS2 pick'em match with a pick, both win probabilities and its sources; TWC 2026 day-3 desk.">
+<title>Method &amp; sources</title><style>
+:root{--ink:#111827;--muted:#5b6472;--line:#e3e7ee;--bg:#f7f8fb;--card:#fff;--accent:#0b63ce;
+--good:#0f9d58;--warn:#b45309;--bad:#b91c1c;--chip:#eef2f8}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:760px;margin:0 auto;padding:0 12px 64px}
+header.top{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);
+padding:10px 12px}
+header.top .inner{max-width:760px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.brand{font-weight:700;font-size:15px;text-decoration:none;color:var(--ink)}
+nav.jump{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:2px 0}
+nav.jump a{flex:0 0 auto;padding:9px 12px;border:1px solid var(--line);border-radius:999px;
+background:var(--chip);text-decoration:none;font-size:13px;color:var(--ink);min-height:40px;
+display:inline-flex;align-items:center}
+h1{font-size:24px;line-height:1.2;margin:18px 0 6px}
+h2{font-size:19px;margin:28px 0 8px}
+h3{font-size:16px;margin:18px 0 6px}
+p,li{color:#1f2937}
+.lede{color:var(--muted);font-size:14px;margin:0 0 10px}
+.grid{display:grid;gap:10px}
+@media(min-width:640px){.grid.two{grid-template-columns:1fr 1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0}
+.card.hero{border-left:5px solid var(--accent)}
+.card.locked{opacity:.65}
+.top-line{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.chip{background:var(--chip);border-radius:999px;padding:3px 9px;font-size:12px;white-space:nowrap}
+.chip.s{background:#fde8e8;color:#8a1c1c}
+.chip.b{background:#e8f0fd;color:#123a75}
+.chip.c{background:#eef2f8;color:#374151}
+.chip.win{background:#e6f6ec;color:#0b6b3a;font-weight:600}
+.chip.flag{background:#fdf1e3;color:#8a5300}
+.match{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:8px 0 2px}
+.team{font-size:19px;font-weight:600;line-height:1.2}
+.team.pick{color:var(--accent)}
+.prob{font-size:20px;font-variant-numeric:tabular-nums;font-weight:700}
+.prob.pick{color:var(--accent)}
+.pickline{margin:6px 0 0;font-size:14px}
+.pickline b{font-size:16px}
+.meta{font-size:12.5px;color:var(--muted);margin:6px 0 0}
+.bar{display:flex;height:8px;border-radius:999px;overflow:hidden;background:#eceff5;margin:8px 0 2px}
+.bar span{display:block;height:100%}
+.bar .a{background:#0b63ce}.bar .b{background:#9aa7bb}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}
+.kpi b{display:block;font-size:22px;line-height:1.1}
+.kpi span{font-size:12px;color:var(--muted)}
+details{margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+summary{cursor:pointer;font-size:13px;color:var(--accent);min-height:36px;display:flex;align-items:center}
+ul.src{list-style:none;padding:0;margin:4px 0 0}
+ul.src li{font-size:12.5px;margin:6px 0;overflow-wrap:anywhere}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:600}
+.scroll{overflow-x:auto}
+.callout{background:#fffaf0;border:1px solid #f2dfba;border-radius:12px;padding:10px;margin:10px 0}
+.callout.bad{background:#fef6f6;border-color:#f3cccc}
+.callout.ok{background:#f4fbf6;border-color:#cfe9d8}
+footer.foot{margin-top:30px;border-top:1px solid var(--line);padding-top:12px;font-size:12.5px;color:var(--muted)}
+.drop{color:var(--muted);font-size:13px}
+</style></head><body>
+<header class="top"><div class="inner"><a class="brand" href="index.html">⚡ Pick'em hub</a>
+<nav class="jump" aria-label="Hub sections"><a href="index.html">Day 3 + every match</a><a href="twc.html">TWC review</a><a href="unresolved.html">Unresolved</a><a href="flagged.html">Flagged</a><a href="verify.html">Verification</a><a href="method.html" style=background:#0b63ce;color:#fff>Method</a><a href="../index.html">Main site</a></nav></div></header>
+<div class="wrap">
+<h1>Method, formulas and refresh schedule</h1>
+<h2>Where each number comes from</h2>
+<ol>
+<li><b>Fixtures, listed points, locks and crowd shares</b> — the public HotSpawn lobby and its own
+embedded fixture response. The crowd share is ownership: it is shown next to the pick and is never
+used to derive a probability.</li>
+<li><b>Prices</b> — licensed bookmaker two-way match-winner lines (Pinnacle weighted 2, Bovada and
+Melbet weighted 1) and public exchange books (Polymarket CLOB only when both sides of the book
+exist inside 10 cents and the kickoff matches within five minutes; the CFTC-regulated Kalshi
+KXCS2GAME series only through explicit full-match contract rules).</li>
+<li><b>Derivation</b> — proportional no-vig: for decimal dA, dB, pA = (1/dA) / ((1/dA) + (1/dB)).
+Exchange readings use the midpoint of the live bid/ask book and are labelled as estimates, not
+executable prices.</li>
+<li><b>Own model line</b> — only for rows with no eligible price, and only when both teams resolve
+to exactly one row of the official Valve regional standings.
+pA = 1 / (1 + 10^(-Δ·s·k)) where Δ is the points difference, s the rating scale and k the slope
+fitted on this capture's own bookmaker consensus: <b>k=0.4534441214368267</b>
+(slope learned from this capture&#x27;s own bookmaker consensus over official Valve ratings, through the origin, clamped to the published bounds), pairs used 15.</li>
+<li><b>Pick</b> — the side with the higher derived probability; confidence labels are Strong ≥70%,
+Solid ≥60%, Lean ≥53%, otherwise Toss-up. Fair decimal = 1/p.</li>
+</ol>
+<h2>The contrarian (leaderboard) gate</h2>
+<ul><li><b>description</b> — Contrarian-but-not-stupid gate for leaderboard picks. All four conditions must hold on the same row and the same capture; the gate can and does select no candidate rather than force a fade.</li><li><b>G1_price_floor</b> — The most conservative available market or exchange reading of the underdog must be at least 30%.</li><li><b>G2_crowd_gap</b> — Crowd ownership of the underdog must be at least 15 percentage points below that reading, so the pick is genuinely contrarian rather than merely unpopular.</li><li><b>G3_dated_context</b> — At least one dated, source-linked fact about the underdog (recent result, head-to-head, roster change, map/veto profile).</li><li><b>G4_model_sanity</b> — If a rating-model estimate exists for the match, it must not sit more than 10 percentage points below the market reading of the underdog. This blocks fades that only the crowd disagrees with but both the market and the model reject.</li><li><b>points_differential</b> — listed_points * (pick_probability - crowd_ownership_of_that_side), published in listed points only because the lobby never states how its tier and stage multipliers combine.</li></ul>
+<p class="meta">Differential = listed points × (probability − crowd ownership of that side), quoted
+in listed points only: the lobby advertises tier and stage multipliers but never states how they
+combine, so no score-adjusted number is invented.</p>
+<h2>Zero-blank ladder</h2>
+<ol><li>HLTV first (per-fixture pages and analytics; automated access is blocked and manual reads are dated)</li><li>esportsbooks (Pinnacle guest API, Bovada, Melbet LineFeed) through the shared collector</li><li>esports exchanges and betting lines (Polymarket CLOB markets, Kalshi KXCS2GAME series, rule-backed only)</li><li>documented originated line from the official Valve regional standings, only when both teams resolve to exactly one non-ambiguous official row</li><li>otherwise blank, with every attempt and its result published</li></ol>
+<p class="meta">A row that stops at the last step is published blank in the
+<a href="unresolved.html">Unresolved section</a>, never filled in.</p>
+<h2>Refresh</h2>
+<p>The hub rebuilds every four hours on a GitHub-hosted runner (cron <code>41 */4 * * *</code>) and
+whenever the canonical collected batch changes. Each run re-reads the lobby, re-fetches the
+bookmaker prices, the exchange books and the official ratings, then re-derives every number on the
+site. Build time for this copy: <b>2026-10-16T04:43:41Z</b>.</p>
+<ul>
+<li>Capture: manual lobby capture 2026-10-16T04:30:00Z (31 rows) merged with the automated capture 2026-10-16T04:43:40Z (188 rows)</li>
+<li>Quotes: merged: hub collection at 2026-10-16T04:43:40Z + canonical every-match collection (read-only) at 2026-10-15T23:40:40Z at 2026-10-16T04:43:40Z (99 quotes)</li>
+<li>Ratings: hub collection, official snapshot 2026_10_05</li>
+<li>Exchange: 2026-10-16T04:43:40Z (1 market(s))</li>
+</ul>
+<h2>Sources read for this build</h2>
+<h2>Leaderboard context (captured 2026-10-16T04:30Z)</h2>
+<p class="meta">Prizes: 1: $400 Steam voucher · 2: $200 Steam voucher · 3: $100 Steam voucher · 4-10: $50 Steam voucher · qualification: minimum 10 picks to qualify. This is the field the leaderboard picks are played against;
+the points differential is quoted in listed points, never in score-adjusted points.</p>
+<div class="scroll"><table><thead><tr><th>#</th><th>Player</th><th>Points</th></tr></thead><tbody>
+<tr><td>1</td><td>AndréD</td><td>160</td></tr><tr><td>2</td><td>Pickem Buster</td><td>123</td></tr><tr><td>3</td><td>iujioj51</td><td>122</td></tr><tr><td>4</td><td>Wheres my reward?</td><td>84</td></tr><tr><td>5</td><td>wallet_89649831</td><td>81</td></tr><tr><td>6</td><td>neverstopthegames</td><td>78</td></tr><tr><td>7</td><td>interactive041</td><td>68</td></tr><tr><td>8</td><td>christiansamasenpaidesu</td><td>66</td></tr><tr><td>9</td><td>collectionstellaris</td><td>65</td></tr><tr><td>10</td><td>mirranda.harvey420</td><td>63</td></tr></tbody></table></div>
+<div class="scroll"><table><thead><tr><th>Source</th><th>Link</th><th>Read (UTC)</th>
+<th>Used for</th></tr></thead><tbody><tr><td>HotSpawn lobby (live render)</td><td><a href="https://play.hotspawn.com/lobby?cb=20261016T0430Z">link</a></td><td class="drop">2026-10-16T04:30:00Z</td><td class="drop">fixture list, listed points/tier, crowd ownership per fixture, lock countdowns</td></tr><tr><td>HLTV news 45718 - 9z beat Aurora 2-0 to kick off TWC 2026</td><td><a href="https://www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026">link</a></td><td class="drop">2026-10-16T04:20:00Z</td><td class="drop">day-1 Group A result, map scores, player ratings, VRS point gain</td></tr><tr><td>HLTV news 45706 - TWC 2026 teams, format, schedule, prizes</td><td><a href="https://www.hltv.org/news/45706/thunderpick-world-championship-teams-format-schedule-prizes-talent-fantasy">link</a></td><td class="drop">2026-10-16T04:22:00Z</td><td class="drop">field, groups, opening matchups</td></tr><tr><td>HLTV analytics - Aurora vs 9z (match 2399412)</td><td><a href="https://www.hltv.org/betting/analytics/2399412/aurora-vs-9z-thunderpick-world-championship-2026">link</a></td><td class="drop">2026-10-16T04:30:00Z</td><td class="drop">head-to-head, form, map/veto statistics, bookmaker favourite flag</td></tr><tr><td>HLTV team page - Aurora (11861)</td><td><a href="https://www.hltv.org/team/11861/aurora">link</a></td><td class="drop">2026-10-16T04:33:00Z</td><td class="drop">current roster, coach tenure, world/VRS rank, decider context</td></tr><tr><td>Liquipedia - Thunderpick World Championship 2026</td><td><a href="https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026">link</a></td><td class="drop">2026-10-16T04:25:00Z</td><td class="drop">all eight day-1/day-2 map scores with HLTV match ids, group tables, day-3 deciders, participants</td></tr><tr><td>Liquipedia - Aurora Gaming (timeline)</td><td><a href="https://liquipedia.net/counterstrike/Aurora_Gaming">link</a></td><td class="drop">2026-10-16T04:33:00Z</td><td class="drop">dated July 2026 roster timeline (Fabre/MAJ3R/soulfly out; Jimpphat, ashhh, kyxsan in)</td></tr><tr><td>Dust2.us match preview - Aurora vs 9z</td><td><a href="https://www.dust2.us/matches/2399412/aurora-vs-9z">link</a></td><td class="drop">2026-10-16T04:33:00Z</td><td class="drop">day-3 lineups, event map pool, scheduled time</td></tr><tr><td>Strafe - Aurora locks in new CS2 roster with kyxsan and Jimpphat</td><td><a href="https://www.strafe.com/news/read/aurora-locks-in-new-cs2-roster-with-kyxsan-and-jimpphat/">link</a></td><td class="drop">2026-10-16T04:30:00Z</td><td class="drop">confirmation of the July 8 rebuild and how kyxsan/Jimpphat arrived</td></tr><tr><td>Pley.gg - Aurora completes international transition with kyxsan</td><td><a href="https://pley.gg/cs2/aurora-finalizes-international-transition-with-the-signing-of-kyxsan/">link</a></td><td class="drop">2026-10-16T04:30:00Z</td><td class="drop">kyxsan signed from Falcons after being benched; MAJ3R/soulfly/Fabre out; first event BLAST Bounty 2026 S2 (July 21)</td></tr><tr><td>Dust2.us - Official: Aurora complete kyxsan signing</td><td><a href="https://www.dust2.us/news/75795/official-aurora-complete-kyxsan-signing">link</a></td><td class="drop">2026-10-16T04:30:00Z</td><td class="drop">kyxsan replaced from Falcons by karrigan; Aurora&#x27;s post-transfer lineup</td></tr><tr><td>HLTV news 45710 - TWC 2026 Fantasy pick stats</td><td><a href="https://www.hltv.org/news/45710/falcons-and-aurora-players-are-most-picked-in-twc-2026-fantasy">link</a></td><td class="drop">2026-10-16T04:31:00Z</td><td class="drop">attention/ownership context around Aurora players</td></tr><tr><td>Pley.gg - TWC 2026 schedule, teams and prize pool</td><td><a href="https://pley.gg/cs2/thunderpick-world-championship-2026/">link</a></td><td class="drop">2026-10-16T04:32:00Z</td><td class="drop">day-1 summary (9z, Falcons, Legacy, FURIA all won 2-0), VRS snapshot 5 October in use</td></tr><tr><td>Hotspawn - CS2 roster changes 2026 (news article)</td><td><a href="https://www.hotspawn.com/counter-strike/news/cs2-roster-changes">link</a></td><td class="drop">2026-10-16T04:32:00Z</td><td class="drop">independent confirmation of Aurora&#x27;s July international rebuild</td></tr><tr><td>Polymarket Gamma API - ex-RUSTEC vs Saint Sinners</td><td><a href="https://gamma-api.polymarket.com/events?slug=cs2-rustec-ssins-2026-10-16">link</a></td><td class="drop">2026-10-16T04:30:00Z</td><td class="drop">external exchange prices for hotspawn fixture 1079630</td></tr><tr><td>Prognozist - ex-Rustec vs Saint Sinners</td><td><a href="https://prognozist.ru/ex-rustec-saint-sinners-forze-reload-lavked-wqjrnpq.html">link</a></td><td class="drop">2026-10-16T04:29:00Z</td><td class="drop">additional bookmaker-style 1.45 price on ex-Rustec (single side, not used as a probability)</td></tr><tr><td>EGamersWorld - ex-RUSTEC vs Saint Sinners</td><td><a href="https://egamersworld.com/counterstrike/match/_rW8GEyWK/ex-rustec-vs-saint-sinners-IF2UwX2YR">link</a></td><td class="drop">2026-10-16T04:29:00Z</td><td class="drop">run-rate form; its 1.8/1.8 pair is rejected as a suspected placeholder (not used)</td></tr><tr><td>HLTV team page 13683 (published slug &#x27;wrotberry&#x27;, displayed name WBT)</td><td><a href="https://www.hltv.org/team/13683/wrotberry">link</a></td><td class="drop">2026-10-16T04:27:00Z</td><td class="drop">contested-alias decision WROTBERRY = WBT and the 19/10 WBT-Nexus fixture</td></tr><tr><td>Liquipedia - DraculaN Season 7</td><td><a href="https://liquipedia.net/counterstrike/DraculaN/Season_7">link</a></td><td class="drop">2026-10-16T04:27:00Z</td><td class="drop">WhiteBIT Team = WBT participant list and the 2399592 WBT-Nexus match link</td></tr><tr><td>white.market blog - WhiteBIT Team enters CS2</td><td><a href="https://white.market/blog/cs2-news/whitebit-team-enters-cs2-scene-w-group-launches-new-counter-strike-2-roster">link</a></td><td class="drop">2026-10-16T04:28:00Z</td><td class="drop">org identity of WBT (W Group / WhiteBIT) and its inaugural roster</td></tr><tr><td>Pinnacle guest API (matchups)</td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups?withSpecials=false">link</a></td><td class="drop">2026-10-16T04:26:00Z</td><td class="drop">confirmed the public endpoint answers from this environment; specific quotes are taken from the retained snapshot instead</td></tr><tr><td>Kalshi email/API series KXCS2GAME</td><td><a href="https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&amp;status=open&amp;with_nested_markets=true&amp;limit=200">link</a></td><td class="drop">2026-10-16T04:26:00Z</td><td class="drop">confirmed CS2 exchange market ids exist for the day-3 deciders; prices are taken from the retained snapshot quotes</td></tr><tr><td>Valve official regional standings - global 2026-10-05</td><td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">link</a></td><td class="drop">2026-10-16T04:28:00Z</td><td class="drop">official ratings for every team used in the model cross-check</td></tr><tr><td>HLTV event page - Stake Pulse Beat III (event 9223)</td><td><a href="https://www.hltv.org/events/9223/stake-pulse-beat-iii">link</a></td><td class="drop">2026-10-16T04:31:00Z</td><td class="drop">group-stage results for the six Stake Pulse Beat III fixtures on the card, used as dated context facts for the leaderboard gate</td></tr><tr><td>Liquipedia - TWC 2026 group stage match details (Group A/B)</td><td><a href="https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026">link</a></td><td class="drop">2026-10-16T04:34:00Z</td><td class="drop">per-map confirmation of every day-1/day-2 series in label order, the EDT kickoff of each decider, and the replacement note (Virtus.pro out, Ninjas in Pyjamas in)</td></tr></tbody></table></div>
+<h2>Machine-readable outputs</h2>
+<ul>
+<li><a href="../data/7c2622db/hub.json">hub.json — every row with its line, sources and flags</a></li>
+<li><a href="../data/7c2622db/verification.json">verification.json — independent re-derivation</a></li>
+<li><a href="../data/7c2622db/research.json">research.json — the dated research this page cites</a></li>
+<li><a href="../data/7c2622db/coverage.json">coverage.json — alias rules and the declared gate</a></li>
+</ul>
+
+<footer class="foot">Built 2026-10-16T04:43:41Z by session <code>7c2622db</code>.
+HotSpawn supplies fixtures, listed points and crowd ownership only — never a probability.
+External prices come from licensed bookmakers and public exchanges; model rows are this
+project's own calculation from the official Valve standings. Research only, 18+.
+<a href="../picks-every-match/index.html">Canonical every-match board</a> ·
+<a href="../index.html">Main dashboard</a>.</footer></div></body></html>

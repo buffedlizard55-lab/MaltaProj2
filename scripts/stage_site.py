@@ -12,7 +12,7 @@ if OUT.exists():
 OUT.mkdir(parents=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub'):
 # 'twc' added by session 869a5375 (T-TWC-DAY3 Day 1-3 review + Day 3 picks), additive single entry:
 # the landing executive summary links twc/index.html, so the artifact must carry the directory.
 # 'day3' added by session 4cf64ea3 (TWC day-2 review -> day-3 picks desk, every-match coverage);
@@ -46,6 +46,11 @@ for name in ('assets','data','docs','pickem','evidence','audits','verify','curre
 # fresh/index.html (section dd2b7fee landed on main), so the artifact must carry the directory or
 # every root page fails the staged-link check and no site is published. Additive single entry.
 # dd2b7fee's own files are not modified here.
+# 'hub' added by session 7c2622db (mobile pick'em hub: every open match + TWC day-3 desk) as an
+# additive single entry; the root NAV and the landing-page executive summary link hub/index.html,
+# so the artifact must carry the directory or every root page fails the staged-link check.
+# The hub is re-rendered from the staged data batch below, so a scheduled refresh cannot leave
+# its probabilities stale. No other session's files are modified here.
     source=ROOT/name
     if source.exists():
         shutil.copytree(source,OUT/name,ignore=shutil.ignore_patterns('__pycache__','*.pyc','.git'))
@@ -56,6 +61,19 @@ _twc_spec=importlib.util.spec_from_file_location('staged_twc_69e4c06a',ROOT/'scr
 _twc=importlib.util.module_from_spec(_twc_spec)
 _twc_spec.loader.exec_module(_twc)
 _twc.build(OUT)
+# Pick'em hub (session 7c2622db): re-render from the staged data batch, read-only for every
+# other session's files. If the render fails the copied hub/ directory stays as committed.
+try:
+    _hub_spec=importlib.util.spec_from_file_location('staged_hub_7c2622db',ROOT/'scripts/7c2622db/build.py')
+    _hub=importlib.util.module_from_spec(_hub_spec)
+    _hub_spec.loader.exec_module(_hub)
+    _hub.OUT=OUT/'data'/'7c2622db'
+    _hub.HUB=OUT/'hub'
+    _hub.CANON=OUT/'data'/'c64a5e19'
+    _hub.build()
+    print('Staged pick\'em hub re-rendered from the staged data batch')
+except Exception as _hub_error:  # noqa: BLE001
+    print('hub re-render skipped, using committed pages:', _hub_error)
 # RECONCILE-4E6 (session 4e6dcd0d): rebuild the cross-board section from the staged data batch (additive, read-only).
 import reconcile_4e6dcd0d
 reconcile_4e6dcd0d.build(OUT/'reconcile', write_json=False)
