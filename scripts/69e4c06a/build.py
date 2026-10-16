@@ -288,7 +288,7 @@ def day_three_table(data):
             ownership += '<br><span class="small">Ownership only · reported picks: ' + esc(own['total_picks_reported'] if own['total_picks_reported'] is not None else 'unverified') + '</span>'
             if choice['probability_to_ownership_ratio'] is not None:
                 ownership += f'<br><span class="small">Underdog probability / ownership: {choice["probability_to_ownership_ratio"]:.2f}×</span>'
-        sources = '<a href="' + esc(row['hltv_url']) + '">HLTV match / stage</a><br><a href="' + esc(row['official_publisher_url']) + '">Official HotSpawn day-two report</a><br><a href="' + esc(row['hotspawn_url']) + '">HotSpawn ' + ('fixture' if row['listed_on_hotspawn'] else 'lobby (not listed in this capture)') + '</a>'
+        sources = '<a href="' + esc(row['hltv_url']) + '">HLTV match / stage</a><br><a href="' + esc(row['official_publisher_url']) + '">Official HotSpawn day-two report</a><br><a href="' + esc(row['hotspawn_url']) + '">HotSpawn ' + ('fixture' if row['listed_on_hotspawn'] else 'lobby (not listed in this capture; not a HotSpawn pick)') + '</a>'
         if row['listed_on_hotspawn']:
             sources += '<br><a href="../picks-every-match/picks.html#m-' + esc(row['fixture_id']) + '">Canonical row / full basis evidence</a>'
         for quote in row['quotes']:
