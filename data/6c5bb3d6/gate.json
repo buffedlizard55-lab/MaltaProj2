@@ -1,32 +1,34 @@
 {
  "session": "6c5bb3d6",
- "ran_utc": "2026-10-16T13:30:55Z",
+ "ran_utc": "2026-10-16T16:58:14Z",
  "command": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests",
  "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
  "returncode": 1,
  "green": false,
  "failing_tests": [
-  "test_displayed_clock_rule_is_rechecked_at_every_build"
+  "test_calibration_is_reproducible_from_this_capture",
+  "test_displayed_clock_rule_is_rechecked_at_every_build",
+  "test_twc_day3_rows_are_in_the_open_board"
  ],
  "counts": {
   "ran": 731,
   "ok": false,
   "skipped": 0,
-  "failures": 1,
+  "failures": 3,
   "errors": 0
  },
  "tail": [
-  "-   'derived_utc': '2026-10-16T10:00:00Z',",
-  "-   'displayed_et': 'Oct 16, 06:00',",
-  "-   'fixture_id': '1080286'},",
-  "-  {'canonical_utc': '2026-10-16T11:00:00Z',",
-  "-   'derived_utc': '2026-10-16T12:00:00Z',",
-  "-   'displayed_et': 'Oct 16, 08:00',",
-  "-   'fixture_id': '1080287'}] : a displayed ET time disagrees with the canonical epoch start",
+  "======================================================================",
+  "FAIL: test_twc_day3_rows_are_in_the_open_board (test_7c2622db.HubBuild.test_twc_day3_rows_are_in_the_open_board)",
+  "----------------------------------------------------------------------",
+  "Traceback (most recent call last):",
+  "  File \"/home/runner/work/MaltaProj2/MaltaProj2/tests/test_7c2622db.py\", line 182, in test_twc_day3_rows_are_in_the_open_board",
+  "    self.assertIn(str(entry[\"fixture_id\"]), listed,",
+  "AssertionError: '1080205' not found in {'1079171', '1081528', '1081527', '1081781', '1081126', '1079173', '1079170', '1081521', '1081526', '1081529', '1081530', '1081531', '1081532', '1080290', '1081513', '1081522'} : every day-3 decider must appear in the open board",
   "",
   "----------------------------------------------------------------------",
-  "Ran 731 tests in 11.543s",
+  "Ran 731 tests in 9.610s",
   "",
-  "FAILED (failures=1, skipped=3)"
+  "FAILED (failures=3, skipped=3)"
  ]
 }
