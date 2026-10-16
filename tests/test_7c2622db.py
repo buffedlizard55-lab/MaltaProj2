@@ -28,9 +28,16 @@ BUILD = module("test_hub_build_7c2622db", "scripts/7c2622db/build.py")
 class HubBuild(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        cls._saved_files = {
+            p: p.read_bytes()
+            for p in [DATA / "hub.json", *HUB.glob("*.html")]
+            if p.exists()
+        }
         cls.hub = BUILD.build()
         cls.rows = cls.hub["rows"]
         cls.html = {path.name: path.read_text() for path in HUB.glob("*.html")}
+        for p, raw in cls._saved_files.items():
+            p.write_bytes(raw)
 
     # ---------------------------------------------------------------- machine-readable board
     def test_counts_match_the_rows(self):

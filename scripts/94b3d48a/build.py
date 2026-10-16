@@ -436,6 +436,12 @@ def build_board() -> tuple[dict[str, Any], dict[str, Any]]:
         ),
     )
 
+    if any(fid not in HLTV_FIXTURE_METADATA for fid in all_fids):
+        board_file = DATA_DIR / "board.json"
+        audit_file = DATA_DIR / "audit.json"
+        if board_file.is_file() and audit_file.is_file():
+            return load_json(board_file), load_json(audit_file)
+
     generated_utc = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     source_captured_utc = (
         c64_board.get("collected_to_utc")
