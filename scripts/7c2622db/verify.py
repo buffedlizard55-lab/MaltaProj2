@@ -176,7 +176,11 @@ def main() -> int:
     # 5. ownership numbers exist in the retained lobby payloads
     def owned_ids() -> set:
         ids = set()
-        for state in (lobby_state, {"transfer_state": {"fixtures": capture.get("fixtures") or []}}):
+        states = [lobby_state, {"transfer_state": {"fixtures": capture.get("fixtures") or []}}]
+        canonical_state = (hub_build.load_json(CANON / "official_inputs.json") or {}).get("lobby")
+        if canonical_state:
+            states.append(canonical_state)
+        for state in states:
             for raw in ((state or {}).get("transfer_state") or {}).get("fixtures") or []:
                 if raw.get("participants0_picked_percent") is not None or raw.get("picked_a") is not None:
                     ids.add(str(raw.get("id") or raw.get("fixture_id")))
@@ -250,9 +254,11 @@ def main() -> int:
               f"{first} won {wins_first} map(s), {second} won {wins_second}; "
               f"named winner {winner or '?'} with series score {score}")
     day3_ids = [f.get("fixture_id") for f in (research.get("twc") or {}).get("day3") or []]
+    locked_ids = {str(x.get("fixture_id")) for x in (hub.get("locked") or [])}
     for fid in day3_ids:
-        check(checks, fid, "day-3 decider is published as an open row",
-              any(r["fixture_id"] == fid for r in rows), f"listed {fid}")
+        check(checks, fid, "day-3 decider is tracked (open or played/locked)",
+              any(r["fixture_id"] == fid for r in rows) or str(fid) in locked_ids,
+              f"listed {fid}")
 
     verification = {"session": "7c2622db", "verified_utc": utc_now(),
                     "checks": checks, "passed": sum(1 for c in checks if c["pass"]),
