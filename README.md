@@ -175,3 +175,11 @@ not certified by the canonical verifier and never override its blank rows.
 - **31 open CS2 fixtures verified:** 24 Tier A market lines (including 4 rule-backed Kalshi fallbacks and 2 exact 50/50 ties with `pick_team=None`), 3 Tier B official Valve VRS model fallbacks, and 4 Tier D unresolved/blank rows with per-step fallback logs on [`picks-every-match/unresolved.html`](picks-every-match/unresolved.html).
 - **CI & Pages smoke gate fixes:** Preserved `not a HotSpawn pick` disclosure outside `[data-live]` on expired unlisted-preview rows in `scripts/69e4c06a/build.py`, aligned 50/50 tie comparison in `tests/test_69e4c06a.py`, and added a 3.5-hour `workflow_run` cadence gate to `.github/workflows/every-match-c64a5e19.yml`.
 
+
+### 16 October coverage and mobile-handoff audit (6ffacd40)
+
+- [Coverage, TWC Day 1/2 review, source checks and Flagged for Review](audits/6ffacd40/index.html).
+- [Research ledger](data/6ffacd40/research.json) records original Aurora announcements, five uncovered HLTV match-page reads, esportsbook access limits and a rejected secondary-only odds lead. No manual read overwrites a canonical price.
+- Reproduce: `python scripts/6ffacd40/audit.py` (read-only canonical inputs; writes only its own dated audit). Independently checks raw odds, no-vig weighting, model calibration and all retained official input/provider payloads. Input hashes bind the report to the exact reviewed snapshot.
+- The landing page distinguishes **directional picks**, **priced ties / no edge**, and **unsupported blanks**. Competing historical boards are collapsed; the primary mobile actions link to the canonical list, unresolved limitations and TWC decisions. Keyboard skip navigation is available on root-generated pages.
+- Tests: `python -m unittest tests.test_6ffacd40`. Optional browser acceptance: `CHROME_BIN=/path/to/chrome python scripts/6ffacd40/browser.py http://127.0.0.1:8080` against an already-running static preview. Checks 320/390/768/1280px widths, CTA above the fold, tap target, focus and navigation.
