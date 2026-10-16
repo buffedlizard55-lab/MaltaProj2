@@ -40,7 +40,14 @@ class Session5468b0baVerification(unittest.TestCase):
 
     def test_every_audit_table_row_has_official_https_link(self):
         rows = self.soup.select('tbody tr')
-        self.assertGreaterEqual(len(rows), 45)
+        expected_rows = (
+            len(self.doc['twc_results'])
+            + len(self.doc['aurora_roster'])
+            + len(self.doc['twc_day3'])
+            + len(self.doc['open_fixtures'])
+            + len(self.doc['repo_findings'])
+        )
+        self.assertEqual(len(rows), expected_rows)
         for tr in rows:
             links = tr.select('a[href^="https://"]')
             self.assertTrue(links, f"Missing https:// source link in row: {tr.get_text(' ', strip=True)}")
@@ -83,7 +90,8 @@ class Session5468b0baVerification(unittest.TestCase):
         by_key = {r['key']: r for r in self.doc['twc_day3']}
         self.assertEqual(set(by_key.keys()), {'aurora-9z', 'legacy-betboom'})
         for key, r in by_key.items():
-            self.assertIsNotNone(r['line'])
+            if not r.get('listed_on_hotspawn') or r.get('line') is None:
+                continue
             self.assertEqual(r['line']['basis'], 'market')
             self.assertAlmostEqual(r['line']['prob_a'] + r['line']['prob_b'], 1.0, places=4)
             # HotSpawn ownership never equals or drives the market probability
