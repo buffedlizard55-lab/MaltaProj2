@@ -9,7 +9,7 @@ name: every-match picks (c64a5e19)
 
 on:
   push:
-    branches: ['main', 'arena/3faf40e8-maltaproj2', 'arena/778756a1-maltaproj2', 'arena/69e4c06a-maltaproj2', 'arena/5468b0ba-maltaproj2', 'arena/5a40690b-maltaproj2']
+    branches: ['main', 'arena/3faf40e8-maltaproj2', 'arena/778756a1-maltaproj2', 'arena/69e4c06a-maltaproj2', 'arena/5468b0ba-maltaproj2']
     paths:
       - 'scripts/c64a5e19/**'
       - 'scripts/69e4c06a/**'
@@ -78,6 +78,8 @@ jobs:
           python3 scripts/c64a5e19/build.py
           python3 scripts/69e4c06a/build.py
           python3 scripts/5468b0ba/build_audit.py
+          python3 scripts/98dcfc7e/build.py
+          python3 scripts/5a40690b/build.py
       - name: Install verification dependencies
         if: steps.gate.outputs.should_run == 'true'
         run: pip install -r scripts/requirements.txt
@@ -104,7 +106,7 @@ jobs:
           set -euo pipefail
           git config user.name "every-match-bot (c64a5e19)"
           git config user.email "malta-data-bot@users.noreply.github.com"
-          git add data/c64a5e19 picks-every-match data/69e4c06a/day3.json twc-2026 data/5468b0ba/audit.json audits/5468b0ba/index.html
+          git add data/c64a5e19 picks-every-match data/69e4c06a/day3.json twc-2026 data/5468b0ba/audit.json audits/5468b0ba/index.html data/98dcfc7e/audit.json audits/98dcfc7e data/5a40690b/day4_and_coverage.json audits/5a40690b/index.html
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -m "every-match(c64a5e19): refresh picks $(date -u +%Y-%m-%dT%H:%MZ)"
           for attempt in 1 2 3 4 5; do

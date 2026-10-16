@@ -61,6 +61,11 @@ _twc_spec=importlib.util.spec_from_file_location('staged_twc_69e4c06a',ROOT/'scr
 _twc=importlib.util.module_from_spec(_twc_spec)
 _twc_spec.loader.exec_module(_twc)
 _twc.build(OUT)
+# TWC Day 1-3 -> Day 4 Semifinals & every-match verification (5a40690b): render from the staged canonical batch.
+_d4_spec=importlib.util.spec_from_file_location('staged_d4_5a40690b',ROOT/'scripts/5a40690b/build.py')
+_d4=importlib.util.module_from_spec(_d4_spec)
+_d4_spec.loader.exec_module(_d4)
+_d4.build(OUT)
 # Pick'em hub (session 7c2622db): re-render from the staged data batch, read-only for every
 # other session's files. If the render fails the copied hub/ directory stays as committed.
 try:
