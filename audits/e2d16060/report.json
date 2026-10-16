@@ -1,0 +1,974 @@
+{
+  "alternate_snapshot": {
+    "generated_utc": "2026-10-16T23:50:08Z",
+    "kept_separate": true,
+    "open": 21,
+    "path": "data/f7279a54/board.json",
+    "with_line": 13
+  },
+  "audit_generated_utc": "2026-10-17T00:05:00Z",
+  "audit_session": "e2d16060",
+  "findings": [
+    {
+      "action": "Repair the shared template/page in the integration scope, then rerun the mobile/browser checks.",
+      "id": "AUD-E2D-001",
+      "observation": "The canonical picks page contains a closing option tag with attributes; browser recovery may still render it, but the markup is not valid option syntax.",
+      "severity": "needs review",
+      "source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://github.com/buffedlizard55-lab/MaltaProj2"
+      ],
+      "title": "Malformed option end tag in the shared picks filter"
+    },
+    {
+      "action": "Reattempt the HLTV read in the next scheduled refresh; do not backfill a number from a blocked or stale page.",
+      "id": "AUD-E2D-002",
+      "observation": "The canonical board records the source failure instead of using HLTV as an unverified probability input. Market evidence and Valve VRS evidence remain separately labeled.",
+      "severity": "needs review",
+      "source_urls": [
+        "https://www.hltv.org/",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings"
+      ],
+      "title": "HLTV probe is recorded as failed for this batch"
+    },
+    {
+      "action": "Use the dedicated unresolved page and its source-attempt ledger. A later refresh may resolve a row only after identity, kickoff and source-price checks pass.",
+      "id": "AUD-E2D-003",
+      "observation": "7 of 21 canonical open fixtures have no eligible retained line. The page keeps both probabilities and the pick blank rather than inventing 50/50.",
+      "severity": "unresolved",
+      "source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings"
+      ],
+      "title": "Unresolved rows remain blank by policy"
+    },
+    {
+      "action": "The integration owner should choose and publish one coherent batch per board; never copy a probability across snapshots without replaying its retained evidence.",
+      "id": "AUD-E2D-004",
+      "observation": "The separate ourline snapshot is stamped 2026-10-16T23:50:08Z; the canonical picks batch is stamped 2026-10-16T22:48:43Z. They have different policies and open-line counts, so this audit keeps them separate.",
+      "severity": "needs review",
+      "source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://github.com/buffedlizard55-lab/MaltaProj2"
+      ],
+      "title": "A newer alternate snapshot must not be mixed into canonical counts"
+    },
+    {
+      "action": "Repair the owning template and re-run the phone-width browser checks.",
+      "id": "AUD-E2D-008",
+      "observation": "11 canonical surface(s) miss one or more required mobile/accessibility markers.",
+      "severity": "needs review",
+      "source_urls": [
+        "https://github.com/buffedlizard55-lab/MaltaProj2"
+      ],
+      "title": "Mobile/accessibility marker missing"
+    }
+  ],
+  "fixture_checks": [
+    {
+      "audit_failures": [],
+      "basis": "unverified",
+      "competition": "NODWIN Clutch Series #13",
+      "fixture_id": "1079170",
+      "flags": [
+        "ambiguous_vrs_name:Just Players",
+        "no_line_unverified"
+      ],
+      "hotspawn_url": "https://www.hotspawn.com/matches/bet-m-vs-just-players-nodwin-clutch-series-13-1079170",
+      "page_source_urls": [
+        "https://www.hotspawn.com/matches/bet-m-vs-just-players-nodwin-clutch-series-13-1079170"
+      ],
+      "pick_team": null,
+      "prob_a": null,
+      "prob_b": null,
+      "source_urls": [
+        "https://www.hotspawn.com/matches/bet-m-vs-just-players-nodwin-clutch-series-13-1079170",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-17T08:00:00Z",
+      "status": "pass",
+      "team_a": "BET-M",
+      "team_b": "Just Players"
+    },
+    {
+      "audit_failures": [],
+      "basis": "market",
+      "competition": "PGL Bucharest 2027: Closed Qualifier",
+      "fixture_id": "1081510",
+      "flags": [],
+      "hotspawn_url": "https://www.hotspawn.com/matches/eternal-fire-vs-nuclear-tigeres-pgl-bucharest-2027-closed-qualifier-1081510",
+      "page_source_urls": [
+        "https://www.hotspawn.com/matches/eternal-fire-vs-nuclear-tigeres-pgl-bucharest-2027-closed-qualifier-1081510",
+        "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+        "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"
+      ],
+      "pick_team": "Eternal Fire",
+      "prob_a": 0.5457,
+      "prob_b": 0.4543,
+      "source_urls": [
+        "https://www.hotspawn.com/matches/eternal-fire-vs-nuclear-tigeres-pgl-bucharest-2027-closed-qualifier-1081510",
+        "https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-qualifiers/europe/eternal-fire-nuclear-tigeres-202610170400",
+        "https://melbet.com/en/line/esports",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-17T08:00:00Z",
+      "status": "pass",
+      "team_a": "Eternal Fire",
+      "team_b": "Nuclear TigeRES"
+    },
+    {
+      "audit_failures": [],
+      "basis": "market",
+      "competition": "Stake Pulse Beat III",
+      "fixture_id": "1081888",
+      "flags": [],
+      "hotspawn_url": "https://www.hotspawn.com/matches/ninjas-in-pyjamas-vs-heroic-stake-pulse-beat-iii-1081888",
+      "page_source_urls": [
+        "https://www.hotspawn.com/matches/ninjas-in-pyjamas-vs-heroic-stake-pulse-beat-iii-1081888",
+        "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+        "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+        "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638536486/markets/related/straight"
+      ],
+      "pick_team": "Heroic",
+      "prob_a": 0.4475,
+      "prob_b": 0.5525,
+      "source_urls": [
+        "https://www.hotspawn.com/matches/ninjas-in-pyjamas-vs-heroic-stake-pulse-beat-iii-1081888",
+        "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/ninjas-in-pyjamas-heroic-202610170400",
+        "https://melbet.com/en/line/esports",
+        "https://www.pinnacle.com/en/esports/cs2-hub",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-17T08:00:00Z",
+      "status": "pass",
+      "team_a": "Ninjas in Pyjamas",
+      "team_b": "Heroic"
+    },
+    {
+      "audit_failures": [],
+      "basis": "model",
+      "competition": "NODWIN Clutch Series #13",
+      "fixture_id": "1079171",
+      "flags": [
+        "model_estimate_not_verified_win_probability"
+      ],
+      "hotspawn_url": "https://www.hotspawn.com/matches/genone-vs-butterfly-nodwin-clutch-series-13-1079171",
+      "page_source_urls": [
+        "https://www.hotspawn.com/matches/genone-vs-butterfly-nodwin-clutch-series-13-1079171",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "pick_team": "GenOne",
+      "prob_a": 0.6403,
+      "prob_b": 0.3597,
+      "source_urls": [
+        "https://www.hotspawn.com/matches/genone-vs-butterfly-nodwin-clutch-series-13-1079171",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-17T11:00:00Z",
+      "status": "pass",
+      "team_a": "GenOne",
+      "team_b": "Butterfly"
+    },
+    {
+      "audit_failures": [],
+      "basis": "market",
+      "competition": "CCT Europe 2026 Challengers #8",
+      "fixture_id": "1081513",
+      "flags": [
+        "ambiguous_vrs_name:Bebop"
+      ],
+      "hotspawn_url": "https://www.hotspawn.com/matches/bebop-vs-donstu-cct-europe-2026-challengers-8-1081513",
+      "page_source_urls": [
+        "https://www.hotspawn.com/matches/bebop-vs-donstu-cct-europe-2026-challengers-8-1081513",
+        "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+        "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638582117/markets/related/straight"
+      ],
+      "pick_team": "Bebop",
+      "prob_a": 0.5103,
+      "prob_b": 0.4897,
+      "source_urls": [
+        "https://www.hotspawn.com/matches/bebop-vs-donstu-cct-europe-2026-challengers-8-1081513",
+        "https://melbet.com/en/line/esports",
+        "https://www.pinnacle.com/en/esports/cs2-hub",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-17T11:00:00Z",
+      "status": "pass",
+      "team_a": "Bebop",
+      "team_b": "Donstu"
+    },
+    {
+      "audit_failures": [],
+      "basis": "unverified",
+      "competition": "PGL Bucharest 2027: Closed Qualifier",
+      "fixture_id": "1081515",
+      "flags": [
+        "no_line_unverified",
+        "not_in_vrs:Apogee Betclic"
+      ],
+      "hotspawn_url": "https://www.hotspawn.com/matches/apogee-betclic-vs-nemesis-pgl-bucharest-2027-closed-qualifier-1081515",
+      "page_source_urls": [
+        "https://www.hotspawn.com/matches/apogee-betclic-vs-nemesis-pgl-bucharest-2027-closed-qualifier-1081515"
+      ],
+      "pick_team": null,
+      "prob_a": null,
+      "prob_b": null,
+      "source_urls": [
+        "https://www.hotspawn.com/matches/apogee-betclic-vs-nemesis-pgl-bucharest-2027-closed-qualifier-1081515",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-17T14:00:00Z",
+      "status": "pass",
+      "team_a": "Apogee Betclic",
+      "team_b": "Nemesis"
+    },
+    {
+      "audit_failures": [],
+      "basis": "market",
+      "competition": "NODWIN Clutch Series #13",
+      "fixture_id": "1079173",
+      "flags": [],
+      "hotspawn_url": "https://www.hotspawn.com/matches/baks-vs-fire-flux-nodwin-clutch-series-13-1079173",
+      "page_source_urls": [
+        "https://www.hotspawn.com/matches/baks-vs-fire-flux-nodwin-clutch-series-13-1079173",
+        "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"
+      ],
+      "pick_team": "BakS",
+      "prob_a": 0.5921,
+      "prob_b": 0.4079,
+      "source_urls": [
+        "https://www.hotspawn.com/matches/baks-vs-fire-flux-nodwin-clutch-series-13-1079173",
+        "https://melbet.com/en/line/esports",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-17T17:00:00Z",
+      "status": "pass",
+      "team_a": "BakS",
+      "team_b": "Fire Flux"
+    },
+    {
+      "audit_failures": [],
+      "basis": "unverified",
+      "competition": "CCT Europe 2026 Series #12 Play-In",
+      "fixture_id": "1081126",
+      "flags": [
+        "ambiguous_vrs_name:Banda chuya",
+        "no_line_unverified"
+      ],
+      "hotspawn_url": "https://www.hotspawn.com/matches/banda-chuya-vs-enjoy-cct-europe-2026-series-12-play-in-1081126",
+      "page_source_urls": [
+        "https://www.hotspawn.com/matches/banda-chuya-vs-enjoy-cct-europe-2026-series-12-play-in-1081126"
+      ],
+      "pick_team": null,
+      "prob_a": null,
+      "prob_b": null,
+      "source_urls": [
+        "https://www.hotspawn.com/matches/banda-chuya-vs-enjoy-cct-europe-2026-series-12-play-in-1081126",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-18T08:00:00Z",
+      "status": "pass",
+      "team_a": "Banda chuya",
+      "team_b": "Enjoy"
+    },
+    {
+      "audit_failures": [],
+      "basis": "market",
+      "competition": "CCT Europe 2026 Challengers #8",
+      "fixture_id": "1081521",
+      "flags": [
+        "exchange_midpoints_not_executable_bookmaker_odds",
+        "exchange_volume_may_be_low_or_zero",
+        "not_in_vrs:ex-6666",
+        "rule_backed_exchange_fallback"
+      ],
+      "hotspawn_url": "https://www.hotspawn.com/matches/ex-6666-vs-privateer-cct-europe-2026-challengers-8-1081521",
+      "page_source_urls": [
+        "https://www.hotspawn.com/matches/ex-6666-vs-privateer-cct-europe-2026-challengers-8-1081521",
+        "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200"
+      ],
+      "pick_team": "ex-6666",
+      "prob_a": 0.8966,
+      "prob_b": 0.1034,
+      "source_urls": [
+        "https://www.hotspawn.com/matches/ex-6666-vs-privateer-cct-europe-2026-challengers-8-1081521",
+        "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct180945pgex",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-18T13:45:00Z",
+      "status": "pass",
+      "team_a": "ex-6666",
+      "team_b": "Privateer"
+    },
+    {
+      "audit_failures": [],
+      "basis": "unverified",
+      "competition": "CCT Europe 2026 Challengers #8",
+      "fixture_id": "1081522",
+      "flags": [
+        "no_line_unverified",
+        "not_in_vrs:antidaun"
+      ],
+      "hotspawn_url": "https://www.hotspawn.com/matches/antidaun-vs-phantom-academy-cct-europe-2026-challengers-8-1081522",
+      "page_source_urls": [
+        "https://www.hotspawn.com/matches/antidaun-vs-phantom-academy-cct-europe-2026-challengers-8-1081522"
+      ],
+      "pick_team": null,
+      "prob_a": null,
+      "prob_b": null,
+      "source_urls": [
+        "https://www.hotspawn.com/matches/antidaun-vs-phantom-academy-cct-europe-2026-challengers-8-1081522",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-18T13:45:00Z",
+      "status": "pass",
+      "team_a": "antidaun",
+      "team_b": "Phantom Academy"
+    },
+    {
+      "audit_failures": [],
+      "basis": "market",
+      "competition": "DraculaN Season 7",
+      "fixture_id": "1081526",
+      "flags": [
+        "not_in_vrs:Insiders"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "page_source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"
+      ],
+      "pick_team": "Infinite",
+      "prob_a": 0.6552,
+      "prob_b": 0.3448,
+      "source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://melbet.com/en/line/esports",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-19T09:00:00Z",
+      "status": "pass",
+      "team_a": "Infinite",
+      "team_b": "Insiders"
+    },
+    {
+      "audit_failures": [],
+      "basis": "market",
+      "competition": "DraculaN Season 7",
+      "fixture_id": "1081527",
+      "flags": [
+        "ambiguous_vrs_name:aimclub"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "page_source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"
+      ],
+      "pick_team": "BASEMENT BOYS",
+      "prob_a": 0.4531,
+      "prob_b": 0.5469,
+      "source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://melbet.com/en/line/esports",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-19T09:00:00Z",
+      "status": "pass",
+      "team_a": "aimclub",
+      "team_b": "BASEMENT BOYS"
+    },
+    {
+      "audit_failures": [],
+      "basis": "market",
+      "competition": "DraculaN Season 7",
+      "fixture_id": "1081528",
+      "flags": [],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "page_source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"
+      ],
+      "pick_team": "BC.Game",
+      "prob_a": 0.8245,
+      "prob_b": 0.1755,
+      "source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://melbet.com/en/line/esports",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-19T09:00:00Z",
+      "status": "pass",
+      "team_a": "BC.Game",
+      "team_b": "Drama"
+    },
+    {
+      "audit_failures": [],
+      "basis": "unverified",
+      "competition": "DraculaN Season 7",
+      "fixture_id": "1081529",
+      "flags": [
+        "no_line_unverified",
+        "not_in_vrs:WROTBERRY"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "page_source_urls": [
+        "https://play.hotspawn.com/lobby"
+      ],
+      "pick_team": null,
+      "prob_a": null,
+      "prob_b": null,
+      "source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-19T09:00:00Z",
+      "status": "pass",
+      "team_a": "Nexus",
+      "team_b": "WROTBERRY"
+    },
+    {
+      "audit_failures": [],
+      "basis": "market",
+      "competition": "DraculaN Season 7",
+      "fixture_id": "1081530",
+      "flags": [
+        "model_market_gap_26pp"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "page_source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"
+      ],
+      "pick_team": "Iberian Soul",
+      "prob_a": 0.6552,
+      "prob_b": 0.3448,
+      "source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://melbet.com/en/line/esports",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-19T10:45:00Z",
+      "status": "pass",
+      "team_a": "Iberian Soul",
+      "team_b": "HyperSpirit"
+    },
+    {
+      "audit_failures": [],
+      "basis": "market",
+      "competition": "DraculaN Season 7",
+      "fixture_id": "1081531",
+      "flags": [
+        "ambiguous_vrs_name:mouz NXT"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "page_source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"
+      ],
+      "pick_team": "Sashi",
+      "prob_a": 0.6194,
+      "prob_b": 0.3806,
+      "source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://melbet.com/en/line/esports",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-19T10:45:00Z",
+      "status": "pass",
+      "team_a": "Sashi",
+      "team_b": "mouz NXT"
+    },
+    {
+      "audit_failures": [],
+      "basis": "market",
+      "competition": "DraculaN Season 7",
+      "fixture_id": "1081532",
+      "flags": [
+        "ambiguous_vrs_name:Leo"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "page_source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"
+      ],
+      "pick_team": "Leo",
+      "prob_a": 0.4531,
+      "prob_b": 0.5469,
+      "source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://melbet.com/en/line/esports",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-19T10:45:00Z",
+      "status": "pass",
+      "team_a": "ASTRAL",
+      "team_b": "Leo"
+    },
+    {
+      "audit_failures": [],
+      "basis": "unverified",
+      "competition": "VOID Autumn Cup 2026",
+      "fixture_id": "1081861",
+      "flags": [
+        "no_line_unverified",
+        "not_in_vrs:Morningstar"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "page_source_urls": [
+        "https://play.hotspawn.com/lobby"
+      ],
+      "pick_team": null,
+      "prob_a": null,
+      "prob_b": null,
+      "source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-20T03:00:00Z",
+      "status": "pass",
+      "team_a": "Lynn Vision",
+      "team_b": "Morningstar"
+    },
+    {
+      "audit_failures": [],
+      "basis": "model",
+      "competition": "VOID Autumn Cup 2026",
+      "fixture_id": "1081862",
+      "flags": [
+        "model_estimate_not_verified_win_probability"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "page_source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "pick_team": "Rare Atom",
+      "prob_a": 0.6194,
+      "prob_b": 0.3806,
+      "source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-20T05:00:00Z",
+      "status": "pass",
+      "team_a": "Rare Atom",
+      "team_b": "Alter Ego"
+    },
+    {
+      "audit_failures": [],
+      "basis": "unverified",
+      "competition": "VOID Autumn Cup 2026",
+      "fixture_id": "1081863",
+      "flags": [
+        "ambiguous_vrs_name:Chinggis Warriors",
+        "no_line_unverified",
+        "not_in_vrs:WXM"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "page_source_urls": [
+        "https://play.hotspawn.com/lobby"
+      ],
+      "pick_team": null,
+      "prob_a": null,
+      "prob_b": null,
+      "source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-20T07:00:00Z",
+      "status": "pass",
+      "team_a": "Chinggis Warriors",
+      "team_b": "WXM"
+    },
+    {
+      "audit_failures": [],
+      "basis": "model",
+      "competition": "VOID Autumn Cup 2026",
+      "fixture_id": "1081864",
+      "flags": [
+        "model_estimate_not_verified_win_probability"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "page_source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "pick_team": "NEXVOID",
+      "prob_a": 0.8226,
+      "prob_b": 0.1774,
+      "source_urls": [
+        "https://play.hotspawn.com/lobby",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "start_utc": "2026-10-20T09:00:00Z",
+      "status": "pass",
+      "team_a": "NEXVOID",
+      "team_b": "Vitalem Aerem"
+    }
+  ],
+  "manual_review_sources": [
+    {
+      "label": "HotSpawn lobby",
+      "url": "https://play.hotspawn.com/lobby"
+    },
+    {
+      "label": "Official Valve regional standings",
+      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings"
+    },
+    {
+      "label": "HLTV",
+      "url": "https://www.hltv.org/"
+    },
+    {
+      "label": "Repository source evidence",
+      "url": "https://github.com/buffedlizard55-lab/MaltaProj2"
+    }
+  ],
+  "probability_checks": {
+    "failures": [],
+    "rows": [
+      {
+        "basis": "market",
+        "fixture_id": "1081510",
+        "pick_team": "Eternal Fire",
+        "prob_a": 0.5457,
+        "prob_b": 0.4543,
+        "status": "pass"
+      },
+      {
+        "basis": "market",
+        "fixture_id": "1081888",
+        "pick_team": "Heroic",
+        "prob_a": 0.4475,
+        "prob_b": 0.5525,
+        "status": "pass"
+      },
+      {
+        "basis": "model",
+        "fixture_id": "1079171",
+        "pick_team": "GenOne",
+        "prob_a": 0.6403,
+        "prob_b": 0.3597,
+        "status": "pass"
+      },
+      {
+        "basis": "market",
+        "fixture_id": "1081513",
+        "pick_team": "Bebop",
+        "prob_a": 0.5103,
+        "prob_b": 0.4897,
+        "status": "pass"
+      },
+      {
+        "basis": "market",
+        "fixture_id": "1079173",
+        "pick_team": "BakS",
+        "prob_a": 0.5921,
+        "prob_b": 0.4079,
+        "status": "pass"
+      },
+      {
+        "basis": "market",
+        "fixture_id": "1081521",
+        "pick_team": "ex-6666",
+        "prob_a": 0.8966,
+        "prob_b": 0.1034,
+        "status": "pass"
+      },
+      {
+        "basis": "market",
+        "fixture_id": "1081526",
+        "pick_team": "Infinite",
+        "prob_a": 0.6552,
+        "prob_b": 0.3448,
+        "status": "pass"
+      },
+      {
+        "basis": "market",
+        "fixture_id": "1081527",
+        "pick_team": "BASEMENT BOYS",
+        "prob_a": 0.4531,
+        "prob_b": 0.5469,
+        "status": "pass"
+      },
+      {
+        "basis": "market",
+        "fixture_id": "1081528",
+        "pick_team": "BC.Game",
+        "prob_a": 0.8245,
+        "prob_b": 0.1755,
+        "status": "pass"
+      },
+      {
+        "basis": "market",
+        "fixture_id": "1081530",
+        "pick_team": "Iberian Soul",
+        "prob_a": 0.6552,
+        "prob_b": 0.3448,
+        "status": "pass"
+      },
+      {
+        "basis": "market",
+        "fixture_id": "1081531",
+        "pick_team": "Sashi",
+        "prob_a": 0.6194,
+        "prob_b": 0.3806,
+        "status": "pass"
+      },
+      {
+        "basis": "market",
+        "fixture_id": "1081532",
+        "pick_team": "Leo",
+        "prob_a": 0.4531,
+        "prob_b": 0.5469,
+        "status": "pass"
+      },
+      {
+        "basis": "model",
+        "fixture_id": "1081862",
+        "pick_team": "Rare Atom",
+        "prob_a": 0.6194,
+        "prob_b": 0.3806,
+        "status": "pass"
+      },
+      {
+        "basis": "model",
+        "fixture_id": "1081864",
+        "pick_team": "NEXVOID",
+        "prob_a": 0.8226,
+        "prob_b": 0.1774,
+        "status": "pass"
+      }
+    ]
+  },
+  "scope": {
+    "canonical_board": "data/c64a5e19/board.json",
+    "canonical_page": "picks-every-match/picks.html",
+    "policy": "audit retained canonical batch only; no external URL reachability is claimed",
+    "surfaces": [
+      "index.html",
+      "flagged.html",
+      "picks-every-match/index.html",
+      "picks-every-match/picks.html",
+      "picks-every-match/inventory.html",
+      "picks-every-match/unresolved.html",
+      "picks-every-match/flagged.html",
+      "picks-every-match/method.html",
+      "twc-2026/index.html",
+      "twc-2026/day-4.html",
+      "twc-2026/results.html",
+      "twc-2026/roster.html",
+      "twc-2026/flagged.html",
+      "twc-2026/method.html",
+      "hub/index.html",
+      "hub/unresolved.html",
+      "hub/flagged.html"
+    ]
+  },
+  "source_capture": {
+    "collected_from_utc": "2026-10-16T22:48:29Z",
+    "freshness_limit_hours": 4,
+    "generated_utc": "2026-10-16T22:48:43Z",
+    "source_status": {
+      "failed": [
+        "hltv_probe"
+      ],
+      "ok": [
+        "bovada",
+        "hotspawn_api",
+        "hotspawn_lobby_page",
+        "kalshi",
+        "melbet",
+        "pinnacle",
+        "polymarket_probe",
+        "valve_vrs_file",
+        "valve_vrs_tree"
+      ]
+    },
+    "week": {
+      "cutoffUtc": "2026-10-18T23:59:59.999Z",
+      "sportAlias": "cs2",
+      "status": "OPEN",
+      "weekEndUtc": "2026-10-18T23:59:59.999Z",
+      "weekId": 270,
+      "weekStartUtc": "2026-10-12T00:00:00.000Z"
+    }
+  },
+  "summary": {
+    "arithmetic_failures": 0,
+    "arithmetic_rows_checked": 14,
+    "board_unresolved": 7,
+    "board_with_line": 14,
+    "findings": 5,
+    "fixture_failures": 0,
+    "listed_open": 21,
+    "page_rows": 21,
+    "surface_count": 17,
+    "surfaces_with_marker_failures": 11,
+    "surfaces_with_missing_links": 0
+  },
+  "surface_checks": [
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 0,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [
+        "labelled navigation"
+      ],
+      "path": "index.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 0,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [
+        "labelled navigation",
+        "table caption"
+      ],
+      "path": "flagged.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 1,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [],
+      "path": "picks-every-match/index.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 1,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [],
+      "path": "picks-every-match/picks.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 0,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [
+        "table caption"
+      ],
+      "path": "picks-every-match/inventory.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 0,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [
+        "table caption"
+      ],
+      "path": "picks-every-match/unresolved.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 0,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [
+        "table caption"
+      ],
+      "path": "picks-every-match/flagged.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 0,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [],
+      "path": "picks-every-match/method.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 0,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [],
+      "path": "twc-2026/index.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 0,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [
+        "table caption"
+      ],
+      "path": "twc-2026/day-4.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 0,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [],
+      "path": "twc-2026/results.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 0,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [
+        "table caption"
+      ],
+      "path": "twc-2026/roster.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 0,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [
+        "table caption"
+      ],
+      "path": "twc-2026/flagged.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 0,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [],
+      "path": "twc-2026/method.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 0,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [
+        "skip link",
+        "main landmark"
+      ],
+      "path": "hub/index.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 0,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [
+        "skip link",
+        "main landmark"
+      ],
+      "path": "hub/unresolved.html"
+    },
+    {
+      "broken_fragments": [],
+      "has_viewport": true,
+      "malformed_option_end_tags": 0,
+      "missing_local_links": [],
+      "missing_mobile_accessibility_markers": [
+        "skip link",
+        "main landmark"
+      ],
+      "path": "hub/flagged.html"
+    }
+  ]
+}
