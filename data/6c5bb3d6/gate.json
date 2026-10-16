@@ -1,34 +1,30 @@
 {
  "session": "6c5bb3d6",
- "ran_utc": "2026-10-16T18:00:55Z",
+ "ran_utc": "2026-10-16T19:41:29Z",
  "command": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests",
  "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
- "returncode": 1,
- "green": false,
- "failing_tests": [
-  "test_calibration_is_reproducible_from_this_capture",
-  "test_displayed_clock_rule_is_rechecked_at_every_build",
-  "test_twc_day3_rows_are_in_the_open_board"
- ],
+ "returncode": 0,
+ "green": true,
+ "failing_tests": [],
  "counts": {
   "ran": 731,
-  "ok": false,
-  "skipped": 0,
-  "failures": 3,
+  "ok": true,
+  "skipped": 3,
+  "failures": 0,
   "errors": 0
  },
  "tail": [
-  "======================================================================",
-  "FAIL: test_twc_day3_rows_are_in_the_open_board (test_7c2622db.HubBuild.test_twc_day3_rows_are_in_the_open_board)",
+  "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
+  "........s................................................./home/runner/work/MaltaProj2/MaltaProj2/tests/test_verify_8e7a652d.py:81: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/runner/work/MaltaProj2/MaltaProj2/verify/8e7a652d/index.html' mode='r' encoding='utf-8'>",
+  "  html = open(page, encoding=\"utf-8\").read()",
+  "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
+  ".../home/runner/work/MaltaProj2/MaltaProj2/tests/test_verify_8e7a652d.py:99: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/runner/work/MaltaProj2/MaltaProj2/index.html' mode='r' encoding='utf-8'>",
+  "  html = open(os.path.join(ROOT, \"index.html\"), encoding=\"utf-8\").read()",
+  "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
+  ".",
   "----------------------------------------------------------------------",
-  "Traceback (most recent call last):",
-  "  File \"/home/runner/work/MaltaProj2/MaltaProj2/tests/test_7c2622db.py\", line 182, in test_twc_day3_rows_are_in_the_open_board",
-  "    self.assertIn(str(entry[\"fixture_id\"]), listed,",
-  "AssertionError: '1080205' not found in {'1081521', '1081529', '1081513', '1081522', '1081527', '1081532', '1081781', '1081528', '1081526', '1081531', '1079173', '1079171', '1079170', '1081126', '1081530'} : every day-3 decider must appear in the open board",
+  "Ran 731 tests in 8.372s",
   "",
-  "----------------------------------------------------------------------",
-  "Ran 731 tests in 8.953s",
-  "",
-  "FAILED (failures=3, skipped=5)"
+  "OK (skipped=3)"
  ]
 }
