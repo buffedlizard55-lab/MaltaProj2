@@ -1,15 +1,15 @@
 {
- "generated_at_utc": "2026-10-16T07:35:54Z",
+ "generated_at_utc": "2026-10-16T13:36:58Z",
  "checks": [
   {
    "id": "R1",
    "claim": "data/hotspawn_matches.json matches the live lobby fixture list",
    "source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
    "snapshot_file": "data/hotspawn_matches.json",
-   "snapshot_generated_at_utc": "2026-10-16T07:14:52Z",
-   "live_count_all_sports": 11705,
-   "live_window_rows": 296,
-   "snapshot_count": 95,
+   "snapshot_generated_at_utc": "2026-10-16T12:31:40Z",
+   "live_count_all_sports": 11714,
+   "live_window_rows": 288,
+   "snapshot_count": 100,
    "window_ids_missing_from_snapshot": [
     "1071191",
     "1071208",
@@ -34,7 +34,7 @@
    ],
    "stale_in_snapshot": [],
    "status": "discrepancy",
-   "detail": "95 snapshot rows vs 296 live window rows; 263 live window fixture(s) missing from the snapshot, 0 snapshot row(s) no longer served"
+   "detail": "100 snapshot rows vs 288 live window rows; 253 live window fixture(s) missing from the snapshot, 0 snapshot row(s) no longer served"
   },
   {
    "id": "R2",
@@ -202,34 +202,32 @@
      ]
     }
    ],
-   "detail": "32 priced rows joined to the lobby snapshot by fixture id and team name; 0 mismatch(es), 23 row(s) whose fixture has since left the lobby window"
+   "detail": "32 priced rows joined to the lobby snapshot by fixture id and team name; 0 mismatch(es), 24 row(s) whose fixture has since left the lobby window"
   },
   {
    "id": "R5",
    "claim": "data/lines.json summary counters match its own row list",
-   "declared_fixtures_total": 95,
-   "rows": 95,
+   "declared_fixtures_total": 100,
+   "rows": 100,
    "status": "verified",
-   "detail": "declared fixtures_total=95 vs 95 rows; fixtures_with_external_line=11"
+   "detail": "declared fixtures_total=100 vs 100 rows; fixtures_with_external_line=10"
   },
   {
    "id": "R6",
    "claim": "every price published on the board carries a source link, a market label and a retrieval timestamp",
-   "priced_rows": 34,
-   "distinct_source_pages": 19,
+   "priced_rows": 27,
+   "distinct_source_pages": 17,
    "links_listed_for_manual_review": [
     "https://melbet.com/en/line/esports/",
     "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/baks-esports-g2-ares-202610161300",
     "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/ex-rustec-saint-sinners-202610160700",
     "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/forze-reload-lavked-202610161000",
-    "https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/joga-de-terno-your-end-202610160900",
     "https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/procyon-gaming-los-ninos-202610161200",
+    "https://www.bovada.lv/esports/counter-strike-2/nodwin-clutch-series/ex-zero-tenacity-unity-esports-202610161000",
     "https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-qualifiers/europe/bbl-esports-eyeballers-202610161000",
     "https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-qualifiers/europe/gamerlegion-ex-rustec-202610161300",
-    "https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-qualifiers/europe/team-nemesis-nuclear-tigeres-202610160700",
+    "https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-qualifiers/europe/team-nemesis-nuclear-tigeres-202610160745",
     "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-mibr-202610161000",
-    "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/fnatic-heroic-202610160700",
-    "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/ninjas-in-pyjamas-team-liquid-202610160400",
     "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/sangal-esports-100-thieves-202610161300",
     "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/bb-team-legacy-202610161300",
     "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-aurora-9z-globant-202610161000",
@@ -240,36 +238,24 @@
    ],
    "reachability_from_this_host": {
     "reachable": 1,
-    "not_reachable": 18,
+    "not_reachable": 16,
     "note": "bookmaker pages commonly refuse datacenter clients, so a failure here is not treated as a broken link \u2014 the reviewer clicks them",
     "not_reachable_examples": [
-     {
-      "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/ninjas-in-pyjamas-team-liquid-202610160400"
-     },
-     {
-      "source": "Melbet (1xBet platform, LineFeed)",
-      "url": "https://melbet.com/en/line/esports/"
-     },
      {
       "source": "Bovada",
       "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/ex-rustec-saint-sinners-202610160700"
      },
      {
       "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/fnatic-heroic-202610160700"
-     },
-     {
-      "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-qualifiers/europe/team-nemesis-nuclear-tigeres-202610160700"
-     },
-     {
-      "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/joga-de-terno-your-end-202610160900"
+      "url": "https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-qualifiers/europe/team-nemesis-nuclear-tigeres-202610160745"
      },
      {
       "source": "Bovada",
       "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/astralis-mibr-202610161000"
+     },
+     {
+      "source": "Melbet (1xBet platform, LineFeed)",
+      "url": "https://melbet.com/en/line/esports/"
      },
      {
       "source": "Bovada",
@@ -282,20 +268,32 @@
      {
       "source": "Bovada",
       "url": "https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-qualifiers/europe/bbl-esports-eyeballers-202610161000"
+     },
+     {
+      "source": "Bovada",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/nodwin-clutch-series/ex-zero-tenacity-unity-esports-202610161000"
+     },
+     {
+      "source": "Bovada",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/procyon-gaming-los-ninos-202610161200"
+     },
+     {
+      "source": "Bovada",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/sangal-esports-100-thieves-202610161300"
      }
     ]
    },
    "status": "verified",
    "mismatches": [],
-   "detail": "34 priced rows, 19 distinct source pages, 0 row(s) missing provenance; 1 link(s) answered automatically"
+   "detail": "27 priced rows, 17 distinct source pages, 0 row(s) missing provenance; 1 link(s) answered automatically"
   },
   {
    "id": "R7",
    "claim": "where two or more independent sources price the same fixture, their no-vig probabilities agree within 12 points",
-   "fixtures_with_two_or_more_sources": 19,
+   "fixtures_with_two_or_more_sources": 15,
    "status": "verified",
    "mismatches": [],
-   "detail": "19 fixture(s) priced by 2+ sources compared source by source; 0 with a spread wider than 12 points"
+   "detail": "15 fixture(s) priced by 2+ sources compared source by source; 0 with a spread wider than 12 points"
   }
  ],
  "irregularities": [
