@@ -2,21 +2,23 @@
  "session": "6c5bb3d6",
  "task": "T-VERIFY-6C5BB3D6 independent line-by-line verification",
  "gate": {
-  "ran_utc": "2026-10-16T12:30:43Z",
+  "ran_utc": "2026-10-16T13:23:44Z",
   "command": "python -m unittest discover -s tests",
   "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
-  "green": true,
-  "returncode": 0,
+  "green": false,
+  "returncode": 1,
   "counts": {
    "ran": 731,
-   "ok": true,
-   "skipped": 3,
-   "failures": 0,
+   "ok": false,
+   "skipped": 0,
+   "failures": 1,
    "errors": 0
   },
-  "failing_tests": []
+  "failing_tests": [
+   "test_displayed_clock_rule_is_rechecked_at_every_build"
+  ]
  },
- "generated_utc": "2026-10-16T12:30:43Z",
+ "generated_utc": "2026-10-16T13:23:45Z",
  "verified_board": {
   "file": "data/f28afd9e/board.json",
   "generated_utc": "2026-10-16T12:29:39Z",
@@ -34,7 +36,7 @@
  },
  "official_vrs": {
   "snapshot": "2026_10_05",
-  "fetched_utc": "2026-10-16T12:30:29Z",
+  "fetched_utc": "2026-10-16T13:23:32Z",
   "http_status": 200,
   "teams_parsed": 349,
   "human_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
@@ -42,21 +44,22 @@
  },
  "lobby_snapshot": {
   "file": "data/hotspawn_matches.json",
-  "generated_at_utc": "2026-10-16T07:50:00Z",
-  "match_count": 95,
-  "pickable_at_board_instant": 24
+  "generated_at_utc": "2026-10-16T12:31:40Z",
+  "match_count": 100,
+  "pickable_at_board_instant": 33
  },
- "quotes_re_derived": 220,
+ "quotes_re_derived": 223,
  "summary": {
   "checks": 11,
   "by_status": {
-   "pass": 9,
+   "pass": 7,
+   "warn": 2,
    "info": 1,
-   "warn": 1
+   "fail": 1
   },
-  "irregularities": 28,
+  "irregularities": 29,
   "by_severity": {
-   "high": 2,
+   "high": 3,
    "info": 16,
    "low": 2,
    "medium": 4,
@@ -68,12 +71,12 @@
    "id": "C1",
    "name": "Inventory coverage of every pickable CS2 fixture",
    "status": "pass",
-   "detail": "95 CS2 fixtures in the official lobby snapshot; 24 still pickable at the board instant 2026-10-16T12:29:39Z; 71 locked/past; 24/24 carry a pick",
+   "detail": "100 CS2 fixtures in the official lobby snapshot; 33 still pickable at the board instant 2026-10-16T12:29:39Z; 67 locked/past; 33/33 carry a pick",
    "evidence": [
     "data/hotspawn_matches.json",
     "data/f28afd9e/board.json"
    ],
-   "rows_checked": 24,
+   "rows_checked": 33,
    "rows_failed": 0,
    "failures": []
   },
@@ -93,20 +96,22 @@
   {
    "id": "C3",
    "name": "No-vig arithmetic re-derived from every retained raw quote",
-   "status": "pass",
-   "detail": "26 rows re-derived from 220 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 0 rows publish no probability (blank, so there is nothing to re-derive); 11 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct",
+   "status": "warn",
+   "detail": "25 rows re-derived from 223 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 0 rows publish no probability (blank, so there is nothing to re-derive); 11 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct",
    "evidence": [
     "data/live/quotes.json",
     "data/fe803b80/snapshot.json",
     "data/b1fb1465/board.json"
    ],
    "rows_checked": 37,
-   "rows_failed": 0,
-   "failures": [],
+   "rows_failed": 1,
+   "failures": [
+    "1081779: published market 0.631575 vs re-derived mean 0.7005 from 1 quote(s), spread 0.0000"
+   ],
    "unjoined_rows": [
+    "1079167",
     "1081496",
     "1079632",
-    "1081781",
     "1081513",
     "1079173",
     "1081126",
@@ -121,47 +126,16 @@
     {
      "fixture_id": "1079167",
      "match": "Bushido Wildcats vs ex-RUSTEC",
+     "quotes": [],
      "published_market_prob_a": 0.5,
-     "rederived_mean_prob_a": 0.415747,
-     "rederived_spread": 0.168505,
-     "quotes": [
-      {
-       "source": "melbet",
-       "event_id": "761990283",
-       "quote_team_a": "Bushido Wildcats",
-       "quote_team_b": "ex-RUSTEC",
-       "decimal_a": 1.87,
-       "decimal_b": 1.87,
-       "raw_side_a_prob": 0.5,
-       "orientation": "straight",
-       "rederived_prob_a": 0.5,
-       "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T04:42:54Z",
-       "origin": "data/b1fb1465/board.json row 1079167 (market)"
-      },
-      {
-       "source": "kalshi",
-       "event_id": "KXCS2GAME-26OCT160700EXRBW",
-       "quote_team_a": "ex-RUSTEC",
-       "quote_team_b": "Bushido Wildcats",
-       "decimal_a": 1.6529,
-       "decimal_b": 3.3333,
-       "raw_side_a_prob": 0.668505,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.331495,
-       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T04:42:57Z",
-       "origin": "data/b1fb1465/board.json row 1079167 (exchange)"
-      }
-     ],
-     "status": "agrees"
+     "status": "no_retained_quote"
     },
     {
      "fixture_id": "1079630",
      "match": "ex-RUSTEC vs Saint Sinners",
      "published_market_prob_a": 0.6456,
-     "rederived_mean_prob_a": 0.636863,
-     "rederived_spread": 0.356933,
+     "rederived_mean_prob_a": 0.674074,
+     "rederived_spread": 0.085338,
      "quotes": [
       {
        "source": "bovada",
@@ -182,56 +156,28 @@
        "event_id": "32271168",
        "quote_team_a": "Ex-Rustec",
        "quote_team_b": "Saint Sinners",
-       "decimal_a": 1.2,
-       "decimal_b": 4.25,
-       "raw_side_a_prob": 0.779817,
-       "orientation": "straight",
-       "rederived_prob_a": 0.779817,
-       "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-16T12:02:14Z",
-       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      },
-      {
-       "source": "kalshi",
-       "event_id": "KXCS2GAME-26OCT160700SSINSEXR",
-       "quote_team_a": "Saint Sinners",
-       "quote_team_b": "ex-RUSTEC",
-       "decimal_a": 1.7241,
-       "decimal_b": 2.3529,
-       "raw_side_a_prob": 0.577116,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.422884,
-       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T12:02:18Z",
-       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      },
-      {
-       "source": "bovada",
-       "event_id": "32271168",
-       "quote_team_a": "Ex-Rustec",
-       "quote_team_b": "Saint Sinners",
        "decimal_a": 1.4545,
        "decimal_b": 2.65,
        "raw_side_a_prob": 0.645633,
        "orientation": "straight",
        "rederived_prob_a": 0.645633,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-16T04:42:53Z",
-       "origin": "data/b1fb1465/board.json row 1079630 (market)"
+       "retrieved_utc": "2026-10-16T12:56:32Z",
+       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
        "source": "kalshi",
        "event_id": "KXCS2GAME-26OCT160700SSINSEXR",
        "quote_team_a": "Saint Sinners",
        "quote_team_b": "ex-RUSTEC",
-       "decimal_a": 3.2787,
-       "decimal_b": 1.4706,
-       "raw_side_a_prob": 0.309646,
+       "decimal_a": 3.7736,
+       "decimal_b": 1.3889,
+       "raw_side_a_prob": 0.269036,
        "orientation": "swapped",
-       "rederived_prob_a": 0.690354,
+       "rederived_prob_a": 0.730964,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T04:42:57Z",
-       "origin": "data/b1fb1465/board.json row 1079630 (exchange)"
+       "retrieved_utc": "2026-10-16T12:56:35Z",
+       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       }
      ],
      "status": "agrees"
@@ -247,8 +193,8 @@
      "fixture_id": "1081712",
      "match": "Fnatic vs Heroic",
      "published_market_prob_a": 0.3551,
-     "rederived_mean_prob_a": 0.323068,
-     "rederived_spread": 0.214388,
+     "rederived_mean_prob_a": 0.302133,
+     "rederived_spread": 0.199008,
      "quotes": [
       {
        "source": "pinnacle",
@@ -283,98 +229,14 @@
        "event_id": "32306169",
        "quote_team_a": "Fnatic",
        "quote_team_b": "Heroic",
-       "decimal_a": 2.7,
-       "decimal_b": 1.4444,
-       "raw_side_a_prob": 0.348518,
+       "decimal_a": 2.55,
+       "decimal_b": 1.4878,
+       "raw_side_a_prob": 0.368468,
        "orientation": "straight",
-       "rederived_prob_a": 0.348518,
+       "rederived_prob_a": 0.368468,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-16T12:02:14Z",
+       "retrieved_utc": "2026-10-16T12:56:32Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      },
-      {
-       "source": "kalshi",
-       "event_id": "KXCS2GAME-26OCT160700HEROFNC",
-       "quote_team_a": "Heroic",
-       "quote_team_b": "fnatic",
-       "decimal_a": 1.2658,
-       "decimal_b": 4.878,
-       "raw_side_a_prob": 0.793971,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.206029,
-       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T12:02:18Z",
-       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      },
-      {
-       "source": "pinnacle",
-       "event_id": "1638461212",
-       "quote_team_a": "fnatic",
-       "quote_team_b": "HEROIC",
-       "decimal_a": 2.68,
-       "decimal_b": 1.4505,
-       "raw_side_a_prob": 0.351168,
-       "orientation": "straight",
-       "rederived_prob_a": 0.351168,
-       "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638461212/markets/related/straight",
-       "retrieved_utc": "2026-10-16T04:42:52Z",
-       "origin": "data/b1fb1465/board.json row 1081712 (market)"
-      },
-      {
-       "source": "bovada",
-       "event_id": "32306169",
-       "quote_team_a": "Fnatic",
-       "quote_team_b": "Heroic",
-       "decimal_a": 2.45,
-       "decimal_b": 1.5263,
-       "raw_side_a_prob": 0.383849,
-       "orientation": "straight",
-       "rederived_prob_a": 0.383849,
-       "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-16T04:42:53Z",
-       "origin": "data/b1fb1465/board.json row 1081712 (market)"
-      },
-      {
-       "source": "melbet",
-       "event_id": "761910446",
-       "quote_team_a": "Fnatic",
-       "quote_team_b": "Heroic",
-       "decimal_a": 2.673,
-       "decimal_b": 1.46,
-       "raw_side_a_prob": 0.353254,
-       "orientation": "straight",
-       "rederived_prob_a": 0.353254,
-       "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T04:42:54Z",
-       "origin": "data/b1fb1465/board.json row 1081712 (market)"
-      },
-      {
-       "source": "thunderpick",
-       "event_id": "131341",
-       "quote_team_a": "fnatic",
-       "quote_team_b": "HEROIC",
-       "decimal_a": 2.5,
-       "decimal_b": 1.48,
-       "raw_side_a_prob": 0.371859,
-       "orientation": "straight",
-       "rederived_prob_a": 0.371859,
-       "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131341",
-       "retrieved_utc": "2026-10-16T04:43:23Z",
-       "origin": "data/b1fb1465/board.json row 1081712 (market)"
-      },
-      {
-       "source": "kalshi",
-       "event_id": "KXCS2GAME-26OCT160700HEROFNC",
-       "quote_team_a": "Heroic",
-       "quote_team_b": "fnatic",
-       "decimal_a": 1.5504,
-       "decimal_b": 2.8169,
-       "raw_side_a_prob": 0.644998,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.355002,
-       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T04:42:57Z",
-       "origin": "data/b1fb1465/board.json row 1081712 (exchange)"
       }
      ],
      "status": "agrees"
@@ -383,8 +245,8 @@
      "fixture_id": "1081497",
      "match": "Young27 vs Young TigeRES",
      "published_market_prob_a": 0.5190710000000001,
-     "rederived_mean_prob_a": 0.512711,
-     "rederived_spread": 0.167879,
+     "rederived_mean_prob_a": 0.536377,
+     "rederived_spread": 0.109132,
      "quotes": [
       {
        "source": "linefeed_melbet",
@@ -405,13 +267,13 @@
        "event_id": "761960568",
        "quote_team_a": "Young TigeRES",
        "quote_team_b": "Young27",
-       "decimal_a": 1.65,
-       "decimal_b": 2.142,
-       "raw_side_a_prob": 0.564873,
+       "decimal_a": 1.85,
+       "decimal_b": 1.85,
+       "raw_side_a_prob": 0.5,
        "orientation": "swapped",
-       "rederived_prob_a": 0.435127,
+       "rederived_prob_a": 0.5,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T12:02:15Z",
+       "retrieved_utc": "2026-10-16T12:56:33Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -420,12 +282,12 @@
        "quote_team_a": "Young27",
        "quote_team_b": "Young TigeRES",
        "decimal_a": 1.6667,
-       "decimal_b": 2.5316,
-       "raw_side_a_prob": 0.603006,
+       "decimal_b": 2.5974,
+       "raw_side_a_prob": 0.609132,
        "orientation": "straight",
-       "rederived_prob_a": 0.603006,
+       "rederived_prob_a": 0.609132,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T12:02:18Z",
+       "retrieved_utc": "2026-10-16T12:56:35Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       }
      ],
@@ -435,8 +297,8 @@
      "fixture_id": "1081498",
      "match": "JOGA DE TERNO vs your end",
      "published_market_prob_a": 0.5586392727272728,
-     "rederived_mean_prob_a": 0.548566,
-     "rederived_spread": 0.130274,
+     "rederived_mean_prob_a": 0.594924,
+     "rederived_spread": 0.087701,
      "quotes": [
       {
        "source": "pinnacle",
@@ -485,13 +347,13 @@
        "event_id": "1638484917",
        "quote_team_a": "JOGA DE TERNO",
        "quote_team_b": "your end",
-       "decimal_a": 1.6711,
-       "decimal_b": 2.12,
-       "raw_side_a_prob": 0.559204,
+       "decimal_a": 1.5435,
+       "decimal_b": 2.35,
+       "raw_side_a_prob": 0.60357,
        "orientation": "straight",
-       "rederived_prob_a": 0.559204,
+       "rederived_prob_a": 0.60357,
        "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638484917/markets/related/straight",
-       "retrieved_utc": "2026-10-16T12:02:13Z",
+       "retrieved_utc": "2026-10-16T12:56:30Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -499,13 +361,13 @@
        "event_id": "32282783",
        "quote_team_a": "Joga De Terno",
        "quote_team_b": "Your End",
-       "decimal_a": 1.69,
-       "decimal_b": 2.1,
-       "raw_side_a_prob": 0.55409,
+       "decimal_a": 1.6452,
+       "decimal_b": 2.2,
+       "raw_side_a_prob": 0.572142,
        "orientation": "straight",
-       "rederived_prob_a": 0.55409,
+       "rederived_prob_a": 0.572142,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-16T12:02:14Z",
+       "retrieved_utc": "2026-10-16T12:56:32Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -513,13 +375,13 @@
        "event_id": "762001867",
        "quote_team_a": "Joga de terno",
        "quote_team_b": "your end",
-       "decimal_a": 1.69,
-       "decimal_b": 2.109,
-       "raw_side_a_prob": 0.555146,
+       "decimal_a": 1.56,
+       "decimal_b": 2.333,
+       "raw_side_a_prob": 0.599281,
        "orientation": "straight",
-       "rederived_prob_a": 0.555146,
+       "rederived_prob_a": 0.599281,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T12:02:15Z",
+       "retrieved_utc": "2026-10-16T12:56:33Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -527,56 +389,14 @@
        "event_id": "KXCS2GAME-26OCT160900YOUJDT",
        "quote_team_a": "your end",
        "quote_team_b": "Joga de terno",
-       "decimal_a": 2.3256,
-       "decimal_b": 1.7699,
-       "raw_side_a_prob": 0.432157,
+       "decimal_a": 2.7778,
+       "decimal_b": 1.5504,
+       "raw_side_a_prob": 0.358209,
        "orientation": "swapped",
-       "rederived_prob_a": 0.567843,
+       "rederived_prob_a": 0.641791,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T12:02:18Z",
+       "retrieved_utc": "2026-10-16T12:56:35Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      },
-      {
-       "source": "bovada",
-       "event_id": "32282783",
-       "quote_team_a": "Joga De Terno",
-       "quote_team_b": "Your End",
-       "decimal_a": 2.0,
-       "decimal_b": 1.7692,
-       "raw_side_a_prob": 0.469383,
-       "orientation": "straight",
-       "rederived_prob_a": 0.469383,
-       "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-16T04:42:53Z",
-       "origin": "data/b1fb1465/board.json row 1081498 (market)"
-      },
-      {
-       "source": "melbet",
-       "event_id": "761711445",
-       "quote_team_a": "Joga de terno",
-       "quote_team_b": "your end",
-       "decimal_a": 1.96,
-       "decimal_b": 1.75,
-       "raw_side_a_prob": 0.471698,
-       "orientation": "straight",
-       "rederived_prob_a": 0.471698,
-       "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T04:42:54Z",
-       "origin": "data/b1fb1465/board.json row 1081498 (market)"
-      },
-      {
-       "source": "kalshi",
-       "event_id": "KXCS2GAME-26OCT160900YOUJDT",
-       "quote_team_a": "your end",
-       "quote_team_b": "Joga de terno",
-       "decimal_a": 2.2989,
-       "decimal_b": 1.8018,
-       "raw_side_a_prob": 0.439388,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.560612,
-       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T04:42:57Z",
-       "origin": "data/b1fb1465/board.json row 1081498 (exchange)"
       }
      ],
      "status": "agrees"
@@ -585,32 +405,32 @@
      "fixture_id": "1081779",
      "match": "Rune Eaters vs HyperSpirit",
      "published_market_prob_a": 0.631575,
-     "rederived_mean_prob_a": 0.628141,
+     "rederived_mean_prob_a": 0.700502,
      "rederived_spread": 0.0,
      "quotes": [
       {
-       "source": "thunderpick",
-       "event_id": "132167",
-       "quote_team_a": "Rune Eaters",
-       "quote_team_b": "HYPERSPIRIT",
-       "decimal_a": 1.48,
-       "decimal_b": 2.5,
-       "raw_side_a_prob": 0.628141,
-       "orientation": "straight",
-       "rederived_prob_a": 0.628141,
-       "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=132167",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT160900HSRUN",
+       "quote_team_a": "HyperSpirit",
+       "quote_team_b": "Rune Eaters",
+       "decimal_a": 3.3898,
+       "decimal_b": 1.4493,
+       "raw_side_a_prob": 0.299498,
+       "orientation": "swapped",
+       "rederived_prob_a": 0.700502,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-16T12:56:35Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       }
      ],
-     "status": "agrees"
+     "status": "diverges"
     },
     {
      "fixture_id": "1079588",
      "match": "Astralis vs MIBR",
      "published_market_prob_a": 0.4579365714285714,
-     "rederived_mean_prob_a": 0.480715,
-     "rederived_spread": 0.102646,
+     "rederived_mean_prob_a": 0.458543,
+     "rederived_spread": 0.095118,
      "quotes": [
       {
        "source": "pinnacle",
@@ -665,7 +485,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.452105,
        "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638470501/markets/related/straight",
-       "retrieved_utc": "2026-10-16T12:02:13Z",
+       "retrieved_utc": "2026-10-16T12:56:30Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -679,7 +499,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.469383,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-16T12:02:14Z",
+       "retrieved_utc": "2026-10-16T12:56:32Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -693,7 +513,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.451444,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T12:02:15Z",
+       "retrieved_utc": "2026-10-16T12:56:33Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -702,12 +522,12 @@
        "quote_team_a": "MIBR",
        "quote_team_b": "Astralis",
        "decimal_a": 1.8349,
-       "decimal_b": 2.2222,
-       "raw_side_a_prob": 0.547731,
+       "decimal_b": 2.1978,
+       "raw_side_a_prob": 0.544995,
        "orientation": "swapped",
-       "rederived_prob_a": 0.452269,
+       "rederived_prob_a": 0.455005,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T12:02:18Z",
+       "retrieved_utc": "2026-10-16T12:56:35Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -721,7 +541,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.462366,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131342",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "retrieved_utc": "2026-10-16T12:57:26Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -729,13 +549,13 @@
        "event_id": "1638470501",
        "quote_team_a": "Astralis",
        "quote_team_b": "MIBR",
-       "decimal_a": 1.9009,
-       "decimal_b": 1.885,
-       "raw_side_a_prob": 0.4979,
+       "decimal_a": 2.08,
+       "decimal_b": 1.7353,
+       "raw_side_a_prob": 0.454827,
        "orientation": "straight",
-       "rederived_prob_a": 0.4979,
+       "rederived_prob_a": 0.454827,
        "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638470501/markets/related/straight",
-       "retrieved_utc": "2026-10-16T04:42:51Z",
+       "retrieved_utc": "2026-10-16T13:20:36Z",
        "origin": "data/b1fb1465/board.json row 1079588 (market)"
       },
       {
@@ -743,13 +563,13 @@
        "event_id": "32310396",
        "quote_team_a": "Astralis",
        "quote_team_b": "MIBR",
-       "decimal_a": 1.69,
-       "decimal_b": 2.1,
-       "raw_side_a_prob": 0.55409,
+       "decimal_a": 2.0,
+       "decimal_b": 1.7692,
+       "raw_side_a_prob": 0.469383,
        "orientation": "straight",
-       "rederived_prob_a": 0.55409,
+       "rederived_prob_a": 0.469383,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-16T04:42:53Z",
+       "retrieved_utc": "2026-10-16T13:20:37Z",
        "origin": "data/b1fb1465/board.json row 1079588 (market)"
       },
       {
@@ -757,13 +577,13 @@
        "event_id": "761919053",
        "quote_team_a": "Astralis",
        "quote_team_b": "MiBR",
-       "decimal_a": 1.9,
-       "decimal_b": 1.88,
-       "raw_side_a_prob": 0.497354,
+       "decimal_a": 2.08,
+       "decimal_b": 1.74,
+       "raw_side_a_prob": 0.455497,
        "orientation": "straight",
-       "rederived_prob_a": 0.497354,
+       "rederived_prob_a": 0.455497,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T04:42:54Z",
+       "retrieved_utc": "2026-10-16T13:20:38Z",
        "origin": "data/b1fb1465/board.json row 1079588 (market)"
       },
       {
@@ -771,13 +591,13 @@
        "event_id": "131342",
        "quote_team_a": "Astralis",
        "quote_team_b": "MIBR",
-       "decimal_a": 1.78,
-       "decimal_b": 1.92,
-       "raw_side_a_prob": 0.518919,
+       "decimal_a": 2.0,
+       "decimal_b": 1.72,
+       "raw_side_a_prob": 0.462366,
        "orientation": "straight",
-       "rederived_prob_a": 0.518919,
+       "rederived_prob_a": 0.462366,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131342",
-       "retrieved_utc": "2026-10-16T04:43:23Z",
+       "retrieved_utc": "2026-10-16T13:21:10Z",
        "origin": "data/b1fb1465/board.json row 1079588 (market)"
       },
       {
@@ -785,13 +605,13 @@
        "event_id": "KXCS2GAME-26OCT161000MIBRAST",
        "quote_team_a": "MIBR",
        "quote_team_b": "Astralis",
-       "decimal_a": 1.9417,
-       "decimal_b": 2.1053,
-       "raw_side_a_prob": 0.520213,
+       "decimal_a": 1.7094,
+       "decimal_b": 2.4096,
+       "raw_side_a_prob": 0.584996,
        "orientation": "swapped",
-       "rederived_prob_a": 0.479787,
+       "rederived_prob_a": 0.415004,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T04:42:57Z",
+       "retrieved_utc": "2026-10-16T13:20:40Z",
        "origin": "data/b1fb1465/board.json row 1079588 (exchange)"
       }
      ],
@@ -801,8 +621,8 @@
      "fixture_id": "1079631",
      "match": "FORZE Reload vs Lavked",
      "published_market_prob_a": 0.7084674545454545,
-     "rederived_mean_prob_a": 0.721735,
-     "rederived_spread": 0.051771,
+     "rederived_mean_prob_a": 0.711335,
+     "rederived_spread": 0.046411,
      "quotes": [
       {
        "source": "pinnacle",
@@ -857,7 +677,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.699708,
        "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638440143/markets/related/straight",
-       "retrieved_utc": "2026-10-16T12:02:14Z",
+       "retrieved_utc": "2026-10-16T12:56:29Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -871,7 +691,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.716192,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-16T12:02:14Z",
+       "retrieved_utc": "2026-10-16T12:56:32Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -885,7 +705,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.69697,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T12:02:15Z",
+       "retrieved_utc": "2026-10-16T12:56:33Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -893,13 +713,13 @@
        "event_id": "KXCS2GAME-26OCT161000LAVFORZER",
        "quote_team_a": "Lavked",
        "quote_team_b": "FORZE Reload",
-       "decimal_a": 3.7037,
-       "decimal_b": 1.3986,
-       "raw_side_a_prob": 0.274112,
+       "decimal_a": 3.7736,
+       "decimal_b": 1.3889,
+       "raw_side_a_prob": 0.269036,
        "orientation": "swapped",
-       "rederived_prob_a": 0.725888,
+       "rederived_prob_a": 0.730964,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T12:02:18Z",
+       "retrieved_utc": "2026-10-16T12:56:35Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -907,13 +727,13 @@
        "event_id": "1638440143",
        "quote_team_a": "FORZE Reload",
        "quote_team_b": "Lavked",
-       "decimal_a": 1.2703,
-       "decimal_b": 3.53,
-       "raw_side_a_prob": 0.735371,
+       "decimal_a": 1.3436,
+       "decimal_b": 3.1,
+       "raw_side_a_prob": 0.697633,
        "orientation": "straight",
-       "rederived_prob_a": 0.735371,
+       "rederived_prob_a": 0.697633,
        "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638440143/markets/related/straight",
-       "retrieved_utc": "2026-10-16T04:42:51Z",
+       "retrieved_utc": "2026-10-16T13:20:36Z",
        "origin": "data/b1fb1465/board.json row 1079631 (market)"
       },
       {
@@ -921,13 +741,13 @@
        "event_id": "32270207",
        "quote_team_a": "Forze Reload",
        "quote_team_b": "Lavked",
-       "decimal_a": 1.26,
-       "decimal_b": 3.65,
-       "raw_side_a_prob": 0.743381,
+       "decimal_a": 1.3077,
+       "decimal_b": 3.3,
+       "raw_side_a_prob": 0.716192,
        "orientation": "straight",
-       "rederived_prob_a": 0.743381,
+       "rederived_prob_a": 0.716192,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-16T04:42:53Z",
+       "retrieved_utc": "2026-10-16T13:20:37Z",
        "origin": "data/b1fb1465/board.json row 1079631 (market)"
       },
       {
@@ -935,13 +755,13 @@
        "event_id": "761850899",
        "quote_team_a": "FORZE Reload",
        "quote_team_b": "Lavked",
-       "decimal_a": 1.28,
-       "decimal_b": 3.51,
-       "raw_side_a_prob": 0.732777,
+       "decimal_a": 1.35,
+       "decimal_b": 3.105,
+       "raw_side_a_prob": 0.69697,
        "orientation": "straight",
-       "rederived_prob_a": 0.732777,
+       "rederived_prob_a": 0.69697,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T04:42:54Z",
+       "retrieved_utc": "2026-10-16T13:20:38Z",
        "origin": "data/b1fb1465/board.json row 1079631 (market)"
       },
       {
@@ -949,13 +769,13 @@
        "event_id": "KXCS2GAME-26OCT161000LAVFORZER",
        "quote_team_a": "Lavked",
        "quote_team_b": "FORZE Reload",
-       "decimal_a": 4.0,
-       "decimal_b": 1.3423,
-       "raw_side_a_prob": 0.251259,
+       "decimal_a": 3.7037,
+       "decimal_b": 1.3699,
+       "raw_side_a_prob": 0.270006,
        "orientation": "swapped",
-       "rederived_prob_a": 0.748741,
+       "rederived_prob_a": 0.729994,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T04:42:57Z",
+       "retrieved_utc": "2026-10-16T13:20:40Z",
        "origin": "data/b1fb1465/board.json row 1079631 (exchange)"
       }
      ],
@@ -965,8 +785,8 @@
      "fixture_id": "1080205",
      "match": "Aurora vs 9z",
      "published_market_prob_a": 0.6617430714285714,
-     "rederived_mean_prob_a": 0.659656,
-     "rederived_spread": 0.014619,
+     "rederived_mean_prob_a": 0.661202,
+     "rederived_spread": 0.009711,
      "quotes": [
       {
        "source": "pinnacle",
@@ -987,13 +807,13 @@
        "event_id": "1638461153",
        "quote_team_a": "Aurora",
        "quote_team_b": "9z",
-       "decimal_a": 1.4505,
-       "decimal_b": 2.79,
-       "raw_side_a_prob": 0.657941,
+       "decimal_a": 1.4329,
+       "decimal_b": 2.86,
+       "raw_side_a_prob": 0.666216,
        "orientation": "straight",
-       "rederived_prob_a": 0.657941,
+       "rederived_prob_a": 0.666216,
        "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638461153/markets/related/straight",
-       "retrieved_utc": "2026-10-16T12:02:12Z",
+       "retrieved_utc": "2026-10-16T12:56:30Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1001,13 +821,13 @@
        "event_id": "131670",
        "quote_team_a": "Aurora",
        "quote_team_b": "9z",
-       "decimal_a": 1.42,
+       "decimal_a": 1.4,
        "decimal_b": 2.7,
-       "raw_side_a_prob": 0.65534,
+       "raw_side_a_prob": 0.658537,
        "orientation": "straight",
-       "rederived_prob_a": 0.65534,
+       "rederived_prob_a": 0.658537,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131670",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "retrieved_utc": "2026-10-16T12:57:26Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1015,13 +835,13 @@
        "event_id": "1638461153",
        "quote_team_a": "Aurora",
        "quote_team_b": "9z",
-       "decimal_a": 1.4237,
-       "decimal_b": 2.89,
-       "raw_side_a_prob": 0.669959,
+       "decimal_a": 1.4329,
+       "decimal_b": 2.86,
+       "raw_side_a_prob": 0.666216,
        "orientation": "straight",
-       "rederived_prob_a": 0.669959,
+       "rederived_prob_a": 0.666216,
        "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638461153/markets/related/straight",
-       "retrieved_utc": "2026-10-16T04:42:52Z",
+       "retrieved_utc": "2026-10-16T13:20:35Z",
        "origin": "data/b1fb1465/board.json row 1080205 (market)"
       },
       {
@@ -1035,7 +855,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.658537,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131670",
-       "retrieved_utc": "2026-10-16T04:43:23Z",
+       "retrieved_utc": "2026-10-16T13:21:10Z",
        "origin": "data/b1fb1465/board.json row 1080205 (market)"
       }
      ],
@@ -1045,63 +865,49 @@
      "fixture_id": "1080288",
      "match": "Phantom vs RoundsGG",
      "published_market_prob_a": 0.909548,
-     "rederived_mean_prob_a": 0.886803,
-     "rederived_spread": 0.07669,
+     "rederived_mean_prob_a": 0.955223,
+     "rederived_spread": 0.059705,
      "quotes": [
       {
        "source": "kalshi",
        "event_id": "KXCS2GAME-26OCT161000RGGPHA",
        "quote_team_a": "RoundsGG",
        "quote_team_b": "Phantom",
-       "decimal_a": 11.1111,
-       "decimal_b": 1.105,
-       "raw_side_a_prob": 0.090454,
+       "decimal_a": 11.7647,
+       "decimal_b": 1.087,
+       "raw_side_a_prob": 0.08458,
        "orientation": "swapped",
-       "rederived_prob_a": 0.909546,
+       "rederived_prob_a": 0.91542,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T12:02:18Z",
+       "retrieved_utc": "2026-10-16T12:56:35Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      },
-      {
-       "source": "thunderpick",
-       "event_id": "131782",
-       "quote_team_a": "Phantom",
-       "quote_team_b": "ROUNDS",
-       "decimal_a": 1.08,
-       "decimal_b": 6.3,
-       "raw_side_a_prob": 0.853659,
-       "orientation": "straight",
-       "rederived_prob_a": 0.853659,
-       "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131782",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
-       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      },
-      {
-       "source": "thunderpick",
-       "event_id": "131782",
-       "quote_team_a": "Phantom",
-       "quote_team_b": "ROUNDS",
-       "decimal_a": 1.08,
-       "decimal_b": 6.3,
-       "raw_side_a_prob": 0.853659,
-       "orientation": "straight",
-       "rederived_prob_a": 0.853659,
-       "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131782",
-       "retrieved_utc": "2026-10-16T04:43:23Z",
-       "origin": "data/b1fb1465/board.json row 1080288 (market)"
       },
       {
        "source": "kalshi",
        "event_id": "KXCS2GAME-26OCT161000RGGPHA",
        "quote_team_a": "RoundsGG",
        "quote_team_b": "Phantom",
-       "decimal_a": 14.2857,
-       "decimal_b": 1.0695,
-       "raw_side_a_prob": 0.069651,
+       "decimal_a": 40.0,
+       "decimal_b": 1.0204,
+       "raw_side_a_prob": 0.024875,
        "orientation": "swapped",
-       "rederived_prob_a": 0.930349,
+       "rederived_prob_a": 0.975125,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T04:42:57Z",
+       "retrieved_utc": "2026-10-16T13:20:40Z",
+       "origin": "data/b1fb1465/board.json row 1080288 (exchange)"
+      },
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT161000RGGPHA",
+       "quote_team_a": "RoundsGG",
+       "quote_team_b": "Phantom",
+       "decimal_a": 40.0,
+       "decimal_b": 1.0204,
+       "raw_side_a_prob": 0.024875,
+       "orientation": "swapped",
+       "rederived_prob_a": 0.975125,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-16T13:20:40Z",
        "origin": "data/b1fb1465/board.json row 1080288 (exchange)"
       }
      ],
@@ -1111,9 +917,23 @@
      "fixture_id": "1081120",
      "match": "mellren vs Privateer",
      "published_market_prob_a": 0.879397,
-     "rederived_mean_prob_a": 0.880198,
-     "rederived_spread": 0.001208,
+     "rederived_mean_prob_a": 0.876263,
+     "rederived_spread": 0.009391,
      "quotes": [
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT161000PGMEL",
+       "quote_team_a": "Privateer Gaming",
+       "quote_team_b": "mellren",
+       "decimal_a": 7.6923,
+       "decimal_b": 1.1494,
+       "raw_side_a_prob": 0.129998,
+       "orientation": "swapped",
+       "rederived_prob_a": 0.870002,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-16T12:56:35Z",
+       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
       {
        "source": "kalshi",
        "event_id": "KXCS2GAME-26OCT161000PGMEL",
@@ -1125,21 +945,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.879393,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T12:02:18Z",
-       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      },
-      {
-       "source": "kalshi",
-       "event_id": "KXCS2GAME-26OCT161000PGMEL",
-       "quote_team_a": "Privateer Gaming",
-       "quote_team_b": "mellren",
-       "decimal_a": 8.3333,
-       "decimal_b": 1.1299,
-       "raw_side_a_prob": 0.119399,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.880601,
-       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T04:42:57Z",
+       "retrieved_utc": "2026-10-16T13:20:40Z",
        "origin": "data/b1fb1465/board.json row 1081120 (exchange)"
       },
       {
@@ -1148,12 +954,12 @@
        "quote_team_a": "Privateer Gaming",
        "quote_team_b": "mellren",
        "decimal_a": 8.3333,
-       "decimal_b": 1.1299,
-       "raw_side_a_prob": 0.119399,
+       "decimal_b": 1.1429,
+       "raw_side_a_prob": 0.120607,
        "orientation": "swapped",
-       "rederived_prob_a": 0.880601,
+       "rederived_prob_a": 0.879393,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T04:42:57Z",
+       "retrieved_utc": "2026-10-16T13:20:40Z",
        "origin": "data/b1fb1465/board.json row 1081120 (exchange)"
       }
      ],
@@ -1163,21 +969,21 @@
      "fixture_id": "1081499",
      "match": "BBL vs EYEBALLERS",
      "published_market_prob_a": 0.5443399999999999,
-     "rederived_mean_prob_a": 0.535146,
-     "rederived_spread": 0.004976,
+     "rederived_mean_prob_a": 0.534456,
+     "rederived_spread": 0.01238,
      "quotes": [
       {
        "source": "kalshi",
        "event_id": "KXCS2GAME-26OCT161000EYEBBL",
        "quote_team_a": "EYEBALLERS",
        "quote_team_b": "BBL",
-       "decimal_a": 2.1505,
-       "decimal_b": 1.8868,
-       "raw_side_a_prob": 0.467342,
+       "decimal_a": 2.1277,
+       "decimal_b": 1.9231,
+       "raw_side_a_prob": 0.474746,
        "orientation": "swapped",
-       "rederived_prob_a": 0.532658,
+       "rederived_prob_a": 0.525254,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T12:02:18Z",
+       "retrieved_utc": "2026-10-16T12:56:35Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1191,8 +997,36 @@
        "orientation": "straight",
        "rederived_prob_a": 0.537634,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=132121",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "retrieved_utc": "2026-10-16T12:57:26Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
+      {
+       "source": "thunderpick",
+       "event_id": "132121",
+       "quote_team_a": "BBL",
+       "quote_team_b": "EYEBALLERS",
+       "decimal_a": 1.72,
+       "decimal_b": 2.0,
+       "raw_side_a_prob": 0.537634,
+       "orientation": "straight",
+       "rederived_prob_a": 0.537634,
+       "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=132121",
+       "retrieved_utc": "2026-10-16T13:21:10Z",
+       "origin": "data/b1fb1465/board.json row 1081499 (market)"
+      },
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT161000EYEBBL",
+       "quote_team_a": "EYEBALLERS",
+       "quote_team_b": "BBL",
+       "decimal_a": 2.1505,
+       "decimal_b": 1.8519,
+       "raw_side_a_prob": 0.462697,
+       "orientation": "swapped",
+       "rederived_prob_a": 0.537303,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-16T13:20:40Z",
+       "origin": "data/b1fb1465/board.json row 1081499 (exchange)"
       }
      ],
      "status": "agrees"
@@ -1201,7 +1035,7 @@
      "fixture_id": "1081769",
      "match": "ex-Zero Tenacity vs UNiTY",
      "published_market_prob_a": 0.5047451,
-     "rederived_mean_prob_a": 0.499928,
+     "rederived_mean_prob_a": 0.497211,
      "rederived_spread": 0.040396,
      "quotes": [
       {
@@ -1229,7 +1063,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.513369,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T12:02:15Z",
+       "retrieved_utc": "2026-10-16T12:56:33Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1243,7 +1077,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.472973,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131169",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "retrieved_utc": "2026-10-16T12:57:26Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1251,13 +1085,27 @@
        "event_id": "761990691",
        "quote_team_a": "ex-Zero Tenacity",
        "quote_team_b": "UNiTY",
-       "decimal_a": 1.87,
-       "decimal_b": 1.87,
-       "raw_side_a_prob": 0.5,
+       "decimal_a": 1.82,
+       "decimal_b": 1.92,
+       "raw_side_a_prob": 0.513369,
        "orientation": "straight",
-       "rederived_prob_a": 0.5,
+       "rederived_prob_a": 0.513369,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T04:42:54Z",
+       "retrieved_utc": "2026-10-16T13:20:38Z",
+       "origin": "data/b1fb1465/board.json row 1081769 (market)"
+      },
+      {
+       "source": "thunderpick",
+       "event_id": "131169",
+       "quote_team_a": "ex-Zero Tenacity",
+       "quote_team_b": "UNiTY",
+       "decimal_a": 1.95,
+       "decimal_b": 1.75,
+       "raw_side_a_prob": 0.472973,
+       "orientation": "straight",
+       "rederived_prob_a": 0.472973,
+       "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131169",
+       "retrieved_utc": "2026-10-16T13:21:10Z",
        "origin": "data/b1fb1465/board.json row 1081769 (market)"
       }
      ],
@@ -1267,8 +1115,8 @@
      "fixture_id": "1080289",
      "match": "RoundsGG vs Voca",
      "published_market_prob_a": 0.125,
-     "rederived_mean_prob_a": 0.142368,
-     "rederived_spread": 0.034416,
+     "rederived_mean_prob_a": 0.139856,
+     "rederived_spread": 0.043839,
      "quotes": [
       {
        "source": "kalshi",
@@ -1281,7 +1129,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.125004,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T12:02:18Z",
+       "retrieved_utc": "2026-10-16T12:56:35Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1295,7 +1143,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.15942,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131783",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "retrieved_utc": "2026-10-16T12:57:26Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1309,7 +1157,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.15942,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131783",
-       "retrieved_utc": "2026-10-16T04:43:23Z",
+       "retrieved_utc": "2026-10-16T13:21:10Z",
        "origin": "data/b1fb1465/board.json row 1080289 (market)"
       },
       {
@@ -1317,13 +1165,13 @@
        "event_id": "KXCS2GAME-26OCT161200RGGVOC",
        "quote_team_a": "RoundsGG",
        "quote_team_b": "Voca",
-       "decimal_a": 8.0,
-       "decimal_b": 1.1494,
-       "raw_side_a_prob": 0.125626,
+       "decimal_a": 8.6957,
+       "decimal_b": 1.1364,
+       "raw_side_a_prob": 0.115581,
        "orientation": "straight",
-       "rederived_prob_a": 0.125626,
+       "rederived_prob_a": 0.115581,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T04:42:57Z",
+       "retrieved_utc": "2026-10-16T13:20:40Z",
        "origin": "data/b1fb1465/board.json row 1080289 (exchange)"
       }
      ],
@@ -1333,7 +1181,7 @@
      "fixture_id": "1081502",
      "match": "Procyon vs LOS NINOS",
      "published_market_prob_a": 0.6795143636363635,
-     "rederived_mean_prob_a": 0.677689,
+     "rederived_mean_prob_a": 0.677688,
      "rederived_spread": 6e-06,
      "quotes": [
       {
@@ -1361,8 +1209,22 @@
        "orientation": "straight",
        "rederived_prob_a": 0.677686,
        "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638406883/markets/related/straight",
-       "retrieved_utc": "2026-10-16T12:02:13Z",
+       "retrieved_utc": "2026-10-16T12:56:31Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
+      {
+       "source": "pinnacle",
+       "event_id": "1638406883",
+       "quote_team_a": "Procyon",
+       "quote_team_b": "LOS NINOS",
+       "decimal_a": 1.365,
+       "decimal_b": 2.87,
+       "raw_side_a_prob": 0.677686,
+       "orientation": "straight",
+       "rederived_prob_a": 0.677686,
+       "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638406883/markets/related/straight",
+       "retrieved_utc": "2026-10-16T13:20:36Z",
+       "origin": "data/b1fb1465/board.json row 1081502 (market)"
       }
      ],
      "status": "agrees"
@@ -1371,8 +1233,8 @@
      "fixture_id": "1081780",
      "match": "PRIVATE vs UPGRADE",
      "published_market_prob_a": 0.5526220000000001,
-     "rederived_mean_prob_a": 0.547703,
-     "rederived_spread": 0.018445,
+     "rederived_mean_prob_a": 0.56403,
+     "rederived_spread": 0.078231,
      "quotes": [
       {
        "source": "linefeed_melbet",
@@ -1399,7 +1261,21 @@
        "orientation": "straight",
        "rederived_prob_a": 0.541555,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T12:02:15Z",
+       "retrieved_utc": "2026-10-16T12:56:33Z",
+       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT161200UPGPRIV",
+       "quote_team_a": "UPGRADE",
+       "quote_team_b": "PRIVATE",
+       "decimal_a": 2.7397,
+       "decimal_b": 1.6807,
+       "raw_side_a_prob": 0.380214,
+       "orientation": "swapped",
+       "rederived_prob_a": 0.619786,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-16T12:56:35Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1413,8 +1289,50 @@
        "orientation": "straight",
        "rederived_prob_a": 0.56,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=132168",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "retrieved_utc": "2026-10-16T12:57:26Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
+      {
+       "source": "melbet",
+       "event_id": "761960564",
+       "quote_team_a": "PRIVATE",
+       "quote_team_b": "UPGRADE",
+       "decimal_a": 1.71,
+       "decimal_b": 2.02,
+       "raw_side_a_prob": 0.541555,
+       "orientation": "straight",
+       "rederived_prob_a": 0.541555,
+       "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_utc": "2026-10-16T13:20:38Z",
+       "origin": "data/b1fb1465/board.json row 1081780 (market)"
+      },
+      {
+       "source": "thunderpick",
+       "event_id": "132168",
+       "quote_team_a": "PRIVATE",
+       "quote_team_b": "UPGRADE",
+       "decimal_a": 1.65,
+       "decimal_b": 2.1,
+       "raw_side_a_prob": 0.56,
+       "orientation": "straight",
+       "rederived_prob_a": 0.56,
+       "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=132168",
+       "retrieved_utc": "2026-10-16T13:21:10Z",
+       "origin": "data/b1fb1465/board.json row 1081780 (market)"
+      },
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT161200UPGPRIV",
+       "quote_team_a": "UPGRADE",
+       "quote_team_b": "PRIVATE",
+       "decimal_a": 2.439,
+       "decimal_b": 1.7391,
+       "raw_side_a_prob": 0.416242,
+       "orientation": "swapped",
+       "rederived_prob_a": 0.583758,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-16T13:20:40Z",
+       "origin": "data/b1fb1465/board.json row 1081780 (exchange)"
       }
      ],
      "status": "agrees"
@@ -1423,8 +1341,8 @@
      "fixture_id": "1079589",
      "match": "100 Thieves vs Sangal",
      "published_market_prob_a": 0.6710295000000001,
-     "rederived_mean_prob_a": 0.67551,
-     "rederived_spread": 0.047467,
+     "rederived_mean_prob_a": 0.680568,
+     "rederived_spread": 0.036603,
      "quotes": [
       {
        "source": "pinnacle",
@@ -1451,7 +1369,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.671614,
        "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638407379/markets/related/straight",
-       "retrieved_utc": "2026-10-16T12:02:12Z",
+       "retrieved_utc": "2026-10-16T12:56:31Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1465,7 +1383,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.702961,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T12:02:18Z",
+       "retrieved_utc": "2026-10-16T12:56:35Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1479,7 +1397,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.669856,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131343",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "retrieved_utc": "2026-10-16T12:57:26Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1487,13 +1405,13 @@
        "event_id": "1638407379",
        "quote_team_a": "Sangal",
        "quote_team_b": "100 Thieves",
-       "decimal_a": 2.73,
-       "decimal_b": 1.4348,
-       "raw_side_a_prob": 0.344506,
+       "decimal_a": 2.86,
+       "decimal_b": 1.3984,
+       "raw_side_a_prob": 0.328386,
        "orientation": "swapped",
-       "rederived_prob_a": 0.655494,
+       "rederived_prob_a": 0.671614,
        "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638407379/markets/related/straight",
-       "retrieved_utc": "2026-10-16T04:42:52Z",
+       "retrieved_utc": "2026-10-16T13:20:35Z",
        "origin": "data/b1fb1465/board.json row 1079589 (market)"
       },
       {
@@ -1501,13 +1419,13 @@
        "event_id": "131343",
        "quote_team_a": "100 Thieves",
        "quote_team_b": "Sangal",
-       "decimal_a": 1.4,
-       "decimal_b": 2.7,
-       "raw_side_a_prob": 0.658537,
+       "decimal_a": 1.38,
+       "decimal_b": 2.8,
+       "raw_side_a_prob": 0.669856,
        "orientation": "straight",
-       "rederived_prob_a": 0.658537,
+       "rederived_prob_a": 0.669856,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131343",
-       "retrieved_utc": "2026-10-16T04:43:23Z",
+       "retrieved_utc": "2026-10-16T13:21:10Z",
        "origin": "data/b1fb1465/board.json row 1079589 (market)"
       },
       {
@@ -1515,13 +1433,13 @@
        "event_id": "KXCS2GAME-26OCT161300SNG100T",
        "quote_team_a": "Sangal",
        "quote_team_b": "100 Thieves",
-       "decimal_a": 3.3333,
-       "decimal_b": 1.4388,
-       "raw_side_a_prob": 0.301502,
+       "decimal_a": 3.3898,
+       "decimal_b": 1.4085,
+       "raw_side_a_prob": 0.293541,
        "orientation": "swapped",
-       "rederived_prob_a": 0.698498,
+       "rederived_prob_a": 0.706459,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T04:42:57Z",
+       "retrieved_utc": "2026-10-16T13:20:40Z",
        "origin": "data/b1fb1465/board.json row 1079589 (exchange)"
       }
      ],
@@ -1538,8 +1456,8 @@
      "fixture_id": "1081503",
      "match": "GamerLegion vs ex-RUSTEC",
      "published_market_prob_a": 0.7938551,
-     "rederived_mean_prob_a": 0.786789,
-     "rederived_spread": 0.056012,
+     "rederived_mean_prob_a": 0.787375,
+     "rederived_spread": 0.04683,
      "quotes": [
       {
        "source": "bovada",
@@ -1580,7 +1498,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.78712,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-16T12:02:14Z",
+       "retrieved_utc": "2026-10-16T12:56:32Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1594,7 +1512,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.761252,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T12:02:15Z",
+       "retrieved_utc": "2026-10-16T12:56:33Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1602,13 +1520,13 @@
        "event_id": "KXCS2GAME-26OCT161300EXRGL",
        "quote_team_a": "ex-RUSTEC",
        "quote_team_b": "GamerLegion",
-       "decimal_a": 5.5556,
-       "decimal_b": 1.2422,
-       "raw_side_a_prob": 0.182736,
+       "decimal_a": 5.2632,
+       "decimal_b": 1.25,
+       "raw_side_a_prob": 0.191918,
        "orientation": "swapped",
-       "rederived_prob_a": 0.817264,
+       "rederived_prob_a": 0.808082,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T12:02:18Z",
+       "retrieved_utc": "2026-10-16T12:56:35Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1622,8 +1540,64 @@
        "orientation": "straight",
        "rederived_prob_a": 0.806723,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=132122",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "retrieved_utc": "2026-10-16T12:57:26Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
+      {
+       "source": "bovada",
+       "event_id": "32297167",
+       "quote_team_a": "GamerLegion",
+       "quote_team_b": "Ex-Rustec",
+       "decimal_a": 1.19,
+       "decimal_b": 4.4,
+       "raw_side_a_prob": 0.78712,
+       "orientation": "straight",
+       "rederived_prob_a": 0.78712,
+       "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+       "retrieved_utc": "2026-10-16T13:20:37Z",
+       "origin": "data/b1fb1465/board.json row 1081503 (market)"
+      },
+      {
+       "source": "melbet",
+       "event_id": "761811310",
+       "quote_team_a": "GamerLegion",
+       "quote_team_b": "ex-RUSTEC",
+       "decimal_a": 1.22,
+       "decimal_b": 3.89,
+       "raw_side_a_prob": 0.761252,
+       "orientation": "straight",
+       "rederived_prob_a": 0.761252,
+       "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_utc": "2026-10-16T13:20:38Z",
+       "origin": "data/b1fb1465/board.json row 1081503 (market)"
+      },
+      {
+       "source": "thunderpick",
+       "event_id": "132122",
+       "quote_team_a": "GamerLegion",
+       "quote_team_b": "ex-RUSTEC",
+       "decimal_a": 1.15,
+       "decimal_b": 4.8,
+       "raw_side_a_prob": 0.806723,
+       "orientation": "straight",
+       "rederived_prob_a": 0.806723,
+       "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=132122",
+       "retrieved_utc": "2026-10-16T13:21:10Z",
+       "origin": "data/b1fb1465/board.json row 1081503 (market)"
+      },
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT161300EXRGL",
+       "quote_team_a": "ex-RUSTEC",
+       "quote_team_b": "GamerLegion",
+       "decimal_a": 5.2632,
+       "decimal_b": 1.2579,
+       "raw_side_a_prob": 0.192897,
+       "orientation": "swapped",
+       "rederived_prob_a": 0.807103,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-16T13:20:40Z",
+       "origin": "data/b1fb1465/board.json row 1081503 (exchange)"
       }
      ],
      "status": "agrees"
@@ -1646,7 +1620,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.365002,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T12:02:18Z",
+       "retrieved_utc": "2026-10-16T12:56:35Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1660,7 +1634,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.371859,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131665",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "retrieved_utc": "2026-10-16T12:57:26Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1674,7 +1648,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.371859,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131665",
-       "retrieved_utc": "2026-10-16T04:43:23Z",
+       "retrieved_utc": "2026-10-16T13:21:10Z",
        "origin": "data/b1fb1465/board.json row 1081775 (market)"
       }
      ],
@@ -1684,8 +1658,8 @@
      "fixture_id": "1080290",
      "match": "Phantom vs HAVU",
      "published_market_prob_a": 0.6662441428571428,
-     "rederived_mean_prob_a": 0.679793,
-     "rederived_spread": 0.044795,
+     "rederived_mean_prob_a": 0.64027,
+     "rederived_spread": 0.028421,
      "quotes": [
       {
        "source": "kalshi",
@@ -1698,7 +1672,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.656562,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T12:02:18Z",
+       "retrieved_utc": "2026-10-16T12:56:35Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1706,13 +1680,13 @@
        "event_id": "131784",
        "quote_team_a": "Phantom",
        "quote_team_b": "HAVU",
-       "decimal_a": 1.32,
-       "decimal_b": 3.1,
-       "raw_side_a_prob": 0.701357,
+       "decimal_a": 1.48,
+       "decimal_b": 2.5,
+       "raw_side_a_prob": 0.628141,
        "orientation": "straight",
-       "rederived_prob_a": 0.701357,
+       "rederived_prob_a": 0.628141,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131784",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "retrieved_utc": "2026-10-16T12:57:26Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1720,13 +1694,13 @@
        "event_id": "131784",
        "quote_team_a": "Phantom",
        "quote_team_b": "HAVU",
-       "decimal_a": 1.32,
-       "decimal_b": 3.1,
-       "raw_side_a_prob": 0.701357,
+       "decimal_a": 1.48,
+       "decimal_b": 2.5,
+       "raw_side_a_prob": 0.628141,
        "orientation": "straight",
-       "rederived_prob_a": 0.701357,
+       "rederived_prob_a": 0.628141,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131784",
-       "retrieved_utc": "2026-10-16T04:43:23Z",
+       "retrieved_utc": "2026-10-16T13:21:10Z",
        "origin": "data/b1fb1465/board.json row 1080290 (market)"
       },
       {
@@ -1734,13 +1708,13 @@
        "event_id": "KXCS2GAME-26OCT161400HAVUPHA",
        "quote_team_a": "HAVU",
        "quote_team_b": "Phantom",
-       "decimal_a": 2.9851,
-       "decimal_b": 1.5385,
-       "raw_side_a_prob": 0.340105,
+       "decimal_a": 2.8571,
+       "decimal_b": 1.5504,
+       "raw_side_a_prob": 0.351764,
        "orientation": "swapped",
-       "rederived_prob_a": 0.659895,
+       "rederived_prob_a": 0.648236,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T04:42:57Z",
+       "retrieved_utc": "2026-10-16T13:20:40Z",
        "origin": "data/b1fb1465/board.json row 1080290 (exchange)"
       }
      ],
@@ -1749,9 +1723,26 @@
     {
      "fixture_id": "1081781",
      "match": "Honvéd vs Lavked",
-     "quotes": [],
      "published_market_prob_a": 0.435127,
-     "status": "no_retained_quote"
+     "rederived_mean_prob_a": 0.432157,
+     "rederived_spread": 0.0,
+     "quotes": [
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT161500LAVHON",
+       "quote_team_a": "Lavked",
+       "quote_team_b": "Honvéd",
+       "decimal_a": 1.7699,
+       "decimal_b": 2.3256,
+       "raw_side_a_prob": 0.567843,
+       "orientation": "swapped",
+       "rederived_prob_a": 0.432157,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-16T13:20:40Z",
+       "origin": "data/b1fb1465/board.json row 1081781 (exchange)"
+      }
+     ],
+     "status": "agrees"
     },
     {
      "fixture_id": "1079170",
@@ -1771,8 +1762,22 @@
        "orientation": "straight",
        "rederived_prob_a": 0.669856,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131171",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "retrieved_utc": "2026-10-16T12:57:26Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
+      {
+       "source": "thunderpick",
+       "event_id": "131171",
+       "quote_team_a": "BET-M",
+       "quote_team_b": "Just Players",
+       "decimal_a": 1.38,
+       "decimal_b": 2.8,
+       "raw_side_a_prob": 0.669856,
+       "orientation": "straight",
+       "rederived_prob_a": 0.669856,
+       "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131171",
+       "retrieved_utc": "2026-10-16T13:21:10Z",
+       "origin": "data/b1fb1465/board.json row 1079170 (market)"
       }
      ],
      "status": "agrees"
@@ -1781,7 +1786,7 @@
      "fixture_id": "1079171",
      "match": "GenOne vs Butterfly",
      "published_market_prob_a": 0.48731,
-     "rederived_mean_prob_a": 0.487314,
+     "rederived_mean_prob_a": 0.494951,
      "rederived_spread": 0.0,
      "quotes": [
       {
@@ -1789,13 +1794,13 @@
        "event_id": "KXCS2GAME-26OCT170700BTFG1",
        "quote_team_a": "Butterfly",
        "quote_team_b": "GenOne",
-       "decimal_a": 1.9802,
-       "decimal_b": 2.0833,
-       "raw_side_a_prob": 0.512686,
+       "decimal_a": 2.0,
+       "decimal_b": 2.0408,
+       "raw_side_a_prob": 0.505049,
        "orientation": "swapped",
-       "rederived_prob_a": 0.487314,
+       "rederived_prob_a": 0.494951,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T04:42:57Z",
+       "retrieved_utc": "2026-10-16T13:20:40Z",
        "origin": "data/b1fb1465/board.json row 1079171 (exchange)"
       },
       {
@@ -1803,13 +1808,13 @@
        "event_id": "KXCS2GAME-26OCT170700BTFG1",
        "quote_team_a": "Butterfly",
        "quote_team_b": "GenOne",
-       "decimal_a": 1.9802,
-       "decimal_b": 2.0833,
-       "raw_side_a_prob": 0.512686,
+       "decimal_a": 2.0,
+       "decimal_b": 2.0408,
+       "raw_side_a_prob": 0.505049,
        "orientation": "swapped",
-       "rederived_prob_a": 0.487314,
+       "rederived_prob_a": 0.494951,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T04:42:57Z",
+       "retrieved_utc": "2026-10-16T13:20:40Z",
        "origin": "data/b1fb1465/board.json row 1079171 (exchange)"
       }
      ],
@@ -1889,7 +1894,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.453083,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T12:02:15Z",
+       "retrieved_utc": "2026-10-16T12:56:33Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1903,7 +1908,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.453083,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131693",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "retrieved_utc": "2026-10-16T12:57:26Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1917,7 +1922,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.453083,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T04:42:54Z",
+       "retrieved_utc": "2026-10-16T13:20:38Z",
        "origin": "data/b1fb1465/board.json row 1081527 (market)"
       },
       {
@@ -1931,7 +1936,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.453083,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131693",
-       "retrieved_utc": "2026-10-16T04:43:23Z",
+       "retrieved_utc": "2026-10-16T13:21:10Z",
        "origin": "data/b1fb1465/board.json row 1081527 (market)"
       }
      ],
@@ -1962,7 +1967,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.462366,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131688",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "retrieved_utc": "2026-10-16T12:57:26Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1976,7 +1981,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.462366,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131688",
-       "retrieved_utc": "2026-10-16T04:43:23Z",
+       "retrieved_utc": "2026-10-16T13:21:10Z",
        "origin": "data/b1fb1465/board.json row 1081529 (market)"
       }
      ],
@@ -1986,7 +1991,7 @@
      "fixture_id": "1081530",
      "match": "Iberian Soul vs HyperSpirit",
      "published_market_prob_a": 0.6571910000000001,
-     "rederived_mean_prob_a": 0.656855,
+     "rederived_mean_prob_a": 0.656518,
      "rederived_spread": 0.003365,
      "quotes": [
       {
@@ -2014,7 +2019,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.655172,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-16T12:02:15Z",
+       "retrieved_utc": "2026-10-16T12:56:33Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -2028,8 +2033,22 @@
        "orientation": "straight",
        "rederived_prob_a": 0.658537,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131704",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "retrieved_utc": "2026-10-16T12:57:26Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
+      {
+       "source": "melbet",
+       "event_id": "761019645",
+       "quote_team_a": "Iberian Soul",
+       "quote_team_b": "HyperSpirit",
+       "decimal_a": 1.42,
+       "decimal_b": 2.698,
+       "raw_side_a_prob": 0.655172,
+       "orientation": "straight",
+       "rederived_prob_a": 0.655172,
+       "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_utc": "2026-10-16T13:20:38Z",
+       "origin": "data/b1fb1465/board.json row 1081530 (market)"
       },
       {
        "source": "thunderpick",
@@ -2042,7 +2061,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.658537,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131704",
-       "retrieved_utc": "2026-10-16T04:43:23Z",
+       "retrieved_utc": "2026-10-16T13:21:10Z",
        "origin": "data/b1fb1465/board.json row 1081530 (market)"
       }
      ],
@@ -2066,7 +2085,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.628141,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131703",
-       "retrieved_utc": "2026-10-16T12:03:22Z",
+       "retrieved_utc": "2026-10-16T12:57:26Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -2080,7 +2099,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.628141,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131703",
-       "retrieved_utc": "2026-10-16T04:43:23Z",
+       "retrieved_utc": "2026-10-16T13:21:10Z",
        "origin": "data/b1fb1465/board.json row 1081531 (market)"
       }
      ],
@@ -3811,15 +3830,17 @@
   {
    "id": "C11",
    "name": "Shared publication gate (Pages deploys only on a green suite)",
-   "status": "pass",
-   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-16T12:30:43Z: 731 tests, 0 failures, 0 errors, 3 skipped -> GREEN, the site can publish",
+   "status": "fail",
+   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-16T13:23:44Z: 731 tests, 1 failures, 0 errors, 0 skipped -> RED, Pages deployment is blocked",
    "evidence": [
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml",
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/gate.json"
    ],
    "rows_checked": 731,
-   "rows_failed": 0,
-   "failures": []
+   "rows_failed": 1,
+   "failures": [
+    "test_displayed_clock_rule_is_rechecked_at_every_build"
+   ]
   }
  ],
  "irregularities": [
@@ -3827,7 +3848,7 @@
    "id": "IR-C3",
    "severity": "medium",
    "title": "Published probabilities with no retained raw quote in this snapshot",
-   "detail": "fixtures 1081496, 1079632, 1081781, 1081513, 1079173, 1081126, 1081521, 1081522, 1081526, 1081528, 1081532 — the number is published by an upstream board whose raw quote file is not retained here, so this audit could not re-derive it. Left unverified, not assumed correct.",
+   "detail": "fixtures 1079167, 1081496, 1079632, 1081513, 1079173, 1081126, 1081521, 1081522, 1081526, 1081528, 1081532 — the number is published by an upstream board whose raw quote file is not retained here, so this audit could not re-derive it. Left unverified, not assumed correct.",
    "links": [
     "https://play.hotspawn.com/lobby"
    ]
@@ -3883,6 +3904,15 @@
    "detail": "1080205: context claim not independently sourced in this audit (Summer rebuild: kyxsan (ex-Falcons) signed as in-game leader, Jimpphat (ex-MOUZ) added and)",
    "links": [
     "https://www.hltv.org/"
+   ]
+  },
+  {
+   "id": "IR-C11",
+   "severity": "high",
+   "title": "Shared Pages publication gate is red - the site cannot deploy",
+   "detail": "1 failing test(s): test_displayed_clock_rule_is_rechecked_at_every_build. pages.yml gates deployment on the full suite, so this blocks publication for every session.",
+   "links": [
+    "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml"
    ]
   },
   {

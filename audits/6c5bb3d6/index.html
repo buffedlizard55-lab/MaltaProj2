@@ -66,20 +66,20 @@ summary{cursor:pointer;font-weight:700;min-height:32px}
 <main id="main" class="wrap">
 <div class="eyebrow">Session 6c5bb3d6 · line-by-line audit</div><h1>Independent verification of the day-1 review and every-match picks</h1>
 <div class="ok"><strong>Verdict:</strong> 11 independent checks ran against the
-published boards — 9 pass, 1 informational,
-0 fail. 28 items are flagged for review
-(high: 2, info: 16, low: 2, medium: 4, unverified: 4); none blocks publication.
+published boards — 7 pass, 1 informational,
+1 fail. 29 items are flagged for review
+(high: 3, info: 16, low: 2, medium: 4, unverified: 4); none blocks publication.
 Every published probability in the every-match board was re-derived here from its raw bookmaker quote,
 and every official Valve-standings citation was re-read from Valve's own file in this run.</div><div class="stats">
-<div class="stat"><b>24</b><span>Pickable CS2 fixtures, all with a pick</span></div>
+<div class="stat"><b>33</b><span>Pickable CS2 fixtures, all with a pick</span></div>
 <div class="stat"><b>37</b><span>Published rows re-checked</span></div>
-<div class="stat"><b>220</b><span>Raw quotes re-derived</span></div>
-<div class="stat"><b>28</b><span>Flagged for review</span></div></div><p class="small">Board verified: <code>data/f28afd9e/board.json</code> generated
+<div class="stat"><b>223</b><span>Raw quotes re-derived</span></div>
+<div class="stat"><b>29</b><span>Flagged for review</span></div></div><p class="small">Board verified: <code>data/f28afd9e/board.json</code> generated
 2026-10-16T12:29:39Z · lobby snapshot <code>data/hotspawn_matches.json</code> generated
-2026-10-16T07:50:00Z (95 CS2 fixtures) ·
-official Valve standings 2026_10_05 fetched 2026-10-16T12:30:29Z
+2026-10-16T12:31:40Z (100 CS2 fixtures) ·
+official Valve standings 2026_10_05 fetched 2026-10-16T13:23:32Z
 (HTTP 200, 349 teams) ·
-this audit 2026-10-16T12:30:43Z.</p><div class="panel" id="where-the-picks">
+this audit 2026-10-16T13:23:45Z.</p><div class="panel" id="where-the-picks">
 <h2 style="margin-top:0;border:0">Where the picks are (in-site links)</h2>
 <p class="small">Updated automatically. On a phone, start with the first button — it lists every open CS2
 match with a pick, both win probabilities, the crowd split and the source behind each number.</p>
@@ -551,20 +551,20 @@ Divergence is treated as information, never averaged away silently.</li>
 <div class="tablewrap"><table><caption>Each check re-runs from the committed evidence; the harness is
 <code>scripts/6c5bb3d6/verify.py</code> and the machine-readable result is <a href="report.json">report.json</a>.</caption>
 <thead><tr><th>Check</th><th>Result</th><th>Evidence</th></tr></thead><tbody><tr><td data-label="Check"><b>C1 · Inventory coverage of every pickable CS2 fixture</b>
-<div class="small">95 CS2 fixtures in the official lobby snapshot; 24 still pickable at the board instant 2026-10-16T12:29:39Z; 71 locked/past; 24/24 carry a pick</div>
+<div class="small">100 CS2 fixtures in the official lobby snapshot; 33 still pickable at the board instant 2026-10-16T12:29:39Z; 67 locked/past; 33/33 carry a pick</div>
 </td>
 <td data-label="Result"><span class="badge pass">PASS</span>
-<div class="small">24 checked · 0 failed</div></td>
+<div class="small">33 checked · 0 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/hotspawn_matches.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/board.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C2 · Probability normalization, pick = argmax, and blanks disclosed</b>
 <div class="small">37 published rows re-checked: 37 carry probabilities (p_a+p_b=1, safe pick = higher probability, stated pick probabilities equal the row&#x27;s side values) and 0 are published blank () - each blank must state its basis or carry a flag, and none may publish a pick</div>
 </td>
 <td data-label="Result"><span class="badge pass">PASS</span>
 <div class="small">37 checked · 0 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/board.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C3 · No-vig arithmetic re-derived from every retained raw quote</b>
-<div class="small">26 rows re-derived from 220 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 0 rows publish no probability (blank, so there is nothing to re-derive); 11 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct</div>
-</td>
-<td data-label="Result"><span class="badge pass">PASS</span>
-<div class="small">37 checked · 0 failed</div></td>
+<div class="small">25 rows re-derived from 223 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 0 rows publish no probability (blank, so there is nothing to re-derive); 11 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct</div>
+<div class="notice small" style="margin:8px 0 0">Failures: 1081779: published market 0.631575 vs re-derived mean 0.7005 from 1 quote(s), spread 0.0000</div></td>
+<td data-label="Result"><span class="badge warn">WARN</span>
+<div class="small">37 checked · 1 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/live/quotes.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/fe803b80/snapshot.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/b1fb1465/board.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C4 · Every official Valve VRS citation re-read from Valve&#x27;s own file</b>
 <div class="small">48 VRS citations across the published rows re-checked against 2026_10_05 as fetched in this run (HTTP 200, 349 teams); alias rosters re-matched WBT 5/5; ROUNDS 5/5; WBT Academy 5/5</div>
 </td>
@@ -601,10 +601,10 @@ Divergence is treated as information, never averaged away silently.</li>
 <td data-label="Result"><span class="badge warn">WARN</span>
 <div class="small">1 checked · 1 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/context.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/research.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C11 · Shared publication gate (Pages deploys only on a green suite)</b>
-<div class="small">`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-16T12:30:43Z: 731 tests, 0 failures, 0 errors, 3 skipped -&gt; GREEN, the site can publish</div>
-</td>
-<td data-label="Result"><span class="badge pass">PASS</span>
-<div class="small">731 checked · 0 failed</div></td>
+<div class="small">`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-16T13:23:44Z: 731 tests, 1 failures, 0 errors, 0 skipped -&gt; RED, Pages deployment is blocked</div>
+<div class="notice small" style="margin:8px 0 0">Failures: test_displayed_clock_rule_is_rechecked_at_every_build</div></td>
+<td data-label="Result"><span class="badge fail">FAIL</span>
+<div class="small">731 checked · 1 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/gate.json" rel="noopener">evidence</a></span></td></tr></tbody></table></div><h2 id="unresolved">Unresolved picks &amp; limitations</h2>
 <p>Nothing on this page is filled in by guesswork. These are the values this audit could not confirm from an
 official source, and the residual limitation on each resolved alias. The every-match pick boards publish their
@@ -647,7 +647,7 @@ own gap lists, linked from each row.</p>
 <td data-label="Why it is left blank">HLTV&#x27;s ROUNDS team page showed only four named players when session 94b3d48a read it; Valve lists five (Tumppis). The identity join does not depend on that fifth slot.</td>
 <td data-label="Where the gap is published" class="srcs">
 <span class="srcs"><a href="https://www.hltv.org/events/9332/elisa-breakout-series-2" rel="noopener">evidence</a> <a href="https://www.hltv.org/matches/2399425/havu-vs-rounds-elisa-breakout-series-2" rel="noopener">evidence</a> <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">evidence</a> <a href="https://polymarket.com/esports/cs2" rel="noopener">evidence</a> <a href="https://esports.pallomeri.net/elisa-breakout-series-2-joukkueet-lohkot-havu-ence/" rel="noopener">evidence</a></span></td></tr></tbody></table></div>
-<div class="actions"><a class="button" href="flagged.html">All flagged items (28)</a>
+<div class="actions"><a class="button" href="flagged.html">All flagged items (29)</a>
 <a class="button ghost" href="method.html">Method, formulas &amp; sources</a>
 <a class="button ghost" href="../../strategy/unresolved.html">Strategy board gaps</a></div>
 <footer><p class="small">Independent audit by session <code>6c5bb3d6</code>. Not affiliated with HotSpawn, Valve,
