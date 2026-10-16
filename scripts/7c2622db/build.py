@@ -218,16 +218,53 @@ def load_fixtures(capture: dict, snapshot: dict | None) -> tuple[dict, dict]:
 
 
 def load_quotes(snapshot: dict | None, canonical: dict | None) -> tuple[list, dict]:
-    quotes: list = []
-    source = None
-    if snapshot and snapshot.get("quotes"):
-        quotes = list(snapshot["quotes"])
-        source = {"label": "hub collection", "collected_to_utc": snapshot.get("collected_to_utc")}
-    elif canonical and canonical.get("quotes"):
-        quotes = list(canonical["quotes"])
-        source = {"label": "canonical every-match collection (read-only)",
-                  "collected_to_utc": canonical.get("collected_to_utc")}
-    return quotes, source or {"label": "none", "collected_to_utc": None}
+    """Merge this hub's own collection with the read-only canonical collection.
+
+    Both are the same public sources read by the same shared collector at different times. One
+    quote is published per (source, event, pair): the newest read supplies the prices, and any
+    field the newest read omitted (in practice the kickoff the contract rules state) is carried
+    forward from the older read of the *same* contract with its own collection time recorded, so
+    the published evidence still says where each value came from. Nothing is averaged.
+    """
+    core = shared.core()
+    grouped: dict[tuple, list] = {}
+    contributors = []
+    for payload, label in ((snapshot, "hub collection"),
+                           (canonical, "canonical every-match collection (read-only)")):
+        rows = (payload or {}).get("quotes") or []
+        if not rows:
+            continue
+        contributors.append(f"{label} at {(payload or {}).get('collected_to_utc')}")
+        for quote in rows:
+            pair = tuple(sorted((core.norm(str(quote.get("team_a"))), core.norm(str(quote.get("team_b"))))))
+            key = (quote.get("source_key"), str(quote.get("event_id")), pair)
+            grouped.setdefault(key, []).append({**quote, "collection": label,
+                                                "collection_time": (payload or {}).get("collected_to_utc")})
+    merged: list[dict] = []
+    for entries in grouped.values():
+        entries.sort(key=lambda e: str(e.get("retrieved_utc") or ""), reverse=True)
+        newest, inherited_from = entries[0], None
+        inherited: list[str] = []
+        for older in entries[1:]:
+            for field in ("start_utc", "start_is_approx", "kickoff_evidence"):
+                if not newest.get(field) and older.get(field):
+                    newest[field] = older[field]
+                    inherited.append(field)
+                    inherited_from = f"{older.get('collection')} at {older.get('retrieved_utc')}"
+        evidence = newest.get("kickoff_evidence") or {}
+        if (evidence.get("rules_primary") and evidence.get("start_utc")
+                and newest.get("start_utc") == evidence.get("start_utc")):
+            # The contract's own rules state the kickoff, so the start is no longer an estimate.
+            if newest.get("start_is_approx"):
+                inherited.append("start_is_approx")
+            newest["start_is_approx"] = False
+        if inherited:
+            newest["inherited_fields"] = sorted(set(inherited))
+            newest["inherited_from"] = inherited_from
+        merged.append(newest)
+    label = "merged: " + " + ".join(contributors) if contributors else "none"
+    stamps = [str((p or {}).get("collected_to_utc") or "") for p in (snapshot, canonical)]
+    return merged, {"label": label, "collected_to_utc": max(stamps + [""]) or None}
 
 
 def load_vrs(snapshot: dict | None, canonical: dict | None) -> tuple[dict, dict]:
@@ -550,7 +587,10 @@ def decide(fixture: dict, quotes: list, exchange: dict | None, vrs: dict, k: flo
     for quote in eligible_book + expired_book + kalshi:
         row["sources"].append({"label": f"{quote['source_name']} full-match price "
                                          f"({quote.get('raw_a')}/{quote.get('raw_b')} {quote.get('raw_format')}, "
-                                         f"fetched {quote.get('fetched_utc')})",
+                                         f"fetched {quote.get('fetched_utc')} via "
+                                         f"{quote.get('collection') or 'collection'}"
+                                         + (f"; kickoff carried from {quote.get('inherited_from')}"
+                                            if quote.get("inherited_from") else "") + ")",
                                "url": quote.get("public_url") or quote.get("api_url")})
     for entry in polymarket:
         row["sources"].append({"label": f"Polymarket exchange market {entry.get('event_id')} "

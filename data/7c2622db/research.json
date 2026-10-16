@@ -826,5 +826,16 @@
       "fact": "Stake Pulse Beat III is a 16-team, $80,000 event in Stockholm running 12-17 October 2026 (HLTV event page)."
     }
   ],
-  "context_facts_policy": "A context fact may support the climb candidate only when it is dated, source-linked and about that side or about the head-to-head. The gate requires at least one such fact for the candidate side."
+  "context_facts_policy": "A context fact may support the climb candidate only when it is dated, source-linked and about that side or about the head-to-head. The gate requires at least one such fact for the candidate side.",
+  "flags": [
+    {
+      "id": "F10",
+      "title": "Newer exchange reads can omit the kickoff the contract rules state",
+      "detail": "The 2026-10-16 04:40Z Kalshi read returned the same event ids as the 2026-10-15 23:40Z read without the contract-rule kickoff field, which would have made three already-resolvable rows blank again. The hub therefore publishes the newest prices and carries the kickoff forward from the older read of the same contract id, naming that read and time in the row source.",
+      "reference_urls": [
+        "https://kalshi.com/markets/kxcs2game",
+        "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200"
+      ]
+    }
+  ]
 }
