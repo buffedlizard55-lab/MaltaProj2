@@ -1,0 +1,254 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Independent verification · CS2 board &amp; TWC 2026 Day 3</title><link rel="stylesheet" href="assets.css"></head><body>
+<a class="skip" href="#main">Skip to content</a>
+<header><div class="wrap">
+<div class="brand">HOTSPAWN / INDEPENDENT VERIFICATION <span class="small">session b3b89eec</span></div>
+<nav aria-label="Main">
+<a href="../../index.html">Home</a>
+<a href="../../picks-every-match/index.html">All CS2 picks</a>
+<a href="../../picks-every-match/unresolved.html">Unresolved &amp; limitations</a>
+<a href="../../twc-2026/index.html">TWC Day‑3 decisions</a>
+<a href="flagged.html" aria-current="page">Flagged for Review</a>
+</nav>
+</div></header>
+<main id="main" class="wrap">
+<div class="eyebrow">Independent verification · 2026‑10‑16</div>
+<h1>I re‑derived every number in the board instead of trusting it, and I re‑checked the two TWC deciders against their official match pages.</h1>
+<p>This page is the session’s audit trail. Every stored estimate is re‑computed from the raw odds the capture retained, and the two Thunderpick World Championship day‑3 matches are cross‑checked against HLTV’s official match pages and each source’s own listing. Where a value cannot be confirmed, it is marked <span class="blank">— Unverified</span> rather than filled in. Nothing on this page is inferred from HotSpawn crowd percentages, which are ownership context only.</p>
+
+<div class="notice"><strong>Bottom line.</strong> All 37 retained quotes re‑derive exactly to their stored no‑vig probabilities; the two TWC picks (Aurora, Legacy) re‑derive exactly to their stored market estimates; and the two kickoff times, rosters and series scores on this page match the official HLTV pages. The only caveats are the flagged items at the bottom, none of which changes a stored number.</div>
+
+<div class="actions">
+<a class="button primary" href="../../picks-every-match/index.html">See the current picks list</a>
+<a class="button" href="../../picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a>
+<a class="button" href="../../twc-2026/index.html">TWC day‑3 decisions</a>
+</div>
+
+<h2>What I verified, row by row</h2>
+<table>
+<caption>Each row states exactly what was re‑derived and where the official source is.</caption>
+<thead><tr><th scope="col">Check</th><th scope="col">Result</th><th scope="col">How</th><th scope="col">Official / primary source</th></tr></thead>
+<tbody>
+<tr>
+<td data-label="Check">37 retained quotes → no‑vig probabilities</td>
+<td data-label="Result"><span class="pick">Exact</span></td>
+<td data-label="How">For every quote I recomputed (1/a)÷(1/a+1/b) from the raw decimal pair the capture retained, honouring each source’s team order (some list the fixture reversed and are stored with <code>swapped=true</code>). All 37 match their stored <code>no_vig_prob_team_a</code> to 4 decimals.</td>
+<td data-label="Official / primary source"><div><a href="https://www.bovada.lv/esports/counter-strike-2">Bovada CS2 lines</a><br><a href="https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1">Melbet live feed</a><br><a href="https://www.pinnacle.com/esports/counter-strike-2">Pinnacle CS2</a></div></td>
+</tr>
+<tr>
+<td data-label="Check">31 open fixtures → market estimate</td>
+<td data-label="Result"><span class="pick">Exact</span></td>
+<td data-label="How">The board’s <code>market.prob_a</code> is the declared weighted mean of its per‑source no‑vig values (Pinnacle weight 2, all others 1 — a stated modelling choice on the method page, not an official figure). I re‑applied the same published weights to every market row; all match.</td>
+<td data-label="Official / primary source"><div><a href="https://www.pinnacle.com/esports/counter-strike-2">Pinnacle CS2 (market data)</a><br><a href="../../picks-every-match/method.html">Declared weighting &amp; no‑vig method</a><br><a href="../../data/f7279a54/board.json">Retained raw capture (2026‑10‑16T04:34:39Z)</a></div></td>
+</tr>
+<tr>
+<td data-label="Check">20 market picks → side, % and fair decimal</td>
+<td data-label="Result"><span class="pick">Exact</span></td>
+<td data-label="How">For each market row the pick side equals the larger of the two estimates, the pick % equals that estimate, and the fair decimal equals 1÷p. All 20 rows recompute cleanly; probabilities on every row sum to 1.0.</td>
+<td data-label="Official / primary source"><div><a href="https://www.hltv.org/events/8932/thunderpick-world-championship-2026">HLTV TWC event (fixture list)</a><br><a href="../../picks-every-match/picks.html">Picks list (same numbers)</a><br><a href="../../picks-every-match/method.html">Fair‑decimal definition</a></div></td>
+</tr>
+<tr>
+<td data-label="Check">7 rows with no line</td>
+<td data-label="Result"><span class="risk">Documented, blank</span></td>
+<td data-label="How">Every fixture with no usable market or model line is left blank and carries the <code>no_line_unverified</code> flag plus a specific reason (e.g. RoundsGG not in the VRS file, Kalshi join rejected on start‑time). I confirmed no value was invented to fill them.</td>
+<td data-label="Official / primary source"><div><a href="https://www.hltv.org/events/8932/thunderpick-world-championship-2026/matches">HLTV TWC schedule (the fixtures)</a><br><a href="../../picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a></div></td>
+</tr>
+<tr>
+<td data-label="Check">Aurora vs 9z kickoff + roster</td>
+<td data-label="Result"><span class="pick">Matches official page</span></td>
+<td data-label="How">Kickoff 2026‑10‑16T14:00:00Z and the line‑ups XANTARES / woxic / Wicadia / Jimpphat / kyxsan (Aurora) and dgt / HUASOPEEK / luchov / max / meyern (9z) are read from HLTV’s official match page, not assumed.</td>
+<td data-label="Official / primary source"><div><a href="https://www.hltv.org/matches/2399412/aurora-vs-9z-thunderpick-world-championship-2026">HLTV match 2399412</a></div></td>
+</tr>
+<tr>
+<td data-label="Check">BetBoom vs Legacy kickoff + roster</td>
+<td data-label="Result"><span class="pick">Matches official page</span></td>
+<td data-label="How">Kickoff 2026‑10‑16T17:00:00Z and the line‑ups Boombl4 / d1Ledez / Magnojez / S1ren / zorte (BetBoom) and arT / dumau / latto / n1ssim / try (Legacy) are read from HLTV’s official match page.</td>
+<td data-label="Official / primary source"><div><a href="https://www.hltv.org/matches/2399413/betboom-vs-legacy-thunderpick-world-championship-2026">HLTV match 2399413</a></div></td>
+</tr>
+<tr>
+<td data-label="Check">Days 1–2 series scores</td>
+<td data-label="Result"><span class="pick">Matches official pages</span></td>
+<td data-label="How">All eight day‑1 and day‑2 series scores below are read from their HLTV match pages, map by map, and agree with the site’s results ledger.</td>
+<td data-label="Official / primary source"><div><a href="../../twc-2026/results.html">Site results ledger</a><br><a href="https://www.hltv.org/events/8932/thunderpick-world-championship-2026/matches">HLTV schedule &amp; results</a></div></td>
+</tr>
+</tbody>
+</table>
+
+<h2>The two TWC day‑3 picks, re‑derived</h2>
+<p>Both are market‑derived. The exchange (Kalshi) price is shown as a cross‑check only; the capture’s join of each Kalshi market was <em>rejected</em> on a start‑time mismatch, so it is not blended into either estimate. Ownership percentages from HotSpawn are <em>not</em> used anywhere in these numbers.</p>
+<table>
+<caption>Raw odds → no‑vig → weighted market estimate → pick. “Fair” is 1÷p, not a book’s price.</caption>
+<thead><tr><th scope="col">Fixture (UTC)</th><th scope="col">Source (raw)</th><th scope="col">No‑vig</th><th scope="col">Market estimate</th><th scope="col">Pick / fair</th></tr></thead>
+<tbody>
+<tr>
+<td data-label="Fixture (UTC)"><div>Aurora vs 9z<br><span class="small">Group A decider · 14:00 · lock 13:54</span></div></td>
+<td data-label="Source (raw)"><div>Bovada 1.4348 / 2.750<br>Melbet 1.43 / 2.869<br>Pinnacle −236 / +189<br><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct1610009zaur">Kalshi (cross‑check)</a></div></td>
+<td data-label="No‑vig"><div class="prob">65.7 / 66.7 / 67.0 %</div><span class="small">Aurora, per source</span></td>
+<td data-label="Market estimate"><div class="prob">Aurora 66.61 %<br>9z 33.39 %</div><span class="small">weighted mean (Pinnacle ×2); was 65.96 % at 04:09Z</span></td>
+<td data-label="Pick / fair"><div><span class="pick">Aurora 66.61 %</span><br>fair 1.501 / 2.995<br><span class="small">7 points</span></div></td>
+</tr>
+<tr>
+<td data-label="Fixture (UTC)"><div>BetBoom vs Legacy<br><span class="small">Group B decider · 17:00 · lock 16:54</span></div></td>
+<td data-label="Source (raw)"><div>Bovada 2.400 / 1.5405<br>Melbet 2.387 / 1.55<br><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct161300bblgc">Kalshi (cross‑check)</a></div></td>
+<td data-label="No‑vig"><div class="prob">39.1 / 39.4 %</div><span class="small">BetBoom, per source</span></td>
+<td data-label="Market estimate"><div class="prob">Legacy 60.77 %<br>BetBoom 39.23 %</div><span class="small">weighted mean (both ×1)</span></td>
+<td data-label="Pick / fair"><div><span class="pick">Legacy 60.77 %</span><br>fair 2.549 / 1.646<br><span class="small">7 points</span></div></td>
+</tr>
+</tbody>
+</table>
+<p class="small">Pinnacle does not list the BetBoom–Legacy decider, so that estimate uses the two available bookmakers. The fixture was absent from the earlier 2026‑10‑15T22:19Z capture and is listed with two quotes in the 2026‑10‑16T04:34:39Z capture; see the flag below.</p>
+
+<h2>Contrarian read: why 9z is a watchlist, not a swing</h2>
+<p>9z’s day‑1 2‑0 over Aurora (including a 13‑1 on Nuke) is real, and it took a map from Falcons on day 2. But three of the four day‑1 favourites also won, one upset in four matches does not prove TWC favourites are mispriced, and the market already moved Aurora to ≈66 %. Under the declared rule (take an underdog only when its market probability is ≥35 % and at least two bookmakers confirm), 9z at 34.04 % sits just <em>below</em> the floor. It stays on the watchlist; the expected‑value pick is Aurora.</p>
+<table>
+<caption>The evidence, with the official page for each claim.</caption>
+<thead><tr><th scope="col">Claim</th><th scope="col">Evidence</th><th scope="col">Source</th></tr></thead>
+<tbody>
+<tr>
+<td data-label="Claim">9z beat Aurora 2‑0 on day 1 (13‑11, 13‑1)</td>
+<td data-label="Evidence">Inferno 13‑11, Nuke 13‑1; map scores read from the match page</td>
+<td data-label="Source"><div><a href="https://www.hltv.org/matches/2399384/9z-vs-aurora-thunderpick-world-championship-2026">HLTV match 2399384</a></div></td>
+</tr>
+<tr>
+<td data-label="Claim">9z lost 1‑2 to Falcons on day 2 (took Mirage)</td>
+<td data-label="Evidence">Nuke 9‑13, Mirage 13‑8, Dust2 9‑13</td>
+<td data-label="Source"><div><a href="https://www.hltv.org/matches/2399409/9z-vs-falcons-thunderpick-world-championship-2026">HLTV match 2399409</a></div></td>
+</tr>
+<tr>
+<td data-label="Claim">Aurora rebounded 2‑0 vs NIP on day 2</td>
+<td data-label="Evidence">Cache 13‑9, Dust2 13‑7</td>
+<td data-label="Source"><div><a href="https://www.hltv.org/matches/2399408/aurora-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026">HLTV match 2399408</a></div></td>
+</tr>
+<tr>
+<td data-label="Claim">9z crowd ownership is a minority (context only)</td>
+<td data-label="Evidence">≈14 % of 14 reported picks as of 2026‑10‑15T23:40:25Z — never used as a probability input</td>
+<td data-label="Source"><div><a href="https://play.hotspawn.com/lobby">HotSpawn lobby (observation)</a><br><a href="../../data/69e4c06a/day3.json">Retained decision data</a></div></td>
+</tr>
+</tbody>
+</table>
+
+<h2>Days 1–2, verified map by map</h2>
+<table>
+<caption>Every series score below is read from the official HLTV match page.</caption>
+<thead><tr><th scope="col">Day</th><th scope="col">Match</th><th scope="col">Series</th><th scope="col">Maps</th><th scope="col">Source</th></tr></thead>
+<tbody>
+<tr>
+<td data-label="Day">1</td><td data-label="Match">9z vs Aurora</td>
+<td data-label="Series"><div>9z 2‑0</div></td>
+<td data-label="Maps"><div>Inferno 9z 13‑11 · Nuke 9z 13‑1</div></td>
+<td data-label="Source"><div><a href="https://www.hltv.org/matches/2399384/9z-vs-aurora-thunderpick-world-championship-2026">Match 2399384</a></div></td>
+</tr>
+<tr>
+<td data-label="Day">1</td><td data-label="Match">Falcons vs Ninjas in Pyjamas</td>
+<td data-label="Series"><div>Falcons 2‑0</div></td>
+<td data-label="Maps"><div>Ancient 16‑13 (OT) · Dust2 13‑6</div></td>
+<td data-label="Source"><div><a href="https://www.hltv.org/matches/2399385/falcons-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026">Match 2399385</a></div></td>
+</tr>
+<tr>
+<td data-label="Day">1</td><td data-label="Match">Legacy vs PARIVISION</td>
+<td data-label="Series"><div>Legacy 2‑0</div></td>
+<td data-label="Maps"><div>Dust2 13‑11 · Mirage 16‑14 (OT)</div></td>
+<td data-label="Source"><div><a href="https://www.hltv.org/matches/2399386/legacy-vs-parivision-thunderpick-world-championship-2026">Match 2399386</a></div></td>
+</tr>
+<tr>
+<td data-label="Day">1</td><td data-label="Match">FURIA vs BETBOOM</td>
+<td data-label="Series"><div>FURIA 2‑0</div></td>
+<td data-label="Maps"><div>Ancient 13‑10 · Mirage 13‑9</div></td>
+<td data-label="Source"><div><a href="https://www.hltv.org/matches/2399387/furia-vs-betboom-thunderpick-world-championship-2026">Match 2399387</a></div></td>
+</tr>
+<tr>
+<td data-label="Day">2</td><td data-label="Match">Aurora vs Ninjas in Pyjamas</td>
+<td data-label="Series"><div>Aurora 2‑0</div></td>
+<td data-label="Maps"><div>Cache 13‑9 · Dust2 13‑7</div></td>
+<td data-label="Source"><div><a href="https://www.hltv.org/matches/2399408/aurora-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026">Match 2399408</a></div></td>
+</tr>
+<tr>
+<td data-label="Day">2</td><td data-label="Match">9z vs Falcons</td>
+<td data-label="Series"><div>9z 1‑2</div></td>
+<td data-label="Maps"><div>Nuke 9‑13 · Mirage 13‑8 · Dust2 9‑13</div></td>
+<td data-label="Source"><div><a href="https://www.hltv.org/matches/2399409/9z-vs-falcons-thunderpick-world-championship-2026">Match 2399409</a></div></td>
+</tr>
+<tr>
+<td data-label="Day">2</td><td data-label="Match">PARIVISION vs BETBOOM</td>
+<td data-label="Series"><div>PARIVISION 1‑2</div></td>
+<td data-label="Maps"><div>Ancient 13‑10 · Anubis 4‑13 · Mirage 7‑13</div></td>
+<td data-label="Source"><div><a href="https://www.hltv.org/matches/2399410/parivision-vs-betboom-thunderpick-world-championship-2026">Match 2399410</a></div></td>
+</tr>
+<tr>
+<td data-label="Day">2</td><td data-label="Match">Legacy vs FURIA</td>
+<td data-label="Series"><div>Legacy 1‑2</div></td>
+<td data-label="Maps"><div>Cache 13‑10 · Inferno 5‑13 · Mirage 8‑13</div></td>
+<td data-label="Source"><div><a href="https://www.hltv.org/matches/2399411/legacy-vs-furia-thunderpick-world-championship-2026">Match 2399411</a></div></td>
+</tr>
+</tbody>
+</table>
+
+<h2>Roster finding behind the 9z upset question</h2>
+<p>The question was whether a <em>recent</em> (October) Aurora change explains the upset. The answer from the official pages: the last HLTV‑verified Aurora roster change is the <strong>July 2026</strong> rebuild (Jimpphat + ash on 2026‑07‑03, kyxsan on 2026‑07‑08). No October change appears on the team or event page. The current roster is XANTARES, woxic, Wicadia, Jimpphat, kyxsan, coach ash. Elapsed calendar days are not a win‑probability penalty, so no figure is adjusted for it.</p>
+<table>
+<caption>Signing dates are verified on HLTV; the exact seconds shown on the site’s roster page are attributed to Aurora’s own posts (flagged).</caption>
+<thead><tr><th scope="col">Change</th><th scope="col">Verified date</th><th scope="col">Source</th></tr></thead>
+<tbody>
+<tr>
+<td data-label="Change">Jimpphat joins (ex‑MOUZ); ash appointed coach</td>
+<td data-label="Verified date"><div>2026‑07‑03</div></td>
+<td data-label="Source"><div><a href="https://www.hltv.org/news/45057/jimpphat-signs-with-aurora">HLTV news 45057</a><br><a href="https://www.hltv.org/news/45054/aurora-sign-ash">HLTV news 45054</a></div></td>
+</tr>
+<tr>
+<td data-label="Change">kyxsan joins as captain (ex‑Falcons), completing the rebuild</td>
+<td data-label="Verified date"><div>2026‑07‑08</div></td>
+<td data-label="Source"><div><a href="https://www.hltv.org/news/45082/official-aurora-complete-rebuild-with-kyxsan">HLTV news 45082</a></div></td>
+</tr>
+<tr>
+<td data-label="Change">Current TWC line‑up confirmation</td>
+<td data-label="Verified date"><div>as of 2026‑10‑16</div></td>
+<td data-label="Source"><div><a href="https://www.hltv.org/events/8932/thunderpick-world-championship-2026">HLTV event page</a></div></td>
+</tr>
+</tbody>
+</table>
+
+<a id="flagged" href="flagged.html"></a>
+<h2>Flagged for review (none change a stored number)</h2>
+<table>
+<caption>Irregularities surfaced during verification. They are documented, not silently resolved.</caption>
+<thead><tr><th scope="col">Flag</th><th scope="col">Detail</th><th scope="col">Source</th></tr></thead>
+<tbody>
+<tr>
+<td data-label="Flag">Kalshi joins rejected on both deciders</td>
+<td data-label="Detail">The exchange’s start‑time metadata did not match the fixture, so both Kalshi markets were excluded from the estimates. Their prices (Aurora ≈66 %, Legacy ≈66 %) are shown as cross‑checks only and agree with the book consensus.</td>
+<td data-label="Source"><div><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct1610009zaur">Kalshi Aurora‑9z market</a><br><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct161300bblgc">Kalshi BetBoom‑Legacy market</a></div></td>
+</tr>
+<tr>
+<td data-label="Flag">BetBoom–Legacy absent from the earlier capture</td>
+<td data-label="Detail">The fixture was not listed in the 2026‑10‑15T22:19Z capture but appears with two quotes in the 2026‑10‑16T04:34:39Z capture. The line here is from the newer capture; the older page’s preview for it is superseded.</td>
+<td data-label="Source"><div><a href="https://www.bovada.lv/esports/counter-strike-2">Bovada CS2 (lists the match)</a><br><a href="../../data/f7279a54/board.json">Newer capture</a><br><a href="../../data/c64a5e19/board.json">Older capture</a></div></td>
+</tr>
+<tr>
+<td data-label="Flag">Fixture 1080200 (Wildcard vs DENDELE) missing from two captures</td>
+<td data-label="Detail">Listed in the independent 2026‑10‑16T03:58Z board capture but absent from both ourline captures (04:09Z and 04:34:39Z), consistent with a stale lobby cache in the line collector. Left unpicked and flagged rather than back‑filled.</td>
+<td data-label="Source"><div><a href="https://www.hltv.org/events/8932/thunderpick-world-championship-2026/matches">HLTV TWC schedule</a><br><a href="../../data/fe803b80/board.json">Board capture 03:58Z (lists it)</a><br><a href="../../data/f7279a54/board.json">Ourline captures (absent)</a></div></td>
+</tr>
+<tr>
+<td data-label="Flag">Canonical picks‑every‑match board stale (23:40:40Z)</td>
+<td data-label="Detail">The 04:35Z successful refresh commit (624c689a) for data/c64a5e19 was orphaned by a history rewrite, so the root index and picks‑every‑match pages still evaluate at 2026‑10‑15T23:40:40Z (22 open, before BetBoom–Legacy was listed). This verification page uses the newer 04:34:39Z capture (31 open); the next scheduled refresh will realign the canonical pages.</td>
+<td data-label="Source"><div><a href="../../picks-every-match/index.html">Canonical picks page (23:40:40Z stamp)</a><br><a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions">Workflow run history</a></div></td>
+</tr>
+<tr>
+<td data-label="Flag">Exact signing seconds</td>
+<td data-label="Detail">The seconds shown on the site’s roster page are attributed to Aurora’s official posts; HLTV verifies the dates, not the seconds. Flagged, not altered.</td>
+<td data-label="Source"><div><a href="../../twc-2026/roster.html">Site roster page</a><br><a href="https://www.hltv.org/news/45082/official-aurora-complete-rebuild-with-kyxsan">HLTV date verification</a></div></td>
+</tr>
+<tr>
+<td data-label="Flag">Rest and veto are unmeasured</td>
+<td data-label="Detail">Actual rest between day‑2 and day‑3, and the day‑3 map vetoes, are not independently established. Map counts are not rest hours; the vetoes are not assumed to repeat.</td>
+<td data-label="Source"><div><a href="https://www.hltv.org/matches/2399412/aurora-vs-9z-thunderpick-world-championship-2026">Decider page (maps TBA)</a><br><a href="https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-day-2-review">Official day‑2 review</a></div></td>
+</tr>
+</tbody>
+</table>
+
+<div class="notice">This page is a dated audit, not a live feed. The stored numbers are from the retained 2026‑10‑16T04:34:39Z capture; lines move, so treat every percentage as valid only at that capture time. Probabilities are dated estimates, not verified future outcomes.</div>
+
+<footer class="small">Verification run 2026‑10‑16 (UTC) · capture 2026‑10‑16T04:34:39Z · canonical refresh every 4 h (best effort).<br>
+Machine‑readable audit: <a href="../../data/b3b89eec/board_verification.json">board re‑derivation JSON</a> · <a href="../../data/b3b89eec/twc_review.json">TWC review JSON</a><br>
+HotSpawn percentages are ownership context only. No automated bets or account actions. Not affiliated with HotSpawn. 18+; gamble responsibly.</footer>
+</main>
+</body></html>
