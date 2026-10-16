@@ -2,7 +2,7 @@
  "session": "6c5bb3d6",
  "task": "T-VERIFY-6C5BB3D6 independent line-by-line verification",
  "gate": {
-  "ran_utc": "2026-10-16T20:14:59Z",
+  "ran_utc": "2026-10-16T20:15:30Z",
   "command": "python -m unittest discover -s tests",
   "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
   "green": true,
@@ -16,10 +16,10 @@
   },
   "failing_tests": []
  },
- "generated_utc": "2026-10-16T20:14:59Z",
+ "generated_utc": "2026-10-16T20:15:30Z",
  "verified_board": {
   "file": "data/f28afd9e/board.json",
-  "generated_utc": "2026-10-16T19:41:37Z",
+  "generated_utc": "2026-10-16T20:14:44Z",
   "rows": 23,
   "summary": {
    "listed_open": 14,
@@ -34,7 +34,7 @@
  },
  "official_vrs": {
   "snapshot": "2026_10_05",
-  "fetched_utc": "2026-10-16T20:14:52Z",
+  "fetched_utc": "2026-10-16T20:15:20Z",
   "http_status": 200,
   "teams_parsed": 349,
   "human_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
@@ -51,8 +51,7 @@
   "checks": 11,
   "by_status": {
    "fail": 1,
-   "pass": 7,
-   "warn": 1,
+   "pass": 8,
    "info": 1,
    "skipped": 1
   },
@@ -70,7 +69,7 @@
    "id": "C1",
    "name": "Inventory coverage of every pickable CS2 fixture",
    "status": "fail",
-   "detail": "80 CS2 fixtures in the official lobby snapshot; 16 still pickable at the board instant 2026-10-16T19:41:37Z; 64 locked/past; 14/16 carry a pick",
+   "detail": "80 CS2 fixtures in the official lobby snapshot; 16 still pickable at the board instant 2026-10-16T20:14:44Z; 64 locked/past; 14/16 carry a pick",
    "evidence": [
     "data/hotspawn_matches.json",
     "data/f28afd9e/board.json"
@@ -86,7 +85,7 @@
    "id": "C2",
    "name": "Probability normalization, pick = argmax, and blanks disclosed",
    "status": "pass",
-   "detail": "23 published rows re-checked: 21 carry probabilities (p_a+p_b=1, safe pick = higher probability, stated pick probabilities equal the row's side values) and 2 are published blank (1079167, 1081497) - each blank must state its basis or carry a flag, and none may publish a pick",
+   "detail": "23 published rows re-checked: 14 carry probabilities (p_a+p_b=1, safe pick = higher probability, stated pick probabilities equal the row's side values) and 9 are published blank (1079167, 1081497, 1081502, 1081780, 1079589, 1079632) - each blank must state its basis or carry a flag, and none may publish a pick",
    "evidence": [
     "data/f28afd9e/board.json"
    ],
@@ -95,28 +94,30 @@
    "failures": [],
    "blank_rows": [
     "1079167",
-    "1081497"
+    "1081497",
+    "1081502",
+    "1081780",
+    "1079589",
+    "1079632",
+    "1081503",
+    "1081775",
+    "1081781"
    ]
   },
   {
    "id": "C3",
    "name": "No-vig arithmetic re-derived from every retained raw quote",
-   "status": "warn",
-   "detail": "11 rows re-derived from 142 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 2 rows publish no probability (blank, so there is nothing to re-derive); 8 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct",
+   "status": "pass",
+   "detail": "8 rows re-derived from 142 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 9 rows publish no probability (blank, so there is nothing to re-derive); 6 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct",
    "evidence": [
     "data/live/quotes.json",
     "data/fe803b80/snapshot.json",
     "data/b1fb1465/board.json"
    ],
    "rows_checked": 23,
-   "rows_failed": 2,
-   "failures": [
-    "1081502: published market 0.6759 vs re-derived mean 0.4898 from 2 quote(s), spread 0.1411",
-    "1081781: published market 0.4351 vs re-derived mean 0.3367 from 1 quote(s), spread 0.0000"
-   ],
+   "rows_failed": 0,
+   "failures": [],
    "unjoined_rows": [
-    "1081780",
-    "1079632",
     "1081513",
     "1079173",
     "1081126",
@@ -126,7 +127,14 @@
    ],
    "blank_rows": [
     "1079167",
-    "1081497"
+    "1081497",
+    "1081502",
+    "1081780",
+    "1079589",
+    "1079632",
+    "1081503",
+    "1081775",
+    "1081781"
    ],
    "per_row": [
     {
@@ -146,150 +154,51 @@
     {
      "fixture_id": "1081502",
      "match": "Procyon vs LOS NINOS",
-     "published_market_prob_a": 0.6759,
-     "rederived_mean_prob_a": 0.489796,
-     "rederived_spread": 0.141124,
-     "quotes": [
-      {
-       "source": "pinnacle",
-       "event_id": "1638406883",
-       "quote_team_a": "Procyon",
-       "quote_team_b": "LOS NINOS",
-       "decimal_a": 2.23,
-       "decimal_b": 1.609756,
-       "raw_side_a_prob": 0.419234,
-       "orientation": "straight",
-       "rederived_prob_a": 0.419234,
-       "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638406883/markets/related/straight",
-       "retrieved_utc": "2026-10-16T17:24:25Z",
-       "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
-      },
-      {
-       "source": "pinnacle",
-       "event_id": "1638522940",
-       "quote_team_a": "Procyon",
-       "quote_team_b": "LOS NINOS",
-       "decimal_a": 1.671141,
-       "decimal_b": 2.13,
-       "raw_side_a_prob": 0.560358,
-       "orientation": "straight",
-       "rederived_prob_a": 0.560358,
-       "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638522940/markets/related/straight",
-       "retrieved_utc": "2026-10-16T17:24:26Z",
-       "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
-      }
-     ],
-     "status": "diverges"
+     "quotes": [],
+     "published_market_prob_a": null,
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1081780",
      "match": "PRIVATE vs UPGRADE",
      "quotes": [],
-     "published_market_prob_a": 0.5416,
-     "status": "no_retained_quote"
+     "published_market_prob_a": null,
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1079589",
      "match": "100 Thieves vs Sangal",
-     "published_market_prob_a": 0.6659,
-     "rederived_mean_prob_a": 0.683108,
-     "rederived_spread": 0.0,
-     "quotes": [
-      {
-       "source": "pinnacle",
-       "event_id": "1638407379",
-       "quote_team_a": "Sangal",
-       "quote_team_b": "100 Thieves",
-       "decimal_a": 2.96,
-       "decimal_b": 1.373134,
-       "raw_side_a_prob": 0.316892,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.683108,
-       "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638407379/markets/related/straight",
-       "retrieved_utc": "2026-10-16T17:24:27Z",
-       "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
-      }
-     ],
-     "status": "agrees"
+     "quotes": [],
+     "published_market_prob_a": null,
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1079632",
      "match": "BakS vs G2 Ares",
      "quotes": [],
-     "published_market_prob_a": 0.5918,
-     "status": "no_retained_quote"
+     "published_market_prob_a": null,
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1081503",
      "match": "GamerLegion vs ex-RUSTEC",
-     "published_market_prob_a": 0.7742,
-     "rederived_mean_prob_a": 0.78712,
-     "rederived_spread": 0.0,
-     "quotes": [
-      {
-       "source": "bovada",
-       "event_id": "32297167",
-       "quote_team_a": "GamerLegion",
-       "quote_team_b": "Ex-Rustec",
-       "decimal_a": 1.19,
-       "decimal_b": 4.4,
-       "raw_side_a_prob": 0.78712,
-       "orientation": "straight",
-       "rederived_prob_a": 0.78712,
-       "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
-       "retrieved_utc": "2026-10-16T17:24:29Z",
-       "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
-      }
-     ],
-     "status": "agrees"
+     "quotes": [],
+     "published_market_prob_a": null,
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1081775",
      "match": "BetBoom vs Legacy",
-     "published_market_prob_a": 0.3835,
-     "rederived_mean_prob_a": 0.355002,
-     "rederived_spread": 0.0,
-     "quotes": [
-      {
-       "source": "kalshi",
-       "event_id": "KXCS2GAME-26OCT161300BBLGC",
-       "quote_team_a": "BetBoom Team",
-       "quote_team_b": "Legacy",
-       "decimal_a": 2.8169,
-       "decimal_b": 1.5504,
-       "raw_side_a_prob": 0.355002,
-       "orientation": "straight",
-       "rederived_prob_a": 0.355002,
-       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T19:47:47Z",
-       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      }
-     ],
-     "status": "agrees"
+     "quotes": [],
+     "published_market_prob_a": null,
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1081781",
      "match": "Honvéd vs Lavked",
-     "published_market_prob_a": 0.4351,
-     "rederived_mean_prob_a": 0.336689,
-     "rederived_spread": 0.0,
-     "quotes": [
-      {
-       "source": "kalshi",
-       "event_id": "KXCS2GAME-26OCT161500LAVHON",
-       "quote_team_a": "Lavked",
-       "quote_team_b": "Honvéd",
-       "decimal_a": 1.5152,
-       "decimal_b": 2.9851,
-       "raw_side_a_prob": 0.663311,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.336689,
-       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-16T19:47:47Z",
-       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      }
-     ],
-     "status": "diverges"
+     "quotes": [],
+     "published_market_prob_a": null,
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1079170",
@@ -1117,12 +1026,12 @@
    "id": "C6",
    "name": "HotSpawn crowd % is ownership-only and never a probability",
    "status": "pass",
-   "detail": "21 priced rows publish exactly the upstream board's market/model probability (so the crowd split cannot have entered them); 0 rows have a probability numerically equal to the crowd share; 0 blank rows carry no probability to compare",
+   "detail": "14 priced rows publish exactly the upstream board's market/model probability (so the crowd split cannot have entered them); 0 rows have a probability numerically equal to the crowd share; 0 blank rows carry no probability to compare",
    "evidence": [
     "data/f28afd9e/board.json",
     "https://play.hotspawn.com/lobby"
    ],
-   "rows_checked": 21,
+   "rows_checked": 14,
    "rows_failed": 0,
    "failures": [],
    "blank_rows": []
@@ -1169,7 +1078,7 @@
    "id": "C8",
    "name": "Contrarian (differential) pick recomputed independently",
    "status": "info",
-   "detail": "23 rows recomputed with points x (probability - crowd ownership); 13 agree with the published leaderboard pick, 5 open rows diverge. Divergence is a methodology difference (the published layer caps swings and only fades near coin-flips), not an arithmetic error.",
+   "detail": "23 rows recomputed with points x (probability - crowd ownership); 9 agree with the published leaderboard pick, 5 open rows diverge. Divergence is a methodology difference (the published layer caps swings and only fades near coin-flips), not an arithmetic error.",
    "evidence": [
     "data/f28afd9e/board.json",
     "data/live/board.json (crowd reference field)"
@@ -1200,142 +1109,44 @@
     {
      "fixture_id": "1081502",
      "match": "Procyon vs LOS NINOS",
-     "competition": "CCT South America 2026 Series #7",
-     "start_utc": "2026-10-16T16:00:00Z",
      "state": "locked",
-     "points": 2.0,
-     "prob_a": 0.6759,
-     "prob_b": 0.3241,
-     "crowd_a": 97,
-     "crowd_b": 3,
-     "diff_a": -0.2941,
-     "diff_b": 0.2941,
-     "ev_a": -0.588,
-     "ev_b": 0.588,
-     "differential_optimal": "LOS NINOS",
-     "published_leaderboard_pick": "Procyon",
-     "published_rule": "chalk",
-     "agrees": false
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1081780",
      "match": "PRIVATE vs UPGRADE",
-     "competition": "CyberClash Season 2: Closed Qualifier",
-     "start_utc": "2026-10-16T16:00:00Z",
      "state": "locked",
-     "points": 2.0,
-     "prob_a": 0.5416,
-     "prob_b": 0.4584,
-     "crowd_a": 15,
-     "crowd_b": 85,
-     "diff_a": 0.3916,
-     "diff_b": -0.3916,
-     "ev_a": 0.783,
-     "ev_b": -0.783,
-     "differential_optimal": "PRIVATE",
-     "published_leaderboard_pick": "PRIVATE",
-     "published_rule": "chalk_contrarian",
-     "agrees": true
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1079589",
      "match": "100 Thieves vs Sangal",
-     "competition": "Stake Pulse Beat III",
-     "start_utc": "2026-10-16T17:00:00Z",
      "state": "locked",
-     "points": 3.0,
-     "prob_a": 0.6659,
-     "prob_b": 0.3341,
-     "crowd_a": 97,
-     "crowd_b": 3,
-     "diff_a": -0.3041,
-     "diff_b": 0.3041,
-     "ev_a": -0.912,
-     "ev_b": 0.912,
-     "differential_optimal": "Sangal",
-     "published_leaderboard_pick": "100 Thieves",
-     "published_rule": "chalk",
-     "agrees": false
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1079632",
      "match": "BakS vs G2 Ares",
-     "competition": "CCT Europe 2026 Series #11",
-     "start_utc": "2026-10-16T17:00:00Z",
      "state": "locked",
-     "points": 3.0,
-     "prob_a": 0.5918,
-     "prob_b": 0.4082,
-     "crowd_a": 39,
-     "crowd_b": 61,
-     "diff_a": 0.2018,
-     "diff_b": -0.2018,
-     "ev_a": 0.605,
-     "ev_b": -0.605,
-     "differential_optimal": "BakS",
-     "published_leaderboard_pick": "BakS",
-     "published_rule": "chalk_contrarian",
-     "agrees": true
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1081503",
      "match": "GamerLegion vs ex-RUSTEC",
-     "competition": "PGL Bucharest 2027: Closed Qualifier",
-     "start_utc": "2026-10-16T17:00:00Z",
      "state": "locked",
-     "points": 3.0,
-     "prob_a": 0.7742,
-     "prob_b": 0.2258,
-     "crowd_a": 97,
-     "crowd_b": 3,
-     "diff_a": -0.1958,
-     "diff_b": 0.1958,
-     "ev_a": -0.587,
-     "ev_b": 0.587,
-     "differential_optimal": "ex-RUSTEC",
-     "published_leaderboard_pick": "GamerLegion",
-     "published_rule": "chalk",
-     "agrees": false
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1081775",
      "match": "BetBoom vs Legacy",
-     "competition": "Thunderpick World Championship 2026",
-     "start_utc": "2026-10-16T17:00:00Z",
      "state": "locked",
-     "points": 7.0,
-     "prob_a": 0.3835,
-     "prob_b": 0.6165,
-     "crowd_a": 12,
-     "crowd_b": 88,
-     "diff_a": 0.2635,
-     "diff_b": -0.2635,
-     "ev_a": 1.845,
-     "ev_b": -1.844,
-     "differential_optimal": "BetBoom",
-     "published_leaderboard_pick": "BetBoom",
-     "published_rule": "R2_upset_swing",
-     "agrees": true
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1081781",
      "match": "Honvéd vs Lavked",
-     "competition": "CyberClash Season 2: Closed Qualifier",
-     "start_utc": "2026-10-16T19:00:00Z",
      "state": "locked",
-     "points": 2.0,
-     "prob_a": 0.4351,
-     "prob_b": 0.5649,
-     "crowd_a": 7,
-     "crowd_b": 93,
-     "diff_a": 0.3651,
-     "diff_b": -0.3651,
-     "ev_a": 0.73,
-     "ev_b": -0.73,
-     "differential_optimal": "Honvéd",
-     "published_leaderboard_pick": "Honvéd",
-     "published_rule": "R2_upset_swing",
-     "agrees": true
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1079170",
@@ -1692,7 +1503,7 @@
    "id": "C11",
    "name": "Shared publication gate (Pages deploys only on a green suite)",
    "status": "pass",
-   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-16T20:14:59Z: 736 tests, 0 failures, 0 errors, 4 skipped -> GREEN, the site can publish",
+   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-16T20:15:30Z: 736 tests, 0 failures, 0 errors, 4 skipped -> GREEN, the site can publish",
    "evidence": [
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml",
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/gate.json"
@@ -1716,7 +1527,7 @@
    "id": "IR-C3",
    "severity": "medium",
    "title": "Published probabilities with no retained raw quote in this snapshot",
-   "detail": "fixtures 1081780, 1079632, 1081513, 1079173, 1081126, 1081526, 1081528, 1081532 — the number is published by an upstream board whose raw quote file is not retained here, so this audit could not re-derive it. Left unverified, not assumed correct.",
+   "detail": "fixtures 1081513, 1079173, 1081126, 1081526, 1081528, 1081532 — the number is published by an upstream board whose raw quote file is not retained here, so this audit could not re-derive it. Left unverified, not assumed correct.",
    "links": [
     "https://play.hotspawn.com/lobby"
    ]
@@ -1952,142 +1763,44 @@
   {
    "fixture_id": "1081502",
    "match": "Procyon vs LOS NINOS",
-   "competition": "CCT South America 2026 Series #7",
-   "start_utc": "2026-10-16T16:00:00Z",
    "state": "locked",
-   "points": 2.0,
-   "prob_a": 0.6759,
-   "prob_b": 0.3241,
-   "crowd_a": 97,
-   "crowd_b": 3,
-   "diff_a": -0.2941,
-   "diff_b": 0.2941,
-   "ev_a": -0.588,
-   "ev_b": 0.588,
-   "differential_optimal": "LOS NINOS",
-   "published_leaderboard_pick": "Procyon",
-   "published_rule": "chalk",
-   "agrees": false
+   "status": "no_published_probability"
   },
   {
    "fixture_id": "1081780",
    "match": "PRIVATE vs UPGRADE",
-   "competition": "CyberClash Season 2: Closed Qualifier",
-   "start_utc": "2026-10-16T16:00:00Z",
    "state": "locked",
-   "points": 2.0,
-   "prob_a": 0.5416,
-   "prob_b": 0.4584,
-   "crowd_a": 15,
-   "crowd_b": 85,
-   "diff_a": 0.3916,
-   "diff_b": -0.3916,
-   "ev_a": 0.783,
-   "ev_b": -0.783,
-   "differential_optimal": "PRIVATE",
-   "published_leaderboard_pick": "PRIVATE",
-   "published_rule": "chalk_contrarian",
-   "agrees": true
+   "status": "no_published_probability"
   },
   {
    "fixture_id": "1079589",
    "match": "100 Thieves vs Sangal",
-   "competition": "Stake Pulse Beat III",
-   "start_utc": "2026-10-16T17:00:00Z",
    "state": "locked",
-   "points": 3.0,
-   "prob_a": 0.6659,
-   "prob_b": 0.3341,
-   "crowd_a": 97,
-   "crowd_b": 3,
-   "diff_a": -0.3041,
-   "diff_b": 0.3041,
-   "ev_a": -0.912,
-   "ev_b": 0.912,
-   "differential_optimal": "Sangal",
-   "published_leaderboard_pick": "100 Thieves",
-   "published_rule": "chalk",
-   "agrees": false
+   "status": "no_published_probability"
   },
   {
    "fixture_id": "1079632",
    "match": "BakS vs G2 Ares",
-   "competition": "CCT Europe 2026 Series #11",
-   "start_utc": "2026-10-16T17:00:00Z",
    "state": "locked",
-   "points": 3.0,
-   "prob_a": 0.5918,
-   "prob_b": 0.4082,
-   "crowd_a": 39,
-   "crowd_b": 61,
-   "diff_a": 0.2018,
-   "diff_b": -0.2018,
-   "ev_a": 0.605,
-   "ev_b": -0.605,
-   "differential_optimal": "BakS",
-   "published_leaderboard_pick": "BakS",
-   "published_rule": "chalk_contrarian",
-   "agrees": true
+   "status": "no_published_probability"
   },
   {
    "fixture_id": "1081503",
    "match": "GamerLegion vs ex-RUSTEC",
-   "competition": "PGL Bucharest 2027: Closed Qualifier",
-   "start_utc": "2026-10-16T17:00:00Z",
    "state": "locked",
-   "points": 3.0,
-   "prob_a": 0.7742,
-   "prob_b": 0.2258,
-   "crowd_a": 97,
-   "crowd_b": 3,
-   "diff_a": -0.1958,
-   "diff_b": 0.1958,
-   "ev_a": -0.587,
-   "ev_b": 0.587,
-   "differential_optimal": "ex-RUSTEC",
-   "published_leaderboard_pick": "GamerLegion",
-   "published_rule": "chalk",
-   "agrees": false
+   "status": "no_published_probability"
   },
   {
    "fixture_id": "1081775",
    "match": "BetBoom vs Legacy",
-   "competition": "Thunderpick World Championship 2026",
-   "start_utc": "2026-10-16T17:00:00Z",
    "state": "locked",
-   "points": 7.0,
-   "prob_a": 0.3835,
-   "prob_b": 0.6165,
-   "crowd_a": 12,
-   "crowd_b": 88,
-   "diff_a": 0.2635,
-   "diff_b": -0.2635,
-   "ev_a": 1.845,
-   "ev_b": -1.844,
-   "differential_optimal": "BetBoom",
-   "published_leaderboard_pick": "BetBoom",
-   "published_rule": "R2_upset_swing",
-   "agrees": true
+   "status": "no_published_probability"
   },
   {
    "fixture_id": "1081781",
    "match": "Honvéd vs Lavked",
-   "competition": "CyberClash Season 2: Closed Qualifier",
-   "start_utc": "2026-10-16T19:00:00Z",
    "state": "locked",
-   "points": 2.0,
-   "prob_a": 0.4351,
-   "prob_b": 0.5649,
-   "crowd_a": 7,
-   "crowd_b": 93,
-   "diff_a": 0.3651,
-   "diff_b": -0.3651,
-   "ev_a": 0.73,
-   "ev_b": -0.73,
-   "differential_optimal": "Honvéd",
-   "published_leaderboard_pick": "Honvéd",
-   "published_rule": "R2_upset_swing",
-   "agrees": true
+   "status": "no_published_probability"
   },
   {
    "fixture_id": "1079170",
