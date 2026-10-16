@@ -1,0 +1,58 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Flagged for Review · session b3b89eec</title><link rel="stylesheet" href="assets.css"></head><body>
+<a class="skip" href="#main">Skip to content</a>
+<header><div class="wrap">
+<div class="brand">HOTSPAWN / FLAGGED FOR REVIEW <span class="small">session b3b89eec</span></div>
+<nav aria-label="Main">
+<a href="../../index.html">Home</a>
+<a href="../../picks-every-match/index.html">All CS2 picks</a>
+<a href="index.html">Verification</a>
+<a href="flagged.html" aria-current="page">Flagged for Review</a>
+</nav>
+</div></header>
+<main id="main" class="wrap">
+<div class="eyebrow">Irregularities, documented · 2026‑10‑16</div>
+<h1>Four items I could not fully confirm, listed so they are reviewed rather than hidden.</h1>
+<p>None of these changes a stored number on the board. Each is either a rejected data join, a capture‑timing gap, an unverified second‑level timestamp, or an unmeasured human factor. They are surfaced here per the review protocol and do not block publication.</p>
+
+<table>
+<caption>Each flag states what is known, what is not, and the source that bounds it.</caption>
+<thead><tr><th scope="col">Flag</th><th scope="col">What is known / what is not</th><th scope="col">Source</th></tr></thead>
+<tbody>
+<tr>
+<td data-label="Flag">Kalshi joins rejected (both deciders)</td>
+<td data-label="What is known / what is not">Known: the exchange lists both matches. Not: its start‑time metadata matched the fixture, so the join was rejected and the price is used as a cross‑check only. The cross‑check agrees with the book consensus (Aurora ≈66 %, Legacy ≈66 %).</td>
+<td data-label="Source"><div><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct1610009zaur">Kalshi Aurora‑9z</a><br><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct161300bblgc">Kalshi BetBoom‑Legacy</a></div></td>
+</tr>
+<tr>
+<td data-label="Flag">BetBoom–Legacy missing from the earlier capture</td>
+<td data-label="What is known / what is not">Known: listed with two quotes in the 2026‑10‑16T04:34:39Z capture. Not: it was absent from the 2026‑10‑15T22:19Z capture, so any older page that previewed it is superseded by the newer capture used here.</td>
+<td data-label="Source"><div><a href="https://www.bovada.lv/esports/counter-strike-2">Bovada CS2 (lists the match)</a><br><a href="../../data/f7279a54/board.json">Newer capture</a><br><a href="../../data/c64a5e19/board.json">Older capture</a></div></td>
+</tr>
+<tr>
+<td data-label="Flag">Fixture 1080200 (Wildcard vs DENDELE) missing from two captures</td>
+<td data-label="What is known / what is not">Known: listed in the independent 2026‑10‑16T03:58Z board capture. Not: present in either ourline capture (04:09Z, 04:34:39Z) — a stale-lobby-cache sign. Left unpicked; no value was back‑filled.</td>
+<td data-label="Source"><div><a href="https://www.hltv.org/events/8932/thunderpick-world-championship-2026/matches">HLTV TWC schedule</a><br><a href="../../data/fe803b80/board.json">Board capture (lists it)</a></div></td>
+</tr>
+<tr>
+<td data-label="Flag">Canonical picks board stale at 23:40:40Z</td>
+<td data-label="What is known / what is not">Known: the 04:35Z c64a5e19 refresh succeeded but its commit was orphaned by a history rewrite, so the canonical pages still stamp 2026‑10‑15T23:40:40Z. This page’s numbers come from the newer 04:34:39Z capture.</td>
+<td data-label="Source"><div><a href="../../picks-every-match/index.html">Canonical picks page</a><br><a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions">Workflow run history</a></div></td>
+</tr>
+<tr>
+<td data-label="Flag">Exact signing seconds unverified</td>
+<td data-label="What is known / what is not">Known: the signing dates (2026‑07‑03, 2026‑07‑08) are confirmed by HLTV. Not: the exact seconds shown on the site’s roster page are attributed to Aurora’s own posts and were not independently timestamped.</td>
+<td data-label="Source"><div><a href="../../twc-2026/roster.html">Site roster page</a><br><a href="https://www.hltv.org/news/45082/official-aurora-complete-rebuild-with-kyxsan">HLTV news 45082</a></div></td>
+</tr>
+<tr>
+<td data-label="Flag">Rest and vetoes unmeasured</td>
+<td data-label="What is known / what is not">Known: map counts for each day‑2 series. Not: actual rest (sleep, travel, scrims) before day 3, and the day‑3 map vetoes (shown TBA). Map counts are not rest hours and the vetoes are not assumed to repeat day 1.</td>
+<td data-label="Source"><div><a href="https://www.hltv.org/matches/2399412/aurora-vs-9z-thunderpick-world-championship-2026">Decider page (maps TBA)</a><br><a href="https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-day-2-review">Official day‑2 review</a></div></td>
+</tr>
+</tbody>
+</table>
+
+<div class="notice">Flagging an item is not a verdict on it. It records the boundary of what was confirmed at this capture time so a later refresh can either clear or tighten the flag.</div>
+
+<footer class="small">Verification run 2026‑10‑16 (UTC) · capture 2026‑10‑16T04:34:39Z. Not affiliated with HotSpawn. 18+; gamble responsibly.</footer>
+</main>
+</body></html>
