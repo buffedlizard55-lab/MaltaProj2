@@ -359,13 +359,17 @@ def index_html(board: dict) -> str:
     climb_bits = []
     for r in climbs:
         cp = r["ladder"]["climb_prob"]
-        own = r["crowd_b"] if r["ladder"]["climb"].casefold() == r["team_b"].casefold() else r["crowd_a"]
+        own = (r["crowd_b"] if r["ladder"]["climb_side"] == "b" else r["crowd_a"]) / 100.0
+        same = r["ladder"]["climb"].casefold() == r["ladder"]["safe"].casefold()
+        head = ("<strong>{}</strong> (safe pick and climb coincide — the crowd-faded side is also the line favorite)".format(esc(r["ladder"]["climb"]))
+                if same else
+                "<strong>{}</strong> over {}".format(esc(r["ladder"]["climb"]), esc(r["ladder"]["safe"])))
         climb_bits.append(
-            "<li><strong>{}</strong> over {} ({}, {}) — fair {} at crowd ownership {}% "
+            "<li>{} ({}, {}) — fair {} at crowd ownership {:.0f}% "
             "({:.1f}× the crowd's share){}</li>".format(
-                esc(r["ladder"]["climb"]), esc(r["ladder"]["safe"]), esc(r["competition"]),
-                esc(r["start_utc"][:16].replace("T", " ")) + "Z", pct(cp), own,
-                cp / (own / 100),
+                head, esc(r["competition"]),
+                esc(r["start_utc"][:16].replace("T", " ")) + "Z", pct(cp), own * 100,
+                cp / own,
                 " at {} (bc.game)".format(format(r["ladder"]["climb_odds"], ".2f")) if r["ladder"]["climb_odds"] else " (no market price — originated line)"))
     contra_bits = []
     for r in contra:

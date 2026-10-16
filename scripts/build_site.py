@@ -160,14 +160,6 @@ def executive_summary_html():
          "contrarian-but-not-stupid climb ladder (safe + leaderboard pick per match) and a pick for "
          "every open CS2 match; unresolved picks + limitations linked from its executive summary.",
          _board_stamp("data/4cf64ea3/board.json", "generated_utc")),
-        # 1c8f79f8 integration (additive): the TWC day-4 desk. Its own executive
-        # summary links every updated picks list on the site, so one row here is enough.
-        ("day4/index.html", "TWC day-4 semifinal picks + every-match refresh (1c8f79f8)",
-         "Verified day-1/2/3 TWC review (incl. the disproven October Aurora roster-change premise), "
-         "both playoff semifinal picks with external lines, a pick and probability for all 21 open "
-         "lobby fixtures, three documented contrarian climb swings, and its own unresolved/"
-         "limitations, flagged and method sections.",
-         _board_stamp("data/1c8f79f8/board.json", "generated_utc")),
         ("picks-all/index.html", "Complete picks — every match",
          "Pick + win probability for every open CS2 match on the pick'em lobby (incl. low-tier), "
          "each number linked to its source. The complete updated picks list.",
@@ -227,7 +219,6 @@ def executive_summary_html():
   <p><a class="btn" href="cs2.html">Start here: source-linked CS2 picks</a>
      <a class="btn" href="picks-all/index.html">Complete picks · all matches</a>
      <a class="btn" href="day3/index.html">TWC day-3 picks &amp; day-2 review</a>
-     <a class="btn alt2" href="day4/index.html">TWC day-4 semifinals + all 21 open matches</a>
      <a class="btn ghost" href="#unresolved-picks">Unresolved matches</a>
      <a class="btn ghost" href="picks-all/unresolved.html">Unresolved + limitations (complete list)</a>
      <a class="btn ghost" href="board/picks.html">Expanded picks · models included</a></p>
@@ -459,11 +450,12 @@ and the evidence behind it. Low-tier matches stay on the list too.</p>
 <a class="btn btn-primary" href="picks-every-match/index.html">Open all CS2 picks →</a>
 <a class="btn ghost" href="picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a>
 <a class="btn ghost" href="twc-2026/index.html">TWC day-three decisions</a>
+<a class="btn ghost" href="day4/index.html">TWC day-4 semifinals + all 21 open matches (1c8f79f8)</a>
 </div>
 <p class="note">Snapshot counts below are evaluated at {esc(pick_time or 'unverified')}.
 Source capture ended {esc(pick_board.get('collected_to_utc') or 'unverified')}.
 A page rebuild is not a new source observation. Open the picks list for per-match expiry checks.</p>
-<p><a href="twc-2026/results.html">Verified day-two results</a> → <a href="twc-2026/index.html">day-three decisions</a> · <a href="twc-2026/roster.html">Original Aurora announcements &amp; unknown rest</a> · <a href="twc-2026/flagged.html">Research flags</a>. The upset watchlist never changes the canonical match probabilities.</p>
+<p><a href="twc-2026/results.html">Verified day-two results</a> → <a href="twc-2026/index.html">day-three decisions</a> · <a href="twc-2026/roster.html">Original Aurora announcements &amp; unknown rest</a> · <a href="twc-2026/flagged.html">Research flags</a>. The upset watchlist never changes the canonical match probabilities. <a href="day4/index.html">Day-4 desk (1c8f79f8)</a>: both verified semifinal picks, the BetBoom decider upset analysis, the disproven October Aurora roster-change premise, and a pick for all 21 open lobby fixtures.</p>
 <div class="cards">{pick_counts}</div>
 <p id="pick-accounting"><strong>{esc(directional)} directional picks</strong> ·
 <strong>{esc(tied)} priced ties — no edge</strong>. A market price is not always a recommendation.
@@ -492,6 +484,7 @@ calculations, not officially verified win chances. <strong>HotSpawn crowd picks 
 <a class="board-card" href="picks-every-match/inventory.html"><div class="board-card-title">Full lobby inventory</div><div class="board-card-desc">Every retained CS2 fixture, including locked/past rows. Coverage refers to the captured lobby, not unseen additions.</div></a>
 <a class="board-card" href="twc-2026/index.html"><div class="board-card-title">Day 2 → Day 3: a credible upset, not blind underdogs</div><div class="board-card-desc">All eight TWC results, primary-confirmed July signings, a canonical day-three decision sheet and explicit expected-points tradeoffs. No invented rest penalty.</div></a>
 <a class="board-card" href="day-one.html"><div class="board-card-title">Day one &amp; sensible contrarian strategy</div><div class="board-card-desc">9z–Aurora, all four opening results, roster context and what the evidence does not prove.</div></a>
+<a class="board-card" href="day4/index.html"><div class="board-card-title">Day-4 desk: TWC semifinals + every open match</div><div class="board-card-desc">Both playoff semifinal picks with external lines, the verified day-1/2/3 review, a pick and probability for all 21 open lobby fixtures with per-row sources, three documented climb swings, and its own unresolved/flagged/method sections.</div></a>
 
 <a class="board-card" href="flagged.html"><div class="board-card-title">Flagged for Review</div><div class="board-card-desc">Source failures, disputed identities and competing historical boards. No silent assumptions.</div></a>
 </div>
