@@ -521,6 +521,9 @@ def build_board() -> tuple[dict[str, Any], dict[str, Any]]:
         source_links: list[dict[str, str]] = [
             {"label": "HotSpawn Lobby", "url": hotspawn_url},
         ]
+        if not (hltv_meta or {}).get("match_url"):
+            # No HLTV page was captured for this fixture: disclosed, never implied.
+            flags.append("hltv_page_not_captured_for_fixture")
         if hltv_meta.get("match_url"):
             source_links.append({"label": "HLTV Match", "url": hltv_meta["match_url"]})
         if hltv_meta.get("analytics_url") and hltv_meta.get("analytics_url") != hltv_meta.get("match_url"):
@@ -590,7 +593,7 @@ def build_board() -> tuple[dict[str, Any], dict[str, Any]]:
                     "fair_odds_a": round(1.0 / vrs_prob_a, 2) if vrs_prob_a else None,
                     "fair_odds_b": round(1.0 / vrs_prob_b, 2) if vrs_prob_b else None,
                     "method": "Official HLTV final result verification + Valve VRS pre-match reference (#39 DENDELE 1368 pts vs #58 Wildcard 1239 pts)",
-                    "limitation": hltv_meta["notes"],
+                    "limitation": hltv_meta.get("notes"),
                 },
                 "quotes": [],
                 "vrs_model": {"prob_a": vrs_prob_a, "prob_b": vrs_prob_b},
@@ -641,7 +644,7 @@ def build_board() -> tuple[dict[str, Any], dict[str, Any]]:
             if fid in ("1080281", "1080283"):
                 flags.append("alias_verified_5of5_hltv_vrs_wrotberry_is_wbt")
                 method_desc = (
-                    f"Fallback Step 1 (HLTV match {hltv_meta['match_url'].split('/')[4]} confirms 5/5 WBT starting lineup "
+                    f"Fallback Step 1 (HLTV match {_hltv_id(hltv_meta)} confirms 5/5 WBT starting lineup "
                     f"Psycho, Smash, s4ltovsk1yy, DemQQ, tyr1k = Valve VRS #60 WBT) + "
                     f"Fallback Step 2 (no-vig mean of {', '.join(q_books)})."
                 )
@@ -672,7 +675,7 @@ def build_board() -> tuple[dict[str, Any], dict[str, Any]]:
                         "hltv_disclosed_substitute_cej0t_for_kunai",
                     ])
                 method_desc = (
-                    f"Fallback Step 1 (HLTV match {hltv_meta['match_url'].split('/')[4]} rank & lineup corroboration) + "
+                    f"Fallback Step 1 (HLTV match {_hltv_id(hltv_meta)} rank & lineup corroboration) + "
                     f"Fallback Step 2 (no-vig consensus across {', '.join(q_books)})."
                 )
                 limitation_desc = (
@@ -684,17 +687,35 @@ def build_board() -> tuple[dict[str, Any], dict[str, Any]]:
             # Invoked ONLY because NO bookmaker or exchange has opened a market yet.
             prob_a = vrs_prob_a
             prob_b = vrs_prob_b
-            pick = team_a if prob_a >= prob_b else team_b
-            pick_prob = max(prob_a, prob_b)
-            tier_code = "TIER_3_ORIGINATED_VRS_HLTV"
-            tier_label_str = "Tier 3 · Originated CS2 Line (Official Valve VRS + HLTV + Elo)"
-            fallback_invoked = True
-            flags.append("no_bookmaker_market_open_yet_originated_vrs_line")
-            if fid in ("1080286", "1080288", "1080289"):
+            if prob_a is None or prob_b is None:
+                # No eligible line AND no unambiguous official rating pair: the row stays blank.
+                # Nothing is inferred, and no arithmetic is attempted on a missing side.
+                pick, pick_prob = None, None
+                tier_code = "TIER_4_UNRESOLVED_NO_LINE_NO_RATING_PAIR"
+                tier_label_str = ("Tier 4 · Unresolved (no eligible price and no unambiguous official "
+                                  "rating pair) - published blank")
+                fallback_invoked = True
+                flags.append("no_line_and_no_usable_rating_pair_published_blank")
+                method_desc = (
+                    "No Pinnacle/Bovada/Melbet/Thunderpick-via-bo3.gg price and no Kalshi exchange book "
+                    "reached this fixture in the capture window, and at least one side has no unambiguous "
+                    "official Valve rating entry, so no originated line can be derived either.")
+                limitation_desc = (
+                    "Blank by policy: a probability is never inferred from an ambiguous or missing "
+                    "official rating. The per-fixture blockers and everything that was attempted are "
+                    "listed in the unresolved ledger.")
+            else:
+                pick = team_a if prob_a >= prob_b else team_b
+                pick_prob = max(prob_a, prob_b)
+                tier_code = "TIER_3_ORIGINATED_VRS_HLTV"
+                tier_label_str = "Tier 3 · Originated CS2 Line (Official Valve VRS + HLTV + Elo)"
+                fallback_invoked = True
+                flags.append("no_bookmaker_market_open_yet_originated_vrs_line")
+            if prob_a is not None and fid in ("1080286", "1080288", "1080289"):
                 flags.append("alias_verified_5of5_hltv_vrs_roundsgg_is_rounds")
                 elo_pct = f"{max(elo_prob_a, elo_prob_b)*100:.1f}%" if elo_prob_a is not None else "n/a"
                 method_desc = (
-                    f"Fallback Step 1 (HLTV match {hltv_meta['match_url'].split('/')[4]} confirms 5/5 ROUNDS starting lineup "
+                    f"Fallback Step 1 (HLTV match {_hltv_id(hltv_meta)} confirms 5/5 ROUNDS starting lineup "
                     f"Tumppis, Kollo, ykis, Lapa, Monoxx = Valve VRS #310 ROUNDS, 548 pts) + "
                     f"Fallback Step 3 (Market-calibrated Official Valve VRS logistic origination #{vrs_a['standing']} {vrs_a['points']} pts vs "
                     f"#{vrs_b['standing']} {vrs_b['points']} pts; corroborated by 809-match Elo {elo_pct})."
@@ -705,7 +726,7 @@ def build_board() -> tuple[dict[str, Any], dict[str, Any]]:
                     "Prior strict boards left RoundsGG blank because HLTV's team profile showed 4/5 players yesterday; "
                     "today's official HLTV match page publishes all 5 starters (Tumppis, Kollo, ykis, Lapa, Monoxx), matching Valve VRS #310 ROUNDS (548 pts) 5-for-5."
                 )
-            else:
+            elif prob_a is not None:
                 flags.append("hltv_match_2399471_corroborates_vrs")
                 method_desc = (
                     f"Fallback Step 1 (HLTV match 2399471 & analytics confirm #94 mellren vs #226 Privateer) + "
@@ -747,8 +768,8 @@ def build_board() -> tuple[dict[str, Any], dict[str, Any]]:
                 "prob_a": prob_a,
                 "prob_b": prob_b,
                 "pick_prob": pick_prob,
-                "fair_odds_a": round(1.0 / prob_a, 2),
-                "fair_odds_b": round(1.0 / prob_b, 2),
+                "fair_odds_a": round(1.0 / prob_a, 2) if prob_a else None,
+                "fair_odds_b": round(1.0 / prob_b, 2) if prob_b else None,
                 "method": method_desc,
                 "limitation": limitation_desc,
             },
@@ -774,7 +795,10 @@ def build_board() -> tuple[dict[str, Any], dict[str, Any]]:
         "summary": {
             "lobby_listed_cs2": len(c64_board.get("inventory", [])),
             "open_lobby_matches": len(open_lobby_rows),
-            "resolved_open_matches": len(open_lobby_rows),
+            "resolved_open_matches": sum(1 for r in open_lobby_rows
+                                         if r["resolution"]["prob_a"] is not None),
+            "unresolved_open_matches_published_blank": sum(
+                1 for r in open_lobby_rows if r["resolution"]["prob_a"] is None),
             "tier_1_primary_bookmaker": t1_count,
             "tier_2_fallback_esportsbook_exchange": t2_count,
             "tier_3_originated_vrs_hltv": t3_count,
@@ -1157,6 +1181,29 @@ def _page_shell(title: str, active: str, body: str, board: dict[str, Any]) -> st
 """
 
 
+
+def _vrs_ref(vrs) -> str:
+    """Official-rating citation for one side, or an explicit blank when Valve has no entry."""
+    if not vrs:
+        return "— (no official Valve entry for this name)"
+    return f"#{vrs['standing']} {esc(vrs['team_name'])} ({vrs['points']} pts)"
+
+
+def _pct(value) -> str:
+    return "—" if value is None else f"{value * 100:.1f}%"
+
+
+def _hltv_id(hltv_meta: dict) -> str:
+    """HLTV match id for a method note, or 'n/a' when this fixture has no captured HLTV page."""
+    url = str((hltv_meta or {}).get("match_url") or "")
+    parts = url.split("/")
+    return parts[4] if len(parts) > 4 and parts[4] else "n/a"
+
+
+def _fair(value) -> str:
+    """Fair price cell. A row published blank shows a dash, never a price computed from nothing."""
+    return "—" if value is None else f"{value:.2f}"
+
 def render_index(board: dict[str, Any], audit: dict[str, Any]) -> str:
     s = board["summary"]
     cards_html = []
@@ -1167,9 +1214,9 @@ def render_index(board: dict[str, Any], audit: dict[str, Any]) -> str:
         vrs_a = r["vrs_a"]
         vrs_b = r["vrs_b"]
         hltv = r["hltv"]
-        prob_a_pct = f"{res['prob_a'] * 100:.1f}%"
-        prob_b_pct = f"{res['prob_b'] * 100:.1f}%"
-        pick_prob_pct = f"{res['pick_prob'] * 100:.1f}%"
+        prob_a_pct = _pct(res['prob_a'])
+        prob_b_pct = _pct(res['prob_b'])
+        pick_prob_pct = _pct(res['pick_prob'])
         strict_cell = (
             f"<strong>{esc(sp['pick'])} ({max(sp['prob_a'], sp['prob_b']) * 100:.1f}%)</strong>"
             f"<div class='mini'>{sp['prob_a']*100:.1f}% / {sp['prob_b']*100:.1f}% · {esc(', '.join(sp['sources']))}</div>"
@@ -1178,10 +1225,9 @@ def render_index(board: dict[str, Any], audit: dict[str, Any]) -> str:
                  f'<div class="mini"><a href="unresolved.html#u-{esc(r["fixture_id"])}">See fallback &amp; limitation →</a></div>'
         )
         vrs_cell = (
-            f"#{vrs_a['standing']} {esc(vrs_a['team_name'])} ({vrs_a['points']} pts) vs "
-            f"#{vrs_b['standing']} {esc(vrs_b['team_name'])} ({vrs_b['points']} pts)"
+            f"{_vrs_ref(vrs_a)} vs {_vrs_ref(vrs_b)}"
             f"<div class='mini'>HLTV #{hltv.get('hltv_rank_a', '—')} vs #{hltv.get('hltv_rank_b', '—')} · "
-            f"VRS p(A)={r['vrs_model']['prob_a']*100:.1f}%</div>"
+            f"VRS p(A)={_pct(r['vrs_model']['prob_a'])}</div>"
         )
         cards_html.append(f"""
 <article class="pcard" id="card-{esc(r['fixture_id'])}">
@@ -1198,11 +1244,11 @@ def render_index(board: dict[str, Any], audit: dict[str, Any]) -> str:
     </div>
     <div style="text-align:right">
       <div class="pk-prob">{pick_prob_pct}</div>
-      <div class="mini">Fair: {res['fair_odds_a']:.2f} / {res['fair_odds_b']:.2f}</div>
+      <div class="mini">Fair: {_fair(res['fair_odds_a'])} / {_fair(res['fair_odds_b'])}</div>
     </div>
   </div>
   <div>{_tier_badge(res['tier_code'], res['tier_label'])}</div>
-  <div class="mini"><strong>{esc(r['team_a'])}:</strong> {prob_a_pct} ({res['fair_odds_a']:.2f}) · <strong>{esc(r['team_b'])}:</strong> {prob_b_pct} ({res['fair_odds_b']:.2f})</div>
+  <div class="mini"><strong>{esc(r['team_a'])}:</strong> {prob_a_pct} ({_fair(res['fair_odds_a'])}) · <strong>{esc(r['team_b'])}:</strong> {prob_b_pct} ({_fair(res['fair_odds_b'])})</div>
   <div class="mini">{esc( vrs_cell.split('<div')[0] )} · HLTV #{hltv.get('hltv_rank_a')} vs #{hltv.get('hltv_rank_b')}</div>
   <div class="src-pills">{_links_html(r['source_links'])}</div>
 </article>""")
@@ -1211,7 +1257,7 @@ def render_index(board: dict[str, Any], audit: dict[str, Any]) -> str:
 <tr id="row-{esc(r['fixture_id'])}">
   <td>{esc(r['start_utc'].replace('T', ' ').replace('Z', ' UTC'))}<div class="mini">#{esc(r['fixture_id'])} · {esc(r['competition'])} ({esc(r['format'])})</div></td>
   <td><strong>{esc(r['team_a'])}</strong> vs <strong>{esc(r['team_b'])}</strong></td>
-  <td><strong style="color:#4ade80">{esc(res['pick'])} ({pick_prob_pct})</strong><div class="mini">{prob_a_pct} / {prob_b_pct} · Fair {res['fair_odds_a']:.2f} / {res['fair_odds_b']:.2f}</div></td>
+  <td><strong style="color:#4ade80">{esc(res['pick'])} ({pick_prob_pct})</strong><div class="mini">{prob_a_pct} / {prob_b_pct} · Fair {_fair(res['fair_odds_a'])} / {_fair(res['fair_odds_b'])}</div></td>
   <td>{_tier_badge(res['tier_code'], res['tier_label'])}<div class="mini">{esc(res['method'])}</div></td>
   <td>{strict_cell}</td>
   <td>{vrs_cell}</td>
@@ -1299,15 +1345,18 @@ def render_unresolved(board: dict[str, Any], audit: dict[str, Any]) -> str:
             if r["elo_model"]["prob_a"] is not None
             else "—"
         )
+        prob_a_pct = _pct(res['prob_a'])
+        prob_b_pct = _pct(res['prob_b'])
+        pick_prob_pct = _pct(res['pick_prob'])
         tr_html.append(f"""
 <tr id="u-{esc(r['fixture_id'])}">
   <td><strong>{esc(r['team_a'])} vs {esc(r['team_b'])}</strong><div class="mini">#{esc(r['fixture_id'])} · {esc(r['start_utc'].replace('T', ' ').replace('Z', ' UTC'))}<br>{esc(r['competition'])} ({esc(r['format'])})</div></td>
   <td><span class="blank">— (Blank · Unverified under strict primary-bookmaker rule)</span></td>
-  <td><strong style="color:#4ade80">{esc(res['pick'])} ({res['pick_prob']*100:.1f}%)</strong><div class="mini">{res['prob_a']*100:.1f}% / {res['prob_b']*100:.1f}% · Fair {res['fair_odds_a']:.2f} / {res['fair_odds_b']:.2f}</div><div>{_tier_badge(res['tier_code'], res['tier_label'])}</div></td>
+  <td><strong style="color:#4ade80">{esc(res['pick'])} ({pick_prob_pct})</strong><div class="mini">{prob_a_pct} / {prob_b_pct} · Fair {_fair(res['fair_odds_a'])} / {_fair(res['fair_odds_b'])}</div><div>{_tier_badge(res['tier_code'], res['tier_label'])}</div></td>
   <td>
     <div><strong>Step 1 (HLTV):</strong> HLTV #{hltv.get('hltv_rank_a')} vs #{hltv.get('hltv_rank_b')}. {esc(hltv.get('roster_verification') or hltv.get('notes') or '')}</div>
     <div style="margin-top:4px"><strong>Step 2 (Esportsbooks/Exchange):</strong> {esc(', '.join(f"{q.get('book')}: {q.get('odds_a')}/{q.get('odds_b')}" for q in r['quotes']) if r['quotes'] else 'No two-sided bookmaker/exchange market open yet.')}</div>
-    <div style="margin-top:4px"><strong>Step 3 (Official Valve VRS / Elo):</strong> VRS #{vrs_a['standing']} ({vrs_a['points']} pts) vs #{vrs_b['standing']} ({vrs_b['points']} pts) → VRS {r['vrs_model']['prob_a']*100:.1f}% / {r['vrs_model']['prob_b']*100:.1f}% · Elo {elo_str}</div>
+    <div style="margin-top:4px"><strong>Step 3 (Official Valve VRS / Elo):</strong> {_vrs_ref(vrs_a)} vs {_vrs_ref(vrs_b)} → VRS {_pct(r['vrs_model']['prob_a'])} / {_pct(r['vrs_model']['prob_b'])} · Elo {elo_str}</div>
   </td>
   <td>{esc(res['limitation'])}</td>
   <td><div class="src-pills">{_links_html(r['source_links'])}</div></td>
@@ -1430,18 +1479,18 @@ def render_flagged(board: dict[str, Any], audit: dict[str, Any]) -> str:
     team_rows = []
     for tname, info in sorted(seen_teams.items(), key=lambda kv: (kv[1]["vrs"]["standing"] if kv[1]["vrs"] else 999)):
         v = info["vrs"]
-        links = [
-            {"label": f"Valve VRS #{v['standing']}", "url": v["details_url"]},
-            {"label": "HLTV Team", "url": info["hltv_url"] or HLTV_ANALYTICS_INDEX_URL},
-            {"label": "HLTV Match", "url": info["fixture_url"]},
-        ]
+        links = []
+        if v and v.get("details_url"):
+            links.append({"label": f"Valve VRS #{v['standing']}", "url": v["details_url"]})
+        links.append({"label": "HLTV Team", "url": info["hltv_url"] or HLTV_ANALYTICS_INDEX_URL})
+        links.append({"label": "HLTV Match", "url": info["fixture_url"]})
         team_rows.append(f"""
 <tr>
   <td><strong>{esc(tname)}</strong></td>
-  <td><strong>#{esc(v['standing'])} {esc(v['team_name'])}</strong> ({esc(v['points'])} pts)</td>
+  <td><strong>{esc(_vrs_ref(v))}</strong></td>
   <td>#{esc(info['hltv_rank'] or '—')}</td>
-  <td><code>{esc(', '.join(v.get('roster') or []))}</code></td>
-  <td>{esc(v.get('verification_basis'))}</td>
+  <td><code>{esc(', '.join((v or {}).get('roster') or []) or '—')}</code></td>
+  <td>{esc((v or {}).get('verification_basis'))}</td>
   <td><div class="src-pills">{_links_html(links)}</div></td>
 </tr>""")
 

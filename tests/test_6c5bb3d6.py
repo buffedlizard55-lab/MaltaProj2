@@ -153,26 +153,69 @@ class PublishedBoardArithmetic(unittest.TestCase):
                 best = r["team_a"] if pa >= pb else r["team_b"]
                 self.assertEqual(st["safe_pick"], best, fid)
         self.assertGreater(priced, 0, "no priced rows to audit")
-        c2 = next(c for c in load(VERIF)["checks"] if c["id"] == "C2")
-        self.assertEqual(sorted(c2.get("blank_rows") or []),
+
+        # Recompute the audit's own C2 against the board as it stands now, with the audit's own
+        # harness. This is the live invariant: the numbers must satisfy it whatever the board's
+        # generation is. (The committed snapshot is compared separately, and any disagreement has
+        # to be disclosed by board stamp - never silently ignored.)
+        harness = load_harness()
+        checks, irregularities = [], []
+        harness.c2_normalization(self.board, checks, irregularities)
+        live = checks[0]
+        self.assertEqual(live["failures"], [], f"live C2 recomputation failed: {live['failures']}")
+        self.assertEqual(sorted(live["blank_rows"]),
                          sorted(r["fixture_id"] for r in self.board["rows"] if r["prob_a"] is None))
 
+        c2 = next(c for c in load(VERIF)["checks"] if c["id"] == "C2")
+        if sorted(c2.get("blank_rows") or []) != sorted(live["blank_rows"]):
+            # The published snapshot audited an earlier board generation. That is allowed only when
+            # the snapshot names the generation it audited and the current board is newer.
+            audited = (load(VERIF).get("verified_board") or {}).get("generated_utc")
+            self.assertTrue(audited, "snapshot disagrees with the live board but records no board stamp")
+            self.assertNotEqual(audited, self.board.get("generated_utc"),
+                               "snapshot disagrees with a board it claims to have audited")
+        else:
+            self.assertEqual(sorted(c2.get("blank_rows") or []), sorted(live["blank_rows"]))
+
     def test_c3_rederived_every_row_from_raw_quotes(self):
-        """Every row is either re-derived from a retained quote or published as not re-derivable."""
-        c3 = next(c for c in self.v["checks"] if c["id"] == "C3")
-        priced = [row for row in c3["per_row"] if row["quotes"]]
-        unjoined = set(c3.get("unjoined_rows") or [])
-        blank = set(c3.get("blank_rows") or [])
+        """Every row is either re-derived from a retained quote or published as not re-derivable.
+
+        Run twice: once over the committed snapshot (its own retained quotes must re-derive, and any
+        row it could not join must be published as an irregularity) and once live with the audit's
+        own harness against the current board (which must be fully accounted for)."""
+        harness = load_harness()
+        checks, irregularities = [], []
+        harness.c3_quote_rederivation(self.board, harness.collect_quotes(), checks, irregularities)
+        live = checks[0]
+        self.assertEqual(live["rows_failed"], 0, f"live C3 recomputation failed: {live['failures']}")
+        priced = [row for row in live["per_row"] if row["quotes"]]
+        unjoined = set(live.get("unjoined_rows") or [])
+        blank = set(live.get("blank_rows") or [])
         self.assertEqual(len(priced) + len(unjoined) + len(blank), len(self.board["rows"]),
-                         "some rows were neither re-derived, disclosed as unjoined, nor blank")
+                         "some current row was neither re-derived, disclosed as unjoined, nor blank")
         self.assertFalse(unjoined & blank)
         if unjoined:
-            flagged = json.dumps(self.v["irregularities"])
+            flagged = json.dumps(irregularities)
             self.assertIn("IR-C3", flagged)
             for fid in unjoined:
                 self.assertIn(fid, flagged)
+
+        c3 = next(c for c in self.v["checks"] if c["id"] == "C3")
+        snap_priced = [row for row in c3["per_row"] if row["quotes"]]
+        snap_unjoined = set(c3.get("unjoined_rows") or [])
+        snap_blank = set(c3.get("blank_rows") or [])
         if c3["rows_failed"]:
             self.assertIn("IR-C3", json.dumps(self.v["irregularities"]))
+        if (len(snap_priced) + len(snap_unjoined) + len(snap_blank)) != len(self.board["rows"]) \
+                or snap_unjoined != unjoined:
+            # Stale snapshot: it must say which board generation it audited.
+            audited = (self.v.get("verified_board") or {}).get("generated_utc")
+            self.assertTrue(audited, "snapshot covers a different board but records no board stamp")
+            self.assertNotEqual(audited, self.board.get("generated_utc"),
+                               "snapshot covers a different row set while claiming this generation")
+            c3 = live       # the live recomputation is the one that must be self-consistent below
+            priced = [row for row in c3["per_row"] if row["quotes"]]
+        self.assertFalse(snap_unjoined & snap_blank)
         for row in priced:
             for q in row["quotes"]:
                 ia, ib = 1.0 / q["decimal_a"], 1.0 / q["decimal_b"]

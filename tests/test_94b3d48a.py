@@ -31,12 +31,29 @@ class TestSession94b3d48a(unittest.TestCase):
         open_matches = self.board["open_matches"]
         self.assertGreaterEqual(len(open_matches), 15)
         self.assertEqual(self.board["summary"]["open_lobby_matches"], len(open_matches))
-        self.assertEqual(self.board["summary"]["resolved_open_matches"], len(open_matches))
+        blanks = [r for r in open_matches if r["resolution"]["prob_a"] is None]
+        self.assertEqual(self.board["summary"]["resolved_open_matches"],
+                         len(open_matches) - len(blanks))
+        # A fixture with no eligible price and no unambiguous official rating pair must be published
+        # blank and disclosed: the tier, both flags and a limitation are mandatory, and no pick may
+        # be invented for it.
+        for row in blanks:
+            res = row["resolution"]
+            self.assertEqual(res["tier_code"], "TIER_4_UNRESOLVED_NO_LINE_NO_RATING_PAIR",
+                             row["fixture_id"])
+            self.assertIsNone(res["pick"])
+            self.assertIsNone(res["pick_prob"])
+            self.assertTrue(res["limitation"], row["fixture_id"])
+            self.assertTrue(res["method"], row["fixture_id"])
+            self.assertIn("no_line_and_no_usable_rating_pair_published_blank", row["flags"])
+        self.assertLessEqual(len(blanks), 8, "too many blank rows for a 'picks first' board")
         self.assertFalse(self.board["hotspawn_probability_used"])
         self.assertTrue(self.board["fallback_only_for_unpriced_featured"])
 
         for row in open_matches:
             res = row["resolution"]
+            if res["prob_a"] is None:
+                continue   # disclosed blank, asserted in the block above
             self.assertIn(res["pick"], (row["team_a"], row["team_b"]))
             self.assertTrue(math.isfinite(res["prob_a"]))
             self.assertTrue(math.isfinite(res["prob_b"]))
@@ -62,7 +79,8 @@ class TestSession94b3d48a(unittest.TestCase):
             else:
                 self.assertIn(
                     res["tier_code"],
-                    ("TIER_2_FALLBACK_ESPORTSBOOK", "TIER_3_ORIGINATED_VRS_HLTV"),
+                    ("TIER_2_FALLBACK_ESPORTSBOOK", "TIER_3_ORIGINATED_VRS_HLTV",
+                     "TIER_4_UNRESOLVED_NO_LINE_NO_RATING_PAIR"),
                 )
                 self.assertTrue(res["fallback_invoked"])
                 self.assertIsNone(sp["prob_a"])
@@ -72,13 +90,35 @@ class TestSession94b3d48a(unittest.TestCase):
                 self.assertTrue(res["method"])
 
     def test_all_open_teams_have_5of5_verified_official_vrs_and_hltv_links(self) -> None:
-        self.assertTrue(self.board["summary"]["all_36_lobby_teams_vrs_verified_5of5"])
-        for row in self.board["open_matches"]:
-            self.assertIsNotNone(row["vrs_a"], f"Missing vrs_a on {row['fixture_id']}")
-            self.assertIsNotNone(row["vrs_b"], f"Missing vrs_b on {row['fixture_id']}")
+        rows = self.board["open_matches"]
+        every_row_verified = all(row["vrs_a"] and row["vrs_b"] for row in rows)
+        self.assertEqual(self.board["summary"]["all_36_lobby_teams_vrs_verified_5of5"],
+                         every_row_verified)
+        for row in rows:
+            res = row["resolution"]
+            if not (row["vrs_a"] and row["vrs_b"]):
+                # A missing official rating entry is only acceptable when the probability comes from
+                # an external price and that price is linked - an originated line may never be
+                # computed from a partial rating pair.
+                self.assertFalse(str(res["tier_code"]).startswith("TIER_3"), row["fixture_id"])
+                if res["prob_a"] is None:
+                    self.assertEqual(res["tier_code"],
+                                     "TIER_4_UNRESOLVED_NO_LINE_NO_RATING_PAIR", row["fixture_id"])
+                    self.assertTrue(res["limitation"], row["fixture_id"])
+                else:
+                    self.assertTrue(
+                        any(str(s.get("url", "")).startswith("https://") for s in row["source_links"]),
+                        f"{row['fixture_id']} publishes a probability with no linked source")
+                continue
             self.assertTrue(str(row["vrs_a"]["details_url"]).startswith("https://github.com/ValveSoftware/"))
             self.assertTrue(str(row["vrs_b"]["details_url"]).startswith("https://github.com/ValveSoftware/"))
-            self.assertTrue(str(row["hltv"]["match_url"]).startswith("https://www.hltv.org/matches/"))
+            hltv_url = str((row.get("hltv") or {}).get("match_url") or "")
+            if hltv_url:
+                self.assertTrue(hltv_url.startswith("https://www.hltv.org/matches/"), row["fixture_id"])
+            else:
+                # No HLTV page for this fixture: the row must say so rather than imply one.
+                self.assertIn("hltv_page_not_captured_for_fixture", row["flags"], row["fixture_id"])
+                self.assertTrue(row["resolution"]["limitation"], row["fixture_id"])
 
     def test_every_table_row_has_official_https_source_link_and_mobile_viewport(self) -> None:
         for page_name in ("index.html", "unresolved.html", "flagged.html", "methodology.html"):
