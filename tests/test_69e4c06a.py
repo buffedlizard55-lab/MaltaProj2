@@ -221,7 +221,7 @@ class CanonicalGapAdmission(unittest.TestCase):
     def test_existing_accepted_market_estimates_remain_identical(self):
         inputs = copy.deepcopy(self.snapshot)
         inputs['quotes'] = [q for q in inputs['quotes'] if not q.get('fallback_only')]
-        primary = self.B.ENGINE.build_board(inputs, {}, {}, {})
+        primary = self.B.build_board(inputs, 'test')
         changed = {r['fixture_id']: r for r in self.board['open']}
         for old in primary['open']:
             if old['market']:

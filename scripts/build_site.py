@@ -498,7 +498,7 @@ Quotes expire after four hours or at pick lock. Source failures preserve invento
 <details class="archive"><summary>Historical research and independent audits</summary>
 <p>Alternate boards have different captures and assumptions; they are not interchangeable current pick lists.
 Do not add their counts together or use an older estimate to fill a current blank.</p>
-<p><a href="research.html">Research archive</a> · <a href="audits/3faf40e8/index.html">Source integrity audit</a> ·
+<p><a href="research.html">Research archive</a> · <a href="audits/5468b0ba/index.html">Latest Day 1–3 &amp; Every-Match Verification (5468b0ba)</a> · <a href="audits/3faf40e8/index.html">Source integrity audit</a> ·
 <a href="audits/94b3d48a/index.html">Independent roster research (dated)</a> ·
 <a href="summary/gaps.html">Cross-board disagreements</a></p>
 <p>Alternate snapshots: <a href="board/picks.html">Expanded board</a> ·
@@ -956,7 +956,8 @@ Unpriced games stay blank. Archived model/pickem/audit sections retain their own
 their own snapshots, source policies and model assumptions. They do not supply a number to the current CS2 or
 Probabilities tables.</div>
 <div class="archive-grid">
-  <article class="card"><h2>Independent verification</h2><p><a href="verify/8e7a652d/index.html">Market verification &amp; cross-check</a><br>
+  <article class="card"><h2>Independent verification</h2><p><a href="audits/5468b0ba/index.html">TWC Day 1–3 &amp; Every-Match Verification (5468b0ba)</a><br>
+  <a href="verify/8e7a652d/index.html">Market verification &amp; cross-check</a><br>
   <a href="verify/0f71ea59/index.html">Line-by-line verification report</a><br>
   <a href="verify/7cd2e67a/index.html">Board re-verification (7cd2e67a)</a><br>
   <a href="audits/d4ec32a9/REPORT.md">Current-pipeline audit</a></p></article>

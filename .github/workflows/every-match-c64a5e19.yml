@@ -6,7 +6,7 @@ name: every-match picks (c64a5e19)
 
 on:
   push:
-    branches: ['main', 'arena/3faf40e8-maltaproj2', 'arena/778756a1-maltaproj2', 'arena/69e4c06a-maltaproj2']
+    branches: ['main', 'arena/3faf40e8-maltaproj2', 'arena/778756a1-maltaproj2', 'arena/69e4c06a-maltaproj2', 'arena/5468b0ba-maltaproj2']
     paths:
       - 'scripts/c64a5e19/**'
       - 'scripts/69e4c06a/**'
@@ -20,6 +20,9 @@ on:
       - '.github/workflows/every-match-c64a5e19.yml'
   schedule:
     - cron: '12 */4 * * *'
+  workflow_run:
+    workflows: ['update-data', 'ourline (f7279a54)']
+    types: [completed]
   workflow_dispatch:
 
 permissions:
@@ -42,19 +45,53 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Check workflow_run cadence gate (refresh if >= 3.5h since last c64a5e19 capture)
+        id: gate
+        run: |
+          python3 - <<'PY'
+          import datetime as dt, json, os, pathlib
+          ev = os.environ.get('GITHUB_EVENT_NAME', '')
+          run_it = True
+          if ev == 'workflow_run':
+              p = pathlib.Path('data/c64a5e19/snapshot.json')
+              if p.exists():
+                  ts = json.loads(p.read_text()).get('collected_to_utc', '')
+                  if ts:
+                      age = (dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(ts.replace('Z', '+00:00'))).total_seconds()
+                      run_it = age >= 12600
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+              fh.write(f"should_run={'true' if run_it else 'false'}\n")
+          print(f"event={ev} should_run={run_it}")
+          PY
       - name: Collect public lobby, external prices and official Valve ratings
+        if: steps.gate.outputs.should_run == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 scripts/c64a5e19/collect.py
       - name: Build every-match board (re-derives every number from the snapshot)
+        if: steps.gate.outputs.should_run == 'true'
         run: |
           python3 scripts/c64a5e19/build.py
           python3 scripts/69e4c06a/build.py
+          python3 scripts/5468b0ba/build_audit.py
       - name: Install verification dependencies
+        if: steps.gate.outputs.should_run == 'true'
         run: pip install -r scripts/requirements.txt
       - name: Tests
-        run: python3 -m unittest tests.test_c64a5e19 tests.test_479ef53e tests.test_dc741cc1 tests.test_3faf40e8 tests.test_69e4c06a -v
+        if: steps.gate.outputs.should_run == 'true'
+        run: |
+          python3 - <<'PY'
+          import subprocess, sys
+          r = subprocess.run([sys.executable, '-m', 'unittest', 'tests.test_c64a5e19', 'tests.test_479ef53e', 'tests.test_dc741cc1', 'tests.test_3faf40e8', 'tests.test_69e4c06a', 'tests.test_5468b0ba', '-v'], capture_output=True, text=True)
+          print(r.stdout)
+          print(r.stderr, file=sys.stderr)
+          if r.returncode != 0:
+              msg = (r.stderr or r.stdout)[-1800:].replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+              print(f"::error title=test_failure::{msg}")
+              sys.exit(r.returncode)
+          PY
       - name: Commit and push (rebase before every push)
+        if: steps.gate.outputs.should_run == 'true'
         env:
           REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
           GH_TOKEN: ${{ github.token }}
@@ -63,7 +100,7 @@ jobs:
           set -euo pipefail
           git config user.name "every-match-bot (c64a5e19)"
           git config user.email "malta-data-bot@users.noreply.github.com"
-          git add data/c64a5e19 picks-every-match data/69e4c06a/day3.json twc-2026
+          git add data/c64a5e19 picks-every-match data/69e4c06a/day3.json twc-2026 data/5468b0ba/audit.json audits/5468b0ba/index.html
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -m "every-match(c64a5e19): refresh picks $(date -u +%Y-%m-%dT%H:%MZ)"
           for attempt in 1 2 3 4 5; do
