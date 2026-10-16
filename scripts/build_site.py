@@ -73,6 +73,8 @@ def pct(value):
 # available from Research archive rather than crowding every mobile header.
 NAV = [
     ("index.html", "Home"),
+    # 'hub' entry added by session 7c2622db (mobile pick'em hub); additive single entry.
+    ("hub/index.html", "Pick'em hub (every match)"),
     ("picks-every-match/index.html", "All CS2 picks"),
     ("picks-every-match/unresolved.html", "Unresolved"),
     ("day-one.html", "Day-one review"),
@@ -139,6 +141,19 @@ def executive_summary_html():
         if gap_rows else '<p>No unresolved rows in the available strict snapshot; this is not a guarantee of global coverage.</p>'
     )
     stamp_map = [
+        # 7c2622db integration (additive): the mobile pick'em hub. It publishes a pick and both
+        # win probabilities for every fixture in its own dated lobby capture, plus the TWC 2026
+        # day-1/2 review and day-3 desk, and its own unresolved/flagged/verification sections.
+        ("hub/index.html", "Every-match hub &amp; TWC day-3 desk (mobile)",
+         "Pick + both win probabilities for every open match in its dated capture, with the crowd "
+         "share shown as ownership only; separate Unresolved picks &amp; limitations section.",
+         _board_stamp("data/7c2622db/hub.json", "generated_utc")),
+        ("hub/twc.html", "Day 1 &amp; day 2 review → day 3 desk",
+         "Every result and line with its own source link, the dated Aurora roster timeline "
+         "(premise could not be verified) and the day-3 safe + leaderboard picks.",
+         None),
+        ("hub/unresolved.html", "Hub: unresolved picks &amp; limitations",
+         "The blank rows, what was tried for each and why no line is published.", None),
         # 4cf64ea3 integration (additive): the TWC day-2 review -> day-3 picks desk. Its own
         # executive summary links every updated picks list on the site, so one row here is enough.
         ("day3/index.html", "TWC day-3 picks &amp; day-1/2 review (4cf64ea3)",
@@ -431,6 +446,7 @@ source times and limitations. All matches in the captured HotSpawn lobby are ret
 including low-tier matches. <strong>Unsupported probabilities stay blank, not 50/50.</strong></p>
 <div class="actions">
 <a class="btn btn-primary" href="picks-every-match/index.html">Open all CS2 picks →</a>
+<a class="btn ghost" href="hub/index.html">Mobile hub: every match + day-3 desk</a>
 <a class="btn ghost" href="picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a>
 <a class="btn ghost" href="twc-2026/index.html">Day 2 → Day 3: results &amp; leaderboard risk</a>
 </div>
@@ -461,6 +477,7 @@ calculations, not officially verified win chances. <strong>HotSpawn crowd picks 
 </div>
 </section>
 <div class="pick-boards-grid" id="where-the-picks">
+<a class="board-card" href="hub/index.html"><div class="board-card-title">Every-match hub &amp; TWC day-3 desk</div><div class="board-card-desc">Mobile front door (session 7c2622db): one card per open match with pick, both probabilities and the crowd share as ownership only, plus the day-1/2 review, its own unresolved &amp; limitations section, flags and verification.</div></a>
 <a class="board-card board-card-primary" href="picks-every-match/picks.html"><div class="board-card-title">Match picks &amp; probabilities</div><div class="board-card-desc">Both teams, clear pick, market/model label and source evidence. Search by team or tournament.</div></a>
 <a class="board-card" href="picks-every-match/inventory.html"><div class="board-card-title">Full lobby inventory</div><div class="board-card-desc">Every retained CS2 fixture, including locked/past rows. Coverage refers to the captured lobby, not unseen additions.</div></a>
 <a class="board-card" href="twc-2026/index.html"><div class="board-card-title">Day 2 → Day 3: a credible upset, not blind underdogs</div><div class="board-card-desc">All eight TWC results, primary-confirmed July signings, a canonical day-three decision sheet and explicit expected-points tradeoffs. No invented rest penalty.</div></a>

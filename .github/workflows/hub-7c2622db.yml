@@ -1,0 +1,78 @@
+name: pick'em hub (7c2622db)
+
+# Refreshes the mobile pick'em hub (hub/) with no manual input: every open HotSpawn CS2 match
+# plus the TWC 2026 day-3 desk. Four-hourly cron keeps inside the 4-8 hour refresh policy.
+# Scope guard: this session writes only hub/ and data/7c2622db/ and never edits another
+# session's files. Every push rebases first; the Pages workflow is dispatched afterwards.
+
+on:
+  push:
+    branches: ['main', 'arena/7c2622db-maltaproj2']
+    paths:
+      - 'scripts/7c2622db/**'
+      - 'tests/test_7c2622db.py'
+      - 'data/7c2622db/research.json'
+      - 'data/7c2622db/coverage.json'
+      - 'data/7c2622db/exchange_markets.json'
+      - '.github/workflows/hub-7c2622db.yml'
+  schedule:
+    - cron: '41 */4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: hub-7c2622db-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install collector dependencies
+        run: pip install -r scripts/requirements.txt
+      - name: Collect the lobby, external bookmaker prices and live exchange books
+        run: |
+          python3 scripts/7c2622db/collect.py || echo "collector reported a source failure; building from the last committed capture"
+      - name: Build the hub (every number re-derived from the capture)
+        run: python3 scripts/7c2622db/build.py
+      - name: Verify every published number independently
+        run: python3 scripts/7c2622db/verify.py
+      - name: Tests
+        run: python3 -m unittest tests.test_7c2622db -v
+      - name: Commit and push (rebase before every push)
+        if: github.ref_name == 'main' || github.ref_name == 'arena/7c2622db-maltaproj2'
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config user.name "pickem-hub-bot (7c2622db)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add hub
+          for extra in hub.json verification.json snapshot.json lobby_state.json exchange.json \
+                       ownership.json coverage.json exchange_readings.json research.json \
+                       lobby_capture_manual.json exchange_markets.json; do
+            if [ -f "data/7c2622db/$extra" ]; then git add "data/7c2622db/$extra"; fi
+          done
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "hub(7c2622db): refresh picks $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then
+              if [ "$REF_NAME" = "main" ]; then gh workflow run pages.yml --ref main || echo "pages dispatch failed"; fi
+              exit 0
+            fi
+            sleep $((attempt * 7))
+          done
+          exit 1

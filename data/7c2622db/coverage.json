@@ -1,0 +1,63 @@
+{
+  "session": "7c2622db",
+  "policy": "Zero-blank coverage ladder. A row is published with a pick only when a source proves the price or the rating pair. HotSpawn supplies fixtures, listed points and crowd ownership only, never a probability. Nothing is inferred: a row without a defensible line stays blank and is published in the Unresolved section with every attempt.",
+  "alias_rules": [
+    {
+      "fixture_side": "WROTBERRY",
+      "canonical_team": "WBT",
+      "source_sides": ["WBT", "WhiteBIT Team", "WhiteBIT", "WBT Esports"],
+      "decision": "accepted",
+      "why": "HotSpawn lists a community name; the bookmaker lists the organisation name. Four independent sources tie them to one roster and one fixture.",
+      "evidence": [
+        {"label": "HLTV team 13683 publishes the URL slug 'wrotberry' with the displayed name WBT and the lineup Psycho, Smash, s4ltovsk1yy, DemQQ, tyr1k", "url": "https://www.hltv.org/team/13683/wrotberry", "read_utc": "2026-10-16T04:27:00Z"},
+        {"label": "Liquipedia DraculaN Season 7 lists the same lineup as WhiteBIT Team and links match 2399592 WBT vs Nexus", "url": "https://liquipedia.net/counterstrike/DraculaN/Season_7", "read_utc": "2026-10-16T04:27:00Z"},
+        {"label": "Official Valve VRS 2026-10-05 lists WBT at #60 (1201 points) with that exact roster", "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md", "read_utc": "2026-10-16T04:28:00Z"},
+        {"label": "Melbet prices 'WhiteBIT Team' against 'Nexus Gaming' for 2026-10-19T09:00:00Z in 'CS 2. DraculaN' - the same pair, league and start as this fixture, in reverse order", "url": "https://melbet.com/en/line/esports", "read_utc": "2026-10-16T04:30:00Z"}
+      ],
+      "residual_limitation": "The join rests on a reviewed alias chain, not on one source publishing both names. If the alias is wrong the row must be corrected; it is listed on the Flagged page."
+    },
+    {
+      "fixture_side": "BetBoom",
+      "canonical_team": "BETBOOM",
+      "source_sides": ["BB Team", "BetBoom Team", "BetBoom"],
+      "decision": "accepted",
+      "why": "The bookmaker abbreviates the organisation to its initials. Pair, competition and kickoff are identical.",
+      "evidence": [
+        {"label": "Melbet event 761935756 prices 'BB Team' vs 'Legacy' in league 'CS 2. TP World Championship' with start 2026-10-16T17:00:00Z", "url": "https://melbet.com/en/line/esports", "read_utc": "2026-10-15T23:40:37Z"},
+        {"label": "Liquipedia lists the Group B decider BetBoom vs Legacy on 2026-10-16 19:00 CEST (17:00Z) and the lobby capture lists the same pair at the same instant", "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026", "read_utc": "2026-10-16T04:25:00Z"}
+      ],
+      "residual_limitation": "Documented abbreviation, not a shared name token. Published on the Flagged page."
+    },
+    {
+      "fixture_side": "ex-RUSTEC",
+      "canonical_team": "ex-RUSTEC",
+      "source_sides": ["ex-RUSTEC", "Ex-Rustec", "ex-RUSTEC (bl1x1)"],
+      "decision": "accepted_for_market_only",
+      "why": "The market side matches the HotSpawn label directly. The rating side is refused separately because the official standings carry two different rows with this name.",
+      "evidence": [
+        {"label": "Polymarket market cs2-rustec-ssins-2026-10-16 names both teams and states the kickoff and HLT V resolution source", "url": "https://polymarket.com/esports/cs2/cct-europe/cs2-rustec-ssins-2026-10-16", "read_utc": "2026-10-16T04:30:00Z"}
+      ],
+      "residual_limitation": "No rating fallback exists for this row: the 2026-10-05 standings contain both #92 (1066) and #152 (824) under 'ex-RUSTEC' with different rosters, so the pair is ambiguous and the model is refused."
+    }
+  ],
+  "declared_rules": {
+    "time_tolerance_minutes": 5,
+    "quote_max_age_hours": 6,
+    "exchange_max_spread": 0.10,
+    "climb_gate": {
+      "description": "Contrarian-but-not-stupid gate for leaderboard picks. All four conditions must hold on the same row and the same capture; the gate can and does select no candidate rather than force a fade.",
+      "G1_price_floor": "The most conservative available market or exchange reading of the underdog must be at least 30%.",
+      "G2_crowd_gap": "Crowd ownership of the underdog must be at least 15 percentage points below that reading, so the pick is genuinely contrarian rather than merely unpopular.",
+      "G3_dated_context": "At least one dated, source-linked fact about the underdog (recent result, head-to-head, roster change, map/veto profile).",
+      "G4_model_sanity": "If a rating-model estimate exists for the match, it must not sit more than 10 percentage points below the market reading of the underdog. This blocks fades that only the crowd disagrees with but both the market and the model reject.",
+      "points_differential": "listed_points * (pick_probability - crowd_ownership_of_that_side), published in listed points only because the lobby never states how its tier and stage multipliers combine."
+    }
+  },
+  "unresolvable_attempt_order": [
+    "HLTV first (per-fixture pages and analytics; automated access is blocked and manual reads are dated)",
+    "esportsbooks (Pinnacle guest API, Bovada, Melbet LineFeed) through the shared collector",
+    "esports exchanges and betting lines (Polymarket CLOB markets, Kalshi KXCS2GAME series, rule-backed only)",
+    "documented originated line from the official Valve regional standings, only when both teams resolve to exactly one non-ambiguous official row",
+    "otherwise blank, with every attempt and its result published"
+  ]
+}
