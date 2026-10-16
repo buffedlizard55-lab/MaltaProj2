@@ -1,0 +1,91 @@
+name: desk (6484426f)
+
+# Mobile CS2 picks desk: every open HotSpawn fixture with a pick and both win probabilities.
+# Runs a full collection -> resolution -> render -> verification -> test cycle every four hours
+# (inside the required 4-8 hour refresh policy) and on demand. Scope guard: this workflow writes
+# only desk/ and data/6484426f/; every other board in the repository is read-only input.
+
+on:
+  push:
+    branches: ['main', 'arena/6484426f-maltaproj2']
+    paths:
+      - 'scripts/6484426f/**'
+      - 'tests/test_6484426f.py'
+      - 'data/6484426f/research.json'
+      - 'data/6484426f/valve/**'
+      - '.github/workflows/desk-6484426f.yml'
+  schedule:
+    - cron: '23 */4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: desk-6484426f-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Collect sources (lobby, bookmakers, exchange, official ratings)
+        run: |
+          python3 scripts/6484426f/collect.py || echo "collector reported a source failure; the resolver keeps the last committed capture and every unsupported row stays blank"
+
+      - name: Resolve a pick for every open fixture
+        run: python3 scripts/6484426f/resolve.py
+
+      - name: Render the desk pages
+        run: python3 scripts/6484426f/build.py
+
+      - name: Re-derive every published number
+        run: python3 scripts/6484426f/verify.py
+
+      - name: Contract tests
+        run: python3 -m unittest tests.test_6484426f -v
+
+      - name: Staged link check (no broken internal links in the whole artifact)
+        run: python3 scripts/stage_site.py
+
+      - name: Commit and push (rebase before every push)
+        if: github.ref_name == 'main' || github.ref_name == 'arena/6484426f-maltaproj2'
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "picks-desk-bot (6484426f)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add desk
+          for extra in board.json history.json verification.json research.json access_log.json; do
+            [ -f "data/6484426f/$extra" ] && git add "data/6484426f/$extra" || true
+          done
+          if [ -d data/6484426f/sources ]; then
+            find data/6484426f/sources -type f -size -2M -print0 | xargs -0 -r git add
+          fi
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "desk(6484426f): refresh every-match picks $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then
+              if [ "$REF_NAME" = "main" ]; then gh workflow run pages.yml --ref main || echo "pages dispatch failed"; fi
+              exit 0
+            fi
+            sleep $((attempt * 7))
+          done
+          echo "::error::could not push the refreshed desk"
+          exit 1

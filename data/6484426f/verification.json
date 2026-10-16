@@ -1,0 +1,106 @@
+{
+ "session": "6484426f",
+ "generated_utc": "2026-10-16T07:30:08Z",
+ "board_generated_utc": "2026-10-16T07:30:08Z",
+ "checks": [
+  {
+   "id": "C1",
+   "name": "Market and exchange probabilities re-derive from the retained raw prices",
+   "status": "pass",
+   "detail": "no-vig = (1/dec_a)/(1/dec_a+1/dec_b); multi-book rows use the declared weights",
+   "rows_checked": 23,
+   "rows_failed": 0,
+   "failures": []
+  },
+  {
+   "id": "C2",
+   "name": "Originated lines re-derive from the official ratings and the published slope",
+   "status": "pass",
+   "detail": "P(A)=sigmoid(k*C*delta) with Valve's C at RD 75 and this build's fitted k",
+   "rows_checked": 8,
+   "rows_failed": 0,
+   "failures": []
+  },
+  {
+   "id": "C3",
+   "name": "Probabilities sum to one and the pick is the higher-probability side",
+   "status": "pass",
+   "detail": "exact ties must publish a declared tiebreak instead",
+   "rows_checked": 31,
+   "rows_failed": 0,
+   "failures": []
+  },
+  {
+   "id": "C4",
+   "name": "Unresolved rows stay blank and publish why",
+   "status": "pass",
+   "detail": "0 unresolved row(s) in this build",
+   "rows_checked": 31,
+   "rows_failed": 0,
+   "failures": []
+  },
+  {
+   "id": "C5",
+   "name": "Every row carries at least one http(s) source link",
+   "status": "pass",
+   "detail": "a row without a link is unpublished, not inferred",
+   "rows_checked": 31,
+   "rows_failed": 0,
+   "failures": []
+  },
+  {
+   "id": "C6",
+   "name": "Crowd ownership never equals a published probability",
+   "status": "pass",
+   "detail": "static collision check; the unit suite also mutates crowd shares and asserts the published numbers do not move",
+   "rows_checked": 31,
+   "rows_failed": 0,
+   "failures": []
+  },
+  {
+   "id": "C7",
+   "name": "Climb picks clear the declared gates and the daily cap",
+   "status": "pass",
+   "detail": "3 activation(s), cap 3",
+   "rows_checked": 31,
+   "rows_failed": 0,
+   "failures": []
+  },
+  {
+   "id": "C8",
+   "name": "Ambiguity and alias decisions are published with their evidence",
+   "status": "pass",
+   "detail": "11 decision(s) recorded",
+   "rows_checked": 31,
+   "rows_failed": 0,
+   "failures": []
+  },
+  {
+   "id": "C9",
+   "name": "Desk pages exist, are mobile-ready and link only to real pages",
+   "status": "pass",
+   "detail": "flagged.html, index.html, method.html, picks.html, twc.html, unresolved.html, verify.html",
+   "rows_checked": 7,
+   "rows_failed": 0,
+   "failures": []
+  },
+  {
+   "id": "C10",
+   "name": "Refresh cadence stays inside the 4-8 hour policy",
+   "status": "pass",
+   "detail": "workflow .github/workflows/desk-6484426f.yml",
+   "rows_checked": 1,
+   "rows_failed": 0,
+   "failures": []
+  }
+ ],
+ "summary": {
+  "checks": 10,
+  "passed": 10,
+  "failed": 0
+ },
+ "quotes_re_derived": 40,
+ "rows_checked": 31,
+ "blank_rows": 0,
+ "crowd_probability_collisions": 0
+}

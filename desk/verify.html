@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Verification · CS2 picks desk</title>
+<meta name="description" content="Mobile CS2 pick'em desk: a pick and win probability for every open HotSpawn fixture, with source links.">
+<style>
+:root{color-scheme:light dark;--bg:#f7f8fa;--fg:#14181f;--muted:#5b6472;--card:#fff;--line:#e3e7ee;
+--accent:#0b5fff;--good:#0f7b46;--warn:#a45b00;--bad:#b3261e;--chip:#eef2f9}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1116;--fg:#e8ecf2;--muted:#9aa4b2;--card:#161a21;
+--line:#262c36;--accent:#6ea8ff;--chip:#1d232d}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding-bottom:3rem}
+a{color:var(--accent)}
+header{position:sticky;top:0;background:var(--card);border-bottom:1px solid var(--line);z-index:9}
+.wrap{max-width:60rem;margin:0 auto;padding:0 .75rem}
+header .wrap{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;padding:.55rem .75rem}
+header b{font-size:1rem}
+nav{display:flex;flex-wrap:wrap;gap:.35rem;width:100%}
+nav a{background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:.42rem .7rem;
+font-size:.86rem;text-decoration:none;white-space:nowrap}
+nav a[aria-current="page"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+main{padding-top:.85rem}
+h1{font-size:1.35rem;margin:.4rem 0 .5rem}
+h2{font-size:1.1rem;margin:1.1rem 0 .4rem}
+h3{font-size:1rem;margin:.9rem 0 .3rem}
+p,li{overflow-wrap:anywhere}
+.muted{color:var(--muted);font-size:.88rem}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.5rem,1fr));gap:.5rem;margin:.6rem 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:.7rem;padding:.6rem}
+.kpi b{display:block;font-size:1.4rem;line-height:1.2}
+.cta{display:grid;grid-template-columns:1fr;gap:.5rem;margin:.7rem 0}
+.cta a{display:block;background:var(--card);border:1px solid var(--line);border-left:.35rem solid var(--accent);
+border-radius:.7rem;padding:.75rem .8rem;text-decoration:none;color:var(--fg)}
+.cta a b{display:block;font-size:1.05rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:.8rem;padding:.7rem;margin:.6rem 0}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{text-align:left;vertical-align:top;padding:.45rem .4rem;border-bottom:1px solid var(--line)}
+th{font-size:.78rem;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
+.chip{display:inline-block;background:var(--chip);border:1px solid var(--line);border-radius:999px;
+padding:.1rem .45rem;font-size:.74rem;margin:.1rem .15rem .1rem 0;white-space:nowrap}
+.chip.m{background:#e6f0ff;color:#0b3d91}.chip.e{background:#e8f7ee;color:#0f5c36}
+.chip.o{background:#fff2e0;color:#7a4400}.chip.u{background:#fdecec;color:#8c1d18}
+@media (prefers-color-scheme:dark){.chip.m{background:#12294d;color:#cfe0ff}.chip.e{background:#123526;color:#c8f0d8}
+.chip.o{background:#3a2a10;color:#ffd9a3}.chip.u{background:#3d1a18;color:#ffc9c5}}
+.pick{font-weight:600}
+.bar{height:.62rem;border-radius:999px;background:var(--chip);overflow:hidden;display:flex}
+.bar span{display:block;height:100%}
+.bar .a{background:#0b5fff}.bar .b{background:#8a94a6}
+.pct{font-variant-numeric:tabular-nums}
+.matches{display:grid;grid-template-columns:1fr;gap:.6rem}
+.match{background:var(--card);border:1px solid var(--line);border-radius:.8rem;padding:.65rem}
+.match h3{margin:0 0 .25rem;font-size:1rem;display:flex;justify-content:space-between;gap:.4rem}
+.match .row{display:flex;justify-content:space-between;gap:.5rem;align-items:baseline}
+.match .side{display:flex;justify-content:space-between;gap:.5rem;margin:.18rem 0}
+.match .side b{font-size:.95rem}
+.match .side .num{font-variant-numeric:tabular-nums;color:var(--muted)}
+.match .side.chosen b{color:var(--good)}
+table.cards{display:block}
+table.cards thead{display:none}
+table.cards tbody,table.cards tr,table.cards td{display:block;width:100%}
+table.cards tr{border:1px solid var(--line);border-radius:.8rem;background:var(--card);
+margin:0 0 .6rem;padding:.55rem .6rem}
+table.cards td{border:0;padding:.2rem 0}
+table.cards td::before{content:attr(data-label);display:block;font-size:.72rem;text-transform:uppercase;
+letter-spacing:.03em;color:var(--muted)}
+footer{margin-top:1.4rem;border-top:1px solid var(--line);padding-top:.6rem}
+@media (min-width:48rem){.cta{grid-template-columns:1fr 1fr}.matches{grid-template-columns:1fr 1fr}}
+</style></head>
+<body>
+<header><div class="wrap"><b>CS2 picks desk</b>
+<span class="muted">built 2026-10-16T07:30:08Z</span>
+<nav><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="twc.html">TWC day 3</a><a href="unresolved.html">Unresolved</a><a href="flagged.html">Flagged</a><a href="method.html">Method</a><a href="verify.html" aria-current="page">Verification</a></nav></div></header>
+<main class="wrap">
+<h1>Verification</h1>
+<p class="muted">Every published probability is re-derived from the retained raw prices by
+<code>scripts/6484426f/verify.py</code>, independently of the code that published it. Run
+2026-10-16T07:29:44Z: <b>9</b> passed,
+1 failed.</p>
+<div class="card"><table class="cards"><thead><tr><th>Check</th><th>Result</th><th>Detail</th></tr>
+</thead><tbody><tr><td data-label="Check">C1 — Market and exchange probabilities re-derive from the retained raw prices</td><td data-label="Result"><span class="chip e">pass</span></td><td data-label="Detail">no-vig = (1/dec_a)/(1/dec_a+1/dec_b); multi-book rows use the declared weights</td></tr><tr><td data-label="Check">C2 — Originated lines re-derive from the official ratings and the published slope</td><td data-label="Result"><span class="chip e">pass</span></td><td data-label="Detail">P(A)=sigmoid(k*C*delta) with Valve&#x27;s C at RD 75 and this build&#x27;s fitted k</td></tr><tr><td data-label="Check">C3 — Probabilities sum to one and the pick is the higher-probability side</td><td data-label="Result"><span class="chip e">pass</span></td><td data-label="Detail">exact ties must publish a declared tiebreak instead</td></tr><tr><td data-label="Check">C4 — Unresolved rows stay blank and publish why</td><td data-label="Result"><span class="chip e">pass</span></td><td data-label="Detail">0 unresolved row(s) in this build</td></tr><tr><td data-label="Check">C5 — Every row carries at least one http(s) source link</td><td data-label="Result"><span class="chip e">pass</span></td><td data-label="Detail">a row without a link is unpublished, not inferred</td></tr><tr><td data-label="Check">C6 — Crowd ownership never equals a published probability</td><td data-label="Result"><span class="chip e">pass</span></td><td data-label="Detail">static collision check; the unit suite also mutates crowd shares and asserts the published numbers do not move</td></tr><tr><td data-label="Check">C7 — Climb picks clear the declared gates and the daily cap</td><td data-label="Result"><span class="chip e">pass</span></td><td data-label="Detail">3 activation(s), cap 3</td></tr><tr><td data-label="Check">C8 — Ambiguity and alias decisions are published with their evidence</td><td data-label="Result"><span class="chip e">pass</span></td><td data-label="Detail">11 decision(s) recorded</td></tr><tr><td data-label="Check">C9 — Desk pages exist, are mobile-ready and link only to real pages</td><td data-label="Result"><span class="chip e">pass</span></td><td data-label="Detail">flagged.html, index.html, method.html, picks.html, twc.html, unresolved.html, verify.html</td></tr><tr><td data-label="Check">C10 — Refresh cadence stays inside the 4-8 hour policy</td><td data-label="Result"><span class="chip u">fail</span></td><td data-label="Detail">workflow .github/workflows/desk-6484426f.yml</td></tr></tbody></table></div>
+<h2>Rows checked</h2>
+<p class="muted">Quotes re-derived: 40 ·
+Rows re-checked: 31 ·
+Blanks confirmed blank: 0 ·
+Crowd-equals-probability collisions found: 0</p>
+
+<footer class="muted">Session 6484426f · data: <a href="https://play.hotspawn.com/lobby">HotSpawn lobby</a> (fixtures, points, crowd ownership) ·
+lines: <a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle</a>,
+<a href="https://www.bovada.lv/sports/esports">Bovada</a>,
+<a href="https://melbet.com/en/line/esports">Melbet</a>,
+<a href="https://kalshi.com/markets/kxcs2game">Kalshi</a> ·
+ratings: <a href="https://github.com/ValveSoftware/counter-strike_regional_standings">official Valve standings</a> ·
+crowd % is ownership only and is never used as a probability.</footer></main></body></html>
