@@ -53,7 +53,17 @@ jobs:
       - name: Install verification dependencies
         run: pip install -r scripts/requirements.txt
       - name: Tests
-        run: python3 -m unittest tests.test_c64a5e19 tests.test_479ef53e tests.test_dc741cc1 tests.test_3faf40e8 tests.test_69e4c06a -v
+        run: |
+          python3 - <<'PY'
+          import subprocess, sys
+          r = subprocess.run([sys.executable, '-m', 'unittest', 'tests.test_c64a5e19', 'tests.test_479ef53e', 'tests.test_dc741cc1', 'tests.test_3faf40e8', 'tests.test_69e4c06a', '-v'], capture_output=True, text=True)
+          print(r.stdout)
+          print(r.stderr, file=sys.stderr)
+          if r.returncode != 0:
+              msg = (r.stderr or r.stdout)[-1800:].replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+              print(f"::error title=test_failure::{msg}")
+              sys.exit(r.returncode)
+          PY
       - name: Commit and push (rebase before every push)
         env:
           REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
