@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Methodology &amp; 4h Refresh Pipeline · HotSpawn CS2 Pick'em Audit (98dcfc7e)</title>
+  <style>
+:root {
+  --bg: #0b1020;
+  --panel: #131b33;
+  --panel-alt: #182242;
+  --border: #283663;
+  --text: #eef2ff;
+  --muted: #a5b4fc;
+  --accent: #38bdf8;
+  --good: #34d399;
+  --warn: #fbbf24;
+  --bad: #f87171;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+a { color: var(--accent); text-decoration: underline; word-break: break-word; }
+a:hover { color: #7dd3fc; }
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--accent);
+  color: #061224;
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+}
+.skip-link:focus { left: 0.5rem; top: 0.5rem; z-index: 999; }
+header.site-header {
+  background: #0e162e;
+  border-bottom: 1px solid var(--border);
+  padding: 0.85rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.header-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+.brand {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--text);
+  text-decoration: none;
+}
+nav.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+nav.nav-links a {
+  text-decoration: none;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+nav.nav-links a.active {
+  background: var(--accent);
+  color: #061224;
+  border-color: var(--accent);
+}
+main {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+.hero {
+  background: linear-gradient(145deg, #131b33 0%, #1a274c 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.1rem;
+  margin-bottom: 1.2rem;
+}
+.eyebrow {
+  margin: 0 0 0.3rem 0;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  font-weight: 700;
+}
+h1 { margin: 0 0 0.5rem 0; font-size: 1.45rem; line-height: 1.25; }
+h2 { margin: 1.4rem 0 0.6rem 0; font-size: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+h3 { margin: 1rem 0 0.4rem 0; font-size: 1.02rem; }
+p { margin: 0.45rem 0; }
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.8rem 0;
+}
+.btn {
+  display: inline-block;
+  padding: 0.5rem 0.85rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  background: var(--panel-alt);
+  color: var(--text);
+}
+.btn-primary {
+  background: var(--accent);
+  color: #061224;
+  border-color: var(--accent);
+}
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 0.65rem;
+  margin: 0.9rem 0;
+}
+.kpi-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem;
+}
+.kpi-num {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.kpi-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.45rem;
+  border-radius: 5px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+.badge-good { background: rgba(52, 211, 153, 0.18); color: var(--good); border: 1px solid rgba(52, 211, 153, 0.45); }
+.badge-warn { background: rgba(251, 191, 36, 0.18); color: var(--warn); border: 1px solid rgba(251, 191, 36, 0.45); }
+.badge-bad { background: rgba(248, 113, 113, 0.18); color: var(--bad); border: 1px solid rgba(248, 113, 113, 0.45); }
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin: 0.75rem 0 1.25rem 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.86rem;
+}
+th, td {
+  padding: 0.55rem 0.65rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: var(--panel-alt);
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+tr:last-child td { border-bottom: none; }
+footer.site-footer {
+  max-width: 1240px;
+  margin: 2rem auto 1rem auto;
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+@media (max-width: 760px) {
+  table, thead, tbody, th, td, tr { display: block; width: 100%; }
+  thead { display: none; }
+  tbody tr {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    padding: 0.35rem;
+    background: var(--panel);
+  }
+  tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.65rem;
+    padding: 0.4rem 0.5rem;
+    border-bottom: 1px dashed rgba(165, 180, 252, 0.2);
+  }
+  tbody td:last-child { border-bottom: none; }
+  tbody td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: var(--muted);
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    flex: 0 0 38%;
+  }
+}
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">HotSpawn CS2 Pick'em · Audit 98dcfc7e</a>
+      <nav class="nav-links" aria-label="Audit navigation"><a href="index.html" class="">Executive Summary &amp; All Picks</a><a href="twc.html" class="">TWC Day 1–3 Strategy</a><a href="unresolved.html" class="">Unresolved &amp; Limitations</a><a href="flagged.html" class="">Flagged for Review</a><a href="methodology.html" class="active">Methodology &amp; 4h Refresh</a><a href="../../index.html" class="">Root Landing</a><a href="../../picks-every-match/index.html" class="">Canonical Board</a></nav>
+    </div>
+  </header>
+  <main id="main-content">
+    
+    <section class="hero">
+      <p class="eyebrow">Methodology &amp; Automated Refresh Architecture</p>
+      <h1>HotSpawn Lobby Reverse-Engineering, Proportional No-Vig Math &amp; Valve VRS Calibration</h1>
+      <p>All 40 raw bookmaker/exchange quotes and all 48 official Valve VRS team
+      citations in the canonical snapshot were independently re-derived with <strong>0 quote mismatches</strong>
+      and <strong>0 VRS mismatches</strong>.</p>
+    </section>
+
+    <section id="pipeline">
+      <h2>1. Reverse-Engineering HotSpawn Pick'ems &amp; 4–8 Hour Automated Refresh</h2>
+      <p>The HotSpawn Pick'em lobby (<a href="https://play.hotspawn.com/lobby">play.hotspawn.com/lobby</a>) embeds an Angular SSR transfer-state
+      JSON block (<code>script#ng-state</code>) containing the live <code>/api/v1/fixtures</code> payload (fixture ID, team names,
+      scheduled start and lock timestamps, competition tier/points, and crowd pick share) alongside match permalinks on
+      <code>www.hotspawn.com/matches/...</code>. Scheduled GitHub Actions workflows refresh the board every 4 hours without manual input:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Workflow</th>
+              <th>Schedule (UTC)</th>
+              <th>Pipeline Role</th>
+              <th>Official Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+          <td data-label="Workflow"><code>every-match-c64a5e19.yml</code></td>
+          <td data-label="Schedule (UTC)">Every 4 hours (12 */4 * * *)</td>
+          <td data-label="Pipeline Role">Canonical every-match CS2 collector &amp; builder (`scripts/c64a5e19/collect.py`, `scripts/c64a5e19/build.py`, `scripts/3faf40e8/verify.py`).</td>
+          <td data-label="Official Source"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/every-match-c64a5e19.yml" target="_blank" rel="noopener">GitHub Actions Workflow</a></td>
+        </tr><tr>
+          <td data-label="Workflow"><code>pages.yml</code></td>
+          <td data-label="Schedule (UTC)">Every 4 hours (17 */4 * * *) + push to main</td>
+          <td data-label="Pipeline Role">Re-evaluates source deadlines, runs full `unittest discover -s tests`, stages `out/site`, and deploys GitHub Pages.</td>
+          <td data-label="Official Source"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/pages.yml" target="_blank" rel="noopener">GitHub Actions Workflow</a></td>
+        </tr><tr>
+          <td data-label="Workflow"><code>ourline-f7279a54.yml</code></td>
+          <td data-label="Schedule (UTC)">Every 6 hours (25 */6 * * *)</td>
+          <td data-label="Pipeline Role">Refreshes originated + bookmaker CS2 lines (`data/f7279a54/board.json`, `ourline/`).</td>
+          <td data-label="Official Source"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/ourline-f7279a54.yml" target="_blank" rel="noopener">GitHub Actions Workflow</a></td>
+        </tr><tr>
+          <td data-label="Workflow"><code>verify-6c5bb3d6.yml</code></td>
+          <td data-label="Schedule (UTC)">Every 4 hours (42 */4 * * *)</td>
+          <td data-label="Pipeline Role">Re-fetches official Valve VRS standings and runs 11 independent verification checks (`data/6c5bb3d6/verification.json`).</td>
+          <td data-label="Official Source"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/verify-6c5bb3d6.yml" target="_blank" rel="noopener">GitHub Actions Workflow</a></td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="math">
+      <h2>2. Probability Derivation &amp; Contrarian Leaderboard Math</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Formula / Rule</th>
+              <th>Verification Result</th>
+              <th>Official Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Component"><strong>Proportional No-Vig (Tier A)</strong></td>
+              <td data-label="Formula / Rule"><code>p_A = (1/d_A) / ((1/d_A) + (1/d_B))</code>; multi-book consensus weights Pinnacle <code>2.0</code> and Bovada/Melbet/Kalshi <code>1.0</code>.</td>
+              <td data-label="Verification Result">40 quotes checked, 0 mismatches.</td>
+              <td data-label="Official Source"><a href="https://www.pinnacle.com/en/esports/cs2/matchups/" target="_blank" rel="noopener">Pinnacle CS2</a></td>
+            </tr>
+            <tr>
+              <td data-label="Component"><strong>Valve VRS Logistic Fallback (Tier B)</strong></td>
+              <td data-label="Formula / Rule"><code>p_A = 1 / (1 + exp(-(pts_A - pts_B) / 400.0))</code> using Valve's 05 Oct 2026 global standings when no bookmaker/exchange line exists.</td>
+              <td data-label="Verification Result">48 VRS citations checked, 0 mismatches.</td>
+              <td data-label="Official Source"><a href="https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS (05 Oct 2026)</a></td>
+            </tr>
+            <tr>
+              <td data-label="Component"><strong>HotSpawn Crowd Isolation</strong></td>
+              <td data-label="Formula / Rule">Crowd pick % is used exclusively for leaderboard leverage (<code>leverage = p_true / crowd_share</code>, <code>diff_edge = pts * (p_true - crowd_share)</code>), never as <code>p_true</code>.</td>
+              <td data-label="Verification Result">0 crowd-probability leaks across 31 open matches.</td>
+              <td data-label="Official Source"><a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">HotSpawn Lobby</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    
+  </main>
+  <footer class="site-footer">
+    <p>Session <code>98dcfc7e</code> · Canonical board evaluated at <code>2026-10-16T04:59:15Z</code> ·
+    HotSpawn crowd pick percentages are contest ownership only and are never used as win probabilities.
+    Every row is linked to an official <code>https://</code> source; unverified values remain blank (<code>—</code>).</p>
+  </footer>
+</body>
+</html>
