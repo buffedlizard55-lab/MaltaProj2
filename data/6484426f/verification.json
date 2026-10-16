@@ -1,36 +1,29 @@
 {
  "session": "6484426f",
- "generated_utc": "2026-10-16T07:32:37Z",
- "board_generated_utc": "2026-10-16T07:32:37Z",
+ "generated_utc": "2026-10-16T07:35:50Z",
+ "source_mix": {
+  "pinnacle": 10,
+  "bovada": 11,
+  "melbet": 23,
+  "kalshi": 20
+ },
+ "board_generated_utc": "2026-10-16T07:35:49Z",
  "checks": [
   {
    "id": "C1",
-   "name": "Market and exchange probabilities re-derive from the retained raw prices",
-   "status": "fail",
+   "name": "Market, esportsbook and exchange probabilities re-derive from the retained raw prices",
+   "status": "pass",
    "detail": "no-vig = (1/dec_a)/(1/dec_a+1/dec_b); multi-book rows use the declared weights",
    "rows_checked": 25,
-   "rows_failed": 17,
-   "failures": [
-    "1079586: published 0.511433 != re-derived 0.509596",
-    "1080285: published 0.462766 != re-derived 0.457026",
-    "1079167: published 0.500000 != re-derived 0.474747",
-    "1079630: published 0.645626 != re-derived 0.666108",
-    "1081712: published 0.356011 != re-derived 0.354787",
-    "1080287: published 0.602467 != re-derived 0.601109",
-    "1081498 pinnacle: orientation flag False does not map source order to the fixture order",
-    "1081498: published 0.524841 != re-derived 0.529229",
-    "1079588: published 0.498988 != re-derived 0.495734",
-    "1079631: published 0.736727 != re-derived 0.737215",
-    "1080205: published 0.666104 != re-derived 0.668972",
-    "1081769: published 0.500000 != re-derived 0.511905"
-   ]
+   "rows_failed": 0,
+   "failures": []
   },
   {
    "id": "C2",
    "name": "Originated lines re-derive from the official ratings and the published slope",
    "status": "pass",
    "detail": "P(A)=sigmoid(k*C*delta) with Valve's C at RD 75 and this build's fitted k",
-   "rows_checked": 45,
+   "rows_checked": 6,
    "rows_failed": 0,
    "failures": []
   },
@@ -39,49 +32,34 @@
    "name": "Probabilities sum to one and the pick is the higher-probability side",
    "status": "pass",
    "detail": "exact ties must publish a declared tiebreak instead",
-   "rows_checked": 95,
+   "rows_checked": 31,
    "rows_failed": 0,
    "failures": []
   },
   {
    "id": "C4",
    "name": "Unresolved rows stay blank and publish why",
-   "status": "fail",
-   "detail": "25 unresolved row(s) in this build",
-   "rows_checked": 95,
-   "rows_failed": 25,
-   "failures": [
-    "1051301: unresolved row without a published limitation",
-    "1053068: unresolved row without a published limitation",
-    "1053146: unresolved row without a published limitation",
-    "1053070: unresolved row without a published limitation",
-    "1051790: unresolved row without a published limitation",
-    "1052699: unresolved row without a published limitation",
-    "1052183: unresolved row without a published limitation",
-    "1051341: unresolved row without a published limitation",
-    "1051342: unresolved row without a published limitation",
-    "1053073: unresolved row without a published limitation",
-    "1051803: unresolved row without a published limitation",
-    "1052751: unresolved row without a published limitation"
-   ]
+   "status": "pass",
+   "detail": "0 unresolved row(s) in this build",
+   "rows_checked": 31,
+   "rows_failed": 0,
+   "failures": []
   },
   {
    "id": "C5",
    "name": "Every row carries at least one http(s) source link",
-   "status": "fail",
+   "status": "pass",
    "detail": "a row without a link is unpublished, not inferred",
-   "rows_checked": 95,
-   "rows_failed": 1,
-   "failures": [
-    "1051343: missing or non-http source link"
-   ]
+   "rows_checked": 31,
+   "rows_failed": 0,
+   "failures": []
   },
   {
    "id": "C6",
    "name": "Crowd ownership never equals a published probability",
    "status": "pass",
    "detail": "static collision check; the unit suite also mutates crowd shares and asserts the published numbers do not move",
-   "rows_checked": 95,
+   "rows_checked": 31,
    "rows_failed": 0,
    "failures": []
   },
@@ -90,7 +68,7 @@
    "name": "Climb picks clear the declared gates and the daily cap",
    "status": "pass",
    "detail": "3 activation(s), cap 3",
-   "rows_checked": 95,
+   "rows_checked": 31,
    "rows_failed": 0,
    "failures": []
   },
@@ -98,8 +76,8 @@
    "id": "C8",
    "name": "Ambiguity and alias decisions are published with their evidence",
    "status": "pass",
-   "detail": "31 decision(s) recorded",
-   "rows_checked": 95,
+   "detail": "11 decision(s) recorded",
+   "rows_checked": 31,
    "rows_failed": 0,
    "failures": []
   },
@@ -124,11 +102,11 @@
  ],
  "summary": {
   "checks": 10,
-  "passed": 7,
-  "failed": 3
+  "passed": 10,
+  "failed": 0
  },
- "quotes_re_derived": 101,
- "rows_checked": 95,
- "blank_rows": 25,
+ "quotes_re_derived": 48,
+ "rows_checked": 31,
+ "blank_rows": 0,
  "crowd_probability_collisions": 0
 }

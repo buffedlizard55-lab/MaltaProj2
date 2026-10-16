@@ -44,6 +44,10 @@ PIN_HEADERS = {"X-API-Key": "CmX2KcMrXuFmNg6YFbmTxE0y9CIrOi0R",
                "Referer": "https://www.pinnacle.com/", "Accept": "application/json"}
 BOVADA = "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2"
 MELBET = "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"
+# Thunderpick coefficients as published by bo3.gg's public fixture feed. Thunderpick is the
+# esportsbook this session treats as the "esportsbook / betting line" tier for matches no sharp book
+# covers. Same public endpoint shape used by the repository's other market boards.
+BO3 = "https://api.bo3.gg/api/v1"
 KALSHI = ("https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME"
           "&status=open&with_nested_markets=true&limit=200")
 VRS_REPO = "ValveSoftware/counter-strike_regional_standings"
@@ -52,7 +56,7 @@ HLTV_PROBES = ("https://www.hltv.org/matches",
                "https://www.hltv.org/events/8932/matches",
                "https://www.hltv.org/results?event=8932")
 PROP_RE = re.compile(r"\(|\)|\byes\b|\bno\b|kills?|\bmaps?\b|total|handicap|rounds?|pistol|\bby \d", re.I)
-MAX_BYTES = 2_000_000
+MAX_BYTES = 12_000_000
 
 LOG: dict = {}
 PAYLOADS: dict = {}
@@ -272,6 +276,69 @@ def collect_melbet() -> dict:
     return {"quotes": parsed, "rows": kept_rows}
 
 
+# ------------------------------------------------------- Thunderpick coefficients (via bo3.gg)
+def collect_bo3gg(pages: int = 4) -> dict:
+    """Upcoming CS2 fixtures with two-sided Thunderpick coefficients published by bo3.gg.
+
+    Names are not inline: they come from the coefficient payload or the /teams/ lookup. Only rows
+    with both coefficients above 1.00 and both names known are kept; nothing is inferred.
+    """
+    quotes, pages_read, last_status, error = [], 0, None, None
+    for page in range(pages):
+        url = (f"{BO3}/matches/?filter%5Bmatches.discipline_id%5D%5Beq%5D=1"
+               f"&filter%5Bmatches.status%5D%5Bin%5D=upcoming"
+               f"&page%5Boffset%5D={page * 100}&page%5Blimit%5D=100")
+        status, body, err = fetch(url)
+        last_status = status or last_status
+        LOG[f"bo3gg_page_{page}"] = {"url": url, "status": status, "bytes": len(body or b""),
+                                     "error": err, "read_utc": iso_now()}
+        if err and not body:
+            error = error or err
+            continue
+        if not body:
+            continue
+        try:
+            payload = json.loads(body.decode("utf-8", "replace"))
+        except ValueError as exc:
+            error = error or f"{type(exc).__name__}: {exc}"
+            continue
+        results = payload.get("results") if isinstance(payload, dict) else None
+        if not isinstance(results, list) or not results:
+            break
+        pages_read += 1
+        for item in results:
+            if not isinstance(item, dict) or str(item.get("status") or "") != "upcoming":
+                continue
+            bu = item.get("bet_updates") or {}
+            t1 = (bu.get("team_1") or {}) if isinstance(bu, dict) else {}
+            t2 = (bu.get("team_2") or {}) if isinstance(bu, dict) else {}
+            try:
+                da, db = float(t1.get("coeff")), float(t2.get("coeff"))
+            except (TypeError, ValueError):
+                continue
+            if da <= 1.0 or db <= 1.0:
+                continue
+            name_a, name_b = str(t1.get("name") or ""), str(t2.get("name") or "")
+            if not (name_a and name_b):
+                continue
+            if PROP_RE.search(f"{name_a} {name_b}"):
+                continue
+            quotes.append({"source_key": "thunderpick_via_bo3gg",
+                           "source_name": "Thunderpick (coefficients as published by bo3.gg)",
+                           "public_url": f"https://bo3.gg/matches/{item.get('slug') or ''}",
+                           "api_url": url, "event_id": str(item.get("id") or ""),
+                           "names_at_source": [name_a, name_b], "raw_format": "decimal",
+                           "raw_a": da, "raw_b": db, "decimal_a": da, "decimal_b": db,
+                           "start_utc": shared.core().to_iso(parse_any(item.get("start_date"))),
+                           "league": str(item.get("tournament") or item.get("league") or "") or None,
+                           "provider": (bu.get("provider") if isinstance(bu, dict) else None),
+                           "retrieved_utc": iso_now()})
+        if len(results) < 100:
+            break
+    return {"quotes": quotes, "pages_read": pages_read, "http_status": last_status,
+            "error": error, "url": "https://bo3.gg/matches"}
+
+
 # ------------------------------------------------------------------------------- Kalshi
 KALSHI_RULES_TIME = re.compile(
     r"scheduled for\s+([A-Z][a-z]{2})\s+(\d{1,2}),\s*(\d{4})\s+at\s+(\d{1,2}):(\d{2})\s*(AM|PM)\s*"
@@ -425,19 +492,21 @@ def main() -> int:
     bovada = guard(collect_bovada, default={"quotes": []})
     melbet = guard(collect_melbet, default={"quotes": [], "rows": []})
     kalshi = guard(collect_kalshi, default={"markets": [], "rejected": [], "events": []})
+    bo3gg = guard(collect_bo3gg, default={"quotes": [], "pages_read": 0, "error": None})
     valve = guard(collect_valve, default={"commit": None, "files": {}})
     hltv = guard(probe_hltv, default={})
 
     capture = {"session": "6484426f", "started_utc": started, "finished_utc": iso_now(),
                "hotspawn": hs, "pinnacle": pinnacle, "bovada": bovada, "melbet": melbet,
-               "kalshi": kalshi, "valve": valve, "hltv_probe": hltv}
+               "kalshi": kalshi, "bo3gg": bo3gg, "valve": valve, "hltv_probe": hltv}
     digest = {"session": "6484426f", "started_utc": started, "finished_utc": capture["finished_utc"],
               "hotspawn_fixtures": len(hs["fixtures"]),
               "hotspawn_lobby_rows": sum(1 for f in hs["fixtures"]
                                          if "lobby_page" in f.get("seen_in", [])),
               "ownership_rows": len(hs.get("ownership") or {}),
               "quotes": {"pinnacle": pinnacle["quotes"], "bovada": bovada["quotes"],
-                         "melbet": melbet["quotes"], "kalshi": kalshi.get("markets") or []},
+                         "melbet": melbet["quotes"], "kalshi": kalshi.get("markets") or [],
+                         "thunderpick_via_bo3gg": bo3gg.get("quotes") or []},
               "kalshi_rejected": kalshi.get("rejected") or [],
               "valve": {"commit": (valve.get("commit") or {}).get("sha") if isinstance(valve.get("commit"), dict)
                         else valve.get("commit"), "files": sorted(valve.get("files") or {})},
@@ -450,6 +519,7 @@ def main() -> int:
     counts = {"lobby_fixtures": len(hs["fixtures"]), "pinnacle_quotes": len(pinnacle["quotes"]),
               "bovada_quotes": len(bovada["quotes"]), "melbet_quotes": len(melbet["quotes"]),
               "kalshi_markets": len(kalshi["markets"]), "kalshi_rejected": len(kalshi["rejected"]),
+              "thunderpick_quotes": len(bo3gg.get("quotes") or []),
               "valve_files": sorted(valve["files"]), "hltv": {k.split("/")[2] + k[-14:]: v.get("status")
                                                              for k, v in hltv.items()}}
     print(json.dumps(counts, indent=1))

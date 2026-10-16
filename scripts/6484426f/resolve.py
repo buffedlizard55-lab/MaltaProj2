@@ -148,9 +148,40 @@ def hq(source_key, source_name, public_url, api_url, event_id, names, dec_a, dec
             **(extra or {})}
 
 
+def dedupe_quotes(quotes: list[dict]) -> list[dict]:
+    """One price per source and event: the newest read wins, and any move between reads is published.
+
+    Two captures of the same book can disagree (the line moved). Blending both would double-weight one
+    book and hide the move, so the newer read prices the row, the older read time is kept in
+    ``also_read_at``, and a differing earlier price is recorded in ``earlier_price`` with a
+    ``price_moved_between_reads`` flag on the joined quote.
+    """
+    best: dict[tuple, dict] = {}
+    for quote in quotes:
+        key = (quote.get("source_key"), quote.get("event_id") or tuple(quote.get("names_at_source") or []))
+        current = best.get(key)
+        if current is None:
+            best[key] = dict(quote)
+            continue
+        newer, older = ((quote, current) if str(quote.get("retrieved_utc") or "") >
+                        str(current.get("retrieved_utc") or "") else (current, quote))
+        merged = dict(newer)
+        merged["also_read_at"] = sorted({str(older.get("retrieved_utc")),
+                                         str(current.get("retrieved_utc"))} - {str(newer.get("retrieved_utc"))})
+        for field in ("books", "rules_primary"):
+            if not merged.get(field) and older.get(field):
+                merged[field] = older[field]
+        if (round(float(older.get("decimal_a") or 0), 4), round(float(older.get("decimal_b") or 0), 4)) != \
+                (round(float(newer.get("decimal_a") or 0), 4), round(float(newer.get("decimal_b") or 0), 4)):
+            merged["earlier_price"] = {"decimal_a": older.get("decimal_a"), "decimal_b": older.get("decimal_b"),
+                                      "retrieved_utc": older.get("retrieved_utc")}
+        best[key] = merged
+    return list(best.values())
+
+
 def capture_quotes(capture: dict) -> list[dict]:
     quotes = []
-    for key in ("pinnacle", "bovada", "melbet"):
+    for key in ("pinnacle", "bovada", "melbet", "bo3gg"):
         for row in ((capture.get(key) or {}).get("quotes") or []):
             try:
                 dec_a, dec_b = float(row["decimal_a"]), float(row["decimal_b"])
@@ -233,7 +264,7 @@ def join_quote(fixture: dict, quote: dict, aliases: dict | None = None) -> dict 
                          shared.core().parse_iso(quote.get("start_utc")))
     if diff is None:
         return {"rejected": "unverified_start_time", "swapped": swapped, "start_diff_h": None}
-    if diff > shared.core().TIME_TOLERANCE_H:
+    if diff > 3.0:
         return {"rejected": "kickoff_mismatch", "swapped": swapped, "start_diff_h": diff}
     prob = quote.get("no_vig_prob_team_a")
     if prob is None:
@@ -284,7 +315,7 @@ def evaluate_row(row: dict, quotes: list[dict], valve: dict, aliases: dict, k_fi
     fixture = {k: row.get(k) for k in ("fixture_id", "team_a", "team_b", "start_utc", "lock_utc",
                                        "competition", "tier", "points", "hotspawn_url")}
     joined, rejected = [], []
-    for quote in quotes:
+    for quote in dedupe_quotes(quotes):
         info = join_quote(fixture, quote, aliases)
         if info is None:
             continue
@@ -313,7 +344,8 @@ def evaluate_row(row: dict, quotes: list[dict], valve: dict, aliases: dict, k_fi
         joined.append(q)
 
     # 1. bookmaker market line
-    books = [q for q in joined if q["source_key"] in ("pinnacle", "bovada", "melbet")]
+    books = [q for q in joined
+             if q["source_key"] in ("pinnacle", "bovada", "melbet", "thunderpick_via_bo3gg")]
     exchange = [q for q in joined if q["source_key"] == "kalshi"]
     vrs_a = resolve_team(fixture["team_a"], valve, aliases)
     vrs_b = resolve_team(fixture["team_b"], valve, aliases)
@@ -355,6 +387,12 @@ def evaluate_row(row: dict, quotes: list[dict], valve: dict, aliases: dict, k_fi
         flags.append("quote_older_than_4h")
     if out["basis"] == "market" and out.get("n_sources") == 1:
         flags.append("single_book_price")
+    if out["basis"] == "market" and all(q["source_key"] == "thunderpick_via_bo3gg" for q in books):
+        flags.append("single_esportsbook_price_no_sharp_book")
+    if any((q.get("start_diff_h") or 0.0) > shared.core().TIME_TOLERANCE_H for q in joined):
+        flags.append("kickoff_differs_between_sources")
+    if any(q.get("price_moved") for q in joined):
+        flags.append("price_moved_between_reads")
     if out["basis"] == "model":
         for side, res in (("a", vrs_a), ("b", vrs_b)):
             for note in res.get("notes") or []:
@@ -475,6 +513,20 @@ def build() -> dict:
                          "seen_in": fx.get("seen_in"), "membership": "own_capture"}
     inventory = canonical.get("inventory") or []
     ownership = load_ownership(capture)
+    now_iso = iso(now_utc())
+    locked: list[dict] = []
+    for fid, fx in list(fixtures.items()):
+        lock = fx.get("lock_utc") or fx.get("start_utc")
+        if lock and lock <= now_iso:
+            locked.append({"fixture_id": fid, "team_a": fx.get("team_a"), "team_b": fx.get("team_b"),
+                           "start_utc": fx.get("start_utc"), "lock_utc": fx.get("lock_utc"),
+                           "status": fx.get("status"), "why": "lock time already passed in this capture"})
+            fixtures.pop(fid)
+        elif not lock:
+            locked.append({"fixture_id": fid, "team_a": fx.get("team_a"), "team_b": fx.get("team_b"),
+                           "start_utc": fx.get("start_utc"), "lock_utc": None, "status": fx.get("status"),
+                           "why": "no lock time published by the lobby source"})
+            fixtures.pop(fid)
     quotes = capture_quotes(capture or {}) + canonical_quotes(canonical)
     unresolved_notes = research.get("unresolved_notes") or {}
 
@@ -505,6 +557,8 @@ def build() -> dict:
         if row.get("crowd"):
             row["sources"].append({"label": "HotSpawn crowd share (ownership only, never a price)",
                                    "url": LOBBY})
+        if not row["sources"]:
+            row["sources"].append({"label": "HotSpawn lobby listing for this fixture", "url": LOBBY})
 
     # Climb budget: at most CLIMB_MAX_PER_DAY activations, ranked by leverage x offered points.
     today = date.fromisoformat(generated[:10])
@@ -516,6 +570,21 @@ def build() -> dict:
             row["climb_pick"] = row["underdog"]["team"]
             row["climb_active"] = True
             row["climb_rank"] = rank + 1
+    clusters: dict[tuple, set] = {}
+    for row in rows:
+        for quote in row["quotes"]:
+            key = (quote["source_key"], round(float(quote["decimal_a"]), 3),
+                   round(float(quote["decimal_b"]), 3))
+            clusters.setdefault(key, set()).add(row["fixture_id"])
+    for row in rows:
+        repeated = sorted({fid for quote in row["quotes"]
+                           for fid in clusters.get((quote["source_key"],
+                                                    round(float(quote["decimal_a"]), 3),
+                                                    round(float(quote["decimal_b"]), 3)), set())
+                           if fid != row["fixture_id"]})
+        if repeated:
+            row["flags"] = sorted(set(row["flags"]) | {f"repeated_price_pair_with:{','.join(repeated)}"})
+            row["repeated_price_pair"] = repeated
     rows.sort(key=lambda r: (r.get("start_utc") or "", r["fixture_id"]))
 
     grading = grade_history(rows, inventory, generated)
@@ -533,8 +602,14 @@ def build() -> dict:
         "graded": len(grading["graded"]),
         "safe_correct": sum(1 for g in grading["graded"] if g["safe_correct"]),
     }
+    coverage = {"capture_fixtures": len(fixtures) + len(locked),
+                "open": len(fixtures), "listed_locked": len(locked),
+                "locked_ids": sorted(f["fixture_id"] for f in locked),
+                "locked_sample": sorted(locked, key=lambda f: (f.get("start_utc") or ""))[:12],
+                "lobby_source": LOBBY}
     out = {
         "session": "6484426f",
+        "coverage": coverage,
         "generated_utc": generated,
         "policy": {"climb_min_prob": CLIMB_MIN_PROB, "climb_min_leverage": CLIMB_MIN_LEVERAGE,
                    "climb_max_per_day": CLIMB_MAX_PER_DAY, "quote_max_age_hours": QUOTE_MAX_AGE_H,

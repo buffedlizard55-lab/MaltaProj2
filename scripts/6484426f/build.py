@@ -135,7 +135,8 @@ def page(name: str, title: str, body: str, generated: str) -> str:
 lines: <a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle</a>,
 <a href="https://www.bovada.lv/sports/esports">Bovada</a>,
 <a href="https://melbet.com/en/line/esports">Melbet</a>,
-<a href="https://kalshi.com/markets/kxcs2game">Kalshi</a> ·
+<a href="https://kalshi.com/markets/kxcs2game">Kalshi</a>,
+<a href="https://bo3.gg/matches">Thunderpick coefficients via bo3.gg</a> ·
 ratings: <a href="https://github.com/ValveSoftware/counter-strike_regional_standings">official Valve standings</a> ·
 crowd % is ownership only and is never used as a probability.</footer></main></body></html>
 """
@@ -236,7 +237,7 @@ crowd shares only — its crowd % is never a probability.</p>
 <div class="kpis">
 <div class="kpi"><span class="muted">Open fixtures</span><b>{summary['open']}</b></div>
 <div class="kpi"><span class="muted">With a pick</span><b>{summary['with_pick']}</b></div>
-<div class="kpi"><span class="muted">Bookmaker line</span><b>{summary['market']}</b></div>
+<div class="kpi"><span class="muted">External line</span><b>{summary['market']}</b></div>
 <div class="kpi"><span class="muted">Exchange line</span><b>{summary['exchange']}</b></div>
 <div class="kpi"><span class="muted">Originated line</span><b>{summary['model']}</b></div>
 <div class="kpi"><span class="muted">Unresolved</span><b>{summary['unresolved']}</b></div>
@@ -325,9 +326,21 @@ same rules keep the safe pick on Legacy.</li>
 "not stupid" half of the rule, and the per-row gate results are printed on
 <a href="picks.html">the picks page</a>.</li>
 </ul>
+<h3>Who had a real upset shot on day 1</h3>
+<ul>{"".join(f'<li>{esc(point)}</li>' for point in ((twc.get("research") or {}).get("day1_upset_review") or {}).get("why_9z_had_a_real_shot") or [])}</ul>
+<h3>Day-3 context</h3>
+<div class="card"><table class="cards"><thead><tr><th>Pair</th><th>Meetings in 30 days</th><th>Latest</th>
+<th>Source</th></tr></thead><tbody>
+{"".join(f'<tr><td data-label="Pair">{esc(p["pair"])}</td><td data-label="Meetings">{esc(p["meetings_in_30_days"])}</td><td data-label="Latest">{esc(p["latest"])}</td><td data-label="Source"><a href="{esc(p["url"])}" rel="noopener">HLTV odds &amp; prediction</a></td></tr>' for p in (twc.get("research") or {}).get("h2h_day3_pairs") or [])}
+</tbody></table></div>
+<div class="card"><table class="cards"><thead><tr><th>Team</th><th>HLTV rank</th><th>Form / note</th>
+<th>Source</th></tr></thead><tbody>
+{"".join(f'<tr><td data-label="Team">{esc(team)}</td><td data-label="Rank">#{esc(row["hltv_rank"])}</td><td data-label="Form">{esc(row.get("form") or row.get("note"))}</td><td data-label="Source"><a href="{esc(row["url"])}" rel="noopener">HLTV odds &amp; prediction</a></td></tr>' for team, row in ((twc.get("research") or {}).get("rankings_day3") or {}).items())}
+</tbody></table></div>
 <h3>Roster premise check</h3>
 <p>{esc(roster.get("finding"))}</p>
-<p class="muted">Status: <b>{esc(roster.get("status"))}</b>. Sources:
+<p class="muted">Status: <b>{esc(roster.get("status"))}</b>. Last documented moves:
+{" · ".join(f'{esc(m["date"])} {esc(m["move"])} (<a href="{esc(m["url"])}" rel="noopener">source</a>)' for m in roster.get("last_documented_moves") or [])}. Sources:
 {" · ".join(f'<a href="{esc(s["url"])}" rel="noopener">{esc(s["label"])}</a>' for s in (roster.get("sources") or []))}</p>
 <h3>Rest of the bracket</h3>
 <ul>{"".join(f'<li>{esc(s["match"])} — {esc(s["stage"])}, {esc(str(s["kickoff_utc"])[11:16])}Z UTC · <a href="{esc(s["hltv_url"])}" rel="noopener">HLTV</a> <span class="muted">{esc(s.get("note"))}</span></li>' for s in sched)}</ul>
@@ -459,8 +472,9 @@ it. Nothing here changes a published probability; entries are caveats on how the
 <h1>Method, sources and limits</h1>
 <h2>Resolution ladder (in order)</h2>
 <ol>
-<li><b>Market.</b> Full-match two-way moneyline prices from Pinnacle, Bovada and Melbet, read from their
-public endpoints. No-vig probability = (1/dec_a) / (1/dec_a + 1/dec_b). Multi-book rows use the weighted
+<li><b>Market.</b> Full-match two-way moneyline prices from Pinnacle, Bovada, Melbet and the
+Thunderpick coefficients published by bo3.gg (the esportsbook tier for matches no sharp book
+covers), read from their public endpoints. No-vig probability = (1/dec_a) / (1/dec_a + 1/dec_b). Multi-book rows use the weighted
 mean with Pinnacle weighted 2× (declared modelling choice). A price prices a row only if the source's own
 names match the fixture and its stated kick-off is within five minutes of HotSpawn's.</li>
 <li><b>Exchange.</b> Kalshi series <code>KXCS2GAME</code>: the yes-bid/yes-ask midpoints of both sides,
@@ -504,8 +518,10 @@ odds &amp; prediction</a> — rankings, form and head-to-head context (read
 regional standings</a> — {board['valve']['entries']} team rows from
 {esc(", ".join(board['valve']['files']))} (read {esc(board['research_read_utc']['valve'])}, commit
 <code>eec4853d</code>).</li>
-<li>External prices: Pinnacle (guest odds API), Bovada, Melbet, Kalshi — each row on
-<a href="picks.html">All picks</a> links the exact endpoint and its read time.</li>
+<li>External prices: Pinnacle (guest odds API), Bovada, Melbet, the Kalshi exchange and the
+Thunderpick coefficients bo3.gg publishes per fixture — the esportsbook tier that gives several
+low-tier matches a real two-sided price. Each row on <a href="picks.html">All picks</a> links the
+exact endpoint and its read time.</li>
 </ul>
 <h2>Limits</h2>
 <ul>

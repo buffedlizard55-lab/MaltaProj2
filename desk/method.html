@@ -70,14 +70,15 @@ footer{margin-top:1.4rem;border-top:1px solid var(--line);padding-top:.6rem}
 </style></head>
 <body>
 <header><div class="wrap"><b>CS2 picks desk</b>
-<span class="muted">built 2026-10-16T07:32:37Z</span>
+<span class="muted">built 2026-10-16T07:35:49Z</span>
 <nav><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="twc.html">TWC day 3</a><a href="unresolved.html">Unresolved</a><a href="flagged.html">Flagged</a><a href="method.html" aria-current="page">Method</a><a href="verify.html">Verification</a></nav></div></header>
 <main class="wrap">
 <h1>Method, sources and limits</h1>
 <h2>Resolution ladder (in order)</h2>
 <ol>
-<li><b>Market.</b> Full-match two-way moneyline prices from Pinnacle, Bovada and Melbet, read from their
-public endpoints. No-vig probability = (1/dec_a) / (1/dec_a + 1/dec_b). Multi-book rows use the weighted
+<li><b>Market.</b> Full-match two-way moneyline prices from Pinnacle, Bovada, Melbet and the
+Thunderpick coefficients published by bo3.gg (the esportsbook tier for matches no sharp book
+covers), read from their public endpoints. No-vig probability = (1/dec_a) / (1/dec_a + 1/dec_b). Multi-book rows use the weighted
 mean with Pinnacle weighted 2× (declared modelling choice). A price prices a row only if the source's own
 names match the fixture and its stated kick-off is within five minutes of HotSpawn's.</li>
 <li><b>Exchange.</b> Kalshi series <code>KXCS2GAME</code>: the yes-bid/yes-ask midpoints of both sides,
@@ -86,9 +87,9 @@ text states the kick-off (converted from the zone it prints).</li>
 <li><b>Originated (official ratings).</b> Where no bookmaker prices a match: this session's line from
 Valve's official regional standings, P(A) = σ(k · C · (points_a − points_b)) with Valve's own formula
 (C = g·ln10/400 at RD 75) and the slope k fitted by least squares against the market lines in the same
-capture. This build: k = 0.451 from 18 pairs, mean
+capture. This build: k = 0.452 from 18 pairs, mean
 absolute error 6.1% (Valve's own k = 1 would miss by
-11.2%).</li>
+11.3%).</li>
 <li><b>Unresolved.</b> Nothing is guessed: the probabilities stay blank, the pick stays blank, and the row
 is published with its blocker on <a href="unresolved.html">Unresolved picks</a>.</li>
 </ol>
@@ -121,8 +122,10 @@ odds &amp; prediction</a> — rankings, form and head-to-head context (read
 regional standings</a> — 380 team rows from
 standings_americas_2026_10_05, standings_asia_2026_10_05, standings_europe_2026_10_05, standings_global_2026_10_05 (read 2026-10-16T07:32Z, commit
 <code>eec4853d</code>).</li>
-<li>External prices: Pinnacle (guest odds API), Bovada, Melbet, Kalshi — each row on
-<a href="picks.html">All picks</a> links the exact endpoint and its read time.</li>
+<li>External prices: Pinnacle (guest odds API), Bovada, Melbet, the Kalshi exchange and the
+Thunderpick coefficients bo3.gg publishes per fixture — the esportsbook tier that gives several
+low-tier matches a real two-sided price. Each row on <a href="picks.html">All picks</a> links the
+exact endpoint and its read time.</li>
 </ul>
 <h2>Limits</h2>
 <ul>
@@ -139,6 +142,7 @@ here carries its URL and read time in <code>data/6484426f/research.json</code>.<
 lines: <a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle</a>,
 <a href="https://www.bovada.lv/sports/esports">Bovada</a>,
 <a href="https://melbet.com/en/line/esports">Melbet</a>,
-<a href="https://kalshi.com/markets/kxcs2game">Kalshi</a> ·
+<a href="https://kalshi.com/markets/kxcs2game">Kalshi</a>,
+<a href="https://bo3.gg/matches">Thunderpick coefficients via bo3.gg</a> ·
 ratings: <a href="https://github.com/ValveSoftware/counter-strike_regional_standings">official Valve standings</a> ·
 crowd % is ownership only and is never used as a probability.</footer></main></body></html>

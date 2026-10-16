@@ -44,8 +44,9 @@ def main() -> int:
     for row in rows:
         if row["basis"] not in ("market", "exchange"):
             continue
+        book_keys = {"pinnacle", "bovada", "melbet", "thunderpick_via_bo3gg"}
         usable = [q for q in row["quotes"]
-                  if q["source_key"] in ("pinnacle", "bovada", "melbet", "kalshi")]
+                  if q["source_key"] in (book_keys if row["basis"] == "market" else {"kalshi"})]
         if not usable:
             failures.append(f"{row['fixture_id']} publishes a {row['basis']} line with no retained quote")
             continue
@@ -61,16 +62,17 @@ def main() -> int:
             if not nv:
                 failures.append(f"{row['fixture_id']} {q['source_key']}: odds pair is not a usable book")
                 continue
-            if abs(nv["prob_a"] - q.get("raw_no_vig_team1", -1)) > TOL:
+            if abs(nv["prob_a"] - q.get("raw_no_vig_team1", -1)) > 2e-6:
                 failures.append(f"{row['fixture_id']} {q['source_key']}: source-order no-vig "
                                 f"{q.get('raw_no_vig_team1')} != re-derived {nv['prob_a']:.6f}")
             oriented = 1.0 - nv["prob_a"] if q["swapped"] else nv["prob_a"]
-            if abs(oriented - q["no_vig_prob_team_a"]) > TOL:
+            if abs(oriented - q["no_vig_prob_team_a"]) > 2e-6:
                 failures.append(f"{row['fixture_id']} {q['source_key']}: orientation flag "
                                 f"{q['swapped']} does not map source order to the fixture order")
         if abs(value - row["prob_a"]) > TOL:
             failures.append(f"{row['fixture_id']}: published {row['prob_a']:.6f} != re-derived {value:.6f}")
-    checks.append(check("C1", "Market and exchange probabilities re-derive from the retained raw prices",
+    checks.append(check("C1", "Market, esportsbook and exchange probabilities re-derive from the "
+                        "retained raw prices",
                         sum(1 for r in rows if r["basis"] in ("market", "exchange")), failures,
                         "no-vig = (1/dec_a)/(1/dec_a+1/dec_b); multi-book rows use the declared weights"))
 
@@ -219,7 +221,11 @@ def main() -> int:
                         "workflow .github/workflows/desk-6484426f.yml"))
 
     failed = sum(1 for c in checks if c["status"] == "fail")
-    out = {"session": "6484426f", "generated_utc": iso_now(),
+    source_mix = {}
+    for row in rows:
+        for q in row.get("quotes") or []:
+            source_mix[q["source_key"]] = source_mix.get(q["source_key"], 0) + 1
+    out = {"session": "6484426f", "generated_utc": iso_now(), "source_mix": source_mix,
            "board_generated_utc": board["generated_utc"],
            "checks": checks,
            "summary": {"checks": len(checks), "passed": len(checks) - failed, "failed": failed},
