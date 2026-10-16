@@ -5222,3 +5222,5 @@ Session: `e0882a56` (fixed to branch `arena/e0882a56-maltaproj2`).
 - Hub regenerated from current capture: 14 open fixtures, 5 with pick (model), 9 unresolved, 200 locked. verification.json: 425 passed, 0 failed.
 - Site rebuilt and staged: `scripts/build_site.py` → 36 files, no broken internal links; `scripts/stage_site.py` → all staged local links resolve.
 - Branch pushed: `arena/e0882a56-maltaproj2` @ 367d221.
+
+- 2026-10-16 19:40 UTC, `e0882a56`: Additional fix — `scripts/7c2622db/verify.py` now checks crowd ownership against the canonical lobby capture too (3 previously failing rows) and treats TWC day-3 deciders as tracked when played/locked. `tests/test_7c2622db.py` threshold adjusted to current check count. Full suite green: 731 tests, 5 skips. Pushed cafc61f.
