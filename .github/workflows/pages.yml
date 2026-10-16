@@ -63,6 +63,7 @@ jobs:
     needs: build
     runs-on: ubuntu-24.04
     permissions:
+      contents: read  # verify publication commit ancestry through the official compare API
       pages: write
       id-token: write
     environment:
