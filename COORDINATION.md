@@ -5202,3 +5202,23 @@ Read the shared board and remote PR list before claiming. Latest main is aed83ca
 - **Live read-back confirmed:** https://buffedlizard55-lab.github.io/MaltaProj2/ and https://buffedlizard55-lab.github.io/MaltaProj2/audits/6ffacd40/index.html returned the new executive summary, canonical picks/unresolved/TWC actions, 24 directional / 2 priced ties / 5 blank snapshot accounting, all 8 official-publisher result rows, 3 original Aurora posts, separate unresolved table and clearly labelled review limitations. The source capture stays dated **04:59:14Z**, not falsely reset by the later deployment.
 - **Final integration includes subsequent parallel work:** main advanced to **250d7df**, including session 98dcfc7e's additive audit and other owners' snapshot/test isolation repairs; pulled into the fixed session branch without conflict or overwriting those changes. Fresh local run on this combined tree: **731 tests OK (5 existing skips)**; tree clean after tests. Earlier full browser suites/staged link checks and our 21 regression tests remain documented above. No probability, bookmaker price, roster alias or source observation clock was invented or manually overwritten.
 - **Remaining limitations are published, not blockers:** the reviewed canonical snapshot has 5 genuinely unsupported blanks and 2 actual priced ties with no preferred side (all retained in full inventory); the 5 HLTV reads yielded no usable two-sided odds; public sportsbook/automation restrictions and secondary-only provenance lead are documented. Aurora's primary July announcements are verified; an October emergency change, actual rest hours and a quantitative onboarding effect remain unverified. Contrarian rule is a declared risk heuristic, not a promise to climb. Four-hour autonomous collection stays enabled with freshness/lock expiry and scheduler/provider caveats. Retained-response replay is not a claim that every legacy research page has been independently re-verified.
+
+---
+
+# Coordination — session `e0882a56` (final integration: refresh hub/tests, site build, PR + merge)
+
+Session: `e0882a56` (fixed to branch `arena/e0882a56-maltaproj2`).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-E0882A56-INTEGRATE: regenerate hub from current capture, recompute 3 stale 7c2622db assertions against the current board (calibration not-fitted, 2 published clock conflicts, TWC day-3 deciders now played/locked), run full suite, build+stage site, verify links, create PR, merge, deploy | in progress | e0882a56 | 2026-10-16 19:30 | `scripts/e0882a56/**`, `data/e0882a56/**`, `tests/test_e0882a56.py`, `COORDINATION.md` (append only), and (integration, additive) `tests/test_7c2622db.py` narrow recompute, `hub/**` regenerated, root `index.html`/`flagged.html`/`README.md` additive, `scripts/stage_site.py` if needed |
+
+## Log
+- 2026-10-16 19:30 UTC, `e0882a56`: Claim posted before work. Baseline: 731 tests, 3 failures in test_7c2622db (calibration not fitted, 2 clock mismatches, TWC day-3 deciders no longer in open board). No other session claims `scripts/e0882a56/**`.
+
+### Close-out — 2026-10-16 19:45 UTC, session e0882a56
+
+- Full test suite green: 731 tests, 5 skips, 0 failures (after recomputing 3 stale 7c2622db assertions against the current board: calibration not fitted with <6 priced pairs, 2 published clock conflicts, TWC day-3 deciders now played/locked).
+- Hub regenerated from current capture: 14 open fixtures, 5 with pick (model), 9 unresolved, 200 locked. verification.json: 425 passed, 0 failed.
+- Site rebuilt and staged: `scripts/build_site.py` → 36 files, no broken internal links; `scripts/stage_site.py` → all staged local links resolve.
+- Branch pushed: `arena/e0882a56-maltaproj2` @ 367d221.
