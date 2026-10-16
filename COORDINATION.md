@@ -5153,3 +5153,14 @@ Session: `5468b0ba` (fixed to branch `arena/5468b0ba-maltaproj2`).
   - **Gate note (honest):** `Verify and publish dashboard` (pages.yml) is still **red** on `main` for the pre-existing reason logged above (2 assertions in `test_6c5bb3d6` against a rotating board). This PR did not cause it and does not touch those assertions. The site itself deploys via the legacy Pages build, which is green. The owner request is logged. I did not edit another session's test to make the gate green.
   - **Still open for the user:** the 7 unresolved fixtures stay blank (see the audit page, section 4). The Aurora vs 9z climb pick is flagged because it misses the stricter 35% hub floor.
 
+---
+## Session 6ffacd40 — 2026-10-16 final coverage and mobile handoff audit
+
+Environment fixes this session to `arena/6ffacd40-maltaproj2`; no alternate branch will be created.
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-6FF-AUDIT: independently verify current canonical coverage and TWC source ledger, research currently unsupported rows only, publish reproducible review and regression tests | in progress | 6ffacd40 | 2026-10-16 07:20 | scripts/6ffacd40/**, data/6ffacd40/**, audits/6ffacd40/**, tests/test_6ffacd40.py, COORDINATION.md append-only |
+| T-6FF-INTEGRATE: final integration after audit: simplify mobile root handoff without adding another competing picks board, repair only demonstrated issues, staged links/full tests, PR merge and Pages deployment | in progress | 6ffacd40 | 2026-10-16 07:20 | scripts/build_site.py (root handoff only), assets/style.css (root mobile usability only), root generated HTML, README.md (audit link), COORDINATION.md append-only |
+
+Read the shared board and remote PR list before claiming. Latest main is aed83ca (07:15Z); prior final integration sessions b3b89eec and 5468b0ba have close-out records. Existing automated source collectors and all independently owned boards remain read-only. Historical task rows still marked in progress are not silently taken over. Shared root work is final integration only; any source-collector change needs a separately logged scope request. Do not conflate independent board policies or fill canonical blanks with guessed probabilities.
