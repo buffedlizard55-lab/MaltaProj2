@@ -1,0 +1,30 @@
+{
+  "session": "7c2622db",
+  "what": "Exchange markets this hub reads directly, with the fixture they price. Each run re-fetches the market and re-derives the midpoint from the live bid/ask books; nothing is cached as a price.",
+  "gate": {
+    "full_match_market": "the market must be the two-team match winner, not a map, handicap or prop market",
+    "two_sided_book": "bestBid and bestAsk must both exist",
+    "max_spread": 0.10,
+    "accepting_orders": true,
+    "kickoff_agreement": "the market's own gameStartTime must agree with the fixture kickoff within 5 minutes",
+    "identity": "both outcomes must map to the fixture's teams (through the reviewed alias rules where needed)"
+  },
+  "markets": [
+    {
+      "fixture_id": "1079630",
+      "market_slug": "cs2-rustec-ssins-2026-10-16",
+      "outcomes": ["ex-RUSTEC", "Saint Sinners"],
+      "fixture_sides": ["ex-RUSTEC", "Saint Sinners"],
+      "claimed_start_utc": "2026-10-16T11:00:00Z",
+      "market_url": "https://polymarket.com/esports/cs2/cct-europe/cs2-rustec-ssins-2026-10-16",
+      "api_url": "https://gamma-api.polymarket.com/markets?slug=cs2-rustec-ssins-2026-10-16",
+      "resolution_source": "https://hltv.org",
+      "rule_note": "The market description carries the full endgame rules: cancellation resolves 50-50, postponement beyond 2026-10-30 23:59 ET resolves 50-50, forfeit before start resolves 50-50, and the settlement source is HLTV with a credible-reporting fallback only if HLTV is silent for two hours.",
+      "first_seen_utc": "2026-10-16T04:30:00Z"
+    }
+  ],
+  "notes": [
+    "Polymarket's browsable counter-strike tag is dominated by non-match markets, so this file is an explicit list of match markets rather than a crawl. A row that is not listed here is never claimed to be unpriced by Polymarket.",
+    "Exchange midpoints are estimates, not executable prices, and volume on low-tier matches can be small. Every published row carries the volume, the liquidity and the spread."
+  ]
+}

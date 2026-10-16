@@ -1,0 +1,117 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Every open HotSpawn CS2 pick'em match with a pick, both win probabilities and its sources; TWC 2026 day-3 desk.">
+<title>Unresolved picks &amp; limitations</title><style>
+:root{--ink:#111827;--muted:#5b6472;--line:#e3e7ee;--bg:#f7f8fb;--card:#fff;--accent:#0b63ce;
+--good:#0f9d58;--warn:#b45309;--bad:#b91c1c;--chip:#eef2f8}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:760px;margin:0 auto;padding:0 12px 64px}
+header.top{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);
+padding:10px 12px}
+header.top .inner{max-width:760px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.brand{font-weight:700;font-size:15px;text-decoration:none;color:var(--ink)}
+nav.jump{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:2px 0}
+nav.jump a{flex:0 0 auto;padding:9px 12px;border:1px solid var(--line);border-radius:999px;
+background:var(--chip);text-decoration:none;font-size:13px;color:var(--ink);min-height:40px;
+display:inline-flex;align-items:center}
+h1{font-size:24px;line-height:1.2;margin:18px 0 6px}
+h2{font-size:19px;margin:28px 0 8px}
+h3{font-size:16px;margin:18px 0 6px}
+p,li{color:#1f2937}
+.lede{color:var(--muted);font-size:14px;margin:0 0 10px}
+.grid{display:grid;gap:10px}
+@media(min-width:640px){.grid.two{grid-template-columns:1fr 1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0}
+.card.hero{border-left:5px solid var(--accent)}
+.card.locked{opacity:.65}
+.top-line{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.chip{background:var(--chip);border-radius:999px;padding:3px 9px;font-size:12px;white-space:nowrap}
+.chip.s{background:#fde8e8;color:#8a1c1c}
+.chip.b{background:#e8f0fd;color:#123a75}
+.chip.c{background:#eef2f8;color:#374151}
+.chip.win{background:#e6f6ec;color:#0b6b3a;font-weight:600}
+.chip.flag{background:#fdf1e3;color:#8a5300}
+.match{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:8px 0 2px}
+.team{font-size:19px;font-weight:600;line-height:1.2}
+.team.pick{color:var(--accent)}
+.prob{font-size:20px;font-variant-numeric:tabular-nums;font-weight:700}
+.prob.pick{color:var(--accent)}
+.pickline{margin:6px 0 0;font-size:14px}
+.pickline b{font-size:16px}
+.meta{font-size:12.5px;color:var(--muted);margin:6px 0 0}
+.bar{display:flex;height:8px;border-radius:999px;overflow:hidden;background:#eceff5;margin:8px 0 2px}
+.bar span{display:block;height:100%}
+.bar .a{background:#0b63ce}.bar .b{background:#9aa7bb}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}
+.kpi b{display:block;font-size:22px;line-height:1.1}
+.kpi span{font-size:12px;color:var(--muted)}
+details{margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+summary{cursor:pointer;font-size:13px;color:var(--accent);min-height:36px;display:flex;align-items:center}
+ul.src{list-style:none;padding:0;margin:4px 0 0}
+ul.src li{font-size:12.5px;margin:6px 0;overflow-wrap:anywhere}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:600}
+.scroll{overflow-x:auto}
+.callout{background:#fffaf0;border:1px solid #f2dfba;border-radius:12px;padding:10px;margin:10px 0}
+.callout.bad{background:#fef6f6;border-color:#f3cccc}
+.callout.ok{background:#f4fbf6;border-color:#cfe9d8}
+footer.foot{margin-top:30px;border-top:1px solid var(--line);padding-top:12px;font-size:12.5px;color:var(--muted)}
+.drop{color:var(--muted);font-size:13px}
+</style></head><body>
+<header class="top"><div class="inner"><a class="brand" href="index.html">⚡ Pick'em hub</a>
+<nav class="jump" aria-label="Hub sections"><a href="index.html">Day 3 + every match</a><a href="twc.html">TWC review</a><a href="unresolved.html" style=background:#0b63ce;color:#fff>Unresolved</a><a href="flagged.html">Flagged</a><a href="verify.html">Verification</a><a href="method.html">Method</a><a href="../index.html">Main site</a></nav></div></header>
+<div class="wrap">
+<h1>Unresolved picks &amp; limitations</h1>
+<p class="lede">The separate section for anything this hub could not resolve. A blank here is a
+statement about the evidence, not about the match: every row lists what was tried and what would
+change the answer.</p>
+<div class="callout bad"><b>2 unresolved row(s) in this build.</b> They are excluded from
+the pick counts and are never filled with a guess.
+<div><a href="index.html">Back to the every-match list</a> · <a href="flagged.html">Flagged for review</a></div></div>
+<article class="card bad"><h3>BET-M vs Just Players</h3>
+<p class="meta">NODWIN Clutch Series #13 · 17 Oct 08:00Z · 04:00 ET · 3 pts ·
+B ×1.5</p>
+<p><b>Status:</b> no pick published. <b>Why:</b> ambiguous_vrs_name:Just Players; no_line_unverified.</p>
+<p><b>What was tried:</b> 4 - no defensible price or rating pair in this capture.
+The official standings resolution for ambiguous_vrs_name:Just Players failed, so the rating fallback is refused rather than guessed.</p>
+<details><summary>Sources for this row (2)</summary><ul class="src"><li>· HotSpawn match page (fixture, points, lock, crowd share)<br><a href="https://www.hotspawn.com/matches/bet-m-vs-just-players-nodwin-clutch-series-13-1079170">https://www.hotspawn.com/matches/bet-m-vs-just-players-nodwin-clutch-series-13-1079170</a></li><li>· HotSpawn lobby (fixture discovery)<br><a href="https://play.hotspawn.com/lobby">https://play.hotspawn.com/lobby</a></li></ul></details></article><article class="card bad"><h3>Banda chuya vs Enjoy</h3>
+<p class="meta">CCT Europe 2026 Series #12 Play-In · 18 Oct 08:00Z · 04:00 ET · 2 pts ·
+C ×1.0</p>
+<p><b>Status:</b> no pick published. <b>Why:</b> ambiguous_vrs_name:Banda chuya; no_line_unverified.</p>
+<p><b>What was tried:</b> 4 - no defensible price or rating pair in this capture.
+The official standings resolution for ambiguous_vrs_name:Banda chuya failed, so the rating fallback is refused rather than guessed.</p>
+<details><summary>Sources for this row (2)</summary><ul class="src"><li>· HotSpawn match page (fixture, points, lock, crowd share)<br><a href="https://www.hotspawn.com/matches/banda-chuya-vs-enjoy-cct-europe-2026-series-12-play-in-1081126">https://www.hotspawn.com/matches/banda-chuya-vs-enjoy-cct-europe-2026-series-12-play-in-1081126</a></li><li>· HotSpawn lobby (fixture discovery)<br><a href="https://play.hotspawn.com/lobby">https://play.hotspawn.com/lobby</a></li></ul></details></article>
+<h2>Model-only rows (3)</h2>
+<p class="lede">These rows have a pick, but the pick is an own model line rather than a market
+price, so they are listed here as well so nothing is mistaken for a bookmaker quote.</p>
+<article class="card"><h3>mellren vs Privateer</h3>
+<p class="pickline">Own model line: <b>mellren</b> at
+69.5% (Valve ratings 324.0 points apart,
+slope k=0.4534441214368267)</p>
+<p class="meta">This is not a bookmaker price and carries no claimed out-of-sample accuracy. No
+eligible two-way bookmaker or exchange price existed in this capture.</p><details><summary>Sources for this row (3)</summary><ul class="src"><li>· HotSpawn match page (fixture, points, lock, crowd share)<br><a href="https://www.hotspawn.com/matches/mellren-vs-privateer-cct-europe-2026-series-12-play-in-1081120">https://www.hotspawn.com/matches/mellren-vs-privateer-cct-europe-2026-series-12-play-in-1081120</a></li><li>· HotSpawn lobby (fixture discovery)<br><a href="https://play.hotspawn.com/lobby">https://play.hotspawn.com/lobby</a></li><li>· Official Valve standings 2026_10_05 (#125 vs #271)<br><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md</a></li></ul></details></article><article class="card"><h3>GenOne vs Butterfly</h3>
+<p class="pickline">Own model line: <b>GenOne</b> at
+56.5% (Valve ratings 103.0 points apart,
+slope k=0.4534441214368267)</p>
+<p class="meta">This is not a bookmaker price and carries no claimed out-of-sample accuracy. No
+eligible two-way bookmaker or exchange price existed in this capture.</p><details><summary>Sources for this row (3)</summary><ul class="src"><li>· HotSpawn match page (fixture, points, lock, crowd share)<br><a href="https://www.hotspawn.com/matches/genone-vs-butterfly-nodwin-clutch-series-13-1079171">https://www.hotspawn.com/matches/genone-vs-butterfly-nodwin-clutch-series-13-1079171</a></li><li>· HotSpawn lobby (fixture discovery)<br><a href="https://play.hotspawn.com/lobby">https://play.hotspawn.com/lobby</a></li><li>· Official Valve standings 2026_10_05 (#66 vs #88)<br><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md</a></li></ul></details></article><article class="card"><h3>BakS vs Fire Flux</h3>
+<p class="pickline">Own model line: <b>BakS</b> at
+58.6% (Valve ratings 137.0 points apart,
+slope k=0.4534441214368267)</p>
+<p class="meta">This is not a bookmaker price and carries no claimed out-of-sample accuracy. No
+eligible two-way bookmaker or exchange price existed in this capture.</p><details><summary>Sources for this row (3)</summary><ul class="src"><li>· HotSpawn match page (fixture, points, lock, crowd share)<br><a href="https://www.hotspawn.com/matches/baks-vs-fire-flux-nodwin-clutch-series-13-1079173">https://www.hotspawn.com/matches/baks-vs-fire-flux-nodwin-clutch-series-13-1079173</a></li><li>· HotSpawn lobby (fixture discovery)<br><a href="https://play.hotspawn.com/lobby">https://play.hotspawn.com/lobby</a></li><li>· Official Valve standings 2026_10_05 (#100 vs #131)<br><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md</a></li></ul></details></article>
+<h2>Standing limitations of this hub</h2>
+<ul><li>HotSpawn is used for fixture discovery, listed points/tier, lock times and crowd ownership only. It is never a probability input.</li><li>No source reviewed here publishes how many days of rest a team had, so no rest adjustment is applied anywhere.</li><li>The model column is this project&#x27;s own calibrated calculation from official Valve ratings. It is not a bookmaker line and carries no claimed out-of-sample accuracy.</li><li>Playoff fixtures beyond the two day-3 deciders were not listed on the HotSpawn lobby at capture time, so they are not priced here.</li><li>Ratings come from the 2026-10-05 global standings because that is the newest official global file published at capture time; HLTV&#x27;s live VRS chip shows #5 for Aurora, which the model does not use.</li></ul>
+
+<footer class="foot">Built 2026-10-16T04:50:04Z by session <code>7c2622db</code>.
+HotSpawn supplies fixtures, listed points and crowd ownership only — never a probability.
+External prices come from licensed bookmakers and public exchanges; model rows are this
+project's own calculation from the official Valve standings. Research only, 18+.
+<a href="../picks-every-match/index.html">Canonical every-match board</a> ·
+<a href="../index.html">Main dashboard</a>.</footer></div></body></html>
