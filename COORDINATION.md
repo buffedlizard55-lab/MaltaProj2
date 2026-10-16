@@ -1,5 +1,20 @@
 # Coordination
 
+---
+
+# Coordination — session `169d010a` (TWC Day 3 contrarian check + phone-first landing de-clutter request)
+
+Session: `169d010a` (fixed to branch `arena/169d010a-maltaproj2`).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-169D010A-DAY3: independent line-by-line re-check of the two TWC Day-3 deciders (Aurora vs 9z 1080205, BetBoom vs Legacy 1081775) — Aurora roster-change claim, Day 1/Day 2 results, fresh betting lines from non-HotSpawn sources, safe + contrarian-but-not-stupid pick per decider with every row source-linked, unverified items blank and flagged | in progress | 169d010a | 2026-10-16 07:20 | `audits/169d010a/**`, `data/169d010a/**`, `scripts/169d010a/**`, `tests/test_169d010a.py` |
+| T-169D010A-LANDING (request only, NOT edited here): the root landing page exposes ~30 links from ~20 sessions, which the user reports as confusing on phone. Requested for the integration owner: one primary phone CTA per task (picks list, unresolved, Day-3 decisions, flagged) with the other sessions' boards grouped under a single 'Archive' heading | requested | 169d010a | 2026-10-16 07:20 | owned by the final integration session: `index.html`, `README.md`, `scripts/build_site.py` |
+
+## Log
+- 2026-10-16 07:20 UTC, `169d010a`: Claim posted before any work. Read COORDINATION.md, the live lobby (3 chunks, 31 open fixtures incl. both TWC Day-3 deciders) and the live landing page. No other session holds a claim on `audits/169d010a/**`, `data/169d010a/**`, `scripts/169d010a/**` or `tests/test_169d010a.py`. Every existing board (`picks-every-match/`, `hub/`, `twc-2026/`, `day3/`, `strategy/`, `board/`, root `index.html`) is a read-only input to this session.
+
+
 Session: `b3b89eec` (final integration + line-by-line verification + TWC Day 3 re-check session). Environment fixes work to branch `arena/b3b89eec-maltaproj2`.
 
 | Task | Status | Owner | Claimed UTC | File scope |
