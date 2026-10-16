@@ -73,8 +73,7 @@ def pct(value):
 # available from Research archive rather than crowding every mobile header.
 NAV = [
     ("index.html", "Home"),
-    # 'hub' entry added by session 7c2622db (mobile pick'em hub); additive single entry.
-    ("hub/index.html", "Pick'em hub (every match)"),
+    # Alternate hubs remain in the dated research archive, not primary navigation.
     ("picks-every-match/index.html", "All CS2 picks"),
     ("picks-every-match/unresolved.html", "Unresolved"),
     ("day-one.html", "Day-one review"),
@@ -278,13 +277,14 @@ def page(title, subtitle, body, generated_at, active=None, banner=None, hero=Fal
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 <header class="topbar">
   <div class="wrap">
     <div class="brand"><span class="dot"></span>HotSpawn Pick'ems · betting-line analysis</div>
     <nav>{nav}</nav>
   </div>
 </header>
-<main class="wrap">{main_block}
+<main class="wrap" id="main-content" tabindex="-1">{main_block}
 </main>
 <footer class="wrap">
   <p>Page generated <strong>{esc(generated_at)}</strong>. Fixture list and every quoted price are read from the
@@ -434,59 +434,65 @@ def canonical_home(pick_board):
     pick_time = pick_board.get("generated_utc")
     pick_counts = "".join(
         f'<div class="card"><div class="card-num">{esc(pick_summary.get(key, "—"))}</div><div class="card-label">{label}</div></div>'
-        for key, label in [("open", "Open CS2 fixtures"), ("tier_a_market", "Market-derived picks"),
-                           ("tier_b_model", "Model fallbacks"), ("tier_d_none", "Unverified / blank")])
+        for key, label in [("open", "Open CS2 fixtures"), ("tier_a_market", "Market-priced matches"),
+                           ("tier_b_model", "Model estimates"), ("tier_d_none", "Unverified / blank")])
+    rows = pick_board.get("open")
+    directional = sum(bool((r.get("line") or {}).get("pick_team")) for r in rows) if rows is not None else "—"
+    tied = sum(bool(r.get("line")) and r["line"]["prob_a"] == r["line"]["prob_b"] for r in rows) if rows is not None else "—"
     return f"""
 <section id="executive-summary" aria-labelledby="summary-title">
 <div class="hero-card">
 <p class="eyebrow">CS2 Pick’em dashboard · Executive summary</p>
 <h1 id="summary-title">Every listed match. Evidence before picks.</h1>
-<p>One primary list for your phone: both teams’ win probabilities, the recommended pick,
-source times and limitations. All matches in the captured HotSpawn lobby are retained,
-including low-tier matches. <strong>Unsupported probabilities stay blank, not 50/50.</strong></p>
-<div class="actions">
+<p>Find your next CS2 pick in one list: both teams’ win chances, a clear recommendation,
+and the evidence behind it. Low-tier matches stay on the list too.</p>
+<div class="actions primary-actions">
 <a class="btn btn-primary" href="picks-every-match/index.html">Open all CS2 picks →</a>
-<a class="btn ghost" href="hub/index.html">Mobile hub: every match + day-3 desk</a>
 <a class="btn ghost" href="picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a>
-<a class="btn ghost" href="twc-2026/index.html">Day 2 → Day 3: results &amp; leaderboard risk</a>
+<a class="btn ghost" href="twc-2026/index.html">TWC day-three decisions</a>
 </div>
 <p class="note">Snapshot counts below are evaluated at {esc(pick_time or 'unverified')}.
 Source capture ended {esc(pick_board.get('collected_to_utc') or 'unverified')}.
 A page rebuild is not a new source observation. Open the picks list for per-match expiry checks.</p>
 <p><a href="twc-2026/results.html">Verified day-two results</a> → <a href="twc-2026/index.html">day-three decisions</a> · <a href="twc-2026/roster.html">Original Aurora announcements &amp; unknown rest</a> · <a href="twc-2026/flagged.html">Research flags</a>. The upset watchlist never changes the canonical match probabilities.</p>
 <div class="cards">{pick_counts}</div>
+<p id="pick-accounting"><strong>{esc(directional)} directional picks</strong> ·
+<strong>{esc(tied)} priced ties — no edge</strong>. A market price is not always a recommendation.
+These categories plus the unverified blanks account for every open row in this snapshot.
+<a href="data/c64a5e19/board.json">Source-linked row data</a>.</p>
 <section id="canonical-unresolved">
 <h2>What remains unresolved?</h2>
 <p><strong>{esc(pick_summary.get('tier_d_none', '—'))} open matches have no supported line</strong>
 in this evaluated snapshot. Missing prices, uncertain roster identity, stale evidence or mismatched
 kickoff times are reasons to withhold a pick, not exclude the match. Each row on the
-<a href="picks-every-match/unresolved.html">dedicated unresolved page</a> explains source attempts and limitations.</p>
+<a href="picks-every-match/unresolved.html">dedicated unresolved page</a> explains source attempts and limitations.
+<strong>Unsupported probabilities stay blank, not 50/50.</strong></p>
 <p>Primary markets come first. Only uncovered matches use the fallback research ladder:
 HLTV → esportsbooks/exchanges → uniquely identified official Valve ratings.
 An endpoint responding successfully is not proof it prices a match. Model estimates are our
 calculations, not officially verified win chances. <strong>HotSpawn crowd picks never price a match.</strong></p>
 </section>
-<details class="archive"><summary>Independent parallel TWC review (different capture/policy)</summary>
-<p>Additional preserved work: <a href="day3/index.html">Independent day-three desk (4cf64ea3)</a> · <a href="day3/unresolved.html">Its unresolved picks / limitations</a>. Its alternative source/identity and risk gates are not blended into the canonical board.</p>
-<p>Preserved from session 869a5375: <a href="twc/index.html">TWC Day 1–3 review &amp; Day 3 picks</a> · <a href="twc/unresolved.html">TWC unresolved &amp; limitations</a>. Its rounded forecasts and ownership come from a different capture and strategy. Do not substitute them for the current canonical line or use them to fill a canonical blank.</p></details>
-<details class="archive"><summary>Independent dated roster review</summary>
-<p>Not a current price feed: <a href="audits/94b3d48a/index.html">Audit 94b3d48a</a> ·
-<a href="audits/94b3d48a/unresolved.html">Dated unresolved research</a> ·
-<a href="audits/94b3d48a/flagged.html">Audit limitations</a> ·
-<a href="audits/6c5bb3d6/index.html">Independent line-by-line verification (every probability re-derived from raw quotes and Valve's standings; day-1 upset review and leaderboard-differential cross-check)</a>.</p></details>
+<details class="archive"><summary>Dated roster research (not current prices)</summary>
+<p><a href="audits/94b3d48a/index.html">Independent roster audit</a> ·
+<a href="audits/94b3d48a/unresolved.html">Its dated unresolved research</a>.</p></details>
 </div>
 </section>
 <div class="pick-boards-grid" id="where-the-picks">
-<a class="board-card" href="hub/index.html"><div class="board-card-title">Every-match hub &amp; TWC day-3 desk</div><div class="board-card-desc">Mobile front door (session 7c2622db): one card per open match with pick, both probabilities and the crowd share as ownership only, plus the day-1/2 review, its own unresolved &amp; limitations section, flags and verification.</div></a>
+
 <a class="board-card board-card-primary" href="picks-every-match/picks.html"><div class="board-card-title">Match picks &amp; probabilities</div><div class="board-card-desc">Both teams, clear pick, market/model label and source evidence. Search by team or tournament.</div></a>
 <a class="board-card" href="picks-every-match/inventory.html"><div class="board-card-title">Full lobby inventory</div><div class="board-card-desc">Every retained CS2 fixture, including locked/past rows. Coverage refers to the captured lobby, not unseen additions.</div></a>
 <a class="board-card" href="twc-2026/index.html"><div class="board-card-title">Day 2 → Day 3: a credible upset, not blind underdogs</div><div class="board-card-desc">All eight TWC results, primary-confirmed July signings, a canonical day-three decision sheet and explicit expected-points tradeoffs. No invented rest penalty.</div></a>
-<a class="board-card" href="strategy/index.html"><div class="board-card-title">Independent safe + leaderboard research</div><div class="board-card-desc">Preserved alternative strategy snapshot, with a different source/identity policy and a dated day-one retrospective. Do not use it to fill a canonical blank or add its coverage count to this one.</div></a>
-<a class="board-card" href="day3/index.html"><div class="board-card-title">Independent day-three desk</div><div class="board-card-desc">Preserved session 4cf64ea3 results, all-match research and climb heuristics. Its independent capture/source/risk policy may differ; do not use it to replace canonical prices or fill unsupported canonical rows. Includes its own unresolved section.</div></a>
 <a class="board-card" href="day-one.html"><div class="board-card-title">Day one &amp; sensible contrarian strategy</div><div class="board-card-desc">9z–Aurora, all four opening results, roster context and what the evidence does not prove.</div></a>
-<a class="board-card" href="twc/index.html"><div class="board-card-title">Independent parallel TWC review</div><div class="board-card-desc">Preserved session 869a5375 results, group standings and strategy snapshot with its own limitations. Different source capture/policy, not a replacement for the current canonical picks or day-three decision sheet above.</div></a>
+
 <a class="board-card" href="flagged.html"><div class="board-card-title">Flagged for Review</div><div class="board-card-desc">Source failures, disputed identities and competing historical boards. No silent assumptions.</div></a>
 </div>
+<h2>How to use this dashboard</h2>
+<ol class="quick-guide"><li><strong>Choose a match:</strong> open All CS2 picks, then search a team or tournament.</li>
+<li><strong>Read the line:</strong> market prices first; a labelled model only where no accepted market exists.</li>
+<li><strong>For leaderboard risk:</strong> use the TWC decision sheet. A possible upset is not automatically a good pick.</li></ol>
+<p><a href="twc-2026/index.html">TWC day-three strategy</a> ·
+<a href="picks-every-match/inventory.html">Full captured lobby</a> ·
+<a href="audits/6ffacd40/index.html">16 October coverage &amp; source audit</a></p>
 <h2>Automatic updates</h2>
 <p>The canonical collector is scheduled every four hours at 00:12, 04:12, 08:12, 12:12,
 16:12 and 20:12 UTC. It rediscovers lobby fixtures and retries external markets without manual input.
@@ -495,7 +501,19 @@ Quotes expire after four hours or at pick lock. Source failures preserve invento
 <p><a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/every-match-c64a5e19.yml">Refresh status</a> ·
 <a href="https://play.hotspawn.com/lobby">Official HotSpawn lobby</a> ·
 <a href="picks-every-match/method.html">Probability method &amp; retained source payloads</a></p>
-<details class="archive"><summary>Historical research and independent audits</summary>
+<details class="archive"><summary>Historical research and independent audits (not the current pick list)</summary>
+<details class="archive"><summary>Independent parallel TWC review (different capture/policy)</summary>
+<p>Additional preserved work: <a href="day3/index.html">Independent day-three desk (4cf64ea3)</a> · <a href="day3/unresolved.html">Its unresolved picks / limitations</a>. Its alternative source/identity and risk gates are not blended into the canonical board.</p>
+<p>Preserved from session 869a5375: <a href="twc/index.html">TWC Day 1–3 review &amp; Day 3 picks</a> · <a href="twc/unresolved.html">TWC unresolved &amp; limitations</a>. Its rounded forecasts and ownership come from a different capture and strategy. Do not substitute them for the current canonical line or use them to fill a canonical blank.</p></details>
+<details class="archive"><summary>Independent dated roster review</summary>
+<p>Not a current price feed: <a href="audits/94b3d48a/index.html">Audit 94b3d48a</a> ·
+<a href="audits/94b3d48a/unresolved.html">Dated unresolved research</a> ·
+<a href="audits/94b3d48a/flagged.html">Audit limitations</a> ·
+<a href="audits/6c5bb3d6/index.html">Independent line-by-line verification (every probability re-derived from raw quotes and Valve's standings; day-1 upset review and leaderboard-differential cross-check)</a>.</p></details>
+
+<div class="pick-boards-grid"><a class="board-card" href="hub/index.html"><div class="board-card-title">Alternate mobile hub &amp; TWC desk</div><div class="board-card-desc">Mobile front door (session 7c2622db): one card per open match with pick, both probabilities and the crowd share as ownership only, plus the day-1/2 review, its own unresolved &amp; limitations section, flags and verification.</div></a><a class="board-card" href="strategy/index.html"><div class="board-card-title">Independent safe + leaderboard research</div><div class="board-card-desc">Preserved alternative strategy snapshot, with a different source/identity policy and a dated day-one retrospective. Do not use it to fill a canonical blank or add its coverage count to this one.</div></a>
+<a class="board-card" href="day3/index.html"><div class="board-card-title">Independent day-three desk</div><div class="board-card-desc">Preserved session 4cf64ea3 results, all-match research and climb heuristics. Its independent capture/source/risk policy may differ; do not use it to replace canonical prices or fill unsupported canonical rows. Includes its own unresolved section.</div></a>
+<a class="board-card" href="twc/index.html"><div class="board-card-title">Independent parallel TWC review</div><div class="board-card-desc">Preserved session 869a5375 results, group standings and strategy snapshot with its own limitations. Different source capture/policy, not a replacement for the current canonical picks or day-three decision sheet above.</div></a></div>
 <p>Alternate boards have different captures and assumptions; they are not interchangeable current pick lists.
 Do not add their counts together or use an older estimate to fill a current blank.</p>
 <p><a href="research.html">Research archive</a> · <a href="audits/5468b0ba/index.html">Latest Day 1–3 &amp; Every-Match Verification (5468b0ba)</a> · <a href="audits/3faf40e8/index.html">Source integrity audit</a> ·
@@ -741,7 +759,13 @@ fixtures with the same verification columns as the main table.</p>
 Nothing on this page blocks the analysis; it exists so every gap, irregularity and failed access attempt is
 visible instead of being silently filled in.</div>
 
-<h2>Current integration review · 15 October 2026</h2>
+<h2>Coverage &amp; source review · 16 October 2026</h2>
+<p><a href="audits/6ffacd40/index.html">Line-by-line canonical audit and unresolved research</a>:
+market-priced rows are now distinguished from directional picks. Equal-probability markets are
+explicit no-edge ties, not missing odds and not a made-up preference. Unsupported probabilities remain blank.</p>
+<p><a href="audits/6ffacd40/index.html#limitations">Flagged for Review: missing primary odds, roster ambiguity,
+secondary-only price leads and publication-test snapshot mismatch</a>. All are published with source links.</p>
+<h2>Earlier integration review · 15 October 2026</h2>
 <p>The homepage previously promoted an alternate board as complete coverage while the strict board
 retained unresolved matches. The primary navigation and counts now use only the canonical board.
 Historical alternate boards are preserved for audit, not endorsed as verified current picks.</p>
@@ -957,7 +981,7 @@ Unpriced games stay blank. Archived model/pickem/audit sections retain their own
 their own snapshots, source policies and model assumptions. They do not supply a number to the current CS2 or
 Probabilities tables.</div>
 <div class="archive-grid">
-  <article class="card"><h2>Independent verification</h2><p><a href="audits/5468b0ba/index.html">TWC Day 1–3 &amp; Every-Match Verification (5468b0ba)</a><br>
+  <article class="card"><h2>Independent verification</h2><p><a href="audits/6ffacd40/index.html">16 October canonical coverage, no-edge ties &amp; source review</a><br><a href="audits/5468b0ba/index.html">TWC Day 1–3 &amp; Every-Match Verification (5468b0ba)</a><br>
   <a href="verify/b3b89eec/index.html">Independent verification + TWC day-3 audit (b3b89eec)</a><br>
   <a href="verify/8e7a652d/index.html">Market verification &amp; cross-check</a><br>
   <a href="verify/0f71ea59/index.html">Line-by-line verification report</a><br>
@@ -1178,6 +1202,14 @@ table td:before{display:block;content:attr(data-label);color:var(--mut);font-siz
 }
 footer{color:var(--mut);font-size:13px;border-top:1px solid var(--line);margin-top:40px;padding:18px}
 
+/* Root accessibility and single-list mobile handoff (6ffacd40). */
+.skip-link{position:absolute;left:12px;top:-80px;z-index:100;background:var(--acc);color:#04101f;padding:12px;border-radius:8px}
+.skip-link:focus{top:12px}
+.primary-actions{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.primary-actions .btn{margin:0;display:flex;align-items:center;justify-content:center;min-width:0}
+.quick-guide{padding-left:22px;max-width:750px}
+.archive p,.archive .pick-boards-grid{margin-left:16px;margin-right:16px}
+@media(max-width:640px){.primary-actions{display:grid;grid-template-columns:1fr}.primary-actions .btn{width:100%}}
 /* Executive summary hero */
 .hero-card{background:linear-gradient(135deg,#141d2e 0%,#1a2744 100%);border:1px solid #2b3d5c;border-radius:16px;padding:28px 24px;margin:10px 0 0}
 .eyebrow{color:#69e4bd;font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin:0}
