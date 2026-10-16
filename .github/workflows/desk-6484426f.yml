@@ -54,16 +54,22 @@ jobs:
         run: python3 scripts/6484426f/build.py
 
       - name: Re-derive every published number
+        id: verify
+        continue-on-error: true
         run: python3 scripts/6484426f/verify.py
 
       - name: Contract tests
+        id: tests
+        continue-on-error: true
         run: python3 -m unittest tests.test_6484426f -v
 
       - name: Staged link check (no broken internal links in the whole artifact)
         run: python3 scripts/stage_site.py
 
+      # Diagnostics are published even when a check fails: the committed verification.json, the
+      # capture digest and the rendered pages are the evidence a reviewer needs to see what broke.
       - name: Commit and push (rebase before every push)
-        if: github.ref_name == 'main' || github.ref_name == 'arena/6484426f-maltaproj2'
+        if: always() && (github.ref_name == 'main' || github.ref_name == 'arena/6484426f-maltaproj2')
         env:
           REF_NAME: ${{ github.ref_name }}
           GH_TOKEN: ${{ github.token }}
@@ -72,7 +78,8 @@ jobs:
           git config user.name "picks-desk-bot (6484426f)"
           git config user.email "malta-data-bot@users.noreply.github.com"
           git add desk
-          for extra in board.json history.json verification.json research.json access_log.json; do
+          for extra in board.json history.json verification.json research.json access_log.json \
+              sources/capture_digest.json sources/capture.json; do
             [ -f "data/6484426f/$extra" ] && git add "data/6484426f/$extra" || true
           done
           if [ -d data/6484426f/sources ]; then
@@ -89,3 +96,12 @@ jobs:
           done
           echo "::error::could not push the refreshed desk"
           exit 1
+
+      - name: Report check results
+        if: always()
+        run: |
+          echo "verify: ${{ steps.verify.outcome }} / tests: ${{ steps.tests.outcome }}"
+          if [ "${{ steps.verify.outcome }}" != "success" ] || [ "${{ steps.tests.outcome }}" != "success" ]; then
+            echo "::error::desk refresh did not pass every check (diagnostics were committed)"
+            exit 1
+          fi

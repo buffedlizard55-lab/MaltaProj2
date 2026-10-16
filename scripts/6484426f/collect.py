@@ -172,7 +172,9 @@ def collect_pinnacle(lobby_names: set[str]) -> dict:
                 continue
             markets_out.append({"matchup_id": m["id"], "participants": names, "start_utc":
                                 shared.core().to_iso(start), "league": (m.get("league") or {}).get("name"),
-                                "markets": markets})
+                                "n_markets": len(markets),
+                                "market_types": sorted({str(mk.get("type")) for mk in markets
+                                                        if isinstance(mk, dict)})})
             for mk in markets:
                 if (mk.get("type") != "moneyline" or mk.get("period") != 0 or mk.get("isAlternate")
                         or mk.get("matchupId") != m["id"] or mk.get("status") != "open"):
@@ -429,6 +431,19 @@ def main() -> int:
     capture = {"session": "6484426f", "started_utc": started, "finished_utc": iso_now(),
                "hotspawn": hs, "pinnacle": pinnacle, "bovada": bovada, "melbet": melbet,
                "kalshi": kalshi, "valve": valve, "hltv_probe": hltv}
+    digest = {"session": "6484426f", "started_utc": started, "finished_utc": capture["finished_utc"],
+              "hotspawn_fixtures": len(hs["fixtures"]),
+              "hotspawn_lobby_rows": sum(1 for f in hs["fixtures"]
+                                         if "lobby_page" in f.get("seen_in", [])),
+              "ownership_rows": len(hs.get("ownership") or {}),
+              "quotes": {"pinnacle": pinnacle["quotes"], "bovada": bovada["quotes"],
+                         "melbet": melbet["quotes"], "kalshi": kalshi.get("markets") or []},
+              "kalshi_rejected": kalshi.get("rejected") or [],
+              "valve": {"commit": (valve.get("commit") or {}).get("sha") if isinstance(valve.get("commit"), dict)
+                        else valve.get("commit"), "files": sorted(valve.get("files") or {})},
+              "http": {k: {"status": v.get("status"), "bytes": v.get("bytes"), "error": v.get("error"),
+                           "read_utc": v.get("read_utc")} for k, v in LOG.items()}}
+    (SRC / "capture_digest.json").write_text(json.dumps(digest, indent=1, ensure_ascii=False) + "\n")
     (SRC / "capture.json").write_text(json.dumps(capture, indent=1, ensure_ascii=False) + "\n")
     (SRC / "access_log.json").write_text(json.dumps({"session": "6484426f", "log": LOG},
                                                     indent=1, ensure_ascii=False) + "\n")
