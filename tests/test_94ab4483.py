@@ -123,7 +123,7 @@ class TestDayFourAudit(unittest.TestCase):
         delta = int((datetime.fromisoformat(independent) - datetime.fromisoformat(canonical)).total_seconds())
         self.assertEqual(delta, data["capture_gap_seconds"])
         self.assertNotEqual(data["canonical"]["policy"], data["independent"]["policy"])
-        self.assertEqual(delta, 6 * 3600 + 36 * 60 + 2)
+        self.assertEqual(delta, -(9 * 60 + 51))
 
     def test_generated_pages_are_mobile_accessible_source_linked_and_resolve_local_links(self) -> None:
         pages = ["index.html", "unresolved.html", "flagged.html", "method.html"]

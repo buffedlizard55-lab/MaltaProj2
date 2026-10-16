@@ -183,9 +183,24 @@ def render_market(data: dict) -> str:
     return table_open("FURIA vs Aurora: latest exact source-board captures, each pinned to its raw repository record.", ["Operator / method", "Captured UTC", "Decimal odds", "No-vig estimate", "Source"]) + "".join(rows) + table_close()
 
 
+def capture_gap_summary(boards: dict) -> str:
+    signed_gap = boards["capture_gap_seconds"]
+    absolute_gap = abs(signed_gap)
+    hours, remainder = divmod(absolute_gap, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    if signed_gap > 0:
+        newer, older = "separate full-coverage", "canonical market-first"
+    elif signed_gap < 0:
+        newer, older = "canonical market-first", "separate full-coverage"
+    else:
+        return "The two captures have the same timestamp; their inventories and fallback policies still differ, so do not combine counts."
+    return f"The {newer} capture is {hours}h {minutes}m {seconds}s newer than the {older} capture. Their inventories and fallback policies differ; do not combine counts."
+
+
 def render_index(data: dict) -> str:
     live = data["live_match"]
     boards = data["board_freshness"]
+    ci = data["ci_observation"]
     board_rows = []
     for key, label in (("canonical", "Canonical market-first board"), ("independent", "Separate full-coverage board")):
         board = boards[key]
@@ -201,6 +216,11 @@ def render_index(data: dict) -> str:
         board_rows.append(row)
     roster = data["roster_and_rest"]
     live_map_list = " · ".join(live["maps_observed"])
+    ci_summary = (
+        f"Latest main check on {ci['main_sha'][:7]} (finished {ci['observed_utc']}): "
+        f"{ci['dashboard_check']}. Pages deployment {ci['pages_deployment']} "
+        f"(finished {ci['pages_deploy_observed_utc']}). {ci['local_tests']}."
+    )
     return f"""
     <div class="hero">
       <div class="eyebrow">Day 4 preview · source-linked · reviewed 16 October 2026</div>
@@ -223,12 +243,17 @@ def render_index(data: dict) -> str:
 
     <section id="roster"><h2>Aurora roster, onboarding and rest</h2><p>The reviewed official announcements confirm a July rebuild, not a newly verified October roster move. Calendar time since signing does not measure practice or adaptation, so no probability penalty is applied.</p>{render_roster(data)}<p>Additional context: {source_link(data, "hltv_aurora_roster")} · <a href="../../twc-2026/roster.html">existing roster/rest review and its search limitations</a>.</p><p><strong>Rest hours:</strong> <span class="blank">— unverified</span>. No verified rest/sleep/travel schedule was collected, and no numeric fatigue adjustment is made. {source_link(data, "hotspawn_day2", "Day 2 match schedule and results")}</p></section>
 
-    <section id="coverage"><h2>Coverage boundary and refresh freshness</h2><p>The tournament page lists two semifinal placeholders (#1080207 and #1080208). The latest general Pick’ems lobby view omitted the main TWC filter and fixture rows; an earlier same-day view showed TWC and team counts but no match row. These changing states do not verify whether either semifinal is selectable. See <a href="unresolved.html">Unresolved</a> for the exact unknowns and next evidence needed.</p>{table_open("Two repository snapshots are not interchangeable; capture time and policy are shown.", ["Board", "Capture UTC", "Snapshot counts", "Source"])}{"".join(board_rows)}{table_close()}<div class="notice warning">The newer independent capture is {boards["capture_gap_seconds"] // 3600}h {(boards["capture_gap_seconds"] % 3600) // 60}m {(boards["capture_gap_seconds"] % 60)}s newer than the canonical capture. The counts/policies are different and must not be mixed. The canonical board’s configured four-hour refresh workflow is best-effort; check its run history for current data. {source_link(data, boards["canonical_refresh_workflow_url_key"], "Open the 4-hour refresh workflow")}</div><p>Latest main check observed at 19:49Z: the dashboard verification run failed at its post-refresh source-linked-row recheck, while the GitHub Pages deployment completed successfully. The rebased full suite passed 740 tests (3 skipped), and this audit’s 9 targeted tests passed. The hosted check is flagged, not claimed fixed; details are on <a href="flagged.html#ci">Flagged for Review</a>.</p></section>
+    <section id="coverage"><h2>Coverage boundary and refresh freshness</h2><p>The tournament page lists two semifinal placeholders (#1080207 and #1080208). The latest general Pick’ems lobby view omitted the main TWC filter and fixture rows; an earlier same-day view showed TWC and team counts but no match row. These changing states do not verify whether either semifinal is selectable. See <a href="unresolved.html">Unresolved</a> for the exact unknowns and next evidence needed.</p>{table_open("Two repository snapshots are not interchangeable; capture time and policy are shown.", ["Board", "Capture UTC", "Snapshot counts", "Source"])}{"".join(board_rows)}{table_close()}<div class="notice warning">{esc(capture_gap_summary(boards))} The canonical board’s configured four-hour refresh workflow is best-effort; check its run history for current data. {source_link(data, boards["canonical_refresh_workflow_url_key"], "Open the 4-hour refresh workflow")}</div><p>{esc(ci_summary)} This audit’s 9 targeted tests passed. Earlier hosted-check history is summarized on <a href="flagged.html#ci">Flagged for Review</a>.</p></section>
     """
 
 
 def render_unresolved(data: dict) -> str:
     live = data["live_match"]
+    boards = data["board_freshness"]
+    board_freshness_detail = (
+        f"Canonical capture {boards['canonical']['capture_utc']}; separate full-coverage capture "
+        f"{boards['independent']['capture_utc']}. {capture_gap_summary(boards)}"
+    )
     issues = [
         ("Falcons’ semifinal opponent", "", "Leave opponent, winner pick, and probability blank until the BetBoom–Legacy decider is final and the official semifinal pairing is verified.", ["hotspawn_tournament", "hltv_betboom_legacy", "hotspawn_betboom_legacy"]),
         ("Are either Day 4 semifinal slots selectable in Pick’ems?", "UNVERIFIED", "The latest general lobby view omitted the main TWC filter and semifinal rows; an earlier same-day render showed TWC and BetBoom/Legacy counts but no row. These changing views do not prove presence or absence.", ["hotspawn_pickems", "hotspawn_tournament"]),
@@ -237,8 +262,8 @@ def render_unresolved(data: dict) -> str:
         ("BetBoom–Legacy series winner", "", f"HLTV was {live['hltv_status_observed']} at 1–1 in maps; Mirage had not started in that fetched view. HotSpawn displayed 0–0 / Waiting for information. Do not report a winner.", ["hltv_betboom_legacy", "hotspawn_betboom_legacy"]),
         ("Exact live rest/fatigue hours for Aurora", "", "No verified rest, sleep, travel or practice-hours record. Map count is not rest time.", ["hotspawn_day2", "hotspawn_aurora_day3"]),
         ("Causal win-probability effect of Aurora’s July roster onboarding", "", "The official July signings are confirmed; a causal October probability adjustment is not. No arbitrary penalty is applied.", ["aurora_jimpphat", "aurora_ash", "aurora_kyxsan"]),
-        ("Fresh live odds at decision time", "DATED SNAPSHOT", "Exact feed captures are 19:47:45Z (Melbet) and 19:48:48Z (Thunderpick via bo3.gg), preserved in the 19:49 source-board snapshot. Prices can move; treat them as dated evidence, not a live quote.", ["melbet_feed", "thunderpick_mirror", "coverage_board"]),
-        ("Canonical board after the independent 19:49 capture", "FRESHNESS FLAG", "Canonical board capture is 13:13:13Z; separate full-coverage capture is 19:49:15Z. Their fixture inventories and fallback policies differ; do not combine counts.", ["canonical_board", "coverage_board", "canonical_refresh_workflow"]),
+        ("External odds snapshot at decision time (not live)", "DATED SNAPSHOT", "Exact feed captures are 19:47:45Z (Melbet) and 19:48:48Z (Thunderpick via bo3.gg), preserved in the 19:49 source-board snapshot. Prices can move; treat them as dated evidence, not a live quote.", ["melbet_feed", "thunderpick_mirror", "coverage_board"]),
+        ("Canonical and independent board freshness", "FRESHNESS FLAG", board_freshness_detail, ["canonical_board", "coverage_board", "canonical_refresh_workflow"]),
         ("Other CS2 fixtures without verified market prices", "See all-match page", "This TWC report does not overwrite the repository’s all-match board. Use its dedicated unresolved section for all non-TWC/low-tier blanks and fallbacks.", ["canonical_board", "coverage_board"]),
     ]
     rows = []
@@ -263,14 +288,28 @@ def render_unresolved(data: dict) -> str:
 
 
 def render_flagged(data: dict) -> str:
+    ci = data["ci_observation"]
+    previous_failure = ci["previous_dashboard_failure"]
+    boards = data["board_freshness"]
+    ci_history_note = (
+        f"Earlier main run {previous_failure['run_id']} on SHA {previous_failure['sha'][:7]} failed at step 10. "
+        f"The later main run {ci['dashboard_run_id']} on SHA {ci['main_sha'][:7]} "
+        f"{ci['dashboard_check']}; the Pages deployment and actual public-dashboard verification succeeded. "
+        "This later recovery followed shared main-branch updates and is not attributed to this audit; "
+        "the detailed log download for the earlier failure returned EOF."
+    )
+    board_history_note = (
+        f"Canonical market-first capture {boards['canonical']['capture_utc']}; separate full-coverage capture "
+        f"{boards['independent']['capture_utc']}. {capture_gap_summary(boards)}"
+    )
     rows = [
         ("F1 · Inconsistent tournament status cards", "HotSpawn’s tournament page showed Aurora–9z as LIVE after the official Day 3 article said Aurora won 2–0. It showed BetBoom–Legacy as UPCOMING while HLTV showed the decider LIVE at 1–1. Treat the tournament card status as stale/inconsistent until corroborated.", ["hotspawn_tournament", "hotspawn_aurora_day3", "hltv_betboom_legacy"]),
         ("F2 · HotSpawn match page is behind the live match", "BetBoom–Legacy’s match page showed 0–0 and “Waiting for information”; HLTV showed Nuke 16–13 BetBoom, Dust2 13–11 Legacy, with Mirage not started. No winner verified.", ["hotspawn_betboom_legacy", "hltv_betboom_legacy"]),
         ("F3 · Pick’ems lobby state changed during review", "An earlier same-day view showed TWC (1), BetBoom (1) and Legacy (1), but no card. The latest general weekly lobby showed 159 matches across 83 tournament filters and omitted main TWC and BetBoom/Legacy; only the South American TWC series appeared. This changing state does not verify semifinal inclusion or crowd ownership.", ["hotspawn_pickems"]),
         ("F4 · Market source quality differs", "Melbet’s retained line is from its public feed; its human page was country-restricted in a direct fetch. Thunderpick is labelled on a bo3.gg mirror, not a direct operator page. EGamersWorld’s displayed 1.83/1.90 did not identify a bookmaker. Kalshi’s 15¢ and 13¢ spreads exceed the board’s 10¢ threshold. Only the two even source readings are shown as evidence, with caveats.", ["melbet_feed", "melbet_public", "thunderpick_mirror", "coverage_board", "egamersworld", "kalshi"]),
         ("F5 · Quote timestamp precision", "Exact source-board captures are 19:47:45Z (Melbet) and 19:48:48Z (Thunderpick via bo3.gg), recorded in the pinned 19:49 board. Quotes can still move after that snapshot; they are not guaranteed live odds.", ["melbet_feed", "thunderpick_mirror", "coverage_board"]),
-        ("F6 · Board captures differ in time and policy", "The canonical market-first board is 13:13:13Z; a separate broader capture is 19:49:15Z. The second capture is 6h 36m 2s newer but has a different inventory/fallback policy. Keep counts separate.", ["canonical_board", "coverage_board", "canonical_refresh_workflow"]),
-        ("F7 · Hosted dashboard validation was red", "GitHub Actions reported failure at “Recheck generated site and every source-linked row” on main SHA 24e745f (observed 19:49Z). The Pages deployment run succeeded; the rebased local full suite passed 740 tests (3 skipped) and this session’s 9 targeted tests passed. Detailed remote log retrieval returned EOF; cause is not inferred, and the hosted recheck is not claimed resolved.", ["dashboard_check_run", "pages_deploy_run"]),
+        ("F6 · Board captures differ in time and policy", board_history_note, ["canonical_board", "coverage_board", "canonical_refresh_workflow"]),
+        ("F7 · Earlier red dashboard recheck later passed", ci_history_note, ["previous_dashboard_failure_run", "dashboard_check_run", "pages_deploy_run"]),
         ("F8 · Roster/rest story is bounded", f"Three official Aurora announcements were from July. {esc(data['roster_and_rest']['recent_change_finding'])} Actual rest hours and a causal probability effect remain blank.", ["aurora_jimpphat", "aurora_ash", "aurora_kyxsan"]),
         ("F9 · A tie is not a contrarian edge", "The two bookmaker-labelled readings are 50/50 after removing overround, and HotSpawn ownership was not available. A forced team choice would be arbitrary; no contrarian pick is published.", ["melbet_feed", "thunderpick_mirror", "coverage_board", "hotspawn_pickems"]),
     ]
@@ -282,7 +321,7 @@ def render_flagged(data: dict) -> str:
         table_rows.append(row)
     return f"""
     <div class="hero"><div class="eyebrow">Separate public review page</div><h1>Flagged for Review</h1><p>These issues affect confidence, coverage or source freshness. Values were not “fixed” by guessing; each flag links back to the evidence needed to re-check it.</p></div>
-    <div class="notice warning"><strong>Important:</strong> a successful Pages deployment does not erase a failed validation check. The hosted recheck remains flagged even though the local suite passed.</div>
+    <div class="notice neutral"><strong>CI follow-up:</strong> {esc(ci_history_note)}</div>
     <div id="ci"></div>
     {table_open("Nine source, status, freshness and verification flags.", ["Flag", "Finding", "Review links"])}{"".join(table_rows)}{table_close()}
     <section><h2>Review state</h2><p>The Day 4 HTML pages are generated from <a href="../../data/94ab4483/review.json">the frozen evidence ledger</a> by the <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/scripts/94ab4483/build.py">versioned build script</a>. A fresh deployment does not automatically refresh this dated research snapshot; its date and quote-capture times remain visible.</p></section>

@@ -94,7 +94,7 @@
     },
     "canonical_board": {
       "label": "Canonical every-match board source record",
-      "url": "https://github.com/buffedlizard55-lab/MaltaProj2/blob/706b427997d63abf5bb9ba285270f4fe95178dd3/data/c64a5e19/board.json",
+      "url": "https://github.com/buffedlizard55-lab/MaltaProj2/blob/6becd9983b19086376696015b969f980676de2bf/data/c64a5e19/board.json",
       "kind": "repository snapshot"
     },
     "coverage_board": {
@@ -107,14 +107,19 @@
       "url": "https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/every-match-c64a5e19.yml",
       "kind": "automated refresh configuration"
     },
-    "dashboard_check_run": {
-      "label": "Verify and publish dashboard run (failed recheck step)",
+    "previous_dashboard_failure_run": {
+      "label": "Earlier Verify and publish dashboard run (step 10 failed)",
       "url": "https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38957728524",
       "kind": "GitHub Actions run"
     },
+    "dashboard_check_run": {
+      "label": "Latest Verify and publish dashboard run (all checks and public verification passed)",
+      "url": "https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38959695583",
+      "kind": "GitHub Actions run"
+    },
     "pages_deploy_run": {
-      "label": "GitHub Pages deployment run (success)",
-      "url": "https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38957727854",
+      "label": "Latest GitHub Pages deployment run (success)",
+      "url": "https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38959694544",
       "kind": "GitHub Actions run"
     },
     "aurora_jimpphat": {
@@ -233,7 +238,7 @@
     "result": null,
     "observation_date_utc": "2026-10-16",
     "observation_time_precision": "date-only; exact HTTP response time was not exposed",
-    "latest_check_started_after_utc": "2026-10-16T19:54:51Z",
+    "latest_check_started_after_utc": "2026-10-16T20:06:40Z",
     "latest_hltv_status_observed": "LIVE at 1-1 in maps; Mirage still not started in this fetched view",
     "latest_hotspawn_match_page_observed": "0-0 at the listed 17:00 start with 'Waiting for information'; its embedded stream widget also displayed LIVE, which is not treated as a match score",
     "latest_tournament_page_observed": "Aurora-9z still labelled LIVE after the reported result; BetBoom-Legacy labelled UPCOMING despite HLTV's live 1-1 series; semifinal slots remain generic placeholders",
@@ -359,7 +364,7 @@
   "coverage_observations": {
     "pickem_lobby": {
       "observation_date_utc": "2026-10-16",
-      "fetched_after_utc": "2026-10-16T19:54:51Z",
+      "fetched_after_utc": "2026-10-16T20:06:40Z",
       "rendered_text": "Latest general weekly lobby: 159 matches this week; 83 tournament filters and 83 team filters. The main Thunderpick World Championship 2026 and BetBoom/Legacy are absent; the only TWC-named filter is Thunderpick World Championship 2026: South American Series #1 (8). All displayed cards across both fetched page chunks were from other competitions; no main-TWC semifinal card appeared.",
       "twc_match_rows_visible": false,
       "main_twc_filter_visible": false,
@@ -384,14 +389,14 @@
   },
   "board_freshness": {
     "canonical": {
-      "capture_utc": "2026-10-16T13:13:13Z",
+      "capture_utc": "2026-10-16T19:59:06Z",
       "path": "data/c64a5e19/board.json",
-      "listed": 93,
-      "open": 29,
-      "with_pick": 23,
-      "market_based": 21,
-      "model_only": 2,
-      "blank": 6,
+      "listed": 83,
+      "open": 21,
+      "with_pick": 13,
+      "market_based": 10,
+      "model_only": 3,
+      "blank": 8,
       "policy": "canonical market-first all-match board"
     },
     "independent": {
@@ -407,20 +412,28 @@
       "open_blank": 2,
       "policy": "separate full-coverage board with a different inventory and fallback/model policy"
     },
-    "capture_gap_seconds": 23762,
-    "comparison_note": "The independent capture is 6h 36m 2s newer than the canonical capture. Counts and policies are not interchangeable; the newer board does not replace the canonical source.",
+    "capture_gap_seconds": -591,
+    "comparison_note": "The canonical capture is 9m 51s newer than the independent capture. Their inventories and fallback policies remain distinct; do not combine counts.",
     "canonical_refresh_workflow_url_key": "canonical_refresh_workflow"
   },
   "ci_observation": {
-    "main_sha": "24e745fe049f673e2771e626e587a69d3d02bb72",
-    "observed_utc": "2026-10-16T19:49:47Z",
-    "dashboard_check": "failed at 'Recheck generated site and every source-linked row' (step 10)",
+    "main_sha": "c44cb504717a2eb1b701182ddb7645c550308833",
+    "observed_utc": "2026-10-16T20:07:56Z",
+    "dashboard_run_id": "38959695583",
+    "dashboard_check": "passed: step 10 source-linked-row recheck, browser smoke tests, staging, and actual public dashboard verification all succeeded",
     "dashboard_check_url_key": "dashboard_check_run",
+    "previous_dashboard_failure": {
+      "run_id": "38957728524",
+      "sha": "24e745fe049f673e2771e626e587a69d3d02bb72",
+      "observed_utc": "2026-10-16T19:49:47Z",
+      "finding": "failed at 'Recheck generated site and every source-linked row' (step 10)",
+      "source_url_key": "previous_dashboard_failure_run"
+    },
     "pages_deployment": "success",
-    "pages_deploy_observed_utc": "2026-10-16T19:49:47Z",
+    "pages_deploy_observed_utc": "2026-10-16T20:05:57Z",
     "pages_deployment_url_key": "pages_deploy_run",
-    "local_tests": "740 tests passed; 3 skipped on the rebased 24e745f tree; 9 session tests passed",
-    "log_note": "The hosted step failure is recorded as observed; detailed job-log retrieval returned EOF in this environment. The local suite passed on the rebased tree, but the remote recheck is not claimed as resolved and no cause is inferred."
+    "local_tests": "745 tests passed with 4 skipped on the rebased c44cb50 tree; 9 session tests passed",
+    "log_note": "The earlier failed-run log download returned EOF. On later main SHA c44cb50, GitHub Actions explicitly reports the step-10 recheck and actual public dashboard verification as successful; the recovery followed shared main-branch updates and is not attributed to this audit."
   },
   "strategy": {
     "conclusion": "No forced contrarian selection is justified for FURIA vs Aurora at the observed prices.",
