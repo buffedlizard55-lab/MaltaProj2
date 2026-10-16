@@ -438,7 +438,10 @@ def decide(fixture: dict, quotes: list, exchange: dict | None, vrs: dict, k: flo
         "quotes_exchange": kalshi + polymarket,
         "exchange_reading": exchange_reading,
         "ownership": fixture.get("ownership"),
+        "ownership_rounding_note": fixture.get("ownership_rounding_note"),
     }
+    if fixture.get("ownership_rounding_note"):
+        row["flags"].append("crowd_shares_rounded_by_source")
 
     # Valve rating model (independent of the market layer)
     a_row, a_info = vrs_lookup(fixture.get("team_a"), vrs)
@@ -761,7 +764,9 @@ def ownership_bar(row: dict) -> str:
             + (f', {own.get("total_picks")} picks' if own.get("total_picks") is not None else '')
             + (f' counted ' + esc(str(own.get("count_capture_utc"))[:16]) + 'Z'
                if own.get("count_capture_utc") and own.get("count_capture_utc") != own.get("capture_utc") else '')
-            + ', ownership only)</p>')
+            + ', ownership only)'
+            + (f' · {esc(row.get("ownership_rounding_note"))}'
+               if row.get("ownership_rounding_note") else '') + '</p>')
 
 
 def source_details(row: dict) -> str:
@@ -1234,6 +1239,10 @@ def build() -> dict:
                                "count_utc": stamp or None, "count_label": label}
     for fixture in fixtures.values():
         entry = shares.get(fixture["fixture_id"])
+        if entry and (entry["a"] + entry["b"]) != 100:
+            fixture["ownership_rounding_note"] = ("HotSpawn rounds each side's share independently, "
+                                                  "so the two published percentages can sum to "
+                                                  f"{entry['a'] + entry['b']} rather than 100")
         if entry:
             count = counts.get(fixture["fixture_id"]) or {}
             fixture["ownership"] = {"a": (entry["a"] / 100.0), "b": (entry["b"] / 100.0),
