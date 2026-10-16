@@ -49,7 +49,7 @@ code{background:#11151c;padding:1px 5px;border-radius:4px}
 }
 </style></head><body>
 <header><div class="bar"><div class="brand">🎯 Our line · CS2 Pick'ems</div><nav><a href="index.html">Picks</a><a href="results.html">Track record</a><a href="sources.html">Lines &amp; sources</a><a href="flagged.html">Flagged for review</a><a href="method.html" class=on>Method</a><a href="../index.html">Main dashboard</a></nav></div></header>
-<main data-observed="2026-10-16T13:08:11Z">
+<main data-observed="2026-10-16T13:33:47Z">
 <h1>Method</h1>
 <div class="note">Short version: eligible external prices are de-vigged and averaged. Only matches without eligible prices use a model built on Valve's official CS2 standings. The model's steepness is learned from the bookmaker prices.
 If no bookmaker prices the match, the calibrated model alone gives the line. If a team has no official rating and no bookmaker prices
@@ -80,7 +80,7 @@ Valve's own code defines expected win rate from a points difference Δ: <a href=
 <code>ev = 1/(1+10^(g·Δ/−400))</code>) evaluated with a fixed RD of 75 in <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js">model/fit.js</a>, giving g = 0.9728.
 Valve's <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/readme.md">readme</a> notes the curve is steeper than observed results, so we fit a slope factor <b>k</b>:
 <code>p_A = 1/(1+10^(−k·g·Δ/400))</code>, by least squares of logit(market) on Δ over eligible fixtures with a price and two unambiguous ratings. A duplicate team name remains unverified even if one roster has a more recent counted match. Ratings older than 14 days are excluded. These freshness thresholds and the fitted model are our policy choices, not official forecasts.</p>
-<p>Current fit: k = <b>0.395</b> (raw 0.395) on 36 fixtures
+<p>Current fit: k = <b>0.394</b> (raw 0.394) on 36 fixtures
 (minimum 6 to fit, otherwise k = 1, Valve's own curve; k is bounded to 0.25–1.5).
 Mean absolute error vs market: calibrated 7.7%, Valve default 13.8%.</p>
 <h2>4. Our line and the pick</h2>
@@ -95,7 +95,7 @@ which GitHub Pages publishes. Raw evidence: <code>data/f7279a54/snapshot.json</c
 <li>Bookmaker start-time discrepancies greater than five minutes are rejected and flagged, never treated as the same verified fixture.</li>
 <li>Low-tier teams are often absent from both bookmakers and VRS; those rows stay blank.</li></ul>
 
-<p class="foot">Data collected 2026-10-16T13:08:11Z UTC (<span data-r="2026-10-16T13:08:11Z"></span>) by an automated GitHub Actions run — no manual input.
+<p class="foot">Data collected 2026-10-16T13:33:47Z UTC (<span data-r="2026-10-16T13:33:47Z"></span>) by an automated GitHub Actions run — no manual input.
 Probabilities are estimates derived from external bookmaker/exchange prices and Valve's official VRS ratings; HotSpawn crowd picks are never used.
 Not affiliated with HotSpawn or any bookmaker. Not betting advice. Section owner: session <code>f7279a54</code>.</p>
 </main><script>
