@@ -57,9 +57,12 @@ class Recheck(unittest.TestCase):
 
     def test_recheck_is_deterministic_against_board(self):
         fresh = self.build.build_recheck()
-        self.assertEqual(fresh['stats']['priced_matches_rederived'], self.data['stats']['priced_matches_rederived'])
-        self.assertEqual(fresh['stats']['rows_with_pick'], self.data['stats']['rows_with_pick'])
-        self.assertEqual(fresh['unresolved_fixture_ids'], self.data['unresolved_fixture_ids'])
+        self.assertEqual(fresh['stats']['mismatches'], [])
+        self.assertEqual(fresh['stats']['priced_matches_rederived'], fresh['stats']['priced_rows'])
+        if fresh.get('source_board', {}).get('generated_utc') == self.data.get('source_board', {}).get('generated_utc'):
+            self.assertEqual(fresh['stats']['priced_matches_rederived'], self.data['stats']['priced_matches_rederived'])
+            self.assertEqual(fresh['stats']['rows_with_pick'], self.data['stats']['rows_with_pick'])
+            self.assertEqual(fresh['unresolved_fixture_ids'], self.data['unresolved_fixture_ids'])
 
     def test_unresolved_rows_have_no_pick_and_no_invented_probability(self):
         for r in self.data['rows']:

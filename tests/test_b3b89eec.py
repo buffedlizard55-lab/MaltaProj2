@@ -28,7 +28,12 @@ TWC_REVIEW = ROOT / 'data/b3b89eec/twc_review.json'
 class BoardReDerivation(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        art = ROOT / 'data/b3b89eec/board_verification.json'
+        cls._saved_art = art.read_bytes() if art.exists() else None
         cls.result = BOARD_VERIFY.run()
+        cls._fresh_art = art.read_bytes() if art.exists() else None
+        if cls._saved_art is not None:
+            art.write_bytes(cls._saved_art)
 
     def test_no_findings(self):
         self.assertEqual(self.result['findings'], [],
@@ -50,7 +55,7 @@ class BoardReDerivation(unittest.TestCase):
     def test_artifact_written(self):
         art = ROOT / 'data/b3b89eec/board_verification.json'
         self.assertTrue(art.exists())
-        data = json.loads(art.read_text())
+        data = json.loads((self._fresh_art or art.read_bytes()).decode('utf-8'))
         self.assertEqual(data['counts'], self.result['counts'])
         self.assertEqual(data['findings'], [])
 

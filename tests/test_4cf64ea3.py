@@ -240,11 +240,20 @@ class TestEvidence(unittest.TestCase):
 
 class TestWrittenOutput(unittest.TestCase):
     def test_written_files_match_build(self):
-        written = build4cf.build(write=True)
-        board = json.loads((ROOT / "data" / "4cf64ea3" / "board.json").read_text())
-        self.assertEqual(board["summary"], written["board"]["summary"])
-        for name, html in written["pages"].items():
-            self.assertEqual((ROOT / "day3" / name).read_text(), html, f"{name} differs from build()")
+        saved = {
+            p: p.read_bytes()
+            for p in [ROOT / "data" / "4cf64ea3" / "board.json", *(ROOT / "day3").glob("*.html")]
+            if p.exists()
+        }
+        try:
+            written = build4cf.build(write=True)
+            board = json.loads((ROOT / "data" / "4cf64ea3" / "board.json").read_text())
+            self.assertEqual(board["summary"], written["board"]["summary"])
+            for name, html in written["pages"].items():
+                self.assertEqual((ROOT / "day3" / name).read_text(), html, f"{name} differs from build()")
+        finally:
+            for p, raw in saved.items():
+                p.write_bytes(raw)
 
 
 if __name__ == "__main__":

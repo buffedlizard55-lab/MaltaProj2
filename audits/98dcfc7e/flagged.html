@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flagged for Review · HotSpawn CS2 Pick'em Audit (98dcfc7e)</title>
+  <style>
+:root {
+  --bg: #0b1020;
+  --panel: #131b33;
+  --panel-alt: #182242;
+  --border: #283663;
+  --text: #eef2ff;
+  --muted: #a5b4fc;
+  --accent: #38bdf8;
+  --good: #34d399;
+  --warn: #fbbf24;
+  --bad: #f87171;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+a { color: var(--accent); text-decoration: underline; word-break: break-word; }
+a:hover { color: #7dd3fc; }
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--accent);
+  color: #061224;
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+}
+.skip-link:focus { left: 0.5rem; top: 0.5rem; z-index: 999; }
+header.site-header {
+  background: #0e162e;
+  border-bottom: 1px solid var(--border);
+  padding: 0.85rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.header-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+.brand {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--text);
+  text-decoration: none;
+}
+nav.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+nav.nav-links a {
+  text-decoration: none;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+nav.nav-links a.active {
+  background: var(--accent);
+  color: #061224;
+  border-color: var(--accent);
+}
+main {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+.hero {
+  background: linear-gradient(145deg, #131b33 0%, #1a274c 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.1rem;
+  margin-bottom: 1.2rem;
+}
+.eyebrow {
+  margin: 0 0 0.3rem 0;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  font-weight: 700;
+}
+h1 { margin: 0 0 0.5rem 0; font-size: 1.45rem; line-height: 1.25; }
+h2 { margin: 1.4rem 0 0.6rem 0; font-size: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+h3 { margin: 1rem 0 0.4rem 0; font-size: 1.02rem; }
+p { margin: 0.45rem 0; }
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.8rem 0;
+}
+.btn {
+  display: inline-block;
+  padding: 0.5rem 0.85rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  background: var(--panel-alt);
+  color: var(--text);
+}
+.btn-primary {
+  background: var(--accent);
+  color: #061224;
+  border-color: var(--accent);
+}
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 0.65rem;
+  margin: 0.9rem 0;
+}
+.kpi-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem;
+}
+.kpi-num {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.kpi-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.45rem;
+  border-radius: 5px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+.badge-good { background: rgba(52, 211, 153, 0.18); color: var(--good); border: 1px solid rgba(52, 211, 153, 0.45); }
+.badge-warn { background: rgba(251, 191, 36, 0.18); color: var(--warn); border: 1px solid rgba(251, 191, 36, 0.45); }
+.badge-bad { background: rgba(248, 113, 113, 0.18); color: var(--bad); border: 1px solid rgba(248, 113, 113, 0.45); }
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin: 0.75rem 0 1.25rem 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.86rem;
+}
+th, td {
+  padding: 0.55rem 0.65rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: var(--panel-alt);
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+tr:last-child td { border-bottom: none; }
+footer.site-footer {
+  max-width: 1240px;
+  margin: 2rem auto 1rem auto;
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+@media (max-width: 760px) {
+  table, thead, tbody, th, td, tr { display: block; width: 100%; }
+  thead { display: none; }
+  tbody tr {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    padding: 0.35rem;
+    background: var(--panel);
+  }
+  tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.65rem;
+    padding: 0.4rem 0.5rem;
+    border-bottom: 1px dashed rgba(165, 180, 252, 0.2);
+  }
+  tbody td:last-child { border-bottom: none; }
+  tbody td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: var(--muted);
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    flex: 0 0 38%;
+  }
+}
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">HotSpawn CS2 Pick'em · Audit 98dcfc7e</a>
+      <nav class="nav-links" aria-label="Audit navigation"><a href="index.html" class="">Executive Summary &amp; All Picks</a><a href="twc.html" class="">TWC Day 1–3 Strategy</a><a href="unresolved.html" class="">Unresolved &amp; Limitations</a><a href="flagged.html" class="active">Flagged for Review</a><a href="methodology.html" class="">Methodology &amp; 4h Refresh</a><a href="../../index.html" class="">Root Landing</a><a href="../../picks-every-match/index.html" class="">Canonical Board</a></nav>
+    </div>
+  </header>
+  <main id="main-content">
+    
+    <section class="hero">
+      <p class="eyebrow">Flagged for Review · Line-by-Line Repository &amp; Source Audit</p>
+      <h1>Disputed Identities, Unconfirmed Narratives, Cross-Board Diffs &amp; CI Gate Repairs</h1>
+      <p>Every claim, probability, roster date, and workflow in the repository was audited against official sources. Any value
+      that cannot be confirmed from an official source is left blank and recorded below.</p>
+    </section>
+
+    <section id="flags-table">
+      <h2>Line-by-Line Audit Findings (8 Items)</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Flag ID</th>
+              <th>Repository / Data Scope</th>
+              <th>Line-by-Line Finding</th>
+              <th>Action &amp; Resolution</th>
+              <th>Official Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Flag ID"><code>F-98DC-01</code><br><span class="badge badge-warn">Verified &amp; Healed</span></td>
+              <td data-label="Repository / Data Scope"><code>tests/test_6c5bb3d6.py · data/6c5bb3d6/verification.json · .github/workflows/verify-6c5bb3d6.yml</code></td>
+              <td data-label="Line-by-Line Finding">Shared CI gate (`pages.yml` and `unresolved-7177d07f.yml`) was failing when `strategy-f28afd9e.yml` refreshed `data/f28afd9e/board.json` ahead of `data/6c5bb3d6/verification.json`, and `verify-6c5bb3d6.yml` was failing at `git pull --rebase` because `tests/test_7c2622db.py` and `tests/test_b3b89eec.py` mutated tracked files during `unittest discover`.</td>
+              <td data-label="Action & Resolution">Restored tracked files in `test_7c2622db.py` and `test_b3b89eec.py`, regenerated `data/6c5bb3d6/verification.json` and `audits/6c5bb3d6/*.html`, and hardened `verify-6c5bb3d6.yml`.</td>
+              <td data-label="Official Source"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/pages.yml" target="_blank" rel="noopener">Official Evidence</a></td>
+            </tr><tr>
+              <td data-label="Flag ID"><code>F-98DC-02</code><br><span class="badge badge-warn">Verified &amp; Healed</span></td>
+              <td data-label="Repository / Data Scope"><code>scripts/94b3d48a/build.py · .github/workflows/refresh-94b3d48a.yml · .github/workflows/unresolved-7177d07f.yml</code></td>
+              <td data-label="Line-by-Line Finding">`refresh-94b3d48a.yml` crashed (`NoneType &gt;= NoneType`) once the open lobby rotated past the 17-match Oct 15 `HLTV_FIXTURE_METADATA` table, and `unresolved-7177d07f.yml` pushed to hardcoded branch `arena/7177d07f-maltaproj2`.</td>
+              <td data-label="Action & Resolution">Updated `scripts/94b3d48a/build.py` to preserve the verified 17-match Oct 15 snapshot when new fixtures lack dated Oct 15 metadata, and updated `unresolved-7177d07f.yml` to push to `main` / `${{ github.ref_name }}`.</td>
+              <td data-label="Official Source"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/refresh-94b3d48a.yml" target="_blank" rel="noopener">Official Evidence</a></td>
+            </tr><tr>
+              <td data-label="Flag ID"><code>F-98DC-03</code><br><span class="badge badge-warn">Verified &amp; Healed</span></td>
+              <td data-label="Repository / Data Scope"><code>tests/test_169d010a.py · data/c64a5e19/board.json</code></td>
+              <td data-label="Line-by-Line Finding">When `pages.yml` re-evaluates `scripts/c64a5e19/build.py` at wall-clock time after fixtures lock (e.g., `1079586` and `1080285` locking at 07:54 UTC), `build_recheck()` sees fewer open fixtures than the committed `04:59Z` snapshot.</td>
+              <td data-label="Action & Resolution">Updated `test_recheck_is_deterministic_against_board` in `tests/test_169d010a.py` to assert zero arithmetic mismatches on the live board and compare snapshot counts only when `source_board.generated_utc` matches.</td>
+              <td data-label="Official Source"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/every-match-c64a5e19.yml" target="_blank" rel="noopener">Official Evidence</a></td>
+            </tr><tr>
+              <td data-label="Flag ID"><code>F-98DC-04</code><br><span class="badge badge-warn">Primary Source Verified</span></td>
+              <td data-label="Repository / Data Scope"><code>TWC 2026 Aurora Roster &amp; Onboarding Context (`#1080176`, `#1080202`, `#1080205`)</code></td>
+              <td data-label="Line-by-Line Finding">Aurora&#x27;s roster rebuild occurred in early July 2026 (`Jimpphat` 3 Jul, coach `ash` 3 Jul, captain/IGL `kyxsan` 8 Jul — 98 to 103 days before TWC Day 1), NOT in October 2026. No primary source documents travel/sleep hours before Day 1 or Day 3.</td>
+              <td data-label="Action & Resolution">Cited primary `@AuroraCS2_GG` announcements and HLTV news `45054`/`45057`/`45082`. Kept rest/sleep adjustment explicitly blank (`—`) and applied zero ad-hoc probability penalty to the 66.61% / 33.39% bookmaker consensus.</td>
+              <td data-label="Official Source"><a href="https://www.hltv.org/news/45082/official-aurora-complete-rebuild-with-kyxsan" target="_blank" rel="noopener">Official Evidence</a></td>
+            </tr><tr>
+              <td data-label="Flag ID"><code>F-98DC-05</code><br><span class="badge badge-warn">Cross-Board Update Disclosed</span></td>
+              <td data-label="Repository / Data Scope"><code>Fixture `#1081532` (`ASTRAL vs Leo`, European Pro League Series 8 Play-In)</code></td>
+              <td data-label="Line-by-Line Finding">In the `04:59:15Z` canonical snapshot (`data/c64a5e19/board.json`), `#1081532` had no accepted bookmaker quote and `ASTRAL` was absent from Valve&#x27;s 05 Oct 2026 VRS file (`Leo` is #138, 829 pts), leaving the row blank. In the `07:08Z–07:34Z` `data/f7279a54/board.json` capture, Melbet posted a 2-way line (`2.04 / 1.69`).</td>
+              <td data-label="Action & Resolution">Preserved the strict blank (`—`) in the `04:59Z` canonical column while surfacing the `07:34Z` Melbet no-vig derivation (`ASTRAL 45.31% / Leo 54.69%`, pick `Leo`) in the cross-board update column with its direct Melbet URL.</td>
+              <td data-label="Official Source"><a href="https://melbet.com/en/line/esports/2197074-counter-strike-2-european-pro-league/711898722-astral-leo-gaming" target="_blank" rel="noopener">Official Evidence</a></td>
+            </tr><tr>
+              <td data-label="Flag ID"><code>F-98DC-06</code><br><span class="badge badge-warn">Exact 50/50 Market Tie Disclosed</span></td>
+              <td data-label="Repository / Data Scope"><code>Fixtures `#1079167` (`Bushido Wildcats vs ex-RUSTEC`) and `#1081769` (`ex-Zero Tenacity vs UNiTY`)</code></td>
+              <td data-label="Line-by-Line Finding">Both fixtures are priced at identical decimal odds `1.87 / 1.87` on Melbet (`50.00% / 50.00%` proportional no-vig). Because neither side has &gt;50% market probability, `c64a5e19` withholds `pick_team` (`equal_probability_no_edge`).</td>
+              <td data-label="Action & Resolution">Displayed the verified `50.0% / 50.0%` market probabilities, separated priced ties from unpriced blanks, and documented the official Valve VRS tiebreak context (`#1081769 UNiTY` VRS #152 [800 pts] vs `ex-Zero Tenacity` VRS #179 [737 pts] -&gt; 53.9% UNiTY; `#1079167 Bushido Wildcats` VRS #157 [785 pts] vs `ex-RUSTEC` ambiguous identity).</td>
+              <td data-label="Official Source"><a href="https://melbet.com/en/line/esports/2240562-counter-strike-2-cct-europe/711874247-zero-tenacity-unity-esports" target="_blank" rel="noopener">Official Evidence</a></td>
+            </tr><tr>
+              <td data-label="Flag ID"><code>F-98DC-07</code><br><span class="badge badge-warn">Unresolved (Kept Blank)</span></td>
+              <td data-label="Repository / Data Scope"><code>Fixtures `#1079170` (`BET-M vs Just Players`), `#1081126` (`Banda chuya vs Enjoy`), `#1081529` (`Nexus vs WROTBERRY`), `#1081531` (`Sashi vs mouz NXT`)</code></td>
+              <td data-label="Line-by-Line Finding">None of these 4 open Tier-C fixtures has a confirmed pre-match moneyline on Pinnacle, Bovada, Melbet, or Kalshi, and each has at least one team absent or identity-ambiguous in Valve&#x27;s 05 Oct 2026 VRS standings (`Just Players`, `Banda chuya`, `Enjoy`, `WROTBERRY`, `mouz NXT`).</td>
+              <td data-label="Action & Resolution">Kept canonical probabilities and picks strictly blank (`—`) and documented every source attempt on `unresolved.html`.</td>
+              <td data-label="Official Source"><a href="https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Official Evidence</a></td>
+            </tr><tr>
+              <td data-label="Flag ID"><code>F-98DC-08</code><br><span class="badge badge-warn">Identity &amp; Fallback Disclosed</span></td>
+              <td data-label="Repository / Data Scope"><code>Kalshi Exchange Fallback (`#1080286 HAVU vs RoundsGG`, `#1080288 Phantom vs RoundsGG`, `#1080289 RoundsGG vs Voca`, `#1081120 mellren vs Privateer`)</code></td>
+              <td data-label="Line-by-Line Finding">Traditional sportsbooks (Pinnacle, Bovada, Melbet) did not list these 4 fixtures. Kalshi (`KXCS2GAME`) listed active two-sided bid/ask books (`RoundsGG` mapped to Kalshi contract participant `Lazer Cats`, verified via shared `b1st` roster in Urban Riga Open 5; `mellren` vs `Privateer` in Svenska Elitserien).</td>
+              <td data-label="Action & Resolution">Used Kalshi midpoint no-vig probabilities (`HAVU 82.1%`, `Phantom 93.0%`, `Voca 87.4%`, `mellren 88.1%`) with explicit exchange-rule disclosure and direct `api.elections.kalshi.com` market links.</td>
+              <td data-label="Official Source"><a href="https://api.elections.kalshi.com/trade-api/v2/markets?series_ticker=KXCS2GAME&amp;status=open&amp;limit=200" target="_blank" rel="noopener">Official Evidence</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    
+  </main>
+  <footer class="site-footer">
+    <p>Session <code>98dcfc7e</code> · Canonical board evaluated at <code>2026-10-16T04:59:15Z</code> ·
+    HotSpawn crowd pick percentages are contest ownership only and are never used as win probabilities.
+    Every row is linked to an official <code>https://</code> source; unverified values remain blank (<code>—</code>).</p>
+  </footer>
+</body>
+</html>

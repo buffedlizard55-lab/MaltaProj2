@@ -492,7 +492,8 @@ calculations, not officially verified win chances. <strong>HotSpawn crowd picks 
 <li><strong>For leaderboard risk:</strong> use the TWC decision sheet. A possible upset is not automatically a good pick.</li></ol>
 <p><a href="twc-2026/index.html">TWC day-three strategy</a> ·
 <a href="picks-every-match/inventory.html">Full captured lobby</a> ·
-<a href="audits/6ffacd40/index.html">16 October coverage &amp; source audit</a></p>
+<a href="audits/6ffacd40/index.html">16 October coverage &amp; source audit</a> ·
+<a href="audits/98dcfc7e/index.html">Every-match &amp; TWC Day 3 verification (98dcfc7e)</a></p>
 <h2>Automatic updates</h2>
 <p>The canonical collector is scheduled every four hours at 00:12, 04:12, 08:12, 12:12,
 16:12 and 20:12 UTC. It rediscovers lobby fixtures and retries external markets without manual input.
@@ -516,7 +517,7 @@ Quotes expire after four hours or at pick lock. Source failures preserve invento
 <a class="board-card" href="twc/index.html"><div class="board-card-title">Independent parallel TWC review</div><div class="board-card-desc">Preserved session 869a5375 results, group standings and strategy snapshot with its own limitations. Different source capture/policy, not a replacement for the current canonical picks or day-three decision sheet above.</div></a></div>
 <p>Alternate boards have different captures and assumptions; they are not interchangeable current pick lists.
 Do not add their counts together or use an older estimate to fill a current blank.</p>
-<p><a href="research.html">Research archive</a> · <a href="audits/5468b0ba/index.html">Latest Day 1–3 &amp; Every-Match Verification (5468b0ba)</a> · <a href="audits/3faf40e8/index.html">Source integrity audit</a> ·
+<p><a href="research.html">Research archive</a> · <a href="audits/98dcfc7e/index.html">Every-Match &amp; TWC Day 1–3 Verification (98dcfc7e)</a> · <a href="audits/98dcfc7e/unresolved.html">Unresolved &amp; Limitations (98dcfc7e)</a> · <a href="audits/169d010a/index.html">Open-Matches Recheck (169d010a)</a> · <a href="audits/5468b0ba/index.html">Latest Day 1–3 &amp; Every-Match Verification (5468b0ba)</a> · <a href="audits/3faf40e8/index.html">Source integrity audit</a> ·
 <a href="audits/94b3d48a/index.html">Independent roster research (dated)</a> ·
 <a href="verify/b3b89eec/index.html">Independent verification + TWC day-3 audit (b3b89eec)</a> ·
 <a href="summary/gaps.html">Cross-board disagreements</a></p>
@@ -855,6 +856,7 @@ above. The independent price observations are reproduced verbatim from
 {table(["Teams", "Bookmaker / market", "Quoted prices (American)", "Their derived probability", "Source (official)", "Observed", "Flags"],
        audit_price_rows(audit_1916))}
 <ul>
+<li><a href="audits/98dcfc7e/flagged.html">Session 98dcfc7e line-by-line repository &amp; source audit</a> (<a href="audits/98dcfc7e/index.html">executive summary &amp; all picks</a> · <a href="audits/98dcfc7e/twc.html">TWC Day 1–3 review</a> · <a href="audits/98dcfc7e/unresolved.html">unresolved &amp; limitations</a>).</li>
 <li><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/audits/1d4de836/README.md" rel="noopener">Independent verification audit — session 1d4de836</a> (86-row lobby snapshot, access evidence, handoff requirements).</li>
 <li><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/audits/1916f96c/REPORT.md" rel="noopener">Independent official-source audit — session 1916f96c</a> (lobby observations, Thunderpick market reads, GG.BET/Rivalry access results).</li>
 <li><a href="pickem/index.html">Parallel dashboard built by session a0fcf175</a> (preserved unmodified under <code>pickem/</code>).</li>
@@ -981,7 +983,7 @@ Unpriced games stay blank. Archived model/pickem/audit sections retain their own
 their own snapshots, source policies and model assumptions. They do not supply a number to the current CS2 or
 Probabilities tables.</div>
 <div class="archive-grid">
-  <article class="card"><h2>Independent verification</h2><p><a href="audits/6ffacd40/index.html">16 October canonical coverage, no-edge ties &amp; source review</a><br><a href="audits/5468b0ba/index.html">TWC Day 1–3 &amp; Every-Match Verification (5468b0ba)</a><br>
+  <article class="card"><h2>Independent verification</h2><p><a href="audits/98dcfc7e/index.html">Every-match CS2 picks, TWC Day 1–3 strategy &amp; CI gate audit (98dcfc7e)</a><br><a href="audits/169d010a/index.html">Open-matches recheck &amp; TWC Day 1–3 audit (169d010a)</a><br><a href="audits/6ffacd40/index.html">16 October canonical coverage, no-edge ties &amp; source review</a><br><a href="audits/5468b0ba/index.html">TWC Day 1–3 &amp; Every-Match Verification (5468b0ba)</a><br>
   <a href="verify/b3b89eec/index.html">Independent verification + TWC day-3 audit (b3b89eec)</a><br>
   <a href="verify/8e7a652d/index.html">Market verification &amp; cross-check</a><br>
   <a href="verify/0f71ea59/index.html">Line-by-line verification report</a><br>

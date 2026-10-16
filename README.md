@@ -183,3 +183,12 @@ not certified by the canonical verifier and never override its blank rows.
 - Reproduce: `python scripts/6ffacd40/audit.py` (read-only canonical inputs; writes only its own dated audit). Independently checks raw odds, no-vig weighting, model calibration and all retained official input/provider payloads. Input hashes bind the report to the exact reviewed snapshot.
 - The landing page distinguishes **directional picks**, **priced ties / no edge**, and **unsupported blanks**. Competing historical boards are collapsed; the primary mobile actions link to the canonical list, unresolved limitations and TWC decisions. Keyboard skip navigation is available on root-generated pages.
 - Tests: `python -m unittest tests.test_6ffacd40`. Optional browser acceptance: `CHROME_BIN=/path/to/chrome python scripts/6ffacd40/browser.py http://127.0.0.1:8080` against an already-running static preview. Checks 320/390/768/1280px widths, CTA above the fold, tap target, focus and navigation.
+
+## 16 October every-match CS2 picks, TWC Day 1–3 strategy & CI workflow heal (98dcfc7e)
+
+- **Executive Summary & Every-Match CS2 Picks:** [`audits/98dcfc7e/index.html`](audits/98dcfc7e/index.html)
+- **TWC 2026 Day 1–2 Review, Aurora Roster Timeline & Day 3 Decider Strategy:** [`audits/98dcfc7e/twc.html`](audits/98dcfc7e/twc.html)
+- **Unresolved Picks, Priced 50/50 Ties & Fallback Research Ladder:** [`audits/98dcfc7e/unresolved.html`](audits/98dcfc7e/unresolved.html)
+- **Flagged for Review (Line-by-Line Repository & Source Audit):** [`audits/98dcfc7e/flagged.html`](audits/98dcfc7e/flagged.html)
+- **Methodology & 4–8h Automated Refresh Pipeline:** [`audits/98dcfc7e/methodology.html`](audits/98dcfc7e/methodology.html) (`scripts/98dcfc7e/build.py`, `data/98dcfc7e/audit.json`, `tests/test_98dcfc7e.py`).
+
