@@ -5224,3 +5224,17 @@ Session: `e0882a56` (fixed to branch `arena/e0882a56-maltaproj2`).
 - Branch pushed: `arena/e0882a56-maltaproj2` @ 367d221.
 
 - 2026-10-16 19:40 UTC, `e0882a56`: Additional fix — `scripts/7c2622db/verify.py` now checks crowd ownership against the canonical lobby capture too (3 previously failing rows) and treats TWC day-3 deciders as tracked when played/locked. `tests/test_7c2622db.py` threshold adjusted to current check count. Full suite green: 731 tests, 5 skips. Pushed cafc61f.
+
+---
+
+# Coordination — session `5a40690b` (TWC 2026 Day 1–3 review → Day 4 Semifinals picks, full CS2 coverage + unresolved picks, canonical refresh unblocking)
+
+Session: `5a40690b` (fixed to branch `arena/5a40690b-maltaproj2`).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-5A40690B-DAY4-AND-CANONICAL: (1) Unblock `every-match picks (c64a5e19)` and `pages.yml` by updating `tests/test_5468b0ba.py` for post-lock Day 3 deciders and refreshing `data/c64a5e19/`; (2) Build TWC 2026 Day 1–3 review → Day 4 Semifinals decision & contrarian leaderboard page + full CS2 match coverage & unresolved/limitations audit (`scripts/5a40690b/**`, `data/5a40690b/**`, `audits/5a40690b/index.html`, `twc-2026/day-4.html`, `tests/test_5a40690b.py`) and additive links on `index.html`, `twc-2026/index.html`, `flagged.html`, and `scripts/stage_site.py` | in progress | 5a40690b | 2026-10-16 19:41 | `scripts/5a40690b/**`, `data/5a40690b/**`, `audits/5a40690b/**`, `twc-2026/day-4.html`, `tests/test_5a40690b.py`, `tests/test_5468b0ba.py`, `.github/workflows/every-match-c64a5e19.yml`, `.github/workflows/pages.yml`, additive links in `index.html`/`twc-2026/**`/`flagged.html`/`scripts/stage_site.py`, `COORDINATION.md` (append only) |
+
+## Log
+- 2026-10-16 19:41 UTC, `5a40690b`: Claimed scope before implementation. Diagnosed root cause of `every-match-c64a5e19.yml` and `pages.yml` failures on `main`: `tests/test_5468b0ba.py` had pre-Day-3-lock assertions (`len(rows) >= 45` and `r['line'] is not None` on `#1080205` / `#1081775`), blocking `every-match-c64a5e19.yml` Step 8 (`Tests`) once `#1080205` locked at 14:00 UTC and preventing `data/c64a5e19/snapshot.json` (`13:13:13Z`) from refreshing, which then caused `c64a5e19` quotes to expire (>4h) during `pages.yml` Step 9/10.
+

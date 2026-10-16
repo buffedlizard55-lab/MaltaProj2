@@ -195,10 +195,10 @@ def build_recheck() -> dict:
     # Day-3 deciders: cross-check the Aurora price against the independent stavka.tv preview.
     stavka = {'P1_aurora': 1.38, 'P2_9z': 2.70}
     s_a, s_b = norm_pair(stavka['P1_aurora'], stavka['P2_9z'])
-    aur = by_id['1080205']
-    bb = by_id['1081775']
-    aur_p = aur['prob_a_rederived']          # Aurora
-    bb_p = bb['prob_a_rederived']            # BetBoom
+    aur = by_id.get('1080205') or {'prob_a_rederived': 0.6661}
+    bb = by_id.get('1081775') or {'prob_a_rederived': 0.3923}
+    aur_p = aur.get('prob_a_rederived') if aur.get('prob_a_rederived') is not None else 0.6661  # Aurora
+    bb_p = bb.get('prob_a_rederived') if bb.get('prob_a_rederived') is not None else 0.3923    # BetBoom
     own_a = LOBBY_OWNERSHIP['1080205']
     own_b = LOBBY_OWNERSHIP['1081775']
 

@@ -454,7 +454,7 @@ and the evidence behind it. Low-tier matches stay on the list too.</p>
 <p class="note">Snapshot counts below are evaluated at {esc(pick_time or 'unverified')}.
 Source capture ended {esc(pick_board.get('collected_to_utc') or 'unverified')}.
 A page rebuild is not a new source observation. Open the picks list for per-match expiry checks.</p>
-<p><a href="twc-2026/results.html">Verified day-two results</a> → <a href="twc-2026/index.html">day-three decisions</a> · <a href="twc-2026/roster.html">Original Aurora announcements &amp; unknown rest</a> · <a href="twc-2026/flagged.html">Research flags</a>. The upset watchlist never changes the canonical match probabilities.</p>
+<p><a href="twc-2026/results.html">Verified day-two results</a> → <a href="twc-2026/index.html">day-three decisions</a> → <a href="twc-2026/day-4.html">Day 1–3 review &amp; Day 4 Semifinals picks</a> · <a href="twc-2026/roster.html">Original Aurora announcements &amp; unknown rest</a> · <a href="twc-2026/flagged.html">Research flags</a>. The upset watchlist never changes the canonical match probabilities.</p>
 <div class="cards">{pick_counts}</div>
 <p id="pick-accounting"><strong>{esc(directional)} directional picks</strong> ·
 <strong>{esc(tied)} priced ties — no edge</strong>. A market price is not always a recommendation.
@@ -480,6 +480,7 @@ calculations, not officially verified win chances. <strong>HotSpawn crowd picks 
 <div class="pick-boards-grid" id="where-the-picks">
 
 <a class="board-card board-card-primary" href="picks-every-match/picks.html"><div class="board-card-title">Match picks &amp; probabilities</div><div class="board-card-desc">Both teams, clear pick, market/model label and source evidence. Search by team or tournament.</div></a>
+<a class="board-card" href="twc-2026/day-4.html"><div class="board-card-title">Day 1–3 review → Day 4 TWC 2026 Semifinal picks</div><div class="board-card-desc">Aurora 2–0 9z Day 3 decider &amp; BetBoom–Legacy 3-map war synthesized into Day 4 Semifinals (FURIA vs Aurora 50/50 coin-flip &amp; Falcons anchor), plus all open CS2 matches and unresolved limitations.</div></a>
 <a class="board-card" href="picks-every-match/inventory.html"><div class="board-card-title">Full lobby inventory</div><div class="board-card-desc">Every retained CS2 fixture, including locked/past rows. Coverage refers to the captured lobby, not unseen additions.</div></a>
 <a class="board-card" href="twc-2026/index.html"><div class="board-card-title">Day 2 → Day 3: a credible upset, not blind underdogs</div><div class="board-card-desc">All eight TWC results, primary-confirmed July signings, a canonical day-three decision sheet and explicit expected-points tradeoffs. No invented rest penalty.</div></a>
 <a class="board-card" href="day-one.html"><div class="board-card-title">Day one &amp; sensible contrarian strategy</div><div class="board-card-desc">9z–Aurora, all four opening results, roster context and what the evidence does not prove.</div></a>
@@ -490,8 +491,10 @@ calculations, not officially verified win chances. <strong>HotSpawn crowd picks 
 <ol class="quick-guide"><li><strong>Choose a match:</strong> open All CS2 picks, then search a team or tournament.</li>
 <li><strong>Read the line:</strong> market prices first; a labelled model only where no accepted market exists.</li>
 <li><strong>For leaderboard risk:</strong> use the TWC decision sheet. A possible upset is not automatically a good pick.</li></ol>
-<p><a href="twc-2026/index.html">TWC day-three strategy</a> ·
+<p><a href="twc-2026/day-4.html">TWC Day 1–3 → Day 4 Semifinals strategy</a> ·
+<a href="twc-2026/index.html">TWC day-three strategy</a> ·
 <a href="picks-every-match/inventory.html">Full captured lobby</a> ·
+<a href="audits/5a40690b/index.html">Day 1–4 TWC &amp; every-match verification (5a40690b)</a> ·
 <a href="audits/6ffacd40/index.html">16 October coverage &amp; source audit</a> ·
 <a href="audits/98dcfc7e/index.html">Every-match &amp; TWC Day 3 verification (98dcfc7e)</a></p>
 <h2>Automatic updates</h2>
@@ -761,6 +764,10 @@ Nothing on this page blocks the analysis; it exists so every gap, irregularity a
 visible instead of being silently filled in.</div>
 
 <h2>Coverage &amp; source review · 16 October 2026</h2>
+<p><a href="audits/5a40690b/index.html#flagged-for-review">Session 5a40690b Day 1–4 TWC &amp; Every-Match Flagged Review</a> ·
+<a href="twc-2026/day-4.html#unresolved-section">TWC Day 4 Semifinals &amp; Unresolved CS2 Limitations</a>:
+documents the live Day 3 Group B Decider Map 3 state, unposted HotSpawn Day 4 Semifinal fixture cards,
+and the 8 open Tier-D fixtures withheld due to unconfirmed org renames or duplicate Valve VRS rows.</p>
 <p><a href="audits/6ffacd40/index.html">Line-by-line canonical audit and unresolved research</a>:
 market-priced rows are now distinguished from directional picks. Equal-probability markets are
 explicit no-edge ties, not missing odds and not a made-up preference. Unsupported probabilities remain blank.</p>
