@@ -120,5 +120,52 @@ class MobileHandoff(unittest.TestCase):
         self.assertEqual(A.render(r, research), A.render(r, research))
 
 
+class PagesPublisher(unittest.TestCase):
+    def setUp(self):
+        self.gate = mod('test_pages_gate_6ff', 'scripts/6ffacd40/pages_gate.py')
+
+    def test_only_configured_publisher_is_selected(self):
+        self.assertEqual(self.gate.configured_publisher({'build_type': 'workflow'}), 'actions')
+        self.assertEqual(self.gate.configured_publisher({'build_type': 'legacy', 'source': {'branch': 'main', 'path': '/'}}), 'legacy')
+        for pages in ({}, {'build_type': 'legacy'}, {'build_type': 'legacy', 'source': {'branch': 'other', 'path': '/'}}):
+            with self.assertRaises(ValueError):
+                self.gate.configured_publisher(pages)
+
+    def test_orphan_building_does_not_block_successful_descendant(self):
+        builds = [{'status': 'building', 'commit': 'old-orphan'}, {'status': 'errored', 'commit': 'target'}, {'status': 'built', 'commit': 'descendant'}]
+        b = self.gate.published_build(builds, 'target', lambda a, b: b == 'descendant')
+        self.assertEqual(b['commit'], 'descendant')
+
+    def test_exact_built_sha_does_not_need_compare(self):
+        b = self.gate.published_build([{'status': 'built', 'commit': 'target'}], 'target', lambda a, b: self.fail('not needed'))
+        self.assertEqual(b['commit'], 'target')
+
+    def test_pending_target_and_unrelated_success_never_count(self):
+        builds = [{'status': 'building', 'commit': 'target'}, {'status': 'errored', 'commit': 'target'}, {'status': 'built', 'commit': 'unrelated'}]
+        self.assertIsNone(self.gate.published_build(builds, 'target', lambda a, b: False))
+
+    def test_missing_publication_times_out_without_deploying(self):
+        with self.assertRaises(RuntimeError):
+            self.gate.wait_for_legacy('owner/repo', 'target', attempts=2, api=lambda path: [], sleep=lambda _: None)
+
+    def test_ancestry_comparisons_are_cached(self):
+        calls = []
+        def api(path):
+            calls.append(path)
+            if '/compare/' in path:
+                return {'status': 'behind'}
+            return [{'status': 'built', 'commit': 'older'}]
+        with self.assertRaises(RuntimeError):
+            self.gate.wait_for_legacy('owner/repo', 'target', attempts=3, api=api, sleep=lambda _: None)
+        self.assertEqual(sum('/compare/' in p for p in calls), 1)
+
+    def test_workflow_does_not_use_two_publishers(self):
+        text = (ROOT / '.github/workflows/pages.yml').read_text()
+        self.assertIn("if: steps.publisher.outputs.publisher == 'actions'", text)
+        self.assertIn('python scripts/6ffacd40/pages_gate.py', text)
+        self.assertIn('python scripts/check_deployment.py', text)
+        self.assertNotIn('not active', text)
+
+
 if __name__ == '__main__':
     unittest.main()
