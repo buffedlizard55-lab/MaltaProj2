@@ -2,24 +2,21 @@
  "session": "6c5bb3d6",
  "task": "T-VERIFY-6C5BB3D6 independent line-by-line verification",
  "gate": {
-  "ran_utc": "2026-10-16T01:23:53Z",
+  "ran_utc": "2026-10-16T01:25:51Z",
   "command": "python -m unittest discover -s tests",
   "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
-  "green": false,
-  "returncode": 1,
+  "green": true,
+  "returncode": 0,
   "counts": {
    "ran": 653,
-   "ok": false,
-   "skipped": 0,
-   "failures": 2,
+   "ok": true,
+   "skipped": 5,
+   "failures": 0,
    "errors": 0
   },
-  "failing_tests": [
-   "test_c3_rederived_every_row_from_raw_quotes",
-   "test_rows_normalize_and_pick_is_argmax"
-  ]
+  "failing_tests": []
  },
- "generated_utc": "2026-10-16T01:23:53Z",
+ "generated_utc": "2026-10-16T01:25:51Z",
  "verified_board": {
   "file": "data/f28afd9e/board.json",
   "generated_utc": "2026-10-16T01:22:39Z",
@@ -37,7 +34,7 @@
  },
  "official_vrs": {
   "snapshot": "2026_10_05",
-  "fetched_utc": "2026-10-16T01:23:44Z",
+  "fetched_utc": "2026-10-16T01:25:42Z",
   "http_status": 200,
   "teams_parsed": 349,
   "human_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
@@ -45,7 +42,7 @@
  },
  "lobby_snapshot": {
   "file": "data/hotspawn_matches.json",
-  "generated_at_utc": "2026-10-15T23:40:26Z",
+  "generated_at_utc": "2026-10-16T01:25:08Z",
   "match_count": 86,
   "pickable_at_board_instant": 22
  },
@@ -53,14 +50,13 @@
  "summary": {
   "checks": 11,
   "by_status": {
-   "pass": 8,
+   "pass": 9,
    "info": 1,
-   "warn": 1,
-   "fail": 1
+   "warn": 1
   },
-  "irregularities": 22,
+  "irregularities": 21,
   "by_severity": {
-   "high": 3,
+   "high": 2,
    "info": 9,
    "low": 2,
    "medium": 4,
@@ -2581,18 +2577,15 @@
   {
    "id": "C11",
    "name": "Shared publication gate (Pages deploys only on a green suite)",
-   "status": "fail",
-   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-16T01:23:53Z: 653 tests, 2 failures, 0 errors, 0 skipped -> RED, Pages deployment is blocked",
+   "status": "pass",
+   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-16T01:25:51Z: 653 tests, 0 failures, 0 errors, 5 skipped -> GREEN, the site can publish",
    "evidence": [
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml",
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/gate.json"
    ],
    "rows_checked": 653,
-   "rows_failed": 2,
-   "failures": [
-    "test_c3_rederived_every_row_from_raw_quotes",
-    "test_rows_normalize_and_pick_is_argmax"
-   ]
+   "rows_failed": 0,
+   "failures": []
   }
  ],
  "irregularities": [
@@ -2656,15 +2649,6 @@
    "detail": "1080205: context claim not independently sourced in this audit (Summer rebuild: kyxsan (ex-Falcons) signed as in-game leader, Jimpphat (ex-MOUZ) added and)",
    "links": [
     "https://www.hltv.org/"
-   ]
-  },
-  {
-   "id": "IR-C11",
-   "severity": "high",
-   "title": "Shared Pages publication gate is red - the site cannot deploy",
-   "detail": "2 failing test(s): test_c3_rederived_every_row_from_raw_quotes, test_rows_normalize_and_pick_is_argmax. pages.yml gates deployment on the full suite, so this blocks publication for every session.",
-   "links": [
-    "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml"
    ]
   },
   {

@@ -1,33 +1,30 @@
 {
  "session": "6c5bb3d6",
- "ran_utc": "2026-10-16T01:23:53Z",
+ "ran_utc": "2026-10-16T01:25:51Z",
  "command": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests",
  "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
- "returncode": 1,
- "green": false,
- "failing_tests": [
-  "test_c3_rederived_every_row_from_raw_quotes",
-  "test_rows_normalize_and_pick_is_argmax"
- ],
+ "returncode": 0,
+ "green": true,
+ "failing_tests": [],
  "counts": {
   "ran": 653,
-  "ok": false,
-  "skipped": 0,
-  "failures": 2,
+  "ok": true,
+  "skipped": 5,
+  "failures": 0,
   "errors": 0
  },
  "tail": [
-  "First extra element 2:",
-  "'1080204'",
-  "",
-  "- ['1079626', '1079628', '1080204']",
-  "?  -----------",
-  "",
-  "+ ['1079628', '1080204']",
-  "",
+  "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
+  "........s................................................./home/runner/work/MaltaProj2/MaltaProj2/tests/test_verify_8e7a652d.py:81: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/runner/work/MaltaProj2/MaltaProj2/verify/8e7a652d/index.html' mode='r' encoding='utf-8'>",
+  "  html = open(page, encoding=\"utf-8\").read()",
+  "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
+  ".../home/runner/work/MaltaProj2/MaltaProj2/tests/test_verify_8e7a652d.py:99: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/runner/work/MaltaProj2/MaltaProj2/index.html' mode='r' encoding='utf-8'>",
+  "  html = open(os.path.join(ROOT, \"index.html\"), encoding=\"utf-8\").read()",
+  "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
+  ".",
   "----------------------------------------------------------------------",
-  "Ran 653 tests in 7.021s",
+  "Ran 653 tests in 8.408s",
   "",
-  "FAILED (failures=2, skipped=5)"
+  "OK (skipped=5)"
  ]
 }
