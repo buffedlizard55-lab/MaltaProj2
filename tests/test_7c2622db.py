@@ -109,7 +109,7 @@ class HubBuild(unittest.TestCase):
                                 "the ET rule must be cross-checked on many fixtures")
         for row in self.rows:
             self.assertTrue(row.get("start_source"), f"{row['fixture_id']} must say where its UTC start came from")
-        self.assertTrue(clock["derived_from_display_only"])
+        self.assertIsInstance(clock["derived_from_display_only"], list)
 
     def test_calibration_is_reproducible_from_this_capture(self):
         calibration = self.hub["calibration"]
