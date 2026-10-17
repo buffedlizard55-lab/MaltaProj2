@@ -31,7 +31,7 @@ try:
             page.set_viewport_size({'width':width,'height':844})
             page.goto('http://127.0.0.1:8768/index.html',wait_until='networkidle')
             assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), ('root',width)
-            assert page.locator('#executive-summary a[href="picks-every-match/index.html"]').is_visible()
+            assert page.locator('#executive-summary a[href="picks-every-match/index.html"]').first.is_visible()
             assert page.locator('#executive-summary a[href="picks-every-match/unresolved.html"]').count() > 0
             ids=page.locator('[id]').evaluate_all('(nodes)=>nodes.map(n=>n.id)')
             assert len(ids)==len(set(ids)), 'duplicate landing-page IDs'
