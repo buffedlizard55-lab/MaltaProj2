@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Method · HotSpawn CS2 picks</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0b1020;color:#e8ecf8;line-height:1.5}
+a{color:#7dd3fc}.wrap{max-width:860px;margin:0 auto;padding:16px 14px 90px}
+h1{font-size:1.55rem;line-height:1.2;margin:.3rem 0}h2{font-size:1.15rem;margin:1.4rem 0 .5rem}h3{font-size:1rem;margin:1rem 0 .4rem}
+.eyebrow{color:#93c5fd;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;margin:0}
+.card{background:#141b33;border:1px solid #26325a;border-radius:14px;padding:14px;margin:10px 0}
+.btn{display:block;text-align:center;background:#2563eb;color:#fff;text-decoration:none;font-weight:700;padding:14px;border-radius:12px;margin:8px 0;font-size:1.05rem}
+.btn.alt{background:#1e293b;border:1px solid #334155}.btn.warn{background:#7c2d12}
+.pick{font-size:1.25rem;font-weight:800}.prob{font-size:1.6rem;font-weight:800;color:#4ade80}
+.vs{display:flex;justify-content:space-between;gap:8px;align-items:center}.team{flex:1;text-align:center}
+.bar{height:10px;border-radius:6px;background:#334155;overflow:hidden;display:flex;margin:6px 0}
+.bar i{display:block;height:100%;background:#4ade80}.bar b{display:block;height:100%;background:#f472b6}
+table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{border-bottom:1px solid #26325a;padding:8px 6px;text-align:left;vertical-align:top}
+.tbl{overflow-x:auto}.small{color:#a5b4d4;font-size:.82rem}.flag{color:#fbbf24;font-weight:700}.blank{color:#f87171;font-weight:700}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:#0f1730;border-top:1px solid #26325a;display:flex;z-index:9}
+nav.tabs a{flex:1;text-align:center;padding:12px 2px;color:#cbd5f5;text-decoration:none;font-size:.78rem;font-weight:600}
+nav.tabs a.on{color:#fff;background:#1d4ed8}
+.notice{border-left:4px solid #f59e0b;background:#1c1917;padding:10px 12px;border-radius:8px;margin:10px 0}
+.good{border-left-color:#22c55e;background:#052e16}
+</style></head><body><main class="wrap">
+<h1>📖 Method &amp; sources</h1>
+<h2>How a probability is produced</h2>
+<p>For decimal odds d<sub>A</sub>, d<sub>B</sub>: fair p<sub>A</sub> = (1/d<sub>A</sub>) / ((1/d<sub>A</sub>)+(1/d<sub>B</sub>)) (bookmaker margin removed).
+Exchange cents are normalised the same way. Multiple accepted sources are averaged as declared per row.
+Worked example (SF1, read 2026-10-17T01:05:00Z): egamersworld 1.83/1.90 → FURIA 51%; Polymarket 53¢/48¢ → FURIA 52%; mean → <b>FURIA 52% / Aurora 48%</b>.</p>
+<h2>Source order</h2>
+<ol><li>Fixture inventory: <a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn lobby</a> (fixtures only — never probabilities).</li>
+<li>Betting lines: Pinnacle/Bovada/Melbet (canonical collector), then Polymarket/Kalshi/egamersworld-listed books.</li>
+<li>Results/identity/schedule: <a href="https://www.hltv.org/events/8932/thunderpick-world-championship-2026" rel="noopener">HLTV</a>.</li>
+<li>Originated fallback: Valve official VRS → Glicko model (labelled "model").</li></ol>
+<h2>Refresh</h2>
+<p>The canonical collectors run every 4 hours in GitHub Actions (<code>every-match-c64a5e19</code>, <code>day4-1c8f79f8</code>);
+this desk's workflow (<code>today-9c44d0e9</code>) then re-joins their retained boards and republishes <code>today/</code>.
+Data for manual replay: <a href="../data/9c44d0e9/board.json">data/9c44d0e9/board.json</a> ·
+<a href="../data/c64a5e19/board.json">canonical board</a> · <a href="../data/1c8f79f8/board.json">day-4 board</a>.</p>
+<h2>Contrarian rule</h2>
+<p>A "climb" pick is only shown when the underdog's fair probability is <b>≥40%</b>. Below that, fading the favourite loses
+more expected points than differentiation can repay — the definition of "stupid" used across this site.</p>
+<h2>All pick lists on this site</h2>
+<p><a href="picks.html">Today · all open picks</a> · <a href="../picks-every-match/index.html">Canonical every-match</a> ·
+<a href="../day4/index.html">Day-4 desk</a> · <a href="../picks-every-match/picks.html">Canonical picks table</a> ·
+<a href="../index.html">Dashboard home</a></p>
+<p class="small">Built 2026-10-17T00:56:35Z · Session 9c44d0e9 · <a href="../index.html">Full dashboard</a> · <a href="../flagged.html">Flagged for Review</a> · <a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn lobby</a>. Probabilities are estimates from the cited betting lines / models, not guarantees. HotSpawn is never a probability input.</p></main><nav class="tabs"><a href="index.html" class="">🏠 Today</a><a href="picks.html" class="">🎯 All picks</a><a href="twc.html" class="">🏆 TWC Day 4</a><a href="unresolved.html" class="">❔ Unresolved</a><a href="method.html" class="on">📖 Method</a></nav></body></html>

@@ -2,6 +2,8 @@
 
 **Live dashboard: https://buffedlizard55-lab.github.io/MaltaProj2/**
 
+**📱 Phone? Start with [Today](https://buffedlizard55-lab.github.io/MaltaProj2/today/) — TWC Day-4 semifinals + every open pick on one thumb-friendly page (session 9c44d0e9; re-joins the boards below every 4 hours).**
+
 **Start with [all CS2 picks](https://buffedlizard55-lab.github.io/MaltaProj2/picks-every-match/).**
 Use the [unresolved picks & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/picks-every-match/unresolved.html) page for every unsupported row and its source-attempt ledger.
 The landing executive summary links the canonical picks and unresolved list, with a blank probability

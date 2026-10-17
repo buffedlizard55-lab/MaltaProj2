@@ -503,6 +503,7 @@ and the evidence behind it. Low-tier matches stay on the list too.</p>
 <a class="btn ghost" href="twc-2026/index.html">Day 1–3 review &amp; day-4 picks →</a>
 <a class="btn ghost" href="#canonical-unresolved">Unresolved picks &amp; limitations ↓</a>
 </div>
+<p><a class="btn alt2" href="today/index.html">📱 Today on your phone · TWC Day 4 + every open pick →</a></p>
 <p class="note"><strong>Two current pick lists, both rebuilt automatically:</strong>
 <a href="picks-every-match/index.html">every-match picks</a> (canonical, 4-hourly collector, last evaluated
 {esc(pick_time or 'unverified')}) and the <a href="day4/index.html">day-4 desk</a> (TWC 2026 semifinals plus a
