@@ -1,43 +1,91 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Method · HotSpawn CS2 picks</title><style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0b1020;color:#e8ecf8;line-height:1.5}
-a{color:#7dd3fc}.wrap{max-width:860px;margin:0 auto;padding:16px 14px 90px}
-h1{font-size:1.55rem;line-height:1.2;margin:.3rem 0}h2{font-size:1.15rem;margin:1.4rem 0 .5rem}h3{font-size:1rem;margin:1rem 0 .4rem}
-.eyebrow{color:#93c5fd;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;margin:0}
-.card{background:#141b33;border:1px solid #26325a;border-radius:14px;padding:14px;margin:10px 0}
-.btn{display:block;text-align:center;background:#2563eb;color:#fff;text-decoration:none;font-weight:700;padding:14px;border-radius:12px;margin:8px 0;font-size:1.05rem}
-.btn.alt{background:#1e293b;border:1px solid #334155}.btn.warn{background:#7c2d12}
-.pick{font-size:1.25rem;font-weight:800}.prob{font-size:1.6rem;font-weight:800;color:#4ade80}
-.vs{display:flex;justify-content:space-between;gap:8px;align-items:center}.team{flex:1;text-align:center}
-.bar{height:10px;border-radius:6px;background:#334155;overflow:hidden;display:flex;margin:6px 0}
-.bar i{display:block;height:100%;background:#4ade80}.bar b{display:block;height:100%;background:#f472b6}
-table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{border-bottom:1px solid #26325a;padding:8px 6px;text-align:left;vertical-align:top}
-.tbl{overflow-x:auto}.small{color:#a5b4d4;font-size:.82rem}.flag{color:#fbbf24;font-weight:700}.blank{color:#f87171;font-weight:700}
-nav.tabs{position:fixed;left:0;right:0;bottom:0;background:#0f1730;border-top:1px solid #26325a;display:flex;z-index:9}
-nav.tabs a{flex:1;text-align:center;padding:12px 2px;color:#cbd5f5;text-decoration:none;font-size:.78rem;font-weight:600}
-nav.tabs a.on{color:#fff;background:#1d4ed8}
-.notice{border-left:4px solid #f59e0b;background:#1c1917;padding:10px 12px;border-radius:8px;margin:10px 0}
-.good{border-left-color:#22c55e;background:#052e16}
-</style></head><body><main class="wrap">
-<h1>📖 Method &amp; sources</h1>
-<h2>How a probability is produced</h2>
-<p>For decimal odds d<sub>A</sub>, d<sub>B</sub>: fair p<sub>A</sub> = (1/d<sub>A</sub>) / ((1/d<sub>A</sub>)+(1/d<sub>B</sub>)) (bookmaker margin removed).
-Exchange cents are normalised the same way. Multiple accepted sources are averaged as declared per row.
-Worked example (SF1, read 2026-10-17T01:05:00Z): egamersworld 1.83/1.90 → FURIA 51%; Polymarket 53¢/48¢ → FURIA 52%; mean → <b>FURIA 52% / Aurora 48%</b>.</p>
-<h2>Source order</h2>
-<ol><li>Fixture inventory: <a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn lobby</a> (fixtures only — never probabilities).</li>
-<li>Betting lines: Pinnacle/Bovada/Melbet (canonical collector), then Polymarket/Kalshi/egamersworld-listed books.</li>
-<li>Results/identity/schedule: <a href="https://www.hltv.org/events/8932/thunderpick-world-championship-2026" rel="noopener">HLTV</a>.</li>
-<li>Originated fallback: Valve official VRS → Glicko model (labelled "model").</li></ol>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0a0f1e"><title>Method · HotSpawn CS2 picks</title><style>
+:root{--bg:#0a0f1e;--card:#121a30;--line:#233156;--ink:#e9eefb;--muted:#9fb0d4;
+--blue:#3b82f6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--pink:#ec4899}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:84px}
+a{color:#7dd3fc}
+.wrap{max-width:820px;margin:0 auto;padding:18px 14px 24px}
+h1{font-size:1.5rem;line-height:1.2;margin:.2rem 0 .5rem}
+h2{font-size:1.15rem;margin:1.5rem 0 .5rem}
+h3{font-size:1rem;margin:1rem 0 .35rem}
+p{margin:.5rem 0}
+.eyebrow{color:#93c5fd;font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;margin:0}
+.muted{color:var(--muted)}.small{font-size:.83rem;line-height:1.45;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}
+.btn{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:56px;
+background:var(--blue);color:#fff;text-decoration:none;font-weight:750;padding:14px 16px;
+border-radius:14px;margin:9px 0;font-size:1.02rem;box-shadow:0 1px 0 rgba(255,255,255,.08) inset}
+.btn .chev{font-size:1.35rem;opacity:.9}
+.btn.alt{background:#17203a;border:1px solid #2c3c66;color:var(--ink)}
+.btn.go{background:linear-gradient(180deg,#2563eb,#1d4ed8)}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:12px 0}
+.kpi{background:#0f1730;border:1px solid var(--line);border-radius:13px;padding:10px 12px}
+.kpi b{display:block;font-size:1.55rem;line-height:1.1}
+.kpi span{font-size:.78rem;color:var(--muted)}
+.match{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}
+.top{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);gap:8px;margin-bottom:8px}
+.teams{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px}
+.team{text-align:center;min-width:0}
+.team .name{font-weight:750;font-size:.98rem;overflow-wrap:anywhere}
+.team .num{font-size:1.75rem;font-weight:820;letter-spacing:-.02em}
+.team.win .num{color:var(--green)}
+.team.lose .num{color:#c7d2ea}
+.vs{font-size:.7rem;color:var(--muted);text-align:center}
+.bar{display:flex;height:9px;border-radius:6px;overflow:hidden;background:#26324f;margin:9px 0 6px}
+.bar i{background:var(--green);height:100%}
+.bar b{background:var(--pink);height:100%}
+.pickline{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:8px}
+.badge{background:#052e16;border:1px solid #166534;color:#86efac;border-radius:999px;padding:5px 11px;font-weight:800;font-size:.94rem}
+.badge.dir{background:#1c1917;border-color:#57534e;color:#fbbf24}
+.badge.tie{background:#1e1b4b;border-color:#4338ca;color:#c7d2fe}
+.badge.climb{background:#3b0764;border-color:#7e22ce;color:#e9d5ff}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-size:.72rem;color:var(--muted);margin:2px 4px 2px 0}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+th{color:#c7d2fa;font-weight:650;font-size:.8rem}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.notice{border-left:4px solid var(--amber);background:#1c1917;border-radius:10px;padding:11px 13px;margin:12px 0}
+.notice.good{border-color:var(--green);background:#052e16}
+.notice.bad{border-color:var(--red);background:#2a0a0a}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:#0c1428ee;backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;z-index:20}
+nav.tabs a{flex:1;text-align:center;padding:10px 2px 12px;color:#b9c6e6;text-decoration:none;font-size:.7rem;font-weight:650;line-height:1.25}
+nav.tabs a .ico{display:block;font-size:1.15rem;line-height:1.25}
+nav.tabs a[aria-current="page"]{color:#fff;background:#1d4ed8}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:8px;top:8px;background:#fff;color:#000;padding:8px;z-index:99}
+footer{margin-top:26px;border-top:1px solid var(--line);padding-top:12px}
+</style></head><body><a class="skip" href="#main">Skip to content</a><main class="wrap" id="main">
+<p class="eyebrow">Method &amp; sources</p>
+<h1>📖 How every number is made</h1>
+<h2>Probability from a market</h2>
+<p>For decimal odds <i>d<sub>A</sub></i>, <i>d<sub>B</sub></i>:
+<code>p<sub>A</sub> = (1/d<sub>A</sub>) / ((1/d<sub>A</sub>) + (1/d<sub>B</sub>))</code>.
+The overround is removed. Exchange cents are normalised the same way. Accepted two-sided sources are averaged
+with equal weight and the row lists them all.</p>
+<h2>Probability from official ratings</h2>
+<p><code>p<sub>A</sub> = 1 / (1 + 10^(-(Pts<sub>A</sub> - Pts<sub>B</sub>) × k / 400))</code>,
+with Pts from Valve’s published regional standings and <code>k = 0.421341</code> fitted on 11 market/model pairs
+(MAE 0.075). The 400-point scale is a stated modelling assumption, not a Valve-published quantity.</p>
+<h2>What is never used</h2>
+<ul>
+<li>HotSpawn “picked %” — it is crowd ownership, shown only as context.</li>
+<li>The egamersworld 1.80/1.80 default — a placeholder, rejected.</li>
+<li>A forced 50/50 to fill a blank row.</li>
+</ul>
 <h2>Refresh</h2>
-<p>The canonical collectors run every 4 hours in GitHub Actions (<code>every-match-c64a5e19</code>, <code>day4-1c8f79f8</code>);
-this desk's workflow (<code>today-9c44d0e9</code>) then re-joins their retained boards and republishes <code>today/</code>.
-Data for manual replay: <a href="../data/9c44d0e9/board.json">data/9c44d0e9/board.json</a> ·
-<a href="../data/c64a5e19/board.json">canonical board</a> · <a href="../data/1c8f79f8/board.json">day-4 board</a>.</p>
-<h2>Contrarian rule</h2>
-<p>A "climb" pick is only shown when the underdog's fair probability is <b>≥40%</b>. Below that, fading the favourite loses
-more expected points than differentiation can repay — the definition of "stupid" used across this site.</p>
-<h2>All pick lists on this site</h2>
-<p><a href="picks.html">Today · all open picks</a> · <a href="../picks-every-match/index.html">Canonical every-match</a> ·
-<a href="../day4/index.html">Day-4 desk</a> · <a href="../picks-every-match/picks.html">Canonical picks table</a> ·
-<a href="../index.html">Dashboard home</a></p>
-<p class="small">Built 2026-10-17T08:49:31Z · Session 9c44d0e9 · <a href="../index.html">Full dashboard</a> · <a href="../flagged.html">Flagged for Review</a> · <a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn lobby</a>. Probabilities are estimates from the cited betting lines / models, not guarantees. HotSpawn is never a probability input.</p></main><nav class="tabs"><a href="index.html" class="">🏠 Today</a><a href="picks.html" class="">🎯 All picks</a><a href="twc.html" class="">🏆 TWC Day 4</a><a href="unresolved.html" class="">❔ Unresolved</a><a href="method.html" class="on">📖 Method</a></nav></body></html>
+<p>The canonical collector (<code>every-match-c64a5e19</code>) rebuilds the fixture board every 4 hours.
+<code>today-9c44d0e9</code> then runs this builder and republishes these pages. No manual step.</p>
+<h2>Sources</h2>
+<ul class="small">
+<li><a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn lobby</a> — fixtures, tier, points, crowd ownership only.</li>
+<li><a href="https://www.hltv.org/events/8932/thunderpick-world-championship-2026" rel="noopener">HLTV event 8932</a> — results, schedule, rosters.</li>
+<li><a href="https://github.com/ValveSoftware/counter-strike_regional_standings" rel="noopener">Valve regional standings</a> — official VRS points.</li>
+<li><a href="https://stavka.tv/matches/csgo/17-10-2026-furia-aurora-gaming" rel="noopener">stavka.tv</a> · <a href="https://egamersworld.com/counterstrike/match/5X5sFiL7H/furia-vs-aurora-Z00JFz0dG" rel="noopener">egamersworld</a> · <a href="https://kushvsporte.ru/event/6977301-apogee-esports-team-nemesis" rel="noopener">kushvsporte</a> — prices.</li>
+<li><a href="https://polymarket.com/esports/cs2/thunderpick-world-championship/cs2-furia-aur1-2026-10-17" rel="noopener">Polymarket</a> — exchange prices where a market exists.</li>
+</ul>
+<h2>Machine-readable data</h2>
+<p class="small"><a href="../data/7191a16e/board.json">board.json</a> ·
+<a href="../data/7191a16e/research.json">research.json</a> ·
+<a href="../data/c64a5e19/board.json">canonical board</a></p>
+<footer><p class="small">Built 2026-10-17 09:52 UTC. Probabilities are estimates from the cited betting lines or an official-rating model — not guarantees. HotSpawn supplies fixtures and crowd ownership only; it is never a probability input. Not affiliated with HotSpawn or any bookmaker.</p><p class="small"><a href="picks.html">All picks</a> · <a href="unresolved.html">No-percentage list</a> · <a href="flagged.html">Flagged</a> · <a href="https://play.hotspawn.com/lobby">HotSpawn lobby</a></p></footer></main><nav class="tabs"><a href="index.html"><span class="ico">🏠</span>Today</a><a href="picks.html"><span class="ico">🎯</span>Picks</a><a href="twc.html"><span class="ico">🏆</span>TWC</a><a href="unresolved.html"><span class="ico">❔</span>No %</a><a href="method.html" aria-current="page"><span class="ico">📖</span>Method</a></nav></body></html>
