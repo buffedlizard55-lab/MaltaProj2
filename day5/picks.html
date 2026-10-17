@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<title>Every pick · HotSpawn picks desk</title>
+<style>
+:root{--bg:#0d1117;--card:#161b22;--line:#26303b;--fg:#e6edf3;--mut:#93a1b1;
+--good:#3fb950;--warn:#d29922;--bad:#f85149;--accent:#58a6ff;--pick:#1f6feb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+-webkit-text-size-adjust:100%}
+a{color:var(--accent)}
+.wrap{max-width:720px;margin:0 auto;padding:12px 12px 40px}
+header.top{position:sticky;top:0;z-index:20;background:#0d1117ee;backdrop-filter:blur(8px);
+border-bottom:1px solid var(--line);padding:10px 0 8px}
+h1{font-size:19px;margin:0 0 2px}
+.sub{color:var(--mut);font-size:13px}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs a{flex:0 0 auto;font-size:13px;padding:7px 11px;border:1px solid var(--line);
+border-radius:999px;text-decoration:none;color:var(--fg);background:#11161d;white-space:nowrap}
+nav.tabs a.on{background:var(--pick);border-color:var(--pick);color:#fff;font-weight:600}
+h2{font-size:16px;margin:22px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+h3{font-size:14px;margin:16px 0 6px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+p{font-size:15px}
+.muted{color:var(--mut);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;
+margin:0 0 10px}
+.card.hot{border-color:#3d4f6b;box-shadow:0 0 0 1px #1d2733}
+.topline{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.teams{font-size:17px;font-weight:650;letter-spacing:-.01em}
+.pick{background:var(--pick);color:#fff;border-radius:8px;padding:3px 9px;font-size:13px;
+font-weight:700;white-space:nowrap;display:inline-block}
+.pick.none{background:#2a2f38;color:var(--mut);font-weight:600}
+.pick.climb{background:#6e40c9}
+.bar{height:9px;border-radius:5px;background:#21262d;overflow:hidden;display:flex;margin:9px 0 4px}
+.bar i{display:block;height:100%}
+.bar .a{background:var(--good)}
+.bar .b{background:#30363d}
+.probs{display:flex;justify-content:space-between;font-size:13px;color:var(--mut)}
+.probs b{color:var(--fg);font-size:15px}
+.rowmeta{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.chip{font-size:11.5px;border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--mut)}
+.chip.s{color:#7ee787;border-color:#2b4a33}
+.chip.m{color:#79c0ff;border-color:#23406b}
+.chip.b{color:#d29922;border-color:#4a3a12}
+.chip.x{color:#f85149;border-color:#5a2323}
+.kv{font-size:13px;color:var(--mut);margin-top:8px}
+.kv b{color:var(--fg)}
+.srcs{margin-top:9px;font-size:12.5px}
+.srcs a{display:inline-block;margin:0 8px 4px 0}
+.btn{display:block;background:#11161d;border:1px solid var(--line);border-radius:10px;
+padding:11px 12px;margin:0 0 8px;text-decoration:none;color:var(--fg)}
+.btn span{display:block;font-size:12px;color:var(--mut);margin-top:2px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
+.stat b{display:block;font-size:22px;line-height:1.2}
+.stat span{font-size:12px;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;display:block;overflow-x:auto}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em}
+td.wrapcell{white-space:normal;min-width:190px}
+.flag{border-left:3px solid var(--warn);padding-left:9px}
+.flag.high{border-left-color:var(--bad)}
+.note{font-size:13px;color:var(--mut);border-left:2px solid var(--line);padding-left:9px;margin:8px 0}
+footer{color:var(--mut);font-size:12.5px;margin-top:26px;border-top:1px solid var(--line);padding-top:12px}
+@media (min-width:640px){h1{font-size:24px}.wrap{padding:16px}}
+</style>
+</head><body>
+<header class="top"><div class="wrap">
+<h1>Every pick</h1>
+<div class="sub">Counter-Strike 2 picks for every HotSpawn match · built 2026-10-17T20:32:55Z</div>
+<nav class="tabs"><a href="index.html">Summary</a><a href="picks.html" class="on">Every pick</a><a href="twc.html">TWC day 5</a><a href="unresolved.html">Unresolved</a><a href="flagged.html">Flagged</a><a href="method.html">Method</a></nav>
+</div></header>
+<div class="wrap">
+<h2>Every open match · 18 rows</h2>
+<p class="muted">Each card is one HotSpawn Counter-Strike 2 match you can still pick. Both win probabilities come from external bookmaker prices, or from Valve's own ratings when no book prices the match. HotSpawn's crowd share is shown as context only.</p>
+<h2>TWC 2026 day 5</h2>
+<div class="card hot" id="twc-third_place">
+<div class="topline">
+<div class="teams">Aurora<br><span class="muted" style="font-weight:400">vs</span> Falcons</div>
+<div style="text-align:right"><span class="pick">Falcons</span><div class="muted" style="font-size:12px;margin-top:4px">Thunderpick World Championship 2026</div></div>
+</div>
+<div class="bar"><i class="a" style="width:42.9%"></i><i class="b" style="width:57.1%"></i></div>
+<div class="probs"><span><b>42.9%</b> Aurora</span>
+<span><b>57.1%</b> Falcons</span></div>
+<div class="rowmeta"><span class="chip m">Valve ratings model</span><span class="chip">Tier S</span><span class="chip">Bo3</span><span class="chip">3rd place decider</span><span class="chip x">not in HotSpawn lobby</span></div>
+<div class="kv"><b>Lock:</b> &mdash; · <b>Start:</b> 18 Oct 11:30</div>
+<div class="kv"><b>Basis:</b> No external book price at this capture. Valve&#x27;s own global regional standings (2026-10-05) rate Aurora 1716 and Falcons 1843. Valve&#x27;s published rating curve, with the slope the repository fits to 48 observed bookmaker lines (k=0.4019), gives 42.9%; Valve&#x27;s raw slope would give 32.9%. This is a ratings model, not a bookmaker price.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — No HotSpawn crowd split recorded; no leaderboard edge can be measured.</div>
+<div class="kv"><b>Verdict:</b> Pick: Falcons.</div><div class="muted" style="font-size:12.5px;margin-top:6px">Aurora lose the semi-final 0-2 to FURIA and play for third place.</div><div class="muted" style="font-size:12.5px;margin-top:6px">Falcons lose the semi-final 1-2 to BETBOOM and play for third place.</div><div class="note">Aurora are the underdog here at 42.9% by the ratings model, which is above the 35% floor, and they are rested in one sense - they lost 0-2 to FURIA while Falcons went the distance against BETBOOM and played a third map. There is no HotSpawn crowd split for this match, because HotSpawn does not list it, so there is no leaderboard edge to measure and the pick stays on the more likely side: Falcons.</div>
+<div class="srcs"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve regional standings (model input)</a><a href="https://www.hltv.org/matches/2399416/aurora-vs-falcons-thunderpick-world-championship-2026" rel="noopener">HLTV match page</a><a href="https://bo3.gg/matches/aurora-gaming-vs-falcons-esports-18-10-2026" rel="noopener">bo3.gg match page</a></div>
+</div>
+<div class="card hot" id="twc-grand_final">
+<div class="topline">
+<div class="teams">FURIA<br><span class="muted" style="font-weight:400">vs</span> BETBOOM</div>
+<div style="text-align:right"><span class="pick">FURIA</span><div class="muted" style="font-size:12px;margin-top:4px">Thunderpick World Championship 2026</div></div>
+</div>
+<div class="bar"><i class="a" style="width:62.8%"></i><i class="b" style="width:37.2%"></i></div>
+<div class="probs"><span><b>62.8%</b> FURIA</span>
+<span><b>37.2%</b> BETBOOM</span></div>
+<div class="rowmeta"><span class="chip m">Valve ratings model</span><span class="chip">Tier S</span><span class="chip">Bo5</span><span class="chip">Grand final</span><span class="chip x">not in HotSpawn lobby</span></div>
+<div class="kv"><b>Lock:</b> &mdash; · <b>Start:</b> 18 Oct 15:00</div>
+<div class="kv"><b>Basis:</b> No external book price at this capture. Valve&#x27;s own global regional standings (2026-10-05) rate FURIA 1829 and BETBOOM 1596. Valve&#x27;s published rating curve, with the slope the repository fits to 48 observed bookmaker lines (k=0.4019), gives 62.8%; Valve&#x27;s raw slope would give 78.7%. This is a ratings model, not a bookmaker price.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — No HotSpawn crowd split recorded; no leaderboard edge can be measured.</div>
+<div class="kv"><b>Verdict:</b> Pick: FURIA.</div><div class="muted" style="font-size:12.5px;margin-top:6px">FURIA beat Aurora 2-0 in the semi-final and are through to defend their 2025 title.</div><div class="muted" style="font-size:12.5px;margin-top:6px">BETBOOM beat Falcons 2-1 in the semi-final and are through to the final.</div><div class="note">BETBOOM at 37.2% is a real shot at an upset, and the format helps them: a Bo5 gives them five maps, their only loss in this event was 0-2 to FURIA in the group stage, and they have already beaten Falcons 2-1 in a semi-final. But the ratings model still has FURIA 233 points ahead (1829 v 1596), FURIA are the higher-ranked side (#4 v #14) and in form (4/5, straight sets against Aurora in the semi-final), and there is no HotSpawn crowd split or book price for this match to fade. So the pick is FURIA and BETBOOM is published as the upset shot at 37.2% rather than taken.</div>
+<div class="srcs"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve regional standings (model input)</a><a href="https://www.hltv.org/matches/2399417/furia-vs-betboom-thunderpick-world-championship-2026" rel="noopener">HLTV match page</a><a href="https://bo3.gg/matches/furia-vs-betboom-team-18-10-2026" rel="noopener">bo3.gg match page</a></div>
+</div>
+<h2>HotSpawn lobby · 18 open matches</h2>
+<div class="card" id="1082019">
+<div class="topline">
+<div class="teams">Hacha<br><span class="muted" style="font-weight:400">vs</span> LOS NINOS</div>
+<div style="text-align:right"><span class="pick none">no pick</span><div class="muted" style="font-size:12px;margin-top:4px">CCT South America 2026 Series #7</div></div>
+</div>
+<div class="bar"><i class="a" style="width:50.0%"></i><i class="b" style="width:50.0%"></i></div>
+<div class="probs"><span><b>&mdash;</b> Hacha</span>
+<span><b>&mdash;</b> LOS NINOS</span></div>
+<div class="rowmeta"><span class="chip x">unresolved</span><span class="chip">Tier C</span><span class="chip">2 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 5% / 95% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 17 Oct 21:54 · <b>Start:</b> 17 Oct 22:00</div>
+<div class="kv"><b>Basis:</b> Neither side appears in Valve&#x27;s global regional standings and no external book priced this match at this capture. The bookmakers that price Counter-Strike 2 do not list this event.</div>
+
+
+<div class="srcs"><a href="https://www.hotspawn.com/matches/hacha-vs-los-ninos-cct-south-america-2026-series-7-1082019" rel="noopener">HotSpawn fixture</a></div>
+</div>
+<div class="card" id="1081519">
+<div class="topline">
+<div class="teams">NEXVOID<br><span class="muted" style="font-weight:400">vs</span> Off Chops</div>
+<div style="text-align:right"><span class="pick">NEXVOID</span><div class="muted" style="font-size:12px;margin-top:4px">Logitech G Pro Series 2026</div></div>
+</div>
+<div class="bar"><i class="a" style="width:79.9%"></i><i class="b" style="width:20.1%"></i></div>
+<div class="probs"><span><b>79.9%</b> NEXVOID</span>
+<span><b>20.1%</b> Off Chops</span></div>
+<div class="rowmeta"><span class="chip b">lower bound</span><span class="chip">Tier B</span><span class="chip">3 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 87% / 13% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 18 Oct 02:54 · <b>Start:</b> 18 Oct 03:00</div>
+<div class="kv"><b>Basis:</b> NEXVOID is rated in Valve&#x27;s global regional standings (995 points). Off Chops is not in Valve&#x27;s list of 380 teams, so treating it as no better than the list floor (381 points, the lowest team Valve does rank) puts NEXVOID at no less than 79.9%. This is a floor, not an estimate: an unlisted side could in principle be weaker still. No bookmaker priced this match at this capture.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — Our own probability for that side is 20.1%, below the 35% floor. A contrarian pick below the floor is a lottery ticket, not a climb.</div>
+
+<div class="srcs"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve regional standings (model input)</a><a href="https://www.hotspawn.com/matches/nexvoid-vs-off-chops-logitech-g-pro-series-2026-1081519" rel="noopener">HotSpawn fixture</a></div>
+</div>
+<div class="card" id="1081126">
+<div class="topline">
+<div class="teams">Banda chuya<br><span class="muted" style="font-weight:400">vs</span> Enjoy</div>
+<div style="text-align:right"><span class="pick">Enjoy</span><div class="muted" style="font-size:12px;margin-top:4px">CCT Europe 2026 Series #12 Play-In</div></div>
+</div>
+<div class="bar"><i class="a" style="width:46.1%"></i><i class="b" style="width:53.9%"></i></div>
+<div class="probs"><span><b>46.1%</b> Banda chuya</span>
+<span><b>53.9%</b> Enjoy</span></div>
+<div class="rowmeta"><span class="chip m">Valve ratings model</span><span class="chip">Tier C</span><span class="chip">2 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 79% / 21% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 18 Oct 07:54 · <b>Start:</b> 18 Oct 08:00</div>
+<div class="kv"><b>Basis:</b> No external book price at this capture. Valve&#x27;s own global regional standings (2026-10-05) rate Banda chuya 801 and Enjoy 871. Valve&#x27;s published rating curve, with the slope the repository fits to 48 observed bookmaker lines (k=0.4019), gives 46.1%; Valve&#x27;s raw slope would give 40.3%. This is a ratings model, not a bookmaker price. Valve&#x27;s list carries more than one Banda chuya entry (older rosters of the same organisation); the entry with the most recent activity (2026-10-04) was used.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — The crowd already backs that side (21%); there is no crowd disagreement left to exploit.</div>
+
+<div class="srcs"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve regional standings (model input)</a><a href="https://www.hotspawn.com/matches/banda-chuya-vs-enjoy-cct-europe-2026-series-12-play-in-1081126" rel="noopener">HotSpawn fixture</a></div>
+</div>
+<div class="card" id="1079638">
+<div class="topline">
+<div class="teams">ex-RUSTEC<br><span class="muted" style="font-weight:400">vs</span> ILLYRIANS</div>
+<div style="text-align:right"><span class="pick">ex-RUSTEC</span><div class="muted" style="font-size:12px;margin-top:4px">CCT Europe 2026 Series #11</div></div>
+</div>
+<div class="bar"><i class="a" style="width:71.6%"></i><i class="b" style="width:28.4%"></i></div>
+<div class="probs"><span><b>71.6%</b> ex-RUSTEC</span>
+<span><b>28.4%</b> ILLYRIANS</span></div>
+<div class="rowmeta"><span class="chip s">bookmaker price</span><span class="chip">Tier B</span><span class="chip">3 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 86% / 14% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 18 Oct 10:54 · <b>Start:</b> 18 Oct 11:00</div>
+<div class="kv"><b>Basis:</b> 1 two-way price from Bovada; margin removed proportionally.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — Our own probability for that side is 28.4%, below the 35% floor. A contrarian pick below the floor is a lottery ticket, not a climb.</div>
+
+<div class="srcs"><a href="https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/ex-rustec-illyrians-202610180700" rel="noopener">Bovada</a><a href="https://www.hotspawn.com/matches/ex-rustec-vs-illyrians-cct-europe-2026-series-11-1079638" rel="noopener">HotSpawn fixture</a><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2" rel="noopener">Bovada</a></div>
+</div>
+<div class="card" id="1081521">
+<div class="topline">
+<div class="teams">ex-6666<br><span class="muted" style="font-weight:400">vs</span> Privateer</div>
+<div style="text-align:right"><span class="pick">ex-6666</span><div class="muted" style="font-size:12px;margin-top:4px">CCT Europe 2026 Challengers #8</div></div>
+</div>
+<div class="bar"><i class="a" style="width:91.5%"></i><i class="b" style="width:8.5%"></i></div>
+<div class="probs"><span><b>91.5%</b> ex-6666</span>
+<span><b>8.5%</b> Privateer</span></div>
+<div class="rowmeta"><span class="chip b">exchange midpoint</span><span class="chip">Tier C</span><span class="chip">2 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 91% / 9% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 18 Oct 13:39 · <b>Start:</b> 18 Oct 13:45</div>
+<div class="kv"><b>Basis:</b> 1 two-way price from Kalshi (exchange); margin removed proportionally. The ratings model would say 67.0%, which is 24 points away from the price; the price is the pick and the disagreement is flagged.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — Our own probability for that side is 8.5%, below the 35% floor. A contrarian pick below the floor is a lottery ticket, not a climb.</div>
+
+<div class="srcs"><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct180945pgex" rel="noopener">Kalshi (exchange)</a><a href="https://www.hotspawn.com/matches/ex-6666-vs-privateer-cct-europe-2026-challengers-8-1081521" rel="noopener">HotSpawn fixture</a><a href="https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&amp;status=open&amp;with_nested_markets=true&amp;limit=200" rel="noopener">Kalshi (exchange)</a></div>
+</div>
+<div class="card" id="1081522">
+<div class="topline">
+<div class="teams">antidaun<br><span class="muted" style="font-weight:400">vs</span> Phantom Academy</div>
+<div style="text-align:right"><span class="pick">Phantom Academy</span><div class="muted" style="font-size:12px;margin-top:4px">CCT Europe 2026 Challengers #8</div></div>
+</div>
+<div class="bar"><i class="a" style="width:28.8%"></i><i class="b" style="width:71.2%"></i></div>
+<div class="probs"><span><b>28.8%</b> antidaun</span>
+<span><b>71.2%</b> Phantom Academy</span></div>
+<div class="rowmeta"><span class="chip b">lower bound</span><span class="chip">Tier C</span><span class="chip">2 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 12% / 88% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 18 Oct 13:39 · <b>Start:</b> 18 Oct 13:45</div>
+<div class="kv"><b>Basis:</b> Phantom Academy is rated in Valve&#x27;s global regional standings (783 points). antidaun is not in Valve&#x27;s list of 380 teams, so treating it as no better than the list floor (381 points, the lowest team Valve does rank) puts Phantom Academy at no less than 71.2%. This is a floor, not an estimate: an unlisted side could in principle be weaker still. No bookmaker priced this match at this capture.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — Our own probability for that side is 28.8%, below the 35% floor. A contrarian pick below the floor is a lottery ticket, not a climb.</div>
+
+<div class="srcs"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve regional standings (model input)</a><a href="https://www.hotspawn.com/matches/antidaun-vs-phantom-academy-cct-europe-2026-challengers-8-1081522" rel="noopener">HotSpawn fixture</a></div>
+</div>
+<div class="card" id="1079640">
+<div class="topline">
+<div class="teams">FORZE Reload<br><span class="muted" style="font-weight:400">vs</span> BakS</div>
+<div style="text-align:right"><span class="pick">FORZE Reload</span><div class="muted" style="font-size:12px;margin-top:4px">CCT Europe 2026 Series #11</div></div>
+</div>
+<div class="bar"><i class="a" style="width:58.3%"></i><i class="b" style="width:41.7%"></i></div>
+<div class="probs"><span><b>58.3%</b> FORZE Reload</span>
+<span><b>41.7%</b> BakS</span></div>
+<div class="rowmeta"><span class="chip s">bookmaker price</span><span class="chip">Tier B</span><span class="chip">3 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 17% / 83% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 18 Oct 16:54 · <b>Start:</b> 18 Oct 17:00</div>
+<div class="kv"><b>Basis:</b> 1 two-way price from Melbet; margin removed proportionally.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — The crowd already backs that side (17%); there is no crowd disagreement left to exploit.</div>
+
+<div class="srcs"><a href="https://melbet.com/en/line/esports" rel="noopener">Melbet</a><a href="https://www.hotspawn.com/matches/forze-reload-vs-baks-cct-europe-2026-series-11-1079640" rel="noopener">HotSpawn fixture</a><a href="https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1" rel="noopener">Melbet</a></div>
+</div>
+<div class="card" id="1081526">
+<div class="topline">
+<div class="teams">Infinite<br><span class="muted" style="font-weight:400">vs</span> Insiders</div>
+<div style="text-align:right"><span class="pick">Infinite</span><div class="muted" style="font-size:12px;margin-top:4px">DraculaN Season 7</div></div>
+</div>
+<div class="bar"><i class="a" style="width:72.7%"></i><i class="b" style="width:27.3%"></i></div>
+<div class="probs"><span><b>72.7%</b> Infinite</span>
+<span><b>27.3%</b> Insiders</span></div>
+<div class="rowmeta"><span class="chip s">bookmaker price</span><span class="chip">Tier B</span><span class="chip">3 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 95% / 5% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 19 Oct 08:54 · <b>Start:</b> 19 Oct 09:00</div>
+<div class="kv"><b>Basis:</b> 1 two-way price from Melbet; margin removed proportionally.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — Our own probability for that side is 27.3%, below the 35% floor. A contrarian pick below the floor is a lottery ticket, not a climb.</div>
+
+<div class="srcs"><a href="https://melbet.com/en/line/esports" rel="noopener">Melbet</a><a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn fixture</a><a href="https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1" rel="noopener">Melbet</a></div>
+</div>
+<div class="card" id="1081527">
+<div class="topline">
+<div class="teams">aimclub<br><span class="muted" style="font-weight:400">vs</span> BASEMENT BOYS</div>
+<div style="text-align:right"><span class="pick">BASEMENT BOYS</span><div class="muted" style="font-size:12px;margin-top:4px">DraculaN Season 7</div></div>
+</div>
+<div class="bar"><i class="a" style="width:45.3%"></i><i class="b" style="width:54.7%"></i></div>
+<div class="probs"><span><b>45.3%</b> aimclub</span>
+<span><b>54.7%</b> BASEMENT BOYS</span></div>
+<div class="rowmeta"><span class="chip s">bookmaker price</span><span class="chip">Tier B</span><span class="chip">3 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 72% / 28% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 19 Oct 08:54 · <b>Start:</b> 19 Oct 09:00</div>
+<div class="kv"><b>Basis:</b> 1 two-way price from Melbet; margin removed proportionally.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — The crowd already backs that side (28%); there is no crowd disagreement left to exploit.</div>
+
+<div class="srcs"><a href="https://melbet.com/en/line/esports" rel="noopener">Melbet</a><a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn fixture</a><a href="https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1" rel="noopener">Melbet</a></div>
+</div>
+<div class="card" id="1081528">
+<div class="topline">
+<div class="teams">BC.Game<br><span class="muted" style="font-weight:400">vs</span> Drama</div>
+<div style="text-align:right"><span class="pick">BC.Game</span><div class="muted" style="font-size:12px;margin-top:4px">DraculaN Season 7</div></div>
+</div>
+<div class="bar"><i class="a" style="width:82.4%"></i><i class="b" style="width:17.6%"></i></div>
+<div class="probs"><span><b>82.4%</b> BC.Game</span>
+<span><b>17.6%</b> Drama</span></div>
+<div class="rowmeta"><span class="chip s">bookmaker price</span><span class="chip">Tier B</span><span class="chip">3 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 98% / 2% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 19 Oct 08:54 · <b>Start:</b> 19 Oct 09:00</div>
+<div class="kv"><b>Basis:</b> 1 two-way price from Melbet; margin removed proportionally.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — Our own probability for that side is 17.6%, below the 35% floor. A contrarian pick below the floor is a lottery ticket, not a climb.</div>
+
+<div class="srcs"><a href="https://melbet.com/en/line/esports" rel="noopener">Melbet</a><a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn fixture</a><a href="https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1" rel="noopener">Melbet</a></div>
+</div>
+<div class="card" id="1081529">
+<div class="topline">
+<div class="teams">Nexus<br><span class="muted" style="font-weight:400">vs</span> WROTBERRY</div>
+<div style="text-align:right"><span class="pick">Nexus</span><div class="muted" style="font-size:12px;margin-top:4px">DraculaN Season 7</div></div>
+</div>
+<div class="bar"><i class="a" style="width:80.4%"></i><i class="b" style="width:19.6%"></i></div>
+<div class="probs"><span><b>80.4%</b> Nexus</span>
+<span><b>19.6%</b> WROTBERRY</span></div>
+<div class="rowmeta"><span class="chip b">lower bound</span><span class="chip">Tier B</span><span class="chip">3 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 90% / 10% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 19 Oct 08:54 · <b>Start:</b> 19 Oct 09:00</div>
+<div class="kv"><b>Basis:</b> Nexus is rated in Valve&#x27;s global regional standings (1008 points). WROTBERRY is not in Valve&#x27;s list of 380 teams, so treating it as no better than the list floor (381 points, the lowest team Valve does rank) puts Nexus at no less than 80.4%. This is a floor, not an estimate: an unlisted side could in principle be weaker still. No bookmaker priced this match at this capture.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — Our own probability for that side is 19.6%, below the 35% floor. A contrarian pick below the floor is a lottery ticket, not a climb.</div>
+
+<div class="srcs"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve regional standings (model input)</a><a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn fixture</a></div>
+</div>
+<div class="card" id="1081530">
+<div class="topline">
+<div class="teams">Iberian Soul<br><span class="muted" style="font-weight:400">vs</span> HyperSpirit</div>
+<div style="text-align:right"><span class="pick">Iberian Soul</span><div class="muted" style="font-size:12px;margin-top:4px">DraculaN Season 7</div></div>
+</div>
+<div class="bar"><i class="a" style="width:65.5%"></i><i class="b" style="width:34.5%"></i></div>
+<div class="probs"><span><b>65.5%</b> Iberian Soul</span>
+<span><b>34.5%</b> HyperSpirit</span></div>
+<div class="rowmeta"><span class="chip s">bookmaker price</span><span class="chip">Tier B</span><span class="chip">3 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 85% / 15% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 19 Oct 10:39 · <b>Start:</b> 19 Oct 10:45</div>
+<div class="kv"><b>Basis:</b> 1 two-way price from Melbet; margin removed proportionally.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — Our own probability for that side is 34.5%, below the 35% floor. A contrarian pick below the floor is a lottery ticket, not a climb.</div>
+
+<div class="srcs"><a href="https://melbet.com/en/line/esports" rel="noopener">Melbet</a><a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn fixture</a><a href="https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1" rel="noopener">Melbet</a></div>
+</div>
+<div class="card" id="1081531">
+<div class="topline">
+<div class="teams">Sashi<br><span class="muted" style="font-weight:400">vs</span> mouz NXT</div>
+<div style="text-align:right"><span class="pick">Sashi</span><div class="muted" style="font-size:12px;margin-top:4px">DraculaN Season 7</div></div>
+</div>
+<div class="bar"><i class="a" style="width:61.9%"></i><i class="b" style="width:38.1%"></i></div>
+<div class="probs"><span><b>61.9%</b> Sashi</span>
+<span><b>38.1%</b> mouz NXT</span></div>
+<div class="rowmeta"><span class="chip s">bookmaker price</span><span class="chip">Tier B</span><span class="chip">3 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 78% / 23% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 19 Oct 10:39 · <b>Start:</b> 19 Oct 10:45</div>
+<div class="kv"><b>Basis:</b> 1 two-way price from Melbet; margin removed proportionally.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — The crowd already backs that side (23%); there is no crowd disagreement left to exploit.</div>
+
+<div class="srcs"><a href="https://melbet.com/en/line/esports" rel="noopener">Melbet</a><a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn fixture</a><a href="https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1" rel="noopener">Melbet</a></div>
+</div>
+<div class="card" id="1081532">
+<div class="topline">
+<div class="teams">ASTRAL<br><span class="muted" style="font-weight:400">vs</span> Leo</div>
+<div style="text-align:right"><span class="pick">Leo</span><div class="muted" style="font-size:12px;margin-top:4px">DraculaN Season 7</div></div>
+</div>
+<div class="bar"><i class="a" style="width:45.3%"></i><i class="b" style="width:54.7%"></i></div>
+<div class="probs"><span><b>45.3%</b> ASTRAL</span>
+<span><b>54.7%</b> Leo</span></div>
+<div class="rowmeta"><span class="chip s">bookmaker price</span><span class="chip">Tier B</span><span class="chip">3 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 23% / 77% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 19 Oct 10:39 · <b>Start:</b> 19 Oct 10:45</div>
+<div class="kv"><b>Basis:</b> 1 two-way price from Melbet; margin removed proportionally.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — The crowd already backs that side (23%); there is no crowd disagreement left to exploit.</div>
+
+<div class="srcs"><a href="https://melbet.com/en/line/esports" rel="noopener">Melbet</a><a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn fixture</a><a href="https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1" rel="noopener">Melbet</a></div>
+</div>
+<div class="card" id="1081861">
+<div class="topline">
+<div class="teams">Lynn Vision<br><span class="muted" style="font-weight:400">vs</span> Morningstar</div>
+<div style="text-align:right"><span class="pick">Lynn Vision</span><div class="muted" style="font-size:12px;margin-top:4px">VOID Autumn Cup 2026</div></div>
+</div>
+<div class="bar"><i class="a" style="width:86.1%"></i><i class="b" style="width:13.9%"></i></div>
+<div class="probs"><span><b>86.1%</b> Lynn Vision</span>
+<span><b>13.9%</b> Morningstar</span></div>
+<div class="rowmeta"><span class="chip b">lower bound</span><span class="chip">Tier C</span><span class="chip">2 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 94% / 6% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 20 Oct 02:54 · <b>Start:</b> 20 Oct 03:00</div>
+<div class="kv"><b>Basis:</b> Lynn Vision is rated in Valve&#x27;s global regional standings (1190 points). Morningstar is not in Valve&#x27;s list of 380 teams, so treating it as no better than the list floor (381 points, the lowest team Valve does rank) puts Lynn Vision at no less than 86.1%. This is a floor, not an estimate: an unlisted side could in principle be weaker still. No bookmaker priced this match at this capture.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — Our own probability for that side is 13.9%, below the 35% floor. A contrarian pick below the floor is a lottery ticket, not a climb.</div>
+
+<div class="srcs"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve regional standings (model input)</a><a href="https://www.hotspawn.com/matches/lynn-vision-vs-morningstar-void-autumn-cup-2026-1081861" rel="noopener">HotSpawn fixture</a></div>
+</div>
+<div class="card" id="1081862">
+<div class="topline">
+<div class="teams">Rare Atom<br><span class="muted" style="font-weight:400">vs</span> Alter Ego</div>
+<div style="text-align:right"><span class="pick">Rare Atom</span><div class="muted" style="font-size:12px;margin-top:4px">VOID Autumn Cup 2026</div></div>
+</div>
+<div class="bar"><i class="a" style="width:54.9%"></i><i class="b" style="width:45.1%"></i></div>
+<div class="probs"><span><b>54.9%</b> Rare Atom</span>
+<span><b>45.1%</b> Alter Ego</span></div>
+<div class="rowmeta"><span class="chip m">Valve ratings model</span><span class="chip">Tier C</span><span class="chip">2 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 71% / 29% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 20 Oct 04:54 · <b>Start:</b> 20 Oct 05:00</div>
+<div class="kv"><b>Basis:</b> No external book price at this capture. Valve&#x27;s own global regional standings (2026-10-05) rate Rare Atom 906 and Alter Ego 819. Valve&#x27;s published rating curve, with the slope the repository fits to 48 observed bookmaker lines (k=0.4019), gives 54.9%; Valve&#x27;s raw slope would give 61.9%. This is a ratings model, not a bookmaker price.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — The crowd already backs that side (29%); there is no crowd disagreement left to exploit.</div>
+
+<div class="srcs"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve regional standings (model input)</a><a href="https://www.hotspawn.com/matches/rare-atom-vs-alter-ego-void-autumn-cup-2026-1081862" rel="noopener">HotSpawn fixture</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve standings (model input)</a></div>
+</div>
+<div class="card" id="1081863">
+<div class="topline">
+<div class="teams">Chinggis Warriors<br><span class="muted" style="font-weight:400">vs</span> WXM</div>
+<div style="text-align:right"><span class="pick">Chinggis Warriors</span><div class="muted" style="font-size:12px;margin-top:4px">VOID Autumn Cup 2026</div></div>
+</div>
+<div class="bar"><i class="a" style="width:83.0%"></i><i class="b" style="width:17.0%"></i></div>
+<div class="probs"><span><b>83.0%</b> Chinggis Warriors</span>
+<span><b>17.0%</b> WXM</span></div>
+<div class="rowmeta"><span class="chip b">lower bound</span><span class="chip">Tier C</span><span class="chip">2 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 97% / 3% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 20 Oct 06:54 · <b>Start:</b> 20 Oct 07:00</div>
+<div class="kv"><b>Basis:</b> Chinggis Warriors is rated in Valve&#x27;s global regional standings (1084 points). WXM is not in Valve&#x27;s list of 380 teams, so treating it as no better than the list floor (381 points, the lowest team Valve does rank) puts Chinggis Warriors at no less than 83.0%. This is a floor, not an estimate: an unlisted side could in principle be weaker still. No bookmaker priced this match at this capture. Valve&#x27;s list carries more than one Chinggis Warriors entry (older rosters of the same organisation); the entry with the most recent activity (2026-10-04) was used.</div>
+<div class="kv"><b>Leaderboard edge:</b> not taken — Our own probability for that side is 17.0%, below the 35% floor. A contrarian pick below the floor is a lottery ticket, not a climb.</div>
+
+<div class="srcs"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve regional standings (model input)</a><a href="https://www.hotspawn.com/matches/chinggis-warriors-vs-wxm-void-autumn-cup-2026-1081863" rel="noopener">HotSpawn fixture</a></div>
+</div>
+<div class="card" id="1081864">
+<div class="topline">
+<div class="teams">NEXVOID<br><span class="muted" style="font-weight:400">vs</span> Vitalem Aerem</div>
+<div style="text-align:right"><span class="pick">NEXVOID</span><div class="muted" style="font-size:12px;margin-top:4px">VOID Autumn Cup 2026</div></div>
+</div>
+<div class="bar"><i class="a" style="width:64.9%"></i><i class="b" style="width:35.1%"></i></div>
+<div class="probs"><span><b>64.9%</b> NEXVOID</span>
+<span><b>35.1%</b> Vitalem Aerem</span></div>
+<div class="rowmeta"><span class="chip m">Valve ratings model</span><span class="chip">Tier C</span><span class="chip">2 pts</span><span class="chip">waiting for information</span><span class="chip">crowd 90% / 10% (context only)</span></div>
+<div class="kv"><b>Lock:</b> 20 Oct 08:54 · <b>Start:</b> 20 Oct 09:00</div>
+<div class="kv"><b>Basis:</b> No external book price at this capture. Valve&#x27;s own global regional standings (2026-10-05) rate NEXVOID 995 and Vitalem Aerem 721. Valve&#x27;s published rating curve, with the slope the repository fits to 48 observed bookmaker lines (k=0.4019), gives 64.9%; Valve&#x27;s raw slope would give 82.3%. This is a ratings model, not a bookmaker price.</div>
+<div class="kv"><b>Leaderboard edge:</b> Vitalem Aerem 35.1% — Under-picked by the crowd (10% picked) and rated 35.1% by our own line, 25.1 points of edge, above the 35% floor. This is the underdog, so it is a real shot at an upset rather than a safe price — take it only if the points are worth the risk.</div>
+
+<div class="srcs"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve regional standings (model input)</a><a href="https://www.hotspawn.com/matches/nexvoid-vs-vitalem-aerem-void-autumn-cup-2026-1081864" rel="noopener">HotSpawn fixture</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve standings (model input)</a></div>
+</div>
+<p class="muted">81 CS2 fixtures are listed by HotSpawn in this capture; 18 are still open for a pick. The rest have already locked and cannot be picked.</p>
+<footer>
+<p>Built 2026-10-17T20:32:55Z from the HotSpawn lobby read 2026-10-17T20:23:00Z
+and external bookmaker lines read the same day. HotSpawn is used for fixture discovery and
+settlement only; its crowd percentages are shown as leaderboard context and never as a
+probability. Every number on this page has a source link on the row it belongs to.</p>
+<p>Unresolved picks and the limits of the method: <a href="unresolved.html">unresolved.html</a>.
+Items needing a human decision: <a href="flagged.html">flagged.html</a>.
+Method and every rule: <a href="method.html">method.html</a>.</p>
+</footer>
+</div></body></html>

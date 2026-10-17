@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<title>Method &amp; sources · HotSpawn picks desk</title>
+<style>
+:root{--bg:#0d1117;--card:#161b22;--line:#26303b;--fg:#e6edf3;--mut:#93a1b1;
+--good:#3fb950;--warn:#d29922;--bad:#f85149;--accent:#58a6ff;--pick:#1f6feb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+-webkit-text-size-adjust:100%}
+a{color:var(--accent)}
+.wrap{max-width:720px;margin:0 auto;padding:12px 12px 40px}
+header.top{position:sticky;top:0;z-index:20;background:#0d1117ee;backdrop-filter:blur(8px);
+border-bottom:1px solid var(--line);padding:10px 0 8px}
+h1{font-size:19px;margin:0 0 2px}
+.sub{color:var(--mut);font-size:13px}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs a{flex:0 0 auto;font-size:13px;padding:7px 11px;border:1px solid var(--line);
+border-radius:999px;text-decoration:none;color:var(--fg);background:#11161d;white-space:nowrap}
+nav.tabs a.on{background:var(--pick);border-color:var(--pick);color:#fff;font-weight:600}
+h2{font-size:16px;margin:22px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+h3{font-size:14px;margin:16px 0 6px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+p{font-size:15px}
+.muted{color:var(--mut);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;
+margin:0 0 10px}
+.card.hot{border-color:#3d4f6b;box-shadow:0 0 0 1px #1d2733}
+.topline{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.teams{font-size:17px;font-weight:650;letter-spacing:-.01em}
+.pick{background:var(--pick);color:#fff;border-radius:8px;padding:3px 9px;font-size:13px;
+font-weight:700;white-space:nowrap;display:inline-block}
+.pick.none{background:#2a2f38;color:var(--mut);font-weight:600}
+.pick.climb{background:#6e40c9}
+.bar{height:9px;border-radius:5px;background:#21262d;overflow:hidden;display:flex;margin:9px 0 4px}
+.bar i{display:block;height:100%}
+.bar .a{background:var(--good)}
+.bar .b{background:#30363d}
+.probs{display:flex;justify-content:space-between;font-size:13px;color:var(--mut)}
+.probs b{color:var(--fg);font-size:15px}
+.rowmeta{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.chip{font-size:11.5px;border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--mut)}
+.chip.s{color:#7ee787;border-color:#2b4a33}
+.chip.m{color:#79c0ff;border-color:#23406b}
+.chip.b{color:#d29922;border-color:#4a3a12}
+.chip.x{color:#f85149;border-color:#5a2323}
+.kv{font-size:13px;color:var(--mut);margin-top:8px}
+.kv b{color:var(--fg)}
+.srcs{margin-top:9px;font-size:12.5px}
+.srcs a{display:inline-block;margin:0 8px 4px 0}
+.btn{display:block;background:#11161d;border:1px solid var(--line);border-radius:10px;
+padding:11px 12px;margin:0 0 8px;text-decoration:none;color:var(--fg)}
+.btn span{display:block;font-size:12px;color:var(--mut);margin-top:2px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
+.stat b{display:block;font-size:22px;line-height:1.2}
+.stat span{font-size:12px;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;display:block;overflow-x:auto}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em}
+td.wrapcell{white-space:normal;min-width:190px}
+.flag{border-left:3px solid var(--warn);padding-left:9px}
+.flag.high{border-left-color:var(--bad)}
+.note{font-size:13px;color:var(--mut);border-left:2px solid var(--line);padding-left:9px;margin:8px 0}
+footer{color:var(--mut);font-size:12.5px;margin-top:26px;border-top:1px solid var(--line);padding-top:12px}
+@media (min-width:640px){h1{font-size:24px}.wrap{padding:16px}}
+</style>
+</head><body>
+<header class="top"><div class="wrap">
+<h1>Method &amp; sources</h1>
+<div class="sub">Counter-Strike 2 picks for every HotSpawn match · built 2026-10-17T20:32:55Z</div>
+<nav class="tabs"><a href="index.html">Summary</a><a href="picks.html">Every pick</a><a href="twc.html">TWC day 5</a><a href="unresolved.html">Unresolved</a><a href="flagged.html">Flagged</a><a href="method.html" class="on">Method</a></nav>
+</div></header>
+<div class="wrap">
+<h2>What this desk is</h2>
+<p>A phone-first board of Counter-Strike 2 picks for every match the HotSpawn Pick'ems lobby
+lists, with a win probability for each side derived from sources outside HotSpawn, and a
+separate page for the TWC 2026 day-5 final.</p>
+<h2>How a probability is derived</h2>
+<table><thead><tr><th>Step</th><th>Rule</th></tr></thead><tbody>
+<tr><td>1. Discovery</td><td class="wrapcell">Fixtures come from the HotSpawn lobby page and the
+public HotSpawn fixtures API, which is the same API the lobby itself calls. A fixture is
+"open" if it is on the lobby and its lock time has not passed.</td></tr>
+<tr><td>2. Price</td><td class="wrapcell">A price comes from Thunderpick (through bo3.gg),
+Pinnacle, Bovada or Melbet. The margin is removed proportionally:
+p = (1/dA) / (1/dA + 1/dB).</td></tr>
+<tr><td>3. Join</td><td class="wrapcell">A price is joined only when both team names resolve to
+the same canonical key and the source kickoff is within the tolerance window. Names are folded
+for accents, organisational words (Gaming, Team, Esports) and a leading "ex" (a rebranded
+roster). A one-sided price is rejected.</td></tr>
+<tr><td>4. Blend</td><td class="wrapcell">Where more than one book prices the same match, the
+no-vig probabilities are averaged with equal weight per book.</td></tr>
+<tr><td>5. Model</td><td class="wrapcell">With no external price, Valve's own expected-win
+formula is applied to the 2026-10-05 global regional standings, through the repository's own
+engine, with the slope fitted to observed bookmaker lines. Labelled as a model, never as a
+price.</td></tr>
+<tr><td>6. Bound</td><td class="wrapcell">With only one side rated, a conservative lower bound
+is published and labelled as a bound.</td></tr>
+<tr><td>7. Unresolved</td><td class="wrapcell">With neither side rated and no price, the row is
+published blank on the unresolved page with the reason and the sources that were tried.</td></tr>
+</tbody></table>
+<h2>The ratings model, and how its slope was fitted</h2>
+<p>Valve's published rating curve is
+p<sub>A</sub> = 1 / (1 + 10<sup>&minus;g&middot;&Delta;/400</sup>), with g from Valve's own
+Glicko code and &Delta; the rating difference. Valve's own README says that curve is too
+steep &mdash; it underestimates win rates at the low end and overestimates them at the high
+end &mdash; so the slope is <b>learned from observed bookmaker lines</b> instead of assumed.
+Least squares on logit(market) = k&middot;C&middot;&Delta; over the market pairs below gives
+the k used on every model and bound row.</p>
+<div class="card">
+<div class="kv"><b>Fitted slope k:</b> 0.40188</div>
+<div class="kv"><b>Market pairs used:</b> 48 (minimum needed:
+6)</div>
+<div class="kv"><b>Mean absolute error:</b> 0.0761 with the
+fitted slope, against 0.1304 with Valve's raw
+slope</div>
+<div class="kv"><b>Where the pairs come from:</b>
+data/f7279a54/calibration_pairs.json</div>
+<div class="srcs"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings"
+rel="noopener">Valve's ratings repository</a></div>
+</div>
+<p>Rows where a book price and the ratings model disagree by 20 points or more carry a
+<code>model_market_gap</code> flag, and the row says so. The price always wins; the model is
+the fallback.</p>
+<h2>How the pick is chosen</h2>
+<p>Every row carries a <b>safe pick</b>, which is simply the side with the higher probability,
+and a <b>leaderboard edge</b> layer, which is the side the crowd under-picks. The leaderboard
+edge is only taken when all three of these hold, and the reason is printed when it is
+refused:</p>
+<ul>
+<li>our own probability for that side is at least <b>35%</b> —
+below that it is a lottery ticket, not a climb;</li>
+<li>our probability beats the crowd's share of that side by at least
+<b>5 points</b>;</li>
+<li>the crowd has not already taken that side (it must be at most
+<b>15% picked</b>).</li>
+</ul>
+<p>When any of those fail, the row says so and why, so a refusal is as reviewable as a pick.</p>
+<h2>What is never used</h2>
+<ul>
+<li>HotSpawn's crowd percentages as a probability. They are context for the leaderboard
+decision and nothing else.</li>
+<li>Any value that cannot be traced to a source. A blank cell is the correct answer, and it is
+published as blank with a reason.</li>
+<li>The bo3.gg <code>rating</code> field as a win probability. It repeats across every match of
+a tournament, so it is a tournament metric, not a per-match forecast.</li>
+</ul>
+<h2>Sources</h2>
+<table><thead><tr><th>Source</th><th>What it provides</th><th>Link</th></tr></thead><tbody>
+<tr><td>HotSpawn lobby</td><td class="wrapcell">Fixture discovery, lock times, points, crowd
+context</td><td><a href="https://play.hotspawn.com/lobby" rel="noopener">play.hotspawn.com/lobby</a></td></tr>
+<tr><td>HotSpawn fixtures API</td><td class="wrapcell">The same fixtures the lobby calls, with
+UTC start and lock times</td><td><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures" rel="noopener">fixtures API</a></td></tr>
+<tr><td>Thunderpick via bo3.gg</td><td class="wrapcell">Bookmaker coefficients for low-tier CS2
+events the mainstream books skip</td><td><a href="https://bo3.gg/api/v1/matches?filter%5Bmatches.status%5D%5Bin%5D=upcoming&amp;filter%5Bmatches.discipline_id%5D%5Bin%5D=1&amp;sort=start_date&amp;page%5Blimit%5D=50" rel="noopener">bo3.gg matches API</a></td></tr>
+<tr><td>Pinnacle</td><td class="wrapcell">Moneyline prices</td><td><a href="https://www.pinnacle.com/en/esports/cs2-hub" rel="noopener">pinnacle.com</a></td></tr>
+<tr><td>Bovada</td><td class="wrapcell">Moneyline prices</td><td><a href="https://www.bovada.lv" rel="noopener">bovada.lv</a></td></tr>
+<tr><td>Melbet</td><td class="wrapcell">Moneyline prices, including most CCT and NODWIN
+events</td><td><a href="https://melbet.com/en/line/esports" rel="noopener">melbet.com</a></td></tr>
+<tr><td>Kalshi</td><td class="wrapcell">Exchange midpoint, labelled as such</td><td><a href="https://kalshi.com" rel="noopener">kalshi.com</a></td></tr>
+<tr><td>Polymarket</td><td class="wrapcell">Market midpoint, labelled as such</td><td><a href="https://polymarket.com" rel="noopener">polymarket.com</a></td></tr>
+<tr><td>Valve regional standings</td><td class="wrapcell">Official ratings for the model and the
+bound</td><td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve's repository</a></td></tr>
+<tr><td>HLTV</td><td class="wrapcell">Results, rosters, map scores, head-to-head and the
+analytics pages</td><td><a href="https://www.hltv.org/events/8932/thunderpick-world-championship-2026" rel="noopener">TWC 2026 event</a></td></tr>
+</tbody></table>
+<h2>Refresh</h2>
+<p>The capture, the board and this site are rebuilt every four hours, and again as soon as the
+upstream HotSpawn capture lands. The published stamp is the board's own build time, and the
+lobby read time is printed next to it on every page.</p>
+
+<footer>
+<p>Built 2026-10-17T20:32:55Z from the HotSpawn lobby read 2026-10-17T20:23:00Z
+and external bookmaker lines read the same day. HotSpawn is used for fixture discovery and
+settlement only; its crowd percentages are shown as leaderboard context and never as a
+probability. Every number on this page has a source link on the row it belongs to.</p>
+<p>Unresolved picks and the limits of the method: <a href="unresolved.html">unresolved.html</a>.
+Items needing a human decision: <a href="flagged.html">flagged.html</a>.
+Method and every rule: <a href="method.html">method.html</a>.</p>
+</footer>
+</div></body></html>
