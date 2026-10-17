@@ -1,0 +1,56 @@
+
+:root{--bg:#0b0f14;--panel:#141a22;--panel2:#1b232e;--line:#27313f;--txt:#e8eef5;--mut:#93a1b1;
+--acc:#4da3ff;--ok:#3fb950;--warn:#d29922;--bad:#f85149;--chip:#22303f}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--acc)}
+.wrap{max-width:760px;margin:0 auto;padding:14px 14px 90px}
+header.top{position:sticky;top:0;z-index:9;background:rgba(11,15,20,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
+.top .bar{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:8px 12px}
+.brand{font-weight:700;font-size:15px;letter-spacing:.2px;white-space:nowrap;color:var(--txt);text-decoration:none}
+.tabs{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{flex:0 0 auto;padding:9px 12px;border-radius:999px;background:var(--panel2);color:var(--txt);text-decoration:none;font-size:14px;border:1px solid var(--line);min-height:40px;display:flex;align-items:center}
+.tabs a[aria-current=page]{background:var(--acc);color:#04121f;border-color:var(--acc);font-weight:700}
+h1{font-size:24px;line-height:1.25;margin:14px 0 6px}
+h2{font-size:19px;margin:26px 0 8px}
+h3{font-size:16px;margin:18px 0 6px}
+p,li{color:var(--txt)}
+.muted{color:var(--mut)}
+.small{font-size:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.card.pick{border-left:4px solid var(--acc)}
+.card.blank{border-left:4px solid var(--warn);opacity:.95}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0}
+.kpi{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px}
+.kpi b{display:block;font-size:24px;line-height:1.1}
+.kpi span{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+.actions{display:grid;gap:8px;margin:14px 0}
+.btn{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px;color:var(--txt);text-decoration:none;font-weight:600;min-height:52px}
+.btn.primary{background:var(--acc);color:#04121f;border-color:var(--acc)}
+.btn .n{font-weight:700;opacity:.9}
+.match{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.teams{font-size:17px;font-weight:700;margin:0}
+.teams .vs{color:var(--mut);font-weight:400;font-size:14px}
+.pickline{margin:10px 0 4px;font-size:15px}
+.pickline b{font-size:18px}
+.bar{height:9px;border-radius:6px;background:#26303d;overflow:hidden;display:flex;margin:8px 0 4px}
+.bar i{display:block;height:100%}
+.bar .a{background:var(--acc)}
+.bar .b{background:#8b5cf6}
+.probs{display:flex;justify-content:space-between;font-size:13px;color:var(--mut)}
+.chip{display:inline-block;background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-size:12px;margin:2px 4px 2px 0;color:var(--txt)}
+.chip.ok{border-color:#245c33;color:#7ee2a0}
+.chip.warn{border-color:#6b4f12;color:#f0c674}
+.chip.bad{border-color:#6e2a26;color:#ff9d97}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.4px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:10px 0}
+summary{cursor:pointer;font-weight:600}
+.note{background:#182231;border:1px solid #24344a;border-radius:10px;padding:10px 12px;font-size:14px}
+.warnbox{background:#241d0f;border:1px solid #6b4f12;border-radius:10px;padding:10px 12px;font-size:14px}
+footer{margin-top:30px;border-top:1px solid var(--line);padding-top:12px;font-size:12px;color:var(--mut)}
+@media(max-width:420px){h1{font-size:21px}.kpi b{font-size:21px}}
