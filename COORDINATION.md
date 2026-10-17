@@ -2,6 +2,17 @@
 
 ---
 
+# Coordination — session `9c44d0e9` (TWC Day-4 live desk + phone-first every-match refresh, 2026-10-17)
+
+Session: `9c44d0e9` (environment-fixed branch `arena/9c44d0e9-maltaproj2`; the environment forbids switching to a `session-<id>/<task>` branch, so all work stays on the fixed branch and scopes below are non-overlapping by directory).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-9C44D0E9-TODAY: fresh 2026-10-17 verification — TWC 2026 Day 1 (9z>Aurora upset) / Day 2 / Day 3 decider results line-by-line from HLTV, Aurora recent-roster-change premise checked against HLTV team/news records, Day-4 (Oct 17) semifinal picks with safe + contrarian-but-not-stupid layers priced from non-HotSpawn betting lines (egamersworld/books → Polymarket → HLTV → documented originated line); a pick + win probability (or blank + flagged reason) for **every** open CS2 fixture in the current HotSpawn lobby inventory (83 listed / 21 open at last canonical capture) by joining retained verified boards (`data/c64a5e19`, `data/1c8f79f8`) by fixture ID — never inventing a number; separate Unresolved picks & limitations section; phone-first executive summary (`today/`) linking to every picks list; 4-hourly auto-refresh workflow; tests; then final-integration (additive nav link only), PR to `main`, merge, Pages verification | claimed | 9c44d0e9 | 2026-10-17 01:00 | `today/**`, `scripts/9c44d0e9/**`, `data/9c44d0e9/**`, `tests/test_9c44d0e9.py`, `.github/workflows/today-9c44d0e9.yml`, `COORDINATION.md` (this section + close-out only). Integration (additive only, at close-out): `scripts/build_site.py` NAV/executive-summary link to `today/`, generated root `index.html`, `README.md` one row. All other boards/pages are read-only inputs. |
+
+## Log
+- 2026-10-17 01:00 UTC, `9c44d0e9`: Claim posted before any other file edits. Read COORDINATION.md: prior sessions recorded done; no live claim on `today/**`, `scripts/9c44d0e9/**`, `data/9c44d0e9/**`, `tests/test_9c44d0e9.py`. Live lobby re-read 2026-10-17 ~00:55Z (`https://play.hotspawn.com/lobby`, 2 chunks): header "83" CS2 matches this week, 181 total; TWC Malta main event is **not** in the rendered lobby filter list (only "Thunderpick World Championship 2026: South American Series #1 (8)"); rendered cards show Oct 17–20 fixtures (NIP–Heroic, BET-M–Just Players, Eternal Fire–Nuclear TigeRES, …). Canonical retained capture (`data/c64a5e19/board.json`, generated 2026-10-16T22:48:43Z): inventory 83, open 21, with-line 14, no-line 7. Day-4 desk (`data/1c8f79f8/board.json`, generated 2026-10-16T23:58:49Z): open 21, market 11, model-only 8, blank 2, TWC semifinals FURIA–Aurora (Oct 17 14:00Z) + Falcons–BetBoom (Oct 17 17:00Z), `twc_not_listed_on_hotspawn: true`. This session re-verifies Day 1–3 + semifinal lines fresh and publishes under `today/` without editing either board.
+
 ---
 
 # Coordination — session `1c8f79f8` (TWC Day-4 playoff picks + every-match refresh, 2026-10-16 ~19:30Z)
