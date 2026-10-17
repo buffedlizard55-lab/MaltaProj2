@@ -73,9 +73,11 @@ def pct(value):
 # available from Research archive rather than crowding every mobile header.
 NAV = [
     ("index.html", "Home"),
-    # Alternate hubs remain in the dated research archive, not primary navigation.
+    # Current picks first: the two lists the site is actually for.
     ("picks-every-match/index.html", "All CS2 picks"),
+    ("day4/index.html", "TWC day-4 picks"),
     ("picks-every-match/unresolved.html", "Unresolved"),
+    # Alternate hubs remain in the dated research archive, not primary navigation.
     ("day-one.html", "Day-one review"),
     ("twc-2026/index.html", "Day 2 → Day 3"),
     ("flagged.html", "Flagged for Review"),
@@ -441,6 +443,46 @@ def canonical_home(pick_board):
     """Render counts and destinations from one explicitly dated board only."""
     pick_summary = pick_board.get("summary") or {}
     pick_time = pick_board.get("generated_utc")
+    # The day-4 desk is a second, separately dated board. Its stamp and its two
+    # semifinal picks are read from its own JSON so the landing page cannot go
+    # stale relative to the desk it links to.
+    day4 = load("data/1c8f79f8/board.json")
+    day4_time = day4.get("generated_utc")
+    twc_rows = []
+    for key, label in (("sf1", "Semifinal 1"), ("sf2", "Semifinal 2")):
+        match = (day4.get("twc") or {}).get(key) or {}
+        teams = match.get("teams") or []
+        if not match or len(teams) != 2:
+            continue
+        market = match.get("market") or {}
+        basis = market.get("basis") or "no published line (documented estimate)"
+        twc_rows.append(
+            '<tr><td data-label="Match"><strong>{label}</strong><br>{a} vs {b}</td>'
+            '<td data-label="When (UTC)">{when}</td>'
+            '<td data-label="Line basis">{basis}</td>'
+            '<td data-label="Pick"><strong>{pick}</strong> {prob}</td>'
+            '<td data-label="Sources">{links}</td></tr>'.format(
+                label=esc(label), a=esc(teams[0]), b=esc(teams[1]),
+                when=esc(str(match.get("start_utc") or "")[:16].replace("T", " ")),
+                basis=esc(basis), pick=esc(match.get("pick")),
+                prob=esc(f"{100 * match['pick_prob']:.0f}%") if match.get("pick_prob") else "—",
+                links=" · ".join(
+                    f'<a href="{esc(url)}" rel="noopener">source</a>' for _, url in (match.get("sources") or [])[:3])
+                    or '<span class="blank">—</span>'))
+    twc_teaser = ""
+    if twc_rows:
+        twc_teaser = f"""
+<section id="twc-day-4">
+<h2>Day 4 · TWC 2026 semifinals (Malta)</h2>
+<div class="tablewrap"><table class="responsive"><thead><tr><th>Match</th><th>When (UTC)</th>
+<th>Line basis</th><th>Pick</th><th>Sources</th></tr></thead><tbody>{''.join(twc_rows)}</tbody></table></div>
+<p class="note">The Thunderpick World Championship Malta playoffs are <strong>not listed on the HotSpawn
+pick'em lobby</strong> (its fixtures API has no Malta competition), so these two rows are originated
+externally and flagged as not-listed. Full reasoning, the verified day-1 to day-3 review and the Aurora
+roster investigation are on the <a href="day4/twc-review.html">day 1–3 review</a>.
+<a class="btn" href="day4/picks.html#twc">Semifinal picks + sources</a></p>
+</section>"""
+    day4_time_fmt = esc(str(day4_time).replace("T", " ").replace("Z", " UTC")) if day4_time else "unverified"
     pick_counts = "".join(
         f'<div class="card"><div class="card-num">{esc(pick_summary.get(key, "—"))}</div><div class="card-label">{label}</div></div>'
         for key, label in [("open", "Open CS2 fixtures"), ("tier_a_market", "Market-priced matches"),
@@ -456,11 +498,20 @@ def canonical_home(pick_board):
 <p>Find your next CS2 pick in one list: both teams’ win chances, a clear recommendation,
 and the evidence behind it. Low-tier matches stay on the list too.</p>
 <div class="actions primary-actions">
-<a class="btn btn-primary" href="picks-every-match/index.html">Open all CS2 picks →</a>
-<a class="btn ghost" href="picks-every-match/unresolved.html">Unresolved picks &amp; limitations</a>
-<a class="btn ghost" href="twc-2026/index.html">TWC day-three decisions</a>
+<a class="btn btn-primary" href="picks-every-match/index.html">All picks · every match →</a>
+<a class="btn alt2" href="day4/index.html">TWC day-4 semifinals + lobby picks →</a>
+<a class="btn ghost" href="twc-2026/index.html">Day 1–3 review &amp; day-4 picks →</a>
+<a class="btn ghost" href="#canonical-unresolved">Unresolved picks &amp; limitations ↓</a>
 </div>
-<p class="note">Snapshot counts below are evaluated at {esc(pick_time or 'unverified')}.
+<p class="note"><strong>Two current pick lists, both rebuilt automatically:</strong>
+<a href="picks-every-match/index.html">every-match picks</a> (canonical, 4-hourly collector, last evaluated
+{esc(pick_time or 'unverified')}) and the <a href="day4/index.html">day-4 desk</a> (TWC 2026 semifinals plus a
+pick and probability for every open lobby fixture, last evaluated
+{esc(day4_time or 'unverified')}). Blank rows are never 50/50 estimates — they are listed with their
+reasons on the <a href="picks-every-match/unresolved.html">unresolved page</a> and the
+<a href="day4/unresolved.html">day-4 unresolved page</a>.</p>
+{twc_teaser}
+<p class="note">Snapshot counts below are evaluated at {esc(pick_time or 'unverified')}. Day-4 desk evaluated at {day4_time_fmt}.
 Source capture ended {esc(pick_board.get('collected_to_utc') or 'unverified')}.
 A page rebuild is not a new source observation. Open the picks list for per-match expiry checks.</p>
 <p><a href="twc-2026/results.html">Verified day-two results</a> → <a href="twc-2026/index.html">day-three decisions</a> → <a href="twc-2026/day-4.html">Day 1–3 review &amp; Day 4 Semifinals picks</a> · <a href="twc-2026/roster.html">Original Aurora announcements &amp; unknown rest</a> · <a href="twc-2026/flagged.html">Research flags</a>. The upset watchlist never changes the canonical match probabilities.</p>
@@ -488,7 +539,8 @@ calculations, not officially verified win chances. <strong>HotSpawn crowd picks 
 </section>
 <div class="pick-boards-grid" id="where-the-picks">
 
-<a class="board-card board-card-primary" href="picks-every-match/picks.html"><div class="board-card-title">Match picks &amp; probabilities</div><div class="board-card-desc">Both teams, clear pick, market/model label and source evidence. Search by team or tournament.</div></a>
+<a class="board-card board-card-primary" href="picks-every-match/picks.html"><div class="board-card-title">Match picks &amp; probabilities</div><div class="board-card-desc">Every open match: both teams, the pick, the market/model label and the source behind each number. Search by team or tournament.</div><div class="board-card-meta">Evaluated {esc(pick_time or 'unverified')} · refreshed every 4 hours</div></a>
+<a class="board-card board-card-primary" href="day4/picks.html"><div class="board-card-title">Day-4 desk: TWC semifinals + every lobby match</div><div class="board-card-desc">Both TWC 2026 semifinal picks with external lines, a pick and probability for every open HotSpawn fixture (including low-tier and unpriced ones), plus its own unresolved and flagged pages.</div><div class="board-card-meta">Desk evaluated {day4_time_fmt} · refreshed every 4 hours</div></a>
 <a class="board-card" href="twc-2026/day-4.html"><div class="board-card-title">Day 1–3 review → Day 4 TWC 2026 Semifinal picks</div><div class="board-card-desc">Aurora 2–0 9z Day 3 decider &amp; BetBoom–Legacy 3-map war synthesized into Day 4 Semifinals (FURIA vs Aurora 50/50 coin-flip &amp; Falcons anchor), plus all open CS2 matches and unresolved limitations.</div></a>
 <a class="board-card" href="picks-every-match/inventory.html"><div class="board-card-title">Full lobby inventory</div><div class="board-card-desc">Every retained CS2 fixture, including locked/past rows. Coverage refers to the captured lobby, not unseen additions.</div></a>
 <a class="board-card" href="twc-2026/index.html"><div class="board-card-title">Day 2 → Day 3: a credible upset, not blind underdogs</div><div class="board-card-desc">All eight TWC results, primary-confirmed July signings, a canonical day-three decision sheet and explicit expected-points tradeoffs. No invented rest penalty.</div></a>

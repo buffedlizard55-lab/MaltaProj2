@@ -491,7 +491,12 @@ TWC = dict(
 # read 2026-10-16 ~19:55Z) — the day-1/2/3 record the semifinal picks rest on.
 # ---------------------------------------------------------------------------
 TWC_RESULTS = [
-    ("Oct 14", "Group A opening", "9z", "2-0", "Aurora", "Inferno 13-11, Nuke 13-4"),
+    # CORRECTED 2026-10-16 by the integration session (1fac4be2): the day-1 Nuke
+    # score first recorded here as 13-4 was wrong -- eight independent retained
+    # captures in this repository carry 13-1 for 9z (with half scores 11:1/2:0 in
+    # b3b89eec), and 13-4 collides with the day-3 Inferno result in the same table.
+    # The discrepancy is published on day4/flagged.html and verify/1fac4be2/.
+    ("Oct 14", "Group A opening", "9z", "2-0", "Aurora", "Inferno 13-11, Nuke 13-1"),
     ("Oct 14", "Group A opening", "Falcons", "2-0", "Ninjas in Pyjamas", "Ancient 16-13, Dust2 13-6"),
     ("Oct 14", "Group B opening", "Legacy", "2-0", "PARIVISION", "Dust2 13-11, Mirage 16-14"),
     ("Oct 14", "Group B opening", "FURIA", "2-0", "BETBOOM", "Ancient 13-10, Mirage 13-9"),
@@ -504,6 +509,45 @@ TWC_RESULTS = [
 ]
 
 # Remaining TWC schedule (HLTV event 8932 + Liquipedia, read 2026-10-16)
+# Per-result official source URLs, taken verbatim from the retained captures in
+# this repository (every id below also appears in the twc-2026/results.html and
+# audits/5468b0ba tables). Keyed by (day label, winner, loser) so each row of the
+# day-4 results table can carry its own source link.
+_DAY1 = "https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-day-1-review"
+_DAY2 = "https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-day-2-review"
+TWC_RESULTS_SOURCES = {
+    ("Oct 14", "9z", "Aurora"): [
+        ("HLTV match 2399384 (map scores)", "https://www.hltv.org/matches/2399384/9z-vs-aurora-thunderpick-world-championship-2026"),
+        ("Official HotSpawn day-1 review", _DAY1)],
+    ("Oct 14", "Falcons", "Ninjas in Pyjamas"): [
+        ("HLTV match 2399385 (map scores)", "https://www.hltv.org/matches/2399385/falcons-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026"),
+        ("Official HotSpawn day-1 review", _DAY1)],
+    ("Oct 14", "Legacy", "PARIVISION"): [
+        ("HLTV match 2399386 (map scores)", "https://www.hltv.org/matches/2399386/legacy-vs-parivision-thunderpick-world-championship-2026"),
+        ("Official HotSpawn day-1 review", _DAY1)],
+    ("Oct 14", "FURIA", "BETBOOM"): [
+        ("HLTV match 2399387 (map scores)", "https://www.hltv.org/matches/2399387/furia-vs-betboom-thunderpick-world-championship-2026"),
+        ("Official HotSpawn day-1 review", _DAY1)],
+    ("Oct 15", "Falcons", "9z"): [
+        ("HLTV match 2399409 (map scores)", "https://www.hltv.org/matches/2399409/9z-vs-falcons-thunderpick-world-championship-2026"),
+        ("Official HotSpawn day-2 review", _DAY2)],
+    ("Oct 15", "Aurora", "Ninjas in Pyjamas"): [
+        ("HLTV match 2399408 (map scores)", "https://www.hltv.org/matches/2399408/aurora-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026"),
+        ("Official HotSpawn day-2 review", _DAY2)],
+    ("Oct 15", "FURIA", "Legacy"): [
+        ("HLTV match 2399411 (map scores)", "https://www.hltv.org/matches/2399411/legacy-vs-furia-thunderpick-world-championship-2026"),
+        ("Official HotSpawn day-2 review", _DAY2)],
+    ("Oct 15", "BETBOOM", "PARIVISION"): [
+        ("HLTV match 2399410 (map scores)", "https://www.hltv.org/matches/2399410/parivision-vs-betboom-thunderpick-world-championship-2026"),
+        ("Official HotSpawn day-2 review", _DAY2)],
+    ("Oct 16", "Aurora", "9z"): [
+        ("HLTV match 2399412 (day-3 decider)", "https://www.hltv.org/matches/2399412/aurora-vs-9z-thunderpick-world-championship-2026"),
+        ("HLTV news 45736 (Aurora beat 9z 2-0)", "https://www.hltv.org/news/45736/aurora-beat-9z-to-secure-third-consecutive-top-four-appearance")],
+    ("Oct 16", "BETBOOM", "Legacy"): [
+        ("HLTV match 2399413 (day-3 decider)", "https://www.hltv.org/matches/2399413/betboom-vs-legacy-thunderpick-world-championship-2026"),
+        ("bo3.gg live page (team analytics cited on the row)", "https://bo3.gg/matches/legacy-br-vs-betboom-team-16-10-2026")],
+}
+
 TWC_SCHEDULE = [
     ("Semifinal 1", "FURIA vs Aurora", "2026-10-17T14:00:00Z", "Bo3", "HLTV 2399414"),
     ("Semifinal 2", "Falcons vs BETBOOM", "2026-10-17T17:00:00Z", "Bo3", "HLTV 2399415"),

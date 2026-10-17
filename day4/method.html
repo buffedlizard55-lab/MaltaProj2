@@ -55,7 +55,7 @@ details .inner{padding:6px 14px 12px}
 parameters — <code>sport_alias</code>, <code>status</code> and <code>competition_id</code> (discovered this
 session; <code>from</code>, <code>limit</code> and <code>tier</code> are rejected with 400 "property should
 not exist"). The <code>competition_id</code> filter returns a small single-chunk JSON per tournament, which
-is how this desk captures cleanly: seven per-competition captures cover all 21 open fixtures. The unfiltered
+is how this desk captures cleanly: seven per-competition captures cover every open fixture. The unfiltered
 response spans 9 chunks and mixes in stale rows. Every raw response is retained verbatim under
 <code>data/1c8f79f8/evidence/</code> before any derivation.</p>
 <p>Verified API fields per row: <code>id</code>, <code>competition_id/name</code>,
@@ -101,6 +101,24 @@ Field Level Media/Reuters, dust2.us, Liquipedia.</li>
 <li>Never used as prices: HotSpawn crowd %, HLTV fan-vote widgets, strafe user votes, egamersworld
 prediction-bot votes, placeholder 1.8/1.8 pairs, $0-volume Polymarket seeds.</li>
 </ol>
+<h2>New listings the ledger has never seen (repair, 2026-10-16)</h2>
+<p>The board is rebuilt from the fresh fixtures capture, not from the curated ledger alone. A fixture that
+appears in the capture but not in the ledger gets a row automatically, priced in this order:</p>
+<ol>
+<li>an <strong>exact fixture-id quote</strong> retained in another published board on this site (the
+canonical every-match board, the full-coverage board, the o<em>urline</em> board, the exec board or the
+research-resolved board) — the sibling board's raw decimals and its public URL and read time are republished
+verbatim and re-de-vigged here;</li>
+<li>otherwise the <strong>canonical Valve-VRS model</strong>, when both teams are unambiguously present in
+Valve's official standings;</li>
+<li>otherwise a <strong>blank probability with a published reason</strong> and a note that the four-hourly
+collector retries every external venue.</li>
+</ol>
+<p>Fixture-id equality is the join key, so no alias, sibling rating or tournament-slot guess is introduced.
+Live drift between the ledger and the capture — ownership percentages, rescheduled kickoffs, name rendering
+— is recorded on the row (<code>inventory.drift</code>) instead of aborting the rebuild, and a capture that
+returns empty or truncated keeps the last researched inventory with a
+<code>retained_inventory_capture_degraded</code> flag rather than publishing a silently smaller board.</p>
 <h2>Refresh cadence and evidence</h2>
 <p><code>.github/workflows/day4-1c8f79f8.yml</code> re-runs the collector and this builder every 4 hours
 (cron <code>23 */4 * * *</code>, inside the required 4–8 h window) and after upstream board refreshes.
@@ -114,5 +132,5 @@ and network-free; tests re-derive every published number from the retained raw i
 COORDINATION.md. Integration into the landing page is additive only (one NAV/exec-summary row in
 <code>scripts/build_site.py</code>, one directory entry in <code>scripts/stage_site.py</code>).</p>
 
-<p class="mut">Generated 2026-10-16T22:51:25Z · session 1c8f79f8 · fixtures API snapshot 2026-10-16T20:50Z · all external lines read 2026-10-16T19:35–20:50Z · <a href="method.html">method &amp; sources</a> · <a href="https://play.hotspawn.com/lobby">HotSpawn lobby</a></p>
+<p class="mut">Generated 2026-10-16T23:58:49Z · session 1c8f79f8 · fixtures API snapshot 2026-10-16T20:50Z · external lines read ledger read 2026-10-16T20:45:00Z · <a href="method.html">method &amp; sources</a> · <a href="https://play.hotspawn.com/lobby">HotSpawn lobby</a></p>
 </main></body></html>
