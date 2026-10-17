@@ -499,7 +499,8 @@ roster investigation are on the <a href="day4/twc-review.html">day 1–3 review<
 and the evidence behind it. Low-tier matches stay on the list too.</p>
 <div class="actions primary-actions">
 <a class="btn btn-primary" href="picks-every-match/index.html">All picks · every match →</a>
-<a class="btn btn-primary" href="day4/index.html">TWC day-4 semifinals + lobby picks →</a>
+<a class="btn alt2" href="day4/index.html">TWC day-4 semifinals + lobby picks →</a>
+<a class="btn ghost" href="twc-2026/index.html">Day 1–3 review &amp; day-4 picks →</a>
 <a class="btn ghost" href="#canonical-unresolved">Unresolved picks &amp; limitations ↓</a>
 </div>
 <p class="note"><strong>Two current pick lists, both rebuilt automatically:</strong>

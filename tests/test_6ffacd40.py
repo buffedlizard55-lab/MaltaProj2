@@ -90,7 +90,8 @@ class MobileHandoff(unittest.TestCase):
         # in-page anchor to this page's own unresolved section. Archived boards stay
         # collapsed; the anchor must resolve on the landing page itself.
         self.assertEqual([a['href'] for a in soup.select('.primary-actions a')], [
-            'picks-every-match/index.html', 'day4/index.html', '#canonical-unresolved'])
+            'picks-every-match/index.html', 'day4/index.html',
+            'twc-2026/index.html', '#canonical-unresolved'])
         landing = BeautifulSoup((ROOT / 'index.html').read_text(), 'html.parser')
         self.assertIsNotNone(landing.select_one('.primary-actions a[href="#canonical-unresolved"]'))
         self.assertIsNotNone(landing.select_one('#canonical-unresolved'))

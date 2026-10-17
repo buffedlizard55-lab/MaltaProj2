@@ -605,8 +605,12 @@ def audit_pages() -> dict:
                     break
     landing = (ROOT / "index.html").read_text(encoding="utf-8")
     primary = re.findall(r'class="btn btn-primary" href="([^"]+)"', landing)
+    secondary = re.findall(r'class="btn (?!btn-primary)[^"]*" href="([^"]+)"', landing)
     return {"pages_audited": audited, "issues": issues, "issue_count": len(issues),
+            # the shared browser smoke tests click a single .btn-primary inside
+            # #executive-summary, so the count here must stay at one.
             "landing_primary_actions": primary,
+            "landing_secondary_actions": secondary,
             "landing_links_picks": "picks-every-match/index.html" in landing,
             "landing_links_day4": "day4/index.html" in landing,
             "landing_links_unresolved": "#canonical-unresolved" in landing}

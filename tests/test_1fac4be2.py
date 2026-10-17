@@ -137,10 +137,24 @@ class VerificationPages(unittest.TestCase):
 class IntegrationInvariants(unittest.TestCase):
     """The user-facing requirements this session is responsible for."""
 
+    def test_landing_has_one_primary_cta(self):
+        """The shared smoke tests click `#executive-summary a.btn-primary`; a second
+        primary button makes that locator ambiguous and the hosted run fails."""
+        text = LANDING.read_text()
+        summary = re.search(r'<section id="executive-summary".*?(?=<section id="canonical-picks|'
+                            r'<footer)', text, re.S)
+        self.assertIsNotNone(summary)
+        self.assertEqual(summary.group(0).count('btn-primary'), 1)
+
     def test_landing_page_links_the_current_pick_lists_mobile_first(self):
         text = LANDING.read_text()
+        # Exactly one primary CTA, as the shared browser smoke tests require
+        # (they click a single .btn-primary inside #executive-summary).
         primary = re.findall(r'class="btn btn-primary" href="([^"]+)"', text)
-        self.assertEqual(primary, ["picks-every-match/index.html", "day4/index.html"])
+        self.assertEqual(primary, ["picks-every-match/index.html"])
+        self.assertIn('class="btn alt2" href="day4/index.html"', text)
+        # the shared TWC smoke test clicks exactly one twc-2026 action from here
+        self.assertEqual(text.count('class="btn ghost" href="twc-2026/index.html"'), 1)
         self.assertIn('href="#canonical-unresolved"', text)
         self.assertIn('name="viewport"', text)
         # the day-4 semifinal picks and their probabilities are on the landing page itself
