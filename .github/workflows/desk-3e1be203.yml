@@ -57,6 +57,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add desk data/3e1be203 index.html
+          # build_site.py also rewrites uncommitted root/data files; drop those working-tree
+          # edits so the rebase below cannot refuse on unstaged changes.
+          git checkout -- .
           if git diff --cached --quiet; then echo "no changes"; exit 0; fi
           git commit -m "desk(3e1be203): refresh picks $(date -u +%FT%TZ) [skip ci]"
           git pull --rebase origin "$REF_NAME"
