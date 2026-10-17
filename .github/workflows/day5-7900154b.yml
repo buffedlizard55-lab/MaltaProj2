@@ -67,6 +67,11 @@ jobs:
           git add data/7900154b
           git add day5 || true
           git add index.html || true
+          # build_site.py also rewrites root/data files that belong to other sessions;
+          # drop those working-tree edits so the rebase below cannot refuse on
+          # unstaged changes.
+          git checkout -- . || true
+          git clean -fd data/7900154b day5 || true
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -m "day5(7900154b): refresh picks $(date -u +%Y-%m-%dT%H:%MZ)"
           for attempt in 1 2 3 4 5; do
