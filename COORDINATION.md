@@ -5372,3 +5372,39 @@ Session: `e2d16060` (fixed to branch `arena/e2d16060-maltaproj2`).
 - **Post-merge checks:** `Verify and publish dashboard` run **38985070598** (`https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38985070598`) passed both build and deploy, including regenerated-source checks, browser smoke tests, staging and semantic public-dashboard verification. `pages build and deployment` run **38985070382** (`https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38985070382`) passed. The concurrent `update-data` run **38985070518** also passed. GitHub Pages API reports `built` at `https://buffedlizard55-lab.github.io/MaltaProj2/`.
 - **Local acceptance:** `/tmp/malta-venv/bin/python -m unittest discover -s tests -v` completed **784 tests OK, 3 skipped**; `python -m unittest tests.test_e2d16060 -v` completed **8/8**; `python scripts/stage_site.py` staged 33 files with no broken internal links; compile and whitespace checks passed. The system interpreter's missing optional BeautifulSoup dependency was not treated as a repository failure; the pinned requirement was installed in `/tmp/malta-venv`.
 - **Status:** done. Later automated refresh commits advanced `main` to `3652aab6` after the merge; they are current-data updates and do not alter this additive integration. The dated audit remains historical/replay-only, while the canonical four-hour picks route remains primary.
+
+### Verification close-out — 2026-10-17 00:40 UTC, session `1fac4be2`
+
+Self-contained verification of everything this integration publishes, run from the repository itself (no network assumption): `python3 scripts/1fac4be2/verify.py` → `data/1fac4be2/verification.json`, `verify/1fac4be2/index.html`, `verify/1fac4be2/flagged.html`.
+
+**Result: 5 boards / 106 open rows / 0 re-derivation failures / 10 flagged items / 58 pages audited (6 hygiene findings, all on other sessions' JavaScript-template pages).**
+
+| Board | JSON | Open rows | With a probability | Market / model / blank | Re-derivation failures |
+|---|---|---|---|---|---|
+| picks-every-match (canonical) | `data/c64a5e19/board.json` | 21 | 14 | 11 / 3 / 7 | 0 |
+| day-4 desk (TWC + every open match) | `data/1c8f79f8/board.json` | 21 | 19 | 11 / 8 / 2 | 0 |
+| full-coverage board | `data/fe803b80/board.json` | 22 | 20 | 1 / 8 / 2 | 0 |
+| our-line board | `data/f7279a54/board.json` | 21 | 13 | 10 / 3 / 8 | 0 |
+| exec board | `data/b1fb1465/board.json` | 21 | 17 | 8 / 6 / 4 | 0 |
+
+- **Probability re-derivation (line by line, per row).** Each published probability is recomputed from the row's own retained inputs, never from the published number: orientation-aware de-vig of the retained decimal quote (honouring each quote's `swapped` flag), the two-source market rules (mean / Pinnacle-weighted / median per the board's own method text), the linear and log-odds blends with their declared weights, and the originated Valve-Glicko lines re-fitted with each row's own `k`. Published rounding is tolerated to 6e-3. All 106 rows reproduce; the canonical `swapped` row (#1081521, 0.8966 = 1 − de-vig of the Privateer quote) and the day-4 rows priced from sibling quotes are re-derived from those exact decimals.
+- **Material irregularity published (not silently merged): the Glicko rating deviation is not one constant across the site.** Canonical, day-4 desk, full-coverage and our-line boards all reproduce with RD = 75 (the constant in `scripts/fe803b80/core.py`); the exec board reproduces only with RD = 200 (slope C ≈ 0.00486). Same rating pair ⇒ different line (137-point gap: 54.4% at RD = 200 vs 54.8% at RD = 75 before the k fit). Both boards label their constants "Valve Glicko"; the divergence is on `verify/1fac4be2/flagged.html` with per-board evidence links. No number was changed.
+- **Inventory reconciliation.** The retained lobby capture used by the day-4 desk lists 21 open fixtures; 21/21 have a published row on a current board (0 unreconciled). The full-coverage board's 22nd row (#1080200, `FRAG University: Wildcard vs DENDELE`, dated 2026-11-12, status `started`) exists only in that board's capture and is excluded rather than copied.
+- **TWC day-1/2/3 ledger.** Every capture's own day-1 record is located structurally (never by scanning raw file text) and its Nuke score read from that record:
+
+| Capture | Path | Day-1 9z–Aurora map scores |
+|---|---|---|
+| 5468b0ba audit | `data/5468b0ba/audit.json` | Inferno 13-11; Nuke 13-1 |
+| 5a40690b day-4 coverage | `data/5a40690b/day4_and_coverage.json` | Inferno 13-11; Nuke 13-1 |
+| 94ab4483 review | `data/94ab4483/review.json` | Inferno 13-11; Nuke 13-1 |
+| 6c5bb3d6 research | `data/6c5bb3d6/research.json` | Inferno 13-11; Nuke 13-1 |
+| 4cf64ea3 evidence | `data/4cf64ea3/evidence.json` | Inferno 13-11; Nuke 13-1 |
+| b3b89eec verification | `data/b3b89eec/twc_review.json` | Inferno 13-11; Nuke 13-1 |
+| 98dcfc7e audit | `data/98dcfc7e/audit.json` | Mirage 13-11; **Nuke 16-14** (disagrees — flagged, capture preserved) |
+| day-4 desk board | `data/1c8f79f8/board.json` | Inferno 13-11; Nuke 13-1 (corrected this session) |
+
+  Verdict recorded in the JSON: *"day-1 Nuke is 13-1 for 9z: 7 retained captures record that score, 1 records something else (flagged below); the day-4 desk published 13-4 until this session corrected it to 13-1."* The disagreeing 98dcfc7e capture is preserved byte-for-byte and named on the Flagged page with HLTV match/news links instead of being overwritten.
+- **Coverage request to the canonical board owner (logged, not edited):** five fixtures that the canonical board leaves blank (`1079170` BET-M–Just Players, `1081515` Apogee Betclic–Nemesis, `1081126` banda chuya–Enjoy, `1081522` antidaun–Phantom Academy, `1081529` Nexus–WROTBERRY) are priced on the day-4 desk from the same lobby capture (sibling-quote reuse or the Valve-VRS ladder). Since the brief asks for a pick and an originated line for every listed match, the canonical board should adopt the same ladder; until then the site's "unresolved picks" list is longer than the day-4 desk's. Published on `verify/1fac4be2/flagged.html` with links to both boards. `data/c64a5e19/**` and `scripts/f7279a54/**` were not touched.
+- **Also surfaced for review (non-blocking):** the day-1 result table on `day4/twc-review.html` now carries a per-row official source column (HLTV match page + official HotSpawn review for each of the ten group-stage results) and the remaining-schedule table links HLTV event 8932; the two failing workflows (`day4 desk (1c8f79f8)`, `verify audit (6c5bb3d6)`) are published on the Flagged page with their run URLs; the six page-hygiene findings are JS-template hrefs on `lines.html`/`teams.html` (dead only without JavaScript) on pages this session does not own.
+- **Tests added:** `tests/test_1fac4be2.py` (19 tests) locks the contract — every published probability must re-derive, every flagged item must carry HTTPS sources, no failing workflow may be hidden, the landing page must keep its two primary actions + unresolved anchor, the day-4 results table must source every row, and the Nuke correction must hold. Full local suite after the changes: **790 tests, 4 skipped, OK**. `python3 scripts/build_site.py` and `python3 scripts/stage_site.py`: 33 files staged, all local links resolve.
+- PR link and merge result are appended below in the publish step.

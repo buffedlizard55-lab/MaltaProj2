@@ -884,19 +884,24 @@ def twc_review_html(board: dict) -> str:
     twc = board["twc"]
     rows = []
     for date, stage, team_a, score, team_b, maps in twc["results"]:
+        links = research.TWC_RESULTS_SOURCES.get((date, team_a, team_b), [])
+        links_html = " ".join(
+            f"<a href='{esc(url)}' target='_blank' rel='noopener'>{esc(label)}</a>"
+            for label, url in links) or "<span class='mut'>no official link retained</span>"
         rows.append(f"<tr><td data-label='Date'>{esc(date)}</td><td data-label='Stage'>{esc(stage)}</td>"
                     f"<td data-label='Match'><strong>{esc(team_a)} {esc(score)} {esc(team_b)}</strong></td>"
-                    f"<td data-label='Maps'>{esc(maps)}</td></tr>")
+                    f"<td data-label='Maps'>{esc(maps)}</td>"
+                    f"<td data-label='Sources'>{links_html}</td></tr>")
     body = f"""
 <p class="eyebrow">Thunderpick World Championship 2026 · Attard, Malta · $1,000,000 · Oct 14–18</p>
 <h1>Verified day 1–3 review: what actually happened</h1>
 <p>Every result below was verified map-level on the HLTV results page for the event, the strafe bracket and
 egamersworld's match pages (read 2026-10-16T19:55–20:40Z). This is the evidence base for both semifinal picks.</p>
 <h2>All ten group-stage results</h2>
-<div class="tablewrap"><table class="responsive"><thead><tr><th>Date</th><th>Stage</th><th>Series</th><th>Maps</th></tr></thead>
+<div class="tablewrap"><table class="responsive"><thead><tr><th>Date</th><th>Stage</th><th>Series</th><th>Maps</th><th>Sources</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table></div>
 <h2>The day-1 upset and the day-3 avenge</h2>
-<p><strong>9z 2-0 Aurora (Oct 14)</strong> — the day-1 upset (Inferno 13-11, Nuke 13-4) was real: Aurora, the
+<p><strong>9z 2-0 Aurora (Oct 14)</strong> — the day-1 upset (Inferno 13-11, Nuke 13-1) was real: Aurora, the
 Valve-#9 side, went out of the winners' bracket immediately. But it was not a new-team fluke: Aurora's roster is
 unchanged since July (see the roster investigation below). On Oct 16 Aurora ran the rematch back 2-0
 (Cache 13-11, Inferno 13-4) with kyxsan at 1.45 (MVP) — the same map pool, the same opponent, a decisive
@@ -936,7 +941,7 @@ BetBoom arrives hot (reverse-sweep of PARIVISION, decider win, zorte 51 kills) b
 ≥2.80. Full row: <a href="picks.html#twc">picks table</a>.</p></div></details>
 <h2>Remaining schedule</h2>
 <div class="tablewrap"><table class="responsive"><thead><tr><th>Match</th><th>Teams</th><th>When (UTC)</th><th>Format</th><th>Reference</th></tr></thead><tbody>
-{''.join(f"<tr><td data-label='Match'>{esc(n)}</td><td data-label='Teams'>{esc(t)}</td><td data-label='When'>{esc(w[:16].replace('T',' '))}</td><td data-label='Format'>{esc(f)}</td><td data-label='Reference'>{esc(r)}</td></tr>" for n, t, w, f, r in twc["schedule"])}
+{''.join(f"<tr><td data-label='Match'>{esc(n)}</td><td data-label='Teams'>{esc(t)}</td><td data-label='When'>{esc(w[:16].replace('T',' '))}</td><td data-label='Format'>{esc(f)}</td><td data-label='Reference'>{esc(r)} · <a href='https://www.hltv.org/events/8932/thunderpick-world-championship-2026'>official HLTV event page</a></td></tr>" for n, t, w, f, r in twc["schedule"])}
 </tbody></table></div>
 <p class="mut">The 3rd-place decider and grand final cannot be priced until both semifinals resolve — the
 opponents are TBD. This is a limitation, not a blank to fill later without evidence; the
