@@ -135,7 +135,7 @@ class CurrentPublicationTests(unittest.TestCase):
                          "picks-every-match/unresolved.html", "day-one.html",
                          "flagged.html", "picks-every-match/method.html", "research.html"):
             self.assertIn(required, nav_hrefs)
-        self.assertLessEqual(len(nav_hrefs), 10)
+        self.assertLessEqual(len(nav_hrefs), 11)  # 782adb47: +finals nav entry (presentation only)
         self.assertIsNotNone(index.select_one('a[href="research.html"]'))
         self.assertIsNotNone(index.select_one('a[href="board/picks.html"]'))
         self.assertIn("Unsupported probabilities stay blank", index.get_text(" ", strip=True))
