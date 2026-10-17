@@ -136,8 +136,10 @@ def pick_card(row: dict) -> str:
     blank = ""
     if row["basis"] == "blank":
         blank = '<p class="mut">No external price was reachable and no unambiguous rating pair exists — this row is published blank, never filled with a guess.</p>'
+    where = ('<span class="tag s">LOBBY CARD</span>' if row.get("lobby_card")
+             else '<span class="tag res">FIXTURES FEED</span>')
     return f"""<div class="rowcard">
-<div class="teams">{core.esc(row["team_a"])} vs {core.esc(row["team_b"])} {tag} <span class="mut" style="font-weight:400">#{core.esc(row["fixture_id"])}</span></div>
+<div class="teams">{core.esc(row["team_a"])} vs {core.esc(row["team_b"])} {tag} {where} <span class="mut" style="font-weight:400">#{core.esc(row["fixture_id"])}</span></div>
 <div class="meta">{core.esc(row.get("competition") or "")} · {core.human_utc(row.get("start_utc"))} · pick'em points {core.esc(row.get("offered_points") or "—")}</div>
 <div class="pickline"><span>Pick: <b>{core.esc(row.get("pick") or "—")}</b></span><span>{core.pct(prob, 1)}</span></div>
 {bar(prob)}
@@ -177,6 +179,7 @@ list and the crowd scoreboard only — never as a probability.</p>
 <div class="kpi"><b>{s['originated_rows']}</b><span>originated (labelled) lines</span></div>
 <div class="kpi"><b>{s['blank_rows']}</b><span>unresolved, published blank</span></div>
 <div class="kpi"><b>{s['climb_picks_activated']}</b><span>contrarian climb picks activated</span></div>
+<div class="kpi"><b>{s.get('lobby_cards', 0)}</b><span>cards on the rendered lobby page</span></div>
 </div>
 
 <div class="cta">
@@ -485,8 +488,12 @@ read by hand with a dated citation.</p>
 <li>Decimal → implied probability: <code>p = 1 / decimal</code>.</li>
 <li>No-vig two-way split: <code>p_a = (1/d_a) / (1/d_a + 1/d_b)</code>; the overround is published per quote.</li>
 <li>Consensus: weighted mean of the accepted sources' no-vig splits; weights below.</li>
-<li>Originated line (only when no market prices the fixture): <code>p = 1 / (1 + 10^(-Δpoints/{g['vrs_elo_scale']:.0f}))</code>
-applied to Valve's official regional standings, always labelled ORIGINATED.</li>
+<li>Originated line, rung 1 (only when no market prices the fixture and Valve ranks both teams):
+<code>p = 1 / (1 + 10^(-Δpoints/{g['vrs_elo_scale']:.0f}))</code> applied to Valve's official regional standings,
+always labelled ORIGINATED.</li>
+<li>Originated line, rung 2 (no market and no Valve pair): <code>p = 0.5 + 0.5·tanh(Δrank/{g.get('rank_scale', 40):.0f})</code>
+on the bo3.gg world rank of both teams, clamped to [0.08, 0.92] — a coarse input, so the clamp and the label are
+part of the published number.</li>
 <li>Expected leaderboard differential: <code>points × (probability − crowd ownership)</code>.</li>
 </ul>
 <div class="tablewrap"><table><tr><th>Source weight in the consensus</th><th>Weight</th></tr>{weights}</table></div>

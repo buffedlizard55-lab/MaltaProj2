@@ -35,6 +35,8 @@ import research  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "34af18bf"
+BO3_TEAMS: dict = {}          # filled in main() from the snapshot
+BO3_READ_UTC: str = ""        # read time recorded by the collector for that snapshot
 
 # Declared source weights for the market consensus (published on method.html).
 SOURCE_WEIGHTS = {"pinnacle": 2.0, "thunderpick": 1.0, "melbet": 1.0, "bovada": 1.0,
@@ -44,6 +46,8 @@ SOURCE_LABELS = {"pinnacle": "Pinnacle", "bovada": "Bovada", "melbet": "Melbet (
                  "polymarket": "Polymarket", "research": "Research reading (dated)"}
 KALSHI_SPREAD_GATE = 0.10          # reject thin/untraded exchange books
 VRS_ELO_SCALE = 400.0              # declared transform: p = 1/(1+10^(-Δ/400))
+RANK_SCALE = 40.0                  # declared transform on bo3.gg world ranks: p = 0.5+0.5*tanh(Δ/40)
+RANK_CLAMP = (0.08, 0.92)          # a rank is a coarse input: never claim more than this
 C1_MIN_PROBABILITY = 0.20          # "not stupid" floor: never below one win in five
 C4_MAX_CLIMB_PER_DAY = 3
 
@@ -113,6 +117,30 @@ def vrs_reading(team_a: str, team_b: str, vrs: dict) -> dict | None:
             "rating_a": ra, "rating_b": rb, "delta_points": round(diff, 1)}
 
 
+def rank_reading(team_a: str, team_b: str, bo3_teams: dict) -> dict | None:
+    """Last-resort ORIGINATED line from the bo3.gg world rank of the two teams.
+
+    Used only when no market prices the fixture and Valve does not rank both teams.
+    The transform is declared on the method page and the source link is the bo3.gg
+    team record the rank was read from.
+    """
+    import math
+    by_name = {}
+    for tid, rec in (bo3_teams or {}).items():
+        if isinstance(rec, dict) and rec.get("rank"):
+            by_name[core.canon(rec.get("name"))] = (rec, tid)
+    ra, rb = by_name.get(core.canon(team_a)), by_name.get(core.canon(team_b))
+    if not ra or not rb:
+        return None
+    delta = float(rb[0]["rank"]) - float(ra[0]["rank"])   # positive => team_a ranked higher
+    prob_a = 0.5 + 0.5 * math.tanh(delta / RANK_SCALE)
+    prob_a = min(max(prob_a, RANK_CLAMP[0]), RANK_CLAMP[1])
+    return {"prob_a": round(prob_a, 6), "prob_b": round(1 - prob_a, 6),
+            "rank_a": ra[0]["rank"], "rank_b": rb[0]["rank"], "delta": delta,
+            "name_a": ra[0].get("name"), "name_b": rb[0].get("name"),
+            "slug_a": ra[0].get("slug"), "slug_b": rb[0].get("slug")}
+
+
 def crowd_of(fixture: dict, team: str) -> float | None:
     canon = core.canon(team)
     if canon == core.canon(fixture["team_a"]) and fixture.get("crowd_a_pct") is not None:
@@ -173,6 +201,8 @@ def resolve(fixture: dict, index, vrs, res, basis_override: dict | None = None) 
         "crowd_b": fixture.get("crowd_b_pct"),
         "crowd_picks_total": fixture.get("crowd_picks_total"),
         "hotspawn_url": fixture.get("hotspawn_url"),
+        "lobby_card": bool(fixture.get("lobby_card")),
+        "discovery": fixture.get("discovery"),
         "hotspawn_url_kind": fixture.get("hotspawn_url_kind"),
         "readings": accepted,
         "refused": refused,
@@ -201,8 +231,24 @@ def resolve(fixture: dict, index, vrs, res, basis_override: dict | None = None) 
                                 "Valve's official standings with the declared transform "
                                 "p = 1/(1+10^(-Δ/400)) and is labelled ORIGINATED.")
         else:
-            row.update(basis="blank", verified=False)
-            row["notes"].append("No external price and no unambiguous Valve rating pair — left blank.")
+            rank_read = rank_reading(fixture["team_a"], fixture["team_b"], BO3_TEAMS)
+            if rank_read:
+                row.update(prob_a=rank_read["prob_a"], prob_b=rank_read["prob_b"], basis="originated",
+                           confidence="originated (bo3.gg world rank)",
+                           source_links=[{
+                               "label": f"bo3.gg world rank: {rank_read['name_a']} #{rank_read['rank_a']} vs "
+                                        f"{rank_read['name_b']} #{rank_read['rank_b']}",
+                               "url": (f"https://bo3.gg/teams/{rank_read['slug_a']}" if rank_read.get("slug_a")
+                                       else "https://bo3.gg/teams"),
+                               "read_utc": BO3_READ_UTC}])
+                row["notes"].append("No external two-sided price and no Valve rating pair; the line is "
+                                    "originated from bo3.gg's published world ranks with the declared "
+                                    "transform p = 0.5 + 0.5·tanh(Δrank/40), clamped to [0.08, 0.92], and "
+                                    "is labelled ORIGINATED.")
+            else:
+                row.update(basis="blank", verified=False)
+                row["notes"].append("No external price, no unambiguous Valve rating pair and no bo3.gg "
+                                    "world rank for both teams — left blank.")
     if row["prob_a"] is not None:
         prefer_a = row["prob_a"] >= row["prob_b"]
         row["pick"] = fixture["team_a"] if prefer_a else fixture["team_b"]
@@ -250,7 +296,10 @@ def twc_rows(index, vrs, res) -> list[dict]:
 
 
 def main() -> int:
+    global BO3_TEAMS, BO3_READ_UTC
     snapshot = json.loads((DATA / "snapshot.json").read_text(encoding="utf-8"))
+    BO3_TEAMS = snapshot.get("bo3_teams") or {}
+    BO3_READ_UTC = snapshot.get("captured_utc") or ""
     fixtures = snapshot["hotspawn"]["fixtures"]
     quotes = snapshot["quotes"]
     vrs = snapshot["vrs"]
@@ -289,11 +338,14 @@ def main() -> int:
         "fixture_capture_utc": snapshot["captured_utc"],
         "declared_weights": SOURCE_WEIGHTS,
         "gates": {"kalshi_spread": KALSHI_SPREAD_GATE, "vrs_elo_scale": VRS_ELO_SCALE,
+                  "rank_scale": RANK_SCALE, "rank_clamp": RANK_CLAMP,
                   "C1_min_probability": C1_MIN_PROBABILITY, "C4_max_climb_per_day": C4_MAX_CLIMB_PER_DAY},
         "summary": {
             "open_fixtures_total": len(rows) + len(twc),
             "from_hotspawn_lobby": len(rows),
             "twc_playoff_rows": len(twc),
+            "lobby_cards": sum(1 for r in rows if r.get("lobby_card")),
+            "fixtures_feed_only": sum(1 for r in rows if not r.get("lobby_card")),
             "market_rows": len(market),
             "originated_rows": len(originated),
             "blank_rows": len(unresolved),

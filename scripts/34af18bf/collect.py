@@ -192,6 +192,8 @@ def collect_hotspawn() -> dict:
     for raw in state.get("fixtures") or []:
         fx = normalise_fixture(raw)
         if fx:
+            fx["lobby_card"] = True
+            fx["discovery"] = "HotSpawn lobby transfer state (the cards a browser renders)"
             fixtures[fx["fixture_id"]] = fx
     LOG["hotspawn_lobby_page"]["fixtures_in_transfer_state"] = len(fixtures)
 
@@ -217,6 +219,9 @@ def collect_hotspawn() -> dict:
             if not fx:
                 continue
             fx["competition"] = fx["competition"] or name
+            fx["lobby_card"] = False
+            fx["discovery"] = ("HotSpawn fixtures endpoint (listed by HotSpawn, "
+                               "not on the rendered lobby page)")
             # the status=scheduled filter is known to return past-dated rows
             start = core.parse_iso(fx["start_utc"])
             if start and start < core.now_utc():
@@ -438,101 +443,132 @@ def collect_kalshi(quotes: list, attempts: list) -> None:
     LOG["kalshi_KXCS2GAME"]["quotes"] = written
 
 
-def collect_bo3(quotes: list) -> None:
-    """Thunderpick coefficients published per fixture by bo3.gg (esportsbook line)."""
-    all_matches: list[dict] = []
-    for page in range(1, 4):
-        data, meta = fetch_json(f"{BO3_MATCHES}&page%5Bnumber%5D={page}", {"Accept": "application/json"})
-        LOG[f"bo3gg_matches_p{page}"] = dict(meta, quotes=0)
+def collect_bo3(quotes: list) -> dict:
+    """Upcoming fixtures plus the Thunderpick two-way coefficient bo3.gg publishes per match.
+
+    Schema (verified against the working collectors already in this repository): the payload is
+    ``bet_updates = {"provider": ..., "team_1": {name, coeff, max_coeff, team_id}, "team_2": {...}}``.
+    Team records are kept for the ids the feed references, because the rank in that record is the
+    only rating this desk can read for the tier-C teams that no bookmaker prices and Valve does not
+    rank — it becomes the last-resort ORIGINATED rung in build.py, always labelled as such.
+    """
+    matches: list[dict] = []
+    for page in range(3):
+        url = (f"{BO3}/matches/?filter%5Bmatches.discipline_id%5D%5Beq%5D=1"
+               f"&filter%5Bmatches.status%5D%5Bin%5D=upcoming&sort=start_date"
+               f"&page%5Blimit%5D=100&page%5Boffset%5D={page * 100}")
+        data, meta = fetch_json(url, {"Accept": "application/json"})
+        LOG[f"bo3gg_matches_p{page + 1}"] = dict(meta, rows=0, quotes=0)
         rows = (data or {}).get("results") if isinstance(data, dict) else None
         if not isinstance(rows, list) or not rows:
             break
-        all_matches.extend(rows)
         written = 0
         for m in rows:
-            teams = m.get("team1") or {}, m.get("team2") or {}
-            t1, t2 = (teams[0] or {}).get("name"), (teams[1] or {}).get("name")
-            if not t1 or not t2:
+            if not isinstance(m, dict):
                 continue
-            if PROP_RE.search(f"{t1} {t2}"):
+            matches.append(m)
+            bu = m.get("bet_updates") or {}
+            t1, t2 = bu.get("team_1") or {}, bu.get("team_2") or {}
+            try:
+                da, db = float(t1.get("coeff")), float(t2.get("coeff"))
+            except (TypeError, ValueError):
                 continue
-            bets = m.get("bet_updates") or []
-            picked = None
-            for bet in bets:
-                coefs = {str(c.get("name") or "").strip().casefold(): c.get("coef")
-                         for c in (bet.get("coefficients") or [])}
-                a = coefs.get(str(t1).strip().casefold())
-                b = coefs.get(str(t2).strip().casefold())
-                if a and b:
-                    picked = (float(a), float(b), bet.get("bookmaker") or bet.get("bookmaker_id"))
-                    break
-            if not picked:
+            if da <= 1.0 or db <= 1.0:
                 continue
-            da, db, book = picked
-            start = m.get("start_date") or m.get("start_date_utc")
-            months = m.get("tournament") or {}
+            name_a, name_b = t1.get("name") or "", t2.get("name") or ""
+            if not name_a or not name_b or PROP_RE.search(f"{name_a} {name_b}"):
+                continue
+            tour = m.get("tournament") or {}
             quotes.append(quote("thunderpick", "Thunderpick (coefficients via bo3.gg)",
-                                f"https://bo3.gg/matches/{m.get('slug') or m.get('id')}",
-                                BO3_MATCHES, m.get("id"), t1, t2, da, db,
-                                core.iso(core.parse_iso(str(start)) or core.now_utc()),
-                                months.get("name") if isinstance(months, dict) else None,
-                                "decimal", da, db, extra={"bookmaker_ref": book}))
+                                f"https://bo3.gg/matches/{m.get('slug')}",
+                                f"{BO3}/matches/?filter%5Bmatches.id%5D%5Beq%5D={m.get('id')}",
+                                m.get("id"), name_a, name_b, da, db,
+                                core.iso(core.parse_iso(str(m.get("start_date") or "").replace("Z", "+00:00"))
+                                         or core.now_utc()),
+                                tour.get("name") if isinstance(tour, dict) else None, "decimal",
+                                t1.get("coeff"), t2.get("coeff"),
+                                extra={"provider": bu.get("provider"), "team1_id": m.get("team1_id"),
+                                       "team2_id": m.get("team2_id"), "max_coeff_a": t1.get("max_coeff"),
+                                       "max_coeff_b": t2.get("max_coeff")}))
             written += 1
-        LOG[f"bo3gg_matches_p{page}"]["quotes"] = written
+        LOG[f"bo3gg_matches_p{page + 1}"]["rows"] = len(rows)
+        LOG[f"bo3gg_matches_p{page + 1}"]["quotes"] = written
+        if len(rows) < 100:
+            break
         time.sleep(0.2)
-    LOG["bo3gg_matches_total"] = len(all_matches)
+
+    team_ids = sorted({str(i) for m in matches for i in (m.get("team1_id"), m.get("team2_id")) if i})
+    teams: dict[str, dict] = {}
+    for tid in team_ids[:120]:
+        data, _ = fetch_json(f"{BO3}/teams/?filter%5Bteams.id%5D%5Beq%5D={tid}&limit=1",
+                             {"Accept": "application/json"})
+        rec = (data or {}).get("results") if isinstance(data, dict) else None
+        if rec and isinstance(rec, list) and rec:
+            row = rec[0]
+            teams[tid] = {k: row.get(k) for k in ("id", "name", "slug", "acronym", "rank")}
+        time.sleep(0.05)
+    LOG["bo3gg_teams"] = {"teams": len(teams), "matches": len(matches)}
+    return {"matches": len(matches), "teams": teams}
+
+
+PM_TITLE = re.compile(r"^(?:Counter-Strike|CS2)\s*:\s*(?P<a>.+?)\s+vs\.?\s+(?P<b>.+?)"
+                       r"\s*(?:\((?P<fmt>[^)]*)\))?\s*-\s*(?P<tour>.+)$", re.I)
 
 
 def collect_polymarket(quotes: list, attempts: list) -> None:
-    data, meta = fetch_json(POLY, {"Accept": "application/json"})
-    LOG["polymarket_events"] = dict(meta, markets=0, quotes=0)
+    """CS2 match-winner markets only; a book with no traded volume is refused, not priced."""
+    url = "https://gamma-api.polymarket.com/events?closed=false&limit=200&tag_slug=esports"
+    data, meta = fetch_json(url, {"Accept": "application/json"})
+    LOG["polymarket_events"] = dict(meta, cs2_events=0, quotes=0)
     events = data if isinstance(data, list) else (data or {}).get("events")
     if not isinstance(events, list):
         return
-    written = 0
+    cs2_events, written = 0, 0
+    now = core.now_utc()
     for ev in events:
-        markets = ev.get("markets") or []
-        if len(markets) != 2:
+        m = PM_TITLE.match(str(ev.get("title") or "").strip())
+        if not m:
             continue
-        legs = []
-        for mk in markets:
+        cs2_events += 1
+        for mk in ev.get("markets") or []:
+            outcomes, prices = mk.get("outcomes"), mk.get("outcomePrices")
             try:
-                outcome_prices = json.loads(mk.get("outcomePrices") or "[]")
-                outcomes = json.loads(mk.get("outcomes") or "[]")
-            except ValueError:
+                outcomes = json.loads(outcomes) if isinstance(outcomes, str) else outcomes
+                prices = [float(x) for x in (json.loads(prices) if isinstance(prices, str) else prices)]
+            except (TypeError, ValueError):
                 continue
-            if len(outcome_prices) != 1 or len(outcomes) != 1:
+            if not outcomes or len(outcomes) != 2 or len(prices) != 2:
                 continue
-            legs.append({"team": outcomes[0], "yes": float(outcome_prices[0]),
-                         "volume": mk.get("volumeNum") or mk.get("volume"),
-                         "closed": mk.get("closed")})
-        if len(legs) != 2:
-            continue
-        LOG["polymarket_events"]["markets"] += 1
-        volume = sum(float(l["volume"] or 0) for l in legs)
-        base = {"source_key": "polymarket", "source_name": "Polymarket (prediction market)",
-                "public_url": f"https://polymarket.com/event/{ev.get('slug')}",
-                "api_url": POLY, "event_id": ev.get("id"), "team_a": legs[0]["team"],
-                "team_b": legs[1]["team"], "start_utc": ev.get("endDate"),
-                "retrieved_utc": core.iso(core.now_utc()), "volume_usd": round(volume, 2),
-                "legs": legs}
-        if volume < 25.0:
-            attempts.append({**base, "reason": f"untraded book (${volume:.2f} volume) — refused as a price"})
-            continue
-        prices = [l["yes"] for l in legs]
-        if sum(prices) <= 0.5:
-            attempts.append({**base, "reason": "no two-sided book"})
-            continue
-        prob_a = prices[0] / (prices[0] + prices[1])
-        quotes.append(quote("polymarket", "Polymarket (prediction market)", base["public_url"], POLY,
-                            ev.get("id"), legs[0]["team"], legs[1]["team"],
-                            1.0 / prices[0] if prices[0] else 0, 1.0 / prices[1] if prices[1] else 0,
-                            ev.get("endDate"), ev.get("title"), "share price ($)",
-                            prices[0], prices[1],
-                            extra={"prob_a": round(prob_a, 6), "prob_b": round(1 - prob_a, 6),
-                                   "volume_usd": round(volume, 2)}))
-        written += 1
-    LOG["polymarket_events"]["quotes"] = written
+            if mk.get("closed") or mk.get("active") is False:
+                continue
+            end = mk.get("endDate") or ev.get("endDate")
+            end_dt = core.parse_iso(str(end)) if end else None
+            if end_dt and end_dt < now:
+                continue
+            volume = float(mk.get("volumeNum") or mk.get("volume") or 0)
+            public_url = f"https://polymarket.com/event/{ev.get('slug')}"
+            base = {"source_key": "polymarket", "source_name": "Polymarket (prediction market)",
+                    "public_url": public_url, "api_url": url, "event_id": ev.get("id"),
+                    "team_a": str(outcomes[0]).strip(), "team_b": str(outcomes[1]).strip(),
+                    "start_utc": core.iso(end_dt) if end_dt else None,
+                    "retrieved_utc": core.iso(core.now_utc()), "volume_usd": round(volume, 2),
+                    "raw_format": "share price ($)", "raw_a": prices[0], "raw_b": prices[1]}
+            if volume < 25.0 or min(prices) <= 0.0:
+                attempts.append({**base, "reason": f"untraded book (${volume:.2f} traded) — refused as a price"})
+                continue
+            total = prices[0] + prices[1]
+            if total <= 0.5:
+                attempts.append({**base, "reason": "no two-sided book"})
+                continue
+            prob_a = prices[0] / total
+            quotes.append(quote("polymarket", "Polymarket (prediction market)", public_url, url,
+                                ev.get("id"), base["team_a"], base["team_b"],
+                                1.0 / prices[0], 1.0 / prices[1], base["start_utc"],
+                                m.group("tour").strip(), "share price ($)", prices[0], prices[1],
+                                extra={"prob_a": round(prob_a, 6), "prob_b": round(1 - prob_a, 6),
+                                       "volume_usd": round(volume, 2)}))
+            written += 1
+    LOG["polymarket_events"].update({"cs2_events": cs2_events, "quotes": written})
 
 
 # --------------------------------------------------------------------------- Valve VRS
@@ -576,7 +612,7 @@ def main() -> int:
     collect_bovada(quotes)
     collect_linefeed(quotes)
     collect_kalshi(quotes, attempts)
-    collect_bo3(quotes)
+    bo3 = collect_bo3(quotes)
     collect_polymarket(quotes, attempts)
     vrs = collect_vrs()
 
@@ -598,6 +634,7 @@ def main() -> int:
         "quotes": quotes,
         "refused_quotes": attempts,
         "vrs": vrs,
+        "bo3_teams": bo3.get("teams") or {},
         "access": LOG,
     }
     OUT.mkdir(parents=True, exist_ok=True)
