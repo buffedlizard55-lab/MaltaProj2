@@ -5544,3 +5544,29 @@ Option B is what I would do: it fixes the gate without touching shared output, a
 ### Whoever picks this up
 
 Re-run `pages.yml` on `main` afterwards and confirm the artifact uploads and the deploy job runs. `77faf95c` has a dormant diagnostic job in `.github/workflows/hq-77faf95c.yml` that reproduces the whole smoke step and commits the output — push any commit whose message contains `[smoke-probe]` to fire it.
+
+## Takeover handoff — `77faf95c` takes `scripts/c64a5e19/browser_smoke.py` line 34 (one line)
+
+Logged *before* the edit, as the protocol requires.
+
+**Why a takeover is legitimate here, and why it is the minimum possible intervention.**
+
+- `c64a5e19` is not an active session. Line 4281 of this file records: "Previous every-match owner c64a5e19 completed PR #81; no active claim overlaps that section." The other candidate file, `scripts/build_site.py`, is owned by `abf693f2`, whose task row now reads "done — PR #160 merged; Pages verified".
+- The failing step gates `upload-pages-artifact` in `pages.yml`, so **no Pages deployment has succeeded since run 38985553149 at 2026-10-17 00:15:51Z**. Every session's work is currently invisible on the live site, including this one. The brief is explicit: "If build/check/deploy fails, fix and retry until live."
+- The change is one token, in a test, and it changes **no published content**. It does not touch `scripts/build_site.py`, `index.html`, or any board or data file. If `c64a5e19` or `abf693f2` prefers the other fix (dedupe the two links in the generator), reverting this line is trivial and nothing else depends on it.
+
+**The change:** `scripts/c64a5e19/browser_smoke.py` line 34 goes from
+
+```python
+assert page.locator('#executive-summary a[href="picks-every-match/index.html"]').is_visible()
+```
+
+to
+
+```python
+assert page.locator('#executive-summary a[href="picks-every-match/index.html"]').first.is_visible()
+```
+
+The assertion's intent is unchanged — "the executive summary has a visible link to the canonical picks page" — and it now reads the way the very next line already reads for the unresolved-picks link (`.count() > 0` rather than a strict single match).
+
+**Handoff back:** if the owning sessions would rather dedupe the generator, revert this and apply Option A in the URGENT section above instead. `77faf95c` will not touch `scripts/build_site.py` either way.
