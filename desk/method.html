@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Method &amp; sources · CS2 pick'em desk</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+<header class="top"><div class="bar"><a class="brand" href="index.html">CS2 desk</a><nav class="tabs"><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="twc.html">TWC Day 4</a><a href="unresolved.html">Unresolved</a><a href="flagged.html">Flagged</a><a href="method.html" aria-current=page>Method</a></nav></div></header>
+<div class="wrap">
+
+<h1>Method &amp; sources</h1>
+<h2>1. Inventory</h2>
+<p>Fixtures, points, tiers and lock times come from the canonical capture
+<a href="../data/c64a5e19/board.json">data/c64a5e19/board.json</a>
+(collected 2026-10-17T09:27:01Z → 2026-10-17T09:27:14Z), which reads the
+public HotSpawn lobby. This desk does not re-invent fixtures; it joins to that capture by fixture id.</p>
+
+<h2 id="rules">2. Probability</h2>
+<p>For decimal odds dA and dB: <code>pA = (1/dA) / ((1/dA) + (1/dB))</code>, i.e. the no-vig two-way price.
+Multiple books are combined with weight 2 for Pinnacle and 1 for the others (a modelling choice, declared).
+The live Thunderpick read is used as a second source and shown next to the consensus; it never silently
+replaces it.</p>
+<p><strong>Model rows</strong> use Valve's official published rating points and the same shrink curve as the
+canonical board: <code>u = 1/(1+10^(-Δ/400))</code>, <code>p = 0.5 + (u-0.5)·0.4213</code>, where Δ is
+the rating-point difference. It is an estimate, not a bookmaker price.</p>
+<p><strong>Lower bounds</strong> put the unrated opponent at the floor of Valve's published list
+(381 pts, rank 380) and therefore
+report the <em>minimum</em> probability of the rated side. It is written "≥ x%" and never presented as a
+point estimate.</p>
+
+<h2>3. Picks and the leaderboard rule</h2>
+<ul>
+<li><strong>Pick</strong> = the side with the higher probability. On a true 50/50 the pick is the
+lower-owned side, labelled "priced tie".</li>
+<li><strong>Leverage</strong> = probability − crowd share, for that side.
+Positive means the field is under-weighting the side.</li>
+<li><strong>Climb pick</strong> requires all three: the side is the underdog, its market probability is at
+least <strong>35%</strong> (the "not stupid" floor), and its leverage is at least <strong>20 points</strong>.
+No climb pick is invented when the thresholds fail.</li>
+<li>Points per match come from HotSpawn (2 / 3 / 7) and are shown on every row. The leaderboard impact of a
+pick is roughly <code>points × (probability − crowd share)</code>; that is the arithmetic behind the
+"Aurora is the one real edge" call.</li>
+</ul>
+
+<h2>4. Sources read for this build</h2>
+<div class="scroll"><table><thead><tr><th>Source</th><th>Used for</th><th>Read (UTC)</th></tr></thead><tbody>
+<tr><td><a href='https://play.hotspawn.com/lobby' rel='noreferrer'>HotSpawn lobby (fixtures + crowd ownership)</a></td><td class='small'>93 CS2 matches listed this week; 32 cards still open. Rendered times are UTC-4 (America/Sao_Paulo); every card was cross-checked against the canonical capture&#x27;s start_utc.</td><td class='small'>read by 2026-10-17T09:50:58Z</td></tr><tr><td><a href='https://www.hltv.org/events/8932/thunderpick-world-championship-2026' rel='noreferrer'>HLTV event 8932 overview</a></td><td class='small'>Bracket, prize distribution and news list for TWC 2026 (Malta, Oct 14-18).</td><td class='small'>read by 2026-10-17T09:50:58Z</td></tr><tr><td><a href='https://www.hltv.org/results?event=8932' rel='noreferrer'>HLTV results, event 8932</a></td><td class='small'>All 10 group matches with dates, series scores and match links.</td><td class='small'>read by 2026-10-17T09:50:58Z</td></tr><tr><td><a href='https://www.hltv.org/matches/2399384/9z-vs-aurora-thunderpick-world-championship-2026' rel='noreferrer'>HLTV match 2399384 (9z 2-0 Aurora, day 1)</a></td><td class='small'>Inferno 13-11, Nuke 13-1. Group A opening match, 14 Oct 2026.</td><td class='small'>read by 2026-10-17T09:50:58Z</td></tr><tr><td><a href='https://www.hltv.org/matches/2399412/aurora-vs-9z-thunderpick-world-championship-2026' rel='noreferrer'>HLTV match 2399412 (Aurora 2-0 9z, day 3)</a></td><td class='small'>Cache 13-11, Inferno 13-4. Group A decider, 16 Oct 2026.</td><td class='small'>read by 2026-10-17T09:50:58Z</td></tr><tr><td><a href='https://www.hltv.org/matches/2399413/betboom-vs-legacy-thunderpick-world-championship-2026' rel='noreferrer'>HLTV match 2399413 (BETBOOM 2-1 Legacy, day 3)</a></td><td class='small'>Nuke 16-13, Dust2 11-13, Mirage 13-11. Group B decider, 16 Oct 2026.</td><td class='small'>read by 2026-10-17T09:50:58Z</td></tr><tr><td><a href='https://www.hltv.org/betting/analytics/2399414/furia-vs-aurora-thunderpick-world-championship-2026' rel='noreferrer'>HLTV betting analytics 2399414 (FURIA-Aurora)</a></td><td class='small'>H2H (Aurora won the last meeting 2-1 on 6 Oct at ESL Pro League S24), form, map pools.</td><td class='small'>read by 2026-10-17T09:50:58Z</td></tr><tr><td><a href='https://www.hltv.org/betting/analytics/2399415/falcons-vs-betboom-thunderpick-world-championship-2026' rel='noreferrer'>HLTV betting analytics 2399415 (Falcons-BETBOOM)</a></td><td class='small'>H2H: BETBOOM beat Falcons 2-1 at ESL Pro League S24 (listed on BETBOOM&#x27;s side of the page); form and map pools.</td><td class='small'>read by 2026-10-17T09:50:58Z</td></tr><tr><td><a href='https://bo3.gg/matches/current' rel='noreferrer'>bo3.gg match centre (Thunderpick prices)</a></td><td class='small'>Two-sided prices used as a second esportsbook source for the semifinals and for tier-3 fixtures that Pinnacle/Bovada/Melbet did not cover.</td><td class='small'>read by 2026-10-17T09:50:58Z</td></tr><tr><td><a href='https://bo3.gg/tournaments/thunderpick-world-championship-2026' rel='noreferrer'>bo3.gg TWC 2026 tournament page</a></td><td class='small'>FURIA-Aurora 1.85/1.85; Falcons-BETBOOM 1.26/3.40; closing prices for played matches.</td><td class='small'>read by 2026-10-17T09:50:58Z</td></tr><tr><td><a href='https://www.hltv.org/team/11861/aurora' rel='noreferrer'>HLTV Aurora team page</a></td><td class='small'>Lineup XANTARES, woxic, Jimpphat, kyxsan, Wicadia; coach ash; VRS #5, HLTV #6.</td><td class='small'>read by 2026-10-17T09:50:58Z</td></tr><tr><td><a href='https://bo3.gg/teams/aurora-gaming' rel='noreferrer'>bo3.gg Aurora team page</a></td><td class='small'>Same five starters and coach; confirms no October 2026 roster move is visible on either source.</td><td class='small'>read by 2026-10-17T09:50:58Z</td></tr><tr><td><a href='https://bo3.gg/teams/pcific-esport' rel='noreferrer'>bo3.gg PCIFIC team page</a></td><td class='small'>Page title &#x27;PCIFIC / WRAITH PCIFIC&#x27; - proves the Melbet name &#x27;Wraith PCIFIC&#x27; is the same team as HotSpawn&#x27;s &#x27;PCIFIC&#x27;.</td><td class='small'>read by 2026-10-17T09:50:58Z</td></tr><tr><td><a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md' rel='noreferrer'>Valve regional standings 2026-10-05 (in-repo copy)</a></td><td class='small'>Official VRS list used for the model rows and for the disambiguations below. In-repo copies: data/expanded/vrs/standings_global_2026_10_05.md and data/expanded/vrs/standings_{europe,asia,americas}_2026_10_05.md.</td><td class='small'>read by 2026-10-17T09:50:58Z</td></tr>
+</tbody></table></div>
+
+<h2>5. Refresh</h2>
+<p>Rebuilt every 4 hours by <code>.github/workflows/desk-3e1be203.yml</code>, and after every new
+canonical capture. A rebuild re-reads <code>data/c64a5e19/board.json</code>; it does not invent a new
+observation. If the capture is stale, the page says so with the capture's own timestamps.</p>
+
+<h2>6. What this desk does not do</h2>
+<ul class="small">
+<li>It does not use HotSpawn crowd percentages as probabilities.</li>
+<li>It does not fill a blank with 50/50, a sibling-team rating or an average of unrelated matches.</li>
+<li>It does not claim a model estimate is a bookmaker price.</li>
+<li>It does not edit another session's board or data.</li>
+</ul>
+
+<footer>
+<p><strong>CS2 pick'em desk</strong> · page built 2026-10-17 09:56 UTC · fixture inventory from the HotSpawn lobby
+(<a href="https://play.hotspawn.com/lobby">play.hotspawn.com/lobby</a>). HotSpawn supplies fixtures, points and crowd ownership only;
+it is never used as a win probability. Not affiliated with HotSpawn or any bookmaker.</p>
+<p>Old boards stay online under <a href="../research.html">Research archive</a> ·
+<a href="../picks-every-match/index.html">canonical every-match board</a> ·
+<a href="../flagged.html">site-wide Flagged for Review</a>.</p>
+</footer>
+</div></body></html>

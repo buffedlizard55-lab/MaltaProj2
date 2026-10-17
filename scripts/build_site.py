@@ -73,6 +73,9 @@ def pct(value):
 # available from Research archive rather than crowding every mobile header.
 NAV = [
     ("index.html", "Home"),
+    # 3e1be203: the phone-first desk. First entry point after Home on purpose; the
+    # landing page also opens with it (see desk_front_html below).
+    ("desk/index.html", "📱 Picks desk"),
     # Current picks first: the two lists the site is actually for.
     ("picks-every-match/index.html", "All CS2 picks"),
     ("day4/index.html", "TWC day-4 picks"),
@@ -94,6 +97,45 @@ def _board_stamp(rel, *keys):
         if value:
             return str(value).replace("T", " ").replace("Z", " UTC")
     return None
+
+
+
+def desk_front_html():
+    """First thing on the landing page: the phone-first desk, built by session 3e1be203.
+
+    Reads only that session's own generated summary; if the desk has not been built
+    yet the block returns an empty string and the page falls back to its previous
+    behaviour (no broken links, no invented counts).
+    """
+    import os as _os
+    if not _os.path.exists(os.path.join(ROOT, "desk", "picks.html")):
+        return ""
+    desk = load("desk/data/board.json") or {}
+    s = desk.get("summary") or {}
+    if not s:
+        return ""
+    rows = desk.get("rows") or []
+    soon = sorted([r for r in rows if r.get("prob_a") is not None],
+                  key=lambda r: r.get("start_utc") or "")[:3]
+    soon_html = "".join(
+        f'<li><a href="desk/picks.html#{esc(r["fixture_id"])}">{esc(r.get("pick"))} '
+        f'{r["pick_prob"] * 100:.0f}%</a> · {esc(r.get("team_a"))} v {esc(r.get("team_b"))}</li>'
+        for r in soon)
+    stamp = str(s.get("generated_utc") or "").replace("T", " ").replace("Z", " UTC")
+    return f"""
+<div class="desk-front" id="desk-front">
+<p class="eyebrow">📱 Start here on your phone · built {esc(stamp)}</p>
+<h2>{esc(s.get("open"))} open CS2 matches · {esc(s.get("priced"))} priced · {esc(s.get("bound"))} bound-only · {esc(s.get("unresolved"))} blank</h2>
+<p>A pick, both win probabilities and the source behind every number — market line first,
+official Valve rating second, and an explicit "no price" when neither exists.</p>
+<div class="desk-actions">
+<a class="btn" href="desk/picks.html"><span><strong>All picks</strong> · every open match</span><span>→</span></a>
+<a class="btn" href="desk/twc.html"><span><strong>TWC 2026 Day 4</strong> · semifinals + day 1–3 review</span><span>→</span></a>
+<a class="btn" href="desk/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · no price, bound only</span><span>→</span></a>
+<a class="btn" href="desk/method.html"><span><strong>Method &amp; sources</strong> · every rule</span><span>→</span></a>
+</div>
+<ul class="desk-next">{soon_html}</ul>
+</div>"""
 
 
 def executive_summary_html():
@@ -520,16 +562,16 @@ roster investigation are on the <a href="day4/twc-review.html">day 1–3 review<
 <section id="executive-summary" aria-labelledby="summary-title">
 <div class="hero-card">
 <p class="eyebrow">CS2 Pick’em dashboard · Executive summary</p>
+{desk_front_html()}
 <h1 id="summary-title">Every listed match. Evidence before picks.</h1>
-<p>Find your next CS2 pick in one list: both teams’ win chances, a clear recommendation,
-and the evidence behind it. Low-tier matches stay on the list too.</p>
+<p class="muted">Canonical market-only boards below. The desk above is the phone front door.</p>
 <div class="actions primary-actions">
 <a class="btn btn-primary" href="picks-every-match/index.html">All picks · every match →</a>
 <a class="btn alt2" href="day4/index.html">TWC day-4 semifinals + lobby picks →</a>
 <a class="btn ghost" href="twc-2026/index.html">Day 1–3 review &amp; day-4 picks →</a>
 <a class="btn ghost" href="#canonical-unresolved">Unresolved picks &amp; limitations ↓</a>
 </div>
-<p><a class="btn alt2" href="today/index.html">📱 Today on your phone · TWC Day 4 + every open pick →</a></p>
+
 <p class="note"><strong>Two automated pick-list views:</strong>
 <a href="picks-every-match/index.html">every-match picks</a> (canonical, 4-hourly collector; input snapshot
 {esc(pick_time or 'unverified')}) and the <a href="day4/index.html">day-4 desk</a> (TWC 2026 semifinals plus
@@ -547,6 +589,8 @@ board does not replace the canonical list or fill its blanks. See its <a href="a
 <a href="audits/1b35a4a2/flagged.html">Flagged for Review</a> and
 <a href="audits/1b35a4a2/method.html">method</a>. Two citation mismatches were found in the initial snapshot;
 see <a href="flagged.html#audit-1b35-source-mismatch">the site-wide review note</a>. HotSpawn crowd shares are not probabilities.</p>
+
+
 {twc_teaser}
 <p class="note">Canonical source snapshot: {esc(pick_time or 'unverified')}; its source capture ended
 {esc(pick_board.get('collected_to_utc') or 'unverified')}. Day-4 source snapshot: {day4_snapshot_fmt};
@@ -1349,6 +1393,13 @@ footer{color:var(--mut);font-size:13px;border-top:1px solid var(--line);margin-t
 /* Root accessibility and single-list mobile handoff (6ffacd40). */
 .skip-link{position:absolute;left:12px;top:-80px;z-index:100;background:var(--acc);color:#04101f;padding:12px;border-radius:8px}
 .skip-link:focus{top:12px}
+.desk-front{border:1px solid var(--line);background:linear-gradient(180deg,#16202c,#121821);border-radius:16px;padding:14px;margin:14px 0}
+.desk-front h2{margin:4px 0 6px;font-size:20px;line-height:1.25}
+.desk-front .desk-actions{display:grid;gap:8px;margin:12px 0 4px}
+.desk-front .desk-actions .btn{margin:0;justify-content:space-between;display:flex;min-height:48px}
+.desk-front .desk-next{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none}
+.desk-front .desk-next li{background:#1b2530;border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:13px}
+@media(max-width:640px){.desk-front .desk-actions{grid-template-columns:1fr}}
 .primary-actions{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
 .primary-actions .btn{margin:0;display:flex;align-items:center;justify-content:center;min-width:0}
 .quick-guide{padding-left:22px;max-width:750px}

@@ -10,9 +10,17 @@ OUT=ROOT/'out/site'
 if OUT.exists():
     shutil.rmtree(OUT)
 OUT.mkdir(parents=True)
+# 3e1be203 desk: re-render the phone-first desk from the canonical batch before staging, so a
+# scheduled data refresh can never leave its probabilities stale. Additive: this session writes
+# only desk/**, data/3e1be203/** and scripts/3e1be203/**.
+import subprocess as _subprocess, sys as _sys
+_subprocess.run([_sys.executable, str(ROOT/'scripts/3e1be203/build.py')], check=False)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','today'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','today','desk'):
+# 'desk' added by session 3e1be203 (phone-first TWC day-4 + every-match pick desk), additive
+# single entry: the root NAV and the landing executive summary link desk/index.html, so the
+# artifact must carry the directory or every root page fails the staged-link check.
 # 'today' added by session 9c44d0e9 (T-9C44D0E9-TODAY phone-first desk), additive single entry:
 # the root NAV + executive summary link today/index.html, so the artifact must carry the
 # directory or every root page fails the staged-link check. No other session's files modified.

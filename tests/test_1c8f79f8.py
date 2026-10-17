@@ -459,8 +459,8 @@ class RefreshRobustnessTests(unittest.TestCase):
                 self.assertIn(str(api["id"]), ids)
 
     def test_sibling_quote_reuse_is_exact_id_only(self):
-        quote = builder.sibling_market("1081888")
-        self.assertIsNotNone(quote, "a researched fixture id must be found in a published board")
+        quote = builder.sibling_market("1080207")  # maintenance: 1081888 closed out of every sibling board
+        self.assertIsNotNone(quote, "a live fixture id must be found in a published board")
         self.assertTrue(quote["url"].startswith("https://"))
         self.assertRegex(quote["retrieved_utc"], r"^\d{4}-\d{2}-\d{2}T")
         self.assertIsNone(builder.sibling_market("999999999"),
