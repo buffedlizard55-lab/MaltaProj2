@@ -495,6 +495,7 @@ calculations, not officially verified win chances. <strong>HotSpawn crowd picks 
 <a class="board-card" href="day-one.html"><div class="board-card-title">Day one &amp; sensible contrarian strategy</div><div class="board-card-desc">9z–Aurora, all four opening results, roster context and what the evidence does not prove.</div></a>
 
 <a class="board-card" href="flagged.html"><div class="board-card-title">Flagged for Review</div><div class="board-card-desc">Source failures, disputed identities and competing historical boards. No silent assumptions.</div></a>
+<a class="board-card" href="audits/e2d16060/index.html"><div class="board-card-title">Independent line-by-line audit</div><div class="board-card-desc">Dated review of the canonical 21-row snapshot: source links, arithmetic checks, seven explicit unresolved blanks, and mobile/accessibility findings.</div></a>
 </div>
 <h2>How to use this dashboard</h2>
 <ol class="quick-guide"><li><strong>Choose a match:</strong> open All CS2 picks, then search a team or tournament.</li>

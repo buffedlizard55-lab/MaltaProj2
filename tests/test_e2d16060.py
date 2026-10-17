@@ -123,6 +123,20 @@ class AuditArtifacts(unittest.TestCase):
         finding = next(item for item in self.report["findings"] if item["id"] == "AUD-E2D-001")
         self.assertIn("Repair", finding["action"])
 
+    def test_root_executive_summary_links_the_dated_audit(self):
+        root = (ROOT / "index.html").read_text(encoding="utf-8")
+        builder = (ROOT / "scripts" / "build_site.py").read_text(encoding="utf-8")
+        audit_href = "audits/e2d16060/index.html"
+        self.assertIn(audit_href, root)
+        self.assertIn(audit_href, builder)
+        for required in (
+            "picks-every-match/index.html",
+            "picks-every-match/unresolved.html",
+            "flagged.html",
+            "twc-2026/index.html",
+        ):
+            self.assertIn(required, root)
+
 
 if __name__ == "__main__":
     unittest.main()
