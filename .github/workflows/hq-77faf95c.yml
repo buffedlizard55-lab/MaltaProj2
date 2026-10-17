@@ -1,0 +1,124 @@
+name: hq (77faf95c)
+
+# Session 77faf95c / HQ. Phone-first front-door board: a pick and a win probability for every
+# open HotSpawn CS2 fixture, market price first, then the documented research ladder for the
+# fixtures no book prices. Scope guard: this workflow writes only data/77faf95c/** and hq/**.
+#
+# The scheduled trigger is best-effort on GitHub, so the workflow also re-dispatches itself after
+# each successful run on main (workflow_dispatch is the one event a GITHUB_TOKEN may fire).
+on:
+  push:
+    branches: ['arena/77faf95c-maltaproj2', 'main']
+    paths:
+      - 'scripts/77faf95c/**'
+      - 'tests/test_77faf95c.py'
+      - '.github/workflows/hq-77faf95c.yml'
+  schedule:
+    - cron: '23 */4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: hq-77faf95c-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Collect lobby fixtures and external prices (raw payloads retained as evidence)
+        run: python3 scripts/77faf95c/collect.py
+      - name: Rebuild the HQ pages from the retained raw prices
+        run: python3 scripts/77faf95c/build.py
+      - name: Tests
+        run: python3 -m unittest tests.test_77faf95c -v
+      - name: Commit and push
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config user.name "hq-bot (77faf95c)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/77faf95c
+          git add hq || true
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "hq(77faf95c): refresh picks $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then
+              if [ "$REF_NAME" = "main" ]; then gh workflow run pages.yml --ref main || echo "pages dispatch failed"; fi
+              exit 0
+            fi
+            sleep $((attempt * 7))
+          done
+          exit 1
+
+  next:
+    needs: refresh
+    if: always() && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Wait, then dispatch the next refresh unless another run is already active
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          sleep 2400
+          others=$(gh api "repos/$GH_REPO/actions/workflows/hq-77faf95c.yml/runs?per_page=30" \
+            --jq "[.workflow_runs[] | select(.id != $RUN_ID) | select(.status==\"queued\" or .status==\"in_progress\" or .status==\"waiting\" or .status==\"pending\")] | length")
+          echo "other active runs: $others"
+          if [ "$others" = "0" ]; then gh workflow run hq-77faf95c.yml --ref main; fi
+
+  smoke-diagnostic:
+    needs: refresh
+    # `gh workflow run` is 403 for the Actions app token, so the marker in the commit
+    # message is the only way to fire this job on demand.
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && contains(github.event.head_commit.message, '[smoke-probe]'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Reproduce the shared browser-smoke step and write the result into data/77faf95c
+        run: |
+          python3 -m pip install --break-system-packages -q -r scripts/requirements.txt || true
+          python3 -m pip install --break-system-packages -q playwright==1.55.0
+          python3 scripts/77faf95c/browser_probe.py
+          python3 scripts/77faf95c/smoke_probe.py
+      - name: Commit the diagnosis
+        env:
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          git config user.name "hq-bot (77faf95c)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          # running the smoke scripts regenerates site pages; drop those edits so only the
+          # diagnosis is committed and the rebase below has a clean tree.
+          git checkout -- . || true
+          git add data/77faf95c/browser_diagnosis.txt data/77faf95c/smoke_probe.txt
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "hq(77faf95c): shared browser-smoke diagnosis $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then exit 0; fi
+            sleep $((attempt * 7))
+          done
+          exit 1

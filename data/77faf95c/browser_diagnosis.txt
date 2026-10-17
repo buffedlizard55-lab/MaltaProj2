@@ -1,0 +1,37 @@
+diagnosed_utc: 2026-10-17T02:02:29Z
+python: 3.11.17
+platform: Linux-6.17.0-1022-azure-x86_64-with-glibc2.39
+ImageOS: ubuntu24
+CHROME_BIN: /usr/bin/google-chrome
+--- candidate browser binaries ---
+PRESENT /usr/bin/google-chrome -> Google Chrome 155.0.8059.39
+PRESENT /usr/bin/google-chrome-stable -> Google Chrome 155.0.8059.39
+PRESENT /usr/bin/chromium -> Chromium 155.0.8059.0
+PRESENT /usr/bin/chromium-browser -> Chromium 155.0.8059.0
+MISSING /snap/bin/chromium
+which google-chrome: /usr/bin/google-chrome
+which chromium: /usr/bin/chromium
+which chromium-browser: /usr/bin/chromium-browser
+--- playwright browser cache ---
+  none (/home/runner/.cache/ms-playwright does not exist)
+--- pip playwright ---
+playwright import FAILED: ModuleNotFoundError: No module named 'playwright'
+--- attempting pip install (PROBE_INSTALL_PLAYWRIGHT set) ---
+pip playwright==1.55.0 exit=0 
+--- launch attempts ---
+--- playwright install chromium ---
+install exit=0
+                                  |  40% of 104.3 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 104.3 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 104.3 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 104.3 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 104.3 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 104.3 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 104.3 MiB
+Chromium Headless Shell 140.0.7339.16 (playwright build v1187) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1187
+
+OK   bundled chromium (no executable_path) -> 140.0.7339.16
+OK   explicit /usr/bin/google-chrome -> 155.0.8059.39
+OK   explicit /usr/bin/google-chrome-stable -> 155.0.8059.39
+OK   explicit /usr/bin/chromium -> 155.0.8059.0
+OK   explicit /usr/bin/chromium-browser -> 155.0.8059.0
