@@ -571,7 +571,7 @@ By contrast BETBOOM at {pct(sf2['p_b'])} is a genuine long shot; the 35% floor r
 <thead><tr><th>Day</th><th>Result</th><th>Maps</th><th>Source</th></tr></thead>
 <tbody>{res_rows}</tbody></table></div>
 <p class="small muted">Map scores are transcribed only where the HLTV match page was read in this session;
-the four day-1/day-2 series without a transcribed map line are left explicitly blank rather than filled
+the seven other series without a transcribed map line are left explicitly blank rather than filled
 from memory. Every series score and every link in the table was read from HLTV results on {esc(generated)}.</p>
 
 <h3>Group standings (derived from the results above)</h3>
