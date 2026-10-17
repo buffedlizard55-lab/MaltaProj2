@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unresolved · c32f1b93</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">CS2 Pick&rsquo;em Board <span class="session-tag">c32f1b93</span></div>
+    <nav class="site-nav" aria-label="Session pages"><a href="index.html" class="">Picks board</a> · <a href="twc-day4.html" class="">TWC Day 4</a> · <a href="unresolved.html" class="nav-on">Unresolved</a> · <a href="flagged.html" class="">Flagged</a> · <a href="method.html" class="">Method</a></nav>
+  </div>
+</header>
+<main id="main" class="wrap">
+
+    <h1>Unresolved &amp; limitations</h1>
+    <p class="lede">1 fixture stays BLANK. Policy rule 1: a probability is published only
+    when it can be derived from a retained source; otherwise the cell stays blank and the fixture
+    is ledgered here with the full attempt trail.</p>
+    
+        <article class="card">
+          <h2>Chinggis Warriors vs WXM &middot; fixture 1081863</h2>
+          <p class="dim">VOID Autumn Cup 2026 &middot; 2026-10-20T07:00:00Z &middot;
+          no fixture link captured</p>
+          <p>Directional read (not a probability): <strong>Chinggis Warriors</strong></p>
+          <p><strong>Why blank:</strong> No published two-sided price on any reachable bookmaker or exchange, and the opponent is absent from Valve&#x27;s VRS ladder and from bo3.gg&#x27;s match history, so neither the market basis nor any documented model basis can produce a probability. Per policy the probability stays BLANK; the directional pick (Chinggis Warriors, Valve-rated #87/1084 pt against an unrated opponent) is published as direction only, low confidence, and is never presented as a percentage.</p>
+          <h3>Attempt ledger (every avenue tried, in order)</h3>
+          <ol><li><strong>HotSpawn lobby + API inventory</strong> &mdash; fixture 1081863 confirmed open, Chinggis Warriors vs WXM, VOID Autumn Cup 2026, 2026-10-20T07:00Z <a href=https://play.hotspawn.com/lobby>source</a></li><li><strong>egamersworld match page</strong> &mdash; fixture exists with lineups (Chinggis: sk0R, cool4st, ROUX, fury5k, tikuak) but odds are an untrained 1.80/1.80 placeholder with 0% vote - rejected as a price <a href=https://egamersworld.com/counterstrike/match/EJcHRdr5Vx/chinggis-warriors-vs-wxm-_ddme1I7dZ>source</a></li><li><strong>Polymarket esports CS2 event pages</strong> &mdash; no market exists for this fixture <a href=https://polymarket.com/esports/cs2/>source</a></li><li><strong>Pinnacle / Bovada / Melbet / Kalshi / Thunderpick (via retained bo3.gg bet_updates)</strong> &mdash; no two-sided price published for this fixture <a href=https://bo3.gg/matches/>source</a></li><li><strong>bo3.gg VOID Autumn Cup tournament page</strong> &mdash; fixture confirmed (as &#x27;Wept Xyloid Melancholy vs Chinggis Warriors&#x27;) but no odds block published <a href=https://bo3.gg/tournaments/void-autumn-cup-2026>source</a></li><li><strong>Valve VRS global ladder 2026-10-05</strong> &mdash; Chinggis Warriors rated (#87, 1084 pt, roster cool4st/fury5k/ROUX/sk0R/yAmi - verified against the egamersworld lineup); WXM absent from the ladder <a href=https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standards_global_2026_10_05.md>source</a></li><li><strong>bo3.gg match history (Elo origination)</strong> &mdash; WXM (&#x27;Wept Xyloid Melancholy&#x27;, bo3.gg team id 25531) has zero recorded matches - Elo cannot be originated for them either <a href=https://bo3.gg/teams/25531>source</a></li><li><strong>HLTV / Mais Esports event pages</strong> &mdash; WXM identified as &#x27;Wept Xyloid Melancholy&#x27;, a Chinese lineup (Currant, Kinatie, outccc, 1romma, Genxiu) playing the VOID Autumn Cup 2026 (Oct 20-24, Shanghai, $12,000, 8 teams) - identity verified, rating still unavailable <a href=https://www.hltv.org/events/9435/macemedia-void-autumn-cup-2026>source</a></li></ol>
+          <span class="chip chip-flag">no_derived_line</span> <span class="chip chip-flag">no_published_price</span> <span class="chip chip-flag">policy_blank</span> <span class="chip chip-flag">unrated_opponent</span>
+        </article>
+    <section class="card">
+      <h2>Scheduling disclosure</h2>
+      <p>Fixture 1080200 (Wildcard vs DENDELE, 2026-11-12) is included with the
+      <span class="chip chip-flag">placeholder_scheduling</span> flag: HotSpawn carries it with
+      status &ldquo;started&rdquo; although kickoff is 26 days after the capture &mdash; a
+      placeholder-data quirk (a match cannot be in progress before it starts). Session fe803b80
+      included the same fixture; we do too, flagged. Both teams now carry live Oct-16 VRS rows
+      (Wildcard AM #8 / 1332 pt, DENDELE AM #7 / 1355 pt), so the model line is a genuine
+      two-side VRS join: DENDELE 51.6%.</p>
+    </section>
+    <section class="card">
+      <h2>Known limitations</h2>
+      <ul>
+        <li>The Oct-16 live ladder read covers Europe top-145, Americas top-28 and Asia top-26.
+        Deep-tail teams outside those ranges (Privateer, Bebop, Donstu) keep their Oct-5 file
+        values, disclosed per row on the method page.</li>
+        <li>The fitted slope k is a through-origin least-squares fit on 19 joined pairs; four
+        pairs imply a negative slope (market/ladder disagreement). The raw fit, the MAE and every
+        pair are published &mdash; nothing is trimmed.</li>
+        <li>Melbet and bc.game (via egamersworld) are single-book lines on several fixtures;
+        the <span class="chip chip-flag">single_source</span> flag marks every such row.</li>
+        <li>Crowd shares are HotSpawn pick'em ownership at read time &mdash; sentiment context
+        only, never a price input (rule 6).</li>
+        <li>XomA's assistant-coach date is unverified-secondary; FURIA/Aurora analyst prose and
+        the fetched prices diverge (flagged, not adjudicated).</li>
+      </ul>
+    </section>
+</main>
+<footer class="site-footer">
+  <p>Session c32f1b93 &middot; board generated 2026-10-17T02:07:11Z<br>
+  Independent re-derivation from retained primary evidence only (no network at build time).
+  Crowd shares are sentiment, never prices. Not betting advice.</p>
+</footer>
+</body>
+</html>

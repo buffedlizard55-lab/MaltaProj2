@@ -1,0 +1,92 @@
+name: board (c32f1b93)
+
+# Session c32f1b93 / T-C32F1B93. Independent re-derivation board: every number
+# is recomputed from retained primary evidence (Valve VRS ladder copy, fe803b80's
+# retained HotSpawn/bookmaker snapshot, this session's hand-verified research
+# ledger, and the Oct-16 HLTV live-ladder reads recorded in research.json).
+#
+# Why no collector and why daily (unlike board-fe803b80's 30-minute chain):
+# this board's inputs are frozen retained evidence, not a live feed. The
+# refresh is a reproducibility heartbeat - it re-derives the board in CI,
+# re-renders the audit pages, runs the contract tests, and commits only if
+# the output actually changed. A green run proves the board is byte-reproducible
+# from the committed evidence.
+#
+# Scope guard: this workflow writes only data/c32f1b93/** and audits/c32f1b93/**
+# (plus this workflow's own dispatch of the shared Pages workflow).
+on:
+  push:
+    branches: ['arena/c32f1b93-maltaproj2', 'main']
+    paths:
+      - 'scripts/c32f1b93/**'
+      - 'data/c32f1b93/**'
+      - 'tests/test_c32f1b93.py'
+      - '.github/workflows/refresh-c32f1b93.yml'
+  schedule:
+    - cron: '17 4 * * *'
+  workflow_run:
+    workflows: ['update-data']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: board-c32f1b93-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Re-derive the board from retained evidence (no network)
+        run: python3 scripts/c32f1b93/build.py
+      - name: Render the audit pages
+        run: python3 scripts/c32f1b93/render.py
+      - name: Tests (output kept for the debug ref when they fail)
+        run: |
+          set +e
+          python3 -m unittest tests.test_c32f1b93 -v > board_tests.log 2>&1
+          echo "TEST_EXIT=$?" >> "$GITHUB_ENV"
+          tail -80 board_tests.log
+      - name: Commit and push (rebase before every push; never discards another session's work)
+        env:
+          REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config user.name "board-bot (c32f1b93)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          if [ "${TEST_EXIT:-1}" != "0" ]; then
+            # Never publish a board whose own contract tests failed: park the captured output on a
+            # scratch ref so the failure is readable outside the runner, then stop.
+            git add -f board_tests.log
+            git commit -m "debug(c32f1b93): test output run ${{ github.run_id }}"
+            git push --force origin "HEAD:refs/heads/board-debug-c32f1b93" || true
+            echo "contract tests failed; board not published"; exit 1
+          fi
+          rm -f board_tests.log
+          git add data/c32f1b93 audits/c32f1b93
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "board(c32f1b93): re-derivation reproducibility check $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then
+              # Pushes made with GITHUB_TOKEN do not trigger other workflows, so on main explicitly
+              # dispatch the shared Pages workflow (it re-runs every test before deploying).
+              if [ "$REF_NAME" = "main" ]; then gh workflow run pages.yml --ref main || echo "pages dispatch failed"; fi
+              exit 0
+            fi
+            sleep $((attempt * 7))
+          done
+          exit 1

@@ -1,0 +1,3702 @@
+{
+ "session": "c32f1b93",
+ "generated_utc": "2026-10-17T02:17:30Z",
+ "data_as_of": {
+  "hotspawn_lobby_render": "2026-10-17T00:52:00Z (this session, manual read)",
+  "hotspawn_api_inventory": "2026-10-17T00:22:00Z (retained fe803b80 snapshot)",
+  "external_quotes_retained": "2026-10-17T00:19:42Z/00:21:36Z (fe803b80 capture)",
+  "external_quotes_fresh": "2026-10-17T00:52:00Z/01:10:00Z (this session)",
+  "valve_vrs_ladder": "2026-10-05 official global snapshot (latest full ladder published)",
+  "live_vrs_overrides": "2026-10-17T00:53Z/01:10Z HLTV live Valve-ranking reads"
+ },
+ "rules": {
+  "market_consensus": "median of per-source no-vig probabilities",
+  "blend": "0.85 market / 0.15 model when both exist",
+  "vrs_model": "Valve Glicko expected-score formula, RD=75.0 (Valve's fit.js default), slope k fitted against joined market lines",
+  "elo_model": "plain Elo over retained bo3.gg history, k=20.0, 8 chronological passes, VRS teams anchored at their Valve points",
+  "blank_policy": "a probability is published only when derivable from a retained source; otherwise the cell stays blank and the fixture is ledgered as unresolved",
+  "crowd_policy": "HotSpawn pick'em crowd share is context only and is never a probability input",
+  "seed_policy": "untrained seed prices (exact 1.80/1.80 placeholders with zero votes, $0-volume markets, wide bid/ask seeds, overround > 0.30) are rejected, not averaged"
+ },
+ "calibration": {
+  "n_pairs": 19,
+  "k_raw": 0.496964251390143,
+  "k": 0.496964251390143,
+  "clamped": false,
+  "bounds": [
+   0.1,
+   1.5
+  ],
+  "min_pairs": 6,
+  "mae_prob": 0.05920939593773291,
+  "pairs": [
+   {
+    "fixture_id": "1079170",
+    "delta": 62.0,
+    "market_prob_a": 0.669856
+   },
+   {
+    "fixture_id": "1080291",
+    "delta": 227.0,
+    "market_prob_a": 0.6507745
+   },
+   {
+    "fixture_id": "1081510",
+    "delta": 98.0,
+    "market_prob_a": 0.528
+   },
+   {
+    "fixture_id": "1081888",
+    "delta": -34.0,
+    "market_prob_a": 0.4405795
+   },
+   {
+    "fixture_id": "1079591",
+    "delta": 72.0,
+    "market_prob_a": 0.55409
+   },
+   {
+    "fixture_id": "1081512",
+    "delta": -103.0,
+    "market_prob_a": 0.288889
+   },
+   {
+    "fixture_id": "1081513",
+    "delta": -30.0,
+    "market_prob_a": 0.5766555
+   },
+   {
+    "fixture_id": "1080292",
+    "delta": -150.0,
+    "market_prob_a": 0.389184
+   },
+   {
+    "fixture_id": "1080207",
+    "delta": -21.0,
+    "market_prob_a": 0.510127
+   },
+   {
+    "fixture_id": "1081515",
+    "delta": -163.0,
+    "market_prob_a": 0.3086365
+   },
+   {
+    "fixture_id": "1079173",
+    "delta": 99.0,
+    "market_prob_a": 0.592102
+   },
+   {
+    "fixture_id": "1080208",
+    "delta": 261.0,
+    "market_prob_a": 0.765961
+   },
+   {
+    "fixture_id": "1081517",
+    "delta": 261.0,
+    "market_prob_a": 0.607235
+   },
+   {
+    "fixture_id": "1081527",
+    "delta": 100.0,
+    "market_prob_a": 0.453083
+   },
+   {
+    "fixture_id": "1081528",
+    "delta": 494.0,
+    "market_prob_a": 0.824451
+   },
+   {
+    "fixture_id": "1081529",
+    "delta": -164.0,
+    "market_prob_a": 0.462366
+   },
+   {
+    "fixture_id": "1081530",
+    "delta": 395.0,
+    "market_prob_a": 0.6568545
+   },
+   {
+    "fixture_id": "1081531",
+    "delta": 164.0,
+    "market_prob_a": 0.6237634999999999
+   },
+   {
+    "fixture_id": "1081532",
+    "delta": 22.0,
+    "market_prob_a": 0.453083
+   }
+  ]
+ },
+ "elo": {
+  "n_matches": 224,
+  "n_history_teams": 25,
+  "n_seeded": 351,
+  "params": {
+   "base": 1500.0,
+   "k": 20.0,
+   "passes": 8,
+   "anchor": "Valve VRS points, re-anchored every pass"
+  },
+  "source": "retained bo3.gg match history (data/fe803b80/snapshot.json bo3gg_history), 950-match list"
+ },
+ "summary": {
+  "open_fixtures": 35,
+  "with_market_line": 20,
+  "model_only_line": 14,
+  "blank_unresolved": 1,
+  "n_sources_total": 30,
+  "strong_picks": 14,
+  "contrarian_climb": 2,
+  "flags_raised": 93
+ },
+ "open": [
+  {
+   "fixture_id": "1079170",
+   "competition": "NODWIN Clutch Series #13",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-17T08:00:00Z",
+   "lock_utc": "2026-10-17T07:54:00Z",
+   "team_a": "BET-M",
+   "team_b": "Just Players",
+   "hotspawn_url": "https://www.hotspawn.com/matches/bet-m-vs-just-players-nodwin-clutch-series-13-1079170",
+   "fixture_url": "https://www.hotspawn.com/matches/bet-m-vs-just-players-nodwin-clutch-series-13-1079170",
+   "points": 3,
+   "market": {
+    "prob_a": 0.669856,
+    "prob_b": 0.330144,
+    "n_sources": 1,
+    "sources": [
+     "thunderpick"
+    ],
+    "spread_a": null,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (via bo3.gg)",
+     "decimal_a": 1.38,
+     "decimal_b": 2.8,
+     "prob_a": 0.669856,
+     "retrieved_utc": "2026-10-17T00:21:36Z",
+     "public_url": "https://bo3.gg/matches/thirtythree-vs-just-players-17-10-2026",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.54303,
+    "vrs": {
+     "points_a": 1064.0,
+     "points_b": 1002.0,
+     "standing_a": "EU #64",
+     "standing_b": "EU #78",
+     "vrs_name_a": "BET-M",
+     "vrs_name_b": "Just Players",
+     "delta": 62.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "bo3.gg current five overlaps row #118 on 4/5 (bl1x1->wh1teout drift, bl1x1 now at ex-RUSTEC); live ladder EU#78/1002 lists the wh1teout five"
+    }
+   },
+   "line": {
+    "prob_a": 0.650832,
+    "prob_b": 0.349168,
+    "pick": "BET-M",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.650832
+   },
+   "pick": "BET-M",
+   "pick_probability": 0.650832,
+   "confidence": "Strong",
+   "basis": "market+model",
+   "role": "safe (crowd-aligned; ownership inflated - treat as sentiment)",
+   "crowd": {
+    "team_a": "BET-M",
+    "team_b": "Just Players",
+    "crowd_a": 91,
+    "crowd_b": 9,
+    "total_picks": 320,
+    "read_utc": "2026-10-17T00:52:00Z",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "crowd_divergence",
+    "live_vrs_override",
+    "market_model_divergence",
+    "single_source",
+    "stale_row_corrected",
+    "vrs_row_disambiguated"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://bo3.gg/matches/thirtythree-vs-just-players-17-10-2026",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1079633",
+   "competition": "CCT Europe 2026 Series #11",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-17T08:00:00Z",
+   "lock_utc": "2026-10-17T07:54:00Z",
+   "team_a": "ex-6666",
+   "team_b": "G2 Ares",
+   "hotspawn_url": null,
+   "fixture_url": "https://bo3.gg/matches/g2-ares-vs-ex-6666-17-10-2026",
+   "points": 3,
+   "market": null,
+   "quotes": [],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.531961,
+    "vrs": {
+     "points_a": 994.0,
+     "points_b": 948.0,
+     "standing_a": "EU #80",
+     "standing_b": "EU #92",
+     "vrs_name_a": "ex6666",
+     "vrs_name_b": "G2 Ares",
+     "delta": 46.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.531961,
+    "prob_b": 0.468039,
+    "pick": "ex-6666",
+    "basis": "model",
+    "market_weight": 0.0,
+    "pick_probability": 0.531961
+   },
+   "pick": "ex-6666",
+   "pick_probability": 0.531961,
+   "confidence": "Toss-up",
+   "basis": "model",
+   "role": "toss-up",
+   "crowd": null,
+   "flags": [
+    "live_vrs_override"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1080291",
+   "competition": "Elisa BreakOut Series #2",
+   "tier": "C",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-17T08:00:00Z",
+   "lock_utc": "2026-10-17T07:54:00Z",
+   "team_a": "WROTBERRY",
+   "team_b": "HAVU",
+   "hotspawn_url": null,
+   "fixture_url": "https://bo3.gg/matches/wbt-vs-havu-17-10-2026",
+   "points": 2,
+   "market": {
+    "prob_a": 0.650775,
+    "prob_b": 0.349225,
+    "n_sources": 2,
+    "sources": [
+     "pinnacle",
+     "thunderpick"
+    ],
+    "spread_a": 0.038163,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "decimal_a": 1.4926,
+     "decimal_b": 2.56,
+     "prob_a": 0.631693,
+     "retrieved_utc": "2026-10-17T00:19:43Z",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "retained_from": "fe803b80 snapshot"
+    },
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (via bo3.gg)",
+     "decimal_a": 1.38,
+     "decimal_b": 2.8,
+     "prob_a": 0.669856,
+     "retrieved_utc": "2026-10-17T00:21:36Z",
+     "public_url": "https://bo3.gg/matches/wbt-vs-havu-17-10-2026",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.652884,
+    "vrs": {
+     "points_a": 1214.0,
+     "points_b": 987.0,
+     "standing_a": "EU #41",
+     "standing_b": "EU #82",
+     "vrs_name_a": "WBT",
+     "vrs_name_b": "HAVU",
+     "delta": 227.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.651091,
+    "prob_b": 0.348909,
+    "pick": "WROTBERRY",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.651091
+   },
+   "pick": "WROTBERRY",
+   "pick_probability": 0.651091,
+   "confidence": "Strong",
+   "basis": "market+model",
+   "role": "safe",
+   "crowd": null,
+   "flags": [
+    "alias_applied",
+    "live_vrs_override"
+   ],
+   "aliases_applied": [
+    [
+     "wrotberry->wbt"
+    ]
+   ],
+   "alias_notes": [
+    "HotSpawn lists the Ukrainian roster as WROTBERRY; Valve's official ladder carries the same roster (DemQQ, Psycho, s4ltovsk1yy, Smash, tyr1k) as WBT, and HLTV team 13683 (page title now WBT, formerly WROTBERRY) lists that exact five plus the Oct-17 HAVU and Oct-19 Nexus fixtures that match HotSpawn's WROTBERRY fixtures on opponent and date."
+   ],
+   "twc": null,
+   "sources": [
+    "https://bo3.gg/matches/wbt-vs-havu-17-10-2026",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe",
+    "https://www.pinnacle.com/en/esports/cs2-hub"
+   ]
+  },
+  {
+   "fixture_id": "1081510",
+   "competition": "PGL Bucharest 2027: Closed Qualifier",
+   "tier": "B",
+   "stage": "qualifier",
+   "best_of": null,
+   "start_utc": "2026-10-17T08:00:00Z",
+   "lock_utc": "2026-10-17T07:54:00Z",
+   "team_a": "Eternal Fire",
+   "team_b": "Nuclear TigeRES",
+   "hotspawn_url": "https://www.hotspawn.com/matches/eternal-fire-vs-nuclear-tigeres-pgl-bucharest-2027-closed-qualifier-1081510",
+   "fixture_url": "https://www.hotspawn.com/matches/eternal-fire-vs-nuclear-tigeres-pgl-bucharest-2027-closed-qualifier-1081510",
+   "points": 3,
+   "market": {
+    "prob_a": 0.528,
+    "prob_b": 0.472,
+    "n_sources": 3,
+    "sources": [
+     "bovada",
+     "melbet",
+     "thunderpick"
+    ],
+    "spread_a": 0.036287,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "decimal_a": 1.6667,
+     "decimal_b": 2.15,
+     "prob_a": 0.563314,
+     "retrieved_utc": "2026-10-17T00:19:44Z",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-qualifiers/europe/eternal-fire-nuclear-tigeres-202610170400",
+     "retained_from": "fe803b80 snapshot"
+    },
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet (1xBet platform)",
+     "decimal_a": 1.77,
+     "decimal_b": 1.98,
+     "prob_a": 0.528,
+     "retrieved_utc": "2026-10-17T00:19:45Z",
+     "public_url": "https://melbet.com/en/line/esports",
+     "retained_from": "fe803b80 snapshot"
+    },
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (via bo3.gg)",
+     "decimal_a": 1.75,
+     "decimal_b": 1.95,
+     "prob_a": 0.527027,
+     "retrieved_utc": "2026-10-17T00:21:36Z",
+     "public_url": "https://bo3.gg/matches/eternal-fire-vs-nuclear-tigeres-17-10-2026",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [
+    {
+     "source_key": "kalshi",
+     "reason": "wide bid/ask seed (KALSHI_MAX_SPREAD)"
+    }
+   ],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.567764,
+    "vrs": {
+     "points_a": 1365.0,
+     "points_b": 1267.0,
+     "standing_a": "EU #30",
+     "standing_b": "EU #35",
+     "vrs_name_a": "Eternal Fire",
+     "vrs_name_b": "Nuclear TigeRES",
+     "delta": 98.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.533965,
+    "prob_b": 0.466035,
+    "pick": "Eternal Fire",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.533965
+   },
+   "pick": "Eternal Fire",
+   "pick_probability": 0.533965,
+   "confidence": "Toss-up",
+   "basis": "market+model",
+   "role": "toss-up",
+   "crowd": {
+    "team_a": "Eternal Fire",
+    "team_b": "Nuclear TigeRES",
+    "crowd_a": 43,
+    "crowd_b": 57,
+    "total_picks": 114,
+    "read_utc": "2026-10-17T00:52:00Z",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "live_vrs_override"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://bo3.gg/matches/eternal-fire-vs-nuclear-tigeres-17-10-2026",
+    "https://melbet.com/en/line/esports",
+    "https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-qualifiers/europe/eternal-fire-nuclear-tigeres-202610170400",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1081888",
+   "competition": "Stake Pulse Beat III",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-17T08:00:00Z",
+   "lock_utc": "2026-10-17T07:54:00Z",
+   "team_a": "Ninjas in Pyjamas",
+   "team_b": "Heroic",
+   "hotspawn_url": "https://www.hotspawn.com/matches/ninjas-in-pyjamas-vs-heroic-stake-pulse-beat-iii-1081888",
+   "fixture_url": "https://www.hotspawn.com/matches/ninjas-in-pyjamas-vs-heroic-stake-pulse-beat-iii-1081888",
+   "points": 3,
+   "market": {
+    "prob_a": 0.44058,
+    "prob_b": 0.55942,
+    "n_sources": 4,
+    "sources": [
+     "bovada",
+     "melbet",
+     "pinnacle",
+     "thunderpick"
+    ],
+    "spread_a": 0.021636,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "decimal_a": 2.13,
+     "decimal_b": 1.7042,
+     "prob_a": 0.444473,
+     "retrieved_utc": "2026-10-17T00:19:43Z",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "retained_from": "fe803b80 snapshot"
+    },
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "decimal_a": 2.15,
+     "decimal_b": 1.6667,
+     "prob_a": 0.436686,
+     "retrieved_utc": "2026-10-17T00:19:44Z",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/ninjas-in-pyjamas-heroic-202610170400",
+     "retained_from": "fe803b80 snapshot"
+    },
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet (1xBet platform)",
+     "decimal_a": 2.103,
+     "decimal_b": 1.73,
+     "prob_a": 0.451344,
+     "retrieved_utc": "2026-10-17T00:19:45Z",
+     "public_url": "https://melbet.com/en/line/esports",
+     "retained_from": "fe803b80 snapshot"
+    },
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (via bo3.gg)",
+     "decimal_a": 2.15,
+     "decimal_b": 1.62,
+     "prob_a": 0.429708,
+     "retrieved_utc": "2026-10-17T00:21:36Z",
+     "public_url": "https://bo3.gg/matches/nip-vs-heroic-17-10-2026",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [
+    {
+     "source_key": "kalshi",
+     "reason": "wide bid/ask seed (KALSHI_MAX_SPREAD)"
+    }
+   ],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.476362,
+    "vrs": {
+     "points_a": 1511.0,
+     "points_b": 1545.0,
+     "standing_a": "EU #12",
+     "standing_b": "EU #10",
+     "vrs_name_a": "Ninjas in Pyjamas",
+     "vrs_name_b": "HEROIC",
+     "delta": -34.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.445947,
+    "prob_b": 0.554053,
+    "pick": "Heroic",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.554053
+   },
+   "pick": "Heroic",
+   "pick_probability": 0.554053,
+   "confidence": "Lean",
+   "basis": "market+model",
+   "role": "lean",
+   "crowd": {
+    "team_a": "Ninjas in Pyjamas",
+    "team_b": "Heroic",
+    "crowd_a": 43,
+    "crowd_b": 57,
+    "total_picks": 679,
+    "read_utc": "2026-10-17T00:52:00Z",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "live_vrs_override"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://bo3.gg/matches/nip-vs-heroic-17-10-2026",
+    "https://melbet.com/en/line/esports",
+    "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/ninjas-in-pyjamas-heroic-202610170400",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe",
+    "https://www.pinnacle.com/en/esports/cs2-hub"
+   ]
+  },
+  {
+   "fixture_id": "1081511",
+   "competition": "GLuck Yungstar 2026: Series #3",
+   "tier": "C",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-17T09:00:00Z",
+   "lock_utc": "2026-10-17T08:54:00Z",
+   "team_a": "VP.Future",
+   "team_b": "Black Phoenix",
+   "hotspawn_url": null,
+   "fixture_url": null,
+   "points": 2,
+   "market": null,
+   "quotes": [],
+   "quote_rejections": [],
+   "model": {
+    "basis": "originated_elo",
+    "prob_a": 0.173751,
+    "elo": {
+     "rating_a": 897.1,
+     "rating_b": 1168.0,
+     "anchored_a": false,
+     "anchored_b": true,
+     "base": 1500.0,
+     "k": 20.0,
+     "passes": 8,
+     "anchor": "Valve VRS points, re-anchored every pass",
+     "n_matches": 224
+    }
+   },
+   "line": {
+    "prob_a": 0.173751,
+    "prob_b": 0.826249,
+    "pick": "Black Phoenix",
+    "basis": "model",
+    "market_weight": 0.0,
+    "pick_probability": 0.826249
+   },
+   "pick": "Black Phoenix",
+   "pick_probability": 0.826249,
+   "confidence": "Strong",
+   "basis": "model",
+   "role": "safe",
+   "crowd": null,
+   "flags": [],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1079171",
+   "competition": "NODWIN Clutch Series #13",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-17T11:00:00Z",
+   "lock_utc": "2026-10-17T10:54:00Z",
+   "team_a": "GenOne",
+   "team_b": "Butterfly",
+   "hotspawn_url": "https://www.hotspawn.com/matches/genone-vs-butterfly-nodwin-clutch-series-13-1079171",
+   "fixture_url": "https://www.hotspawn.com/matches/genone-vs-butterfly-nodwin-clutch-series-13-1079171",
+   "points": 3,
+   "market": null,
+   "quotes": [],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.54717,
+    "vrs": {
+     "points_a": 1077.0,
+     "points_b": 1009.0,
+     "standing_a": "EU #60",
+     "standing_b": "EU #74",
+     "vrs_name_a": "GenOne",
+     "vrs_name_b": "Butterfly",
+     "delta": 68.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.54717,
+    "prob_b": 0.45283,
+    "pick": "GenOne",
+    "basis": "model",
+    "market_weight": 0.0,
+    "pick_probability": 0.54717
+   },
+   "pick": "GenOne",
+   "pick_probability": 0.54717,
+   "confidence": "Toss-up",
+   "basis": "model",
+   "role": "toss-up",
+   "crowd": {
+    "team_a": "GenOne",
+    "team_b": "Butterfly",
+    "crowd_a": 28,
+    "crowd_b": 72,
+    "total_picks": 214,
+    "matchup_mapped_from_ledger_fixture_id": "1080150",
+    "read_utc": "2026-10-17T00:52:00Z",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "crowd_divergence",
+    "live_vrs_override"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1079591",
+   "competition": "Stake Pulse Beat III",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-17T11:00:00Z",
+   "lock_utc": "2026-10-17T10:54:00Z",
+   "team_a": "MIBR",
+   "team_b": "100 Thieves",
+   "hotspawn_url": null,
+   "fixture_url": "https://bo3.gg/matches/mibr-vs-100-thieves-17-10-2026",
+   "points": 3,
+   "market": {
+    "prob_a": 0.55409,
+    "prob_b": 0.44591,
+    "n_sources": 5,
+    "sources": [
+     "bovada",
+     "kalshi",
+     "melbet",
+     "pinnacle",
+     "thunderpick"
+    ],
+    "spread_a": 0.024291,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "decimal_a": 1.6993,
+     "decimal_b": 2.13,
+     "prob_a": 0.556237,
+     "retrieved_utc": "2026-10-17T00:19:42Z",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "retained_from": "fe803b80 snapshot"
+    },
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "decimal_a": 1.69,
+     "decimal_b": 2.1,
+     "prob_a": 0.55409,
+     "retrieved_utc": "2026-10-17T00:19:44Z",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-100-thieves-202610170700",
+     "retained_from": "fe803b80 snapshot"
+    },
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet (1xBet platform)",
+     "decimal_a": 1.72,
+     "decimal_b": 2.113,
+     "prob_a": 0.551265,
+     "retrieved_utc": "2026-10-17T00:19:45Z",
+     "public_url": "https://melbet.com/en/line/esports",
+     "retained_from": "fe803b80 snapshot"
+    },
+    {
+     "source_key": "kalshi",
+     "source_name": "Kalshi (exchange)",
+     "decimal_a": 1.9048,
+     "decimal_b": 2.1978,
+     "prob_a": 0.535709,
+     "retrieved_utc": "2026-10-17T00:19:47Z",
+     "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct170700100tmibr",
+     "retained_from": "fe803b80 snapshot",
+     "note": "source lists the teams home/away swapped; prices mapped to HotSpawn order"
+    },
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (via bo3.gg)",
+     "decimal_a": 1.65,
+     "decimal_b": 2.1,
+     "prob_a": 0.56,
+     "retrieved_utc": "2026-10-17T00:21:36Z",
+     "public_url": "https://bo3.gg/matches/mibr-vs-100-thieves-17-10-2026",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.549927,
+    "vrs": {
+     "points_a": 1562.0,
+     "points_b": 1490.0,
+     "standing_a": "AM #3",
+     "standing_b": "#14 (listed on the EU regional page)",
+     "vrs_name_a": "MIBR",
+     "vrs_name_b": "100 Thieves",
+     "delta": 72.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Americas regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.553466,
+    "prob_b": 0.446534,
+    "pick": "MIBR",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.553466
+   },
+   "pick": "MIBR",
+   "pick_probability": 0.553466,
+   "confidence": "Lean",
+   "basis": "market+model",
+   "role": "lean",
+   "crowd": null,
+   "flags": [
+    "live_vrs_override"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://bo3.gg/matches/mibr-vs-100-thieves-17-10-2026",
+    "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct170700100tmibr",
+    "https://melbet.com/en/line/esports",
+    "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-100-thieves-202610170700",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Americas",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe",
+    "https://www.pinnacle.com/en/esports/cs2-hub"
+   ]
+  },
+  {
+   "fixture_id": "1079634",
+   "competition": "CCT Europe 2026 Series #11",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-17T11:00:00Z",
+   "lock_utc": "2026-10-17T10:54:00Z",
+   "team_a": "Lavked",
+   "team_b": "LFO 10",
+   "hotspawn_url": null,
+   "fixture_url": "https://bo3.gg/matches/lavked-vs-sokerorg-17-10-2026",
+   "points": 3,
+   "market": null,
+   "quotes": [],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.54717,
+    "vrs": {
+     "points_a": 855.0,
+     "points_b": 787.0,
+     "standing_a": "EU #103",
+     "standing_b": "EU #118",
+     "vrs_name_a": "Lavked",
+     "vrs_name_b": "sokerorg",
+     "delta": 68.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.54717,
+    "prob_b": 0.45283,
+    "pick": "Lavked",
+    "basis": "model",
+    "market_weight": 0.0,
+    "pick_probability": 0.54717
+   },
+   "pick": "Lavked",
+   "pick_probability": 0.54717,
+   "confidence": "Toss-up",
+   "basis": "model",
+   "role": "toss-up",
+   "crowd": null,
+   "flags": [
+    "alias_applied",
+    "form_conflict",
+    "live_vrs_override",
+    "roster_drift"
+   ],
+   "aliases_applied": [
+    [
+     "lfo10->sokerorg"
+    ]
+   ],
+   "alias_notes": [
+    "HotSpawn lists the Oct-17 CCT Europe 2026 Series #11 fixture as 'Lavked vs LFO 10'; bo3.gg's own tournament page for the same event lists the same round-3 slot as 'Lavked vs Sökerorg', and bo3.gg publishes no team called 'LFO 10' (its LFO teams are LFO, LFO 2/3/5/7/8/9). Kalshi priced the same pairing at the same kick-off under the Sokerorg spelling."
+   ],
+   "twc": null,
+   "sources": [
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1081512",
+   "competition": "PGL Bucharest 2027: Closed Qualifier",
+   "tier": "B",
+   "stage": "qualifier",
+   "best_of": null,
+   "start_utc": "2026-10-17T11:00:00Z",
+   "lock_utc": "2026-10-17T10:54:00Z",
+   "team_a": "EYEBALLERS",
+   "team_b": "GamerLegion",
+   "hotspawn_url": null,
+   "fixture_url": "https://bo3.gg/matches/eyeballers-vs-gamerlegion-17-10-2026",
+   "points": 3,
+   "market": {
+    "prob_a": 0.288889,
+    "prob_b": 0.711111,
+    "n_sources": 1,
+    "sources": [
+     "thunderpick"
+    ],
+    "spread_a": null,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (via bo3.gg)",
+     "decimal_a": 3.2,
+     "decimal_b": 1.3,
+     "prob_a": 0.288889,
+     "retrieved_utc": "2026-10-17T00:21:36Z",
+     "public_url": "https://bo3.gg/matches/eyeballers-vs-gamerlegion-17-10-2026",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [
+    {
+     "source_key": "kalshi",
+     "reason": "wide bid/ask seed (KALSHI_MAX_SPREAD)"
+    }
+   ],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.428824,
+    "vrs": {
+     "points_a": 1256.0,
+     "points_b": 1359.0,
+     "standing_a": "EU #37",
+     "standing_b": "EU #31",
+     "vrs_name_a": "EYEBALLERS",
+     "vrs_name_b": "GamerLegion",
+     "delta": -103.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.309879,
+    "prob_b": 0.690121,
+    "pick": "GamerLegion",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.690121
+   },
+   "pick": "GamerLegion",
+   "pick_probability": 0.690121,
+   "confidence": "Strong",
+   "basis": "market+model",
+   "role": "safe",
+   "crowd": null,
+   "flags": [
+    "live_vrs_override",
+    "market_model_divergence",
+    "single_source"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://bo3.gg/matches/eyeballers-vs-gamerlegion-17-10-2026",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1081513",
+   "competition": "CCT Europe 2026 Challengers #8",
+   "tier": "C",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-17T11:00:00Z",
+   "lock_utc": "2026-10-17T10:54:00Z",
+   "team_a": "Bebop",
+   "team_b": "Donstu",
+   "hotspawn_url": "https://www.hotspawn.com/matches/bebop-vs-donstu-cct-europe-2026-challengers-8-1081513",
+   "fixture_url": "https://www.hotspawn.com/matches/bebop-vs-donstu-cct-europe-2026-challengers-8-1081513",
+   "points": 2,
+   "market": {
+    "prob_a": 0.576655,
+    "prob_b": 0.423345,
+    "n_sources": 2,
+    "sources": [
+     "melbet",
+     "pinnacle"
+    ],
+    "spread_a": 0.004037,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "decimal_a": 1.6211,
+     "decimal_b": 2.19,
+     "prob_a": 0.574637,
+     "retrieved_utc": "2026-10-17T00:19:43Z",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "retained_from": "fe803b80 snapshot"
+    },
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet (1xBet platform)",
+     "decimal_a": 1.62,
+     "decimal_b": 2.225,
+     "prob_a": 0.578674,
+     "retrieved_utc": "2026-10-17T00:19:45Z",
+     "public_url": "https://melbet.com/en/line/esports",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.47914,
+    "vrs": {
+     "points_a": 702.0,
+     "points_b": 732.0,
+     "standing_a": 212,
+     "standing_b": 197,
+     "vrs_name_a": "Bebop",
+     "vrs_name_b": "DONSTU",
+     "delta": -30.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "bo3.gg current five matches row #212 exactly; row #282's danistzz/Norwi/lov1kus era is dissolved (BAKS/PsychoFace); live ladder has no Bebop row above EU#145, consistent with the slide",
+     "join_b": "Valve VRS global ladder 2026-10-05 (retained copy)"
+    }
+   },
+   "line": {
+    "prob_a": 0.562028,
+    "prob_b": 0.437972,
+    "pick": "Bebop",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.562028
+   },
+   "pick": "Bebop",
+   "pick_probability": 0.562028,
+   "confidence": "Lean",
+   "basis": "market+model",
+   "role": "safe (crowd-aligned; ownership inflated - treat as sentiment)",
+   "crowd": {
+    "team_a": "Bebop",
+    "team_b": "DONSTU",
+    "crowd_a": 90,
+    "crowd_b": 10,
+    "total_picks": 515,
+    "matchup_mapped_from_ledger_fixture_id": "1079807",
+    "read_utc": "2026-10-17T00:52:00Z",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "crowd_divergence",
+    "stale_row_corrected",
+    "vrs_row_disambiguated"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0197--donstu--due1yant-gleb86rus-laksheri-neolife-phorate.md",
+    "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0212--bebop--faydett-idisbalance-kensi-pipw-redzed.md",
+    "https://melbet.com/en/line/esports",
+    "https://www.pinnacle.com/en/esports/cs2-hub"
+   ]
+  },
+  {
+   "fixture_id": "1080292",
+   "competition": "Elisa BreakOut Series #2",
+   "tier": "C",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-17T12:00:00Z",
+   "lock_utc": "2026-10-17T11:54:00Z",
+   "team_a": "ENCE",
+   "team_b": "Phantom",
+   "hotspawn_url": null,
+   "fixture_url": "https://bo3.gg/matches/ence-vs-phantom-esports-17-10-2026",
+   "points": 2,
+   "market": {
+    "prob_a": 0.389184,
+    "prob_b": 0.610816,
+    "n_sources": 2,
+    "sources": [
+     "melbet",
+     "thunderpick"
+    ],
+    "spread_a": 0.062318,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet (1xBet platform)",
+     "decimal_a": 2.234,
+     "decimal_b": 1.62,
+     "prob_a": 0.420343,
+     "retrieved_utc": "2026-10-17T00:19:45Z",
+     "public_url": "https://melbet.com/en/line/esports",
+     "retained_from": "fe803b80 snapshot"
+    },
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (via bo3.gg)",
+     "decimal_a": 2.6,
+     "decimal_b": 1.45,
+     "prob_a": 0.358025,
+     "retrieved_utc": "2026-10-17T00:21:36Z",
+     "public_url": "https://bo3.gg/matches/ence-vs-phantom-esports-17-10-2026",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [
+    {
+     "source_key": "kalshi",
+     "reason": "wide bid/ask seed (KALSHI_MAX_SPREAD)"
+    }
+   ],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.397127,
+    "vrs": {
+     "points_a": 1022.0,
+     "points_b": 1172.0,
+     "standing_a": "EU #72",
+     "standing_b": "EU #47",
+     "vrs_name_a": "ENCE",
+     "vrs_name_b": "Phantom",
+     "delta": -150.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.390375,
+    "prob_b": 0.609625,
+    "pick": "Phantom",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.609625
+   },
+   "pick": "Phantom",
+   "pick_probability": 0.609625,
+   "confidence": "Solid",
+   "basis": "market+model",
+   "role": "lean",
+   "crowd": null,
+   "flags": [
+    "live_vrs_override"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://bo3.gg/matches/ence-vs-phantom-esports-17-10-2026",
+    "https://melbet.com/en/line/esports",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1079635",
+   "competition": "CCT Europe 2026 Series #11",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-17T14:00:00Z",
+   "lock_utc": "2026-10-17T13:54:00Z",
+   "team_a": "Bushido Wildcats",
+   "team_b": "Gothic",
+   "hotspawn_url": null,
+   "fixture_url": "https://bo3.gg/matches/bushido-wildcats-cs-vs-gothic-17-10-2026",
+   "points": 3,
+   "market": null,
+   "quotes": [],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.654774,
+    "vrs": {
+     "points_a": 966.0,
+     "points_b": 736.0,
+     "standing_a": "EU #88",
+     "standing_b": "EU #131",
+     "vrs_name_a": "Bushido Wildcats",
+     "vrs_name_b": "Gothic",
+     "delta": 230.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.654774,
+    "prob_b": 0.345226,
+    "pick": "Bushido Wildcats",
+    "basis": "model",
+    "market_weight": 0.0,
+    "pick_probability": 0.654774
+   },
+   "pick": "Bushido Wildcats",
+   "pick_probability": 0.654774,
+   "confidence": "Strong",
+   "basis": "model",
+   "role": "safe",
+   "crowd": null,
+   "flags": [
+    "form_conflict",
+    "live_vrs_override"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1080207",
+   "competition": "Thunderpick World Championship 2026",
+   "tier": "S",
+   "stage": "group stage and playoffs",
+   "best_of": null,
+   "start_utc": "2026-10-17T14:00:00Z",
+   "lock_utc": "2026-10-17T13:54:00Z",
+   "team_a": "FURIA",
+   "team_b": "Aurora",
+   "hotspawn_url": null,
+   "fixture_url": "https://www.hltv.org/matches/2399414/furia-vs-aurora-thunderpick-world-championship-2026",
+   "points": 7,
+   "market": {
+    "prob_a": 0.510127,
+    "prob_b": 0.489873,
+    "n_sources": 7,
+    "sources": [
+     "bovada",
+     "egamersworld",
+     "kalshi",
+     "melbet",
+     "pinnacle",
+     "polymarket",
+     "thunderpick"
+    ],
+    "spread_a": 0.030026,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "egamersworld",
+     "source_name": "egamersworld",
+     "decimal_a": 1.83,
+     "decimal_b": 1.9,
+     "prob_a": 0.509383,
+     "retrieved_utc": "2026-10-17T00:54:00Z",
+     "public_url": "https://egamersworld.com/counterstrike/match/5X5sFiL7H/furia-vs-aurora-Z00JFz0dG",
+     "note": "bc.game average shown on the EGW match page",
+     "retained_from": "c32f1b93 fresh read"
+    },
+    {
+     "source_key": "polymarket",
+     "source_name": "polymarket",
+     "decimal_a": 1.89,
+     "decimal_b": 2.08,
+     "prob_a": 0.523929,
+     "retrieved_utc": "2026-10-17T00:55:00Z",
+     "public_url": "https://polymarket.com/esports/cs2/thunderpick-world-championship/cs2-furia-aur1-2026-10-17",
+     "note": "53c/48c cents, $53.2K volume",
+     "retained_from": "c32f1b93 fresh read"
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "pinnacle",
+     "decimal_a": 1.8,
+     "decimal_b": 2.03,
+     "prob_a": 0.530026,
+     "retrieved_utc": "2026-10-17T00:19:42Z",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "note": "retained quote from session fe803b80 capture (40 min old at board build) | price unchanged since the fe803b80 snapshot read; fresh re-read confirms",
+     "retained_from": "fe803b80 snapshot, re-confirmed by c32f1b93 fresh read"
+    },
+    {
+     "source_key": "bovada",
+     "source_name": "bovada",
+     "decimal_a": 1.8333,
+     "decimal_b": 1.9091,
+     "prob_a": 0.510127,
+     "retrieved_utc": "2026-10-17T00:19:44Z",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-team-aurora-202610171000",
+     "note": "retained quote from session fe803b80 capture | price unchanged since the fe803b80 snapshot read; fresh re-read confirms",
+     "retained_from": "fe803b80 snapshot, re-confirmed by c32f1b93 fresh read"
+    },
+    {
+     "source_key": "melbet",
+     "source_name": "melbet",
+     "decimal_a": 1.87,
+     "decimal_b": 1.87,
+     "prob_a": 0.5,
+     "retrieved_utc": "2026-10-17T00:19:45Z",
+     "public_url": "https://melbet.com/en/line/esports",
+     "note": "retained quote from session fe803b80 capture | price unchanged since the fe803b80 snapshot read; fresh re-read confirms",
+     "retained_from": "fe803b80 snapshot, re-confirmed by c32f1b93 fresh read"
+    },
+    {
+     "source_key": "kalshi",
+     "source_name": "kalshi",
+     "decimal_a": 1.9231,
+     "decimal_b": 2.1053,
+     "prob_a": 0.522614,
+     "retrieved_utc": "2026-10-17T00:19:47Z",
+     "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct171000aurfuria",
+     "note": "retained quote from session fe803b80 capture; CFTC-regulated exchange | price unchanged since the fe803b80 snapshot read; fresh re-read confirms",
+     "retained_from": "fe803b80 snapshot, re-confirmed by c32f1b93 fresh read"
+    },
+    {
+     "source_key": "thunderpick",
+     "source_name": "thunderpick",
+     "decimal_a": 1.85,
+     "decimal_b": 1.85,
+     "prob_a": 0.5,
+     "retrieved_utc": "2026-10-17T00:21:36Z",
+     "public_url": "https://bo3.gg/matches/furia-vs-aurora-gaming-17-10-2026",
+     "note": "retained Thunderpick coefficient via bo3.gg public API capture | price unchanged since the fe803b80 snapshot read; fresh re-read confirms",
+     "retained_from": "fe803b80 snapshot, re-confirmed by c32f1b93 fresh read"
+    }
+   ],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.485393,
+    "vrs": {
+     "points_a": 1827.0,
+     "points_b": 1848.0,
+     "standing_a": "AM #1",
+     "standing_b": "EU #5",
+     "vrs_name_a": "FURIA",
+     "vrs_name_b": "Aurora",
+     "delta": -21.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Americas regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.506417,
+    "prob_b": 0.493583,
+    "pick": "FURIA",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.506417
+   },
+   "pick": "FURIA",
+   "pick_probability": 0.506417,
+   "confidence": "Toss-up",
+   "basis": "market+model",
+   "role": "toss-up",
+   "crowd": {
+    "team_a": "FURIA",
+    "team_b": "Aurora",
+    "crowd_a": 65,
+    "crowd_b": 35,
+    "total_picks": 3346,
+    "read_utc": "2026-10-16T20:50:00Z (retained)",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "live_vrs_override",
+    "twc_semifinal"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": {
+    "fixture_id": 1080207,
+    "quotes": [
+     {
+      "source_key": "egamersworld",
+      "decimal_a": 1.83,
+      "decimal_b": 1.9,
+      "read_utc": "2026-10-17T00:54:00Z",
+      "url": "https://egamersworld.com/counterstrike/match/5X5sFiL7H/furia-vs-aurora-Z00JFz0dG",
+      "note": "bc.game average shown on the EGW match page"
+     },
+     {
+      "source_key": "polymarket",
+      "decimal_a": 1.89,
+      "decimal_b": 2.08,
+      "read_utc": "2026-10-17T00:55:00Z",
+      "url": "https://polymarket.com/esports/cs2/thunderpick-world-championship/cs2-furia-aur1-2026-10-17",
+      "note": "53c/48c cents, $53.2K volume"
+     },
+     {
+      "source_key": "pinnacle",
+      "decimal_a": 1.8,
+      "decimal_b": 2.03,
+      "read_utc": "2026-10-17T00:19:42Z",
+      "url": "https://www.pinnacle.com/en/esports/cs2-hub",
+      "note": "retained quote from session fe803b80 capture (40 min old at board build)"
+     },
+     {
+      "source_key": "bovada",
+      "decimal_a": 1.8333,
+      "decimal_b": 1.9091,
+      "read_utc": "2026-10-17T00:19:44Z",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-team-aurora-202610171000",
+      "note": "retained quote from session fe803b80 capture"
+     },
+     {
+      "source_key": "melbet",
+      "decimal_a": 1.87,
+      "decimal_b": 1.87,
+      "read_utc": "2026-10-17T00:19:45Z",
+      "url": "https://melbet.com/en/line/esports",
+      "note": "retained quote from session fe803b80 capture"
+     },
+     {
+      "source_key": "kalshi",
+      "decimal_a": 1.9231,
+      "decimal_b": 2.1053,
+      "read_utc": "2026-10-17T00:19:47Z",
+      "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct171000aurfuria",
+      "note": "retained quote from session fe803b80 capture; CFTC-regulated exchange"
+     },
+     {
+      "source_key": "thunderpick",
+      "decimal_a": 1.85,
+      "decimal_b": 1.85,
+      "read_utc": "2026-10-17T00:21:36Z",
+      "url": "https://bo3.gg/matches/furia-vs-aurora-gaming-17-10-2026",
+      "note": "retained Thunderpick coefficient via bo3.gg public API capture"
+     }
+    ],
+    "hltv_fan_vote": {
+     "furia_pct": 35.4,
+     "aurora_pct": 64.6,
+     "read_utc": "2026-10-17T00:57:00Z",
+     "url": "https://www.hltv.org/matches/2399414/furia-vs-aurora-thunderpick-world-championship-2026",
+     "note": "sentiment only, never a price; earlier desks recorded 73.5% Aurora — the vote moved as more fans voted"
+    },
+    "hltv_analytics": {
+     "url": "https://www.hltv.org/betting/analytics/2399414/furia-vs-aurora-thunderpick-world-championship-2026",
+     "read_utc": "2026-10-17T01:02:00Z",
+     "fans_of": "FURIA better ranked (HLTV #4); Aurora: bookmaker favorite with best odds, better form ranking, won the only meeting in the past 30 days (1-0); FURIA won 3 of last 5",
+     "h2h_alltime": "FURIA leads 9-4 in series, 18-15 in maps (HLTV AI summary on both team pages); only 2026 meeting: Aurora won 2-1 at ESL Pro League S24 (2026-10-06, HLTV match 2398743)"
+    },
+    "live_vrs": {
+     "furhia_rank": 6,
+     "aurora_rank": 5,
+     "note": "HLTV team pages read 2026-10-17: Aurora 'Valve ranking VRS #5 (EU#5)', FURIA 'VRS #6 (AM#1)'. The Oct-5 global snapshot (FURIA 1829 #7, Aurora 1716 #9) predates TWC group play; the live ranks flipped after Aurora's 2-0 avenge.",
+     "sources": [
+      "https://www.hltv.org/team/11861/aurora",
+      "https://www.hltv.org/team/8297/furia"
+     ]
+    },
+    "form": {
+     "furhia": "2-0 BETBOOM (Ancient 13-10, Mirage 13-9), 2-1 Legacy (Cache 10-13 L, Inferno 13-5, Mirage 13-8) — 4-1 maps",
+     "aurora": "0-2 9z (upset), 2-0 Ninjas in Pyjamas, 2-0 9z (Cache 13-11, Inferno 13-4) — 4-2 maps, and 13-4 on the decider's Inferno replay",
+     "rest": "FURIA last played 2026-10-15; Aurora last played 2026-10-16 (one day less rest for Aurora)"
+    },
+    "lineups": {
+     "furhia": [
+      "FalleN",
+      "yuurih",
+      "KSCERATO",
+      "YEKINDAR",
+      "molodoy"
+     ],
+     "aurora": [
+      "XANTARES",
+      "woxic",
+      "Wicadia",
+      "Jimpphat",
+      "kyxsan"
+     ],
+     "source": "https://egamersworld.com/counterstrike/match/5X5sFiL7H/furia-vs-aurora-Z00JFz0dG and HLTV match page lineups, read 2026-10-17T00:54Z"
+    }
+   },
+   "sources": [
+    "https://bo3.gg/matches/furia-vs-aurora-gaming-17-10-2026",
+    "https://egamersworld.com/counterstrike/match/5X5sFiL7H/furia-vs-aurora-Z00JFz0dG",
+    "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct171000aurfuria",
+    "https://melbet.com/en/line/esports",
+    "https://polymarket.com/esports/cs2/thunderpick-world-championship/cs2-furia-aur1-2026-10-17",
+    "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-team-aurora-202610171000",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Americas",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe",
+    "https://www.pinnacle.com/en/esports/cs2-hub"
+   ]
+  },
+  {
+   "fixture_id": "1081515",
+   "competition": "PGL Bucharest 2027: Closed Qualifier",
+   "tier": "B",
+   "stage": "qualifier",
+   "best_of": null,
+   "start_utc": "2026-10-17T14:00:00Z",
+   "lock_utc": "2026-10-17T13:54:00Z",
+   "team_a": "Apogee Betclic",
+   "team_b": "Nemesis",
+   "hotspawn_url": "https://www.hotspawn.com/matches/apogee-betclic-vs-nemesis-pgl-bucharest-2027-closed-qualifier-1081515",
+   "fixture_url": "https://www.hotspawn.com/matches/apogee-betclic-vs-nemesis-pgl-bucharest-2027-closed-qualifier-1081515",
+   "points": 3,
+   "market": {
+    "prob_a": 0.308636,
+    "prob_b": 0.691364,
+    "n_sources": 2,
+    "sources": [
+     "polymarket",
+     "thunderpick"
+    ],
+    "spread_a": 0.043015,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "polymarket",
+     "source_name": "polymarket",
+     "decimal_a": 3.4482758620689653,
+     "decimal_b": 1.3888888888888888,
+     "prob_a": 0.287129,
+     "retrieved_utc": "2026-10-17T01:00:00Z",
+     "public_url": "https://polymarket.com/esports/cs2/pgl/cs2-bca-nem-2026-10-17",
+     "note": "series moneyline 29c/72c, $75.45 volume (thin but trained; the $0.00-volume seed captured 2026-10-16T20:45Z was rejected as untrained)",
+     "retained_from": "c32f1b93 fresh read"
+    },
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (via bo3.gg)",
+     "decimal_a": 2.8,
+     "decimal_b": 1.38,
+     "prob_a": 0.330144,
+     "retrieved_utc": "2026-10-17T00:21:36Z",
+     "public_url": "https://bo3.gg/matches/betclic-apogee-esports-vs-team-nemesis-cs-17-10-2026",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.388498,
+    "vrs": {
+     "points_a": 1232.0,
+     "points_b": 1395.0,
+     "standing_a": "EU #40",
+     "standing_b": "EU #27",
+     "vrs_name_a": "Betclic",
+     "vrs_name_b": "Nemesis",
+     "delta": -163.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV team/12916 starters match row #45 on 5/5 (ultimate replaced hades Aug 11; the quartet inherited KOLESIE's VRS position Jul 22); row #183 is the pre-Aug hades era - confirmed stale by the live Oct-16 ladder (main row EU#40/1232 current five; hades-era row EU#145/708 'old roster')",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.320615,
+    "prob_b": 0.679385,
+    "pick": "Nemesis",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.679385
+   },
+   "pick": "Nemesis",
+   "pick_probability": 0.679385,
+   "confidence": "Strong",
+   "basis": "market+model",
+   "role": "safe (crowd-aligned; ownership inflated - treat as sentiment)",
+   "crowd": {
+    "team_a": "Apogee Betclic",
+    "team_b": "Nemesis",
+    "crowd_a": 14,
+    "crowd_b": 86,
+    "total_picks": 592,
+    "read_utc": "2026-10-17T00:52:00Z",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "alias_applied",
+    "crowd_divergence",
+    "freshly_priced_this_session",
+    "live_vrs_override",
+    "stale_row_corrected",
+    "thin_volume",
+    "vrs_row_disambiguated"
+   ],
+   "aliases_applied": [
+    [
+     "apogeebetclic->betclic"
+    ]
+   ],
+   "alias_notes": [
+    "HotSpawn lists the Portuguese roster with its sponsor ('Apogee Betclic'); Valve's ladder and HLTV carry it as Betclic. Same five (Demho, ex1st, Prism, Qlocuu, ultimate)."
+   ],
+   "twc": null,
+   "sources": [
+    "https://bo3.gg/matches/betclic-apogee-esports-vs-team-nemesis-cs-17-10-2026",
+    "https://polymarket.com/esports/cs2/pgl/cs2-bca-nem-2026-10-17",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1079173",
+   "competition": "NODWIN Clutch Series #13",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-17T17:00:00Z",
+   "lock_utc": "2026-10-17T16:54:00Z",
+   "team_a": "BakS",
+   "team_b": "Fire Flux",
+   "hotspawn_url": "https://www.hotspawn.com/matches/baks-vs-fire-flux-nodwin-clutch-series-13-1079173",
+   "fixture_url": "https://www.hotspawn.com/matches/baks-vs-fire-flux-nodwin-clutch-series-13-1079173",
+   "points": 3,
+   "market": {
+    "prob_a": 0.592102,
+    "prob_b": 0.407898,
+    "n_sources": 1,
+    "sources": [
+     "melbet"
+    ],
+    "spread_a": null,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet (1xBet platform)",
+     "decimal_a": 1.57,
+     "decimal_b": 2.279,
+     "prob_a": 0.592102,
+     "retrieved_utc": "2026-10-17T00:19:45Z",
+     "public_url": "https://melbet.com/en/line/esports",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.568447,
+    "vrs": {
+     "points_a": 1053.0,
+     "points_b": 954.0,
+     "standing_a": "EU #65",
+     "standing_b": "EU #91",
+     "vrs_name_a": "BAKS",
+     "vrs_name_b": "Fire Flux",
+     "delta": 99.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.588554,
+    "prob_b": 0.411446,
+    "pick": "BakS",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.588554
+   },
+   "pick": "BakS",
+   "pick_probability": 0.588554,
+   "confidence": "Lean",
+   "basis": "market+model",
+   "role": "safe (crowd-aligned; ownership inflated - treat as sentiment)",
+   "crowd": {
+    "team_a": "BakS",
+    "team_b": "Fire Flux",
+    "crowd_a": 96,
+    "crowd_b": 4,
+    "total_picks": 508,
+    "matchup_mapped_from_ledger_fixture_id": "1080299",
+    "read_utc": "2026-10-17T00:52:00Z",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "crowd_divergence",
+    "live_vrs_override",
+    "single_source"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://melbet.com/en/line/esports",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1080208",
+   "competition": "Thunderpick World Championship 2026",
+   "tier": "S",
+   "stage": "group stage and playoffs",
+   "best_of": null,
+   "start_utc": "2026-10-17T17:00:00Z",
+   "lock_utc": "2026-10-17T16:54:00Z",
+   "team_a": "Falcons",
+   "team_b": "BetBoom",
+   "hotspawn_url": null,
+   "fixture_url": "https://www.hltv.org/matches/2399415/falcons-vs-betboom-thunderpick-world-championship-2026",
+   "points": 7,
+   "market": {
+    "prob_a": 0.765961,
+    "prob_b": 0.234039,
+    "n_sources": 7,
+    "sources": [
+     "bovada",
+     "egamersworld",
+     "kalshi",
+     "melbet",
+     "pinnacle",
+     "polymarket",
+     "thunderpick"
+    ],
+    "spread_a": 0.039914,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "egamersworld",
+     "source_name": "egamersworld",
+     "decimal_a": 1.23,
+     "decimal_b": 3.75,
+     "prob_a": 0.753012,
+     "retrieved_utc": "2026-10-17T00:56:00Z",
+     "public_url": "https://egamersworld.com/counterstrike/match/5X5sFiL7H/falcons-vs-betboom-team-H2VXCn1md",
+     "note": "",
+     "retained_from": "c32f1b93 fresh read"
+    },
+    {
+     "source_key": "polymarket",
+     "source_name": "polymarket",
+     "decimal_a": 1.25,
+     "decimal_b": 4.76,
+     "prob_a": 0.792013,
+     "retrieved_utc": "2026-10-17T00:55:00Z",
+     "public_url": "https://polymarket.com/esports/cs2/thunderpick-world-championship/cs2-fal2-bb3-2026-10-17",
+     "note": "80c/21c cents, $25.8K volume",
+     "retained_from": "c32f1b93 fresh read"
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "pinnacle",
+     "decimal_a": 1.2571,
+     "decimal_b": 3.98,
+     "prob_a": 0.759963,
+     "retrieved_utc": "2026-10-17T00:19:43Z",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "note": "retained quote from session fe803b80 capture | price unchanged since the fe803b80 snapshot read; fresh re-read confirms",
+     "retained_from": "fe803b80 snapshot, re-confirmed by c32f1b93 fresh read"
+    },
+    {
+     "source_key": "bovada",
+     "source_name": "bovada",
+     "decimal_a": 1.2222,
+     "decimal_b": 4.0,
+     "prob_a": 0.765961,
+     "retrieved_utc": "2026-10-17T00:19:44Z",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-bb-team-202610171300",
+     "note": "retained quote from session fe803b80 capture | price unchanged since the fe803b80 snapshot read; fresh re-read confirms",
+     "retained_from": "fe803b80 snapshot, re-confirmed by c32f1b93 fresh read"
+    },
+    {
+     "source_key": "melbet",
+     "source_name": "melbet",
+     "decimal_a": 1.27,
+     "decimal_b": 3.92,
+     "prob_a": 0.755299,
+     "retrieved_utc": "2026-10-17T00:19:45Z",
+     "public_url": "https://melbet.com/en/line/esports",
+     "note": "retained quote from session fe803b80 capture | price unchanged since the fe803b80 snapshot read; fresh re-read confirms",
+     "retained_from": "fe803b80 snapshot, re-confirmed by c32f1b93 fresh read"
+    },
+    {
+     "source_key": "kalshi",
+     "source_name": "kalshi",
+     "decimal_a": 1.2739,
+     "decimal_b": 4.878,
+     "prob_a": 0.792926,
+     "retrieved_utc": "2026-10-17T00:19:47Z",
+     "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct171300bbfal",
+     "note": "retained quote from session fe803b80 capture",
+     "retained_from": "c32f1b93 fresh read"
+    },
+    {
+     "source_key": "thunderpick",
+     "source_name": "thunderpick",
+     "decimal_a": 1.2,
+     "decimal_b": 4.0,
+     "prob_a": 0.769231,
+     "retrieved_utc": "2026-10-17T00:21:36Z",
+     "public_url": "https://bo3.gg/matches/falcons-esports-vs-betboom-team-17-10-2026",
+     "note": "retained Thunderpick coefficient via bo3.gg public API capture | price unchanged since the fe803b80 snapshot read; fresh re-read confirms",
+     "retained_from": "fe803b80 snapshot, re-confirmed by c32f1b93 fresh read"
+    }
+   ],
+   "quote_rejections": [
+    {
+     "source_key": "kalshi",
+     "reason": "wide bid/ask seed (KALSHI_MAX_SPREAD)"
+    }
+   ],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.674007,
+    "vrs": {
+     "points_a": 1880.0,
+     "points_b": 1619.0,
+     "standing_a": "EU #4",
+     "standing_b": "EU #8",
+     "vrs_name_a": "Falcons",
+     "vrs_name_b": "BETBOOM",
+     "delta": 261.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.752168,
+    "prob_b": 0.247832,
+    "pick": "Falcons",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.752168
+   },
+   "pick": "Falcons",
+   "pick_probability": 0.752168,
+   "confidence": "Strong",
+   "basis": "market+model",
+   "role": "safe (crowd-aligned; ownership inflated - treat as sentiment)",
+   "crowd": {
+    "team_a": "Falcons",
+    "team_b": "BETBOOM",
+    "crowd_a": 81,
+    "crowd_b": 19,
+    "total_picks": 1905,
+    "read_utc": "2026-10-16T20:50:00Z (retained)",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "live_vrs_override",
+    "twc_semifinal"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": {
+    "fixture_id": 1080208,
+    "quotes": [
+     {
+      "source_key": "egamersworld",
+      "decimal_a": 1.23,
+      "decimal_b": 3.75,
+      "read_utc": "2026-10-17T00:56:00Z",
+      "url": "https://egamersworld.com/counterstrike/match/5X5sFiL7H/falcons-vs-betboom-team-H2VXCn1md"
+     },
+     {
+      "source_key": "polymarket",
+      "decimal_a": 1.25,
+      "decimal_b": 4.76,
+      "read_utc": "2026-10-17T00:55:00Z",
+      "url": "https://polymarket.com/esports/cs2/thunderpick-world-championship/cs2-fal2-bb3-2026-10-17",
+      "note": "80c/21c cents, $25.8K volume"
+     },
+     {
+      "source_key": "pinnacle",
+      "decimal_a": 1.2571,
+      "decimal_b": 3.98,
+      "read_utc": "2026-10-17T00:19:43Z",
+      "url": "https://www.pinnacle.com/en/esports/cs2-hub",
+      "note": "retained quote from session fe803b80 capture"
+     },
+     {
+      "source_key": "bovada",
+      "decimal_a": 1.2222,
+      "decimal_b": 4.0,
+      "read_utc": "2026-10-17T00:19:44Z",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-bb-team-202610171300",
+      "note": "retained quote from session fe803b80 capture"
+     },
+     {
+      "source_key": "melbet",
+      "decimal_a": 1.27,
+      "decimal_b": 3.92,
+      "read_utc": "2026-10-17T00:19:45Z",
+      "url": "https://melbet.com/en/line/esports",
+      "note": "retained quote from session fe803b80 capture"
+     },
+     {
+      "source_key": "kalshi",
+      "decimal_a": 1.2739,
+      "decimal_b": 4.878,
+      "read_utc": "2026-10-17T00:19:47Z",
+      "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct171300bbfal",
+      "note": "retained quote from session fe803b80 capture"
+     },
+     {
+      "source_key": "thunderpick",
+      "decimal_a": 1.2,
+      "decimal_b": 4.0,
+      "read_utc": "2026-10-17T00:21:36Z",
+      "url": "https://bo3.gg/matches/falcons-esports-vs-betboom-team-17-10-2026",
+      "note": "retained Thunderpick coefficient via bo3.gg public API capture"
+     }
+    ],
+    "h2h": "BETBOOM leads the head-to-head 2-0 in maps across their one recorded meeting (HLTV AI summary on both team pages, read 2026-10-17T01:00Z)",
+    "form": {
+     "falcons": "2-0 Ninjas in Pyjamas (Ancient 16-13 OT, Dust2 13-6), 2-1 9z (Nuke 13-9, Mirage 8-13 L, Dust2 13-9) — 4-1 maps; did NOT play on Oct 16 (full extra rest day)",
+     "betboom": "0-2 FURIA, 2-1 PARIVISION (reverse sweep: Ancient 10-13 L, Anubis 13-4, Mirage 13-7), 2-1 Legacy (Nuke 16-13, Dust2 11-13 L, Mirage 13-11) — 4-4 maps across 8 maps in 3 days; played the Group B decider on Oct 16"
+    },
+    "lineups": {
+     "falcons": [
+      "karrigan",
+      "TeSeS",
+      "NiKo",
+      "m0NESY",
+      "kyousuke"
+     ],
+     "betboom": [
+      "Boombl4",
+      "zorte",
+      "d1Ledez",
+      "S1ren",
+      "Magnojez"
+     ],
+     "source": "https://egamersworld.com/counterstrike/match/5X5sFiL7H/falcons-vs-betboom-team-H2VXCn1md, read 2026-10-17T00:56Z"
+    },
+    "betboom_upset_context": "BETBOOM (HLTV #14) upset 7th-ranked Legacy 2-1 in the Group B decider on Oct 16 while ranked 14th, closing Mirage 13-11 (HLTV team page AI summary, read 2026-10-17T01:04Z). Momentum is real but the rest deficit (8 maps played vs Falcons' 5, one fewer rest day) and a 247-point Oct-5 VRS gap cut against taking the upset side at these prices."
+   },
+   "sources": [
+    "https://bo3.gg/matches/falcons-esports-vs-betboom-team-17-10-2026",
+    "https://egamersworld.com/counterstrike/match/5X5sFiL7H/falcons-vs-betboom-team-H2VXCn1md",
+    "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct171300bbfal",
+    "https://melbet.com/en/line/esports",
+    "https://polymarket.com/esports/cs2/thunderpick-world-championship/cs2-fal2-bb3-2026-10-17",
+    "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-bb-team-202610171300",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe",
+    "https://www.pinnacle.com/en/esports/cs2-hub"
+   ]
+  },
+  {
+   "fixture_id": "1081517",
+   "competition": "PGL Bucharest 2027: Closed Qualifier",
+   "tier": "B",
+   "stage": "qualifier",
+   "best_of": null,
+   "start_utc": "2026-10-17T17:00:00Z",
+   "lock_utc": "2026-10-17T16:54:00Z",
+   "team_a": "BBL",
+   "team_b": "ex-RUSTEC",
+   "hotspawn_url": null,
+   "fixture_url": "https://bo3.gg/matches/bbl-vs-ex-rustec-17-10-2026",
+   "points": 3,
+   "market": {
+    "prob_a": 0.607235,
+    "prob_b": 0.392765,
+    "n_sources": 1,
+    "sources": [
+     "thunderpick"
+    ],
+    "spread_a": null,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (via bo3.gg)",
+     "decimal_a": 1.52,
+     "decimal_b": 2.35,
+     "prob_a": 0.607235,
+     "retrieved_utc": "2026-10-17T00:21:36Z",
+     "public_url": "https://bo3.gg/matches/bbl-vs-ex-rustec-17-10-2026",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.674007,
+    "vrs": {
+     "points_a": 1333.0,
+     "points_b": 1072.0,
+     "standing_a": "EU #33",
+     "standing_b": "EU #61",
+     "vrs_name_a": "BBL",
+     "vrs_name_b": "ex-RUSTEC",
+     "delta": 261.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "tie on 3/5 roster overlap broken by row recency (#92 last played 2026-09-27 vs #152 last played 2026-08-17) and the live HLTV VRS rank #86 sitting next to file rank #92; two onboardings since the snapshot flagged"
+    }
+   },
+   "line": {
+    "prob_a": 0.617251,
+    "prob_b": 0.382749,
+    "pick": "BBL",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.617251
+   },
+   "pick": "BBL",
+   "pick_probability": 0.617251,
+   "confidence": "Solid",
+   "basis": "market+model",
+   "role": "lean",
+   "crowd": null,
+   "flags": [
+    "live_vrs_override",
+    "single_source",
+    "stale_row_corrected",
+    "vrs_row_disambiguated"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://bo3.gg/matches/bbl-vs-ex-rustec-17-10-2026",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1081126",
+   "competition": "CCT Europe 2026 Series #12 Play-In",
+   "tier": "C",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-18T08:00:00Z",
+   "lock_utc": "2026-10-18T07:54:00Z",
+   "team_a": "Banda chuya",
+   "team_b": "Enjoy",
+   "hotspawn_url": "https://www.hotspawn.com/matches/banda-chuya-vs-enjoy-cct-europe-2026-series-12-play-in-1081126",
+   "fixture_url": "https://www.hotspawn.com/matches/banda-chuya-vs-enjoy-cct-europe-2026-series-12-play-in-1081126",
+   "points": 2,
+   "market": null,
+   "quotes": [],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.443195,
+    "vrs": {
+     "points_a": 729.0,
+     "points_b": 811.0,
+     "standing_a": "EU #135",
+     "standing_b": "EU #113",
+     "vrs_name_a": "Banda Chuya",
+     "vrs_name_b": "Enjoy",
+     "delta": -82.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "ingame-stats five matches row #165 exactly (alt org name 'Banda LFO'); row #373 is a 2-player stub; live ladder EU#135/729 lists the same five",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.443195,
+    "prob_b": 0.556805,
+    "pick": "Enjoy",
+    "basis": "model",
+    "market_weight": 0.0,
+    "pick_probability": 0.556805
+   },
+   "pick": "Enjoy",
+   "pick_probability": 0.556805,
+   "confidence": "Lean",
+   "basis": "model",
+   "role": "climb (contrarian: crowd owns the other side, model backs this pick)",
+   "crowd": {
+    "team_a": "banda chuya",
+    "team_b": "Enjoy",
+    "crowd_a": 84,
+    "crowd_b": 16,
+    "total_picks": 132,
+    "matchup_mapped_from_ledger_fixture_id": "1080157",
+    "read_utc": "2026-10-17T00:52:00Z",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "crowd_divergence",
+    "live_vrs_override",
+    "stale_row_corrected",
+    "vrs_row_disambiguated"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1079638",
+   "competition": "CCT Europe 2026 Series #11",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-18T11:00:00Z",
+   "lock_utc": "2026-10-18T10:54:00Z",
+   "team_a": "ex-RUSTEC",
+   "team_b": "ILLYRIANS",
+   "hotspawn_url": null,
+   "fixture_url": "https://bo3.gg/matches/ex-rustec-vs-illyrians-18-10-2026",
+   "points": 3,
+   "market": null,
+   "quotes": [],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.617435,
+    "vrs": {
+     "points_a": 1072.0,
+     "points_b": 900.0,
+     "standing_a": "EU #61",
+     "standing_b": "EU #94",
+     "vrs_name_a": "ex-RUSTEC",
+     "vrs_name_b": "Illyrians",
+     "delta": 172.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "tie on 3/5 roster overlap broken by row recency (#92 last played 2026-09-27 vs #152 last played 2026-08-17) and the live HLTV VRS rank #86 sitting next to file rank #92; two onboardings since the snapshot flagged",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.617435,
+    "prob_b": 0.382565,
+    "pick": "ex-RUSTEC",
+    "basis": "model",
+    "market_weight": 0.0,
+    "pick_probability": 0.617435
+   },
+   "pick": "ex-RUSTEC",
+   "pick_probability": 0.617435,
+   "confidence": "Solid",
+   "basis": "model",
+   "role": "lean",
+   "crowd": null,
+   "flags": [
+    "form_conflict_note",
+    "live_vrs_override",
+    "roster_drift",
+    "stale_row_corrected",
+    "vrs_row_disambiguated"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1081521",
+   "competition": "CCT Europe 2026 Challengers #8",
+   "tier": "C",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-18T13:45:00Z",
+   "lock_utc": "2026-10-18T13:39:00Z",
+   "team_a": "ex-6666",
+   "team_b": "Privateer",
+   "hotspawn_url": "https://www.hotspawn.com/matches/ex-6666-vs-privateer-cct-europe-2026-challengers-8-1081521",
+   "fixture_url": "https://www.hotspawn.com/matches/ex-6666-vs-privateer-cct-europe-2026-challengers-8-1081521",
+   "points": 2,
+   "market": null,
+   "quotes": [],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.745402,
+    "vrs": {
+     "points_a": 994.0,
+     "points_b": 608.0,
+     "standing_a": "EU #80",
+     "standing_b": 271,
+     "vrs_name_a": "ex6666",
+     "vrs_name_b": "Privateer",
+     "delta": 386.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "Valve VRS global ladder 2026-10-05 (retained copy)"
+    }
+   },
+   "line": {
+    "prob_a": 0.745402,
+    "prob_b": 0.254598,
+    "pick": "ex-6666",
+    "basis": "model",
+    "market_weight": 0.0,
+    "pick_probability": 0.745402
+   },
+   "pick": "ex-6666",
+   "pick_probability": 0.745402,
+   "confidence": "Strong",
+   "basis": "model",
+   "role": "safe (crowd-aligned; ownership inflated - treat as sentiment)",
+   "crowd": {
+    "team_a": "ex-6666",
+    "team_b": "Privateer",
+    "crowd_a": 96,
+    "crowd_b": 4,
+    "total_picks": 251,
+    "matchup_mapped_from_ledger_fixture_id": "1081820",
+    "read_utc": "2026-10-17T00:52:00Z",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "crowd_divergence",
+    "live_vrs_override"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0271--privateer--ariant0-frazehh-jaustere-m1n1mal-prime.md",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1081522",
+   "competition": "CCT Europe 2026 Challengers #8",
+   "tier": "C",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-18T13:45:00Z",
+   "lock_utc": "2026-10-18T13:39:00Z",
+   "team_a": "antidaun",
+   "team_b": "Phantom Academy",
+   "hotspawn_url": "https://www.hotspawn.com/matches/antidaun-vs-phantom-academy-cct-europe-2026-challengers-8-1081522",
+   "fixture_url": "https://www.hotspawn.com/matches/antidaun-vs-phantom-academy-cct-europe-2026-challengers-8-1081522",
+   "points": 2,
+   "market": null,
+   "quotes": [],
+   "quote_rejections": [],
+   "model": {
+    "basis": "originated_elo",
+    "prob_a": 0.965575,
+    "elo": {
+     "rating_a": 1350.1,
+     "rating_b": 770.9,
+     "anchored_a": false,
+     "anchored_b": true,
+     "base": 1500.0,
+     "k": 20.0,
+     "passes": 8,
+     "anchor": "Valve VRS points, re-anchored every pass",
+     "n_matches": 224
+    }
+   },
+   "line": {
+    "prob_a": 0.965575,
+    "prob_b": 0.034425,
+    "pick": "antidaun",
+    "basis": "model",
+    "market_weight": 0.0,
+    "pick_probability": 0.965575
+   },
+   "pick": "antidaun",
+   "pick_probability": 0.965575,
+   "confidence": "Strong",
+   "basis": "model",
+   "role": "climb (contrarian: crowd owns the other side, model backs this pick)",
+   "crowd": {
+    "team_a": "antidaun",
+    "team_b": "Phantom Academy",
+    "crowd_a": 8,
+    "crowd_b": 92,
+    "total_picks": 82,
+    "matchup_mapped_from_ledger_fixture_id": "1080183",
+    "read_utc": "2026-10-17T00:52:00Z",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "crowd_divergence"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1079640",
+   "competition": "CCT Europe 2026 Series #11",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-18T17:00:00Z",
+   "lock_utc": "2026-10-18T16:54:00Z",
+   "team_a": "FORZE Reload",
+   "team_b": "BakS",
+   "hotspawn_url": null,
+   "fixture_url": "https://bo3.gg/tournaments/cct-europe-2026-series-11",
+   "points": 3,
+   "market": null,
+   "quotes": [],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.531961,
+    "vrs": {
+     "points_a": 1099.0,
+     "points_b": 1053.0,
+     "standing_a": "EU #59",
+     "standing_b": "EU #65",
+     "vrs_name_a": "FORZE Reload",
+     "vrs_name_b": "BAKS",
+     "delta": 46.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.531961,
+    "prob_b": 0.468039,
+    "pick": "FORZE Reload",
+    "basis": "model",
+    "market_weight": 0.0,
+    "pick_probability": 0.531961
+   },
+   "pick": "FORZE Reload",
+   "pick_probability": 0.531961,
+   "confidence": "Toss-up",
+   "basis": "model",
+   "role": "toss-up",
+   "crowd": null,
+   "flags": [
+    "live_vrs_override"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1081526",
+   "competition": "DraculaN Season 7",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-19T09:00:00Z",
+   "lock_utc": "2026-10-19T08:54:00Z",
+   "team_a": "Infinite",
+   "team_b": "Insiders",
+   "hotspawn_url": null,
+   "fixture_url": "https://melbet.com/en/line/esports",
+   "points": 3,
+   "market": {
+    "prob_a": 0.655172,
+    "prob_b": 0.344828,
+    "n_sources": 1,
+    "sources": [
+     "melbet"
+    ],
+    "spread_a": null,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet (1xBet platform)",
+     "decimal_a": 1.42,
+     "decimal_b": 2.698,
+     "prob_a": 0.655172,
+     "retrieved_utc": "2026-10-17T00:19:45Z",
+     "public_url": "https://melbet.com/en/line/esports",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [],
+   "model": null,
+   "line": {
+    "prob_a": 0.655172,
+    "prob_b": 0.344828,
+    "pick": "Infinite",
+    "basis": "market",
+    "market_weight": 1.0,
+    "pick_probability": 0.655172
+   },
+   "pick": "Infinite",
+   "pick_probability": 0.655172,
+   "confidence": "Strong",
+   "basis": "market",
+   "role": "safe (crowd-aligned; ownership inflated - treat as sentiment)",
+   "crowd": {
+    "team_a": "INFINITE",
+    "team_b": "Insiders",
+    "crowd_a": 100,
+    "crowd_b": 0,
+    "total_picks": 234,
+    "matchup_mapped_from_ledger_fixture_id": "1081869",
+    "read_utc": "2026-10-17T00:52:00Z",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "crowd_divergence",
+    "single_source"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://melbet.com/en/line/esports",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1081527",
+   "competition": "DraculaN Season 7",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-19T09:00:00Z",
+   "lock_utc": "2026-10-19T08:54:00Z",
+   "team_a": "aimclub",
+   "team_b": "BASEMENT BOYS",
+   "hotspawn_url": null,
+   "fixture_url": "https://bo3.gg/matches/aimclub-vs-basement-boys-19-10-2026",
+   "points": 3,
+   "market": {
+    "prob_a": 0.453083,
+    "prob_b": 0.546917,
+    "n_sources": 2,
+    "sources": [
+     "melbet",
+     "thunderpick"
+    ],
+    "spread_a": 0.0,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet (1xBet platform)",
+     "decimal_a": 2.04,
+     "decimal_b": 1.69,
+     "prob_a": 0.453083,
+     "retrieved_utc": "2026-10-17T00:19:45Z",
+     "public_url": "https://melbet.com/en/line/esports",
+     "retained_from": "fe803b80 snapshot"
+    },
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (via bo3.gg)",
+     "decimal_a": 2.04,
+     "decimal_b": 1.69,
+     "prob_a": 0.453083,
+     "retrieved_utc": "2026-10-17T00:21:36Z",
+     "public_url": "https://bo3.gg/matches/aimclub-vs-basement-boys-19-10-2026",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.569129,
+    "vrs": {
+     "points_a": 1102.0,
+     "points_b": 1002.0,
+     "standing_a": "EU #58",
+     "standing_b": "EU #77",
+     "vrs_name_a": "aimclub",
+     "vrs_name_b": "BASEMENT BOYS",
+     "delta": 100.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "bo3.gg current five overlaps row #77 on 4/5 (ERSIN->XELLOW); recent W 2-1 ARGOS (Oct 11), W 1-0 at ENCE (Oct 10); live ladder EU#58/1102 same lineage",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.47049,
+    "prob_b": 0.52951,
+    "pick": "BASEMENT BOYS",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.52951
+   },
+   "pick": "BASEMENT BOYS",
+   "pick_probability": 0.52951,
+   "confidence": "Toss-up",
+   "basis": "market+model",
+   "role": "toss-up",
+   "crowd": {
+    "team_a": "aimclub",
+    "team_b": "BASEMENT BOYS",
+    "crowd_a": 84,
+    "crowd_b": 16,
+    "total_picks": 636,
+    "matchup_mapped_from_ledger_fixture_id": "1080014",
+    "read_utc": "2026-10-17T00:52:00Z",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "crowd_divergence",
+    "live_vrs_override",
+    "market_model_divergence",
+    "stale_row_corrected",
+    "vrs_row_disambiguated"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://bo3.gg/matches/aimclub-vs-basement-boys-19-10-2026",
+    "https://melbet.com/en/line/esports",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1081528",
+   "competition": "DraculaN Season 7",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-19T09:00:00Z",
+   "lock_utc": "2026-10-19T08:54:00Z",
+   "team_a": "BC.Game",
+   "team_b": "Drama",
+   "hotspawn_url": null,
+   "fixture_url": "https://melbet.com/en/line/esports",
+   "points": 3,
+   "market": {
+    "prob_a": 0.824451,
+    "prob_b": 0.175549,
+    "n_sources": 1,
+    "sources": [
+     "melbet"
+    ],
+    "spread_a": null,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet (1xBet platform)",
+     "decimal_a": 1.12,
+     "decimal_b": 5.26,
+     "prob_a": 0.824451,
+     "retrieved_utc": "2026-10-17T00:19:45Z",
+     "public_url": "https://melbet.com/en/line/esports",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.798155,
+    "vrs": {
+     "points_a": 1304.0,
+     "points_b": 810.0,
+     "standing_a": "AS #1",
+     "standing_b": "EU #114",
+     "vrs_name_a": "BC.Game",
+     "vrs_name_b": "Drama",
+     "delta": 494.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Asia regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.820507,
+    "prob_b": 0.179493,
+    "pick": "BC.Game",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.820507
+   },
+   "pick": "BC.Game",
+   "pick_probability": 0.820507,
+   "confidence": "Strong",
+   "basis": "market+model",
+   "role": "safe (crowd-aligned; ownership inflated - treat as sentiment)",
+   "crowd": {
+    "team_a": "BC.Game",
+    "team_b": "Drama",
+    "crowd_a": 100,
+    "crowd_b": 0,
+    "total_picks": 158,
+    "matchup_mapped_from_ledger_fixture_id": "1081611",
+    "read_utc": "2026-10-17T00:52:00Z",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "crowd_divergence",
+    "live_vrs_override",
+    "single_source"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://melbet.com/en/line/esports",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Asia",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1081529",
+   "competition": "DraculaN Season 7",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-19T09:00:00Z",
+   "lock_utc": "2026-10-19T08:54:00Z",
+   "team_a": "Nexus",
+   "team_b": "WROTBERRY",
+   "hotspawn_url": null,
+   "fixture_url": "https://bo3.gg/matches/wbt-vs-nexus-19-10-2026",
+   "points": 3,
+   "market": {
+    "prob_a": 0.462366,
+    "prob_b": 0.537634,
+    "n_sources": 1,
+    "sources": [
+     "thunderpick"
+    ],
+    "spread_a": null,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (via bo3.gg)",
+     "decimal_a": 2.0,
+     "decimal_b": 1.72,
+     "prob_a": 0.462366,
+     "retrieved_utc": "2026-10-17T00:21:36Z",
+     "public_url": "https://bo3.gg/matches/wbt-vs-nexus-19-10-2026",
+     "retained_from": "fe803b80 snapshot",
+     "note": "source lists the teams home/away swapped; prices mapped to HotSpawn order"
+    }
+   ],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.387837,
+    "vrs": {
+     "points_a": 1050.0,
+     "points_b": 1214.0,
+     "standing_a": "EU #67",
+     "standing_b": "EU #41",
+     "vrs_name_a": "Nexus",
+     "vrs_name_b": "WBT",
+     "delta": -164.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.451187,
+    "prob_b": 0.548813,
+    "pick": "WROTBERRY",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.548813
+   },
+   "pick": "WROTBERRY",
+   "pick_probability": 0.548813,
+   "confidence": "Toss-up",
+   "basis": "market+model",
+   "role": "toss-up",
+   "crowd": {
+    "team_a": "Nexus",
+    "team_b": "WROTBERRY",
+    "crowd_a": 88,
+    "crowd_b": 12,
+    "total_picks": 105,
+    "matchup_mapped_from_ledger_fixture_id": "1081646",
+    "read_utc": "2026-10-16T20:50:00Z (retained)",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "alias_applied",
+    "crowd_divergence",
+    "live_vrs_override",
+    "single_source"
+   ],
+   "aliases_applied": [
+    [
+     "wrotberry->wbt"
+    ]
+   ],
+   "alias_notes": [
+    "HotSpawn lists the Ukrainian roster as WROTBERRY; Valve's official ladder carries the same roster (DemQQ, Psycho, s4ltovsk1yy, Smash, tyr1k) as WBT, and HLTV team 13683 (page title now WBT, formerly WROTBERRY) lists that exact five plus the Oct-17 HAVU and Oct-19 Nexus fixtures that match HotSpawn's WROTBERRY fixtures on opponent and date."
+   ],
+   "twc": null,
+   "sources": [
+    "https://bo3.gg/matches/wbt-vs-nexus-19-10-2026",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1081530",
+   "competition": "DraculaN Season 7",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-19T10:45:00Z",
+   "lock_utc": "2026-10-19T10:39:00Z",
+   "team_a": "Iberian Soul",
+   "team_b": "HyperSpirit",
+   "hotspawn_url": null,
+   "fixture_url": "https://bo3.gg/matches/iberian-soul-vs-hyperspirit-19-10-2026",
+   "points": 3,
+   "market": {
+    "prob_a": 0.656855,
+    "prob_b": 0.343145,
+    "n_sources": 2,
+    "sources": [
+     "melbet",
+     "thunderpick"
+    ],
+    "spread_a": 0.003365,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet (1xBet platform)",
+     "decimal_a": 1.42,
+     "decimal_b": 2.698,
+     "prob_a": 0.655172,
+     "retrieved_utc": "2026-10-17T00:19:45Z",
+     "public_url": "https://melbet.com/en/line/esports",
+     "retained_from": "fe803b80 snapshot"
+    },
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (via bo3.gg)",
+     "decimal_a": 1.4,
+     "decimal_b": 2.7,
+     "prob_a": 0.658537,
+     "retrieved_utc": "2026-10-17T00:21:36Z",
+     "public_url": "https://bo3.gg/matches/iberian-soul-vs-hyperspirit-19-10-2026",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.750126,
+    "vrs": {
+     "points_a": 1200.0,
+     "points_b": 805.0,
+     "standing_a": "EU #42",
+     "standing_b": "EU #115",
+     "vrs_name_a": "Iberian Soul",
+     "vrs_name_b": "HYPERSPIRIT",
+     "delta": 395.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.670846,
+    "prob_b": 0.329154,
+    "pick": "Iberian Soul",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.670846
+   },
+   "pick": "Iberian Soul",
+   "pick_probability": 0.670846,
+   "confidence": "Strong",
+   "basis": "market+model",
+   "role": "safe (crowd-aligned; ownership inflated - treat as sentiment)",
+   "crowd": {
+    "team_a": "Iberian Soul",
+    "team_b": "HYPERSPIRIT",
+    "crowd_a": 85,
+    "crowd_b": 15,
+    "total_picks": 269,
+    "matchup_mapped_from_ledger_fixture_id": "1079623",
+    "read_utc": "2026-10-16T20:50:00Z (retained)",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "crowd_divergence",
+    "live_vrs_override"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://bo3.gg/matches/iberian-soul-vs-hyperspirit-19-10-2026",
+    "https://melbet.com/en/line/esports",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1081531",
+   "competition": "DraculaN Season 7",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-19T10:45:00Z",
+   "lock_utc": "2026-10-19T10:39:00Z",
+   "team_a": "Sashi",
+   "team_b": "mouz NXT",
+   "hotspawn_url": null,
+   "fixture_url": "https://bo3.gg/matches/sashi-esport-vs-mouz-nxt-19-10-2026",
+   "points": 3,
+   "market": {
+    "prob_a": 0.623763,
+    "prob_b": 0.376237,
+    "n_sources": 2,
+    "sources": [
+     "melbet",
+     "thunderpick"
+    ],
+    "spread_a": 0.008755,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet (1xBet platform)",
+     "decimal_a": 1.5,
+     "decimal_b": 2.441,
+     "prob_a": 0.619386,
+     "retrieved_utc": "2026-10-17T00:19:45Z",
+     "public_url": "https://melbet.com/en/line/esports",
+     "retained_from": "fe803b80 snapshot"
+    },
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (via bo3.gg)",
+     "decimal_a": 1.48,
+     "decimal_b": 2.5,
+     "prob_a": 0.628141,
+     "retrieved_utc": "2026-10-17T00:21:36Z",
+     "public_url": "https://bo3.gg/matches/sashi-esport-vs-mouz-nxt-19-10-2026",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.612163,
+    "vrs": {
+     "points_a": 1042.0,
+     "points_b": 878.0,
+     "standing_a": "EU #68",
+     "standing_b": "EU #98",
+     "vrs_name_a": "Sashi",
+     "vrs_name_b": "MOUZ NXT",
+     "delta": 164.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "bo3.gg current five matches row #137 exactly (opdust benched); the higher-standing duplicate carries Flierax, live at Inner Circle Academy; live ladder EU#98/878 same five"
+    }
+   },
+   "line": {
+    "prob_a": 0.622023,
+    "prob_b": 0.377977,
+    "pick": "Sashi",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.622023
+   },
+   "pick": "Sashi",
+   "pick_probability": 0.622023,
+   "confidence": "Solid",
+   "basis": "market+model",
+   "role": "safe (crowd-aligned; ownership inflated - treat as sentiment)",
+   "crowd": {
+    "team_a": "Sashi",
+    "team_b": "mouz NXT",
+    "crowd_a": 84,
+    "crowd_b": 16,
+    "total_picks": 259,
+    "matchup_mapped_from_ledger_fixture_id": "1080294",
+    "read_utc": "2026-10-16T20:50:00Z (retained)",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "crowd_divergence",
+    "live_vrs_override",
+    "stale_row_corrected",
+    "vrs_row_disambiguated"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://bo3.gg/matches/sashi-esport-vs-mouz-nxt-19-10-2026",
+    "https://melbet.com/en/line/esports",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1081532",
+   "competition": "DraculaN Season 7",
+   "tier": "B",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-19T10:45:00Z",
+   "lock_utc": "2026-10-19T10:39:00Z",
+   "team_a": "ASTRAL",
+   "team_b": "Leo",
+   "hotspawn_url": null,
+   "fixture_url": "https://melbet.com/en/line/esports",
+   "points": 3,
+   "market": {
+    "prob_a": 0.453083,
+    "prob_b": 0.546917,
+    "n_sources": 1,
+    "sources": [
+     "melbet"
+    ],
+    "spread_a": null,
+    "rule": "median of per-source no-vig probabilities"
+   },
+   "quotes": [
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet (1xBet platform)",
+     "decimal_a": 2.04,
+     "decimal_b": 1.69,
+     "prob_a": 0.453083,
+     "retrieved_utc": "2026-10-17T00:19:45Z",
+     "public_url": "https://melbet.com/en/line/esports",
+     "retained_from": "fe803b80 snapshot"
+    }
+   ],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.515302,
+    "vrs": {
+     "points_a": 991.0,
+     "points_b": 969.0,
+     "standing_a": "EU #81",
+     "standing_b": "EU #86",
+     "vrs_name_a": "ASTRAL",
+     "vrs_name_b": "Leo",
+     "delta": 22.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)",
+     "join_b": "known Leo five matches row #112 exactly; row #340 holds ex-6666 players amster/kL1o = stale academy lineage; live ladder EU#86/969 same five"
+    }
+   },
+   "line": {
+    "prob_a": 0.462416,
+    "prob_b": 0.537584,
+    "pick": "Leo",
+    "basis": "market+model",
+    "market_weight": 0.85,
+    "pick_probability": 0.537584
+   },
+   "pick": "Leo",
+   "pick_probability": 0.537584,
+   "confidence": "Toss-up",
+   "basis": "market+model",
+   "role": "safe (crowd-aligned; ownership inflated - treat as sentiment)",
+   "crowd": {
+    "team_a": "ASTRAL",
+    "team_b": "Leo",
+    "crowd_a": 24,
+    "crowd_b": 76,
+    "total_picks": 145,
+    "matchup_mapped_from_ledger_fixture_id": "1080194",
+    "read_utc": "2026-10-16T20:50:00Z (retained)",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "crowd_divergence",
+    "live_vrs_override",
+    "single_source",
+    "stale_row_corrected",
+    "vrs_row_disambiguated"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://melbet.com/en/line/esports",
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe"
+   ]
+  },
+  {
+   "fixture_id": "1081861",
+   "competition": "VOID Autumn Cup 2026",
+   "tier": "C",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-20T03:00:00Z",
+   "lock_utc": "2026-10-20T02:54:00Z",
+   "team_a": "Lynn Vision",
+   "team_b": "Morningstar",
+   "hotspawn_url": null,
+   "fixture_url": null,
+   "points": 2,
+   "market": null,
+   "quotes": [],
+   "quote_rejections": [],
+   "model": {
+    "basis": "originated_elo",
+    "prob_a": 0.821396,
+    "elo": {
+     "rating_a": 1173.5,
+     "rating_b": 908.4,
+     "anchored_a": true,
+     "anchored_b": false,
+     "base": 1500.0,
+     "k": 20.0,
+     "passes": 8,
+     "anchor": "Valve VRS points, re-anchored every pass",
+     "n_matches": 224
+    }
+   },
+   "line": {
+    "prob_a": 0.821396,
+    "prob_b": 0.178604,
+    "pick": "Lynn Vision",
+    "basis": "model",
+    "market_weight": 0.0,
+    "pick_probability": 0.821396
+   },
+   "pick": "Lynn Vision",
+   "pick_probability": 0.821396,
+   "confidence": "Strong",
+   "basis": "model",
+   "role": "safe (crowd-aligned; ownership inflated - treat as sentiment)",
+   "crowd": {
+    "team_a": "Lynn Vision",
+    "team_b": "Morningstar",
+    "crowd_a": 100,
+    "crowd_b": 0,
+    "total_picks": 107,
+    "matchup_mapped_from_ledger_fixture_id": "1079990",
+    "read_utc": "2026-10-16T20:50:00Z (retained)",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "crowd_divergence"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Asia"
+   ]
+  },
+  {
+   "fixture_id": "1081862",
+   "competition": "VOID Autumn Cup 2026",
+   "tier": "C",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-20T05:00:00Z",
+   "lock_utc": "2026-10-20T04:54:00Z",
+   "team_a": "Rare Atom",
+   "team_b": "Alter Ego",
+   "hotspawn_url": null,
+   "fixture_url": null,
+   "points": 2,
+   "market": null,
+   "quotes": [],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.460425,
+    "vrs": {
+     "points_a": 818.0,
+     "points_b": 875.0,
+     "standing_a": "AS #17",
+     "standing_b": "AS #13",
+     "vrs_name_a": "Rare Atom",
+     "vrs_name_b": "Alter Ego",
+     "delta": -57.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Asia regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Asia regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.460425,
+    "prob_b": 0.539575,
+    "pick": "Alter Ego",
+    "basis": "model",
+    "market_weight": 0.0,
+    "pick_probability": 0.539575
+   },
+   "pick": "Alter Ego",
+   "pick_probability": 0.539575,
+   "confidence": "Toss-up",
+   "basis": "model",
+   "role": "toss-up",
+   "crowd": {
+    "team_a": "Rare Atom",
+    "team_b": "Alter Ego",
+    "crowd_a": 56,
+    "crowd_b": 44,
+    "total_picks": 191,
+    "matchup_mapped_from_ledger_fixture_id": "1081890",
+    "read_utc": "2026-10-16T20:50:00Z (retained)",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "live_vrs_override"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Asia"
+   ]
+  },
+  {
+   "fixture_id": "1081863",
+   "competition": "VOID Autumn Cup 2026",
+   "tier": "C",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-20T07:00:00Z",
+   "lock_utc": "2026-10-20T06:54:00Z",
+   "team_a": "Chinggis Warriors",
+   "team_b": "WXM",
+   "hotspawn_url": null,
+   "fixture_url": "https://play.hotspawn.com/lobby",
+   "points": 2,
+   "market": null,
+   "quotes": [],
+   "quote_rejections": [],
+   "model": null,
+   "line": null,
+   "pick": null,
+   "pick_probability": null,
+   "confidence": "Unresolved",
+   "basis": "blank",
+   "role": null,
+   "crowd": {
+    "team_a": "Chinggis Warriors",
+    "team_b": "WXM",
+    "crowd_a": 100,
+    "crowd_b": 0,
+    "total_picks": 498,
+    "read_utc": "2026-10-16T20:50:00Z (retained)",
+    "role": "context only - sentiment, never a price"
+   },
+   "flags": [
+    "no_derived_line",
+    "no_published_price",
+    "policy_blank",
+    "unrated_opponent"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Asia"
+   ]
+  },
+  {
+   "fixture_id": "1081864",
+   "competition": "VOID Autumn Cup 2026",
+   "tier": "C",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-10-20T09:00:00Z",
+   "lock_utc": "2026-10-20T08:54:00Z",
+   "team_a": "NEXVOID",
+   "team_b": "Vitalem Aerem",
+   "hotspawn_url": null,
+   "fixture_url": null,
+   "points": 2,
+   "market": null,
+   "quotes": [],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.719232,
+    "vrs": {
+     "points_a": 1049.0,
+     "points_b": 711.0,
+     "standing_a": "AS #8",
+     "standing_b": "AS #21",
+     "vrs_name_a": "NEXVOID",
+     "vrs_name_b": "Vitalem Aerem",
+     "delta": 338.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Asia regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Asia regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.719232,
+    "prob_b": 0.280768,
+    "pick": "NEXVOID",
+    "basis": "model",
+    "market_weight": 0.0,
+    "pick_probability": 0.719232
+   },
+   "pick": "NEXVOID",
+   "pick_probability": 0.719232,
+   "confidence": "Strong",
+   "basis": "model",
+   "role": "safe",
+   "crowd": null,
+   "flags": [
+    "live_vrs_override"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Asia"
+   ]
+  },
+  {
+   "fixture_id": "1080200",
+   "competition": "FRAG University 2026",
+   "tier": "C",
+   "stage": "waiting for information",
+   "best_of": null,
+   "start_utc": "2026-11-12T00:00:00Z",
+   "lock_utc": "2026-11-11T23:54:00Z",
+   "team_a": "Wildcard",
+   "team_b": "DENDELE",
+   "hotspawn_url": null,
+   "fixture_url": null,
+   "points": 2,
+   "market": null,
+   "quotes": [],
+   "quote_rejections": [],
+   "model": {
+    "basis": "valve_vrs",
+    "prob_a": 0.484003,
+    "vrs": {
+     "points_a": 1332.0,
+     "points_b": 1355.0,
+     "standing_a": "AM #8",
+     "standing_b": "AM #7",
+     "vrs_name_a": "Wildcard",
+     "vrs_name_b": "DENDELE",
+     "delta": -23.0,
+     "k": 0.496964251390143,
+     "rd": 75.0,
+     "join_a": "HLTV live Valve-ranking read 2026-10-16 (Americas regional ladder)",
+     "join_b": "HLTV live Valve-ranking read 2026-10-16 (Americas regional ladder)"
+    }
+   },
+   "line": {
+    "prob_a": 0.484003,
+    "prob_b": 0.515997,
+    "pick": "DENDELE",
+    "basis": "model",
+    "market_weight": 0.0,
+    "pick_probability": 0.515997
+   },
+   "pick": "DENDELE",
+   "pick_probability": 0.515997,
+   "confidence": "Toss-up",
+   "basis": "model",
+   "role": "toss-up",
+   "crowd": null,
+   "flags": [
+    "far_future_scheduling",
+    "live_vrs_override",
+    "placeholder_scheduling"
+   ],
+   "aliases_applied": [],
+   "alias_notes": [],
+   "twc": null,
+   "sources": [
+    "https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Americas"
+   ]
+  }
+ ],
+ "twc": {
+  "event": {
+   "name": "Thunderpick World Championship 2026",
+   "hltv_event_id": 8932,
+   "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+   "dates": "Oct 14 - Oct 18, 2026",
+   "location": "Malta",
+   "prize_pool_usd": 1000000,
+   "prize_pool_note": "HLTV event page: '$1,000,000' total, 'Player Share: $500,000 / Club Share: $500,000'",
+   "teams_count": 8,
+   "format": "Two GSL double-elimination groups (Bo3) -> single-elimination playoffs (semis Bo3, grand final Bo5, 3rd-place decider Bo3)",
+   "format_source": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+   "teams": [
+    "FURIA",
+    "Falcons",
+    "Aurora",
+    "Legacy",
+    "PARIVISION",
+    "BETBOOM",
+    "9z",
+    "Ninjas in Pyjamas"
+   ],
+   "nip_replacement_note": "Ninjas in Pyjamas entered as the team replacement; HLTV news 45688 headline: 'Thunderpick World Championship matchups announced with Virtus.pro replaced by NIP'",
+   "nip_replacement_source": "https://www.hltv.org/news/45688/thunderpick-world-championship-matchups-announced-with-virtuspro-replaced-by-nip"
+  },
+  "results": {
+   "day1_2026_10_14": [
+    {
+     "match_id_hltv": 2399384,
+     "group": "A",
+     "stage": "opening",
+     "winner": "9z",
+     "loser": "Aurora",
+     "series": "2-0",
+     "maps": "Inferno 9z 13-11 (8:4; 5:7); Nuke 9z 13-1 (11:1; 2:0); Dust2 left over (not played)",
+     "veto": "9z removed Anubis; Aurora removed Ancient; 9z picked Inferno; Aurora picked Nuke; 9z removed Mirage; Aurora removed Cache; Dust2 left over",
+     "url": "https://www.hltv.org/matches/2399384/9z-vs-aurora-thunderpick-world-championship-2026",
+     "note": "THE DAY-1 UPSET. Independently re-read on the HLTV match page this session: scoreboard '9z 2 : 0 Aurora', Inferno 13-11, Nuke 13-1. mvp-tier performance by luchov (38-20 K-D, 1.61 rating). The 98dcfc7e audit capture recorded Nuke 16-14 — that capture is WRONG and stays flagged; seven other retained captures and this direct read all say 13-1."
+    },
+    {
+     "match_id_hltv": 2399385,
+     "group": "A",
+     "stage": "opening",
+     "winner": "Falcons",
+     "loser": "Ninjas in Pyjamas",
+     "series": "2-0",
+     "maps": "Ancient Falcons 16-13 (overtime; 8:4; 4:8 +4:1); Dust2 Falcons 13-6 (8:4; 5:2)",
+     "url": "https://www.hltv.org/matches/2399385/falcons-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026"
+    },
+    {
+     "match_id_hltv": 2399386,
+     "group": "B",
+     "stage": "opening",
+     "winner": "Legacy",
+     "loser": "PARIVISION",
+     "series": "2-0",
+     "maps": "Dust2 Legacy 13-11 (8:4; 5:7); Mirage Legacy 16-14 (overtime; 6:6; 6:6 +4:2)",
+     "url": "https://www.hltv.org/matches/2399386/legacy-vs-parivision-thunderpick-world-championship-2026"
+    },
+    {
+     "match_id_hltv": 2399387,
+     "group": "B",
+     "stage": "opening",
+     "winner": "FURIA",
+     "loser": "BETBOOM",
+     "series": "2-0",
+     "maps": "Ancient FURIA 13-10 (4:8; 9:2); Mirage FURIA 13-9 (4:8; 9:1)",
+     "url": "https://www.hltv.org/matches/2399387/furia-vs-betboom-thunderpick-world-championship-2026"
+    }
+   ],
+   "day2_2026_10_15": [
+    {
+     "match_id_hltv": 2399408,
+     "group": "A",
+     "stage": "elimination",
+     "winner": "Aurora",
+     "loser": "Ninjas in Pyjamas",
+     "series": "2-0",
+     "maps": "Cache Aurora 13-9 (7:5; 6:4); Dust2 Aurora 13-7 (9:3; 4:4)",
+     "url": "https://www.hltv.org/matches/2399408/aurora-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026"
+    },
+    {
+     "match_id_hltv": 2399409,
+     "group": "A",
+     "stage": "winners",
+     "winner": "Falcons",
+     "loser": "9z",
+     "series": "2-1",
+     "maps": "Nuke 9z 9-13 (4:8; 5:5); Mirage 9z 13-8 (9:3; 4:5); Dust2 9z 9-13 (4:8; 5:5)",
+     "url": "https://www.hltv.org/matches/2399409/9z-vs-falcons-thunderpick-world-championship-2026"
+    },
+    {
+     "match_id_hltv": 2399410,
+     "group": "B",
+     "stage": "elimination",
+     "winner": "BETBOOM",
+     "loser": "PARIVISION",
+     "series": "2-1",
+     "maps": "Ancient PARIVISION 13-10 (4:8; 9:2); Anubis PARIVISION 4-13 (2:10; 2:3); Mirage PARIVISION 7-13 (3:9; 4:4)",
+     "url": "https://www.hltv.org/matches/2399410/parivision-vs-betboom-thunderpick-world-championship-2026",
+     "news_url": "https://www.hltv.org/news/45729/betboom-eliminate-parivision-from-twc",
+     "news_note": "HLTV news 45729 (15-10-2026 14:15): reverse sweep; xiELO 2.82 rating on Ancient (19-4 K-D, 136.4 ADR); BetBoom at 89.1% simulated Singapore Major qualification chance per HLTV's simulation page."
+    },
+    {
+     "match_id_hltv": 2399411,
+     "group": "B",
+     "stage": "winners",
+     "winner": "FURIA",
+     "loser": "Legacy",
+     "series": "2-1",
+     "maps": "Cache Legacy 13-10 (7:5; 6:5); Inferno Legacy 5-13 (4:8; 1:5); Mirage Legacy 8-13 (3:9; 5:4)",
+     "url": "https://www.hltv.org/matches/2399411/legacy-vs-furia-thunderpick-world-championship-2026"
+    }
+   ],
+   "day3_2026_10_16": [
+    {
+     "match_id_hltv": 2399412,
+     "group": "A",
+     "stage": "decider",
+     "winner": "Aurora",
+     "loser": "9z",
+     "series": "2-0",
+     "maps": "Cache Aurora 13-11; Inferno Aurora 13-4",
+     "veto_note": "Aurora opted against Nuke (their day-1 loss map) and picked Cache; Inferno replayed",
+     "url": "https://www.hltv.org/matches/2399412/aurora-vs-9z-thunderpick-world-championship-2026",
+     "news_url": "https://www.hltv.org/news/45736/aurora-beat-9z-to-secure-third-consecutive-top-four-appearance",
+     "news_note": "HLTV news 45736 (16-10-2026 12:21): avenge verified; kyxsan 1.45 Rating3.0 (33-20 K-D, 75.5 ADR), Jimpphat 1.31, Wicadia 1.29, woxic 1.05, XANTARES 0.95; Wicadia 'marvelous AWP highlight' on Inferno CT; 9z eliminated — fifth consecutive group-stage exit; Aurora's third consecutive top-four (StarSeries runner-up, EPL S24 third)."
+    },
+    {
+     "match_id_hltv": 2399413,
+     "group": "B",
+     "stage": "decider",
+     "winner": "BETBOOM",
+     "loser": "Legacy",
+     "series": "2-1",
+     "maps": "Nuke BETBOOM 16-13 (4:8; 8:4 +4:1); Dust2 BETBOOM 11-13 (7:5; 4:8); Mirage BETBOOM 13-11 (7:5; 6:6)",
+     "veto": "BETBOOM removed Inferno; Legacy removed Anubis; BETBOOM picked Nuke; Legacy picked Dust2; BETBOOM removed Cache; Legacy removed Ancient; Mirage left over",
+     "url": "https://www.hltv.org/matches/2399413/betboom-vs-legacy-thunderpick-world-championship-2026",
+     "note": "SECOND DAY-3 UPSET: earlier desks (169d010a, b3b89eec) had priced Legacy 60.77% for this decider; BETBOOM won anyway. Magnojez led BETBOOM (62-50 K-D, 1.17)."
+    }
+   ],
+   "playoff_bracket": {
+    "semifinal_1": {
+     "teams": [
+      "FURIA",
+      "Aurora"
+     ],
+     "hltv_match_id": 2399414,
+     "url": "https://www.hltv.org/matches/2399414/furia-vs-aurora-thunderpick-world-championship-2026",
+     "start_utc": "2026-10-17T14:00:00Z",
+     "start_evidence": "HotSpawn fixture start_utc 14:00Z; Polymarket market text 'October 17, 2026 at 10:00 AM ET' (=14:00Z); egamersworld '17.10.26 16:00' (UTC+2 display = 14:00Z); HLTV renders '10:00' (fetch-server UTC-4 display) and a live countdown consistent with 14:00Z."
+    },
+    "semifinal_2": {
+     "teams": [
+      "Falcons",
+      "BETBOOM"
+     ],
+     "hltv_match_id": 2399415,
+     "url": "https://www.hltv.org/matches/2399415/falcons-vs-betboom-thunderpick-world-championship-2026",
+     "start_utc": "2026-10-17T17:00:00Z",
+     "start_evidence": "HotSpawn fixture start_utc 17:00Z; egamersworld '17.10.26 19:00' (UTC+2 display = 17:00Z); Polymarket 'Tomorrow 1:00 PM' ET (=17:00Z); HLTV renders '13:00' (UTC-4 display)."
+    },
+    "grand_final": {
+     "teams": [
+      "TBD",
+      "TBD"
+     ],
+     "note": "Winner SF1 vs Winner SF2; HLTV event page shows both slots TBD at read time."
+    },
+    "third_place": {
+     "teams": [
+      "TBD",
+      "TBD"
+     ],
+     "note": "3rd Place Decider Match listed TBD on the HLTV event page at read time."
+    }
+   }
+  },
+  "aurora_roster_verdict": {
+   "premise_check": "The user brief states 'There was a recent roster change for aurora.' VERDICT: the most recent HLTV-verified Aurora roster change is the JULY 2026 international rebuild — NOT an October change. No October 2026 Aurora roster change was found on HLTV (team page transfer timeline, read 2026-10-17), Liquipedia, or news search. The current five played TWC together and also played the Esports World Cup 2026 and StarSeries together: the lineup is ~3 months / ~5 events onboarded, not new.",
+   "current_roster": [
+    "XANTARES (TR)",
+    "woxic (TR)",
+    "Wicadia (TR)",
+    "Jimpphat (FI)",
+    "kyxsan (MK, IGL)"
+   ],
+   "coach": "ash (Ashley Battye, UK)",
+   "roster_source": "https://www.hltv.org/team/11861/aurora (read 2026-10-17T00:53Z; identical five listed on the TWC decider match page stats)",
+   "rebuild_timeline": [
+    {
+     "date": "2026-06-29",
+     "event": "Coach Fabre parts ways (HLTV-reported)",
+     "source": "https://www.hltv.org/news/45057/jimpphat-signs-with-aurora (context)"
+    },
+    {
+     "date": "2026-07-02",
+     "event": "MAJ3R steps down from active roster (stays with org); soulfly benched",
+     "source": "https://liquipedia.net/counterstrike/Aurora_Gaming"
+    },
+    {
+     "date": "2026-07-03",
+     "event": "Jimpphat signed from MOUZ; ash signed as head coach (first coaching job since leaving GamerLegion Oct 2025)",
+     "source": "https://www.hltv.org/news/45057/jimpphat-signs-with-aurora"
+    },
+    {
+     "date": "2026-07-08",
+     "event": "kyxsan signed from Team Falcons as IGL, completing the six-day rebuild",
+     "source": "https://www.hltv.org/news/45082/official-aurora-complete-rebuild-with-kyxsan"
+    },
+    {
+     "date": "2026-09-13",
+     "event": "XomA acquired from Virtus.pro as ASSISTANT COACH (staff only, not a playing-roster change)",
+     "source": "https://liquipedia.net/counterstrike/Aurora_Gaming",
+     "flag": "date read from Liquipedia page; HLTV confirmation not found — flagged unverified-secondary"
+    }
+   ],
+   "deko_premise": "dko premise FALSE for October 2026: Denis 'deko' Zhukov moved to Aurora's inactive roster on 2024-11-28 (HLTV news 40408) and transferred Aurora -> WW on 2025-11-16 (HLTV team timeline). He has not been in the Aurora active lineup since November 2024.",
+   "deko_sources": [
+    "https://www.hltv.org/news/40408/deko-takes-break-from-competition",
+    "https://www.hltv.org/team/12967/ww (transfer timeline entry)"
+   ]
+  }
+ },
+ "unresolved": [
+  {
+   "fixture_id": "1081863",
+   "match": "Chinggis Warriors vs WXM",
+   "start_utc": "2026-10-20T07:00:00Z",
+   "competition": "VOID Autumn Cup 2026",
+   "hotspawn_url": null,
+   "fixture_url": null,
+   "directional_pick": "Chinggis Warriors",
+   "attempt_ledger": [
+    {
+     "step": "HotSpawn lobby + API inventory",
+     "result": "fixture 1081863 confirmed open, Chinggis Warriors vs WXM, VOID Autumn Cup 2026, 2026-10-20T07:00Z",
+     "url": "https://play.hotspawn.com/lobby"
+    },
+    {
+     "step": "egamersworld match page",
+     "result": "fixture exists with lineups (Chinggis: sk0R, cool4st, ROUX, fury5k, tikuak) but odds are an untrained 1.80/1.80 placeholder with 0% vote - rejected as a price",
+     "url": "https://egamersworld.com/counterstrike/match/EJcHRdr5Vx/chinggis-warriors-vs-wxm-_ddme1I7dZ"
+    },
+    {
+     "step": "Polymarket esports CS2 event pages",
+     "result": "no market exists for this fixture",
+     "url": "https://polymarket.com/esports/cs2/"
+    },
+    {
+     "step": "Pinnacle / Bovada / Melbet / Kalshi / Thunderpick (via retained bo3.gg bet_updates)",
+     "result": "no two-sided price published for this fixture",
+     "url": "https://bo3.gg/matches/"
+    },
+    {
+     "step": "bo3.gg VOID Autumn Cup tournament page",
+     "result": "fixture confirmed (as 'Wept Xyloid Melancholy vs Chinggis Warriors') but no odds block published",
+     "url": "https://bo3.gg/tournaments/void-autumn-cup-2026"
+    },
+    {
+     "step": "Valve VRS global ladder 2026-10-05",
+     "result": "Chinggis Warriors rated (#87, 1084 pt, roster cool4st/fury5k/ROUX/sk0R/yAmi - verified against the egamersworld lineup); WXM absent from the ladder",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standards_global_2026_10_05.md"
+    },
+    {
+     "step": "bo3.gg match history (Elo origination)",
+     "result": "WXM ('Wept Xyloid Melancholy', bo3.gg team id 25531) has zero recorded matches - Elo cannot be originated for them either",
+     "url": "https://bo3.gg/teams/25531"
+    },
+    {
+     "step": "HLTV / Mais Esports event pages",
+     "result": "WXM identified as 'Wept Xyloid Melancholy', a Chinese lineup (Currant, Kinatie, outccc, 1romma, Genxiu) playing the VOID Autumn Cup 2026 (Oct 20-24, Shanghai, $12,000, 8 teams) - identity verified, rating still unavailable",
+     "url": "https://www.hltv.org/events/9435/macemedia-void-autumn-cup-2026"
+    }
+   ],
+   "flags": [
+    "no_derived_line",
+    "no_published_price",
+    "policy_blank",
+    "unrated_opponent"
+   ],
+   "policy": "No published two-sided price on any reachable bookmaker or exchange, and the opponent is absent from Valve's VRS ladder and from bo3.gg's match history, so neither the market basis nor any documented model basis can produce a probability. Per policy the probability stays BLANK; the directional pick (Chinggis Warriors, Valve-rated #87/1084 pt against an unrated opponent) is published as direction only, low confidence, and is never presented as a percentage."
+  }
+ ],
+ "corrections": [
+  {
+   "fixture_id": "1079638",
+   "title": "ex-RUSTEC joined to the stale Valve row",
+   "detail": "The full-coverage board joined ex-RUSTEC to Valve row #152 (823.9 pt; Brilliance, jakekeS, Patsi, youka - last played 2026-08-17). The active lineage is row #92 (1066.4 pt; last match 2026-09-27), which the live HLTV VRS rank (#86) confirms. This board uses row #92 and the pick flips from ILLYRIANS to ex-RUSTEC. Current five (Brilliance, shalfey, bl1x1, youka, relaxxie) overlaps the row on 3/5 - roster-drift flagged.",
+   "evidence": [
+    "https://www.hltv.org/team/13901/ex-rustec",
+    "https://bo3.gg/matches/ex-rustec-vs-illyrians-18-10-2026"
+   ]
+  },
+  {
+   "fixture_id": "1081863",
+   "title": "Chinggis Warriors joined to the wrong Valve row",
+   "detail": "The full-coverage board joined Chinggis Warriors to Valve row #220 (685 pt; Aceari, hasteka five). The fixture's verified lineup (sk0R, cool4st, ROUX, fury5k, tikuak - egamersworld) overlaps row #87 (1084 pt) on 4/5 and row #220 on 2/5. Row #87 is correct; the fixture nonetheless stays blank because WXM is unrated everywhere.",
+   "evidence": [
+    "https://egamersworld.com/counterstrike/match/EJcHRdr5Vx/chinggis-warriors-vs-wxm-_ddme1I7dZ"
+   ]
+  },
+  {
+   "fixture_id": "1080291/1081529",
+   "title": "WROTBERRY = WBT join verified (no correction needed)",
+   "detail": "Suspected after the Oct-5 file grep (no team literally named WROTBERRY). Verified correct: Valve carries the roster as WBT (#60, 1201.1 pt, DemQQ/Psycho/s4ltovsk1yy/Smash/tyr1k) and HLTV team 13683 - page title now WBT, formerly WROTBERRY - lists that exact five and upcoming matches '17 Oct vs HAVU' and '19 Oct vs Nexus', matching HotSpawn fixtures 1080291 and 1081529 on opponent and date.",
+   "evidence": [
+    "https://www.hltv.org/team/13683/wbt"
+   ]
+  },
+  {
+   "title": "Canonical board's VRS slope is internally inconsistent",
+   "detail": "Re-deriving the documented Valve Glicko formula row-by-row against the full-coverage board's published model probabilities implies effective slopes from ~0.10 to ~1.33 across rows of the same board. This board fits ONE global slope on the joined market pairs and publishes the fit (k, pair count, MAE) with the board.",
+   "evidence": [
+    "data/c32f1b93/board.json calibration section"
+   ]
+  },
+  {
+   "title": "Day-1 TWC Nuke score capture error confirmed",
+   "detail": "One prior desk capture recorded 9z's day-1 Nuke win over Aurora as 16-14. The HLTV match page reads 13-1 (11:1; 2:0). 13-1 is confirmed by direct read this session; the 16-14 capture stays flagged.",
+   "evidence": [
+    "https://www.hltv.org/matches/2399384/9z-vs-aurora-thunderpick-world-championship-2026"
+   ]
+  },
+  {
+   "title": "HLTV analytics prose vs fetched prices on FURIA-Aurora",
+   "detail": "HLTV's betting-analytics page says 'Aurora is the bookmaker favorite with the best odds', while every directly fetched price this session (egamersworld 1.83/1.90, Polymarket 53c/48c, plus the retained Pinnacle/Bovada/Melbet/Kalshi/Thunderpick lines) prices FURIA marginally ahead. Both are published with read times; the pick follows the prices and the divergence is flagged, not reconciled.",
+   "evidence": [
+    "https://www.hltv.org/betting/analytics/2399414/furia-vs-aurora-thunderpick-world-championship-2026"
+   ]
+  }
+ ],
+ "vrs_file": {
+  "path": "data/c32f1b93/vrs_global_2026_10_05.md",
+  "source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standards_global_2026_10_05.md",
+  "teams_in_file": 380
+ }
+}

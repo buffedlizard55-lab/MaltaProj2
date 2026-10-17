@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method · c32f1b93</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">CS2 Pick&rsquo;em Board <span class="session-tag">c32f1b93</span></div>
+    <nav class="site-nav" aria-label="Session pages"><a href="index.html" class="">Picks board</a> · <a href="twc-day4.html" class="">TWC Day 4</a> · <a href="unresolved.html" class="">Unresolved</a> · <a href="flagged.html" class="">Flagged</a> · <a href="method.html" class="nav-on">Method</a></nav>
+  </div>
+</header>
+<main id="main" class="wrap">
+
+    <h1>Method &amp; calibration</h1>
+    <p class="lede">The seven published rules, the slope fit, and the complete VRS join ledger.
+    Everything here is recomputed from retained evidence; nothing is inherited from a prior board.</p>
+
+    <section class="card">
+      <h2>The seven published rules</h2>
+      <ol>
+        <li><strong>Blank policy.</strong> a probability is published only when derivable from a retained source; otherwise the cell stays blank and the fixture is ledgered as unresolved</li>
+        <li><strong>Market consensus.</strong> median of per-source no-vig probabilities</li>
+        <li><strong>Valve VRS model.</strong> Valve Glicko expected-score formula, RD=75.0 (Valve&#x27;s fit.js default), slope k fitted against joined market lines</li>
+        <li><strong>Elo (last resort).</strong> plain Elo over retained bo3.gg history, k=20.0, 8 chronological passes, VRS teams anchored at their Valve points</li>
+        <li><strong>Published line.</strong> 0.85 market / 0.15 model when both exist &mdash; market median when at least one usable price exists, else the model, else BLANK.</li>
+        <li><strong>Crowd policy.</strong> HotSpawn pick&#x27;em crowd share is context only and is never a probability input</li>
+        <li><strong>Seed policy.</strong> untrained seed prices (exact 1.80/1.80 placeholders with zero votes, $0-volume markets, wide bid/ask seeds, overround &gt; 0.30) are rejected, not averaged</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Calibration &mdash; our own fit</h2>
+      <p>Valve's README states the published curve is too steep at both ends, so the slope is
+      learned from observed bookmaker lines instead of assuming k=1. Fit: least squares through
+      the origin on ln(market/(1-market)) = k &middot; C &middot; (points<sub>a</sub> &minus; points<sub>b</sub>),
+      C = g&middot;ln10/400 with g = 1/sqrt(1 + 3Q&sup2;RD&sup2;/&pi;&sup2;), RD = 75 (Valve's fit.js default).</p>
+      <p><strong>k = 0.4970</strong> (raw 0.4970, unclamped, inside band,
+      band [0.1, 1.5], minimum 6 pairs),
+      n = 19 pairs, MAE(prob) = <strong>0.0592</strong>.
+      fe803b80 published k=0.275, MAE 0.1002 on 19 pairs. Our slope is steeper
+      (0.497 vs 0.275) because the live Oct-16 ladder compressed several mid-tier deltas
+      (TWC point swings and 128-day decay) while the markets held &mdash; and our MAE is
+      lower (0.059 vs 0.100), i.e. the fit is better, not just different.</p>
+      <div class="table-scroll"><table id="calibration-pairs">
+        <thead><tr><th>Fixture</th><th>VRS delta (pt)</th><th>Market P(team A)</th><th>Row-implied k</th></tr></thead>
+        <tbody><tr><td>1079170</td><td>+62.0</td><td>0.6699</td><td>2.038</td></tr><tr><td>1080291</td><td>+227.0</td><td>0.6508</td><td>0.490</td></tr><tr><td>1081510</td><td>+98.0</td><td>0.5280</td><td>0.204</td></tr><tr><td>1081888</td><td>-34.0</td><td>0.4406</td><td>1.254</td></tr><tr><td>1079591</td><td>+72.0</td><td>0.5541</td><td>0.539</td></tr><tr><td>1081512</td><td>-103.0</td><td>0.2889</td><td>1.562</td></tr><tr><td>1081513</td><td>-30.0</td><td>0.5767</td><td>-1.840</td></tr><tr><td>1080292</td><td>-150.0</td><td>0.3892</td><td>0.537</td></tr><tr><td>1080207</td><td>-21.0</td><td>0.5101</td><td>-0.345</td></tr><tr><td>1081515</td><td>-163.0</td><td>0.3086</td><td>0.884</td></tr><tr><td>1079173</td><td>+99.0</td><td>0.5921</td><td>0.672</td></tr><tr><td>1080208</td><td>+261.0</td><td>0.7660</td><td>0.811</td></tr><tr><td>1081517</td><td>+261.0</td><td>0.6072</td><td>0.298</td></tr><tr><td>1081527</td><td>+100.0</td><td>0.4531</td><td>-0.336</td></tr><tr><td>1081528</td><td>+494.0</td><td>0.8245</td><td>0.559</td></tr><tr><td>1081529</td><td>-164.0</td><td>0.4624</td><td>0.164</td></tr><tr><td>1081530</td><td>+395.0</td><td>0.6569</td><td>0.294</td></tr><tr><td>1081531</td><td>+164.0</td><td>0.6238</td><td>0.550</td></tr><tr><td>1081532</td><td>+22.0</td><td>0.4531</td><td>-1.528</td></tr></tbody>
+      </table></div>
+      <p class="dim">Row-implied k = logit(market) / (C&middot;delta), natural logit (fe803b80 convention). Negative values mark
+      market/ladder disagreements (published, not trimmed). The spread is the reason the fit is
+      disclosed with its MAE rather than presented as exact.</p>
+    </section>
+
+    <section class="card">
+      <h2>VRS join ledger (every fixture team)</h2>
+      <p>Point vintages: <strong>live Oct-16</strong> rows come from HLTV's rendered regional
+      ladders (read 2026-10-17T05:10-07:30Z;
+      the Oct-5 global file is the latest full ladder in the repo); <strong>file</strong> rows are the
+      retained Oct-5 Valve ladder. TWC participants must use live rows &mdash; the Oct-5 file
+      predates the group stage. Duplicate-name rule: lowest standing number = main roster
+      (verified for all 31 duplicate keys against the live ladder). Fixture-specific lineage
+      pins (roster evidence) are marked &ldquo;lineage pinned&rdquo;.</p>
+      <div class="table-scroll"><table>
+        <thead><tr><th>Fixture</th><th>Team A</th><th>Rating A</th><th>Team B</th><th>Rating B</th><th>Delta</th><th>Join notes</th></tr></thead>
+        <tbody><tr><td>1079170</td><td>BET-M</td><td>1064 pt (EU #64)</td><td>Just Players</td><td>1002 pt (EU #78)</td><td>+62.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>bo3.gg current five overlaps row #118 on 4/5 (bl1x1-&gt;wh1teout drift, bl1x1 now at ex-RUSTEC); live ladder EU#78/1002 lis</td></tr><tr><td>1079633</td><td>ex-6666</td><td>994 pt (EU #80)</td><td>G2 Ares</td><td>948 pt (EU #92)</td><td>+46.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1080291</td><td>WROTBERRY</td><td>1214 pt (EU #41)</td><td>HAVU</td><td>987 pt (EU #82)</td><td>+227.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1081510</td><td>Eternal Fire</td><td>1365 pt (EU #30)</td><td>Nuclear TigeRES</td><td>1267 pt (EU #35)</td><td>+98.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1081888</td><td>Ninjas in Pyjamas</td><td>1511 pt (EU #12)</td><td>Heroic</td><td>1545 pt (EU #10)</td><td>-34.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1081511</td><td>VP.Future</td><td class='dim'>Elo 897</td><td>Black Phoenix</td><td class='dim'>Elo 1168</td><td class='dim'>&ndash;</td><td class='dim'>originated_elo</td></tr><tr><td>1079171</td><td>GenOne</td><td>1077 pt (EU #60)</td><td>Butterfly</td><td>1009 pt (EU #74)</td><td>+68.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1079591</td><td>MIBR</td><td>1562 pt (AM #3)</td><td>100 Thieves</td><td>1490 pt (#14 (listed on the EU regional page))</td><td>+72.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Americas regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1079634</td><td>Lavked</td><td>855 pt (EU #103)</td><td>LFO 10</td><td>787 pt (EU #118)</td><td>+68.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1081512</td><td>EYEBALLERS</td><td>1256 pt (EU #37)</td><td>GamerLegion</td><td>1359 pt (EU #31)</td><td>-103.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1081513</td><td>Bebop</td><td>702 pt (212)</td><td>Donstu</td><td>732 pt (197)</td><td>-30.0</td><td class='dim'>bo3.gg current five matches row #212 exactly; row #282&#x27;s danistzz/Norwi/lov1kus era is dissolved (BAKS/PsychoFace); live<br>Valve VRS global ladder 2026-10-05 (retained copy)</td></tr><tr><td>1080292</td><td>ENCE</td><td>1022 pt (EU #72)</td><td>Phantom</td><td>1172 pt (EU #47)</td><td>-150.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1079635</td><td>Bushido Wildcats</td><td>966 pt (EU #88)</td><td>Gothic</td><td>736 pt (EU #131)</td><td>+230.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1080207</td><td>FURIA</td><td>1827 pt (AM #1)</td><td>Aurora</td><td>1848 pt (EU #5)</td><td>-21.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Americas regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1081515</td><td>Apogee Betclic</td><td>1232 pt (EU #40)</td><td>Nemesis</td><td>1395 pt (EU #27)</td><td>-163.0</td><td class='dim'>HLTV team/12916 starters match row #45 on 5/5 (ultimate replaced hades Aug 11; the quartet inherited KOLESIE&#x27;s VRS posit<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1079173</td><td>BakS</td><td>1053 pt (EU #65)</td><td>Fire Flux</td><td>954 pt (EU #91)</td><td>+99.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1080208</td><td>Falcons</td><td>1880 pt (EU #4)</td><td>BetBoom</td><td>1619 pt (EU #8)</td><td>+261.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1081517</td><td>BBL</td><td>1333 pt (EU #33)</td><td>ex-RUSTEC</td><td>1072 pt (EU #61)</td><td>+261.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>tie on 3/5 roster overlap broken by row recency (#92 last played 2026-09-27 vs #152 last played 2026-08-17) and the live</td></tr><tr><td>1081126</td><td>Banda chuya</td><td>729 pt (EU #135)</td><td>Enjoy</td><td>811 pt (EU #113)</td><td>-82.0</td><td class='dim'>ingame-stats five matches row #165 exactly (alt org name &#x27;Banda LFO&#x27;); row #373 is a 2-player stub; live ladder EU#135/7<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1079638</td><td>ex-RUSTEC</td><td>1072 pt (EU #61)</td><td>ILLYRIANS</td><td>900 pt (EU #94)</td><td>+172.0</td><td class='dim'>tie on 3/5 roster overlap broken by row recency (#92 last played 2026-09-27 vs #152 last played 2026-08-17) and the live<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1081521</td><td>ex-6666</td><td>994 pt (EU #80)</td><td>Privateer</td><td>608 pt (271)</td><td>+386.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>Valve VRS global ladder 2026-10-05 (retained copy)</td></tr><tr><td>1081522</td><td>antidaun</td><td class='dim'>Elo 1350</td><td>Phantom Academy</td><td class='dim'>Elo 771</td><td class='dim'>&ndash;</td><td class='dim'>originated_elo</td></tr><tr><td>1079640</td><td>FORZE Reload</td><td>1099 pt (EU #59)</td><td>BakS</td><td>1053 pt (EU #65)</td><td>+46.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1081527</td><td>aimclub</td><td>1102 pt (EU #58)</td><td>BASEMENT BOYS</td><td>1002 pt (EU #77)</td><td>+100.0</td><td class='dim'>bo3.gg current five overlaps row #77 on 4/5 (ERSIN-&gt;XELLOW); recent W 2-1 ARGOS (Oct 11), W 1-0 at ENCE (Oct 10); live l<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1081528</td><td>BC.Game</td><td>1304 pt (AS #1)</td><td>Drama</td><td>810 pt (EU #114)</td><td>+494.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Asia regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1081529</td><td>Nexus</td><td>1050 pt (EU #67)</td><td>WROTBERRY</td><td>1214 pt (EU #41)</td><td>-164.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1081530</td><td>Iberian Soul</td><td>1200 pt (EU #42)</td><td>HyperSpirit</td><td>805 pt (EU #115)</td><td>+395.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)</td></tr><tr><td>1081531</td><td>Sashi</td><td>1042 pt (EU #68)</td><td>mouz NXT</td><td>878 pt (EU #98)</td><td>+164.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>bo3.gg current five matches row #137 exactly (opdust benched); the higher-standing duplicate carries Flierax, live at In</td></tr><tr><td>1081532</td><td>ASTRAL</td><td>991 pt (EU #81)</td><td>Leo</td><td>969 pt (EU #86)</td><td>+22.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Europe regional ladder)<br>known Leo five matches row #112 exactly; row #340 holds ex-6666 players amster/kL1o = stale academy lineage; live ladder</td></tr><tr><td>1081861</td><td>Lynn Vision</td><td class='dim'>Elo 1174</td><td>Morningstar</td><td class='dim'>Elo 908</td><td class='dim'>&ndash;</td><td class='dim'>originated_elo</td></tr><tr><td>1081862</td><td>Rare Atom</td><td>818 pt (AS #17)</td><td>Alter Ego</td><td>875 pt (AS #13)</td><td>-57.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Asia regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Asia regional ladder)</td></tr><tr><td>1081864</td><td>NEXVOID</td><td>1049 pt (AS #8)</td><td>Vitalem Aerem</td><td>711 pt (AS #21)</td><td>+338.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Asia regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Asia regional ladder)</td></tr><tr><td>1080200</td><td>Wildcard</td><td>1332 pt (AM #8)</td><td>DENDELE</td><td>1355 pt (AM #7)</td><td>-23.0</td><td class='dim'>HLTV live Valve-ranking read 2026-10-16 (Americas regional ladder)<br>HLTV live Valve-ranking read 2026-10-16 (Americas regional ladder)</td></tr></tbody>
+      </table></div>
+    </section>
+
+    <section class="card">
+      <h2>Elo fallback</h2>
+      <p>224 usable matches from 25 teams in the retained
+      bo3.gg history (the 950-match capture list, filtered to canon-joinable rows),
+      351 teams seeded from the VRS table. Parameters: base 1500,
+      k=20, 8 chronological passes,
+      Valve VRS points, re-anchored every pass. Source: retained bo3.gg match history (data/fe803b80/snapshot.json bo3gg_history), 950-match list.</p>
+    </section>
+
+    <section class="card">
+      <h2>Valve file &amp; live ladder provenance</h2>
+      <p>Retained Valve VRS global ladder: data/c32f1b93/vrs_global_2026_10_05.md (380 team rows),
+      source <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standards_global_2026_10_05.md">https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standards_global_2026_10_05.md</a>.</p>
+      <p>Live Oct-16 regional ladders (read for overrides):
+      <a href="https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Europe">Europe</a> &middot;
+      <a href="https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Americas">Americas</a> &middot;
+      <a href="https://www.hltv.org/valve-ranking/teams/2026/october/16/region/Asia">Asia</a>.
+      HLTV marks the ladder &ldquo;Beta: includes matches and secured prize money from unfinished events&rdquo;.</p>
+    </section>
+</main>
+<footer class="site-footer">
+  <p>Session c32f1b93 &middot; board generated 2026-10-17T02:07:11Z<br>
+  Independent re-derivation from retained primary evidence only (no network at build time).
+  Crowd shares are sentiment, never prices. Not betting advice.</p>
+</footer>
+</body>
+</html>

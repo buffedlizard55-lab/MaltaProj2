@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flagged · c32f1b93</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">CS2 Pick&rsquo;em Board <span class="session-tag">c32f1b93</span></div>
+    <nav class="site-nav" aria-label="Session pages"><a href="index.html" class="">Picks board</a> · <a href="twc-day4.html" class="">TWC Day 4</a> · <a href="unresolved.html" class="">Unresolved</a> · <a href="flagged.html" class="nav-on">Flagged</a> · <a href="method.html" class="">Method</a></nav>
+  </div>
+</header>
+<main id="main" class="wrap">
+
+    <h1>Flagged for review</h1>
+    <p class="lede">Corrections applied to prior boards, known irregularities, and every flag
+    raised on this board's rows (grouped by type).</p>
+    <h2>Corrections to prior boards</h2>
+    
+      <article class="card">
+        <h2>ex-RUSTEC joined to the stale Valve row <span class="dim">&middot; 1079638</span></h2>
+        <p>The full-coverage board joined ex-RUSTEC to Valve row #152 (823.9 pt; Brilliance, jakekeS, Patsi, youka - last played 2026-08-17). The active lineage is row #92 (1066.4 pt; last match 2026-09-27), which the live HLTV VRS rank (#86) confirms. This board uses row #92 and the pick flips from ILLYRIANS to ex-RUSTEC. Current five (Brilliance, shalfey, bl1x1, youka, relaxxie) overlaps the row on 3/5 - roster-drift flagged.</p>
+        <p class="dim">Evidence: <a href="https://www.hltv.org/team/13901/ex-rustec">https://www.hltv.org/team/13901/ex-rustec</a> <a href="https://bo3.gg/matches/ex-rustec-vs-illyrians-18-10-2026">https://bo3.gg/matches/ex-rustec-vs-illyrians-18-10-2026</a></p>
+      </article>
+      <article class="card">
+        <h2>Chinggis Warriors joined to the wrong Valve row <span class="dim">&middot; 1081863</span></h2>
+        <p>The full-coverage board joined Chinggis Warriors to Valve row #220 (685 pt; Aceari, hasteka five). The fixture&#x27;s verified lineup (sk0R, cool4st, ROUX, fury5k, tikuak - egamersworld) overlaps row #87 (1084 pt) on 4/5 and row #220 on 2/5. Row #87 is correct; the fixture nonetheless stays blank because WXM is unrated everywhere.</p>
+        <p class="dim">Evidence: <a href="https://egamersworld.com/counterstrike/match/EJcHRdr5Vx/chinggis-warriors-vs-wxm-_ddme1I7dZ">https://egamersworld.com/counterstrike/match/EJcHRdr5Vx/chinggis-warriors-vs-wxm-_ddme1I7dZ</a></p>
+      </article>
+      <article class="card">
+        <h2>WROTBERRY = WBT join verified (no correction needed) <span class="dim">&middot; 1080291/1081529</span></h2>
+        <p>Suspected after the Oct-5 file grep (no team literally named WROTBERRY). Verified correct: Valve carries the roster as WBT (#60, 1201.1 pt, DemQQ/Psycho/s4ltovsk1yy/Smash/tyr1k) and HLTV team 13683 - page title now WBT, formerly WROTBERRY - lists that exact five and upcoming matches &#x27;17 Oct vs HAVU&#x27; and &#x27;19 Oct vs Nexus&#x27;, matching HotSpawn fixtures 1080291 and 1081529 on opponent and date.</p>
+        <p class="dim">Evidence: <a href="https://www.hltv.org/team/13683/wbt">https://www.hltv.org/team/13683/wbt</a></p>
+      </article>
+      <article class="card">
+        <h2>Canonical board&#x27;s VRS slope is internally inconsistent <span class="dim">&middot; </span></h2>
+        <p>Re-deriving the documented Valve Glicko formula row-by-row against the full-coverage board&#x27;s published model probabilities implies effective slopes from ~0.10 to ~1.33 across rows of the same board. This board fits ONE global slope on the joined market pairs and publishes the fit (k, pair count, MAE) with the board.</p>
+        <p class="dim">Evidence: <code>data/c32f1b93/board.json calibration section</code></p>
+      </article>
+      <article class="card">
+        <h2>Day-1 TWC Nuke score capture error confirmed <span class="dim">&middot; </span></h2>
+        <p>One prior desk capture recorded 9z&#x27;s day-1 Nuke win over Aurora as 16-14. The HLTV match page reads 13-1 (11:1; 2:0). 13-1 is confirmed by direct read this session; the 16-14 capture stays flagged.</p>
+        <p class="dim">Evidence: <a href="https://www.hltv.org/matches/2399384/9z-vs-aurora-thunderpick-world-championship-2026">https://www.hltv.org/matches/2399384/9z-vs-aurora-thunderpick-world-championship-2026</a></p>
+      </article>
+      <article class="card">
+        <h2>HLTV analytics prose vs fetched prices on FURIA-Aurora <span class="dim">&middot; </span></h2>
+        <p>HLTV&#x27;s betting-analytics page says &#x27;Aurora is the bookmaker favorite with the best odds&#x27;, while every directly fetched price this session (egamersworld 1.83/1.90, Polymarket 53c/48c, plus the retained Pinnacle/Bovada/Melbet/Kalshi/Thunderpick lines) prices FURIA marginally ahead. Both are published with read times; the pick follows the prices and the divergence is flagged, not reconciled.</p>
+        <p class="dim">Evidence: <a href="https://www.hltv.org/betting/analytics/2399414/furia-vs-aurora-thunderpick-world-championship-2026">https://www.hltv.org/betting/analytics/2399414/furia-vs-aurora-thunderpick-world-championship-2026</a></p>
+      </article>
+    <h2>Irregularities &amp; disclosures</h2>
+    <article class='card'><h2>fe803b80 joined Betclic to the wrong Valve row</h2><p>The prior board&#x27;s duplicate-name default (highest standing number) joined Apogee Betclic to row #183 (Demho, Dr3nquu, eskyy, hades, Prism &amp;mdash; the pre-August hades era, 765 pt) instead of row #45 (1333 pt, the current five). That manufactured a &amp;minus;690 pt delta on 1081515 and dragged the prior calibration fit to k=0.0927 (clamped). This board&#x27;s default is the lowest-standing row, verified for all 31 duplicate names against the live Oct-16 ladder, and Betclic&#x27;s lineage is pinned by roster evidence (HLTV team/12916: ultimate replaced hades on Aug 11; the quartet inherited KOLESIE&#x27;s VRS position on Jul 22).</p></article><article class='card'><h2>fe803b80 joined ex-RUSTEC to a stale row</h2><p>Row #152 (823.9 pt, last played 2026-08-17) instead of the active #92 lineage (1066.4 pt, last played 2026-09-27). The pick on 1079638 flips from ILLYRIANS to ex-RUSTEC (+172 pt live delta).</p></article><article class='card'><h2>fe803b80 joined Chinggis Warriors to a stale row</h2><p>Row #220 (685 pt, Aceari/hasteka five) instead of #87 (1084 pt, the current four-fifths). The fixture stays blank for the WXM reason, but the directional read strengthens: Chinggis now carries a live AS #5 / 1200 pt row.</p></article><article class='card'><h2>fe803b80&#x27;s published slope is internally inconsistent</h2><p>The prior board published k=0.275, but its own row-implied effective slopes range 0.10&amp;ndash;1.33 (FURIA&amp;ndash;Aurora 0.5434 at delta +113 &amp;rArr; k&amp;asymp;0.119; ASTRAL&amp;ndash;Leo 0.7073 at delta +71 &amp;rArr; k&amp;asymp;0.96; BandaChuya&amp;ndash;Enjoy 0.3269 at delta &amp;minus;70 &amp;rArr; k&amp;asymp;1.33). A single through-origin slope cannot reproduce all three &amp;mdash; the prior board&#x27;s rows were computed with mixed join vintages. This board re-fits on uniformly joined pairs and publishes the raw fit.</p></article><article class='card'><h2>9z day-1 Nuke score capture error</h2><p>An earlier desk capture recorded 9z&amp;ndash;Aurora Nuke as 16&amp;ndash;14; the HLTV match page reads 13&amp;ndash;1. The verified day-1 result stands: 9z 2&amp;ndash;0 Aurora (Inferno 13&amp;ndash;11, Nuke 13&amp;ndash;1) &amp;mdash; the day&#x27;s upset.</p></article><article class='card'><h2>HLTV analytics prose vs fetched prices (SF1)</h2><p>HLTV&#x27;s analytics blurb favours Aurora (better form ranking, won the only 2026 meeting) while the fetched 7-source median (51.0% FURIA) and the live VRS delta (&amp;minus;21 pt) sit on FURIA&#x27;s side. Both are published; the blend lands at 50.6% FURIA &amp;mdash; a toss-up, flagged as such.</p></article><article class='card'><h2>Glicko RD inconsistency across prior boards</h2><p>Prior boards used varying RD assumptions; this board uses Valve&#x27;s documented default RD=75 (fit.js) everywhere and publishes the constant.</p></article><article class='card'><h2>Duplicate team names on the Valve ladder</h2><p>The Oct-5 file carries 31 canon keys with two rows each (main roster + academy/stale lineage), and the live Oct-16 ladder repeats the pattern (e.g. Sashi, Johnny Speeds, Chinggis, The Huns, ex-RUSTEC, Betclic, CYBERSHOKE, RBLS, WBT/WBT Academy). Join rule: lowest standing number = main roster, pinned by roster evidence where it matters (FIXTURE_VRS_PICKS).</p></article>
+    <h2>Flags raised on this board (93)</h2>
+    
+      <article class="card">
+        <h2><span class="chip chip-flag">live_vrs_override</span> &middot; 29 fixture(s)</h2>
+        <ul><li><a href='index.html#1079170'>1079170</a> BET-M vs Just Players</li><li><a href='index.html#1079633'>1079633</a> ex-6666 vs G2 Ares</li><li><a href='index.html#1080291'>1080291</a> WROTBERRY vs HAVU</li><li><a href='index.html#1081510'>1081510</a> Eternal Fire vs Nuclear TigeRES</li><li><a href='index.html#1081888'>1081888</a> Ninjas in Pyjamas vs Heroic</li><li><a href='index.html#1079171'>1079171</a> GenOne vs Butterfly</li><li><a href='index.html#1079591'>1079591</a> MIBR vs 100 Thieves</li><li><a href='index.html#1079634'>1079634</a> Lavked vs LFO 10</li><li><a href='index.html#1081512'>1081512</a> EYEBALLERS vs GamerLegion</li><li><a href='index.html#1080292'>1080292</a> ENCE vs Phantom</li><li><a href='index.html#1079635'>1079635</a> Bushido Wildcats vs Gothic</li><li><a href='index.html#1080207'>1080207</a> FURIA vs Aurora</li><li><a href='index.html#1081515'>1081515</a> Apogee Betclic vs Nemesis</li><li><a href='index.html#1079173'>1079173</a> BakS vs Fire Flux</li><li><a href='index.html#1080208'>1080208</a> Falcons vs BetBoom</li><li><a href='index.html#1081517'>1081517</a> BBL vs ex-RUSTEC</li><li><a href='index.html#1081126'>1081126</a> Banda chuya vs Enjoy</li><li><a href='index.html#1079638'>1079638</a> ex-RUSTEC vs ILLYRIANS</li><li><a href='index.html#1081521'>1081521</a> ex-6666 vs Privateer</li><li><a href='index.html#1079640'>1079640</a> FORZE Reload vs BakS</li><li><a href='index.html#1081527'>1081527</a> aimclub vs BASEMENT BOYS</li><li><a href='index.html#1081528'>1081528</a> BC.Game vs Drama</li><li><a href='index.html#1081529'>1081529</a> Nexus vs WROTBERRY</li><li><a href='index.html#1081530'>1081530</a> Iberian Soul vs HyperSpirit</li><li><a href='index.html#1081531'>1081531</a> Sashi vs mouz NXT</li><li><a href='index.html#1081532'>1081532</a> ASTRAL vs Leo</li><li><a href='index.html#1081862'>1081862</a> Rare Atom vs Alter Ego</li><li><a href='index.html#1081864'>1081864</a> NEXVOID vs Vitalem Aerem</li><li><a href='index.html#1080200'>1080200</a> Wildcard vs DENDELE</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">crowd_divergence</span> &middot; 16 fixture(s)</h2>
+        <ul><li><a href='index.html#1079170'>1079170</a> BET-M vs Just Players</li><li><a href='index.html#1079171'>1079171</a> GenOne vs Butterfly</li><li><a href='index.html#1081513'>1081513</a> Bebop vs Donstu</li><li><a href='index.html#1081515'>1081515</a> Apogee Betclic vs Nemesis</li><li><a href='index.html#1079173'>1079173</a> BakS vs Fire Flux</li><li><a href='index.html#1081126'>1081126</a> Banda chuya vs Enjoy</li><li><a href='index.html#1081521'>1081521</a> ex-6666 vs Privateer</li><li><a href='index.html#1081522'>1081522</a> antidaun vs Phantom Academy</li><li><a href='index.html#1081526'>1081526</a> Infinite vs Insiders</li><li><a href='index.html#1081527'>1081527</a> aimclub vs BASEMENT BOYS</li><li><a href='index.html#1081528'>1081528</a> BC.Game vs Drama</li><li><a href='index.html#1081529'>1081529</a> Nexus vs WROTBERRY</li><li><a href='index.html#1081530'>1081530</a> Iberian Soul vs HyperSpirit</li><li><a href='index.html#1081531'>1081531</a> Sashi vs mouz NXT</li><li><a href='index.html#1081532'>1081532</a> ASTRAL vs Leo</li><li><a href='index.html#1081861'>1081861</a> Lynn Vision vs Morningstar</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">stale_row_corrected</span> &middot; 9 fixture(s)</h2>
+        <ul><li><a href='index.html#1079170'>1079170</a> BET-M vs Just Players</li><li><a href='index.html#1081513'>1081513</a> Bebop vs Donstu</li><li><a href='index.html#1081515'>1081515</a> Apogee Betclic vs Nemesis</li><li><a href='index.html#1081517'>1081517</a> BBL vs ex-RUSTEC</li><li><a href='index.html#1081126'>1081126</a> Banda chuya vs Enjoy</li><li><a href='index.html#1079638'>1079638</a> ex-RUSTEC vs ILLYRIANS</li><li><a href='index.html#1081527'>1081527</a> aimclub vs BASEMENT BOYS</li><li><a href='index.html#1081531'>1081531</a> Sashi vs mouz NXT</li><li><a href='index.html#1081532'>1081532</a> ASTRAL vs Leo</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">vrs_row_disambiguated</span> &middot; 9 fixture(s)</h2>
+        <ul><li><a href='index.html#1079170'>1079170</a> BET-M vs Just Players</li><li><a href='index.html#1081513'>1081513</a> Bebop vs Donstu</li><li><a href='index.html#1081515'>1081515</a> Apogee Betclic vs Nemesis</li><li><a href='index.html#1081517'>1081517</a> BBL vs ex-RUSTEC</li><li><a href='index.html#1081126'>1081126</a> Banda chuya vs Enjoy</li><li><a href='index.html#1079638'>1079638</a> ex-RUSTEC vs ILLYRIANS</li><li><a href='index.html#1081527'>1081527</a> aimclub vs BASEMENT BOYS</li><li><a href='index.html#1081531'>1081531</a> Sashi vs mouz NXT</li><li><a href='index.html#1081532'>1081532</a> ASTRAL vs Leo</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">single_source</span> &middot; 8 fixture(s)</h2>
+        <ul><li><a href='index.html#1079170'>1079170</a> BET-M vs Just Players</li><li><a href='index.html#1081512'>1081512</a> EYEBALLERS vs GamerLegion</li><li><a href='index.html#1079173'>1079173</a> BakS vs Fire Flux</li><li><a href='index.html#1081517'>1081517</a> BBL vs ex-RUSTEC</li><li><a href='index.html#1081526'>1081526</a> Infinite vs Insiders</li><li><a href='index.html#1081528'>1081528</a> BC.Game vs Drama</li><li><a href='index.html#1081529'>1081529</a> Nexus vs WROTBERRY</li><li><a href='index.html#1081532'>1081532</a> ASTRAL vs Leo</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">alias_applied</span> &middot; 4 fixture(s)</h2>
+        <ul><li><a href='index.html#1080291'>1080291</a> WROTBERRY vs HAVU</li><li><a href='index.html#1079634'>1079634</a> Lavked vs LFO 10</li><li><a href='index.html#1081515'>1081515</a> Apogee Betclic vs Nemesis</li><li><a href='index.html#1081529'>1081529</a> Nexus vs WROTBERRY</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">market_model_divergence</span> &middot; 3 fixture(s)</h2>
+        <ul><li><a href='index.html#1079170'>1079170</a> BET-M vs Just Players</li><li><a href='index.html#1081512'>1081512</a> EYEBALLERS vs GamerLegion</li><li><a href='index.html#1081527'>1081527</a> aimclub vs BASEMENT BOYS</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">form_conflict</span> &middot; 2 fixture(s)</h2>
+        <ul><li><a href='index.html#1079634'>1079634</a> Lavked vs LFO 10</li><li><a href='index.html#1079635'>1079635</a> Bushido Wildcats vs Gothic</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">roster_drift</span> &middot; 2 fixture(s)</h2>
+        <ul><li><a href='index.html#1079634'>1079634</a> Lavked vs LFO 10</li><li><a href='index.html#1079638'>1079638</a> ex-RUSTEC vs ILLYRIANS</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">twc_semifinal</span> &middot; 2 fixture(s)</h2>
+        <ul><li><a href='index.html#1080207'>1080207</a> FURIA vs Aurora</li><li><a href='index.html#1080208'>1080208</a> Falcons vs BetBoom</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">freshly_priced_this_session</span> &middot; 1 fixture(s)</h2>
+        <ul><li><a href='index.html#1081515'>1081515</a> Apogee Betclic vs Nemesis</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">thin_volume</span> &middot; 1 fixture(s)</h2>
+        <ul><li><a href='index.html#1081515'>1081515</a> Apogee Betclic vs Nemesis</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">form_conflict_note</span> &middot; 1 fixture(s)</h2>
+        <ul><li><a href='index.html#1079638'>1079638</a> ex-RUSTEC vs ILLYRIANS</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">no_derived_line</span> &middot; 1 fixture(s)</h2>
+        <ul><li><a href='index.html#1081863'>1081863</a> Chinggis Warriors vs WXM</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">no_published_price</span> &middot; 1 fixture(s)</h2>
+        <ul><li><a href='index.html#1081863'>1081863</a> Chinggis Warriors vs WXM</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">policy_blank</span> &middot; 1 fixture(s)</h2>
+        <ul><li><a href='index.html#1081863'>1081863</a> Chinggis Warriors vs WXM</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">unrated_opponent</span> &middot; 1 fixture(s)</h2>
+        <ul><li><a href='index.html#1081863'>1081863</a> Chinggis Warriors vs WXM</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">far_future_scheduling</span> &middot; 1 fixture(s)</h2>
+        <ul><li><a href='index.html#1080200'>1080200</a> Wildcard vs DENDELE</li></ul>
+      </article>
+      <article class="card">
+        <h2><span class="chip chip-flag">placeholder_scheduling</span> &middot; 1 fixture(s)</h2>
+        <ul><li><a href='index.html#1080200'>1080200</a> Wildcard vs DENDELE</li></ul>
+      </article>
+</main>
+<footer class="site-footer">
+  <p>Session c32f1b93 &middot; board generated 2026-10-17T02:07:11Z<br>
+  Independent re-derivation from retained primary evidence only (no network at build time).
+  Crowd shares are sentiment, never prices. Not betting advice.</p>
+</footer>
+</body>
+</html>

@@ -577,6 +577,25 @@ Quotes expire after four hours or at pick lock. Source failures preserve invento
 <a href="audits/94b3d48a/flagged.html">Audit limitations</a> ·
 <a href="audits/6c5bb3d6/index.html">Independent line-by-line verification (every probability re-derived from raw quotes and Valve's standings; day-1 upset review and leaderboard-differential cross-check)</a>.</p></details>
 
+<!-- c32f1b93 integration (additive): the independent re-derivation board.
+     Re-derives every number from retained evidence on the live Oct-16 HLTV
+     Valve ladders: roster-verified VRS joins (corrects the prior board's
+     stale-row joins on Betclic/ex-RUSTEC/Chinggis and its max-standing
+     duplicate-name default), its own fitted slope, both TWC semifinals
+     covered source-by-source, one policy-blank fixture with its full attempt
+     trail. Its own picks/TWC/unresolved/flagged/method pages and daily
+     reproducibility workflow are linked from its executive summary. -->
+<details class="archive"><summary>Independent re-derivation board (session c32f1b93, dated 2026-10-17)</summary>
+<p>Not a current price feed: <a href="audits/c32f1b93/index.html">Picks board (c32f1b93)</a> —
+35 open fixtures, every probability re-derived from retained evidence (Valve VRS ladder,
+bookmaker/exchange quotes, bo3.gg history, HLTV live Oct-16 ladders) with roster-verified
+joins, our own fitted slope (k=0.4970, MAE 0.059 on 19 pairs) and per-row point vintages ·
+<a href="audits/c32f1b93/twc-day4.html">TWC day-4 semifinals</a> ·
+<a href="audits/c32f1b93/method.html">Method &amp; calibration</a> ·
+<a href="audits/c32f1b93/unresolved.html">Unresolved</a> ·
+<a href="audits/c32f1b93/flagged.html">Flagged (incl. prior-board corrections)</a>.
+Refreshed daily by <a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/refresh-c32f1b93.yml">refresh-c32f1b93.yml</a> as a reproducibility check.</p></details>
+
 <div class="pick-boards-grid"><a class="board-card" href="hub/index.html"><div class="board-card-title">Alternate mobile hub &amp; TWC desk</div><div class="board-card-desc">Mobile front door (session 7c2622db): one card per open match with pick, both probabilities and the crowd share as ownership only, plus the day-1/2 review, its own unresolved &amp; limitations section, flags and verification.</div></a><a class="board-card" href="strategy/index.html"><div class="board-card-title">Independent safe + leaderboard research</div><div class="board-card-desc">Preserved alternative strategy snapshot, with a different source/identity policy and a dated day-one retrospective. Do not use it to fill a canonical blank or add its coverage count to this one.</div></a>
 <a class="board-card" href="day3/index.html"><div class="board-card-title">Independent day-three desk</div><div class="board-card-desc">Preserved session 4cf64ea3 results, all-match research and climb heuristics. Its independent capture/source/risk policy may differ; do not use it to replace canonical prices or fill unsupported canonical rows. Includes its own unresolved section.</div></a>
 <a class="board-card" href="twc/index.html"><div class="board-card-title">Independent parallel TWC review</div><div class="board-card-desc">Preserved session 869a5375 results, group standings and strategy snapshot with its own limitations. Different source capture/policy, not a replacement for the current canonical picks or day-three decision sheet above.</div></a></div>
@@ -1053,6 +1072,7 @@ their own snapshots, source policies and model assumptions. They do not supply a
 Probabilities tables.</div>
 <div class="archive-grid">
   <article class="card"><h2>Independent verification</h2><p><a href="audits/98dcfc7e/index.html">Every-match CS2 picks, TWC Day 1–3 strategy &amp; CI gate audit (98dcfc7e)</a><br><a href="audits/169d010a/index.html">Open-matches recheck &amp; TWC Day 1–3 audit (169d010a)</a><br><a href="audits/6ffacd40/index.html">16 October canonical coverage, no-edge ties &amp; source review</a><br><a href="audits/5468b0ba/index.html">TWC Day 1–3 &amp; Every-Match Verification (5468b0ba)</a><br>
+  <a href="audits/c32f1b93/index.html">Independent re-derivation board, TWC day-4 (c32f1b93)</a> · <a href="audits/c32f1b93/method.html">method &amp; calibration</a> · <a href="audits/c32f1b93/flagged.html">corrections of prior boards</a><br>
   <a href="verify/b3b89eec/index.html">Independent verification + TWC day-3 audit (b3b89eec)</a><br>
   <a href="verify/8e7a652d/index.html">Market verification &amp; cross-check</a><br>
   <a href="verify/0f71ea59/index.html">Line-by-line verification report</a><br>

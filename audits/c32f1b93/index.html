@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Picks board · c32f1b93</title>
+<link rel="stylesheet" href="style.css">
+<script>
+function filterBoard(){
+  var c=document.getElementById('f-conf').value.toLowerCase();
+  var t=document.getElementById('f-text').value.toLowerCase();
+  document.querySelectorAll('#board-table tbody tr').forEach(function(tr){
+    var ok=(c===''||tr.getAttribute('data-conf').toLowerCase().indexOf(c)===0)
+        &&(t===''||tr.textContent.toLowerCase().indexOf(t)!==-1);
+    tr.style.display=ok?'':'none';
+  });
+}
+document.getElementById('f-conf').addEventListener('input',filterBoard);
+document.getElementById('f-text').addEventListener('input',filterBoard);
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">CS2 Pick&rsquo;em Board <span class="session-tag">c32f1b93</span></div>
+    <nav class="site-nav" aria-label="Session pages"><a href="index.html" class="nav-on">Picks board</a> · <a href="twc-day4.html" class="">TWC Day 4</a> · <a href="unresolved.html" class="">Unresolved</a> · <a href="flagged.html" class="">Flagged</a> · <a href="method.html" class="">Method</a></nav>
+  </div>
+</header>
+<main id="main" class="wrap">
+
+    <h1>Independent CS2 picks board &mdash; session c32f1b93</h1>
+    <p class="lede">Every probability on this board is re-derived from retained primary evidence
+    (Valve's official VRS ladder, bookmaker/exchange quotes, bo3.gg history, HLTV live ladders).
+    No prior board's numbers are inherited: the VRS joins, the market medians, the Elo fallback and
+    the slope fit are all recomputed here, and every join is audited on the
+    <a href="method.html">method page</a>. Data as of {&#x27;hotspawn_lobby_render&#x27;: &#x27;2026-10-17T00:52:00Z (this session, manual read)&#x27;, &#x27;hotspawn_api_inventory&#x27;: &#x27;2026-10-17T00:22:00Z (retained fe803b80 snapshot)&#x27;, &#x27;external_quotes_retained&#x27;: &#x27;2026-10-17T00:19:42Z/00:21:36Z (fe803b80 capture)&#x27;, &#x27;external_quotes_fresh&#x27;: &#x27;2026-10-17T00:52:00Z/01:10:00Z (this session)&#x27;, &#x27;valve_vrs_ladder&#x27;: &#x27;2026-10-05 official global snapshot (latest full ladder published)&#x27;, &#x27;live_vrs_overrides&#x27;: &#x27;2026-10-17T00:53Z/01:10Z HLTV live Valve-ranking reads&#x27;}; board generated 2026-10-17T02:07:11Z.</p>
+    
+    <section class="stats" aria-label="Board statistics">
+      <div class="stat"><div class="stat-num">35</div><div class="stat-label">open fixtures</div></div>
+      <div class="stat"><div class="stat-num">20</div><div class="stat-label">market lines</div></div>
+      <div class="stat"><div class="stat-num">14</div><div class="stat-label">model-only lines</div></div>
+      <div class="stat"><div class="stat-num">1</div><div class="stat-label">blank (unresolved)</div></div>
+      <div class="stat"><div class="stat-num">14</div><div class="stat-label">Strong picks</div></div>
+      <div class="stat"><div class="stat-num">2</div><div class="stat-label">contrarian climbs</div></div>
+      <div class="stat"><div class="stat-num">30</div><div class="stat-label">price sources</div></div>
+      <div class="stat"><div class="stat-num">93</div><div class="stat-label">flags raised</div></div>
+    </section>
+    
+    <section class="card">
+      <h2>Calibration (our own fit, published raw)</h2>
+      <p>The Valve-VRS slope <em>k</em> is fitted by least squares through the origin on the
+      19 fixtures that carry both a market median and a two-side VRS join:
+      <strong>k = 0.4970</strong> (raw 0.4970, unclamped, inside the
+      [0.1, 1.5] stability band; k=1 reproduces Valve's own
+      curve, where a 400-point rank delta is a 90% win probability), median absolute
+      probability error <strong>0.0592</strong>. For comparison, session
+      fe803b80 published k=0.275 with MAE 0.1002 on the same pair count. Our slope is
+      steeper because the live Oct-16 ladder compressed several mid-tier deltas (TWC
+      point swings, 128-day decay) while the markets held &mdash; the same markets now
+      imply more certainty per rating point. Four pairs imply a negative slope (market
+      and ladder disagree on the favourite); they are published in full on the
+      <a href="method.html">method page</a> rather than dropped.</p>
+    </section>
+    <section class="card"><h2>Headline: Thunderpick World Championship semifinals (Bo3)</h2>
+        <article class="semi">
+          <h3>FURIA vs Aurora &middot; 2026-10-17T14:00:00Z</h3>
+          <p class="semi-line">Pick: <strong>FURIA</strong> 50.6%
+          <span class="badge b-toss">Toss-up</span> <span class="chip chip-marketpmodel">market+model</span></p>
+          <div class="pbar"><div class="pbar-a" style="width:50.6%"></div><div class="pbar-b" style="width:49.4%"></div></div>
+          <p class="semi-detail">Market median 51.0% over 7 sources
+          (bovada, egamersworld, kalshi, melbet, pinnacle, polymarket, thunderpick) &middot; model 48.5%
+          (live VRS delta -21 pt) &middot; blend 85/15.</p>
+          <p class="semi-detail"></p>
+        </article>
+        <article class="semi">
+          <h3>Falcons vs BetBoom &middot; 2026-10-17T17:00:00Z</h3>
+          <p class="semi-line">Pick: <strong>Falcons</strong> 75.2%
+          <span class="badge b-strong">Strong</span> <span class="chip chip-marketpmodel">market+model</span></p>
+          <div class="pbar"><div class="pbar-a" style="width:75.2%"></div><div class="pbar-b" style="width:24.8%"></div></div>
+          <p class="semi-detail">Market median 76.6% over 7 sources
+          (bovada, egamersworld, kalshi, melbet, pinnacle, polymarket, thunderpick) &middot; model 67.4%
+          (live VRS delta +261 pt) &middot; blend 85/15.</p>
+          <p class="semi-detail"></p>
+        </article><p class="dim">Full day-1&ndash;3 results, lineups, form and the contrarian framing: <a href="twc-day4.html">TWC Day 4 page</a>.</p></section>
+    
+    <section class="card">
+      <h2>Every open fixture (35)</h2>
+      <p class="dim">All times UTC. Crowd % is HotSpawn pick'em ownership (sentiment context, never a price).
+      Filter: <input id="f-conf" aria-label="filter by confidence" placeholder="confidence">
+      <input id="f-text" aria-label="filter by text" placeholder="team, competition, flag&hellip;"></p>
+      <div class="table-scroll">
+      <table class="board" id="board-table">
+        <thead><tr>
+          <th>Fixture</th><th>Matchup</th><th>Market</th><th>Model</th>
+          <th>Published line</th><th>Crowd</th><th>Role / flags</th>
+        </tr></thead>
+        <tbody>
+        <tr data-conf="Strong" data-basis="market+model" data-comp="NODWIN Clutch Series #13">
+          <td data-label="Fixture"><a href="https://www.hotspawn.com/matches/bet-m-vs-just-players-nodwin-clutch-series-13-1079170">1079170</a></td>
+            <span class="dim">NODWIN Clutch Series #13 &middot; tier B &middot; 2026-10-17T08:00:00Z</span></td>
+          <td data-label="Matchup"><strong>BET-M</strong> vs <strong>Just Players</strong></td>
+          <td data-label="Market">67.0%<br><span class="dim">1 source(s) &middot; spread n/a</span></td>
+          <td data-label="Model">VRS 54.3%<br><span class="dim">delta +62 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>65.1%</strong><br><span class="badge b-strong">Strong</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd">91&nbsp;% / 9&nbsp;%</td>
+          <td data-label="Role / flags">safe (crowd-aligned; ownership inflated - treat as sentiment)<br><span class="chip chip-flag">crowd_divergence</span> <span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">market_model_divergence</span> <span class="chip chip-flag">single_source</span> <span class="chip chip-flag">stale_row_corrected</span> <span class="chip chip-flag">vrs_row_disambiguated</span></td>
+        </tr>
+        <tr data-conf="Toss-up" data-basis="model" data-comp="CCT Europe 2026 Series #11">
+          <td data-label="Fixture"><a href="https://bo3.gg/matches/g2-ares-vs-ex-6666-17-10-2026">1079633</a></td>
+            <span class="dim">CCT Europe 2026 Series #11 &middot; tier B &middot; 2026-10-17T08:00:00Z</span></td>
+          <td data-label="Matchup"><strong>ex-6666</strong> vs <strong>G2 Ares</strong></td>
+          <td data-label="Market"><span class="dim">no usable price</span></td>
+          <td data-label="Model">VRS 53.2%<br><span class="dim">delta +46 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>53.2%</strong><br><span class="badge b-toss">Toss-up</span> <span class="chip chip-model">model</span></td>
+          <td data-label="Crowd"><span class="dim">not captured</span></td>
+          <td data-label="Role / flags">toss-up<br><span class="chip chip-flag">live_vrs_override</span></td>
+        </tr>
+        <tr data-conf="Strong" data-basis="market+model" data-comp="Elisa BreakOut Series #2">
+          <td data-label="Fixture"><a href="https://bo3.gg/matches/wbt-vs-havu-17-10-2026">1080291</a></td>
+            <span class="dim">Elisa BreakOut Series #2 &middot; tier C &middot; 2026-10-17T08:00:00Z</span></td>
+          <td data-label="Matchup"><strong>WROTBERRY</strong> vs <strong>HAVU</strong></td>
+          <td data-label="Market">65.1%<br><span class="dim">2 source(s) &middot; spread 0.038</span></td>
+          <td data-label="Model">VRS 65.3%<br><span class="dim">delta +227 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>65.1%</strong><br><span class="badge b-strong">Strong</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd"><span class="dim">not captured</span></td>
+          <td data-label="Role / flags">safe<br><span class="chip chip-flag">alias_applied</span> <span class="chip chip-flag">live_vrs_override</span></td>
+        </tr>
+        <tr data-conf="Toss-up" data-basis="market+model" data-comp="PGL Bucharest 2027: Closed Qualifier">
+          <td data-label="Fixture"><a href="https://www.hotspawn.com/matches/eternal-fire-vs-nuclear-tigeres-pgl-bucharest-2027-closed-qualifier-1081510">1081510</a></td>
+            <span class="dim">PGL Bucharest 2027: Closed Qualifier &middot; tier B &middot; 2026-10-17T08:00:00Z</span></td>
+          <td data-label="Matchup"><strong>Eternal Fire</strong> vs <strong>Nuclear TigeRES</strong></td>
+          <td data-label="Market">52.8%<br><span class="dim">3 source(s) &middot; spread 0.036</span></td>
+          <td data-label="Model">VRS 56.8%<br><span class="dim">delta +98 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>53.4%</strong><br><span class="badge b-toss">Toss-up</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd">43&nbsp;% / 57&nbsp;%</td>
+          <td data-label="Role / flags">toss-up<br><span class="chip chip-flag">live_vrs_override</span></td>
+        </tr>
+        <tr data-conf="Lean" data-basis="market+model" data-comp="Stake Pulse Beat III">
+          <td data-label="Fixture"><a href="https://www.hotspawn.com/matches/ninjas-in-pyjamas-vs-heroic-stake-pulse-beat-iii-1081888">1081888</a></td>
+            <span class="dim">Stake Pulse Beat III &middot; tier B &middot; 2026-10-17T08:00:00Z</span></td>
+          <td data-label="Matchup"><strong>Ninjas in Pyjamas</strong> vs <strong>Heroic</strong></td>
+          <td data-label="Market">44.1%<br><span class="dim">4 source(s) &middot; spread 0.022</span></td>
+          <td data-label="Model">VRS 47.6%<br><span class="dim">delta -34 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>44.6%</strong><br><span class="badge b-lean">Lean</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd">43&nbsp;% / 57&nbsp;%</td>
+          <td data-label="Role / flags">lean<br><span class="chip chip-flag">live_vrs_override</span></td>
+        </tr>
+        <tr data-conf="Strong" data-basis="model" data-comp="GLuck Yungstar 2026: Series #3">
+          <td data-label="Fixture"><span class="dim">1081511</span></td>
+            <span class="dim">GLuck Yungstar 2026: Series #3 &middot; tier C &middot; 2026-10-17T09:00:00Z</span></td>
+          <td data-label="Matchup"><strong>VP.Future</strong> vs <strong>Black Phoenix</strong></td>
+          <td data-label="Market"><span class="dim">no usable price</span></td>
+          <td data-label="Model">Elo 17.4%<br><span class="dim">originated elo &middot; k=20 &middot; 224 matches</span></td>
+          <td data-label="Published line"><strong>17.4%</strong><br><span class="badge b-strong">Strong</span> <span class="chip chip-model">model</span></td>
+          <td data-label="Crowd"><span class="dim">not captured</span></td>
+          <td data-label="Role / flags">safe<br><span class="chip chip-none">clean</span></td>
+        </tr>
+        <tr data-conf="Toss-up" data-basis="model" data-comp="NODWIN Clutch Series #13">
+          <td data-label="Fixture"><a href="https://www.hotspawn.com/matches/genone-vs-butterfly-nodwin-clutch-series-13-1079171">1079171</a></td>
+            <span class="dim">NODWIN Clutch Series #13 &middot; tier B &middot; 2026-10-17T11:00:00Z</span></td>
+          <td data-label="Matchup"><strong>GenOne</strong> vs <strong>Butterfly</strong></td>
+          <td data-label="Market"><span class="dim">no usable price</span></td>
+          <td data-label="Model">VRS 54.7%<br><span class="dim">delta +68 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>54.7%</strong><br><span class="badge b-toss">Toss-up</span> <span class="chip chip-model">model</span></td>
+          <td data-label="Crowd">28&nbsp;% / 72&nbsp;% <span class="dim">(via 1080150)</span></td>
+          <td data-label="Role / flags">toss-up<br><span class="chip chip-flag">crowd_divergence</span> <span class="chip chip-flag">live_vrs_override</span></td>
+        </tr>
+        <tr data-conf="Lean" data-basis="market+model" data-comp="Stake Pulse Beat III">
+          <td data-label="Fixture"><a href="https://bo3.gg/matches/mibr-vs-100-thieves-17-10-2026">1079591</a></td>
+            <span class="dim">Stake Pulse Beat III &middot; tier B &middot; 2026-10-17T11:00:00Z</span></td>
+          <td data-label="Matchup"><strong>MIBR</strong> vs <strong>100 Thieves</strong></td>
+          <td data-label="Market">55.4%<br><span class="dim">5 source(s) &middot; spread 0.024</span></td>
+          <td data-label="Model">VRS 55.0%<br><span class="dim">delta +72 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>55.3%</strong><br><span class="badge b-lean">Lean</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd"><span class="dim">not captured</span></td>
+          <td data-label="Role / flags">lean<br><span class="chip chip-flag">live_vrs_override</span></td>
+        </tr>
+        <tr data-conf="Toss-up" data-basis="model" data-comp="CCT Europe 2026 Series #11">
+          <td data-label="Fixture"><a href="https://bo3.gg/matches/lavked-vs-sokerorg-17-10-2026">1079634</a></td>
+            <span class="dim">CCT Europe 2026 Series #11 &middot; tier B &middot; 2026-10-17T11:00:00Z</span></td>
+          <td data-label="Matchup"><strong>Lavked</strong> vs <strong>LFO 10</strong></td>
+          <td data-label="Market"><span class="dim">no usable price</span></td>
+          <td data-label="Model">VRS 54.7%<br><span class="dim">delta +68 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>54.7%</strong><br><span class="badge b-toss">Toss-up</span> <span class="chip chip-model">model</span></td>
+          <td data-label="Crowd"><span class="dim">not captured</span></td>
+          <td data-label="Role / flags">toss-up<br><span class="chip chip-flag">alias_applied</span> <span class="chip chip-flag">form_conflict</span> <span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">roster_drift</span></td>
+        </tr>
+        <tr data-conf="Strong" data-basis="market+model" data-comp="PGL Bucharest 2027: Closed Qualifier">
+          <td data-label="Fixture"><a href="https://bo3.gg/matches/eyeballers-vs-gamerlegion-17-10-2026">1081512</a></td>
+            <span class="dim">PGL Bucharest 2027: Closed Qualifier &middot; tier B &middot; 2026-10-17T11:00:00Z</span></td>
+          <td data-label="Matchup"><strong>EYEBALLERS</strong> vs <strong>GamerLegion</strong></td>
+          <td data-label="Market">28.9%<br><span class="dim">1 source(s) &middot; spread n/a</span></td>
+          <td data-label="Model">VRS 42.9%<br><span class="dim">delta -103 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>31.0%</strong><br><span class="badge b-strong">Strong</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd"><span class="dim">not captured</span></td>
+          <td data-label="Role / flags">safe<br><span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">market_model_divergence</span> <span class="chip chip-flag">single_source</span></td>
+        </tr>
+        <tr data-conf="Lean" data-basis="market+model" data-comp="CCT Europe 2026 Challengers #8">
+          <td data-label="Fixture"><a href="https://www.hotspawn.com/matches/bebop-vs-donstu-cct-europe-2026-challengers-8-1081513">1081513</a></td>
+            <span class="dim">CCT Europe 2026 Challengers #8 &middot; tier C &middot; 2026-10-17T11:00:00Z</span></td>
+          <td data-label="Matchup"><strong>Bebop</strong> vs <strong>Donstu</strong></td>
+          <td data-label="Market">57.7%<br><span class="dim">2 source(s) &middot; spread 0.004</span></td>
+          <td data-label="Model">VRS 47.9%<br><span class="dim">delta -30 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>56.2%</strong><br><span class="badge b-lean">Lean</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd">90&nbsp;% / 10&nbsp;% <span class="dim">(via 1079807)</span></td>
+          <td data-label="Role / flags">safe (crowd-aligned; ownership inflated - treat as sentiment)<br><span class="chip chip-flag">crowd_divergence</span> <span class="chip chip-flag">stale_row_corrected</span> <span class="chip chip-flag">vrs_row_disambiguated</span></td>
+        </tr>
+        <tr data-conf="Solid" data-basis="market+model" data-comp="Elisa BreakOut Series #2">
+          <td data-label="Fixture"><a href="https://bo3.gg/matches/ence-vs-phantom-esports-17-10-2026">1080292</a></td>
+            <span class="dim">Elisa BreakOut Series #2 &middot; tier C &middot; 2026-10-17T12:00:00Z</span></td>
+          <td data-label="Matchup"><strong>ENCE</strong> vs <strong>Phantom</strong></td>
+          <td data-label="Market">38.9%<br><span class="dim">2 source(s) &middot; spread 0.062</span></td>
+          <td data-label="Model">VRS 39.7%<br><span class="dim">delta -150 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>39.0%</strong><br><span class="badge b-solid">Solid</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd"><span class="dim">not captured</span></td>
+          <td data-label="Role / flags">lean<br><span class="chip chip-flag">live_vrs_override</span></td>
+        </tr>
+        <tr data-conf="Strong" data-basis="model" data-comp="CCT Europe 2026 Series #11">
+          <td data-label="Fixture"><a href="https://bo3.gg/matches/bushido-wildcats-cs-vs-gothic-17-10-2026">1079635</a></td>
+            <span class="dim">CCT Europe 2026 Series #11 &middot; tier B &middot; 2026-10-17T14:00:00Z</span></td>
+          <td data-label="Matchup"><strong>Bushido Wildcats</strong> vs <strong>Gothic</strong></td>
+          <td data-label="Market"><span class="dim">no usable price</span></td>
+          <td data-label="Model">VRS 65.5%<br><span class="dim">delta +230 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>65.5%</strong><br><span class="badge b-strong">Strong</span> <span class="chip chip-model">model</span></td>
+          <td data-label="Crowd"><span class="dim">not captured</span></td>
+          <td data-label="Role / flags">safe<br><span class="chip chip-flag">form_conflict</span> <span class="chip chip-flag">live_vrs_override</span></td>
+        </tr>
+        <tr data-conf="Toss-up" data-basis="market+model" data-comp="Thunderpick World Championship 2026">
+          <td data-label="Fixture"><a href="https://www.hltv.org/matches/2399414/furia-vs-aurora-thunderpick-world-championship-2026">1080207</a></td>
+            <span class="dim">Thunderpick World Championship 2026 &middot; tier S &middot; 2026-10-17T14:00:00Z</span></td>
+          <td data-label="Matchup"><strong>FURIA</strong> vs <strong>Aurora</strong></td>
+          <td data-label="Market">51.0%<br><span class="dim">7 source(s) &middot; spread 0.030</span></td>
+          <td data-label="Model">VRS 48.5%<br><span class="dim">delta -21 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>50.6%</strong><br><span class="badge b-toss">Toss-up</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd">65&nbsp;% / 35&nbsp;%</td>
+          <td data-label="Role / flags">toss-up<br><span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">twc_semifinal</span></td>
+        </tr>
+        <tr data-conf="Strong" data-basis="market+model" data-comp="PGL Bucharest 2027: Closed Qualifier">
+          <td data-label="Fixture"><a href="https://www.hotspawn.com/matches/apogee-betclic-vs-nemesis-pgl-bucharest-2027-closed-qualifier-1081515">1081515</a></td>
+            <span class="dim">PGL Bucharest 2027: Closed Qualifier &middot; tier B &middot; 2026-10-17T14:00:00Z</span></td>
+          <td data-label="Matchup"><strong>Apogee Betclic</strong> vs <strong>Nemesis</strong></td>
+          <td data-label="Market">30.9%<br><span class="dim">2 source(s) &middot; spread 0.043</span></td>
+          <td data-label="Model">VRS 38.8%<br><span class="dim">delta -163 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>32.1%</strong><br><span class="badge b-strong">Strong</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd">14&nbsp;% / 86&nbsp;%</td>
+          <td data-label="Role / flags">safe (crowd-aligned; ownership inflated - treat as sentiment)<br><span class="chip chip-flag">alias_applied</span> <span class="chip chip-flag">crowd_divergence</span> <span class="chip chip-flag">freshly_priced_this_session</span> <span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">stale_row_corrected</span> <span class="chip chip-flag">thin_volume</span> <span class="chip chip-flag">vrs_row_disambiguated</span></td>
+        </tr>
+        <tr data-conf="Lean" data-basis="market+model" data-comp="NODWIN Clutch Series #13">
+          <td data-label="Fixture"><a href="https://www.hotspawn.com/matches/baks-vs-fire-flux-nodwin-clutch-series-13-1079173">1079173</a></td>
+            <span class="dim">NODWIN Clutch Series #13 &middot; tier B &middot; 2026-10-17T17:00:00Z</span></td>
+          <td data-label="Matchup"><strong>BakS</strong> vs <strong>Fire Flux</strong></td>
+          <td data-label="Market">59.2%<br><span class="dim">1 source(s) &middot; spread n/a</span></td>
+          <td data-label="Model">VRS 56.8%<br><span class="dim">delta +99 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>58.9%</strong><br><span class="badge b-lean">Lean</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd">96&nbsp;% / 4&nbsp;% <span class="dim">(via 1080299)</span></td>
+          <td data-label="Role / flags">safe (crowd-aligned; ownership inflated - treat as sentiment)<br><span class="chip chip-flag">crowd_divergence</span> <span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">single_source</span></td>
+        </tr>
+        <tr data-conf="Strong" data-basis="market+model" data-comp="Thunderpick World Championship 2026">
+          <td data-label="Fixture"><a href="https://www.hltv.org/matches/2399415/falcons-vs-betboom-thunderpick-world-championship-2026">1080208</a></td>
+            <span class="dim">Thunderpick World Championship 2026 &middot; tier S &middot; 2026-10-17T17:00:00Z</span></td>
+          <td data-label="Matchup"><strong>Falcons</strong> vs <strong>BetBoom</strong></td>
+          <td data-label="Market">76.6%<br><span class="dim">7 source(s) &middot; spread 0.040</span></td>
+          <td data-label="Model">VRS 67.4%<br><span class="dim">delta +261 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>75.2%</strong><br><span class="badge b-strong">Strong</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd">81&nbsp;% / 19&nbsp;%</td>
+          <td data-label="Role / flags">safe (crowd-aligned; ownership inflated - treat as sentiment)<br><span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">twc_semifinal</span></td>
+        </tr>
+        <tr data-conf="Solid" data-basis="market+model" data-comp="PGL Bucharest 2027: Closed Qualifier">
+          <td data-label="Fixture"><a href="https://bo3.gg/matches/bbl-vs-ex-rustec-17-10-2026">1081517</a></td>
+            <span class="dim">PGL Bucharest 2027: Closed Qualifier &middot; tier B &middot; 2026-10-17T17:00:00Z</span></td>
+          <td data-label="Matchup"><strong>BBL</strong> vs <strong>ex-RUSTEC</strong></td>
+          <td data-label="Market">60.7%<br><span class="dim">1 source(s) &middot; spread n/a</span></td>
+          <td data-label="Model">VRS 67.4%<br><span class="dim">delta +261 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>61.7%</strong><br><span class="badge b-solid">Solid</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd"><span class="dim">not captured</span></td>
+          <td data-label="Role / flags">lean<br><span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">single_source</span> <span class="chip chip-flag">stale_row_corrected</span> <span class="chip chip-flag">vrs_row_disambiguated</span></td>
+        </tr>
+        <tr data-conf="Lean" data-basis="model" data-comp="CCT Europe 2026 Series #12 Play-In">
+          <td data-label="Fixture"><a href="https://www.hotspawn.com/matches/banda-chuya-vs-enjoy-cct-europe-2026-series-12-play-in-1081126">1081126</a></td>
+            <span class="dim">CCT Europe 2026 Series #12 Play-In &middot; tier C &middot; 2026-10-18T08:00:00Z</span></td>
+          <td data-label="Matchup"><strong>Banda chuya</strong> vs <strong>Enjoy</strong></td>
+          <td data-label="Market"><span class="dim">no usable price</span></td>
+          <td data-label="Model">VRS 44.3%<br><span class="dim">delta -82 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>44.3%</strong><br><span class="badge b-lean">Lean</span> <span class="chip chip-model">model</span></td>
+          <td data-label="Crowd">84&nbsp;% / 16&nbsp;% <span class="dim">(via 1080157)</span></td>
+          <td data-label="Role / flags">climb (contrarian: crowd owns the other side, model backs this pick)<br><span class="chip chip-flag">crowd_divergence</span> <span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">stale_row_corrected</span> <span class="chip chip-flag">vrs_row_disambiguated</span></td>
+        </tr>
+        <tr data-conf="Solid" data-basis="model" data-comp="CCT Europe 2026 Series #11">
+          <td data-label="Fixture"><a href="https://bo3.gg/matches/ex-rustec-vs-illyrians-18-10-2026">1079638</a></td>
+            <span class="dim">CCT Europe 2026 Series #11 &middot; tier B &middot; 2026-10-18T11:00:00Z</span></td>
+          <td data-label="Matchup"><strong>ex-RUSTEC</strong> vs <strong>ILLYRIANS</strong></td>
+          <td data-label="Market"><span class="dim">no usable price</span></td>
+          <td data-label="Model">VRS 61.7%<br><span class="dim">delta +172 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>61.7%</strong><br><span class="badge b-solid">Solid</span> <span class="chip chip-model">model</span></td>
+          <td data-label="Crowd"><span class="dim">not captured</span></td>
+          <td data-label="Role / flags">lean<br><span class="chip chip-flag">form_conflict_note</span> <span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">roster_drift</span> <span class="chip chip-flag">stale_row_corrected</span> <span class="chip chip-flag">vrs_row_disambiguated</span></td>
+        </tr>
+        <tr data-conf="Strong" data-basis="model" data-comp="CCT Europe 2026 Challengers #8">
+          <td data-label="Fixture"><a href="https://www.hotspawn.com/matches/ex-6666-vs-privateer-cct-europe-2026-challengers-8-1081521">1081521</a></td>
+            <span class="dim">CCT Europe 2026 Challengers #8 &middot; tier C &middot; 2026-10-18T13:45:00Z</span></td>
+          <td data-label="Matchup"><strong>ex-6666</strong> vs <strong>Privateer</strong></td>
+          <td data-label="Market"><span class="dim">no usable price</span></td>
+          <td data-label="Model">VRS 74.5%<br><span class="dim">delta +386 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>74.5%</strong><br><span class="badge b-strong">Strong</span> <span class="chip chip-model">model</span></td>
+          <td data-label="Crowd">96&nbsp;% / 4&nbsp;% <span class="dim">(via 1081820)</span></td>
+          <td data-label="Role / flags">safe (crowd-aligned; ownership inflated - treat as sentiment)<br><span class="chip chip-flag">crowd_divergence</span> <span class="chip chip-flag">live_vrs_override</span></td>
+        </tr>
+        <tr data-conf="Strong" data-basis="model" data-comp="CCT Europe 2026 Challengers #8">
+          <td data-label="Fixture"><a href="https://www.hotspawn.com/matches/antidaun-vs-phantom-academy-cct-europe-2026-challengers-8-1081522">1081522</a></td>
+            <span class="dim">CCT Europe 2026 Challengers #8 &middot; tier C &middot; 2026-10-18T13:45:00Z</span></td>
+          <td data-label="Matchup"><strong>antidaun</strong> vs <strong>Phantom Academy</strong></td>
+          <td data-label="Market"><span class="dim">no usable price</span></td>
+          <td data-label="Model">Elo 96.6%<br><span class="dim">originated elo &middot; k=20 &middot; 224 matches</span></td>
+          <td data-label="Published line"><strong>96.6%</strong><br><span class="badge b-strong">Strong</span> <span class="chip chip-model">model</span></td>
+          <td data-label="Crowd">8&nbsp;% / 92&nbsp;% <span class="dim">(via 1080183)</span></td>
+          <td data-label="Role / flags">climb (contrarian: crowd owns the other side, model backs this pick)<br><span class="chip chip-flag">crowd_divergence</span></td>
+        </tr>
+        <tr data-conf="Toss-up" data-basis="model" data-comp="CCT Europe 2026 Series #11">
+          <td data-label="Fixture"><a href="https://bo3.gg/tournaments/cct-europe-2026-series-11">1079640</a></td>
+            <span class="dim">CCT Europe 2026 Series #11 &middot; tier B &middot; 2026-10-18T17:00:00Z</span></td>
+          <td data-label="Matchup"><strong>FORZE Reload</strong> vs <strong>BakS</strong></td>
+          <td data-label="Market"><span class="dim">no usable price</span></td>
+          <td data-label="Model">VRS 53.2%<br><span class="dim">delta +46 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>53.2%</strong><br><span class="badge b-toss">Toss-up</span> <span class="chip chip-model">model</span></td>
+          <td data-label="Crowd"><span class="dim">not captured</span></td>
+          <td data-label="Role / flags">toss-up<br><span class="chip chip-flag">live_vrs_override</span></td>
+        </tr>
+        <tr data-conf="Strong" data-basis="market" data-comp="DraculaN Season 7">
+          <td data-label="Fixture"><a href="https://melbet.com/en/line/esports">1081526</a></td>
+            <span class="dim">DraculaN Season 7 &middot; tier B &middot; 2026-10-19T09:00:00Z</span></td>
+          <td data-label="Matchup"><strong>Infinite</strong> vs <strong>Insiders</strong></td>
+          <td data-label="Market">65.5%<br><span class="dim">1 source(s) &middot; spread n/a</span></td>
+          <td data-label="Model"><span class="dim">&ndash;</span></td>
+          <td data-label="Published line"><strong>65.5%</strong><br><span class="badge b-strong">Strong</span> <span class="chip chip-market">market</span></td>
+          <td data-label="Crowd">100&nbsp;% / 0&nbsp;% <span class="dim">(via 1081869)</span></td>
+          <td data-label="Role / flags">safe (crowd-aligned; ownership inflated - treat as sentiment)<br><span class="chip chip-flag">crowd_divergence</span> <span class="chip chip-flag">single_source</span></td>
+        </tr>
+        <tr data-conf="Toss-up" data-basis="market+model" data-comp="DraculaN Season 7">
+          <td data-label="Fixture"><a href="https://bo3.gg/matches/aimclub-vs-basement-boys-19-10-2026">1081527</a></td>
+            <span class="dim">DraculaN Season 7 &middot; tier B &middot; 2026-10-19T09:00:00Z</span></td>
+          <td data-label="Matchup"><strong>aimclub</strong> vs <strong>BASEMENT BOYS</strong></td>
+          <td data-label="Market">45.3%<br><span class="dim">2 source(s) &middot; spread 0.000</span></td>
+          <td data-label="Model">VRS 56.9%<br><span class="dim">delta +100 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>47.0%</strong><br><span class="badge b-toss">Toss-up</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd">84&nbsp;% / 16&nbsp;% <span class="dim">(via 1080014)</span></td>
+          <td data-label="Role / flags">toss-up<br><span class="chip chip-flag">crowd_divergence</span> <span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">market_model_divergence</span> <span class="chip chip-flag">stale_row_corrected</span> <span class="chip chip-flag">vrs_row_disambiguated</span></td>
+        </tr>
+        <tr data-conf="Strong" data-basis="market+model" data-comp="DraculaN Season 7">
+          <td data-label="Fixture"><a href="https://melbet.com/en/line/esports">1081528</a></td>
+            <span class="dim">DraculaN Season 7 &middot; tier B &middot; 2026-10-19T09:00:00Z</span></td>
+          <td data-label="Matchup"><strong>BC.Game</strong> vs <strong>Drama</strong></td>
+          <td data-label="Market">82.4%<br><span class="dim">1 source(s) &middot; spread n/a</span></td>
+          <td data-label="Model">VRS 79.8%<br><span class="dim">delta +494 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>82.1%</strong><br><span class="badge b-strong">Strong</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd">100&nbsp;% / 0&nbsp;% <span class="dim">(via 1081611)</span></td>
+          <td data-label="Role / flags">safe (crowd-aligned; ownership inflated - treat as sentiment)<br><span class="chip chip-flag">crowd_divergence</span> <span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">single_source</span></td>
+        </tr>
+        <tr data-conf="Toss-up" data-basis="market+model" data-comp="DraculaN Season 7">
+          <td data-label="Fixture"><a href="https://bo3.gg/matches/wbt-vs-nexus-19-10-2026">1081529</a></td>
+            <span class="dim">DraculaN Season 7 &middot; tier B &middot; 2026-10-19T09:00:00Z</span></td>
+          <td data-label="Matchup"><strong>Nexus</strong> vs <strong>WROTBERRY</strong></td>
+          <td data-label="Market">46.2%<br><span class="dim">1 source(s) &middot; spread n/a</span></td>
+          <td data-label="Model">VRS 38.8%<br><span class="dim">delta -164 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>45.1%</strong><br><span class="badge b-toss">Toss-up</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd">88&nbsp;% / 12&nbsp;% <span class="dim">(via 1081646)</span></td>
+          <td data-label="Role / flags">toss-up<br><span class="chip chip-flag">alias_applied</span> <span class="chip chip-flag">crowd_divergence</span> <span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">single_source</span></td>
+        </tr>
+        <tr data-conf="Strong" data-basis="market+model" data-comp="DraculaN Season 7">
+          <td data-label="Fixture"><a href="https://bo3.gg/matches/iberian-soul-vs-hyperspirit-19-10-2026">1081530</a></td>
+            <span class="dim">DraculaN Season 7 &middot; tier B &middot; 2026-10-19T10:45:00Z</span></td>
+          <td data-label="Matchup"><strong>Iberian Soul</strong> vs <strong>HyperSpirit</strong></td>
+          <td data-label="Market">65.7%<br><span class="dim">2 source(s) &middot; spread 0.003</span></td>
+          <td data-label="Model">VRS 75.0%<br><span class="dim">delta +395 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>67.1%</strong><br><span class="badge b-strong">Strong</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd">85&nbsp;% / 15&nbsp;% <span class="dim">(via 1079623)</span></td>
+          <td data-label="Role / flags">safe (crowd-aligned; ownership inflated - treat as sentiment)<br><span class="chip chip-flag">crowd_divergence</span> <span class="chip chip-flag">live_vrs_override</span></td>
+        </tr>
+        <tr data-conf="Solid" data-basis="market+model" data-comp="DraculaN Season 7">
+          <td data-label="Fixture"><a href="https://bo3.gg/matches/sashi-esport-vs-mouz-nxt-19-10-2026">1081531</a></td>
+            <span class="dim">DraculaN Season 7 &middot; tier B &middot; 2026-10-19T10:45:00Z</span></td>
+          <td data-label="Matchup"><strong>Sashi</strong> vs <strong>mouz NXT</strong></td>
+          <td data-label="Market">62.4%<br><span class="dim">2 source(s) &middot; spread 0.009</span></td>
+          <td data-label="Model">VRS 61.2%<br><span class="dim">delta +164 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>62.2%</strong><br><span class="badge b-solid">Solid</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd">84&nbsp;% / 16&nbsp;% <span class="dim">(via 1080294)</span></td>
+          <td data-label="Role / flags">safe (crowd-aligned; ownership inflated - treat as sentiment)<br><span class="chip chip-flag">crowd_divergence</span> <span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">stale_row_corrected</span> <span class="chip chip-flag">vrs_row_disambiguated</span></td>
+        </tr>
+        <tr data-conf="Toss-up" data-basis="market+model" data-comp="DraculaN Season 7">
+          <td data-label="Fixture"><a href="https://melbet.com/en/line/esports">1081532</a></td>
+            <span class="dim">DraculaN Season 7 &middot; tier B &middot; 2026-10-19T10:45:00Z</span></td>
+          <td data-label="Matchup"><strong>ASTRAL</strong> vs <strong>Leo</strong></td>
+          <td data-label="Market">45.3%<br><span class="dim">1 source(s) &middot; spread n/a</span></td>
+          <td data-label="Model">VRS 51.5%<br><span class="dim">delta +22 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>46.2%</strong><br><span class="badge b-toss">Toss-up</span> <span class="chip chip-marketpmodel">market+model</span></td>
+          <td data-label="Crowd">24&nbsp;% / 76&nbsp;% <span class="dim">(via 1080194)</span></td>
+          <td data-label="Role / flags">safe (crowd-aligned; ownership inflated - treat as sentiment)<br><span class="chip chip-flag">crowd_divergence</span> <span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">single_source</span> <span class="chip chip-flag">stale_row_corrected</span> <span class="chip chip-flag">vrs_row_disambiguated</span></td>
+        </tr>
+        <tr data-conf="Strong" data-basis="model" data-comp="VOID Autumn Cup 2026">
+          <td data-label="Fixture"><span class="dim">1081861</span></td>
+            <span class="dim">VOID Autumn Cup 2026 &middot; tier C &middot; 2026-10-20T03:00:00Z</span></td>
+          <td data-label="Matchup"><strong>Lynn Vision</strong> vs <strong>Morningstar</strong></td>
+          <td data-label="Market"><span class="dim">no usable price</span></td>
+          <td data-label="Model">Elo 82.1%<br><span class="dim">originated elo &middot; k=20 &middot; 224 matches</span></td>
+          <td data-label="Published line"><strong>82.1%</strong><br><span class="badge b-strong">Strong</span> <span class="chip chip-model">model</span></td>
+          <td data-label="Crowd">100&nbsp;% / 0&nbsp;% <span class="dim">(via 1079990)</span></td>
+          <td data-label="Role / flags">safe (crowd-aligned; ownership inflated - treat as sentiment)<br><span class="chip chip-flag">crowd_divergence</span></td>
+        </tr>
+        <tr data-conf="Toss-up" data-basis="model" data-comp="VOID Autumn Cup 2026">
+          <td data-label="Fixture"><span class="dim">1081862</span></td>
+            <span class="dim">VOID Autumn Cup 2026 &middot; tier C &middot; 2026-10-20T05:00:00Z</span></td>
+          <td data-label="Matchup"><strong>Rare Atom</strong> vs <strong>Alter Ego</strong></td>
+          <td data-label="Market"><span class="dim">no usable price</span></td>
+          <td data-label="Model">VRS 46.0%<br><span class="dim">delta -57 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>46.0%</strong><br><span class="badge b-toss">Toss-up</span> <span class="chip chip-model">model</span></td>
+          <td data-label="Crowd">56&nbsp;% / 44&nbsp;% <span class="dim">(via 1081890)</span></td>
+          <td data-label="Role / flags">toss-up<br><span class="chip chip-flag">live_vrs_override</span></td>
+        </tr>
+        <tr data-conf="Unresolved" data-basis="blank" data-comp="VOID Autumn Cup 2026">
+          <td data-label="Fixture"><a href="https://play.hotspawn.com/lobby">1081863</a></td>
+            <span class="dim">VOID Autumn Cup 2026 &middot; tier C &middot; 2026-10-20T07:00:00Z</span></td>
+          <td data-label="Matchup"><strong>Chinggis Warriors</strong> vs <strong>WXM</strong></td>
+          <td data-label="Market"><span class="dim">no usable price</span></td>
+          <td data-label="Model"><span class="dim">&ndash;</span></td>
+          <td data-label="Published line"><span class="dim">BLANK</span><br><span class="badge b-none">Unresolved</span> <span class="chip chip-blank">BLANK</span></td>
+          <td data-label="Crowd">100&nbsp;% / 0&nbsp;%</td>
+          <td data-label="Role / flags"><br><span class="chip chip-flag">no_derived_line</span> <span class="chip chip-flag">no_published_price</span> <span class="chip chip-flag">policy_blank</span> <span class="chip chip-flag">unrated_opponent</span></td>
+        </tr>
+        <tr data-conf="Strong" data-basis="model" data-comp="VOID Autumn Cup 2026">
+          <td data-label="Fixture"><span class="dim">1081864</span></td>
+            <span class="dim">VOID Autumn Cup 2026 &middot; tier C &middot; 2026-10-20T09:00:00Z</span></td>
+          <td data-label="Matchup"><strong>NEXVOID</strong> vs <strong>Vitalem Aerem</strong></td>
+          <td data-label="Market"><span class="dim">no usable price</span></td>
+          <td data-label="Model">VRS 71.9%<br><span class="dim">delta +338 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>71.9%</strong><br><span class="badge b-strong">Strong</span> <span class="chip chip-model">model</span></td>
+          <td data-label="Crowd"><span class="dim">not captured</span></td>
+          <td data-label="Role / flags">safe<br><span class="chip chip-flag">live_vrs_override</span></td>
+        </tr>
+        <tr data-conf="Toss-up" data-basis="model" data-comp="FRAG University 2026">
+          <td data-label="Fixture"><span class="dim">1080200</span></td>
+            <span class="dim">FRAG University 2026 &middot; tier C &middot; 2026-11-12T00:00:00Z</span></td>
+          <td data-label="Matchup"><strong>Wildcard</strong> vs <strong>DENDELE</strong></td>
+          <td data-label="Market"><span class="dim">no usable price</span></td>
+          <td data-label="Model">VRS 48.4%<br><span class="dim">delta -23 pt &middot; k=0.497 &middot; RD=75</span></td>
+          <td data-label="Published line"><strong>48.4%</strong><br><span class="badge b-toss">Toss-up</span> <span class="chip chip-model">model</span></td>
+          <td data-label="Crowd"><span class="dim">not captured</span></td>
+          <td data-label="Role / flags">toss-up<br><span class="chip chip-flag">far_future_scheduling</span> <span class="chip chip-flag">live_vrs_override</span> <span class="chip chip-flag">placeholder_scheduling</span></td>
+        </tr></tbody>
+      </table>
+      </div>
+    </section>
+    <section class="card">
+      <h2>Ledger pages</h2>
+      <ul>
+        <li><a href="twc-day4.html">TWC Day 4</a> &mdash; both semifinals line-by-line, day 1&ndash;3 results, bracket state</li>
+        <li><a href="unresolved.html">Unresolved &amp; limitations</a> &mdash; the one BLANK fixture, its 8-step attempt ledger, and what this board does not know</li>
+        <li><a href="flagged.html">Flagged for review</a> &mdash; corrections to prior boards, irregularities, and all 93 flags grouped by type</li>
+        <li><a href="method.html">Method &amp; calibration</a> &mdash; the seven published rules, the 19-pair fit, the VRS join ledger, the Elo fallback</li>
+      </ul>
+    </section>
+</main>
+<footer class="site-footer">
+  <p>Session c32f1b93 &middot; board generated 2026-10-17T02:07:11Z<br>
+  Independent re-derivation from retained primary evidence only (no network at build time).
+  Crowd shares are sentiment, never prices. Not betting advice.</p>
+</footer>
+</body>
+</html>
