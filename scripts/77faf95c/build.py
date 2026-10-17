@@ -266,10 +266,13 @@ def build():
                     chosen = ((ra, rb), swapped)
                     break
                 if ra[1] == "rejected" or rb[1] == "rejected":
+                    # cite the record of the side that was actually rejected, never the accepted one
+                    rec = (rb[2] if rb[1] == "rejected" else None) or \
+                          (ra[2] if ra[1] == "rejected" else None) or {}
                     rejected_rows.append({
                         "source": q.get("source_name"), "url": q.get("public_url"),
                         "labels": [qa, qb], "prices": [q.get("decimal_a"), q.get("decimal_b")],
-                        "reason": (ra[2] or rb[2] or {}).get("evidence", "rejected alias")})
+                        "reason": rec.get("evidence") or "no reviewed alias record for this label"})
             if not chosen:
                 continue
             (ra, rb), swapped = chosen
@@ -720,14 +723,25 @@ def render(board):
         body.append(results("day_3", "Day 3 · Fri 16 Oct — the deciders"))
         body.append('<div class="panel"><h3>What day 2 and day 3 tell us for day 4</h3><ul>'
                     '<li>The day-1 upset did not repeat: Aurora beat 9z 2-0 in the Group A decider '
-                    '(Cache 13-11, Inferno 13-4) and dropped Nuke, the map they had lost 13-1.</li>'
-                    '<li>Falcons beat 9z 2-1 in the winners\' match and went straight to the '
-                    'semi-finals with a day of rest; Aurora had to play the decider on 16 Oct.</li>'
-                    '<li>BETBOOM came through the lower bracket (2-1 PARIVISION, then 2-1 Legacy) '
-                    'and played the Group B decider on 16 Oct.</li>'
-                    '<li>Both semi-finalists on the Aurora/FURIA side and the Falcons/BETBOOM side '
-                    'therefore arrive off a 16 Oct match; Falcons are the only team with a full day '
-                    'off.</li></ul></div>')
+                    '(Cache 13-11, Inferno 13-4) and dropped Nuke, the map they had lost 13-1. '
+                    'The 9z result reads as a bad day, not a new ceiling.</li>'
+                    '<li><b>Rest</b>: FURIA and Falcons both won their winners\' matches on '
+                    '15 Oct and had 16 Oct off. Aurora and BETBOOM both had to play their group '
+                    'decider on 16 Oct. The rest edge sits with FURIA in semi-final 1 and with '
+                    'Falcons in semi-final 2.</li>'
+                    '<li><b>Route</b>: BETBOOM played four matches to reach the semi-final '
+                    '(2-1 PARIVISION on 15 Oct, then 2-1 Legacy on 16 Oct) against Falcons\' two. '
+                    'More matches also means more recent map veto information on BETBOOM.</li>'
+                    '<li><b>Where the market and the read disagree</b>: HLTV ranks FURIA #4 and '
+                    'Aurora #6, yet the books have FURIA-Aurora as close to a coin flip (51/49 on this '
+                    'capture) and HLTV tags Aurora the bookmaker favourite. The market is pricing '
+                    'Aurora\'s form and the head-to-head win, not the ranking gap.</li>'
+                    '<li><b>Contrarian-but-not-stupid</b>: the obvious contrarian side is Aurora '
+                    'in semi-final 1 only in the sense that the ranking gap suggests FURIA - the '
+                    'market already agrees with FURIA, so FURIA is not contrarian here. The '
+                    'genuinely contrarian-but-supported side is BETBOOM in semi-final 2, and it '
+                    'is a 24% shot: the form and the rest both point the other way, so it is a '
+                    'leaderboard play, not an edge.</li></ul></div>')
         body.append('<h2>Day 4 · the lines</h2>')
         body.append("".join(row_card(r, board) for r in extra))
         body.append('<p class="small">%s</p>' % esc(twc.get("kickoff_note") or ""))
@@ -769,9 +783,10 @@ def render(board):
     flagged_rows = [r for r in rows if r["basis"] == "market-flagged"]
     body = [
         '<p class="muted">%d of the %d matches in this capture have no supported win probability, '
-        'and %d more carry a provisional price. Nothing here is filled with a guess or a 50/50: '
+        'and %d more %s a provisional price. Nothing here is filled with a guess or a 50/50: '
         'these are the rows where the evidence ran out, with exactly what was tried.</p>'
-        % (len(blanks), len(rows), len(flagged_rows)),
+        % (len(blanks), len(rows), len(flagged_rows),
+           "carries" if len(flagged_rows) == 1 else "carry"),
         '<div class="notice"><b>Why a row stays blank.</b> A probability is published only when a '
         'bookmaker price joins to both teams through a reviewed alias record, or when both teams sit '
         'on a single row of Valve\'s official regional standings. A Kalshi market whose bid-ask '
@@ -838,12 +853,12 @@ def render(board):
                 'lineup source disambiguates them.</li>'
                 '<li>Pinnacle\'s public guest endpoint carried only %d CS2 matchups in this capture, '
                 'so most low-tier matches rest on Melbet\'s line feed alone.</li>'
-                '<li>HotSpil crowd percentages are deliberately not collected and never enter a '
+                '<li>HotSpawn crowd percentages are deliberately not collected and never enter a '
                 'probability.</li></ul>'
                 % (esc(board.get("vrs_snapshot")),
                    ((board.get("access") or {}).get("sources") or {}).get("pinnacle", {}).get("cs2_matchups", 0)))
     (OUT / "unresolved.html").write_text(
-        page("Unresolved picks &amp; limitations", "unresolved.html", "".join(body),
+        page("Unresolved picks & limitations", "unresolved.html", "".join(body),
              "%d blank · %d provisional" % (len(blanks), len(flagged_rows))), encoding="utf-8")
 
     # ---------------------------------------------------------------- flagged
@@ -1036,7 +1051,7 @@ def render(board):
                 '<a href="../data/77faf95c/raw/vrs_standings.md">raw/vrs_standings.md</a> — '
                 'unmodified provider payloads</li></ul>')
     (OUT / "method.html").write_text(
-        page("Method &amp; sources", "method.html", "".join(body),
+        page("Method & sources", "method.html", "".join(body),
              "Read in this order, nothing inferred"), encoding="utf-8")
 
 
