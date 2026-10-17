@@ -182,6 +182,9 @@ def build_rows():
             item["basis_label"] = "Unresolved"
             item["note"] = "No usable price and no uniquely identified rating pair in this capture."
 
+        if item["prob_a"] is not None and abs(item["prob_a"] - 0.5) < 0.005:
+            item["tossup"] = True
+
         # pick + leverage
         pa, pb = item["prob_a"], item["prob_b"]
         if pa is not None:
@@ -473,6 +476,8 @@ adds the research layer described above.</p></details>
                 chips = f'<span class="chip">{esc(r["basis_label"])}</span>'
                 if r["bound"]:
                     chips += '<span class="chip warn">lower bound</span>'
+                if r.get("tossup"):
+                    chips += '<span class="chip warn">coin-flip price</span>'
                 if r.get("climb") and r["fixture_id"] in top_climb:
                     chips += f'<span class="chip ok">climb {esc(r["climb"]["team"])} +{r["climb"]["leverage"] * 100:.0f} pts</span>'
                 card = f"""
@@ -482,7 +487,7 @@ adds the research layer described above.</p></details>
 <div class="bar" aria-hidden="true"><i class="a" style="width:{pa * 100:.1f}%"></i><i class="b" style="width:{pb * 100:.1f}%"></i></div>
 <div class="probs"><span>{esc(r['team_a'])} <b>{pct(pa) if not r['bound'] else '≥' + pct(pa)}</b></span>
 <span>{esc(r['team_b'])} <b>{pct(pb) if not r['bound'] else '≤' + pct(pb)}</b></span></div>
-<div class="pickline">Pick <b>{esc(lead)}</b> · {pct(lead_p)} {chips}</div>
+<div class="pickline">Pick <b>{esc(lead)}</b> · {pct(lead_p)}{' · toss-up, leaderboard pick only' if r.get('tossup') else ''} {chips}</div>
 <div class="small muted">{esc(r['competition'])} · crowd {esc(r['crowd_a'])}% / {esc(r['crowd_b'])}%{crowd_note(r, lead)}
 {nxt_note(r)}</div>
 <details><summary class="small">Sources for this row</summary><div class="small">{src_links(r)}</div></details>
@@ -663,10 +668,12 @@ used only in the leverage column.</li>
          "The brief states there was a recent Aurora roster change. HLTV and bo3.gg both list the same five "
          "starters and the same coach, and neither shows an October move. Premise not used in any price.",
          "https://www.hltv.org/team/11861/aurora"),
-        ("F2", "HotSpawn names the wrong opponent for Lavked",
+        ("F2", "HotSpawn names a different opponent for Lavked",
          "HotSpawn card 1079634 reads 'Lavked vs LFO 10'. Bovada, Melbet and bo3.gg all price "
-         "'Lavked vs Sokerorg' in the same CCT Europe Series 11 slot. LFO 10 does not appear in Valve's list "
-         "(only LFO 7/8/9). The row is priced from the books but flagged.",
+         "'Lavked vs Sokerorg' in the same CCT Europe Series 11 slot. The teams are the same side: "
+         "HotSpawn's LFO 10 lineup (dottie, Sapec, L00m1) is a subset of bo3.gg's Sokerorg squad "
+         "(dottie, Sapec, L00m1, tvs, flaw; coach PhnX). The row is joined on that roster evidence and "
+         "the name difference stays visible on the row.",
          "https://bo3.gg/matches/lavked-vs-sokerorg-17-10-2026"),
         ("F3", "Duplicate team names in Valve's official list",
          "Valve's 2026-10-05 list contains two rows each for Banda Chuya, ex-RUSTEC and 6666. The capture "
@@ -687,14 +694,21 @@ used only in the leverage column.</li>
          "10:00). All times on this desk are converted to UTC and cross-checked against the canonical "
          "capture's start_utc.", LOBBY),
         ("F7", "Published map scores are partial",
-         "Only the six series whose HLTV match page was opened in this session carry a map line. The other "
-         "four are left blank; they are not reconstructed from memory.",
+         "Only the three series whose HLTV match page was opened in this session carry a map line "
+         "(9z-Aurora, Aurora-9z, BETBOOM-Legacy). The other seven are left blank; they are not "
+         "reconstructed from memory.",
          "https://www.hltv.org/results?event=8932"),
         ("F8", "The canonical board still shows 9 blank rows",
-         "This desk resolves 5 of them (3 by re-joined book quotes, 2 by roster-disambiguated Valve rows) and "
-         "adds 1 more model row. The canonical board itself is not edited; it remains the strict market-only "
-         "view and will keep showing its own blanks until its collector is changed.",
+         "This desk resolves all nine: two by re-joined book quotes, three by roster-disambiguated Valve "
+         "rows and four by lower bounds. It also re-derives one existing model row (PCIFIC) from a book "
+         "quote. The canonical board itself is not edited; it remains the strict market-only view and "
+         "keeps showing its own blanks until its collector is changed.",
          "../picks-every-match/unresolved.html"),
+        ("F9", "One row is a single-book coin flip",
+         "Omega vs Bushido Wildcats (1082020) is priced 1.85/1.85 by Melbet only, which de-vigs to exactly "
+         "50/50. It is published as a coin-flip price and the pick is a leaderboard pick (Omega are 14% "
+         "owned), not a probability edge. No second book was found for this fixture.",
+         "https://melbet.com/en/line/esports"),
     ]
     flag_html = "".join(
         f'<div class="card"><h3>{esc(k)} · {esc(t)}</h3><p class="small">{esc(d)}</p>'
