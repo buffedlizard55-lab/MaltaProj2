@@ -425,7 +425,7 @@ class DatedResearchAndDecisions(unittest.TestCase):
         link = summary.select_one('a[href="twc-2026/index.html"]')
         self.assertIsNotNone(link)
         self.assertIsNone(link.find_parent('details'))
-        self.assertLessEqual(len(soup.select('header nav a')), 10)
+        self.assertLessEqual(len(soup.select('header nav a')), 12)  # 782adb47+7900154b union: +finals +day5 nav entries (presentation only)
 
     def test_category_is_in_scheduled_build_publication_and_staged_link_gate(self):
         refresh = (ROOT / '.github/workflows/every-match-c64a5e19.yml').read_text()

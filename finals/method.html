@@ -1,0 +1,63 @@
+<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Method &amp; sources</title><style>
+:root{--bg:#0b1220;--card:#131e33;--line:#2a3a5c;--txt:#eef3ff;--mut:#a9b8d8;--acc:#ffb020;--ok:#2fbf71;--bad:#ff6b6b;--warn:#ffd166}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:#7db4ff}h1{font-size:1.45rem;margin:.2rem 0 .4rem}h2{font-size:1.15rem;margin:1.2rem 0 .5rem}h3{font-size:1rem;margin:.8rem 0 .3rem}
+.wrap{max-width:860px;margin:0 auto;padding:12px 12px 40px}
+.tabs{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;background:var(--bg);padding:8px 0;border-bottom:1px solid var(--line)}
+.tabs a{flex:0 0 auto;min-height:44px;display:flex;align-items:center;padding:6px 12px;border:1px solid var(--line);border-radius:999px;color:var(--txt);text-decoration:none;font-size:.92rem}
+.tabs a.on{background:var(--acc);color:#111;border-color:var(--acc);font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0}
+.pick{font-size:1.15rem;font-weight:800}.pick b{color:var(--ok)}
+.probs{display:flex;gap:8px;margin:8px 0}.probs div{flex:1;background:#0d1830;border-radius:10px;padding:8px;text-align:center}
+.probs .n{font-size:1.5rem;font-weight:800}.probs .t{font-size:.85rem;color:var(--mut)}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.78rem;font-weight:700;margin:2px 4px 2px 0}
+.b-market{background:#123d2b;color:#7dffb0}.b-model{background:#2b2a12;color:#ffe97d}.b-bound{background:#3d2a12;color:#ffcf7d}
+.b-stale{background:#3d1230;color:#ff9de2}.b-alias{background:#12303d;color:#7dd7ff}.b-none{background:#3d1212;color:#ff9d9d}
+.mut{color:var(--mut);font-size:.9rem}.small{font-size:.85rem}
+.btn{display:flex;justify-content:space-between;align-items:center;min-height:48px;background:#1a2a4a;color:var(--txt);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;text-decoration:none}
+.btn strong{color:var(--acc)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.warn{border-left:4px solid var(--warn);padding:8px 10px;background:#241d08;border-radius:8px}
+.good{border-left:4px solid var(--ok);padding:8px 10px;background:#0b2417;border-radius:8px}
+code{background:#0d1830;padding:1px 5px;border-radius:6px}
+@media (max-width:520px){.probs .n{font-size:1.25rem}h1{font-size:1.25rem}}
+</style></head><body><div class=wrap>
+<nav class=tabs><a href="index.html">🏆 Summary</a><a href="picks.html">✅ All picks</a><a href="twc.html">TWC Days 1–5</a><a href="unresolved.html">⚠️ Unresolved</a><a href="flagged.html">Flagged</a><a href="method.html" class=on>Method</a></nav>
+<p class="mut small">TWC 2026 finals desk · built 2026-10-17T20:49:14Z · lobby capture 2026-10-17T18:26:54Z ·
+probabilities from external books / Valve ratings — never HotSpawn. Crowd % = ownership only.</p>
+<h1>Method &amp; sources</h1>
+<h2>How the HotSpawn lobby is reverse-engineered (retained collector)</h2>
+<p>The pick'em lobby at <a href="https://play.hotspawn.com/lobby">play.hotspawn.com/lobby</a> is a server-rendered page whose transfer
+state embeds the week's fixtures; the same data is served by its fixtures API
+(<code>phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures</code>). The canonical collector
+(<code>scripts/c64a5e19/</code>, engine <code>scripts/f7279a54/</code>) reads both, keeps CS2 fixtures whose
+lock time is still ahead, and stores the raw snapshot + every quote payload under <code>data/c64a5e19/</code>.
+HotSpawn data used here: fixture identity, start/lock UTC, tier, points — and, separately labelled, crowd
+picked% as <strong>ownership</strong>. HotSpawn is never a probability source.</p>
+<table><thead><tr><th>Source (this capture)</th><th>HTTP</th><th>Read (UTC)</th><th>Link</th></tr></thead><tbody><tr><td>hotspawn_lobby_page</td><td>200</td><td>2026-10-17T18:26:40Z</td><td><a href="https://play.hotspawn.com/lobby">endpoint</a></td></tr><tr><td>hotspawn_api</td><td>200</td><td>2026-10-17T18:26:42Z</td><td><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures">endpoint</a></td></tr><tr><td>pinnacle</td><td>200</td><td>2026-10-17T18:26:49Z</td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups">endpoint</a></td></tr><tr><td>bovada</td><td>200</td><td>2026-10-17T18:26:49Z</td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2">endpoint</a></td></tr><tr><td>melbet</td><td>200</td><td>2026-10-17T18:26:50Z</td><td><a href="https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1">endpoint</a></td></tr><tr><td>kalshi</td><td>200</td><td>2026-10-17T18:26:51Z</td><td><a href="https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&amp;status=open&amp;with_nested_markets=true&amp;limit=200">endpoint</a></td></tr><tr><td>polymarket_probe</td><td>200</td><td>2026-10-17T18:26:51Z</td><td><a href="https://gamma-api.polymarket.com/events?closed=false&amp;limit=200&amp;tag_slug=counter-strike">endpoint</a></td></tr><tr><td>hltv_probe</td><td>403</td><td>2026-10-17T18:26:51Z</td><td><a href="https://www.hltv.org/matches">endpoint</a></td></tr><tr><td>valve_vrs_tree</td><td>200</td><td>2026-10-17T18:26:51Z</td><td><a href="https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/git/trees/main?recursive=1">endpoint</a></td></tr><tr><td>valve_vrs_file</td><td>200</td><td>2026-10-17T18:26:53Z</td><td><a href="https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md">endpoint</a></td></tr></tbody></table>
+<h2>Refresh cadence (no manual input)</h2>
+<ul>
+<li><code>update-data</code> workflow: hourly lobby + quote collection to <code>main</code>.</li>
+<li><code>every-match-c64a5e19</code>: canonical board rebuild ≈ every 4 hours.</li>
+<li><code>finals-782adb47</code> (this desk): every 4 hours and after each canonical refresh — inside the required 4–8h window. Expired locks drop to the locked section automatically; new lobby cards enter with the capture.</li>
+<li>Editorial research (TWC results, roster timeline) is dated in <code>data/782adb47/research.json</code> and never reprices a market row.</li>
+</ul>
+<h2>Probability rules</h2>
+<ul>
+<li><strong>Market:</strong> per-book no-vig <code>p = (1/da) / (1/da + 1/db)</code>, arithmetic mean across accepted books (Pinnacle, Bovada, Melbet; Kalshi exchange midpoints only as flagged fallback). A quote joins a fixture only on agreeing teams (canonical names) + kickoff; alias joins additionally require published roster/slot proof.</li>
+<li><strong>Model (originated):</strong> Valve's own Glicko expected-win curve on official VRS points, <code>p = sigmoid(k·C·Δ)</code> with RD=75; k=0.4213 market-calibrated (session 7177d07f fit, retained in-repo), k=1.0 shown as sensitivity. Source: <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve standings 2026-10-05</a>.</li>
+<li><strong>Bound:</strong> exactly one side rated → opponent priced at the list floor (381 pts); published as ≥, using the weaker duplicate row where a name is duplicated.</li>
+<li><strong>Blank:</strong> no price + no rating pair → no number, no pick, listed on Unresolved with the attempt ledger.</li>
+<li><strong>Safe pick</strong> = argmax probability. <strong>Climb switch</strong> requires dog ≥35%, leverage (prob − crowd) ≥15pp, ≥2 verified context flags; max 3/day. Context never moves the % — it only gates the switch.</li>
+</ul>
+<h2>Verification</h2>
+<p>Every row links its fixture + price/rating source. Tests (<code>tests/test_782adb47.py</code>) re-derive every
+published probability from its retained decimals or VRS points, check pick=argmax, check every canonical open
+fixture appears exactly once, and check no HotSpawn crowd value enters a probability. Research reads with URLs
+and timestamps: <code>data/782adb47/research.json</code>.</p>
+<p class="mut small">Not affiliated with HotSpawn, Thunderpick or any bookmaker. Model/bound numbers are
+our originated estimates, not verified win chances. Check lock times on HotSpawn before picking.
+<a href="../index.html">← Site home</a> · <a href="data/board.json">Machine-readable board (JSON)</a></p>
+</div></body></html>

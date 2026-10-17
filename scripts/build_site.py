@@ -80,6 +80,8 @@ NAV = [
     # 3e1be203: the phone-first desk. First entry point after Home on purpose; the
     # landing page also opens with it (see desk_front_html below).
     ("desk/index.html", "📱 Picks desk"),
+    # 782adb47: TWC Day-5 finals desk (newest front door; landing opens with it).
+    ("finals/index.html", "🏆 TWC finals"),
     # Current picks first: the two lists the site is actually for.
     ("picks-every-match/index.html", "All CS2 picks"),
     ("day4/index.html", "TWC day-4 picks"),
@@ -102,6 +104,42 @@ def _board_stamp(rel, *keys):
             return str(value).replace("T", " ").replace("Z", " UTC")
     return None
 
+
+
+def finals_front_html():
+    """Newest front door: session 782adb47 TWC Day-5 finals desk (additive).
+
+    Reads only that session's generated board; returns "" if absent so the page
+    falls back cleanly (no broken links, no invented counts).
+    """
+    import os as _os
+    if not _os.path.exists(os.path.join(ROOT, "finals", "picks.html")):
+        return ""
+    fin = load("finals/data/board.json") or {}
+    s = fin.get("summary") or {}
+    if not s:
+        return ""
+    stamp = str(fin.get('generated_utc') or '').replace('T', ' ').replace('Z', ' UTC')
+    d5 = {d.get('id'): d for d in fin.get('day5') or []}
+    final = d5.get('final') or {}
+    third = d5.get('third') or {}
+    f_pick, f_pct = esc(final.get('safe_pick')), (final.get('safe_prob') or 0) * 100
+    t_pick, t_pct = esc(third.get('safe_pick')), (third.get('safe_prob') or 0) * 100
+    n_open, n_pick, n_blank = esc(s.get('open')), esc(s.get('with_pick')), esc(s.get('blank'))
+    return f"""
+<div class="desk-front" id="finals-front">
+<p class="eyebrow">🏆 TWC 2026 FINAL DAY (Sun 18 Oct) · built {esc(stamp)}</p>
+<h2>Grand Final: pick <strong>{f_pick}</strong> ({f_pct:.0f}%) · 3rd place: pick <strong>{t_pick}</strong> ({t_pct:.0f}%) — no forced underdog switch qualifies</h2>
+<p>Day-4 graded honestly (26.8% BETBOOM beat Falcons), Aurora's July rebuild verified, and every one of the
+{n_open} open HotSpawn matches resolved below the featured tier — {n_pick} picks,
+{n_blank} blank — with unresolved limitations on their own page.</p>
+<div class="desk-actions">
+<a class="btn" href="finals/picks.html"><span><strong>All picks</strong> · every open match</span><span>→</span></a>
+<a class="btn" href="finals/twc.html"><span><strong>TWC Days 1–5</strong> · results, roster truth, final case</span><span>→</span></a>
+<a class="btn" href="finals/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · no fresh price, why</span><span>→</span></a>
+<a class="btn" href="finals/method.html"><span><strong>Method &amp; sources</strong> · lobby + formulas</span><span>→</span></a>
+</div>
+</div>"""
 
 
 def _fmt_day5_start(value):
@@ -644,6 +682,7 @@ roster investigation are on the <a href="day4/twc-review.html">day 1–3 review<
 <section id="executive-summary" aria-labelledby="summary-title">
 <div class="hero-card">
 <p class="eyebrow">CS2 Pick’em dashboard · Executive summary</p>
+{finals_front_html()}
 {day5_front_html()}
 {desk_front_html()}
 <h1 id="summary-title">Every listed match. Evidence before picks.</h1>

@@ -15,17 +15,21 @@ OUT.mkdir(parents=True)
 # only desk/**, data/3e1be203/** and scripts/3e1be203/**.
 import subprocess as _subprocess, sys as _sys
 _subprocess.run([_sys.executable, str(ROOT/'scripts/3e1be203/build.py')], check=False)
+# 782adb47 finals: re-render the Day-5 finals desk from the canonical batch before staging (additive;
+# this session writes only finals/**, data/782adb47/**, scripts/782adb47/**).
+_subprocess.run([_sys.executable, str(ROOT/'scripts/782adb47/build.py')], check=False)
 # 7900154b day-5 desk: re-render from the retained raw prices before staging, so the
 # published artifact can never serve a stale board. Writes only day5/**.
 _subprocess.run([_sys.executable, str(ROOT/'scripts/7900154b/build.py')], check=False)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','today','desk','day5'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','today','desk','finals','day5'):
+# 'finals' added by session 782adb47 (TWC Day-5 finals desk), additive single entry: root NAV +
+# landing front door link finals/index.html, so the artifact must carry the directory.
 # 'day5' added by session 7900154b (TWC 2026 day-5 final desk + every-match picks), additive
 # single entry: the root NAV and the landing executive summary link day5/index.html, so the
-# artifact must carry the directory or every root page fails the staged-link check. The
-# section is re-rendered from the retained raw prices below, so a scheduled refresh cannot
-# leave its probabilities stale. No other session's files are modified here.
+# artifact must carry the directory or every root page fails the staged-link check.
+# Unioned by session 782adb47 during merge of PR #175; neither entry removed.
 # 'desk' added by session 3e1be203 (phone-first TWC day-4 + every-match pick desk), additive
 # single entry: the root NAV and the landing executive summary link desk/index.html, so the
 # artifact must carry the directory or every root page fails the staged-link check.
