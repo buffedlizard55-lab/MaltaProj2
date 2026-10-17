@@ -1,0 +1,50 @@
+name: Day-5 TWC research validation (234db976)
+
+on:
+  push:
+    branches:
+      - main
+      - arena/234db976-maltaproj2
+    paths:
+      - data/234db976/**
+      - scripts/234db976/**
+      - tests/test_234db976.py
+      - twc-2026/day-5.html
+      - twc-2026/day-5-unresolved.html
+      - twc-2026/index.html
+      - twc-2026/assets.css
+      - .github/workflows/day5-234db976.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - data/234db976/**
+      - scripts/234db976/**
+      - tests/test_234db976.py
+      - twc-2026/day-5.html
+      - twc-2026/day-5-unresolved.html
+      - twc-2026/index.html
+      - twc-2026/assets.css
+      - .github/workflows/day5-234db976.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: day5-234db976-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check generated Day-5 pages are up to date
+        run: python scripts/234db976/build.py --check
+      - name: Test odds math, source-bearing rows, schedule flags, and routes
+        run: python -m unittest discover -s tests -p 'test_234db976.py' -v
+      - name: Compile scoped Python files
+        run: python -m py_compile scripts/234db976/build.py tests/test_234db976.py
