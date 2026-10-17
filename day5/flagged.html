@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<title>Flagged for review · HotSpawn picks desk</title>
+<style>
+:root{--bg:#0d1117;--card:#161b22;--line:#26303b;--fg:#e6edf3;--mut:#93a1b1;
+--good:#3fb950;--warn:#d29922;--bad:#f85149;--accent:#58a6ff;--pick:#1f6feb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+-webkit-text-size-adjust:100%}
+a{color:var(--accent)}
+.wrap{max-width:720px;margin:0 auto;padding:12px 12px 40px}
+header.top{position:sticky;top:0;z-index:20;background:#0d1117ee;backdrop-filter:blur(8px);
+border-bottom:1px solid var(--line);padding:10px 0 8px}
+h1{font-size:19px;margin:0 0 2px}
+.sub{color:var(--mut);font-size:13px}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs a{flex:0 0 auto;font-size:13px;padding:7px 11px;border:1px solid var(--line);
+border-radius:999px;text-decoration:none;color:var(--fg);background:#11161d;white-space:nowrap}
+nav.tabs a.on{background:var(--pick);border-color:var(--pick);color:#fff;font-weight:600}
+h2{font-size:16px;margin:22px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+h3{font-size:14px;margin:16px 0 6px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+p{font-size:15px}
+.muted{color:var(--mut);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;
+margin:0 0 10px}
+.card.hot{border-color:#3d4f6b;box-shadow:0 0 0 1px #1d2733}
+.topline{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.teams{font-size:17px;font-weight:650;letter-spacing:-.01em}
+.pick{background:var(--pick);color:#fff;border-radius:8px;padding:3px 9px;font-size:13px;
+font-weight:700;white-space:nowrap;display:inline-block}
+.pick.none{background:#2a2f38;color:var(--mut);font-weight:600}
+.pick.climb{background:#6e40c9}
+.bar{height:9px;border-radius:5px;background:#21262d;overflow:hidden;display:flex;margin:9px 0 4px}
+.bar i{display:block;height:100%}
+.bar .a{background:var(--good)}
+.bar .b{background:#30363d}
+.probs{display:flex;justify-content:space-between;font-size:13px;color:var(--mut)}
+.probs b{color:var(--fg);font-size:15px}
+.rowmeta{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.chip{font-size:11.5px;border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--mut)}
+.chip.s{color:#7ee787;border-color:#2b4a33}
+.chip.m{color:#79c0ff;border-color:#23406b}
+.chip.b{color:#d29922;border-color:#4a3a12}
+.chip.x{color:#f85149;border-color:#5a2323}
+.kv{font-size:13px;color:var(--mut);margin-top:8px}
+.kv b{color:var(--fg)}
+.srcs{margin-top:9px;font-size:12.5px}
+.srcs a{display:inline-block;margin:0 8px 4px 0}
+.btn{display:block;background:#11161d;border:1px solid var(--line);border-radius:10px;
+padding:11px 12px;margin:0 0 8px;text-decoration:none;color:var(--fg)}
+.btn span{display:block;font-size:12px;color:var(--mut);margin-top:2px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
+.stat b{display:block;font-size:22px;line-height:1.2}
+.stat span{font-size:12px;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;display:block;overflow-x:auto}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em}
+td.wrapcell{white-space:normal;min-width:190px}
+.flag{border-left:3px solid var(--warn);padding-left:9px}
+.flag.high{border-left-color:var(--bad)}
+.note{font-size:13px;color:var(--mut);border-left:2px solid var(--line);padding-left:9px;margin:8px 0}
+footer{color:var(--mut);font-size:12.5px;margin-top:26px;border-top:1px solid var(--line);padding-top:12px}
+@media (min-width:640px){h1{font-size:24px}.wrap{padding:16px}}
+</style>
+</head><body>
+<header class="top"><div class="wrap">
+<h1>Flagged for review</h1>
+<div class="sub">Counter-Strike 2 picks for every HotSpawn match · built 2026-10-17T20:47:05Z</div>
+<nav class="tabs"><a href="index.html">Summary</a><a href="picks.html">Every pick</a><a href="twc.html">TWC day 5</a><a href="unresolved.html">Unresolved</a><a href="flagged.html" class="on">Flagged</a><a href="method.html">Method</a></nav>
+</div></header>
+<div class="wrap">
+<h2>Flagged for review · 5 items</h2><p class="muted">These do not block the board. Each one is a statement this desk could not confirm from an official source, or a decision that is safer left to a human. Every item carries the source links behind it.</p><div class="card flag">
+<div class="topline"><div class="teams">F1 · The &#x27;recent Aurora roster change&#x27; in the brief is not supported by the official records</div>
+<span class="chip b">medium</span></div>
+<p class="muted">HLTV&#x27;s Aurora team page, Valve&#x27;s own global regional standings for 2026-10-05, HLTV&#x27;s third-place odds page and bo3.gg all list the same five starters across 5-17 October. It is recorded here rather than quietly dropped, and it is not used to move any number. It also cannot affect the grand final: Aurora are in the third-place match, not the final.</p>
+<div class="srcs"><a href="https://www.hltv.org/team/11861/aurora" rel="noopener">HLTV Aurora team page</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve global regional standings 2026-10-05</a><a href="https://www.hltv.org/betting/analytics/2399416/aurora-vs-falcons-thunderpick-world-championship-2026" rel="noopener">HLTV third-place odds page (Aurora player list)</a><a href="https://bo3.gg/teams/aurora-gaming" rel="noopener">bo3.gg Aurora team page</a></div>
+</div>
+<div class="card flag">
+<div class="topline"><div class="teams">F2 · The two day-5 matches are not in HotSpawn&#x27;s current pick&#x27;em inventory</div>
+<span class="chip b">medium</span></div>
+<p class="muted">The public HotSpawn fixtures API lists every TWC 2026 main-event fixture from 14 to 17 October (ids 1080176-1080208) but no fixture for 18 October, and the live lobby&#x27;s tournament filter offers only &#x27;Thunderpick World Championship 2026: South American Series #1&#x27; (8 matches, all 26-28 June, tier C). The grand final therefore has no HotSpawn pick to make at the time of writing. This desk still prices it and will pick it up automatically if HotSpawn lists it on a later refresh.</p>
+<div class="srcs"><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures" rel="noopener">HotSpawn fixtures API (full CS2 fixture list)</a><a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn lobby (tournament filter list)</a><a href="https://www.hotspawn.com/matches/aurora-vs-9z-thunderpick-world-championship-2026-1080205" rel="noopener">HotSpawn match page for the day-3 decider (an example of a TWC pick card)</a></div>
+</div>
+<div class="card ">
+<div class="topline"><div class="teams">F3 · The bo3.gg &#x27;rating&#x27; field is a tournament-level metric and is not used as a win probability</div>
+<span class="chip b">low</span></div>
+<p class="muted">Every match of the same bo3.gg tournament carries the same &#x27;rating&#x27; value (for example 0.0416 for the whole of tournament 6050), so it cannot be a per-match win probability. Only bo3.gg&#x27;s bookmaker coefficients inside &#x27;bet_updates&#x27; are used, and only when both sides carry one. This is recorded because the field is easy to mistake for a model probability.</p>
+<div class="srcs"><a href="https://bo3.gg/api/v1/matches?filter%5Bmatches.status%5D%5Bin%5D=upcoming&amp;filter%5Bmatches.discipline_id%5D%5Bin%5D=1&amp;sort=start_date&amp;page%5Blimit%5D=50&amp;page%5Boffset%5D=0" rel="noopener">bo3.gg upcoming CS2 matches API</a></div>
+</div>
+<div class="card ">
+<div class="topline"><div class="teams">F4 · HotSpawn&#x27;s own crowd percentages are never a probability input</div>
+<span class="chip b">low</span></div>
+<p class="muted">HotSpawn&#x27;s &#x27;picked %&#x27; is carried on every row as leaderboard context only, labelled as such, and is excluded from every probability. The published probability comes from external bookmaker prices, or from the official Valve ratings model when no book prices the match.</p>
+<div class="srcs"><a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn lobby</a></div>
+</div>
+<div class="card ">
+<div class="topline"><div class="teams">F5 · Valve&#x27;s official ratings snapshot used is 2026-10-05</div>
+<span class="chip b">low</span></div>
+<p class="muted">Valve&#x27;s counter-strike_regional_standings repository publishes a dated global standings file; the newest one in the repository is live/2026/standings_global_2026_10_05.md. Ratings are therefore twelve days old at the time of this page, inside the fourteen-day freshness rule the canonical board already applies, but they are not a live feed.</p>
+<div class="srcs"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve global regional standings 2026-10-05</a><a href="https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/git/trees/main?recursive=1" rel="noopener">Valve standings repository tree</a></div>
+</div>
+<footer>
+<p>Built 2026-10-17T20:47:05Z from the HotSpawn lobby read 2026-10-17T20:23:00Z
+and external bookmaker lines read the same day. HotSpawn is used for fixture discovery and
+settlement only; its crowd percentages are shown as leaderboard context and never as a
+probability. Every number on this page has a source link on the row it belongs to.</p>
+<p>Unresolved picks and the limits of the method: <a href="unresolved.html">unresolved.html</a>.
+Items needing a human decision: <a href="flagged.html">flagged.html</a>.
+Method and every rule: <a href="method.html">method.html</a>.</p>
+</footer>
+</div></body></html>

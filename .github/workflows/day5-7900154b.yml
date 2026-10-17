@@ -1,0 +1,86 @@
+name: day5 (7900154b)
+
+# Day-5 desk: TWC 2026 final-day picks plus a pick and a win probability for every open
+# Counter-Strike 2 fixture the HotSpawn Pick'ems lobby lists.
+#
+# The collector reaches the HotSpawn lobby and the public fixtures API for the inventory,
+# and real bookmaker and esportsbook prices for the probabilities (Thunderpick through
+# bo3.gg, Pinnacle, Bovada, Melbet, plus Kalshi and Polymarket as labelled cross-checks).
+# HotSpawn's own crowd percentages are captured as leaderboard context only and never
+# enter a probability.
+#
+# Scope guard: this workflow writes only data/7900154b/** and day5/** (plus the root
+# index.html that scripts/build_site.py regenerates).
+#
+# Refresh cadence: every 4 hours, inside the required 4-8 hour window, and again whenever
+# the workflow is dispatched by hand.
+
+on:
+  push:
+    branches: ['arena/7900154b-maltaproj2', 'main']
+    paths:
+      - 'scripts/7900154b/**'
+      - 'tests/test_7900154b.py'
+      - 'data/7900154b/**'
+      - 'day5/**'
+      - '.github/workflows/day5-7900154b.yml'
+  schedule:
+    - cron: '41 */4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: day5-7900154b-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Collect the lobby, the fixtures API and the external book lines
+        run: python3 scripts/7900154b/collect.py
+      - name: Rebuild the day-5 desk from the retained raw prices
+        run: python3 scripts/7900154b/build.py
+      - name: Refresh the landing front door (reads day5/data/board.json)
+        run: python3 scripts/build_site.py
+      - name: Tests
+        run: python3 -m unittest tests.test_7900154b -v
+      - name: Commit and push
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config user.name "day5-bot (7900154b)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/7900154b
+          git add day5 || true
+          git add index.html || true
+          # build_site.py also rewrites root/data files that belong to other sessions;
+          # drop those working-tree edits so the rebase below cannot refuse on
+          # unstaged changes.
+          git checkout -- . || true
+          git clean -fd data/7900154b day5 || true
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "day5(7900154b): refresh picks $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then
+              if [ "$REF_NAME" = "main" ]; then
+                gh workflow run pages.yml --ref main || echo "pages dispatch failed"
+              fi
+              exit 0
+            fi
+            sleep $((attempt * 7))
+          done
+          exit 1

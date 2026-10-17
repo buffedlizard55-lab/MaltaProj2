@@ -73,6 +73,10 @@ def pct(value):
 # available from Research archive rather than crowding every mobile header.
 NAV = [
     ("index.html", "Home"),
+    # 7900154b: the day-5 desk. First entry point after Home on purpose; the landing
+    # page also opens with it (see day5_front_html below). Additive: the earlier desk
+    # (3e1be203) stays in the archive.
+    ("day5/index.html", "📱 Day-5 desk"),
     # 3e1be203: the phone-first desk. First entry point after Home on purpose; the
     # landing page also opens with it (see desk_front_html below).
     ("desk/index.html", "📱 Picks desk"),
@@ -135,6 +139,66 @@ def finals_front_html():
 <a class="btn" href="finals/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · no fresh price, why</span><span>→</span></a>
 <a class="btn" href="finals/method.html"><span><strong>Method &amp; sources</strong> · lobby + formulas</span><span>→</span></a>
 </div>
+</div>"""
+
+
+def _fmt_day5_start(value):
+    """Short UTC stamp for a kickoff, so the landing card stays readable on a phone."""
+    if not value:
+        return ""
+    try:
+        dt = datetime.strptime(str(value)[:19], "%Y-%m-%dT%H:%M:%S")
+        return dt.strftime("%d %b %H:%M UTC")
+    except (ValueError, TypeError):
+        return str(value)
+
+
+def day5_front_html():
+    """First thing on the landing page: the day-5 desk, built by session 7900154b.
+
+    Reads only that session's own generated summary; if the desk has not been built yet
+    the block returns an empty string and the page falls back to its previous behaviour
+    (no broken links, no invented counts).
+    """
+    import os as _os
+    if not _os.path.exists(os.path.join(ROOT, "day5", "picks.html")):
+        return ""
+    desk = load("day5/data/board.json") or {}
+    s = desk.get("summary") or {}
+    if not s:
+        return ""
+    featured = desk.get("featured") or []
+    rows = desk.get("rows") or []
+    soon = sorted([r for r in rows if r.get("prob_a") is not None],
+                  key=lambda r: r.get("start_utc") or "")[:3]
+    soon_html = "".join(
+        f'<li><a href="day5/picks.html#{esc(r["fixture_id"])}">{esc(r.get("pick"))} '
+        f'{r["pick_prob"] * 100:.0f}%</a> · {esc(r.get("team_a"))} v {esc(r.get("team_b"))}</li>'
+        for r in soon)
+    final_html = ""
+    for f in featured:
+        if not f.get("pick"):
+            continue
+        final_html += (
+            f'<li><a href="day5/twc.html">{esc(f.get("stage"))}: <b>{esc(f.get("pick"))}</b> '
+            f'{f["pick_prob"] * 100:.1f}%</a> · {esc(f.get("team_a"))} v {esc(f.get("team_b"))}'
+            f' · {esc(f.get("start_utc") or "")}</li>')
+    stamp = str(s.get("generated_utc") or "").replace("T", " ").replace("Z", " UTC")
+    return f"""
+<div class="desk-front" id="day5-front">
+<p class="eyebrow">📱 Start here on your phone · TWC 2026 day 5 · built {esc(stamp)}</p>
+<h2>{esc(s.get("open"))} open CS2 matches · {esc(s.get("market"))} book-priced · {esc(s.get("model"))} rated · {esc(s.get("unresolved"))} unresolved</h2>
+<p>A pick and both win probabilities for every match the HotSpawn lobby still lists, plus
+the TWC 2026 final-day picks. HotSpawn's crowd split is leaderboard context only, never a
+probability.</p>
+<ul class="desk-next">{final_html}</ul>
+<div class="desk-actions">
+<a class="btn" href="day5/picks.html"><span><strong>Every pick</strong> · all {esc(s.get("open"))} open matches</span><span>→</span></a>
+<a class="btn" href="day5/twc.html"><span><strong>TWC 2026 day 5</strong> · final + third place, day 1→4 review</span><span>→</span></a>
+<a class="btn" href="day5/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · {esc(s.get("unresolved"))} blank</span><span>→</span></a>
+<a class="btn" href="day5/method.html"><span><strong>Method &amp; sources</strong> · every rule</span><span>→</span></a>
+</div>
+<ul class="desk-next">{soon_html}</ul>
 </div>"""
 
 
@@ -619,6 +683,7 @@ roster investigation are on the <a href="day4/twc-review.html">day 1–3 review<
 <div class="hero-card">
 <p class="eyebrow">CS2 Pick’em dashboard · Executive summary</p>
 {finals_front_html()}
+{day5_front_html()}
 {desk_front_html()}
 <h1 id="summary-title">Every listed match. Evidence before picks.</h1>
 <p class="muted">Canonical market-only boards below. The desk above is the phone front door.</p>
