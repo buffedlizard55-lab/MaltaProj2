@@ -1,3 +1,16 @@
+# Coordination — session `782adb47` (TWC 2026 Day 1–4 review → Day 5 final picks, every-match resolution & phone-first front door)
+
+Session: `782adb47` (environment-fixed branch `arena/782adb47-maltaproj2`; the environment forbids switching to a `session-<id>/<task>` branch, so all work stays on the fixed branch and scopes below are non-overlapping by directory).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-782ADB47-FINALS: (1) line-by-line review of TWC 2026 Day 1 (9z 2-0 Aurora upset), Day 2, Day 3 and Day 4 (17 Oct semifinals) from HLTV results, (2) Aurora recent-roster-change premise re-checked against HLTV team/news + official announcements (July rebuild vs any October move), roster/onboarding/rest context for every finalist, (3) Day 5 (18 Oct, final day) picks with safe + contrarian-but-not-stupid layers priced from non-HotSpawn betting lines (books/exchanges → bo3.gg/Thunderpick → HLTV → documented Valve-VRS originated line; HotSpawn crowd % is ownership only, never a probability), (4) a pick + both win probabilities (or blank + flagged reason with full HLTV→esportsbook→exchange→VRS research ledger) for **every** open CS2 fixture in the latest canonical HotSpawn capture, including low-tier / Polymarket-uncovered matches — first by re-joining dropped book quotes (name-variant aliases justified by agreeing opponent + kickoff), then HLTV/bo3.gg team research, then one-sided VRS bounds; no invented numbers, (5) a separate Unresolved & Limitations section surfaced in the executive summary, (6) phone-first dashboard `finals/` + landing executive-summary links to every picks list, (7) 4-hourly auto-refresh, tests, then final integration (additive NAV + landing summary only), PR to `main`, merge without waiting, Pages verification | in progress | 782adb47 | 2026-10-17 20:15 | `finals/**`, `scripts/782adb47/**`, `data/782adb47/**`, `tests/test_782adb47.py`, `.github/workflows/finals-782adb47.yml`, `COORDINATION.md` (this section only). Integration (additive, at close-out): `scripts/build_site.py` NAV + executive-summary/front-door link to `finals/`, `scripts/stage_site.py` one `'finals'` entry, generated root `index.html`, `README.md` one row. Every other board/page (incl. `desk/**`, `day4/**`, `data/c64a5e19/**`) is a read-only input. |
+
+## Log
+- 2026-10-17 20:15 UTC, `782adb47`: Claim posted before any other file edits. Read COORDINATION.md: all prior session sections record done/merged (latest `3e1be203` desk covers Day 1–3 → Day 4 semifinals pre-match); no live claim on `finals/**`, `scripts/782adb47/**`, `data/782adb47/**`. Inventory base (read-only): `data/c64a5e19/board.json` @ 2026-10-17T18:26:54Z (81 listed / 19 open / 9 market / 3 model / 7 blank). TWC semifinals today: FURIA–Aurora 14:00Z, Falcons–BetBoom 17:00Z (HLTV 2399414/2399415) — results to be verified live this session before any Day 5 preview is written. Day 5 = 18 Oct final day; fixtures/prices to be verified from HLTV event 8932 + books, never assumed.
+
+---
+
 # Coordination — session `3e1be203` (TWC 2026 day-1→day-4 review, every-match pick resolution & phone-first front door)
 
 Session: `3e1be203` (environment-fixed branch `arena/3e1be203-maltaproj2`; the environment forbids switching branches, so work stays on that branch and scopes below are non-overlapping by directory).
