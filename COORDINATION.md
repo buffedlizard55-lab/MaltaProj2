@@ -1,3 +1,14 @@
+# Coordination — session `3e1be203` (TWC 2026 day-1→day-4 review, every-match pick resolution & phone-first front door)
+
+Session: `3e1be203` (environment-fixed branch `arena/3e1be203-maltaproj2`; the environment forbids switching branches, so work stays on that branch and scopes below are non-overlapping by directory).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-3E1BE203-DESK: (1) line-by-line review of TWC 2026 day 1 (9z 2-0 Aurora upset), day 2 and day 3 from HLTV results, (2) Aurora roster-change premise checked against HLTV team/news records, (3) day-4 (17 Oct) semifinal picks with safe + contrarian-but-not-stupid layers, (4) a pick + win probability for **every** open CS2 fixture in the 09:27Z HotSpawn capture — first by re-joining book quotes the canonical matcher dropped (name-variant aliases, each alias justified by agreeing opponent + kickoff), then by HLTV → esportsbook (bo3.gg/Thunderpick) → exchange research, (5) a separate Unresolved & Limitations section surfaced on the executive summary, (6) phone-first dashboard `desk/` with in-site links to every picks list, (7) 4-hourly auto-refresh, tests, then final integration (additive NAV + landing executive summary), PR to `main`, merge, Pages verification | in progress | 3e1be203 | 2026-10-17 10:40 | `desk/**`, `scripts/3e1be203/**`, `data/3e1be203/**`, `tests/test_3e1be203.py`, `.github/workflows/desk-3e1be203.yml`, `COORDINATION.md` (this section only). Integration (additive, at close-out): `scripts/build_site.py` NAV + executive summary, `scripts/stage_site.py` one section entry, root `index.html` regeneration, `README.md` one row, and only the two landing-page presentation assertions in `tests/test_6ffacd40.py` / `tests/test_abf693f2.py` that encode the old nav. Every other board/page is a read-only input. |
+
+## Log
+- 2026-10-17 10:40 UTC, `3e1be203`: Claim posted before any other file edits. Read COORDINATION.md: prior sessions recorded done; no live claim on `desk/**`. Live inputs read this session: HotSpawn lobby (3 chunks, cards + crowd ownership), HLTV event 8932 overview/results/match pages 2399384 / 2399412 / 2399413 / 2399414 / 2399415, HLTV betting-analytics pages for both semifinals, HLTV Aurora team page, bo3.gg match centre + TWC tournament page (Thunderpick prices), bo3.gg team page for PCIFIC. Canonical retained capture `data/c64a5e19/board.json` @ 2026-10-17T09:27:14Z (93 listed / 32 open / 23 priced / 9 blank) is the inventory base; it is not edited.
+
 # Coordination
 
 ---
