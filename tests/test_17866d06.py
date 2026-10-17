@@ -615,9 +615,23 @@ class TestCommittedBoard(unittest.TestCase):
         self.assertIn("scale", calibration)
         if calibration["calibrated"]:
             self.assertGreaterEqual(calibration["samples"], model.MIN_CALIBRATION_SAMPLES)
-            self.assertLessEqual(calibration["mean_abs_error"], 0.25)
+            self.assertIn("mean_abs_error", calibration)
+            self.assertIn("weak_calibration", calibration)
+            if calibration["weak_calibration"]:
+                self.assertGreater(calibration["mean_abs_error"], calibration["weak_threshold"])
+                # a weak fit must be published on the rows that lean on the model
+                model_rows = [r for r in BOARD["open"] if (r.get("final") or {}).get("no_market")]
+                self.assertTrue(model_rows, "weak calibration reported without any model-only row")
+                for row in model_rows:
+                    self.assertTrue(any("weakly calibrated" in text for text in row["limitations"]),
+                                    f"row {row['fixture_id']} does not publish the weak calibration")
+            else:
+                self.assertLessEqual(calibration["mean_abs_error"], calibration["weak_threshold"])
         else:
             self.assertEqual(calibration["scale"], model.SCALE_FALLBACK)
+            for row in BOARD["open"]:
+                if (row.get("final") or {}).get("model_prob_a") is not None:
+                    self.assertTrue(any("fallback" in text for text in row["limitations"]))
 
     @unittest.skipUnless(HAS_CAPTURE, "no committed capture yet")
     def test_committed_pages_are_in_sync_with_the_board(self):

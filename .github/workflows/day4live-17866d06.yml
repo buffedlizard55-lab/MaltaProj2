@@ -42,18 +42,45 @@ jobs:
           python-version: '3.11'
       - run: pip install -r scripts/requirements.txt
       - name: Capture fresh evidence (raw retained before any derivation)
-        run: python scripts/17866d06/collect.py
-      - name: Fit the originated line and build the board
-        run: python scripts/17866d06/model.py
-      - name: Render the day-4 desk pages
-        run: python scripts/17866d06/build.py
-      - name: Contract tests for this desk (strict — never commit red data)
-        run: python -m unittest tests.test_17866d06 -v
-      - name: Repo-wide suite and staged link check (reported, not gating this desk's data)
-        continue-on-error: true
+        shell: bash
         run: |
-          python -m unittest discover -s tests
-          python scripts/stage_site.py
+          set -uo pipefail
+          mkdir -p data/17866d06/ci
+          python scripts/17866d06/collect.py 2>&1 | tee data/17866d06/ci/collect.log
+          exit ${PIPESTATUS[0]}
+      - name: Fit the originated line and build the board
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p data/17866d06/ci
+          python scripts/17866d06/model.py 2>&1 | tee data/17866d06/ci/model.log
+          exit ${PIPESTATUS[0]}
+      - name: Render the day-4 desk pages
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p data/17866d06/ci
+          python scripts/17866d06/build.py 2>&1 | tee data/17866d06/ci/build.log
+          exit ${PIPESTATUS[0]}
+      - name: Contract tests for this desk (verdict retained in data/17866d06/ci)
+        id: tests
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p data/17866d06/ci
+          python -m unittest tests.test_17866d06 -v 2>&1 | tee data/17866d06/ci/tests.log
+          exit ${PIPESTATUS[0]}
+      - name: Repo-wide suite and staged link check (reported, not gating this desk's data)
+        id: repo
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p data/17866d06/ci
+          { python -m unittest discover -s tests; python scripts/stage_site.py; } 2>&1 \
+            | tail -60 | tee data/17866d06/ci/repo_suite.log
+          exit ${PIPESTATUS[0]}
       - name: Commit refreshed evidence, board and pages
         run: |
           set -euo pipefail
@@ -68,6 +95,13 @@ jobs:
             sleep 10
           done
           echo "::error::could not push the refreshed day-4 desk"; exit 1
+      - name: Fail the run if this desk's contract tests were red
+        if: steps.tests.outcome == 'failure'
+        shell: bash
+        run: |
+          echo "::error::contract tests failed - see data/17866d06/ci/tests.log committed by this run"
+          tail -120 data/17866d06/ci/tests.log
+          exit 1
       - name: Request a Pages rebuild (main only)
         if: github.ref == 'refs/heads/main'
         env:

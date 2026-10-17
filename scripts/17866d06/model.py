@@ -42,6 +42,7 @@ COIN_FLIP_BAND = 0.02          # R5 tie-break band
 SCALE_BOUNDS = (150.0, 1200.0)
 SCALE_FALLBACK = 700.0
 MIN_CALIBRATION_SAMPLES = 8
+WEAK_CALIBRATION_MAE = 0.20    # above this mean absolute error the model is labelled weak, not trusted
 
 # Team-name aliases and the names deliberately left unresolved live in research.py so that
 # collect.py (join) and model.py (standings lookup) cannot drift apart.
@@ -265,9 +266,12 @@ def fit_scale(samples):
     ss_res = sum((o - p) ** 2 for o, p in zip(observed, predicted))
     ss_tot = sum((o - mean_obs) ** 2 for o in observed) or 1e-9
     residuals = sorted((round(abs(o - p), 4) for o, p in zip(observed, predicted)), reverse=True)
+    mean_abs_error = round(sum(residuals) / len(residuals), 4)
     return {"scale": round(scale, 1), "raw_scale": round(raw, 1), "calibrated": True,
             "samples": len(usable), "r_squared": round(1 - ss_res / ss_tot, 4),
-            "mean_abs_error": round(sum(residuals) / len(residuals), 4),
+            "mean_abs_error": mean_abs_error,
+            "weak_calibration": mean_abs_error > WEAK_CALIBRATION_MAE,
+            "weak_threshold": WEAK_CALIBRATION_MAE,
             "max_abs_error": residuals[0],
             "bounds": list(SCALE_BOUNDS),
             "method": ("ordinary least squares of logit(no-vig market probability) on the Valve "
@@ -518,6 +522,10 @@ def limitations_for(row, scale):
                    "standings alone (roster changes, form, vetoes and travel are NOT in that input)")
     if not scale.get("calibrated"):
         out.append("the VRS scale used for this row is the documented fallback, not fitted to this run")
+    elif scale.get("weak_calibration") and (row.get("final") or {}).get("model_prob_a") is not None:
+        out.append(f"the originated VRS line is weakly calibrated on this capture (mean absolute error "
+                   f"{scale.get('mean_abs_error')} against the markets, threshold "
+                   f"{scale.get('weak_threshold')}), so treat the model number as a rough prior")
     for quote in row.get("quotes") or []:
         join = quote.get("join") or {}
         if join.get("confidence") == "alias":
