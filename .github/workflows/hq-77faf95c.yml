@@ -41,6 +41,10 @@ jobs:
       - name: Rebuild the HQ pages from the retained raw prices
         run: python3 scripts/77faf95c/build.py
       - name: Diagnose the shared browser-smoke dependency (result written to data/77faf95c)
+        env:
+          PROBE_INSTALL_PLAYWRIGHT: '1'
+          PROBE_PLAYWRIGHT_SPEC: 'playwright==1.55.0'
+          PROBE_INSTALL_BROWSER: '1'
         run: python3 scripts/77faf95c/browser_probe.py
       - name: Tests
         run: python3 -m unittest tests.test_77faf95c -v

@@ -67,10 +67,33 @@ def main() -> int:
         lines.append("playwright %s imported" % getattr(playwright, "__version__", "?"))
     except Exception as exc:  # noqa: BLE001
         lines.append("playwright import FAILED: %s: %s" % (type(exc).__name__, exc))
-        sync_playwright = None  # type: ignore[assignment]
+        if os.environ.get("PROBE_INSTALL_PLAYWRIGHT"):
+            lines.append("--- attempting pip install (PROBE_INSTALL_PLAYWRIGHT set) ---")
+            req = os.environ.get("PROBE_PLAYWRIGHT_SPEC", "playwright")
+            pip = subprocess.run(
+                [sys.executable, "-m", "pip", "install", "--break-system-packages", "-q", req],
+                capture_output=True, text=True, timeout=600)
+            lines.append("pip %s exit=%s %s" % (req, pip.returncode, (pip.stderr or "")[-300:]))
+            try:
+                import importlib
+
+                importlib.invalidate_caches()
+                from playwright.sync_api import sync_playwright  # noqa: F811
+            except Exception as exc2:  # noqa: BLE001
+                lines.append("still FAILED after install: %s: %s" % (type(exc2).__name__, exc2))
+                sync_playwright = None  # type: ignore[assignment]
+        else:
+            sync_playwright = None  # type: ignore[assignment]
     if sync_playwright is not None:
         lines.append("--- launch attempts ---")
         attempts = [("bundled chromium (no executable_path)", None)]
+        if os.environ.get("PROBE_INSTALL_BROWSER"):
+            lines.append("--- playwright install chromium ---")
+            inst = subprocess.run(
+                [sys.executable, "-m", "playwright", "install", "chromium"],
+                capture_output=True, text=True, timeout=900)
+            lines.append("install exit=%s" % inst.returncode)
+            lines.append((inst.stdout or inst.stderr or "")[-800:])
         for c in CANDIDATES:
             if os.path.exists(c):
                 attempts.append(("explicit %s" % c, c))
