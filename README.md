@@ -2,7 +2,7 @@
 
 **Live dashboard: https://buffedlizard55-lab.github.io/MaltaProj2/**
 
-**📱 Phone? Start with [Today](https://buffedlizard55-lab.github.io/MaltaProj2/today/) — TWC Day-4 semifinals + every open pick on one thumb-friendly page (session 9c44d0e9; re-joins the boards below every 4 hours).**
+**📱 Phone? Start with [Today](https://buffedlizard55-lab.github.io/MaltaProj2/today/) — TWC Day-4 semifinals + every open match on one thumb-friendly page (session 7191a16e; rebuilds every 4 hours).** Every open fixture now carries a pick or a stated no-edge verdict; where no percentage can be justified the [no-percentage list](https://buffedlizard55-lab.github.io/MaltaProj2/today/unresolved.html) says exactly what was tried and why the blank is deliberate.
 
 **Start with [all CS2 picks](https://buffedlizard55-lab.github.io/MaltaProj2/picks-every-match/).**
 Use the [unresolved picks & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/picks-every-match/unresolved.html) page for every unsupported row and its source-attempt ledger.
