@@ -89,7 +89,11 @@ jobs:
           if [ "$others" = "0" ]; then gh workflow run hq-77faf95c.yml --ref main; fi
 
   smoke-diagnostic:
-    if: github.event_name == 'workflow_dispatch'
+    # `gh workflow run` is 403 for the Actions app token, so the marker in the commit
+    # message is the only way to fire this job on demand.
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && contains(github.event.head_commit.message, '[smoke-probe]'))
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
