@@ -77,8 +77,12 @@ read by hand with a dated citation.</p>
 <li>Decimal → implied probability: <code>p = 1 / decimal</code>.</li>
 <li>No-vig two-way split: <code>p_a = (1/d_a) / (1/d_a + 1/d_b)</code>; the overround is published per quote.</li>
 <li>Consensus: weighted mean of the accepted sources' no-vig splits; weights below.</li>
-<li>Originated line (only when no market prices the fixture): <code>p = 1 / (1 + 10^(-Δpoints/400))</code>
-applied to Valve's official regional standings, always labelled ORIGINATED.</li>
+<li>Originated line, rung 1 (only when no market prices the fixture and Valve ranks both teams):
+<code>p = 1 / (1 + 10^(-Δpoints/400))</code> applied to Valve's official regional standings,
+always labelled ORIGINATED.</li>
+<li>Originated line, rung 2 (no market and no Valve pair): <code>p = 0.5 + 0.5·tanh(Δrank/40)</code>
+on the bo3.gg world rank of both teams, clamped to [0.08, 0.92] — a coarse input, so the clamp and the label are
+part of the published number.</li>
 <li>Expected leaderboard differential: <code>points × (probability − crowd ownership)</code>.</li>
 </ul>
 <div class="tablewrap"><table><tr><th>Source weight in the consensus</th><th>Weight</th></tr><tr><td>bovada</td><td>1.0</td></tr><tr><td>kalshi</td><td>1.0</td></tr><tr><td>melbet</td><td>1.0</td></tr><tr><td>pinnacle</td><td>2.0</td></tr><tr><td>polymarket</td><td>1.0</td></tr><tr><td>research</td><td>1.0</td></tr><tr><td>thunderpick</td><td>1.0</td></tr></table></div>
@@ -109,8 +113,8 @@ by <code>scripts/34af18bf/verify.py</code>; a mismatch fails the build.</li>
 2026-10-17T00:45:00Z; the live market numbers are re-read every four hours and each quote keeps its own
 <code>retrieved_utc</code>.</p>
 
-<footer>Built by session <code>34af18bf</code> · board generated 2026-10-17T00:57:53Z · fixture capture
-2026-10-17T00:57:53Z · no manual input. HotSpawn supplies fixtures and the pick'em scoreboard only;
+<footer>Built by session <code>34af18bf</code> · board generated 2026-10-17T01:00:29Z · fixture capture
+2026-10-17T01:00:29Z · no manual input. HotSpawn supplies fixtures and the pick'em scoreboard only;
 every probability on this site comes from an external bookmaker, exchange or dated research reading.
 Not betting advice.</footer>
 </main></body></html>
