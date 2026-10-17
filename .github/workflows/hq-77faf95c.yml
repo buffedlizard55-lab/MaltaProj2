@@ -40,31 +40,8 @@ jobs:
         run: python3 scripts/77faf95c/collect.py
       - name: Rebuild the HQ pages from the retained raw prices
         run: python3 scripts/77faf95c/build.py
-      - name: Diagnose the shared browser-smoke dependency (written to data/77faf95c)
-        run: |
-          {
-            echo "diagnosed_utc: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            echo "runner_image: ${ImageOS:-unknown}"
-            echo "CHROME_BIN=${CHROME_BIN:-<unset>}"
-            for c in /usr/bin/google-chrome /usr/bin/google-chrome-stable /usr/bin/chromium /usr/bin/chromium-browser; do
-              if [ -x "$c" ]; then echo "PRESENT $c"; else echo "MISSING $c"; fi
-            done
-            echo "--- playwright browser cache ---"
-            ls -1 /root/.cache/ms-playwright 2>/dev/null || echo "none"
-            echo "--- pip playwright ---"
-            python3 -m pip show playwright 2>/dev/null | head -2 || echo "not installed"
-            echo "--- bundled chromium launch test ---"
-            python3 -c "import playwright,sys
-from playwright.sync_api import sync_playwright
-try:
-    with sync_playwright() as p:
-        b=p.chromium.launch(headless=True,args=['--no-sandbox'])
-        print('bundled chromium launch: OK',b.version); b.close()
-except Exception as e:
-    print('bundled chromium launch: FAILED',type(e).__name__,str(e)[:300])
-" 2>&1 | tail -4
-          } > data/77faf95c/browser_diagnosis.txt 2>&1
-          cat data/77faf95c/browser_diagnosis.txt
+      - name: Diagnose the shared browser-smoke dependency (result written to data/77faf95c)
+        run: python3 scripts/77faf95c/browser_probe.py
       - name: Tests
         run: python3 -m unittest tests.test_77faf95c -v
       - name: Commit and push
