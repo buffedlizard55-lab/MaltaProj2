@@ -440,14 +440,41 @@ def source_health_table(odds_evidence, probe_evidence):
 
 
 def canonical_home(pick_board):
-    """Render counts and destinations from one explicitly dated board only."""
+    """Render the strict canonical snapshot and clearly dated secondary boards."""
     pick_summary = pick_board.get("summary") or {}
     pick_time = pick_board.get("generated_utc")
     # The day-4 desk is a second, separately dated board. Its stamp and its two
     # semifinal picks are read from its own JSON so the landing page cannot go
     # stale relative to the desk it links to.
     day4 = load("data/1c8f79f8/board.json")
-    day4_time = day4.get("generated_utc")
+    day4_summary = day4.get("summary") or {}
+    day4_generated = day4.get("generated_utc")
+    day4_snapshot = day4.get("snapshot_utc") or day4.get("canonical_snapshot_utc")
+    day4_rows = day4.get("open") or []
+    day4_open = day4_summary.get("open", len(day4_rows))
+    day4_with_probability = sum(
+        1 for row in day4_rows
+        if (row.get("line") or {}).get("prob_a") is not None
+        and (row.get("line") or {}).get("prob_b") is not None
+    )
+    day4_without_probability = max(0, day4_open - day4_with_probability)
+    day4_snapshot_fmt = esc(fmt_time(day4_snapshot) or "unverified")
+    day4_generated_fmt = esc(fmt_time(day4_generated) or "unverified")
+
+    # A second, explicitly dated research audit is useful for coverage review,
+    # but its estimates must not replace the stricter canonical pick list.
+    audit_board = load("data/1b35a4a2/board.json")
+    audit_summary = audit_board.get("summary") or {}
+    audit_rows = audit_board.get("open") or []
+    audit_open = audit_summary.get("open", len(audit_rows))
+    audit_with_line = audit_summary.get("with_line", sum(
+        1 for row in audit_rows if (row.get("line") or {}).get("prob_a") is not None
+    ))
+    audit_market = audit_summary.get("market_based", 0)
+    audit_research = audit_summary.get("research_resolved", 0)
+    audit_model = audit_summary.get("model_only", 0)
+    audit_snapshot_fmt = esc(fmt_time(audit_board.get("canonical_snapshot_utc")) or "unverified")
+    audit_generated_fmt = esc(fmt_time(audit_board.get("generated_utc")) or "unverified")
     twc_rows = []
     for key, label in (("sf1", "Semifinal 1"), ("sf2", "Semifinal 2")):
         match = (day4.get("twc") or {}).get(key) or {}
@@ -482,7 +509,6 @@ externally and flagged as not-listed. Full reasoning, the verified day-1 to day-
 roster investigation are on the <a href="day4/twc-review.html">day 1–3 review</a>.
 <a class="btn" href="day4/picks.html#twc">Semifinal picks + sources</a></p>
 </section>"""
-    day4_time_fmt = esc(str(day4_time).replace("T", " ").replace("Z", " UTC")) if day4_time else "unverified"
     pick_counts = "".join(
         f'<div class="card"><div class="card-num">{esc(pick_summary.get(key, "—"))}</div><div class="card-label">{label}</div></div>'
         for key, label in [("open", "Open CS2 fixtures"), ("tier_a_market", "Market-priced matches"),
@@ -504,17 +530,28 @@ and the evidence behind it. Low-tier matches stay on the list too.</p>
 <a class="btn ghost" href="#canonical-unresolved">Unresolved picks &amp; limitations ↓</a>
 </div>
 <p><a class="btn alt2" href="today/index.html">📱 Today on your phone · TWC Day 4 + every open pick →</a></p>
-<p class="note"><strong>Two current pick lists, both rebuilt automatically:</strong>
-<a href="picks-every-match/index.html">every-match picks</a> (canonical, 4-hourly collector, last evaluated
-{esc(pick_time or 'unverified')}) and the <a href="day4/index.html">day-4 desk</a> (TWC 2026 semifinals plus a
-pick and probability for every open lobby fixture, last evaluated
-{esc(day4_time or 'unverified')}). Blank rows are never 50/50 estimates — they are listed with their
-reasons on the <a href="picks-every-match/unresolved.html">unresolved page</a> and the
+<p class="note"><strong>Two automated pick-list views:</strong>
+<a href="picks-every-match/index.html">every-match picks</a> (canonical, 4-hourly collector; input snapshot
+{esc(pick_time or 'unverified')}) and the <a href="day4/index.html">day-4 desk</a> (TWC 2026 semifinals plus
+{day4_with_probability} of {day4_open} open lobby fixtures with a market/model probability; {day4_without_probability}
+remain blank and flagged). Blank rows are never 50/50 estimates — their reasons are listed on the
+<a href="picks-every-match/unresolved.html">canonical unresolved page</a> and the
 <a href="day4/unresolved.html">day-4 unresolved page</a>.</p>
+<p class="note"><strong>Additional dated, research-extended coverage:</strong> the
+<a href="audits/1b35a4a2/index.html">1b35a4a2 audit summary</a> reports {audit_with_line} lines for {audit_open}
+open fixtures in its input snapshot ({audit_snapshot_fmt}); that audit was generated at {audit_generated_fmt}.
+It labels {audit_market} market, {audit_research} research-resolved and {audit_model} Valve-VRS model estimates.
+The research and model values are estimates, not bookmaker prices or verified win chances; this secondary
+board does not replace the canonical list or fill its blanks. See its <a href="audits/1b35a4a2/picks.html">full picks</a>,
+<a href="audits/1b35a4a2/unresolved.html">unresolved picks &amp; limitations</a>,
+<a href="audits/1b35a4a2/flagged.html">Flagged for Review</a> and
+<a href="audits/1b35a4a2/method.html">method</a>. Two citation mismatches were found in the initial snapshot;
+see <a href="flagged.html#audit-1b35-source-mismatch">the site-wide review note</a>. HotSpawn crowd shares are not probabilities.</p>
 {twc_teaser}
-<p class="note">Snapshot counts below are evaluated at {esc(pick_time or 'unverified')}. Day-4 desk evaluated at {day4_time_fmt}.
-Source capture ended {esc(pick_board.get('collected_to_utc') or 'unverified')}.
-A page rebuild is not a new source observation. Open the picks list for per-match expiry checks.</p>
+<p class="note">Canonical source snapshot: {esc(pick_time or 'unverified')}; its source capture ended
+{esc(pick_board.get('collected_to_utc') or 'unverified')}. Day-4 source snapshot: {day4_snapshot_fmt};
+that board was generated at {day4_generated_fmt}. A page rebuild is not a new source observation.
+Open the pick lists for per-match expiry checks.</p>
 <p><a href="twc-2026/results.html">Verified day-two results</a> → <a href="twc-2026/index.html">day-three decisions</a> → <a href="twc-2026/day-4.html">Day 1–3 review &amp; Day 4 Semifinals picks</a> · <a href="twc-2026/roster.html">Original Aurora announcements &amp; unknown rest</a> · <a href="twc-2026/flagged.html">Research flags</a>. The upset watchlist never changes the canonical match probabilities.</p>
 <div class="cards">{pick_counts}</div>
 <p id="pick-accounting"><strong>{esc(directional)} directional picks</strong> ·
@@ -540,8 +577,9 @@ calculations, not officially verified win chances. <strong>HotSpawn crowd picks 
 </section>
 <div class="pick-boards-grid" id="where-the-picks">
 
-<a class="board-card board-card-primary" href="picks-every-match/picks.html"><div class="board-card-title">Match picks &amp; probabilities</div><div class="board-card-desc">Every open match: both teams, the pick, the market/model label and the source behind each number. Search by team or tournament.</div><div class="board-card-meta">Evaluated {esc(pick_time or 'unverified')} · refreshed every 4 hours</div></a>
-<a class="board-card board-card-primary" href="day4/picks.html"><div class="board-card-title">Day-4 desk: TWC semifinals + every lobby match</div><div class="board-card-desc">Both TWC 2026 semifinal picks with external lines, a pick and probability for every open HotSpawn fixture (including low-tier and unpriced ones), plus its own unresolved and flagged pages.</div><div class="board-card-meta">Desk evaluated {day4_time_fmt} · refreshed every 4 hours</div></a>
+<a class="board-card board-card-primary" href="picks-every-match/picks.html"><div class="board-card-title">Match picks &amp; probabilities</div><div class="board-card-desc">Every open match: both teams, the pick, the market/model label and the source behind each number. Search by team or tournament.</div><div class="board-card-meta">Input snapshot {esc(pick_time or 'unverified')} · refreshed every 4 hours</div></a>
+<a class="board-card board-card-primary" href="day4/picks.html"><div class="board-card-title">Day-4 desk: TWC semifinals + lobby picks</div><div class="board-card-desc">Both TWC 2026 semifinal picks and {day4_with_probability} of {day4_open} open HotSpawn fixtures have a market/model probability. {day4_without_probability} remain blank and flagged where evidence is insufficient; its unresolved and flagged pages explain why.</div><div class="board-card-meta">Source snapshot {day4_snapshot_fmt} · board generated {day4_generated_fmt} · refreshed every 4 hours</div></a>
+<a class="board-card" href="audits/1b35a4a2/index.html"><div class="board-card-title">Dated research-extended full-coverage audit</div><div class="board-card-desc">The captured board reports {audit_with_line} lines for {audit_open} open fixtures: {audit_market} market, {audit_research} research-resolved and {audit_model} Valve-VRS model estimates. It is secondary to the canonical board; research/model values are estimates, not bookmaker prices or verified win chances.</div><div class="board-card-meta">Input snapshot {audit_snapshot_fmt} · audit generated {audit_generated_fmt}</div></a>
 <a class="board-card" href="twc-2026/day-4.html"><div class="board-card-title">Day 1–3 review → Day 4 TWC 2026 Semifinal picks</div><div class="board-card-desc">Aurora 2–0 9z Day 3 decider &amp; BetBoom–Legacy 3-map war synthesized into Day 4 Semifinals (FURIA vs Aurora 50/50 coin-flip &amp; Falcons anchor), plus all open CS2 matches and unresolved limitations.</div></a>
 <a class="board-card" href="picks-every-match/inventory.html"><div class="board-card-title">Full lobby inventory</div><div class="board-card-desc">Every retained CS2 fixture, including locked/past rows. Coverage refers to the captured lobby, not unseen additions.</div></a>
 <a class="board-card" href="twc-2026/index.html"><div class="board-card-title">Day 2 → Day 3: a credible upset, not blind underdogs</div><div class="board-card-desc">All eight TWC results, primary-confirmed July signings, a canonical day-three decision sheet and explicit expected-points tradeoffs. No invented rest penalty.</div></a>
@@ -550,6 +588,12 @@ calculations, not officially verified win chances. <strong>HotSpawn crowd picks 
 <a class="board-card" href="flagged.html"><div class="board-card-title">Flagged for Review</div><div class="board-card-desc">Source failures, disputed identities and competing historical boards. No silent assumptions.</div></a>
 <a class="board-card" href="audits/e2d16060/index.html"><div class="board-card-title">Independent line-by-line audit</div><div class="board-card-desc">Dated review of the canonical 21-row snapshot: source links, arithmetic checks, seven explicit unresolved blanks, and mobile/accessibility findings.</div></a>
 </div>
+<p class="note" id="audit-1b35-navigation"><strong>Research-audit navigation:</strong>
+<a href="audits/1b35a4a2/picks.html">full 1b35 picks list</a> ·
+<a href="audits/1b35a4a2/unresolved.html">unresolved picks &amp; limitations</a> ·
+<a href="audits/1b35a4a2/flagged.html">Flagged for Review</a> ·
+<a href="audits/1b35a4a2/method.html">method &amp; sources</a> ·
+<a href="flagged.html#audit-1b35-source-mismatch">integration source-link check</a>.</p>
 <h2>How to use this dashboard</h2>
 <ol class="quick-guide"><li><strong>Choose a match:</strong> open All CS2 picks, then search a team or tournament.</li>
 <li><strong>Read the line:</strong> market prices first; a labelled model only where no accepted market exists.</li>
@@ -817,6 +861,24 @@ fixtures with the same verification columns as the main table.</p>
                       for r in (matching.get("unmatched_bookmaker_lines") or [])]
     alias_rows = [[esc(k), BLANK + ' <span class="warn">not independently verified</span>',
                    '<a href="https://play.hotspawn.com/lobby">official inventory reference</a>'] for k, v in ALIAS_NOTE.items()]
+    secondary_audit_source_rows = [
+        [
+            '<a href="audits/1b35a4a2/unresolved.html">BET-M vs Just Players · #1079170</a>',
+            'In the initial snapshot, the audit labels this EGW citation as a BET-M vs Just Players tracker, but the fetched EGW page identifies Betclic vs Team Nemesis in the PGL Bucharest 2027 Closed Qualifier. It does not support the cited BET-M form/rating claim; keep the initial 66% research estimate flagged as unverified, not as a bookmaker line.',
+            '<a href="https://www.hotspawn.com/matches/bet-m-vs-just-players-nodwin-clutch-series-13-1079170" rel="noopener">Official HotSpawn fixture</a> · <a href="https://egamersworld.com/counterstrike/match/4JaFCnn5Ve/betclic-vs-team-nemesis-6LGr94GGb" rel="noopener">Mismatched EGW page</a> · <a href="https://www.hltv.org/events/9440/nodwin-clutch-series-13" rel="noopener">HLTV NODWIN event</a>',
+        ],
+        [
+            '<a href="audits/1b35a4a2/unresolved.html">Banda chuya vs Enjoy · #1081126</a>',
+            'In the initial snapshot, the audit labels its HLTV event URL as CCT Europe 2026 Series #12, but the fetched page is NODWIN Clutch Series 13. HotSpawn identifies this fixture as CCT Europe 2026 Series #12 Play-In. The 55% value is an unpriced research estimate; the mismatched event citation does not verify it.',
+            '<a href="https://www.hotspawn.com/matches/banda-chuya-vs-enjoy-cct-europe-2026-series-12-play-in-1081126" rel="noopener">Official HotSpawn fixture</a> · <a href="https://www.hltv.org/events/9440/nodwin-clutch-series-13" rel="noopener">Mismatched HLTV page</a> · <a href="https://egamersworld.com/counterstrike/match/1sGIL2gAYu/banda-chuya-vs-enjoy-9ru7xO5OG" rel="noopener">EGW match page</a>',
+        ],
+    ]
+    secondary_audit_source_table = table(
+        ["Research-audit row", "Finding / treatment", "Fixture and cited source links"],
+        secondary_audit_source_rows,
+        table_id="audit-1b35-source-review",
+        classes="responsive",
+    )
 
     flagged_body = f"""
 <div class="banner warn"><strong>These items are published for review, not as verified facts.</strong>
@@ -840,6 +902,16 @@ secondary-only price leads and publication-test snapshot mismatch</a>. All are p
 <p>The homepage previously promoted an alternate board as complete coverage while the strict board
 retained unresolved matches. The primary navigation and counts now use only the canonical board.
 Historical alternate boards are preserved for audit, not endorsed as verified current picks.</p>
+<h2 id="audit-1b35-source-mismatch">Initial 1b35a4a2 audit snapshot citation checks · reviewed 17 October 2026</h2>
+<p>The <a href="audits/1b35a4a2/index.html">1b35a4a2 board</a> is linked as a dated, secondary research view, not as the canonical pick list.
+This review checked the initial input snapshot <code>2026-10-16T22:48:43Z</code> (audit generated <code>2026-10-16T23:57:03Z</code>).
+The exact source URLs recorded for two research rows in that snapshot did not match their labels.
+Those historical estimates remain unverified; the mismatches are not evidence that no market exists.
+Later scheduled refreshes may change the row set, so check the linked audit's current timestamps before relying on it.
+No row or probability in the source audit was edited here. See its <a href="audits/1b35a4a2/flagged.html">flag ledger</a> and
+<a href="audits/1b35a4a2/unresolved.html">unresolved/limitations page</a> alongside the source links below.</p>
+{secondary_audit_source_table}
+<p>Until the citations for those initial rows are corrected or re-derived, do not treat their research percentages as verified win probabilities or bookmaker prices. The strict canonical board remains the primary route; unsupported canonical values stay blank.</p>
 <p><a href="twc-2026/results.html">Day-two results and day-three bracket</a>, <a href="twc-2026/roster.html">primary Aurora signing announcements</a> and <a href="twc-2026/flagged.html">research limitations</a> now supplement the <a href="day-one.html#review-limitations">day-one review</a>. Captain kyxsan joined on 8 July; Jimpphat and coach ash were announced on 3 July. This does not establish rest hours or a causal onboarding penalty.</p>
 <h3>Fallback-only source checks · reviewed 15 October 2026</h3>
 <p>HLTV was inspected first for uncovered matches. Its rendered betting areas did not expose usable two-sided lines in the reviewed examples; votes, handicap statistics and social-casino promotions were not accepted. <a href="https://www.hltv.org/matches/2399425/havu-vs-rounds-elisa-breakout-series-2">HLTV HAVU–ROUNDS</a> · <a href="twc-2026/flagged.html">Per-fixture research ledger</a>.</p>
