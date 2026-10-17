@@ -12,7 +12,10 @@ if OUT.exists():
 OUT.mkdir(parents=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','today'):
+# 'today' added by session 9c44d0e9 (T-9C44D0E9-TODAY phone-first desk), additive single entry:
+# the root NAV + executive summary link today/index.html, so the artifact must carry the
+# directory or every root page fails the staged-link check. No other session's files modified.
 # 'day4' added by session 1c8f79f8 (T-DAY4-1C8F79F8 TWC day-4 desk + every-match
 # refresh), additive single entry: the landing executive summary links day4/index.html,
 # so the artifact must carry the directory or every root page fails the staged-link

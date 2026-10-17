@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Unresolved · HotSpawn CS2 picks</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0b1020;color:#e8ecf8;line-height:1.5}
+a{color:#7dd3fc}.wrap{max-width:860px;margin:0 auto;padding:16px 14px 90px}
+h1{font-size:1.55rem;line-height:1.2;margin:.3rem 0}h2{font-size:1.15rem;margin:1.4rem 0 .5rem}h3{font-size:1rem;margin:1rem 0 .4rem}
+.eyebrow{color:#93c5fd;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;margin:0}
+.card{background:#141b33;border:1px solid #26325a;border-radius:14px;padding:14px;margin:10px 0}
+.btn{display:block;text-align:center;background:#2563eb;color:#fff;text-decoration:none;font-weight:700;padding:14px;border-radius:12px;margin:8px 0;font-size:1.05rem}
+.btn.alt{background:#1e293b;border:1px solid #334155}.btn.warn{background:#7c2d12}
+.pick{font-size:1.25rem;font-weight:800}.prob{font-size:1.6rem;font-weight:800;color:#4ade80}
+.vs{display:flex;justify-content:space-between;gap:8px;align-items:center}.team{flex:1;text-align:center}
+.bar{height:10px;border-radius:6px;background:#334155;overflow:hidden;display:flex;margin:6px 0}
+.bar i{display:block;height:100%;background:#4ade80}.bar b{display:block;height:100%;background:#f472b6}
+table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{border-bottom:1px solid #26325a;padding:8px 6px;text-align:left;vertical-align:top}
+.tbl{overflow-x:auto}.small{color:#a5b4d4;font-size:.82rem}.flag{color:#fbbf24;font-weight:700}.blank{color:#f87171;font-weight:700}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:#0f1730;border-top:1px solid #26325a;display:flex;z-index:9}
+nav.tabs a{flex:1;text-align:center;padding:12px 2px;color:#cbd5f5;text-decoration:none;font-size:.78rem;font-weight:600}
+nav.tabs a.on{color:#fff;background:#1d4ed8}
+.notice{border-left:4px solid #f59e0b;background:#1c1917;padding:10px 12px;border-radius:8px;margin:10px 0}
+.good{border-left-color:#22c55e;background:#052e16}
+</style></head><body><main class="wrap">
+<h1>❔ Unresolved picks &amp; limitations</h1>
+<p>These open matches have <b>no pick and no probability</b> because no source passed verification. A blank is deliberate —
+inventing a 50/50 would be worse than useless for leaderboard play. They are re-checked every 4 hours.</p>
+<div class="tbl"><table><thead><tr><th>Match (blank — no pick)</th><th>Why no number / what was tried</th><th>Verify</th></tr></thead><tbody><tr><td><b>Lynn Vision</b> vs <b>Morningstar</b><div class="small">#1081861 · VOID Autumn Cup 2026 · 2026-10-20T03:00Z</div></td><td class="small">no_external_price_and_opponent_absent_from_valve_vrs</td><td><a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn</a> · <a href="../picks-every-match/unresolved.html">canonical ledger</a></td></tr><tr><td><b>Chinggis Warriors</b> vs <b>WXM</b><div class="small">#1081863 · VOID Autumn Cup 2026 · 2026-10-20T07:00Z</div></td><td class="small">no_external_price_and_opponent_absent_from_valve_vrs</td><td><a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn</a> · <a href="../picks-every-match/unresolved.html">canonical ledger</a></td></tr></tbody></table></div>
+<h2>The resolution ladder (applied in order)</h2>
+<ol><li><b>Esportsbooks first:</b> Pinnacle / Bovada / Melbet full-match two-way prices, both teams + kickoff joined (canonical collector).</li>
+<li><b>HLTV</b> match pages for identity/schedule (HLTV publishes no directly reusable odds feed; probe results are retained).</li>
+<li><b>Exchanges / other books:</b> Polymarket / Kalshi / egamersworld-listed books where a full-match market exists (day-4 desk).</li>
+<li><b>Originated line:</b> Valve official VRS standings → Glicko logistic model, only when both rosters are uniquely identified and standings ≤14 days old. Labelled "model", never presented as a bookmaker line.</li>
+<li><b>Otherwise blank</b> and listed here with the failure reason.</li></ol>
+<h2>Limitations you should know</h2>
+<ul><li>Low-tier (B/C) matches are often priced by <b>no</b> book and absent from Polymarket — the blank is a market-coverage fact, not laziness.</li>
+<li>Team-name aliases (academy/ex- rosters, slot names) block the VRS model when identity can't be proven; we never borrow a sibling roster's rating.</li>
+<li>Lines move: every probability carries its source + capture time in <a href="../data/9c44d0e9/board.json">board.json</a>; re-check before lock.</li>
+<li>HotSpawn crowd % is shown nowhere as a probability — it measures other players' picks, not win chances.</li>
+<li>This desk re-joins retained boards; freshness is bounded by the canonical 4-hourly collectors listed on the Method page.</li></ul>
+<p>Full ledgers: <a href="../picks-every-match/unresolved.html">canonical unresolved</a> · <a href="../day4/unresolved.html">day-4 unresolved</a> · <a href="flagged.html">flagged items for this desk</a></p>
+<p class="small">Built 2026-10-17T01:05:43Z · Session 9c44d0e9 · <a href="../index.html">Full dashboard</a> · <a href="../flagged.html">Flagged for Review</a> · <a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn lobby</a>. Probabilities are estimates from the cited betting lines / models, not guarantees. HotSpawn is never a probability input.</p></main><nav class="tabs"><a href="index.html" class="">🏠 Today</a><a href="picks.html" class="">🎯 All picks</a><a href="twc.html" class="">🏆 TWC Day 4</a><a href="unresolved.html" class="on">❔ Unresolved</a><a href="method.html" class="">📖 Method</a></nav></body></html>
