@@ -116,7 +116,10 @@ jobs:
           set -euo pipefail
           git config user.name "hq-bot (77faf95c)"
           git config user.email "malta-data-bot@users.noreply.github.com"
-          git add data/77faf95c
+          # running the smoke scripts regenerates site pages; drop those edits so only the
+          # diagnosis is committed and the rebase below has a clean tree.
+          git checkout -- . || true
+          git add data/77faf95c/smoke_probe.txt
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -m "hq(77faf95c): shared browser-smoke diagnosis $(date -u +%Y-%m-%dT%H:%MZ)"
           for attempt in 1 2 3 4 5; do
