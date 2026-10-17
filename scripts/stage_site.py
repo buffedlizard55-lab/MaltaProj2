@@ -12,7 +12,12 @@ if OUT.exists():
 OUT.mkdir(parents=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4'):
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','pickdesk'):
+# 'pickdesk' added by session 34af18bf (final integration: phone-first pick desk = every open
+# HotSpawn CS2 fixture incl. the TWC pick'em competition 35859, plus the day-4 decisions and the
+# separate unresolved section). Additive single entry: the root executive summary links
+# pickdesk/index.html, so the artifact must carry the directory or every root page fails the
+# staged-link check. No other session's files are modified here.
 # 'day4' added by session 1c8f79f8 (T-DAY4-1C8F79F8 TWC day-4 desk + every-match
 # refresh), additive single entry: the landing executive summary links day4/index.html,
 # so the artifact must carry the directory or every root page fails the staged-link

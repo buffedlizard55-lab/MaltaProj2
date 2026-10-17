@@ -1,0 +1,107 @@
+name: pick desk (34af18bf — every HotSpawn CS2 match + TWC day-4)
+# Session 34af18bf. Rebuilds pickdesk/ every four hours with no manual input:
+#   1. collect — HotSpawn lobby (fixture discovery only, incl. the TWC pick'em
+#                competition 35859) + Pinnacle / Bovada / Melbet-1xBet / Kalshi /
+#                Thunderpick-via-bo3.gg / Polymarket prices + official Valve VRS.
+#   2. build   — resolution ladder: market -> research -> originated -> blank,
+#                plus the contrarian climb gates (C1-C4).
+#   3. render  — pickdesk/*.html, mobile-first.
+#   4. verify  — line-by-line re-derivation; a failure blocks the commit.
+#   5. tests   — unit contracts.
+# The runner has general internet; the sandbox this session was built in does not,
+# which is why collection only ever happens here.
+on:
+  schedule:
+    - cron: '7 */4 * * *'
+  workflow_dispatch:
+  push:
+    # no branch filter: the same workflow must be runnable on a session branch
+    # while it is being built, and on main once it is merged
+    paths:
+      - 'scripts/34af18bf/**'
+      - 'tests/test_34af18bf.py'
+      - '.github/workflows/pickdesk-34af18bf.yml'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: pickdesk-34af18bf
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Collect fixtures, external prices, ratings and access evidence
+        id: collect
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          python scripts/34af18bf/collect.py 2>&1 | tee /tmp/collect.log
+      - name: Build the board (resolution ladder + climb gates)
+        id: build
+        if: steps.collect.outcome == 'success'
+        run: python scripts/34af18bf/build.py
+      - name: Render the mobile-first pick desk
+        id: render
+        if: steps.build.outcome == 'success'
+        run: python scripts/34af18bf/render.py
+      - name: Verify line by line (a failure blocks the commit)
+        id: verify
+        if: steps.render.outcome == 'success'
+        run: python scripts/34af18bf/verify.py
+      - name: Unit contracts
+        run: python -m unittest tests.test_34af18bf -v
+      - name: Staged link check for the whole site
+        run: python scripts/stage_site.py
+      - name: Run report (always committed, so a broken run is diagnosable)
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os, pathlib, datetime
+          report = {
+              "run_utc": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "ref": os.environ.get("GITHUB_REF_NAME"),
+              "sha": os.environ.get("GITHUB_SHA"),
+              "run_id": os.environ.get("GITHUB_RUN_ID"),
+              "steps": {
+                  "collect": "${{ steps.collect.outcome }}",
+                  "build": "${{ steps.build.outcome }}",
+                  "render": "${{ steps.render.outcome }}",
+                  "verify": "${{ steps.verify.outcome }}",
+              },
+          }
+          path = pathlib.Path("data/34af18bf/run_status.json")
+          path.parent.mkdir(parents=True, exist_ok=True)
+          path.write_text(json.dumps(report, indent=1))
+          print(json.dumps(report, indent=1))
+          PY
+          tail -40 /tmp/collect.log 2>/dev/null || true
+      - name: Commit the refreshed board, pages and run report
+        if: always()
+        run: |
+          set -e
+          git config user.name "malta-data-bot"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/34af18bf pickdesk || true
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "pickdesk(34af18bf): refresh $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
+            sleep 10
+          done
+          echo "::error::could not push the refreshed pick desk"; exit 1
+      - name: Request a Pages rebuild
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --repo "${{ github.repository }}" --ref main || echo "dispatch not permitted; the next scheduled Pages run publishes"
