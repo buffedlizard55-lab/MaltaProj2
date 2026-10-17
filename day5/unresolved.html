@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<title>Unresolved &amp; limitations · HotSpawn picks desk</title>
+<style>
+:root{--bg:#0d1117;--card:#161b22;--line:#26303b;--fg:#e6edf3;--mut:#93a1b1;
+--good:#3fb950;--warn:#d29922;--bad:#f85149;--accent:#58a6ff;--pick:#1f6feb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+-webkit-text-size-adjust:100%}
+a{color:var(--accent)}
+.wrap{max-width:720px;margin:0 auto;padding:12px 12px 40px}
+header.top{position:sticky;top:0;z-index:20;background:#0d1117ee;backdrop-filter:blur(8px);
+border-bottom:1px solid var(--line);padding:10px 0 8px}
+h1{font-size:19px;margin:0 0 2px}
+.sub{color:var(--mut);font-size:13px}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs a{flex:0 0 auto;font-size:13px;padding:7px 11px;border:1px solid var(--line);
+border-radius:999px;text-decoration:none;color:var(--fg);background:#11161d;white-space:nowrap}
+nav.tabs a.on{background:var(--pick);border-color:var(--pick);color:#fff;font-weight:600}
+h2{font-size:16px;margin:22px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+h3{font-size:14px;margin:16px 0 6px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+p{font-size:15px}
+.muted{color:var(--mut);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;
+margin:0 0 10px}
+.card.hot{border-color:#3d4f6b;box-shadow:0 0 0 1px #1d2733}
+.topline{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.teams{font-size:17px;font-weight:650;letter-spacing:-.01em}
+.pick{background:var(--pick);color:#fff;border-radius:8px;padding:3px 9px;font-size:13px;
+font-weight:700;white-space:nowrap;display:inline-block}
+.pick.none{background:#2a2f38;color:var(--mut);font-weight:600}
+.pick.climb{background:#6e40c9}
+.bar{height:9px;border-radius:5px;background:#21262d;overflow:hidden;display:flex;margin:9px 0 4px}
+.bar i{display:block;height:100%}
+.bar .a{background:var(--good)}
+.bar .b{background:#30363d}
+.probs{display:flex;justify-content:space-between;font-size:13px;color:var(--mut)}
+.probs b{color:var(--fg);font-size:15px}
+.rowmeta{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.chip{font-size:11.5px;border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--mut)}
+.chip.s{color:#7ee787;border-color:#2b4a33}
+.chip.m{color:#79c0ff;border-color:#23406b}
+.chip.b{color:#d29922;border-color:#4a3a12}
+.chip.x{color:#f85149;border-color:#5a2323}
+.kv{font-size:13px;color:var(--mut);margin-top:8px}
+.kv b{color:var(--fg)}
+.srcs{margin-top:9px;font-size:12.5px}
+.srcs a{display:inline-block;margin:0 8px 4px 0}
+.btn{display:block;background:#11161d;border:1px solid var(--line);border-radius:10px;
+padding:11px 12px;margin:0 0 8px;text-decoration:none;color:var(--fg)}
+.btn span{display:block;font-size:12px;color:var(--mut);margin-top:2px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
+.stat b{display:block;font-size:22px;line-height:1.2}
+.stat span{font-size:12px;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;display:block;overflow-x:auto}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em}
+td.wrapcell{white-space:normal;min-width:190px}
+.flag{border-left:3px solid var(--warn);padding-left:9px}
+.flag.high{border-left-color:var(--bad)}
+.note{font-size:13px;color:var(--mut);border-left:2px solid var(--line);padding-left:9px;margin:8px 0}
+footer{color:var(--mut);font-size:12.5px;margin-top:26px;border-top:1px solid var(--line);padding-top:12px}
+@media (min-width:640px){h1{font-size:24px}.wrap{padding:16px}}
+</style>
+</head><body>
+<header class="top"><div class="wrap">
+<h1>Unresolved &amp; limitations</h1>
+<div class="sub">Counter-Strike 2 picks for every HotSpawn match · built 2026-10-17T20:41:12Z</div>
+<nav class="tabs"><a href="index.html">Summary</a><a href="picks.html">Every pick</a><a href="twc.html">TWC day 5</a><a href="unresolved.html" class="on">Unresolved</a><a href="flagged.html">Flagged</a><a href="method.html">Method</a></nav>
+</div></header>
+<div class="wrap">
+<h2>Unresolved picks · 0</h2>
+<p class="muted">These are the matches where no probability could be derived from any source.
+They are published blank on purpose: a number that cannot be sourced is not published, and a
+blank is never quietly replaced with 50/50.</p>
+<h2>Limitations of the method</h2>
+<div class="card">
+<ul>
+<li><b>HotSpawn is not a source of probability.</b> Its crowd percentages are shown as
+leaderboard context only and never enter a probability. A crowd split measures what people
+picked, not what is likely to happen.</li>
+<li><b>A probability is only ever one of four things.</b> A real external bookmaker price with
+the margin removed; an exchange midpoint, labelled as such; Valve's own regional-standings
+model when no book prices the match; or a conservative lower bound when only one side is
+rated. The basis label on every row says which.</li>
+<li><b>The ratings model is not a bookmaker price.</b> It applies the expected-win formula
+Valve publishes for its own ranking to a dated snapshot of the global standings. It is a model,
+it is twelve days old, and it is labelled as a model wherever it appears.</li>
+<li><b>Low-tier coverage depends on the esportsbook, not the mainstream books.</b> Pinnacle,
+Bovada and Melbet do not list most CCT and NODWIN events. The lines that cover them come from
+Thunderpick through bo3.gg, and where that is missing the row falls back to the ratings model
+or to the unresolved list.</li>
+<li><b>Name matching is conservative.</b> A price is joined only when both sides of a fixture
+resolve to the same canonical team key and the source kickoff is within the tolerance window.
+A one-sided price, a price with no kickoff, or a price with a different opponent is rejected
+rather than guessed at.</li>
+<li><b>Exchange and prediction-market prices are midpoints, not executable quotes.</b> Kalshi's
+bid/ask midpoint and a Polymarket midpoint are shown where they exist and are labelled; where
+nothing else prices the match they may be used under the same rule-backed fallback the
+canonical board already applies, and the row says so.</li>
+<li><b>Nothing is forecast for a match that has not started.</b> These are pre-match
+probabilities from prices and ratings. They are not results and they are not advice.</li>
+<li><b>The Valve snapshot is dated.</b> The newest global standings file in Valve's repository
+is 2026-10-05; there is no live feed, so a roster or ranking change after that date is not
+reflected in a model-based row.</li>
+<li><b>Coverage is a snapshot, not a subscription.</b> The board is rebuilt every four hours
+from a fresh read of the lobby and the books. A match that appears between reads waits for the
+next one.</li>
+</ul>
+</div>
+<h2>What the desk does with each basis</h2>
+<table><thead><tr><th>Basis</th><th>Meaning</th><th>Count this capture</th></tr></thead><tbody>
+<tr><td>Bookmaker price</td><td class="wrapcell">An external two-way price, margin removed
+proportionally. Where more than one book prices the match the probabilities are averaged.</td>
+<td>10</td></tr>
+<tr><td>Exchange midpoint</td><td class="wrapcell">A bid/ask midpoint or a market midpoint. Used
+only where no bookmaker prices the match, and labelled on the row.</td>
+<td>1</td></tr>
+<tr><td>Valve ratings model</td><td class="wrapcell">No external price; Valve's published
+expected-win formula applied to the 2026-10-05 global standings.</td>
+<td>3</td></tr>
+<tr><td>Lower bound</td><td class="wrapcell">Only one side is rated, so no head-to-head
+probability exists. A floor, not an estimate.</td>
+<td>4</td></tr>
+<tr><td>Unresolved</td><td class="wrapcell">Neither side rated and no external price. Published
+blank with the reason.</td>
+<td>0</td></tr>
+</tbody></table>
+
+<footer>
+<p>Built 2026-10-17T20:41:12Z from the HotSpawn lobby read 2026-10-17T20:23:00Z
+and external bookmaker lines read the same day. HotSpawn is used for fixture discovery and
+settlement only; its crowd percentages are shown as leaderboard context and never as a
+probability. Every number on this page has a source link on the row it belongs to.</p>
+<p>Unresolved picks and the limits of the method: <a href="unresolved.html">unresolved.html</a>.
+Items needing a human decision: <a href="flagged.html">flagged.html</a>.
+Method and every rule: <a href="method.html">method.html</a>.</p>
+</footer>
+</div></body></html>
