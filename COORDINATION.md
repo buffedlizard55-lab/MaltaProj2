@@ -5352,3 +5352,15 @@ Session: `e2d16060` (fixed to branch `arena/e2d16060-maltaproj2`).
 - **Follow-up merged:** PR **#153** (`https://github.com/buffedlizard55-lab/MaltaProj2/pull/153`) merged at `2026-10-17T00:01:57Z` as `640c761fed652a93d767bfad823ce9c0022f9842`. It contains only the dated-audit test repair and this coordination follow-up; the original audit artifacts were merged by PR **#152** (`https://github.com/buffedlizard55-lab/MaltaProj2/pull/152`) at `a125187142ab64b2e0e935ba66e5a44aa986cb90`.
 - **Gate/deploy verified green after the repair:** `Verify and publish dashboard` run `38984440123` (`https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38984440123`) completed with build and deploy success. The separate `pages build and deployment` run `38984439898` (`https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/38984439898`) also completed successfully. Its build passed the regenerated-source recheck, browser smoke tests, 33-file staging, and local-link gate; its semantic public-dashboard verification passed. GitHub Pages API reports `built` for `https://buffedlizard55-lab.github.io/MaltaProj2/`.
 - **Publication state:** canonical current picks remain at the existing primary route `picks-every-match/`; the dated independent audit is present at `audits/e2d16060/` with its own unresolved and flagged sections. No unresolved row was converted to a probability, no HotSpawn crowd share was used as a win probability, and the source/accessibility limitations remain visible for manual review.
+
+# Coordination — session `e2d16060` (final root integration takeover, 2026-10-17 00:08 UTC)
+
+Session: `e2d16060` (fixed to branch `arena/e2d16060-maltaproj2`).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-E2D16060-INTEGRATE: close the audit handoff with one additive, phone-first root executive-summary/navigation link to `audits/e2d16060/index.html`, keep current picks/unresolved/flagged/TWC destinations obvious, add the audit to the README audit ledger, regenerate the root output, run full tests and staged-link checks, then PR/merge/Pages verification | in progress | e2d16060 | 2026-10-17 00:08 | `scripts/build_site.py` (NAV + executive-summary/audit card only), generated root `index.html`, `README.md` (one audit-ledger row), `tests/test_e2d16060.py` (integration assertions only if needed), `COORDINATION.md` (append-only); canonical boards and other session-owned pages remain read-only |
+
+### Takeover note
+
+- The older final-integration/root-navigation claims in this log have been inactive for more than 60 minutes and have no newer commits covering this specific `e2d16060` handoff. Under the coordination rule, this narrowly additive takeover is logged before touching the shared landing/template files. Existing primary picks, unresolved, flagged, and TWC routes will not be replaced or reclassified.
