@@ -89,6 +89,7 @@ jobs:
           if [ "$others" = "0" ]; then gh workflow run hq-77faf95c.yml --ref main; fi
 
   smoke-diagnostic:
+    needs: refresh
     # `gh workflow run` is 403 for the Actions app token, so the marker in the commit
     # message is the only way to fire this job on demand.
     if: >
