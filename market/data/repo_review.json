@@ -1,15 +1,15 @@
 {
- "generated_at_utc": "2026-10-17T00:51:36Z",
+ "generated_at_utc": "2026-10-17T07:16:11Z",
  "checks": [
   {
    "id": "R1",
    "claim": "data/hotspawn_matches.json matches the live lobby fixture list",
    "source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
    "snapshot_file": "data/hotspawn_matches.json",
-   "snapshot_generated_at_utc": "2026-10-17T00:20:30Z",
-   "live_count_all_sports": 11746,
-   "live_window_rows": 283,
-   "snapshot_count": 83,
+   "snapshot_generated_at_utc": "2026-10-17T04:33:42Z",
+   "live_count_all_sports": 11753,
+   "live_window_rows": 279,
+   "snapshot_count": 96,
    "window_ids_missing_from_snapshot": [
     "1071191",
     "1071208",
@@ -26,15 +26,15 @@
     "1071219",
     "1074645",
     "1074646",
-    "1074647",
     "1074648",
     "1074649",
     "1074650",
-    "1074651"
+    "1074651",
+    "1074652"
    ],
    "stale_in_snapshot": [],
    "status": "discrepancy",
-   "detail": "83 snapshot rows vs 283 live window rows; 261 live window fixture(s) missing from the snapshot, 0 snapshot row(s) no longer served"
+   "detail": "96 snapshot rows vs 279 live window rows; 244 live window fixture(s) missing from the snapshot, 0 snapshot row(s) no longer served"
   },
   {
    "id": "R2",
@@ -207,18 +207,22 @@
   {
    "id": "R5",
    "claim": "data/lines.json summary counters match its own row list",
-   "declared_fixtures_total": 83,
-   "rows": 83,
+   "declared_fixtures_total": 96,
+   "rows": 96,
    "status": "verified",
-   "detail": "declared fixtures_total=83 vs 83 rows; fixtures_with_external_line=3"
+   "detail": "declared fixtures_total=96 vs 96 rows; fixtures_with_external_line=10"
   },
   {
    "id": "R6",
    "claim": "every price published on the board carries a source link, a market label and a retrieval timestamp",
-   "priced_rows": 18,
-   "distinct_source_pages": 9,
+   "priced_rows": 25,
+   "distinct_source_pages": 14,
    "links_listed_for_manual_review": [
     "https://melbet.com/en/line/esports/",
+    "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/bushido-wildcats-gothic-202610171000",
+    "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-ex-6666-202610170400",
+    "https://www.bovada.lv/esports/counter-strike-2/nodwin-clutch-series/baks-esports-fire-flux-202610171300",
+    "https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-qualifiers/europe/bbl-esports-ex-rustec-202610171300",
     "https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-qualifiers/europe/eternal-fire-nuclear-tigeres-202610170400",
     "https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-qualifiers/europe/eyeballers-gamerlegion-202610170700",
     "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-100-thieves-202610170700",
@@ -226,11 +230,12 @@
     "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-team-aurora-202610171000",
     "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-bb-team-202610171300",
     "https://www.bovada.lv/esports/league-of-legends/demacia-cup-global-invitational/bnk-fearx-team-we-202610170500",
+    "https://www.bovada.lv/esports/league-of-legends/world-championship-play-in/mvk-esports-furia-esports-202610171400",
     "https://www.pinnacle.com/en/esports/"
    ],
    "reachability_from_this_host": {
     "reachable": 1,
-    "not_reachable": 8,
+    "not_reachable": 13,
     "note": "bookmaker pages commonly refuse datacenter clients, so a failure here is not treated as a broken link \u2014 the reviewer clicks them",
     "not_reachable_examples": [
      {
@@ -240,6 +245,10 @@
      {
       "source": "Melbet (1xBet platform, LineFeed)",
       "url": "https://melbet.com/en/line/esports/"
+     },
+     {
+      "source": "Bovada",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/g2-ares-ex-6666-202610170400"
      },
      {
       "source": "Bovada",
@@ -259,25 +268,29 @@
      },
      {
       "source": "Bovada",
+      "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/bushido-wildcats-gothic-202610171000"
+     },
+     {
+      "source": "Bovada",
       "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-team-aurora-202610171000"
      },
      {
       "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-bb-team-202610171300"
+      "url": "https://www.bovada.lv/esports/counter-strike-2/nodwin-clutch-series/baks-esports-fire-flux-202610171300"
      }
     ]
    },
    "status": "verified",
    "mismatches": [],
-   "detail": "18 priced rows, 9 distinct source pages, 0 row(s) missing provenance; 1 link(s) answered automatically"
+   "detail": "25 priced rows, 14 distinct source pages, 0 row(s) missing provenance; 1 link(s) answered automatically"
   },
   {
    "id": "R7",
    "claim": "where two or more independent sources price the same fixture, their no-vig probabilities agree within 12 points",
-   "fixtures_with_two_or_more_sources": 8,
+   "fixtures_with_two_or_more_sources": 14,
    "status": "verified",
    "mismatches": [],
-   "detail": "8 fixture(s) priced by 2+ sources compared source by source; 0 with a spread wider than 12 points"
+   "detail": "14 fixture(s) priced by 2+ sources compared source by source; 0 with a spread wider than 12 points"
   }
  ],
  "irregularities": [
