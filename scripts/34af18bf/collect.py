@@ -75,6 +75,7 @@ VRS_RAW = ("https://raw.githubusercontent.com/ValveSoftware/"
 # Competition ids HotSpawn publishes in its own article/tournament links.
 # 35859 = "Thunderpick World Championship 2026" pick'em competition, linked from
 # https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-semi-preview
+TWC_COMPETITION_IDS = {"35859"}
 KNOWN_COMPETITIONS = {35859: "Thunderpick World Championship 2026",
                       33804: "Thunderpick World Championship 2026: South American Series #1"}
 
@@ -189,13 +190,25 @@ def collect_hotspawn() -> dict:
     html = page.decode("utf-8", "replace") if page else ""
     state = lobby_state(html)
     fixtures: dict[str, dict] = {}
+    stale: list[dict] = []
+    grace = core.now_utc() - timedelta(minutes=5)
     for raw in state.get("fixtures") or []:
         fx = normalise_fixture(raw)
-        if fx:
-            fx["lobby_card"] = True
-            fx["discovery"] = "HotSpawn lobby transfer state (the cards a browser renders)"
-            fixtures[fx["fixture_id"]] = fx
-    LOG["hotspawn_lobby_page"]["fixtures_in_transfer_state"] = len(fixtures)
+        if not fx:
+            continue
+        fx["lobby_card"] = True
+        fx["discovery"] = "HotSpawn lobby transfer state (the cards a browser renders)"
+        start = core.parse_iso(fx["start_utc"])
+        if start and start < grace:
+            # HotSpawn's lobby transfer state lingers on old cards after they settle.
+            # They are kept as evidence on the flagged page, never as an open pick.
+            stale.append({"fixture_id": fx["fixture_id"], "team_a": fx["team_a"], "team_b": fx["team_b"],
+                          "start_utc": fx["start_utc"], "competition": fx.get("competition"),
+                          "reason": "past-dated card still present in the lobby transfer state"})
+            continue
+        fixtures[fx["fixture_id"]] = fx
+    LOG["hotspawn_lobby_page"]["fixtures_in_transfer_state"] = len(fixtures) + len(stale)
+    LOG["hotspawn_lobby_page"]["past_dated_rows_dropped"] = len(stale)
 
     # Competition ids: the ones seen in the transfer state, the ones in HotSpawn's
     # own published links, and anything the rendered page leaks in an href/param.
@@ -219,12 +232,23 @@ def collect_hotspawn() -> dict:
             if not fx:
                 continue
             fx["competition"] = fx["competition"] or name
-            fx["lobby_card"] = False
-            fx["discovery"] = ("HotSpawn fixtures endpoint (listed by HotSpawn, "
-                               "not on the rendered lobby page)")
+            # Competition 35859 is the Thunderpick World Championship: the lobby renders those
+            # two cards when it is filtered to that competition, so they count as lobby cards.
+            # Everything else here is listed by HotSpawn's fixtures endpoint only.
+            if str(cid) in TWC_COMPETITION_IDS:
+                fx["lobby_card"] = True
+                fx["discovery"] = ("HotSpawn lobby competition view "
+                                   f"(competitionId={cid}) — rendered as a card, 7-point tier-S pick")
+            else:
+                fx["lobby_card"] = False
+                fx["discovery"] = ("HotSpawn fixtures endpoint (listed by HotSpawn, "
+                                   "not on the rendered lobby page)")
             # the status=scheduled filter is known to return past-dated rows
             start = core.parse_iso(fx["start_utc"])
-            if start and start < core.now_utc():
+            if start and start < grace:
+                stale.append({"fixture_id": fx["fixture_id"], "team_a": fx["team_a"], "team_b": fx["team_b"],
+                              "start_utc": fx["start_utc"], "competition": fx.get("competition"),
+                              "reason": "fixtures endpoint returns past-dated rows under status=scheduled"})
                 continue
             fixtures.setdefault(fx["fixture_id"], fx)
             kept += 1
@@ -238,7 +262,7 @@ def collect_hotspawn() -> dict:
         fx["hotspawn_url_kind"] = "official match page" if link else "official lobby page"
     ordered = sorted(fixtures.values(), key=lambda r: (r["start_utc"], r["fixture_id"]))
     return {"fixtures": ordered, "week": state.get("week"), "permalinks": permalinks,
-            "competitions_swept": comps}
+            "competitions_swept": comps, "stale": stale}
 
 
 # --------------------------------------------------------------------------- quotes
@@ -499,7 +523,7 @@ def collect_bo3(quotes: list) -> dict:
 
     team_ids = sorted({str(i) for m in matches for i in (m.get("team1_id"), m.get("team2_id")) if i})
     teams: dict[str, dict] = {}
-    for tid in team_ids[:120]:
+    for tid in team_ids[:260]:
         data, _ = fetch_json(f"{BO3}/teams/?filter%5Bteams.id%5D%5Beq%5D={tid}&limit=1",
                              {"Accept": "application/json"})
         rec = (data or {}).get("results") if isinstance(data, dict) else None
@@ -572,32 +596,65 @@ def collect_polymarket(quotes: list, attempts: list) -> None:
 
 
 # --------------------------------------------------------------------------- Valve VRS
-def collect_vrs() -> dict:
-    tree, meta = fetch_json(VRS_TREE, {"Accept": "application/vnd.github+json"})
-    LOG["valve_vrs_tree"] = dict(meta)
-    names = [n.get("name") for n in tree if isinstance(n, dict)] if isinstance(tree, list) else []
-    files = sorted([n for n in names if n and n.startswith("standings_global") and n.endswith(".md")])
-    if not files:
-        return {"file": None, "teams": {}, "raw": None}
-    latest = files[-1]
-    body, fmeta = fetch(VRS_RAW.format(path=latest), {"Accept": "text/plain"})
-    LOG["valve_vrs_file"] = dict(fmeta, file=latest)
-    text = body.decode("utf-8", "replace") if body else ""
+def _github_contents(path: str) -> list | dict | None:
+    url = f"https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/{path}"
+    data, _ = fetch_json(url, {"Accept": "application/vnd.github+json"})
+    return data
+
+
+def _vrs_table(path: str, log_key: str) -> dict:
+    rec = _github_contents(path)
+    if not isinstance(rec, dict) or "content" not in rec:
+        LOG[log_key] = {"error": "contents call did not return a file", "path": path}
+        return {}
+    import base64
+    text = base64.b64decode(rec["content"]).decode("utf-8", "replace")
     teams: dict[str, dict] = {}
     for line in text.splitlines():
-        parts = [p.strip() for p in line.split("|")]
-        if len(parts) < 4:
+        parts = [x.strip() for x in line.split("|")]
+        if len(parts) < 5 or not parts[1].isdigit():
             continue
-        if not parts[1].isdigit():
-            continue
-        name, points = parts[2], parts[3]
         try:
-            pts = float(points.replace(",", ""))
+            rank = int(parts[1])
+            points = int(parts[2].replace(",", ""))
         except ValueError:
             continue
-        teams[core.canon(name)] = {"name": name, "rank": int(parts[1]), "points": pts}
-    return {"file": latest, "teams": teams,
-            "source_url": VRS_RAW.format(path=latest),
+        name, roster = parts[3], parts[4]
+        if not name:
+            continue
+        teams[core.canon(name)] = {"name": name, "rank": rank, "points": points, "roster": roster}
+    LOG[log_key] = {"path": path, "teams": len(teams), "sha256_16": rec.get("sha", "")[:16]}
+    return teams
+
+
+def collect_vrs() -> dict:
+    """Valve's official regional standings, read from the repository Valve publishes them in.
+
+    Layout (verified by listing the repository): ``live/<year>/standings_global_<yyyy_mm_dd>.md``
+    and ``standings_<region>_<yyyy_mm_dd>.md``. A one-month-old dated rating is still an official
+    rating, so the file that was read is recorded on every row it prices.
+    """
+    year = core.now_utc().year
+    listing = _github_contents(f"live/{year}")
+    LOG["valve_vrs_tree"] = {"path": f"live/{year}", "entries": len(listing) if isinstance(listing, list) else 0}
+    names = [n.get("name") for n in listing if isinstance(n, dict)] if isinstance(listing, list) else []
+    globals_ = sorted(n for n in names if n and n.startswith("standings_global_") and n.endswith(".md"))
+    regions = sorted(n for n in names if n and n.startswith("standings_") and n.endswith(".md")
+                     and "global" not in n)
+    if not globals_:
+        LOG["valve_vrs_tree"]["error"] = "no standings_global_*.md found"
+        return {"file": None, "teams": {}, "source_url": None}
+    latest = globals_[-1]
+    teams = _vrs_table(f"live/{year}/{latest}", "valve_vrs_file")
+    regional: dict[str, dict] = {}
+    for region_file in regions[-3:]:
+        regional.update(_vrs_table(f"live/{year}/{region_file}", f"valve_vrs_{region_file}"))
+    for key, rec in regional.items():
+        teams.setdefault(key, {**rec, "regional": True})
+    as_of = latest.replace("standings_global_", "").replace(".md", "")
+    return {"file": latest, "as_of": as_of, "teams": teams,
+            "source_url": ("https://github.com/ValveSoftware/counter-strike_regional_standings/"
+                           f"blob/main/live/{year}/{latest}"),
             "repo_url": "https://github.com/ValveSoftware/counter-strike_regional_standings",
             "retrieved_utc": core.iso(core.now_utc())}
 
@@ -626,6 +683,7 @@ def main() -> int:
                                     "polymarket", "research(dated,manual)", "valve_vrs(originated)"],
         },
         "hotspawn": {
+            "stale": hotspawn["stale"],
             "week": hotspawn["week"],
             "competitions_swept": hotspawn["competitions_swept"],
             "fixtures": hotspawn["fixtures"],

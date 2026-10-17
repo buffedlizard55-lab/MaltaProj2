@@ -167,11 +167,14 @@ def page_index(board: dict) -> str:
     body = f"""
 <p class="eyebrow">Executive summary · updated every 4 hours</p>
 <h1>Every HotSpawn CS2 pick, on one phone screen</h1>
-<p>This desk covers <b>all {s['open_fixtures_total']} open Counter-Strike 2 matches</b> the HotSpawn
-pick'em lobby is offering right now, including the <b>{s['twc_playoff_rows']} Thunderpick World Championship
-semi-finals</b> that the lobby lists under competition 35859. Every row carries a pick, a win probability
-built from external betting lines, the basis it uses, and a source link. HotSpawn is used for the fixture
-list and the crowd scoreboard only — never as a probability.</p>
+<p>This desk covers <b>all {s['open_fixtures_total']} open Counter-Strike 2 matches</b> HotSpawn is
+listing right now: the <b>{s.get('lobby_cards', 0)} cards</b> the rendered lobby page shows, the
+<b>{s['twc_playoff_rows']} Thunderpick World Championship semi-finals</b> it shows under competition 35859,
+and <b>{s.get('fixtures_feed_only', 0)} further fixtures</b> HotSpawn's own fixtures endpoint lists without
+rendering a lobby card. Every row carries a pick, a win probability built from external betting lines, the
+basis it uses, and a source link. Rows are tagged <b>LOBBY CARD</b> or <b>FIXTURES FEED</b> so the two are
+never confused. HotSpawn is used for the fixture list and the crowd scoreboard only — never as a
+probability.</p>
 
 <div class="kpis">
 <div class="kpi"><b>{s['open_fixtures_total']}</b><span>open CS2 fixtures covered</span></div>
@@ -313,9 +316,10 @@ def page_twc(board: dict) -> str:
 <p class="eyebrow">Thunderpick World Championship 2026 · Malta · day 4</p>
 <h1>Day 1 upset, day 3 avenge — and the day-4 contrarian case</h1>
 <p>All ten group-stage series are listed below with the map scores this session could read on official pages.
-The day-1 result the brief asks about — <b>9z 2-0 Aurora</b> — was a genuine upset: 9z were VRS #17 beating
-VRS #5, and they took Aurora's own map pick (Nuke) 13-1. Aurora answered by eliminating 9z 2-0 in the day-3
-decider. Both semi-finals are <b>HotSpawn pick'em cards worth 7 points</b>.</p>
+The day-1 result the brief asks about — <b>9z 2-0 Aurora</b> — was a genuine upset: on Valve's 5 October
+standings 9z sat at #17 and Aurora at #9, and 9z took Aurora's own map pick (Nuke) 13-1 (HLTV's 16 October
+Valve-ranking page lists Aurora at #5 with 1,815 points, a later reading of a different date). Aurora
+answered by eliminating 9z 2-0 in the day-3 decider. Both semi-finals are <b>HotSpawn pick'em cards worth 7 points</b>.</p>
 
 <h2>The two day-4 decisions</h2>
 {twc_cards}
@@ -328,9 +332,12 @@ costs you the week when it does not. The gates below are published so you can ch
 <p class="mut"><b>Semi-final 1 — Aurora.</b> The market itself is a coin flip (Thunderpick 1.85/1.85,
 Kalshi 1.94/2.11), so Aurora at ~50% is not a long shot: it is the crowd's blind side. 75% of pick'em players
 are on FURIA, 25% on Aurora, so the differential is about +25 points of probability on a 7-point card.
-Two verified context flags back it: Aurora beat FURIA 2-1 at ESL Pro League Season 24 on 6 October, and
-Aurora have three consecutive top-four finishes with kyxsan as the rebuilt IGL. Against it: FURIA rested
-~44 hours against Aurora's ~24.</p>
+Two verified context flags back it: Aurora beat FURIA 2-1 at ESL Pro League Season 24 on 6 October
+(HLTV head-to-head), and Aurora have three consecutive top-four finishes with kyxsan as the rebuilt IGL.
+Against it: FURIA rested ~44 hours against Aurora's ~24, and the sources do not all agree on the favourite —
+HLTV's own analytics page states “Aurora is the bookmaker favorite with the best odds”, while the accepted
+price set on this row (Pinnacle, Melbet, Thunderpick-via-bo3.gg, Kalshi) blends to a narrow FURIA edge. Both
+readings are published; neither is smoothed away.</p>
 <p class="mut"><b>Semi-final 2 — BETBOOM.</b> Here the crowd is <i>unanimous</i> — 100% Falcons, 0% BETBOOM —
 while the books price BETBOOM at roughly one win in five. That is the only way this card can move you up the
 board. Two verified flags: BETBOOM beat Falcons 2-0 at the last meeting (IEM Cologne Major), and BETBOOM won

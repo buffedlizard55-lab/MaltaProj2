@@ -220,6 +220,13 @@ def resolve(fixture: dict, index, vrs, res, basis_override: dict | None = None) 
     else:
         vrs_read = vrs_reading(fixture["team_a"], fixture["team_b"], vrs)
         if vrs_read:
+            row["rating_pair"] = {
+                "kind": "valve_vrs", "transform": "p_a = 1/(1+10^(-(points_a-points_b)/400))",
+                "as_of": (vrs.get("as_of") or ""), "source_url": vrs.get("source_url"),
+                "read_utc": vrs.get("retrieved_utc"),
+                "a": {k: vrs_read["rating_a"].get(k) for k in ("name", "rank", "points")},
+                "b": {k: vrs_read["rating_b"].get(k) for k in ("name", "rank", "points")},
+                "delta_points": vrs_read["delta_points"]}
             row.update(prob_a=vrs_read["prob_a"], prob_b=vrs_read["prob_b"], basis="originated",
                        confidence="originated (Valve VRS)",
                        source_links=[{"label": f"Valve VRS {vrs_read['rating_a']['name']} "
@@ -233,6 +240,13 @@ def resolve(fixture: dict, index, vrs, res, basis_override: dict | None = None) 
         else:
             rank_read = rank_reading(fixture["team_a"], fixture["team_b"], BO3_TEAMS)
             if rank_read:
+                row["rating_pair"] = {
+                    "kind": "bo3_rank", "transform": "p_a = clamp(0.5+0.5*tanh((rank_b-rank_a)/40), 0.08, 0.92)",
+                    "as_of": BO3_READ_UTC, "source_url": ("https://bo3.gg/teams/" + str(rank_read.get("slug_a") or "")),
+                    "read_utc": BO3_READ_UTC,
+                    "a": {"name": rank_read["name_a"], "rank": rank_read["rank_a"]},
+                    "b": {"name": rank_read["name_b"], "rank": rank_read["rank_b"]},
+                    "delta_rank": rank_read["delta"]}
                 row.update(prob_a=rank_read["prob_a"], prob_b=rank_read["prob_b"], basis="originated",
                            confidence="originated (bo3.gg world rank)",
                            source_links=[{
@@ -350,10 +364,12 @@ def main() -> int:
             "originated_rows": len(originated),
             "blank_rows": len(unresolved),
             "climb_picks_activated": sum(1 for r in rows + twc if r.get("climb")),
+            "stale_lobby_rows_excluded": len(snapshot["hotspawn"].get("stale") or []),
             "sources_accepted": sorted({r["source_key"] for row in rows + twc for r in row["readings"]}),
         },
         "fixtures": rows,
         "twc": twc,
+        "stale": snapshot["hotspawn"].get("stale") or [],
         "unresolved": [{"fixture_id": r["fixture_id"], "team_a": r["team_a"], "team_b": r["team_b"],
                         "competition": r["competition"], "start_utc": r["start_utc"],
                         "reason": " ".join(r["notes"]), "refused": r["refused"],

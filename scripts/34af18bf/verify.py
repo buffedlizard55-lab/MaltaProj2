@@ -22,6 +22,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+from datetime import timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -42,6 +43,18 @@ def rederive_market(row: dict) -> float | None:
                 for r in row.get("readings") or []]
     merged = core.blend(readings)
     return merged["prob_a"] if merged else None
+
+
+def staleness_gate(board: dict) -> list:
+    """No row may present an already-started fixture as an open pick."""
+    late = []
+    stamp = core.parse_iso(board.get("fixture_capture_utc") or board.get("generated_utc") or "")
+    grace = (stamp or core.now_utc()) - timedelta(minutes=5)
+    for row in board["fixtures"] + board.get("twc") or []:
+        start = core.parse_iso(row.get("start_utc") or "")
+        if start and start < grace:
+            late.append((row["fixture_id"], row.get("start_utc")))
+    return late
 
 
 def main() -> int:
@@ -66,19 +79,38 @@ def main() -> int:
             if expected is None or row.get("prob_a") is None or abs(expected - row["prob_a"]) > 5e-5:
                 bad_market.append((row["fixture_id"], expected, row.get("prob_a")))
         elif row["basis"] == "originated":
-            link = (row.get("source_links") or [{}])[0].get("label", "")
-            if not re.search(r"Valve VRS .*#\d+.*#\d+", link):
-                bad_originated.append((row["fixture_id"], "no rating pair on the row"))
+            pair = row.get("rating_pair") or {}
+            kind = pair.get("kind")
+            if kind == "valve_vrs":
+                points_a = (pair.get("a") or {}).get("points")
+                points_b = (pair.get("b") or {}).get("points")
+                if points_a is None or points_b is None:
+                    bad_originated.append((row["fixture_id"], "valve pair missing points"))
+                    continue
+                delta = float(points_a) - float(points_b)
+                expected = 1.0 / (1.0 + 10 ** (-delta / board["gates"]["vrs_elo_scale"]))
+            elif kind == "bo3_rank":
+                rank_a = (pair.get("a") or {}).get("rank")
+                rank_b = (pair.get("b") or {}).get("rank")
+                if rank_a is None or rank_b is None:
+                    bad_originated.append((row["fixture_id"], "rank pair missing ranks"))
+                    continue
+                import math
+                hi, lo = board["gates"]["rank_clamp"]
+                expected = 0.5 + 0.5 * math.tanh((float(rank_b) - float(rank_a)) / board["gates"]["rank_scale"])
+                expected = min(max(expected, hi), lo)
             else:
-                nums = [float(x) for x in re.findall(r"\((\d+)\)", link)]
-                if len(nums) >= 2:
-                    delta = nums[0] - nums[1]
-                    expected = 1.0 / (1.0 + 10 ** (-delta / board["gates"]["vrs_elo_scale"]))
-                    if row.get("prob_a") is None or abs(expected - row["prob_a"]) > 1e-4:
-                        bad_originated.append((row["fixture_id"], expected, row.get("prob_a")))
+                bad_originated.append((row["fixture_id"], f"unknown rating pair kind {kind!r}"))
+                continue
+            if row.get("prob_a") is None or abs(expected - row["prob_a"]) > 1e-4:
+                bad_originated.append((row["fixture_id"], expected, row.get("prob_a")))
     check("V2 market probabilities re-derive from retained quotes", not bad_market, str(bad_market))
     check("V3 originated probabilities re-derive from the stored rating pair", not bad_originated,
           str(bad_originated))
+
+    # V3b — staleness: a settled fixture is never published as an open pick
+    late = staleness_gate(board)
+    check("V3b no already-started fixture is published as an open pick", not late, str(late[:6]))
 
     # V4 — pick integrity
     integrity = []

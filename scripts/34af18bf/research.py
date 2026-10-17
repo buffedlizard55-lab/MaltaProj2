@@ -76,7 +76,8 @@ TWC_RESULTS = [
      "score": "2-0", "winner_a": True,
      "maps": [("Inferno", 13, 11, "(8:4; 5:7)"), ("Nuke", 13, 1, "(11:1; 2:0)")],
      "source": "hltv_day1_9z_aurora",
-     "note": "The day-1 upset: 9z (VRS #17 at the time) beat Aurora (VRS #5). Aurora picked Nuke "
+     "note": "The day-1 upset: 9z (Valve standings 5 October: #17) beat Aurora (same list: #9; HLTV's "
+             "16 October Valve-ranking page: #5). Aurora picked Nuke "
              "and lost it 1-13; 9z picked Inferno and closed it 13-11. HLTV match stats: luchov 1.61."},
     {"day": "Day 1 — 14 Oct", "stage": "Group A opening", "winner": "Falcons", "loser": "Ninjas in Pyjamas",
      "score": "2-0", "winner_a": True,
