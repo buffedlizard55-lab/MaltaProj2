@@ -1,0 +1,75 @@
+name: day4 live desk (17866d06)
+# Session 17866d06 — TWC 2026 day-1..3 review -> day-4 desk with a pick and an originated
+# win probability for EVERY open HotSpawn CS2 fixture.
+#
+# Each run: capture fresh evidence (HotSpawn fixtures API, Thunderpick via bo3.gg, Melbet
+# LineFeed, Polymarket gamma, Valve's official Regional Standings) -> fit the originated
+# line to the markets captured in the same run -> render picks-day4/ -> run the contract
+# tests and the staged link check -> commit the evidence and the pages.
+#
+# Every 4 hours (inside the required 4-8 h re-check window) and on demand. Pushes on this
+# session's branch are included so the desk is populated as soon as the code lands.
+#
+# HotSpawn is discovery/settlement/ownership only: it is never used as a probability input.
+on:
+  schedule:
+    - cron: '37 */4 * * *'
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'arena/17866d06-maltaproj2'
+    paths:
+      - 'scripts/17866d06/**'
+      - 'tests/test_17866d06.py'
+      - '.github/workflows/day4live-17866d06.yml'
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: day4live-17866d06
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r scripts/requirements.txt
+      - name: Capture fresh evidence (raw retained before any derivation)
+        run: python scripts/17866d06/collect.py
+      - name: Fit the originated line and build the board
+        run: python scripts/17866d06/model.py
+      - name: Render the day-4 desk pages
+        run: python scripts/17866d06/build.py
+      - name: Contract tests for this desk (strict — never commit red data)
+        run: python -m unittest tests.test_17866d06 -v
+      - name: Repo-wide suite and staged link check (reported, not gating this desk's data)
+        continue-on-error: true
+        run: |
+          python -m unittest discover -s tests
+          python scripts/stage_site.py
+      - name: Commit refreshed evidence, board and pages
+        run: |
+          set -euo pipefail
+          git config user.name "malta-data-bot"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/17866d06 picks-day4
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -m "day4live(17866d06): refresh evidence, board and pages $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin "$BRANCH" && git push origin "HEAD:$BRANCH" && exit 0
+            sleep 10
+          done
+          echo "::error::could not push the refreshed day-4 desk"; exit 1
+      - name: Request a Pages rebuild (main only)
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --repo "${{ github.repository }}" --ref main || echo "dispatch not permitted; the next scheduled Pages run publishes"

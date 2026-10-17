@@ -1,0 +1,496 @@
+#!/usr/bin/env python3
+"""Session 17866d06 — verified research ledger for TWC 2026 day 1 -> day 4.
+
+Every value in this module was read directly from the linked source during this
+session (UTC read times recorded per block). Nothing here is inferred: where a
+source did not state a value, the value is ``None`` and the row says so.
+
+Editorial facts are dated. They never reprice a match: probabilities come only
+from ``collect.py`` evidence (external market quotes) or from the declared
+Valve-VRS model in ``model.py``. HotSpawn crowd "picked %" is ownership context
+only and is never blended into a probability.
+"""
+from __future__ import annotations
+
+READ_UTC = "2026-10-17T00:05Z"          # window 2026-10-16T23:50Z .. 2026-10-17T00:15Z
+SESSION = "17866d06"
+
+EVENT = {
+    "name": "Thunderpick World Championship 2026",
+    "hltv_event_id": "8932",
+    "hltv_url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+    "hotspawn_competition_id": "35859",
+    "hotspawn_url": "https://www.hotspawn.com/counter-strike/tournament/thunderpick-world-championship-2026",
+    "dates": "Oct 14 - Oct 18 (2026)",
+    "location": "Attard (Malta)",
+    "prize_pool_usd": 1000000,
+    "type": "Offline / LAN",
+    "stage": "Group Stage and Playoffs",
+    "format_hotspawn": "N/A",
+    "format_hltv": "two GSL groups of four, then single-elimination playoffs; Bo3 semi-finals, Bo5 grand final",
+    "groups": {
+        "A": ["Falcons", "Ninjas in Pyjamas", "9z", "Aurora"],
+        "B": ["Legacy", "PARIVISION", "FURIA", "BETBOOM"],
+    },
+    "sources": [
+        ("HotSpawn tournament page (dates, prize pool, location, type, stage, organiser GAM3RS_X, format 'N/A')",
+         "https://www.hotspawn.com/counter-strike/tournament/thunderpick-world-championship-2026"),
+        ("HLTV event page 8932 (Oct 14th - Oct 18th, LAN)",
+         "https://www.hltv.org/events/8932/thunderpick-world-championship-2026"),
+        ("HLTV news 45706 — teams, format, schedule, prizes (groups A/B)",
+         "https://www.hltv.org/news/45706/thunderpick-world-championship-teams-format-schedule-prizes-talent-fantasy"),
+    ],
+    "read_utc": READ_UTC,
+}
+
+# ---------------------------------------------------------------- day 1 -> day 3
+# series_score: verified twice, HLTV results?event=8932 and the HotSpawn fixtures
+# API row for competition 35859 (participants*_score). maps: only where a named
+# source stated them; None means "not verified this session" and renders blank.
+RESULTS = [
+    dict(day=1, date="2026-10-14", hltv="2399384", hs="1080176",
+         a="9z", b="Aurora", sa=2, sb=0,
+         maps="Inferno 13-11; Nuke 13-1",
+         crowd_a=7, crowd_b=93, picks=29,
+         note="Day-1 upset. 9z were on a four-event group-stage exit streak (EWC, BLAST Porto, FPG 3, EPL) and had lost to Aurora 0-2 eleven days earlier (EPL S24, 03/10). luchov 1.61 rating (38-20, 97.4 ADR, 86.8% KAST); HUASOPEEK 1.45. Aurora's kyxsan finished 0.53 (9-29). HLTV: 9z earned 62 VRS points from the win.",
+         sources=[("HLTV news 45718 — 9z beat Aurora 2-0 to kick off TWC 2026 (map scores, ratings, VRS points)",
+                   "https://www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026"),
+                  ("HLTV match page 2399384", "https://www.hltv.org/matches/2399384/9z-vs-aurora-thunderpick-world-championship-2026"),
+                  ("HotSpawn fixtures API row 1080176 (settled 2-0; crowd 7%/93%; 29 picks)",
+                   "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&competition_id=35859")]),
+    dict(day=1, date="2026-10-14", hltv="2399385", hs="1080177",
+         a="Falcons", b="Ninjas in Pyjamas", sa=2, sb=0,
+         maps="Ancient 16-13 (OT); Dust2 13-6",
+         crowd_a=90, crowd_b=10, picks=40,
+         note="Falcons needed overtime on Ancient after leading 8-4 and winning the pistol after the swap.",
+         sources=[("HLTV news 45723 — FURIA fend off BETBOOM to end day one of TWC (day-1 wrap, map scores)",
+                   "https://www.hltv.org/news/45723/furia-fend-off-betboom-to-end-day-one-of-twc"),
+                  ("HLTV match page 2399385", "https://www.hltv.org/matches/2399385/falcons-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026"),
+                  ("HotSpawn fixtures API row 1080177", "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&competition_id=35859")]),
+    dict(day=1, date="2026-10-14", hltv="2399386", hs="1080178",
+         a="Legacy", b="PARIVISION", sa=2, sb=0,
+         maps="Dust2 13-11; Mirage 16-14 (OT)",
+         crowd_a=67, crowd_b=33, picks=48,
+         note="Legacy needed overtime on Mirage and a 1.57-rated map from dumau after leading 12-8; arT returned to the server.",
+         sources=[("HLTV news 45723", "https://www.hltv.org/news/45723/furia-fend-off-betboom-to-end-day-one-of-twc"),
+                  ("HLTV match page 2399386", "https://www.hltv.org/matches/2399386/legacy-vs-parivision-thunderpick-world-championship-2026"),
+                  ("HotSpawn fixtures API row 1080178", "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&competition_id=35859")]),
+    dict(day=1, date="2026-10-14", hltv="2399387", hs="1080179",
+         a="FURIA", b="BETBOOM", sa=2, sb=0,
+         maps=None,
+         crowd_a=88, crowd_b=13, picks=64,
+         note="Maps played were Ancient and Mirage; HLTV reports BETBOOM let 8-4 leads slip on both. Exact map scores were not read from a named source this session and are left blank.",
+         sources=[("HLTV news 45723", "https://www.hltv.org/news/45723/furia-fend-off-betboom-to-end-day-one-of-twc"),
+                  ("HLTV match page 2399387", "https://www.hltv.org/matches/2399387/furia-vs-betboom-thunderpick-world-championship-2026"),
+                  ("HotSpawn fixtures API row 1080179", "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&competition_id=35859")]),
+    dict(day=2, date="2026-10-15", hltv="2399408", hs="1080201",
+         a="Aurora", b="Ninjas in Pyjamas", sa=2, sb=0,
+         maps="Cache 13-9; Dust2 13-7",
+         crowd_a=75, crowd_b=25, picks=16,
+         note="Group A elimination match. Wicadia led Aurora with 45 kills and a +20 K-D; Krimbo had 32 kills for NIP, who were eliminated.",
+         sources=[("HLTV results for event 8932 (series score)", "https://www.hltv.org/results?event=8932"),
+                  ("Reuters / Field Level Media wire copy (map scores, kill totals)",
+                   "https://www.charlotteobserver.com/sports/article317644856.html"),
+                  ("HotSpawn fixtures API row 1080201", "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&competition_id=35859")]),
+    dict(day=2, date="2026-10-15", hltv="2399409", hs="1080202",
+         a="9z", b="Falcons", sa=1, sb=2,
+         maps="Nuke 9-13; Mirage 13-8; Dust2 9-13",
+         crowd_a=4, crowd_b=96, picks=23,
+         note="Group A winners' match. TeSeS 47 kills for Falcons; luchov a match-high 49 kills for 9z. Falcons through to the semi-finals.",
+         sources=[("HLTV results for event 8932", "https://www.hltv.org/results?event=8932"),
+                  ("Reuters / Field Level Media wire copy (map order and scores)",
+                   "https://www.charlotteobserver.com/sports/article317644856.html"),
+                  ("HotSpawn fixtures API row 1080202 (settled 9z 1 - 2 Falcons; crowd 4%/96%)",
+                   "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&competition_id=35859")]),
+    dict(day=2, date="2026-10-15", hltv="2399410", hs="1080203",
+         a="PARIVISION", b="BETBOOM", sa=1, sb=2,
+         maps="Ancient 13-10; Anubis 4-13; Mirage 7-13",
+         crowd_a=64, crowd_b=36, picks=25,
+         note="Group B elimination match. BETBOOM recovered from the Ancient loss; zorte 51 kills (+17) across the series, xiELO 45 for PARIVISION, who were eliminated.",
+         sources=[("HLTV results for event 8932", "https://www.hltv.org/results?event=8932"),
+                  ("HLTV news — BETBOOM eliminate PARIVISION from TWC",
+                   "https://www.hltv.org/events/8932/thunderpick-world-championship-2026"),
+                  ("Reuters / Field Level Media wire copy (map scores)",
+                   "https://www.charlotteobserver.com/sports/article317644856.html"),
+                  ("HotSpawn fixtures API row 1080203", "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&competition_id=35859")]),
+    dict(day=2, date="2026-10-15", hltv="2399411", hs="1081614",
+         a="Legacy", b="FURIA", sa=1, sb=2,
+         maps="Cache 13-10; Inferno 5-13; Mirage 8-13",
+         crowd_a=0, crowd_b=0, picks=0,
+         note="Group B winners' match. HotSpawn's original fixture 1080204 (crowd 30%/70%, 33 picks) is settled status='cancelled' — no points awarded or deducted — and the replayed fixture 1081614 carries total_picks=0 and 0%/0% ownership, so this match was not pickable on HotSpawn. molodoy 48 kills (+13) for FURIA; dumau 45 for Legacy.",
+         sources=[("HLTV news 45730 — FURIA make TWC playoffs over Legacy (Inferno 13-5, Mirage 13-8 after losing Cache 10-13)",
+                   "https://www.hltv.org/news/45730/furia-make-twc-playoffs-over-legacy"),
+                  ("HLTV results for event 8932", "https://www.hltv.org/results?event=8932"),
+                  ("HotSpawn fixtures API rows 1080204 (cancelled) and 1081614 (0 picks)",
+                   "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&competition_id=35859")]),
+    dict(day=3, date="2026-10-16", hltv="2399412", hs="1080205",
+         a="Aurora", b="9z", sa=2, sb=0,
+         maps="Cache 13-11; Inferno 13-4",
+         crowd_a=94, crowd_b=6, picks=34,
+         note="Group A decider — the day-1 upset avenged. kyxsan named best player of the match with a 1.45 rating. Veto: Aurora ban Ancient, 9z ban Anubis, Aurora pick Cache, 9z pick Inferno, Aurora ban Nuke, 9z ban Dust2, Mirage left over. HLTV: third consecutive top-four appearance for Aurora.",
+         sources=[("HLTV news 45736 — Aurora beat 9z to secure third consecutive top-four appearance",
+                   "https://www.hltv.org/news/45736/aurora-beat-9z-to-secure-third-consecutive-top-four-appearance"),
+                  ("egamersworld — Aurora defeat 9z (map scores 13:11 Cache / 13:4 Inferno, kyxsan 1.45, full veto)",
+                   "https://egamersworld.com/counterstrike/news/37859/aurora-defeat-9z-to-reach-the-thunderpick-world-ch-eTQEyTXgU"),
+                  ("HLTV match page 2399412 (lineup: woxic, XANTARES, Wicadia, Jimpphat, kyxsan; HLTV #6 / VRS #5)",
+                   "https://www.hltv.org/matches/2399412/aurora-vs-9z-thunderpick-world-championship-2026"),
+                  ("HotSpawn fixtures API row 1080205 (settled 2-0; crowd 94%/6%; 34 picks)",
+                   "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&competition_id=35859")]),
+    dict(day=3, date="2026-10-16", hltv="2399413", hs="1081775",
+         a="BETBOOM", b="Legacy", sa=2, sb=1,
+         maps="Nuke 16-13; Dust2 11-13; Mirage 13-11",
+         crowd_a=12, crowd_b=88, picks=34,
+         note="Group B decider — the week's second big ownership upset: BETBOOM won at 12% crowd ownership against Legacy's 88%. Magnojez closed it on Mirage with 25 kills, 104.5 ADR and a 1.58 rating. HLTV: BETBOOM secured a Singapore Major spot per its invite predictor and now face Falcons, 'a team they beat at the IEM Cologne Major'.",
+         sources=[("HLTV news 45739 — BETBOOM qualify for TWC playoffs over Legacy (map scores, Magnojez line, Falcons note)",
+                   "https://www.hltv.org/news/45739/betboom-qualify-for-twc-playoffs-over-legacy"),
+                  ("HLTV match page 2399413", "https://www.hltv.org/matches/2399413/betboom-vs-legacy-thunderpick-world-championship-2026"),
+                  ("HotSpawn fixtures API row 1081775 (settled 2-1; crowd 12%/88%; 34 picks)",
+                   "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&competition_id=35859")]),
+]
+
+# --------------------------------------------------------------- day 4 / day 5
+DAY4 = [
+    dict(slot="Semi-final 1", hltv="2399414", hs_fixture="1080207",
+         a="FURIA", b="Aurora", start_utc="2026-10-17T14:00:00Z",
+         hltv_url="https://www.hltv.org/matches/2399414/furia-vs-aurora-thunderpick-world-championship-2026",
+         hotspawn_schedule_url="https://www.hotspawn.com/?fixtures=waiting-for-information-1080207",
+         polymarket_slug="cs2-furia-aur1-2026-10-17",
+         polymarket_url="https://polymarket.com/event/cs2-furia-aur1-2026-10-17",
+         hotspawn_pickem_listed=False,
+         start_evidence=[
+             ("HotSpawn tournament page shows '14:00 UTC' on the 17 Oct row",
+              "https://www.hotspawn.com/counter-strike/tournament/thunderpick-world-championship-2026"),
+             ("Polymarket market 5778024 gameStartTime '2026-10-17 14:00:00+00'",
+              "https://gamma-api.polymarket.com/markets?slug=cs2-furia-aur1-2026-10-17"),
+             ("HLTV match page countdown read '14h 10m 54s' at 2026-10-16T23:55Z",
+              "https://www.hltv.org/matches/2399414/furia-vs-aurora-thunderpick-world-championship-2026")],
+         hltv_analytics="https://www.hltv.org/betting/analytics/2399414/furia-vs-aurora-thunderpick-world-championship-2026",
+         hltv_facts=[
+             "HLTV analytics summary: 'Aurora is the bookmaker favorite with the best odds'; 'FURIA is better ranked (#4)'; 'Aurora is worse ranked (#6)'; 'Aurora played 1 matches against FURIA in the past 30 days, they won 1 and lost 0'; 'Aurora has better form ranking'.",
+             "Three-month series distribution (HLTV handicap data): FURIA 27 series — 2-0 25.9%, 2-1 29.6%, 0-2 25.9%, 1-2 18.5%, OT 1.5%. Aurora 25 series — 2-0 48.0%, 2-1 24.0%, 0-2 12.0%, 1-2 16.0%, OT 3.3%.",
+             "Veto tendencies (HLTV map stats): Aurora first-picks Anubis 41% of the time and wins 75% of 12 played, on a four-map Anubis winning streak; Aurora first-bans Ancient 87%; FURIA first-bans Ancient 40% and first-picks Mirage 26% (60% win over 15).",
+             "Head-to-head 2026: Aurora beat FURIA 2-1 in the ESL Pro League Season 24 group stage on 06/10/2026 (HLTV 2398743; also stated in HLTV news 45736 and on Aurora's team page)."],
+         ),
+    dict(slot="Semi-final 2", hltv="2399415", hs_fixture="1080208",
+         a="Falcons", b="BETBOOM", start_utc="2026-10-17T17:00:00Z",
+         hltv_url="https://www.hltv.org/matches/2399415/falcons-vs-betboom-thunderpick-world-championship-2026",
+         hotspawn_schedule_url="https://www.hotspawn.com/?fixtures=waiting-for-information-1080208",
+         polymarket_slug="cs2-fal2-bb3-2026-10-17",
+         polymarket_url="https://polymarket.com/event/cs2-fal2-bb3-2026-10-17",
+         hotspawn_pickem_listed=False,
+         start_evidence=[
+             ("HotSpawn tournament page shows '17:00 UTC' on the 17 Oct row",
+              "https://www.hotspawn.com/counter-strike/tournament/thunderpick-world-championship-2026"),
+             ("Polymarket market 5787759 gameStartTime '2026-10-17 17:00:00+00'",
+              "https://gamma-api.polymarket.com/markets?slug=cs2-fal2-bb3-2026-10-17"),
+             ("HLTV event match list shows the 17 Oct semi-final as bo3 (page renders 13:00 in the fetch server's UTC-4 display)",
+              "https://www.hltv.org/events/8932/matches")],
+         hltv_analytics="https://www.hltv.org/betting/analytics/2399415/falcons-vs-betboom-thunderpick-world-championship-2026",
+         hltv_facts=[
+             "Three-month series distribution (HLTV handicap data): Falcons 16 series — 2-0 37.5%, 2-1 25.0%, 0-2 18.8%, 1-2 18.8%, OT 2.6%. BETBOOM 12 series — 2-0 33.3%, 2-1 16.7%, 0-2 33.3%, 1-2 16.7%, OT 0.0%.",
+             "Map handicap: Falcons average 7.48 rounds lost in wins and 8.50 rounds won in losses; BETBOOM 9.71 and 8.71 — BETBOOM's wins are tighter.",
+             "Veto tendencies (HLTV map stats): Falcons first-pick Dust2 35% and win 75% of 12; BETBOOM first-bans Inferno 97%; Falcons first-ban Cache 43% while BETBOOM win 67% of 3 Cache maps played.",
+             "Head-to-head 2026: Aurora beat BETBOOM 2-1 on 05/10/2026 (EPL S24, HLTV 2398740); BETBOOM beat 9z 2-0 (HLTV 2398744); BETBOOM lost 0-2 to FURIA in this event's day 1. HLTV news 45739 records that BETBOOM beat Falcons at the IEM Cologne Major."],
+         ),
+]
+
+DAY5 = [
+    dict(slot="3rd place decider", hltv="2399416", start_utc="2026-10-18T11:30:00Z", bo="bo3",
+         teams="loser SF1 vs loser SF2 (both 'Waiting for information' on HotSpawn)",
+         url="https://www.hltv.org/matches/2399416/thunderpick-world-championship-2026-3rd-place-decider-match-thunderpick-world-championship-2026"),
+    dict(slot="Grand final", hltv="2399417", start_utc="2026-10-18T15:00:00Z", bo="bo5",
+         teams="winner SF1 vs winner SF2 (both 'Waiting for information' on HotSpawn)",
+         url="https://www.hltv.org/matches/2399417/thunderpick-world-championship-2026-grand-final-thunderpick-world-championship-2026"),
+]
+
+# ------------------------------------------------------------------ Aurora roster
+AURORA = {
+    "active_five": ["Ismailcan 'XANTARES' Dörtkardeş", "Özgür 'woxic' Eker", "Ali 'Wicadia' Haydar Yalçın",
+                    "Jimi 'Jimpphat' Salo", "Damjan 'kyxsan' Stoilkovski"],
+    "coach": "Ashley 'ash' Battye",
+    "five_evidence": [
+        ("HLTV match page 2399412 lineup (woxic, XANTARES, Wicadia, Jimpphat, kyxsan)",
+         "https://www.hltv.org/matches/2399412/aurora-vs-9z-thunderpick-world-championship-2026"),
+        ("Official Valve VRS global standings 2026_10_05, Aurora roster 'Jimpphat, kyxsan, Wicadia, woxic, XANTARES'",
+         "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"),
+        ("HLTV news 45718 lineup block (XANTARES, woxic, Jimpphat, kyxsan, Wicadia + coach ash)",
+         "https://www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026")],
+    "change_history": [
+        ("2026-07-02", "MAJ3R steps down from the active roster (break from pro play); stays with the organisation.",
+         "https://www.hltv.org/news/45050/maj3r-steps-down-from-aurora"),
+        ("2026-07-08", "Aurora complete the rebuild by signing kyxsan from Falcons as IGL, following the additions of Jimpphat and coach ash; the trio replace MAJ3R, soulfly and coach Fabre. New international five debuts at BLAST Bounty 2026 Season 2 (online stage from July 21).",
+         "https://www.hltv.org/news/45082/official-aurora-complete-rebuild-with-kyxsan"),
+        ("2026-09-11", "Former Aurora coach Fabre transfers to Eternal Fire as coach (HLTV transfer list). Does not change the active five.",
+         "https://www.hltv.org/team/11861/aurora")],
+    "october_change_found": False,
+    "october_change_note": ("No October 2026 change to Aurora's CS2 active five was found. The HLTV team page's transfer list, read this session, shows deko leaving Aurora on 2025-11-16 and jottAAA benched on 2025-12-27 — both predate the July 2026 rebuild. The most recent verified change to the active five is therefore the July 2026 rebuild, three months old at day 4. Absence of an October move in the sources read is not proof that none exists; the value is left blank rather than inferred."),
+    "october_change_sources": [("HLTV Aurora team page — roster timeline and transfers", "https://www.hltv.org/team/11861/aurora")],
+    "onboarding_evidence": [
+        ("Day 1 vs 9z (loss 0-2): kyxsan 0.53 rating on 9-29; woxic 0.84; XANTARES 0.81; Wicadia 0.76; only Jimpphat above 1.00 (1.19).",
+         "https://www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026"),
+        ("Day 3 vs 9z (win 2-0): kyxsan best player of the match, 1.45 rating.",
+         "https://egamersworld.com/counterstrike/news/37859/aurora-defeat-9z-to-reach-the-thunderpick-world-ch-eTQEyTXgU"),
+        ("Event player ratings, 3 months vs event (HLTV analytics 2399414): Wicadia 1.13 -> 1.22, Jimpphat 1.13 -> 1.10, woxic 1.05 -> 1.06, XANTARES 1.05 -> 1.05, kyxsan 0.98 -> 1.02.",
+         "https://www.hltv.org/betting/analytics/2399414/furia-vs-aurora-thunderpick-world-championship-2026"),
+        ("ash on the rebuild (August 2026 interview): integrating multiple playing cultures and a new system; practice form promising, official-match consistency still developing.",
+         "https://cs2news.com/news/ash-aurora-new-system-ewc-2026")],
+}
+
+# ------------------------------------------------- verified team-name aliases
+# Keys and values are lower-cased and stripped of everything that is not alphanumeric
+# (model.norm / collect.norm). Each alias carries the evidence that justifies it; a name
+# that is not listed here is left unresolved rather than guessed.
+ALIASES = {
+    "nip": ("Ninjas in Pyjamas",
+            "Valve's official standings 2026_10_05 list 'Ninjas in Pyjamas' (1534 points, roster adamb, "
+            "Krimbo, sjuush, ...) as the only entry for that roster; HotSpawn, HLTV and the books use the "
+            "short tag 'NIP' for the same team."),
+    "ninjasinpyjamas": ("Ninjas in Pyjamas", "Identity mapping used when a book publishes the long name."),
+    "betm": ("BET-M",
+             "bo3.gg match 131171 carries slug 'thirtythree-vs-just-players-17-10-2026' while its Thunderpick "
+             "quote names the side 'BET-M'; Valve's standings list 'BET-M' (roster bluewh1te, execut1ve, ...)."),
+    "33team": ("BET-M",
+               "Melbet's LineFeed lists the side as '33 Team' for the same 17 Oct fixture against Just Players "
+               "that bo3.gg/Thunderpick and HotSpawn list as 'BET-M' (bo3.gg match 131171)."),
+    "thirtythree": ("BET-M",
+                    "bo3.gg slug 'thirtythree-vs-just-players-17-10-2026' with bet_updates.team_1.name 'BET-M'."),
+    "betboomteam": ("BETBOOM",
+                    "Polymarket outcome string 'BetBoom Team' (market cs2-fal2-bb3-2026-10-17); Valve's "
+                    "standings list 'BETBOOM' (roster Boombl4, d1Ledez, Magnojez, S1ren, zorte)."),
+    "teamfalcons": ("Falcons",
+                    "Polymarket outcome string 'Team Falcons' (market cs2-fal2-bb3-2026-10-17); Valve's "
+                    "standings list 'Falcons' (roster karrigan, kyousuke, m0NESY, NiKo, TeSeS)."),
+}
+
+# Names deliberately left unresolved, with the reason published on the Flagged page.
+UNRESOLVED_BY_DESIGN = {
+    "ex6666": ("Valve's 2026_10_05 standings contain two different rosters both named '6666' (global #127 "
+               "amster, dENZY, kL1o, rendysky, skcH and global #368 auth0ri, m4d4ra, rickangel, skcH), so "
+               "mapping 'ex-6666' to either would be a guess."),
+    "wrotberry": ("Not listed in Valve's official standings snapshot (global, europe, americas or asia). The "
+                  "mapping 'WROTBERRY' -> 'WhiteBIT Team' appears in another board in this repository but is "
+                  "not evidenced by any source read this session, so it is not asserted here."),
+}
+
+# --------------------------------------------- verified per-team context (R3 input)
+# A context flag may only be attached to a pick when it is backed by a source read this
+# session. Teams with no verified context get an empty list, so rule R3 cannot fire on
+# them: "contrarian but not stupid" means evidence, not vibe.
+CONTEXT_FLAGS = {
+    "aurora": [
+        dict(text=("Roster rebuild completed 2026-07-08: kyxsan signed from Falcons as IGL alongside "
+                   "Jimpphat and coach ash, replacing MAJ3R, soulfly and coach Fabre. The international "
+                   "five is three months old at day 4 and is still onboarding a new system."),
+             sources=[("HLTV news 45082 - Aurora complete rebuild with kyxsan",
+                       "https://www.hltv.org/news/45082/official-aurora-complete-rebuild-with-kyxsan"),
+                      ("Valve VRS global standings 2026_10_05, Aurora roster line",
+                       "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md")]),
+        dict(text=("Onboarding swing inside this event: kyxsan posted a 0.53 rating in the day-1 loss to "
+                   "9z, then was best player with a 1.45 rating in the day-3 2-0 win over the same 9z "
+                   "side three days later."),
+             sources=[("HLTV news 45718 - 9z beat Aurora 2-0 to kick off TWC 2026",
+                       "https://www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026"),
+                      ("egamersworld - Aurora defeat 9z to reach the TWC semi-final",
+                       "https://egamersworld.com/counterstrike/news/37859/aurora-defeat-9z-to-reach-the-thunderpick-world-ch-eTQEyTXgU")]),
+        dict(text=("Head-to-head inside 30 days against FURIA: HLTV's own analytics for the semi-final "
+                   "state 'Aurora played 1 matches against FURIA in the past 30 days, they won 1 and "
+                   "lost 0' (the 2-1 EPL S24 group-stage win on 06/10/2026)."),
+             sources=[("HLTV analytics 2399414 - FURIA v Aurora",
+                       "https://www.hltv.org/betting/analytics/2399414/furia-vs-aurora-thunderpick-world-championship-2026")]),
+        dict(text=("Three-month map/veto profile favours Aurora's Anubis: HLTV handicap data shows Aurora "
+                   "first-picks Anubis 41% of the time and has won 75% of the 12 they played, on a "
+                   "four-map Anubis winning streak."),
+             sources=[("HLTV analytics 2399414 - map and veto tendencies",
+                       "https://www.hltv.org/betting/analytics/2399414/furia-vs-aurora-thunderpick-world-championship-2026")]),
+    ],
+    "furia": [
+        dict(text=("Lost the only head-to-head inside 30 days: FURIA went down 1-2 to Aurora in the ESL "
+                   "Pro League Season 24 group stage on 06/10/2026, per HLTV's semi-final analytics."),
+             sources=[("HLTV analytics 2399414 - FURIA v Aurora",
+                       "https://www.hltv.org/betting/analytics/2399414/furia-vs-aurora-thunderpick-world-championship-2026")]),
+        dict(text=("Schedule: FURIA's day-2 fixture against Legacy was cancelled by HotSpawn (1080204) "
+                   "and replayed as 1081614, which FURIA won 2-1 - so FURIA played a deciding series "
+                   "on day 3 while Aurora's day-2 opponent (NIP) was eliminated in two maps."),
+             sources=[("HotSpawn fixtures API competition 35859 (1080204 cancelled, 1081614 ended 1-2)",
+                       "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&competition_id=35859")]),
+    ],
+}
+
+# ------------------------------------------------------- HotSpawn scoring (official)
+SCORING = {
+    "how_it_works_url": "https://play.hotspawn.com/how-it-works",
+    "rules": [
+        "Picks lock 5 minutes before the scheduled start time (also published per fixture by the API: lock_offset_sec = 360).",
+        "'Earn points for every correct pick. Higher tier matches reward more points.' No ownership-scaled payout is published.",
+        "'Get bonus points for consecutive correct picks. The longer your streak, the bigger the bonus.' The bonus value is not published.",
+        "Forfeited match: all predictions voided, no points awarded or deducted.",
+        "Cancelled match: all predictions cancelled, no points, excluded from the leaderboard.",
+        "The leaderboard resets every week.",
+    ],
+    "api_points_fields": ["offered_points", "base_points", "points_breakdown.game_multiplier",
+                          "points_breakdown.tier_multiplier", "points_breakdown.series_multiplier",
+                          "points_breakdown.stage_multiplier", "points_breakdown.tournament_multiplier"],
+    "api_points_absent_fields": ["no ownership / picked_percent term appears anywhere in the points model"],
+    "observed_points": [
+        ("Tier S (TWC Malta)", 7, 2, {"game_multiplier": 1.25, "tier_multiplier": 3, "series_multiplier": 1,
+                                      "stage_multiplier": 1, "tournament_multiplier": 1}),
+        ("Tier B (e.g. Stake Pulse Beat III)", 3, 2, {"game_multiplier": 1.25, "tier_multiplier": 1.5, "series_multiplier": 1,
+                                                      "stage_multiplier": 1, "tournament_multiplier": 1}),
+    ],
+    "lobby_url": "https://play.hotspawn.com/lobby",
+    "lobby_context_read_utc": "2026-10-16T23:53Z",
+    "lobby_context": {
+        "matches_this_week": "159 matches this week (CS2 filter: 83 fixtures; Tier B 31, Tier C 52; 20 tournaments)",
+        "reset_countdown_observed": "Resets in 2d 00h 10m 03s",
+        "prizes": ["1st — $400 Steam Voucher", "2nd — $200 Steam Voucher", "3rd — $100 Steam Voucher",
+                   "4th-10th — $50 Steam Voucher"],
+        "qualification": "Prizes awarded after the weekly reset. Winners contacted via email. Minimum 10 picks to qualify.",
+        "leaderboard_top10": [("AndréD", 223), ("iujioj51", 169), ("Pickem Buster", 168), ("wallet_89649831", 127),
+                              ("interactive041", 126), ("Wheres my reward?", 122), ("wallet_256a92e4", 106),
+                              ("costelciuperca824", 98), ("extradrummy1913", 94), ("christiansamasenpaidesu", 93)],
+    },
+}
+
+# --------------------------------------------------------------- decision rules
+# Derived from SCORING above: HotSpawn pays flat points per correct pick (plus an
+# unquantified streak bonus). Ownership does not scale the payout, so expected
+# points = offered_points x P(win). That single fact drives every rule below.
+RULES = [
+    dict(id="R1", name="Maximum-probability pick (default)",
+         text="Because points are flat per correct pick, expected points = offered_points x P(win). The leaderboard-optimal pick is always the higher-probability side of our independent line. Fading the crowd earns no bonus.",
+         gate="always applies", cost="none"),
+    dict(id="R2", name="Free contrarian (information edge)",
+         text="Where our line's favourite is NOT the crowd's favourite, R1 and contrarianism point the same way: take the higher-probability side and collect the ownership differential for free. These are the only contrarian picks this desk calls 'climb' picks by default.",
+         gate="our pick probability >= 50% AND crowd ownership of our pick <= 40%",
+         cost="none versus R1"),
+    dict(id="R3", name="Verified-context swing (labelled, capped)",
+         text="A sub-50% side may be taken only with two or more independently verified context flags (roster change / onboarding, head-to-head inside 30 days, rest or schedule, in-event form swing) AND a market price at or above the break-even decimal for our own fair probability. Maximum two per day, and only on fixtures worth 3 points or more.",
+         gate="our probability >= 30% (the 'not stupid' floor) AND >= 2 verified context flags AND offered decimal >= 1/our probability",
+         cost="negative EV versus R1; variance only"),
+    dict(id="R4", name="Variance play when behind (explicit, not recommended by default)",
+         text="Hotspawn's prizes go to the top 10 and the board resets weekly. A player trailing the 10th place score late in the week can only close the gap with variance, so a small number of R3 swings is rational for that player and irrational for the leader. The gap and the number of picks left are user-side inputs we do not have, so this rule is published as a decision aid, never auto-applied.",
+         gate="user is behind the prize cut with few picks left", cost="negative EV; explicit variance"),
+    dict(id="R5", name="Streak protection",
+         text="HotSpawn awards bonus points for consecutive correct picks but does not publish the bonus value, so it cannot be optimised. Until it is quantified the desk treats it as a tie-breaker only: between two picks of equal probability, prefer the one that keeps an existing streak alive (the higher-probability side).",
+         gate="tie-break only", cost="unquantified — flagged"),
+]
+
+# ------------------------------------------------------------------ irregularities
+FLAGS = [
+    dict(id="F1", severity="high",
+         title="HotSpawn's published scoring has no ownership term, so 'points x (probability - crowd ownership)' differentials are not a payout model",
+         detail=("The official how-it-works page states only 'Earn points for every correct pick. Higher tier matches reward more points' plus an "
+                 "unquantified consecutive-correct streak bonus, and the fixtures API points model exposes exactly five multipliers "
+                 "(game, tier, series, stage, tournament) with no ownership field. Several boards already published in this repository rank "
+                 "contrarian value by points x (probability - crowd ownership). That formula implies a payout that HotSpawn does not publish. "
+                 "This desk therefore ranks picks by expected points = offered_points x probability, and treats ownership purely as context."),
+         sources=[("HotSpawn how it works", "https://play.hotspawn.com/how-it-works"),
+                  ("HotSpawn fixtures API row 1081888 (points_breakdown fields)",
+                   "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&status=scheduled&competition_id=36197")]),
+    dict(id="F2", severity="high",
+         title="The TWC Malta day-4 semi-finals are not pickable on HotSpawn",
+         detail=("The HotSpawn fixtures API returns an empty list for competition 35859 with status=scheduled, and its unfiltered competition "
+                 "response contains only the eleven group-stage/decider rows — no semi-final, third-place or grand-final row. The website schedule "
+                 "does carry 17 Oct rows 1080207 (14:00 UTC, FURIA v 'Waiting for information') and 1080208 (17:00 UTC, Falcons v 'Waiting for "
+                 "information'), and 18 Oct rows at 11:30 UTC and 15:00 UTC with both sides 'Waiting for information'. So day 4's leaderboard "
+                 "points come entirely from the 7 non-TWC lobby fixtures (20 points available), not from the semi-finals. The collector re-checks "
+                 "competition 35859 every run and will pick the semi-finals up automatically if HotSpawn lists them."),
+         sources=[("HotSpawn fixtures API, competition 35859, status=scheduled (empty)",
+                   "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&status=scheduled&competition_id=35859"),
+                  ("HotSpawn fixtures API, competition 35859, all statuses (11 rows, none a semi-final)",
+                   "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&competition_id=35859"),
+                  ("HotSpawn tournament page (1080207 / 1080208 schedule rows)",
+                   "https://www.hotspawn.com/counter-strike/tournament/thunderpick-world-championship-2026")]),
+    dict(id="F3", severity="medium",
+         title="HotSpawn's tournament page still shows settled day-3 matches as LIVE / UPCOMING",
+         detail=("Read this session, the tournament page rendered Aurora v 9z (1080205) as LIVE and BetBoom v Legacy (1081775) as UPCOMING, while "
+                 "the fixtures API reports both as status='ended' with scores 2-0 and 2-1. Settlement and status disagree inside HotSpawn itself; "
+                 "the API is treated as authoritative for results."),
+         sources=[("HotSpawn tournament page", "https://www.hotspawn.com/counter-strike/tournament/thunderpick-world-championship-2026"),
+                  ("HotSpawn fixtures API competition 35859", "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&competition_id=35859")]),
+    dict(id="F4", severity="medium",
+         title="offered_points does not equal base_points x the published multipliers",
+         detail=("Tier S: base 2 with game 1.25 and tier 3 multipliers gives 7.5, but the API publishes offered_points 7. Tier B: 2 x 1.25 x 1.5 = "
+                 "3.75 but offered_points is 3. Both are consistent with truncation to an integer, but HotSpawn publishes no rounding rule, so the "
+                 "values are recorded verbatim and the rounding is labelled a hypothesis, never applied to any calculation."),
+         sources=[("HotSpawn fixtures API rows 1080176 (tier s) and 1081888 (tier b)",
+                   "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&competition_id=35859")]),
+    dict(id="F5", severity="medium",
+         title="Official Valve VRS and HLTV's live ranking disagree on the SF1 favourite's ordering",
+         detail=("The official Valve global standings snapshot 2026_10_05 rank FURIA #7 on 1829 points and Aurora #9 on 1716 (FURIA +113). HLTV's "
+                 "match analytics for 2399414 ranks FURIA #4 and Aurora #6 in its own world ranking. Boards published earlier in this repository "
+                 "also cite an 'HLTV live Valve-VRS forecast' of Aurora 1848 (#5) over FURIA 1824 (#6). Three orderings, two of them putting "
+                 "Aurora ahead. This desk originates its model line from the official Valve file only, states the snapshot date on every row, and "
+                 "does not merge the HLTV numbers into it."),
+         sources=[("Valve VRS global standings 2026_10_05",
+                   "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"),
+                  ("HLTV analytics 2399414 (FURIA #4 / Aurora #6)",
+                   "https://www.hltv.org/betting/analytics/2399414/furia-vs-aurora-thunderpick-world-championship-2026")]),
+    dict(id="F6", severity="medium",
+         title="HotSpawn's semi-final preview quotes VRS ranks that match neither the official Valve file nor HLTV",
+         detail=("HotSpawn's own preview states 'On VRS, the difference between the two teams is significant, with Falcons ranked 4th and BetBoom "
+                 "12th'. The official Valve global standings 2026_10_05 list Falcons #6 (1843) and BETBOOM #11 (1596); HLTV's October 12 world "
+                 "ranking lists Falcons #5. The HotSpawn figures are recorded as HotSpawn's claim and are not used as a probability input "
+                 "(HotSpawn is discovery and settlement only in this project)."),
+         sources=[("HotSpawn semi-final preview", "https://www.hotspawn.com/counter-strike/news/thunderpick-world-championship-2026-semi-preview"),
+                  ("Valve VRS global standings 2026_10_05",
+                   "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md")]),
+    dict(id="F7", severity="medium",
+         title="One team, three names across sources (BET-M / 33 Team / thirtythree)",
+         detail=("HotSpawn fixture 1079170 lists 'BET-M v Just Players' at 2026-10-17T08:00:00Z. bo3.gg match 131171 has slug "
+                 "'thirtythree-vs-just-players-17-10-2026', team1_id 22191 and bet_updates.team_1.name 'BET-M' at the same 08:00:00Z. Melbet's "
+                 "LineFeed lists '33 Team v Just Players' with start epoch 1792233000 = 2026-10-17T10:30:00Z, two and a half hours later. The join "
+                 "rule (start within 90 minutes and a name match) therefore rejects the Melbet row and flags it instead of silently pricing the "
+                 "wrong match. No alias is asserted beyond the bo3.gg slug/name pair, which is the same record."),
+         sources=[("bo3.gg API match 131171", "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131171"),
+                  ("HotSpawn fixtures API competition 36038", "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&status=scheduled&competition_id=36038"),
+                  ("Melbet LineFeed (esports)", "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1")]),
+    dict(id="F8", severity="low",
+         title="The lobby's weekly-reset countdown and its own fixture list disagree",
+         detail=("Read at 2026-10-16T23:53Z the lobby showed 'Resets in 2d 00h 10m 03s' (implying a reset around 2026-10-19T00:03Z) while still "
+                 "listing fixtures that start on 19 and 20 October as part of 'this week' (159 matches). Which week the 19-20 October fixtures "
+                 "score into is not stated anywhere official, so the day-4 desk counts points only for fixtures that start before the observed "
+                 "reset and labels the rest as next-week-uncertain."),
+         sources=[("HotSpawn pick'em lobby", "https://play.hotspawn.com/lobby")]),
+    dict(id="F9", severity="low",
+         title="HotSpawn listed a cancelled TWC fixture that 33 players had already picked",
+         detail=("Fixture 1080204 (Legacy v FURIA, day 2) is status='cancelled' with total_picks 33 and ownership 30%/70%; the replayed fixture "
+                 "1081614 settled 1-2 with total_picks 0 and 0%/0% ownership. Per the official rules a cancelled match awards no points, so 33 "
+                 "players lost a pickable 7-point fixture through no fault of their own and nobody could pick the replay. Recorded because it is a "
+                 "real, if unlucky, hole in day-2 coverage."),
+         sources=[("HotSpawn fixtures API competition 35859", "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&competition_id=35859"),
+                  ("HotSpawn how it works — cancelled matches", "https://play.hotspawn.com/how-it-works")]),
+]
+
+# Backtest of the crowd, computed only from the eleven settled HotSpawn rows above.
+BACKTEST_NOTE = (
+    "Computed from HotSpawn's own settled rows (competition 35859), not from any model. "
+    "Nine of the eleven TWC fixtures had a crowd favourite at 60% ownership or higher; those favourites "
+    "went 6-3. The three failures were Aurora at 93% (lost to 9z on day 1), PARIVISION at 64% (lost to "
+    "BETBOOM on day 2) and Legacy at 88% (lost to BETBOOM in the day-3 decider). Each winner in those three "
+    "was held by 7%, 36% and 12% of pickers respectively and paid the same flat 7 points as every other "
+    "correct TWC pick."
+)
+
+SOURCES_INDEX = [
+    ("HotSpawn pick'em lobby (fixtures, tier, points, ownership, prizes, leaderboard) — discovery and settlement only, never a probability input",
+     "https://play.hotspawn.com/lobby"),
+    ("HotSpawn fixtures API (authoritative fixture rows: scheduled_start_time, lock_time, offered_points, points_breakdown, picked_percent, total_picks, scores)",
+     "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&status=scheduled"),
+    ("HotSpawn how it works (official scoring, lock time, forfeit/cancel handling, streak bonus)",
+     "https://play.hotspawn.com/how-it-works"),
+    ("HLTV — TWC 2026 event, results, match pages, news and betting analytics",
+     "https://www.hltv.org/events/8932/thunderpick-world-championship-2026"),
+    ("Official Valve regional standings (regional standings repository, live/2026)",
+     "https://github.com/ValveSoftware/counter-strike_regional_standings/tree/main/live/2026"),
+    ("Polymarket gamma API (CFTC-regulated exchange; series moneyline prices, volume and liquidity)",
+     "https://gamma-api.polymarket.com/events?closed=false&limit=200&tag_slug=counter-strike"),
+    ("Melbet public LineFeed (bookmaker decimal odds, esports sport id 40)",
+     "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"),
+    ("bo3.gg public API — publishes Thunderpick's coefficients per fixture, with the thunderpick.io match path",
+     "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.discipline_id%5D%5Beq%5D=1&filter%5Bmatches.status%5D%5Bin%5D=upcoming"),
+    ("egamersworld (day-3 map scores, veto and MVP for Aurora v 9z)",
+     "https://egamersworld.com/counterstrike/news/37859/aurora-defeat-9z-to-reach-the-thunderpick-world-ch-eTQEyTXgU"),
+    ("Reuters / Field Level Media wire copy via charlotteobserver.com (day-2 map scores and kill totals)",
+     "https://www.charlotteobserver.com/sports/article317644856.html"),
+]

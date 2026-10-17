@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method &amp; sources · session 17866d06</title>
+<meta name="description" content="Sources, join rule, no-vig maths, consensus weighting, the originated Valve-VRS line and its calibration, decision rules R1-R5, and the verification protocol.">
+<style>
+:root{--bg:#0b1220;--card:#141f33;--txt:#e9effb;--mut:#93a4c3;--line:#26344c;--acc:#3d7dff;
+--good:#1f9d63;--warn:#c9861b;--bad:#c4453c;--violet:#7c3aed;--teal:#0f766e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:16px}
+header.site{position:sticky;top:0;background:rgba(11,18,32,.97);border-bottom:1px solid var(--line);z-index:30}
+header.site .wrap{padding:9px 14px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+header.site strong{font-size:13.5px;margin-right:4px}
+header.site a{color:var(--mut);text-decoration:none;font-size:13.5px;padding:8px 9px;border-radius:9px}
+header.site a.on,header.site a:hover,header.site a:focus{background:var(--card);color:var(--txt)}
+main.wrap{padding-bottom:56px}
+h1{font-size:25px;line-height:1.18;margin:12px 0 6px}
+h2{font-size:19px;margin:28px 0 8px;padding-top:4px}
+h3{font-size:16px;margin:18px 0 6px}
+p{margin:9px 0}
+a{color:#8db6ff}
+.mut{color:var(--mut);font-size:13.5px}
+.tiny{font-size:12.5px;color:var(--mut)}
+.eyebrow{color:#7fa7ff;font-weight:800;letter-spacing:.09em;text-transform:uppercase;font-size:11.5px;margin:0}
+.cards{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.card{flex:1 1 150px;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:12px 13px}
+.card-num{font-size:23px;font-weight:800;line-height:1.1}
+.card-label{color:var(--mut);font-size:12.5px;margin-top:3px}
+.btn{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;
+border-radius:13px;padding:14px 16px;margin:8px 8px 0 0;min-height:46px;font-size:15.5px}
+.btn.ghost{background:transparent;border:1.5px solid var(--acc);color:#a8c6ff}
+.btn.good{background:var(--good)} .btn.violet{background:var(--violet)} .btn.warn{background:var(--warn);color:#221602}
+.btn:focus{outline:3px solid #fff3}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:#b9c8e4;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:800;white-space:nowrap}
+.tag.pick{background:var(--good);color:#fff}
+.tag.contra{background:var(--violet);color:#fff}
+.tag.mkt{background:#1d4ed8;color:#fff}
+.tag.mdl{background:#334155;color:#dbe7ff}
+.tag.blank{background:#3a2530;color:#ffb4ae}
+.tag.warn{background:#3a2d13;color:#ffd591}
+.tag.bad{background:#3d1a17;color:#ffb3ab}
+.tag.teal{background:var(--teal);color:#fff}
+.pickbox{background:linear-gradient(180deg,#17324a,#132338);border:1px solid #2c4a6d;border-radius:13px;padding:12px 13px}
+.pickbox .who{font-size:18px;font-weight:800}
+.bar{height:9px;border-radius:99px;background:#22304a;overflow:hidden;margin:6px 0 3px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,#3d7dff,#22c39a)}
+details{background:var(--card);border:1px solid var(--line);border-radius:13px;margin:10px 0}
+details>summary{cursor:pointer;padding:12px 14px;font-weight:700}
+details[open]>summary{border-bottom:1px solid var(--line)}
+details .inner{padding:8px 14px 14px}
+.tablewrap{overflow-x:auto}
+.note{background:#131d2f;border-left:3px solid var(--acc);padding:10px 12px;border-radius:0 10px 10px 0;margin:12px 0}
+.note.warn{border-color:var(--warn);background:#1d1a12}
+.note.bad{border-color:var(--bad);background:#1e1414}
+.note.good{border-color:var(--good);background:#12211a}
+ul{margin:8px 0 8px 20px;padding:0}li{margin:5px 0}
+code{background:#0f1a2c;border:1px solid var(--line);border-radius:6px;padding:1px 5px;font-size:13px}
+.srcs{font-size:12.5px;color:var(--mut);margin-top:6px}
+.srcs a{color:#9dc0ff}
+hr{border:0;border-top:1px solid var(--line);margin:22px 0}
+footer{border-top:1px solid var(--line);margin-top:30px;padding-top:14px}
+@media (max-width:680px){
+ h1{font-size:21px}.wrap{padding:12px}
+ .btn{display:block;text-align:center;margin:8px 0 0}
+ table.responsive thead{display:none}
+ table.responsive tr{display:block;border:1px solid var(--line);border-radius:13px;margin:11px 0;padding:7px 3px;background:var(--card)}
+ table.responsive td{display:flex;justify-content:space-between;gap:12px;border:0;padding:5px 11px}
+ table.responsive td:before{content:attr(data-label);color:#9db1d4;font-size:11px;text-transform:uppercase;
+   letter-spacing:.04em;font-weight:800;flex:0 0 40%}
+ table.responsive td.num{text-align:right}
+ header.site .wrap{gap:2px}header.site a{font-size:12.5px;padding:7px 6px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head>
+<body><header class="site"><div class="wrap"><strong>Day-4 desk · 17866d06</strong><a href="index.html">Start here</a><a href="picks.html">Every match</a><a href="twc.html">TWC day 1–3 → 4</a><a href="unresolved.html">Unresolved</a><a href="flagged.html">Flagged for review</a><a href="method.html" class="on">Method &amp; sources</a><a href="../index.html">Site home</a></div></header>
+<main class="wrap">
+<p class="eyebrow">Method · maths · verification</p>
+<h1>How every number on this desk was produced</h1>
+<p class="mut">Reproducible from the repository: <code>python3 scripts/17866d06/collect.py</code> then
+<code>python3 scripts/17866d06/model.py</code> then <code>python3 scripts/17866d06/build.py</code>. The CI workflow
+runs the same three commands on a schedule and commits the evidence it captured.</p>
+
+<h2 id="sources">Sources, and what each one is allowed to decide</h2>
+<div class="tablewrap"><table class="responsive"><thead><tr><th>Source</th><th>Link</th></tr></thead><tbody>
+<tr><td data-label="Source">HotSpawn pick&#x27;em lobby (fixtures, tier, points, ownership, prizes, leaderboard) — discovery and settlement only, never a probability input</td><td data-label="Link"><a href="https://play.hotspawn.com/lobby" rel="noopener">https://play.hotspawn.com/lobby</a></td></tr><tr><td data-label="Source">HotSpawn fixtures API (authoritative fixture rows: scheduled_start_time, lock_time, offered_points, points_breakdown, picked_percent, total_picks, scores)</td><td data-label="Link"><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&amp;status=scheduled" rel="noopener">https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&amp;status=scheduled</a></td></tr><tr><td data-label="Source">HotSpawn how it works (official scoring, lock time, forfeit/cancel handling, streak bonus)</td><td data-label="Link"><a href="https://play.hotspawn.com/how-it-works" rel="noopener">https://play.hotspawn.com/how-it-works</a></td></tr><tr><td data-label="Source">HLTV — TWC 2026 event, results, match pages, news and betting analytics</td><td data-label="Link"><a href="https://www.hltv.org/events/8932/thunderpick-world-championship-2026" rel="noopener">https://www.hltv.org/events/8932/thunderpick-world-championship-2026</a></td></tr><tr><td data-label="Source">Official Valve regional standings (regional standings repository, live/2026)</td><td data-label="Link"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/tree/main/live/2026" rel="noopener">https://github.com/ValveSoftware/counter-strike_regional_standings/tree/main/live/2026</a></td></tr><tr><td data-label="Source">Polymarket gamma API (CFTC-regulated exchange; series moneyline prices, volume and liquidity)</td><td data-label="Link"><a href="https://gamma-api.polymarket.com/events?closed=false&amp;limit=200&amp;tag_slug=counter-strike" rel="noopener">https://gamma-api.polymarket.com/events?closed=false&amp;limit=200&amp;tag_slug=counter-strike</a></td></tr><tr><td data-label="Source">Melbet public LineFeed (bookmaker decimal odds, esports sport id 40)</td><td data-label="Link"><a href="https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1" rel="noopener">https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1</a></td></tr><tr><td data-label="Source">bo3.gg public API — publishes Thunderpick&#x27;s coefficients per fixture, with the thunderpick.io match path</td><td data-label="Link"><a href="https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.discipline_id%5D%5Beq%5D=1&amp;filter%5Bmatches.status%5D%5Bin%5D=upcoming" rel="noopener">https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.discipline_id%5D%5Beq%5D=1&amp;filter%5Bmatches.status%5D%5Bin%5D=upcoming</a></td></tr><tr><td data-label="Source">egamersworld (day-3 map scores, veto and MVP for Aurora v 9z)</td><td data-label="Link"><a href="https://egamersworld.com/counterstrike/news/37859/aurora-defeat-9z-to-reach-the-thunderpick-world-ch-eTQEyTXgU" rel="noopener">https://egamersworld.com/counterstrike/news/37859/aurora-defeat-9z-to-reach-the-thunderpick-world-ch-eTQEyTXgU</a></td></tr><tr><td data-label="Source">Reuters / Field Level Media wire copy via charlotteobserver.com (day-2 map scores and kill totals)</td><td data-label="Link"><a href="https://www.charlotteobserver.com/sports/article317644856.html" rel="noopener">https://www.charlotteobserver.com/sports/article317644856.html</a></td></tr></tbody></table></div>
+<div class="note"><strong>Hard rule:</strong> HotSpawn is used for fixture discovery, tier, offered points, lock
+times, crowd ownership and settlement — and <strong>never</strong> as a probability indicator. Crowd ownership is
+always labelled as crowd ownership.</div>
+
+<h2>Join rule (how a price is attached to a fixture)</h2>
+<p>A quote is attached to a HotSpawn fixture only when <strong>both</strong> hold:</p>
+<ul><li>its start time is within <strong>90 minutes</strong> of the fixture's
+<code>scheduled_start_time</code> (Melbet and bo3.gg matched HotSpawn to the second on the fixtures checked);</li>
+<li>at least one side matches by team name (exact or substring), and the other side does not contradict it.</li></ul>
+<p class="tiny">Rejected quotes are published in full on <a href="unresolved.html" rel="noopener">Unresolved</a> — including the
+Melbet row that names the same two teams 2.5 hours off HotSpawn's start time. Joins that are not exact on both names
+carry a "partial" confidence label on the row itself.</p>
+
+<h2>No-vig conversion</h2>
+<p>Bookmaker decimal odds are converted with <code>p_a = (1/o_a) / ((1/o_a) + (1/o_b))</code>, which removes the
+overround rather than trusting either side's raw price. Polymarket prices are already probabilities and sum to ~1.0;
+they are renormalised to remove rounding only. The overround actually observed on each quote is printed on the row.</p>
+
+<h2>Consensus weighting</h2>
+<p>Books (Thunderpick via bo3.gg, Melbet) are weighted <strong>1.0</strong>. Polymarket is weighted
+<strong>0.5–1.25 by traded volume</strong> (<code>0.5 + log10(volume)/4</code>, capped) because an exchange price
+carries no vig but a thin book is noisy. The consensus is the weighted average of the no-vig probabilities; if the
+sources disagree by more than 12 points the row is flagged.</p>
+
+<h2>Our originated line (Valve VRS logistic)</h2>
+<p><code>p_a = 1 / (1 + exp(−Δ/S))</code> where Δ is the point difference in Valve's <em>official</em> Regional
+Standings and S is fitted, not asserted: least squares of <code>logit(market p_a)</code> on Δ through the origin,
+over every quote in this capture whose two sides both resolve in the standings.</p>
+<div class="note warn"><strong>This capture:</strong>
+S = 700.0 · samples 0 ·
+R² — · mean abs error — ·
+bounds None 
+<div class="tiny"></div>
+<div class="tiny">fewer than 8 usable market/VRS pairs in this capture; the documented fallback scale is used and every model line derived from it is flagged uncalibrated</div></div>
+<p class="tiny">Fallback if fewer than 8 usable pairs: S = 700, and every model line derived from it is labelled
+uncalibrated on the row. Precedent check: S ≈ 709 reproduces the 58.6% Falcons figure published by another desk in
+this repository, so the scale is in the same range as independent work.</p>
+
+<h2>Which number the pick uses</h2>
+<ul class="tiny">
+<li><strong>≥2 market sources</strong> → consensus.</li>
+<li><strong>1 market source</strong> → 75% consensus + 25% originated VRS line (shrinks a thin quote).</li>
+<li><strong>No market</strong> → originated VRS line alone, labelled "our model only" and listed as a limitation.</li>
+<li><strong>Neither</strong> → blank, UNVERIFIED, on <a href="unresolved.html" rel="noopener">Unresolved</a>. Never guessed.</li>
+</ul>
+
+<h2>Decision rules</h2>
+<details open><summary><strong>R1 —
+Maximum-probability pick (default)</strong> <span class="mut">gate: always applies · cost: none</span></summary>
+<div class="inner"><p>Because points are flat per correct pick, expected points = offered_points x P(win). The leaderboard-optimal pick is always the higher-probability side of our independent line. Fading the crowd earns no bonus.</p></div></details><details open><summary><strong>R2 —
+Free contrarian (information edge)</strong> <span class="mut">gate: our pick probability &gt;= 50% AND crowd ownership of our pick &lt;= 40% · cost: none versus R1</span></summary>
+<div class="inner"><p>Where our line&#x27;s favourite is NOT the crowd&#x27;s favourite, R1 and contrarianism point the same way: take the higher-probability side and collect the ownership differential for free. These are the only contrarian picks this desk calls &#x27;climb&#x27; picks by default.</p></div></details><details ><summary><strong>R3 —
+Verified-context swing (labelled, capped)</strong> <span class="mut">gate: our probability &gt;= 30% (the &#x27;not stupid&#x27; floor) AND &gt;= 2 verified context flags AND offered decimal &gt;= 1/our probability · cost: negative EV versus R1; variance only</span></summary>
+<div class="inner"><p>A sub-50% side may be taken only with two or more independently verified context flags (roster change / onboarding, head-to-head inside 30 days, rest or schedule, in-event form swing) AND a market price at or above the break-even decimal for our own fair probability. Maximum two per day, and only on fixtures worth 3 points or more.</p></div></details><details ><summary><strong>R4 —
+Variance play when behind (explicit, not recommended by default)</strong> <span class="mut">gate: user is behind the prize cut with few picks left · cost: negative EV; explicit variance</span></summary>
+<div class="inner"><p>Hotspawn&#x27;s prizes go to the top 10 and the board resets weekly. A player trailing the 10th place score late in the week can only close the gap with variance, so a small number of R3 swings is rational for that player and irrational for the leader. The gap and the number of picks left are user-side inputs we do not have, so this rule is published as a decision aid, never auto-applied.</p></div></details><details ><summary><strong>R5 —
+Streak protection</strong> <span class="mut">gate: tie-break only · cost: unquantified — flagged</span></summary>
+<div class="inner"><p>HotSpawn awards bonus points for consecutive correct picks but does not publish the bonus value, so it cannot be optimised. Until it is quantified the desk treats it as a tie-breaker only: between two picks of equal probability, prefer the one that keeps an existing streak alive (the higher-probability side).</p></div></details>
+
+<h2>HotSpawn scoring as officially published</h2>
+<ul class="tiny"><li>Picks lock 5 minutes before the scheduled start time (also published per fixture by the API: lock_offset_sec = 360).</li><li>&#x27;Earn points for every correct pick. Higher tier matches reward more points.&#x27; No ownership-scaled payout is published.</li><li>&#x27;Get bonus points for consecutive correct picks. The longer your streak, the bigger the bonus.&#x27; The bonus value is not published.</li><li>Forfeited match: all predictions voided, no points awarded or deducted.</li><li>Cancelled match: all predictions cancelled, no points, excluded from the leaderboard.</li><li>The leaderboard resets every week.</li></ul>
+<p class="tiny"><a href="https://play.hotspawn.com/how-it-works" rel="noopener">https://play.hotspawn.com/how-it-works</a> · API points fields:
+offered_points, base_points, points_breakdown.game_multiplier, points_breakdown.tier_multiplier, points_breakdown.series_multiplier, points_breakdown.stage_multiplier, points_breakdown.tournament_multiplier · no ownership / picked_percent term appears anywhere in the points model</p>
+<div class="tablewrap"><table class="responsive"><thead><tr><th>Tier</th><th>Offered</th><th>Base</th>
+<th>Multipliers (API)</th></tr></thead><tbody><tr><td data-label="Tier">Tier S (TWC Malta)</td><td data-label="Offered">7</td><td data-label="Base">2</td><td data-label="Multipliers">{&quot;game_multiplier&quot;: 1.25, &quot;tier_multiplier&quot;: 3, &quot;series_multiplier&quot;: 1, &quot;stage_multiplier&quot;: 1, &quot;tournament_multiplier&quot;: 1}</td></tr><tr><td data-label="Tier">Tier B (e.g. Stake Pulse Beat III)</td><td data-label="Offered">3</td><td data-label="Base">2</td><td data-label="Multipliers">{&quot;game_multiplier&quot;: 1.25, &quot;tier_multiplier&quot;: 1.5, &quot;series_multiplier&quot;: 1, &quot;stage_multiplier&quot;: 1, &quot;tournament_multiplier&quot;: 1}</td></tr></tbody></table></div>
+<p class="tiny">Lobby context read at 2026-10-16T23:53Z:
+159 matches this week (CS2 filter: 83 fixtures; Tier B 31, Tier C 52; 20 tournaments) · reset countdown observed
+"Resets in 2d 00h 10m 03s" · prizes
+1st — $400 Steam Voucher; 2nd — $200 Steam Voucher; 3rd — $100 Steam Voucher; 4th-10th — $50 Steam Voucher · Prizes awarded after the weekly reset. Winners contacted via email. Minimum 10 picks to qualify.</p>
+<p class="tiny">Leaderboard top 10 as displayed: AndréD 223, iujioj51 169, Pickem Buster 168, wallet_89649831 127, interactive041 126, Wheres my reward? 122, wallet_256a92e4 106, costelciuperca824 98, extradrummy1913 94, christiansamasenpaidesu 93
+<a href="https://play.hotspawn.com/lobby" rel="noopener">lobby</a></p>
+
+<h2 id="refresh">Refresh cadence</h2>
+<p>The workflow <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/day4live-17866d06.yml" rel="noopener">day4live-17866d06.yml</a> runs
+<code>collect → model → build → tests → stage</code> every 4 hours and on demand, commits the evidence and the
+rendered pages to this branch, and triggers the Pages deployment. That satisfies the 4–8 hour re-check requirement:
+HotSpawn adds fixtures continuously, and each run re-reads the whole scheduled list rather than a cached subset.</p>
+<p class="tiny">If a run fails, the previously committed pages stay live — a failed refresh never blanks the site.</p>
+
+<h2>Verification protocol</h2>
+<ul class="tiny">
+<li>Every table row carries a link to the source that produced it (official site, bookmaker feed, exchange API or
+Valve's repository). No row is published without one.</li>
+<li>A value that could not be confirmed is rendered blank with an UNVERIFIED tag. It is never inferred, averaged
+from a neighbour, or copied from another board.</li>
+<li>Editorial claims (results, map scores, ratings, roster moves) are taken only from sources read this session and
+stored verbatim in <code>scripts/17866d06/research.py</code> with their URLs.</li>
+<li>Raw responses are committed under <code>data/17866d06/evidence/</code> with byte counts and SHA-256 digests in
+<code>collect_log.json</code>, so any published number can be replayed from stored evidence.</li>
+<li>Crowd percentages are recorded verbatim even when a pair sums to more than 100% (observed on the lobby), because
+renormalising them would invent data.</li>
+</ul>
+
+<h2>How to re-run this desk yourself</h2>
+<p><code>python3 scripts/17866d06/collect.py</code> · <code>python3 scripts/17866d06/model.py</code> ·
+<code>python3 scripts/17866d06/build.py</code> · <code>python3 -m unittest discover -s tests</code> ·
+<code>python3 scripts/stage_site.py</code></p>
+<p class="tiny">Quote volumes captured this run: {}.</p>
+
+<footer><p class="tiny">Session 17866d06 · board generated 2026-10-17T00:29:45Z from evidence captured no capture ·
+refreshed automatically every 4 hours by
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/day4live-17866d06.yml" rel="noopener">.github/workflows/day4live-17866d06.yml</a> ·
+HotSpawn is used for fixtures, points and crowd ownership only, never as a probability input.</p>
+<p class="tiny"><a href="flagged.html" rel="noopener">Flagged for Review</a> · <a href="method.html" rel="noopener">Method &amp; sources</a> ·
+<a href="unresolved.html" rel="noopener">Unresolved matches</a> · <a href="../index.html" rel="noopener">Site home</a></p></footer>
+</main></body></html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Start here · day-4 desk · session 17866d06</title>
+<meta name="description" content="Executive summary of the day-4 HotSpawn CS2 pick&#x27;em desk: every match priced, contrarian picks gated on verified evidence, unresolved matches and flags published.">
+<style>
+:root{--bg:#0b1220;--card:#141f33;--txt:#e9effb;--mut:#93a4c3;--line:#26344c;--acc:#3d7dff;
+--good:#1f9d63;--warn:#c9861b;--bad:#c4453c;--violet:#7c3aed;--teal:#0f766e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:16px}
+header.site{position:sticky;top:0;background:rgba(11,18,32,.97);border-bottom:1px solid var(--line);z-index:30}
+header.site .wrap{padding:9px 14px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+header.site strong{font-size:13.5px;margin-right:4px}
+header.site a{color:var(--mut);text-decoration:none;font-size:13.5px;padding:8px 9px;border-radius:9px}
+header.site a.on,header.site a:hover,header.site a:focus{background:var(--card);color:var(--txt)}
+main.wrap{padding-bottom:56px}
+h1{font-size:25px;line-height:1.18;margin:12px 0 6px}
+h2{font-size:19px;margin:28px 0 8px;padding-top:4px}
+h3{font-size:16px;margin:18px 0 6px}
+p{margin:9px 0}
+a{color:#8db6ff}
+.mut{color:var(--mut);font-size:13.5px}
+.tiny{font-size:12.5px;color:var(--mut)}
+.eyebrow{color:#7fa7ff;font-weight:800;letter-spacing:.09em;text-transform:uppercase;font-size:11.5px;margin:0}
+.cards{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.card{flex:1 1 150px;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:12px 13px}
+.card-num{font-size:23px;font-weight:800;line-height:1.1}
+.card-label{color:var(--mut);font-size:12.5px;margin-top:3px}
+.btn{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;
+border-radius:13px;padding:14px 16px;margin:8px 8px 0 0;min-height:46px;font-size:15.5px}
+.btn.ghost{background:transparent;border:1.5px solid var(--acc);color:#a8c6ff}
+.btn.good{background:var(--good)} .btn.violet{background:var(--violet)} .btn.warn{background:var(--warn);color:#221602}
+.btn:focus{outline:3px solid #fff3}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:#b9c8e4;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:800;white-space:nowrap}
+.tag.pick{background:var(--good);color:#fff}
+.tag.contra{background:var(--violet);color:#fff}
+.tag.mkt{background:#1d4ed8;color:#fff}
+.tag.mdl{background:#334155;color:#dbe7ff}
+.tag.blank{background:#3a2530;color:#ffb4ae}
+.tag.warn{background:#3a2d13;color:#ffd591}
+.tag.bad{background:#3d1a17;color:#ffb3ab}
+.tag.teal{background:var(--teal);color:#fff}
+.pickbox{background:linear-gradient(180deg,#17324a,#132338);border:1px solid #2c4a6d;border-radius:13px;padding:12px 13px}
+.pickbox .who{font-size:18px;font-weight:800}
+.bar{height:9px;border-radius:99px;background:#22304a;overflow:hidden;margin:6px 0 3px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,#3d7dff,#22c39a)}
+details{background:var(--card);border:1px solid var(--line);border-radius:13px;margin:10px 0}
+details>summary{cursor:pointer;padding:12px 14px;font-weight:700}
+details[open]>summary{border-bottom:1px solid var(--line)}
+details .inner{padding:8px 14px 14px}
+.tablewrap{overflow-x:auto}
+.note{background:#131d2f;border-left:3px solid var(--acc);padding:10px 12px;border-radius:0 10px 10px 0;margin:12px 0}
+.note.warn{border-color:var(--warn);background:#1d1a12}
+.note.bad{border-color:var(--bad);background:#1e1414}
+.note.good{border-color:var(--good);background:#12211a}
+ul{margin:8px 0 8px 20px;padding:0}li{margin:5px 0}
+code{background:#0f1a2c;border:1px solid var(--line);border-radius:6px;padding:1px 5px;font-size:13px}
+.srcs{font-size:12.5px;color:var(--mut);margin-top:6px}
+.srcs a{color:#9dc0ff}
+hr{border:0;border-top:1px solid var(--line);margin:22px 0}
+footer{border-top:1px solid var(--line);margin-top:30px;padding-top:14px}
+@media (max-width:680px){
+ h1{font-size:21px}.wrap{padding:12px}
+ .btn{display:block;text-align:center;margin:8px 0 0}
+ table.responsive thead{display:none}
+ table.responsive tr{display:block;border:1px solid var(--line);border-radius:13px;margin:11px 0;padding:7px 3px;background:var(--card)}
+ table.responsive td{display:flex;justify-content:space-between;gap:12px;border:0;padding:5px 11px}
+ table.responsive td:before{content:attr(data-label);color:#9db1d4;font-size:11px;text-transform:uppercase;
+   letter-spacing:.04em;font-weight:800;flex:0 0 40%}
+ table.responsive td.num{text-align:right}
+ header.site .wrap{gap:2px}header.site a{font-size:12.5px;padding:7px 6px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head>
+<body><header class="site"><div class="wrap"><strong>Day-4 desk · 17866d06</strong><a href="index.html" class="on">Start here</a><a href="picks.html">Every match</a><a href="twc.html">TWC day 1–3 → 4</a><a href="unresolved.html">Unresolved</a><a href="flagged.html">Flagged for review</a><a href="method.html">Method &amp; sources</a><a href="../index.html">Site home</a></div></header>
+<main class="wrap">
+<p class="eyebrow">Thunderpick World Championship 2026 · Malta · day 4 (17 Oct) + every open HotSpawn CS2 match</p>
+<h1>Day-4 desk: what to pick, what it is worth, and what we could not price</h1>
+<p class="mut">Evidence captured — · board generated
+2026-10-17T00:29:45Z · refreshed every 4 hours by CI ·
+Valve standings snapshot 2026_10_05</p>
+
+<a class="btn good" href="picks.html">▶ Today's picks — every match</a>
+<a class="btn ghost" href="unresolved.html">Unresolved matches (0)</a>
+<a class="btn ghost" href="twc.html">TWC day 1–3 review → day 4</a>
+<a class="btn warn" href="flagged.html">Flagged for review (9)</a>
+
+<div class="note bad"><strong>Read this first: the day-4 semifinals are NOT pickable on HotSpawn.</strong>
+The fixtures API returns an empty list for <code>competition_id=35859&amp;status=scheduled</code>, and the
+unfiltered competition response contains only the eleven group-stage/decider rows — no semi-final, third-place
+or grand-final row. FURIA v Aurora (14:00 UTC) and Falcons v BETBOOM (17:00 UTC) are on the
+<a href="https://www.hotspawn.com/counter-strike/tournament/thunderpick-world-championship-2026" rel="noopener">HotSpawn tournament schedule</a>
+as rows 1080207 / 1080208 but award <strong>zero leaderboard points</strong>. Day-4 points come only from the
+non-TWC lobby fixtures. <a href="flagged.html#F2" rel="noopener">Evidence + detail (flag F2)</a></div>
+
+<div class="cards">
+<div class="card"><div class="card-num">0</div>
+<div class="card-label">open HotSpawn CS2 fixtures</div></div>
+<div class="card"><div class="card-num">0</div>
+<div class="card-label">priced — pick + probability</div></div>
+<div class="card"><div class="card-num">0</div>
+<div class="card-label">points available on priced fixtures</div></div>
+<div class="card"><div class="card-num">0</div>
+<div class="card-label">contrarian picks that pass the gates</div></div>
+<div class="card"><div class="card-num">0.0%</div>
+<div class="card-label">fixtures covered by a real market line</div></div>
+<div class="card"><div class="card-num">700.0</div>
+<div class="card-label">VRS scale FALLBACK — uncalibrated</div></div>
+</div>
+
+<h2>The strategy in three sentences</h2>
+<p>HotSpawn pays a <strong>flat number of points per correct pick</strong> (tier multiplies the points, ownership
+does not) plus an unpublished streak bonus, so expected points = <code>offered_points × P(win)</code> — the
+leaderboard-optimal play is simply the highest-probability side of a <em>correct</em> line, and "contrarian" only
+earns anything when it is free. It is free when our line's favourite is not the crowd's favourite
+(rule R2), and it is defensible at sub-50% only with two or more independently verified context facts and real
+points on the table (rule R3, capped at two per day). Everything else is variance, and variance is labelled as
+variance rather than sold as an edge.</p>
+<div class="srcs">Sources: <a href="https://play.hotspawn.com/how-it-works" rel="noopener">HotSpawn how it works (official scoring)</a> · <a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&amp;status=scheduled&amp;competition_id=36197" rel="noopener">HotSpawn fixtures API row 1081888 (points_breakdown has no ownership term)</a></div>
+
+<h2>Why fading the crowd was right on day 1 — and how often it works</h2>
+<p>9z beat Aurora 2-0 on day 1 with the crowd <strong>93% on Aurora</strong>: the 7% who took 9z collected the
+same flat 7 points as everyone who got a favourite right. Across the eleven settled TWC fixtures, the nine with a
+≥60% crowd favourite went <strong>0-0</strong> — right often
+enough to respect, wrong often enough to fade <em>when our own line disagrees</em>. The three failures were
+Aurora at 93% (v 9z), PARIVISION at 64% (v BETBOOM) and Legacy at 88% (v BETBOOM); the winners were held by
+7%, 36% and 12% of pickers.</p>
+<p class="mut"><a href="twc.html" rel="noopener">Full settled table + Aurora roster analysis →</a></p>
+
+<h2>Today's picks at a glance</h2>
+<div class="tablewrap"><table class="responsive"><thead><tr><th>Start</th><th>Match</th><th>Pick</th>
+<th class="num">Our %</th><th class="num">Crowd % on pick</th><th class="num">Pts</th></tr></thead><tbody>
+<tr><td colspan="6">No priced fixtures in this capture.</td></tr>
+</tbody></table></div>
+<p><a class="btn" href="picks.html">Open every match with odds, sources and limits</a></p>
+
+<h2>Contrarian-but-not-stupid picks in this capture</h2>
+<ul><li>No fixture in this capture meets the contrarian gates — the free-upgrade picks did not appear, so the board stays on maximum-probability picks.</li></ul>
+
+<h2>Unresolved (0) — in the executive summary as required</h2>
+<p class="mut">Every open fixture in this capture has either a market line or an originated model line.</p>
+<p class="mut">Unresolved rows are never filled with a guess. Each one lists what was tried in the required order
+(HLTV → esportsbooks → betting lines), what blocked it, and what it costs you:
+<a href="unresolved.html" rel="noopener">Unresolved matches + limitations →</a></p>
+
+<h2>Flagged for review (9, 2 high severity)</h2>
+<ul class="tiny"><li><strong>F1</strong> (high) — HotSpawn&#x27;s published scoring has no ownership term, so &#x27;points x (probability - crowd ownership)&#x27; differentials are not a payout model <a href="flagged.html#F1" rel="noopener">detail</a></li><li><strong>F2</strong> (high) — The TWC Malta day-4 semi-finals are not pickable on HotSpawn <a href="flagged.html#F2" rel="noopener">detail</a></li><li><strong>F3</strong> (medium) — HotSpawn&#x27;s tournament page still shows settled day-3 matches as LIVE / UPCOMING <a href="flagged.html#F3" rel="noopener">detail</a></li><li><strong>F4</strong> (medium) — offered_points does not equal base_points x the published multipliers <a href="flagged.html#F4" rel="noopener">detail</a></li><li><strong>F5</strong> (medium) — Official Valve VRS and HLTV&#x27;s live ranking disagree on the SF1 favourite&#x27;s ordering <a href="flagged.html#F5" rel="noopener">detail</a></li><li><strong>F6</strong> (medium) — HotSpawn&#x27;s semi-final preview quotes VRS ranks that match neither the official Valve file nor HLTV <a href="flagged.html#F6" rel="noopener">detail</a></li><li><strong>F7</strong> (medium) — One team, three names across sources (BET-M / 33 Team / thirtythree) <a href="flagged.html#F7" rel="noopener">detail</a></li><li><strong>F8</strong> (low) — The lobby&#x27;s weekly-reset countdown and its own fixture list disagree <a href="flagged.html#F8" rel="noopener">detail</a></li><li><strong>F9</strong> (low) — HotSpawn listed a cancelled TWC fixture that 33 players had already picked <a href="flagged.html#F9" rel="noopener">detail</a></li></ul>
+<p class="mut">Flagged items do not block anything: they are published with their sources so a human can check
+them. <a href="flagged.html" rel="noopener">Flagged for Review →</a></p>
+
+<h2>Where every number comes from</h2>
+<ul class="tiny">
+<li><strong>Fixtures, points, crowd ownership, settlement:</strong> HotSpawn fixtures API — discovery and
+settlement only, never a probability input.</li>
+<li><strong>Prices:</strong> Thunderpick coefficients as published by bo3.gg, Melbet's public esports LineFeed,
+and Polymarket exchange prices (volume-weighted). All converted to no-vig probabilities.</li>
+<li><strong>Our originated line:</strong> logistic on the official Valve Regional Standings point delta
+(<a href="https://github.com/ValveSoftware/counter-strike_regional_standings" rel="noopener">Valve repository</a>),
+scale fitted to the markets captured in the same run — 0 pairs,
+R² —, mean absolute error —.</li>
+<li><strong>Editorial facts</strong> (results, map scores, ratings, roster history, rules): HLTV, Valve, HotSpawn's
+own pages and Polymarket, each cited where it is used.</li>
+</ul>
+<p><a class="btn ghost" href="method.html">Method, maths and verification protocol</a></p>
+
+<footer><p class="tiny">Session 17866d06 · board generated 2026-10-17T00:29:45Z from evidence captured no capture ·
+refreshed automatically every 4 hours by
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/day4live-17866d06.yml" rel="noopener">.github/workflows/day4live-17866d06.yml</a> ·
+HotSpawn is used for fixtures, points and crowd ownership only, never as a probability input.</p>
+<p class="tiny"><a href="flagged.html" rel="noopener">Flagged for Review</a> · <a href="method.html" rel="noopener">Method &amp; sources</a> ·
+<a href="unresolved.html" rel="noopener">Unresolved matches</a> · <a href="../index.html" rel="noopener">Site home</a></p></footer>
+</main></body></html>
