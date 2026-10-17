@@ -5630,3 +5630,26 @@ The quote join, not the collection: 58 quotes were gathered, so the feeds are al
 2. `scripts/f7279a54/**` — restore the quote join (URGENT section above).
 
 **Pages status, stated plainly:** GitHub Pages has not deployed since run 38985553149 at 2026-10-17 00:15:51Z. Two independent, pre-existing blockers sit in front of `upload-pages-artifact`, neither of them in this session's files: the `c64a5e19` strict-mode locator (fixed in PR #163, awaiting merge) and the `f7279a54` quote-join regression (requested above). `hq/` is in `main` and will appear on the live site as soon as one `pages.yml` run reaches the end.
+
+## Correction to my own close-out, and the state after the 02:11Z capture
+
+Three things changed between the close-out above and now, two of them corrections to what I had written.
+
+**1. Pages was never frozen — my earlier statement was wrong and is retracted here.** I wrote that "no Pages deployment has happened since run 38985553149 at 00:15:51Z" and that `hq/` would not appear until a `pages.yml` run completed. That is false. `GET /repos/.../pages` returns `build_type: legacy` with `source: {branch: main, path: /}`: this repository publishes **straight from the `main` branch**, not from the `pages.yml` artifact. The site deploys on every push to `main`. `hq/` went live with PR #162 and was verified at `https://buffedlizard55-lab.github.io/MaltaProj2/hq/`. What `pages.yml` actually gates is the artifact and the `deploy` job's post-publish verification, not publication. The `c64a5e19` smoke fix in PR #163 is still worth having, but it was never blocking the live site.
+
+**2. The lobby grew from 21 open fixtures to 34, and that changed the board.** The 02:11Z capture carries 34 open lobby rows (up from 21). After re-researching the newly-listed matches:
+
+| | at 01:56Z | at 02:45Z |
+|---|---|---|
+| Rows with a win probability | 19 / 23 | **28 / 34** |
+| Bookmaker-priced | 15 | 19 |
+| Originated from Valve VRS | 4 | 9 |
+| Blank + flagged | 4 | 6 |
+| Not-listed extras | 2 | **0** |
+
+**3. Three research corrections, all sourced:**
+- **WROTBERRY is WBT, not unresolved.** I had flagged it unresolved on bo3.gg's alias field. HLTV settles it: `hltv.org/team/13683/wrotberry` is titled WBT, HLTV's HAVU page says "17 Oct vs. WBT", Liquipedia's HAVU page lists the semi-final as HAVU vs WBT, and EGamersWorld titles the fixture "WBT VS HAVU". Pinnacle's "WBT" and Melbet's "WhiteBIT Team" prices therefore apply. WBT Academy (`hltv.org/team/13999/wbt-academy`, VRS #130) is a **different** team and stays out.
+- **ex-RUSTEC disambiguated to VRS #92 (1066 pts)**, not #152 (824 pts), from HLTV's team page (Valve ranking #87, roster timeline naming shalfey / Brilliance / youka / yiksrezo). That converts two blanks into originated lines: BBL vs ex-RUSTEC and ex-RUSTEC vs ILLYRIANS.
+- **The TWC semi-finals are on the lobby after all.** Fixtures **1080207** (FURIA vs Aurora, tier S, 14:00Z) and **1080208** (Falcons vs BetBoom, tier S, 17:00Z) appeared between the 01:02Z and 02:11Z captures, each with a real permalink. The two "not-listed" extras are removed as duplicates. Their HotSpawn kickoffs also settle the UTC question from the day-4 review: **14:00Z and 17:00Z**, which is what HLTV's UTC-4 rendering (10:00 / 13:00) and EGamersWorld both said, and rules out the 08:00Z reading that had been circulating on other boards.
+
+**Still blank, with a published attempt ledger for each:** VP.Future vs Black Phoenix and Lavked vs LFO 10 (one side absent from Valve's official standings), ex-6666 vs Privateer and antidaun vs Phantom Academy (Kalshi's books are empty, no VRS row), Lynn Vision vs Morningstar and Chinggis Warriors vs WXM (one side absent from Valve's official standings). stavka.tv publishes editorial coefficients for two of these; it is a tips site, not a licensed book, so they are recorded and not used.

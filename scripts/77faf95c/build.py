@@ -743,7 +743,21 @@ def render(board):
                     'is a 24% shot: the form and the rest both point the other way, so it is a '
                     'leaderboard play, not an edge.</li></ul></div>')
         body.append('<h2>Day 4 · the lines</h2>')
-        body.append("".join(row_card(r, board) for r in extra))
+        semis = [r for r in rows if "Thunderpick World Championship 2026" in (r["competition"] or "")]
+        if semis:
+            body.append('<p class="small">Both semi-finals are on the HotSpawn pick\'em lobby '
+                        '(tier S, fixtures 1080207 and 1080208), so they are ordinary rows on the '
+                        'picks board. They were added to the lobby between the 01:02Z and 02:11Z '
+                        'captures; before that the lobby carried only the Thunderpick South '
+                        'American Series #1 and no Malta playoff competition, and this desk carried '
+                        'them as not-listed extras.</p>')
+            body.append("".join(row_card(r, board) for r in semis))
+        else:
+            body.append('<p class="small">Not on the HotSpawn pick\'em lobby: the lobby fixtures '
+                        'API carries the Thunderpick World Championship 2026 South American Series '
+                        '#1 but no Malta playoff competition, so these two rows are originated '
+                        'externally and flagged as not-listed.</p>')
+            body.append("".join(row_card(r, board) for r in extra))
         body.append('<p class="small">%s</p>' % esc(twc.get("kickoff_note") or ""))
         rp = twc.get("roster_premise") or {}
         if rp:

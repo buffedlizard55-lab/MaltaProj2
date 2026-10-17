@@ -1,12 +1,12 @@
 {
  "session": "77faf95c",
- "generated_utc": "2026-10-17T02:27:52Z",
+ "generated_utc": "2026-10-17T02:44:08Z",
  "captured_at_utc": "2026-10-17T02:11:00Z",
  "freshness_limit_hours": 8.0,
  "vrs_snapshot": "2026_10_05",
  "vrs_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
  "calibration": {
-  "k": 0.537327,
+  "k": 0.513318,
   "fitted": true,
   "pairs": [
    {
@@ -53,37 +53,27 @@
     "fixture_id": "1081530",
     "delta": 415.0,
     "market_prob_a": 0.655172
-   },
-   {
-    "fixture_id": "hltv-2399414",
-    "delta": 113.0,
-    "market_prob_a": 0.5116573333333333
-   },
-   {
-    "fixture_id": "hltv-2399415",
-    "delta": 247.0,
-    "market_prob_a": 0.7623860000000001
    }
   ],
-  "n_pairs": 11,
+  "n_pairs": 9,
   "min_pairs": 6,
   "bounds": [
    0.25,
    1.5
   ],
-  "mae_prob": 0.063834,
-  "mae_prob_valve": 0.099085,
+  "mae_prob": 0.060271,
+  "mae_prob_valve": 0.101261,
   "rd": 75.0,
   "formula": "p = sigmoid(k * C * (pointsA - pointsB)), C = g*ln10/400, g = 1/sqrt(1 + 3*q^2*RD^2/pi^2), q = ln10/400"
  },
  "counts": {
   "listed_open": 34,
-  "extra_not_listed": 2,
-  "with_probability": 27,
+  "extra_not_listed": 0,
+  "with_probability": 28,
   "market": 19,
-  "market_flagged": 1,
-  "model": 7,
-  "blank": 9
+  "market_flagged": 0,
+  "model": 9,
+  "blank": 6
  },
  "rows": [
   {
@@ -310,14 +300,64 @@
     {
      "label": "HotSpawn fixture",
      "url": "https://www.hotspawn.com/matches/wrotberry-vs-havu-elisa-breakout-series-2-1080291"
+    },
+    {
+     "label": "Pinnacle",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub"
+    },
+    {
+     "label": "Melbet (1xBet platform)",
+     "url": "https://melbet.com/en/line/esports"
     }
    ],
-   "quotes": [],
-   "rejected_quotes": [],
-   "flags": [
-    "not_in_vrs:WROTBERRY",
-    "no_supported_line"
+   "quotes": [
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638582071/markets/related/straight",
+     "event_id": "1638582071",
+     "labels": [
+      "WBT",
+      "HAVU"
+     ],
+     "decimals": [
+      1.4926,
+      2.56
+     ],
+     "raw_format": "american",
+     "raw_a": -203,
+     "raw_b": 156,
+     "prob_a": 0.631693,
+     "retrieved_utc": "2026-10-17T02:10:56Z",
+     "swapped": false,
+     "league": "CS2 - Elisa BreakOut"
+    },
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet (1xBet platform)",
+     "url": "https://melbet.com/en/line/esports",
+     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+     "event_id": "762188099",
+     "labels": [
+      "WhiteBIT Team",
+      "HAVU Gaming"
+     ],
+     "decimals": [
+      1.5,
+      2.554
+     ],
+     "raw_format": "decimal",
+     "raw_a": 1.5,
+     "raw_b": 2.554,
+     "prob_a": 0.629995,
+     "retrieved_utc": "2026-10-17T02:10:59Z",
+     "swapped": false,
+     "league": "CS 2. Elisa Esports BreakOut"
+    }
    ],
+   "rejected_quotes": [],
+   "flags": [],
    "vrs_a": {
     "missing": true
    },
@@ -336,11 +376,49 @@
     }
    },
    "kalshi": [],
-   "research_ledger": [],
-   "prob_a": null,
-   "basis": "blank",
-   "pick": null,
-   "note": null
+   "research_ledger": [
+    {
+     "source": "Pinnacle guest API",
+     "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups",
+     "result": "prices the slot as 'WBT vs HAVU' 1.4926 / 2.56 at 2026-10-17T08:00Z. Held back only because HotSpawn's string is 'WROTBERRY'."
+    },
+    {
+     "source": "Melbet LineFeed",
+     "url": "https://melbet.com/en/line/esports",
+     "result": "prices the slot as 'WhiteBIT Team vs HAVU Gaming' 1.5 / 2.554 at 2026-10-17T08:00Z"
+    },
+    {
+     "source": "HLTV team page",
+     "url": "https://www.hltv.org/team/13683/wrotberry",
+     "result": "HLTV serves WROTBERRY at this URL and titles the team WBT - resolves the identity"
+    },
+    {
+     "source": "HLTV HAVU team page",
+     "url": "https://www.hltv.org/team/7865/havu",
+     "result": "'The next matches for HAVU will be against: 17 Oct vs. WBT' - confirms the opponent for this slot"
+    },
+    {
+     "source": "Liquipedia HAVU",
+     "url": "https://liquipedia.net/counterstrike/HAVU",
+     "result": "'Oct 17 - 10:00 EET - Elisa BreakOut Series #2 - Playoffs-SF - HAVU vs WBT', and 'HAVU (formerly stylized as HAVU Gaming)'"
+    },
+    {
+     "source": "EGamersWorld",
+     "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-havu-IJIfWRFXjp",
+     "result": "'WBT VS HAVU: 17.10.2026 at 08:00 ... Bo3 ... Elisa Esports BreakOut Series 2' - agrees on kickoff and teams"
+    },
+    {
+     "source": "Official Valve VRS",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "result": "WBT #60 (1201 pts) is present; WROTBERRY as a string is not. Not needed - the row is bookmaker-priced."
+    }
+   ],
+   "prob_a": 0.630844,
+   "basis": "market",
+   "pick": "WROTBERRY",
+   "note": null,
+   "consensus_rule": "arithmetic mean of the per-source no-vig probabilities",
+   "pick_prob": 0.630844
   },
   {
    "fixture_id": "1081510",
@@ -667,7 +745,33 @@
      "url": "https://kalshi.com/markets/kxcs2game"
     }
    ],
-   "research_ledger": [],
+   "research_ledger": [
+    {
+     "source": "Pinnacle / Bovada / Melbet / Kalshi",
+     "url": "https://melbet.com/en/line/esports",
+     "result": "no quote for this pair in the 2026-10-17T02:11Z capture; the capture prices no GLuck Yungstar match"
+    },
+    {
+     "source": "HLTV event page",
+     "url": "https://www.hltv.org/events/9443/gluck-yungstar-2026-series-3",
+     "result": "confirms the event (Oct 16-17 2026, Moscow, $5,000, 8 teams, double-elimination Bo3) and lists Black Phoenix as a participant (#57). Publishes no match price."
+    },
+    {
+     "source": "HLTV match page",
+     "url": "https://www.hltv.org/matches/2399644/quazar-vs-vpfuture-gluck-yungstar-2026-series-3",
+     "result": "confirms VP.Future played at this event. Publishes no moneyline."
+    },
+    {
+     "source": "EGamersWorld",
+     "url": "https://egamersworld.com/counterstrike/match/Eklp98tP5Ee/vpfuture-vs-black-phoenix-dGceA4XCC",
+     "result": "lists the fixture at 2026-10-17T09:00Z but shows the site's 1.8 placeholder - not a price"
+    },
+    {
+     "source": "Official Valve VRS",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "result": "Black Phoenix is present (#76, 1116 pts). 'VP.Future' is not in the official standings, so no rating difference can be formed."
+    }
+   ],
    "prob_a": null,
    "basis": "blank",
    "pick": null,
@@ -779,20 +883,20 @@
      "result": "reachable through this session's manual reads (the automated probe in other sessions recorded HTTP 403)"
     }
    ],
-   "prob_a": 0.576868,
+   "prob_a": 0.573485,
    "basis": "model",
    "pick": "GenOne",
    "note": "Originated from Valve's official regional standings, not a bookmaker price. No book in this capture prices the match.",
    "model": {
     "points_a": 1185.0,
     "points_b": 1082.0,
-    "k": 0.537327,
+    "k": 0.513318,
     "rd": 75.0,
     "snapshot": "2026_10_05",
     "standing_a": 66,
     "standing_b": 88
    },
-   "pick_prob": 0.576868
+   "pick_prob": 0.573485
   },
   {
    "fixture_id": "1079591",
@@ -994,7 +1098,33 @@
     "missing": true
    },
    "kalshi": [],
-   "research_ledger": [],
+   "research_ledger": [
+    {
+     "source": "Pinnacle / Bovada / Melbet / Kalshi",
+     "url": "https://melbet.com/en/line/esports",
+     "result": "no quote for this pair in the 2026-10-17T02:11Z capture"
+    },
+    {
+     "source": "HLTV event page",
+     "url": "https://www.hltv.org/events/9442/cct-2026-europe-series-11",
+     "result": "confirms both teams are in CCT 2026 Europe Series 11 (FORZE Reload beat LFO 10 2-0 on 14 Oct and Lavked 2-0 on 16 Oct). Publishes no moneyline."
+    },
+    {
+     "source": "EGamersWorld",
+     "url": "https://egamersworld.com/counterstrike/match/_rW8GEyWK/lavked-vs-z6CTAa5pD",
+     "result": "lists 'Lavked vs' at 2026-10-17T11:00Z with an empty opponent field and the site's 1.8 placeholder - not a price"
+    },
+    {
+     "source": "stavka.tv (tip site, not a bookmaker)",
+     "url": "https://stavka.tv/matches/csgo/17-10-2026-lavked-s-kerorg",
+     "result": "publishes an editorial preview of a Lavked match that discusses LFO 10's form, but the page title names a different opponent ('Sokerorg') and it is a tips site, not a licensed book. Not used as a line."
+    },
+    {
+     "source": "Official Valve VRS",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "result": "Lavked is present (#143, 862 pts). 'LFO 10' is not in the official standings, so no rating difference can be formed."
+    }
+   ],
    "prob_a": null,
    "basis": "blank",
    "pick": null,
@@ -1305,20 +1435,20 @@
     }
    ],
    "research_ledger": [],
-   "prob_a": 0.409241,
+   "prob_a": 0.413213,
    "basis": "model",
    "pick": "Phantom",
    "note": "Originated from Valve's official regional standings, not a bookmaker price. No book in this capture prices the match.",
    "model": {
     "points_a": 1025.0,
     "points_b": 1147.0,
-    "k": 0.537327,
+    "k": 0.513318,
     "rd": 75.0,
     "snapshot": "2026_10_05",
     "standing_a": 105,
     "standing_b": 72
    },
-   "pick_prob": 0.590759
+   "pick_prob": 0.586787
   },
   {
    "fixture_id": "1079635",
@@ -1390,20 +1520,20 @@
     }
    ],
    "research_ledger": [],
-   "prob_a": 0.697095,
+   "prob_a": 0.689174,
    "basis": "model",
    "pick": "Bushido Wildcats",
    "note": "Originated from Valve's official regional standings, not a bookmaker price. No book in this capture prices the match.",
    "model": {
     "points_a": 982.0,
     "points_b": 705.0,
-    "k": 0.537327,
+    "k": 0.513318,
     "rd": 75.0,
     "snapshot": "2026_10_05",
     "standing_a": 114,
     "standing_b": 211
    },
-   "pick_prob": 0.697095
+   "pick_prob": 0.689174
   },
   {
    "fixture_id": "1080207",
@@ -1916,13 +2046,15 @@
     {
      "label": "HotSpawn fixture",
      "url": "https://www.hotspawn.com/matches/bbl-vs-ex-rustec-pgl-bucharest-2027-closed-qualifier-1081517"
+    },
+    {
+     "label": "Valve official standings (model input)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
     }
    ],
    "quotes": [],
    "rejected_quotes": [],
    "flags": [
-    "ambiguous_vrs_name:ex-RUSTEC",
-    "no_supported_line",
     "exchange_book_empty"
    ],
    "vrs_a": {
@@ -1940,31 +2072,32 @@
     }
    },
    "vrs_b": {
-    "ambiguous": [
-     {
-      "standing": 92,
-      "points": 1066.0,
-      "team": "ex-RUSTEC",
-      "roster": [
-       "Brilliance",
-       "glowiing",
-       "shalfey",
-       "yiksrezo",
-       "youka"
-      ]
-     },
-     {
-      "standing": 152,
-      "points": 824.0,
-      "team": "ex-RUSTEC",
-      "roster": [
-       "Brilliance",
-       "jakekeS",
-       "Patsi",
-       "youka"
-      ]
-     }
-    ]
+    "unique": {
+     "standing": 92,
+     "points": 1066.0,
+     "team": "ex-RUSTEC",
+     "roster": "Brilliance, glowiing, shalfey, yiksrezo, youka"
+    },
+    "disambiguated": {
+     "name": "ex-RUSTEC",
+     "chosen_standing": 92,
+     "chosen_points": 1066,
+     "chosen_roster": "Brilliance, glowiing, shalfey, yiksrezo, youka",
+     "rejected": [
+      {
+       "standing": 152,
+       "points": 824,
+       "roster": "Brilliance, jakekeS, Patsi, youka"
+      }
+     ],
+     "evidence": "The official standings carry two ex-RUSTEC rows. HLTV's team page (13901) reports ex-RUSTEC at Valve ranking #87 for the week of 17 October, which sits next to row #92 and nowhere near row #152, and its roster timeline names shalfey, Brilliance, youka and yiksrezo - four of row #92 and only two of row #152. shalfey has '1 month' time on team as of 17 October, so he was already on the roster in the 2026_10_05 snapshot, and he appears only in row #92.",
+     "sources": [
+      "https://www.hltv.org/team/13901/ex-rustec",
+      "https://www.hltv.org/valve-ranking/teams?teamId=13901",
+      "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+     ],
+     "read_utc": "2026-10-17T02:40:00Z"
+    }
    },
    "kalshi": [
     {
@@ -1978,11 +2111,47 @@
      "url": "https://kalshi.com/markets/kxcs2game"
     }
    ],
-   "research_ledger": [],
-   "prob_a": null,
-   "basis": "blank",
-   "pick": null,
-   "note": null
+   "research_ledger": [
+    {
+     "source": "Pinnacle / Bovada / Melbet / Kalshi",
+     "url": "https://melbet.com/en/line/esports",
+     "result": "no quote for this pair in the 2026-10-17T02:11Z capture"
+    },
+    {
+     "source": "HLTV event page",
+     "url": "https://www.hltv.org/events/9449/pgl-bucharest-2027-closed-qualifier",
+     "result": "confirms the event (Oct 16-20 2026, 8 teams, online, two PGL Bucharest 2027 slots) and lists BBL as a participant"
+    },
+    {
+     "source": "HLTV team page",
+     "url": "https://www.hltv.org/team/13901/ex-rustec",
+     "result": "'The next matches for ex-RUSTEC will be against: 17 Oct vs. BBL' (match 2399661) and '18 Oct vs. Illyrians' (2399315) - confirms both fixtures. HLTV reports ex-RUSTEC at Valve ranking #87."
+    },
+    {
+     "source": "stavka.tv (tip site, not a bookmaker)",
+     "url": "https://stavka.tv/matches/csgo/17-10-2026-bbl-ex-rustec",
+     "result": "publishes an editorial pick ('Pobeda BBL s kefom 1.50', editorial probability 75%). It is a betting-tips site, not a licensed bookmaker, so the coefficient is not used as a line."
+    },
+    {
+     "source": "Official Valve VRS",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "result": "BBL is present on a unique row (#37, 1386 pts). ex-RUSTEC has two rows; disambiguated to #92 (1066 pts) from HLTV's Valve ranking and roster timeline. -> originated line"
+    }
+   ],
+   "prob_a": 0.715015,
+   "basis": "model",
+   "pick": "BBL",
+   "note": "Originated from Valve's official regional standings, not a bookmaker price. No book in this capture prices the match.",
+   "model": {
+    "points_a": 1386.0,
+    "points_b": 1066.0,
+    "k": 0.513318,
+    "rd": 75.0,
+    "snapshot": "2026_10_05",
+    "standing_a": 37,
+    "standing_b": 92
+   },
+   "pick_prob": 0.715015
   },
   {
    "fixture_id": "1081126",
@@ -2064,20 +2233,20 @@
      "result": "Banda Chuya has two rows; disambiguated to #165 (801 pts) from HLTV's published lineup. Enjoy #138 (871 pts). -> originated line"
     }
    ],
-   "prob_a": 0.447536,
+   "prob_a": 0.449864,
    "basis": "model",
    "pick": "Enjoy",
    "note": "Originated from Valve's official regional standings, not a bookmaker price. No book in this capture prices the match.",
    "model": {
     "points_a": 801.0,
     "points_b": 871.0,
-    "k": 0.537327,
+    "k": 0.513318,
     "rd": 75.0,
     "snapshot": "2026_10_05",
     "standing_a": 165,
     "standing_b": 138
    },
-   "pick_prob": 0.552464
+   "pick_prob": 0.550136
   },
   {
    "fixture_id": "1079638",
@@ -2097,41 +2266,44 @@
     {
      "label": "HotSpawn fixture",
      "url": "https://www.hotspawn.com/matches/ex-rustec-vs-illyrians-cct-europe-2026-series-11-1079638"
+    },
+    {
+     "label": "Valve official standings (model input)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
     }
    ],
    "quotes": [],
    "rejected_quotes": [],
    "flags": [
-    "ambiguous_vrs_name:ex-RUSTEC",
-    "no_supported_line",
     "exchange_book_empty"
    ],
    "vrs_a": {
-    "ambiguous": [
-     {
-      "standing": 92,
-      "points": 1066.0,
-      "team": "ex-RUSTEC",
-      "roster": [
-       "Brilliance",
-       "glowiing",
-       "shalfey",
-       "yiksrezo",
-       "youka"
-      ]
-     },
-     {
-      "standing": 152,
-      "points": 824.0,
-      "team": "ex-RUSTEC",
-      "roster": [
-       "Brilliance",
-       "jakekeS",
-       "Patsi",
-       "youka"
-      ]
-     }
-    ]
+    "unique": {
+     "standing": 92,
+     "points": 1066.0,
+     "team": "ex-RUSTEC",
+     "roster": "Brilliance, glowiing, shalfey, yiksrezo, youka"
+    },
+    "disambiguated": {
+     "name": "ex-RUSTEC",
+     "chosen_standing": 92,
+     "chosen_points": 1066,
+     "chosen_roster": "Brilliance, glowiing, shalfey, yiksrezo, youka",
+     "rejected": [
+      {
+       "standing": 152,
+       "points": 824,
+       "roster": "Brilliance, jakekeS, Patsi, youka"
+      }
+     ],
+     "evidence": "The official standings carry two ex-RUSTEC rows. HLTV's team page (13901) reports ex-RUSTEC at Valve ranking #87 for the week of 17 October, which sits next to row #92 and nowhere near row #152, and its roster timeline names shalfey, Brilliance, youka and yiksrezo - four of row #92 and only two of row #152. shalfey has '1 month' time on team as of 17 October, so he was already on the roster in the 2026_10_05 snapshot, and he appears only in row #92.",
+     "sources": [
+      "https://www.hltv.org/team/13901/ex-rustec",
+      "https://www.hltv.org/valve-ranking/teams?teamId=13901",
+      "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+     ],
+     "read_utc": "2026-10-17T02:40:00Z"
+    }
    },
    "vrs_b": {
     "unique": {
@@ -2159,11 +2331,47 @@
      "url": "https://kalshi.com/markets/kxcs2game"
     }
    ],
-   "research_ledger": [],
-   "prob_a": null,
-   "basis": "blank",
-   "pick": null,
-   "note": null
+   "research_ledger": [
+    {
+     "source": "Pinnacle / Bovada / Melbet / Kalshi",
+     "url": "https://melbet.com/en/line/esports",
+     "result": "no quote for this pair in the 2026-10-17T02:11Z capture"
+    },
+    {
+     "source": "HLTV event page",
+     "url": "https://www.hltv.org/events/9442/cct-2026-europe-series-11",
+     "result": "lists '18/10/26 ex-RUSTEC 13:00 Illyrians bo3' (= 11:00 UTC) - confirms the fixture. Publishes no moneyline."
+    },
+    {
+     "source": "HLTV team page",
+     "url": "https://www.hltv.org/team/13901/ex-rustec",
+     "result": "'18 Oct vs. Illyrians' (match 2399315); Valve ranking #87; main lineup shalfey, Brilliance, youka"
+    },
+    {
+     "source": "EGamersWorld",
+     "url": "https://egamersworld.com/counterstrike/match/_rW8GEyWK/ex-rustec-vs-illyrians-du7eLrVLy",
+     "result": "lists the fixture at 2026-10-18T11:00Z with the site's 1.8 placeholder - not a price"
+    },
+    {
+     "source": "Official Valve VRS",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "result": "Illyrians is present on a unique row (#141, 862 pts). ex-RUSTEC has two rows; disambiguated to #92 (1066 pts). -> originated line"
+    }
+   ],
+   "prob_a": 0.642542,
+   "basis": "model",
+   "pick": "ex-RUSTEC",
+   "note": "Originated from Valve's official regional standings, not a bookmaker price. No book in this capture prices the match.",
+   "model": {
+    "points_a": 1066.0,
+    "points_b": 862.0,
+    "k": 0.513318,
+    "rd": 75.0,
+    "snapshot": "2026_10_05",
+    "standing_a": 92,
+    "standing_b": 141
+   },
+   "pick_prob": 0.642542
   },
   {
    "fixture_id": "1081521",
@@ -2371,20 +2579,20 @@
    },
    "kalshi": [],
    "research_ledger": [],
-   "prob_a": 0.542027,
+   "prob_a": 0.540158,
    "basis": "model",
    "pick": "FORZE Reload",
    "note": "Originated from Valve's official regional standings, not a bookmaker price. No book in this capture prices the match.",
    "model": {
     "points_a": 1100.0,
     "points_b": 1044.0,
-    "k": 0.537327,
+    "k": 0.513318,
     "rd": 75.0,
     "snapshot": "2026_10_05",
     "standing_a": 84,
     "standing_b": 100
    },
-   "pick_prob": 0.542027
+   "pick_prob": 0.540158
   },
   {
    "fixture_id": "1081526",
@@ -2708,16 +2916,11 @@
      "prob_a": 0.462366,
      "retrieved_utc": "2026-10-17T02:10:59Z",
      "swapped": true,
-     "league": "CS 2. DraculaN",
-     "identity_unresolved": [
-      "WROTBERRY"
-     ]
+     "league": "CS 2. DraculaN"
     }
    ],
    "rejected_quotes": [],
-   "flags": [
-    "identity_unresolved:WROTBERRY"
-   ],
+   "flags": [],
    "vrs_a": {
     "unique": {
      "standing": 111,
@@ -2764,9 +2967,9 @@
     }
    ],
    "prob_a": 0.462366,
-   "basis": "market-flagged",
+   "basis": "market",
    "pick": "WROTBERRY",
-   "note": "Bookmaker price found, but the identity of WROTBERRY is unresolved, so the price cannot be attributed to one roster. Treat as provisional.",
+   "note": null,
    "consensus_rule": "arithmetic mean of the per-source no-vig probabilities",
    "pick_prob": 0.537634
   },
@@ -3206,20 +3409,20 @@
      "result": "both teams present on a unique row: Rare Atom #133 (906 pts), Alter Ego #155 (819 pts) -> originated line"
     }
    ],
-   "prob_a": 0.565075,
+   "prob_a": 0.562198,
    "basis": "model",
    "pick": "Rare Atom",
    "note": "Originated from Valve's official regional standings, not a bookmaker price. No book in this capture prices the match.",
    "model": {
     "points_a": 906.0,
     "points_b": 819.0,
-    "k": 0.537327,
+    "k": 0.513318,
     "rd": 75.0,
     "snapshot": "2026_10_05",
     "standing_a": 133,
     "standing_b": 155
    },
-   "pick_prob": 0.565075
+   "pick_prob": 0.562198
   },
   {
    "fixture_id": "1081863",
@@ -3362,298 +3565,20 @@
      "result": "both teams present on a unique row: NEXVOID #113 (995 pts), Vitalem Aerem #204 (721 pts) -> originated line"
     }
    ],
-   "prob_a": 0.695186,
+   "prob_a": 0.687324,
    "basis": "model",
    "pick": "NEXVOID",
    "note": "Originated from Valve's official regional standings, not a bookmaker price. No book in this capture prices the match.",
    "model": {
     "points_a": 995.0,
     "points_b": 721.0,
-    "k": 0.537327,
+    "k": 0.513318,
     "rd": 75.0,
     "snapshot": "2026_10_05",
     "standing_a": 113,
     "standing_b": 204
    },
-   "pick_prob": 0.695186
-  },
-  {
-   "fixture_id": "hltv-2399414",
-   "label": "TWC 2026 semifinal 1",
-   "competition": "Thunderpick World Championship 2026 (Malta playoffs)",
-   "tier": null,
-   "best_of": 3,
-   "start_utc": "2026-10-17T14:00:00Z",
-   "lock_utc": null,
-   "team_a": "FURIA",
-   "team_b": "Aurora",
-   "listed_on_hotspawn": false,
-   "hotspawn_url": "https://play.hotspawn.com/lobby",
-   "hotspawn_url_kind": "lobby (no per-match link published)",
-   "match_url": "https://www.hltv.org/matches/2399414/furia-vs-aurora-thunderpick-world-championship-2026",
-   "sources": [
-    {
-     "label": "HLTV match page (not on the HotSpawn lobby)",
-     "url": "https://www.hltv.org/matches/2399414/furia-vs-aurora-thunderpick-world-championship-2026"
-    },
-    {
-     "label": "Pinnacle",
-     "url": "https://www.pinnacle.com/en/esports/cs2-hub"
-    },
-    {
-     "label": "Bovada",
-     "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-team-aurora-202610171000"
-    },
-    {
-     "label": "Melbet (1xBet platform)",
-     "url": "https://melbet.com/en/line/esports"
-    }
-   ],
-   "quotes": [
-    {
-     "source_key": "pinnacle",
-     "source_name": "Pinnacle",
-     "url": "https://www.pinnacle.com/en/esports/cs2-hub",
-     "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638536356/markets/related/straight",
-     "event_id": "1638536356",
-     "labels": [
-      "FURIA",
-      "Aurora"
-     ],
-     "decimals": [
-      1.8197,
-      2.01
-     ],
-     "raw_format": "american",
-     "raw_a": -122,
-     "raw_b": 101,
-     "prob_a": 0.524845,
-     "retrieved_utc": "2026-10-17T02:10:56Z",
-     "swapped": false,
-     "league": "CS2 - TP World Championship"
-    },
-    {
-     "source_key": "bovada",
-     "source_name": "Bovada",
-     "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-team-aurora-202610171000",
-     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-     "event_id": "32349764",
-     "labels": [
-      "FURIA Esports",
-      "Team AURORA"
-     ],
-     "decimals": [
-      1.8333,
-      1.9091
-     ],
-     "raw_format": "decimal",
-     "raw_a": "1.833333",
-     "raw_b": "1.909091",
-     "prob_a": 0.510127,
-     "retrieved_utc": "2026-10-17T02:10:58Z",
-     "swapped": false,
-     "league": "Thunderpick World Championship'26"
-    },
-    {
-     "source_key": "melbet",
-     "source_name": "Melbet (1xBet platform)",
-     "url": "https://melbet.com/en/line/esports",
-     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-     "event_id": "762156600",
-     "labels": [
-      "FURIA",
-      "Aurora Gaming"
-     ],
-     "decimals": [
-      1.9,
-      1.9
-     ],
-     "raw_format": "decimal",
-     "raw_a": 1.9,
-     "raw_b": 1.9,
-     "prob_a": 0.5,
-     "retrieved_utc": "2026-10-17T02:10:59Z",
-     "swapped": false,
-     "league": "CS 2. TP World Championship"
-    }
-   ],
-   "rejected_quotes": [],
-   "flags": [],
-   "vrs_a": {
-    "unique": {
-     "standing": 7,
-     "points": 1829.0,
-     "team": "FURIA",
-     "roster": [
-      "FalleN",
-      "KSCERATO",
-      "molodoy",
-      "YEKINDAR",
-      "yuurih"
-     ]
-    }
-   },
-   "vrs_b": {
-    "unique": {
-     "standing": 9,
-     "points": 1716.0,
-     "team": "Aurora",
-     "roster": [
-      "Jimpphat",
-      "kyxsan",
-      "Wicadia",
-      "woxic",
-      "XANTARES"
-     ]
-    }
-   },
-   "kalshi": [],
-   "research_ledger": [],
-   "prob_a": 0.511657,
-   "basis": "market",
-   "pick": "FURIA",
-   "note": null,
-   "consensus_rule": "arithmetic mean of the per-source no-vig probabilities",
-   "pick_prob": 0.511657
-  },
-  {
-   "fixture_id": "hltv-2399415",
-   "label": "TWC 2026 semifinal 2",
-   "competition": "Thunderpick World Championship 2026 (Malta playoffs)",
-   "tier": null,
-   "best_of": 3,
-   "start_utc": "2026-10-17T17:00:00Z",
-   "lock_utc": null,
-   "team_a": "Falcons",
-   "team_b": "BETBOOM",
-   "listed_on_hotspawn": false,
-   "hotspawn_url": "https://play.hotspawn.com/lobby",
-   "hotspawn_url_kind": "lobby (no per-match link published)",
-   "match_url": "https://www.hltv.org/matches/2399415/falcons-vs-betboom-thunderpick-world-championship-2026",
-   "sources": [
-    {
-     "label": "HLTV match page (not on the HotSpawn lobby)",
-     "url": "https://www.hltv.org/matches/2399415/falcons-vs-betboom-thunderpick-world-championship-2026"
-    },
-    {
-     "label": "Pinnacle",
-     "url": "https://www.pinnacle.com/en/esports/cs2-hub"
-    },
-    {
-     "label": "Bovada",
-     "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-bb-team-202610171300"
-    },
-    {
-     "label": "Melbet (1xBet platform)",
-     "url": "https://melbet.com/en/line/esports"
-    }
-   ],
-   "quotes": [
-    {
-     "source_key": "pinnacle",
-     "source_name": "Pinnacle",
-     "url": "https://www.pinnacle.com/en/esports/cs2-hub",
-     "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638595724/markets/related/straight",
-     "event_id": "1638595724",
-     "labels": [
-      "Falcons",
-      "BB Team"
-     ],
-     "decimals": [
-      1.2532,
-      4.02
-     ],
-     "raw_format": "american",
-     "raw_a": -395,
-     "raw_b": 302,
-     "prob_a": 0.762345,
-     "retrieved_utc": "2026-10-17T02:10:57Z",
-     "swapped": false,
-     "league": "CS2 - TP World Championship"
-    },
-    {
-     "source_key": "bovada",
-     "source_name": "Bovada",
-     "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/team-falcons-bb-team-202610171300",
-     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-     "event_id": "32359169",
-     "labels": [
-      "Team Falcons",
-      "BB Team"
-     ],
-     "decimals": [
-      1.2222,
-      4.0
-     ],
-     "raw_format": "decimal",
-     "raw_a": "1.222222",
-     "raw_b": "4.00",
-     "prob_a": 0.765961,
-     "retrieved_utc": "2026-10-17T02:10:58Z",
-     "swapped": false,
-     "league": "Thunderpick World Championship'26"
-    },
-    {
-     "source_key": "melbet",
-     "source_name": "Melbet (1xBet platform)",
-     "url": "https://melbet.com/en/line/esports",
-     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-     "event_id": "762230018",
-     "labels": [
-      "Team Falcons",
-      "BB Team"
-     ],
-     "decimals": [
-      1.26,
-      3.965
-     ],
-     "raw_format": "decimal",
-     "raw_a": 1.26,
-     "raw_b": 3.965,
-     "prob_a": 0.758852,
-     "retrieved_utc": "2026-10-17T02:10:59Z",
-     "swapped": false,
-     "league": "CS 2. TP World Championship"
-    }
-   ],
-   "rejected_quotes": [],
-   "flags": [],
-   "vrs_a": {
-    "unique": {
-     "standing": 6,
-     "points": 1843.0,
-     "team": "Falcons",
-     "roster": [
-      "karrigan",
-      "kyousuke",
-      "m0NESY",
-      "NiKo",
-      "TeSeS"
-     ]
-    }
-   },
-   "vrs_b": {
-    "unique": {
-     "standing": 11,
-     "points": 1596.0,
-     "team": "BETBOOM",
-     "roster": [
-      "Boombl4",
-      "d1Ledez",
-      "Magnojez",
-      "S1ren",
-      "zorte"
-     ]
-    }
-   },
-   "kalshi": [],
-   "research_ledger": [],
-   "prob_a": 0.762386,
-   "basis": "market",
-   "pick": "Falcons",
-   "note": null,
-   "consensus_rule": "arithmetic mean of the per-source no-vig probabilities",
-   "pick_prob": 0.762386
+   "pick_prob": 0.687324
   }
  ],
  "twc_review": {
@@ -3741,8 +3666,10 @@
     "hltv": "https://www.hltv.org/matches/2399415/falcons-vs-betboom-thunderpick-world-championship-2026"
    }
   ],
-  "kickoff_note": "HLTV renders 10:00 and 13:00 in the fetch server's UTC-4 zone; the UTC kickoffs are 14:00Z and 17:00Z. EGamersWorld's structured data agrees (title '17.10.2026 at 14:00' for FURIA-Aurora; the Falcons match page shows 19:00 CEST = 17:00 UTC).",
+  "kickoff_note": "HotSpawn's own lobby settles it: fixture 1080207 (FURIA vs Aurora) locks at 2026-10-17T13:54Z for a 14:00Z start and fixture 1080208 (Falcons vs BetBoom) at 16:54Z for 17:00Z. HLTV rendered 10:00 and 13:00 in the fetch server's UTC-4 zone, which is the same pair of kickoffs, and EGamersWorld's structured data agreed.",
   "kickoff_sources": [
+   "https://www.hotspawn.com/matches/furia-vs-aurora-thunderpick-world-championship-2026-1080207",
+   "https://www.hotspawn.com/matches/falcons-vs-betboom-thunderpick-world-championship-2026-1080208",
    "https://www.hltv.org/events/8932/matches",
    "https://egamersworld.com/counterstrike/match/5X5sFiL7H/furia-vs-aurora-Z00JFz0dG"
   ],
@@ -3830,21 +3757,6 @@
    "evidence": "Both Melbet and Bovada label the 2026-10-17T14:00Z PGL Bucharest closed-qualifier match 'Team Nemesis' against Apogee; Valve VRS row 29 is 'Nemesis' (mag1k3Y, r3salt, Sdaim, SELLTER, tex1y). Organisation-prefix variant on a unique VRS row.",
    "sources": [
     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
-   ],
-   "read_utc": "2026-10-17T01:10:00Z"
-  },
-  {
-   "hotspawn_name": "WROTBERRY",
-   "market_names": [
-    "WhiteBIT Team",
-    "WBT Academy",
-    "WBTac"
-   ],
-   "decision": "unresolved",
-   "evidence": "bo3.gg's WROTBERRY page lists the organisation's aliases as 'WBTac, WBT Academy', while Melbet labels the same DraculaN Season 7 slot on 2026-10-19T09:00Z 'WhiteBIT Team' and Kalshi labels it 'WBT Academy'. WhiteBIT Team and WBT Academy are two different squads (EGW records svemyy moving WhiteBIT Team -> WhiteBIT Academy on 2026-09-01), so the two labels are not interchangeable and the market price cannot be attributed to one roster.",
-   "sources": [
-    "https://bo3.gg/teams/wrotberry",
-    "https://egamersworld.com/cs2/players/svemyy-4JTkfhHhR"
    ],
    "read_utc": "2026-10-17T01:10:00Z"
   },
@@ -4125,6 +4037,52 @@
     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
    ],
    "read_utc": "2026-10-17T01:10:00Z"
+  },
+  {
+   "hotspawn_name": "WROTBERRY",
+   "market_names": [
+    "WBT",
+    "WhiteBIT Team",
+    "WhiteBIT"
+   ],
+   "decision": "accepted",
+   "evidence": "HLTV serves the organisation at hltv.org/team/13683/wrotberry and the page is titled WBT; HLTV's HAVU page states 'The next matches for HAVU will be against: 17 Oct vs. WBT'; Liquipedia's HAVU page lists 'Oct 17 - 10:00 EET, Elisa BreakOut Series #2 - Playoffs-SF, HAVU vs WBT'; EGamersWorld titles the same fixture 'WBT VS HAVU: 17.10.2026 at 08:00'. Three independent sources name WBT as the team playing this slot, so Pinnacle's 'WBT' and Melbet's 'WhiteBIT Team' are this fixture.",
+   "sources": [
+    "https://www.hltv.org/team/13683/wrotberry",
+    "https://www.hltv.org/team/7865/havu",
+    "https://liquipedia.net/counterstrike/HAVU",
+    "https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-havu-IJIfWRFXjp",
+    "https://www.hltv.org/events/9332/elisa-breakout-series-2"
+   ],
+   "read_utc": "2026-10-17T02:40:00Z"
+  },
+  {
+   "hotspawn_name": "WROTBERRY",
+   "market_names": [
+    "WBT Academy",
+    "WBTac"
+   ],
+   "decision": "unresolved",
+   "evidence": "WBT Academy is a separate HLTV entity (hltv.org/team/13999/wbt-academy) with a different roster (fl1peR, svemyy, marat2k, tired73, NxStep) from WBT (hltv.org/team/13683/wrotberry; Psycho, Smash, s4ltovsk1yy, DemQQ, tyr1k), and it is a separate row in the official Valve standings (#130, 911 pts, versus WBT #60, 1201 pts). bo3.gg lists WROTBERRY's aliases as 'WBTac, WBT Academy', which contradicts HLTV and Liquipedia; where a book names the academy rather than the main team the price is shown as provisional, not folded in.",
+   "sources": [
+    "https://www.hltv.org/team/13999/wbt-academy",
+    "https://www.hltv.org/team/13683/wrotberry",
+    "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+    "https://bo3.gg/teams/wrotberry"
+   ],
+   "read_utc": "2026-10-17T02:40:00Z"
+  },
+  {
+   "hotspawn_name": "HAVU",
+   "market_names": [
+    "HAVU Gaming"
+   ],
+   "decision": "accepted",
+   "evidence": "Liquipedia's HAVU page: 'HAVU (formerly stylized as HAVU Gaming)'. Same organisation, one row in the official Valve standings.",
+   "sources": [
+    "https://liquipedia.net/counterstrike/HAVU"
+   ],
+   "read_utc": "2026-10-17T02:40:00Z"
   }
  ],
  "vrs_disambiguation": [
@@ -4163,6 +4121,26 @@
     "https://www.hltv.org/team/12646/chinggis-warriors"
    ],
    "read_utc": "2026-10-17T01:10:00Z"
+  },
+  {
+   "name": "ex-RUSTEC",
+   "chosen_standing": 92,
+   "chosen_points": 1066,
+   "chosen_roster": "Brilliance, glowiing, shalfey, yiksrezo, youka",
+   "rejected": [
+    {
+     "standing": 152,
+     "points": 824,
+     "roster": "Brilliance, jakekeS, Patsi, youka"
+    }
+   ],
+   "evidence": "The official standings carry two ex-RUSTEC rows. HLTV's team page (13901) reports ex-RUSTEC at Valve ranking #87 for the week of 17 October, which sits next to row #92 and nowhere near row #152, and its roster timeline names shalfey, Brilliance, youka and yiksrezo - four of row #92 and only two of row #152. shalfey has '1 month' time on team as of 17 October, so he was already on the roster in the 2026_10_05 snapshot, and he appears only in row #92.",
+   "sources": [
+    "https://www.hltv.org/team/13901/ex-rustec",
+    "https://www.hltv.org/valve-ranking/teams?teamId=13901",
+    "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+   ],
+   "read_utc": "2026-10-17T02:40:00Z"
   }
  ],
  "research_ledger": [
@@ -4369,6 +4347,171 @@
      "result": "both teams present on a unique row: NEXVOID #113 (995 pts), Vitalem Aerem #204 (721 pts) -> originated line"
     }
    ]
+  },
+  {
+   "fixture_id": "1080291",
+   "match": "WROTBERRY vs HAVU",
+   "steps": [
+    {
+     "source": "Pinnacle guest API",
+     "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups",
+     "result": "prices the slot as 'WBT vs HAVU' 1.4926 / 2.56 at 2026-10-17T08:00Z. Held back only because HotSpawn's string is 'WROTBERRY'."
+    },
+    {
+     "source": "Melbet LineFeed",
+     "url": "https://melbet.com/en/line/esports",
+     "result": "prices the slot as 'WhiteBIT Team vs HAVU Gaming' 1.5 / 2.554 at 2026-10-17T08:00Z"
+    },
+    {
+     "source": "HLTV team page",
+     "url": "https://www.hltv.org/team/13683/wrotberry",
+     "result": "HLTV serves WROTBERRY at this URL and titles the team WBT - resolves the identity"
+    },
+    {
+     "source": "HLTV HAVU team page",
+     "url": "https://www.hltv.org/team/7865/havu",
+     "result": "'The next matches for HAVU will be against: 17 Oct vs. WBT' - confirms the opponent for this slot"
+    },
+    {
+     "source": "Liquipedia HAVU",
+     "url": "https://liquipedia.net/counterstrike/HAVU",
+     "result": "'Oct 17 - 10:00 EET - Elisa BreakOut Series #2 - Playoffs-SF - HAVU vs WBT', and 'HAVU (formerly stylized as HAVU Gaming)'"
+    },
+    {
+     "source": "EGamersWorld",
+     "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-havu-IJIfWRFXjp",
+     "result": "'WBT VS HAVU: 17.10.2026 at 08:00 ... Bo3 ... Elisa Esports BreakOut Series 2' - agrees on kickoff and teams"
+    },
+    {
+     "source": "Official Valve VRS",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "result": "WBT #60 (1201 pts) is present; WROTBERRY as a string is not. Not needed - the row is bookmaker-priced."
+    }
+   ]
+  },
+  {
+   "fixture_id": "1081511",
+   "match": "VP.Future vs Black Phoenix",
+   "steps": [
+    {
+     "source": "Pinnacle / Bovada / Melbet / Kalshi",
+     "url": "https://melbet.com/en/line/esports",
+     "result": "no quote for this pair in the 2026-10-17T02:11Z capture; the capture prices no GLuck Yungstar match"
+    },
+    {
+     "source": "HLTV event page",
+     "url": "https://www.hltv.org/events/9443/gluck-yungstar-2026-series-3",
+     "result": "confirms the event (Oct 16-17 2026, Moscow, $5,000, 8 teams, double-elimination Bo3) and lists Black Phoenix as a participant (#57). Publishes no match price."
+    },
+    {
+     "source": "HLTV match page",
+     "url": "https://www.hltv.org/matches/2399644/quazar-vs-vpfuture-gluck-yungstar-2026-series-3",
+     "result": "confirms VP.Future played at this event. Publishes no moneyline."
+    },
+    {
+     "source": "EGamersWorld",
+     "url": "https://egamersworld.com/counterstrike/match/Eklp98tP5Ee/vpfuture-vs-black-phoenix-dGceA4XCC",
+     "result": "lists the fixture at 2026-10-17T09:00Z but shows the site's 1.8 placeholder - not a price"
+    },
+    {
+     "source": "Official Valve VRS",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "result": "Black Phoenix is present (#76, 1116 pts). 'VP.Future' is not in the official standings, so no rating difference can be formed."
+    }
+   ]
+  },
+  {
+   "fixture_id": "1079634",
+   "match": "Lavked vs LFO 10",
+   "steps": [
+    {
+     "source": "Pinnacle / Bovada / Melbet / Kalshi",
+     "url": "https://melbet.com/en/line/esports",
+     "result": "no quote for this pair in the 2026-10-17T02:11Z capture"
+    },
+    {
+     "source": "HLTV event page",
+     "url": "https://www.hltv.org/events/9442/cct-2026-europe-series-11",
+     "result": "confirms both teams are in CCT 2026 Europe Series 11 (FORZE Reload beat LFO 10 2-0 on 14 Oct and Lavked 2-0 on 16 Oct). Publishes no moneyline."
+    },
+    {
+     "source": "EGamersWorld",
+     "url": "https://egamersworld.com/counterstrike/match/_rW8GEyWK/lavked-vs-z6CTAa5pD",
+     "result": "lists 'Lavked vs' at 2026-10-17T11:00Z with an empty opponent field and the site's 1.8 placeholder - not a price"
+    },
+    {
+     "source": "stavka.tv (tip site, not a bookmaker)",
+     "url": "https://stavka.tv/matches/csgo/17-10-2026-lavked-s-kerorg",
+     "result": "publishes an editorial preview of a Lavked match that discusses LFO 10's form, but the page title names a different opponent ('Sokerorg') and it is a tips site, not a licensed book. Not used as a line."
+    },
+    {
+     "source": "Official Valve VRS",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "result": "Lavked is present (#143, 862 pts). 'LFO 10' is not in the official standings, so no rating difference can be formed."
+    }
+   ]
+  },
+  {
+   "fixture_id": "1081517",
+   "match": "BBL vs ex-RUSTEC",
+   "steps": [
+    {
+     "source": "Pinnacle / Bovada / Melbet / Kalshi",
+     "url": "https://melbet.com/en/line/esports",
+     "result": "no quote for this pair in the 2026-10-17T02:11Z capture"
+    },
+    {
+     "source": "HLTV event page",
+     "url": "https://www.hltv.org/events/9449/pgl-bucharest-2027-closed-qualifier",
+     "result": "confirms the event (Oct 16-20 2026, 8 teams, online, two PGL Bucharest 2027 slots) and lists BBL as a participant"
+    },
+    {
+     "source": "HLTV team page",
+     "url": "https://www.hltv.org/team/13901/ex-rustec",
+     "result": "'The next matches for ex-RUSTEC will be against: 17 Oct vs. BBL' (match 2399661) and '18 Oct vs. Illyrians' (2399315) - confirms both fixtures. HLTV reports ex-RUSTEC at Valve ranking #87."
+    },
+    {
+     "source": "stavka.tv (tip site, not a bookmaker)",
+     "url": "https://stavka.tv/matches/csgo/17-10-2026-bbl-ex-rustec",
+     "result": "publishes an editorial pick ('Pobeda BBL s kefom 1.50', editorial probability 75%). It is a betting-tips site, not a licensed bookmaker, so the coefficient is not used as a line."
+    },
+    {
+     "source": "Official Valve VRS",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "result": "BBL is present on a unique row (#37, 1386 pts). ex-RUSTEC has two rows; disambiguated to #92 (1066 pts) from HLTV's Valve ranking and roster timeline. -> originated line"
+    }
+   ]
+  },
+  {
+   "fixture_id": "1079638",
+   "match": "ex-RUSTEC vs ILLYRIANS",
+   "steps": [
+    {
+     "source": "Pinnacle / Bovada / Melbet / Kalshi",
+     "url": "https://melbet.com/en/line/esports",
+     "result": "no quote for this pair in the 2026-10-17T02:11Z capture"
+    },
+    {
+     "source": "HLTV event page",
+     "url": "https://www.hltv.org/events/9442/cct-2026-europe-series-11",
+     "result": "lists '18/10/26 ex-RUSTEC 13:00 Illyrians bo3' (= 11:00 UTC) - confirms the fixture. Publishes no moneyline."
+    },
+    {
+     "source": "HLTV team page",
+     "url": "https://www.hltv.org/team/13901/ex-rustec",
+     "result": "'18 Oct vs. Illyrians' (match 2399315); Valve ranking #87; main lineup shalfey, Brilliance, youka"
+    },
+    {
+     "source": "EGamersWorld",
+     "url": "https://egamersworld.com/counterstrike/match/_rW8GEyWK/ex-rustec-vs-illyrians-du7eLrVLy",
+     "result": "lists the fixture at 2026-10-18T11:00Z with the site's 1.8 placeholder - not a price"
+    },
+    {
+     "source": "Official Valve VRS",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "result": "Illyrians is present on a unique row (#141, 862 pts). ex-RUSTEC has two rows; disambiguated to #92 (1066 pts). -> originated line"
+    }
+   ]
   }
  ],
  "access": {
@@ -4564,21 +4707,6 @@
     "evidence": "Both Melbet and Bovada label the 2026-10-17T14:00Z PGL Bucharest closed-qualifier match 'Team Nemesis' against Apogee; Valve VRS row 29 is 'Nemesis' (mag1k3Y, r3salt, Sdaim, SELLTER, tex1y). Organisation-prefix variant on a unique VRS row.",
     "sources": [
      "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
-    ],
-    "read_utc": "2026-10-17T01:10:00Z"
-   },
-   {
-    "hotspawn_name": "WROTBERRY",
-    "market_names": [
-     "WhiteBIT Team",
-     "WBT Academy",
-     "WBTac"
-    ],
-    "decision": "unresolved",
-    "evidence": "bo3.gg's WROTBERRY page lists the organisation's aliases as 'WBTac, WBT Academy', while Melbet labels the same DraculaN Season 7 slot on 2026-10-19T09:00Z 'WhiteBIT Team' and Kalshi labels it 'WBT Academy'. WhiteBIT Team and WBT Academy are two different squads (EGW records svemyy moving WhiteBIT Team -> WhiteBIT Academy on 2026-09-01), so the two labels are not interchangeable and the market price cannot be attributed to one roster.",
-    "sources": [
-     "https://bo3.gg/teams/wrotberry",
-     "https://egamersworld.com/cs2/players/svemyy-4JTkfhHhR"
     ],
     "read_utc": "2026-10-17T01:10:00Z"
    },
@@ -4859,6 +4987,52 @@
      "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
     ],
     "read_utc": "2026-10-17T01:10:00Z"
+   },
+   {
+    "hotspawn_name": "WROTBERRY",
+    "market_names": [
+     "WBT",
+     "WhiteBIT Team",
+     "WhiteBIT"
+    ],
+    "decision": "accepted",
+    "evidence": "HLTV serves the organisation at hltv.org/team/13683/wrotberry and the page is titled WBT; HLTV's HAVU page states 'The next matches for HAVU will be against: 17 Oct vs. WBT'; Liquipedia's HAVU page lists 'Oct 17 - 10:00 EET, Elisa BreakOut Series #2 - Playoffs-SF, HAVU vs WBT'; EGamersWorld titles the same fixture 'WBT VS HAVU: 17.10.2026 at 08:00'. Three independent sources name WBT as the team playing this slot, so Pinnacle's 'WBT' and Melbet's 'WhiteBIT Team' are this fixture.",
+    "sources": [
+     "https://www.hltv.org/team/13683/wrotberry",
+     "https://www.hltv.org/team/7865/havu",
+     "https://liquipedia.net/counterstrike/HAVU",
+     "https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-havu-IJIfWRFXjp",
+     "https://www.hltv.org/events/9332/elisa-breakout-series-2"
+    ],
+    "read_utc": "2026-10-17T02:40:00Z"
+   },
+   {
+    "hotspawn_name": "WROTBERRY",
+    "market_names": [
+     "WBT Academy",
+     "WBTac"
+    ],
+    "decision": "unresolved",
+    "evidence": "WBT Academy is a separate HLTV entity (hltv.org/team/13999/wbt-academy) with a different roster (fl1peR, svemyy, marat2k, tired73, NxStep) from WBT (hltv.org/team/13683/wrotberry; Psycho, Smash, s4ltovsk1yy, DemQQ, tyr1k), and it is a separate row in the official Valve standings (#130, 911 pts, versus WBT #60, 1201 pts). bo3.gg lists WROTBERRY's aliases as 'WBTac, WBT Academy', which contradicts HLTV and Liquipedia; where a book names the academy rather than the main team the price is shown as provisional, not folded in.",
+    "sources": [
+     "https://www.hltv.org/team/13999/wbt-academy",
+     "https://www.hltv.org/team/13683/wrotberry",
+     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "https://bo3.gg/teams/wrotberry"
+    ],
+    "read_utc": "2026-10-17T02:40:00Z"
+   },
+   {
+    "hotspawn_name": "HAVU",
+    "market_names": [
+     "HAVU Gaming"
+    ],
+    "decision": "accepted",
+    "evidence": "Liquipedia's HAVU page: 'HAVU (formerly stylized as HAVU Gaming)'. Same organisation, one row in the official Valve standings.",
+    "sources": [
+     "https://liquipedia.net/counterstrike/HAVU"
+    ],
+    "read_utc": "2026-10-17T02:40:00Z"
    }
   ],
   "vrs_disambiguation": [
@@ -4897,36 +5071,29 @@
      "https://www.hltv.org/team/12646/chinggis-warriors"
     ],
     "read_utc": "2026-10-17T01:10:00Z"
-   }
-  ],
-  "extra_fixtures": [
-   {
-    "fixture_id": "hltv-2399414",
-    "label": "TWC 2026 semifinal 1",
-    "team_a": "FURIA",
-    "team_b": "Aurora",
-    "competition": "Thunderpick World Championship 2026 (Malta playoffs)",
-    "start_utc": "2026-10-17T14:00:00Z",
-    "best_of": 3,
-    "listed_on_hotspawn": false,
-    "match_url": "https://www.hltv.org/matches/2399414/furia-vs-aurora-thunderpick-world-championship-2026",
-    "odds_url": "https://www.hltv.org/betting/analytics/2399414/furia-vs-aurora-thunderpick-world-championship-2026",
-    "note": "Not in the HotSpawn pick'em inventory: the lobby fixtures API carries the Thunderpick World Championship 2026 South American Series #1 but no Malta playoff competition. Added because the brief asks for day-4 picks; labelled not-listed everywhere it appears."
    },
    {
-    "fixture_id": "hltv-2399415",
-    "label": "TWC 2026 semifinal 2",
-    "team_a": "Falcons",
-    "team_b": "BETBOOM",
-    "competition": "Thunderpick World Championship 2026 (Malta playoffs)",
-    "start_utc": "2026-10-17T17:00:00Z",
-    "best_of": 3,
-    "listed_on_hotspawn": false,
-    "match_url": "https://www.hltv.org/matches/2399415/falcons-vs-betboom-thunderpick-world-championship-2026",
-    "odds_url": "https://www.hltv.org/betting/analytics/2399415/falcons-vs-betboom-thunderpick-world-championship-2026",
-    "note": "Same not-listed caveat as semifinal 1."
+    "name": "ex-RUSTEC",
+    "chosen_standing": 92,
+    "chosen_points": 1066,
+    "chosen_roster": "Brilliance, glowiing, shalfey, yiksrezo, youka",
+    "rejected": [
+     {
+      "standing": 152,
+      "points": 824,
+      "roster": "Brilliance, jakekeS, Patsi, youka"
+     }
+    ],
+    "evidence": "The official standings carry two ex-RUSTEC rows. HLTV's team page (13901) reports ex-RUSTEC at Valve ranking #87 for the week of 17 October, which sits next to row #92 and nowhere near row #152, and its roster timeline names shalfey, Brilliance, youka and yiksrezo - four of row #92 and only two of row #152. shalfey has '1 month' time on team as of 17 October, so he was already on the roster in the 2026_10_05 snapshot, and he appears only in row #92.",
+    "sources": [
+     "https://www.hltv.org/team/13901/ex-rustec",
+     "https://www.hltv.org/valve-ranking/teams?teamId=13901",
+     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+    ],
+    "read_utc": "2026-10-17T02:40:00Z"
    }
   ],
+  "extra_fixtures": [],
   "research_ledger": [
    {
     "fixture_id": "1079171",
@@ -5131,6 +5298,171 @@
       "result": "both teams present on a unique row: NEXVOID #113 (995 pts), Vitalem Aerem #204 (721 pts) -> originated line"
      }
     ]
+   },
+   {
+    "fixture_id": "1080291",
+    "match": "WROTBERRY vs HAVU",
+    "steps": [
+     {
+      "source": "Pinnacle guest API",
+      "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups",
+      "result": "prices the slot as 'WBT vs HAVU' 1.4926 / 2.56 at 2026-10-17T08:00Z. Held back only because HotSpawn's string is 'WROTBERRY'."
+     },
+     {
+      "source": "Melbet LineFeed",
+      "url": "https://melbet.com/en/line/esports",
+      "result": "prices the slot as 'WhiteBIT Team vs HAVU Gaming' 1.5 / 2.554 at 2026-10-17T08:00Z"
+     },
+     {
+      "source": "HLTV team page",
+      "url": "https://www.hltv.org/team/13683/wrotberry",
+      "result": "HLTV serves WROTBERRY at this URL and titles the team WBT - resolves the identity"
+     },
+     {
+      "source": "HLTV HAVU team page",
+      "url": "https://www.hltv.org/team/7865/havu",
+      "result": "'The next matches for HAVU will be against: 17 Oct vs. WBT' - confirms the opponent for this slot"
+     },
+     {
+      "source": "Liquipedia HAVU",
+      "url": "https://liquipedia.net/counterstrike/HAVU",
+      "result": "'Oct 17 - 10:00 EET - Elisa BreakOut Series #2 - Playoffs-SF - HAVU vs WBT', and 'HAVU (formerly stylized as HAVU Gaming)'"
+     },
+     {
+      "source": "EGamersWorld",
+      "url": "https://egamersworld.com/counterstrike/match/4yn491uUVl/wbt-vs-havu-IJIfWRFXjp",
+      "result": "'WBT VS HAVU: 17.10.2026 at 08:00 ... Bo3 ... Elisa Esports BreakOut Series 2' - agrees on kickoff and teams"
+     },
+     {
+      "source": "Official Valve VRS",
+      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+      "result": "WBT #60 (1201 pts) is present; WROTBERRY as a string is not. Not needed - the row is bookmaker-priced."
+     }
+    ]
+   },
+   {
+    "fixture_id": "1081511",
+    "match": "VP.Future vs Black Phoenix",
+    "steps": [
+     {
+      "source": "Pinnacle / Bovada / Melbet / Kalshi",
+      "url": "https://melbet.com/en/line/esports",
+      "result": "no quote for this pair in the 2026-10-17T02:11Z capture; the capture prices no GLuck Yungstar match"
+     },
+     {
+      "source": "HLTV event page",
+      "url": "https://www.hltv.org/events/9443/gluck-yungstar-2026-series-3",
+      "result": "confirms the event (Oct 16-17 2026, Moscow, $5,000, 8 teams, double-elimination Bo3) and lists Black Phoenix as a participant (#57). Publishes no match price."
+     },
+     {
+      "source": "HLTV match page",
+      "url": "https://www.hltv.org/matches/2399644/quazar-vs-vpfuture-gluck-yungstar-2026-series-3",
+      "result": "confirms VP.Future played at this event. Publishes no moneyline."
+     },
+     {
+      "source": "EGamersWorld",
+      "url": "https://egamersworld.com/counterstrike/match/Eklp98tP5Ee/vpfuture-vs-black-phoenix-dGceA4XCC",
+      "result": "lists the fixture at 2026-10-17T09:00Z but shows the site's 1.8 placeholder - not a price"
+     },
+     {
+      "source": "Official Valve VRS",
+      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+      "result": "Black Phoenix is present (#76, 1116 pts). 'VP.Future' is not in the official standings, so no rating difference can be formed."
+     }
+    ]
+   },
+   {
+    "fixture_id": "1079634",
+    "match": "Lavked vs LFO 10",
+    "steps": [
+     {
+      "source": "Pinnacle / Bovada / Melbet / Kalshi",
+      "url": "https://melbet.com/en/line/esports",
+      "result": "no quote for this pair in the 2026-10-17T02:11Z capture"
+     },
+     {
+      "source": "HLTV event page",
+      "url": "https://www.hltv.org/events/9442/cct-2026-europe-series-11",
+      "result": "confirms both teams are in CCT 2026 Europe Series 11 (FORZE Reload beat LFO 10 2-0 on 14 Oct and Lavked 2-0 on 16 Oct). Publishes no moneyline."
+     },
+     {
+      "source": "EGamersWorld",
+      "url": "https://egamersworld.com/counterstrike/match/_rW8GEyWK/lavked-vs-z6CTAa5pD",
+      "result": "lists 'Lavked vs' at 2026-10-17T11:00Z with an empty opponent field and the site's 1.8 placeholder - not a price"
+     },
+     {
+      "source": "stavka.tv (tip site, not a bookmaker)",
+      "url": "https://stavka.tv/matches/csgo/17-10-2026-lavked-s-kerorg",
+      "result": "publishes an editorial preview of a Lavked match that discusses LFO 10's form, but the page title names a different opponent ('Sokerorg') and it is a tips site, not a licensed book. Not used as a line."
+     },
+     {
+      "source": "Official Valve VRS",
+      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+      "result": "Lavked is present (#143, 862 pts). 'LFO 10' is not in the official standings, so no rating difference can be formed."
+     }
+    ]
+   },
+   {
+    "fixture_id": "1081517",
+    "match": "BBL vs ex-RUSTEC",
+    "steps": [
+     {
+      "source": "Pinnacle / Bovada / Melbet / Kalshi",
+      "url": "https://melbet.com/en/line/esports",
+      "result": "no quote for this pair in the 2026-10-17T02:11Z capture"
+     },
+     {
+      "source": "HLTV event page",
+      "url": "https://www.hltv.org/events/9449/pgl-bucharest-2027-closed-qualifier",
+      "result": "confirms the event (Oct 16-20 2026, 8 teams, online, two PGL Bucharest 2027 slots) and lists BBL as a participant"
+     },
+     {
+      "source": "HLTV team page",
+      "url": "https://www.hltv.org/team/13901/ex-rustec",
+      "result": "'The next matches for ex-RUSTEC will be against: 17 Oct vs. BBL' (match 2399661) and '18 Oct vs. Illyrians' (2399315) - confirms both fixtures. HLTV reports ex-RUSTEC at Valve ranking #87."
+     },
+     {
+      "source": "stavka.tv (tip site, not a bookmaker)",
+      "url": "https://stavka.tv/matches/csgo/17-10-2026-bbl-ex-rustec",
+      "result": "publishes an editorial pick ('Pobeda BBL s kefom 1.50', editorial probability 75%). It is a betting-tips site, not a licensed bookmaker, so the coefficient is not used as a line."
+     },
+     {
+      "source": "Official Valve VRS",
+      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+      "result": "BBL is present on a unique row (#37, 1386 pts). ex-RUSTEC has two rows; disambiguated to #92 (1066 pts) from HLTV's Valve ranking and roster timeline. -> originated line"
+     }
+    ]
+   },
+   {
+    "fixture_id": "1079638",
+    "match": "ex-RUSTEC vs ILLYRIANS",
+    "steps": [
+     {
+      "source": "Pinnacle / Bovada / Melbet / Kalshi",
+      "url": "https://melbet.com/en/line/esports",
+      "result": "no quote for this pair in the 2026-10-17T02:11Z capture"
+     },
+     {
+      "source": "HLTV event page",
+      "url": "https://www.hltv.org/events/9442/cct-2026-europe-series-11",
+      "result": "lists '18/10/26 ex-RUSTEC 13:00 Illyrians bo3' (= 11:00 UTC) - confirms the fixture. Publishes no moneyline."
+     },
+     {
+      "source": "HLTV team page",
+      "url": "https://www.hltv.org/team/13901/ex-rustec",
+      "result": "'18 Oct vs. Illyrians' (match 2399315); Valve ranking #87; main lineup shalfey, Brilliance, youka"
+     },
+     {
+      "source": "EGamersWorld",
+      "url": "https://egamersworld.com/counterstrike/match/_rW8GEyWK/ex-rustec-vs-illyrians-du7eLrVLy",
+      "result": "lists the fixture at 2026-10-18T11:00Z with the site's 1.8 placeholder - not a price"
+     },
+     {
+      "source": "Official Valve VRS",
+      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+      "result": "Illyrians is present on a unique row (#141, 862 pts). ex-RUSTEC has two rows; disambiguated to #92 (1066 pts). -> originated line"
+     }
+    ]
    }
   ],
   "twc_review": {
@@ -5218,8 +5550,10 @@
      "hltv": "https://www.hltv.org/matches/2399415/falcons-vs-betboom-thunderpick-world-championship-2026"
     }
    ],
-   "kickoff_note": "HLTV renders 10:00 and 13:00 in the fetch server's UTC-4 zone; the UTC kickoffs are 14:00Z and 17:00Z. EGamersWorld's structured data agrees (title '17.10.2026 at 14:00' for FURIA-Aurora; the Falcons match page shows 19:00 CEST = 17:00 UTC).",
+   "kickoff_note": "HotSpawn's own lobby settles it: fixture 1080207 (FURIA vs Aurora) locks at 2026-10-17T13:54Z for a 14:00Z start and fixture 1080208 (Falcons vs BetBoom) at 16:54Z for 17:00Z. HLTV rendered 10:00 and 13:00 in the fetch server's UTC-4 zone, which is the same pair of kickoffs, and EGamersWorld's structured data agreed.",
    "kickoff_sources": [
+    "https://www.hotspawn.com/matches/furia-vs-aurora-thunderpick-world-championship-2026-1080207",
+    "https://www.hotspawn.com/matches/falcons-vs-betboom-thunderpick-world-championship-2026-1080208",
     "https://www.hltv.org/events/8932/matches",
     "https://egamersworld.com/counterstrike/match/5X5sFiL7H/furia-vs-aurora-Z00JFz0dG"
    ],
@@ -5271,6 +5605,7 @@
     "read_utc": "2026-10-17T01:20:00Z",
     "impact": "Informational. The row is priced by Melbet, so no probability depends on it."
    }
-  ]
+  ],
+  "extra_fixtures_note": "Emptied on 2026-10-17T02:45Z. Both Thunderpick World Championship 2026 semi-finals were added to the HotSpawn pick'em lobby between the 01:02Z and 02:11Z captures, as fixtures 1080207 (FURIA vs Aurora, tier S, 2026-10-17T14:00Z) and 1080208 (Falcons vs BetBoom, tier S, 2026-10-17T17:00Z), each with a real per-match permalink. They are now ordinary lobby rows on the picks board, so the not-listed duplicates are removed. Their HotSpawn kickoffs also settle the UTC question from the earlier review: 14:00Z and 17:00Z, not 08:00Z and 11:00Z."
  }
 }
