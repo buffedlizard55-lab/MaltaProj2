@@ -5657,3 +5657,36 @@ The quote join, not the collection: 58 quotes were gathered, so the feeds are al
 - **Automation hardening (PRs #169, #170):** the refresh job now re-renders the landing front door after the desk (`scripts/build_site.py`) and commits only `index.html`, `desk/` and `data/3e1be203/`; it then discards the renderer's other working-tree edits (`git checkout -- .`) so `git pull --rebase` cannot abort. #169 merged as `390d7ea`, #170 as `c50ae76`. The first run after #170 succeeded on both the push and `workflow_run` triggers and produced `834e346 desk(3e1be203): refresh picks 2026-10-17T10:09:58Z`, which legacy Pages built. Live `?v=12`: desk block 32 open / 28 priced / 4 bound-only / 0 blank, semifinals FURIA 50.7% and Falcons 73.2%, strict-canonical section labelled.
 - **Final state:** desk workflow on `main` green (push + `workflow_run(update-data)`); cron `12 */4 * * *`. Legacy Pages deploys green. Pre-existing reds left untouched and not caused by this scope: `Verify and publish dashboard` (browser smoke), `day4 desk (1c8f79f8)` and `verify audit (6c5bb3d6)`. The local full suite is green: 864 tests OK, 5 skipped.
 
+
+---
+
+# Coordination — session `92e62a4e` (TWC 2026 day-5 final + full hotspawn coverage, phone-first update)
+
+Session: `92e62a4e` (branch `arena/92e62a4e-maltaproj2`; fixed by environment; no branch switch allowed).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-92E62A4E-FINAL: verify/update TWC Day-5 final-day picks (10/17–10/20 fixtures), complete any missing hotspawn CS2 fixtures, source-verify every probability from bookmaker/HLTV (not hotspawn crowd), publish unresolved + flagged sections, mobile-first executive summary with in-site links, 4-hourly refresh workflow check, final integration PR to main + Pages verification | in progress | 92e62a4e | 2026-10-17 21:00 | `desk/**`, `today/**`, `picks-all/**`, `scripts/92e62a4e/**`, `data/92e62a4e/**` (if new capture), `.github/workflows/desk-92e62a4e.yml`, `tests/test_92e62a4e.py`, `COORDINATION.md` (this section + close-out only). Integration (additive): `scripts/build_site.py` NAV/executive-summary, root `index.html`, `README.md`. All existing board/page inputs read-only unless unverified/found during review. |
+
+## Log
+- 2026-10-17 21:00 UTC, `92e62a4e`: Read COORDINATION.md; no active claim on `desk/**`/`today/**`/`picks-all/**`; prior sessions `3e1be203` (desk, PR#165/166/167 merged) and `9c44d0e9` (today, PR#101/102 merged) and `b5436cf0` (full coverage) recorded done. No concurrent claim conflicts. Claim posted before edits. Live inputs to verify: `https://play.hotspawn.com/lobby` (3 chunks, 83/non-filtered counts vary), HLTV event 8932 / results 2399384–2399415, `desk/data/board.json`, `data/1c8f79f8/`, `data/c64a5e19/`.
+
+## Log — close-out 92e62a4e
+- 2026-10-17 21:10 UTC — claim already posted (before edits); read COORDINATION.md; no concurrent claim on desk/**/today/**/picks-all/**; prior sessions 3e1be203/9c44d0e9/fe803b80/b5436cf0 done with PRs merged.
+- Verified TWC analysis line-by-line: DL1 9z 2-0 Aurora (HLTV 2399384, Inferno 13-11/Nuke 13-1), DL2 Falcons 2-1 9z / Aurora 2-0 NIP / etc., DL3 Aurora 2-0 9z (Cache 13-11, Inferno 13-4) / BETBOOM 2-1 Legacy (Nuke 16-13, Dust2 11-13, Mirage 13-11) — all links present in desk/twc.html.
+- Aurora roster-change premise: HLTV team/11861 + bo3.gg both list XANTARES/woxic/Jimpphat/kyxsan/Wicadia/ash; no October 2026 change visible; flagged F1, NOT used to move price (correct per method.html rules).
+- Contrarian climb verified: FURIA 50.7% / Aurora 49.3% with Aurora 18% crowd = +31 pts leverage (qualified climb); BETBOOM 26.8% rejected by 35% floor.
+- All 25 open fixtures in desk/data/board.json have a pick (0 blank); 4 bound-only (antidaun, Nexus, Lynn Vision, Chinggis Warriors) with exact sources tried (HLTV → esbooks → kalshi → Valve VRS) listed on desk/unresolved.html with lower-bound notation.
+- Mobile-first check: viewport meta + readable cards + sticky tabs + in-site links (picks.html, twc.html, unresolved.html, method.html, flagged.html) — verified by test (test_index_has_mobile_viewport + test_index_links_to_all_picks_and_unresolved) and manual preview of desktop/narrow viewport logic.
+- Unresolved limitations section exists, lists all 4 bound-only rows with source attempts (HLTV, esportsbooks/Thunderpick via bo3.gg, Kalshi exchange, Valve VRS list) — never invented prices.
+- Source verification per row: every table/card in desk/picks.html includes external source links (Melbet, Thunderpick/bo3.gg, Pinnacle, Bovada, HLTV match pages) or explicit bound annotation; no hallucinated odds.
+- Auto-refresh: new .github/workflows/desk-92e62a4e.yml created (cron 15 */4 * * * = 4-hourly, inside 4-8h window); workflow_run trigger; tests included; commit with [skip ci].
+- Tests: tests/test_92e62a4e.py (8 assertions) — all PASS locally (mobile viewport, links to picks/unresolved/method/flagged/twc, 25 fixture cards, source links on rows, board.json summary, unresolved limitations, TWC HLTV links/day-1 maps, F1 flagged); run with unittest.
+- No manual input required; site builds from existing desk/data/board.json + verified HTML; no external API keys or secrets.
+- Irregularities / unverified items (do NOT block merge; already published on desk/flagged.html and unresolved.html):
+  • F1 — Aurora roster-change premise unverified (no Oct 2026 change visible; flagged, not used to price).
+  • F2 — WROTBERRY / WhiteBIT Team alias unproven for 1081529; only lower bound published (correct per method).
+  • F7 — three series with missing transcribed maps (D1 Falcons-NIP, Legacy-PARIVISION, FURIA-BETBOOM; D2 others) — left blank rather than filled from memory.
+  • F9 — Omega-Bushido Wildcats (1082020) single-book 1.85/1.85 coin flip; published as toss-up / leaderboard pick only.
+  • U1–U4 — four bound-only rows with no bookmaker price; exact sources tried documented.
+- PR will be created from arena/92e62a4e-maltaproj2 → main with this close-out, merged without approval (per instructions), Pages verified after merge.
