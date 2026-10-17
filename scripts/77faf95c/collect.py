@@ -60,6 +60,10 @@ BOVADA = "https://www.bovada.lv/services/sports/event/v2/events/A/description/es
 MELBET = "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"
 KALSHI = ("https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME"
           "&status=open&with_nested_markets=true&limit=200")
+# Official Valve regional standings, read straight from Valve's own repository through the
+# GitHub API (raw.githubusercontent.com is not reachable from the runner allow-list here).
+VRS_API = ("https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings"
+           "/contents/live/2026/standings_global_2026_10_05.md")
 
 # The lobby is a server-rendered Angular app; its public transfer-state block is script#ng-state.
 LOBBY_STATE_RE = re.compile(r'<script[^>]*id="ng-state"[^>]*>(.*?)</script>', re.S | re.I)
@@ -68,9 +72,11 @@ LOBBY_STATE_FALLBACK_RE = re.compile(r'<script[^>]*id="[^"]*(?:transfer-state|ng
 PROP_RE = re.compile(r"\(|\)|\byes\b|\bno\b|kills?|\bmaps?\b|total|handicap|rounds?|pistol|winner", re.I)
 CS2_LEAGUE_RE = re.compile(r"^(CS2|Counter-Strike|CS 2|CS:GO)", re.I)
 MAX_TOTAL_RAW_BYTES = 12_000_000
+MAX_KALSHI_SPREAD = 0.10  # dollars; above this the book is empty, not a price
 
 ACCESS: dict = {}
 RAW_FILES: dict = {}
+RAW_EXTRA: dict = {}
 QUOTES: list = []
 
 
@@ -367,31 +373,80 @@ def _num(mk, *keys):
 
 
 def collect_kalshi():
+    """Kalshi is a regulated exchange. Only a genuinely two-sided book is a usable price.
+
+    Each event carries one binary market per team. A midpoint is kept only when *both* sides have
+    a live bid and ask and each side's bid-ask spread is at most MAX_KALSHI_SPREAD dollars; a
+    market quoting 0.06/0.84 has mid ~0.45 and is not information, it is an empty book.
+    """
     data, meta = fetch_json(KALSHI, {"Accept": "application/json"})
     written = 0
-    for ev in (data or {}).get("events") or [] if isinstance(data, dict) else []:
-        for mk in ev.get("markets") or []:
+    rejected = []
+    for ev in ((data or {}).get("events") or []) if isinstance(data, dict) else []:
+        markets = [m for m in (ev.get("markets") or [])
+                   if str(m.get("yes_sub_title") or "").strip()
+                   and str(m.get("status") or "") in ("active", "open")]
+        if len(markets) != 2:
+            continue
+        sides = []
+        for mk in markets:
             bid, ask = _num(mk, "yes_bid_dollars", "yes_bid"), _num(mk, "yes_ask_dollars", "yes_ask")
-            if not bid or not ask or bid <= 0 or ask >= 1 or ask < bid:
-                continue
-            mid = (bid + ask) / 2.0
-            if not 0.02 <= mid <= 0.98:
-                continue
-            title = str(ev.get("title") or mk.get("title") or "")
-            if PROP_RE.search(title):
-                continue
-            QUOTES.append(quote("kalshi", "Kalshi (regulated exchange)",
-                                "https://kalshi.com/markets/kxcs2game",
-                                KALSHI, mk.get("ticker"), title, f"{title} (no)",
-                                1.0 / mid, 1.0 / (1.0 - mid),
-                                mk.get("open_time") or mk.get("expected_expiration_time"),
-                                "KXCS2GAME", "exchange midpoint", round(bid, 4), round(ask, 4),
-                                extra={"ticker": mk.get("ticker"), "title": title,
-                                       "volume": mk.get("volume"),
-                                       "note": "exchange midpoint, not an executable bookmaker price"}))
-            written += 1
-    record("kalshi", meta, quotes=written)
+            if bid is None or ask is None:
+                sides = []
+                break
+            sides.append({"team": str(mk.get("yes_sub_title")), "bid": bid, "ask": ask,
+                          "spread": round(ask - bid, 4), "ticker": mk.get("ticker"),
+                          "rules": str(mk.get("rules_primary") or "")[:400],
+                          "volume": mk.get("volume"), "open_interest": mk.get("open_interest")})
+        if len(sides) != 2:
+            continue
+        if any(sd["spread"] > MAX_KALSHI_SPREAD for sd in sides):
+            rejected.append({"event_ticker": ev.get("event_ticker"),
+                             "teams": [sd["team"] for sd in sides],
+                             "spreads": [sd["spread"] for sd in sides],
+                             "reason": "bid-ask spread above the gate; the midpoint is an empty book"})
+            continue
+        a, b = sides[0], sides[1]
+        pa, pb = (a["bid"] + a["ask"]) / 2.0, (b["bid"] + b["ask"]) / 2.0
+        if not (0.02 <= pa <= 0.98 and 0.02 <= pb <= 0.98):
+            continue
+        QUOTES.append(quote("kalshi", "Kalshi (regulated exchange)",
+                            "https://kalshi.com/markets/kxcs2game",
+                            KALSHI, ev.get("event_ticker"), a["team"], b["team"],
+                            1.0 / pa, 1.0 / pb, None, "KXCS2GAME", "exchange midpoint",
+                            [a["bid"], a["ask"]], [b["bid"], b["ask"]],
+                            extra={"event_ticker": ev.get("event_ticker"),
+                                   "tickers": [a["ticker"], b["ticker"]],
+                                   "spreads": [a["spread"], b["spread"]],
+                                   "volumes": [a["volume"], b["volume"]],
+                                   "rules": [a["rules"], b["rules"]],
+                                   "note": ("exchange midpoint inside the %.2f dollar spread gate; "
+                                            "not an executable bookmaker price" % MAX_KALSHI_SPREAD)}))
+        written += 1
+    record("kalshi", meta, quotes=written, rejected_empty_books=len(rejected))
+    RAW_EXTRA["kalshi_rejections"] = rejected
     keep_raw("kalshi", data if data is not None else {"error": meta.get("error")})
+
+
+def collect_vrs():
+    """Official Valve regional standings (VRS), the only official team rating we use."""
+    body, meta = fetch(VRS_API, {"Accept": "application/vnd.github+json"}, timeout=60)
+    text = ""
+    if body:
+        try:
+            payload = json.loads(body.decode("utf-8", "replace"))
+            if isinstance(payload, dict) and payload.get("encoding") == "base64" and payload.get("content"):
+                import base64
+                text = base64.b64decode(payload["content"]).decode("utf-8", "replace")
+            else:
+                meta["error"] = "unexpected GitHub contents payload"
+        except ValueError:
+            meta["error"] = (meta["error"] or "") + " invalid JSON"
+    record("valve_vrs", meta, characters=len(text),
+           download_url=((json.loads(body.decode("utf-8", "replace")).get("html_url")
+                          if body else None)))
+    RAW_FILES["vrs_standings"] = text.encode("utf-8")
+    return text
 
 
 def main():
@@ -402,8 +457,11 @@ def main():
     collect_bovada()
     collect_melbet()
     collect_kalshi()
+    collect_vrs()
     for name, blob in RAW_FILES.items():
-        (RAW / f"{name}.json").write_bytes(blob)
+        (RAW / (name + (".md" if name.startswith("vrs_") else ".json"))).write_bytes(blob)
+    for name, obj in RAW_EXTRA.items():
+        (RAW / f"{name}.json").write_text(json.dumps(obj, indent=1), encoding="utf-8")
     (OUT / "quotes.json").write_text(json.dumps(
         {"collected_at_utc": started, "collected_to_utc": iso(now_utc()),
          "quote_count": len(QUOTES), "quotes": QUOTES}, indent=1), encoding="utf-8")
