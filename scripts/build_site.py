@@ -517,8 +517,26 @@ def canonical_home(pick_board):
     audit_model = audit_summary.get("model_only", 0)
     audit_snapshot_fmt = esc(fmt_time(audit_board.get("canonical_snapshot_utc")) or "unverified")
     audit_generated_fmt = esc(fmt_time(audit_board.get("generated_utc")) or "unverified")
+    desk_board = load("desk/data/board.json")
+    desk_twc = {x.get("id"): x for x in ((desk_board.get("twc") or {}).get("day4") or [])}
     twc_rows = []
     for key, label in (("sf1", "Semifinal 1"), ("sf2", "Semifinal 2")):
+        dm = desk_twc.get(key)
+        if dm and dm.get("pick") and dm.get("pick_prob"):
+            links = [("HLTV", dm.get("hltv_url")),
+                     ("bo3.gg", (dm.get("second_source") or {}).get("url")),
+                     ("desk", "desk/twc.html")]
+            twc_rows.append(
+                '<tr><td data-label="Match"><strong>{label}</strong><br>{a} vs {b}</td>'
+                '<td data-label="When (UTC)">{when}</td>'
+                '<td data-label="Line basis">Pinnacle + Bovada + Melbet, blended with Thunderpick</td>'
+                '<td data-label="Pick"><strong>{pick}</strong> {prob}</td>'
+                '<td data-label="Sources">{links}</td></tr>'.format(
+                    label=esc(label), a=esc(dm.get("team_a")), b=esc(dm.get("team_b")),
+                    when=esc(str(dm.get("start_utc") or "")[:16].replace("T", " ")),
+                    pick=esc(dm.get("pick")), prob=esc(f"{100 * dm['pick_prob']:.1f}%"),
+                    links=" · ".join(f'<a href="{esc(u)}" rel="noopener">{esc(n)}</a>' for n, u in links if u)))
+            continue
         match = (day4.get("twc") or {}).get(key) or {}
         teams = match.get("teams") or []
         if not match or len(teams) != 2:
@@ -546,8 +564,8 @@ def canonical_home(pick_board):
 <div class="tablewrap"><table class="responsive"><thead><tr><th>Match</th><th>When (UTC)</th>
 <th>Line basis</th><th>Pick</th><th>Sources</th></tr></thead><tbody>{''.join(twc_rows)}</tbody></table></div>
 <p class="note">The Thunderpick World Championship Malta playoffs are <strong>not listed on the HotSpawn
-pick'em lobby</strong> (its fixtures API has no Malta competition), so these two rows are originated
-externally and flagged as not-listed. Full reasoning, the verified day-1 to day-3 review and the Aurora
+pick'em lobby</strong> (its fixtures API has no Malta competition), so these two rows are priced from
+external bookmakers only. The <a href="desk/twc.html">picks desk</a> above carries the full case. Full reasoning, the verified day-1 to day-3 review and the Aurora
 roster investigation are on the <a href="day4/twc-review.html">day 1–3 review</a>.
 <a class="btn" href="day4/picks.html#twc">Semifinal picks + sources</a></p>
 </section>"""
@@ -597,6 +615,12 @@ see <a href="flagged.html#audit-1b35-source-mismatch">the site-wide review note<
 that board was generated at {day4_generated_fmt}. A page rebuild is not a new source observation.
 Open the pick lists for per-match expiry checks.</p>
 <p><a href="twc-2026/results.html">Verified day-two results</a> → <a href="twc-2026/index.html">day-three decisions</a> → <a href="twc-2026/day-4.html">Day 1–3 review &amp; Day 4 Semifinals picks</a> · <a href="twc-2026/roster.html">Original Aurora announcements &amp; unknown rest</a> · <a href="twc-2026/flagged.html">Research flags</a>. The upset watchlist never changes the canonical match probabilities.</p>
+<h2 id="strict-canonical">Strict canonical board · no research joins</h2>
+<p class="small muted">These four figures count only what the canonical matcher accepted on its own:
+no re-joined book quotes, no roster-disambiguated Valve rows and no lower bounds. The
+<a href="desk/picks.html">picks desk</a> above starts from the same capture and adds those labelled
+research joins, which is why it can publish a pick for all 32 rows while this strict view still shows
+nine blanks. Both counts are correct for their own rule.</p>
 <div class="cards">{pick_counts}</div>
 <p id="pick-accounting"><strong>{esc(directional)} directional picks</strong> ·
 <strong>{esc(tied)} priced ties — no edge</strong>. A market price is not always a recommendation.
@@ -608,7 +632,9 @@ These categories plus the unverified blanks account for every open row in this s
 in this evaluated snapshot. Missing prices, uncertain roster identity, stale evidence or mismatched
 kickoff times are reasons to withhold a pick, not exclude the match. Each row on the
 <a href="picks-every-match/unresolved.html">dedicated unresolved page</a> explains source attempts and limitations.
-<strong>Unsupported probabilities stay blank, not 50/50.</strong></p>
+<strong>Unsupported probabilities stay blank, not 50/50.</strong> The desk above resolves nine of
+these strict blanks with published evidence — three re-joined book quotes, three roster-disambiguated
+Valve model rows and four lower bounds — and each one is labelled with its basis.</p>
 <p>Primary markets come first. Only uncovered matches use the fallback research ladder:
 HLTV → esportsbooks/exchanges → uniquely identified official Valve ratings.
 An endpoint responding successfully is not proof it prices a match. Model estimates are our
