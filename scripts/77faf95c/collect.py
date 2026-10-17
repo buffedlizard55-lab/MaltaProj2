@@ -61,7 +61,10 @@ MELBET = "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=10
 KALSHI = ("https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME"
           "&status=open&with_nested_markets=true&limit=200")
 
-LOBBY_STATE_RE = re.compile(r'<script id="[^"]*transfer-state[^"]*"[^>]*>(.*?)</script>', re.S)
+# The lobby is a server-rendered Angular app; its public transfer-state block is script#ng-state.
+LOBBY_STATE_RE = re.compile(r'<script[^>]*id="ng-state"[^>]*>(.*?)</script>', re.S | re.I)
+LOBBY_STATE_FALLBACK_RE = re.compile(r'<script[^>]*id="[^"]*(?:transfer-state|ng-state|serverapp-state)"'
+                                     r'[^>]*>(.*?)</script>', re.S | re.I)
 PROP_RE = re.compile(r"\(|\)|\byes\b|\bno\b|kills?|\bmaps?\b|total|handicap|rounds?|pistol|winner", re.I)
 CS2_LEAGUE_RE = re.compile(r"^(CS2|Counter-Strike|CS 2|CS:GO)", re.I)
 MAX_TOTAL_RAW_BYTES = 12_000_000
@@ -158,7 +161,7 @@ def quote(source_key, source_name, public_url, api_url, event_id, team_a, team_b
 
 # --------------------------------------------------------------------------- HotSpawn
 def lobby_state(page_html):
-    m = LOBBY_STATE_RE.search(page_html or "")
+    m = LOBBY_STATE_RE.search(page_html or "") or LOBBY_STATE_FALLBACK_RE.search(page_html or "")
     if not m:
         return {}
     try:
@@ -203,7 +206,8 @@ def collect_hotspawn():
     page, meta = fetch(LOBBY_PAGE, {"Accept": "text/html"}, timeout=60)
     state = lobby_state(page.decode("utf-8", "replace")) if page else {}
     page_fx = [f for f in (state.get("fixtures") or []) if str((f or {}).get("sport_alias", "cs2")).casefold() == "cs2"]
-    record("hotspawn_lobby_page", meta, rows_total=len(state.get("fixtures") or []), rows_cs2=len(page_fx))
+    record("hotspawn_lobby_page", meta, rows_total=len(state.get("fixtures") or []), rows_cs2=len(page_fx),
+           ng_state_found=bool(state.get("fixtures")), permalinks=len(state.get("permalinks") or {}))
 
     api_rows, meta2 = fetch_json(HS_API, {"Accept": "application/json", "Referer": LOBBY_PAGE}, 90)
     api_rows = api_rows if isinstance(api_rows, list) else []
@@ -228,8 +232,10 @@ def collect_hotspawn():
     kept = {}
     for fid, fx in fixtures.items():
         status_counts[str(fx.get("status"))] = status_counts.get(str(fx.get("status")), 0) + 1
-        if "lobby_page" in fx["seen_in"] or fx.get("status") in ("scheduled", "started") \
-                or (fx.get("start_utc") or "") >= iso(cutoff):
+        # Only rows the lobby actually renders are the pickable inventory. Rows that came from the
+        # API alone (the API carries the whole history, including stale "scheduled" rows) are kept
+        # only as settlement evidence for the last seven days.
+        if "lobby_page" in fx["seen_in"] or (fx.get("start_utc") or "") >= iso(cutoff):
             kept[fid] = fx
     record("hotspawn_api", ACCESS["hotspawn_api"], rows=len(api_rows),
            cs2_status_counts=status_counts, cs2_rows_kept=len(kept))
