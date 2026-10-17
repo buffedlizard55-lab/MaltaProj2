@@ -1,6 +1,6 @@
 {
  "session": "7177d07f",
- "generated_utc": "2026-10-17T09:27:09Z",
+ "generated_utc": "2026-10-17T10:01:15Z",
  "inventory_source": {
   "file": "data/hotspawn_matches.json",
   "page": "https://play.hotspawn.com/lobby",
@@ -11,21 +11,21 @@
  },
  "featured_source": {
   "file": "data/lines.json",
-  "generated_at_utc": "2026-10-17T09:26:36Z",
+  "generated_at_utc": "2026-10-17T09:59:55Z",
   "odds_collected_at_utc": "2026-10-17T09:26:36Z"
  },
  "snapshot_source": {
   "file": "data/7177d07f/snapshot.json",
-  "collected_utc": "2026-10-17T09:27:09Z",
+  "collected_utc": "2026-10-17T10:01:15Z",
   "sources": [
    {
     "key": "hltv_probe",
     "url": "https://www.hltv.org/betting/analytics",
     "http_status": 200,
     "error": null,
-    "bytes": 340957,
+    "bytes": 346782,
     "rows": 0,
-    "retrieved_utc": "2026-10-17T09:27:09Z",
+    "retrieved_utc": "2026-10-17T10:01:15Z",
     "note": "HLTV numeric pricing is not parsed by this collector: the 'Best Odds' columns for the unpriced fixtures were empty when read manually on 2026-10-14. HLTV is used for identity and ranking evidence, archived in data/7177d07f/hltv_research.json."
    },
    {
@@ -34,9 +34,9 @@
     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
     "http_status": 200,
     "error": null,
-    "bytes": 47015,
+    "bytes": 47019,
     "rows": 31,
-    "retrieved_utc": "2026-10-17T09:27:06Z",
+    "retrieved_utc": "2026-10-17T10:01:14Z",
     "body_preview": ""
    },
    {
@@ -49,7 +49,7 @@
     "rows": 26,
     "fetched": 300,
     "with_coefficients": 26,
-    "retrieved_utc": "2026-10-17T09:27:08Z",
+    "retrieved_utc": "2026-10-17T10:01:14Z",
     "body_preview": ""
    },
    {
@@ -58,9 +58,9 @@
     "api_url": "https://api.elections.kalshi.com/trade-api/v2/markets?series_ticker=KXCS2GAME&limit=200&status=open",
     "http_status": 200,
     "error": null,
-    "bytes": 223201,
+    "bytes": 223198,
     "rows": 88,
-    "retrieved_utc": "2026-10-17T09:27:08Z"
+    "retrieved_utc": "2026-10-17T10:01:15Z"
    },
    {
     "key": "valve_vrs",
@@ -70,7 +70,7 @@
     "error": null,
     "bytes": 77872,
     "rows": 380,
-    "retrieved_utc": "2026-10-17T09:27:05Z",
+    "retrieved_utc": "2026-10-17T10:01:13Z",
     "snapshot": "2026_10_05",
     "standings": [
      {
@@ -2747,18 +2747,17 @@
   "with_pick": 21,
   "unresolved": 7,
   "by_basis": {
-   "originated_vrs": 9,
-   "featured": 7,
-   "unresolved": 7,
-   "esportsbook": 5
+   "originated_vrs": 10,
+   "esportsbook": 11,
+   "unresolved": 7
   },
   "calibration": {
-   "k": 0.2966,
+   "k": 0.4213,
    "fitted": true,
-   "pairs_used": 7,
+   "pairs_used": 0,
    "min_pairs": 6,
-   "mae_prob": 0.07150286527437617,
-   "borrowed_from": null
+   "mae_prob": null,
+   "borrowed_from": "data/c64a5e19/board.json"
   },
   "valve_snapshot": "2026_10_05",
   "valve_rows": 380
@@ -2779,27 +2778,25 @@
      "kind": "official_valve_vrs",
      "source": "Valve regional standings (official)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "detail": "GenOne 1185 pts (standing 66) vs Butterfly 1082 pts (standing 88); Valve Glicko curve, calibrated slope k=0.2966060056984097",
-     "read_utc": "2026-10-17T09:27:05Z"
+     "detail": "GenOne 1185 pts (standing 66) vs Butterfly 1082 pts (standing 88); Valve Glicko curve, calibrated slope k=0.42134147483007134",
+     "read_utc": "2026-10-17T10:01:13Z"
     }
    ],
-   "flags": [
-    "pick_disagrees_with_at_least_one_other_board"
-   ],
+   "flags": [],
    "basis": "originated_vrs",
-   "prob_a": 0.5427,
-   "prob_b": 0.4573,
+   "prob_a": 0.5605,
+   "prob_b": 0.4395,
    "pick": "GenOne",
-   "pick_prob": 0.5427,
+   "pick_prob": 0.5605,
    "confidence": "Lean (originated)",
    "cross_check": [
     {
      "board": "picks-every-match (c64a5e19)",
      "page": "picks-every-match/index.html",
-     "pick": "Butterfly",
-     "prob": 0.5657,
-     "basis": "market",
-     "agrees": false
+     "pick": "GenOne",
+     "prob": 0.5605,
+     "basis": "model",
+     "agrees": true
     },
     {
      "board": "board (fe803b80)",
@@ -2813,7 +2810,7 @@
      "board": "ourline (f7279a54)",
      "page": "ourline/index.html",
      "pick": "GenOne",
-     "prob": 0.5572,
+     "prob": 0.5574,
      "basis": "model",
      "agrees": true
     },
@@ -2839,26 +2836,26 @@
    "hotspawn_url_kind": "published match page",
    "evidence": [
     {
-     "kind": "featured_bookmaker_line",
-     "source": "Bovada",
-     "url": "https://www.bovada.lv/esports/counter-strike-2/pulse-beat-iii/mibr-100-thieves-202610170700",
-     "detail": "quoted 1.69 / 2.1; no-vig 0.5541 / 0.4459",
-     "read_utc": "2026-10-17T09:26:29Z"
+     "kind": "esportsbook_price",
+     "source": "Melbet (esportsbook LineFeed)",
+     "url": "https://melbet.com/en/line/esports",
+     "detail": "MiBR 1.75 / 100 Thieves 2.06 -> no-vig 0.541 / 0.459",
+     "read_utc": "2026-10-17T10:01:15Z"
     }
    ],
    "flags": [],
-   "basis": "featured",
-   "prob_a": 0.5541,
-   "prob_b": 0.4459,
+   "basis": "esportsbook",
+   "prob_a": 0.5407,
+   "prob_b": 0.4593,
    "pick": "MIBR",
-   "pick_prob": 0.5541,
+   "pick_prob": 0.5407,
    "confidence": "Lean",
    "cross_check": [
     {
      "board": "picks-every-match (c64a5e19)",
      "page": "picks-every-match/index.html",
      "pick": "MIBR",
-     "prob": 0.5517,
+     "prob": 0.5474,
      "basis": "market",
      "agrees": true
     },
@@ -2931,33 +2928,26 @@
    "hotspawn_url_kind": "published match page",
    "evidence": [
     {
-     "kind": "featured_bookmaker_line",
-     "source": "Bovada",
-     "url": "https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-qualifiers/europe/eyeballers-gamerlegion-202610170700",
-     "detail": "quoted 3.2 / 1.333333; no-vig 0.2941 / 0.7059",
-     "read_utc": "2026-10-17T09:26:29Z"
-    },
-    {
-     "kind": "featured_bookmaker_line",
-     "source": "Pinnacle",
-     "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638612857/markets/related/straight",
-     "detail": "quoted 3.06 / 1.3521; no-vig 0.3065 / 0.6935",
-     "read_utc": "2026-10-17T09:26:27Z"
+     "kind": "esportsbook_price",
+     "source": "Melbet (esportsbook LineFeed)",
+     "url": "https://melbet.com/en/line/esports",
+     "detail": "EYEBALLERS 2.991 / GamerLegion 1.37 -> no-vig 0.314 / 0.686",
+     "read_utc": "2026-10-17T10:01:15Z"
     }
    ],
    "flags": [],
-   "basis": "featured",
-   "prob_a": 0.3003,
-   "prob_b": 0.6997,
+   "basis": "esportsbook",
+   "prob_a": 0.3141,
+   "prob_b": 0.6859,
    "pick": "GamerLegion",
-   "pick_prob": 0.6997,
+   "pick_prob": 0.6859,
    "confidence": "Solid",
    "cross_check": [
     {
      "board": "picks-every-match (c64a5e19)",
      "page": "picks-every-match/index.html",
      "pick": "GamerLegion",
-     "prob": 0.699,
+     "prob": 0.6938,
      "basis": "market",
      "agrees": true
     },
@@ -2965,7 +2955,7 @@
      "board": "board (fe803b80)",
      "page": "board/picks.html",
      "pick": "GamerLegion",
-     "prob": 0.6781163048010679,
+     "prob": 0.676840194682232,
      "basis": "market+model",
      "agrees": true
     },
@@ -2973,7 +2963,7 @@
      "board": "ourline (f7279a54)",
      "page": "ourline/index.html",
      "pick": "GamerLegion",
-     "prob": 0.689,
+     "prob": 0.6917,
      "basis": "market",
      "agrees": true
     },
@@ -2999,44 +2989,61 @@
    "hotspawn_url_kind": "published match page",
    "evidence": [
     {
-     "kind": "featured_bookmaker_line",
-     "source": "Pinnacle",
-     "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638582117/markets/related/straight",
-     "detail": "quoted 1.4717 / 2.52; no-vig 0.6313 / 0.3687",
-     "read_utc": "2026-10-17T09:26:26Z"
+     "kind": "official_valve_vrs",
+     "source": "Valve regional standings (official)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "detail": "Bebop 702 pts (standing 212) vs DONSTU 732 pts (standing 197); Valve Glicko curve, calibrated slope k=0.42134147483007134",
+     "read_utc": "2026-10-17T10:01:13Z"
+    },
+    {
+     "kind": "esportsbook_same_slot_not_joined",
+     "source": "Melbet (esportsbook LineFeed)",
+     "url": "https://melbet.com/en/line/esports",
+     "detail": "Bebop 1.48 / Donstu Esports 2.526 -> 0.631 for Bebop if the label is the same team. NOT joined: the identity is what is in dispute on this event.",
+     "read_utc": "2026-10-17T10:01:15Z"
+    },
+    {
+     "kind": "note",
+     "source": "7177d07f rule",
+     "url": "https://play.hotspawn.com/lobby",
+     "detail": "Slot prices above are published for comparison only. They are excluded from the probability because joining them would assume the identity they are meant to test.",
+     "read_utc": null
     }
    ],
-   "flags": [],
-   "basis": "featured",
-   "prob_a": 0.6313,
-   "prob_b": 0.3687,
-   "pick": "Bebop",
-   "pick_prob": 0.6313,
-   "confidence": "Solid",
+   "flags": [
+    "multiple_official_rows_same_team",
+    "pick_disagrees_with_every_other_published_board"
+   ],
+   "basis": "originated_vrs",
+   "prob_a": 0.4823,
+   "prob_b": 0.5177,
+   "pick": "Donstu",
+   "pick_prob": 0.5177,
+   "confidence": "Toss-up (originated)",
    "cross_check": [
     {
      "board": "picks-every-match (c64a5e19)",
      "page": "picks-every-match/index.html",
      "pick": "Bebop",
-     "prob": 0.5951,
+     "prob": 0.6325,
      "basis": "market",
-     "agrees": true
+     "agrees": false
     },
     {
      "board": "board (fe803b80)",
      "page": "board/picks.html",
      "pick": "Bebop",
-     "prob": 0.6066005736000011,
+     "prob": 0.6088864492665127,
      "basis": "market+model",
-     "agrees": true
+     "agrees": false
     },
     {
      "board": "ourline (f7279a54)",
      "page": "ourline/index.html",
      "pick": "Bebop",
-     "prob": 0.626,
+     "prob": 0.6311,
      "basis": "market",
-     "agrees": true
+     "agrees": false
     },
     {
      "board": "coverage (6ddde224)",
@@ -3044,7 +3051,7 @@
      "pick": "Bebop",
      "prob": 0.59438742407331,
      "basis": "market",
-     "agrees": true
+     "agrees": false
     }
    ]
   },
@@ -3064,7 +3071,7 @@
      "source": "Thunderpick (coefficients as published by bo3.gg)",
      "url": "https://bo3.gg/matches/ence-vs-phantom-esports-17-10-2026",
      "detail": "ENCE 3.2 / Phantom 1.3 -> no-vig 0.289 / 0.711",
-     "read_utc": "2026-10-17T09:27:09Z"
+     "read_utc": "2026-10-17T10:01:15Z"
     }
    ],
    "flags": [],
@@ -3079,7 +3086,7 @@
      "board": "picks-every-match (c64a5e19)",
      "page": "picks-every-match/index.html",
      "pick": "Phantom",
-     "prob": 0.6063,
+     "prob": 0.6622,
      "basis": "market",
      "agrees": true
     },
@@ -3087,7 +3094,7 @@
      "board": "board (fe803b80)",
      "page": "board/picks.html",
      "pick": "Phantom",
-     "prob": 0.6708246688131414,
+     "prob": 0.6846001402516704,
      "basis": "market+model",
      "agrees": true
     },
@@ -3095,7 +3102,7 @@
      "board": "ourline (f7279a54)",
      "page": "ourline/index.html",
      "pick": "Phantom",
-     "prob": 0.6622,
+     "prob": 0.7012,
      "basis": "market",
      "agrees": true
     },
@@ -3121,26 +3128,26 @@
    "hotspawn_url_kind": "published match page",
    "evidence": [
     {
-     "kind": "featured_bookmaker_line",
-     "source": "Bovada",
-     "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/bushido-wildcats-gothic-202610171000",
-     "detail": "quoted 1.741 / 2.05; no-vig 0.5408 / 0.4592",
-     "read_utc": "2026-10-17T09:26:29Z"
+     "kind": "esportsbook_price",
+     "source": "Melbet (esportsbook LineFeed)",
+     "url": "https://melbet.com/en/line/esports",
+     "detail": "Bushido Wildcats 1.686 / Gothic 2.0 -> no-vig 0.543 / 0.457",
+     "read_utc": "2026-10-17T10:01:15Z"
     }
    ],
    "flags": [],
-   "basis": "featured",
-   "prob_a": 0.5408,
-   "prob_b": 0.4592,
+   "basis": "esportsbook",
+   "prob_a": 0.5426,
+   "prob_b": 0.4574,
    "pick": "Bushido Wildcats",
-   "pick_prob": 0.5408,
+   "pick_prob": 0.5426,
    "confidence": "Lean",
    "cross_check": [
     {
      "board": "picks-every-match (c64a5e19)",
      "page": "picks-every-match/index.html",
      "pick": "Bushido Wildcats",
-     "prob": 0.5426,
+     "prob": 0.5417,
      "basis": "market",
      "agrees": true
     },
@@ -3182,33 +3189,26 @@
    "hotspawn_url_kind": "published match page",
    "evidence": [
     {
-     "kind": "featured_bookmaker_line",
-     "source": "Bovada",
-     "url": "https://www.bovada.lv/esports/counter-strike-2/thunderpick-world-championship-26/furia-esports-team-aurora-202610171000",
-     "detail": "quoted 1.833333 / 1.909091; no-vig 0.5101 / 0.4899",
-     "read_utc": "2026-10-17T09:26:29Z"
-    },
-    {
-     "kind": "featured_bookmaker_line",
-     "source": "Pinnacle",
-     "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638536356/markets/related/straight",
-     "detail": "quoted 1.8696 / 1.9524; no-vig 0.5108 / 0.4892",
-     "read_utc": "2026-10-17T09:26:25Z"
+     "kind": "esportsbook_price",
+     "source": "Thunderpick (coefficients as published by bo3.gg)",
+     "url": "https://bo3.gg/matches/furia-vs-aurora-gaming-17-10-2026",
+     "detail": "FURIA 1.85 / Aurora 1.85 -> no-vig 0.500 / 0.500",
+     "read_utc": "2026-10-17T10:01:15Z"
     }
    ],
    "flags": [],
-   "basis": "featured",
-   "prob_a": 0.5105,
-   "prob_b": 0.4895,
+   "basis": "esportsbook",
+   "prob_a": 0.5,
+   "prob_b": 0.5,
    "pick": "FURIA",
-   "pick_prob": 0.5105,
+   "pick_prob": 0.5,
    "confidence": "Toss-up",
    "cross_check": [
     {
      "board": "picks-every-match (c64a5e19)",
      "page": "picks-every-match/index.html",
      "pick": "FURIA",
-     "prob": 0.515,
+     "prob": 0.5106,
      "basis": "market",
      "agrees": true
     },
@@ -3272,26 +3272,28 @@
    "hotspawn_url_kind": "published match page",
    "evidence": [
     {
-     "kind": "featured_bookmaker_line",
-     "source": "Bovada",
-     "url": "https://www.bovada.lv/esports/counter-strike-2/nodwin-clutch-series/baks-esports-fire-flux-202610171300",
-     "detail": "quoted 1.47619 / 2.6; no-vig 0.6379 / 0.3621",
-     "read_utc": "2026-10-17T09:26:29Z"
+     "kind": "esportsbook_price",
+     "source": "Kalshi (regulated exchange)",
+     "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct171300firebaks",
+     "detail": "BakS 1.5385 / Fire Flux 2.8571 -> no-vig 0.650 / 0.350",
+     "read_utc": "2026-10-17T10:01:15Z"
     }
    ],
-   "flags": [],
-   "basis": "featured",
-   "prob_a": 0.6379,
-   "prob_b": 0.3621,
+   "flags": [
+    "probability_from_exchange_bid_ask_midpoints"
+   ],
+   "basis": "esportsbook",
+   "prob_a": 0.65,
+   "prob_b": 0.35,
    "pick": "BakS",
-   "pick_prob": 0.6379,
-   "confidence": "Solid",
+   "pick_prob": 0.65,
+   "confidence": "Solid (exchange)",
    "cross_check": [
     {
      "board": "picks-every-match (c64a5e19)",
      "page": "picks-every-match/index.html",
      "pick": "BakS",
-     "prob": 0.5918,
+     "prob": 0.6373,
      "basis": "market",
      "agrees": true
     },
@@ -3299,7 +3301,7 @@
      "board": "board (fe803b80)",
      "page": "board/picks.html",
      "pick": "BakS",
-     "prob": 0.6236872211784786,
+     "prob": 0.6259167542153177,
      "basis": "market+model",
      "agrees": true
     },
@@ -3337,7 +3339,7 @@
      "source": "Thunderpick (coefficients as published by bo3.gg)",
      "url": "https://bo3.gg/matches/falcons-esports-vs-betboom-team-17-10-2026",
      "detail": "Falcons 1.26 / BetBoom 3.4 -> no-vig 0.730 / 0.270",
-     "read_utc": "2026-10-17T09:27:09Z"
+     "read_utc": "2026-10-17T10:01:15Z"
     }
    ],
    "flags": [],
@@ -3352,7 +3354,7 @@
      "board": "picks-every-match (c64a5e19)",
      "page": "picks-every-match/index.html",
      "pick": "Falcons",
-     "prob": 0.7624,
+     "prob": 0.7322,
      "basis": "market",
      "agrees": true
     },
@@ -3394,26 +3396,26 @@
    "hotspawn_url_kind": "published match page",
    "evidence": [
     {
-     "kind": "featured_bookmaker_line",
-     "source": "Bovada",
-     "url": "https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-qualifiers/europe/bbl-esports-ex-rustec-202610171300",
-     "detail": "quoted 1.526316 / 2.45; no-vig 0.6161 / 0.3839",
-     "read_utc": "2026-10-17T09:26:29Z"
+     "kind": "esportsbook_price",
+     "source": "Thunderpick (coefficients as published by bo3.gg)",
+     "url": "https://bo3.gg/matches/bbl-vs-ex-rustec-17-10-2026",
+     "detail": "BBL 1.52 / ex-RUSTEC 2.35 -> no-vig 0.607 / 0.393",
+     "read_utc": "2026-10-17T10:01:15Z"
     }
    ],
    "flags": [],
-   "basis": "featured",
-   "prob_a": 0.6161,
-   "prob_b": 0.3839,
+   "basis": "esportsbook",
+   "prob_a": 0.6072,
+   "prob_b": 0.3928,
    "pick": "BBL",
-   "pick_prob": 0.6161,
+   "pick_prob": 0.6072,
    "confidence": "Solid",
    "cross_check": [
     {
      "board": "picks-every-match (c64a5e19)",
      "page": "picks-every-match/index.html",
      "pick": "BBL",
-     "prob": 0.6456,
+     "prob": 0.6041,
      "basis": "market",
      "agrees": true
     },
@@ -3421,7 +3423,7 @@
      "board": "board (fe803b80)",
      "page": "board/picks.html",
      "pick": "BBL",
-     "prob": 0.6143668509296869,
+     "prob": 0.6147185176633678,
      "basis": "market+model",
      "agrees": true
     },
@@ -3458,19 +3460,19 @@
      "kind": "official_valve_vrs",
      "source": "Valve regional standings (official)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "detail": "Banda Chuya 801 pts (standing 165) vs Enjoy 871 pts (standing 138); Valve Glicko curve, calibrated slope k=0.2966060056984097",
-     "read_utc": "2026-10-17T09:27:05Z"
+     "detail": "Banda Chuya 801 pts (standing 165) vs Enjoy 871 pts (standing 138); Valve Glicko curve, calibrated slope k=0.42134147483007134",
+     "read_utc": "2026-10-17T10:01:13Z"
     }
    ],
    "flags": [
     "multiple_official_rows_same_team"
    ],
    "basis": "originated_vrs",
-   "prob_a": 0.471,
-   "prob_b": 0.529,
+   "prob_a": 0.4588,
+   "prob_b": 0.5412,
    "pick": "Enjoy",
-   "pick_prob": 0.529,
-   "confidence": "Toss-up (originated)",
+   "pick_prob": 0.5412,
+   "confidence": "Lean (originated)",
    "cross_check": [
     {
      "board": "board (fe803b80)",
@@ -3505,8 +3507,8 @@
      "kind": "official_valve_vrs",
      "source": "Valve regional standings (official)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "detail": "ex-RUSTEC 1066 pts (standing 92) vs Illyrians 862 pts (standing 141); Valve Glicko curve, calibrated slope k=0.2966060056984097",
-     "read_utc": "2026-10-17T09:27:05Z"
+     "detail": "ex-RUSTEC 1066 pts (standing 92) vs Illyrians 862 pts (standing 141); Valve Glicko curve, calibrated slope k=0.42134147483007134",
+     "read_utc": "2026-10-17T10:01:13Z"
     }
    ],
    "flags": [
@@ -3514,11 +3516,11 @@
     "pick_disagrees_with_every_other_published_board"
    ],
    "basis": "originated_vrs",
-   "prob_a": 0.5839,
-   "prob_b": 0.4161,
+   "prob_a": 0.6181,
+   "prob_b": 0.3819,
    "pick": "ex-RUSTEC",
-   "pick_prob": 0.5839,
-   "confidence": "Lean (originated)",
+   "pick_prob": 0.6181,
+   "confidence": "Solid (originated)",
    "cross_check": [
     {
      "board": "board (fe803b80)",
@@ -3559,14 +3561,6 @@
    "pick_prob": null,
    "confidence": null,
    "cross_check": [
-    {
-     "board": "picks-every-match (c64a5e19)",
-     "page": "picks-every-match/index.html",
-     "pick": "ex-6666",
-     "prob": 0.9104,
-     "basis": "market",
-     "agrees": false
-    },
     {
      "board": "board (fe803b80)",
      "page": "board/picks.html",
@@ -3623,23 +3617,23 @@
      "kind": "official_valve_vrs",
      "source": "Valve regional standings (official)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "detail": "FORZE Reload 1100 pts (standing 84) vs BAKS 1044 pts (standing 100); Valve Glicko curve, calibrated slope k=0.2966060056984097",
-     "read_utc": "2026-10-17T09:27:05Z"
+     "detail": "FORZE Reload 1100 pts (standing 84) vs BAKS 1044 pts (standing 100); Valve Glicko curve, calibrated slope k=0.42134147483007134",
+     "read_utc": "2026-10-17T10:01:13Z"
     }
    ],
    "flags": [],
    "basis": "originated_vrs",
-   "prob_a": 0.5232,
-   "prob_b": 0.4768,
+   "prob_a": 0.533,
+   "prob_b": 0.467,
    "pick": "FORZE Reload",
-   "pick_prob": 0.5232,
+   "pick_prob": 0.533,
    "confidence": "Toss-up (originated)",
    "cross_check": [
     {
      "board": "picks-every-match (c64a5e19)",
      "page": "picks-every-match/index.html",
      "pick": "FORZE Reload",
-     "prob": 0.5347,
+     "prob": 0.533,
      "basis": "model",
      "agrees": true
     },
@@ -3655,7 +3649,7 @@
      "board": "ourline (f7279a54)",
      "page": "ourline/index.html",
      "pick": "FORZE Reload",
-     "prob": 0.5312,
+     "prob": 0.5313,
      "basis": "model",
      "agrees": true
     },
@@ -3694,7 +3688,7 @@
      "board": "picks-every-match (c64a5e19)",
      "page": "picks-every-match/index.html",
      "pick": "Infinite",
-     "prob": 0.6552,
+     "prob": 0.7274,
      "basis": "market",
      "agrees": false
     },
@@ -3740,7 +3734,7 @@
      "source": "Melbet (esportsbook LineFeed)",
      "url": "https://melbet.com/en/line/esports",
      "detail": "aimclub 2.04 / BASEMENT BOYS 1.69 -> no-vig 0.453 / 0.547",
-     "read_utc": "2026-10-17T09:27:09Z"
+     "read_utc": "2026-10-17T10:01:15Z"
     }
    ],
    "flags": [],
@@ -3800,15 +3794,15 @@
      "kind": "official_valve_vrs",
      "source": "Valve regional standings (official)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "detail": "BC.Game 1318 pts (standing 50) vs Drama 845 pts (standing 148); Valve Glicko curve, calibrated slope k=0.2966060056984097",
-     "read_utc": "2026-10-17T09:27:05Z"
+     "detail": "BC.Game 1318 pts (standing 50) vs Drama 845 pts (standing 148); Valve Glicko curve, calibrated slope k=0.42134147483007134",
+     "read_utc": "2026-10-17T10:01:13Z"
     },
     {
      "kind": "esportsbook_same_slot_not_joined",
      "source": "Melbet (esportsbook LineFeed)",
      "url": "https://melbet.com/en/line/esports",
      "detail": "BC.Game 1.12 / Drama eSports 5.26 -> 0.824 for BC.Game if the label is the same team. NOT joined: the identity is what is in dispute on this event.",
-     "read_utc": "2026-10-17T09:27:09Z"
+     "read_utc": "2026-10-17T10:01:15Z"
     },
     {
      "kind": "note",
@@ -3820,11 +3814,11 @@
    ],
    "flags": [],
    "basis": "originated_vrs",
-   "prob_a": 0.6869,
-   "prob_b": 0.3131,
+   "prob_a": 0.7533,
+   "prob_b": 0.2467,
    "pick": "BC.Game",
-   "pick_prob": 0.6869,
-   "confidence": "Solid (originated)",
+   "pick_prob": 0.7533,
+   "confidence": "Strong (originated)",
    "cross_check": [
     {
      "board": "picks-every-match (c64a5e19)",
@@ -3875,15 +3869,15 @@
      "kind": "official_valve_vrs",
      "source": "Valve regional standings (official)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "detail": "Nexus 1008 pts (standing 111) vs WBT 1201 pts (standing 60); Valve Glicko curve, calibrated slope k=0.2966060056984097",
-     "read_utc": "2026-10-17T09:27:05Z"
+     "detail": "Nexus 1008 pts (standing 111) vs WBT 1201 pts (standing 60); Valve Glicko curve, calibrated slope k=0.42134147483007134",
+     "read_utc": "2026-10-17T10:01:13Z"
     },
     {
      "kind": "esportsbook_same_slot_not_joined",
      "source": "Thunderpick (coefficients as published by bo3.gg)",
      "url": "https://bo3.gg/matches/wbt-vs-nexus-19-10-2026",
      "detail": "WBT 1.72 / Nexus 2.0 -> 0.462 for Nexus if the label is the same team. NOT joined: the identity is what is in dispute on this event.",
-     "read_utc": "2026-10-17T09:27:09Z"
+     "read_utc": "2026-10-17T10:01:15Z"
     },
     {
      "kind": "note",
@@ -3895,11 +3889,11 @@
    ],
    "flags": [],
    "basis": "originated_vrs",
-   "prob_a": 0.4205,
-   "prob_b": 0.5795,
+   "prob_a": 0.3881,
+   "prob_b": 0.6119,
    "pick": "WROTBERRY",
-   "pick_prob": 0.5795,
-   "confidence": "Lean (originated)",
+   "pick_prob": 0.6119,
+   "confidence": "Solid (originated)",
    "cross_check": [
     {
      "board": "board (fe803b80)",
@@ -3927,7 +3921,7 @@
      "source": "Melbet (esportsbook LineFeed)",
      "url": "https://melbet.com/en/line/esports",
      "detail": "Iberian Soul 1.42 / HyperSpirit 2.698 -> no-vig 0.655 / 0.345",
-     "read_utc": "2026-10-17T09:27:09Z"
+     "read_utc": "2026-10-17T10:01:15Z"
     }
    ],
    "flags": [],
@@ -3988,7 +3982,7 @@
      "source": "Thunderpick (coefficients as published by bo3.gg)",
      "url": "https://bo3.gg/matches/sashi-esport-vs-mouz-nxt-19-10-2026",
      "detail": "Sashi 1.48 / MOUZ NXT 2.5 -> no-vig 0.628 / 0.372",
-     "read_utc": "2026-10-17T09:27:09Z"
+     "read_utc": "2026-10-17T10:01:15Z"
     }
    ],
    "flags": [],
@@ -4048,8 +4042,8 @@
      "kind": "official_valve_vrs",
      "source": "Valve regional standings (official)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "detail": "ASTRAL 1072 pts (standing 91) vs Leo 1001 pts (standing 112); Valve Glicko curve, calibrated slope k=0.2966060056984097",
-     "read_utc": "2026-10-17T09:27:05Z"
+     "detail": "ASTRAL 1072 pts (standing 91) vs Leo 1001 pts (standing 112); Valve Glicko curve, calibrated slope k=0.42134147483007134",
+     "read_utc": "2026-10-17T10:01:13Z"
     }
    ],
    "flags": [
@@ -4057,11 +4051,11 @@
     "pick_disagrees_with_at_least_one_other_board"
    ],
    "basis": "originated_vrs",
-   "prob_a": 0.5294,
-   "prob_b": 0.4706,
+   "prob_a": 0.5418,
+   "prob_b": 0.4582,
    "pick": "ASTRAL",
-   "pick_prob": 0.5294,
-   "confidence": "Toss-up (originated)",
+   "pick_prob": 0.5418,
+   "confidence": "Lean (originated)",
    "cross_check": [
     {
      "board": "picks-every-match (c64a5e19)",
@@ -4143,23 +4137,23 @@
      "kind": "official_valve_vrs",
      "source": "Valve regional standings (official)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "detail": "Rare Atom 906 pts (standing 133) vs Alter Ego 819 pts (standing 155); Valve Glicko curve, calibrated slope k=0.2966060056984097",
-     "read_utc": "2026-10-17T09:27:05Z"
+     "detail": "Rare Atom 906 pts (standing 133) vs Alter Ego 819 pts (standing 155); Valve Glicko curve, calibrated slope k=0.42134147483007134",
+     "read_utc": "2026-10-17T10:01:13Z"
     }
    ],
    "flags": [],
    "basis": "originated_vrs",
-   "prob_a": 0.5361,
-   "prob_b": 0.4639,
+   "prob_a": 0.5511,
+   "prob_b": 0.4489,
    "pick": "Rare Atom",
-   "pick_prob": 0.5361,
-   "confidence": "Toss-up (originated)",
+   "pick_prob": 0.5511,
+   "confidence": "Lean (originated)",
    "cross_check": [
     {
      "board": "picks-every-match (c64a5e19)",
      "page": "picks-every-match/index.html",
      "pick": "Rare Atom",
-     "prob": 0.5538,
+     "prob": 0.5511,
      "basis": "model",
      "agrees": true
     },
@@ -4175,7 +4169,7 @@
      "board": "ourline (f7279a54)",
      "page": "ourline/index.html",
      "pick": "Rare Atom",
-     "prob": 0.5483,
+     "prob": 0.5485,
      "basis": "model",
      "agrees": true
     },
@@ -4227,23 +4221,23 @@
      "kind": "official_valve_vrs",
      "source": "Valve regional standings (official)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "detail": "NEXVOID 995 pts (standing 113) vs Vitalem Aerem 721 pts (standing 204); Valve Glicko curve, calibrated slope k=0.2966060056984097",
-     "read_utc": "2026-10-17T09:27:05Z"
+     "detail": "NEXVOID 995 pts (standing 113) vs Vitalem Aerem 721 pts (standing 204); Valve Glicko curve, calibrated slope k=0.42134147483007134",
+     "read_utc": "2026-10-17T10:01:13Z"
     }
    ],
    "flags": [],
    "basis": "originated_vrs",
-   "prob_a": 0.6119,
-   "prob_b": 0.3881,
+   "prob_a": 0.6562,
+   "prob_b": 0.3438,
    "pick": "NEXVOID",
-   "pick_prob": 0.6119,
+   "pick_prob": 0.6562,
    "confidence": "Solid (originated)",
    "cross_check": [
     {
      "board": "picks-every-match (c64a5e19)",
      "page": "picks-every-match/index.html",
      "pick": "NEXVOID",
-     "prob": 0.6639,
+     "prob": 0.6562,
      "basis": "model",
      "agrees": true
     },
@@ -4259,7 +4253,7 @@
      "board": "ourline (f7279a54)",
      "page": "ourline/index.html",
      "pick": "NEXVOID",
-     "prob": 0.6482,
+     "prob": 0.6487,
      "basis": "model",
      "agrees": true
     },
@@ -4350,14 +4344,6 @@
    "confidence": null,
    "cross_check": [
     {
-     "board": "picks-every-match (c64a5e19)",
-     "page": "picks-every-match/index.html",
-     "pick": "ex-6666",
-     "prob": 0.9104,
-     "basis": "market",
-     "agrees": false
-    },
-    {
      "board": "board (fe803b80)",
      "page": "board/picks.html",
      "pick": "ex-6666",
@@ -4423,7 +4409,7 @@
      "board": "picks-every-match (c64a5e19)",
      "page": "picks-every-match/index.html",
      "pick": "Infinite",
-     "prob": 0.6552,
+     "prob": 0.7274,
      "basis": "market",
      "agrees": false
     },
