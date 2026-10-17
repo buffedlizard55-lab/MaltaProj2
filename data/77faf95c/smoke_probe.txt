@@ -1,0 +1,194 @@
+probe_utc: 2026-10-17T02:03:21Z
+python: 3.11.17
+
+======================================================================
+RUN scripts/browser_smoke.py
+  exit=0
+  --- stdout (tail) ---
+  PASS: desktop/mobile navigation, filters, no page errors, no viewport overflow
+  --- stderr (tail) ---
+  127.0.0.1 - - [17/Oct/2026 02:03:29] "GET /index.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:29] "GET /app.js HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:29] "GET /style.css HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:29] code 404, message File not found
+  127.0.0.1 - - [17/Oct/2026 02:03:29] "GET /favicon.ico HTTP/1.1" 404 -
+  127.0.0.1 - - [17/Oct/2026 02:03:30] "GET /matches.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:30] "GET /odds.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:30] "GET /app.js HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:30] "GET /style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:31] "GET /methodology.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:31] "GET /style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:31] "GET /app.js HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:31] "GET /sources.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:32] "GET /flags.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:32] "GET /app.js HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:32] "GET /style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:33] "GET /matches.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:33] "GET /index.html HTTP/1.1" 304 -
+
+======================================================================
+RUN scripts/build_site.py
+  exit=0
+  --- stdout (tail) ---
+  site built: 33 files, no broken internal links
+
+======================================================================
+RUN scripts/browser_current_smoke.py
+  exit=0
+  --- stdout (tail) ---
+  PASS: current root UI desktop/390px/320px, filters, source links and no overflow/errors
+  --- stderr (tail) ---
+  127.0.0.1 - - [17/Oct/2026 02:03:37] "GET /methodology.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:37] "GET /assets/app.js HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:37] "GET /assets/style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:38] "GET /research.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:38] "GET /assets/app.js HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:38] "GET /assets/style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:38] "GET /index.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:38] "GET /assets/style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:38] "GET /assets/app.js HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:39] "GET /cs2.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:39] "GET /assets/app.js HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:39] "GET /assets/style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:39] "GET /probabilities.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:39] "GET /assets/app.js HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:39] "GET /assets/style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:40] "GET /tournaments.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:40] "GET /assets/style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:40] "GET /assets/app.js HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:41] "GET /flagged.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:41] "GET /assets/style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:41] "GET /assets/app.js HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:41] "GET /methodology.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:42] "GET /research.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:42] "GET /assets/style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:42] "GET /assets/app.js HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:42] "GET /index.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:43] "GET /cs2.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:43] "GET /assets/style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:43] "GET /assets/app.js HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:44] "GET /probabilities.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:44] "GET /assets/app.js HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:44] "GET /assets/style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:44] "GET /tournaments.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:45] "GET /flagged.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:45] "GET /assets/style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:45] "GET /assets/app.js HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:45] "GET /methodology.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:46] "GET /research.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:46] "GET /assets/style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:46] "GET /assets/app.js HTTP/1.1" 304 -
+
+======================================================================
+RUN scripts/browser_479ef53e.py
+  exit=0
+  --- stdout (tail) ---
+  PASS: unified board at desktop/390/320px; row sources, filters, expiry, no overflow or JS errors
+  --- stderr (tail) ---
+  127.0.0.1 - - [17/Oct/2026 02:03:47] "GET /picks-every-match/index.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:47] code 404, message File not found
+  127.0.0.1 - - [17/Oct/2026 02:03:47] "GET /favicon.ico HTTP/1.1" 404 -
+  127.0.0.1 - - [17/Oct/2026 02:03:48] "GET /picks-every-match/picks.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:49] "GET /picks-every-match/inventory.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:49] "GET /picks-every-match/flagged.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:50] "GET /picks-every-match/method.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:50] "GET /picks-every-match/index.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:51] "GET /picks-every-match/picks.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:52] "GET /picks-every-match/flagged.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:53] "GET /picks-every-match/index.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:55] "GET /picks-every-match/inventory.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:55] "GET /picks-every-match/flagged.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:56] "GET /picks-every-match/method.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:03:56] "GET /picks-every-match/picks.html HTTP/1.1" 304 -
+
+======================================================================
+RUN scripts/ae75c5c3/browser_smoke.py
+  exit=0
+  --- stdout (tail) ---
+  PASS: fallback board desktop/390px/320px, source links, filters, expiry and no overflow
+  --- stderr (tail) ---
+  127.0.0.1 - - [17/Oct/2026 02:03:58] "GET /ourline/index.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:58] code 404, message File not found
+  127.0.0.1 - - [17/Oct/2026 02:03:58] "GET /favicon.ico HTTP/1.1" 404 -
+  127.0.0.1 - - [17/Oct/2026 02:03:59] "GET /ourline/flagged.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:03:59] "GET /ourline/sources.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:04:00] "GET /ourline/method.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:04:00] "GET /ourline/results.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:04:04] "GET /ourline/index.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:04] "GET /ourline/flagged.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:05] "GET /ourline/sources.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:05] "GET /ourline/method.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:06] "GET /ourline/results.html HTTP/1.1" 304 -
+
+======================================================================
+RUN scripts/c64a5e19/browser_smoke.py
+  exit=1
+  --- stderr (tail) ---
+  127.0.0.1 - - [17/Oct/2026 02:04:09] "GET /picks-every-match/inventory.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:04:10] "GET /picks-every-match/unresolved.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:04:10] "GET /picks-every-match/flagged.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:04:11] "GET /picks-every-match/method.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:04:15] "GET /picks-every-match/index.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:17] "GET /picks-every-match/picks.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:17] "GET /picks-every-match/inventory.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:18] "GET /picks-every-match/unresolved.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:18] "GET /picks-every-match/flagged.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:19] "GET /picks-every-match/method.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:23] "GET /picks-every-match/index.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:24] "GET /index.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:04:24] "GET /assets/style.css HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:04:24] "GET /assets/app.js HTTP/1.1" 200 -
+  Traceback (most recent call last):
+    File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/c64a5e19/browser_smoke.py", line 34, in <module>
+      assert page.locator('#executive-summary a[href="picks-every-match/index.html"]').is_visible()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/playwright/sync_api/_generated.py", line 17198, in is_visible
+      self._sync(self._impl_obj.is_visible(timeout=timeout))
+    File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/playwright/_impl/_sync_base.py", line 115, in _sync
+      return task.result()
+             ^^^^^^^^^^^^^
+    File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/playwright/_impl/_locator.py", line 513, in is_visible
+      return await self._frame.is_visible(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/playwright/_impl/_frame.py", line 408, in is_visible
+      return await self._channel.send(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/playwright/_impl/_connection.py", line 69, in send
+      return await self._connection.wrap_api_call(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/playwright/_impl/_connection.py", line 558, in wrap_api_call
+      raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+  playwright._impl._errors.Error: Locator.is_visible: Error: strict mode violation: locator("#executive-summary a[href=\"picks-every-match/index.html\"]") resolved to 2 elements:
+      1) <a class="btn btn-primary" href="picks-every-match/index.html">All picks · every match →</a> aka get_by_role("link", name="All picks · every match →")
+      2) <a href="picks-every-match/index.html">every-match picks</a> aka get_by_role("link", name="every-match picks")
+  
+  Call log:
+      - checking visibility of locator("#executive-summary a[href=\"picks-every-match/index.html\"]")
+
+======================================================================
+RUN scripts/browser_778756a1.py
+  exit=0
+  --- stdout (tail) ---
+  PASS: canonical mobile CTA, day-one and review at 320/390/768/1280px
+  --- stderr (tail) ---
+  127.0.0.1 - - [17/Oct/2026 02:04:25] "GET /index.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:04:25] "GET /assets/style.css HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:04:25] "GET /assets/app.js HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:04:25] code 404, message File not found
+  127.0.0.1 - - [17/Oct/2026 02:04:25] "GET /favicon.ico HTTP/1.1" 404 -
+  127.0.0.1 - - [17/Oct/2026 02:04:26] "GET /day-one.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:04:27] "GET /flagged.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:04:28] "GET /picks-every-match/index.html HTTP/1.1" 200 -
+  127.0.0.1 - - [17/Oct/2026 02:04:30] "GET /index.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:30] "GET /assets/style.css HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:30] "GET /assets/app.js HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:31] "GET /day-one.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:34] "GET /flagged.html HTTP/1.1" 304 -
+  127.0.0.1 - - [17/Oct/2026 02:04:35] "GET /picks-every-match/index.html HTTP/1.1" 304 -
+
+======================================================================
+RUN scripts/69e4c06a/browser_smoke.py
+  exit=0
+  --- stdout (tail) ---
+  PASS: TWC pages, primary links, canonical values, preview labels and expiry at 320/390/768/1280px
+
