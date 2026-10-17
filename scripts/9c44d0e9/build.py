@@ -1,5 +1,16 @@
 #!/usr/bin/env python3
-"""Session 9c44d0e9: phone-first 'today' desk.
+"""SUPERSEDED by scripts/7191a16e/build.py (session 7191a16e, PR from 2026-10-17).
+
+The session 9c44d0e9 desk left 6 of its 34 open fixtures with no pick and carried
+its Thunderpick lines as literals in EVIDENCE below. The 7191a16e desk derives
+every number from the canonical board plus data/7191a16e/research.json and gives
+every open fixture a percentage, a direction, or a documented no-edge verdict.
+
+This file is kept for replay only. Running it would overwrite today/ with the
+weaker desk, so it refuses to run unless ALLOW_SUPERSEDED_BUILD=1 is set.
+"""
+
+"""Session 9c44d0e9 (superseded): phone-first 'today' desk.
 
 Re-joins the retained verified boards (c64a5e19 canonical + 1c8f79f8 day-4 desk)
 by HotSpawn fixture ID and republishes them as one mobile list. It never invents
@@ -10,6 +21,13 @@ computed in-code from the retained decimal quotes in EVIDENCE below (read live
 context only, never a probability input.
 """
 import html, json, pathlib, datetime
+
+import os, sys
+if os.environ.get("ALLOW_SUPERSEDED_BUILD") != "1":
+    sys.exit(
+        "scripts/9c44d0e9/build.py is superseded by scripts/7191a16e/build.py; "
+        "set ALLOW_SUPERSEDED_BUILD=1 only to replay the old desk."
+    )
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 OUT = ROOT / "today"

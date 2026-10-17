@@ -1,18 +1,21 @@
-name: today desk (9c44d0e9)
+name: today desk (7191a16e)
 
 # Phone-first 'today/' executive summary + every-open-match picks.
-# Re-joins the retained canonical (c64a5e19) and day-4 (1c8f79f8) boards every
-# 4 hours; never edits those boards. No manual input.
+# Reads the canonical collector board (c64a5e19) read-only and applies this
+# session's verified research ledger (data/7191a16e/research.json): market lines
+# where a two-sided price exists, official-rating model rows where it does not,
+# and a direction-only row (blank percentage) where neither exists. Never
+# invents a probability and never edits the canonical board.
 
 on:
   push:
-    branches: ['main', 'arena/9c44d0e9-maltaproj2']
+    branches: ['main', 'arena/7191a16e-maltaproj2']
     paths:
-      - 'scripts/9c44d0e9/**'
-      - 'tests/test_9c44d0e9.py'
+      - 'scripts/7191a16e/**'
+      - 'tests/test_7191a16e.py'
+      - 'data/7191a16e/research.json'
       - 'data/c64a5e19/board.json'
-      - 'data/1c8f79f8/board.json'
-      - '.github/workflows/today-9c44d0e9.yml'
+      - '.github/workflows/today-7191a16e.yml'
   schedule:
     - cron: '42 */4 * * *'
   workflow_dispatch:
@@ -21,7 +24,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: today-9c44d0e9-${{ github.ref }}
+  group: today-7191a16e-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -37,15 +40,15 @@ jobs:
         with:
           python-version: '3.12'
       - name: Build today desk
-        run: python3 scripts/9c44d0e9/build.py
+        run: python3 scripts/7191a16e/build.py
       - name: Test
-        run: python3 -m unittest tests.test_9c44d0e9 -v
+        run: python3 -m unittest tests.test_7191a16e -v
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add today data/9c44d0e9
+          git add today data/7191a16e
           if git diff --cached --quiet; then echo "no changes"; exit 0; fi
-          git commit -m "today(9c44d0e9): refresh picks $(date -u +%FT%TZ) [skip ci]"
+          git commit -m "today(7191a16e): refresh picks $(date -u +%FT%TZ) [skip ci]"
           git pull --rebase origin "${{ github.ref_name }}"
           git push origin "${{ github.ref_name }}"
