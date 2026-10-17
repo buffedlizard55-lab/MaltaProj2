@@ -117,12 +117,12 @@ sources disagree by more than 12 points the row is flagged.</p>
 <p><code>p_a = 1 / (1 + exp(−Δ/S))</code> where Δ is the point difference in Valve's <em>official</em> Regional
 Standings and S is fitted, not asserted: least squares of <code>logit(market p_a)</code> on Δ through the origin,
 over every quote in this capture whose two sides both resolve in the standings.</p>
-<div class="note warn"><strong>This capture:</strong>
-S = 700.0 · samples 0 ·
-R² — · mean abs error — ·
-bounds None 
-<div class="tiny"></div>
-<div class="tiny">fewer than 8 usable market/VRS pairs in this capture; the documented fallback scale is used and every model line derived from it is flagged uncalibrated</div></div>
+<div class="note good"><strong>This capture:</strong>
+S = 652.6 · samples 76 ·
+R² 0.4522 · mean abs error 0.082 ·
+bounds [150.0, 1200.0] 
+<div class="tiny">ordinary least squares of logit(no-vig market probability) on the Valve Regional Standings point delta, through the origin; S = sum(delta^2) / sum(delta * logit)</div>
+<div class="tiny"></div></div>
 <p class="tiny">Fallback if fewer than 8 usable pairs: S = 700, and every model line derived from it is labelled
 uncalibrated on the row. Precedent check: S ≈ 709 reproduces the 58.6% Falcons figure published by another desk in
 this repository, so the scale is in the same range as independent work.</p>
@@ -186,9 +186,9 @@ renormalising them would invent data.</li>
 <p><code>python3 scripts/17866d06/collect.py</code> · <code>python3 scripts/17866d06/model.py</code> ·
 <code>python3 scripts/17866d06/build.py</code> · <code>python3 -m unittest discover -s tests</code> ·
 <code>python3 scripts/stage_site.py</code></p>
-<p class="tiny">Quote volumes captured this run: {}.</p>
+<p class="tiny">Quote volumes captured this run: {&quot;thunderpick&quot;: 36, &quot;melbet&quot;: 30, &quot;polymarket&quot;: 22, &quot;joined&quot;: 28, &quot;unjoined&quot;: 88}.</p>
 
-<footer><p class="tiny">Session 17866d06 · board generated 2026-10-17T00:30:54Z from evidence captured no capture ·
+<footer><p class="tiny">Session 17866d06 · board generated 2026-10-17T00:31:10Z from evidence captured 2026-10-17T00:31:05Z ·
 refreshed automatically every 4 hours by
 <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/day4live-17866d06.yml" rel="noopener">.github/workflows/day4live-17866d06.yml</a> ·
 HotSpawn is used for fixtures, points and crowd ownership only, never as a probability input.</p>
