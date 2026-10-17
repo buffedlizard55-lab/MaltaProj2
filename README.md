@@ -184,6 +184,11 @@ not certified by the canonical verifier and never override its blank rows.
 - The landing page distinguishes **directional picks**, **priced ties / no edge**, and **unsupported blanks**. Competing historical boards are collapsed; the primary mobile actions link to the canonical list, unresolved limitations and TWC decisions. Keyboard skip navigation is available on root-generated pages.
 - Tests: `python -m unittest tests.test_6ffacd40`. Optional browser acceptance: `CHROME_BIN=/path/to/chrome python scripts/6ffacd40/browser.py http://127.0.0.1:8080` against an already-running static preview. Checks 320/390/768/1280px widths, CTA above the fold, tap target, focus and navigation.
 
+## Independent published-site audit (e2d16060, 2026-10-16)
+
+- **[Audit executive summary](audits/e2d16060/index.html)** · [Flagged findings](audits/e2d16060/flagged.html) · [Method & sources](audits/e2d16060/method.html) · [machine-readable report](audits/e2d16060/report.json)
+- The dated audit joins the canonical `c64a5e19` snapshot to the rendered `picks-every-match` rows line by line: 21 open fixtures, 14 retained lines and 7 intentionally blank/unresolved rows. It checks arithmetic, source-link presence, local links and mobile markers without using HotSpawn crowd ownership as a probability. It is a historical audit, not a replacement for the current four-hour picks route.
+
 ## 16 October every-match CS2 picks, TWC Day 1–3 strategy & CI workflow heal (98dcfc7e)
 
 - **Executive Summary & Every-Match CS2 Picks:** [`audits/98dcfc7e/index.html`](audits/98dcfc7e/index.html)
