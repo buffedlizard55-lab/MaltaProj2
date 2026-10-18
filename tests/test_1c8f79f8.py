@@ -36,6 +36,7 @@ _spec3.loader.exec_module(builder)
 
 import tempfile
 from datetime import datetime, timezone
+from unittest import mock
 
 # canonical model constants (scripts/fe803b80/core.py arithmetic)
 VALVE_RD = 75.0
@@ -459,12 +460,41 @@ class RefreshRobustnessTests(unittest.TestCase):
                 self.assertIn(str(api["id"]), ids)
 
     def test_sibling_quote_reuse_is_exact_id_only(self):
-        quote = builder.sibling_market("1080207")  # maintenance: 1081888 closed out of every sibling board
-        self.assertIsNotNone(quote, "a live fixture id must be found in a published board")
-        self.assertTrue(quote["url"].startswith("https://"))
-        self.assertRegex(quote["retrieved_utc"], r"^\d{4}-\d{2}-\d{2}T")
-        self.assertIsNone(builder.sibling_market("999999999"),
-                          "an unknown fixture id must never resolve to another match")
+        # Use an isolated sibling board rather than pinning the test to a live
+        # tournament fixture. Published boards rotate as fixtures lock, so a
+        # formerly valid id (e.g. a TWC semifinal) is not a permanent test input.
+        fixture_id = "fixture-42"
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "sibling.json"
+            source.write_text(json.dumps({
+                "generated_utc": "2026-10-18T00:00:00Z",
+                "open": [{
+                    "fixture_id": fixture_id,
+                    "market": {"prob_a": 0.625, "prob_b": 0.375},
+                    "quotes": [{
+                        "source_key": "test-book",
+                        "public_url": "https://bookmaker.example/matches/fixture-42",
+                        "retrieved_utc": "2026-10-18T00:00:00Z",
+                        "decimal_a": 1.5,
+                        "decimal_b": 2.5,
+                    }],
+                }],
+            }))
+            # An absolute path in the sibling-board list keeps the fixture fully
+            # isolated from the changing repository boards.
+            with mock.patch.object(
+                    builder, "SIBLING_BOARDS",
+                    (("test-source", str(source), "synthetic sibling board"),)):
+                quote = builder.sibling_market(fixture_id)
+                self.assertIsNotNone(quote)
+                self.assertEqual(quote["session"], "test-source")
+                self.assertEqual(quote["prob_a"], 0.625)
+                self.assertEqual(quote["url"], "https://bookmaker.example/matches/fixture-42")
+                self.assertEqual(quote["retrieved_utc"], "2026-10-18T00:00:00Z")
+                self.assertIsNone(
+                    builder.sibling_market("fixture-43"),
+                    "an unknown fixture id must never resolve to another match",
+                )
 
 
 if __name__ == "__main__":

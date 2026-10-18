@@ -133,9 +133,12 @@ class CurrentPublicationTests(unittest.TestCase):
         nav_hrefs = {a.get("href") for a in index.select("header nav a")}
         for required in ("index.html", "picks-every-match/index.html",
                          "picks-every-match/unresolved.html", "day-one.html",
-                         "flagged.html", "picks-every-match/method.html", "research.html"):
+                         "flagged.html", "picks-every-match/method.html", "research.html",
+                         "finalday/index.html"):
             self.assertIn(required, nav_hrefs)
-        self.assertLessEqual(len(nav_hrefs), 12)  # 782adb47+7900154b union: +finals +day5 nav entries (presentation only)
+        # 36186ad8 added the current final-day desk; the mobile header remains
+        # horizontally scrollable with 44px targets, so one additive item is safe.
+        self.assertLessEqual(len(nav_hrefs), 13)
         self.assertIsNotNone(index.select_one('a[href="research.html"]'))
         self.assertIsNotNone(index.select_one('a[href="board/picks.html"]'))
         self.assertIn("Unsupported probabilities stay blank", index.get_text(" ", strip=True))

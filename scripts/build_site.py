@@ -109,10 +109,9 @@ def _board_stamp(rel, *keys):
 
 
 def finals_front_html():
-    """Newest front door: session 782adb47 TWC Day-5 finals desk (additive).
+    """Legacy pre-price finals card, used only when the current finalday board is absent.
 
-    Reads only that session's generated board; returns "" if absent so the page
-    falls back cleanly (no broken links, no invented counts).
+    Reads only that session's generated board; returns an empty string when unavailable.
     """
     import os as _os
     if not _os.path.exists(os.path.join(ROOT, "finals", "picks.html")):
@@ -142,6 +141,138 @@ def finals_front_html():
 <a class="btn" href="finals/method.html"><span><strong>Method &amp; sources</strong> · lobby + formulas</span><span>→</span></a>
 </div>
 </div>"""
+
+
+def finalday_front_html():
+    """Current TWC final-day market card; `None` means this board is not installed.
+
+    A present but incomplete/invalid board yields an explicit withheld-state card,
+    so an older originated-only desk is never presented as the current price.
+    Odds are re-derived here from the retained external decimals before display.
+    """
+    board_path = os.path.join(ROOT, "finalday", "data", "board.json")
+    if not os.path.isfile(board_path):
+        return None
+
+    def withheld(message):
+        return f"""
+<div class="desk-front" id="finalday-front" aria-labelledby="finalday-front-title">
+<p class="eyebrow">🏆 TWC 2026 · current final-day desk</p>
+<h2 id="finalday-front-title">No current market percentages are displayed</h2>
+<p>{esc(message)} No value is copied from HotSpawn crowd ownership or from an older pre-price board.</p>
+<div class="desk-actions">
+<a class="btn" href="finalday/index.html">Open today's final-day desk →</a>
+<a class="btn" href="finalday/picks.html">Every HotSpawn match →</a>
+<a class="btn" href="finalday/unresolved.html">Unresolved picks &amp; limitations →</a>
+<a class="btn" href="finalday/twc.html">TWC results &amp; analysis →</a>
+</div>
+</div>"""
+
+    board = load("finalday/data/board.json") or {}
+    day5 = board.get("day5") or []
+    third = next((r for r in day5 if "3rd-place" in str(r.get("stage", "")).lower()), None)
+    final = next((r for r in day5 if "grand final" in str(r.get("stage", "")).lower()), None)
+    if not third or not final:
+        return withheld("The retained board does not contain both Day-5 matches.")
+
+    verified = []
+    for row in (third, final):
+        try:
+            odds_a, odds_b = float(row["odds_a"]), float(row["odds_b"])
+            stored_a, stored_b = float(row["prob_a"]), float(row["prob_b"])
+        except (KeyError, TypeError, ValueError):
+            return withheld("The retained board is missing a two-sided decimal price or probability.")
+        if odds_a <= 1.0 or odds_b <= 1.0:
+            return withheld("A retained price is not a valid two-sided decimal market.")
+        inv_a, inv_b = 1.0 / odds_a, 1.0 / odds_b
+        prob_a = inv_a / (inv_a + inv_b)
+        prob_b = 1.0 - prob_a
+        if (abs(prob_a - stored_a) > 1e-6 or abs(prob_b - stored_b) > 1e-6
+                or not (0.0 < prob_a < 1.0 and 0.0 < prob_b < 1.0)):
+            return withheld("The stored no-vig percentages do not match the retained decimal prices.")
+
+        team_a, team_b = str(row.get("a") or ""), str(row.get("b") or "")
+        safe = str(row.get("safe") or "")
+        expected_safe = team_a if prob_a >= prob_b else team_b
+        hltv_url, price_url = str(row.get("hltv_url") or ""), str(row.get("bo3_url") or "")
+        if (not team_a or not team_b or safe != expected_safe or not row.get("start_utc")
+                or not hltv_url.startswith("https://") or not price_url.startswith("https://")
+                or not row.get("book") or not row.get("read_utc")):
+            return withheld("A market row is missing its expected pick, source link, book label, or read time.")
+
+        verdict = str(row.get("verdict") or "").upper()
+        if "CONDITIONAL CLIMB" in verdict:
+            contrarian_label = "conditional dog only — see the ownership gate"
+        elif "NO CLIMB" in verdict:
+            contrarian_label = "no underdog switch"
+        else:
+            contrarian_label = "see the linked full TWC analysis"
+        verified.append({
+            "row": row, "odds_a": odds_a, "odds_b": odds_b,
+            "prob_a": prob_a, "prob_b": prob_b, "safe": safe,
+            "safe_prob": max(prob_a, prob_b), "contrarian_label": contrarian_label,
+            "team_a": team_a, "team_b": team_b,
+            "hltv_url": hltv_url, "price_url": price_url,
+        })
+
+    match_cards = []
+    for item in verified:
+        row = item["row"]
+        match_cards.append(f"""
+<article class="finalday-summary-match">
+<h3>{esc(row.get('stage'))} · {esc(_fmt_day5_start(row.get('start_utc')))}</h3>
+<div class="finalday-summary-probs">
+<div><span>{esc(item['team_a'])}</span><strong>{pct(item['prob_a'])}</strong><small>decimal {item['odds_a']:.2f}</small></div>
+<div><span>{esc(item['team_b'])}</span><strong>{pct(item['prob_b'])}</strong><small>decimal {item['odds_b']:.2f}</small></div>
+</div>
+<p class="pick"><strong>SAFE PICK: {esc(item['safe'])}</strong> · {pct(item['safe_prob'])}</p>
+<p class="market-note">{esc(row.get('book'))} · proportional no-vig · read {esc(fmt_time(row.get('read_utc')))}</p>
+<p class="market-note">Leaderboard: {esc(item['contrarian_label'])}.</p>
+<p class="small">Sources: <a href="{esc(item['hltv_url'])}">HLTV match</a> · <a href="{esc(item['price_url'])}">bo3.gg price</a></p>
+</article>""")
+
+    third_pick = next(item["safe"] for item in verified
+                      if "3rd-place" in str(item["row"].get("stage", "")).lower())
+    final_pick = next(item["safe"] for item in verified
+                      if "grand final" in str(item["row"].get("stage", "")).lower())
+    summary = board.get("summary") or {}
+    capture = fmt_time(board.get("canonical_capture")) or "unverified"
+    open_count = summary.get("open")
+    locked_count = summary.get("locked_since_capture")
+    live = load("data/36186ad8/live.json") or {}
+    lobby = live.get("lobby") or {}
+    lobby_note = str(lobby.get("note") or "").lower()
+    lobby_time = fmt_time(live.get("lobby_read_utc") or board.get("lobby_read_utc"))
+    lobby_url = str(lobby.get("url") or "https://play.hotspawn.com/lobby")
+    lobby_context = ""
+    if "not in tournament filter" in lobby_note and lobby_url.startswith("https://"):
+        lobby_context = (f'<p class="market-note">HotSpawn live read {esc(lobby_time or "")}: '
+                         f'TWC Malta was not in the tournament filter; these playoff picks have no '
+                         f'lobby ownership split. <a href="{esc(lobby_url)}">HotSpawn lobby</a>.</p>')
+
+    return f"""
+<div class="desk-front" id="finalday-front" aria-labelledby="finalday-front-title">
+<p class="eyebrow">🏆 TWC 2026 FINAL DAY · external market lines</p>
+<h2 id="finalday-front-title">Today's picks: {esc(final_pick)} in the grand final · {esc(third_pick)} for third</h2>
+<p>Both win probabilities below are recalculated from the displayed external decimal prices after removing the overround. HotSpawn crowd percentages are ownership only, never match probabilities.</p>
+<div class="finalday-summary-matches">{''.join(match_cards)}</div>
+<p class="market-note">HotSpawn board: {esc(open_count if open_count is not None else "unverified")} currently open · {esc(locked_count if locked_count is not None else "unverified")} locked since the source capture ({esc(capture)}). External price read times are shown on each row.</p>
+{lobby_context}
+<div class="desk-actions">
+<a class="btn" href="finalday/index.html">Today's TWC final-day summary →</a>
+<a class="btn" href="finalday/picks.html">All HotSpawn picks →</a>
+<a class="btn" href="finalday/unresolved.html">Unresolved picks &amp; limitations →</a>
+<a class="btn" href="finalday/twc.html">TWC results &amp; full case →</a>
+</div>
+</div>"""
+
+
+def summary_front_html():
+    """Prefer the current live-price board; only fall back when it is not installed."""
+    current = finalday_front_html()
+    if current is not None:
+        return current
+    return finals_front_html() + day5_front_html() + desk_front_html()
 
 
 def _fmt_day5_start(value):
@@ -684,9 +815,7 @@ roster investigation are on the <a href="day4/twc-review.html">day 1–3 review<
 <section id="executive-summary" aria-labelledby="summary-title">
 <div class="hero-card">
 <p class="eyebrow">CS2 Pick’em dashboard · Executive summary</p>
-{finals_front_html()}
-{day5_front_html()}
-{desk_front_html()}
+{summary_front_html()}
 <h1 id="summary-title">Every listed match. Evidence before picks.</h1>
 <p class="muted">Canonical market-only boards below. The desk above is the phone front door.</p>
 <div class="actions primary-actions">
@@ -1531,7 +1660,16 @@ footer{color:var(--mut);font-size:13px;border-top:1px solid var(--line);margin-t
 .desk-front .desk-actions .btn{margin:0;justify-content:space-between;display:flex;min-height:48px}
 .desk-front .desk-next{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none}
 .desk-front .desk-next li{background:#1b2530;border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:13px}
-@media(max-width:640px){.desk-front .desk-actions{grid-template-columns:1fr}}
+.finalday-summary-matches{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin:12px 0}
+.finalday-summary-match{min-width:0;border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:12px}
+.finalday-summary-match h3{margin:0 0 8px}
+.finalday-summary-probs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.finalday-summary-probs div{min-width:0;text-align:center;background:var(--bg);border-radius:9px;padding:8px 5px;overflow-wrap:anywhere}
+.finalday-summary-probs strong,.finalday-summary-probs small{display:block}
+.finalday-summary-probs strong{font-size:1.25rem}
+.finalday-summary-probs small,.market-note{font-size:.82rem;color:var(--mut)}
+.finalday-summary-match .pick{margin:.5rem 0}
+@media(max-width:640px){.desk-front .desk-actions{grid-template-columns:1fr}.finalday-summary-matches{grid-template-columns:1fr}}
 .primary-actions{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
 .primary-actions .btn{margin:0;display:flex;align-items:center;justify-content:center;min-width:0}
 .quick-guide{padding-left:22px;max-width:750px}
