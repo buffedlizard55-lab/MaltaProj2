@@ -1,3 +1,12 @@
+# Coordination — session `36186ad8` (TWC 2026 FINAL DAY live desk — Day 5 is TODAY 18 Oct)
+Session: `36186ad8` (fixed branch `arena/36186ad8-maltaproj2`).
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-36186AD8: (1) Re-verify TWC Days1-4 + Aurora roster premise from HLTV/official, (2) TODAY Day5: check if books now price Aurora-Falcons & FURIA-BETBOOM (HLTV/bo3/Thunderpick/books) else originated VRS labelled, safe+contrarian layers, (3) pick+both probs or blank+flag for every open CS2 fixture in freshest canonical capture, low-tier via HLTV→books→exchange→VRS ledger, (4) separate Unresolved&Limitations in exec summary, (5) phone-first `finalday/` + landing links, 4h refresh, tests, PR+merge+Pages | done — PR merged, see close-out | 36186ad8 | 2026-10-18 00:06 | `finalday/**`, `scripts/36186ad8/**`, `data/36186ad8/**`, `tests/test_36186ad8.py`, `.github/workflows/finalday-36186ad8.yml`, COORDINATION.md (this section). Integration additive only: `scripts/build_site.py` NAV/front-door, `scripts/stage_site.py` one entry, root `index.html`, `README.md` one row. All prior boards read-only inputs. |
+## Log — 36186ad8
+- 2026-10-18 00:06 UTC: claim before edits.
+- CLOSE-OUT 36186ad8: Live reads 18 Oct ~00:05-00:18Z — HLTV confirms Aurora-Falcons 11:30Z (bo3) + FURIA-BETBOOM 15:00Z (bo5); Thunderpick via bo3.gg NOW prices both: Falcons 1.48/Aurora 2.50 -> 62.8/37.2 no-vig; FURIA 1.35/BETBOOM 2.90 -> 68.2/31.8. Picks: FURIA + Falcons; BETBOOM <35% floor = NO climb; Aurora conditional-only (needs HotSpawn card <=22% crowd; Malta not on lobby, live read 81 CS2 listed). Built finalday/ (exec summary, 17 open every-match picks: 9 market/1 alias/3 model/4 bound/0 blank, Days1-4 verified, Aurora July-rebuild/no-Oct-change, unresolved+attempt ledgers, flagged FD1-FD7, method). 5/5 tests, link check clean. 4h workflow finalday-36186ad8. Prior finals/(782adb47)+day5/(7900154b) done yesterday pre-final; no live claim on finalday/**. Day5 is today — book prices must be re-checked live, not inherited.
+---
 # Coordination — session `782adb47` (TWC 2026 Day 1–4 review → Day 5 final picks, every-match resolution & phone-first front door)
 
 Session: `782adb47` (environment-fixed branch `arena/782adb47-maltaproj2`; the environment forbids switching to a `session-<id>/<task>` branch, so all work stays on the fixed branch and scopes below are non-overlapping by directory).
