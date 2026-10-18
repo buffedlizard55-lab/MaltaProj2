@@ -5790,3 +5790,28 @@ Session: `438dd26d` (environment-fixed branch `arena/438dd26d-maltaproj2`; no ot
 - 2026-10-18 01:25 UTC, `438dd26d`: Local checks: full suite `python -m unittest discover -s tests` = 966 tests OK (needs `beautifulsoup4` from `scripts/requirements.txt`). `scripts/stage_site.py` passes ("all staged local links resolve"). Note: `stage_site.py` rewrites tracked files under other sessions' directories (start/, day5/, desk/, finals/, finalday/) when run locally. This session reverted those rewrites and committed none of them.
 - 2026-10-18 01:00 UTC, `438dd26d`: PR #181 (`arena/438dd26d-maltaproj2` → `main`) merged as `49d7227e`. Its build job passed: full suite, browser smoke, stage. Pages verify run `Verify and publish dashboard` on `49d7227e` = success, and the Pages build = success. Live page checked: https://buffedlizard55-lab.github.io/MaltaProj2/audits/438dd26d/index.html (title and rows render). Pre-existing main failures, not caused by this PR, flagged for their owners: `update-data` has failed since at least 00:10Z (before the merge). `day3 desk (4cf64ea3)`, `desk (3e1be203)`, `finals (782adb47)`, `strategy picks (f28afd9e)` and `verify audit (6c5bb3d6)` show failures on `49d7227e`. Not touched by this session.
 - 2026-10-18 01:05 UTC, `438dd26d`: Follow-up wording fix only (labels "What would resolve it:" on the two unresolved rows). Same claimed paths. Pages re-verify to follow in the same PR cycle.
+
+# Coordination — session `b3871d16` (Day-5 TWC contrarian desk + full-lobby pick resolution, phone-first)
+
+Session: `b3871d16` (environment-fixed branch `arena/b3871d16-maltaproj2`; the environment forbids switching to a
+`session-<id>/<task>` branch, so scopes below are separated by directory instead).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-B3871D16-NOW: (1) live re-verification of TWC 2026 Days 1–5 (HLTV results 2399384–2399417) incl. the Day-1 9z 2-0 Aurora upset and the Aurora roster premise, (2) Day-5 picks (18 Oct, locks 11:24Z / 14:54Z) with a safe layer and a contrarian-but-not-stupid layer priced only from external books/exchanges (HotSpawn crowd = ownership context, never a probability), (3) resolve a pick + both win probabilities for **every** open CS2 fixture in the newest canonical capture `data/fe803b80/board.json`, incl. the low-tier / Polymarket-uncovered rows, using HLTV → esportsbooks → bo3.gg/Thunderpick → official Valve VRS origination, and close the two rows currently left blank where the evidence supports it, (4) a separate Unresolved picks & limitations section surfaced in the executive summary, (5) phone-first section `now/**` + one additive landing link, (6) 4-hourly refresh workflow, tests, PR → merge → Pages verification | in progress | b3871d16 | 2026-10-18 00:55 | `now/**` (new), `scripts/b3871d16/**` (new), `data/b3871d16/**` (new), `tests/test_b3871d16.py` (new), `.github/workflows/now-b3871d16.yml` (new), `COORDINATION.md` (this appended section only). Read-only inputs: `data/fe803b80/**`, `data/7177d07f/**`, `board/**`, `start/**`, `finalday/**`, `finals/**`, `day5/**`, `desk/**`, `scripts/**`. Integration (additive, at close-out only, logged here first): one `now` entry in `scripts/stage_site.py` and one front-door link in `scripts/build_site.py` landing. No other session's page, board, collector or data file is edited. |
+
+## Log — b3871d16
+- 2026-10-18 00:55 UTC: Claim posted before any edit. Board read: `532cbae8` holds an OPEN, self-declared
+  CONFLICTING PR #179 whose scope is `scripts/build_site.py` + root `index.html`/`assets/style.css` + four
+  capture-sensitive tests; `371a1ce7` closed out and merged PR #180 (`start/` front door). To avoid collision I do
+  **not** touch `scripts/build_site.py`, `index.html`, `assets/style.css`, `stage_site.py`'s existing entries or any
+  other session's page: my published output lives only in `now/**`, and the landing integration is one additive line
+  executed at close-out after `git pull --rebase`, or logged as a handoff request if #179 is still open at that point.
+- 2026-10-18 00:40–00:55 UTC: Live HLTV reads (research browser, this session): results?event=8932 — Day 1 14 Oct
+  9z 2-0 Aurora (2399384), Falcons 2-0 NIP (2399385), Legacy 2-0 PARIVISION (2399386), FURIA 2-0 BETBOOM (2399387);
+  Day 2 15 Oct Aurora 2-0 NIP (2399408), 9z 1-2 Falcons (2399409), PARIVISION 1-2 BETBOOM (2399410), Legacy 1-2
+  FURIA (2399411); Day 3 16 Oct Aurora 2-0 9z (2399412), BETBOOM 2-1 Legacy (2399413); Day 4 17 Oct semis FURIA 2-0
+  Aurora (2399414), Falcons 1-2 BETBOOM (2399415). Day 5 18 Oct: Grand final FURIA v BETBOOM bo5 LAN (2399417) —
+  HLTV's rendered clock said "11:00 18 Oct" while its own live countdown said 14h21m from a 00:40Z read, i.e. 15:01Z
+  ⇒ HLTV's page time is viewer-local (US Eastern here), NOT UTC; the UTC 15:00 start agreed with HotSpawn's card.
+  Flagged so nobody re-derives a lock time from a HLTV clock string.
