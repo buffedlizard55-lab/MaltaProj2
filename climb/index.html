@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Climb desk · picks for every CS2 match</title>
+<meta name="description" content="Executive summary: TWC final-day picks, climb ladder and links to every picks list.">
+<style>
+:root { --bg:#0e1116; --card:#161b22; --ink:#e8edf4; --muted:#93a0b0; --line:#263041;
+  --ok:#1f7a4d; --ok2:#2ea86b; --warn:#b7791f; --bad:#b23a48; --accent:#ffb020; --fav:#2ea86b; --dog:#8a63d2; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+a { color:#7cc4ff; text-decoration:none; word-break:break-word; }
+a:hover, a:focus { text-decoration:underline; }
+header.top { position:sticky; top:0; z-index:20; background:#12161c; border-bottom:1px solid var(--line); padding:10px 14px; }
+header.top .brand { font-weight:700; font-size:15px; }
+header.top .sub { color:var(--muted); font-size:12px; margin-top:2px; }
+main { padding:12px 12px 84px; max-width:56rem; margin:0 auto; }
+h1 { font-size:22px; line-height:1.25; margin:10px 0 6px; }
+h2 { font-size:18px; margin:22px 0 8px; }
+h3 { font-size:15px; margin:16px 0 6px; }
+p { margin:8px 0; }
+.muted { color:var(--muted); font-size:13px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin:10px 0; }
+.hero { border:2px solid var(--accent); }
+.pill { display:inline-block; padding:2px 9px; border-radius:999px; font-size:11.5px; font-weight:700; letter-spacing:.2px; margin:2px 4px 2px 0; }
+.pill.fav { background:#123922; color:#7fe0a8; border:1px solid #2ea86b55; }
+.pill.dog { background:#2b2144; color:#cbb6f6; border:1px solid #8a63d255; }
+.pill.safe { background:#123922; color:#7fe0a8; }
+.pill.climb { background:#3a2b12; color:#ffd58a; border:1px solid var(--accent); }
+.pill.no { background:#3b1a20; color:#f2a2ac; }
+.pill.basis { background:#1b2634; color:#9fc2e8; }
+.pill.tier { background:#222b38; color:#b9c6d6; }
+.pill.flag { background:#3b1a20; color:#f2a2ac; border:1px solid var(--bad); }
+.pill.ok { background:#123922; color:#7fe0a8; }
+table { width:100%; border-collapse:collapse; font-size:13.5px; }
+th, td { text-align:left; padding:7px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+th { color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.4px; }
+.bar { height:8px; background:#222b38; border-radius:6px; overflow:hidden; margin:4px 0 2px; }
+.bar > span { display:block; height:100%; background:linear-gradient(90deg,#2ea86b,#1f7a4d); }
+.pickbig { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin:6px 0; }
+.pickbig .name { font-size:22px; font-weight:800; }
+.pickbig .pct { font-size:20px; font-weight:800; color:var(--accent); }
+.teams { display:flex; justify-content:space-between; gap:10px; font-size:14px; }
+.teams .t { flex:1 1 45%; }
+.teams .t.right { text-align:right; }
+.pctline { font-weight:700; font-size:15px; }
+.srcs { margin-top:6px; font-size:12px; color:var(--muted); }
+.srcs a { margin-right:8px; display:inline-block; }
+ul li { margin:5px 0; }
+.actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0; }
+.actions a { display:block; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; font-weight:700; color:var(--ink); }
+.actions a small { display:block; font-weight:400; color:var(--muted); margin-top:2px; }
+.actions a.wide { grid-column:1 / -1; }
+nav.tabs { position:fixed; left:0; right:0; bottom:0; z-index:30; display:flex; background:#12161c; border-top:1px solid var(--line); }
+nav.tabs a { flex:1; text-align:center; padding:10px 2px 12px; font-size:11px; color:var(--muted); }
+nav.tabs a .ic { display:block; font-size:17px; line-height:1.2; }
+nav.tabs a.active { color:var(--accent); }
+details { margin:8px 0; }
+summary { cursor:pointer; font-weight:600; }
+.toc a { display:block; padding:8px 10px; margin:6px 0; background:var(--card); border:1px solid var(--line); border-radius:10px; color:var(--ink); font-weight:600; }
+.toc a small { display:block; color:var(--muted); font-weight:400; }
+.fixture { border-left:4px solid var(--line); }
+.fixture.tierS { border-left-color:var(--accent); }
+.fixture.tierB { border-left-color:#2ea86b; }
+.kicker { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
+.tw { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+@media (min-width: 720px) {
+  main { padding:16px 20px 84px; }
+  h1 { font-size:26px; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">🐟 HotSpawn Pick'em · Climb desk</div>
+  <div class="sub">Picks for every CS2 match · external lines only · TWC final day 18 Oct</div>
+</header>
+<main>
+
+<h1>Executive summary · TWC final day</h1>
+<p class="muted">Built 2026-10-18 01:18 UTC · 35 open HotSpawn CS2 matches · every one has a pick and both win probabilities.</p>
+<div class="card hero">
+  <div class="kicker">Where are the picks?</div>
+  <div class="toc">
+    <a href="picks.html">✅ All picks — every open match<small>Pick, both win probabilities, basis, per-row sources · 35 matches</small></a>
+    <a href="twc.html">🏆 TWC final day<small>Day 1→4 verified results · Day 5 safe + climb picks · Aurora roster truth</small></a>
+    <a href="unresolved.html">🧩 Unresolved &amp; limitations<small>2 rows resolved by research fallback + every remaining limitation</small></a>
+    <a href="flagged.html">⚑ Flagged for review<small>8 irregularities with source links (A1–A8)</small></a>
+    <a href="method.html">📐 Method &amp; sources<small>Line ladder, formulas, climb rule, provenance</small></a>
+  </div>
+</div>
+<div class="card hero">
+  <div class="kicker">Today's headline calls · 18 Oct</div>
+  <p><span class="pill safe">SAFE</span> <strong>Falcons</strong> 59.7% <span class="muted">vs Aurora · 3rd place · 11:30 UTC ·5 books agree (1.52–1.67 favourite)</span></p>
+  <p><span class="pill climb">CLIMB if you need variance</span> <strong>Aurora</strong> 40.3% <span class="muted">the only ≥35% upset shot today; dead-rubber + Falcons' semi collapse are the case for it — conditional, not an EV pick</span></p>
+  <p><span class="pill safe">SAFE</span> <strong>FURIA</strong> 68.0% <span class="muted">vs BetBoom · Grand Final bo5 · 15:00 UTC · BetBoom 32% is a no-climb (story ≠ probability)</span></p>
+  <p><span class="pill climb">CLIMB</span> <strong>Enjoy</strong> 66.1% <span class="muted">crowd 78/22 the other way (n=51) — biggest line-vs-crowd gap today</span></p>
+  <p><span class="pill climb">CLIMB</span> <strong>WROTBERRY</strong> 54.5% <span class="muted">crowd 91/9 Nexus (n=45)</span></p>
+</div>
+<div class="card">
+  <div class="kicker">The 9z lesson, in one paragraph</div>
+  <p>Day 1's 9z 2-0 over Aurora (13-11 Inferno, <strong>13-1 Nuke</strong>) and day 4's BETBOOM reverse-sweep of Falcons were both dogs in the 25–35% band — not 1-in-10 longshots. Climb means taking a <em>live</em> underdog when our line gives them a real shot (≥35%) and the crowd is elsewhere; it does not mean chasing BetBoom at 32% in a bo5. Aurora's "recent roster change" is the <strong>July rebuild</strong> (kyxsan/Jimpphat/ash — verified, no October move): old enough that it explains their floor, not a fresh-onboarding edge. <a href="twc.html">Full review →</a></p>
+</div>
+<div class="card">
+  <div class="kicker">Coverage</div>
+  <p class="muted">35 open fixtures from the 2026-10-18T00:45:39Z canonical capture (data/fe803b80/board.json): every row carries a pick, both win probabilities and an https source link. Two rows the capture left blank (Apogee Betclic–BBL, Chinggis Warriors–WXM) were resolved via the HLTV→books→exchange→VRS ladder — see <a href="unresolved.html">Unresolved</a>. Auto-refresh every 4–8h rebuilds this desk from the newest board.</p>
+</div>
+
+<p class="muted" style="margin-top:24px">Session a89b76e9 · sources per row · HotSpawn used for fixture discovery and ownership only, never as a probability. Method: <a href="method.html">method.html</a> · Site home: <a href="../index.html">home</a>.</p>
+</main>
+<nav class="tabs">
+<a href="index.html" class="active"><span class="ic">🏠</span>Summary</a><a href="picks.html"><span class="ic">✅</span>Picks</a><a href="twc.html"><span class="ic">🏆</span>TWC</a><a href="unresolved.html"><span class="ic">🧩</span>Unresolved</a><a href="flagged.html"><span class="ic">⚑</span>Flagged</a>
+</nav>
+</body>
+</html>
