@@ -5768,3 +5768,16 @@ Session: `92e62a4e` (branch `arena/92e62a4e-maltaproj2`; fixed by environment; n
   • F9 — Omega-Bushido Wildcats (1082020) single-book 1.85/1.85 coin flip; published as toss-up / leaderboard pick only.
   • U1–U4 — four bound-only rows with no bookmaker price; exact sources tried documented.
 - PR will be created from arena/92e62a4e-maltaproj2 → main with this close-out, merged without approval (per instructions), Pages verified after merge.
+
+---
+
+# Coordination — session `438dd26d` (gap audit of the freshest canonical board + TWC Day-5 live re-read, claimed 2026-10-18 00:55 UTC)
+
+Session: `438dd26d` (environment-fixed branch `arena/438dd26d-maltaproj2`; no other branch is used).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-438DD26D-GAPS: (1) re-read the live HotSpawn CS2 lobby (both chunks) and reconcile every listed fixture against the freshest canonical board `data/fe803b80/board.json` (generated 2026-10-18T00:45:39Z), (2) for each open fixture that currently has **no pick or no market line** (blank or model-only rows), try HLTV → esportsbooks / betting lines → originated line with labelled basis, otherwise keep it blank and list it as unresolved with the exact limitation, (3) re-read the two TWC Day-5 final-day lines (1080209 Falcons–Aurora, 1080210 FURIA–BETBOOM) from non-HotSpawn books and record the capture time, (4) publish a phone-first audit page with source links on every row and a Flagged-for-Review list, (5) tests, PR to `main`, merge, Pages check | in progress | 438dd26d | 2026-10-18 00:55 | `audits/438dd26d/**`, `data/438dd26d/**`, `scripts/438dd26d/**`, `tests/test_438dd26d.py`, `COORDINATION.md` (this section only). **Shared files not touched by this session:** `index.html`, `scripts/build_site.py`, `scripts/stage_site.py`, `README.md`, `start/**`, `finalday/**`, `day5/**`, `desk/**`, `today/**`, `finals/**`, `data/fe803b80/**`, `picks-every-match/**`. Front-door linking to `audits/438dd26d/` is requested in the log below, not edited here. |
+
+## Log
+- 2026-10-18 00:55 UTC, `438dd26d`: Claim posted before any file edit. Read COORDINATION.md tail + open PR list (#179 `532cbae8` landing CTA, #176 `234db976` Day-5 research, #164 `7191a16e`, older #98/#107/#121 open; merged #173–#180 today). Last active claim with no close-out: `92e62a4e` (21:00Z, on `desk/**`, `today/**`, `picks-all/**`) — out of my scope, not touched. Live lobby snapshot read via fetch_page (2 chunks) at ~00:50Z.
