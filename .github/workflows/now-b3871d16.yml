@@ -1,0 +1,91 @@
+name: now (b3871d16)
+
+# Session b3871d16 / T-B3871D16-NOW. Four-hourly refresh of the day-5 desk section: HotSpawn crowd
+# and lock data, a price probe for every open CS2 fixture the canonical board has no book line for,
+# and a freshness check on Valve's official standings file - then a rebuild of now/** from those
+# inputs. No manual input. Scope guard: this workflow writes only now/** and data/b3871d16/** and
+# reads everything else.
+#
+# Cadence: every four hours at :37, which is after one and before the next of the canonical board's
+# :11/:41 half-hourly runs, and 40 minutes before the shared Pages workflow's hourly :17 run. The
+# push step also dispatches pages.yml explicitly on main so a change is live without waiting.
+
+on:
+  push:
+    branches: ['arena/b3871d16-maltaproj2', 'main']
+    paths:
+      - 'scripts/b3871d16/**'
+      - 'data/b3871d16/**'
+      - 'tests/test_b3871d16.py'
+      - '.github/workflows/now-b3871d16.yml'
+  schedule:
+    - cron: '37 */4 * * *'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Why this manual refresh (recorded in the commit message)'
+        required: false
+        default: 'manual dispatch'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: now-b3871d16-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Collect crowd/lock data, probe prices for the unpriced rows, check the VRS file date
+        # Best effort on purpose: a blocked or changed source must show up as "collector: partial"
+        # on the page, and the previous snapshot stays on disk. It never breaks the build.
+        continue-on-error: true
+        run: python3 scripts/b3871d16/collect.py
+      - name: Rebuild the section from the newest canonical board plus this session's evidence
+        run: python3 scripts/b3871d16/build.py
+      - name: Contract tests
+        run: |
+          set +e
+          python3 -m unittest tests.test_b3871d16 -v > now_tests.log 2>&1
+          echo "TEST_EXIT=$?" >> "$GITHUB_ENV"
+          tail -120 now_tests.log
+      - name: Commit and push (rebase before every push; never discards another session's work)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config user.name "now-desk-bot (b3871d16)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          if [ "${TEST_EXIT:-1}" != "0" ]; then
+            # Never publish a page whose own contract tests failed. Park the output on a scratch
+            # ref so it is readable outside the runner, then stop.
+            git add -f now_tests.log
+            git commit -m "debug(b3871d16): test output run ${{ github.run_id }}"
+            git push --force origin "HEAD:refs/heads/now-debug-b3871d16" || true
+            echo "contract tests failed; section not published"; exit 1
+          fi
+          rm -f now_tests.log
+          git add now data/b3871d16
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "now(b3871d16): refresh day-5 desk and every-match picks $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "${{ github.ref_name }}" && git push origin "HEAD:${{ github.ref_name }}"; then
+              if [ "${{ github.ref_name }}" = "main" ]; then
+                gh workflow run pages.yml --ref main || echo "pages dispatch failed"
+              fi
+              exit 0
+            fi
+            sleep $((attempt * 9))
+          done
+          exit 1

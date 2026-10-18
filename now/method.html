@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang=en>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Method | TWC day 5 desk</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e8eaf0;font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1080px;margin:0 auto;padding:0 14px 64px}
+a{color:#79b8ff;text-decoration:none}a:hover{text-decoration:underline}
+h1{font-size:1.5rem;line-height:1.25;margin:.6em 0 .2em}
+h2{font-size:1.2rem;margin:1.6em 0 .4em;border-bottom:1px solid #223047;padding-bottom:.3em}
+h3{font-size:1.02rem;margin:1.1em 0 .3em}
+p{margin:.45em 0}
+.small{font-size:.83rem}.mut{color:#93a1b8}
+.top{position:sticky;top:0;z-index:5;background:#0d1117f2;border-bottom:1px solid #223047;padding:8px 0 6px;margin-bottom:6px}
+.top nav{display:flex;gap:6px;flex-wrap:wrap}
+.top a{display:inline-block;padding:4px 9px;border:1px solid #2b3a55;border-radius:999px;font-size:.82rem}
+.stamp{font-size:.76rem;color:#93a1b8;margin:2px 0 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.card,.pick{background:#151b26;border:1px solid #232f45;border-radius:12px;padding:10px 12px;margin:10px 0}
+.kpi{background:#111823;border-radius:12px;padding:10px 12px}
+.kpi b{display:block;font-size:1.42rem;line-height:1.2}
+.bar{display:flex;height:10px;border-radius:6px;overflow:hidden;background:#232f45;margin:6px 0}
+.bar i{display:block;height:100%}
+.bar i.a{background:#3fb950}.bar i.b{background:#f0883e}
+table{width:100%;border-collapse:collapse;margin:.3em 0 1em;font-size:.92rem}
+th,td{text-align:left;padding:7px 6px;border-bottom:1px solid #1e2a3f;vertical-align:top}
+th{font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:#93a1b8}
+tr th:first-child,tr td:first-child{padding-left:2px}
+.num{font-variant-numeric:tabular-nums}
+.chip{display:inline-block;font-size:.72rem;padding:2px 7px;border-radius:999px;border:1px solid #2b3a55;margin:1px 3px 1px 0;white-space:nowrap}
+.chip.ok{border-color:#2ea04366;background:#2ea0431f}.chip.warn{border-color:#f0883e66;background:#f0883e1f}
+.chip.bad{border-color:#f8514966;background:#f851491f}.chip.lines{border-color:#79b8ff66;background:#79b8ff1f}
+.pickline{font-size:1.04rem;font-weight:650}
+.blank{color:#f85149;font-weight:600}
+ul,ol{padding-left:1.15em}li{margin:.35em 0}
+details{background:#111823;border:1px solid #232f45;border-radius:10px;padding:8px 11px;margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+.foot{margin-top:34px;border-top:1px solid #223047;padding-top:10px;font-size:.8rem;color:#93a1b8}
+@media(max-width:760px){
+ h1{font-size:1.28rem}
+ table{font-size:.9rem}
+ thead{display:none}
+ table.responsive,table.responsive tbody,table.responsive tr,table.responsive td{display:block;width:100%}
+ table.responsive tr{border:1px solid #232f45;border-radius:10px;margin:8px 0;padding:4px 8px;background:#121a26}
+ table.responsive td{border:0;padding:5px 0;display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+ table.responsive td::before{content:attr(data-label);font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:#93a1b8;flex:0 0 42%}
+ table.responsive td.wide{display:block}
+ table.responsive td.wide::before{display:block;margin-bottom:3px}
+}
+</style>
+<main>
+<header class=top><nav><a href="index.html">Desk home</a><a href="day5.html">TWC day 5</a><a href="twc.html">Day 1-4 review</a><a href="picks.html">Every pick</a><a href="unresolved.html">Unresolved</a><a href="flagged.html">Flagged</a><a href="method.html" aria-current=page>Method</a><a href="../index.html">All sections</a></nav><p class=stamp>Board read 2026-10-18T00:45:39Z - collector not run in this build (CI writes it) - crowd read 2026-10-18T01:28:00Z - this page written 2026-10-18T01:13:33Z. <a href=method.html#ledger>Sources read</a>.</p></header>
+<h1>Method, rules and read ledger</h1>
+<h2 id=rules>Rules this page is built under</h2><ul><li><strong>Market first, model second.</strong> A two-way decimal pair is devigged proportionally: p(A) = (1/odds A) / (1/odds A + 1/odds B). A book whose pair sums outside 0.95-1.30 implied is discarded. Books are weighted Pinnacle 2.0, Bovada 1.5, Thunderpick 1.5, Kalshi 1.0, Melbet 1.0.</li><li><strong>Blend.</strong> line = sigmoid(w x logit(market) + (1-w) x logit(model)), w = 0.85 with two or more sources and 0.75 with one. With no rating pair for one side the line is the market alone; with no price it is the model alone and gets flagged.</li><li><strong>Rating model.</strong> p(A) = sigmoid(k x C x (ptsA - ptsB)) using Valve's own arithmetic (400 rank points = 90%, RD 75 as in model/fit.js), with the fitted slope k = 0.2548 from 17 priced pairs on this board. Labels: Strong at 70%+, Solid 60%+, Lean 53%+, Toss-up below.</li><li><strong>Contrarian floor.</strong> Never recommend switching to a side the priced line puts under 35%, whatever the crowd is doing. Leverage figures are only printed when the crowd sample has at least 20 picks and our line differs from the crowd by at least 10pp, and are reported as points relative to the field: points x (our probability - crowd share of that side).</li><li><strong>HotSpawn is a fixture and ownership source only.</strong> Its percentages are never an input to a line, and a card whose only evidence is crowd behaviour gets no pick from this desk.</li><li><strong>Blank beats wrong.</strong> If no verified source supports a number, the cell is blank, the reason is published, and the sources that were tried are named.</li><li><strong>Read times are part of the data.</strong> Every price carries the minute it was read; nothing on this page is older than the board read in the header.</li></ul>
+<h2 id=fresh>Refresh</h2><p>GitHub Actions runs the collector and this builder every four hours (workflow <code>now-b3871d16.yml</code>), and the staging step re-renders before every Pages publish, so the HTML on this site can never be older than the board it is derived from. The collector only ever adds prices it can prove; a failed fetch leaves the previous file in place and is reported in the header as "collector: failed".</p>
+<h2 id=calib>Track record - and why this desk does not quote one</h2><p class=small>The shared board reports 2676 settled picks, 2020 won, Brier 0.1834, and per-basis accuracies of market 98.4% / market+model 70.2% / model 99.5%. Those per-basis figures are not usable: the history holds one row per refresh for each fixture (4,870 rows for 107 fixtures) and every "won" row has pick == winner by construction, so a 99% model-only hit rate is a bookkeeping artefact, not a result. See <a href=flagged.html#ir1>IR-1</a>. The only calibration this page relies on is the fitted VRS slope, with a mean absolute error of 9.5pp against no-vig book lines over 17 pairs - i.e. our rating-only rows should be read as plus or minus about ten points.</p>
+<h2 id=ledger>Sources read for this build (2026-10-18T00:40:00Z to 2026-10-18T01:35:00Z)</h2>
+<p class=small>Each item is one fetch, what was copied out of it, and the judgement made from it. Reads are minute-stamped; the tool is this session's browser, not a cached mirror.</p>
+<details><summary><code>R1</code> HLTV results, event 8932 - read 2026-10-18T00:40:00Z</summary><p class=small><a href="https://www.hltv.org/results?event=8932" rel="noopener">www.hltv.org/results?event=8932</a></p>
+<p class=small mut>Every TWC 2026 series played to 18 Oct, copied as shown. Used to verify days 1-4 line by line and to date the day-5 fixtures.</p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;day1_2026-10-14&quot;: [
+  {
+   &quot;hltv_match&quot;: &quot;https://www.hltv.org/matches/2399384/9z-vs-aurora-thunderpick-world-championship-2026&quot;,
+   &quot;team_a&quot;: &quot;9z&quot;,
+   &quot;score_a&quot;: 2,
+   &quot;score_b&quot;: 0,
+   &quot;team_b&quot;: &quot;Aurora&quot;,
+   &quot;format&quot;: &quot;bo3&quot;
+  },
+  {
+   &quot;hltv_match&quot;: &quot;https://www.hltv.org/matches/2399385/falcons-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026&quot;,
+   &quot;team_a&quot;: &quot;Falcons&quot;,
+   &quot;score_a&quot;: 2,
+   &quot;score_b&quot;: 0,
+   &quot;team_b&quot;: &quot;Ninjas in Pyjamas&quot;,
+   &quot;format&quot;: &quot;bo3&quot;
+  },
+  {
+   &quot;hltv_match&quot;: &quot;https://www.hltv.org/matches/2399386/legacy-vs-parivision-thunderpick-world-championship-2026&quot;,
+   &quot;team_a&quot;: &quot;Legacy&quot;,
+   &quot;score_a&quot;: 2,
+   &quot;score_b&quot;: 0,
+   &quot;team_b&quot;: &quot;PARIVISION&quot;,
+   &quot;format&quot;: &quot;bo3&quot;
+  },
+  {
+   &quot;hltv_match&quot;: &quot;https://www.hltv.org/matches/2399387/furia-vs-betboom-thunderpick-world-championship-2026&quot;,
+   &quot;team_a&quot;: &quot;FURIA&quot;,
+   &quot;score_a&quot;: 2,
+   &quot;score_b&quot;: 0,
+   &quot;team_b&quot;: &quot;BETBOOM&quot;,
+   &quot;format&quot;: &quot;bo3&quot;
+  }
+ ],
+ &quot;day2_2026-10-15&quot;: [
+  {
+   &quot;hltv_match&quot;: &quot;https://www.hltv.org/matches/2399408/aurora-vs-ninjas-in-pyjamas-thunderpick-world-championship-2026&quot;,
+   &quot;team_a&quot;: &quot;Aurora&quot;,
+   &quot;score_a&quot;: 2,
+   &quot;score_b&quot;: 0,
+   &quot;team_b&quot;: &quot;Ninjas in Pyjamas&quot;,
+   &quot;format&quot;: &quot;bo3&quot;
+  },
+  {
+   &quot;hltv_match&quot;: &quot;https://www.hltv.org/matches/2399409/9z-vs-falcons-thunderpick-world-championship-2026&quot;,
+   &quot;team_a&quot;: &quot;9z&quot;,
+   &quot;score_a&quot;: 1,
+   &quot;score_b&quot;: 2,
+   &quot;team_b&quot;: &quot;Falcons&quot;,
+   &quot;format&quot;: &quot;bo3&quot;
+  },
+  {
+   &quot;hltv_match&quot;: &quot;https://www.hltv.org/matches/2399410/parivision-vs-betboom-thunderpick-world-championship-2026&quot;,
+   &quot;team_a&quot;: &quot;PARIVISION&quot;,
+   &quot;score_a&quot;: 1,
+   &quot;score_b&quot;: 2,
+   &quot;team_b&quot;: &quot;BETBOOM&quot;,
+   &quot;format&quot;: &quot;bo3&quot;
+  },
+  {
+   &quot;hltv_match&quot;: &quot;https://www.hltv.org/matches/2399411/legacy-vs-furia-thunderpick-world-championship-2026&quot;,
+   &quot;team_a&quot;: &quot;Legacy&quot;,
+   &quot;score_a&quot;: 1,
+   &quot;score_b&quot;: 2,
+   &quot;team_b&quot;: &quot;FURIA&quot;,
+   &quot;format&quot;: &quot;bo3&quot;
+  }
+ ],
+ &quot;day3_2026-10-16&quot;: [
+  {
+   &quot;hltv_match&quot;: &quot;https://www.hltv.org/matches/2399412/aurora-vs-9z-thunderpick-world-championship-2026&quot;,
+   &quot;team_a&quot;: &quot;Aurora&quot;,
+   &quot;score_a&quot;: 2,
+   &quot;score_b&quot;: 0,
+   &quot;team_b&quot;: &quot;9z&quot;,
+   &quot;format&quot;: &quot;bo3&quot;
+  },
+  {
+   &quot;hltv_match&quot;: &quot;https://www.hltv.org/matches/2399413/betboom-vs-legacy-thunderpick-world-championship-2026&quot;,
+   &quot;team_a&quot;: &quot;BETBOOM&quot;,
+   &quot;score_a&quot;: 2,
+   &quot;score_b&quot;: 1,
+   &quot;team_b&quot;: &quot;Legacy&quot;,
+   &quot;format&quot;: &quot;bo3&quot;
+  }
+ ],
+ &quot;day4_2026-10-17&quot;: [
+  {
+   &quot;hltv_match&quot;: &quot;https://www.hltv.org/matches/2399414/furia-vs-aurora-thunderpick-world-championship-2026&quot;,
+   &quot;team_a&quot;: &quot;FURIA&quot;,
+   &quot;score_a&quot;: 2,
+   &quot;score_b&quot;: 0,
+   &quot;team_b&quot;: &quot;Aurora&quot;,
+   &quot;format&quot;: &quot;bo3&quot;
+  },
+  {
+   &quot;hltv_match&quot;: &quot;https://www.hltv.org/matches/2399415/falcons-vs-betboom-thunderpick-world-championship-2026&quot;,
+   &quot;team_a&quot;: &quot;Falcons&quot;,
+   &quot;score_a&quot;: 1,
+   &quot;score_b&quot;: 2,
+   &quot;team_b&quot;: &quot;BETBOOM&quot;,
+   &quot;format&quot;: &quot;bo3&quot;
+  }
+ ]
+}</pre></details>
+<details><summary><code>R2</code> HLTV match page, grand final - read 2026-10-18T00:41:00Z</summary><p class=small><a href="https://www.hltv.org/matches/2399417/furia-vs-betboom-thunderpick-world-championship-2026" rel="noopener">www.hltv.org/matches/2399417/furia-vs-betboom-thunderpick-world-champi</a></p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;label&quot;: &quot;Best of 5 (LAN) - Grand final&quot;,
+ &quot;rendered_clock&quot;: &quot;11:00 18 Oct&quot;,
+ &quot;live_countdown_at_read&quot;: &quot;14h 21m 36s&quot;,
+ &quot;conclusion&quot;: &quot;11:00 is the viewer-local time the page was served in (the countdown from a 00:41Z read puts the start at 15:01Z). The UTC start is 15:00, which agrees with HotSpawn&#x27;s card. HLTV clock strings must never be read as UTC.&quot;
+}</pre></details>
+<details><summary><code>R3</code> HLTV match page, third-place decider - read 2026-10-18T00:52:00Z</summary><p class=small><a href="https://www.hltv.org/matches/2399416/aurora-vs-falcons-betboom-loser-thunderpick-world-championship-2026" rel="noopener">www.hltv.org/matches/2399416/aurora-vs-falcons-betboom-loser-thunderpi</a></p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;rendered_clock&quot;: &quot;07:30&quot;,
+ &quot;implied_utc_from_viewer_offset&quot;: &quot;11:30&quot;,
+ &quot;note&quot;: &quot;Same page also carries HLTV&#x27;s AI summary &#x27;A third-place finish is on the line; Aurora&#x27;s opponent is still to be decided&#x27; timestamped Oct 17 12:02, i.e. written before Falcons beat BETBOOM. Prose is stale; the fixture and the bo3 format are confirmed by the results page R1.&quot;
+}</pre></details>
+<details><summary><code>R4</code> HLTV betting analytics, Aurora vs Falcons - read 2026-10-18T00:55:00Z</summary><p class=small><a href="https://www.hltv.org/betting/analytics/2399416/aurora-vs-falcons-thunderpick-world-championship-2026" rel="noopener">www.hltv.org/betting/analytics/2399416/aurora-vs-falcons-thunderpick-w</a></p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;bookmaker_favorite&quot;: &quot;Falcons - &#x27;Falcons is the bookmaker favorite with the best odds&#x27;&quot;,
+ &quot;ranking_line&quot;: &quot;Falcons is better ranked (#5); Aurora is worse ranked (#6)&quot;,
+ &quot;form_line&quot;: &quot;Aurora has better form ranking; Aurora has won 3 out of the last 5 matches&quot;,
+ &quot;head_to_head&quot;: &quot;Aurora played 1 matches against Falcons in the past 30 days, they won 0 and lost 1&quot;,
+ &quot;event&quot;: &quot;Thunderpick World Championship 2026, $1,000,000 prize pool, 8 teams&quot;,
+ &quot;used_for&quot;: &quot;Direction-only corroboration. HLTV&#x27;s analytics page publishes no numeric moneyline, so it cannot move a price; it is cited as an independent check that our favoured side is the bookmaker&#x27;s.&quot;
+}</pre></details>
+<details><summary><code>R5</code> HLTV team page, Aurora - read 2026-10-18T00:52:00Z</summary><p class=small><a href="https://www.hltv.org/team/11861/aurora" rel="noopener">www.hltv.org/team/11861/aurora</a></p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;roster&quot;: [
+  &quot;XANTARES&quot;,
+  &quot;woxic&quot;,
+  &quot;Jimpphat&quot;,
+  &quot;kyxsan&quot;,
+  &quot;Wicadia&quot;
+ ],
+ &quot;coach&quot;: &quot;Ashley &#x27;ash&#x27; Battye&quot;,
+ &quot;valve_ranking_displayed&quot;: &quot;#6 (EU #5)&quot;,
+ &quot;hltv_world_ranking_displayed&quot;: &quot;#6 (2026/october/12)&quot;,
+ &quot;no_october_2026_transfer_visible&quot;: true
+}</pre></details>
+<details><summary><code>R6</code> HLTV news - Aurora roster rebuild (official announcements) - read 2026-10-18T01:05:00Z</summary><p class=small><a href="https://www.hltv.org/news/45082/official-aurora-complete-rebuild-with-kyxsan" rel="noopener">www.hltv.org/news/45082/official-aurora-complete-rebuild-with-kyxsan</a></p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;published&quot;: &quot;2026-07-08 15:00&quot;,
+ &quot;quotes&quot;: [
+  &quot;Aurora have announced the signing of kyxsan from Falcons to complete their summer rebuild with a new international IGL.&quot;,
+  &quot;The move for the Macedonian in-game-leader follows the additions of Jimi &#x27;Jimpphat&#x27; Salo and Ashley &#x27;ash&#x27; Battye earlier on Friday, with the new trio replacing Engin &#x27;MAJ3R&#x27; Kupeli, Caner &#x27;soulfly&#x27; Kesici, and Sezgin &#x27;Fabre&#x27; Kalayci.&quot;,
+  &quot;Aurora are now: XANTARES, woxic, Wicadia, Jimpphat, kyxsan. Coach: ash.&quot;
+ ],
+ &quot;corroborating&quot;: [
+  {
+   &quot;url&quot;: &quot;https://liquipedia.net/counterstrike/Aurora_Gaming&quot;,
+   &quot;note&quot;: &quot;Timeline: Jul 2 bench MAJ3R and soulfly; Jul 3 sign Jimpphat and ashhh (coach); Jul 8 acquire kyxsan.&quot;
+  },
+  {
+   &quot;url&quot;: &quot;https://www.hltv.org/news/45553/aurora-punish-limp-vitality-offense-to-reach-first-final-with-new-roster&quot;,
+   &quot;note&quot;: &quot;19-9-2026: first final for the new roster (StarSeries Fall), fifth event together.&quot;
+  },
+  {
+   &quot;url&quot;: &quot;https://www.hltv.org/news/45736/aurora-beat-9z-to-secure-third-consecutive-top-four-appearance&quot;,
+   &quot;note&quot;: &quot;16-10-2026: &#x27;third consecutive top-four appearance&#x27; - the rebuild is now a known quantity.&quot;
+  }
+ ],
+ &quot;conclusion&quot;: &quot;The roster change the brief refers to is real but it is the July 2026 international rebuild, not an October change, and no transfer in or out was visible on the team page on 18 Oct. It is therefore already in the market price and cannot be used to move a line; the flag stays published.&quot;
+}</pre></details>
+<details><summary><code>R7</code> HLTV news - day-1 result framed as an upset - read 2026-10-18T01:05:00Z</summary><p class=small><a href="https://www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026" rel="noopener">www.hltv.org/news/45718/9z-beat-aurora-2-0-to-kick-off-twc-2026</a></p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;published&quot;: &quot;2026-10-14 13:49&quot;,
+ &quot;quotes&quot;: [
+  &quot;9z earned a statement win against the fifth-ranked team in the VRS, Aurora, to kick off this year&#x27;s Thunderpick World Championship.&quot;,
+  &quot;luchov topped the scoreboard with a 1.61 rating&quot;
+ ],
+ &quot;corroborating&quot;: [
+  {
+   &quot;url&quot;: &quot;https://www.hltv.org/news/45723/furia-fend-off-betboom-to-end-day-one-of-twc&quot;,
+   &quot;quote&quot;: &quot;leaving Aurora as the only favorite to falter in Malta after losing to 9z&quot;,
+   &quot;published&quot;: &quot;2026-10-14 23:43&quot;
+  },
+  {
+   &quot;url&quot;: &quot;https://www.hltv.org/news/45719/bit-if-we-make-it-back-to-the-playoffs-consistently-im-sure-at-some-point-well-win-another-tournament&quot;,
+   &quot;quote&quot;: &quot;9z delivered the first upset of the Thunderpick World Championship in Malta, beating World No.5 Aurora in two maps&quot;,
+   &quot;published&quot;: &quot;2026-10-14 14:51&quot;
+  }
+ ],
+ &quot;conclusion&quot;: &quot;Aurora - not 9z - was the favorite. The Day-1 upset is a favorite losing at a LAN, which is the lesson used in the day-5 contrarian rules, not evidence that dogs are cheap here.&quot;
+}</pre></details>
+<details><summary><code>R8</code> bo3.gg match page - grand final market (Thunderpick) - read 2026-10-18T00:49:00Z</summary><p class=small><a href="https://bo3.gg/matches/furia-vs-betboom-team-18-10-2026" rel="noopener">bo3.gg/matches/furia-vs-betboom-team-18-10-2026</a></p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;winner_market&quot;: {
+  &quot;FURIA&quot;: 1.35,
+  &quot;BetBoom&quot;: 2.9
+ },
+ &quot;countdown_at_read&quot;: &quot;14:11:37&quot;,
+ &quot;stage&quot;: &quot;playoffs / grand final, Bo5&quot;,
+ &quot;side_markets&quot;: {
+  &quot;FURIA_handicap_maps_+1.5&quot;: 1.15,
+  &quot;FURIA_to_win_at_least_one_map&quot;: 1.03,
+  &quot;BetBoom_handicap_maps_+1.5&quot;: 1.85
+ },
+ &quot;rejected_text&quot;: &quot;bo3&#x27;s auto-written &#x27;Analytics Insights&#x27; prose (e.g. FURIA &#x27;three-match winning streak&#x27;, &#x27;80% H2H winrate&#x27;) is not used - the same generator mislabelled the third-place decider as &#x27;the grand final&#x27; on R9, so only the numeric tables are quoted.&quot;
+}</pre></details>
+<details><summary><code>R9</code> bo3.gg match page - third-place decider market (Thunderpick) - read 2026-10-18T00:49:00Z</summary><p class=small><a href="https://bo3.gg/matches/aurora-gaming-vs-falcons-esports-18-10-2026" rel="noopener">bo3.gg/matches/aurora-gaming-vs-falcons-esports-18-10-2026</a></p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;winner_market&quot;: {
+  &quot;Aurora&quot;: 2.35,
+  &quot;Falcons&quot;: 1.52
+ },
+ &quot;countdown_at_read&quot;: &quot;10:41:37&quot;,
+ &quot;stage&quot;: &quot;decider / 3rd place, Bo3&quot;,
+ &quot;movement&quot;: &quot;Opened at Aurora 2.50 / Falcons 1.48 in the 17 Oct 20:00-23:00Z captures; Aurora shortened into the lock, which is why the day-5 desk is re-read rather than inherited.&quot;,
+ &quot;rejected_text&quot;: &quot;Same page calls this fixture &#x27;the grand final&#x27; twice in its insights prose and gives Falcons a &#x27;two-match winning streak&#x27; after a semifinal loss - prose not used, figures used.&quot;
+}</pre></details>
+<details><summary><code>R10</code> bo3.gg team-form pages for the two locked day-4 semifinals (used only to check the upset framing) - read 2026-10-18T00:58:00Z</summary><p class=small><a href="https://bo3.gg/matches/9z-vs-aurora-gaming-14-10-2026" rel="noopener">bo3.gg/matches/9z-vs-aurora-gaming-14-10-2026</a></p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;displayed_single_number&quot;: 3.8,
+ &quot;maps&quot;: {
+  &quot;Inferno&quot;: &quot;13-11&quot;,
+  &quot;Nuke&quot;: &quot;13-1&quot;
+ },
+ &quot;other_pages&quot;: [
+  {
+   &quot;url&quot;: &quot;https://bo3.gg/matches/falcons-esports-vs-betboom-team-17-10-2026&quot;,
+   &quot;displayed_single_number&quot;: 11.0,
+   &quot;maps&quot;: {
+    &quot;Anubis&quot;: &quot;13-5&quot;,
+    &quot;Dust II&quot;: &quot;14-16&quot;,
+    &quot;Mirage&quot;: &quot;7-13&quot;
+   }
+  }
+ ],
+ &quot;flag&quot;: &quot;bo3 shows ONE number per finished match with no team label, and it cannot be the second team&#x27;s price in both rows at once (it would make Falcons 11.00 favourites&#x27; opponents and Aurora a 3.80 dog to 9z, contradicting HLTV news R7). The field is therefore NOT used as an odds source; HotSpawn&#x27;s own report (&#x27;Huge underdogs coming into it&#x27; for BetBoom vs Falcons, https://www.hotspawn.com/counter-strike/tournament/thunderpick-world-championship-2026) is quoted instead for the day-4 upset.&quot;
+}</pre></details>
+<details><summary><code>R11</code> HotSpawn lobby page (fixture inventory and crowd ownership only) - read 2026-10-18T00:53:00Z</summary><p class=small><a href="https://play.hotspawn.com/lobby" rel="noopener">play.hotspawn.com/lobby</a></p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;header&quot;: &quot;This week 213 matches this week; resets in 0d 23h 12m&quot;,
+ &quot;cs2_tier_filter&quot;: &quot;All tiers (81) | B (28) | C (53)&quot;,
+ &quot;tournament_filter_contains_thunderpick_world_championship_2026_main_event&quot;: false,
+ &quot;tournament_filter_contains&quot;: &quot;Thunderpick World Championship 2026: South American Series #1 (8) only&quot;,
+ &quot;closing_soon_crowd&quot;: {
+  &quot;1081519&quot;: [
+   92,
+   8
+  ],
+  &quot;1081126&quot;: [
+   78,
+   22
+  ],
+  &quot;1079638&quot;: [
+   85,
+   15
+  ],
+  &quot;1081521&quot;: [
+   90,
+   10
+  ],
+  &quot;1081522&quot;: [
+   10,
+   90
+  ],
+  &quot;1079640&quot;: [
+   22,
+   78
+  ]
+ },
+ &quot;clock_check&quot;: &quot;The lobby&#x27;s own &#x27;Locks in 07:06:12&#x27; for the 08:00Z fixture is consistent with a 00:53Z read, and its rendered &#x27;Oct 18, 04:00&#x27; is UTC-4. Displayed lobby clocks are viewer-local; only the API&#x27;s epoch fields are used.&quot;
+}</pre></details>
+<details><summary><code>R12</code> HotSpawn public fixtures API (crowd ownership + status) - read 2026-10-18T01:28:00Z</summary><p class=small><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias=cs2&amp;status=scheduled" rel="noopener">phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures?sport_alias</a></p>
+<p class=small mut>total_picks and participants{0,1}_picked_percent copied as served. Ownership only - never a probability, never an input to a line. Epoch start times decoded with datetime.fromtimestamp: 1792350000000 = 2026-10-18T19:00:00Z, 1792396800000 = 2026-10-19T08:00:00Z, 1792418400000 = 2026-10-19T14:00:00Z, 1792465200000 = 2026-10-20T03:00:00Z, 1792479600000 = 2026-10-20T07:00:00Z.</p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;records_with_id_in_the_response&quot;: {
+  &quot;1079178&quot;: {
+   &quot;total_picks&quot;: 1,
+   &quot;names&quot;: [
+    &quot;GenOne&quot;,
+    &quot;FORZE Reload&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    100,
+    0
+   ],
+   &quot;start_utc&quot;: &quot;2026-10-19T08:00:00Z&quot;
+  },
+  &quot;1079180&quot;: {
+   &quot;total_picks&quot;: 1,
+   &quot;names&quot;: [
+    &quot;ex-Zero Tenacity&quot;,
+    &quot;Bushido Wildcats&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    100,
+    0
+   ],
+   &quot;start_utc&quot;: &quot;2026-10-19T14:00:00Z&quot;
+  },
+  &quot;1079181&quot;: {
+   &quot;total_picks&quot;: 1,
+   &quot;names&quot;: [
+    &quot;Fire Flux&quot;,
+    &quot;ex-6666&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    0,
+    100
+   ],
+   &quot;start_utc&quot;: &quot;2026-10-19T17:00:00Z&quot;
+  },
+  &quot;1081526&quot;: {
+   &quot;total_picks&quot;: 45,
+   &quot;names&quot;: [
+    &quot;Infinite&quot;,
+    &quot;Insiders&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    93,
+    7
+   ]
+  },
+  &quot;1081527&quot;: {
+   &quot;total_picks&quot;: 45,
+   &quot;names&quot;: [
+    &quot;aimclub&quot;,
+    &quot;BASEMENT BOYS&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    69,
+    31
+   ]
+  },
+  &quot;1081528&quot;: {
+   &quot;total_picks&quot;: 50,
+   &quot;names&quot;: [
+    &quot;BC.Game&quot;,
+    &quot;Drama&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    98,
+    2
+   ]
+  },
+  &quot;1081529&quot;: {
+   &quot;total_picks&quot;: 45,
+   &quot;names&quot;: [
+    &quot;Nexus&quot;,
+    &quot;WROTBERRY&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    93,
+    7
+   ]
+  },
+  &quot;1081530&quot;: {
+   &quot;total_picks&quot;: 45,
+   &quot;names&quot;: [
+    &quot;Iberian Soul&quot;,
+    &quot;HyperSpirit&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    82,
+    18
+   ]
+  },
+  &quot;1081531&quot;: {
+   &quot;total_picks&quot;: 45,
+   &quot;names&quot;: [
+    &quot;Sashi&quot;,
+    &quot;mouz NXT&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    76,
+    24
+   ]
+  },
+  &quot;1081546&quot;: {
+   &quot;total_picks&quot;: 1,
+   &quot;names&quot;: [
+    &quot;Apogee Betclic&quot;,
+    &quot;BBL&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    0,
+    100
+   ]
+  },
+  &quot;1081861&quot;: {
+   &quot;total_picks&quot;: 39,
+   &quot;names&quot;: [
+    &quot;Lynn Vision&quot;,
+    &quot;Morningstar&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    95,
+    5
+   ]
+  },
+  &quot;1081862&quot;: {
+   &quot;total_picks&quot;: 37,
+   &quot;names&quot;: [
+    &quot;Rare Atom&quot;,
+    &quot;Alter Ego&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    70,
+    30
+   ]
+  },
+  &quot;1081863&quot;: {
+   &quot;total_picks&quot;: 36,
+   &quot;names&quot;: [
+    &quot;Chinggis Warriors&quot;,
+    &quot;WXM&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    97,
+    3
+   ]
+  },
+  &quot;1081864&quot;: {
+   &quot;total_picks&quot;: 36,
+   &quot;names&quot;: [
+    &quot;NEXVOID&quot;,
+    &quot;Vitalem Aerem&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    92,
+    8
+   ]
+  },
+  &quot;1082200&quot;: {
+   &quot;total_picks&quot;: 4,
+   &quot;names&quot;: [
+    &quot;6yuBoJlbl&quot;,
+    &quot;HyperSpirit&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    50,
+    50
+   ]
+  },
+  &quot;1082207&quot;: {
+   &quot;total_picks&quot;: 4,
+   &quot;names&quot;: [
+    &quot;QUINTESSENCIA&quot;,
+    &quot;RED Canids Academy&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    25,
+    75
+   ]
+  },
+  &quot;1082208&quot;: {
+   &quot;total_picks&quot;: 4,
+   &quot;names&quot;: [
+    &quot;Procyon&quot;,
+    &quot;your end&quot;
+   ],
+   &quot;picked_percent&quot;: [
+    100,
+    0
+   ]
+  }
+ },
+ &quot;records_where_the_fixture_id_line_fell_between_two_chunks&quot;: [
+  {
+   &quot;names&quot;: [
+    &quot;QUINTESSÊNCIA&quot;,
+    &quot;RED Canids Academy&quot;
+   ],
+   &quot;scheduled_start_time_ms&quot;: 1792350000000,
+   &quot;total_picks&quot;: 4,
+   &quot;picked_percent&quot;: [
+    25,
+    75
+   ],
+   &quot;joined_to&quot;: &quot;1082207&quot;,
+   &quot;join_basis&quot;: &quot;same two team names and a 2026-10-18T19:00:00Z start; the only open HotSpawn CS2 fixture with that pairing in data/fe803b80/board.json&quot;
+  },
+  {
+   &quot;names&quot;: [
+    &quot;ASTRAL&quot;,
+ </pre></details>
+<details><summary><code>R13</code> bo3.gg tournament page - PGL Bucharest 2027: Closed Qualifier (the row the featured pipeline could not price) - read 2026-10-18T01:15:00Z</summary><p class=small><a href="https://bo3.gg/tournaments/pgl-bucharest-2027-closed-qualifier" rel="noopener">bo3.gg/tournaments/pgl-bucharest-2027-closed-qualifier</a></p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;fixture_row&quot;: &quot;Oct 19 | Betclic v BBL&quot;,
+ &quot;market_link&quot;: &quot;https://bo3.gg/matches/betclic-apogee-esports-vs-bbl-19-10-2026&quot;,
+ &quot;winner_market&quot;: {
+  &quot;Betclic&quot;: 1.92,
+  &quot;BBL&quot;: 1.78
+ },
+ &quot;join_evidence&quot;: &quot;HotSpawn fixture 1081546 is &#x27;Apogee Betclic v BBL&#x27;, tier B, PGL Bucharest 2027: Closed Qualifier, scheduled_start_time 1792418400000 = 2026-10-19T14:00:00Z, lock 13:54Z. bo3&#x27;s own FAQ text says &#x27;Betclic and BBL meeting in the upper-bracket final on 2026-10-19 at 14:00&#x27; - same two teams, same day, same hour, same event. The same page prices the earlier slot &#x27;Betclic 2-0 Nemesis&#x27; (17 Oct), which is HotSpawn fixture 1081515 &#x27;Apogee Betclic v Nemesis&#x27; - a second agreeing join for the same alias.&quot;,
+ &quot;identity_fix&quot;: &quot;HotSpawn&#x27;s &#x27;Apogee Betclic&#x27; is Betclic Apogee Esports, listed by Valve as &#x27;Betclic&#x27;. Valve&#x27;s 2026_10_05 file carries TWO &#x27;Betclic&#x27; rows: #45 (1333 pts: Demho, ex1st, Prism, Qlocuu, ultimate) and #183 (765 pts: Demho, Dr3nquu, eskyy, hades, Prism). HLTV news 45096 &#x27;Betclic down to two players as hades leaves and Dr3nquu is benched&#x27; (9 Jul 2026) and 45273 &#x27;Betclic announce ultimate signing&#x27; (11 Aug 2026) identify #183 as the broken-up lineup and #45 as the current one: https://www.hltv.org/news/45096/betclic-down-to-two-players-as-hades-leaves-and-dr3nquu-is-benched&quot;
+}</pre></details>
+<details><summary><code>R14</code> bo3.gg tournament page - VOID Autumn Cup 2026 (the other unpriced row) - read 2026-10-18T01:10:00Z</summary><p class=small><a href="https://bo3.gg/tournaments/void-autumn-cup-2026" rel="noopener">bo3.gg/tournaments/void-autumn-cup-2026</a></p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;fixture_row&quot;: &quot;Oct 20 | WXM v Chinggis Warriors&quot;,
+ &quot;match_link&quot;: &quot;https://bo3.gg/matches/wept-xyloid-melancholy-vs-chinggis-warriors-20-10-2026&quot;,
+ &quot;winner_market&quot;: null,
+ &quot;no_price_note&quot;: &quot;The card renders &#x27;All odds are on&#x27; with no 1/2 pair - Thunderpick has not priced this series, so there is still no market line for fixture 1081863.&quot;,
+ &quot;identity_fix&quot;: &quot;WXM = &#x27;Wept Xyloid Melancholy&#x27; (bo3 team slug wept-xyloid-melancholy). Its own form table on the match page reads &#x27;There are currently no data&#x27; and its lineup lists a single player (1romma): no match history and no Valve rating, so no two-sided line is derivable from any source tried.&quot;,
+ &quot;opponent_fix&quot;: &quot;Chinggis Warriors&#x27; current lineup on the same page (sk0R, cool4st, ROUX, fury5k, tikuak) matches Valve&#x27;s row #87 (1084 pts: cool4st, fury5k, ROUX, sk0R, yAmi), not the row #220 (685 pts: Aceari, hasteka, ROUX, sk0R, yAmi) the canonical board joined. https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0087--chinggis_warriors--cool4st-fury5k-roux-sk0r-yami.md&quot;
+}</pre></details>
+<details><summary><code>R15</code> bo3.gg tournament page - NODWIN Clutch Series 13 (model-only rows, checked for a market price) - read 2026-10-18T01:20:00Z</summary><p class=small><a href="https://bo3.gg/tournaments/nodwin-clutch-series-13" rel="noopener">bo3.gg/tournaments/nodwin-clutch-series-13</a></p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;butterfly_vs_ex_rustec&quot;: {
+  &quot;date&quot;: &quot;Oct 18&quot;,
+  &quot;winner_market&quot;: null,
+  &quot;note&quot;: &quot;&#x27;All odds are on&#x27; with no price pair - fixture 1079174 really is unpriced by the sportsbook that covers these events.&quot;
+ },
+ &quot;context_form&quot;: [
+  &quot;Black Phoenix 2-0 FORZE Reload (17 Oct)&quot;,
+  &quot;GenOne 2-0 Butterfly (17 Oct)&quot;,
+  &quot;BET-M 2-0 Just Players (17 Oct)&quot;
+ ],
+ &quot;form_links&quot;: [
+  &quot;https://bo3.gg/matches/black-phoenix-vs-forze-reload-17-10-2026&quot;,
+  &quot;https://bo3.gg/matches/genone-vs-butterfly-17-10-2026&quot;
+ ],
+ &quot;use&quot;: &quot;Recent in-event results are published as context next to the two NODWIN rows the books do not price (1079174, 1079178). They are not converted into a number: a 2-0 group-stage result cannot be turned into a probability without inventing one.&quot;
+}</pre></details>
+<details><summary><code>R16</code> Valve official regional standings (the only rating source used by the model) - read 2026-10-18T00:58:00Z</summary><p class=small><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/tree/main/live/2026" rel="noopener">github.com/ValveSoftware/counter-strike_regional_standings/tree/main/l</a></p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;newest_global_file&quot;: &quot;live/2026/standings_global_2026_10_05.md&quot;,
+ &quot;verification&quot;: &quot;Contents listing of live/2026 read through https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026 - 41 entries, the global series runs 2026_01_05, 02_02, 03_02, 04_06, 05_04, 06_01, 07_06, 08_03, 09_07, 10_05, so 2026_10_05 is the newest published snapshot; nothing newer exists to swap in on 18 Oct.&quot;,
+ &quot;sha256_global&quot;: &quot;df96e7fc3cd91a2687ec08cac0128e50cc4e4e55346581679572e881d79ae61b&quot;,
+ &quot;sha256_asia&quot;: &quot;b26930613dec57b4...&quot;,
+ &quot;local_copies&quot;: [
+  &quot;data/b3871d16/standings_global_2026_10_05.md&quot;,
+  &quot;data/b3871d16/standings_asia_2026_10_05.md&quot;,
+  &quot;data/b3871d16/standings_europe_2026_10_05.md&quot;
+ ],
+ &quot;rows_copied&quot;: {
+  &quot;Falcons&quot;: {
+   &quot;standing&quot;: 6,
+   &quot;points&quot;: 1843
+  },
+  &quot;FURIA&quot;: {
+   &quot;standing&quot;: 7,
+   &quot;points&quot;: 1829
+  },
+  &quot;Aurora&quot;: {
+   &quot;standing&quot;: 9,
+   &quot;points&quot;: 1716
+  },
+  &quot;BETBOOM&quot;: {
+   &quot;standing&quot;: 11,
+   &quot;points&quot;: 1596
+  },
+  &quot;9z&quot;: {
+   &quot;standing&quot;: 17,
+   &quot;points&quot;: 1543
+  },
+  &quot;BBL&quot;: {
+   &quot;standing&quot;: 37,
+   &quot;points&quot;: 1386
+  },
+  &quot;Betclic (current)&quot;: {
+   &quot;standing&quot;: 45,
+   &quot;points&quot;: 1333
+  },
+  &quot;Chinggis Warriors (current)&quot;: {
+   &quot;standing&quot;: 87,
+   &quot;points&quot;: 1084
+  }
+ },
+ &quot;note&quot;: &quot;HLTV&#x27;s team page displays Aurora at VRS #6 while this official 5 Oct file has them at #9; the gap is the event&#x27;s own results, which the snapshot cannot contain. The published model component always uses the official file, and the 13-day lag is listed as a limitation.&quot;
+}</pre></details>
+<details><summary><code>R17</code> HotSpawn fixture pages for the two day-5 cards (schedule confirmation) - read 2026-10-18T00:53:00Z</summary><p class=small><a href="https://www.hotspawn.com/matches/furia-vs-betboom-thunderpick-world-championship-2026-1080210" rel="noopener">www.hotspawn.com/matches/furia-vs-betboom-thunderpick-world-championsh</a></p>
+<pre class=small style="white-space:pre-wrap;word-break:break-word">{
+ &quot;grand_final&quot;: {
+  &quot;fixture_id&quot;: &quot;1080210&quot;,
+  &quot;teams&quot;: &quot;FURIA vs BetBoom&quot;,
+  &quot;rendered&quot;: &quot;15:00 18 OCT&quot;
+ },
+ &quot;third_place&quot;: {
+  &quot;fixture_id&quot;: &quot;1080209&quot;,
+  &quot;url&quot;: &quot;https://www.hotspawn.com/matches/aurora-vs-falcons-thunderpick-world-championship-2026-1080209&quot;,
+  &quot;linked_as&quot;: &quot;Prev match from the grand-final page&quot;
+ },
+ &quot;news_quote&quot;: &quot;HotSpawn&#x27;s own tournament news (5 hours before the read): &#x27;BetBoom Take Down Falcons in Three to Reach Thunderpick WC 2026 Grand Final - BetBoom are heading to the ... Grand Final! Huge underdogs coming into...&#x27;&quot;,
+ &quot;map_form&quot;: &quot;FURIA map breakdown at the event: Dust2 1/0, Inferno 2/0, Cache 0/1, Mirage 2/0, Ancient 1/0. BetBoom: Anubis 1/1, Dust2 1/1, Mirage 3/1, Nuke 1/0, Ancient 0/2 (as shown on the same page).&quot;
+}</pre></details>
+<h2 id=inputs>Files this page reads</h2><ul><li><code>data/fe803b80/board.json</code> - the canonical open set, quotes and lines (read 2026-10-18T00:45:39Z).</li><li><code>data/b3871d16/crowd_live.json</code> - ownership and pick counts (read 2026-10-18T01:28:00Z).</li><li><code>data/b3871d16/live_reads.json</code> - this desk's own fetch ledger, published above.</li><li><code>data/b3871d16/overrides.json</code> - corrections, day-5 cards, limitations and flags.</li></ul>
+</main>
