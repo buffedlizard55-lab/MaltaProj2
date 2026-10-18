@@ -459,7 +459,23 @@ class RefreshRobustnessTests(unittest.TestCase):
                 self.assertIn(str(api["id"]), ids)
 
     def test_sibling_quote_reuse_is_exact_id_only(self):
-        quote = builder.sibling_market("1080207")  # maintenance: 1081888 closed out of every sibling board
+        # 371a1ce7 (robustness): pick a fixture id that is open on a published sibling board right now
+        # instead of pinning one id that closes out of every board as its match locks.
+        live_id = None
+        for _s, rel, _l in builder.SIBLING_BOARDS:
+            path = builder.ROOT / rel
+            if not path.exists():
+                continue
+            for row in (json.loads(path.read_text()).get("open") or []):
+                m = row.get("market") or {}
+                if m.get("prob_a") and m.get("prob_b") and any(q.get("public_url") for q in (row.get("quotes") or [])):
+                    live_id = str(row["fixture_id"])
+                    break
+            if live_id:
+                break
+        if live_id is None:
+            self.skipTest("no sibling board currently lists a priced open fixture")
+        quote = builder.sibling_market(live_id)
         self.assertIsNotNone(quote, "a live fixture id must be found in a published board")
         self.assertTrue(quote["url"].startswith("https://"))
         self.assertRegex(quote["retrieved_utc"], r"^\d{4}-\d{2}-\d{2}T")

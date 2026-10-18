@@ -144,14 +144,14 @@ class BoardRows(unittest.TestCase):
 
     def test_pick_is_the_higher_probability_side(self):
         for r in self.open:
-            if r["prob_a"] is not None:
+            if r["prob_a"] is not None and not r.get("tie"):
                 self.assertEqual(r["pick"], r["team_a"] if r["prob_a"] >= r["prob_b"] else r["team_b"])
                 self.assertAlmostEqual(r["prob_a"] + r["prob_b"], 1.0, places=6)
                 self.assertEqual(r["pick_prob"], max(r["prob_a"], r["prob_b"]))
 
     def test_blank_probability_is_never_filled(self):
         for r in self.open:
-            if r["prob_a"] is None:
+            if r["prob_a"] is None or r.get("tie"):
                 self.assertIsNone(r["pick_prob"])
                 self.assertIsNone(r["leverage"])
                 self.assertNotEqual(r["basis_kind"], "lines")
@@ -187,6 +187,24 @@ class BoardRows(unittest.TestCase):
         self.assertEqual(r["climb"]["kind"], "same")
         r = self._synthetic(0.58, 85, sources=())  # model-only: no switch
         self.assertEqual(r["climb"]["kind"], "same")
+
+    def test_dead_even_line_is_a_tie_not_a_pick(self):
+        r = self._synthetic(0.5, 85)
+        self.assertTrue(r.get("tie"))
+        self.assertIsNone(r["pick"])
+        self.assertIsNone(r["pick_prob"])
+
+    def test_tiny_crowd_sample_gives_no_climb_advice(self):
+        board = copy.deepcopy(BOARD)
+        o = copy.deepcopy(next(x for x in BOARD["open"] if x["status"] == "scheduled" and (x.get("line") or {}).get("prob_a")))
+        o["line"].update(prob_a=0.58, prob_b=0.42)
+        o["market"] = {"sources": ["melbet"]}
+        o["lock_utc"] = "2026-10-18T09:00:00Z"
+        board["open"] = [o]
+        crowd = {"rows": [{"fixture_id": str(o["fixture_id"]), "crowd_a": 100, "crowd_b": 0, "total_picks": 2}]}
+        r = B.build_rows(board, crowd, NOW)[0][0]
+        self.assertEqual(r["climb"]["kind"], "none")
+        self.assertIsNone(r["leverage"])
 
     def test_locked_rows_move_to_the_locked_table(self):
         late = datetime(2026, 10, 18, 12, 0, tzinfo=timezone.utc)
@@ -237,15 +255,37 @@ class Twc(unittest.TestCase):
                 self.assertIn(t, TWC["valve_rank"])
 
     def test_day5_arithmetic(self):
-        for m in B.twc_day5(TWC):
-            self.assertAlmostEqual(m["market_a"] + m["market_b"], 1.0, places=9)
-            self.assertAlmostEqual(m["blend_a"] + m["blend_b"], 1.0, places=9)
-            lo, hi = sorted((m["market_a"], m["model_a"]))
-            self.assertTrue(lo - 1e-9 <= m["blend_a"] <= hi + 1e-9)
-            self.assertGreater(m["fav_prob"], 0.5)
-            ln = m["line"]
-            self.assertAlmostEqual(m["market_a"], (1 / ln["dec_a"]) / (1 / ln["dec_a"] + 1 / ln["dec_b"]), places=9)
-            self.assertGreater(m["overround"], 0)
+        for board_open in (BOARD["open"], []):          # with and without a HotSpawn board row
+            for m in B.twc_day5(TWC, board_open):
+                self.assertAlmostEqual(m["market_a"] + m["market_b"], 1.0, places=9)
+                self.assertAlmostEqual(m["blend_a"] + m["blend_b"], 1.0, places=9)
+                self.assertGreater(m["fav_prob"], 0.5)
+                ln = m["line"]
+                self.assertAlmostEqual(m["tp_a"], (1 / ln["dec_a"]) / (1 / ln["dec_a"] + 1 / ln["dec_b"]), places=9)
+                self.assertGreater(m["overround"], 0)
+                if m["basis"] == "single":
+                    lo, hi = sorted((m["market_a"], m["model_a"]))
+                    self.assertTrue(lo - 1e-9 <= m["blend_a"] <= hi + 1e-9)
+                    self.assertAlmostEqual(m["market_a"], m["tp_a"], places=9)
+
+    def test_board_row_is_the_published_number_when_hotspawn_lists_the_match(self):
+        board = copy.deepcopy(BOARD)
+        o = copy.deepcopy(next(x for x in BOARD["open"] if x["status"] == "scheduled" and (x.get("line") or {}).get("prob_a")))
+        o.update(team_a="FURIA", team_b="BetBoom")
+        o["line"].update(prob_a=0.7, prob_b=0.3)
+        o["market"] = {"prob_a": 0.72, "prob_b": 0.28, "n_sources": 3, "sources": ["pinnacle", "melbet", "kalshi"]}
+        furia = next(m for m in B.twc_day5(TWC, [o]) if m["key"] == "final")
+        self.assertEqual(furia["basis"], "board")
+        self.assertAlmostEqual(furia["blend_a"], 0.7, places=9)       # team_a of the TWC card is FURIA
+        self.assertAlmostEqual(furia["market_a"], 0.72, places=9)
+        self.assertEqual(furia["n_sources"], 3)
+        # swapped order on the board row is aligned, not copied
+        o2 = copy.deepcopy(o)
+        o2.update(team_a="BetBoom", team_b="FURIA")
+        o2["line"].update(prob_a=0.3, prob_b=0.7)
+        o2["market"].update(prob_a=0.28, prob_b=0.72)
+        furia2 = next(m for m in B.twc_day5(TWC, [o2]) if m["key"] == "final")
+        self.assertAlmostEqual(furia2["blend_a"], 0.7, places=9)
 
     def test_series_math_roundtrip(self):
         for bo in (3, 5):
@@ -275,6 +315,11 @@ class Collector(unittest.TestCase):
         rows = C.rows_from_api(api, self.OPEN)
         self.assertEqual(rows[0]["crowd_a"], 70)
         self.assertEqual(rows[0]["crowd_b"], 30)
+
+    def test_zero_pick_fixture_is_dropped(self):
+        api = [{"id": "1", "participants0_name": "Alpha", "participants1_name": "Beta",
+                "participants0_picked_percent": 0, "participants1_picked_percent": 0, "total_picks": 0}]
+        self.assertEqual(C.rows_from_api(api, self.OPEN), [])
 
     def test_name_mismatch_and_missing_percent_are_dropped(self):
         api = [{"id": "1", "participants0_name": "Gamma", "participants1_name": "Beta",

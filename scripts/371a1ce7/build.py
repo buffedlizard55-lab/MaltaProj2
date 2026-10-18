@@ -31,6 +31,7 @@ CORE_PATH = ROOT / "scripts/fe803b80/core.py"
 CLIMB_MIN_P = 0.40        # an underdog side must still be at least this likely on our own line
 CLIMB_MAX_CROWD = 0.25    # ...and at most this share of the HotSpawn crowd may be on it
 CLIMB_MIN_EDGE = 0.15     # ...and our probability must beat its crowd share by this much
+CLIMB_MIN_PICKS = 20      # a crowd split on fewer picks than this is noise: no climb advice
 TWC_CREDIBLE_UPSET = 0.35 # TWC: an underdog is called "credible" at or above this de-vigged price
 
 VALVE_URL = "https://github.com/ValveSoftware/counter-strike_regional_standings"
@@ -184,7 +185,12 @@ def build_rows(board: dict, crowd: dict, now: datetime):
             "alias_note": o.get("alias_note"), "total_picks": c.get("total_picks"),
         }
         # ---- safe pick
-        if pa is not None and pb is not None:
+        if pa is not None and pb is not None and abs(pa - pb) < 1e-9:
+            row["pick_side"] = row["pick"] = row["pick_prob"] = None       # a dead-even line has no side to pick
+            row["direction_only"] = False
+            row["tie"] = True
+            row["basis_kind"], row["basis"] = "none", "Dead-even line (50/50) — no edge; treat as a coin flip"
+        elif pa is not None and pb is not None:
             side = "a" if pa >= pb else "b"
             row["pick_side"] = side
             row["pick"] = a if side == "a" else b
@@ -207,8 +213,12 @@ def build_rows(board: dict, crowd: dict, now: datetime):
         row["pick_crowd"] = (ca if row.get("pick_side") == "a" else cb) if row.get("pick_side") else None
         row["leverage"] = (None if row["pick_prob"] is None or row["pick_crowd"] is None
                            else row["pick_prob"] - row["pick_crowd"])
+        small = row.get("total_picks") is not None and row["total_picks"] < CLIMB_MIN_PICKS
         row["climb"] = {"kind": "none", "text": "No crowd read for this match."}
-        if row.get("pick_side") and row["pick_prob"] is not None and row["pick_crowd"] is not None:
+        if small:
+            row["leverage"] = None
+            row["climb"] = {"kind": "none", "text": f"Crowd sample too small (n={row['total_picks']}) — no climb advice."}
+        elif row.get("pick_side") and row["pick_prob"] is not None and row["pick_crowd"] is not None:
             opp_side = "b" if row["pick_side"] == "a" else "a"
             p_opp = pb if opp_side == "b" else pa
             c_opp = cb if opp_side == "b" else ca
@@ -224,7 +234,7 @@ def build_rows(board: dict, crowd: dict, now: datetime):
             else:
                 row["climb"] = {"kind": "same", "pick": row["pick"],
                                 "text": "Same pick — no underdog clears the climb rule here."}
-        elif row.get("direction_only"):
+        elif row.get("direction_only") and not small:
             row["climb"] = {"kind": "same", "pick": row["pick"], "text": "Same pick — direction only, no number to weigh a switch."}
         if lock and lock <= now:
             locked.append(row)
@@ -236,27 +246,59 @@ def build_rows(board: dict, crowd: dict, now: datetime):
 
 
 # ------------------------------------------------------------------------------ TWC
-def twc_day5(twc: dict) -> list:
+def _aligned(row, team_a, val_a):
+    """Probability for `team_a` given a board row's team-A probability (handles swapped order)."""
+    if val_a is None:
+        return None
+    return val_a if _norm(row["team_a"]) == _norm(team_a) else 1.0 - val_a
+
+
+def _norm(name) -> str:
+    return "".join(ch for ch in str(name or "").lower() if ch.isalnum())
+
+
+def twc_day5(twc: dict, board_open=None) -> list:
+    """Day-5 cards. When HotSpawn lists the match, the board's own multi-book line is the published
+    number (so the TWC card and the picks table can never disagree); the single Thunderpick read is
+    kept as a cross-check. Without a board row we fall back to Thunderpick + the Valve model."""
     out = []
     for m in twc["day5"]:
         ln = m["line"]
         nv = CORE.no_vig(ln["dec_a"], ln["dec_b"])
-        mk_a = nv["prob_a"]
+        tp_a = nv["prob_a"]
         va, vb = m["valve"]["a"], m["valve"]["b"]
-        mod_a = CORE.vrs_prob(va, vb, twc["vrs_k"]["value"])
-        w = CORE.market_weight(1)
-        bl_a = CORE.sigmoid(w * CORE.logit(mk_a) + (1 - w) * CORE.logit(mod_a))
+        model_k = CORE.vrs_prob(va, vb, twc["vrs_k"]["value"])
+        row = next((r for r in (board_open or [])
+                    if {_norm(r["team_a"]), _norm(r["team_b"])} == {_norm(m["team_a"]), _norm(m["team_b"])}
+                    and (r.get("line") or {}).get("prob_a") is not None and r.get("status") == "scheduled"), None)
+        if row:
+            mk = row.get("market") or {}
+            mk_a = _aligned(row, m["team_a"], mk.get("prob_a")) if mk.get("prob_a") is not None else tp_a
+            n_src = mk.get("n_sources") or 1
+            sources = mk.get("sources") or ["thunderpick"]
+            bl_a = _aligned(row, m["team_a"], row["line"]["prob_a"])
+            mod_a = _aligned(row, m["team_a"], (row.get("model") or {}).get("prob_a"))
+            weight = row["line"].get("market_weight")
+            basis = "board"
+        else:
+            mk_a, n_src, sources, mod_a, weight, basis = tp_a, 1, ["thunderpick"], model_k, CORE.market_weight(1), "single"
+            w = weight
+            bl_a = CORE.sigmoid(w * CORE.logit(mk_a) + (1 - w) * CORE.logit(mod_a))
         side = "a" if bl_a >= 0.5 else "b"
         fav = m["team_a"] if side == "a" else m["team_b"]
         dog = m["team_b"] if side == "a" else m["team_a"]
         p_fav = bl_a if side == "a" else 1 - bl_a
         mk_fav = mk_a if side == "a" else 1 - mk_a
         mk_dog = 1 - mk_fav
-        credible = mk_dog >= TWC_CREDIBLE_UPSET
-        out.append({**m, "market_a": mk_a, "market_b": 1 - mk_a, "overround": nv["overround"],
-                    "model_a": mod_a, "model_b": 1 - mod_a, "blend_a": bl_a, "blend_b": 1 - bl_a,
+        out.append({**m, "tp_a": tp_a, "tp_b": 1 - tp_a, "overround": nv["overround"],
+                    "market_a": mk_a, "market_b": 1 - mk_a, "n_sources": n_src, "sources": sources,
+                    "model_a": mod_a, "model_b": None if mod_a is None else 1 - mod_a, "model_k": model_k,
+                    "market_weight": weight, "basis": basis,
+                    "blend_a": bl_a, "blend_b": 1 - bl_a,
+                    "hotspawn": ({"fixture_id": str(row["fixture_id"]), "points": row.get("points"),
+                                  "lock_utc": row.get("lock_utc"), "url": row.get("hotspawn_url")} if row else None),
                     "favourite": fav, "underdog": dog, "fav_prob": p_fav, "dog_prob_market": mk_dog,
-                    "credible_upset": credible,
+                    "credible_upset": mk_dog >= TWC_CREDIBLE_UPSET,
                     "implied_map_fav": implied_map_prob(mk_fav, m["best_of"])})
     return out
 
@@ -396,12 +438,27 @@ def twc_card(m, built, detail=False) -> str:
     dog_note = (f'<span class="chip climb">Credible upset shot: {esc(m["underdog"])} {pct(m["dog_prob_market"], 0)} on the book</span>'
                 if m["credible_upset"] else
                 f'<span class="chip">{esc(m["underdog"])} only {pct(m["dog_prob_market"], 0)} on the book — below the {TWC_CREDIBLE_UPSET*100:.0f}% credible-upset line</span>')
+    src_names = ", ".join({"pinnacle": "Pinnacle", "bovada": "Bovada", "melbet": "Melbet", "kalshi": "Kalshi",
+                           "thunderpick": "Thunderpick"}.get(x, x) for x in m["sources"])
+    model_txt = ("" if m["model_a"] is None else
+                 f"; Valve-rating model {pct(m['model_a'])} / {pct(m['model_b'])}")
+    if m["basis"] == "board":
+        book_line = (f"Book consensus ({m['n_sources']} books: {esc(src_names)}), margin removed: {esc(m['team_a'])} {pct(m['market_a'])} / "
+                     f"{esc(m['team_b'])} {pct(m['market_b'])}{model_txt}. Our line = {m['market_weight']*100:.0f}/{(1-m['market_weight'])*100:.0f} market/model blend, the same rule as every row on the picks page. "
+                     f"Thunderpick alone: {ln['dec_a']} / {ln['dec_b']} → {pct(m['tp_a'])} / {pct(m['tp_b'])}.")
+    else:
+        book_line = (f"Thunderpick {ln['dec_a']} / {ln['dec_b']} ({esc(m['team_a'])} / {esc(m['team_b'])}) → de-vigged {pct(m['tp_a'])} / {pct(m['tp_b'])}"
+                     f"{model_txt}. Blend 75/25 market/model (single book).")
+    hs = m.get("hotspawn")
+    hs_line = (f'<p class="small" style="margin:6px 0">On HotSpawn: fixture {esc(hs["fixture_id"])}, <strong>{esc(hs["points"])} pts</strong>, locks {esc(fmt_utc(hs["lock_utc"]))}.</p>'
+               if hs else '<p class="small mut" style="margin:6px 0">Not listed on HotSpawn at the last board read.</p>')
     return f"""<div class="card hero" id="{esc(m['key'])}">
 <p class="mut small" style="margin:0">{esc(m['stage'])} · Bo{m['best_of']} · {esc(fmt_utc(start))} ({esc(until(start, built))})</p>
 <div class="pickline">✅ Pick: {esc(m['favourite'])} <span class="p">{pct(m['fav_prob'],1)}</span> <span class="mut" style="font-size:16px;font-weight:600">vs {esc(m['underdog'])} {pct(1-m['fav_prob'],1)}</span></div>
 <div class="bar"><i style="width:{(m['blend_a'] if m['favourite']==m['team_a'] else m['blend_b'])*100:.1f}%"></i><i style="width:{(1-(m['blend_a'] if m['favourite']==m['team_a'] else m['blend_b']))*100:.1f}%"></i></div>
 <p style="margin:6px 0">{dog_note}</p>
-<p class="small mut" style="margin:6px 0">Book {esc(ln['dec_a'])} / {esc(ln['dec_b'])} ({esc(m['team_a'])} / {esc(m['team_b'])}) → de-vigged {pct(m['market_a'])} / {pct(m['market_b'])}; Valve-rating model {pct(m['model_a'])} / {pct(m['model_b'])}. Blend 75/25 market/model.</p>
+<p class="small mut" style="margin:6px 0">{book_line}</p>
+{hs_line}
 <p class="small" style="margin:6px 0"><a href="{esc(m['hltv_url'])}" rel="noopener">HLTV match</a> · <a href="{esc(m['bo3_url'])}" rel="noopener">bo3.gg (Thunderpick price)</a> · <a href="{esc(m['hltv_odds_url'])}" rel="noopener">HLTV odds page</a></p>
 </div>"""
 
@@ -410,7 +467,7 @@ def twc_card(m, built, detail=False) -> str:
 def build_pages(board, crowd, twc, built):
     now = built
     open_rows, locked, anomalies = build_rows(board, crowd, now)
-    d5 = twc_day5(twc)
+    d5 = twc_day5(twc, board.get("open") or [])
     n = len(open_rows)
     n_lines = sum(r["basis_kind"] == "lines" for r in open_rows)
     n_model = sum(r["basis_kind"] == "model" for r in open_rows)
@@ -421,19 +478,35 @@ def build_pages(board, crowd, twc, built):
     crowd_t = parse_iso(crowd.get("read_utc"))
     age_h = (now - board_t).total_seconds() / 3600 if board_t else None
     stale = age_h is not None and age_h > 8
-    unresolved = [r for r in open_rows if r["basis_kind"] in ("model", "direction", "none")]
+    unresolved = [r for r in open_rows if r["basis_kind"] in ("model", "direction") or (r["basis_kind"] == "none" and not r.get("tie"))]
+    ties = [r for r in open_rows if r.get("tie")]
 
     # leverage list: our pick, ≥50% on our line, crowd least on it
     plays = sorted([r for r in open_rows if r["pick_prob"] is not None and r["leverage"] is not None and r["pick_prob"] >= 0.5],
                    key=lambda r: -r["leverage"])[:5]
 
     # ---------- index
+    hs_n = [m for m in d5 if m.get("hotspawn")]
+    crowd_by_id = {str(r["fixture_id"]): r for r in (crowd.get("rows") or [])}
+    if hs_n:
+        parts = []
+        for m in hs_n:
+            c = crowd_by_id.get(m["hotspawn"]["fixture_id"]) or {}
+            parts.append(f"{m['team_a']} v {m['team_b']}: {c.get('total_picks', '?')} pick(s) so far")
+        twc_crowd_note = ("Both TWC matches are on HotSpawn at 7 points each (tier S) — " + "; ".join(parts) +
+                          ", too few to read as a crowd, so there is no leaderboard leverage to measure yet.")
+    else:
+        twc_crowd_note = "Neither TWC match is on the HotSpawn board at the last read, so there is no crowd to fade."
     nxt = open_rows[:4]
     nxt_html = "".join(
         f'<li><a href="picks.html#m{esc(r["fixture_id"])}"><strong>{esc(r["pick"] or "no pick")}</strong>'
         f'{" " + pct(r["pick_prob"],0) if r["pick_prob"] is not None else ""}</a> · {esc(r["team_a"])} v {esc(r["team_b"])} · locks {esc(until(parse_iso(r["lock_utc"]), now))}</li>'
         for r in nxt) or "<li>No open match right now.</li>"
-    play_html = "".join(
+    sw_html = "".join(
+        f'<li><a href="picks.html#m{esc(r["fixture_id"])}"><strong>{esc(r["climb"]["pick"])}</strong> {pct(r["climb"]["prob"],0)}</a> '
+        f'<span class="chip climb">underdog switch</span> <span class="mut">({esc(r["team_a"])} v {esc(r["team_b"])}; our safe pick is {esc(r["pick"])}, but the crowd is only '
+        f'{(r["crowd_a"] if r["pick_side"] == "b" else r["crowd_b"])*100:.0f}% on {esc(r["climb"]["pick"])})</span></li>' for r in switches)
+    play_html = sw_html + "".join(
         f'<li><a href="picks.html#m{esc(r["fixture_id"])}"><strong>{esc(r["pick"])}</strong> {pct(r["pick_prob"],0)}</a> '
         f'<span class="mut">({esc(r["team_a"])} v {esc(r["team_b"])}; crowd only {r["pick_crowd"]*100:.0f}% on it)</span></li>' for r in plays) \
         or "<li>None qualifies right now.</li>"
@@ -451,7 +524,7 @@ def build_pages(board, crowd, twc, built):
 {stale_banner}
 <h2 style="margin-top:6px">🏆 TWC 2026 final day — Sun 18 Oct</h2>
 {''.join(twc_card(m, now) for m in d5)}
-<p class="small mut">Neither TWC match is on the HotSpawn lobby, so there is no crowd to fade; these are for any other pick'em you play. <a href="twc.html">Full day 1–5 review, Aurora roster check and the upset case →</a></p>
+<p class="small mut">{twc_crowd_note} <a href="twc.html">Full day 1–5 review, Aurora roster check and the upset case →</a></p>
 
 <div class="card">
 <h2 style="margin-top:0">HotSpawn lobby · {n} open CS2 matches</h2>
@@ -528,7 +601,7 @@ with the probability left blank.</p>
         d5_detail += f"""<h3 style="margin-top:14px">{esc(m['team_a'])} vs {esc(m['team_b'])} — the case</h3>
 <ul class="tight">
 <li>Strength: Valve global standings {esc(twc['valve_snapshot']['date'])} #{m['valve']['a_rank']} {esc(m['team_a'])} ({m['valve']['a']} pts) vs #{m['valve']['b_rank']} {esc(m['team_b'])} ({m['valve']['b']}); HLTV ranking #{m['hltv_rank']['a']} vs #{m['hltv_rank']['b']}. <a href="{esc(twc['valve_snapshot']['url'])}" rel="noopener">Valve standings</a></li>
-<li>The book's {pct(m['fav_prob'] if False else max(m['market_a'], m['market_b']),1)} series price for {esc(m['favourite'])} implies about {pct(m['implied_map_fav'],1)} per map in a Bo{m['best_of']} (computed; assumes independent, equal maps).</li>
+<li>The book consensus of {pct(max(m['market_a'], m['market_b']),1)} for {esc(m['favourite'])} implies about {pct(m['implied_map_fav'],1)} per map in a Bo{m['best_of']} (computed; assumes independent, equal maps).</li>
 {facts}
 </ul>"""
     au = twc["aurora"]
@@ -544,8 +617,8 @@ with the probability left blank.</p>
 <div class="card"><h3>How to use them to climb</h3><ul class="tight">
 <li><strong>Safe:</strong> {esc(t_m['favourite'])} (3rd place) and {esc(f_m['favourite'])} (final).</li>
 <li><strong>Contrarian but not stupid — 3rd place:</strong> {esc(t_m['underdog'])} is a credible shot at {pct(t_m['dog_prob_market'],0)} on the book (above the {TWC_CREDIBLE_UPSET*100:.0f}% line), with a fresher semi (2 maps vs 3), a low-stakes decider and a roster-onboarding story that is already 14 weeks old — take it only if you need variance.</li>
-<li><strong>Final:</strong> {esc(f_m['underdog'])} is {pct(f_m['dog_prob_market'],0)} on the book — below the line, in a Bo5 that rewards the favourite, after losing 0-2 to FURIA a few days ago and playing 11 maps in 4 days. Real fatigue and a first-ban on Inferno argue for FURIA; a {esc(f_m['underdog'])} pick is a chase, not an edge.</li>
-<li>No HotSpawn crowd exists for either match, so there is no leaderboard leverage to measure.</li></ul></div>
+<li><strong>Final:</strong> {esc(f_m['underdog'])} is {pct(f_m['dog_prob_market'],0)} on the book — below the line, in a Bo5 that rewards the favourite, after losing 0-2 to FURIA a few days ago and playing 11 maps in 4 days. The workload gap and BETBOOM never playing FURIA's best map (Inferno, 71% over 14 maps) argue for FURIA; a {esc(f_m['underdog'])} pick is a chase, not an edge.</li>
+<li>{twc_crowd_note}</li></ul></div>
 {d5_detail}
 <h2>Aurora — the roster-change premise</h2>
 <p><strong>{esc(au['verdict'])}</strong></p>
@@ -605,10 +678,28 @@ A pick is given wherever a labelled model or any one-sided evidence exists; a pr
         fl.append((i, title, detail, links, sev))
     flag("F1", "The 'recent Aurora roster change' is about 14 weeks old", "Jimpphat and coach ashhh joined 3 Jul 2026 and kyxsan 8 Jul 2026; no change is visible inside the event. The premise is treated as onboarding context only and moves no number.",
          [("Strafe roster tracker", "https://www.strafe.com/news/read/cs2-roster-moves-tracker-summer-2026/"), ("Liquipedia Aurora", "https://liquipedia.net/counterstrike/Aurora_Gaming"), ("HLTV Aurora", "https://www.hltv.org/team/11861/aurora")])
-    flag("F2", "TWC main-event matches are not on the HotSpawn lobby", "The lobby's tournament filter lists only 'Thunderpick World Championship 2026: South American Series #1' — the Malta playoffs are absent, so TWC picks have no crowd split and no HotSpawn fixture id.",
-         [("HotSpawn lobby", LOBBY_URL)])
-    flag("F3", "TWC lines come from a single book", "Day-5 prices are Thunderpick's, read from bo3.gg's match pages at 00:10Z on 18 Oct; HLTV's odds pages do not show a moneyline in our reads. A one-book price is blended 75/25 with the Valve model, as the board's method prescribes for single-source prices. Lines move before kick-off.",
+    hs_twc = [m for m in d5 if m.get("hotspawn")]
+    if hs_twc:
+        flag("F2", "TWC matches appeared on HotSpawn late, with almost no picks yet",
+             "At the 00:08Z read of the lobby page neither TWC match was listed. HotSpawn's live fixtures API now lists both as tier S, 7 points each "
+             + "(" + "; ".join(f"{m['team_a']} v {m['team_b']} id {m['hotspawn']['fixture_id']}, locks {fmt_utc(m['hotspawn']['lock_utc'])}" for m in hs_twc) +
+             "), each with a single pick in the crowd. The lobby page HTML is a cached render (about 2 hours old when read), so cards created since then are missing from it; "
+             "the picks page lists every API fixture the board holds.",
+             [("HotSpawn lobby", LOBBY_URL)])
+    else:
+        flag("F2", "TWC main-event matches are not on the HotSpawn board",
+             "The lobby's tournament filter lists only 'Thunderpick World Championship 2026: South American Series #1' — the Malta playoffs are absent, so TWC picks have no crowd split and no HotSpawn fixture id.",
+             [("HotSpawn lobby", LOBBY_URL)])
+    t0 = d5[0]
+    flag("F3", "TWC price sources",
+         ("Day-5 lines are the board's consensus of " + ", ".join(sorted({x for m in d5 for x in m["sources"]})) +
+          " (margin removed, then blended with the Valve model); Thunderpick's own price, read from bo3.gg at 00:10Z, is shown as a cross-check. HLTV's odds pages show no moneyline in our reads. Lines move before kick-off."
+          if all(m["basis"] == "board" for m in d5) else
+          "Day-5 lines are Thunderpick's, read from bo3.gg at 00:10Z (one book) and blended 75/25 with the Valve model; HLTV's odds pages show no moneyline. Lines move before kick-off."),
          [("bo3.gg 3rd place", twc["day5"][0]["bo3_url"]), ("bo3.gg final", twc["day5"][1]["bo3_url"])])
+    flag("F3b", "bo3.gg's auto-written insight text contradicts its own tables",
+         "For the 3rd-place decider bo3.gg's page calls the match 'the final', says Falcons are on a two-match winning streak (they lost their semi 1-2) and quotes slightly different map rates (Anubis 77%, Dust2 73%) than its own table (76%, 71%). Table figures are used; the insight text is not an input.",
+         [("bo3.gg match page", twc["day5"][0]["bo3_url"]), ("HLTV 2399415", "https://www.hltv.org/matches/2399415/falcons-vs-betboom-thunderpick-world-championship-2026")])
     flag("F4", "Chinggis Warriors vs WXM: pick without a probability", "WXM has no lineup, no results and no rating anywhere we looked; the pick follows the only side with evidence and the probability is left blank rather than assumed.",
          [("HotSpawn match", "https://www.hotspawn.com/matches/chinggis-warriors-vs-wxm-void-autumn-cup-2026-1081863"), ("EGamersWorld match", "https://egamersworld.com/counterstrike/match/EJcHRdr5Vx/chinggis-warriors-vs-wxm-_ddme1I7dZ")])
     for r in open_rows:
@@ -620,6 +711,17 @@ A pick is given wherever a labelled model or any one-sided evidence exists; a pr
             flag("F10", f"{r['team_a']} vs {r['team_b']} — one price source on a tier-C match",
                  f"Only one source prices this match, so the probability ({pct(r['pick_prob'])} for {r['pick']}) has no cross-check and could move or be stale.",
                  [("Price source", next((x["url"] for x in r["sources"] if x.get("kind") == "price"), r["hotspawn_url"]))])
+    for r in ties:
+        flag("F11", f"{r['team_a']} vs {r['team_b']} — dead-even line, no pick",
+             "The only price is exactly 50/50"
+             + (" and the board marks it with a start-time mismatch of more than 3 hours between the price and the fixture, so it may belong to a different match" if "joined_price_start_time_differs_more_than_3h" in r["flags"] else "")
+             + ". A coin flip has no side to recommend; the row is left without a pick instead of choosing arbitrarily.",
+             [("HotSpawn lobby", r["hotspawn_url"]), ("Price source", next((x["url"] for x in r["sources"] if x.get("kind") == "price"), r["hotspawn_url"]))])
+    new_rows = [r for r in open_rows if "new_fixture_since_this_board_started" in r["flags"]]
+    if new_rows:
+        flag("F12", f"{len(new_rows)} matches were added after the cached lobby page was rendered",
+             "They come from HotSpawn's live fixtures API and carry the board's 'new fixture' flag; most have 0–3 picks, so their crowd split is shown but ignored. Matches: " + "; ".join(f"{r['team_a']} v {r['team_b']}" for r in new_rows) + ".",
+             [("HotSpawn lobby", LOBBY_URL)])
     for o in anomalies:
         flag("F5", f"{o['team_a']} vs {o['team_b']} — fixture in an inconsistent state", f"HotSpawn's fixtures API lists {o.get('competition')} fixture {o['fixture_id']} with status '{o.get('status')}' and a start of {o.get('start_utc')}, and the lobby page does not show it. Excluded from the pick count; the board's own line ({(o.get('line') or {}).get('pick') or 'none'}) is not republished.",
              [("HotSpawn match", o.get("hotspawn_url") or LOBBY_URL)])
@@ -629,8 +731,21 @@ A pick is given wherever a labelled model or any one-sided evidence exists; a pr
          [("Valve standings", twc["valve_snapshot"]["url"])])
     flag("F8", "Crowd shares are a snapshot", "The crowd split was read from the lobby at the time shown on each page and moves as players pick; the 4-hourly refresh re-reads it from HotSpawn's public fixtures API when reachable.",
          [("HotSpawn lobby", LOBBY_URL)])
+    extreme = [r for r in open_rows if r["basis_kind"] == "model" and r["pick_prob"] is not None and r["pick_prob"] >= 0.85]
+    if extreme:
+        flag("F13", "Rating-model rows that read extreme",
+             "These model-only rows come out at 85% or more because one side's rating is far below the other's or unrated: "
+             + "; ".join(f"{r['team_a']} v {r['team_b']} → {r['pick']} {pct(r['pick_prob'],0)}" for r in extreme) +
+             ". They rest on a rating gap with no bookmaker cross-check; treat them as a direction, not a precise probability.",
+             [("Valve standings", twc["valve_snapshot"]["url"])])
+    seen_ids = {}
+    fl2 = []
+    for i, t, d, ls, sv in fl:
+        seen_ids[i] = seen_ids.get(i, 0) + 1
+        fl2.append((i if seen_ids[i] == 1 else f"{i}-{seen_ids[i]}", t, d, ls, sv))
+    fl = fl2
     items = "".join(
-        f'<div class="card" id="{i}"><h3>{i} · {esc(t)}</h3><p>{esc(d)}</p><p class="small">' +
+        f'<div class="card" id="{i}"><h3>{esc(i.split("-")[0])} · {esc(t)}</h3><p>{esc(d)}</p><p class="small">' +
         " · ".join(f'<a href="{esc(u)}" rel="noopener">{esc(l)}</a>' for l, u in ls) + "</p></div>" for i, t, d, ls, _ in fl)
     body = f"""<h1>Flagged for review</h1>
 <p class="mut small">Items that could not be fully confirmed from an official source, or that look irregular. None blocks the picks; each is stated rather than silently fixed. Older flags: <a href="../flagged.html">site-wide Flagged for Review</a>.</p>

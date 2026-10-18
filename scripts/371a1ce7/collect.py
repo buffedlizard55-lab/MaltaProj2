@@ -40,6 +40,8 @@ def rows_from_api(api: list, open_rows: list) -> list:
         p0, p1 = f.get("participants0_picked_percent"), f.get("participants1_picked_percent")
         if p0 is None or p1 is None:
             continue
+        if int(p0) + int(p1) == 0 or not f.get("total_picks"):
+            continue          # nobody has picked yet: there is no crowd to report
         n0, n1 = norm(f.get("participants0_name")), norm(f.get("participants1_name"))
         if (n0, n1) == (norm(o["team_a"]), norm(o["team_b"])):
             ca, cb = p0, p1
