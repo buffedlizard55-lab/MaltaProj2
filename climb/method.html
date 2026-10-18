@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method &amp; sources</title>
+<meta name="description" content="Line ladder, formulas, pick rules, provenance and automation.">
+<style>
+:root { --bg:#0e1116; --card:#161b22; --ink:#e8edf4; --muted:#93a0b0; --line:#263041;
+  --ok:#1f7a4d; --ok2:#2ea86b; --warn:#b7791f; --bad:#b23a48; --accent:#ffb020; --fav:#2ea86b; --dog:#8a63d2; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+a { color:#7cc4ff; text-decoration:none; word-break:break-word; }
+a:hover, a:focus { text-decoration:underline; }
+header.top { position:sticky; top:0; z-index:20; background:#12161c; border-bottom:1px solid var(--line); padding:10px 14px; }
+header.top .brand { font-weight:700; font-size:15px; }
+header.top .sub { color:var(--muted); font-size:12px; margin-top:2px; }
+main { padding:12px 12px 84px; max-width:56rem; margin:0 auto; }
+h1 { font-size:22px; line-height:1.25; margin:10px 0 6px; }
+h2 { font-size:18px; margin:22px 0 8px; }
+h3 { font-size:15px; margin:16px 0 6px; }
+p { margin:8px 0; }
+.muted { color:var(--muted); font-size:13px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin:10px 0; }
+.hero { border:2px solid var(--accent); }
+.pill { display:inline-block; padding:2px 9px; border-radius:999px; font-size:11.5px; font-weight:700; letter-spacing:.2px; margin:2px 4px 2px 0; }
+.pill.fav { background:#123922; color:#7fe0a8; border:1px solid #2ea86b55; }
+.pill.dog { background:#2b2144; color:#cbb6f6; border:1px solid #8a63d255; }
+.pill.safe { background:#123922; color:#7fe0a8; }
+.pill.climb { background:#3a2b12; color:#ffd58a; border:1px solid var(--accent); }
+.pill.no { background:#3b1a20; color:#f2a2ac; }
+.pill.basis { background:#1b2634; color:#9fc2e8; }
+.pill.tier { background:#222b38; color:#b9c6d6; }
+.pill.flag { background:#3b1a20; color:#f2a2ac; border:1px solid var(--bad); }
+.pill.ok { background:#123922; color:#7fe0a8; }
+table { width:100%; border-collapse:collapse; font-size:13.5px; }
+th, td { text-align:left; padding:7px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+th { color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.4px; }
+.bar { height:8px; background:#222b38; border-radius:6px; overflow:hidden; margin:4px 0 2px; }
+.bar > span { display:block; height:100%; background:linear-gradient(90deg,#2ea86b,#1f7a4d); }
+.pickbig { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin:6px 0; }
+.pickbig .name { font-size:22px; font-weight:800; }
+.pickbig .pct { font-size:20px; font-weight:800; color:var(--accent); }
+.teams { display:flex; justify-content:space-between; gap:10px; font-size:14px; }
+.teams .t { flex:1 1 45%; }
+.teams .t.right { text-align:right; }
+.pctline { font-weight:700; font-size:15px; }
+.srcs { margin-top:6px; font-size:12px; color:var(--muted); }
+.srcs a { margin-right:8px; display:inline-block; }
+ul li { margin:5px 0; }
+.actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0; }
+.actions a { display:block; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; font-weight:700; color:var(--ink); }
+.actions a small { display:block; font-weight:400; color:var(--muted); margin-top:2px; }
+.actions a.wide { grid-column:1 / -1; }
+nav.tabs { position:fixed; left:0; right:0; bottom:0; z-index:30; display:flex; background:#12161c; border-top:1px solid var(--line); }
+nav.tabs a { flex:1; text-align:center; padding:10px 2px 12px; font-size:11px; color:var(--muted); }
+nav.tabs a .ic { display:block; font-size:17px; line-height:1.2; }
+nav.tabs a.active { color:var(--accent); }
+details { margin:8px 0; }
+summary { cursor:pointer; font-weight:600; }
+.toc a { display:block; padding:8px 10px; margin:6px 0; background:var(--card); border:1px solid var(--line); border-radius:10px; color:var(--ink); font-weight:600; }
+.toc a small { display:block; color:var(--muted); font-weight:400; }
+.fixture { border-left:4px solid var(--line); }
+.fixture.tierS { border-left-color:var(--accent); }
+.fixture.tierB { border-left-color:#2ea86b; }
+.kicker { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
+.tw { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+@media (min-width: 720px) {
+  main { padding:16px 20px 84px; }
+  h1 { font-size:26px; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">🐟 HotSpawn Pick'em · Climb desk</div>
+  <div class="sub">Picks for every CS2 match · external lines only · TWC final day 18 Oct</div>
+</header>
+<main>
+
+<h1>Method &amp; sources</h1>
+<h2>Line ladder (in order)</h2>
+<div class="card">
+  <ol>
+    <li><strong>Esportsbook/exchange prices</strong> — Pinnacle, Bovada, Melbet, Kalshi, Thunderpick (via bo3.gg mirror), egamersworld. Remove the margin: fair = (1/odd) / Σ(1/odd). Average across books; the published line may blend with the model (board weight 0.75–0.85 on market rows).</li>
+    <li><strong>Alias re-join</strong> — a dropped book quote counts when the team-name variant is justified by agreeing opponent + kickoff (e.g. 'Betclic' = 'Apogee Betclic' for #1081546).</li>
+    <li><strong>HLTV team research</strong> — ranks, rosters, form, verified results. Used for direction on even lines and for context notes. HLTV user votes are a crowd, not a line — never a probability.</li>
+    <li><strong>Valve VRS originated line</strong> — only when no price exists: standings snapshot 2026-10-05 (official <a href="https://github.com/ValveSoftware/counter-strike_regional_standings">ValveSoftware/counter-strike_regional_standings</a>) + the canonical board's fitted calibration (k=0.25, mae≈0.09671406821083062 on 17 pairs).</li>
+  </ol>
+  <p class="muted">HotSpawn supplies fixture discovery and crowd ownership only. Its percentages never enter any probability.</p>
+</div>
+<h2>Pick rules</h2>
+<div class="card">
+  <ul>
+    <li>The pick is the argmax of the published fair probabilities. If the market line is exactly even, the pick is a documented research tiebreak and confidence is Toss-up.</li>
+    <li>Climb pick: our fair ≥35% on the underdog side, HotSpawn crowd ownership on that side ≤22%, crowd sample ≥20. Below 35% → 'no climb'.</li>
+    <li>Blank is allowed only when the whole ladder fails; blank rows must publish the attempt ledger. In the current capture: 0 blanks.</li>
+    <li>Every table row links an official source. Values that can't be confirmed stay blank and are flagged on <a href="flagged.html">flagged.html</a> — never inferred.</li>
+  </ul>
+</div>
+<h2>Provenance of this build</h2>
+<div class="card">
+  <ul>
+    <li>Line board: <code>data/fe803b80/board.json</code> · generated 2026-10-18T01:12:32Z · sources: {&quot;pinnacle&quot;: 3, &quot;bovada&quot;: 8, &quot;melbet&quot;: 31, &quot;kalshi&quot;: 12, &quot;thunderpick&quot;: 32}</li>
+    <li>Research: <code>data/a89b76e9/research.json</code> (read window 2026-10-18T00:48Z/2026-10-18T01:35Z)</li>
+    <li>Crowd ownership: <code>data/371a1ce7/crowd.json</code> (HotSpawn fixtures API, 2026-10-18T00:32:02Z)</li>
+    <li>Board track record: settled 2676, Brier 0.18342634554185386 — see flag A8 on how to read the accuracy figures.</li>
+  </ul>
+</div>
+<h2>Automation</h2>
+<div class="card">
+  <p class="muted">Workflow <code>climb-a89b76e9.yml</code> rebuilds this folder every 4–8h and after the canonical board refreshes, runs the contract tests, and commits only when green. No manual input is required.</p>
+</div>
+
+<p class="muted" style="margin-top:24px">Session a89b76e9 · sources per row · HotSpawn used for fixture discovery and ownership only, never as a probability. Method: <a href="method.html">method.html</a> · Site home: <a href="../index.html">home</a>.</p>
+</main>
+<nav class="tabs">
+<a href="index.html"><span class="ic">🏠</span>Summary</a><a href="picks.html"><span class="ic">✅</span>Picks</a><a href="twc.html"><span class="ic">🏆</span>TWC</a><a href="unresolved.html"><span class="ic">🧩</span>Unresolved</a><a href="flagged.html"><span class="ic">⚑</span>Flagged</a>
+</nav>
+</body>
+</html>

@@ -1,0 +1,52 @@
+name: climb desk (a89b76e9)
+
+# Session a89b76e9 / T-A89B76E9-CLIMB. Rebuilds climb/ (picks for every open HotSpawn CS2
+# fixture + TWC final-day safe/climb ladder + resolved blanks + unresolved/flagged/method)
+# from the newest canonical line board and the curated research ledger. Every 5 hours
+# (inside the required 4-8h window), after the canonical board refreshes, and on demand.
+on:
+  schedule:
+    - cron: '17 */5 * * *'
+  workflow_run:
+    workflows: ["board (fe803b80)"]
+    types: [completed]
+  workflow_dispatch:
+  push:
+    branches: [main, 'arena/*']
+    paths:
+      - 'scripts/a89b76e9/**'
+      - 'data/a89b76e9/**'
+      - '.github/workflows/climb-a89b76e9.yml'
+permissions:
+  contents: write
+concurrency:
+  group: climb-a89b76e9
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r scripts/requirements.txt
+      - name: Rebuild climb/ from the newest canonical board + research ledger
+        run: python scripts/a89b76e9/build.py
+      - name: Contract tests (never commit red data)
+        run: python -m unittest tests.test_a89b76e9 -v
+      - name: Commit refreshed desk
+        run: |
+          set -euo pipefail
+          git config user.name "malta-data-bot"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add climb data/a89b76e9
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -m "climb(a89b76e9): refresh picks $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep 10
+          done
+          echo "::error::could not push refreshed climb desk"; exit 1

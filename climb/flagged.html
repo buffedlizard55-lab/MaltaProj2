@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flagged for review</title>
+<meta name="description" content="Irregularities flagged with source links for manual review.">
+<style>
+:root { --bg:#0e1116; --card:#161b22; --ink:#e8edf4; --muted:#93a0b0; --line:#263041;
+  --ok:#1f7a4d; --ok2:#2ea86b; --warn:#b7791f; --bad:#b23a48; --accent:#ffb020; --fav:#2ea86b; --dog:#8a63d2; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+a { color:#7cc4ff; text-decoration:none; word-break:break-word; }
+a:hover, a:focus { text-decoration:underline; }
+header.top { position:sticky; top:0; z-index:20; background:#12161c; border-bottom:1px solid var(--line); padding:10px 14px; }
+header.top .brand { font-weight:700; font-size:15px; }
+header.top .sub { color:var(--muted); font-size:12px; margin-top:2px; }
+main { padding:12px 12px 84px; max-width:56rem; margin:0 auto; }
+h1 { font-size:22px; line-height:1.25; margin:10px 0 6px; }
+h2 { font-size:18px; margin:22px 0 8px; }
+h3 { font-size:15px; margin:16px 0 6px; }
+p { margin:8px 0; }
+.muted { color:var(--muted); font-size:13px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin:10px 0; }
+.hero { border:2px solid var(--accent); }
+.pill { display:inline-block; padding:2px 9px; border-radius:999px; font-size:11.5px; font-weight:700; letter-spacing:.2px; margin:2px 4px 2px 0; }
+.pill.fav { background:#123922; color:#7fe0a8; border:1px solid #2ea86b55; }
+.pill.dog { background:#2b2144; color:#cbb6f6; border:1px solid #8a63d255; }
+.pill.safe { background:#123922; color:#7fe0a8; }
+.pill.climb { background:#3a2b12; color:#ffd58a; border:1px solid var(--accent); }
+.pill.no { background:#3b1a20; color:#f2a2ac; }
+.pill.basis { background:#1b2634; color:#9fc2e8; }
+.pill.tier { background:#222b38; color:#b9c6d6; }
+.pill.flag { background:#3b1a20; color:#f2a2ac; border:1px solid var(--bad); }
+.pill.ok { background:#123922; color:#7fe0a8; }
+table { width:100%; border-collapse:collapse; font-size:13.5px; }
+th, td { text-align:left; padding:7px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+th { color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.4px; }
+.bar { height:8px; background:#222b38; border-radius:6px; overflow:hidden; margin:4px 0 2px; }
+.bar > span { display:block; height:100%; background:linear-gradient(90deg,#2ea86b,#1f7a4d); }
+.pickbig { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin:6px 0; }
+.pickbig .name { font-size:22px; font-weight:800; }
+.pickbig .pct { font-size:20px; font-weight:800; color:var(--accent); }
+.teams { display:flex; justify-content:space-between; gap:10px; font-size:14px; }
+.teams .t { flex:1 1 45%; }
+.teams .t.right { text-align:right; }
+.pctline { font-weight:700; font-size:15px; }
+.srcs { margin-top:6px; font-size:12px; color:var(--muted); }
+.srcs a { margin-right:8px; display:inline-block; }
+ul li { margin:5px 0; }
+.actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0; }
+.actions a { display:block; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; font-weight:700; color:var(--ink); }
+.actions a small { display:block; font-weight:400; color:var(--muted); margin-top:2px; }
+.actions a.wide { grid-column:1 / -1; }
+nav.tabs { position:fixed; left:0; right:0; bottom:0; z-index:30; display:flex; background:#12161c; border-top:1px solid var(--line); }
+nav.tabs a { flex:1; text-align:center; padding:10px 2px 12px; font-size:11px; color:var(--muted); }
+nav.tabs a .ic { display:block; font-size:17px; line-height:1.2; }
+nav.tabs a.active { color:var(--accent); }
+details { margin:8px 0; }
+summary { cursor:pointer; font-weight:600; }
+.toc a { display:block; padding:8px 10px; margin:6px 0; background:var(--card); border:1px solid var(--line); border-radius:10px; color:var(--ink); font-weight:600; }
+.toc a small { display:block; color:var(--muted); font-weight:400; }
+.fixture { border-left:4px solid var(--line); }
+.fixture.tierS { border-left-color:var(--accent); }
+.fixture.tierB { border-left-color:#2ea86b; }
+.kicker { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
+.tw { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+@media (min-width: 720px) {
+  main { padding:16px 20px 84px; }
+  h1 { font-size:26px; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">🐟 HotSpawn Pick'em · Climb desk</div>
+  <div class="sub">Picks for every CS2 match · external lines only · TWC final day 18 Oct</div>
+</header>
+<main>
+
+<h1>Flagged for review</h1>
+<p class="muted">Irregularities found while re-verifying the boards line by line. None of them block a pick; each is published with its sources so you can review after the desk goes live.</p>
+
+<div class="card" id="A1">
+  <p><span class="pill flag">A1 · high</span></p>
+  <h3>Name-to-price orientation is wrong in the per-source quote rows of data/fe803b80/board.json for the TWC decider</h3>
+  <p>The retained Thunderpick quote pairs &#x27;Aurora&#x27; with 1.52 and &#x27;Falcons&#x27; with 2.35, but the source page&#x27;s market widget shows &#x27;1 2.35 / 2 1.52&#x27; (side 1 = Aurora) and the tips sidebar reads &#x27;1.52 Winner Falcons&#x27;. Pinnacle/Bovada/Melbet rows show the same first-name/price mismatch pattern (favourite price attached to the first-listed name). The board&#x27;s FINAL fixture line (Falcons 59.7%) is oriented correctly and matches the re-derived no-vig here; only the per-source display pairs mislead. Kalshi&#x27;s FURIA row has the same name-swap pattern (value fine). Manual review requested of the bo3.gg extractor&#x27;s coefficient-to-team mapping.</p>
+  <p class="muted"><a href="https://bo3.gg/matches/aurora-gaming-vs-falcons-esports-18-10-2026">src</a> <a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct181100bbfuria">src</a></p>
+</div>
+<div class="card" id="A2">
+  <p><span class="pill flag">A2 · medium</span></p>
+  <h3>bo3.gg auto-generated insight text contradicts its own page (3rd-place decider described as &#x27;the final&#x27;)</h3>
+  <p>The prediction widget says &#x27;upward momentum into the grand final&#x27;, &#x27;entering final&#x27;, and claims Falcons are on a &#x27;two-match winning streak&#x27; — they lost their last match (semi vs BETBOOM). The page&#x27;s own stage tag reads &#x27;decider / 3rd place&#x27;. The table figures on the page were used here; the insight narrative was NOT used. Its &#x27;75% historical H2H winrate versus Falcons&#x27; claim for Aurora could not be verified from any official source and is left unverified.</p>
+  <p class="muted"><a href="https://bo3.gg/matches/aurora-gaming-vs-falcons-esports-18-10-2026">src</a> <a href="https://www.hltv.org/news/45746/betboom-stun-falcons-to-make-twc-grand-final">src</a></p>
+</div>
+<div class="card" id="A3">
+  <p><span class="pill flag">A3 · medium</span></p>
+  <h3>1081863 rests on a single aggregator price and an invisible opponent</h3>
+  <p>The only price is egamersworld 1.8/1.8 (aggregator). WXM (&#x27;Wept Xyloid Melancholy&#x27;) has no HLTV ranking, no Valve VRS entry, no published roster, no recorded results. The 50/50 probabilities are the book&#x27;s; only the pick direction comes from research. If the even line is a placeholder default, both the probability and the pick degrade — flagged for manual review after the match.</p>
+  <p class="muted"><a href="https://egamersworld.com/counterstrike/match/EJcHRdr5Vx/chinggis-warriors-vs-wxm-_ddme1I7dZ">src</a></p>
+</div>
+<div class="card" id="A4">
+  <p><span class="pill flag">A4 · low</span></p>
+  <h3>Kickoff-time display inconsistencies on secondary pages</h3>
+  <p>egamersworld shows both 07:00 and 09:00 for the CW-WXM match on the same page (timezone display bug); the official slots (HotSpawn/HLTV/maisesports) agree on 2026-10-20T07:00Z. HLTV match pages render times in the viewer&#x27;s locale (e.g. &#x27;10:00 19 Oct&#x27; for a 14:00Z match). All rows here publish UTC.</p>
+  <p class="muted"><a href="https://egamersworld.com/counterstrike/match/EJcHRdr5Vx/chinggis-warriors-vs-wxm-_ddme1I7dZ">src</a> <a href="https://www.hltv.org/matches/2399664/betclic-vs-bbl-pgl-bucharest-2027-closed-qualifier">src</a></p>
+</div>
+<div class="card" id="A5">
+  <p><span class="pill flag">A5 · low</span></p>
+  <h3>Four day-1/2 series have no transcribed map scores</h3>
+  <p>Legacy-PARIVISION, FURIA-BETBOOM (day 1) and Falcons-9z, Legacy-FURIA, PARIVISION-BETBOOM (day 2 map scores) were not captured from primary pages in this session&#x27;s read window. Series scores are HLTV-verified; map cells are left BLANK rather than filled from memory.</p>
+  <p class="muted"><a href="https://www.hltv.org/results?event=8932">src</a></p>
+</div>
+<div class="card" id="A6">
+  <p><span class="pill flag">A6 · low</span></p>
+  <h3>1081129 Privateer v antidaun is a single-book dead-even price with a 6h start-time mismatch</h3>
+  <p>Melbet lists 1.85/1.85 but with a start time 6h from HotSpawn&#x27;s slot (canonical board flag joined_price_start_time_differs_more_than_3h). Published as 50/50 toss-up with a forced pick for pick&#x27;em completeness only. Treat as a coin flip.</p>
+  <p class="muted"><a href="https://melbet.com/en/line/esports">src</a></p>
+</div>
+<div class="card" id="A7">
+  <p><span class="pill flag">A7 · low</span></p>
+  <h3>BBL roster identity differs between wikis</h3>
+  <p>HLTV team 13996 (the team playing this qualifier — boxscore-verified on HLTV 2399656/2399664) is a Danish five: IceBerg, MistR, salazar, leakz, NickyB + coach wezx, formed ~1 month ago (HLTV &#x27;time on team: 1 month&#x27;), world #49 / VRS #39. Liquipedia&#x27;s BBL_Esports org listing surfaces a different international roster (jottAAA, regali, MisteM, Kvem, soulfly, coach Fabre). The market price used for the pick is roster-agnostic; roster claims are taken from HLTV only.</p>
+  <p class="muted"><a href="https://www.hltv.org/team/13996/bbl">src</a> <a href="https://liquipedia.net/counterstrike/PGL/2027/Bucharest/Qualifier">src</a> <a href="https://www.hltv.org/matches/2399656/bbl-vs-eyeballers-pgl-bucharest-2027-closed-qualifier">src</a></p>
+</div>
+<div class="card" id="A8">
+  <p><span class="pill flag">A8 · low</span></p>
+  <h3>Canonical board track-record accuracies look too high to be skill</h3>
+  <p>data/fe803b80/board.json reports settled-pick accuracy of 98.4% (market) and 99.5% (model) over thousands of rows, against a Brier of 0.183. These figures are consistent with &#x27;mostly heavy favourites settled&#x27; rather than forecasting skill; do not read them as model quality. Flagged for the board owner.</p>
+  <p class="muted"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/fe803b80/board.json">src</a></p>
+</div>
+
+<p class="muted" style="margin-top:24px">Session a89b76e9 · sources per row · HotSpawn used for fixture discovery and ownership only, never as a probability. Method: <a href="method.html">method.html</a> · Site home: <a href="../index.html">home</a>.</p>
+</main>
+<nav class="tabs">
+<a href="index.html"><span class="ic">🏠</span>Summary</a><a href="picks.html"><span class="ic">✅</span>Picks</a><a href="twc.html"><span class="ic">🏆</span>TWC</a><a href="unresolved.html"><span class="ic">🧩</span>Unresolved</a><a href="flagged.html" class="active"><span class="ic">⚑</span>Flagged</a>
+</nav>
+</body>
+</html>
