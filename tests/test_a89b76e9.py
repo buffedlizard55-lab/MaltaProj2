@@ -28,15 +28,27 @@ def load(path):
 
 
 def newest_board():
-    best, best_path = None, None
+    best, best_path, best_key = None, None, None
     for name in sorted(os.listdir(os.path.join(ROOT, "data"))):
         path = os.path.join(ROOT, "data", name, "board.json")
         if not os.path.isfile(path):
             continue
         data = load(path)
         gen = str(data.get("generated_utc") or "")
-        if gen and (best is None or gen > str(best.get("generated_utc") or "")):
-            best, best_path = data, path
+        # mirror scripts/a89b76e9/build.py exactly: canonical-shaped boards
+        # only, completeness first (most priced rows), recency as tie-break
+        rows = [r for r in (data.get("open") or [])
+                if r.get("state") == "open"
+                and r.get("fixture_id") is not None
+                and r.get("team_a") and r.get("team_b")]
+        if not gen or not rows or not any(isinstance(r.get("line"), dict) for r in rows):
+            continue
+        priced = sum(1 for r in rows
+                     if (r.get("line") or {}).get("pick")
+                     or (r.get("line") or {}).get("pick_team"))
+        key = (priced, gen)
+        if best_key is None or key > best_key:
+            best, best_path, best_key = data, path, key
     return best or {}, best_path or ""
 
 
