@@ -5744,3 +5744,17 @@ Session: `92e62a4e` (branch `arena/92e62a4e-maltaproj2`; fixed by environment; n
   • F9 — Omega-Bushido Wildcats (1082020) single-book 1.85/1.85 coin flip; published as toss-up / leaderboard pick only.
   • U1–U4 — four bound-only rows with no bookmaker price; exact sources tried documented.
 - PR will be created from arena/92e62a4e-maltaproj2 → main with this close-out, merged without approval (per instructions), Pages verified after merge.
+
+---
+
+# Coordination — session `532cbae8` (Pages gate repair: stale capture-sensitive contracts)
+
+Session: `532cbae8` (environment-fixed branch `arena/532cbae8-maltaproj2`; work stays on this branch).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-532CBAE8-GATE: unblock the main Pages build by repairing only stale, cross-refresh test assumptions; independently run the source-linked site suite/staging check; integrate no new Day-5 research unless its existing PR passes the same gate | in progress | 532cbae8 | 2026-10-18 00:05 | `tests/test_3e1be203.py` (narrow stale-claim takeover: historical desk inventory vs newer canonical capture assertion only), `tests/test_1c8f79f8.py` (narrow stale-claim takeover: fixed sibling-quote example only), `tests/test_532cbae8.py` (new integration checks), `COORDINATION.md` (this section only) |
+
+## Log
+- 2026-10-18 00:05 UTC, `532cbae8`: Read `COORDINATION.md`, checked current `main`, open PRs, and the Pages run 39081244960. The existing TWC Day-5 research is already in separate open PR #176 (`arena/234db976-maltaproj2`, files under `twc-2026/`, `data/234db976/`, `scripts/234db976/`); those files are out of scope and will not be edited. The root Pages workflow currently fails in its first unittest gate. The two reproducible failures are historical-desks' stale inventory comparison (`tests/test_3e1be203.py`) and a hard-coded sibling market fixture which has rotated out of all published boards (`tests/test_1c8f79f8.py`).
+- Narrow takeovers are limited to the failing test assertions, not either session's site, source ledger, data or probability engine. `3e1be203` has a merged close-out (PR #165) but its coordination row remains `in progress`; `1c8f79f8`'s claim is dated 2026-10-16 19:35 UTC and its latest recorded main workflow attempts are >60 minutes old. Per the task-board handoff rule, both test-only takeovers are logged before any edits. Preserve dated board counts as historical, and do not weaken quote-arithmetic/source assertions.
