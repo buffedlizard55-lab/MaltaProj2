@@ -1,30 +1,33 @@
 {
  "session": "6c5bb3d6",
- "ran_utc": "2026-10-18T06:33:54Z",
+ "ran_utc": "2026-10-18T09:42:05Z",
  "command": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests",
  "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
- "returncode": 0,
- "green": true,
- "failing_tests": [],
+ "returncode": 1,
+ "green": false,
+ "failing_tests": [
+  "test_every_open_fixture_has_a_pick",
+  "test_picks_rows_have_source_links"
+ ],
  "counts": {
   "ran": 1015,
-  "ok": true,
-  "skipped": 7,
-  "failures": 0,
-  "errors": 0
+  "ok": false,
+  "skipped": 0,
+  "failures": 1,
+  "errors": 1
  },
  "tail": [
-  "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
-  "........s................................................./home/runner/work/MaltaProj2/MaltaProj2/tests/test_verify_8e7a652d.py:81: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/runner/work/MaltaProj2/MaltaProj2/verify/8e7a652d/index.html' mode='r' encoding='utf-8'>",
-  "  html = open(page, encoding=\"utf-8\").read()",
-  "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
-  ".../home/runner/work/MaltaProj2/MaltaProj2/tests/test_verify_8e7a652d.py:99: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/runner/work/MaltaProj2/MaltaProj2/index.html' mode='r' encoding='utf-8'>",
-  "  html = open(os.path.join(ROOT, \"index.html\"), encoding=\"utf-8\").read()",
-  "ResourceWarning: Enable tracemalloc to get the object allocation traceback",
-  ".",
+  "FAIL: test_every_open_fixture_has_a_pick (test_a89b76e9.BoardCoverage.test_every_open_fixture_has_a_pick)",
+  "Requirement: picks for EVERY match listed on HotSpawn for CS2.",
   "----------------------------------------------------------------------",
-  "Ran 1015 tests in 12.963s",
+  "Traceback (most recent call last):",
+  "  File \"/home/runner/work/MaltaProj2/MaltaProj2/tests/test_a89b76e9.py\", line 79, in test_every_open_fixture_has_a_pick",
+  "    self.assertEqual(len(block), 2, f\"fixture {fid} missing from picks.html\")",
+  "AssertionError: 1 != 2 : fixture 1082152 missing from picks.html",
   "",
-  "OK (skipped=7)"
+  "----------------------------------------------------------------------",
+  "Ran 1015 tests in 17.615s",
+  "",
+  "FAILED (failures=1, errors=1, skipped=9)"
  ]
 }
