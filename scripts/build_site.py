@@ -73,24 +73,15 @@ def pct(value):
 # available from Research archive rather than crowding every mobile header.
 NAV = [
     ("index.html", "Home"),
-    # 7900154b: the day-5 desk. First entry point after Home on purpose; the landing
-    # page also opens with it (see day5_front_html below). Additive: the earlier desk
-    # (3e1be203) stays in the archive.
-    ("day5/index.html", "📱 Day-5 desk"),
-    # 3e1be203: the phone-first desk. First entry point after Home on purpose; the
-    # landing page also opens with it (see desk_front_html below).
-    ("desk/index.html", "📱 Picks desk"),
-    # 782adb47: TWC Day-5 finals desk (newest front door; landing opens with it).
-    ("finals/index.html", "🏆 TWC finals"),
-    # 36186ad8: final-day live desk (today, market-priced).
-    ("finalday/index.html", "🏆 FINAL DAY"),
-    # Current picks first: the two lists the site is actually for.
-    ("picks-every-match/index.html", "All CS2 picks"),
-    ("day4/index.html", "TWC day-4 picks"),
+    # 371a1ce7: ONE phone-first front door. The primary header is short (10 links); every earlier
+    # desk (day5/, finals/, finalday/, desk/, day4/, ...) stays published and is listed on
+    # start/archive.html and research.html, and the landing keeps linking them.
+    ("start/index.html", "📱 Start here"),
+    ("start/picks.html", "Today's picks"),
+    ("start/twc.html", "🏆 TWC final day"),
+    ("picks-every-match/index.html", "All CS2 picks (canonical)"),
     ("picks-every-match/unresolved.html", "Unresolved"),
-    # Alternate hubs remain in the dated research archive, not primary navigation.
     ("day-one.html", "Day-one review"),
-    ("twc-2026/index.html", "Day 2 → Day 3"),
     ("flagged.html", "Flagged for Review"),
     ("picks-every-match/method.html", "Method & sources"),
     ("research.html", "Research archive"),
@@ -106,6 +97,30 @@ def _board_stamp(rel, *keys):
             return str(value).replace("T", " ").replace("Z", " UTC")
     return None
 
+
+
+def start_front_html():
+    """371a1ce7: the single phone-first front door (start/). Reads start/data/board.json only."""
+    d = load("start/data/board.json") or {}
+    sm = d.get("summary") or {}
+    d5 = d.get("twc_day5") or []
+    if not sm:
+        return ""
+    rows = "".join(
+        f'<li><strong>{esc(m["favourite"])}</strong> {m["fav_prob"] * 100:.0f}% over '
+        f'{esc(m["team_b"] if m["favourite"] == m["team_a"] else m["team_a"])} '
+        f'<span class="muted">({esc(m["stage"])})</span></li>' for m in d5)
+    stamp = esc(str(d.get("generated_utc", "")).replace("T", " ").replace("Z", " UTC"))
+    return f'''<div class="card" id="start-front" style="border:2px solid var(--accent,#ffb020);padding:14px;margin:0 0 16px">
+<p class="eyebrow">📱 Start here · built {stamp}</p>
+<h2 style="margin:4px 0 8px">Today's picks — one page</h2>
+<ul>{rows}</ul>
+<p>{esc(sm.get("open", "—"))} open HotSpawn CS2 matches: {esc(sm.get("lines", "—"))} priced from betting lines,
+{esc(sm.get("model", "—"))} from rating models, {esc(sm.get("direction_only", "—"))} direction only
+(probability left blank). Each pick shows both teams' win chances and sources.</p>
+<p class="start-links"><a href="start/index.html"><strong>Summary &amp; picks →</strong></a> ·
+<a href="start/picks.html">All picks</a> · <a href="start/twc.html">TWC final day</a> ·
+<a href="start/unresolved.html">Unresolved &amp; limitations</a> · <a href="start/flagged.html">Flagged for review</a></p></div>'''
 
 
 def finals_front_html():
@@ -684,9 +699,13 @@ roster investigation are on the <a href="day4/twc-review.html">day 1–3 review<
 <section id="executive-summary" aria-labelledby="summary-title">
 <div class="hero-card">
 <p class="eyebrow">CS2 Pick’em dashboard · Executive summary</p>
+{start_front_html()}
+<details class="archive" id="older-boards"><summary>Earlier desks from previous sessions (superseded by Start here)</summary>
 {finals_front_html()}
 {day5_front_html()}
 {desk_front_html()}
+<p class="note"><a href="finalday/index.html">Final-day live desk (36186ad8)</a> · <a href="start/archive.html">Full archive list</a></p>
+</details>
 <h1 id="summary-title">Every listed match. Evidence before picks.</h1>
 <p class="muted">Canonical market-only boards below. The desk above is the phone front door.</p>
 <div class="actions primary-actions">

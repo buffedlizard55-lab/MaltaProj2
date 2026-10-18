@@ -1,0 +1,64 @@
+name: start (371a1ce7)
+
+# Session 371a1ce7 / T-371A1CE7-HOME. Rebuilds the phone-first front door (start/) from the newest
+# automated line board (data/fe803b80/board.json, refreshed on its own 30-minute schedule) and a fresh
+# read of HotSpawn's crowd split. Crowd shares are ownership only; they never feed a probability.
+# Scope guard: writes only data/371a1ce7/** and start/**.
+# Refresh cadence: every 4 hours (inside the required 4-8 hour window) and on manual dispatch.
+on:
+  push:
+    branches: ['main']
+    paths:
+      - 'scripts/371a1ce7/**'
+      - 'tests/test_371a1ce7.py'
+      - 'data/371a1ce7/twc.json'
+      - '.github/workflows/start-371a1ce7.yml'
+  schedule:
+    - cron: '23 */4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: start-371a1ce7-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Refresh the HotSpawn crowd split (keeps the old file if the API is unreachable)
+        run: python3 scripts/371a1ce7/collect.py
+      - name: Build start/
+        run: python3 scripts/371a1ce7/build.py
+      - name: Tests
+        run: python3 -m unittest tests.test_371a1ce7 -v
+      - name: Commit and push (rebase before every push)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config user.name "start-bot (371a1ce7)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/371a1ce7 start
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "start(371a1ce7): refresh front door $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              gh workflow run pages.yml --ref main || echo "pages dispatch failed"
+              exit 0
+            fi
+            sleep $((attempt * 7))
+          done
+          exit 1
