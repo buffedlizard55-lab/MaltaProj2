@@ -2,6 +2,8 @@
 
 **Live dashboard: https://buffedlizard55-lab.github.io/MaltaProj2/**
 
+**📱🏆 FINAL DAY (today 18 Oct): start with the [final-day desk](https://buffedlizard55-lab.github.io/MaltaProj2/finalday/) — books priced it overnight: FURIA 68.2% v BETBOOM, Falcons 62.8% v Aurora (Thunderpick via bo3.gg, read live); BETBOOM fail the 35% climb floor, Aurora the only conditional gamble. Plus every open HotSpawn pick + [unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/finalday/unresolved.html). Session `36186ad8`, 4-hourly.**
+
 **📱 Phone? Start with the [TWC finals desk](https://buffedlizard55-lab.github.io/MaltaProj2/finals/) — Day-5 Grand Final (FURIA v BETBOOM) + 3rd-place picks, Days 1–4 graded, plus a pick and both win probabilities for every open HotSpawn match, with a separate [Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/finals/unresolved.html) page. Session `782adb47`; rebuilt from the canonical capture every 4 hours. (Yesterday's board: [Picks desk](https://buffedlizard55-lab.github.io/MaltaProj2/desk/), session `3e1be203`.)**
 
 **📱 Phone? Start with the [Day-5 desk](https://buffedlizard55-lab.github.io/MaltaProj2/day5/) — TWC 2026 final day (FURIA v BETBOOM, Aurora v Falcons) plus a pick and both win probabilities for every open HotSpawn match, with a separate [Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/day5/unresolved.html) page. Session `7900154b`; rebuilt from a fresh lobby and book read every 4 hours.**

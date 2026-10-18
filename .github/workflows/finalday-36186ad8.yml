@@ -1,0 +1,17 @@
+name: finalday-36186ad8
+on:
+  schedule: [{cron: "17 */4 * * *"}]
+  workflow_dispatch:
+permissions: {contents: write, pages: write, actions: write}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: main}
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python3 scripts/36186ad8/build.py && python3 -m unittest tests.test_36186ad8
+      - run: |
+          git config user.name "finalday-bot"; git config user.email "actions@github.com"
+          git add finalday && git diff --cached --quiet || { git commit -m "finalday(36186ad8): 4h refresh"; git push; }
