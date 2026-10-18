@@ -2,7 +2,7 @@
  "session": "6c5bb3d6",
  "task": "T-VERIFY-6C5BB3D6 independent line-by-line verification",
  "gate": {
-  "ran_utc": "2026-10-18T02:05:09Z",
+  "ran_utc": "2026-10-18T02:05:43Z",
   "command": "python -m unittest discover -s tests",
   "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
   "green": false,
@@ -11,18 +11,15 @@
    "ran": 1015,
    "ok": false,
    "skipped": 0,
-   "failures": 3,
-   "errors": 2
+   "failures": 2,
+   "errors": 0
   },
   "failing_tests": [
    "test_day4_copy_counts_blank_probabilities_and_separates_timestamps",
-   "test_every_open_fixture_has_a_pick",
-   "test_inventory_matches_canonical",
-   "test_newest_board_found",
-   "test_picks_rows_have_source_links"
+   "test_inventory_matches_canonical"
   ]
  },
- "generated_utc": "2026-10-18T02:05:09Z",
+ "generated_utc": "2026-10-18T02:05:43Z",
  "verified_board": {
   "file": "data/f28afd9e/board.json",
   "generated_utc": "2026-10-18T02:04:43Z",
@@ -40,7 +37,7 @@
  },
  "official_vrs": {
   "snapshot": "2026_10_05",
-  "fetched_utc": "2026-10-18T02:04:58Z",
+  "fetched_utc": "2026-10-18T02:05:30Z",
   "http_status": 200,
   "teams_parsed": 349,
   "human_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
@@ -1731,19 +1728,16 @@
    "id": "C11",
    "name": "Shared publication gate (Pages deploys only on a green suite)",
    "status": "fail",
-   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-18T02:05:09Z: 1015 tests, 3 failures, 2 errors, 0 skipped -> RED, Pages deployment is blocked",
+   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-18T02:05:43Z: 1015 tests, 2 failures, 0 errors, 0 skipped -> RED, Pages deployment is blocked",
    "evidence": [
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml",
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/gate.json"
    ],
    "rows_checked": 1015,
-   "rows_failed": 5,
+   "rows_failed": 2,
    "failures": [
     "test_day4_copy_counts_blank_probabilities_and_separates_timestamps",
-    "test_every_open_fixture_has_a_pick",
-    "test_inventory_matches_canonical",
-    "test_newest_board_found",
-    "test_picks_rows_have_source_links"
+    "test_inventory_matches_canonical"
    ]
   }
  ],
@@ -1814,7 +1808,7 @@
    "id": "IR-C11",
    "severity": "high",
    "title": "Shared Pages publication gate is red - the site cannot deploy",
-   "detail": "5 failing test(s): test_day4_copy_counts_blank_probabilities_and_separates_timestamps, test_every_open_fixture_has_a_pick, test_inventory_matches_canonical, test_newest_board_found, test_picks_rows_have_source_links. pages.yml gates deployment on the full suite, so this blocks publication for every session.",
+   "detail": "2 failing test(s): test_day4_copy_counts_blank_probabilities_and_separates_timestamps, test_inventory_matches_canonical. pages.yml gates deployment on the full suite, so this blocks publication for every session.",
    "links": [
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml"
    ]
