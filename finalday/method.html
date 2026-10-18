@@ -1,0 +1,26 @@
+<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1"><title>Method</title><style>:root{--bg:#0b1220;--card:#131e33;--line:#2a3a5c;--txt:#eef3ff;--mut:#a9b8d8;--acc:#ffb020;--ok:#2fbf71;--bad:#ff6b6b;--warn:#ffd166}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:#7db4ff}h1{font-size:1.4rem;margin:.2rem 0 .4rem}h2{font-size:1.15rem;margin:1.2rem 0 .5rem}h3{font-size:1rem;margin:.8rem 0 .3rem}
+.wrap{max-width:860px;margin:0 auto;padding:12px 12px 40px}
+.tabs{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;background:var(--bg);padding:8px 0;border-bottom:1px solid var(--line)}
+.tabs a{flex:0 0 auto;min-height:44px;display:flex;align-items:center;padding:6px 12px;border:1px solid var(--line);border-radius:999px;color:var(--txt);text-decoration:none;font-size:.92rem}
+.tabs a.on{background:var(--acc);color:#111;border-color:var(--acc);font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0}.pick{font-size:1.15rem;font-weight:800}.pick b{color:var(--ok)}
+.probs{display:flex;gap:8px;margin:8px 0}.probs div{flex:1;background:#0d1830;border-radius:10px;padding:8px;text-align:center}.probs .n{font-size:1.6rem;font-weight:800}.probs .t{font-size:.85rem;color:var(--mut)}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.78rem;font-weight:700;margin:2px 4px 2px 0}
+.b-market{background:#123d2b;color:#7dffb0}.b-model{background:#2b2a12;color:#ffe97d}.b-bound{background:#3d2a12;color:#ffcf7d}.b-stale{background:#3d1230;color:#ff9de2}.b-alias{background:#12303d;color:#7dd7ff}.b-none{background:#3d1212;color:#ff9d9d}
+.mut{color:var(--mut);font-size:.9rem}.small{font-size:.85rem}
+.btn{display:flex;justify-content:space-between;align-items:center;min-height:48px;background:#1a2a4a;color:var(--txt);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;text-decoration:none}.btn strong{color:var(--acc)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.warn{border-left:4px solid var(--warn);padding:8px 10px;background:#241d08;border-radius:8px}.good{border-left:4px solid var(--ok);padding:8px 10px;background:#0b2417;border-radius:8px}
+.big{font-size:1.05rem}@media(max-width:520px){.probs .n{font-size:1.3rem}h1{font-size:1.2rem}}</style></head><body><div class=wrap>
+<nav class=tabs><a href="index.html">🏆 Final day</a><a href="picks.html">✅ All picks</a><a href="twc.html">TWC Days 1–5</a><a href="unresolved.html">⚠️ Unresolved</a><a href="flagged.html">Flagged</a><a href="method.html" class=on>Method</a></nav>
+<p class="mut small">TWC 2026 FINAL DAY desk · built 2026-10-18T00:09:22Z · lobby read live 2026-10-18T00:13:00Z · HotSpawn capture 2026-10-17T18:26:54Z · probabilities from external books / Valve ratings — never HotSpawn. Crowd % = ownership only.</p>
+<h1>Method</h1>
+<h2>HotSpawn reverse-engineering</h2><p>Public lobby at play.hotspawn.com/lobby embeds its fixture list (81 CS2 at today's live read); canonical capture + collectors live in scripts/ (update-data + per-session workflows, 4-hourly). HotSpawn supplies fixtures, points and crowd ownership only.</p>
+<h2>Probability ladder (per match)</h2><ol><li>External bookmaker/exchange two-sided price → proportional no-vig p=(1/odds)/Σ(1/odds).</li><li>Proven-alias re-join only on agreeing opponent + kickoff + roster proof.</li><li>HLTV research (rosters, stand-ins, H2H, maps) — flags, never blended into %.</li><li>Calibrated Valve-VRS originated line (k≈0.42 vs raw k=1.0 sensitivity) where both cores are uniquely ranked.</li><li>One-sided VRS bound, or blank + flagged. Never 50/50.</li></ol>
+<h2>Leaderboard rule (pre-declared)</h2><p>Free differential first (favourite the crowd hates). Dog switch only if win% ≥35, leverage vs crowd ownership ≥15pp, and ≥2 verified flags. HotSpawn crowd % is ownership — it never enters a probability.</p>
+<h2>Day-5 today</h2><p>Thunderpick prices via bo3.gg read live this session; no-vig math in data/board.json. Yesterday's originated lines are retained as sensitivity so the market move is auditable.</p>
+<p class="mut small">Not affiliated with HotSpawn, Thunderpick or any bookmaker. Model/bound numbers are originated estimates, not verified win chances. Check lock times on HotSpawn before picking. <a href="../index.html">← Site home</a> · <a href="data/board.json">JSON board</a></p>
+</div></body></html>

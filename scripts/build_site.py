@@ -82,6 +82,8 @@ NAV = [
     ("desk/index.html", "📱 Picks desk"),
     # 782adb47: TWC Day-5 finals desk (newest front door; landing opens with it).
     ("finals/index.html", "🏆 TWC finals"),
+    # 36186ad8: final-day live desk (today, market-priced).
+    ("finalday/index.html", "🏆 FINAL DAY"),
     # Current picks first: the two lists the site is actually for.
     ("picks-every-match/index.html", "All CS2 picks"),
     ("day4/index.html", "TWC day-4 picks"),
