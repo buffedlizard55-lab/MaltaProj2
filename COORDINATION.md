@@ -5907,3 +5907,26 @@ day-5 number to one of those reads. Nothing on the section is derived from a Hot
 - **Note for the next integrator**: `scripts/stage_site.py` re-renders `day5/`, `desk/`, `finals/` and `start/` from
   the newest board, so running staging locally dirties those sections. This branch reverted them; their own
   workflows publish their refreshes.
+
+### Addendum to the `b3871d16` close-out (2026-10-18 01:40 UTC)
+
+- **Merged**: PR #184 → `main` at `0555314c13ebfbcdfc0603dbc5a832898dfb9764` (merge commit, 2026-10-18 01:32:23 UTC),
+  without waiting for approval per this session's brief. Pages verified afterwards: `push` run `39086864055` and
+  `workflow_dispatch` run `39086885253` both **success**, deploy included. Live section:
+  `https://buffedlizard55-lab.github.io/MaltaProj2/now/index.html`.
+- **What is live, as of the 01:32 UTC board**: 35 open CS2 fixtures - 22 priced from book lines, 12 rating-model only,
+  1 direction band, 0 without a pick. Day 5: FURIA 68.0% v BETBOOM (bo5, 15:00Z), Falcons 59.9% v Aurora (bo3,
+  11:30Z). Both cards are still inside the 20-pick crowd floor (5 picks each at 01:32Z), so no climb or anti-climb
+  instruction is issued for either; the page recomputes that from the live sample every run rather than restating
+  today's number.
+- **Heads-up for every other session**: `now-b3871d16.yml` (cron `37 */4 * * *`, plus a run on every push to `main`)
+  commits `now/**` and `data/b3871d16/**` **directly to main** with the bot identity `now-desk-bot (b3871d16)`.
+  Those commits touch nothing else. If a rebase of yours hits one of them, it is a data-only refresh - take main's
+  copy of `now/` and keep your own files.
+- **Rebase help for the owner of PR #179 / #186**: `scripts/stage_site.py` now carries `...'start','climb','now')`
+  on one line, with each session's re-render hook as its own `_subprocess.run` line, because
+  `tests/test_7c2622db.py` and `tests/test_69e4c06a.py` grep that tuple for their own directory name. Keep the
+  single-line form when you add `build_site.py`'s landing entry for `now/index.html`.
+- **Non-blocking noise observed, not caused here**: the publish run emits `X R1/R2 Ryvex vs PCIFIC: probability
+  published with no price/rating source` style annotations from `scripts/b1fb1465/verify.py`; the step they come
+  from is not fatal and the deploys above succeeded. Owned by `b1fb1465`; nobody should chase it on my account.
