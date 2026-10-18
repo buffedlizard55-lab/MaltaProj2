@@ -108,37 +108,37 @@ prices and HLTV's fan vote are never used as probabilities.</li>
 <div class="tablewrap"><table><caption>Harness: <code>scripts/6c5bb3d6/verify.py</code>; result:
 <a href="report.json">report.json</a>.</caption>
 <thead><tr><th>Check</th><th>How it is verified</th><th>Result</th><th>Evidence</th></tr></thead><tbody><tr><td data-label="Check"><b>C1</b> Inventory coverage of every pickable CS2 fixture</td>
-<td data-label="How it is verified">96 CS2 fixtures in the official lobby snapshot; 16 still pickable at the board instant 2026-10-18T02:58:31Z; 80 locked/past; 15/16 carry a pick</td>
+<td data-label="How it is verified">96 CS2 fixtures in the official lobby snapshot; 16 still pickable at the board instant 2026-10-18T05:03:53Z; 80 locked/past; 15/16 carry a pick</td>
 <td data-label="Result"><span class="badge fail">FAIL</span>
 <div class="small">16 checked · 1 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/hotspawn_matches.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/board.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C2</b> Probability normalization, pick = argmax, and blanks disclosed</td>
-<td data-label="How it is verified">20 published rows re-checked: 16 carry probabilities (p_a+p_b=1, safe pick = higher probability, stated pick probabilities equal the row&#x27;s side values) and 4 are published blank (1079635, 1082021, 1082019, 1081863) - each blank must state its basis or carry a flag, and none may publish a pick</td>
+<td data-label="How it is verified">19 published rows re-checked: 15 carry probabilities (p_a+p_b=1, safe pick = higher probability, stated pick probabilities equal the row&#x27;s side values) and 4 are published blank (1082021, 1082019, 1081519, 1081863) - each blank must state its basis or carry a flag, and none may publish a pick</td>
 <td data-label="Result"><span class="badge pass">PASS</span>
-<div class="small">20 checked · 0 failed</div></td>
+<div class="small">19 checked · 0 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/board.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C3</b> No-vig arithmetic re-derived from every retained raw quote</td>
-<td data-label="How it is verified">8 rows re-derived from 171 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 4 rows publish no probability (blank, so there is nothing to re-derive); 8 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct</td>
+<td data-label="How it is verified">10 rows re-derived from 209 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 4 rows publish no probability (blank, so there is nothing to re-derive); 5 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct</td>
 <td data-label="Result"><span class="badge pass">PASS</span>
-<div class="small">20 checked · 0 failed</div></td>
+<div class="small">19 checked · 0 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/live/quotes.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/fe803b80/snapshot.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/b1fb1465/board.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C4</b> Every official Valve VRS citation re-read from Valve&#x27;s own file</td>
-<td data-label="How it is verified">22 VRS citations across the published rows re-checked against 2026_10_05 as fetched in this run (HTTP 200, 349 teams); alias rosters re-matched WBT 5/5; ROUNDS 5/5; WBT Academy 5/5</td>
+<td data-label="How it is verified">18 VRS citations across the published rows re-checked against 2026_10_05 as fetched in this run (HTTP 200, 349 teams); alias rosters re-matched WBT 5/5; ROUNDS 5/5; WBT Academy 5/5</td>
 <td data-label="Result"><span class="badge pass">PASS</span>
-<div class="small">22 checked · 0 failed</div></td>
+<div class="small">18 checked · 0 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/vrs_official.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C5</b> Every published row and every audited fact carries an https source link</td>
-<td data-label="How it is verified">20 published rows and 21 ledger items checked</td>
+<td data-label="How it is verified">19 published rows and 21 ledger items checked</td>
 <td data-label="Result"><span class="badge pass">PASS</span>
-<div class="small">20 checked · 0 failed</div></td>
+<div class="small">19 checked · 0 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/board.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/research.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C6</b> HotSpawn crowd % is ownership-only and never a probability</td>
-<td data-label="How it is verified">16 priced rows publish exactly the upstream board&#x27;s market/model probability (so the crowd split cannot have entered them); 0 rows have a probability numerically equal to the crowd share; 0 blank rows carry no probability to compare</td>
+<td data-label="How it is verified">15 priced rows publish exactly the upstream board&#x27;s market/model probability (so the crowd split cannot have entered them); 0 rows have a probability numerically equal to the crowd share; 0 blank rows carry no probability to compare</td>
 <td data-label="Result"><span class="badge pass">PASS</span>
-<div class="small">16 checked · 0 failed</div></td>
+<div class="small">15 checked · 0 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/board.json" rel="noopener">evidence</a> <a href="https://play.hotspawn.com/lobby" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C7</b> Day-1 review: results and backtest arithmetic</td>
 <td data-label="How it is verified">13 settled rows recomputed: safe 11/13 = 41 pts, leaderboard 9/13 = 41 pts. 6 winners independently re-read from official pages this session (1080176, 1079439, 1080177, 1080178, 1080179, 1080279); 7 inherited from the board&#x27;s settlement source and not re-read here</td>
 <td data-label="Result"><span class="badge pass">PASS</span>
 <div class="small">13 checked · 0 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/day1_review.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/research.json" rel="noopener">evidence</a> <a href="https://www.hltv.org/results?event=8932" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C8</b> Contrarian (differential) pick recomputed independently</td>
-<td data-label="How it is verified">20 rows recomputed with points x (probability - crowd ownership); 7 agree with the published leaderboard pick, 8 open rows diverge. Divergence is a methodology difference (the published layer caps swings and only fades near coin-flips), not an arithmetic error.</td>
+<td data-label="How it is verified">19 rows recomputed with points x (probability - crowd ownership); 8 agree with the published leaderboard pick, 7 open rows diverge. Divergence is a methodology difference (the published layer caps swings and only fades near coin-flips), not an arithmetic error.</td>
 <td data-label="Result"><span class="badge info">INFO</span>
-<div class="small">20 checked · 0 failed</div></td>
+<div class="small">19 checked · 0 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/board.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/live/board.json (crowd reference field)" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C9</b> Contested team identities (WROTBERRY, RoundsGG) re-checked</td>
 <td data-label="How it is verified">2 alias joins re-verified against the official standings and their published evidence chains (event slot, identical UTC kick-offs, bookmaker naming, 5/5 roster match)</td>
 <td data-label="Result"><span class="badge pass">PASS</span>
@@ -148,7 +148,7 @@ prices and HLTV's fan vote are never used as probabilities.</li>
 <td data-label="Result"><span class="badge skipped">SKIPPED</span>
 <div class="small">0 checked · 0 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f28afd9e/context.json" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/research.json" rel="noopener">evidence</a></span></td></tr><tr><td data-label="Check"><b>C11</b> Shared publication gate (Pages deploys only on a green suite)</td>
-<td data-label="How it is verified">`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-18T02:59:20Z: 1015 tests, 0 failures, 0 errors, 8 skipped -&gt; GREEN, the site can publish</td>
+<td data-label="How it is verified">`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-18T05:04:25Z: 1015 tests, 0 failures, 0 errors, 8 skipped -&gt; GREEN, the site can publish</td>
 <td data-label="Result"><span class="badge pass">PASS</span>
 <div class="small">1015 checked · 0 failed</div></td>
 <td data-label="Evidence"><span class="srcs"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml" rel="noopener">evidence</a> <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/gate.json" rel="noopener">evidence</a></span></td></tr></tbody></table></div>

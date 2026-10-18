@@ -2,7 +2,7 @@
  "session": "6c5bb3d6",
  "task": "T-VERIFY-6C5BB3D6 independent line-by-line verification",
  "gate": {
-  "ran_utc": "2026-10-18T02:59:20Z",
+  "ran_utc": "2026-10-18T05:04:25Z",
   "command": "python -m unittest discover -s tests",
   "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
   "green": true,
@@ -16,25 +16,25 @@
   },
   "failing_tests": []
  },
- "generated_utc": "2026-10-18T02:59:20Z",
+ "generated_utc": "2026-10-18T05:04:25Z",
  "verified_board": {
   "file": "data/f28afd9e/board.json",
-  "generated_utc": "2026-10-18T02:58:31Z",
-  "rows": 20,
+  "generated_utc": "2026-10-18T05:03:53Z",
+  "rows": 19,
   "summary": {
    "listed_open": 16,
    "with_pick": 15,
    "market_priced": 11,
-   "exchange_priced": 0,
-   "model_only": 4,
+   "exchange_priced": 3,
+   "model_only": 1,
    "unresolved": 1,
-   "contrarian": 3,
-   "locked_today": 4
+   "contrarian": 4,
+   "locked_today": 3
   }
  },
  "official_vrs": {
   "snapshot": "2026_10_05",
-  "fetched_utc": "2026-10-18T02:59:04Z",
+  "fetched_utc": "2026-10-18T05:04:15Z",
   "http_status": 200,
   "teams_parsed": 349,
   "human_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
@@ -46,7 +46,7 @@
   "match_count": 96,
   "pickable_at_board_instant": 16
  },
- "quotes_re_derived": 171,
+ "quotes_re_derived": 209,
  "summary": {
   "checks": 11,
   "by_status": {
@@ -55,10 +55,10 @@
    "info": 1,
    "skipped": 1
   },
-  "irregularities": 23,
+  "irregularities": 22,
   "by_severity": {
    "high": 3,
-   "info": 11,
+   "info": 10,
    "low": 2,
    "medium": 3,
    "unverified": 4
@@ -69,7 +69,7 @@
    "id": "C1",
    "name": "Inventory coverage of every pickable CS2 fixture",
    "status": "fail",
-   "detail": "96 CS2 fixtures in the official lobby snapshot; 16 still pickable at the board instant 2026-10-18T02:58:31Z; 80 locked/past; 15/16 carry a pick",
+   "detail": "96 CS2 fixtures in the official lobby snapshot; 16 still pickable at the board instant 2026-10-18T05:03:53Z; 80 locked/past; 15/16 carry a pick",
    "evidence": [
     "data/hotspawn_matches.json",
     "data/f28afd9e/board.json"
@@ -84,17 +84,17 @@
    "id": "C2",
    "name": "Probability normalization, pick = argmax, and blanks disclosed",
    "status": "pass",
-   "detail": "20 published rows re-checked: 16 carry probabilities (p_a+p_b=1, safe pick = higher probability, stated pick probabilities equal the row's side values) and 4 are published blank (1079635, 1082021, 1082019, 1081863) - each blank must state its basis or carry a flag, and none may publish a pick",
+   "detail": "19 published rows re-checked: 15 carry probabilities (p_a+p_b=1, safe pick = higher probability, stated pick probabilities equal the row's side values) and 4 are published blank (1082021, 1082019, 1081519, 1081863) - each blank must state its basis or carry a flag, and none may publish a pick",
    "evidence": [
     "data/f28afd9e/board.json"
    ],
-   "rows_checked": 20,
+   "rows_checked": 19,
    "rows_failed": 0,
    "failures": [],
    "blank_rows": [
-    "1079635",
     "1082021",
     "1082019",
+    "1081519",
     "1081863"
    ]
   },
@@ -102,13 +102,13 @@
    "id": "C3",
    "name": "No-vig arithmetic re-derived from every retained raw quote",
    "status": "pass",
-   "detail": "8 rows re-derived from 171 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 4 rows publish no probability (blank, so there is nothing to re-derive); 8 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct",
+   "detail": "10 rows re-derived from 209 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 4 rows publish no probability (blank, so there is nothing to re-derive); 5 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct",
    "evidence": [
     "data/live/quotes.json",
     "data/fe803b80/snapshot.json",
     "data/b1fb1465/board.json"
    ],
-   "rows_checked": 20,
+   "rows_checked": 19,
    "rows_failed": 0,
    "failures": [],
    "unjoined_rows": [
@@ -116,25 +116,15 @@
     "1079640",
     "1081526",
     "1081528",
-    "1081532",
-    "1081861",
-    "1081862",
-    "1081864"
+    "1081532"
    ],
    "blank_rows": [
-    "1079635",
     "1082021",
     "1082019",
+    "1081519",
     "1081863"
    ],
    "per_row": [
-    {
-     "fixture_id": "1079635",
-     "match": "Bushido Wildcats vs Gothic",
-     "quotes": [],
-     "published_market_prob_a": null,
-     "status": "no_published_probability"
-    },
     {
      "fixture_id": "1082021",
      "match": "PCIFIC vs 6yuBoJlbl",
@@ -152,82 +142,9 @@
     {
      "fixture_id": "1081519",
      "match": "NEXVOID vs Off Chops",
-     "published_market_prob_a": 0.6850255000000001,
-     "rederived_mean_prob_a": 0.647418,
-     "rederived_spread": 0.126572,
-     "quotes": [
-      {
-       "source": "linefeed_melbet",
-       "event_id": "762583337",
-       "quote_team_a": "Nexvoid",
-       "quote_team_b": "Off Chops",
-       "decimal_a": 1.6,
-       "decimal_b": 2.274,
-       "raw_side_a_prob": 0.58699,
-       "orientation": "straight",
-       "rederived_prob_a": 0.58699,
-       "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-18T01:03:04Z",
-       "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
-      },
-      {
-       "source": "melbet",
-       "event_id": "762583337",
-       "quote_team_a": "Nexvoid",
-       "quote_team_b": "Off Chops",
-       "decimal_a": 1.428,
-       "decimal_b": 2.729,
-       "raw_side_a_prob": 0.656483,
-       "orientation": "straight",
-       "rederived_prob_a": 0.656483,
-       "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-18T02:31:39Z",
-       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      },
-      {
-       "source": "kalshi",
-       "event_id": "KXCS2GAME-26OCT172300OFFNEX",
-       "quote_team_a": "Off Chops",
-       "quote_team_b": "NEXVOID",
-       "decimal_a": 3.5088,
-       "decimal_b": 1.4085,
-       "raw_side_a_prob": 0.286438,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.713562,
-       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-18T02:31:41Z",
-       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      },
-      {
-       "source": "melbet",
-       "event_id": "762583337",
-       "quote_team_a": "Nexvoid",
-       "quote_team_b": "Off Chops",
-       "decimal_a": 1.6,
-       "decimal_b": 2.274,
-       "raw_side_a_prob": 0.58699,
-       "orientation": "straight",
-       "rederived_prob_a": 0.58699,
-       "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-17T22:26:38Z",
-       "origin": "data/b1fb1465/board.json row 1081519 (market)"
-      },
-      {
-       "source": "kalshi",
-       "event_id": "KXCS2GAME-26OCT172300OFFNEX",
-       "quote_team_a": "Off Chops",
-       "quote_team_b": "NEXVOID",
-       "decimal_a": 3.2258,
-       "decimal_b": 1.4286,
-       "raw_side_a_prob": 0.306935,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.693065,
-       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-17T22:26:40Z",
-       "origin": "data/b1fb1465/board.json row 1081519 (exchange)"
-      }
-     ],
-     "status": "agrees"
+     "quotes": [],
+     "published_market_prob_a": null,
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1081126",
@@ -239,9 +156,9 @@
     {
      "fixture_id": "1079638",
      "match": "ex-RUSTEC vs ILLYRIANS",
-     "published_market_prob_a": 0.722102,
-     "rederived_mean_prob_a": 0.711908,
-     "rederived_spread": 0.050966,
+     "published_market_prob_a": 0.7161940000000001,
+     "rederived_mean_prob_a": 0.700024,
+     "rederived_spread": 0.064677,
      "quotes": [
       {
        "source": "bovada",
@@ -268,21 +185,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.716192,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-18T02:31:38Z",
-       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      },
-      {
-       "source": "kalshi",
-       "event_id": "KXCS2GAME-26OCT180700ILLEXR",
-       "quote_team_a": "ILLYRIANS",
-       "quote_team_b": "ex-RUSTEC",
-       "decimal_a": 3.7736,
-       "decimal_b": 1.3889,
-       "raw_side_a_prob": 0.269036,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.730964,
-       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-18T02:31:41Z",
+       "retrieved_utc": "2026-10-18T04:45:50Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -296,7 +199,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.716192,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-17T22:26:38Z",
+       "retrieved_utc": "2026-10-18T04:45:44Z",
        "origin": "data/b1fb1465/board.json row 1079638 (market)"
       },
       {
@@ -304,13 +207,13 @@
        "event_id": "KXCS2GAME-26OCT180700ILLEXR",
        "quote_team_a": "ILLYRIANS",
        "quote_team_b": "ex-RUSTEC",
-       "decimal_a": 3.125,
-       "decimal_b": 1.4706,
-       "raw_side_a_prob": 0.320002,
+       "decimal_a": 2.8986,
+       "decimal_b": 1.5504,
+       "raw_side_a_prob": 0.348483,
        "orientation": "swapped",
-       "rederived_prob_a": 0.679998,
+       "rederived_prob_a": 0.651517,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-17T22:26:40Z",
+       "retrieved_utc": "2026-10-18T04:45:46Z",
        "origin": "data/b1fb1465/board.json row 1079638 (exchange)"
       }
      ],
@@ -319,50 +222,78 @@
     {
      "fixture_id": "1081521",
      "match": "ex-6666 vs Privateer",
-     "published_market_prob_a": 0.8212290000000001,
-     "rederived_mean_prob_a": 0.883741,
-     "rederived_spread": 0.093776,
+     "published_market_prob_a": 0.7949082,
+     "rederived_mean_prob_a": 0.795344,
+     "rederived_spread": 0.021959,
      "quotes": [
       {
        "source": "bovada",
        "event_id": "32407398",
        "quote_team_a": "Ex-6666",
        "quote_team_b": "Privateer",
-       "decimal_a": 1.1429,
-       "decimal_b": 5.25,
-       "raw_side_a_prob": 0.821224,
+       "decimal_a": 1.1667,
+       "decimal_b": 4.75,
+       "raw_side_a_prob": 0.802812,
        "orientation": "straight",
-       "rederived_prob_a": 0.821224,
+       "rederived_prob_a": 0.802812,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-18T02:31:38Z",
+       "retrieved_utc": "2026-10-18T04:45:50Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
-       "source": "kalshi",
-       "event_id": "KXCS2GAME-26OCT180945PGEX",
-       "quote_team_a": "Privateer Gaming",
-       "quote_team_b": "ex-6666",
-       "decimal_a": 11.7647,
-       "decimal_b": 1.0929,
-       "raw_side_a_prob": 0.085,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.915,
-       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-17T22:26:40Z",
-       "origin": "data/b1fb1465/board.json row 1081521 (exchange)"
+       "source": "melbet",
+       "event_id": "762663244",
+       "quote_team_a": "ex-6666",
+       "quote_team_b": "Privateer",
+       "decimal_a": 1.19,
+       "decimal_b": 4.295,
+       "raw_side_a_prob": 0.783045,
+       "orientation": "straight",
+       "rederived_prob_a": 0.783045,
+       "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_utc": "2026-10-18T04:45:50Z",
+       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
+      {
+       "source": "bovada",
+       "event_id": "32407398",
+       "quote_team_a": "Ex-6666",
+       "quote_team_b": "Privateer",
+       "decimal_a": 1.1667,
+       "decimal_b": 4.75,
+       "raw_side_a_prob": 0.802812,
+       "orientation": "straight",
+       "rederived_prob_a": 0.802812,
+       "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+       "retrieved_utc": "2026-10-18T04:45:44Z",
+       "origin": "data/b1fb1465/board.json row 1081521 (market)"
+      },
+      {
+       "source": "melbet",
+       "event_id": "762663244",
+       "quote_team_a": "ex-6666",
+       "quote_team_b": "Privateer",
+       "decimal_a": 1.19,
+       "decimal_b": 4.295,
+       "raw_side_a_prob": 0.783045,
+       "orientation": "straight",
+       "rederived_prob_a": 0.783045,
+       "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_utc": "2026-10-18T04:45:44Z",
+       "origin": "data/b1fb1465/board.json row 1081521 (market)"
       },
       {
        "source": "kalshi",
        "event_id": "KXCS2GAME-26OCT180945PGEX",
        "quote_team_a": "Privateer Gaming",
        "quote_team_b": "ex-6666",
-       "decimal_a": 11.7647,
-       "decimal_b": 1.0929,
-       "raw_side_a_prob": 0.085,
+       "decimal_a": 5.1282,
+       "decimal_b": 1.2422,
+       "raw_side_a_prob": 0.194996,
        "orientation": "swapped",
-       "rederived_prob_a": 0.915,
+       "rederived_prob_a": 0.805004,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-17T22:26:40Z",
+       "retrieved_utc": "2026-10-18T04:45:46Z",
        "origin": "data/b1fb1465/board.json row 1081521 (exchange)"
       }
      ],
@@ -372,8 +303,8 @@
      "fixture_id": "1081522",
      "match": "antidaun vs Phantom Academy",
      "published_market_prob_a": 0.1673176,
-     "rederived_mean_prob_a": 0.189966,
-     "rederived_spread": 0.104039,
+     "rederived_mean_prob_a": 0.17279,
+     "rederived_spread": 0.027313,
      "quotes": [
       {
        "source": "linefeed_melbet",
@@ -400,7 +331,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.163636,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-18T02:31:38Z",
+       "retrieved_utc": "2026-10-18T04:45:50Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -414,8 +345,22 @@
        "orientation": "straight",
        "rederived_prob_a": 0.17284,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-18T02:31:39Z",
+       "retrieved_utc": "2026-10-18T04:45:50Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
+      {
+       "source": "bovada",
+       "event_id": "32408976",
+       "quote_team_a": "Antidaun",
+       "quote_team_b": "Phantom Academy",
+       "decimal_a": 5.75,
+       "decimal_b": 1.125,
+       "raw_side_a_prob": 0.163636,
+       "orientation": "straight",
+       "rederived_prob_a": 0.163636,
+       "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+       "retrieved_utc": "2026-10-18T04:45:44Z",
+       "origin": "data/b1fb1465/board.json row 1081522 (market)"
       },
       {
        "source": "melbet",
@@ -428,7 +373,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.17284,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-17T22:26:38Z",
+       "retrieved_utc": "2026-10-18T04:45:44Z",
        "origin": "data/b1fb1465/board.json row 1081522 (market)"
       },
       {
@@ -436,13 +381,13 @@
        "event_id": "KXCS2GAME-26OCT180945PHACANT",
        "quote_team_a": "Phantom Academy",
        "quote_team_b": "antidaun",
-       "decimal_a": 1.3793,
-       "decimal_b": 3.7736,
-       "raw_side_a_prob": 0.732325,
+       "decimal_a": 1.2422,
+       "decimal_b": 5.2632,
+       "raw_side_a_prob": 0.809051,
        "orientation": "swapped",
-       "rederived_prob_a": 0.267675,
+       "rederived_prob_a": 0.190949,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-17T22:26:40Z",
+       "retrieved_utc": "2026-10-18T04:45:46Z",
        "origin": "data/b1fb1465/board.json row 1081522 (exchange)"
       }
      ],
@@ -452,7 +397,7 @@
      "fixture_id": "1079640",
      "match": "FORZE Reload vs BakS",
      "quotes": [],
-     "published_market_prob_a": 0.5933504285714287,
+     "published_market_prob_a": 0.5938869999999999,
      "status": "no_retained_quote"
     },
     {
@@ -466,8 +411,8 @@
      "fixture_id": "1081527",
      "match": "aimclub vs BASEMENT BOYS",
      "published_market_prob_a": 0.450393125,
-     "rederived_mean_prob_a": 0.462881,
-     "rederived_spread": 0.082932,
+     "rederived_mean_prob_a": 0.459227,
+     "rederived_spread": 0.070675,
      "quotes": [
       {
        "source": "linefeed_melbet",
@@ -494,7 +439,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.44591,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-18T02:31:38Z",
+       "retrieved_utc": "2026-10-18T04:45:50Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -508,7 +453,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.453083,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-18T02:31:39Z",
+       "retrieved_utc": "2026-10-18T04:45:50Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -522,8 +467,22 @@
        "orientation": "straight",
        "rederived_prob_a": 0.453083,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131693",
-       "retrieved_utc": "2026-10-18T02:32:37Z",
+       "retrieved_utc": "2026-10-18T04:46:33Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
+      {
+       "source": "bovada",
+       "event_id": "32169786",
+       "quote_team_a": "Aimclub",
+       "quote_team_b": "Basement Boys",
+       "decimal_a": 2.1,
+       "decimal_b": 1.69,
+       "raw_side_a_prob": 0.44591,
+       "orientation": "straight",
+       "rederived_prob_a": 0.44591,
+       "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+       "retrieved_utc": "2026-10-18T04:45:44Z",
+       "origin": "data/b1fb1465/board.json row 1081527 (market)"
       },
       {
        "source": "melbet",
@@ -536,7 +495,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.453083,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-17T22:26:38Z",
+       "retrieved_utc": "2026-10-18T04:45:44Z",
        "origin": "data/b1fb1465/board.json row 1081527 (market)"
       },
       {
@@ -550,7 +509,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.453083,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131693",
-       "retrieved_utc": "2026-10-17T22:27:23Z",
+       "retrieved_utc": "2026-10-18T04:46:11Z",
        "origin": "data/b1fb1465/board.json row 1081527 (market)"
       },
       {
@@ -558,13 +517,13 @@
        "event_id": "KXCS2GAME-26OCT190500BMBAIM",
        "quote_team_a": "BASEMENT BOYS",
        "quote_team_b": "aimclub",
-       "decimal_a": 2.0408,
-       "decimal_b": 1.8182,
-       "raw_side_a_prob": 0.471158,
+       "decimal_a": 1.9608,
+       "decimal_b": 1.8349,
+       "raw_side_a_prob": 0.483415,
        "orientation": "swapped",
-       "rederived_prob_a": 0.528842,
+       "rederived_prob_a": 0.516585,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-17T22:26:40Z",
+       "retrieved_utc": "2026-10-18T04:45:46Z",
        "origin": "data/b1fb1465/board.json row 1081527 (exchange)"
       }
      ],
@@ -574,14 +533,14 @@
      "fixture_id": "1081528",
      "match": "BC.Game vs Drama",
      "quotes": [],
-     "published_market_prob_a": 0.8277401428571428,
+     "published_market_prob_a": 0.8191355714285714,
      "status": "no_retained_quote"
     },
     {
      "fixture_id": "1081529",
      "match": "Nexus vs WROTBERRY",
      "published_market_prob_a": 0.46236600000000005,
-     "rederived_mean_prob_a": 0.461326,
+     "rederived_mean_prob_a": 0.460806,
      "rederived_spread": 0.00312,
      "quotes": [
       {
@@ -595,7 +554,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.459246,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-18T02:31:38Z",
+       "retrieved_utc": "2026-10-18T04:45:50Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -609,8 +568,22 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.462366,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131688",
-       "retrieved_utc": "2026-10-18T02:32:37Z",
+       "retrieved_utc": "2026-10-18T04:46:33Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
+      {
+       "source": "bovada",
+       "event_id": "32143183",
+       "quote_team_a": "Whitebit Team",
+       "quote_team_b": "Nexus",
+       "decimal_a": 1.741,
+       "decimal_b": 2.05,
+       "raw_side_a_prob": 0.540754,
+       "orientation": "swapped",
+       "rederived_prob_a": 0.459246,
+       "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+       "retrieved_utc": "2026-10-18T04:45:44Z",
+       "origin": "data/b1fb1465/board.json row 1081529 (market)"
       },
       {
        "source": "thunderpick",
@@ -623,7 +596,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.462366,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131688",
-       "retrieved_utc": "2026-10-17T22:27:23Z",
+       "retrieved_utc": "2026-10-18T04:46:11Z",
        "origin": "data/b1fb1465/board.json row 1081529 (market)"
       }
      ],
@@ -632,9 +605,9 @@
     {
      "fixture_id": "1081530",
      "match": "Iberian Soul vs HyperSpirit",
-     "published_market_prob_a": 0.6752334000000001,
-     "rederived_mean_prob_a": 0.678399,
-     "rederived_spread": 0.092296,
+     "published_market_prob_a": 0.6737384000000001,
+     "rederived_mean_prob_a": 0.675207,
+     "rederived_spread": 0.084823,
      "quotes": [
       {
        "source": "linefeed_melbet",
@@ -661,7 +634,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.65714,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-18T02:31:38Z",
+       "retrieved_utc": "2026-10-18T04:45:50Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -675,7 +648,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.655172,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-18T02:31:39Z",
+       "retrieved_utc": "2026-10-18T04:45:50Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -683,13 +656,13 @@
        "event_id": "KXCS2GAME-26OCT190645HSIS",
        "quote_team_a": "HyperSpirit",
        "quote_team_b": "Iberian Soul",
-       "decimal_a": 4.0,
+       "decimal_a": 3.8462,
        "decimal_b": 1.3514,
-       "raw_side_a_prob": 0.252532,
+       "raw_side_a_prob": 0.260005,
        "orientation": "swapped",
-       "rederived_prob_a": 0.747468,
+       "rederived_prob_a": 0.739995,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-18T02:31:41Z",
+       "retrieved_utc": "2026-10-18T04:45:52Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -703,8 +676,22 @@
        "orientation": "straight",
        "rederived_prob_a": 0.658537,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131704",
-       "retrieved_utc": "2026-10-18T02:32:37Z",
+       "retrieved_utc": "2026-10-18T04:46:33Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
+      {
+       "source": "bovada",
+       "event_id": "32169382",
+       "quote_team_a": "Iberian Soul",
+       "quote_team_b": "Hyperspirit",
+       "decimal_a": 1.4348,
+       "decimal_b": 2.75,
+       "raw_side_a_prob": 0.65714,
+       "orientation": "straight",
+       "rederived_prob_a": 0.65714,
+       "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+       "retrieved_utc": "2026-10-18T04:45:44Z",
+       "origin": "data/b1fb1465/board.json row 1081530 (market)"
       },
       {
        "source": "melbet",
@@ -717,7 +704,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.655172,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-17T22:26:38Z",
+       "retrieved_utc": "2026-10-18T04:45:44Z",
        "origin": "data/b1fb1465/board.json row 1081530 (market)"
       },
       {
@@ -731,7 +718,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.658537,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131704",
-       "retrieved_utc": "2026-10-17T22:27:23Z",
+       "retrieved_utc": "2026-10-18T04:46:11Z",
        "origin": "data/b1fb1465/board.json row 1081530 (market)"
       },
       {
@@ -745,7 +732,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.739995,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-17T22:26:40Z",
+       "retrieved_utc": "2026-10-18T04:45:46Z",
        "origin": "data/b1fb1465/board.json row 1081530 (exchange)"
       }
      ],
@@ -754,7 +741,7 @@
     {
      "fixture_id": "1081531",
      "match": "Sashi vs mouz NXT",
-     "published_market_prob_a": 0.621454875,
+     "published_market_prob_a": 0.6397381,
      "rederived_mean_prob_a": 0.628141,
      "rederived_spread": 0.0,
      "quotes": [
@@ -769,7 +756,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.628141,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131703",
-       "retrieved_utc": "2026-10-18T02:32:37Z",
+       "retrieved_utc": "2026-10-18T04:46:33Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -783,7 +770,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.628141,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=131703",
-       "retrieved_utc": "2026-10-17T22:27:23Z",
+       "retrieved_utc": "2026-10-18T04:46:11Z",
        "origin": "data/b1fb1465/board.json row 1081531 (market)"
       }
      ],
@@ -799,16 +786,78 @@
     {
      "fixture_id": "1081861",
      "match": "Lynn Vision vs Morningstar",
-     "quotes": [],
-     "published_market_prob_a": null,
-     "status": "no_retained_quote"
+     "published_market_prob_a": 0.5,
+     "rederived_mean_prob_a": 0.5,
+     "rederived_spread": 0.0,
+     "quotes": [
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT192300MORLVG",
+       "quote_team_a": "Morningstar",
+       "quote_team_b": "Lynn Vision",
+       "decimal_a": 2.0,
+       "decimal_b": 2.0,
+       "raw_side_a_prob": 0.5,
+       "orientation": "swapped",
+       "rederived_prob_a": 0.5,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-18T04:45:46Z",
+       "origin": "data/b1fb1465/board.json row 1081861 (exchange)"
+      },
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT192300MORLVG",
+       "quote_team_a": "Morningstar",
+       "quote_team_b": "Lynn Vision",
+       "decimal_a": 2.0,
+       "decimal_b": 2.0,
+       "raw_side_a_prob": 0.5,
+       "orientation": "swapped",
+       "rederived_prob_a": 0.5,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-18T04:45:46Z",
+       "origin": "data/b1fb1465/board.json row 1081861 (exchange)"
+      }
+     ],
+     "status": "agrees"
     },
     {
      "fixture_id": "1081862",
      "match": "Rare Atom vs Alter Ego",
-     "quotes": [],
-     "published_market_prob_a": null,
-     "status": "no_retained_quote"
+     "published_market_prob_a": 0.5,
+     "rederived_mean_prob_a": 0.5,
+     "rederived_spread": 0.0,
+     "quotes": [
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT200100RAAE",
+       "quote_team_a": "Rare Atom",
+       "quote_team_b": "Alter Ego",
+       "decimal_a": 2.0,
+       "decimal_b": 2.0,
+       "raw_side_a_prob": 0.5,
+       "orientation": "straight",
+       "rederived_prob_a": 0.5,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-18T04:45:46Z",
+       "origin": "data/b1fb1465/board.json row 1081862 (exchange)"
+      },
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT200100RAAE",
+       "quote_team_a": "Rare Atom",
+       "quote_team_b": "Alter Ego",
+       "decimal_a": 2.0,
+       "decimal_b": 2.0,
+       "raw_side_a_prob": 0.5,
+       "orientation": "straight",
+       "rederived_prob_a": 0.5,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-18T04:45:46Z",
+       "origin": "data/b1fb1465/board.json row 1081862 (exchange)"
+      }
+     ],
+     "status": "agrees"
     },
     {
      "fixture_id": "1081863",
@@ -820,9 +869,40 @@
     {
      "fixture_id": "1081864",
      "match": "NEXVOID vs Vitalem Aerem",
-     "quotes": [],
-     "published_market_prob_a": null,
-     "status": "no_retained_quote"
+     "published_market_prob_a": 0.502488,
+     "rederived_mean_prob_a": 0.502487,
+     "rederived_spread": 0.0,
+     "quotes": [
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT200500VANEX",
+       "quote_team_a": "Vitalem Aerem",
+       "quote_team_b": "NEXVOID",
+       "decimal_a": 2.0,
+       "decimal_b": 1.9802,
+       "raw_side_a_prob": 0.497513,
+       "orientation": "swapped",
+       "rederived_prob_a": 0.502487,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-18T04:45:46Z",
+       "origin": "data/b1fb1465/board.json row 1081864 (exchange)"
+      },
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT200500VANEX",
+       "quote_team_a": "Vitalem Aerem",
+       "quote_team_b": "NEXVOID",
+       "decimal_a": 2.0,
+       "decimal_b": 1.9802,
+       "raw_side_a_prob": 0.497513,
+       "orientation": "swapped",
+       "rederived_prob_a": 0.502487,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-18T04:45:46Z",
+       "origin": "data/b1fb1465/board.json row 1081864 (exchange)"
+      }
+     ],
+     "status": "agrees"
     }
    ]
   },
@@ -830,12 +910,12 @@
    "id": "C4",
    "name": "Every official Valve VRS citation re-read from Valve's own file",
    "status": "pass",
-   "detail": "22 VRS citations across the published rows re-checked against 2026_10_05 as fetched in this run (HTTP 200, 349 teams); alias rosters re-matched WBT 5/5; ROUNDS 5/5; WBT Academy 5/5",
+   "detail": "18 VRS citations across the published rows re-checked against 2026_10_05 as fetched in this run (HTTP 200, 349 teams); alias rosters re-matched WBT 5/5; ROUNDS 5/5; WBT Academy 5/5",
    "evidence": [
     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
     "data/6c5bb3d6/vrs_official.json"
    ],
-   "rows_checked": 22,
+   "rows_checked": 18,
    "rows_failed": 0,
    "failures": [],
    "citations": [
@@ -1104,66 +1184,6 @@
       "OneUn1que"
      ],
      "status": "match"
-    },
-    {
-     "cited": "Rare Atom",
-     "standing": 133,
-     "points": 906,
-     "official_standing": 133,
-     "official_points": 906,
-     "official_roster": [
-      "3gl",
-      "ChildKing",
-      "kaze",
-      "L1haNg",
-      "Summer"
-     ],
-     "status": "match"
-    },
-    {
-     "cited": "Alter Ego",
-     "standing": 155,
-     "points": 819,
-     "official_standing": 155,
-     "official_points": 819,
-     "official_roster": [
-      "adeX",
-      "BnTeT",
-      "Gratisfaction",
-      "laxiee",
-      "PokemoN"
-     ],
-     "status": "match"
-    },
-    {
-     "cited": "NEXVOID",
-     "standing": 113,
-     "points": 995,
-     "official_standing": 113,
-     "official_points": 995,
-     "official_roster": [
-      "AccuracyTG",
-      "erkaSt",
-      "MiQ",
-      "xerolte",
-      "Zesta"
-     ],
-     "status": "match"
-    },
-    {
-     "cited": "Vitalem Aerem",
-     "standing": 204,
-     "points": 721,
-     "official_standing": 204,
-     "official_points": 721,
-     "official_roster": [
-      "B1NGO",
-      "BZA",
-      "lan",
-      "rain",
-      "Roninbaby"
-     ],
-     "status": "match"
     }
    ],
    "alias_rosters": [
@@ -1236,12 +1256,12 @@
    "id": "C5",
    "name": "Every published row and every audited fact carries an https source link",
    "status": "pass",
-   "detail": "20 published rows and 21 ledger items checked",
+   "detail": "19 published rows and 21 ledger items checked",
    "evidence": [
     "data/f28afd9e/board.json",
     "data/6c5bb3d6/research.json"
    ],
-   "rows_checked": 20,
+   "rows_checked": 19,
    "rows_failed": 0,
    "failures": []
   },
@@ -1249,12 +1269,12 @@
    "id": "C6",
    "name": "HotSpawn crowd % is ownership-only and never a probability",
    "status": "pass",
-   "detail": "16 priced rows publish exactly the upstream board's market/model probability (so the crowd split cannot have entered them); 0 rows have a probability numerically equal to the crowd share; 0 blank rows carry no probability to compare",
+   "detail": "15 priced rows publish exactly the upstream board's market/model probability (so the crowd split cannot have entered them); 0 rows have a probability numerically equal to the crowd share; 0 blank rows carry no probability to compare",
    "evidence": [
     "data/f28afd9e/board.json",
     "https://play.hotspawn.com/lobby"
    ],
-   "rows_checked": 16,
+   "rows_checked": 15,
    "rows_failed": 0,
    "failures": [],
    "blank_rows": []
@@ -1301,31 +1321,24 @@
    "id": "C8",
    "name": "Contrarian (differential) pick recomputed independently",
    "status": "info",
-   "detail": "20 rows recomputed with points x (probability - crowd ownership); 7 agree with the published leaderboard pick, 8 open rows diverge. Divergence is a methodology difference (the published layer caps swings and only fades near coin-flips), not an arithmetic error.",
+   "detail": "19 rows recomputed with points x (probability - crowd ownership); 8 agree with the published leaderboard pick, 7 open rows diverge. Divergence is a methodology difference (the published layer caps swings and only fades near coin-flips), not an arithmetic error.",
    "evidence": [
     "data/f28afd9e/board.json",
     "data/live/board.json (crowd reference field)"
    ],
-   "rows_checked": 20,
+   "rows_checked": 19,
    "rows_failed": 0,
    "failures": [],
    "divergences": [
-    "1079638 ex-RUSTEC vs ILLYRIANS: published 'ex-RUSTEC' (chalk) but differential-optimal is 'ILLYRIANS' (points x (p - crowd): 3 x -0.169 = -0.51 vs 3 x +0.169 = +0.51)",
-    "1081521 ex-6666 vs Privateer: published 'ex-6666' (chalk) but differential-optimal is 'Privateer' (points x (p - crowd): 2 x -0.032 = -0.06 vs 2 x +0.032 = +0.06)",
+    "1079638 ex-RUSTEC vs ILLYRIANS: published 'ex-RUSTEC' (chalk) but differential-optimal is 'ILLYRIANS' (points x (p - crowd): 3 x -0.196 = -0.59 vs 3 x +0.196 = +0.59)",
+    "1081521 ex-6666 vs Privateer: published 'ex-6666' (chalk) but differential-optimal is 'Privateer' (points x (p - crowd): 2 x -0.070 = -0.14 vs 2 x +0.070 = +0.14)",
     "1081522 antidaun vs Phantom Academy: published 'Phantom Academy' (chalk) but differential-optimal is 'antidaun' (points x (p - crowd): 2 x +0.067 = +0.13 vs 2 x -0.067 = -0.13)",
     "1081526 Infinite vs Insiders: published 'Infinite' (chalk) but differential-optimal is 'Insiders' (points x (p - crowd): 3 x -0.200 = -0.60 vs 3 x +0.200 = +0.60)",
-    "1081528 BC.Game vs Drama: published 'BC.Game' (chalk) but differential-optimal is 'Drama' (points x (p - crowd): 3 x -0.173 = -0.52 vs 3 x +0.173 = +0.52)",
-    "1081530 Iberian Soul vs HyperSpirit: published 'Iberian Soul' (chalk) but differential-optimal is 'HyperSpirit' (points x (p - crowd): 3 x -0.150 = -0.45 vs 3 x +0.150 = +0.45)",
-    "1081531 Sashi vs mouz NXT: published 'Sashi' (chalk) but differential-optimal is 'mouz NXT' (points x (p - crowd): 3 x -0.127 = -0.38 vs 3 x +0.127 = +0.38)",
-    "1081861 Lynn Vision vs Morningstar: published 'Lynn Vision' (chalk) but differential-optimal is 'Morningstar' (points x (p - crowd): 2 x -0.249 = -0.50 vs 2 x +0.249 = +0.50)"
+    "1081528 BC.Game vs Drama: published 'BC.Game' (chalk) but differential-optimal is 'Drama' (points x (p - crowd): 3 x -0.180 = -0.54 vs 3 x +0.180 = +0.54)",
+    "1081530 Iberian Soul vs HyperSpirit: published 'Iberian Soul' (chalk) but differential-optimal is 'HyperSpirit' (points x (p - crowd): 3 x -0.151 = -0.45 vs 3 x +0.151 = +0.45)",
+    "1081531 Sashi vs mouz NXT: published 'Sashi' (chalk) but differential-optimal is 'mouz NXT' (points x (p - crowd): 3 x -0.111 = -0.33 vs 3 x +0.111 = +0.33)"
    ],
    "table": [
-    {
-     "fixture_id": "1079635",
-     "match": "Bushido Wildcats vs Gothic",
-     "state": "locked",
-     "status": "no_published_probability"
-    },
     {
      "fixture_id": "1082021",
      "match": "PCIFIC vs 6yuBoJlbl",
@@ -1341,22 +1354,8 @@
     {
      "fixture_id": "1081519",
      "match": "NEXVOID vs Off Chops",
-     "competition": "Logitech G Pro Series 2026",
-     "start_utc": "2026-10-18T03:00:00Z",
      "state": "locked",
-     "points": 3.0,
-     "prob_a": 0.685,
-     "prob_b": 0.315,
-     "crowd_a": 93,
-     "crowd_b": 8,
-     "diff_a": -0.245,
-     "diff_b": 0.235,
-     "ev_a": -0.735,
-     "ev_b": 0.705,
-     "differential_optimal": "Off Chops",
-     "published_leaderboard_pick": "NEXVOID",
-     "published_rule": "chalk",
-     "agrees": false
+     "status": "no_published_probability"
     },
     {
      "fixture_id": "1081126",
@@ -1385,14 +1384,14 @@
      "start_utc": "2026-10-18T11:00:00Z",
      "state": "open",
      "points": 3.0,
-     "prob_a": 0.6908,
-     "prob_b": 0.3092,
+     "prob_a": 0.6639,
+     "prob_b": 0.3361,
      "crowd_a": 86,
      "crowd_b": 14,
-     "diff_a": -0.1692,
-     "diff_b": 0.1692,
-     "ev_a": -0.508,
-     "ev_b": 0.508,
+     "diff_a": -0.1961,
+     "diff_b": 0.1961,
+     "ev_a": -0.588,
+     "ev_b": 0.588,
      "differential_optimal": "ILLYRIANS",
      "published_leaderboard_pick": "ex-RUSTEC",
      "published_rule": "chalk",
@@ -1405,14 +1404,14 @@
      "start_utc": "2026-10-18T13:45:00Z",
      "state": "open",
      "points": 2.0,
-     "prob_a": 0.8679,
-     "prob_b": 0.1321,
+     "prob_a": 0.8298,
+     "prob_b": 0.1702,
      "crowd_a": 90,
      "crowd_b": 10,
-     "diff_a": -0.0321,
-     "diff_b": 0.0321,
-     "ev_a": -0.064,
-     "ev_b": 0.064,
+     "diff_a": -0.0702,
+     "diff_b": 0.0702,
+     "ev_a": -0.14,
+     "ev_b": 0.14,
      "differential_optimal": "Privateer",
      "published_leaderboard_pick": "ex-6666",
      "published_rule": "chalk",
@@ -1445,14 +1444,14 @@
      "start_utc": "2026-10-18T17:00:00Z",
      "state": "open",
      "points": 3.0,
-     "prob_a": 0.5825,
-     "prob_b": 0.4175,
+     "prob_a": 0.5829,
+     "prob_b": 0.4171,
      "crowd_a": 26,
      "crowd_b": 74,
-     "diff_a": 0.3225,
-     "diff_b": -0.3225,
-     "ev_a": 0.967,
-     "ev_b": -0.967,
+     "diff_a": 0.3229,
+     "diff_b": -0.3229,
+     "ev_a": 0.969,
+     "ev_b": -0.969,
      "differential_optimal": "FORZE Reload",
      "published_leaderboard_pick": "FORZE Reload",
      "published_rule": "chalk_contrarian",
@@ -1505,14 +1504,14 @@
      "start_utc": "2026-10-19T09:00:00Z",
      "state": "open",
      "points": 3.0,
-     "prob_a": 0.8075,
-     "prob_b": 0.1925,
+     "prob_a": 0.7995,
+     "prob_b": 0.2005,
      "crowd_a": 98,
      "crowd_b": 2,
-     "diff_a": -0.1725,
-     "diff_b": 0.1725,
-     "ev_a": -0.518,
-     "ev_b": 0.518,
+     "diff_a": -0.1805,
+     "diff_b": 0.1805,
+     "ev_a": -0.541,
+     "ev_b": 0.541,
      "differential_optimal": "Drama",
      "published_leaderboard_pick": "BC.Game",
      "published_rule": "chalk",
@@ -1545,14 +1544,14 @@
      "start_utc": "2026-10-19T10:45:00Z",
      "state": "open",
      "points": 3.0,
-     "prob_a": 0.6702,
-     "prob_b": 0.3298,
+     "prob_a": 0.669,
+     "prob_b": 0.331,
      "crowd_a": 82,
      "crowd_b": 18,
-     "diff_a": -0.1498,
-     "diff_b": 0.1498,
-     "ev_a": -0.449,
-     "ev_b": 0.449,
+     "diff_a": -0.151,
+     "diff_b": 0.151,
+     "ev_a": -0.453,
+     "ev_b": 0.453,
      "differential_optimal": "HyperSpirit",
      "published_leaderboard_pick": "Iberian Soul",
      "published_rule": "chalk",
@@ -1565,14 +1564,14 @@
      "start_utc": "2026-10-19T10:45:00Z",
      "state": "open",
      "points": 3.0,
-     "prob_a": 0.6334,
-     "prob_b": 0.3666,
+     "prob_a": 0.6487,
+     "prob_b": 0.3513,
      "crowd_a": 76,
      "crowd_b": 24,
-     "diff_a": -0.1266,
-     "diff_b": 0.1266,
-     "ev_a": -0.38,
-     "ev_b": 0.38,
+     "diff_a": -0.1113,
+     "diff_b": 0.1113,
+     "ev_a": -0.334,
+     "ev_b": 0.334,
      "differential_optimal": "mouz NXT",
      "published_leaderboard_pick": "Sashi",
      "published_rule": "chalk",
@@ -1605,18 +1604,18 @@
      "start_utc": "2026-10-20T03:00:00Z",
      "state": "open",
      "points": 2.0,
-     "prob_a": 0.7008,
-     "prob_b": 0.2992,
+     "prob_a": 0.5,
+     "prob_b": 0.5,
      "crowd_a": 95,
      "crowd_b": 5,
-     "diff_a": -0.2492,
-     "diff_b": 0.2492,
-     "ev_a": -0.498,
-     "ev_b": 0.498,
+     "diff_a": -0.45,
+     "diff_b": 0.45,
+     "ev_a": -0.9,
+     "ev_b": 0.9,
      "differential_optimal": "Morningstar",
-     "published_leaderboard_pick": "Lynn Vision",
-     "published_rule": "chalk",
-     "agrees": false
+     "published_leaderboard_pick": "Morningstar",
+     "published_rule": "R1_coinflip_fade",
+     "agrees": true
     },
     {
      "fixture_id": "1081862",
@@ -1625,14 +1624,14 @@
      "start_utc": "2026-10-20T05:00:00Z",
      "state": "open",
      "points": 2.0,
-     "prob_a": 0.5304,
-     "prob_b": 0.4696,
+     "prob_a": 0.5,
+     "prob_b": 0.5,
      "crowd_a": 70,
      "crowd_b": 30,
-     "diff_a": -0.1696,
-     "diff_b": 0.1696,
-     "ev_a": -0.339,
-     "ev_b": 0.339,
+     "diff_a": -0.2,
+     "diff_b": 0.2,
+     "ev_a": -0.4,
+     "ev_b": 0.4,
      "differential_optimal": "Alter Ego",
      "published_leaderboard_pick": "Alter Ego",
      "published_rule": "R1_coinflip_fade",
@@ -1651,17 +1650,17 @@
      "start_utc": "2026-10-20T09:00:00Z",
      "state": "open",
      "points": 2.0,
-     "prob_a": 0.5947,
-     "prob_b": 0.4053,
+     "prob_a": 0.5025,
+     "prob_b": 0.4975,
      "crowd_a": 92,
      "crowd_b": 8,
-     "diff_a": -0.3253,
-     "diff_b": 0.3253,
-     "ev_a": -0.651,
-     "ev_b": 0.651,
+     "diff_a": -0.4175,
+     "diff_b": 0.4175,
+     "ev_a": -0.835,
+     "ev_b": 0.835,
      "differential_optimal": "Vitalem Aerem",
      "published_leaderboard_pick": "Vitalem Aerem",
-     "published_rule": "R2_upset_swing",
+     "published_rule": "R1_coinflip_fade",
      "agrees": true
     }
    ]
@@ -1739,7 +1738,7 @@
    "id": "C11",
    "name": "Shared publication gate (Pages deploys only on a green suite)",
    "status": "pass",
-   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-18T02:59:20Z: 1015 tests, 0 failures, 0 errors, 8 skipped -> GREEN, the site can publish",
+   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-18T05:04:25Z: 1015 tests, 0 failures, 0 errors, 8 skipped -> GREEN, the site can publish",
    "evidence": [
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml",
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/gate.json"
@@ -1763,7 +1762,7 @@
    "id": "IR-C3",
    "severity": "medium",
    "title": "Published probabilities with no retained raw quote in this snapshot",
-   "detail": "fixtures 1081126, 1079640, 1081526, 1081528, 1081532, 1081861, 1081862, 1081864 — the number is published by an upstream board whose raw quote file is not retained here, so this audit could not re-derive it. Left unverified, not assumed correct.",
+   "detail": "fixtures 1081126, 1079640, 1081526, 1081528, 1081532 — the number is published by an upstream board whose raw quote file is not retained here, so this audit could not re-derive it. Left unverified, not assumed correct.",
    "links": [
     "https://play.hotspawn.com/lobby"
    ]
@@ -1782,7 +1781,7 @@
    "id": "IR-C8",
    "severity": "info",
    "title": "Where pure differential-EV and the published conservative rule disagree",
-   "detail": "1079638 ex-RUSTEC vs ILLYRIANS: published 'ex-RUSTEC' (chalk) but differential-optimal is 'ILLYRIANS' (points x (p - crowd): 3 x -0.169 = -0.51 vs 3 x +0.169 = +0.51) | 1081521 ex-6666 vs Privateer: published 'ex-6666' (chalk) but differential-optimal is 'Privateer' (points x (p - crowd): 2 x -0.032 = -0.06 vs 2 x +0.032 = +0.06) | 1081522 antidaun vs Phantom Academy: published 'Phantom Academy' (chalk) but differential-optimal is 'antidaun' (points x (p - crowd): 2 x +0.067 = +0.13 vs 2 x -0.067 = -0.13) | 1081526 Infinite vs Insiders: published 'Infinite' (chalk) but differential-optimal is 'Insiders' (points x (p - crowd): 3 x -0.200 = -0.60 vs 3 x +0.200 = +0.60) | 1081528 BC.Game vs Drama: published 'BC.Game' (chalk) but differential-optimal is 'Drama' (points x (p - crowd): 3 x -0.173 = -0.52 vs 3 x +0.173 = +0.52) | 1081530 Iberian Soul vs HyperSpirit: published 'Iberian Soul' (chalk) but differential-optimal is 'HyperSpirit' (points x (p - crowd): 3 x -0.150 = -0.45 vs 3 x +0.150 = +0.45) | 1081531 Sashi vs mouz NXT: published 'Sashi' (chalk) but differential-optimal is 'mouz NXT' (points x (p - crowd): 3 x -0.127 = -0.38 vs 3 x +0.127 = +0.38) | 1081861 Lynn Vision vs Morningstar: published 'Lynn Vision' (chalk) but differential-optimal is 'Morningstar' (points x (p - crowd): 2 x -0.249 = -0.50 vs 2 x +0.249 = +0.50)",
+   "detail": "1079638 ex-RUSTEC vs ILLYRIANS: published 'ex-RUSTEC' (chalk) but differential-optimal is 'ILLYRIANS' (points x (p - crowd): 3 x -0.196 = -0.59 vs 3 x +0.196 = +0.59) | 1081521 ex-6666 vs Privateer: published 'ex-6666' (chalk) but differential-optimal is 'Privateer' (points x (p - crowd): 2 x -0.070 = -0.14 vs 2 x +0.070 = +0.14) | 1081522 antidaun vs Phantom Academy: published 'Phantom Academy' (chalk) but differential-optimal is 'antidaun' (points x (p - crowd): 2 x +0.067 = +0.13 vs 2 x -0.067 = -0.13) | 1081526 Infinite vs Insiders: published 'Infinite' (chalk) but differential-optimal is 'Insiders' (points x (p - crowd): 3 x -0.200 = -0.60 vs 3 x +0.200 = +0.60) | 1081528 BC.Game vs Drama: published 'BC.Game' (chalk) but differential-optimal is 'Drama' (points x (p - crowd): 3 x -0.180 = -0.54 vs 3 x +0.180 = +0.54) | 1081530 Iberian Soul vs HyperSpirit: published 'Iberian Soul' (chalk) but differential-optimal is 'HyperSpirit' (points x (p - crowd): 3 x -0.151 = -0.45 vs 3 x +0.151 = +0.45) | 1081531 Sashi vs mouz NXT: published 'Sashi' (chalk) but differential-optimal is 'mouz NXT' (points x (p - crowd): 3 x -0.111 = -0.33 vs 3 x +0.111 = +0.33)",
    "links": [
     "https://play.hotspawn.com/lobby"
    ]
@@ -1879,8 +1878,8 @@
   {
    "id": "IR-DIV-1079638",
    "severity": "info",
-   "title": "ex-RUSTEC vs ILLYRIANS: official standings and market diverge by -25 pts",
-   "detail": "Valve VRS ex-RUSTEC 824 pts vs Illyrians 862 pts implies 44.6% for ex-RUSTEC on the 400-point logistic scale, while the published market/model line is 69.1%. Both are shown; neither is overwritten. The 400-point scale is a modelling assumption, not a Valve-published quantity.",
+   "title": "ex-RUSTEC vs ILLYRIANS: official standings and market diverge by -22 pts",
+   "detail": "Valve VRS ex-RUSTEC 824 pts vs Illyrians 862 pts implies 44.6% for ex-RUSTEC on the 400-point logistic scale, while the published market/model line is 66.4%. Both are shown; neither is overwritten. The 400-point scale is a modelling assumption, not a Valve-published quantity.",
    "links": [
     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
@@ -1910,7 +1909,7 @@
    "id": "IR-DIV-1081530",
    "severity": "info",
    "title": "Iberian Soul vs HyperSpirit: official standings and market diverge by +25 pts",
-   "detail": "Valve VRS Iberian Soul 1218 pts vs HYPERSPIRIT 803 pts implies 91.6% for Iberian Soul on the 400-point logistic scale, while the published market/model line is 67.0%. Both are shown; neither is overwritten. The 400-point scale is a modelling assumption, not a Valve-published quantity.",
+   "detail": "Valve VRS Iberian Soul 1218 pts vs HYPERSPIRIT 803 pts implies 91.6% for Iberian Soul on the 400-point logistic scale, while the published market/model line is 66.9%. Both are shown; neither is overwritten. The 400-point scale is a modelling assumption, not a Valve-published quantity.",
    "links": [
     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
@@ -1919,8 +1918,8 @@
   {
    "id": "IR-DIV-1081531",
    "severity": "info",
-   "title": "Sashi vs mouz NXT: official standings and market diverge by +34 pts",
-   "detail": "Valve VRS Sashi 1131 pts vs MOUZ NXT 534 pts implies 96.9% for Sashi on the 400-point logistic scale, while the published market/model line is 63.3%. Both are shown; neither is overwritten. The 400-point scale is a modelling assumption, not a Valve-published quantity.",
+   "title": "Sashi vs mouz NXT: official standings and market diverge by +32 pts",
+   "detail": "Valve VRS Sashi 1131 pts vs MOUZ NXT 534 pts implies 96.9% for Sashi on the 400-point logistic scale, while the published market/model line is 64.9%. Both are shown; neither is overwritten. The 400-point scale is a modelling assumption, not a Valve-published quantity.",
    "links": [
     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
@@ -1931,16 +1930,6 @@
    "severity": "info",
    "title": "ASTRAL vs Leo: official standings and market diverge by +48 pts",
    "detail": "Valve VRS ASTRAL 1072 pts vs Leo 499 pts implies 96.4% for ASTRAL on the 400-point logistic scale, while the published market/model line is 48.6%. Both are shown; neither is overwritten. The 400-point scale is a modelling assumption, not a Valve-published quantity.",
-   "links": [
-    "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-    "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
-   ]
-  },
-  {
-   "id": "IR-DIV-1081864",
-   "severity": "info",
-   "title": "NEXVOID vs Vitalem Aerem: official standings and market diverge by +23 pts",
-   "detail": "Valve VRS NEXVOID 995 pts vs Vitalem Aerem 721 pts implies 82.9% for NEXVOID on the 400-point logistic scale, while the published market/model line is 59.5%. Both are shown; neither is overwritten. The 400-point scale is a modelling assumption, not a Valve-published quantity.",
    "links": [
     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
@@ -1985,12 +1974,6 @@
  ],
  "differential_table": [
   {
-   "fixture_id": "1079635",
-   "match": "Bushido Wildcats vs Gothic",
-   "state": "locked",
-   "status": "no_published_probability"
-  },
-  {
    "fixture_id": "1082021",
    "match": "PCIFIC vs 6yuBoJlbl",
    "state": "locked",
@@ -2005,22 +1988,8 @@
   {
    "fixture_id": "1081519",
    "match": "NEXVOID vs Off Chops",
-   "competition": "Logitech G Pro Series 2026",
-   "start_utc": "2026-10-18T03:00:00Z",
    "state": "locked",
-   "points": 3.0,
-   "prob_a": 0.685,
-   "prob_b": 0.315,
-   "crowd_a": 93,
-   "crowd_b": 8,
-   "diff_a": -0.245,
-   "diff_b": 0.235,
-   "ev_a": -0.735,
-   "ev_b": 0.705,
-   "differential_optimal": "Off Chops",
-   "published_leaderboard_pick": "NEXVOID",
-   "published_rule": "chalk",
-   "agrees": false
+   "status": "no_published_probability"
   },
   {
    "fixture_id": "1081126",
@@ -2049,14 +2018,14 @@
    "start_utc": "2026-10-18T11:00:00Z",
    "state": "open",
    "points": 3.0,
-   "prob_a": 0.6908,
-   "prob_b": 0.3092,
+   "prob_a": 0.6639,
+   "prob_b": 0.3361,
    "crowd_a": 86,
    "crowd_b": 14,
-   "diff_a": -0.1692,
-   "diff_b": 0.1692,
-   "ev_a": -0.508,
-   "ev_b": 0.508,
+   "diff_a": -0.1961,
+   "diff_b": 0.1961,
+   "ev_a": -0.588,
+   "ev_b": 0.588,
    "differential_optimal": "ILLYRIANS",
    "published_leaderboard_pick": "ex-RUSTEC",
    "published_rule": "chalk",
@@ -2069,14 +2038,14 @@
    "start_utc": "2026-10-18T13:45:00Z",
    "state": "open",
    "points": 2.0,
-   "prob_a": 0.8679,
-   "prob_b": 0.1321,
+   "prob_a": 0.8298,
+   "prob_b": 0.1702,
    "crowd_a": 90,
    "crowd_b": 10,
-   "diff_a": -0.0321,
-   "diff_b": 0.0321,
-   "ev_a": -0.064,
-   "ev_b": 0.064,
+   "diff_a": -0.0702,
+   "diff_b": 0.0702,
+   "ev_a": -0.14,
+   "ev_b": 0.14,
    "differential_optimal": "Privateer",
    "published_leaderboard_pick": "ex-6666",
    "published_rule": "chalk",
@@ -2109,14 +2078,14 @@
    "start_utc": "2026-10-18T17:00:00Z",
    "state": "open",
    "points": 3.0,
-   "prob_a": 0.5825,
-   "prob_b": 0.4175,
+   "prob_a": 0.5829,
+   "prob_b": 0.4171,
    "crowd_a": 26,
    "crowd_b": 74,
-   "diff_a": 0.3225,
-   "diff_b": -0.3225,
-   "ev_a": 0.967,
-   "ev_b": -0.967,
+   "diff_a": 0.3229,
+   "diff_b": -0.3229,
+   "ev_a": 0.969,
+   "ev_b": -0.969,
    "differential_optimal": "FORZE Reload",
    "published_leaderboard_pick": "FORZE Reload",
    "published_rule": "chalk_contrarian",
@@ -2169,14 +2138,14 @@
    "start_utc": "2026-10-19T09:00:00Z",
    "state": "open",
    "points": 3.0,
-   "prob_a": 0.8075,
-   "prob_b": 0.1925,
+   "prob_a": 0.7995,
+   "prob_b": 0.2005,
    "crowd_a": 98,
    "crowd_b": 2,
-   "diff_a": -0.1725,
-   "diff_b": 0.1725,
-   "ev_a": -0.518,
-   "ev_b": 0.518,
+   "diff_a": -0.1805,
+   "diff_b": 0.1805,
+   "ev_a": -0.541,
+   "ev_b": 0.541,
    "differential_optimal": "Drama",
    "published_leaderboard_pick": "BC.Game",
    "published_rule": "chalk",
@@ -2209,14 +2178,14 @@
    "start_utc": "2026-10-19T10:45:00Z",
    "state": "open",
    "points": 3.0,
-   "prob_a": 0.6702,
-   "prob_b": 0.3298,
+   "prob_a": 0.669,
+   "prob_b": 0.331,
    "crowd_a": 82,
    "crowd_b": 18,
-   "diff_a": -0.1498,
-   "diff_b": 0.1498,
-   "ev_a": -0.449,
-   "ev_b": 0.449,
+   "diff_a": -0.151,
+   "diff_b": 0.151,
+   "ev_a": -0.453,
+   "ev_b": 0.453,
    "differential_optimal": "HyperSpirit",
    "published_leaderboard_pick": "Iberian Soul",
    "published_rule": "chalk",
@@ -2229,14 +2198,14 @@
    "start_utc": "2026-10-19T10:45:00Z",
    "state": "open",
    "points": 3.0,
-   "prob_a": 0.6334,
-   "prob_b": 0.3666,
+   "prob_a": 0.6487,
+   "prob_b": 0.3513,
    "crowd_a": 76,
    "crowd_b": 24,
-   "diff_a": -0.1266,
-   "diff_b": 0.1266,
-   "ev_a": -0.38,
-   "ev_b": 0.38,
+   "diff_a": -0.1113,
+   "diff_b": 0.1113,
+   "ev_a": -0.334,
+   "ev_b": 0.334,
    "differential_optimal": "mouz NXT",
    "published_leaderboard_pick": "Sashi",
    "published_rule": "chalk",
@@ -2269,18 +2238,18 @@
    "start_utc": "2026-10-20T03:00:00Z",
    "state": "open",
    "points": 2.0,
-   "prob_a": 0.7008,
-   "prob_b": 0.2992,
+   "prob_a": 0.5,
+   "prob_b": 0.5,
    "crowd_a": 95,
    "crowd_b": 5,
-   "diff_a": -0.2492,
-   "diff_b": 0.2492,
-   "ev_a": -0.498,
-   "ev_b": 0.498,
+   "diff_a": -0.45,
+   "diff_b": 0.45,
+   "ev_a": -0.9,
+   "ev_b": 0.9,
    "differential_optimal": "Morningstar",
-   "published_leaderboard_pick": "Lynn Vision",
-   "published_rule": "chalk",
-   "agrees": false
+   "published_leaderboard_pick": "Morningstar",
+   "published_rule": "R1_coinflip_fade",
+   "agrees": true
   },
   {
    "fixture_id": "1081862",
@@ -2289,14 +2258,14 @@
    "start_utc": "2026-10-20T05:00:00Z",
    "state": "open",
    "points": 2.0,
-   "prob_a": 0.5304,
-   "prob_b": 0.4696,
+   "prob_a": 0.5,
+   "prob_b": 0.5,
    "crowd_a": 70,
    "crowd_b": 30,
-   "diff_a": -0.1696,
-   "diff_b": 0.1696,
-   "ev_a": -0.339,
-   "ev_b": 0.339,
+   "diff_a": -0.2,
+   "diff_b": 0.2,
+   "ev_a": -0.4,
+   "ev_b": 0.4,
    "differential_optimal": "Alter Ego",
    "published_leaderboard_pick": "Alter Ego",
    "published_rule": "R1_coinflip_fade",
@@ -2315,17 +2284,17 @@
    "start_utc": "2026-10-20T09:00:00Z",
    "state": "open",
    "points": 2.0,
-   "prob_a": 0.5947,
-   "prob_b": 0.4053,
+   "prob_a": 0.5025,
+   "prob_b": 0.4975,
    "crowd_a": 92,
    "crowd_b": 8,
-   "diff_a": -0.3253,
-   "diff_b": 0.3253,
-   "ev_a": -0.651,
-   "ev_b": 0.651,
+   "diff_a": -0.4175,
+   "diff_b": 0.4175,
+   "ev_a": -0.835,
+   "ev_b": 0.835,
    "differential_optimal": "Vitalem Aerem",
    "published_leaderboard_pick": "Vitalem Aerem",
-   "published_rule": "R2_upset_swing",
+   "published_rule": "R1_coinflip_fade",
    "agrees": true
   }
  ]
