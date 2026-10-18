@@ -42,6 +42,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # A named ref, not the detached SHA actions/checkout would otherwise give a push event: the
+          # commit step below rebates onto the branch before pushing, which needs a real branch checked out.
+          ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
@@ -63,6 +66,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
+          BRANCH: ${{ github.head_ref || github.ref_name }}
         run: |
           set -euo pipefail
           git config user.name "now-desk-bot (b3871d16)"
@@ -79,13 +83,19 @@ jobs:
           git add now data/b3871d16
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -m "now(b3871d16): refresh day-5 desk and every-match picks $(date -u +%Y-%m-%dT%H:%MZ)"
+          # Push to the branch by name so a detached checkout can never strand the commit, and rebase
+          # first so another session's commit to the same branch is kept, never overwritten.
           for attempt in 1 2 3 4 5; do
-            if git pull --rebase origin "${{ github.ref_name }}" && git push origin "HEAD:${{ github.ref_name }}"; then
-              if [ "${{ github.ref_name }}" = "main" ]; then
+            if git pull --rebase origin "$BRANCH" && git push origin "HEAD:refs/heads/$BRANCH"; then
+              if [ "$BRANCH" = "main" ]; then
+                # A GITHUB_TOKEN push does not trigger other workflows, so ask for a publish run.
                 gh workflow run pages.yml --ref main || echo "pages dispatch failed"
               fi
               exit 0
             fi
+            git rebase --abort 2>/dev/null || true
+            git fetch origin "$BRANCH" && git rebase "origin/$BRANCH" 2>/dev/null || true
             sleep $((attempt * 9))
           done
+          echo "could not rebase onto $BRANCH after 5 attempts; leaving the commit on the runner"
           exit 1

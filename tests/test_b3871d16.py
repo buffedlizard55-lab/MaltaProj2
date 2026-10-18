@@ -250,6 +250,10 @@ class TestPipeline(Fixture):
         for foreign in ("git add data/fe803b80", "git add board ", "git add start", "git add index.html"):
             self.assertNotIn(foreign, wf, f"this workflow must never commit {foreign}")
         self.assertIn("continue-on-error", wf, "a source failure must not break the refresh")
+        # a push event checks out a detached SHA; without a named ref the rebase-before-push step dies
+        self.assertIn("ref: ${{ github.head_ref || github.ref_name }}", wf)
+        self.assertIn('git push origin "HEAD:refs/heads/$BRANCH"', wf)
+        self.assertIn("git rebase --abort", wf, "a failed rebase must not leave the runner mid-rebase")
 
     def test_staging_publishes_this_section(self):
         staging = (ROOT / "scripts/stage_site.py").read_text(encoding="utf-8")
