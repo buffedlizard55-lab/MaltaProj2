@@ -1,19 +1,19 @@
 {
  "session": "1c8f79f8",
- "generated_utc": "2026-10-18T02:31:38Z",
- "snapshot_utc": "2026-10-18T02:31:26Z",
- "fixture_source_read_utc": "2026-10-18T02:31:26Z",
+ "generated_utc": "2026-10-18T02:46:17Z",
+ "snapshot_utc": "2026-10-18T02:46:10Z",
+ "fixture_source_read_utc": "2026-10-18T02:46:10Z",
  "week": "TWC 2026 day 4 (2026-10-17)",
  "summary": {
   "fixtures_total": 25,
   "open": 25,
-  "open_with_market": 12,
-  "open_real_market": 12,
+  "open_with_market": 13,
+  "open_real_market": 13,
   "open_model_only": 7,
-  "open_blank": 6,
-  "open_with_pick": 21,
+  "open_blank": 5,
+  "open_with_pick": 22,
   "open_auto_rows": 11,
-  "open_without_direction": 4,
+  "open_without_direction": 3,
   "climb_picks": 1,
   "contrarian_picks": 1,
   "twc_semifinals": 2,
@@ -21,7 +21,7 @@
  },
  "inventory": {
   "mode": "fresh_capture",
-  "capture_utc": "2026-10-18T02:31:26Z",
+  "capture_utc": "2026-10-18T02:46:10Z",
   "capture_path": "data/1c8f79f8/fixtures_raw.json",
   "capture_fixtures": 25,
   "researched_fixtures_present": 14,
@@ -31,9 +31,9 @@
    {
     "fixture_id": "1079174",
     "teams": "Butterfly vs ex-RUSTEC",
-    "basis": null,
-    "pick": null,
-    "blank_reason": "new_listing_no_retained_line_and_no_eligible_rating_pair"
+    "basis": "market",
+    "pick": "ex-RUSTEC",
+    "blank_reason": null
    },
    {
     "fixture_id": "1079176",
@@ -295,7 +295,7 @@
    }
   ],
   "degraded_reasons": [],
-  "evaluated_utc": "2026-10-18T02:31:38Z",
+  "evaluated_utc": "2026-10-18T02:46:17Z",
   "policy": "Every fixture in the fresh capture stays on the board. New listings are priced from an exact fixture-id quote retained in another session's published board, else from the canonical Valve-VRS model, else blank + flagged. Ownership drift is recorded, never fatal."
  },
  "calibration": {
@@ -336,41 +336,61 @@
    "crowd_note": "HotSpawn pick'em ownership \u2014 context only, never a probability input",
    "total_picks": 7,
    "alias_note": null,
-   "market": null,
-   "quotes": [],
+   "market": {
+    "prob_a": 0.3366,
+    "prob_b": 0.6634,
+    "overround": 0.01,
+    "n_sources": 1,
+    "sources": [
+     "kalshi"
+    ],
+    "volume_usd": null,
+    "note": "Market line inherited from the fe803b80 board quote (https://kalshi.com/markets/kxcs2game/kxcs2game-26oct180400exrbtf) captured 2026-10-18T02:31:41Z; re-de-vigged here from the retained decimals."
+   },
+   "quotes": [
+    {
+     "source_key": "kalshi",
+     "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct180400exrbtf",
+     "retrieved_utc": "2026-10-18T02:31:41Z",
+     "note": "Retained quote reused verbatim from the fe803b80 full-coverage board (exact HotSpawn fixture id 1079174); that board derived the no-vig pair and this row republishes it with the same source link and read time.",
+     "decimal_a": 2.9412,
+     "decimal_b": 1.4925,
+     "prob_a": 0.3366,
+     "prob_b": 0.6634,
+     "overround": 0.01
+    }
+   ],
    "model": null,
    "line": {
-    "prob_a": null,
-    "prob_b": null,
-    "basis": null,
-    "pick": null,
-    "pick_probability": null,
-    "confidence": "Low"
+    "prob_a": 0.3366,
+    "prob_b": 0.6634,
+    "basis": "market",
+    "pick": "ex-RUSTEC",
+    "pick_probability": 0.6634,
+    "confidence": "Medium"
    },
    "ladder": {
-    "safe": null,
-    "safe_prob": null,
+    "safe": "ex-RUSTEC",
+    "safe_prob": 0.6634,
     "climb": null,
     "climb_prob": null,
     "climb_odds": null,
     "swing_cost_pts": null
    },
-   "role": "directional",
+   "role": "safe",
    "flags": [
     "auto_row_new_listing",
-    "probability_blank",
-    "needs_research_next_refresh"
+    "market_line_inherited_from_sibling_board"
    ],
-   "blank_reason": "new_listing_no_retained_line_and_no_eligible_rating_pair",
+   "blank_reason": null,
    "context": [
-    "This fixture is in the 2026-10-18T02:31Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
-    "No retained market quote exists for this fixture and at least one team is absent from Valve's official standings, so no model pair is eligible. A probability is withheld rather than invented.",
-    "The four-hourly collector retries external venues for every open fixture; this row will be priced as soon as one publishes an accepted two-sided line."
+    "This fixture is in the 2026-10-18T02:46Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
+    "Line inherited from the fe803b80 board: https://kalshi.com/markets/kxcs2game/kxcs2game-26oct180400exrbtf (read 2026-10-18T02:31:41Z)."
    ],
    "sources": [
     [
-     "Valve regional standings (identity check, official)",
-     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+     "full-coverage board quote (fe803b80)",
+     "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct180400exrbtf"
     ],
     [
      "HotSpawn fixtures API (official listing for this competition)",
@@ -559,7 +579,7 @@
    ],
    "blank_reason": null,
    "context": [
-    "This fixture is in the 2026-10-18T02:31Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
+    "This fixture is in the 2026-10-18T02:46Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
     "Line inherited from the c64a5e19 board: https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/ex-rustec-illyrians-202610180700 (read 2026-10-18T01:50:51Z)."
    ],
    "sources": [
@@ -666,7 +686,7 @@
    ],
    "blank_reason": null,
    "context": [
-    "This fixture is in the 2026-10-18T02:31Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
+    "This fixture is in the 2026-10-18T02:46Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
     "Line inherited from the c64a5e19 board: https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-12/privateer-antidaun-202610180700 (read 2026-10-18T01:50:51Z)."
    ],
    "sources": [
@@ -915,13 +935,13 @@
      "thunderpick"
     ],
     "volume_usd": null,
-    "note": "Market line inherited from the fe803b80 board quote (https://bo3.gg/matches/brute-vs-thirtythree-18-10-2026) captured 2026-10-18T02:05:40Z; re-de-vigged here from the retained decimals."
+    "note": "Market line inherited from the fe803b80 board quote (https://bo3.gg/matches/brute-vs-thirtythree-18-10-2026) captured 2026-10-18T02:32:37Z; re-de-vigged here from the retained decimals."
    },
    "quotes": [
     {
      "source_key": "thunderpick",
      "public_url": "https://bo3.gg/matches/brute-vs-thirtythree-18-10-2026",
-     "retrieved_utc": "2026-10-18T02:05:40Z",
+     "retrieved_utc": "2026-10-18T02:32:37Z",
      "note": "Retained quote reused verbatim from the fe803b80 full-coverage board (exact HotSpawn fixture id 1079176); that board derived the no-vig pair and this row republishes it with the same source link and read time.",
      "decimal_a": 2.5,
      "decimal_b": 1.48,
@@ -954,8 +974,8 @@
    ],
    "blank_reason": null,
    "context": [
-    "This fixture is in the 2026-10-18T02:31Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
-    "Line inherited from the fe803b80 board: https://bo3.gg/matches/brute-vs-thirtythree-18-10-2026 (read 2026-10-18T02:05:40Z)."
+    "This fixture is in the 2026-10-18T02:46Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
+    "Line inherited from the fe803b80 board: https://bo3.gg/matches/brute-vs-thirtythree-18-10-2026 (read 2026-10-18T02:32:37Z)."
    ],
    "sources": [
     [
@@ -1044,7 +1064,7 @@
    ],
    "blank_reason": null,
    "context": [
-    "This fixture is in the 2026-10-18T02:31Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
+    "This fixture is in the 2026-10-18T02:46Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
     "Line inherited from the c64a5e19 board: https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-european-qualifiers/team-nemesis-eyeballers-202610181000 (read 2026-10-18T01:50:51Z)."
    ],
    "sources": [
@@ -1134,7 +1154,7 @@
    ],
    "blank_reason": null,
    "context": [
-    "This fixture is in the 2026-10-18T02:31Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
+    "This fixture is in the 2026-10-18T02:46Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
     "Line inherited from the c64a5e19 board: https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/forze-reload-baks-esports-202610181300 (read 2026-10-18T01:50:51Z)."
    ],
    "sources": [
@@ -1224,7 +1244,7 @@
    ],
    "blank_reason": null,
    "context": [
-    "This fixture is in the 2026-10-18T02:31Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
+    "This fixture is in the 2026-10-18T02:46Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
     "Line inherited from the c64a5e19 board: https://www.bovada.lv/esports/counter-strike-2/pgl-bucharest-european-qualifiers/ex-rustec-nuclear-tigeres-202610181300 (read 2026-10-18T01:50:51Z)."
    ],
    "sources": [
@@ -1293,7 +1313,7 @@
    ],
    "blank_reason": "new_listing_no_retained_line_and_no_eligible_rating_pair",
    "context": [
-    "This fixture is in the 2026-10-18T02:31Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
+    "This fixture is in the 2026-10-18T02:46Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
     "No retained market quote exists for this fixture and at least one team is absent from Valve's official standings, so no model pair is eligible. A probability is withheld rather than invented.",
     "The four-hourly collector retries external venues for every open fixture; this row will be priced as soon as one publishes an accepted two-sided line."
    ],
@@ -2132,7 +2152,7 @@
    ],
    "blank_reason": "new_listing_no_retained_line_and_no_eligible_rating_pair",
    "context": [
-    "This fixture is in the 2026-10-18T02:31Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
+    "This fixture is in the 2026-10-18T02:46Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
     "No retained market quote exists for this fixture and at least one team is absent from Valve's official standings, so no model pair is eligible. A probability is withheld rather than invented.",
     "The four-hourly collector retries external venues for every open fixture; this row will be priced as soon as one publishes an accepted two-sided line."
    ],
@@ -2202,7 +2222,7 @@
    ],
    "blank_reason": "new_listing_no_retained_line_and_no_eligible_rating_pair",
    "context": [
-    "This fixture is in the 2026-10-18T02:31Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
+    "This fixture is in the 2026-10-18T02:46Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
     "No retained market quote exists for this fixture and at least one team is absent from Valve's official standings, so no model pair is eligible. A probability is withheld rather than invented.",
     "The four-hourly collector retries external venues for every open fixture; this row will be priced as soon as one publishes an accepted two-sided line."
    ],
@@ -2288,7 +2308,7 @@
    ],
    "blank_reason": null,
    "context": [
-    "This fixture is in the 2026-10-18T02:31Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
+    "This fixture is in the 2026-10-18T02:46Z fixtures capture but was not in the curated research ledger, so the row is generated automatically from the retained capture and the site's existing evidence only.",
     "No market quote for this fixture was found in the retained captures, so the line is the canonical Valve-VRS model."
    ],
    "sources": [
