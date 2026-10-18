@@ -44,6 +44,9 @@ jobs:
           git config user.name "malta-data-bot"
           git config user.email "malta-data-bot@users.noreply.github.com"
           git add data/f28afd9e strategy
+          # drop render churn from scripts/stage_site.py in other sessions'
+          # paths — an unstaged tree makes git pull --rebase refuse every attempt
+          git checkout -- . || true
           if git diff --cached --quiet; then echo "no changes"; exit 0; fi
           git commit -m "strategy(f28afd9e): refresh every-match picks $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
           for attempt in 1 2 3 4 5; do

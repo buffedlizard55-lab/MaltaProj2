@@ -263,6 +263,21 @@ primary sources, with the date each fact was read.</p>
     # ---- differential table
     drows = []
     for d in diff:
+        # Takeover repair (a89b76e9): verify.py emits incomplete-input rows
+        # (status only) when a fixture has no published probability or a
+        # missing crowd share. Render them as an explicit blank + flag row —
+        # never crash, never invent the missing numbers.
+        if "differential_optimal" not in d:
+            drows.append(f"""<tr><td data-label="Match"><b>{esc(d.get('match'))}</b>
+<div class="small">fixture #{esc(d.get('fixture_id'))} · {esc(d.get('state'))}</div></td>
+<td data-label="Win probability"><span class="badge warn">blank — {esc(d.get('status') or 'incomplete inputs')}</span></td>
+<td data-label="Crowd ownership">—<div class="small">reference only</div></td>
+<td data-label="Leaderboard edge">—<div class="small">points × (probability − ownership)</div></td>
+<td data-label="Differential pick"><span class="badge warn">unverified — inputs incomplete</span>
+<div class="small">published: {esc(d.get('published_leaderboard_pick') or '—')}</div></td>
+<td data-label="Source" class="srcs"><a href="https://play.hotspawn.com/lobby" rel="noopener">Lobby</a>
+<a href="report.json" rel="noopener">Recomputation</a></td></tr>""")
+            continue
         pick_side = d["differential_optimal"]
         agree = d.get("agrees")
         badge = ('<span class="badge pass">matches published</span>' if agree
@@ -294,11 +309,11 @@ Crowd ownership is a HotSpawn reference value and is never used as a probability
     body.append(f"""<div class="panel"><h3 style="margin-top:0">What this says, plainly</h3>
 <ul>
 <li><strong>{len(top)} plays carry real leaderboard edge</strong> (≥ +0.50 expected points versus the field):
-{esc(', '.join(f"{d['differential_optimal']} in {d['match']} ({max(d['ev_a'], d['ev_b']):+.2f} pts)" for d in top))}.
+{esc(', '.join(f"{d.get('differential_optimal')} in {d['match']} ({max(d.get('ev_a') or 0, d.get('ev_b') or 0):+.2f} pts)" for d in top))}.
 All of them are also the published strategy layer's picks — the two methods agree where it matters most,
 on the 7-point S-tier matches.</li>
 <li><strong>The three 7-point matches are where a leaderboard is won or lost.</strong> 9z (edge
-{ev([d for d in diff if d['fixture_id'] == '1080202'][0]['ev_a']) if any(d['fixture_id'] == '1080202' for d in diff) else '—'} pts),
+{ev([d for d in diff if d['fixture_id'] == '1080202' and d.get('ev_a') is not None][0]['ev_a']) if any(d['fixture_id'] == '1080202' and d.get('ev_a') is not None for d in diff) else '—'} pts),
 BetBoom and Legacy are all priced below their ownership. Day 1 proved the mechanism: 96% of the field took
 Aurora and scored 0 on a 7-point match.</li>
 <li><strong>{len(diverging)} rows diverge</strong> from pure differential math, all of them 2-point tier-C
