@@ -1,23 +1,23 @@
 {
   "session_id": "5468b0ba",
-  "canonical_generated_utc": "2026-10-18T17:18:50Z",
-  "canonical_collected_to_utc": "2026-10-18T17:18:49Z",
+  "canonical_generated_utc": "2026-10-18T18:36:53Z",
+  "canonical_collected_to_utc": "2026-10-18T18:36:52Z",
   "source_observation_utc": null,
   "valve_git_blob_sha": "2aa2805394fbc68f36a5752a5b16026f2ab2fed5",
   "summary": {
     "open": 26,
-    "with_line": 0,
-    "market_based": 0,
-    "model_only": 0,
-    "no_line": 26,
-    "locked_recent": 9,
+    "with_line": 20,
+    "market_based": 18,
+    "model_only": 2,
+    "no_line": 6,
+    "locked_recent": 0,
     "stale_listed": 61,
-    "quotes_total": 69,
+    "quotes_total": 59,
     "quotes_live_excluded": 0,
-    "quotes_unmatched": 69,
+    "quotes_unmatched": 28,
     "sources_ok": [
       "bovada",
-      "hotspawn_failed_refresh",
+      "hotspawn_api",
       "hotspawn_lobby_page",
       "kalshi",
       "melbet",
@@ -27,23 +27,22 @@
       "valve_vrs_tree"
     ],
     "sources_failed": [
-      "hltv_probe",
-      "hotspawn_api"
+      "hltv_probe"
     ],
-    "captured_quotes_total": 79,
-    "rule_backed_quotes_excluded_by_gap_policy": 10,
-    "with_pick": 0,
-    "tier_a_market": 0,
-    "tier_b_model": 0,
+    "captured_quotes_total": 80,
+    "rule_backed_quotes_excluded_by_gap_policy": 21,
+    "with_pick": 20,
+    "tier_a_market": 18,
+    "tier_b_model": 2,
     "tier_c_fallback": 0,
-    "tier_d_none": 26,
-    "listed": 96
+    "tier_d_none": 6,
+    "listed": 87
   },
   "verification_summary": {
     "failures": [],
-    "fixture_rows_checked": 96,
+    "fixture_rows_checked": 87,
     "rating_rows_checked": 380,
-    "consumed_quotes_checked": 0,
+    "consumed_quotes_checked": 31,
     "all_quotes_math_verified": true
   },
   "twc_results": [
@@ -313,7 +312,7 @@
       "quotes": [],
       "lock_utc": null,
       "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "valid_until_utc": "2026-10-18T17:18:50Z",
+      "valid_until_utc": "2026-10-18T18:36:53Z",
       "flags": [
         "tournament_preview_not_a_hotspawn_pick"
       ],
@@ -349,7 +348,7 @@
       "quotes": [],
       "lock_utc": null,
       "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "valid_until_utc": "2026-10-18T17:18:50Z",
+      "valid_until_utc": "2026-10-18T18:36:53Z",
       "flags": [
         "tournament_preview_not_a_hotspawn_pick"
       ],
@@ -384,15 +383,29 @@
       "tier": "C",
       "team_a": "QUINTESSÊNCIA",
       "team_b": "RED Canids Academy",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.3079,
+      "prob_b": 0.6921,
+      "pick_team": "RED Canids Academy",
+      "pick_prob": 0.6921,
+      "fair_decimal_a": 3.248,
+      "fair_decimal_b": 1.445,
+      "quotes_verified": [
+        {
+          "source_key": "pinnacle",
+          "source_name": "Pinnacle",
+          "event_id": "1638595802",
+          "decimal_a": 3.0,
+          "decimal_b": 1.334448160535117,
+          "recomputed_prob_a": 0.3079,
+          "stored_prob_a": 0.3079,
+          "verified": true,
+          "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+          "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638595802/markets/related/straight",
+          "retrieved_utc": "2026-10-18T18:36:47Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 203,
         "points": 723,
@@ -403,22 +416,12 @@
       "vrs_team_b": null,
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "not_in_vrs:RED Canids Academy",
-        "stale_or_unverified_quote:kalshi",
-        "stale_or_unverified_quote:pinnacle"
+        "not_in_vrs:RED Canids Academy"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "RED Canids Academy: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
-        "kalshi: price or fixture freshness could not be established.",
-        "pinnacle: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/quintessencia-vs-red-canids-academy-cct-south-america-2026-series-7-1082207"
+        "https://www.hotspawn.com/matches/quintessencia-vs-red-canids-academy-cct-south-america-2026-series-7-1082207",
+        "https://www.pinnacle.com/en/esports/cs2-hub"
       ]
     },
     {
@@ -429,15 +432,29 @@
       "tier": "C",
       "team_a": "6yuBoJlbl",
       "team_b": "HyperSpirit",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.5921,
+      "prob_b": 0.4079,
+      "pick_team": "6yuBoJlbl",
+      "pick_prob": 0.5921,
+      "fair_decimal_a": 1.689,
+      "fair_decimal_b": 2.452,
+      "quotes_verified": [
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "762591052",
+          "decimal_a": 1.57,
+          "decimal_b": 2.279,
+          "recomputed_prob_a": 0.5921,
+          "stored_prob_a": 0.5921,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-18T18:36:50Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 110,
         "points": 1015,
@@ -453,21 +470,12 @@
         "details_path": "live/2026/details/2026_10_05/0162--hyperspirit--ciocardau-d1maje-q-q-scr0b-starplajerz.md"
       },
       "vrs_ambiguous": {},
-      "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:kalshi",
-        "stale_or_unverified_quote:melbet"
-      ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "kalshi: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "flags": [],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/6yubojlbl-vs-hyperspirit-cyberclash-season-2-closed-qualifier-1082200"
+        "https://www.hotspawn.com/matches/6yubojlbl-vs-hyperspirit-cyberclash-season-2-closed-qualifier-1082200",
+        "https://melbet.com/en/line/esports",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
       ]
     },
     {
@@ -478,15 +486,55 @@
       "tier": "C",
       "team_a": "Procyon",
       "team_b": "your end",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.8505,
+      "prob_b": 0.1495,
+      "pick_team": "Procyon",
+      "pick_prob": 0.8505,
+      "fair_decimal_a": 1.176,
+      "fair_decimal_b": 6.689,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32408763",
+          "decimal_a": 1.111111,
+          "decimal_b": 6.0,
+          "recomputed_prob_a": 0.8438,
+          "stored_prob_a": 0.8438,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/procyon-gaming-your-end-202610181800",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-18T18:36:49Z"
+        },
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "762699103",
+          "decimal_a": 1.07,
+          "decimal_b": 6.19,
+          "recomputed_prob_a": 0.8526,
+          "stored_prob_a": 0.8526,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-18T18:36:50Z"
+        },
+        {
+          "source_key": "pinnacle",
+          "source_name": "Pinnacle",
+          "event_id": "1638596212",
+          "decimal_a": 1.0686813186813187,
+          "decimal_b": 6.19,
+          "recomputed_prob_a": 0.8528,
+          "stored_prob_a": 0.8528,
+          "verified": true,
+          "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+          "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638596212/markets/related/straight",
+          "retrieved_utc": "2026-10-18T18:36:48Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 149,
         "points": 842,
@@ -503,24 +551,15 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:bovada",
-        "stale_or_unverified_quote:kalshi",
-        "stale_or_unverified_quote:melbet",
-        "stale_or_unverified_quote:pinnacle"
+        "model_market_gap_16pp"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "bovada: price or fixture freshness could not be established.",
-        "kalshi: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "pinnacle: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/procyon-vs-your-end-cct-south-america-2026-series-7-1082208"
+        "https://www.hotspawn.com/matches/procyon-vs-your-end-cct-south-america-2026-series-7-1082208",
+        "https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/procyon-gaming-your-end-202610181800",
+        "https://melbet.com/en/line/esports",
+        "https://www.pinnacle.com/en/esports/cs2-hub",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
       ]
     },
     {
@@ -531,15 +570,55 @@
       "tier": "B",
       "team_a": "GenOne",
       "team_b": "FORZE Reload",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.395,
+      "prob_b": 0.605,
+      "pick_team": "FORZE Reload",
+      "pick_prob": 0.605,
+      "fair_decimal_a": 2.532,
+      "fair_decimal_b": 1.653,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32429163",
+          "decimal_a": 2.4,
+          "decimal_b": 1.540541,
+          "recomputed_prob_a": 0.3909,
+          "stored_prob_a": 0.3909,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/nodwin-clutch-series/genone-forze-reload-202610190400",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-18T18:36:49Z"
+        },
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "762886531",
+          "decimal_a": 2.341,
+          "decimal_b": 1.56,
+          "recomputed_prob_a": 0.3999,
+          "stored_prob_a": 0.3999,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-18T18:36:50Z"
+        },
+        {
+          "source_key": "pinnacle",
+          "source_name": "Pinnacle",
+          "event_id": "1638721228",
+          "decimal_a": 2.3600000000000003,
+          "decimal_b": 1.5376344086021505,
+          "recomputed_prob_a": 0.3945,
+          "stored_prob_a": 0.3945,
+          "verified": true,
+          "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+          "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638721228/markets/related/straight",
+          "retrieved_utc": "2026-10-18T18:36:47Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 66,
         "points": 1185,
@@ -556,22 +635,16 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:kalshi",
-        "stale_or_unverified_quote:melbet",
-        "stale_or_unverified_quote:pinnacle"
+        "model_and_market_pick_different_teams",
+        "model_market_gap_17pp"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "kalshi: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "pinnacle: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/genone-vs-forze-reload-nodwin-clutch-series-13-1079178"
+        "https://www.hotspawn.com/matches/genone-vs-forze-reload-nodwin-clutch-series-13-1079178",
+        "https://www.bovada.lv/esports/counter-strike-2/nodwin-clutch-series/genone-forze-reload-202610190400",
+        "https://melbet.com/en/line/esports",
+        "https://www.pinnacle.com/en/esports/cs2-hub",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
       ]
     },
     {
@@ -582,15 +655,42 @@
       "tier": "B",
       "team_a": "Infinite",
       "team_b": "Insiders",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.7385,
+      "prob_b": 0.2615,
+      "pick_team": "Infinite",
+      "pick_prob": 0.7385,
+      "fair_decimal_a": 1.354,
+      "fair_decimal_b": 3.824,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32207566",
+          "decimal_a": 1.266667,
+          "decimal_b": 3.6,
+          "recomputed_prob_a": 0.7397,
+          "stored_prob_a": 0.7397,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/draculan/infinite-insiders-esport-202610190500",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-18T18:36:49Z"
+        },
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "761246829",
+          "decimal_a": 1.26,
+          "decimal_b": 3.535,
+          "recomputed_prob_a": 0.7372,
+          "stored_prob_a": 0.7372,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-18T18:36:50Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 56,
         "points": 1259,
@@ -601,22 +701,13 @@
       "vrs_team_b": null,
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "not_in_vrs:Insiders",
-        "stale_or_unverified_quote:bovada",
-        "stale_or_unverified_quote:melbet"
+        "not_in_vrs:Insiders"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "Insiders: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
-        "bovada: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://play.hotspawn.com/lobby"
+        "https://play.hotspawn.com/lobby",
+        "https://www.bovada.lv/esports/counter-strike-2/draculan/infinite-insiders-esport-202610190500",
+        "https://melbet.com/en/line/esports"
       ]
     },
     {
@@ -627,15 +718,42 @@
       "tier": "B",
       "team_a": "aimclub",
       "team_b": "BASEMENT BOYS",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.4495,
+      "prob_b": 0.5505,
+      "pick_team": "BASEMENT BOYS",
+      "pick_prob": 0.5505,
+      "fair_decimal_a": 2.225,
+      "fair_decimal_b": 1.817,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32169786",
+          "decimal_a": 2.1,
+          "decimal_b": 1.69,
+          "recomputed_prob_a": 0.4459,
+          "stored_prob_a": 0.4459,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/draculan/aimclub-basement-boys-202610190500",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-18T18:36:49Z"
+        },
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "761018356",
+          "decimal_a": 2.04,
+          "decimal_b": 1.69,
+          "recomputed_prob_a": 0.4531,
+          "stored_prob_a": 0.4531,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-18T18:36:50Z"
+        }
+      ],
       "vrs_team_a": null,
       "vrs_team_b": {
         "standing": 102,
@@ -651,36 +769,27 @@
               "standing": 77,
               "points": 1113,
               "roster": "ERSIN, mhN1, ragga, waZz, zewts",
-              "latest_match_date": null,
+              "latest_match_date": "2026-10-03",
               "details_path": "live/2026/details/2026_10_05/0077--aimclub--ersin-mhn1-ragga-wazz-zewts.md"
             },
             {
               "standing": 336,
               "points": 504,
               "roster": "Ed1m, ERSIN, RoberttMP, XELLOW, zewts",
-              "latest_match_date": null,
+              "latest_match_date": "2026-04-26",
               "details_path": "live/2026/details/2026_10_05/0336--aimclub--ed1m-ersin-roberttmp-xellow-zewts.md"
             }
           ]
         }
       },
       "flags": [
-        "ambiguous_vrs_name:aimclub",
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:bovada",
-        "stale_or_unverified_quote:melbet"
+        "ambiguous_vrs_name:aimclub"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "aimclub: multiple official rating rows; the fixture’s current roster is not confirmed.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "bovada: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://play.hotspawn.com/lobby"
+        "https://play.hotspawn.com/lobby",
+        "https://www.bovada.lv/esports/counter-strike-2/draculan/aimclub-basement-boys-202610190500",
+        "https://melbet.com/en/line/esports"
       ]
     },
     {
@@ -691,15 +800,42 @@
       "tier": "B",
       "team_a": "BC.Game",
       "team_b": "Drama",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.8268,
+      "prob_b": 0.1732,
+      "pick_team": "BC.Game",
+      "pick_prob": 0.8268,
+      "fair_decimal_a": 1.209,
+      "fair_decimal_b": 5.774,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32207565",
+          "decimal_a": 1.133333,
+          "decimal_b": 5.5,
+          "recomputed_prob_a": 0.8291,
+          "stored_prob_a": 0.8291,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/draculan/bc-game-drama-esports-202610190500",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-18T18:36:49Z"
+        },
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "761246827",
+          "decimal_a": 1.12,
+          "decimal_b": 5.26,
+          "recomputed_prob_a": 0.8245,
+          "stored_prob_a": 0.8245,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-18T18:36:50Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 50,
         "points": 1318,
@@ -715,23 +851,13 @@
         "details_path": "live/2026/details/2026_10_05/0148--drama--andr1x-chill-choiv7-depreshn-goody.md"
       },
       "vrs_ambiguous": {},
-      "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:bovada",
-        "stale_or_unverified_quote:kalshi",
-        "stale_or_unverified_quote:melbet"
-      ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "bovada: price or fixture freshness could not be established.",
-        "kalshi: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "flags": [],
+      "limitations": [],
       "sources": [
-        "https://play.hotspawn.com/lobby"
+        "https://play.hotspawn.com/lobby",
+        "https://www.bovada.lv/esports/counter-strike-2/draculan/bc-game-drama-esports-202610190500",
+        "https://melbet.com/en/line/esports",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
       ]
     },
     {
@@ -761,13 +887,11 @@
       "vrs_team_b": null,
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
         "no_line_unverified",
         "not_in_vrs:WROTBERRY"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
         "WROTBERRY: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
         "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
       ],
@@ -802,13 +926,11 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
         "no_line_unverified",
         "not_in_vrs:Apogee Betclic"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
         "Apogee Betclic: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
         "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
       ],
@@ -824,15 +946,42 @@
       "tier": "B",
       "team_a": "Iberian Soul",
       "team_b": "HyperSpirit",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.6562,
+      "prob_b": 0.3438,
+      "pick_team": "Iberian Soul",
+      "pick_prob": 0.6562,
+      "fair_decimal_a": 1.524,
+      "fair_decimal_b": 2.909,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32169382",
+          "decimal_a": 1.434783,
+          "decimal_b": 2.75,
+          "recomputed_prob_a": 0.6571,
+          "stored_prob_a": 0.6571,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/draculan/iberian-soul-hyperspirit-202610190645",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-18T18:36:49Z"
+        },
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "761019645",
+          "decimal_a": 1.42,
+          "decimal_b": 2.698,
+          "recomputed_prob_a": 0.6552,
+          "stored_prob_a": 0.6552,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-18T18:36:50Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 59,
         "points": 1218,
@@ -848,23 +997,13 @@
         "details_path": "live/2026/details/2026_10_05/0162--hyperspirit--ciocardau-d1maje-q-q-scr0b-starplajerz.md"
       },
       "vrs_ambiguous": {},
-      "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:bovada",
-        "stale_or_unverified_quote:kalshi",
-        "stale_or_unverified_quote:melbet"
-      ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "bovada: price or fixture freshness could not be established.",
-        "kalshi: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "flags": [],
+      "limitations": [],
       "sources": [
-        "https://play.hotspawn.com/lobby"
+        "https://play.hotspawn.com/lobby",
+        "https://www.bovada.lv/esports/counter-strike-2/draculan/iberian-soul-hyperspirit-202610190645",
+        "https://melbet.com/en/line/esports",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
       ]
     },
     {
@@ -875,15 +1014,42 @@
       "tier": "B",
       "team_a": "Sashi",
       "team_b": "mouz NXT",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.6255,
+      "prob_b": 0.3745,
+      "pick_team": "Sashi",
+      "pick_prob": 0.6255,
+      "fair_decimal_a": 1.599,
+      "fair_decimal_b": 2.67,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32122379",
+          "decimal_a": 1.487805,
+          "decimal_b": 2.55,
+          "recomputed_prob_a": 0.6315,
+          "stored_prob_a": 0.6315,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/draculan/sashi-esport-mouz-nxt-202610190645",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-18T18:36:49Z"
+        },
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "761013149",
+          "decimal_a": 1.5,
+          "decimal_b": 2.441,
+          "recomputed_prob_a": 0.6194,
+          "stored_prob_a": 0.6194,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-18T18:36:50Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 73,
         "points": 1131,
@@ -899,38 +1065,27 @@
               "standing": 137,
               "points": 877,
               "roster": "ay0k, deeN, eSx, mixer, Nikodeon",
-              "latest_match_date": null,
+              "latest_match_date": "2026-09-26",
               "details_path": "live/2026/details/2026_10_05/0137--mouz_nxt--ay0k-deen-esx-mixer-nikodeon.md"
             },
             {
               "standing": 320,
               "points": 534,
               "roster": "AiyvaN, ay0k, Flierax, Nikodeon, opdust",
-              "latest_match_date": null,
+              "latest_match_date": "2026-05-14",
               "details_path": "live/2026/details/2026_10_05/0320--mouz_nxt--aiyvan-ay0k-flierax-nikodeon-opdust.md"
             }
           ]
         }
       },
       "flags": [
-        "ambiguous_vrs_name:mouz NXT",
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:bovada",
-        "stale_or_unverified_quote:kalshi",
-        "stale_or_unverified_quote:melbet"
+        "ambiguous_vrs_name:mouz NXT"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "mouz NXT: multiple official rating rows; the fixture’s current roster is not confirmed.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "bovada: price or fixture freshness could not be established.",
-        "kalshi: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://play.hotspawn.com/lobby"
+        "https://play.hotspawn.com/lobby",
+        "https://www.bovada.lv/esports/counter-strike-2/draculan/sashi-esport-mouz-nxt-202610190645",
+        "https://melbet.com/en/line/esports"
       ]
     },
     {
@@ -941,15 +1096,42 @@
       "tier": "B",
       "team_a": "ASTRAL",
       "team_b": "Leo",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.4495,
+      "prob_b": 0.5505,
+      "pick_team": "Leo",
+      "pick_prob": 0.5505,
+      "fair_decimal_a": 2.225,
+      "fair_decimal_b": 1.817,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32207573",
+          "decimal_a": 2.1,
+          "decimal_b": 1.69,
+          "recomputed_prob_a": 0.4459,
+          "stored_prob_a": 0.4459,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/draculan/astral-leo-team-202610190645",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-18T18:36:49Z"
+        },
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "761248423",
+          "decimal_a": 2.04,
+          "decimal_b": 1.69,
+          "recomputed_prob_a": 0.4531,
+          "stored_prob_a": 0.4531,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-18T18:36:50Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 91,
         "points": 1072,
@@ -965,36 +1147,27 @@
               "standing": 112,
               "points": 1001,
               "roster": "aimy, drac, leen, next1me, Tarkky",
-              "latest_match_date": null,
+              "latest_match_date": "2026-09-30",
               "details_path": "live/2026/details/2026_10_05/0112--leo--aimy-drac-leen-next1me-tarkky.md"
             },
             {
               "standing": 340,
               "points": 499,
               "roster": "amster, kL1o, leen, Malkiss, OneUn1que",
-              "latest_match_date": null,
+              "latest_match_date": "2026-05-31",
               "details_path": "live/2026/details/2026_10_05/0340--leo--amster-kl1o-leen-malkiss-oneun1que.md"
             }
           ]
         }
       },
       "flags": [
-        "ambiguous_vrs_name:Leo",
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:bovada",
-        "stale_or_unverified_quote:melbet"
+        "ambiguous_vrs_name:Leo"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "Leo: multiple official rating rows; the fixture’s current roster is not confirmed.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "bovada: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://play.hotspawn.com/lobby"
+        "https://play.hotspawn.com/lobby",
+        "https://www.bovada.lv/esports/counter-strike-2/draculan/astral-leo-team-202610190645",
+        "https://melbet.com/en/line/esports"
       ]
     },
     {
@@ -1005,15 +1178,42 @@
       "tier": "B",
       "team_a": "GenOne",
       "team_b": "Omega",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.6657,
+      "prob_b": 0.3343,
+      "pick_team": "GenOne",
+      "pick_prob": 0.6657,
+      "fair_decimal_a": 1.502,
+      "fair_decimal_b": 2.991,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32408963",
+          "decimal_a": 1.4,
+          "decimal_b": 2.85,
+          "recomputed_prob_a": 0.6706,
+          "stored_prob_a": 0.6706,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/genone-omega-esports-202610190800",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-18T18:36:49Z"
+        },
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "762681692",
+          "decimal_a": 1.41,
+          "decimal_b": 2.746,
+          "recomputed_prob_a": 0.6607,
+          "stored_prob_a": 0.6607,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-18T18:36:50Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 66,
         "points": 1185,
@@ -1029,21 +1229,13 @@
         "details_path": "live/2026/details/2026_10_05/0083--omega--adai-aldikon-botpa1-dan4o-def1zer.md"
       },
       "vrs_ambiguous": {},
-      "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:bovada",
-        "stale_or_unverified_quote:melbet"
-      ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "bovada: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "flags": [],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/genone-vs-omega-stake-ranked-episode-6-closed-qualifier-1082153"
+        "https://www.hotspawn.com/matches/genone-vs-omega-stake-ranked-episode-6-closed-qualifier-1082153",
+        "https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/genone-omega-esports-202610190800",
+        "https://melbet.com/en/line/esports",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
       ]
     },
     {
@@ -1054,15 +1246,29 @@
       "tier": "B",
       "team_a": "ex-Zero Tenacity",
       "team_b": "Bushido Wildcats",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.6607,
+      "prob_b": 0.3393,
+      "pick_team": "ex-Zero Tenacity",
+      "pick_prob": 0.6607,
+      "fair_decimal_a": 1.514,
+      "fair_decimal_b": 2.947,
+      "quotes_verified": [
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "762738164",
+          "decimal_a": 1.41,
+          "decimal_b": 2.746,
+          "recomputed_prob_a": 0.6607,
+          "stored_prob_a": 0.6607,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-18T18:36:50Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 93,
         "points": 1066,
@@ -1078,19 +1284,12 @@
         "details_path": "live/2026/details/2026_10_05/0114--bushido_wildcats--cacan-cadnyx-darendeli-muk0s-vej.md"
       },
       "vrs_ambiguous": {},
-      "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:melbet"
-      ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "melbet: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "flags": [],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/ex-zero-tenacity-vs-bushido-wildcats-nodwin-clutch-series-13-1079180"
+        "https://www.hotspawn.com/matches/ex-zero-tenacity-vs-bushido-wildcats-nodwin-clutch-series-13-1079180",
+        "https://melbet.com/en/line/esports",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
       ]
     },
     {
@@ -1120,13 +1319,11 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
         "no_line_unverified",
         "not_in_vrs:Apogee Betclic"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
         "Apogee Betclic: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
         "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
       ],
@@ -1142,15 +1339,42 @@
       "tier": "B",
       "team_a": "Phantom",
       "team_b": "BRUTE",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.6624,
+      "prob_b": 0.3376,
+      "pick_team": "Phantom",
+      "pick_prob": 0.6624,
+      "fair_decimal_a": 1.51,
+      "fair_decimal_b": 2.962,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32408187",
+          "decimal_a": 1.416667,
+          "decimal_b": 2.8,
+          "recomputed_prob_a": 0.664,
+          "stored_prob_a": 0.664,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/phantom-esports-brute-202610191100",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-18T18:36:49Z"
+        },
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "762681680",
+          "decimal_a": 2.746,
+          "decimal_b": 1.41,
+          "recomputed_prob_a": 0.6607,
+          "stored_prob_a": 0.6607,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-18T18:36:50Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 72,
         "points": 1147,
@@ -1166,38 +1390,27 @@
               "standing": 75,
               "points": 1116,
               "roster": "aidKiT, hfah, nbqq, tAk, ZEDKO",
-              "latest_match_date": null,
+              "latest_match_date": "2026-09-26",
               "details_path": "live/2026/details/2026_10_05/0075--brute--aidkit-hfah-nbqq-tak-zedko.md"
             },
             {
               "standing": 218,
               "points": 689,
               "roster": "hfah, KAD1M, majky, nbqq, realzen",
-              "latest_match_date": null,
+              "latest_match_date": "2026-05-25",
               "details_path": "live/2026/details/2026_10_05/0218--brute--hfah-kad1m-majky-nbqq-realzen.md"
             }
           ]
         }
       },
       "flags": [
-        "ambiguous_vrs_name:BRUTE",
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:bovada",
-        "stale_or_unverified_quote:kalshi",
-        "stale_or_unverified_quote:melbet"
+        "ambiguous_vrs_name:BRUTE"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "BRUTE: multiple official rating rows; the fixture’s current roster is not confirmed.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "bovada: price or fixture freshness could not be established.",
-        "kalshi: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/phantom-vs-brute-stake-ranked-episode-6-closed-qualifier-1082154"
+        "https://www.hotspawn.com/matches/phantom-vs-brute-stake-ranked-episode-6-closed-qualifier-1082154",
+        "https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/phantom-esports-brute-202610191100",
+        "https://melbet.com/en/line/esports"
       ]
     },
     {
@@ -1208,15 +1421,29 @@
       "tier": "B",
       "team_a": "Fire Flux",
       "team_b": "ex-6666",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.4489,
+      "prob_b": 0.5511,
+      "pick_team": "ex-6666",
+      "pick_prob": 0.5511,
+      "fair_decimal_a": 2.228,
+      "fair_decimal_b": 1.815,
+      "quotes_verified": [
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "762738160",
+          "decimal_a": 2.075,
+          "decimal_b": 1.69,
+          "recomputed_prob_a": 0.4489,
+          "stored_prob_a": 0.4489,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-18T18:36:50Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 131,
         "points": 907,
@@ -1227,20 +1454,12 @@
       "vrs_team_b": null,
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "not_in_vrs:ex-6666",
-        "stale_or_unverified_quote:melbet"
+        "not_in_vrs:ex-6666"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "ex-6666: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
-        "melbet: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/fire-flux-vs-ex-6666-nodwin-clutch-series-13-1079181"
+        "https://www.hotspawn.com/matches/fire-flux-vs-ex-6666-nodwin-clutch-series-13-1079181",
+        "https://melbet.com/en/line/esports"
       ]
     },
     {
@@ -1251,15 +1470,42 @@
       "tier": "B",
       "team_a": "UNiTY",
       "team_b": "9INE",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.5918,
+      "prob_b": 0.4082,
+      "pick_team": "UNiTY",
+      "pick_prob": 0.5918,
+      "fair_decimal_a": 1.69,
+      "fair_decimal_b": 2.45,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32407991",
+          "decimal_a": 1.588235,
+          "decimal_b": 2.3,
+          "recomputed_prob_a": 0.5915,
+          "stored_prob_a": 0.5915,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/unity-esports-9ine-202610191330",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-18T18:36:49Z"
+        },
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "762686559",
+          "decimal_a": 2.279,
+          "decimal_b": 1.57,
+          "recomputed_prob_a": 0.5921,
+          "stored_prob_a": 0.5921,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-18T18:36:50Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 69,
         "points": 1167,
@@ -1275,21 +1521,13 @@
         "details_path": "live/2026/details/2026_10_05/0079--9ine--b1elany-flayy-kraghen-raalz-rigon.md"
       },
       "vrs_ambiguous": {},
-      "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:bovada",
-        "stale_or_unverified_quote:melbet"
-      ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "bovada: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "flags": [],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/unity-vs-9ine-stake-ranked-episode-6-closed-qualifier-1082155"
+        "https://www.hotspawn.com/matches/unity-vs-9ine-stake-ranked-episode-6-closed-qualifier-1082155",
+        "https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/unity-esports-9ine-202610191330",
+        "https://melbet.com/en/line/esports",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
       ]
     },
     {
@@ -1319,13 +1557,11 @@
       "vrs_team_b": null,
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
         "no_line_unverified",
         "not_in_vrs:Morningstar"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
         "Morningstar: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
         "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
       ],
@@ -1341,14 +1577,14 @@
       "tier": "C",
       "team_a": "Rare Atom",
       "team_b": "Alter Ego",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
+      "basis": "model",
+      "evidence_tier": "B",
+      "prob_a": 0.5672,
+      "prob_b": 0.4328,
+      "pick_team": "Rare Atom",
+      "pick_prob": 0.5672,
+      "fair_decimal_a": 1.763,
+      "fair_decimal_b": 2.311,
       "quotes_verified": [],
       "vrs_team_a": {
         "standing": 133,
@@ -1366,16 +1602,15 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified"
+        "model_estimate_not_verified_win_probability"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
+        "Both unique Valve ratings are available: a labelled model estimate is shown, not verified bookmaker odds. No out-of-sample accuracy is claimed."
       ],
       "sources": [
-        "https://www.hotspawn.com/matches/rare-atom-vs-alter-ego-void-autumn-cup-2026-1081862"
+        "https://www.hotspawn.com/matches/rare-atom-vs-alter-ego-void-autumn-cup-2026-1081862",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
       ]
     },
     {
@@ -1404,14 +1639,14 @@
               "standing": 87,
               "points": 1084,
               "roster": "cool4st, fury5k, ROUX, sk0R, yAmi",
-              "latest_match_date": null,
+              "latest_match_date": "2026-10-04",
               "details_path": "live/2026/details/2026_10_05/0087--chinggis_warriors--cool4st-fury5k-roux-sk0r-yami.md"
             },
             {
               "standing": 220,
               "points": 685,
               "roster": "Aceari, hasteka, ROUX, sk0R, yAmi",
-              "latest_match_date": null,
+              "latest_match_date": "2026-08-29",
               "details_path": "live/2026/details/2026_10_05/0220--chinggis_warriors--aceari-hasteka-roux-sk0r-yami.md"
             }
           ]
@@ -1419,14 +1654,12 @@
       },
       "flags": [
         "ambiguous_vrs_name:Chinggis Warriors",
-        "fixture_observation_stale_or_unverified",
         "no_line_unverified",
         "not_in_vrs:WXM"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
         "Chinggis Warriors: multiple official rating rows; the fixture’s current roster is not confirmed.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
         "WXM: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
         "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
       ],
@@ -1442,14 +1675,14 @@
       "tier": "C",
       "team_a": "NEXVOID",
       "team_b": "Vitalem Aerem",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
+      "basis": "model",
+      "evidence_tier": "B",
+      "prob_a": 0.701,
+      "prob_b": 0.299,
+      "pick_team": "NEXVOID",
+      "pick_prob": 0.701,
+      "fair_decimal_a": 1.427,
+      "fair_decimal_b": 3.345,
       "quotes_verified": [],
       "vrs_team_a": {
         "standing": 113,
@@ -1467,16 +1700,15 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified"
+        "model_estimate_not_verified_win_probability"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
+        "Both unique Valve ratings are available: a labelled model estimate is shown, not verified bookmaker odds. No out-of-sample accuracy is claimed."
       ],
       "sources": [
-        "https://www.hotspawn.com/matches/nexvoid-vs-vitalem-aerem-void-autumn-cup-2026-1081864"
+        "https://www.hotspawn.com/matches/nexvoid-vs-vitalem-aerem-void-autumn-cup-2026-1081864",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
       ]
     },
     {
@@ -1487,15 +1719,29 @@
       "tier": "B",
       "team_a": "Metizport",
       "team_b": "ex-RUSTEC",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.4085,
+      "prob_b": 0.5915,
+      "pick_team": "ex-RUSTEC",
+      "pick_prob": 0.5915,
+      "fair_decimal_a": 2.448,
+      "fair_decimal_b": 1.691,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32424179",
+          "decimal_a": 1.588235,
+          "decimal_b": 2.3,
+          "recomputed_prob_a": 0.4085,
+          "stored_prob_a": 0.4085,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/ex-rustec-metizport-202610200500",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-18T18:36:49Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 53,
         "points": 1290,
@@ -1511,34 +1757,26 @@
               "standing": 92,
               "points": 1066,
               "roster": "Brilliance, glowiing, shalfey, yiksrezo, youka",
-              "latest_match_date": null,
+              "latest_match_date": "2026-09-27",
               "details_path": "live/2026/details/2026_10_05/0092--ex-rustec--brilliance-glowiing-shalfey-yiksrezo-youka.md"
             },
             {
               "standing": 152,
               "points": 824,
               "roster": "Brilliance, jakekeS, Patsi, youka",
-              "latest_match_date": null,
+              "latest_match_date": "2026-08-17",
               "details_path": "live/2026/details/2026_10_05/0152--ex-rustec--brilliance-jakekes-patsi-youka.md"
             }
           ]
         }
       },
       "flags": [
-        "ambiguous_vrs_name:ex-RUSTEC",
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:bovada"
+        "ambiguous_vrs_name:ex-RUSTEC"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "ex-RUSTEC: multiple official rating rows; the fixture’s current roster is not confirmed.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "bovada: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/metizport-vs-ex-rustec-stake-ranked-episode-6-closed-qualifier-1082156"
+        "https://www.hotspawn.com/matches/metizport-vs-ex-rustec-stake-ranked-episode-6-closed-qualifier-1082156",
+        "https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/ex-rustec-metizport-202610200500"
       ]
     },
     {
@@ -1568,13 +1806,11 @@
       "vrs_team_b": null,
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
         "no_line_unverified",
         "not_in_vrs:Aurora YB"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
         "Aurora YB: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
         "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
       ],
@@ -1590,15 +1826,29 @@
       "tier": "B",
       "team_a": "FOKUS",
       "team_b": "ex-Zero Tenacity",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.7059,
+      "prob_b": 0.2941,
+      "pick_team": "FOKUS",
+      "pick_prob": 0.7059,
+      "fair_decimal_a": 1.417,
+      "fair_decimal_b": 3.4,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32425570",
+          "decimal_a": 1.333333,
+          "decimal_b": 3.2,
+          "recomputed_prob_a": 0.7059,
+          "stored_prob_a": 0.7059,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/fokus-esports-ex-zero-tenacity-202610201100",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-18T18:36:49Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 48,
         "points": 1321,
@@ -1614,19 +1864,12 @@
         "details_path": "live/2026/details/2026_10_05/0093--ex-zero_tenacity--brutmonster-cjoffo-dragon-kind0-vldn.md"
       },
       "vrs_ambiguous": {},
-      "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:bovada"
-      ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "bovada: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "flags": [],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/fokus-vs-ex-zero-tenacity-stake-ranked-episode-6-closed-qualifier-1082158"
+        "https://www.hotspawn.com/matches/fokus-vs-ex-zero-tenacity-stake-ranked-episode-6-closed-qualifier-1082158",
+        "https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/fokus-esports-ex-zero-tenacity-202610201100",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
       ]
     },
     {
@@ -1637,15 +1880,29 @@
       "tier": "B",
       "team_a": "Nice Try",
       "team_b": "aimclub",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.4694,
+      "prob_b": 0.5306,
+      "pick_team": "aimclub",
+      "pick_prob": 0.5306,
+      "fair_decimal_a": 2.13,
+      "fair_decimal_b": 1.885,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32408196",
+          "decimal_a": 2.0,
+          "decimal_b": 1.76923,
+          "recomputed_prob_a": 0.4694,
+          "stored_prob_a": 0.4694,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/nice-try-aimclub-202610201330",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-18T18:36:49Z"
+        }
+      ],
       "vrs_team_a": null,
       "vrs_team_b": null,
       "vrs_ambiguous": {
@@ -1655,14 +1912,14 @@
               "standing": 77,
               "points": 1113,
               "roster": "ERSIN, mhN1, ragga, waZz, zewts",
-              "latest_match_date": null,
+              "latest_match_date": "2026-10-03",
               "details_path": "live/2026/details/2026_10_05/0077--aimclub--ersin-mhn1-ragga-wazz-zewts.md"
             },
             {
               "standing": 336,
               "points": 504,
               "roster": "Ed1m, ERSIN, RoberttMP, XELLOW, zewts",
-              "latest_match_date": null,
+              "latest_match_date": "2026-04-26",
               "details_path": "live/2026/details/2026_10_05/0336--aimclub--ed1m-ersin-roberttmp-xellow-zewts.md"
             }
           ]
@@ -1670,21 +1927,12 @@
       },
       "flags": [
         "ambiguous_vrs_name:aimclub",
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "not_in_vrs:Nice Try",
-        "stale_or_unverified_quote:bovada"
+        "not_in_vrs:Nice Try"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "aimclub: multiple official rating rows; the fixture’s current roster is not confirmed.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "Nice Try: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
-        "bovada: price or fixture freshness could not be established.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/nice-try-vs-aimclub-stake-ranked-episode-6-closed-qualifier-1082159"
+        "https://www.hotspawn.com/matches/nice-try-vs-aimclub-stake-ranked-episode-6-closed-qualifier-1082159",
+        "https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/nice-try-aimclub-202610201330"
       ]
     }
   ],
