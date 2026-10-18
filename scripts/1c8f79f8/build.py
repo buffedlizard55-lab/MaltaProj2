@@ -432,6 +432,27 @@ def ledger_row_body(fx, team_a, team_b, crowd_a, crowd_b, total_picks,
                        "climb_side": pick["climb"].get("side"),
                        "climb_gates": pick["climb"].get("gates"),
                        "swing_cost_pts": pick["climb"]["swing_cost_pts"]})
+        # Takeover repair (a89b76e9): re-gate the swing on the PUBLISHED
+        # (live) ownership. A lobby moves crowd % between captures, and the
+        # ladder contract says climb = gates passed — the published row must
+        # be self-consistent, so a swing whose live ownership breaks a gate
+        # is demoted and the demotion is documented, never silently kept.
+        side = ladder.get("climb_side") or (
+            "a" if (ladder["climb"] or "").casefold() == team_a.casefold() else "b")
+        own = ((crowd_b if side == "b" else crowd_a) or 0) / 100.0
+        prob = ladder["climb_prob"] or 0.0
+        if own > 0.20 or prob < 0.30 or (own > 0 and prob / own < 2.0):
+            ladder.update({"climb": None, "climb_prob": None, "climb_odds": None,
+                           "climb_side": None, "climb_gates": None,
+                           "swing_cost_pts": None,
+                           "climb_demoted_reason":
+                               f"live ownership moved past the ladder gate(s) "
+                               f"(published ownership {own:.0%}, climb floor 20%)"})
+            flags.append("climb_demoted_live_ownership_gate")
+            context.append(
+                f"Curated climb swing demoted at this refresh: the published ownership "
+                f"{own:.0%} no longer satisfies the ladder gates (underdog fair ≥30%, "
+                f"ownership ≤20%, probability/ownership ≥2×). Safe pick retained.")
 
     return {
         "fixture_id": fid,
@@ -486,12 +507,23 @@ def build_rows(capture_path=None, now=None) -> tuple[list[dict], dict]:
     dropped: list[dict] = []
     ledger_ids = [fx["fixture_id"] for fx in research.FIXTURES]
     present = [fid for fid in ledger_ids if fid in api_rows]
+    # Takeover repair (a89b76e9): only STILL-OPEN researched fixtures count
+    # toward capture coverage. A fixture that locks out on schedule is absent
+    # from a healthy status=scheduled capture, and that is not degradation —
+    # without this, a growing lobby would be misclassified as "degraded" the
+    # moment most of an old research ledger has locked, which would silently
+    # stop auto-adding the new listings the every-match contract requires.
+    open_ledger = [fx for fx in research.FIXTURES
+                   if open_for_picks(fx["start_utc"], fx["lock_utc"], now)]
+    open_ledger_present = [fx["fixture_id"] for fx in open_ledger
+                           if fx["fixture_id"] in api_rows]
     degraded_reasons = []
     if not fixtures:
         degraded_reasons.append("capture returned no fixtures")
-    elif len(present) * 2 < len(ledger_ids):
+    elif open_ledger and len(open_ledger_present) * 2 < len(open_ledger):
         degraded_reasons.append(
-            f"capture covers only {len(present)} of {len(ledger_ids)} researched fixtures")
+            f"capture covers only {len(open_ledger_present)} of {len(open_ledger)} "
+            "still-open researched fixtures")
     degraded = bool(degraded_reasons)
 
     for fx in research.FIXTURES:
