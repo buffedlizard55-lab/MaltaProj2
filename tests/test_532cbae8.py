@@ -13,15 +13,19 @@ class MobileTWCEntryPointTests(unittest.TestCase):
         self.assertIsNotNone(soup.select_one('meta[name="viewport"][content*="width=device-width"]'))
         summary = soup.select_one("#executive-summary")
         self.assertIsNotNone(summary, "the landing page must have a clearly named executive summary")
+        self.assertIsNotNone(summary.select_one("#finalday-front"),
+                             "the current live-price desk must be the executive entry point")
+        self.assertIsNone(summary.select_one("#finals-front"),
+                          "the prior pre-price Day-5 desk must not be presented as current")
+        self.assertIsNone(summary.select_one("#day5-front"),
+                          "the older Day-5 snapshot must not be presented as current")
 
         hrefs = {anchor.get("href") for anchor in summary.select("a[href]")}
         required = {
-            "day5/picks.html",
-            "day5/twc.html",
-            "day5/unresolved.html",
-            "finals/picks.html",
-            "finals/twc.html",
-            "finals/unresolved.html",
+            "finalday/index.html",
+            "finalday/picks.html",
+            "finalday/twc.html",
+            "finalday/unresolved.html",
             "picks-every-match/index.html",
             "picks-every-match/unresolved.html",
         }
