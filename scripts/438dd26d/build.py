@@ -201,7 +201,7 @@ def build():
                     {"source": "Bookmaker feeds (board)", "url": "data/fe803b80/board.json",
                      "result": "No quote for this fixture."},
                 ],
-                "what_would_resolve_it": "A named bookmaker two-way price, or a Valve VRS entry for WXM.",
+                "what_would_resolve_it": "What would resolve it: a named bookmaker two-way price, or a Valve VRS entry for WXM.",
             }
 
     # ---- exact ties on the board (single book at 50/50): unresolved, not picked --------------
@@ -215,7 +215,7 @@ def build():
                      "result": "Single book at exactly 1.85 / 1.85, so 50.0% / 50.0%. No second book, no model basis."},
                     {"source": "HotSpawn fixture", "url": row["hotspawn_url"], "result": "Fixture confirmed on the canonical board."},
                 ],
-                "what_would_resolve_it": "A second bookmaker line that breaks the tie, or a Valve VRS row for both teams.",
+                "what_would_resolve_it": "What would resolve it: a second bookmaker line that breaks the tie, or a Valve VRS row for both teams.",
             }
 
     # ---- TWC Day-5 re-read ------------------------------------------------------------------
@@ -373,7 +373,7 @@ Valve-VRS probabilities re-derived: {s['vrs_rederived_ok']} match, {s['vrs_reder
     parts.append(f"""<div class="card bad">
 <div class="muted">Chinggis Warriors vs WXM · HotSpawn 1081863 · Oct 20 07:00 UTC ({malta('2026-10-20T07:00:00Z')} Malta) · MaceMedia VOID Autumn Cup</div>
 <p style="margin:8px 0"><b>PICK: none published (UNRESOLVED)</b></p>
-<p><b>Limitation:</b> no bookmaker two-way price was found, WXM has no Valve VRS row in any regional file, and there is no Elo history for WXM. Any pick here would be invented, so none is given. {esc(g2['what_would_resolve_it'])}</p>
+<p><b>Limitation:</b> no bookmaker two-way price was found, WXM has no Valve VRS row in any regional file, and there is no Elo history for WXM. Any pick here would be invented, so none is given. <b>{esc(g2['what_would_resolve_it'].split(':')[0])}:</b>{esc(g2['what_would_resolve_it'].split(':',1)[1])}</p>
 <details><summary>What was tried</summary><ul>{rows_html}</ul></details>
 </div>""")
 
@@ -385,7 +385,7 @@ Valve-VRS probabilities re-derived: {s['vrs_rederived_ok']} match, {s['vrs_reder
         parts.append(f"""<div class="card bad">
 <div class="muted">{esc(row['team_a'])} vs {esc(row['team_b'])} · HotSpawn {esc(fid)} · {malta(row['start_utc'])} Malta · {esc(row['competition'])}</div>
 <p style="margin:8px 0"><b>PICK: none published (UNRESOLVED, exact tie)</b></p>
-<p><b>Limitation:</b> a 50/50 line carries no information, so no pick is given. {esc(g3['what_would_resolve_it'])}</p>
+<p><b>Limitation:</b> a 50/50 line carries no information, so no pick is given. <b>{esc(g3['what_would_resolve_it'].split(':')[0])}:</b>{esc(g3['what_would_resolve_it'].split(':',1)[1])}</p>
 <details><summary>What was tried</summary><ul>{rows_html}</ul></details>
 </div>""")
 
