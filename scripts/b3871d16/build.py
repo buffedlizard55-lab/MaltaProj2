@@ -47,6 +47,15 @@ VALVE_RD = 75.0
 VALVE_G = 1.0 / math.sqrt(1.0 + 3.0 * VALVE_Q ** 2 * VALVE_RD ** 2 / math.pi ** 2)
 VALVE_C = VALVE_G * math.log(10) / 400.0
 
+FLAG_LABEL = {
+    "tier_c_event_low_coverage": "tier-C event - thin external coverage",
+    "no_external_price_for_this_fixture": "no bookmaker prices this card",
+    "originated_vrs_line": "line comes from Valve's ratings, not a book",
+    "originated_elo_line_no_official_rating": "one side has no official rating - originated Elo line",
+    "no_source_input_available_row_left_blank": "no source input at all - row left blank",
+    "joined_price_start_time_differs_more_than_3h": "the price found starts over 3h from this card - weak join",
+    "alias_applied_see_evidence": "team alias resolved from evidence, see the ledger",
+}
 MODEL_SHORT = {"valve_vrs": "Valve VRS rating model", "originated_elo": "originated Elo over bo3.gg results",
                "vrs": "Valve VRS rating model", "model": "rating model"}
 BASIS_LABEL = {
@@ -146,19 +155,31 @@ def norm(name: str) -> str:
 
 # ------------------------------------------------------------------ crowd
 def crowd_index() -> tuple[dict, dict]:
-    """fixture_id -> row, plus provenance for the label under the table."""
+    """fixture_id -> crowd row, merged over every available capture, newest file first.
+
+    A card this desk did not re-read still shows the ownership sample another capture holds, and
+    each row keeps the file and minute it came from so the label beside it is honest.
+    """
+    idx: dict[str, dict] = {}
+    stamps: dict[str, dict] = {}
     for path in CROWD_PATHS:
         blob = load_json(path)
         if not blob or not blob.get("rows"):
             continue
-        idx = {}
+        stamp = {"read_utc": blob.get("read_utc"), "source": blob.get("source_api") or blob.get("source_url"),
+                 "file": str(path.relative_to(ROOT))}
+        stamps[stamp["file"]] = stamp
         for row in blob["rows"]:
             fid = str(row.get("fixture_id") or "")
-            if fid:
-                idx[fid] = {**row, "_origin": path.name}
-        return idx, {"read_utc": blob.get("read_utc"), "source": blob.get("source_api") or blob.get("source_url"),
-                     "file": str(path.relative_to(ROOT))}
-    return {}, {}
+            if fid and fid not in idx:
+                idx[fid] = {**row, "_file": str(path.relative_to(ROOT)), "_read_utc": stamp["read_utc"]}
+    if not idx:
+        return {}, {}
+    files = list(stamps)
+    meta = dict(stamps[files[0]])
+    meta["files"] = files
+    meta["multi"] = len(files) > 1
+    return idx, meta
 
 
 # ------------------------------------------------------------------ row builder
@@ -251,13 +272,15 @@ def build_rows(board: dict, overrides: dict, crowd: dict, live_prices: dict | No
         c = crowd.get(fid)
         crowd_a = crowd_b = total_picks = None
         crowd_orientation = None
+        crowd_provenance = None
         if c:
             if norm(c.get("team_a", "")) in (norm(team_a), norm(team_b)) and norm(c.get("team_b", "")) in (norm(team_a), norm(team_b)):
                 flip = norm(c.get("team_a", "")) == norm(team_b) and norm(team_a) != norm(team_b)
                 crowd_a, crowd_b = (c.get("crowd_b"), c.get("crowd_a")) if flip else (c.get("crowd_a"), c.get("crowd_b"))
                 total_picks = c.get("total_picks")
-                crowd_orientation = ("flipped on names" if flip else "aligned") + (
-                    f" - {c['_provenance']}" if c.get("_provenance") else "")
+                crowd_orientation = "flipped on names" if flip else "aligned"
+                crowd_provenance = (f'{c.get("_file", "crowd capture")} '
+                                     f'{str(c.get("_read_utc", ""))[11:16]}Z')
             else:
                 crowd_orientation = (f"unusable - crowd row lists {c.get('team_a')} / {c.get('team_b')}, "
                                      f"board lists {team_a} / {team_b}")
@@ -298,8 +321,10 @@ def build_rows(board: dict, overrides: dict, crowd: dict, live_prices: dict | No
             "market_prob_a": market_pa, "market_n_sources": n_sources, "market_spread": spread,
             "model_prob_a": model_pa, "model_basis": model_basis,
             "vrs_points_a": (r.get("vrs_a") or {}).get("points"), "vrs_points_b": (r.get("vrs_b") or {}).get("points"),
+            "model_only_high": bool(line and line.get("basis") == "model" and line["pick_probability"] >= 0.85),
             "line": line, "band": band, "status_flag": status,
-            "crowd": {"a": crowd_a, "b": crowd_b, "picks": total_picks, "orientation": crowd_orientation},
+            "crowd": {"a": crowd_a, "b": crowd_b, "picks": total_picks, "orientation": crowd_orientation,
+                      "provenance": crowd_provenance},
             "leverage": leverage, "notes": notes, "flags": flags,
             "sources": links, "correction": corr.get("action"), "vrs_corrected": bool(vrs_fix),
         "context_links": corr.get("context_links") or [],
@@ -415,6 +440,10 @@ def basis_chips(row: dict) -> str:
         out.append(f'<span class=chip>bo{esc(row["best_of"])}</span>')
     if row["correction"] in ("price_added", "price_added_and_rating_fixed") or row.get("vrs_corrected"):
         out.append('<span class="chip ok">corrected by this desk</span>')
+    for f in row["flags"]:
+        out.append(f'<span class="chip warn" title="{esc(f)}">{esc(FLAG_LABEL.get(f, f.replace("_", " ")))}</span>')
+    if row.get("model_only_high"):
+        out.append('<span class="chip bad">model line above 85% - read it as direction, not odds</span>')
     return "".join(out)
 
 
@@ -429,7 +458,8 @@ def crowd_cell(row: dict) -> str:
     if c["b"] is None:
         return (f'<span class=small>{esc(c["a"])}% recorded, other side not</span><br>'
                 f'<span class="chip bad">under {CROWD_FLOOR_PICKS} picks - no leverage read</span>')
-    txt = f'{esc(row["team_a"])} {c["a"]}% - {esc(row["team_b"])} {c["b"]}% <span class=small mut>(n={c["picks"]})</span>'
+    txt = (f'{esc(row["team_a"])} {c["a"]}% - {esc(row["team_b"])} {c["b"]}% '
+           f'<span class=small mut>(n={c["picks"]}, {esc(c.get("provenance") or "crowd capture")})</span>')
     if c["picks"] is not None and c["picks"] < CROWD_FLOOR_PICKS:
         txt += f'<br><span class="chip bad">under {CROWD_FLOOR_PICKS} picks - no leverage read</span>'
     if c["orientation"] and c["orientation"].startswith("unusable"):
@@ -495,6 +525,10 @@ def match_table(rows: list[dict], caption: str = "", show_leverage=True) -> str:
         if row["band"]:
             why.append(f'<span class="chip bad">{esc(row["band"]["label"])}</span> '
                        f'{esc(row["band"].get("why_no_number", ""))}')
+        if row.get("model_only_high"):
+            why.append('No book prices this card and the model line is above 85%. Small-tier Elo and rating models '
+                       'are far less accurate at that distance than the number suggests: treat it as "pick this '
+                       'side", not as a 95% chance.')
         if row["status_flag"] == "no_pick":
             why.append('<span class=blank>Nothing in the verified set prices or rates both sides.</span>')
         conf = f' - {esc(line["confidence"])}' if line else ""
@@ -525,7 +559,6 @@ def render_index(rows, board, overrides, stamp, crowd_meta) -> str:
     rating = [r for r in rows if r["status_flag"] == "rating_only"]
     banded = [r for r in rows if r["status_flag"] == "direction_band"]
     blank = [r for r in rows if r["status_flag"] == "no_pick"]
-    today = [r for r in rows if (r["start_utc"] or "").startswith(board.get("week", {}).get("today_utc", "")[:10])]
     day5 = overrides["day5_cards"]
     d5rows = [r for r in rows if r["fixture_id"] in day5]
     top = sorted((r for r in rows if r["line"]), key=lambda r: (-(r["points"] or 0), r["line"]["pick_probability"] * -1))[:8]
@@ -872,6 +905,10 @@ def render_method(board, overrides, stamp, crowd_meta) -> str:
            f'as points relative to the field: points x (our probability - crowd share of that side).</li>'
            '<li><strong>HotSpawn is a fixture and ownership source only.</strong> Its percentages are never an input to a line, '
            'and a card whose only evidence is crowd behaviour gets no pick from this desk.</li>'
+           '<li><strong>A model line above 85% gets demoted to a direction.</strong> Where no book prices a card and '
+           'the rating or Elo model is very confident, the number is printed with a flag: those models are measurably '
+           f'worse at the extremes than at the middle, so {esc("95.1%")} on a tier-C card means "play it", not '
+           '"95% of the time".</li>'
            '<li><strong>Blank beats wrong.</strong> If no verified source supports a number, the cell is blank, the reason is '
            'published, and the sources that were tried are named.</li>'
            '<li><strong>Read times are part of the data.</strong> Every price carries the minute it was read; nothing on this page '
@@ -934,7 +971,7 @@ def main() -> int:
         pcts = cr.get("picked_percent") or [None, None]
         crowd[fid] = {"fixture_id": fid, "team_a": row["team_a"], "crowd_a": pcts[0],
                       "team_b": row["team_b"], "crowd_b": pcts[1], "total_picks": cr.get("total_picks"),
-                      "_provenance": f"this desk ({cr.get('source', '')} read {cr.get('read_utc', '')})"}
+                      "_file": "this desk", "_read_utc": cr.get("read_utc", "")}
     live_prices = load_json(LIVE_PRICES_PATH) or {}
     vrs_status = load_json(VRS_STATUS_PATH) or {}
     collector = load_json(COLLECTOR_PATH) or {}
