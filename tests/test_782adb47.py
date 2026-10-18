@@ -26,6 +26,20 @@ def vrs(pa, pb, k=0.4213):
     return 1.0 / (1.0 + math.exp(-(k * C * (pa - pb))))
 
 
+def devig(decimal_a, decimal_b):
+    ia, ib = 1.0 / float(decimal_a), 1.0 / float(decimal_b)
+    return ia / (ia + ib)
+
+
+def recalibrated_from_raw_vrs(p_raw, k=0.4213):
+    """Apply the calibrated slope to a retained k=1 VRS probability."""
+    p_raw = float(p_raw)
+    if not 0.0 < p_raw < 1.0:
+        raise ValueError("raw VRS probability must be strictly between zero and one")
+    logit_raw = math.log(p_raw / (1.0 - p_raw))
+    return 1.0 / (1.0 + math.exp(-(k * logit_raw)))
+
+
 class FinalsBoard(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -33,10 +47,21 @@ class FinalsBoard(unittest.TestCase):
         cls.canon = load("data/c64a5e19/board.json")
         cls.research = load("data/782adb47/research.json")
 
-    def test_every_canonical_open_fixture_exactly_once(self):
-        want = sorted(str(r["fixture_id"]) for r in self.canon["open"])
-        got = sorted(r["fixture_id"] for r in self.board["rows"])
-        self.assertEqual(want, got)
+    def test_inventory_is_unique_and_reconciles_only_to_identical_capture(self):
+        rows = self.board["rows"]
+        ids = [str(r["fixture_id"]) for r in rows]
+        self.assertEqual(len(ids), len(set(ids)), "finals rows must not duplicate a fixture")
+
+        locked_count = sum(bool(r["locked"]) for r in rows)
+        self.assertEqual(self.board["summary"]["open"], len(rows) - locked_count)
+        self.assertEqual(self.board["summary"]["locked_since_capture"], locked_count)
+
+        # The canonical board refreshes independently of this retained desk. Compare
+        # inventories only when both documents carry the exact same source capture;
+        # fixture rotations and lock transitions must not rewrite historical rows.
+        if self.board.get("canonical_capture") == self.canon.get("generated_utc"):
+            want = {str(r["fixture_id"]) for r in self.canon["open"]}
+            self.assertEqual(set(ids), want)
 
     def test_pick_is_argmax_and_probs_sum_to_one(self):
         for r in self.board["rows"]:
@@ -49,19 +74,24 @@ class FinalsBoard(unittest.TestCase):
             self.assertAlmostEqual(r["pick_prob"], max(r["prob_a"], r["prob_b"]), places=9)
 
     def test_market_rows_rederive_from_retained_decimals(self):
-        canon = {str(r["fixture_id"]): r for r in self.canon["open"]}
         for r in self.board["rows"]:
             if r["basis"] != "market":
                 continue
-            src = canon[r["fixture_id"]]
+            # The finals row retains fixture-oriented decimals from the exact
+            # capture used to publish its probability. Do not borrow quotes from
+            # the independently refreshed canonical board, where prices may move.
             probs = []
-            for q in src["quotes"]:
+            for q in r.get("quotes", []):
                 if q.get("no_vig_prob_team_a") is not None:
-                    probs.append(q["no_vig_prob_team_a"])
-                else:
-                    ia, ib = 1.0 / q["decimal_a"], 1.0 / q["decimal_b"]
-                    p = ia / (ia + ib)
-                    probs.append(1 - p if q.get("swapped") else p)
+                    probs.append(float(q["no_vig_prob_team_a"]))
+                    continue
+                da, db = q.get("decimal_a"), q.get("decimal_b")
+                self.assertIsNotNone(da, f"{r['fixture_id']} retained quote missing decimal_a")
+                self.assertIsNotNone(db, f"{r['fixture_id']} retained quote missing decimal_b")
+                self.assertGreater(float(da), 1.0, r["fixture_id"])
+                self.assertGreater(float(db), 1.0, r["fixture_id"])
+                probs.append(devig(float(da), float(db)))
+            self.assertTrue(probs, f"{r['fixture_id']} market row has no retained two-sided quote")
             self.assertAlmostEqual(r["prob_a"], sum(probs) / len(probs), places=3,
                                    msg=r["fixture_id"])
 
@@ -83,16 +113,34 @@ class FinalsBoard(unittest.TestCase):
     def test_model_and_bound_math(self):
         floor_pts = self.research["vrs_floor"]["points"]
         canon = {str(x["fixture_id"]): x for x in self.canon["open"]}
+        same_capture = self.board.get("canonical_capture") == self.canon.get("generated_utc")
         models = {m["fixture_id"]: m for m in self.research["model_rows"]}
         bounds = {b["fixture_id"]: b for b in self.research["bound_rows"]}
         for r in self.board["rows"]:
             if r["basis"] == "model" and r["fixture_id"] in models:
                 m = models[r["fixture_id"]]
                 self.assertAlmostEqual(r["prob_a"], vrs(m["points_a"], m["points_b"]), places=6)
-            elif r["basis"] == "model":
+            elif r["basis"] == "model" and same_capture:
+                # On a matching capture, re-derive directly from that capture's
+                # retained Valve points. A different capture may have rotated this
+                # fixture out, or refreshed its inputs, so never join across reads.
+                self.assertIn(r["fixture_id"], canon, r["fixture_id"])
                 v = canon[r["fixture_id"]]["vrs"]
+                self.assertTrue(v.get("team_a") and v.get("team_b"), r["fixture_id"])
                 self.assertAlmostEqual(
-                    r["prob_a"], vrs(v["team_a"]["points"], v["team_b"]["points"]), places=6)
+                    r["prob_a"], vrs(v["team_a"]["points"], v["team_b"]["points"]),
+                    places=6, msg=r["fixture_id"])
+            elif r["basis"] == "model":
+                # The finals row retains the canonical k=1 probability alongside
+                # its calibrated output. Reapply k=0.4213 on that retained input
+                # when the matching source fixture is no longer in the current
+                # canonical inventory; do not substitute a newer row or KeyError.
+                raw = r.get("canonical_prob_a")
+                self.assertIsNotNone(raw, f"{r['fixture_id']} missing retained canonical model input")
+                # The canonical probability is stored to four decimals; allow the
+                # corresponding rounding error after applying the logit slope.
+                self.assertAlmostEqual(r["prob_a"], recalibrated_from_raw_vrs(raw),
+                                       places=4, msg=r["fixture_id"])
             elif r["basis"] == "bound":
                 b = bounds[r["fixture_id"]]
                 p_rated = vrs(b["points"], floor_pts)
