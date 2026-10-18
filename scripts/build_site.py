@@ -79,6 +79,7 @@ NAV = [
     ("start/index.html", "📱 Start here"),
     ("start/picks.html", "Today's picks"),
     ("start/twc.html", "🏆 TWC final day"),
+    ("climb/index.html", "🐟 Climb desk"),
     ("picks-every-match/index.html", "All CS2 picks (canonical)"),
     ("picks-every-match/unresolved.html", "Unresolved"),
     ("day-one.html", "Day-one review"),
@@ -700,6 +701,11 @@ roster investigation are on the <a href="day4/twc-review.html">day 1–3 review<
 <div class="hero-card">
 <p class="eyebrow">CS2 Pick’em dashboard · Executive summary</p>
 {start_front_html()}
+<p class="note">🐟 <a href="climb/index.html"><strong>Climb desk (a89b76e9)</strong></a> —
+<a href="climb/picks.html">a pick for every open match</a> (incl. researched resolutions for the rows the
+capture left blank) · <a href="climb/twc.html">TWC final day: safe + contrarian climb picks</a> ·
+<a href="climb/unresolved.html">unresolved &amp; limitations</a> · <a href="climb/flagged.html">flagged A1–A8</a>.
+External lines only; HotSpawn is never a probability.</p>
 <details class="archive" id="older-boards"><summary>Earlier desks from previous sessions (superseded by Start here)</summary>
 {finals_front_html()}
 {day5_front_html()}

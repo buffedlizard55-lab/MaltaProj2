@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unresolved &amp; limitations</title>
+<meta name="description" content="Rows resolved via the research fallback ladder and every remaining limitation.">
+<style>
+:root { --bg:#0e1116; --card:#161b22; --ink:#e8edf4; --muted:#93a0b0; --line:#263041;
+  --ok:#1f7a4d; --ok2:#2ea86b; --warn:#b7791f; --bad:#b23a48; --accent:#ffb020; --fav:#2ea86b; --dog:#8a63d2; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+a { color:#7cc4ff; text-decoration:none; word-break:break-word; }
+a:hover, a:focus { text-decoration:underline; }
+header.top { position:sticky; top:0; z-index:20; background:#12161c; border-bottom:1px solid var(--line); padding:10px 14px; }
+header.top .brand { font-weight:700; font-size:15px; }
+header.top .sub { color:var(--muted); font-size:12px; margin-top:2px; }
+main { padding:12px 12px 84px; max-width:56rem; margin:0 auto; }
+h1 { font-size:22px; line-height:1.25; margin:10px 0 6px; }
+h2 { font-size:18px; margin:22px 0 8px; }
+h3 { font-size:15px; margin:16px 0 6px; }
+p { margin:8px 0; }
+.muted { color:var(--muted); font-size:13px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin:10px 0; }
+.hero { border:2px solid var(--accent); }
+.pill { display:inline-block; padding:2px 9px; border-radius:999px; font-size:11.5px; font-weight:700; letter-spacing:.2px; margin:2px 4px 2px 0; }
+.pill.fav { background:#123922; color:#7fe0a8; border:1px solid #2ea86b55; }
+.pill.dog { background:#2b2144; color:#cbb6f6; border:1px solid #8a63d255; }
+.pill.safe { background:#123922; color:#7fe0a8; }
+.pill.climb { background:#3a2b12; color:#ffd58a; border:1px solid var(--accent); }
+.pill.no { background:#3b1a20; color:#f2a2ac; }
+.pill.basis { background:#1b2634; color:#9fc2e8; }
+.pill.tier { background:#222b38; color:#b9c6d6; }
+.pill.flag { background:#3b1a20; color:#f2a2ac; border:1px solid var(--bad); }
+.pill.ok { background:#123922; color:#7fe0a8; }
+table { width:100%; border-collapse:collapse; font-size:13.5px; }
+th, td { text-align:left; padding:7px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+th { color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.4px; }
+.bar { height:8px; background:#222b38; border-radius:6px; overflow:hidden; margin:4px 0 2px; }
+.bar > span { display:block; height:100%; background:linear-gradient(90deg,#2ea86b,#1f7a4d); }
+.pickbig { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin:6px 0; }
+.pickbig .name { font-size:22px; font-weight:800; }
+.pickbig .pct { font-size:20px; font-weight:800; color:var(--accent); }
+.teams { display:flex; justify-content:space-between; gap:10px; font-size:14px; }
+.teams .t { flex:1 1 45%; }
+.teams .t.right { text-align:right; }
+.pctline { font-weight:700; font-size:15px; }
+.srcs { margin-top:6px; font-size:12px; color:var(--muted); }
+.srcs a { margin-right:8px; display:inline-block; }
+ul li { margin:5px 0; }
+.actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0; }
+.actions a { display:block; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; font-weight:700; color:var(--ink); }
+.actions a small { display:block; font-weight:400; color:var(--muted); margin-top:2px; }
+.actions a.wide { grid-column:1 / -1; }
+nav.tabs { position:fixed; left:0; right:0; bottom:0; z-index:30; display:flex; background:#12161c; border-top:1px solid var(--line); }
+nav.tabs a { flex:1; text-align:center; padding:10px 2px 12px; font-size:11px; color:var(--muted); }
+nav.tabs a .ic { display:block; font-size:17px; line-height:1.2; }
+nav.tabs a.active { color:var(--accent); }
+details { margin:8px 0; }
+summary { cursor:pointer; font-weight:600; }
+.toc a { display:block; padding:8px 10px; margin:6px 0; background:var(--card); border:1px solid var(--line); border-radius:10px; color:var(--ink); font-weight:600; }
+.toc a small { display:block; color:var(--muted); font-weight:400; }
+.fixture { border-left:4px solid var(--line); }
+.fixture.tierS { border-left-color:var(--accent); }
+.fixture.tierB { border-left-color:#2ea86b; }
+.kicker { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
+.tw { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+@media (min-width: 720px) {
+  main { padding:16px 20px 84px; }
+  h1 { font-size:26px; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">🐟 HotSpawn Pick'em · Climb desk</div>
+  <div class="sub">Picks for every CS2 match · external lines only · TWC final day 18 Oct</div>
+</header>
+<main>
+
+<h1>Unresolved &amp; limitations</h1>
+<p class="muted">The two rows the canonical board could not price are resolved below with full research ledgers. Remaining limitations are published here rather than papered over — nothing on the picks page is invented.</p>
+<h2>Previously blank rows — resolved</h2>
+
+<div class="card">
+  <div class="kicker">Resolved by fallback ladder · previously blank</div>
+  <h3>Apogee Betclic v BBL <span class="muted">#1081546</span></h3>
+  <p>PGL Bucharest 2027: Closed Qualifier (upper bracket final — winner qualifies for the LAN) · starts 2026-10-19T14:00:00Z</p>
+  <p><span class="pill ok">RESOLVED</span> RESOLVED — pick BBL at 51.9% / Apogee Betclic 48.1% · basis: market (re-joined dropped Thunderpick quote + thin Kalshi corroboration), alias: &#x27;Betclic&#x27; = &#x27;Apogee Betclic&#x27; = &#x27;Betclic Apogee Esports&#x27;</p>
+  <details open><summary>Attempt ledger (HLTV → books → exchange → VRS)</summary>
+    <ul><li><strong>Step 1 · HLTV</strong> — Fixture confirmed as HLTV 2399664 &#x27;Betclic vs. BBL&#x27; (bo3, online, upper bracket final, 19 Oct 14:00Z). HLTV renamed the placeholder &#x27;BBL/ex-RUSTEC winner&#x27; to BBL — BBL beat ex-RUSTEC in the UB semi (ex-RUSTEC confirmed in the lower bracket on Liquipedia). Ranks: Betclic HLTV #71 / VRS #50 (match lineups block); BBL HLTV #49 world / VRS #39 (EU#32). <a href="https://www.hltv.org/matches/2399664/betclic-vs-bbl-pgl-bucharest-2027-closed-qualifier">src</a> <a href="https://www.hltv.org/team/13996/bbl">src</a> <a href="https://liquipedia.net/counterstrike/PGL/2027/Bucharest/Qualifier">src</a></li><li><strong>Step 2 · esportsbook</strong> — Thunderpick via bo3.gg prices the match: Betclic 1.92 / BBL 1.78 (retrieved 2026-10-18T00:45:17Z in the canonical capture; URL slug &#x27;betclic-apogee-esports-vs-bbl-19-10-2026&#x27; — same opponent and same kickoff as HotSpawn fixture 1081546). The canonical matcher dropped this quote only because of the name variant &#x27;Betclic&#x27; vs &#x27;apogeebetclic&#x27;; re-joined here. No-vig: 1/1.92 and 1/1.78 normalized = 48.1 / 51.9. <a href="https://bo3.gg/matches/betclic-apogee-esports-vs-bbl-19-10-2026">src</a></li><li><strong>Step 3 · exchange</strong> — Kalshi market KXCS2GAME-26OCT191000BBLAPOGEE exists but was rejected by the canonical capture as a thin order book (BBL best bid 53c). Directionally consistent with the book (BBL slight favourite); recorded as corroboration only, not used as a price. <a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct191000bblapogee">src</a></li><li><strong>Step 4 · VRS ledger</strong> — Not needed (market price found). Ledger fallback would have been BBL VRS #37 in the Valve 2026-10-05 snapshot vs Betclic unreconciled key — wider uncertainty than the market line. <a href="https://github.com/ValveSoftware/counter-strike_regional_standings">src</a></li></ul>
+  </details>
+  <p class="muted">tiebreak: n/a — market price found</p>
+  <p><a href="flagged.html#A1"><span class="pill flag">flag A1</span></a><a href="flagged.html#A2"><span class="pill flag">flag A2</span></a><a href="flagged.html#A4"><span class="pill flag">flag A4</span></a></p>
+</div>
+<div class="card">
+  <div class="kicker">Resolved by fallback ladder · previously blank</div>
+  <h3>Chinggis Warriors v WXM <span class="muted">#1081863</span></h3>
+  <p>MaceMedia VOID Autumn Cup 2026 (Shanghai, $12,000, Valve-ranked) · starts 2026-10-20T07:00:00Z</p>
+  <p><span class="pill ok">RESOLVED</span> RESOLVED — pick Chinggis Warriors at 50.0% / WXM 50.0% (even book line; direction decided by documented research tiebreak) · basis: esportsbook (egamersworld 1.8/1.8 -&gt; no-vig 50/50) + HLTV team-research tiebreak for direction only</p>
+  <details open><summary>Attempt ledger (HLTV → books → exchange → VRS)</summary>
+    <ul><li><strong>Step 1 · HLTV</strong> — Fixture confirmed: HLTV event 9435 (MaceMedia VOID Autumn Cup 2026, Oct 20-24, Shanghai, $12,000). Chinggis Warriors: HLTV world #61, Valve VRS #60 Asia (1,196 pts, Oct 14 ranking page), roster sk0R / cool4st / ROUX / fury5k / tikuak, 4 wins in last 5 (MESA Pro Series title Oct 11 per HLTV news 45697). WXM = &#x27;Wept Xyloid Melancholy&#x27; (maisesports schedule + Kalshi alias): open-qualifier team, no HLTV world ranking, no Valve VRS entry, roster unpublished (egamersworld lists 5x &#x27;noName&#x27;), zero recorded matches on egamersworld. <a href="https://www.hltv.org/team/12646/chinggis-warriors">src</a> <a href="https://www.hltv.org/events/9435/macemedia-void-autumn-cup-2026">src</a> <a href="https://www.hltv.org/news/45697/flyquest-add-to-vrs-after-cruising-to-victory-at-anzc-locals-chinggis-warriors-get-big-win-over-5star-in-mesa-pro-series">src</a> <a href="https://maisesports.com.br/campeonatos/cs-go-void-autumn-cup-2026">src</a></li><li><strong>Step 2 · esportsbook</strong> — egamersworld (odds aggregator / esportsbook portal) lists 1.8 / 1.8 on the match page (re-read 2026-10-18 ~01:10Z). No-vig = 50/50. Single source. <a href="https://egamersworld.com/counterstrike/match/EJcHRdr5Vx/chinggis-warriors-vs-wxm-_ddme1I7dZ">src</a></li><li><strong>Step 3 · exchange + bo3.gg mirror</strong> — bo3.gg has no match page (HTTP 404 checked 2026-10-18 ~01:05Z) so no Thunderpick price exists. Kalshi market KXCS2GAME-26OCT200300CWWXM exists but was rejected as a thin/one-sided book (placeholder 5c bid) — not usable as a price. <a href="https://bo3.gg/matches/chinggis-warriors-vs-wxm-20-10-2026">src</a> <a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct200300cwwxm">src</a></li><li><strong>Step 4 · VRS ledger</strong> — Not usable: WXM has no Valve VRS entry (absent from the Oct 5 regional standings), so no two-sided rating comparison exists. Published probability stays at the book&#x27;s 50/50; only the pick direction is decided by research (ranked+formed roster vs entirely unranked unknown). <a href="https://github.com/ValveSoftware/counter-strike_regional_standings">src</a></li></ul>
+  </details>
+  <p class="muted">tiebreak: A pick&#x27;em requires a side. At an even market price, the only defensible direction is the team we can actually evidence: Chinggis Warriors are HLTV-ranked (#61), VRS-listed, with a known five and recent winning form, against a team absent from every ranking with an unpublished roster. Confidence stays Toss-up because the market says even.</p>
+  <p><a href="flagged.html#A3"><span class="pill flag">flag A3</span></a><a href="flagged.html#A4"><span class="pill flag">flag A4</span></a></p>
+</div>
+<h2>Remaining limitations (no row is silently missing)</h2>
+<div class="card"><ul><li>HotSpawn crowd samples on the two TWC cards were n=1 at the 2026-10-18T00:32Z read — no ownership-based climb advice is possible for the featured matches; the Aurora climb call is conditional on your leaderboard position, not on crowd data.</li><li>1081546 (Apogee Betclic v BBL) rests on ONE bookmaker price (Thunderpick via bo3.gg) re-joined by name alias; the Kalshi corroboration is a thin order book. A second independent price would tighten the line.</li><li>1081863 (Chinggis Warriors v WXM) rests on ONE aggregator price at even money; the opponent is unrated and unlisted everywhere. Probabilities are the book&#x27;s 50/50; only the direction is researched. This is the weakest row on the board.</li><li>11 model-only rows (no bookmaker price anywhere) derive from the Valve VRS snapshot of 2026-10-05 plus the board&#x27;s fitted calibration (k=0.255, mae 0.095 on 17 pairs). They are honest estimates, not market lines; expect wider error on academy/mix rosters.</li><li>1080200 (Wildcard v DENDELE) does not start until 2026-11-12 — model-only and far from the information horizon; the line will change.</li><li>1081129 (Privateer v antidaun) is published as a 50/50 toss-up from a single dead-even price whose listed start differs from HotSpawn&#x27;s by 6h; the forced pick is coin-flip grade.</li><li>Day-2 map scores for three series and day-1 maps for two series were not captured in this session&#x27;s read window and are left blank (flag A5).</li><li>This desk re-publishes the canonical board&#x27;s 33 priced rows unchanged and adds two researched resolutions (1081546, 1081863). Refresh cadence is 4-hourly; quotes can move before lock times.</li></ul></div>
+<h2>What “unresolved” would mean</h2>
+<div class="card">
+  <p>A row stays blank only if all four ladder steps fail: (1) no HLTV/research basis, (2) no book price under any team-name variant, (3) no usable exchange book, (4) no two-sided Valve VRS comparison. In this capture <strong>no row met that bar</strong> — every open fixture carries a pick. The two weakest rows (single-source 1081546, even-line unknown-opponent 1081863) are flagged A2/A3 and listed above.</p>
+</div>
+
+<p class="muted" style="margin-top:24px">Session a89b76e9 · sources per row · HotSpawn used for fixture discovery and ownership only, never as a probability. Method: <a href="method.html">method.html</a> · Site home: <a href="../index.html">home</a>.</p>
+</main>
+<nav class="tabs">
+<a href="index.html"><span class="ic">🏠</span>Summary</a><a href="picks.html"><span class="ic">✅</span>Picks</a><a href="twc.html"><span class="ic">🏆</span>TWC</a><a href="unresolved.html" class="active"><span class="ic">🧩</span>Unresolved</a><a href="flagged.html"><span class="ic">⚑</span>Flagged</a>
+</nav>
+</body>
+</html>
