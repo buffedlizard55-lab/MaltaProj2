@@ -116,6 +116,7 @@ def load(path, default=None):
 def newest_board():
     best = None
     best_path = None
+    best_key = None
     for name in sorted(os.listdir(os.path.join(ROOT, "data"))):
         path = os.path.join(ROOT, "data", name, "board.json")
         if not os.path.isfile(path):
@@ -124,8 +125,25 @@ def newest_board():
         gen = str(data.get("generated_utc") or "")
         if not gen:
             continue
-        if best is None or gen > str(best.get("generated_utc") or ""):
-            best, best_path = data, path
+        # Only boards whose open rows are canonical fixture rows are eligible:
+        # data/ holds several sibling boards with different shapes (rows-keyed
+        # boards, state-less rows). A growing repo must never make the desk
+        # silently select a board it cannot render.
+        rows = [r for r in (data.get("open") or [])
+                if r.get("state") == "open"
+                and r.get("fixture_id") is not None
+                and r.get("team_a") and r.get("team_b")]
+        if not rows or not any(isinstance(r.get("line"), dict) for r in rows):
+            continue
+        # completeness first: the desk publishes a pick for every match, so the
+        # selected board is the one carrying the most priced rows; recency is
+        # only the tie-break.
+        priced = sum(1 for r in rows
+                     if (r.get("line") or {}).get("pick")
+                     or (r.get("line") or {}).get("pick_team"))
+        key = (priced, gen)
+        if best_key is None or key > best_key:
+            best, best_path, best_key = data, path, key
     return best or {}, best_path or ""
 
 
@@ -175,12 +193,35 @@ def page(title, active, body, desc=""):
 """
 
 
+def effective_line(fx, res):
+    """The row's published line: researched resolution > board line (schemas
+    normalized) > the board's own canonical Valve-VRS model block. Blank only
+    when nothing verified exists — never an invented number."""
+    line = fx.get("line") or {}
+    if res:
+        return res["line"]
+    if line and not line.get("pick") and line.get("pick_team"):
+        line = dict(line, pick=line.get("pick_team"),
+                    pick_probability=line.get("pick_prob"))
+    if not ((line.get("pick") or line.get("pick_team"))
+            and line.get("prob_a") is not None):
+        model = fx.get("model") or {}
+        if model.get("prob_a") is not None:
+            ma, mb = model.get("prob_a"), model.get("prob_b")
+            line = {
+                "prob_a": ma, "prob_b": mb,
+                "basis": "model (Valve VRS, canonical block)",
+                "pick": fx.get("team_a") if (ma or 0) >= (mb or 0) else fx.get("team_b"),
+                "pick_probability": max(ma, mb),
+                "confidence": "Lean",
+            }
+    return line
+
+
 def fixture_card(fx, crowd_row, resolutions, is_climb):
     fid = str(fx.get("fixture_id"))
     res = resolutions.get(fid)
-    line = fx.get("line") or {}
-    if res:
-        line = res["line"]
+    line = effective_line(fx, res)
     team_a, team_b = fx.get("team_a"), fx.get("team_b")
     pa, pb = line.get("prob_a"), line.get("prob_b")
     pick = line.get("pick")
@@ -302,20 +343,19 @@ def build(res, board, board_path, crowd):
     n_pick = sum(
         1
         for f in open_fixtures
-        if (f.get("line") or {}).get("pick") or str(f["fixture_id"]) in resolutions
+        if (effective_line(f, resolutions.get(str(f["fixture_id"]))) or {}).get("pick")
     )
     n_market = sum(
         1
         for f in open_fixtures
         if str(f["fixture_id"]) in resolutions
-        or str((f.get("line") or {}).get("basis") or "").startswith("market")
+        or str((effective_line(f, resolutions.get(str(f["fixture_id"]))) or {}).get("basis") or "").startswith("market")
     )
     n_model = sum(
         1
         for f in open_fixtures
         if str(f["fixture_id"]) not in resolutions
-        and (f.get("line") or {}).get("basis") in ("model", "market+model")
-        and not (f.get("quotes") or [])
+        and "model" in str((effective_line(f, None) or {}).get("basis") or "")
     )
 
     gen = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
