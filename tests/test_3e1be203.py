@@ -205,10 +205,16 @@ class Pages(unittest.TestCase):
         self.assertIn("No pick at all", h)
         self.assertIn("Leaderboard climb", h)
 
-    def test_landing_page_links_the_desk(self):
+    def test_landing_page_links_the_current_front_door(self):
         landing = (ROOT / "index.html").read_text(encoding="utf-8")
-        self.assertIn('id="desk-front"', landing)
-        for href in ("desk/picks.html", "desk/twc.html", "desk/unresolved.html", "desk/method.html"):
+        self.assertIn('id="finalday-front"', landing)
+        for href in (
+            "finalday/index.html",
+            "finalday/picks.html",
+            "finalday/twc.html",
+            "finalday/unresolved.html",
+            "picks-every-match/index.html",
+        ):
             self.assertIn(f'href="{href}"', landing)
 
 
