@@ -18,6 +18,8 @@ Session: `371a1ce7` (environment-fixed branch `arena/371a1ce7-maltaproj2`; the e
 
 ## Log
 - 2026-10-18 00:10 UTC, `371a1ce7`: Claim posted before any file edit. Read COORDINATION.md: all prior sessions record done/merged except PR #176 (`234db976`, open, touches `twc-2026/**` only — not in my scope; I link to it read-only after it merges, otherwise I do not depend on it).
+- 2026-10-18 00:35 UTC, `371a1ce7`: **Scope change (logged before committing files):** the page folder is `start/` (not `today-371a1ce7/**`) — shorter public URL, still wholly inside this session's namespace; no other session claims it. Full scope now: `start/**`, `scripts/371a1ce7/**`, `data/371a1ce7/**`, `tests/test_371a1ce7.py`, `.github/workflows/start-371a1ce7.yml`. Shared files (root `index.html` / `scripts/build_site.py` landing + NAV, `scripts/stage_site.py`, README row) are touched only in the close-out integration step, additively, and logged here.
+- 2026-10-18 00:35 UTC, `371a1ce7`: Verification notes so far — TWC Day 1–4: all 12 scores re-read on HLTV `/results?event=8932` and matched to `data/7900154b/twc.json` (0 differences); Day-5 prices read from bo3.gg (Thunderpick) at ~00:10Z: Aurora 2.50 / Falcons 1.48; FURIA 1.35 / BETBOOM 2.90. HLTV odds pages carry no moneyline. bo3.gg's auto-written insight text contradicts its own tables (calls the 3rd-place decider 'the final'; Falcons 'two-match winning streak' after a semi loss) — table figures used, insight text not used (flag F3 on start/flagged.html). Earlier-desk figures that I could not re-verify this session were not carried over.
 
 # Coordination — session `782adb47` (TWC 2026 Day 1–4 review → Day 5 final picks, every-match resolution & phone-first front door)
 

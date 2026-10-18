@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unresolved &amp; limitations · CS2 pick'em picks</title>
+<style>
+:root{--bg:#0f141a;--card:#161d26;--card2:#1b2430;--line:#2a3646;--tx:#e8eef5;--mut:#9fb0c3;--ac:#ffb020;--ok:#37c978;--bad:#ff6b6b;--lnk:#7cc4ff}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--lnk)}a:focus,summary:focus{outline:3px solid var(--ac);outline-offset:2px}
+header.top{position:sticky;top:0;z-index:5;background:#0b1015;border-bottom:1px solid var(--line)}
+header.top .in{max-width:980px;margin:0 auto;padding:8px 12px}
+.brand{font-weight:700;font-size:15px;color:var(--mut)}.brand b{color:var(--ac)}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;padding:6px 0 2px;scrollbar-width:thin}
+nav.tabs a{flex:0 0 auto;text-decoration:none;color:var(--tx);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:15px;min-height:40px;display:inline-flex;align-items:center}
+nav.tabs a[aria-current=page]{background:var(--ac);color:#111;border-color:var(--ac);font-weight:700}
+main{max-width:980px;margin:0 auto;padding:12px}
+h1{font-size:24px;line-height:1.2;margin:10px 0 6px}h2{font-size:20px;margin:22px 0 8px}h3{font-size:17px;margin:0 0 6px}
+.mut{color:var(--mut)}.small{font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.hero{border-color:#3a4c63;background:linear-gradient(180deg,#1a2431,#151c26)}
+.pickline{font-size:22px;font-weight:800;line-height:1.25}.pickline .p{color:var(--ok)}
+.btns{display:grid;gap:8px;margin:12px 0}
+.btn{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:52px;padding:10px 14px;border-radius:12px;background:var(--card2);border:1px solid var(--line);color:var(--tx);text-decoration:none}
+.btn strong{display:block}.btn span.s{font-size:14px;color:var(--mut)}.btn.pri{background:var(--ac);color:#111;border-color:var(--ac)}.btn.pri span.s{color:#3b2a00}
+@media(min-width:700px){.btns{grid-template-columns:1fr 1fr}}
+.chip{display:inline-block;border-radius:999px;padding:2px 9px;font-size:13px;border:1px solid var(--line);background:var(--card2);color:var(--mut);margin:0 4px 4px 0}
+.chip.lines{border-color:#2f7d54;color:#9be3bd}.chip.model{border-color:#8a6d1f;color:#f1d27a}.chip.direction,.chip.none{border-color:#8a3a3a;color:#ffb0b0}
+.chip.climb{border-color:#6a4bb0;color:#cdb8ff}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;color:var(--mut);text-transform:uppercase;letter-spacing:.03em}
+table.resp td strong.pk{color:var(--ok)}
+.bar{display:flex;height:9px;border-radius:5px;overflow:hidden;background:#2a3646;margin:4px 0 2px;min-width:110px}.bar i{display:block;background:var(--ok)}.bar i+i{background:#4a5b70}
+.blank{color:var(--bad);font-weight:600}
+@media(max-width:699px){
+ table.resp thead{display:none}table.resp,table.resp tbody,table.resp tr,table.resp td{display:block;width:100%}
+ table.resp tr{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin:12px 0}
+ table.resp td{border:0;padding:5px 0;display:grid;grid-template-columns:104px 1fr;gap:8px}
+ table.resp td::before{content:attr(data-label);color:var(--mut);font-size:13px;text-transform:uppercase;letter-spacing:.03em;padding-top:2px}
+}
+details.archive{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin:10px 0}
+details summary{cursor:pointer;min-height:40px;display:flex;align-items:center;font-weight:600}
+.jump{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.jump a{border:1px solid var(--line);background:var(--card2);border-radius:999px;padding:6px 12px;text-decoration:none;color:var(--tx);font-size:14px}
+ul.tight{padding-left:20px;margin:6px 0}ul.tight li{margin:4px 0}
+footer{max-width:980px;margin:18px auto;padding:0 12px 28px;color:var(--mut);font-size:14px}
+.tag-up{color:var(--bad);font-weight:700}
+</style></head>
+<body>
+<header class="top"><div class="in"><div class="brand"><b>CS2</b> pick'em · picks from betting lines</div>
+<nav class="tabs" aria-label="Sections"><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="twc.html">TWC final day</a><a href="unresolved.html" aria-current="page">Unresolved</a><a href="flagged.html">Flagged</a><a href="method.html">Method</a><a href="archive.html">Archive</a></nav></div></header>
+<main id="main">
+
+<h1>Unresolved picks &amp; limitations</h1>
+<p>5 of 17 open matches have no bookmaker or exchange price. Research order for each: <strong>HLTV → esportsbooks / exchanges → Valve ratings → our own Elo</strong>.
+A pick is given wherever a labelled model or any one-sided evidence exists; a probability is left blank when no source supports a number.</p>
+<div class="card" id="m1081126"><h3>Banda chuya vs Enjoy</h3>
+<p class="small mut" style="margin:0">CCT Europe 2026 Series #12 Play-In · locks Sun 18 Oct 07:54 UTC · <a href="https://www.hotspawn.com/matches/banda-chuya-vs-enjoy-cct-europe-2026-series-12-play-in-1081126" rel="noopener">HotSpawn match</a></p>
+<p style="margin:6px 0"><strong>Pick:</strong> Enjoy 65.8% <span class="chip model">No book prices it — Valve rating model (fitted slope)</span></p>
+<div class="tablewrap"><table class="resp"><thead><tr><th>Tried</th><th>Result</th><th>Source</th></tr></thead><tbody><tr><td data-label="Tried">HLTV</td><td data-label="Result">HLTV&#x27;s odds pages carried no moneyline in our reads, and team pages for the sides in this match were not individually read in this build (see Limitations).</td><td data-label="Source"><a href="https://www.hltv.org/matches" rel="noopener">link</a></td></tr><tr><td data-label="Tried">Betting lines</td><td data-label="Result">The board collector queried Pinnacle, Bovada, Melbet and its mirrors, Kalshi and Thunderpick (via bo3.gg); none returned a two-sided price that joins to this fixture.</td><td data-label="Source"><a href="https://bo3.gg/matches/current" rel="noopener">link</a></td></tr><tr><td data-label="Tried">Valve VRS</td><td data-label="Result">Banda chuya: 402.0; Enjoy: 871.0 points (standings 2026-10-05).</td><td data-label="Source"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">link</a></td></tr></tbody></table></div>
+<p class="small mut">Flags: no external price for this fixture, originated vrs line, tier c event low coverage.</p></div><div class="card" id="m1081861"><h3>Lynn Vision vs Morningstar</h3>
+<p class="small mut" style="margin:0">VOID Autumn Cup 2026 · locks Tue 20 Oct 02:54 UTC · <a href="https://www.hotspawn.com/matches/lynn-vision-vs-morningstar-void-autumn-cup-2026-1081861" rel="noopener">HotSpawn match</a></p>
+<p style="margin:6px 0"><strong>Pick:</strong> Lynn Vision 70.1% <span class="chip model">No book prices it — our Elo over bo3.gg results</span></p>
+<div class="tablewrap"><table class="resp"><thead><tr><th>Tried</th><th>Result</th><th>Source</th></tr></thead><tbody><tr><td data-label="Tried">HLTV</td><td data-label="Result">HLTV&#x27;s odds pages carried no moneyline in our reads, and team pages for the sides in this match were not individually read in this build (see Limitations).</td><td data-label="Source"><a href="https://www.hltv.org/matches" rel="noopener">link</a></td></tr><tr><td data-label="Tried">Betting lines</td><td data-label="Result">The board collector queried Pinnacle, Bovada, Melbet and its mirrors, Kalshi and Thunderpick (via bo3.gg); none returned a two-sided price that joins to this fixture.</td><td data-label="Source"><a href="https://bo3.gg/matches/current" rel="noopener">link</a></td></tr><tr><td data-label="Tried">Valve VRS</td><td data-label="Result">Lynn Vision: 1190.0; Morningstar: unrated points (standings 2026-10-05).</td><td data-label="Source"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">link</a></td></tr></tbody></table></div>
+<p class="small mut">Flags: no external price for this fixture, originated elo line no official rating, tier c event low coverage.</p></div><div class="card" id="m1081862"><h3>Rare Atom vs Alter Ego</h3>
+<p class="small mut" style="margin:0">VOID Autumn Cup 2026 · locks Tue 20 Oct 04:54 UTC · <a href="https://www.hotspawn.com/matches/rare-atom-vs-alter-ego-void-autumn-cup-2026-1081862" rel="noopener">HotSpawn match</a></p>
+<p style="margin:6px 0"><strong>Pick:</strong> Rare Atom 53.0% <span class="chip model">No book prices it — Valve rating model (fitted slope)</span></p>
+<div class="tablewrap"><table class="resp"><thead><tr><th>Tried</th><th>Result</th><th>Source</th></tr></thead><tbody><tr><td data-label="Tried">HLTV</td><td data-label="Result">HLTV&#x27;s odds pages carried no moneyline in our reads, and team pages for the sides in this match were not individually read in this build (see Limitations).</td><td data-label="Source"><a href="https://www.hltv.org/matches" rel="noopener">link</a></td></tr><tr><td data-label="Tried">Betting lines</td><td data-label="Result">The board collector queried Pinnacle, Bovada, Melbet and its mirrors, Kalshi and Thunderpick (via bo3.gg); none returned a two-sided price that joins to this fixture.</td><td data-label="Source"><a href="https://bo3.gg/matches/current" rel="noopener">link</a></td></tr><tr><td data-label="Tried">Valve VRS</td><td data-label="Result">Rare Atom: 906.0; Alter Ego: 819.0 points (standings 2026-10-05).</td><td data-label="Source"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">link</a></td></tr></tbody></table></div>
+<p class="small mut">Flags: no external price for this fixture, originated vrs line, tier c event low coverage.</p></div><div class="card" id="m1081863"><h3>Chinggis Warriors vs WXM</h3>
+<p class="small mut" style="margin:0">VOID Autumn Cup 2026 · locks Tue 20 Oct 06:54 UTC · <a href="https://www.hotspawn.com/matches/chinggis-warriors-vs-wxm-void-autumn-cup-2026-1081863" rel="noopener">HotSpawn match</a></p>
+<p style="margin:6px 0"><strong>Pick:</strong> Chinggis Warriors — probability <span class="blank">blank</span> (unverified) <span class="chip direction">Direction only — only one side has any rating or results</span></p>
+<div class="tablewrap"><table class="resp"><thead><tr><th>Tried</th><th>Result</th><th>Source</th></tr></thead><tbody><tr><td data-label="Tried">HLTV</td><td data-label="Result">see manual steps below</td><td data-label="Source"><a href="https://www.hltv.org/matches" rel="noopener">link</a></td></tr><tr><td data-label="Tried">Betting lines</td><td data-label="Result">The board collector queried Pinnacle, Bovada, Melbet and its mirrors, Kalshi and Thunderpick (via bo3.gg); none returned a two-sided price that joins to this fixture.</td><td data-label="Source"><a href="https://bo3.gg/matches/current" rel="noopener">link</a></td></tr><tr><td data-label="Tried">Valve VRS</td><td data-label="Result">Chinggis Warriors: 685.0; WXM: unrated points (standings 2026-10-05).</td><td data-label="Source"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">link</a></td></tr></tbody></table></div><h4 style="margin:10px 0 4px">Manual research</h4><div class="tablewrap"><table class="resp"><thead><tr><th>Tried</th><th>Result</th><th>Source</th></tr></thead><tbody><tr><td data-label="Tried">HLTV</td><td data-label="Result">Chinggis Warriors are listed with a full five (sk0R, ROUX, cool4st, fury5k, tikuak) and ranked #61 in HLTV&#x27;s world ranking; WXM has no HLTV team page or ranking in the search index.</td><td data-label="Source"><a href="https://www.hltv.org/team/12646/chinggis-warriors" rel="noopener">link</a></td></tr><tr><td data-label="Tried">HLTV event</td><td data-label="Result">Both teams are on HLTV&#x27;s MaceMedia VOID Autumn Cup 2026 schedule (Bo3, 20 Oct).</td><td data-label="Source"><a href="https://www.hltv.org/events/9435/macemedia-void-autumn-cup-2026" rel="noopener">link</a></td></tr><tr><td data-label="Tried">Esportsbook aggregator (EGamersWorld)</td><td data-label="Result">Prices the match at a flat 1.8 / 1.8 — the site&#x27;s default placeholder, not a bookmaker line; WXM&#x27;s lineup reads &#x27;noName&#x27; x5 and it has 0 recorded wins in the last 5 and 10 matches.</td><td data-label="Source"><a href="https://egamersworld.com/counterstrike/match/EJcHRdr5Vx/chinggis-warriors-vs-wxm-_ddme1I7dZ" rel="noopener">link</a></td></tr><tr><td data-label="Tried">HotSpawn match page</td><td data-label="Result">WXM has an empty lineup and an empty map breakdown; Chinggis Warriors lists four players.</td><td data-label="Source"><a href="https://www.hotspawn.com/matches/chinggis-warriors-vs-wxm-void-autumn-cup-2026-1081863" rel="noopener">link</a></td></tr><tr><td data-label="Tried">Valve VRS</td><td data-label="Result">Chinggis Warriors are rated 685 points; WXM is absent from Valve&#x27;s list, so there is no rating pair to put a number on.</td><td data-label="Source"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings" rel="noopener">link</a></td></tr></tbody></table></div><p class="small"><strong>Direction only: Chinggis Warriors. No probability is published.</strong> A brand-new or re-branded roster can be much stronger than its absence from every list suggests, so any &#x27;bound&#x27; would be an assumption. The pick follows the only side with evidence of recent results; the probability is left blank.</p>
+<p class="small mut">Flags: no external price for this fixture, tier c event low coverage, no source input available row left blank.</p></div><div class="card" id="m1081864"><h3>NEXVOID vs Vitalem Aerem</h3>
+<p class="small mut" style="margin:0">VOID Autumn Cup 2026 · locks Tue 20 Oct 08:54 UTC · <a href="https://www.hotspawn.com/matches/nexvoid-vs-vitalem-aerem-void-autumn-cup-2026-1081864" rel="noopener">HotSpawn match</a></p>
+<p style="margin:6px 0"><strong>Pick:</strong> NEXVOID 59.5% <span class="chip model">No book prices it — Valve rating model (fitted slope)</span></p>
+<div class="tablewrap"><table class="resp"><thead><tr><th>Tried</th><th>Result</th><th>Source</th></tr></thead><tbody><tr><td data-label="Tried">HLTV</td><td data-label="Result">HLTV&#x27;s odds pages carried no moneyline in our reads, and team pages for the sides in this match were not individually read in this build (see Limitations).</td><td data-label="Source"><a href="https://www.hltv.org/matches" rel="noopener">link</a></td></tr><tr><td data-label="Tried">Betting lines</td><td data-label="Result">The board collector queried Pinnacle, Bovada, Melbet and its mirrors, Kalshi and Thunderpick (via bo3.gg); none returned a two-sided price that joins to this fixture.</td><td data-label="Source"><a href="https://bo3.gg/matches/current" rel="noopener">link</a></td></tr><tr><td data-label="Tried">Valve VRS</td><td data-label="Result">NEXVOID: 995.0; Vitalem Aerem: 721.0 points (standings 2026-10-05).</td><td data-label="Source"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">link</a></td></tr></tbody></table></div>
+<p class="small mut">Flags: no external price for this fixture, originated vrs line, tier c event low coverage.</p></div>
+<h2>Limitations</h2>
+<ul class="tight">
+<li>No bookmaker lists most tier-C CS2 fixtures; an API answering is not proof it prices a match.</li>
+<li>Valve's list (2026-10-05) is the newest the board holds and covers only the top ~380 teams; rebrands and new rosters can sit outside it. <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve standings</a></li>
+<li>Our slope for turning rating gaps into probabilities is fitted to the few market pairs available (8 this board, MAE 12 pts) — model rows are weaker than market rows.</li>
+<li>Individual HLTV team pages were read by hand only for Chinggis Warriors (the one-sided case); the other model-only rows rely on Valve's ratings or bo3.gg results, not an HLTV page read.</li>
+<li>Rosters in small events change without notice; the board only knows the names HotSpawn prints.</li>
+<li>HotSpawn's crowd shares are tiny samples on small matches and are never a probability.</li></ul>
+
+</main>
+<footer>Built <strong>Sun 18 Oct 00:19 UTC</strong> · <a href="../index.html">Site home</a> · <a href="../flagged.html">Site-wide flagged items</a>.
+HotSpawn supplies the match list and crowd shares only — never a win probability. Estimates are not guarantees. 18+; gamble responsibly.</footer>
+</body></html>
