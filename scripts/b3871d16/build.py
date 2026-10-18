@@ -184,10 +184,12 @@ def crowd_index() -> tuple[dict, dict]:
 
 # ------------------------------------------------------------------ row builder
 def build_rows(board: dict, overrides: dict, crowd: dict, live_prices: dict | None = None,
-               vrs_status: dict | None = None) -> list[dict]:
+               vrs_status: dict | None = None, source_rows: list[dict] | None = None) -> list[dict]:
+    """One row per fixture. `source_rows` lets a caller build the same shape from the board's closed set,
+    so a card keeps its published line after it locks instead of vanishing off the desk."""
     k = float((board.get("calibration") or {}).get("k") or 1.0)
     rows: list[dict] = []
-    for r in board.get("open", []):
+    for r in (source_rows if source_rows is not None else board.get("open", [])):
         fid = str(r["fixture_id"])
         corr = (overrides.get("board_corrections") or {}).get(fid, {})
         team_a, team_b = r["team_a"], r["team_b"]
@@ -317,6 +319,8 @@ def build_rows(board: dict, overrides: dict, crowd: dict, live_prices: dict | No
             "competition": r.get("competition"), "tier": r.get("tier"), "stage": r.get("stage"),
             "best_of": r.get("best_of"), "points": r.get("points"),
             "start_utc": r.get("start_utc"), "lock_utc": r.get("lock_utc"), "status": r.get("status"),
+            "state": r.get("state") or ("closed" if str(r.get("status")) == "ended" else "open"),
+            "winner": r.get("winner"),
             "alias_note": r.get("alias_note"),
             "market_prob_a": market_pa, "market_n_sources": n_sources, "market_spread": spread,
             "model_prob_a": model_pa, "model_basis": model_basis,
@@ -553,14 +557,14 @@ def kpi(label: str, value: str, note: str = "") -> str:
     return f'<div class=kpi><span class=small>{esc(label)}</span><b>{value}</b><span class="small mut">{esc(note)}</span></div>'
 
 
-def render_index(rows, board, overrides, stamp, crowd_meta) -> str:
+def render_index(rows, board, overrides, stamp, crowd_meta, day5_rows=None) -> str:
     open_n = len(rows)
     priced = [r for r in rows if r["status_flag"] == "priced"]
     rating = [r for r in rows if r["status_flag"] == "rating_only"]
     banded = [r for r in rows if r["status_flag"] == "direction_band"]
     blank = [r for r in rows if r["status_flag"] == "no_pick"]
     day5 = overrides["day5_cards"]
-    d5rows = [r for r in rows if r["fixture_id"] in day5]
+    d5rows = day5_rows if day5_rows is not None else [r for r in rows if r["fixture_id"] in day5]
     top = sorted((r for r in rows if r["line"]), key=lambda r: (-(r["points"] or 0), r["line"]["pick_probability"] * -1))[:8]
 
     body = [f'<h1>TWC day 5 desk and every open HotSpawn CS2 match</h1>',
@@ -677,11 +681,31 @@ def render_day5(rows, board, overrides, stamp) -> str:
                    f'{con["dog_probability"]*100:.1f}%, clears it: '
                    f'{"yes" if con["clears_floor"] else "no"}.</span></li>')
         cr = con["crowd_read"]
-        pct_txt = " / ".join(f'{x}%' for x in cr.get("picked_percent", [])) or cr.get("orientation", "-")
-        out.append(f'<li><strong>Crowd sample on this card:</strong> {esc(pct_txt)} on {cr["total_picks"]} total pick'
-                   f'{"s" if cr["total_picks"] != 1 else ""} (read {esc(cr["read_utc"])}) - '
-                   f'below the {CROWD_FLOOR_PICKS}-pick floor, so no climb or anti-climb instruction is issued here. '
+        c = (row or {}).get("crowd") or {}
+        lev = (row or {}).get("leverage") or {}
+        n = c.get("picks") if c.get("picks") is not None else cr.get("total_picks")
+        split = (" / ".join(f'{x}%' for x in [c.get("a"), c.get("b")] if x is not None)
+                 or cr.get("orientation", "-"))
+        prov = c.get("provenance") or f'desk read {cr.get("read_utc", "-")}'
+        if n is None:
+            tail = "no crowd sample exists for this card, so the crowd side of the rule cannot be evaluated"
+        elif n < CROWD_FLOOR_PICKS:
+            tail = (f'below the {CROWD_FLOOR_PICKS}-pick floor, so no climb or anti-climb instruction is issued here')
+        else:
+            tail = (f'at or above the {CROWD_FLOOR_PICKS}-pick floor, so the differential is readable: our line sits '
+                    f'{lev.get("diff_pp", 0.0):+.1f}pp from the crowd, worth {lev.get("ev_points", 0.0):+.2f} points '
+                    f'relative to the field on a {(row or {}).get("points")}-point card')
+        out.append(f'<li><strong>Crowd sample on this card (ownership only):</strong> {esc(split)} on {n} total '
+                   f'pick{"s" if n != 1 else ""} ({esc(prov)}) - {tail}. '
                    f'Ownership is not a probability and never was.</li>')
+        if (row or {}).get("state") == "closed":
+            won = row.get("winner")
+            who = (row["team_a"] if won in ("a", row["team_a"]) else row["team_b"] if won in ("b", row["team_b"])
+                   else won or "-")
+            out.append(f'<li><span class="chip bad">locked - the desk is closed on this card</span> '
+                       f'<strong>Settled on the board as:</strong> {esc(str(who))} (status '
+                       f'{esc(str(row.get("status")))} at {esc(stamp["board_read"])}). The line above is the one '
+                       f'this desk published before the lock; nothing here changes after it.</li>')
         if row and row["line"]:
             out.append(f'<li><strong>What this desk publishes:</strong> {esc(row["line"]["pick"])} at '
                        f'{pct(row["line"]["pick_probability"])}, basis {esc(BASIS_LABEL.get(row["line"]["basis"], row["line"]["basis"]))}, '
@@ -795,7 +819,7 @@ def render_picks(rows, board, stamp) -> str:
     return page("Every pick", "\n".join(out), stamp, "picks.html")
 
 
-def render_unresolved(rows, board, overrides, stamp) -> str:
+def render_unresolved(rows, board, overrides, stamp, day5_rows=None) -> str:
     un = [r for r in rows if r["status_flag"] != "priced"]
     out = [f'<h1>Unresolved picks and the limits of this board</h1>',
            f'<p class=small>{len(un)} of {len(rows)} open fixtures could not be settled from a book price. '
@@ -820,6 +844,12 @@ def render_unresolved(rows, board, overrides, stamp) -> str:
             out.append('<p class=blank>No number is published for this fixture. It stays blank.</p>')
         out.append(f'<p class=small>Sources: {src_cell(r)}</p></div></details>')
     out.append('<h2 id=limits>Limitations, stated plainly</h2><ol>')
+    pool = day5_rows if day5_rows is not None else rows
+    samples = [r["crowd"]["picks"] for r in rows if (r["crowd"]["picks"] or 0) >= CROWD_FLOOR_PICKS]
+    d5 = [r["crowd"]["picks"] for r in pool if r["crowd"]["picks"] is not None]
+    d5n = max(d5) if d5 else 0
+    d5low = bool(d5) and max(d5) < CROWD_FLOOR_PICKS
+    smin, smax = (min(samples), max(samples)) if samples else (0, 0)
     lims = [
         ("Coverage of the low tiers",
          "Only about a third of this week's CS2 lobby is priced by a book we can read. bo3.gg lists a winner market for 12 "
@@ -837,10 +867,13 @@ def render_unresolved(rows, board, overrides, stamp) -> str:
          "were wrong on the shared board and are corrected here; a fix request is logged on "
          "<a href=flagged.html#ir2>flagged for review</a>."),
         ("Crowd data is too thin to be useful on the big cards",
-         "The two TWC cards carry 1 pick each in the API. The 20-pick floor therefore suspends all climb advice for them, which is "
-         "the honest answer rather than a number."),
+         f'The two TWC day-5 cards carried up to {d5n} pick{"s" if d5n != 1 else ""} in the API at the read below, '
+         f'against a {CROWD_FLOOR_PICKS}-pick floor. '
+         f'{"The floor suspends all climb advice for them, which is the honest answer rather than a number." if d5low else "The floor is now met, so the leverage figures on the day-5 page are live."}'),
         ("Small samples elsewhere",
-         "Where the crowd sample does clear 20 picks it is on tier-B and tier-C cards with 4-51 picks. That is enough to describe "
+         f"Where the crowd sample does clear {CROWD_FLOOR_PICKS} picks it is on tier-B and tier-C cards with "
+         f"{('no cards at all' if not samples else (str(smin) if smin == smax else f'{smin}-{smax}'))} picks. "
+         f"That is enough to describe "
          "ownership, not enough to estimate how the rest of the pool will pick, so leverage figures are shown as points relative to "
          "the field, not as a chance of moving up a leaderboard."),
         ("Nothing is modelled for a specific map",
@@ -965,7 +998,8 @@ def main() -> int:
         cr = ((card.get("contrarian") or {}).get("crowd_read")) or {}
         if fid in crowd or not cr.get("total_picks") is not None:
             continue
-        row = next((r for r in board.get("open", []) if str(r["fixture_id"]) == fid), None)
+        row = next((r for r in list(board.get("open", [])) + list(board.get("closed", []))
+                    if str(r["fixture_id"]) == fid), None)
         if not row:
             continue
         pcts = cr.get("picked_percent") or [None, None]
@@ -979,15 +1013,20 @@ def main() -> int:
                        "crowd_rows": collector.get("crowd_rows"), "new_prices": collector.get("new_prices")}
                       if collector else {})
     rows = build_rows(board, overrides, crowd, live_prices=live_prices, vrs_status=vrs_status)
+    day5_ids = {str(f) for f in (overrides.get("day5_cards") or {})}
+    follow = [r for r in list(board.get("open", [])) + list(board.get("closed", []))
+              if str(r["fixture_id"]) in day5_ids]
+    day5_rows = build_rows(board, overrides, crowd, live_prices=live_prices, vrs_status=vrs_status,
+                           source_rows=follow)
 
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "data").mkdir(exist_ok=True)
     pages = {
-        "index.html": render_index(rows, board, overrides, stamp, crowd_meta),
-        "day5.html": render_day5(rows, board, overrides, stamp),
+        "index.html": render_index(rows, board, overrides, stamp, crowd_meta, day5_rows),
+        "day5.html": render_day5(day5_rows, board, overrides, stamp),
         "twc.html": render_twc(rows, board, overrides, stamp),
         "picks.html": render_picks(rows, board, stamp),
-        "unresolved.html": render_unresolved(rows, board, overrides, stamp),
+        "unresolved.html": render_unresolved(rows, board, overrides, stamp, day5_rows),
         "flagged.html": render_flagged(overrides, board, stamp),
         "method.html": render_method(board, overrides, stamp, crowd_meta),
     }
@@ -1009,7 +1048,7 @@ def main() -> int:
                           "direction_band": sum(1 for r in rows if r["status_flag"] == "direction_band"),
                           "no_pick": sum(1 for r in rows if r["status_flag"] == "no_pick")},
                "collector": collector, "vrs_status": vrs_status, "live_prices": (live_prices or {}).get("prices"),
-               "rows": rows, "irregularities": overrides.get("irregularities_to_report", []),
+               "day5": day5_rows, "rows": rows, "irregularities": overrides.get("irregularities_to_report", []),
                "rejected_claims": overrides.get("rejected_claims", [])}
     (OUT / "data/board.json").write_text(json.dumps(payload, indent=1, ensure_ascii=False), encoding="utf-8")
     with (OUT / "data/rows.csv").open("w", newline="", encoding="utf-8") as fh:
