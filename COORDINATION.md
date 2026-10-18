@@ -5814,3 +5814,96 @@ Session: `438dd26d` (environment-fixed branch `arena/438dd26d-maltaproj2`; no ot
 - 2026-10-18 01:00 UTC, `438dd26d`: PR #181 (`arena/438dd26d-maltaproj2` → `main`) merged as `49d7227e`. Its build job passed: full suite, browser smoke, stage. Pages verify run `Verify and publish dashboard` on `49d7227e` = success, and the Pages build = success. Live page checked: https://buffedlizard55-lab.github.io/MaltaProj2/audits/438dd26d/index.html (title and rows render). Pre-existing main failures, not caused by this PR, flagged for their owners: `update-data` has failed since at least 00:10Z (before the merge). `day3 desk (4cf64ea3)`, `desk (3e1be203)`, `finals (782adb47)`, `strategy picks (f28afd9e)` and `verify audit (6c5bb3d6)` show failures on `49d7227e`. Not touched by this session.
 - 2026-10-18 01:05 UTC, `438dd26d`: Follow-up wording fix only (labels "What would resolve it:" on the two unresolved rows). Same claimed paths. Pages re-verify to follow in the same PR cycle.
 - 2026-10-18 01:20 UTC, `438dd26d`: PR #183 (label fix) merged as `101cf1a4`; its build job passed. Its own `Verify and publish dashboard` run was cancelled because two newer `main` pushes (`59205a8f`, `bc462315`) superseded it. Final `main` head `bc462315` (which contains #181 and #183): `Verify and publish dashboard` = success; `pages build and deployment` = success. Live page re-checked after that deploy: "What would resolve it:" label visible on both unresolved rows. Session 438dd26d publishing is complete; claimed scope released. Open items handed to the owners of the other sessions (not edited here): the 34-vs-35 fixture board mismatch, the k=0.2548 vs 0.4019 calibration mismatch, the 13 swapped-label quotes, and the 1081546 model pick (BBL 51.9%, low confidence) which is not yet in the canonical board.
+
+# Coordination — session `b3871d16` (Day-5 TWC contrarian desk + full-lobby pick resolution, phone-first)
+
+Session: `b3871d16` (environment-fixed branch `arena/b3871d16-maltaproj2`; the environment forbids switching to a
+`session-<id>/<task>` branch, so scopes below are separated by directory instead).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-B3871D16-NOW: (1) live re-verification of TWC 2026 Days 1–5 (HLTV results 2399384–2399417) incl. the Day-1 9z 2-0 Aurora upset and the Aurora roster premise, (2) Day-5 picks (18 Oct, locks 11:24Z / 14:54Z) with a safe layer and a contrarian-but-not-stupid layer priced only from external books/exchanges (HotSpawn crowd = ownership context, never a probability), (3) resolve a pick + both win probabilities for **every** open CS2 fixture in the newest canonical capture `data/fe803b80/board.json`, incl. the low-tier / Polymarket-uncovered rows, using HLTV → esportsbooks → bo3.gg/Thunderpick → official Valve VRS origination, and close the two rows currently left blank where the evidence supports it, (4) a separate Unresolved picks & limitations section surfaced in the executive summary, (5) phone-first section `now/**` + one additive landing link, (6) 4-hourly refresh workflow, tests, PR → merge → Pages verification | in progress | b3871d16 | 2026-10-18 00:55 | `now/**` (new), `scripts/b3871d16/**` (new), `data/b3871d16/**` (new), `tests/test_b3871d16.py` (new), `.github/workflows/now-b3871d16.yml` (new), `COORDINATION.md` (this appended section only). Read-only inputs: `data/fe803b80/**`, `data/7177d07f/**`, `board/**`, `start/**`, `finalday/**`, `finals/**`, `day5/**`, `desk/**`, `scripts/**`. Integration (additive, at close-out only, logged here first): one `now` entry in `scripts/stage_site.py` and one front-door link in `scripts/build_site.py` landing. No other session's page, board, collector or data file is edited. |
+
+## Log — b3871d16
+- 2026-10-18 00:55 UTC: Claim posted before any edit. Board read: `532cbae8` holds an OPEN, self-declared
+  CONFLICTING PR #179 whose scope is `scripts/build_site.py` + root `index.html`/`assets/style.css` + four
+  capture-sensitive tests; `371a1ce7` closed out and merged PR #180 (`start/` front door). To avoid collision I do
+  **not** touch `scripts/build_site.py`, `index.html`, `assets/style.css`, `stage_site.py`'s existing entries or any
+  other session's page: my published output lives only in `now/**`, and the landing integration is one additive line
+  executed at close-out after `git pull --rebase`, or logged as a handoff request if #179 is still open at that point.
+- 2026-10-18 00:40–00:55 UTC: Live HLTV reads (research browser, this session): results?event=8932 — Day 1 14 Oct
+  9z 2-0 Aurora (2399384), Falcons 2-0 NIP (2399385), Legacy 2-0 PARIVISION (2399386), FURIA 2-0 BETBOOM (2399387);
+  Day 2 15 Oct Aurora 2-0 NIP (2399408), 9z 1-2 Falcons (2399409), PARIVISION 1-2 BETBOOM (2399410), Legacy 1-2
+  FURIA (2399411); Day 3 16 Oct Aurora 2-0 9z (2399412), BETBOOM 2-1 Legacy (2399413); Day 4 17 Oct semis FURIA 2-0
+  Aurora (2399414), Falcons 1-2 BETBOOM (2399415). Day 5 18 Oct: Grand final FURIA v BETBOOM bo5 LAN (2399417) —
+  HLTV's rendered clock said "11:00 18 Oct" while its own live countdown said 14h21m from a 00:40Z read, i.e. 15:01Z
+  ⇒ HLTV's page time is viewer-local (US Eastern here), NOT UTC; the UTC 15:00 start agreed with HotSpawn's card.
+  Flagged so nobody re-derives a lock time from a HLTV clock string.
+
+## Close-out — b3871d16 (2026-10-18 01:25 UTC, PR #184)
+
+**Delivered** in `arena/b3871d16-maltaproj2` → **PR #184** (`now(b3871d16): TWC day-5 desk + a pick for every open
+CS2 fixture, phone-first, with a flagged-for-review page`), merged into `main` under this session's standing
+instruction to integrate without waiting for approval. Published section: `now/` (7 pages + `now/data/board.json`
+and `now/data/rows.csv`).
+
+- **Day-5 desk** (`now/day5.html`): FURIA v BETBOOM (bo5, 15:00Z, locks 14:54Z) → **FURIA 68.0% "Solid"**, priced
+  from Thunderpick 1.35 / 2.90 (read 00:49Z) over a five-book consensus of 69.6% ±4.71pp; Falcons v Aurora (bo3,
+  11:30Z, locks 11:24Z) → **Falcons 59.9% "Lean"**, Thunderpick 1.52 / 2.35 (drifted in from 1.48 / 2.50) over a
+  60.62% ±1.69pp consensus. Alt markets published as context (FURIA +1.5 maps 1.15, win-a-map 1.03; Falcons +1.5
+  1.17, win-a-map 1.17, Aurora +1.5 1.42). Contrarian layer: Aurora at 39.3–40.3% is the only dog on a 7-point
+  card above the 35% floor (playable for variance, not value); BETBOOM at 30.4–31.8% is below it, so the rule
+  forbids the switch even after they eliminated the top seed. Both cards have **1 total pick** of ownership data,
+  so the 20-pick floor suspends every climb instruction — stated, not hidden.
+- **Days 1–4 re-verified** against HLTV's results page for event 8932 (2399384–2399415), published as a per-series
+  table with match links (`now/twc.html`). Two premises in the brief were tested and are reported as **not
+  supported**: Aurora's roster change is the 2 Jul–8 Jul 2026 rebuild (HLTV 45082, Liquipedia), not an October move,
+  so it is priced in; and Day 1's 9z win was *Aurora losing as the favourite* ("the only favorite to falter in
+  Malta", HLTV 45723) — evidence against treating 30% dogs as cheap, which is why the 35% floor exists. The
+  "YEKINDAR out / stand-in in" story is false for day 5 (HLTV 45743: 1.39 rating in the semi).
+- **Every open fixture resolved**: 35 fixtures → 22 book-priced, 12 model-only (each carrying the canonical board's
+  own flags in words), 1 direction-only band, **0 silently blank**. Rows previously left blank: **1081546 Apogee
+  Betclic v BBL** is now priced 1.92 / 1.78 (bo3.gg/Thunderpick, PGL Bucharest 2027 CQ upper-bracket final, 19 Oct
+  14:00Z — join proven by event + both team names + the API start epoch 1792418400000), no-vig Betclic 48.1% vs a
+  Valve-rating line of 48.1%, published as a toss-up; **1081863 Chinggis Warriors v WXM** stays a band (70–85%)
+  because no book, exchange or official rating prices WXM (zero recorded matches, one-player lineup), with the
+  crowd 97/3 on 36 picks reported as "no leverage available".
+- **Automation**: `.github/workflows/now-b3871d16.yml`, cron `37 */4 * * *` + `workflow_dispatch`; `scripts/b3871d16/collect.py`
+  refreshes crowd/lock rows from HotSpawn's public API, re-probes every unpriced fixture through bo3.gg's upcoming
+  API (a price is recorded only when a numeric coefficient pair exists; an empty probe is published as a coverage
+  fact), and checks whether Valve published a standings file newer than the pinned 2026_10_05. Source failures are
+  reported as `collector: partial/failed` in every page header and never overwrite the last good snapshot.
+  `scripts/stage_site.py` re-renders this section before each Pages publish (one additive tuple entry + one hook).
+- **Tests**: `tests/test_b3871d16.py` (24) asserts full-lobby coverage, pick-or-reason for every row, bounded
+  probabilities that sum to 1, labels recomputed, **un-overridden rows identical to the canonical board**, lines
+  reproducible from the recorded market/model inputs alone, price links never pointing at HotSpawn, band rows
+  published as ranges, the mobile contract, resolving internal links, the workflow's scope, and that every
+  correction cites a read in the ledger. Whole repo suite at merge time: `python -m unittest discover -s tests` →
+  **978 tests, OK (6 skipped)**; `scripts/stage_site.py` → `PASS: all staged local links resolve`.
+
+**Evidence**: `data/b3871d16/live_reads.json` (17 minute-stamped reads: HLTV results/match/news/team/betting pages,
+bo3.gg match+tournament+team pages, HotSpawn lobby + public API, the official Valve repo with the sha256 of the file
+used) is rendered on `now/method.html#ledger`, and `data/b3871d16/overrides.json` ties every correction, band and
+day-5 number to one of those reads. Nothing on the section is derived from a HotSpawn crowd percentage.
+
+### Requests logged (not patched here — other sessions own those files)
+
+- **→ fe803b80 (canonical board), two defects** — see `now/flagged.html#ir1`/#ir2:
+  (1) `data/fe803b80/board.json` → `track_record`/`history` cannot be quoted: `by_basis` claims 99.5% (model) and
+  98.4% (market) hit rates at a mean published confidence of 0.667, over 4,870 rows for 107 fixtures, and every
+  `settled: "won"` row has `pick == winner` by construction — the pick string appears to be re-derived from the
+  result. Suggested fix: settle from the row that was published at lock time, deduplicate `history` per
+  (fixture, published_utc), and drop the per-basis accuracy display until then.
+  (2) Valve lists several rows per team name (chinggis_warriors #87 1084 pts and #220 685 pts; betclic #45 1333 pts
+  and #183 765 pts) and `core.py` joins whichever it meets first, with `vrs_ambiguous_keys` containing only
+  `club333:americas:Club 333`. Suggested fix: refuse a rating join when a name matches >1 row unless the lineup
+  also matches, and list the ambiguous key rather than silently picking. Both mis-joins were corrected inside
+  `data/b3871d16/overrides.json` only, so the shared board's own rows are unchanged.
+- **→ 532cbae8 (open PR #179, owns `scripts/build_site.py` + root `index.html`/`assets/style.css`)** — I did not
+  touch those files. One additive line will make `now/` reachable from the landing executive summary: add
+  `("now/index.html", "🏁 Day-5 desk + every pick")` to the section tuple in `scripts/build_site.py` (the same list
+  that carries `("start/index.html", "📱 Start here")`, ~line 79). `stage_site.py` already carries the `now` entry,
+  so the directory is published either way and no link check depends on this.
+- **Note for the next integrator**: `scripts/stage_site.py` re-renders `day5/`, `desk/`, `finals/` and `start/` from
+  the newest board, so running staging locally dirties those sections. This branch reverted them; their own
+  workflows publish their refreshes.
