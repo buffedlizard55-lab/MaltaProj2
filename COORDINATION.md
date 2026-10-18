@@ -7,6 +7,18 @@ Session: `36186ad8` (fixed branch `arena/36186ad8-maltaproj2`).
 - 2026-10-18 00:06 UTC: claim before edits.
 - CLOSE-OUT 36186ad8: Live reads 18 Oct ~00:05-00:18Z — HLTV confirms Aurora-Falcons 11:30Z (bo3) + FURIA-BETBOOM 15:00Z (bo5); Thunderpick via bo3.gg NOW prices both: Falcons 1.48/Aurora 2.50 -> 62.8/37.2 no-vig; FURIA 1.35/BETBOOM 2.90 -> 68.2/31.8. Picks: FURIA + Falcons; BETBOOM <35% floor = NO climb; Aurora conditional-only (needs HotSpawn card <=22% crowd; Malta not on lobby, live read 81 CS2 listed). Built finalday/ (exec summary, 17 open every-match picks: 9 market/1 alias/3 model/4 bound/0 blank, Days1-4 verified, Aurora July-rebuild/no-Oct-change, unresolved+attempt ledgers, flagged FD1-FD7, method). 5/5 tests, link check clean. 4h workflow finalday-36186ad8. Prior finals/(782adb47)+day5/(7900154b) done yesterday pre-final; no live claim on finalday/**. Day5 is today — book prices must be re-checked live, not inherited.
 ---
+
+# Coordination — session `371a1ce7` (single canonical front door + Day-5 TWC final desk, 2026-10-18)
+
+Session: `371a1ce7` (environment-fixed branch `arena/371a1ce7-maltaproj2`; the environment forbids a `session-<id>/<task>` branch, so scopes below are separated by directory).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-371A1CE7-HOME: (1) independent re-check of TWC 2026 Day 1–4 results and Day-5 fixtures against HLTV / BLAST / bo3.gg, (2) Day-5 (18 Oct) picks with a safe layer and a contrarian-but-not-stupid layer from non-HotSpawn lines, (3) ONE canonical "Today's picks" page built from the newest automated board `data/fe803b80/board.json` (every open HotSpawn CS2 fixture, pick + both probabilities, unresolved section on top-level), (4) replace the cluttered landing page (6 stacked desk blocks, 11-link nav) with one executive summary that links to the canonical pages, and move superseded desks to an Archive page, (5) tests, PR to `main`, merge, Pages verification | in progress | 371a1ce7 | 2026-10-18 00:10 | `today-371a1ce7/**` (new), `scripts/371a1ce7/**`, `data/371a1ce7/**`, `tests/test_371a1ce7.py`, `COORDINATION.md` (this section only). Integration (additive, at close-out): `scripts/build_site.py` landing/NAV, `scripts/stage_site.py` one entry, generated root `index.html`, `README.md` one row. Every other board/page/data file (incl. `data/fe803b80/**`, `board/**`, `day5/**`, `finals/**`, `desk/**`) is a read-only input. |
+
+## Log
+- 2026-10-18 00:10 UTC, `371a1ce7`: Claim posted before any file edit. Read COORDINATION.md: all prior sessions record done/merged except PR #176 (`234db976`, open, touches `twc-2026/**` only — not in my scope; I link to it read-only after it merges, otherwise I do not depend on it).
+
 # Coordination — session `782adb47` (TWC 2026 Day 1–4 review → Day 5 final picks, every-match resolution & phone-first front door)
 
 Session: `782adb47` (environment-fixed branch `arena/782adb47-maltaproj2`; the environment forbids switching to a `session-<id>/<task>` branch, so all work stays on the fixed branch and scopes below are non-overlapping by directory).
