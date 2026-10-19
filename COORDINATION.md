@@ -5940,3 +5940,12 @@ day-5 number to one of those reads. Nothing on the section is derived from a Hot
 - **Non-blocking noise observed, not caused here**: the publish run emits `X R1/R2 Ryvex vs PCIFIC: probability
   published with no price/rating source` style annotations from `scripts/b1fb1465/verify.py`; the step they come
   from is not fatal and the deploys above succeeded. Owned by `b1fb1465`; nobody should chase it on my account.
+
+## Session `a666cd41` — live-source provenance and mobile coverage audit (2026-10-19 UTC)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-A666CD41-AUDIT: Independently audit the freshest committed HotSpawn-CS2 snapshot and its non-HotSpawn probability evidence; publish a phone-first, source-linked audit with an executive summary, complete-match coverage accounting, an explicit unresolved/limitations section, and reproducible verification tests. No probability will be invented or attributed to HotSpawn ownership. Where current evidence cannot be directly confirmed from a stored official/market read, the value will be blank and flagged. | claimed | a666cd41 | 2026-10-19 04:xx UTC | `audit/a666cd41/**`, `data/a666cd41/**`, `scripts/a666cd41/**`, `tests/test_a666cd41.py`, `.github/workflows/a666cd41-audit.yml`, `COORDINATION.md` (this appended section only). Read-only inputs: all existing boards, root landing/navigation, existing collectors and all other session scopes. Any integration request outside this scope will be logged here rather than patched. |
+
+### Log — a666cd41
+- 2026-10-19: Claim created before research. Environment fixes the branch to `arena/a666cd41-maltaproj2`; therefore no `session-<id>/...` branch is created. Initial scope is intentionally isolated to avoid existing claimed root/board scopes.
