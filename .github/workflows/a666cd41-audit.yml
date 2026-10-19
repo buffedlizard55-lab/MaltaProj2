@@ -1,0 +1,108 @@
+name: a666cd41 provenance audit
+
+# Rebuilds the isolated audit from the current f7279a54 raw board. The audit does not collect
+# sources itself: it verifies the preserved source snapshot and writes only its own data/pages.
+# A four-hour schedule is the primary cadence. workflow_run is a safe catch-up hook after the
+# upstream board refresh, while the builder's min-refresh guard prevents needless commits.
+on:
+  push:
+    branches: [arena/a666cd41-maltaproj2]
+    paths:
+      - 'scripts/a666cd41/**'
+      - 'tests/test_a666cd41.py'
+      - '.github/workflows/a666cd41-audit.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/a666cd41/**'
+      - 'tests/test_a666cd41.py'
+      - '.github/workflows/a666cd41-audit.yml'
+      - 'audits/a666cd41/**'
+      - 'data/a666cd41/**'
+  schedule:
+    - cron: '17 */4 * * *'
+  workflow_run:
+    workflows: ['ourline (f7279a54)']
+    branches: [main]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: a666cd41-audit-${{ github.event_name == 'workflow_run' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # workflow_run always verifies the trusted default branch, never workflow-run code.
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Unit and generated-site checks
+        run: python3 -m unittest tests.test_a666cd41 -v
+
+  refresh:
+    needs: validate
+    # Only rebuild after a successful upstream refresh. Pull requests validate but never write.
+    if: >-
+      github.event_name != 'pull_request' &&
+      (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Rebuild from the fresh strict source board
+        env:
+          TARGET_REF: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+        run: |
+          set -euo pipefail
+          if [ "$TARGET_REF" = "main" ]; then
+            python3 scripts/a666cd41/build_audit.py --min-refresh-hours 4 --max-input-age-hours 8
+          else
+            # Code changes on the session branch must regenerate the committed artifact for review.
+            python3 scripts/a666cd41/build_audit.py --force
+          fi
+      - name: Re-run isolated checks against the generated artifact
+        run: python3 -m unittest tests.test_a666cd41 -v
+      - name: Commit isolated refresh and request a Pages verification
+        env:
+          TARGET_REF: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config user.name "provenance-audit-bot (a666cd41)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add audits/a666cd41 data/a666cd41/report.json data/a666cd41/coverage.csv
+          if git diff --cached --quiet; then
+            echo "No audit refresh due at this source interval."
+            exit 0
+          fi
+          git commit -m "audit(a666cd41): refresh provenance board $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$TARGET_REF" && git push origin "HEAD:$TARGET_REF"; then
+              # A GITHUB_TOKEN push does not trigger workflows. Ask the existing Pages verifier to
+              # stage the already-supported audits/ tree after a main refresh.
+              if [ "$TARGET_REF" = "main" ]; then
+                gh workflow run pages.yml --ref main || echo "Pages dispatch failed; scheduled Pages verification remains available."
+              fi
+              exit 0
+            fi
+            sleep $((attempt * 7))
+          done
+          exit 1

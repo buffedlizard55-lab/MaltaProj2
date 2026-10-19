@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Source-linked, mobile-friendly audit of every open HotSpawn CS2 Pick'em fixture.">
+  <title>Method &amp; provenance · HotSpawn CS2 provenance audit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header>
+  <div class="bar">
+    <a class="brand" href="index.html">CS2 Pick'em <span>provenance audit</span></a>
+    <nav aria-label="Audit navigation"><a href="index.html">Summary</a><a href="picks.html">Current picks</a><a href="unresolved.html">Unresolved</a><a href="evidence.html">Evidence</a><a href="method.html" aria-current="page">Method</a><a href="../../index.html">Main site</a></nav>
+  </div>
+</header>
+<main id="content" data-observed="2026-10-19T04:00:32Z">
+<section>
+  <p class="eyebrow">Reproducible policy</p>
+  <h1>Method &amp; provenance</h1>
+  <p class="lede">This section audits, rather than replaces, the f7279a54 strict board. It publishes an external-market estimate only after independently recomputing it from the preserved raw snapshot.</p>
+</section>
+<section class="method-grid">
+  <article><h2>1. Discover fixtures</h2><p>Use page-listed open HotSpawn CS2 fixtures from the board. HotSpawn links are retained per row. No crowd ownership or HotSpawn pick percentage is read, stored, or used.</p></article>
+  <article><h2>2. Re-derive odds</h2><p>Raw two-way bookmaker prices are converted to decimal odds when needed. Each implied probability is divided by the two implied probabilities' sum, removing the quoted overround.</p></article>
+  <article><h2>3. Match conservatively</h2><p>Both teams and a verified start must match. Normalization is limited to case, diacritics, punctuation, and generic organization suffixes. No fuzzy or substring matching is allowed.</p></article>
+  <article><h2>4. Exact reorder exception</h2><p>When only full team-token order differs (for example, “Apogee Betclic” / “Betclic Apogee”), both teams' complete token multisets, opponent, and source start must match. Such rows are visibly flagged.</p></article>
+  <article><h2>5. Consensus and pick</h2><p>Source no-vig probabilities are weighted Pinnacle 2, Bovada 1, Melbet 1. The displayed pick is the higher resulting probability; it is a deterministic label, not advice.</p></article>
+  <article><h2>6. Stop on uncertainty</h2><p>In-play, approximate-time, stale, ambiguous, alias-only, or unverified data cannot create a probability. The row is blank and linked into the unresolved review.</p></article>
+</section>
+<section>
+  <h2>Fallback ladder &amp; limitations</h2>
+  <ol>
+    <li>Try HLTV as a match/research check. For this input it was blocked; it is recorded below, not treated as a source.</li>
+    <li>Use externally captured sportsbook/exchange odds only when exact join rules pass.</li>
+    <li>Do not originate a VRS/model-only line here: the retained VRS snapshot is flagged stale or unverified for every current fallback context. Blank is safer and required by the audit policy.</li>
+  </ol>
+</section>
+<section>
+  <h2>Captured source access</h2>
+  <p>The following is a status log from the raw snapshot collection window, not a claim that a public page still displays the same price now.</p>
+  <div class="table-wrap"><table><thead><tr><th>Source</th><th>Recorded endpoint</th><th>HTTP</th><th>Result</th><th>Error</th><th>Observed</th></tr></thead><tbody><tr><td>bovada</td><td><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2" target="_blank" rel="noopener noreferrer">recorded endpoint <span aria-hidden="true">↗</span></a></td><td>200</td><td>available</td><td>—</td><td>Mon 19 Oct · 04:00 UTC</td></tr><tr><td>hltv_probe</td><td><a href="https://www.hltv.org/matches" target="_blank" rel="noopener noreferrer">recorded endpoint <span aria-hidden="true">↗</span></a></td><td>403</td><td>failed / unavailable</td><td>HTTPError 403</td><td>Mon 19 Oct · 04:00 UTC</td></tr><tr><td>hotspawn_api</td><td><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures" target="_blank" rel="noopener noreferrer">recorded endpoint <span aria-hidden="true">↗</span></a></td><td>200</td><td>available</td><td>—</td><td>Mon 19 Oct · 04:00 UTC</td></tr><tr><td>hotspawn_lobby_page</td><td><a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener noreferrer">recorded endpoint <span aria-hidden="true">↗</span></a></td><td>200</td><td>available</td><td>—</td><td>Mon 19 Oct · 04:00 UTC</td></tr><tr><td>kalshi</td><td><a href="https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&amp;status=open&amp;with_nested_markets=true&amp;limit=200" target="_blank" rel="noopener noreferrer">recorded endpoint <span aria-hidden="true">↗</span></a></td><td>200</td><td>available</td><td>—</td><td>Mon 19 Oct · 04:00 UTC</td></tr><tr><td>melbet</td><td><a href="https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1" target="_blank" rel="noopener noreferrer">recorded endpoint <span aria-hidden="true">↗</span></a></td><td>200</td><td>available</td><td>—</td><td>Mon 19 Oct · 04:00 UTC</td></tr><tr><td>pinnacle</td><td><a href="https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups" target="_blank" rel="noopener noreferrer">recorded endpoint <span aria-hidden="true">↗</span></a></td><td>200</td><td>available</td><td>—</td><td>Mon 19 Oct · 04:00 UTC</td></tr><tr><td>polymarket_probe</td><td><a href="https://gamma-api.polymarket.com/events?closed=false&amp;limit=200&amp;tag_slug=counter-strike" target="_blank" rel="noopener noreferrer">recorded endpoint <span aria-hidden="true">↗</span></a></td><td>200</td><td>available</td><td>—</td><td>Mon 19 Oct · 04:00 UTC</td></tr><tr><td>valve_vrs_file</td><td><a href="https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener noreferrer">recorded endpoint <span aria-hidden="true">↗</span></a></td><td>200</td><td>available</td><td>—</td><td>Mon 19 Oct · 04:00 UTC</td></tr><tr><td>valve_vrs_tree</td><td><a href="https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/git/trees/main?recursive=1" target="_blank" rel="noopener noreferrer">recorded endpoint <span aria-hidden="true">↗</span></a></td><td>200</td><td>available</td><td>—</td><td>Mon 19 Oct · 04:00 UTC</td></tr></tbody></table></div>
+</section>
+<section>
+  <h2>Repository review &amp; refresh</h2>
+  <ul>
+    <li><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f7279a54/board.json" target="_blank" rel="noopener noreferrer">Source board JSON <span aria-hidden="true">↗</span></a> and <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f7279a54/snapshot.json" target="_blank" rel="noopener noreferrer">raw snapshot JSON <span aria-hidden="true">↗</span></a> are preserved inputs.</li>
+    <li><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/scripts/f7279a54/core.py" target="_blank" rel="noopener noreferrer">Upstream strict join method <span aria-hidden="true">↗</span></a> and <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/scripts/a666cd41/build_audit.py" target="_blank" rel="noopener noreferrer">this independent audit builder <span aria-hidden="true">↗</span></a> are reviewable source code.</li>
+    <li><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/a666cd41-audit.yml" target="_blank" rel="noopener noreferrer">Audit refresh workflow <span aria-hidden="true">↗</span></a> rebuilds on a four-hour schedule and can be manually dispatched. It writes only this audit’s directory/data scope.</li>
+    <li><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/a666cd41/external-observations.json" target="_blank" rel="noopener noreferrer">Supplemental GitHub/Valve metadata observation <span aria-hidden="true">↗</span></a> records the independent official GitHub API metadata check made with this audit; it is explicitly not substituted for raw odds evidence.</li>
+    <li>Input SHA-256: board <code>1c95b9a7e02ff614e37da0b6b5fc95380b7bd1606b3178af6c84c62784df369a</code>; snapshot <code>f9fe1f4eadb62e427efdfb47d7cfaf2b39e3ae6c79f3671afde5d5d7825130b5</code>.</li>
+  </ul>
+</section>
+  <footer>
+    <p>Snapshot collected <time datetime="2026-10-19T04:00:32Z">Mon 19 Oct · 04:00 UTC</time>. This is an evidence audit, not betting advice. External pages may change after capture.</p>
+    <p>HotSpawn is used for match discovery only; its crowd-pick ownership is not read or used as a probability signal.</p>
+  </footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
