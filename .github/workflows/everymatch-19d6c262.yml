@@ -36,6 +36,8 @@ jobs:
         with:
           python-version: '3.11'
       - name: Fetch official Valve Regional Standings (+ per-team details)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 scripts/19d6c262/collect_vrs.py
       - name: Resolve a pick for every open fixture (reads the newest OURLINE board)
         run: python3 scripts/19d6c262/resolve.py

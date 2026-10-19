@@ -9,7 +9,7 @@ inferred: every field is copied from the official files, and the file path + sna
 are stored so each row can be re-checked against the source.
 """
 from __future__ import annotations
-import base64, json, re, sys, urllib.request
+import base64, json, os, re, sys, urllib.request
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import core  # noqa: E402
@@ -18,6 +18,9 @@ ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "data" / "19d6c262"
 REPO = "ValveSoftware/counter-strike_regional_standings"
 UA = {"Accept": "application/vnd.github+json", "User-Agent": "malta-everymatch-resolver"}
+_TOKEN = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+if _TOKEN:
+    UA["Authorization"] = f"Bearer {_TOKEN}"  # authenticated: 5000 req/hr (runner IP shares 60/hr unauthenticated)
 
 
 def gh(url: str):
@@ -89,7 +92,13 @@ def main() -> int:
         for t in groups[key]:
             dp = t["details_path"]
             from urllib.parse import quote
-            md = b64_text(gh(f"https://api.github.com/repos/{REPO}/contents/{quote(dp)}"))
+            try:
+                md = b64_text(gh(f"https://api.github.com/repos/{REPO}/contents/{quote(dp)}"))
+            except Exception as exc:  # rate limit / transient: keep the row, record the miss, never crash
+                t["latest_match_date"] = None
+                t["details_error"] = type(exc).__name__
+                t["details_url"] = f"https://github.com/{REPO}/blob/main/{quote(dp)}"
+                continue
             t["latest_match_date"] = latest_match_date(md)
             t["details_url"] = f"https://github.com/{REPO}/blob/main/{quote(dp)}"
     out = {"snapshot": newest[1], "path": path,
