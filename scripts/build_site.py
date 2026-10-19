@@ -79,6 +79,7 @@ NAV = [
     ("start/index.html", "📱 Start here"),
     ("start/picks.html", "Today's picks"),
     ("start/twc.html", "🏆 TWC final day"),
+    ("everymatch/index.html", "✅ Every match"),
     ("climb/index.html", "🐟 Climb desk"),
     ("picks-every-match/index.html", "All CS2 picks (canonical)"),
     ("picks-every-match/unresolved.html", "Unresolved"),
