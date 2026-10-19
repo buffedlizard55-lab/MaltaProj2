@@ -1,7 +1,7 @@
 {
  "session": "3cd9787c",
  "task": "T-COVER",
- "started_at_utc": "2026-10-18T23:12:33Z",
+ "started_at_utc": "2026-10-19T01:20:59Z",
  "notes": [
   "HotSpawn is used for fixture discovery only; its crowd picked % is never a probability input.",
   "Quotes with confidence=market come from licensed bookmakers or an odds aggregator's cited widget; confidence=reference rows are exchanges and are published separately, never averaged into the consensus."
@@ -41,29 +41,29 @@
  "hotspawn_fixtures": {
   "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
   "status": 200,
-  "bytes": 9426432,
+  "bytes": 9459427,
   "error": null,
   "content_type": "application/json; charset=utf-8",
   "final_url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
-  "rows": 11832,
+  "rows": 11873,
   "status_counts_all_rows": {
-   "ended": 10463,
-   "cancelled": 156,
-   "forfeited": 845,
-   "scheduled": 364,
-   "started": 4
+   "ended": 10475,
+   "cancelled": 158,
+   "forfeited": 848,
+   "scheduled": 390,
+   "started": 2
   },
   "game_counts_all_rows": {
-   "cs2": 10385,
+   "cs2": 10398,
    "football": 1,
-   "lol": 1446
+   "lol": 1474
   },
-  "kept_in_snapshot": 427,
+  "kept_in_snapshot": 466,
   "force_kept_from_lobby_listing": 85,
-  "omitted_outside_window": 11344,
+  "omitted_outside_window": 11346,
   "window": {
-   "from": "2026-10-15T23:12:40Z",
-   "to": "2026-12-02T23:12:40Z",
+   "from": "2026-10-16T01:21:07Z",
+   "to": "2026-12-03T01:21:07Z",
    "rule": "start time within -3d..+45d of collect time"
   }
  },
@@ -79,25 +79,25 @@
  "pinnacle": {
   "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups",
   "status": 200,
-  "bytes": 150928,
+  "bytes": 150962,
   "error": null,
   "content_type": "application/json",
   "final_url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups",
   "type": "matchups list",
   "matchups_total": 13,
   "matchups_relevant": 13,
-  "quotes_written": 11
+  "quotes_written": 12
  },
  "bovada": {
   "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
   "status": 200,
-  "bytes": 290582,
+  "bytes": 472652,
   "error": null,
   "content_type": "application/json",
   "final_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
   "type": "coupon",
-  "events_scanned": 27,
-  "quotes_written": 24
+  "events_scanned": 38,
+  "quotes_written": 35
  },
  "linefeed": {
   "mirrors": [
@@ -154,7 +154,7 @@
    "melbet": {
     "url": "https://melbet.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
     "status": 200,
-    "bytes": 71814,
+    "bytes": 71075,
     "error": null,
     "content_type": "application/json; charset=utf-8",
     "final_url": "https://melbet.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
@@ -165,7 +165,7 @@
    "22bet": {
     "url": "https://22bet.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
     "status": 200,
-    "bytes": 71814,
+    "bytes": 71075,
     "error": null,
     "content_type": "application/json; charset=utf-8",
     "final_url": "https://22bet.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
@@ -176,7 +176,7 @@
    "betwinner": {
     "url": "https://betwinner.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
     "status": 200,
-    "bytes": 71814,
+    "bytes": 71075,
     "error": null,
     "content_type": "application/json; charset=utf-8",
     "final_url": "https://betwinner.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
@@ -214,19 +214,15 @@
     {
      "transport": "allorigins",
      "url": "https://api.allorigins.win/raw?url=https%3A%2F%2Fegamersworld.com%2Fcounterstrike%2Fmatches",
-     "status": 200,
-     "bytes": 644774,
-     "error": null,
-     "rows_parsed": 0,
-     "contains_match_link": true,
-     "contains_vs_title": true,
-     "sample_saved": "egamersworld_cs2_allorigins.txt"
+     "status": 522,
+     "bytes": 7261,
+     "error": "HTTPError 522"
     },
     {
      "transport": "codetabs",
      "url": "https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fegamersworld.com%2Fcounterstrike%2Fmatches",
      "status": 522,
-     "bytes": 7245,
+     "bytes": 7249,
      "error": "HTTPError 522"
     },
     {
@@ -252,15 +248,15 @@
     {
      "transport": "allorigins",
      "url": "https://api.allorigins.win/raw?url=https%3A%2F%2Fegamersworld.com%2Flol%2Fmatches",
-     "status": 522,
-     "bytes": 7257,
-     "error": "HTTPError 522"
+     "status": 502,
+     "bytes": 6428,
+     "error": "HTTPError 502"
     },
     {
      "transport": "codetabs",
      "url": "https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fegamersworld.com%2Flol%2Fmatches",
      "status": 522,
-     "bytes": 7245,
+     "bytes": 7249,
      "error": "HTTPError 522"
     },
     {
@@ -277,7 +273,7 @@
  "kalshi": {
   "url": "https://api.elections.kalshi.com/trade-api/v2/events?limit=200&status=open&with_nested_markets=true",
   "status": 200,
-  "bytes": 3947174,
+  "bytes": 3946907,
   "error": null,
   "content_type": "application/json",
   "final_url": "https://api.elections.kalshi.com/trade-api/v2/events?limit=200&status=open&with_nested_markets=true",
@@ -288,7 +284,7 @@
  "polymarket": {
   "url": "https://gamma-api.polymarket.com/events?closed=false&limit=200&tag_slug=esports",
   "status": 200,
-  "bytes": 4389536,
+  "bytes": 4389629,
   "error": null,
   "content_type": "application/json",
   "final_url": "https://gamma-api.polymarket.com/events?closed=false&limit=200&tag_slug=esports",
@@ -296,19 +292,19 @@
   "events": 100,
   "quotes_written": 0
  },
- "finished_at_utc": "2026-10-18T23:14:00Z",
+ "finished_at_utc": "2026-10-19T01:22:29Z",
  "counts": {
-  "fixtures_in_snapshot": 488,
-  "quotes_total": 66,
-  "quotes_market": 66,
+  "fixtures_in_snapshot": 527,
+  "quotes_total": 78,
+  "quotes_market": 78,
   "quotes_reference": 0,
   "by_source": {
-   "bovada": 24,
+   "bovada": 35,
    "linefeed_melbet": 31,
-   "pinnacle": 11
+   "pinnacle": 12
   },
   "by_game": {
-   "cs2": 57,
+   "cs2": 69,
    "lol": 9
   }
  },
