@@ -1,32 +1,39 @@
 {
  "session": "6c5bb3d6",
- "ran_utc": "2026-10-19T05:01:07Z",
+ "ran_utc": "2026-10-19T10:53:07Z",
  "command": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests",
  "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
  "returncode": 1,
  "green": false,
  "failing_tests": [
   "test_alias_is_documented_with_evidence",
+  "test_bounded_and_sum_to_one",
   "test_consensus_weights_and_spread",
   "test_crowd_pick_fields_cannot_reach_the_fixture_parser",
   "test_current_board_independently_rederives",
   "test_day5_cards_are_present_and_priced",
+  "test_duplicate_names_resolve_to_most_recent_roster",
+  "test_every_fixture_has_a_pick",
+  "test_every_open_fixture_has_a_pick",
   "test_joined_quotes_reproduce_their_own_no_vig",
   "test_lobby_state_parses_public_transfer_state",
   "test_locked_rows_move_to_the_locked_table",
   "test_market_probability_is_reproducible_from_the_stored_quotes",
   "test_match_quote_requires_both_names_and_time",
+  "test_misjoined_book_price_is_not_used",
   "test_no_vig_is_proportional_and_refuses_junk",
   "test_no_vig_matches_board_day5_market",
   "test_norm_and_canon_strip_generic_org_words_without_over_matching",
+  "test_pick_is_the_higher_probability_team",
+  "test_picks_rows_have_source_links",
   "test_retained_official_inventory_ratings_and_quotes_replay"
  ],
  "counts": {
   "ran": 1043,
   "ok": false,
   "skipped": 0,
-  "failures": 4,
-  "errors": 10
+  "failures": 6,
+  "errors": 15
  },
  "tail": [
   "======================================================================",
@@ -38,8 +45,8 @@
   "AssertionError: 0 not greater than or equal to 2",
   "",
   "----------------------------------------------------------------------",
-  "Ran 1043 tests in 17.878s",
+  "Ran 1043 tests in 16.543s",
   "",
-  "FAILED (failures=4, errors=10, skipped=7)"
+  "FAILED (failures=6, errors=15, skipped=8)"
  ]
 }
