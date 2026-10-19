@@ -84,7 +84,7 @@ executable prices.</li>
 to exactly one row of the official Valve regional standings.
 pA = 1 / (1 + 10^(-Δ·s·k)) where Δ is the points difference, s the rating scale and k the slope
 fitted on this capture's own bookmaker consensus: <b>k=1.0</b>
-(fewer than 6 eligible priced pairs in this capture, Valve&#x27;s own slope (k=1) is used and every model row says so), pairs used 4.</li>
+(fewer than 6 eligible priced pairs in this capture, Valve&#x27;s own slope (k=1) is used and every model row says so), pairs used 3.</li>
 <li><b>Pick</b> — the side with the higher derived probability; confidence labels are Strong ≥70%,
 Solid ≥60%, Lean ≥53%, otherwise Toss-up. Fair decimal = 1/p.</li>
 </ol>
@@ -101,10 +101,10 @@ combine, so no score-adjusted number is invented.</p>
 <p>The hub rebuilds every four hours on a GitHub-hosted runner (cron <code>41 */4 * * *</code>) and
 whenever the canonical collected batch changes. Each run re-reads the lobby, re-fetches the
 bookmaker prices, the exchange books and the official ratings, then re-derives every number on the
-site. Build time for this copy: <b>2026-10-19T15:52:03Z</b>.</p>
+site. Build time for this copy: <b>2026-10-19T21:14:58Z</b>.</p>
 <ul>
-<li>Capture: manual lobby capture 2026-10-16T04:30:00Z (31 rows) merged with the automated capture 2026-10-19T15:52:03Z (231 rows)</li>
-<li>Quotes: merged: hub collection at 2026-10-19T15:52:03Z + canonical every-match collection (read-only) at 2026-10-19T15:33:38Z at 2026-10-19T15:52:03Z (96 quotes)</li>
+<li>Capture: manual lobby capture 2026-10-16T04:30:00Z (31 rows) merged with the automated capture 2026-10-19T21:14:58Z (224 rows)</li>
+<li>Quotes: merged: hub collection at 2026-10-19T21:14:58Z + canonical every-match collection (read-only) at 2026-10-19T21:01:52Z at 2026-10-19T21:14:58Z (75 quotes)</li>
 <li>Ratings: hub collection, official snapshot 2026_10_05</li>
 <li>Exchange: None (0 market(s))</li>
 </ul>
@@ -124,7 +124,7 @@ the points differential is quoted in listed points, never in score-adjusted poin
 <li><a href="../data/7c2622db/coverage.json">coverage.json — alias rules and the declared gate</a></li>
 </ul>
 
-<footer class="foot">Built 2026-10-19T15:52:03Z by session <code>7c2622db</code>.
+<footer class="foot">Built 2026-10-19T21:14:58Z by session <code>7c2622db</code>.
 HotSpawn supplies fixtures, listed points and crowd ownership only — never a probability.
 External prices come from licensed bookmakers and public exchanges; model rows are this
 project's own calculation from the official Valve standings. Research only, 18+.
