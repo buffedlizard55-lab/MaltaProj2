@@ -2,7 +2,7 @@
  "session": "6c5bb3d6",
  "task": "T-VERIFY-6C5BB3D6 independent line-by-line verification",
  "gate": {
-  "ran_utc": "2026-10-19T18:07:46Z",
+  "ran_utc": "2026-10-19T21:05:23Z",
   "command": "python -m unittest discover -s tests",
   "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
   "green": false,
@@ -11,7 +11,7 @@
    "ran": 1043,
    "ok": false,
    "skipped": 0,
-   "failures": 7,
+   "failures": 6,
    "errors": 14
   },
   "failing_tests": [
@@ -23,7 +23,6 @@
    "test_duplicate_names_resolve_to_most_recent_roster",
    "test_every_open_fixture_has_a_pick",
    "test_every_open_fixture_has_a_row",
-   "test_every_priced_fixture_has_a_source_link_and_timestamp",
    "test_joined_quotes_reproduce_their_own_no_vig",
    "test_lobby_state_parses_public_transfer_state",
    "test_locked_rows_move_to_the_locked_table",
@@ -38,7 +37,7 @@
    "test_un_overridden_rows_match_the_canonical_board_exactly"
   ]
  },
- "generated_utc": "2026-10-19T18:07:46Z",
+ "generated_utc": "2026-10-19T21:05:23Z",
  "verified_board": {
   "file": "data/f28afd9e/board.json",
   "generated_utc": "2026-10-19T18:06:59Z",
@@ -56,7 +55,7 @@
  },
  "official_vrs": {
   "snapshot": "2026_10_05",
-  "fetched_utc": "2026-10-19T18:07:36Z",
+  "fetched_utc": "2026-10-19T21:05:10Z",
   "http_status": 200,
   "teams_parsed": 349,
   "human_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
@@ -68,7 +67,7 @@
   "match_count": 96,
   "pickable_at_board_instant": 4
  },
- "quotes_re_derived": 241,
+ "quotes_re_derived": 201,
  "summary": {
   "checks": 11,
   "by_status": {
@@ -131,7 +130,7 @@
    "id": "C3",
    "name": "No-vig arithmetic re-derived from every retained raw quote",
    "status": "pass",
-   "detail": "10 rows re-derived from 241 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 11 rows publish no probability (blank, so there is nothing to re-derive); 1 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct",
+   "detail": "10 rows re-derived from 201 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 11 rows publish no probability (blank, so there is nothing to re-derive); 1 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct",
    "evidence": [
     "data/live/quotes.json",
     "data/fe803b80/snapshot.json",
@@ -217,35 +216,21 @@
      "fixture_id": "1079181",
      "match": "Fire Flux vs ex-6666",
      "published_market_prob_a": 0.4847,
-     "rederived_mean_prob_a": 0.461912,
-     "rederived_spread": 0.072142,
+     "rederived_mean_prob_a": 0.413216,
+     "rederived_spread": 0.210755,
      "quotes": [
       {
        "source": "bovada",
        "event_id": "32428393",
        "quote_team_a": "Fire Flux",
        "quote_team_b": "Ex-6666",
-       "decimal_a": 2.0,
-       "decimal_b": 1.76923,
-       "raw_side_a_prob": 0.469388,
+       "decimal_a": 3.25,
+       "decimal_b": 1.3226,
+       "raw_side_a_prob": 0.289245,
        "orientation": "straight",
-       "rederived_prob_a": 0.469388,
-       "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
-       "retrieved_utc": "2026-10-19T15:36:22Z",
-       "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
-      },
-      {
-       "source": "bovada",
-       "event_id": "32428393",
-       "quote_team_a": "Fire Flux",
-       "quote_team_b": "Ex-6666",
-       "decimal_a": 2.2,
-       "decimal_b": 1.6452,
-       "raw_side_a_prob": 0.427858,
-       "orientation": "straight",
-       "rederived_prob_a": 0.427858,
+       "rederived_prob_a": 0.289245,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-19T17:40:02Z",
+       "retrieved_utc": "2026-10-19T20:49:12Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -290,51 +275,9 @@
      "fixture_id": "1082155",
      "match": "UNiTY vs 9INE",
      "published_market_prob_a": 0.479,
-     "rederived_mean_prob_a": 0.457191,
+     "rederived_mean_prob_a": 0.459189,
      "rederived_spread": 0.038378,
      "quotes": [
-      {
-       "source": "linefeed_melbet",
-       "event_id": "762686559",
-       "quote_team_a": "9INE",
-       "quote_team_b": "UNiTY",
-       "decimal_a": 1.77,
-       "decimal_b": 1.93,
-       "raw_side_a_prob": 0.521622,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.478378,
-       "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T15:36:28Z",
-       "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
-      },
-      {
-       "source": "melbet",
-       "event_id": "762686559",
-       "quote_team_a": "9INE",
-       "quote_team_b": "UNiTY",
-       "decimal_a": 1.68,
-       "decimal_b": 2.06,
-       "raw_side_a_prob": 0.550802,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.449198,
-       "url": "https://22bet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T17:40:04Z",
-       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      },
-      {
-       "source": "thunderpick",
-       "event_id": "132317",
-       "quote_team_a": "9INE",
-       "quote_team_b": "UNiTY",
-       "decimal_a": 1.65,
-       "decimal_b": 2.1,
-       "raw_side_a_prob": 0.56,
-       "orientation": "swapped",
-       "rederived_prob_a": 0.44,
-       "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=132317",
-       "retrieved_utc": "2026-10-19T17:41:00Z",
-       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
-      },
       {
        "source": "melbet",
        "event_id": "762686559",
@@ -384,7 +327,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.243028,
        "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=132389",
-       "retrieved_utc": "2026-10-19T17:41:00Z",
+       "retrieved_utc": "2026-10-19T20:50:15Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -408,21 +351,21 @@
      "fixture_id": "1081861",
      "match": "Lynn Vision vs Morningstar",
      "published_market_prob_a": 0.887588,
-     "rederived_mean_prob_a": 0.861809,
-     "rederived_spread": 0.136579,
+     "rederived_mean_prob_a": 0.872752,
+     "rederived_spread": 0.161133,
      "quotes": [
       {
        "source": "linefeed_melbet",
        "event_id": "763053682",
        "quote_team_a": "Lynn Vision",
        "quote_team_b": "Morningstar",
-       "decimal_a": 1.05,
-       "decimal_b": 7.7,
-       "raw_side_a_prob": 0.88,
+       "decimal_a": 1.04,
+       "decimal_b": 8.2,
+       "raw_side_a_prob": 0.887446,
        "orientation": "straight",
-       "rederived_prob_a": 0.88,
+       "rederived_prob_a": 0.887446,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T15:36:28Z",
+       "retrieved_utc": "2026-10-19T21:03:25Z",
        "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
       },
       {
@@ -430,13 +373,13 @@
        "event_id": "763053682",
        "quote_team_a": "Lynn Vision",
        "quote_team_b": "Morningstar",
-       "decimal_a": 1.07,
-       "decimal_b": 6.84,
-       "raw_side_a_prob": 0.864728,
+       "decimal_a": 1.04,
+       "decimal_b": 8.2,
+       "raw_side_a_prob": 0.887446,
        "orientation": "straight",
-       "rederived_prob_a": 0.864728,
+       "rederived_prob_a": 0.887446,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T17:40:03Z",
+       "retrieved_utc": "2026-10-19T20:49:13Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -444,13 +387,13 @@
        "event_id": "KXCS2GAME-26OCT192300MORLVG",
        "quote_team_a": "Morningstar",
        "quote_team_b": "Lynn Vision",
-       "decimal_a": 11.1111,
-       "decimal_b": 1.0929,
-       "raw_side_a_prob": 0.089553,
+       "decimal_a": 15.3846,
+       "decimal_b": 1.0695,
+       "raw_side_a_prob": 0.064999,
        "orientation": "swapped",
-       "rederived_prob_a": 0.910447,
+       "rederived_prob_a": 0.935001,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-19T17:40:06Z",
+       "retrieved_utc": "2026-10-19T20:49:15Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -488,21 +431,21 @@
      "fixture_id": "1081862",
      "match": "Rare Atom vs Alter Ego",
      "published_market_prob_a": 0.435127,
-     "rederived_mean_prob_a": 0.466309,
-     "rederived_spread": 0.064873,
+     "rederived_mean_prob_a": 0.472112,
+     "rederived_spread": 0.090127,
      "quotes": [
       {
        "source": "linefeed_melbet",
        "event_id": "763053686",
        "quote_team_a": "Rare Atom",
        "quote_team_b": "Alter Ego",
-       "decimal_a": 1.99,
-       "decimal_b": 1.73,
-       "raw_side_a_prob": 0.465054,
+       "decimal_a": 2.142,
+       "decimal_b": 1.65,
+       "raw_side_a_prob": 0.435127,
        "orientation": "straight",
-       "rederived_prob_a": 0.465054,
+       "rederived_prob_a": 0.435127,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T15:36:28Z",
+       "retrieved_utc": "2026-10-19T21:03:25Z",
        "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
       },
       {
@@ -516,7 +459,21 @@
        "orientation": "straight",
        "rederived_prob_a": 0.435127,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T17:40:03Z",
+       "retrieved_utc": "2026-10-19T20:49:13Z",
+       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT200100RAAE",
+       "quote_team_a": "Rare Atom",
+       "quote_team_b": "Alter Ego",
+       "decimal_a": 1.9231,
+       "decimal_b": 2.1277,
+       "raw_side_a_prob": 0.525254,
+       "orientation": "straight",
+       "rederived_prob_a": 0.525254,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-19T20:49:15Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -575,7 +532,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.761252,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T15:36:28Z",
+       "retrieved_utc": "2026-10-19T21:03:25Z",
        "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
       },
       {
@@ -589,7 +546,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.761252,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T17:40:03Z",
+       "retrieved_utc": "2026-10-19T20:49:13Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -627,21 +584,21 @@
      "fixture_id": "1082156",
      "match": "Metizport vs ex-RUSTEC",
      "published_market_prob_a": 0.4360594,
-     "rederived_mean_prob_a": 0.43507,
-     "rederived_spread": 0.006628,
+     "rederived_mean_prob_a": 0.451563,
+     "rederived_spread": 0.045195,
      "quotes": [
       {
        "source": "bovada",
        "event_id": "32424179",
        "quote_team_a": "Ex-Rustec",
        "quote_team_b": "Metizport",
-       "decimal_a": 1.666667,
-       "decimal_b": 2.15,
-       "raw_side_a_prob": 0.563319,
+       "decimal_a": 1.741,
+       "decimal_b": 2.05,
+       "raw_side_a_prob": 0.540754,
        "orientation": "swapped",
-       "rederived_prob_a": 0.436681,
+       "rederived_prob_a": 0.459246,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
-       "retrieved_utc": "2026-10-19T15:36:22Z",
+       "retrieved_utc": "2026-10-19T21:03:18Z",
        "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
       },
       {
@@ -649,13 +606,13 @@
        "event_id": "762686563",
        "quote_team_a": "ex-RUSTEC",
        "quote_team_b": "Metizport",
-       "decimal_a": 1.65,
-       "decimal_b": 2.142,
-       "raw_side_a_prob": 0.564873,
+       "decimal_a": 1.71,
+       "decimal_b": 2.02,
+       "raw_side_a_prob": 0.541555,
        "orientation": "swapped",
-       "rederived_prob_a": 0.435127,
+       "rederived_prob_a": 0.458445,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T15:36:28Z",
+       "retrieved_utc": "2026-10-19T21:03:25Z",
        "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
       },
       {
@@ -663,13 +620,13 @@
        "event_id": "32424179",
        "quote_team_a": "Ex-Rustec",
        "quote_team_b": "Metizport",
-       "decimal_a": 1.6667,
-       "decimal_b": 2.15,
-       "raw_side_a_prob": 0.563314,
+       "decimal_a": 1.741,
+       "decimal_b": 2.05,
+       "raw_side_a_prob": 0.540754,
        "orientation": "swapped",
-       "rederived_prob_a": 0.436686,
+       "rederived_prob_a": 0.459246,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-19T17:40:02Z",
+       "retrieved_utc": "2026-10-19T20:49:12Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -677,13 +634,27 @@
        "event_id": "762686563",
        "quote_team_a": "ex-RUSTEC",
        "quote_team_b": "Metizport",
-       "decimal_a": 1.65,
-       "decimal_b": 2.142,
-       "raw_side_a_prob": 0.564873,
+       "decimal_a": 1.71,
+       "decimal_b": 2.02,
+       "raw_side_a_prob": 0.541555,
        "orientation": "swapped",
-       "rederived_prob_a": 0.435127,
+       "rederived_prob_a": 0.458445,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T17:40:03Z",
+       "retrieved_utc": "2026-10-19T20:49:13Z",
+       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT200500MZPEXR",
+       "quote_team_a": "Metizport",
+       "quote_team_b": "ex-RUSTEC",
+       "decimal_a": 2.0833,
+       "decimal_b": 1.8868,
+       "raw_side_a_prob": 0.475253,
+       "orientation": "straight",
+       "rederived_prob_a": 0.475253,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-19T20:49:15Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -749,7 +720,7 @@
      "fixture_id": "1082158",
      "match": "FOKUS vs ex-Zero Tenacity",
      "published_market_prob_a": 0.6627116,
-     "rederived_mean_prob_a": 0.645548,
+     "rederived_mean_prob_a": 0.644357,
      "rederived_spread": 0.060731,
      "quotes": [
       {
@@ -763,7 +734,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.660731,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T15:36:28Z",
+       "retrieved_utc": "2026-10-19T21:03:25Z",
        "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
       },
       {
@@ -777,7 +748,21 @@
        "orientation": "straight",
        "rederived_prob_a": 0.660731,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T17:40:03Z",
+       "retrieved_utc": "2026-10-19T20:49:13Z",
+       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      },
+      {
+       "source": "kalshi",
+       "event_id": "KXCS2GAME-26OCT201100EXZFOK",
+       "quote_team_a": "ex-Zero Tenacity",
+       "quote_team_b": "FOKUS",
+       "decimal_a": 2.8169,
+       "decimal_b": 1.5873,
+       "raw_side_a_prob": 0.360406,
+       "orientation": "swapped",
+       "rederived_prob_a": 0.639594,
+       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+       "retrieved_utc": "2026-10-19T20:49:15Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -829,7 +814,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.403578,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T15:36:28Z",
+       "retrieved_utc": "2026-10-19T21:03:25Z",
        "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
       },
       {
@@ -843,7 +828,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.403578,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T17:40:03Z",
+       "retrieved_utc": "2026-10-19T20:49:13Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -881,7 +866,7 @@
      "fixture_id": "1082159",
      "match": "Nice Try vs aimclub",
      "published_market_prob_a": 0.4762272,
-     "rederived_mean_prob_a": 0.498698,
+     "rederived_mean_prob_a": 0.506665,
      "rederived_spread": 0.183469,
      "quotes": [
       {
@@ -889,13 +874,13 @@
        "event_id": "32408196",
        "quote_team_a": "Nice Try",
        "quote_team_b": "Aimclub",
-       "decimal_a": 2.0,
-       "decimal_b": 1.76923,
-       "raw_side_a_prob": 0.469388,
+       "decimal_a": 1.909091,
+       "decimal_b": 1.833333,
+       "raw_side_a_prob": 0.489878,
        "orientation": "straight",
-       "rederived_prob_a": 0.469388,
+       "rederived_prob_a": 0.489878,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
-       "retrieved_utc": "2026-10-19T15:36:22Z",
+       "retrieved_utc": "2026-10-19T21:03:18Z",
        "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
       },
       {
@@ -903,13 +888,13 @@
        "event_id": "762682136",
        "quote_team_a": "Nice Try",
        "quote_team_b": "aimclub",
-       "decimal_a": 1.96,
-       "decimal_b": 1.75,
-       "raw_side_a_prob": 0.471698,
+       "decimal_a": 1.9,
+       "decimal_b": 1.8,
+       "raw_side_a_prob": 0.486486,
        "orientation": "straight",
-       "rederived_prob_a": 0.471698,
+       "rederived_prob_a": 0.486486,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T15:36:28Z",
+       "retrieved_utc": "2026-10-19T21:03:25Z",
        "origin": "data/live/quotes.json (CI collector, session 3cd9787c)"
       },
       {
@@ -917,13 +902,13 @@
        "event_id": "32408196",
        "quote_team_a": "Nice Try",
        "quote_team_b": "Aimclub",
-       "decimal_a": 2.0,
-       "decimal_b": 1.7692,
-       "raw_side_a_prob": 0.469383,
+       "decimal_a": 1.9091,
+       "decimal_b": 1.8333,
+       "raw_side_a_prob": 0.489873,
        "orientation": "straight",
-       "rederived_prob_a": 0.469383,
+       "rederived_prob_a": 0.489873,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-19T17:40:02Z",
+       "retrieved_utc": "2026-10-19T20:49:12Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -937,7 +922,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.486486,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-19T17:40:03Z",
+       "retrieved_utc": "2026-10-19T20:49:13Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1661,13 +1646,13 @@
    "id": "C11",
    "name": "Shared publication gate (Pages deploys only on a green suite)",
    "status": "fail",
-   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-19T18:07:46Z: 1043 tests, 7 failures, 14 errors, 0 skipped -> RED, Pages deployment is blocked",
+   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-19T21:05:23Z: 1043 tests, 6 failures, 14 errors, 0 skipped -> RED, Pages deployment is blocked",
    "evidence": [
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml",
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/gate.json"
    ],
    "rows_checked": 1043,
-   "rows_failed": 21,
+   "rows_failed": 20,
    "failures": [
     "test_alias_is_documented_with_evidence",
     "test_consensus_weights_and_spread",
@@ -1677,7 +1662,6 @@
     "test_duplicate_names_resolve_to_most_recent_roster",
     "test_every_open_fixture_has_a_pick",
     "test_every_open_fixture_has_a_row",
-    "test_every_priced_fixture_has_a_source_link_and_timestamp",
     "test_joined_quotes_reproduce_their_own_no_vig",
     "test_lobby_state_parses_public_transfer_state",
     "test_locked_rows_move_to_the_locked_table",
@@ -1760,7 +1744,7 @@
    "id": "IR-C11",
    "severity": "high",
    "title": "Shared Pages publication gate is red - the site cannot deploy",
-   "detail": "21 failing test(s): test_alias_is_documented_with_evidence, test_consensus_weights_and_spread, test_covers_the_whole_open_lobby, test_crowd_pick_fields_cannot_reach_the_fixture_parser, test_day5_cards_are_present_and_priced, test_duplicate_names_resolve_to_most_recent_roster, test_every_open_fixture_has_a_pick, test_every_open_fixture_has_a_row. pages.yml gates deployment on the full suite, so this blocks publication for every session.",
+   "detail": "20 failing test(s): test_alias_is_documented_with_evidence, test_consensus_weights_and_spread, test_covers_the_whole_open_lobby, test_crowd_pick_fields_cannot_reach_the_fixture_parser, test_day5_cards_are_present_and_priced, test_duplicate_names_resolve_to_most_recent_roster, test_every_open_fixture_has_a_pick, test_every_open_fixture_has_a_row. pages.yml gates deployment on the full suite, so this blocks publication for every session.",
    "links": [
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml"
    ]

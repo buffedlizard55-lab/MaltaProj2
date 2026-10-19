@@ -1,6 +1,6 @@
 {
  "session": "6c5bb3d6",
- "ran_utc": "2026-10-19T18:07:46Z",
+ "ran_utc": "2026-10-19T21:05:23Z",
  "command": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests",
  "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
  "returncode": 1,
@@ -14,7 +14,6 @@
   "test_duplicate_names_resolve_to_most_recent_roster",
   "test_every_open_fixture_has_a_pick",
   "test_every_open_fixture_has_a_row",
-  "test_every_priced_fixture_has_a_source_link_and_timestamp",
   "test_joined_quotes_reproduce_their_own_no_vig",
   "test_lobby_state_parses_public_transfer_state",
   "test_locked_rows_move_to_the_locked_table",
@@ -32,21 +31,21 @@
   "ran": 1043,
   "ok": false,
   "skipped": 0,
-  "failures": 7,
+  "failures": 6,
   "errors": 14
  },
  "tail": [
   "======================================================================",
-  "FAIL: test_every_priced_fixture_has_a_source_link_and_timestamp (test_expanded_lines.TestPublishedData.test_every_priced_fixture_has_a_source_link_and_timestamp)",
+  "FAIL: test_un_overridden_rows_match_the_canonical_board_exactly (test_b3871d16.TestNumbers.test_un_overridden_rows_match_the_canonical_board_exactly)",
   "----------------------------------------------------------------------",
   "Traceback (most recent call last):",
-  "  File \"/home/runner/work/MaltaProj2/MaltaProj2/tests/test_expanded_lines.py\", line 230, in test_every_priced_fixture_has_a_source_link_and_timestamp",
-  "    self.assertIsNotNone(q.get(\"decimal_odds_a\"))",
-  "AssertionError: unexpectedly None",
+  "  File \"/home/runner/work/MaltaProj2/MaltaProj2/tests/test_b3871d16.py\", line 138, in test_un_overridden_rows_match_the_canonical_board_exactly",
+  "    self.assertGreater(checked, 20)",
+  "AssertionError: 9 not greater than 20",
   "",
   "----------------------------------------------------------------------",
-  "Ran 1043 tests in 8.691s",
+  "Ran 1043 tests in 11.209s",
   "",
-  "FAILED (failures=7, errors=14, skipped=7)"
+  "FAILED (failures=6, errors=14, skipped=8)"
  ]
 }
