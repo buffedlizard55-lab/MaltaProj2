@@ -504,17 +504,27 @@ def build(res, board, board_path, crowd):
   <p>{''.join(f'<a href="flagged.html#A{esc(f.split("A")[1])}"><span class="pill flag">flag {esc(f)}</span></a>' for f in row.get("flags", []))}</p>
 </div>""")
 
+    blank_fixtures = [fx for fx in board.get("open", [])
+                      if fx.get("state") == "open"
+                      and not effective_line(fx, resolutions.get(str(fx.get("fixture_id")))).get("pick")]
+    blank_cards = []
+    for fx in blank_fixtures:
+        fid = str(fx.get("fixture_id"))
+        hurl = fx.get("hotspawn_url") or "https://play.hotspawn.com/lobby"
+        blank_cards.append(f'<div class="card" id="unresolved-{esc(fid)}"><h3>{esc(fx.get("team_a"))} vs {esc(fx.get("team_b"))} · #{esc(fid)}</h3><p><span class="pill flag">UNRESOLVED — probability blank</span></p><p>Competition: {esc(fx.get("competition") or "unverified")} · fixture source: <a href="{esc(hurl)}">HotSpawn listing</a> (discovery only). No independently verified external line or supported model probability was available in the selected board; no pick or percentage is inferred. Recheck HLTV, esports books/exchanges and Valve VRS before publication.</p></div>')
     lims = "".join(f"<li>{esc(x)}</li>" for x in res["limitations"])
     unresolved_body = f"""
 <h1>Unresolved &amp; limitations</h1>
-<p class="muted">The two rows the canonical board could not price are resolved below with full research ledgers. Remaining limitations are published here rather than papered over — nothing on the picks page is invented.</p>
-<h2>Previously blank rows — resolved</h2>
+<p class="muted">{len(blank_fixtures)} current open fixture(s) have no verified probability. They remain visible with blank probabilities and are explicitly flagged below; historic rows resolved via fallback remain documented separately. No values are invented.</p>
+<h2>Current unresolved rows — no pick published</h2>
+{''.join(blank_cards) if blank_cards else '<p>No currently unresolved open rows.</p>'}
+<h2>Previously blank rows — resolved by research</h2>
 {''.join(un_rows)}
 <h2>Remaining limitations (no row is silently missing)</h2>
 <div class="card"><ul>{lims}</ul></div>
 <h2>What “unresolved” would mean</h2>
 <div class="card">
-  <p>A row stays blank only if all four ladder steps fail: (1) no HLTV/research basis, (2) no book price under any team-name variant, (3) no usable exchange book, (4) no two-sided Valve VRS comparison. In this capture <strong>no row met that bar</strong> — every open fixture carries a pick. The two weakest rows (single-source 1081546, even-line unknown-opponent 1081863) are flagged A2/A3 and listed above.</p>
+  <p>A row stays blank when available evidence does not support a defensible probability: (1) no verified HLTV/research basis, (2) no confirmed book price under a verified team-name variant, (3) no usable exchange book, and (4) no supported two-sided Valve VRS comparison. Current blank count: <strong>{n_total - n_pick}</strong>. The two earlier researched resolutions (1081546 and 1081863) remain flagged A2/A3 and listed above; they do not automatically resolve newly listed fixtures.</p>
 </div>
 """
 
@@ -538,13 +548,13 @@ def build(res, board, board_path, crowd):
     # ---------------- index.html ----------------
     index_body = f"""
 <h1>Executive summary · TWC final day</h1>
-<p class="muted">Built {gen} · {n_total} open HotSpawn CS2 matches · every one has a pick and both win probabilities.</p>
+<p class="muted">Built {gen} · {n_total} open HotSpawn CS2 matches · {n_pick} have picks and verified probabilities · {n_total - n_pick} unresolved and flagged.</p>
 <div class="card hero">
   <div class="kicker">Where are the picks?</div>
   <div class="toc">
     <a href="picks.html">✅ All picks — every open match<small>Pick, both win probabilities, basis, per-row sources · {n_total} matches</small></a>
     <a href="twc.html">🏆 TWC final day<small>Day 1→4 verified results · Day 5 safe + climb picks · Aurora roster truth</small></a>
-    <a href="unresolved.html">🧩 Unresolved &amp; limitations<small>2 rows resolved by research fallback + every remaining limitation</small></a>
+    <a href="unresolved.html">🧩 Unresolved &amp; limitations<small>{n_total - n_pick} current blank probabilities + research fallbacks and limitations</small></a>
     <a href="flagged.html">⚑ Flagged for review<small>8 irregularities with source links (A1–A8)</small></a>
     <a href="method.html">📐 Method &amp; sources<small>Line ladder, formulas, climb rule, provenance</small></a>
   </div>
@@ -563,7 +573,7 @@ def build(res, board, board_path, crowd):
 </div>
 <div class="card">
   <div class="kicker">Coverage</div>
-  <p class="muted">{n_total} open fixtures from the {esc(board.get("generated_utc"))} canonical capture ({esc(os.path.relpath(board_path, ROOT))}): every row carries a pick, both win probabilities and an https source link. Two rows the capture left blank (Apogee Betclic–BBL, Chinggis Warriors–WXM) were resolved via the HLTV→books→exchange→VRS ladder — see <a href="unresolved.html">Unresolved</a>. Auto-refresh every 4–8h rebuilds this desk from the newest board.</p>
+  <p class="muted">{n_total} open fixtures from the {esc(board.get("generated_utc"))} canonical capture ({esc(os.path.relpath(board_path, ROOT))}): {n_pick} carry picks and both verified win probabilities; {n_total - n_pick} remain blank and are flagged with limitations. Previously blank rows resolved via the HLTV→books→exchange→VRS ladder are documented separately. Auto-refresh every 4–8h rebuilds this desk from the newest board. See <a href="unresolved.html">Unresolved &amp; limitations</a>.</p>
 </div>
 """
 
@@ -585,7 +595,7 @@ def build(res, board, board_path, crowd):
   <ul>
     <li>The pick is the argmax of the published fair probabilities. If the market line is exactly even, the pick is a documented research tiebreak and confidence is Toss-up.</li>
     <li>Climb pick: our fair ≥35% on the underdog side, HotSpawn crowd ownership on that side ≤22%, crowd sample ≥20. Below 35% → 'no climb'.</li>
-    <li>Blank is allowed only when the whole ladder fails; blank rows must publish the attempt ledger. In the current capture: 0 blanks.</li>
+    <li>Blank is allowed only when no probability can be independently supported. Such rows stay visible, show blank probabilities, and are listed with limitations on <a href="unresolved.html">Unresolved</a>; the current capture has {n_total - n_pick} unresolved rows.</li>
     <li>Every table row links an official source. Values that can't be confirmed stay blank and are flagged on <a href="flagged.html">flagged.html</a> — never inferred.</li>
   </ul>
 </div>

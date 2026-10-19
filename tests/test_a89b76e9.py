@@ -17,6 +17,8 @@ import os
 import re
 import unittest
 
+from scripts.a89b76e9.build import effective_line
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CLIMB = os.path.join(ROOT, "climb")
 RESEARCH = os.path.join(ROOT, "data", "a89b76e9", "research.json")
@@ -82,9 +84,18 @@ class BoardCoverage(unittest.TestCase):
             missing.append(fid) if "PICK" not in seg else None
         self.assertFalse(missing, f"fixtures without picks: {missing}")
 
-    def test_zero_blanks_in_build_summary(self):
-        self.assertEqual(self.summary["blanks"], 0)
-        self.assertGreaterEqual(self.summary["with_pick"], self.summary["open"])
+    def test_blanks_are_explicitly_listed_and_unverified(self):
+        unresolved = read("unresolved.html")
+        self.assertEqual(self.summary["blanks"], self.summary["open"] - self.summary["with_pick"])
+        for fx in self.board["open"]:
+            if fx.get("state") != "open":
+                continue
+            resolved_ids = {str(row["fixture_id"]) for row in self.research.get("blank_resolutions", [])}
+            line = effective_line(fx, None)
+            if not line.get("pick") and str(fx["fixture_id"]) not in resolved_ids:
+                self.assertIn(f'id="unresolved-{fx["fixture_id"]}"', unresolved)
+                self.assertIn("UNRESOLVED — probability blank", unresolved)
+        self.assertGreaterEqual(self.summary["with_pick"] + self.summary["blanks"], self.summary["open"])
 
     def test_both_previous_blanks_resolved(self):
         ids = set(self.summary["resolutions"])
