@@ -1,19 +1,18 @@
 {
  "session": "6c5bb3d6",
- "ran_utc": "2026-10-19T11:20:28Z",
+ "ran_utc": "2026-10-19T13:58:08Z",
  "command": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests",
  "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
  "returncode": 1,
  "green": false,
  "failing_tests": [
   "test_alias_is_documented_with_evidence",
-  "test_bounded_and_sum_to_one",
   "test_consensus_weights_and_spread",
+  "test_covers_the_whole_open_lobby",
   "test_crowd_pick_fields_cannot_reach_the_fixture_parser",
   "test_current_board_independently_rederives",
   "test_day5_cards_are_present_and_priced",
   "test_duplicate_names_resolve_to_most_recent_roster",
-  "test_every_fixture_has_a_pick",
   "test_every_open_fixture_has_a_pick",
   "test_joined_quotes_reproduce_their_own_no_vig",
   "test_lobby_state_parses_public_transfer_state",
@@ -24,29 +23,29 @@
   "test_no_vig_is_proportional_and_refuses_junk",
   "test_no_vig_matches_board_day5_market",
   "test_norm_and_canon_strip_generic_org_words_without_over_matching",
-  "test_pick_is_the_higher_probability_team",
   "test_picks_rows_have_source_links",
-  "test_retained_official_inventory_ratings_and_quotes_replay"
+  "test_retained_official_inventory_ratings_and_quotes_replay",
+  "test_un_overridden_rows_match_the_canonical_board_exactly"
  ],
  "counts": {
   "ran": 1043,
   "ok": false,
   "skipped": 0,
-  "failures": 6,
-  "errors": 15
+  "failures": 7,
+  "errors": 13
  },
  "tail": [
   "======================================================================",
-  "FAIL: test_day5_cards_are_present_and_priced (test_b3871d16.TestCoverage.test_day5_cards_are_present_and_priced)",
+  "FAIL: test_un_overridden_rows_match_the_canonical_board_exactly (test_b3871d16.TestNumbers.test_un_overridden_rows_match_the_canonical_board_exactly)",
   "----------------------------------------------------------------------",
   "Traceback (most recent call last):",
-  "  File \"/home/runner/work/MaltaProj2/MaltaProj2/tests/test_b3871d16.py\", line 90, in test_day5_cards_are_present_and_priced",
-  "    self.assertGreaterEqual(row[\"market_n_sources\"], 2)",
-  "AssertionError: 0 not greater than or equal to 2",
+  "  File \"/home/runner/work/MaltaProj2/MaltaProj2/tests/test_b3871d16.py\", line 138, in test_un_overridden_rows_match_the_canonical_board_exactly",
+  "    self.assertGreater(checked, 20)",
+  "AssertionError: 19 not greater than 20",
   "",
   "----------------------------------------------------------------------",
-  "Ran 1043 tests in 15.787s",
+  "Ran 1043 tests in 12.125s",
   "",
-  "FAILED (failures=6, errors=15, skipped=8)"
+  "FAILED (failures=7, errors=13, skipped=8)"
  ]
 }
