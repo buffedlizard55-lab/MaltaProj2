@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Source-linked, mobile-friendly audit of every open HotSpawn CS2 Pick'em fixture.">
+  <title>Summary · HotSpawn CS2 provenance audit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header>
+  <div class="bar">
+    <a class="brand" href="index.html">CS2 Pick'em <span>provenance audit</span></a>
+    <nav aria-label="Audit navigation"><a href="index.html" aria-current="page">Summary</a><a href="picks.html">Current picks</a><a href="unresolved.html">Unresolved</a><a href="evidence.html">Evidence</a><a href="method.html">Method</a><a href="../../index.html">Main site</a></nav>
+  </div>
+</header>
+<main id="content" data-observed="2026-10-19T04:00:32Z">
+<section class="hero">
+  <p class="eyebrow">Every page-listed open fixture · source snapshot 2026-10-19T04:00:32Z</p>
+  <h1>CS2 Pick'em evidence, without crowd ownership</h1>
+  <p class="lede">A phone-first audit of all 34 open HotSpawn lobby fixtures. 22 have externally re-derived bookmaker probabilities; 12 remain deliberately blank because no source passed verification.</p>
+  <div class="cta-row">
+    <a class="button primary" href="picks.html">View 22 current picks</a>
+    <a class="button warning" href="unresolved.html">Review 12 unresolved</a>
+    <a class="button" href="evidence.html">Open line-by-line evidence</a>
+  </div>
+</section>
+<section class="metrics" aria-label="Coverage summary">
+  <article><b>34</b><span>open fixtures audited</span></article>
+  <article><b>22</b><span>external-market picks</span></article>
+  <article><b>20</b><span>direct strict-name joins</span></article>
+  <article><b>2</b><span>exact token-order joins</span></article>
+  <article><b>12</b><span>blank &amp; flagged</span></article>
+</section>
+<section class="notice" id="freshness-notice">
+  <h2>Read this before using a pick</h2>
+  <p>Each probability is valid only through its shown expiry and match lock. Your browser hides expired probabilities and picks automatically; the audit trail remains visible. The update workflow rebuilds from the f7279a54 source board at a four-hour cadence, with a schedule fallback.</p>
+</section>
+<section class="split">
+  <div>
+    <h2>Highest snapshot probabilities</h2>
+    <ol class="feature-list"><li><a href="evidence.html#fixture-1082448">sAw vs Bayankhongor</a>
+        <strong>sAw 89.7%</strong>
+        <span>External market consensus — exact ordered team-token and start-time match</span></li><li><a href="evidence.html#fixture-1081131">ex-6666 vs Privateer</a>
+        <strong>ex-6666 85.8%</strong>
+        <span>External market consensus — exact ordered team-token and start-time match</span></li><li><a href="evidence.html#fixture-1081528">BC.Game vs Drama</a>
+        <strong>BC.Game 82.9%</strong>
+        <span>External market consensus — exact ordered team-token and start-time match</span></li><li><a href="evidence.html#fixture-1081545">Ryvex vs Phantom Academy</a>
+        <strong>Phantom Academy 76.3%</strong>
+        <span>External market consensus — exact ordered team-token and start-time match</span></li><li><a href="evidence.html#fixture-1082152">Apogee Betclic vs Spirit Academy</a>
+        <strong>Apogee Betclic 74.0%</strong>
+        <span>External market consensus — exact token-order reordering verified with opponent and start time</span></li></ol>
+    <p><a href="picks.html">All updated picks and both-team probabilities →</a></p>
+  </div>
+  <div>
+    <h2>Unresolved Picks &amp; Limitations</h2>
+    <p>12 fixtures have no published probability or pick. Blank is intentional: it means no qualifying external line, not an inferred coin flip.</p>
+    <p>HLTV fallback probe: HTTP 403 (HTTPError 403). The retained Valve VRS input is flagged stale/unverified for fallback use, so this audit does not manufacture model-only values.</p>
+    <p><a href="unresolved.html">See every blank row, flag, and rejected candidate →</a></p>
+  </div>
+</section>
+<section>
+  <h2>What the sources mean</h2>
+  <div class="method-grid">
+    <article><h3>Fixture discovery</h3><p>Each row links to its official HotSpawn match record. That verifies the listing and start/lock context only.</p></article>
+    <article><h3>Probability evidence</h3><p>Bookmaker two-way prices are re-derived to no-vig probabilities. Captured raw odds, source team names, timestamps, and calculations are shown line by line.</p></article>
+    <article><h3>Conservative gaps</h3><p>Aliases, fuzzy names, approximate starts, in-play prices, stale data, and unverified VRS fallbacks do not produce a number.</p></article>
+  </div>
+  <p><a href="method.html">Full method, source statuses, and reproducibility details →</a></p>
+</section>
+  <footer>
+    <p>Snapshot collected <time datetime="2026-10-19T04:00:32Z">Mon 19 Oct · 04:00 UTC</time>. This is an evidence audit, not betting advice. External pages may change after capture.</p>
+    <p>HotSpawn is used for match discovery only; its crowd-pick ownership is not read or used as a probability signal.</p>
+  </footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
