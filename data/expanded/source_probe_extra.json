@@ -1,25 +1,20 @@
 {
- "generated_at_utc": "2026-10-19T13:54:38Z",
+ "generated_at_utc": "2026-10-19T20:11:40Z",
  "purpose": "Round-3 reachability/structure probe. A failed row is recorded as unavailable and is never used for prices.",
  "results": [
   {
    "group": "linefeed_variants",
    "key": "champs_a",
    "url": "https://melbet.com/service-api/LineFeed/GetChampsZip?sports=40&lng=en&country=1",
-   "http_status": 406,
-   "content_type": "application/problem+json; charset=utf-8",
-   "bytes": 150,
-   "error": "HTTPError 406",
+   "http_status": 0,
+   "content_type": null,
+   "bytes": 0,
+   "error": "URLError: <urlopen error _ssl.c:999: The handshake operation timed out>",
    "final_url": null,
-   "json": true,
+   "json": false,
    "records": null,
-   "keys": [
-    "detail",
-    "status",
-    "title",
-    "type"
-   ],
-   "preview": "{\"type\":\"feed/NotAcceptableException\",\"title\":\"NotAcceptable\",\"status\":406,\"detail\":\"Error occurred during request execution. Contact the developer.\"}"
+   "keys": null,
+   "preview": ""
   },
   {
    "group": "linefeed_variants",
@@ -44,15 +39,20 @@
    "group": "linefeed_variants",
    "key": "champs_c",
    "url": "https://melbet.com/service-api/LineFeed/GetChampsZip?sports=40&lng=en&country=1&virtualSports=true&groupChamps=true",
-   "http_status": 0,
-   "content_type": null,
-   "bytes": 0,
-   "error": "URLError: <urlopen error _ssl.c:999: The handshake operation timed out>",
+   "http_status": 406,
+   "content_type": "application/problem+json; charset=utf-8",
+   "bytes": 150,
+   "error": "HTTPError 406",
    "final_url": null,
-   "json": false,
+   "json": true,
    "records": null,
-   "keys": null,
-   "preview": ""
+   "keys": [
+    "detail",
+    "status",
+    "title",
+    "type"
+   ],
+   "preview": "{\"type\":\"feed/NotAcceptableException\",\"title\":\"NotAcceptable\",\"status\":406,\"detail\":\"Error occurred during request execution. Contact the developer.\"}"
   },
   {
    "group": "linefeed_variants",
@@ -60,11 +60,11 @@
    "url": "https://melbet.com/service-api/LineFeed/GetChampsZip?",
    "http_status": 200,
    "content_type": "application/json; charset=utf-8",
-   "bytes": 216324,
+   "bytes": 216584,
    "error": null,
    "final_url": "https://melbet.com/service-api/LineFeed/GetChampsZip?",
    "json": true,
-   "records": 1225,
+   "records": 1221,
    "keys": [
     "Error",
     "ErrorCode",
@@ -92,11 +92,11 @@
    "url": "https://melbet.com/service-api/LineFeed/GetSportsZip?sports=1&lng=en&country=1",
    "http_status": 200,
    "content_type": "application/json; charset=utf-8",
-   "bytes": 220638,
+   "bytes": 221231,
    "error": null,
    "final_url": "https://melbet.com/service-api/LineFeed/GetSportsZip?sports=1&lng=en&country=1",
    "json": true,
-   "records": 46,
+   "records": 48,
    "keys": [
     "Error",
     "ErrorCode",
@@ -105,13 +105,12 @@
     "Success",
     "Value"
    ],
-   "preview": "{\"Id\":0,\"Success\":true,\"Error\":\"\",\"ErrorCode\":0,\"Guid\":\"\",\"Value\":[{\"L\":[{\"L\":\"Euroleague. Results\",\"LR\":\"\u0415\u0432\u0440\u043e\u043b\u0438\u0433\u0430. \u0418\u0442\u043e\u0433\u0438\",\"LI\":1536949,\"CI\":223,\"GC\":13,\"CHIMG\":\"8072557fb4c935717d5d34eb15604dd4.png\",\"COIMG\":\"f791278851c9da6e30f0c86dc6244409.png\"},{\"L\":\"Russia. Winner\",\"LR\":\"\u0420\u043e\u0441\u0441\u0438\u044f. \u041f\u043e\u0431\u0435\u0434\u0438\u0442\u0435\u043b\u044c\",\"LI\":1752709,\"CI\":1,\"T\":50,\"GC\":13,\"COIMG\":\"9b195cd711a059755f8c4a699a927694.png\"},{\"L\":\"England. Winner",
+   "preview": "{\"Id\":0,\"Success\":true,\"Error\":\"\",\"ErrorCode\":0,\"Guid\":\"\",\"Value\":[{\"L\":[{\"L\":\"France. Winner\",\"LR\":\"\u0424\u0440\u0430\u043d\u0446\u0438\u044f. \u041f\u043e\u0431\u0435\u0434\u0438\u0442\u0435\u043b\u044c\",\"LI\":1756209,\"CI\":198,\"T\":50,\"GC\":9,\"COIMG\":\"63208cab765e66aaba15241f49a3f014.png\"},{\"L\":\"Germany. Winner\",\"LR\":\"\u0413\u0435\u0440\u043c\u0430\u043d\u0438\u044f. \u041f\u043e\u0431\u0435\u0434\u0438\u0442\u0435\u043b\u044c\",\"LI\":819023,\"CI\":53,\"T\":50,\"GC\":10,\"COIMG\":\"d4567348989cea3937d84a953323b252.png\"},{\"L\":\"Italy. Winner\",\"LR\":\"\u0418\u0442\u0430\u043b\u0438\u044f. \u041f\u043e\u0431\u0435\u0434\u0438\u0442\u0435\u043b\u044c\",\"LI\":1756204,",
    "item_keys": [
     "C",
     "CC",
     "CID",
     "I",
-    "IT",
     "L",
     "N",
     "R"
@@ -161,7 +160,7 @@
    "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1&getEmpty=true",
    "http_status": 200,
    "content_type": "application/json; charset=utf-8",
-   "bytes": 61717,
+   "bytes": 65420,
    "error": null,
    "final_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1&getEmpty=true",
    "json": true,
@@ -174,7 +173,7 @@
     "Success",
     "Value"
    ],
-   "preview": "{\"Id\":0,\"Success\":true,\"Error\":\"\",\"ErrorCode\":0,\"Guid\":\"\",\"Value\":[{\"B\":933,\"I\":763098144,\"N\":196873,\"CI\":381481690,\"T\":1,\"E\":[{\"T\":1,\"C\":1.67,\"CV\":\"1.67\",\"G\":1},{\"T\":3,\"C\":2.095,\"CV\":\"2.095\",\"G\":1}],\"AE\":[],\"EC\":2,\"TG\":\"\",\"PN\":\"\",\"TN\":\"map\",\"SSI\":46,\"S\":1792419000,\"CHIMG\":\"407e3f43a3627577256dd6545f65adcc.png\",\"O1\":\"Mavros\",\"O2\":\"Quattro\",\"O1I\":10891778,\"O2I\":10891780,\"O1IS\":[10891778],\"O2IS\":[10",
+   "preview": "{\"Id\":0,\"Success\":true,\"Error\":\"\",\"ErrorCode\":0,\"Guid\":\"\",\"Value\":[{\"B\":183,\"I\":763197008,\"N\":156680,\"CI\":381592582,\"T\":1,\"E\":[{\"T\":3,\"C\":1.51,\"CV\":\"1.51\",\"G\":1},{\"T\":1,\"C\":2.39,\"CV\":\"2.39\",\"G\":1}],\"AE\":[],\"EC\":2,\"TG\":\"\",\"PN\":\"\",\"TN\":\"map\",\"SSI\":46,\"S\":1792440840,\"HS\":1,\"SGC\":1,\"CHIMG\":\"407e3f43a3627577256dd6545f65adcc.png\",\"O1\":\"Mavros\",\"O2\":\"Oway\",\"O1I\":10891778,\"O2I\":10877048,\"O1IS\":[10891778],",
    "item_keys": [
     "AE",
     "B",
@@ -185,6 +184,7 @@
     "COI",
     "E",
     "EC",
+    "HS",
     "I",
     "KI",
     "L",
@@ -204,8 +204,7 @@
     "O2C",
     "O2E",
     "O2I",
-    "O2IMG",
-    "O2IS"
+    "O2IMG"
    ]
   },
   {
@@ -231,20 +230,15 @@
    "group": "linefeed_variants",
    "key": "1x2_c",
    "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&country=1&tf=1000000&tz=3&antiExpressBlock=true&groupChamps=true",
-   "http_status": 406,
-   "content_type": "application/problem+json; charset=utf-8",
-   "bytes": 150,
-   "error": "HTTPError 406",
+   "http_status": 0,
+   "content_type": null,
+   "bytes": 0,
+   "error": "URLError: <urlopen error _ssl.c:999: The handshake operation timed out>",
    "final_url": null,
-   "json": true,
+   "json": false,
    "records": null,
-   "keys": [
-    "detail",
-    "status",
-    "title",
-    "type"
-   ],
-   "preview": "{\"type\":\"feed/NotAcceptableException\",\"title\":\"NotAcceptable\",\"status\":406,\"detail\":\"Error occurred during request execution. Contact the developer.\"}"
+   "keys": null,
+   "preview": ""
   },
   {
    "group": "linefeed_variants",
@@ -322,7 +316,7 @@
    "url": "https://www.marathonbet.com/en/betting/eSports/",
    "http_status": 403,
    "content_type": "text/html; charset=UTF-8",
-   "bytes": 5849,
+   "bytes": 5850,
    "error": "HTTPError 403",
    "final_url": null,
    "json": false,
@@ -336,7 +330,7 @@
    "url": "https://www.marathonbet.com/en/betting/InternetJsonLines?action=line&sport=esports",
    "http_status": 403,
    "content_type": "text/html; charset=UTF-8",
-   "bytes": 5849,
+   "bytes": 5850,
    "error": "HTTPError 403",
    "final_url": null,
    "json": false,
@@ -350,7 +344,7 @@
    "url": "https://www.coolbet.com/api/betoffer/v2/bet-offers?lang=en&sport=counter_strike",
    "http_status": 403,
    "content_type": "text/html",
-   "bytes": 958,
+   "bytes": 960,
    "error": "HTTPError 403",
    "final_url": null,
    "json": false,
@@ -522,15 +516,14 @@
    "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups?withSpecials=false",
    "http_status": 200,
    "content_type": "application/json",
-   "bytes": 50512,
+   "bytes": 63213,
    "error": null,
    "final_url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups?withSpecials=false",
    "json": true,
-   "records": 18,
+   "records": 24,
    "keys": [
     "ageLimit",
     "altTeaser",
-    "bestOfX",
     "featureOrder",
     "hasAltSpread",
     "hasAltTotal",
@@ -552,9 +545,10 @@
     "periods",
     "rotation",
     "startTime",
-    "state"
+    "state",
+    "status"
    ],
-   "preview": "[\n  {\n    \"ageLimit\": 0,\n    \"altTeaser\": false,\n    \"bestOfX\": 3,\n    \"featureOrder\": 10,\n    \"hasAltSpread\": true,\n    \"hasAltTotal\": false,\n    \"hasBetshare\": false,\n    \"hasLive\": true,\n    \"hasMarkets\": true,\n    \"id\": 1638754648,\n    \"isBetshareEnabled\": false,\n    \"isFeatured\": true,\n    \"isHighlighted\": true,\n    \"isLive\": false,\n    \"isPromoted\": false,\n    \"league\": {\n      \"ageLimit\": 0"
+   "preview": "[\n  {\n    \"ageLimit\": 16,\n    \"altTeaser\": false,\n    \"featureOrder\": -1,\n    \"hasAltSpread\": true,\n    \"hasAltTotal\": true,\n    \"hasBetshare\": false,\n    \"hasLive\": false,\n    \"hasMarkets\": true,\n    \"id\": 1638613036,\n    \"isBetshareEnabled\": false,\n    \"isFeatured\": false,\n    \"isHighlighted\": false,\n    \"isLive\": false,\n    \"isPromoted\": false,\n    \"league\": {\n      \"ageLimit\": 16,\n      \"featu"
   },
   {
    "group": "extra_bookmakers",
@@ -562,11 +556,11 @@
    "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/markets/straight",
    "http_status": 200,
    "content_type": "application/json",
-   "bytes": 144307,
+   "bytes": 192262,
    "error": null,
    "final_url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/markets/straight",
    "json": true,
-   "records": 255,
+   "records": 341,
    "keys": [
     "cutoffAt",
     "key",
@@ -577,7 +571,7 @@
     "type",
     "version"
    ],
-   "preview": "[\n  {\n    \"cutoffAt\": \"2026-10-19T16:00:00+00:00\",\n    \"key\": \"s;3;m\",\n    \"limits\": [\n      {\n        \"amount\": 100,\n        \"type\": \"maxRiskStake\"\n      }\n    ],\n    \"matchupId\": 1638757305,\n    \"period\": 3,\n    \"prices\": [\n      {\n        \"participantId\": 1638757306,\n        \"price\": 509\n      },\n      {\n        \"participantId\": 1638757307,\n        \"price\": 536\n      },\n      {\n        \"partici"
+   "preview": "[\n  {\n    \"cutoffAt\": \"2026-10-20T12:00:00+00:00\",\n    \"key\": \"s;3;m\",\n    \"limits\": [\n      {\n        \"amount\": 100,\n        \"type\": \"maxRiskStake\"\n      }\n    ],\n    \"matchupId\": 1638782748,\n    \"period\": 3,\n    \"prices\": [\n      {\n        \"participantId\": 1638782749,\n        \"price\": 143\n      },\n      {\n        \"participantId\": 1638782750,\n        \"price\": -192\n      }\n    ],\n    \"type\": \"mone"
   },
   {
    "group": "extra_bookmakers",
