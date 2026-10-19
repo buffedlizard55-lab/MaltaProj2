@@ -5949,3 +5949,6 @@ day-5 number to one of those reads. Nothing on the section is derived from a Hot
 
 ### Log — a666cd41
 - 2026-10-19: Claim created before research. Environment fixes the branch to `arena/a666cd41-maltaproj2`; therefore no `session-<id>/...` branch is created. Initial scope is intentionally isolated to avoid existing claimed root/board scopes.
+
+### Scope correction — a666cd41 (2026-10-19)
+- The deploy staging script already copies the repository's existing `audits/` tree but not a singular `audit/` tree. To publish without touching another session's `scripts/stage_site.py` scope, this task's static output path is **`audits/a666cd41/**`** (not `audit/a666cd41/**`). All other claimed paths and read-only boundaries remain unchanged.
