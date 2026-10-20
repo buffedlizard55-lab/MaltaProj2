@@ -83,8 +83,8 @@ executable prices.</li>
 <li><b>Own model line</b> — only for rows with no eligible price, and only when both teams resolve
 to exactly one row of the official Valve regional standings.
 pA = 1 / (1 + 10^(-Δ·s·k)) where Δ is the points difference, s the rating scale and k the slope
-fitted on this capture's own bookmaker consensus: <b>k=0.46133379779427824</b>
-(slope learned from this capture&#x27;s own bookmaker consensus over official Valve ratings, through the origin, clamped to the published bounds), pairs used 10.</li>
+fitted on this capture's own bookmaker consensus: <b>k=0.5169587279248539</b>
+(slope learned from this capture&#x27;s own bookmaker consensus over official Valve ratings, through the origin, clamped to the published bounds), pairs used 8.</li>
 <li><b>Pick</b> — the side with the higher derived probability; confidence labels are Strong ≥70%,
 Solid ≥60%, Lean ≥53%, otherwise Toss-up. Fair decimal = 1/p.</li>
 </ol>
@@ -101,11 +101,11 @@ combine, so no score-adjusted number is invented.</p>
 <p>The hub rebuilds every four hours on a GitHub-hosted runner (cron <code>41 */4 * * *</code>) and
 whenever the canonical collected batch changes. Each run re-reads the lobby, re-fetches the
 bookmaker prices, the exchange books and the official ratings, then re-derives every number on the
-site. Build time for this copy: <b>2026-10-20T13:51:04Z</b>.</p>
+site. Build time for this copy: <b>2026-10-20T20:08:15Z</b>.</p>
 <ul>
-<li>Capture: manual lobby capture 2026-10-16T04:30:00Z (31 rows) merged with the automated capture 2026-10-20T13:51:03Z (236 rows)</li>
-<li>Quotes: merged: hub collection at 2026-10-20T13:51:03Z + canonical every-match collection (read-only) at 2026-10-20T13:32:40Z at 2026-10-20T13:51:03Z (113 quotes)</li>
-<li>Ratings: hub collection, official snapshot 2026_10_05</li>
+<li>Capture: manual lobby capture 2026-10-16T04:30:00Z (31 rows) merged with the automated capture 2026-10-20T20:08:14Z (234 rows)</li>
+<li>Quotes: merged: hub collection at 2026-10-20T20:08:14Z + canonical every-match collection (read-only) at 2026-10-20T19:59:21Z at 2026-10-20T20:08:14Z (83 quotes)</li>
+<li>Ratings: canonical every-match collection (read-only), official snapshot 2026_10_05</li>
 <li>Exchange: None (0 market(s))</li>
 </ul>
 <h2>Sources read for this build</h2>
@@ -124,7 +124,7 @@ the points differential is quoted in listed points, never in score-adjusted poin
 <li><a href="../data/7c2622db/coverage.json">coverage.json — alias rules and the declared gate</a></li>
 </ul>
 
-<footer class="foot">Built 2026-10-20T13:51:04Z by session <code>7c2622db</code>.
+<footer class="foot">Built 2026-10-20T20:08:15Z by session <code>7c2622db</code>.
 HotSpawn supplies fixtures, listed points and crowd ownership only — never a probability.
 External prices come from licensed bookmakers and public exchanges; model rows are this
 project's own calculation from the official Valve standings. Research only, 18+.
