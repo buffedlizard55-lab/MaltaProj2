@@ -2,7 +2,7 @@
  "session": "6c5bb3d6",
  "task": "T-VERIFY-6C5BB3D6 independent line-by-line verification",
  "gate": {
-  "ran_utc": "2026-10-20T01:18:57Z",
+  "ran_utc": "2026-10-20T02:40:14Z",
   "command": "python -m unittest discover -s tests",
   "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
   "green": false,
@@ -11,14 +11,14 @@
    "ran": 1043,
    "ok": false,
    "skipped": 0,
-   "failures": 4,
+   "failures": 5,
    "errors": 14
   },
   "failing_tests": [
    "test_alias_is_documented_with_evidence",
    "test_consensus_weights_and_spread",
-   "test_covers_the_whole_open_lobby",
    "test_crowd_pick_fields_cannot_reach_the_fixture_parser",
+   "test_current_board_independently_rederives",
    "test_day5_cards_are_present_and_priced",
    "test_duplicate_names_resolve_to_most_recent_roster",
    "test_every_open_fixture_has_a_pick",
@@ -32,28 +32,29 @@
    "test_no_vig_matches_board_day5_market",
    "test_norm_and_canon_strip_generic_org_words_without_over_matching",
    "test_picks_rows_have_source_links",
+   "test_retained_official_inventory_ratings_and_quotes_replay",
    "test_the_two_previously_blank_rows_are_resolved"
   ]
  },
- "generated_utc": "2026-10-20T01:18:58Z",
+ "generated_utc": "2026-10-20T02:40:14Z",
  "verified_board": {
   "file": "data/f28afd9e/board.json",
-  "generated_utc": "2026-10-20T01:18:04Z",
+  "generated_utc": "2026-10-20T02:39:15Z",
   "rows": 11,
   "summary": {
    "listed_open": 10,
-   "with_pick": 8,
-   "market_priced": 8,
+   "with_pick": 9,
+   "market_priced": 9,
    "exchange_priced": 0,
    "model_only": 0,
-   "unresolved": 2,
-   "contrarian": 3,
+   "unresolved": 1,
+   "contrarian": 5,
    "locked_today": 1
   }
  },
  "official_vrs": {
   "snapshot": "2026_10_05",
-  "fetched_utc": "2026-10-20T01:18:47Z",
+  "fetched_utc": "2026-10-20T02:40:03Z",
   "http_status": 200,
   "teams_parsed": 349,
   "human_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
@@ -65,18 +66,18 @@
   "match_count": 96,
   "pickable_at_board_instant": 4
  },
- "quotes_re_derived": 230,
+ "quotes_re_derived": 244,
  "summary": {
   "checks": 11,
   "by_status": {
-   "fail": 2,
-   "pass": 7,
+   "pass": 8,
    "info": 1,
-   "skipped": 1
+   "skipped": 1,
+   "fail": 1
   },
-  "irregularities": 17,
+  "irregularities": 16,
   "by_severity": {
-   "high": 4,
+   "high": 3,
    "info": 5,
    "low": 2,
    "medium": 2,
@@ -87,23 +88,21 @@
   {
    "id": "C1",
    "name": "Inventory coverage of every pickable CS2 fixture",
-   "status": "fail",
-   "detail": "96 CS2 fixtures in the official lobby snapshot; 4 still pickable at the board instant 2026-10-20T01:18:04Z; 92 locked/past; 3/4 carry a pick",
+   "status": "pass",
+   "detail": "96 CS2 fixtures in the official lobby snapshot; 4 still pickable at the board instant 2026-10-20T02:39:15Z; 92 locked/past; 4/4 carry a pick",
    "evidence": [
     "data/hotspawn_matches.json",
     "data/f28afd9e/board.json"
    ],
    "rows_checked": 4,
-   "rows_failed": 1,
-   "failures": [
-    "1081863 (row present, no pick)"
-   ]
+   "rows_failed": 0,
+   "failures": []
   },
   {
    "id": "C2",
    "name": "Probability normalization, pick = argmax, and blanks disclosed",
    "status": "pass",
-   "detail": "11 published rows re-checked: 9 carry probabilities (p_a+p_b=1, safe pick = higher probability, stated pick probabilities equal the row's side values) and 2 are published blank (1081863, 1082157) - each blank must state its basis or carry a flag, and none may publish a pick",
+   "detail": "11 published rows re-checked: 10 carry probabilities (p_a+p_b=1, safe pick = higher probability, stated pick probabilities equal the row's side values) and 1 are published blank (1082157) - each blank must state its basis or carry a flag, and none may publish a pick",
    "evidence": [
     "data/f28afd9e/board.json"
    ],
@@ -111,7 +110,6 @@
    "rows_failed": 0,
    "failures": [],
    "blank_rows": [
-    "1081863",
     "1082157"
    ]
   },
@@ -119,7 +117,7 @@
    "id": "C3",
    "name": "No-vig arithmetic re-derived from every retained raw quote",
    "status": "pass",
-   "detail": "9 rows re-derived from 230 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 2 rows publish no probability (blank, so there is nothing to re-derive); 0 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct",
+   "detail": "10 rows re-derived from 244 retained raw quotes (Pinnacle / Bovada / Melbet LineFeed / Kalshi / Thunderpick-via-bo3.gg); 1 rows publish no probability (blank, so there is nothing to re-derive); 0 rows have no retained quote in this repository snapshot and are reported as not independently re-derivable rather than assumed correct",
    "evidence": [
     "data/live/quotes.json",
     "data/fe803b80/snapshot.json",
@@ -130,14 +128,13 @@
    "failures": [],
    "unjoined_rows": [],
    "blank_rows": [
-    "1081863",
     "1082157"
    ],
    "per_row": [
     {
      "fixture_id": "1082580",
      "match": "A NATA vs Hacha",
-     "published_market_prob_a": 0.2453,
+     "published_market_prob_a": 0.243028,
      "rederived_mean_prob_a": 0.243028,
      "rederived_spread": 0.0,
      "quotes": [
@@ -190,7 +187,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.887446,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-20T00:51:31Z",
+       "retrieved_utc": "2026-10-20T02:12:13Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -204,7 +201,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.915,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-20T00:51:33Z",
+       "retrieved_utc": "2026-10-20T02:12:15Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -241,9 +238,9 @@
     {
      "fixture_id": "1081862",
      "match": "Rare Atom vs Alter Ego",
-     "published_market_prob_a": 0.49320200000000003,
-     "rederived_mean_prob_a": 0.482643,
-     "rederived_spread": 0.084866,
+     "published_market_prob_a": 0.5229775,
+     "rederived_mean_prob_a": 0.494556,
+     "rederived_spread": 0.139138,
      "quotes": [
       {
        "source": "linefeed_melbet",
@@ -270,7 +267,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.471698,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-20T00:51:31Z",
+       "retrieved_utc": "2026-10-20T02:12:13Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -278,13 +275,13 @@
        "event_id": "KXCS2GAME-26OCT200100RAAE",
        "quote_team_a": "Rare Atom",
        "quote_team_b": "Alter Ego",
-       "decimal_a": 1.9048,
-       "decimal_b": 2.0202,
-       "raw_side_a_prob": 0.514701,
+       "decimal_a": 1.7241,
+       "decimal_b": 2.3256,
+       "raw_side_a_prob": 0.574265,
        "orientation": "straight",
-       "rederived_prob_a": 0.514701,
+       "rederived_prob_a": 0.574265,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-20T00:51:33Z",
+       "retrieved_utc": "2026-10-20T02:12:15Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -321,9 +318,26 @@
     {
      "fixture_id": "1081863",
      "match": "Chinggis Warriors vs WXM",
-     "quotes": [],
-     "published_market_prob_a": null,
-     "status": "no_published_probability"
+     "published_market_prob_a": 0.794737,
+     "rederived_mean_prob_a": 0.794737,
+     "rederived_spread": 0.0,
+     "quotes": [
+      {
+       "source": "melbet",
+       "event_id": "763245734",
+       "quote_team_a": "Chinggis Warriors",
+       "quote_team_b": "WXM",
+       "decimal_a": 1.17,
+       "decimal_b": 4.53,
+       "raw_side_a_prob": 0.794737,
+       "orientation": "straight",
+       "rederived_prob_a": 0.794737,
+       "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+       "retrieved_utc": "2026-10-20T02:12:13Z",
+       "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
+      }
+     ],
+     "status": "agrees"
     },
     {
      "fixture_id": "1081864",
@@ -357,7 +371,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.761252,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-20T00:51:31Z",
+       "retrieved_utc": "2026-10-20T02:12:13Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -394,9 +408,9 @@
     {
      "fixture_id": "1082156",
      "match": "Metizport vs ex-RUSTEC",
-     "published_market_prob_a": 0.4735182857142858,
-     "rederived_mean_prob_a": 0.466633,
-     "rederived_spread": 0.051551,
+     "published_market_prob_a": 0.47486285714285714,
+     "rederived_mean_prob_a": 0.467221,
+     "rederived_spread": 0.056256,
      "quotes": [
       {
        "source": "bovada",
@@ -437,7 +451,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.459246,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-20T00:51:30Z",
+       "retrieved_utc": "2026-10-20T02:12:12Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -451,7 +465,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.458445,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-20T00:51:31Z",
+       "retrieved_utc": "2026-10-20T02:12:13Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -459,13 +473,13 @@
        "event_id": "KXCS2GAME-26OCT200500MZPEXR",
        "quote_team_a": "Metizport",
        "quote_team_b": "ex-RUSTEC",
-       "decimal_a": 1.9608,
-       "decimal_b": 2.0408,
-       "raw_side_a_prob": 0.509996,
+       "decimal_a": 1.9048,
+       "decimal_b": 2.0202,
+       "raw_side_a_prob": 0.514701,
        "orientation": "straight",
-       "rederived_prob_a": 0.509996,
+       "rederived_prob_a": 0.514701,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-20T00:51:33Z",
+       "retrieved_utc": "2026-10-20T02:12:15Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -516,8 +530,8 @@
     {
      "fixture_id": "1079644",
      "match": "BakS vs ILLYRIANS",
-     "published_market_prob_a": 0.75,
-     "rederived_mean_prob_a": 0.75,
+     "published_market_prob_a": 0.6141796,
+     "rederived_mean_prob_a": 0.645633,
      "rederived_spread": 0.0,
      "quotes": [
       {
@@ -525,13 +539,13 @@
        "event_id": "32492229",
        "quote_team_a": "Baks",
        "quote_team_b": "illyrians",
-       "decimal_a": 1.25,
-       "decimal_b": 3.75,
-       "raw_side_a_prob": 0.75,
+       "decimal_a": 1.4545,
+       "decimal_b": 2.65,
+       "raw_side_a_prob": 0.645633,
        "orientation": "straight",
-       "rederived_prob_a": 0.75,
+       "rederived_prob_a": 0.645633,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-20T00:51:30Z",
+       "retrieved_utc": "2026-10-20T02:12:12Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       }
      ],
@@ -547,9 +561,9 @@
     {
      "fixture_id": "1082158",
      "match": "FOKUS vs ex-Zero Tenacity",
-     "published_market_prob_a": 0.6529977142857142,
-     "rederived_mean_prob_a": 0.647556,
-     "rederived_spread": 0.033862,
+     "published_market_prob_a": 0.6499625714285714,
+     "rederived_mean_prob_a": 0.645431,
+     "rederived_spread": 0.042636,
      "quotes": [
       {
        "source": "linefeed_melbet",
@@ -576,7 +590,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.660731,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-20T00:51:31Z",
+       "retrieved_utc": "2026-10-20T02:12:13Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -584,13 +598,13 @@
        "event_id": "KXCS2GAME-26OCT201100EXZFOK",
        "quote_team_a": "ex-Zero Tenacity",
        "quote_team_b": "FOKUS",
-       "decimal_a": 2.6667,
-       "decimal_b": 1.5748,
-       "raw_side_a_prob": 0.371284,
+       "decimal_a": 2.6316,
+       "decimal_b": 1.626,
+       "raw_side_a_prob": 0.381905,
        "orientation": "swapped",
-       "rederived_prob_a": 0.628716,
+       "rederived_prob_a": 0.618095,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-20T00:51:33Z",
+       "retrieved_utc": "2026-10-20T02:12:15Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -656,7 +670,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.400724,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-20T00:51:30Z",
+       "retrieved_utc": "2026-10-20T02:12:12Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -670,7 +684,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.403578,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-20T00:51:31Z",
+       "retrieved_utc": "2026-10-20T02:12:13Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -750,7 +764,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.489873,
        "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-       "retrieved_utc": "2026-10-20T00:51:30Z",
+       "retrieved_utc": "2026-10-20T02:12:12Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -764,7 +778,7 @@
        "orientation": "straight",
        "rederived_prob_a": 0.486486,
        "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-       "retrieved_utc": "2026-10-20T00:51:31Z",
+       "retrieved_utc": "2026-10-20T02:12:13Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -778,7 +792,7 @@
        "orientation": "swapped",
        "rederived_prob_a": 0.544995,
        "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-       "retrieved_utc": "2026-10-20T00:51:33Z",
+       "retrieved_utc": "2026-10-20T02:12:15Z",
        "origin": "data/fe803b80/snapshot.json (session fe803b80 collector)"
       },
       {
@@ -1074,12 +1088,12 @@
    "id": "C6",
    "name": "HotSpawn crowd % is ownership-only and never a probability",
    "status": "pass",
-   "detail": "9 priced rows publish exactly the upstream board's market/model probability (so the crowd split cannot have entered them); 0 rows have a probability numerically equal to the crowd share; 0 blank rows carry no probability to compare",
+   "detail": "10 priced rows publish exactly the upstream board's market/model probability (so the crowd split cannot have entered them); 0 rows have a probability numerically equal to the crowd share; 0 blank rows carry no probability to compare",
    "evidence": [
     "data/f28afd9e/board.json",
     "https://play.hotspawn.com/lobby"
    ],
-   "rows_checked": 9,
+   "rows_checked": 10,
    "rows_failed": 0,
    "failures": [],
    "blank_rows": []
@@ -1126,7 +1140,7 @@
    "id": "C8",
    "name": "Contrarian (differential) pick recomputed independently",
    "status": "info",
-   "detail": "11 rows recomputed with points x (probability - crowd ownership); 5 agree with the published leaderboard pick, 4 open rows diverge. Divergence is a methodology difference (the published layer caps swings and only fades near coin-flips), not an arithmetic error.",
+   "detail": "11 rows recomputed with points x (probability - crowd ownership); 7 agree with the published leaderboard pick, 3 open rows diverge. Divergence is a methodology difference (the published layer caps swings and only fades near coin-flips), not an arithmetic error.",
    "evidence": [
     "data/f28afd9e/board.json",
     "data/live/board.json (crowd reference field)"
@@ -1136,9 +1150,8 @@
    "failures": [],
    "divergences": [
     "1081861 Lynn Vision vs Morningstar: published 'Lynn Vision' (chalk) but differential-optimal is 'Morningstar' (points x (p - crowd): 2 x -0.069 = -0.14 vs 2 x +0.069 = +0.14)",
-    "1081864 NEXVOID vs Vitalem Aerem: published 'NEXVOID' (chalk) but differential-optimal is 'Vitalem Aerem' (points x (p - crowd): 2 x -0.182 = -0.36 vs 2 x +0.182 = +0.36)",
-    "1079644 BakS vs ILLYRIANS: published 'BakS' (chalk) but differential-optimal is 'ILLYRIANS' (points x (p - crowd): 3 x -0.262 = -0.79 vs 3 x +0.262 = +0.79)",
-    "1082158 FOKUS vs ex-Zero Tenacity: published 'FOKUS' (chalk) but differential-optimal is 'ex-Zero Tenacity' (points x (p - crowd): 3 x -0.307 = -0.92 vs 3 x +0.307 = +0.92)"
+    "1081863 Chinggis Warriors vs WXM: published 'Chinggis Warriors' (chalk) but differential-optimal is 'WXM' (points x (p - crowd): 2 x -0.175 = -0.35 vs 2 x +0.175 = +0.35)",
+    "1081864 NEXVOID vs Vitalem Aerem: published 'NEXVOID' (chalk) but differential-optimal is 'Vitalem Aerem' (points x (p - crowd): 2 x -0.183 = -0.37 vs 2 x +0.183 = +0.37)"
    ],
    "table": [
     {
@@ -1148,14 +1161,14 @@
      "start_utc": "2026-10-19T22:10:00Z",
      "state": "locked",
      "points": 2.0,
-     "prob_a": 0.2453,
-     "prob_b": 0.7547,
+     "prob_a": 0.243,
+     "prob_b": 0.757,
      "crowd_a": 74,
      "crowd_b": 26,
-     "diff_a": -0.4947,
-     "diff_b": 0.4947,
-     "ev_a": -0.989,
-     "ev_b": 0.989,
+     "diff_a": -0.497,
+     "diff_b": 0.497,
+     "ev_a": -0.994,
+     "ev_b": 0.994,
      "differential_optimal": "Hacha",
      "published_leaderboard_pick": "Hacha",
      "published_rule": "chalk_contrarian",
@@ -1188,14 +1201,14 @@
      "start_utc": "2026-10-20T05:00:00Z",
      "state": "open",
      "points": 2.0,
-     "prob_a": 0.5021,
-     "prob_b": 0.4979,
+     "prob_a": 0.5272,
+     "prob_b": 0.4728,
      "crowd_a": 78,
      "crowd_b": 22,
-     "diff_a": -0.2779,
-     "diff_b": 0.2779,
-     "ev_a": -0.556,
-     "ev_b": 0.556,
+     "diff_a": -0.2528,
+     "diff_b": 0.2528,
+     "ev_a": -0.506,
+     "ev_b": 0.506,
      "differential_optimal": "Alter Ego",
      "published_leaderboard_pick": "Alter Ego",
      "published_rule": "R1_coinflip_fade",
@@ -1204,8 +1217,22 @@
     {
      "fixture_id": "1081863",
      "match": "Chinggis Warriors vs WXM",
+     "competition": "VOID Autumn Cup 2026",
+     "start_utc": "2026-10-20T07:00:00Z",
      "state": "open",
-     "status": "no_published_probability"
+     "points": 2.0,
+     "prob_a": 0.7947,
+     "prob_b": 0.2053,
+     "crowd_a": 97,
+     "crowd_b": 3,
+     "diff_a": -0.1753,
+     "diff_b": 0.1753,
+     "ev_a": -0.351,
+     "ev_b": 0.351,
+     "differential_optimal": "WXM",
+     "published_leaderboard_pick": "Chinggis Warriors",
+     "published_rule": "chalk",
+     "agrees": false
     },
     {
      "fixture_id": "1081864",
@@ -1214,14 +1241,14 @@
      "start_utc": "2026-10-20T09:00:00Z",
      "state": "open",
      "points": 2.0,
-     "prob_a": 0.7381,
-     "prob_b": 0.2619,
+     "prob_a": 0.7373,
+     "prob_b": 0.2627,
      "crowd_a": 92,
      "crowd_b": 8,
-     "diff_a": -0.1819,
-     "diff_b": 0.1819,
-     "ev_a": -0.364,
-     "ev_b": 0.364,
+     "diff_a": -0.1827,
+     "diff_b": 0.1827,
+     "ev_a": -0.365,
+     "ev_b": 0.365,
      "differential_optimal": "Vitalem Aerem",
      "published_leaderboard_pick": "NEXVOID",
      "published_rule": "chalk",
@@ -1234,12 +1261,12 @@
      "start_utc": "2026-10-20T09:00:00Z",
      "state": "open",
      "points": 3.0,
-     "prob_a": 0.5199,
-     "prob_b": 0.4801,
+     "prob_a": 0.52,
+     "prob_b": 0.48,
      "crowd_a": 90,
      "crowd_b": 10,
-     "diff_a": -0.3801,
-     "diff_b": 0.3801,
+     "diff_a": -0.38,
+     "diff_b": 0.38,
      "ev_a": -1.14,
      "ev_b": 1.14,
      "differential_optimal": "ex-RUSTEC",
@@ -1254,18 +1281,18 @@
      "start_utc": "2026-10-20T11:00:00Z",
      "state": "open",
      "points": 3.0,
-     "prob_a": 0.718,
-     "prob_b": 0.282,
+     "prob_a": 0.613,
+     "prob_b": 0.387,
      "crowd_a": 98,
      "crowd_b": 2,
-     "diff_a": -0.262,
-     "diff_b": 0.262,
-     "ev_a": -0.786,
-     "ev_b": 0.786,
+     "diff_a": -0.367,
+     "diff_b": 0.367,
+     "ev_a": -1.101,
+     "ev_b": 1.101,
      "differential_optimal": "ILLYRIANS",
-     "published_leaderboard_pick": "BakS",
-     "published_rule": "chalk",
-     "agrees": false
+     "published_leaderboard_pick": "ILLYRIANS",
+     "published_rule": "R2_upset_swing",
+     "agrees": true
     },
     {
      "fixture_id": "1082157",
@@ -1280,18 +1307,18 @@
      "start_utc": "2026-10-20T15:00:00Z",
      "state": "open",
      "points": 3.0,
-     "prob_a": 0.6525,
-     "prob_b": 0.3475,
+     "prob_a": 0.6495,
+     "prob_b": 0.3505,
      "crowd_a": 96,
      "crowd_b": 4,
-     "diff_a": -0.3075,
-     "diff_b": 0.3075,
-     "ev_a": -0.922,
-     "ev_b": 0.922,
+     "diff_a": -0.3105,
+     "diff_b": 0.3105,
+     "ev_a": -0.932,
+     "ev_b": 0.932,
      "differential_optimal": "ex-Zero Tenacity",
-     "published_leaderboard_pick": "FOKUS",
-     "published_rule": "chalk",
-     "agrees": false
+     "published_leaderboard_pick": "ex-Zero Tenacity",
+     "published_rule": "R2_upset_swing",
+     "agrees": true
     },
     {
      "fixture_id": "1079646",
@@ -1300,14 +1327,14 @@
      "start_utc": "2026-10-20T17:00:00Z",
      "state": "open",
      "points": 3.0,
-     "prob_a": 0.3579,
-     "prob_b": 0.6421,
+     "prob_a": 0.3622,
+     "prob_b": 0.6378,
      "crowd_a": 13,
      "crowd_b": 87,
-     "diff_a": 0.2279,
-     "diff_b": -0.2279,
-     "ev_a": 0.684,
-     "ev_b": -0.684,
+     "diff_a": 0.2322,
+     "diff_b": -0.2322,
+     "ev_a": 0.697,
+     "ev_b": -0.697,
      "differential_optimal": "Lavked",
      "published_leaderboard_pick": "Lavked",
      "published_rule": "R2_upset_swing",
@@ -1408,18 +1435,18 @@
    "id": "C11",
    "name": "Shared publication gate (Pages deploys only on a green suite)",
    "status": "fail",
-   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-20T01:18:57Z: 1043 tests, 4 failures, 14 errors, 0 skipped -> RED, Pages deployment is blocked",
+   "detail": "`/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests` at 2026-10-20T02:40:14Z: 1043 tests, 5 failures, 14 errors, 0 skipped -> RED, Pages deployment is blocked",
    "evidence": [
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml",
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/6c5bb3d6/gate.json"
    ],
    "rows_checked": 1043,
-   "rows_failed": 18,
+   "rows_failed": 19,
    "failures": [
     "test_alias_is_documented_with_evidence",
     "test_consensus_weights_and_spread",
-    "test_covers_the_whole_open_lobby",
     "test_crowd_pick_fields_cannot_reach_the_fixture_parser",
+    "test_current_board_independently_rederives",
     "test_day5_cards_are_present_and_priced",
     "test_duplicate_names_resolve_to_most_recent_roster",
     "test_every_open_fixture_has_a_pick",
@@ -1433,20 +1460,12 @@
     "test_no_vig_matches_board_day5_market",
     "test_norm_and_canon_strip_generic_org_words_without_over_matching",
     "test_picks_rows_have_source_links",
+    "test_retained_official_inventory_ratings_and_quotes_replay",
     "test_the_two_previously_blank_rows_are_resolved"
    ]
   }
  ],
  "irregularities": [
-  {
-   "id": "IR-C1",
-   "severity": "high",
-   "title": "Pickable fixtures without a published pick",
-   "detail": "['1081863 (row present, no pick)']",
-   "links": [
-    "https://play.hotspawn.com/lobby"
-   ]
-  },
   {
    "id": "IR-C7b",
    "severity": "low",
@@ -1461,7 +1480,7 @@
    "id": "IR-C8",
    "severity": "info",
    "title": "Where pure differential-EV and the published conservative rule disagree",
-   "detail": "1081861 Lynn Vision vs Morningstar: published 'Lynn Vision' (chalk) but differential-optimal is 'Morningstar' (points x (p - crowd): 2 x -0.069 = -0.14 vs 2 x +0.069 = +0.14) | 1081864 NEXVOID vs Vitalem Aerem: published 'NEXVOID' (chalk) but differential-optimal is 'Vitalem Aerem' (points x (p - crowd): 2 x -0.182 = -0.36 vs 2 x +0.182 = +0.36) | 1079644 BakS vs ILLYRIANS: published 'BakS' (chalk) but differential-optimal is 'ILLYRIANS' (points x (p - crowd): 3 x -0.262 = -0.79 vs 3 x +0.262 = +0.79) | 1082158 FOKUS vs ex-Zero Tenacity: published 'FOKUS' (chalk) but differential-optimal is 'ex-Zero Tenacity' (points x (p - crowd): 3 x -0.307 = -0.92 vs 3 x +0.307 = +0.92)",
+   "detail": "1081861 Lynn Vision vs Morningstar: published 'Lynn Vision' (chalk) but differential-optimal is 'Morningstar' (points x (p - crowd): 2 x -0.069 = -0.14 vs 2 x +0.069 = +0.14) | 1081863 Chinggis Warriors vs WXM: published 'Chinggis Warriors' (chalk) but differential-optimal is 'WXM' (points x (p - crowd): 2 x -0.175 = -0.35 vs 2 x +0.175 = +0.35) | 1081864 NEXVOID vs Vitalem Aerem: published 'NEXVOID' (chalk) but differential-optimal is 'Vitalem Aerem' (points x (p - crowd): 2 x -0.183 = -0.37 vs 2 x +0.183 = +0.37)",
    "links": [
     "https://play.hotspawn.com/lobby"
    ]
@@ -1495,7 +1514,7 @@
    "id": "IR-C11",
    "severity": "high",
    "title": "Shared Pages publication gate is red - the site cannot deploy",
-   "detail": "18 failing test(s): test_alias_is_documented_with_evidence, test_consensus_weights_and_spread, test_covers_the_whole_open_lobby, test_crowd_pick_fields_cannot_reach_the_fixture_parser, test_day5_cards_are_present_and_priced, test_duplicate_names_resolve_to_most_recent_roster, test_every_open_fixture_has_a_pick, test_joined_quotes_reproduce_their_own_no_vig. pages.yml gates deployment on the full suite, so this blocks publication for every session.",
+   "detail": "19 failing test(s): test_alias_is_documented_with_evidence, test_consensus_weights_and_spread, test_crowd_pick_fields_cannot_reach_the_fixture_parser, test_current_board_independently_rederives, test_day5_cards_are_present_and_priced, test_duplicate_names_resolve_to_most_recent_roster, test_every_open_fixture_has_a_pick, test_joined_quotes_reproduce_their_own_no_vig. pages.yml gates deployment on the full suite, so this blocks publication for every session.",
    "links": [
     "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/.github/workflows/pages.yml"
    ]
@@ -1568,7 +1587,7 @@
    "id": "IR-DIV-1082158",
    "severity": "info",
    "title": "FOKUS vs ex-Zero Tenacity: official standings and market diverge by +16 pts",
-   "detail": "Valve VRS FOKUS 1321 pts vs ex-Zero Tenacity 1066 pts implies 81.3% for FOKUS on the 400-point logistic scale, while the published market/model line is 65.3%. Both are shown; neither is overwritten. The 400-point scale is a modelling assumption, not a Valve-published quantity.",
+   "detail": "Valve VRS FOKUS 1321 pts vs ex-Zero Tenacity 1066 pts implies 81.3% for FOKUS on the 400-point logistic scale, while the published market/model line is 64.9%. Both are shown; neither is overwritten. The 400-point scale is a modelling assumption, not a Valve-published quantity.",
    "links": [
     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
@@ -1619,14 +1638,14 @@
    "start_utc": "2026-10-19T22:10:00Z",
    "state": "locked",
    "points": 2.0,
-   "prob_a": 0.2453,
-   "prob_b": 0.7547,
+   "prob_a": 0.243,
+   "prob_b": 0.757,
    "crowd_a": 74,
    "crowd_b": 26,
-   "diff_a": -0.4947,
-   "diff_b": 0.4947,
-   "ev_a": -0.989,
-   "ev_b": 0.989,
+   "diff_a": -0.497,
+   "diff_b": 0.497,
+   "ev_a": -0.994,
+   "ev_b": 0.994,
    "differential_optimal": "Hacha",
    "published_leaderboard_pick": "Hacha",
    "published_rule": "chalk_contrarian",
@@ -1659,14 +1678,14 @@
    "start_utc": "2026-10-20T05:00:00Z",
    "state": "open",
    "points": 2.0,
-   "prob_a": 0.5021,
-   "prob_b": 0.4979,
+   "prob_a": 0.5272,
+   "prob_b": 0.4728,
    "crowd_a": 78,
    "crowd_b": 22,
-   "diff_a": -0.2779,
-   "diff_b": 0.2779,
-   "ev_a": -0.556,
-   "ev_b": 0.556,
+   "diff_a": -0.2528,
+   "diff_b": 0.2528,
+   "ev_a": -0.506,
+   "ev_b": 0.506,
    "differential_optimal": "Alter Ego",
    "published_leaderboard_pick": "Alter Ego",
    "published_rule": "R1_coinflip_fade",
@@ -1675,8 +1694,22 @@
   {
    "fixture_id": "1081863",
    "match": "Chinggis Warriors vs WXM",
+   "competition": "VOID Autumn Cup 2026",
+   "start_utc": "2026-10-20T07:00:00Z",
    "state": "open",
-   "status": "no_published_probability"
+   "points": 2.0,
+   "prob_a": 0.7947,
+   "prob_b": 0.2053,
+   "crowd_a": 97,
+   "crowd_b": 3,
+   "diff_a": -0.1753,
+   "diff_b": 0.1753,
+   "ev_a": -0.351,
+   "ev_b": 0.351,
+   "differential_optimal": "WXM",
+   "published_leaderboard_pick": "Chinggis Warriors",
+   "published_rule": "chalk",
+   "agrees": false
   },
   {
    "fixture_id": "1081864",
@@ -1685,14 +1718,14 @@
    "start_utc": "2026-10-20T09:00:00Z",
    "state": "open",
    "points": 2.0,
-   "prob_a": 0.7381,
-   "prob_b": 0.2619,
+   "prob_a": 0.7373,
+   "prob_b": 0.2627,
    "crowd_a": 92,
    "crowd_b": 8,
-   "diff_a": -0.1819,
-   "diff_b": 0.1819,
-   "ev_a": -0.364,
-   "ev_b": 0.364,
+   "diff_a": -0.1827,
+   "diff_b": 0.1827,
+   "ev_a": -0.365,
+   "ev_b": 0.365,
    "differential_optimal": "Vitalem Aerem",
    "published_leaderboard_pick": "NEXVOID",
    "published_rule": "chalk",
@@ -1705,12 +1738,12 @@
    "start_utc": "2026-10-20T09:00:00Z",
    "state": "open",
    "points": 3.0,
-   "prob_a": 0.5199,
-   "prob_b": 0.4801,
+   "prob_a": 0.52,
+   "prob_b": 0.48,
    "crowd_a": 90,
    "crowd_b": 10,
-   "diff_a": -0.3801,
-   "diff_b": 0.3801,
+   "diff_a": -0.38,
+   "diff_b": 0.38,
    "ev_a": -1.14,
    "ev_b": 1.14,
    "differential_optimal": "ex-RUSTEC",
@@ -1725,18 +1758,18 @@
    "start_utc": "2026-10-20T11:00:00Z",
    "state": "open",
    "points": 3.0,
-   "prob_a": 0.718,
-   "prob_b": 0.282,
+   "prob_a": 0.613,
+   "prob_b": 0.387,
    "crowd_a": 98,
    "crowd_b": 2,
-   "diff_a": -0.262,
-   "diff_b": 0.262,
-   "ev_a": -0.786,
-   "ev_b": 0.786,
+   "diff_a": -0.367,
+   "diff_b": 0.367,
+   "ev_a": -1.101,
+   "ev_b": 1.101,
    "differential_optimal": "ILLYRIANS",
-   "published_leaderboard_pick": "BakS",
-   "published_rule": "chalk",
-   "agrees": false
+   "published_leaderboard_pick": "ILLYRIANS",
+   "published_rule": "R2_upset_swing",
+   "agrees": true
   },
   {
    "fixture_id": "1082157",
@@ -1751,18 +1784,18 @@
    "start_utc": "2026-10-20T15:00:00Z",
    "state": "open",
    "points": 3.0,
-   "prob_a": 0.6525,
-   "prob_b": 0.3475,
+   "prob_a": 0.6495,
+   "prob_b": 0.3505,
    "crowd_a": 96,
    "crowd_b": 4,
-   "diff_a": -0.3075,
-   "diff_b": 0.3075,
-   "ev_a": -0.922,
-   "ev_b": 0.922,
+   "diff_a": -0.3105,
+   "diff_b": 0.3105,
+   "ev_a": -0.932,
+   "ev_b": 0.932,
    "differential_optimal": "ex-Zero Tenacity",
-   "published_leaderboard_pick": "FOKUS",
-   "published_rule": "chalk",
-   "agrees": false
+   "published_leaderboard_pick": "ex-Zero Tenacity",
+   "published_rule": "R2_upset_swing",
+   "agrees": true
   },
   {
    "fixture_id": "1079646",
@@ -1771,14 +1804,14 @@
    "start_utc": "2026-10-20T17:00:00Z",
    "state": "open",
    "points": 3.0,
-   "prob_a": 0.3579,
-   "prob_b": 0.6421,
+   "prob_a": 0.3622,
+   "prob_b": 0.6378,
    "crowd_a": 13,
    "crowd_b": 87,
-   "diff_a": 0.2279,
-   "diff_b": -0.2279,
-   "ev_a": 0.684,
-   "ev_b": -0.684,
+   "diff_a": 0.2322,
+   "diff_b": -0.2322,
+   "ev_a": 0.697,
+   "ev_b": -0.697,
    "differential_optimal": "Lavked",
    "published_leaderboard_pick": "Lavked",
    "published_rule": "R2_upset_swing",
