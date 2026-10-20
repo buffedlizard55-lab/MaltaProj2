@@ -1,6 +1,6 @@
 {
  "session": "6c5bb3d6",
- "ran_utc": "2026-10-20T08:33:11Z",
+ "ran_utc": "2026-10-20T11:15:22Z",
  "command": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python -m unittest discover -s tests",
  "gate": "the first and sixth steps of .github/workflows/pages.yml (deployment gate)",
  "returncode": 1,
@@ -24,27 +24,28 @@
   "test_norm_and_canon_strip_generic_org_words_without_over_matching",
   "test_picks_rows_have_source_links",
   "test_retained_official_inventory_ratings_and_quotes_replay",
-  "test_the_two_previously_blank_rows_are_resolved"
+  "test_the_two_previously_blank_rows_are_resolved",
+  "test_unpriced_rows_are_blank_with_official_link"
  ],
  "counts": {
   "ran": 1043,
   "ok": false,
   "skipped": 0,
-  "failures": 5,
+  "failures": 6,
   "errors": 14
  },
  "tail": [
   "======================================================================",
-  "FAIL: test_day5_cards_are_present_and_priced (test_b3871d16.TestCoverage.test_day5_cards_are_present_and_priced)",
+  "FAIL: test_unpriced_rows_are_blank_with_official_link (test_reconcile_4e6dcd0d.ReconcileTests.test_unpriced_rows_are_blank_with_official_link)",
   "----------------------------------------------------------------------",
   "Traceback (most recent call last):",
-  "  File \"/home/runner/work/MaltaProj2/MaltaProj2/tests/test_b3871d16.py\", line 90, in test_day5_cards_are_present_and_priced",
-  "    self.assertGreaterEqual(row[\"market_n_sources\"], 2)",
-  "AssertionError: 0 not greater than or equal to 2",
+  "  File \"/home/runner/work/MaltaProj2/MaltaProj2/tests/test_reconcile_4e6dcd0d.py\", line 115, in test_unpriced_rows_are_blank_with_official_link",
+  "    self.assertIn(\"hotspawn.com/matches/\", txt)",
+  "AssertionError: 'hotspawn.com/matches/' not found in '<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>No line yet — Reconciled pick board</title><style>\\n:root{--bg:#0f1420;--card:#171e2e;--ink:#e8ecf4;--mute:#9aa6bd;--line:#2a3550;--ok:#2ecc71;--warn:#f5b041;--bad:#ec7063;--acc:#5dade2}\\n*{box-sizing:border-box}body{margin:0;font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}\\na{color:var(--acc)}header{padding:14px 16px;border-bottom:1px solid var(--line);background:#121a2a;position:sticky;top:0;z-index:5}\\nheader h1{font-size:18px;margin:0 0 6px}nav{display:flex;gap:6px;flex-wrap:wrap}nav a{padding:6px 10px;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);font-size:14px}\\nnav a.on{background:var(--acc);color:#0b1220;border-color:var(--acc)}main{max-width:1100px;margin:0 auto;padding:14px 12px 60px}\\n.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0 16px}.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}\\n.kpi b{display:block;font-size:24px}.kpi span{color:var(--mute);font-size:13px}\\n.note{background:#1d2740;border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:14px}\\n.m{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0}\\n.m.locked{opacity:.6}.top{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--mute);flex-wrap:wrap}\\n.teams{margin:8px 0}.t{display:flex;align-items:center;gap:8px;margin:5px 0}.t .n{flex:0 0 38%;min-width:90px;font-weight:600;overflow-wrap:anywhere}\\n.bar{flex:1;background:#0b1220;border-radius:6px;height:26px;position:relative;overflow:hidden}\\n.bar i{display:block;height:100%;background:#34495e}.t.pick .bar i{background:var(--ok)}\\n.bar em{position:absolute;right:8px;top:2px;font-style:normal;font-weight:700}\\n.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid}\\n.b-pick{color:#0b1220;background:var(--ok);border-color:var(--ok)}.b-split{color:#0b1220;background:var(--warn);border-color:var(--warn)}.b-blank{color:var(--mute);border-color:var(--line)}\\n.pickline{font-size:17px;margin:6px 0}.small{font-size:13px;color:var(--mute)}.flags{margin-top:6px}.flag{display:inline-block;background:#2a1f1f;color:#f5b7b1;border:1px solid #5b3a3a;border-radius:6px;padding:1px 6px;font-size:12px;margin:2px 4px 2px 0}\\ntable{border-collapse:collapse;width:100%;font-size:14px}th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}th{color:var(--mute);position:sticky;top:0;background:var(--bg)}\\n.scroll{overflow-x:auto}.src a{display:block}\\ninput[type=search]{width:100%;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:16px}\\n.tabs{display:flex;gap:6px;margin:8px 0;flex-wrap:wrap}.tabs button{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px}.tabs button.on{background:var(--acc);color:#0b1220}\\nfooter{color:var(--mute);font-size:13px;margin-top:30px}\\n@media(min-width:760px){.m{padding:14px 16px}}\\n</style></head><body><header><h1>Reconciled pick board — every HotSpawn Pick\\'ems fixture, external lines only</h1><nav><a href=\"index.html\">Picks</a><a href=\"boards.html\">Cross-board check</a><a href=\"unpriced.html\" class=on>No line yet</a><a href=\"locked.html\">Locked / started</a><a href=\"flagged.html\">Flagged for review</a><a href=\"methodology.html\">Method &amp; sources</a><a href=\"../index.html\">Site home</a></nav></header><main><h2>Open fixtures with no eligible external line</h2><div class=\"note\">Probability and pick are intentionally <b>blank</b> here: no checked bookmaker/aggregator line passed the join + freshness rules. Nothing is estimated. The source link is the official HotSpawn fixture record only.</div><p>0 fixtures (0 CS2).</p><div class=\"scroll\"><table><thead><tr><th>Game</th><th>Match</th><th>Tournament</th><th>Start (UTC)</th><th>Probability / pick</th><th>Why blank</th><th>Source</th></tr></thead><tbody></tbody></table></div><footer>Built 2026-10-20T11:15:22Z from repository data files by <code>scripts/reconcile_4e6dcd0d.py</code> (session 4e6dcd0d). Estimates derived from bookmaker lines — not guarantees. HotSpawn crowd % is never used.</footer></main><script>\\n(function(){\\n var now=Date.now();\\n document.querySelectorAll(\\'[data-lock]\\').forEach(function(e){\\n   var t=Date.parse(e.getAttribute(\\'data-lock\\'));\\n   if(!isNaN(t)&&t<=now){e.classList.add(\\'locked\\');var b=e.querySelector(\\'.lockstate\\');if(b)b.textContent=\\'LOCKED (as of your clock)\\';}\\n });\\n document.querySelectorAll(\\'[data-local]\\').forEach(function(e){\\n   var t=Date.parse(e.getAttribute(\\'data-local\\'));\\n   if(!isNaN(t)){e.textContent=new Date(t).toLocaleString([], {month:\\'short\\',day:\\'numeric\\',hour:\\'2-digit\\',minute:\\'2-digit\\'})+\\' (your time)\\';}\\n });\\n var s=document.getElementById(\\'q\\');\\n function apply(){\\n   var q=(s&&s.value||\\'\\').toLowerCase();var g=window.__game||\\'all\\';var hide=window.__hideLocked;\\n   document.querySelectorAll(\\'.m\\').forEach(function(e){\\n     var ok=(!q||e.textContent.toLowerCase().indexOf(q)>-1)&&(g===\\'all\\'||e.getAttribute(\\'data-game\\')===g)&&!(hide&&e.classList.contains(\\'locked\\'));\\n     e.style.display=ok?\\'\\':\\'none\\';\\n   });\\n }\\n if(s)s.addEventListener(\\'input\\',apply);\\n document.querySelectorAll(\\'.tabs button\\').forEach(function(b){b.addEventListener(\\'click\\',function(){\\n   var k=b.getAttribute(\\'data-k\\');\\n   if(k===\\'hide\\'){window.__hideLocked=!window.__hideLocked;b.classList.toggle(\\'on\\');}\\n   else{window.__game=k;document.querySelectorAll(\\'.tabs button[data-k]:not([data-k=hide])\\').forEach(function(x){x.classList.remove(\\'on\\')});b.classList.add(\\'on\\');}\\n   apply();});});\\n apply();\\n})();\\n</script></body></html>'",
   "",
   "----------------------------------------------------------------------",
-  "Ran 1043 tests in 11.437s",
+  "Ran 1043 tests in 16.808s",
   "",
-  "FAILED (failures=5, errors=14, skipped=6)"
+  "FAILED (failures=6, errors=14, skipped=6)"
  ]
 }
