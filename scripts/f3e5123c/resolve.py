@@ -441,7 +441,7 @@ def limitations_for(outcome: str, row: dict) -> list[str]:
             "VRS points lag roster changes and reward LAN/prize-weighted results; online low-tier form can diverge from VRS order.",
         ],
         "fallback_floor": [
-            "Opponent is unrated in official VRS: its true strength is UNKNOWn (new stack / <10 counted matches / unregistered Core). The floor % will overstate the favourite whenever the unrated team is mid-table strength.",
+            "Opponent is unrated in official VRS: its true strength is UNKNOWN (new stack / <10 counted matches / unregistered Core). The floor % will overstate the favourite whenever the unrated team is mid-table strength.",
             "Use for pick direction only. Re-check closer to lock: books often post low-tier lines on match day, which will replace this bound automatically on refresh.",
         ],
         "unresolved": [
