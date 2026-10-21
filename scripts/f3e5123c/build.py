@@ -143,7 +143,7 @@ def match_card(r, anchor_prefix="row") -> str:
 <p>{pick_html} {basis_chip(r.get('line'))} {fair}</p>
 {probbar(r)}
 {note_html}{source_bits(r)}{xc_html}{flag_html}
-<p class="src"><a href="{esc(r.get('hotspawn_url') or 'https://play.hotspawn.com/lobby')}">HotSpawn match</a> · <a href="unresolved.html#u-{esc(r['fixture_id'])}">research ledger</a> · <a href="sources.html#s-{esc(r['fixture_id'])}">sources</a></p>
+{('<p class="src"><a href="' + esc(r.get('hotspawn_url') or 'https://play.hotspawn.com/lobby') + '">HotSpawn match</a> · <a href="unresolved.html#u-' + esc(r['fixture_id']) + '">research ledger</a> · <a href="sources.html#s-' + esc(r['fixture_id']) + '">sources</a></p>') if r.get('resolution') else ('<p class="src"><a href="' + esc(r.get('hotspawn_url') or 'https://play.hotspawn.com/lobby') + '">HotSpawn match</a> · <a href="sources.html#s-' + esc(r['fixture_id']) + '">sources</a></p>')}
 </article>"""
 
 
