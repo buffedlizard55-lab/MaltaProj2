@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Every open HotSpawn CS2 pick'em match with a pick, both win probabilities and the source for every number.">
+<title>Flagged for review · Every-match CS2 picks</title>
+<style>
+:root{--bg:#0b1220;--card:#121c2e;--card2:#0f1727;--ink:#e8eefc;--dim:#93a4c3;--line:#25334d;
+--good:#7ef0b2;--warn:#ffd479;--bad:#ff9aa2;--accent:#7cc4ff;--market:#7ef0b2;--model:#7cc4ff;--bound:#ffd479}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:1080px;margin:0 auto;padding:12px 14px 64px}
+header.top{position:sticky;top:0;z-index:5;background:rgba(11,18,32,.96);border-bottom:1px solid var(--line);
+backdrop-filter:blur(6px)}
+header.top .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;
+max-width:1080px;margin:0 auto;padding:8px 14px}
+.brand{font-weight:700;font-size:15px;letter-spacing:.2px}
+.brand span{color:var(--good)}
+nav{display:flex;flex-wrap:wrap;gap:6px}
+nav a{display:inline-block;padding:8px 11px;border:1px solid var(--line);border-radius:999px;
+text-decoration:none;color:var(--ink);font-size:13px;min-height:38px}
+nav a.active{background:var(--good);color:#0b2417;border-color:var(--good);font-weight:700}
+h1{font-size:24px;line-height:1.2;margin:10px 0 4px}
+h2{font-size:18px;margin:26px 0 8px}
+h3{font-size:15px;margin:18px 0 6px}
+p{margin:8px 0}
+.eyebrow{color:var(--dim);text-transform:uppercase;letter-spacing:.09em;font-size:11px;margin:14px 0 2px}
+.lede{color:var(--dim)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0}
+@media(min-width:640px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:11px}
+.tile b{display:block;font-size:24px;line-height:1.1}
+.tile small{color:var(--dim);font-size:12px}
+.cta{display:grid;gap:10px;margin:14px 0}
+@media(min-width:640px){.cta{grid-template-columns:1fr 1fr}}
+.cta a{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);
+border:1px solid var(--line);border-radius:14px;padding:15px 16px;text-decoration:none;color:var(--ink);
+font-weight:700;min-height:56px}
+.cta a.primary{background:var(--good);color:#08200f;border-color:var(--good)}
+.cta a span.small{font-weight:400;color:inherit;opacity:.75;font-size:12px}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;
+border:1px solid var(--line);white-space:nowrap}
+.badge.market{color:#08200f;background:var(--market);border-color:var(--market)}
+.badge.model{color:#04121f;background:var(--model);border-color:var(--model)}
+.badge.bound{color:#2a1d00;background:var(--bound);border-color:var(--bound)}
+.badge.flag{color:var(--warn);background:transparent;border-color:var(--warn)}
+.badge.plain{color:var(--dim)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.pick{font-weight:800;font-size:15px}
+.prob{font-variant-numeric:tabular-nums}
+.prob.win{color:var(--good);font-weight:700}
+.prob.lose{color:var(--dim)}
+.muted{color:var(--dim);font-size:12px}
+.src{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:12px}
+.src a{text-decoration:underline}
+.match{font-weight:700}
+@media(max-width:639px){
+ table thead{display:none}
+ table,thead,tbody,tr,td,th{display:block;width:100%}
+ tr{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;padding:10px 12px}
+ td{border:0;padding:4px 0}
+ td[data-l]{display:flex;gap:10px;justify-content:space-between;align-items:baseline}
+ td[data-l]::before{content:attr(data-l);color:var(--dim);font-size:11px;text-transform:uppercase;
+ letter-spacing:.06em;flex:0 0 42%}
+ td.num{text-align:right}
+}
+.callout{border-left:4px solid var(--warn);background:#1a1608;padding:10px 12px;border-radius:8px;margin:12px 0}
+.callout.good{border-color:var(--good);background:#0b1f16}
+.callout.bad{border-color:var(--bad);background:#221010}
+ul,ol{padding-left:20px}
+li{margin:5px 0}
+footer{color:var(--dim);font-size:12px;border-top:1px solid var(--line);margin-top:26px;padding-top:12px}
+code{background:#0a1322;padding:1px 5px;border-radius:5px;font-size:13px}
+.tbl-scroll{overflow-x:auto}
+</style>
+</head>
+<body>
+<header class="top"><div class="bar">
+<div class="brand">Every-match picks <span>· CS2</span></div>
+<nav><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="sources.html">Sources</a><a href="method.html">Method</a><a href="flagged.html" class="active">Flagged</a><a href="../index.html">Site home</a></nav>
+</div></header>
+<main class="wrap">
+
+<p class="eyebrow">Flagged for review</p>
+<h1>Irregularities, unverified values and things I could not confirm</h1>
+<p class="lede">Published deliberately: nothing here blocks the picks list, but you should see it
+before you trust a number. Every item links to the page or file that shows it.</p>
+<div class="card"><h3>R1 · Valve publishes two rows for the same organisation (different rosters) <span class="badge plain">data</span></h3><p>1081597 benched gods v TitanFlow; 1081600 Donstu v Banda chuya; 1082792 HOTU v The Huns. Both rows are in standings_global_2026_10_05.md with different points. This build applies the published roster rule (full five, newest latest_match_date) and keeps the alternative in the row data, so the choice is auditable.</p><p class="muted">Affected: 1081597, 1081600, 1082792</p><p class="muted">Source: <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md</a></p></div><div class="card"><h3>R2 · Two collectors disagree on the same fixture and one leaves rows blank <span class="badge plain">upstream</span></h3><p>data/fe803b80/board.json stores 13 open rows with the top-level pick/probability set to null while their own &#x27;line&#x27; or &#x27;model&#x27; block holds the numbers, and it also keeps a Kalshi quote whose sides are inverted (Turma do Pagode labelled at 0.78 when the exchange prices Imperial there). This build reads raw decimals and re-derives every no-vig price itself, and it does not import that inverted quote.</p><p class="muted">Affected: 1082837, 1081870, 1081597, 1081600, 1082688, 1082689, 1082858, 1082859, 1082860, 1082861, 1082792, 1082793, 1080200</p><p class="muted">Source: <code>data/fe803b80/board.json</code></p></div><div class="card"><h3>R3 · Primary board resolves duplicate Valve rows the other way round <span class="badge plain">upstream</span></h3><p>Both collectors mishandle Valve&#x27;s duplicate rows, in opposite ways. data/f7279a54/board.json flags &#x27;Banda chuya&#x27;, &#x27;The Huns&#x27; and &#x27;benched gods&#x27; as ambiguous and therefore publishes no rating for those sides at all; data/fe803b80/board.json instead silently picks the older/lower rows (Banda Chuya #373 402 pts, The Huns #213 701 pts, benched gods #329 516 pts), which flips the Banda Chuya pick. bo3.gg&#x27;s squad page for Banda Chuya lists exactly Valve&#x27;s five-man row (#165, 801 pts, latest match 2026-10-04), and Valve&#x27;s own latest_match_date column agrees, so the five-man row is the active one. Both the selected and the alternative values are published on every affected row.</p><p class="muted">Affected: 1081600, 1082792, 1081597</p><p class="muted">Source: <code>data/fe803b80/board.json</code> + <a href="https://bo3.gg/teams/banda-chuya" target="_blank" rel="noopener">https://bo3.gg/teams/banda-chuya</a></p></div><div class="card"><h3>R4 · Kalshi market timestamps are shifted against its own rules text <span class="badge plain">upstream</span></h3><p>Two independent events show the same offset: KXCS2GAME-26OCT211800LNALE&#x27;s rules text says &#x27;Oct 21, 2026 at 6:00 PM EDT&#x27; (22:00Z) while its occurrence_datetime says 2026-10-22T02:00:00Z, and KXCS2GAME-26OCT220100RAVA&#x27;s rules text says &#x27;Oct 22, 2026 at 1:00 AM EDT&#x27; (05:00Z) while its occurrence_datetime says 09:00Z - a +4h shift on both. The rules text agrees with HotSpawn, HLTV and bo3.gg, so the rules-text kick-off is used and the event clocks are treated as unreliable.</p><p class="muted">Affected: 1082837</p><p class="muted">Source: <a href="https://api.elections.kalshi.com/trade-api/v2/markets?event_ticker=KXCS2GAME-26OCT211800LNALE" target="_blank" rel="noopener">https://api.elections.kalshi.com/trade-api/v2/markets?event_ticker=KXCS2GAME-26OCT211800LNALE</a></p></div><div class="card"><h3>R5 · The previous root landing page was not readable on a phone <span class="badge plain">site</span></h3><p>The root index.html carried 12 header links and ~30 session cards before this session. This build adds one phone-first executive summary at the top of the root page that links straight to the picks, unresolved, sources, method and flagged pages, and keeps the older desks below it as an archive.</p><p class="muted">Source: <a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">https://play.hotspawn.com/lobby</a></p></div><div class="card"><h3>R6 · Pre-existing test failures on the base commit <span class="badge plain">repo</span></h3><p>On the base commit a98242a, `python3 -m unittest discover -s tests` reports 1112 tests with 1 failure and 16 errors (missing modules test_3faf40e8, test_5468b0ba, test_58cb2600, test_5a40690b, test_6ffacd40, test_778756a1, test_94b3d48a, test_98dcfc7e, test_dc741cc1, test_e1b48771, test_ff88c096, test_project, plus four assertion errors in test_69e4c06a / test_current_lines and one in test_verify_7cd2e67a). They are unrelated to this section and are recorded, not hidden.</p><p class="muted">Source: <a href="https://github.com/buffedlizard55-lab/MaltaProj2/commit/a98242a9891a3ef2c44bc3df879711a53e5cd1a8" target="_blank" rel="noopener">https://github.com/buffedlizard55-lab/MaltaProj2/commit/a98242a9891a3ef2c44bc3df879711a53e5cd1a8</a></p></div>
+<h2>Values left blank or replaced by a labelled bound</h2>
+<p class="lede">A blank in the source evidence means the value could not be confirmed from an official
+source. None of these rows was filled with an invented number: each got a documented originated line
+instead, and each is marked.</p>
+<div class="tbl-scroll"><table><thead><tr><th>Match</th><th>What is missing upstream</th>
+<th>What the row shows instead</th></tr></thead><tbody><tr><td data-l="Match">benched gods vs TitanFlow</td><td data-l="Blank">no betting line at any source, opponent unrated in Valve table</td><td data-l="Shown instead"><span class="prob win">≥ 73.8%</span> / <span class="prob lose">≤ 26.2%</span></td></tr><tr><td data-l="Match">Donstu vs Banda chuya</td><td data-l="Blank">no betting line at any source</td><td data-l="Shown instead"><span class="prob lose">45.8%</span> / <span class="prob win">54.2%</span></td></tr><tr><td data-l="Match">Ground Zero vs Off Chops</td><td data-l="Blank">no betting line at any source, opponent unrated in Valve table</td><td data-l="Shown instead"><span class="prob win">≥ 76.8%</span> / <span class="prob lose">≤ 23.2%</span></td></tr><tr><td data-l="Match">NEXVOID vs Alter Ego</td><td data-l="Blank">no betting line at any source</td><td data-l="Shown instead"><span class="prob win">60.5%</span> / <span class="prob lose">39.5%</span></td></tr><tr><td data-l="Match">FlyQuest vs Staqued</td><td data-l="Blank">no betting line at any source, opponent unrated in Valve table</td><td data-l="Shown instead"><span class="prob win">≥ 84.8%</span> / <span class="prob lose">≤ 15.2%</span></td></tr><tr><td data-l="Match">Rooster vs Abyssal</td><td data-l="Blank">no betting line at any source</td><td data-l="Shown instead"><span class="prob lose">49.0%</span> / <span class="prob win">51.0%</span></td></tr><tr><td data-l="Match">HOTU vs The Huns</td><td data-l="Blank">no betting line at any source</td><td data-l="Shown instead"><span class="prob win">76.7%</span> / <span class="prob lose">23.3%</span></td></tr><tr><td data-l="Match">5star vs 1WIN</td><td data-l="Blank">no betting line at any source</td><td data-l="Shown instead"><span class="prob lose">34.1%</span> / <span class="prob win">65.9%</span></td></tr><tr><td data-l="Match">Wildcard vs DENDELE</td><td data-l="Blank">no betting line at any source</td><td data-l="Shown instead"><span class="prob lose">42.3%</span> / <span class="prob win">57.7%</span></td></tr></tbody></table></div>
+
+<footer>
+<p>Every figure on this page is either a bookmaker/exchange price (no-vig) or a line originated from
+Valve's official rating table; the basis is printed on every row. HotSpawn's crowd-pick percentages
+are never used. Board built 2026-10-21 19:48:16 UTC.</p>
+</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,2053 @@
+{
+ "session": "5f903db4",
+ "generated_utc": "2026-10-21T19:48:16Z",
+ "policy": {
+  "ladder": [
+   "featured market quotes (bovada / melbet / pinnacle)",
+   "exchange + secondary book quotes (kalshi, thunderpick via bo3.gg)",
+   "official Valve VRS origination with the published formula",
+   "explicit bound when only one side is rated",
+   "explicit unresolved row (never a guessed number)"
+  ],
+  "never_used": "HotSpawn crowd-pick percentages",
+  "formula": "p = 1 / (1 + exp(-k * C * (points_a - points_b)))",
+  "k": 0.43077894236569164,
+  "k_source": "data/f7279a54/board.json#calibration (60 pairs, MAE 7.70 pp)",
+  "k_mae_prob": 0.07702503405478646,
+  "k_pairs": 60,
+  "C": 0.0056000078,
+  "C_source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js",
+  "vrs_select_rule": "When Valve's standings list the same organisation more than once (one row per counted roster), select the row whose roster lists a full five and whose latest published match date is the most recent; break ties on higher points. Alternatives are published on the Flagged for review page.",
+  "bound_rule": "If one side has no row in Valve's published table, that side is at or below the published floor (#380, 381 pts). The listed side's number is published as a lower bound and the unlisted side's number as an upper bound. It is never presented as a point estimate.",
+  "quote_join_tolerance_minutes": 90
+ },
+ "sources": {
+  "hotspawn_lobby": "https://play.hotspawn.com/lobby",
+  "hotspawn_api": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+  "valve_vrs_page": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+  "valve_vrs_snapshot": "2026_10_05",
+  "valve_vrs_newest_check": {
+   "checked_utc": "2026-10-21T19:34:00Z",
+   "newest_published_file": "live/2026/standings_global_2026_10_05.md",
+   "api_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026",
+   "note": "GitHub contents listing of ValveSoftware/counter-strike_regional_standings/live/2026 returns 40 standings files; the newest global table is 2026_10_05. No 2026_10_12 or 2026_10_19 file is published, so the 2026_10_05 table is current-by-publisher."
+  },
+  "kalshi_events_api": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=false",
+  "melbet_feed": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+  "bo3_thunderpick_api": "https://api.bo3.gg/api/v1",
+  "pinnacle": "https://www.pinnacle.com/en/esports/cs2-hub",
+  "bovada": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2"
+ },
+ "inputs": {
+  "primary_board": {
+   "path": "data/f7279a54/board.json",
+   "generated_utc": "2026-10-21T19:24:28Z"
+  },
+  "extra_board": {
+   "path": "data/fe803b80/board.json",
+   "generated_utc": "2026-10-21T19:29:18Z"
+  },
+  "vrs": {
+   "path": "data/19d6c262/vrs_global.json",
+   "snapshot": "2026_10_05",
+   "teams": 380,
+   "floor": {
+    "standing": 380,
+    "points": 381
+   }
+  },
+  "research": {
+   "path": "scripts/5f903db4/research.json",
+   "read_utc": "2026-10-21T19:36:00Z"
+  },
+  "live_snapshot": "2026-10-21T19:47:53Z"
+ },
+ "summary": {
+  "rows": 14,
+  "lobby_open": 13,
+  "api_only": 1,
+  "with_pick": 14,
+  "unresolved": 0,
+  "market": 5,
+  "originated_both_rated": 6,
+  "originated_bound": 3,
+  "single_book": 2,
+  "ambiguous_rating_rows": 3
+ },
+ "rows": [
+  {
+   "fixture_id": "1082837",
+   "competition": "CCT South America 2026 Series #7",
+   "tier": "C",
+   "stage": "waiting for information",
+   "start_utc": "2026-10-21T22:00:00Z",
+   "lock_utc": "2026-10-21T21:54:00Z",
+   "status": "scheduled",
+   "team_a": "Zetta",
+   "team_b": "LOS NINOS",
+   "hotspawn_url": "https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837",
+   "seen_in": [
+    "lobby_page",
+    "api"
+   ],
+   "source_board": "data/f7279a54/board.json",
+   "state": "open",
+   "quotes": [
+    {
+     "source_key": "kalshi",
+     "source_name": "Kalshi (regulated prediction-market exchange)",
+     "event_id": "KXCS2GAME-26OCT211800LNALE",
+     "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211800lnale",
+     "api_url": "https://api.elections.kalshi.com/trade-api/v2/markets?event_ticker=KXCS2GAME-26OCT211800LNALE",
+     "decimal_a": 2.325581,
+     "decimal_b": 1.694915,
+     "prob_a": 0.421569,
+     "prob_b": 0.578431,
+     "overround": 0.02,
+     "start_utc": "2026-10-21T22:00:00Z",
+     "start_diff_minutes": 0.0,
+     "retrieved_utc": "2026-10-21T19:36:00Z",
+     "origin": "research 5f903db4",
+     "raw_format": "yes bid/ask mid in USD (1 contract pays $1)",
+     "raw": {
+      "alianza_lima_yes_bid": 0.39,
+      "alianza_lima_yes_ask": 0.47,
+      "los_ninos_yes_bid": 0.55,
+      "los_ninos_yes_ask": 0.63,
+      "market_updated_time": "2026-10-21T03:25:00.307953Z",
+      "los_ninos_ticker": "KXCS2GAME-26OCT211800LNALE-LN",
+      "alianza_ticker": "KXCS2GAME-26OCT211800LNALE-ALE",
+      "volume_dollars": 0.0,
+      "open_interest": 0.0
+     },
+     "join_note": "HotSpawn 'Zetta' = Kalshi 'Alianza Lima Esports': identical five-man roster (zockie, Slayerhz, NotJuanjo, BabyRage, Antuanette), same CCT SA Series 7 round-5 slot, same 22:00Z kick-off. Kalshi's own rules text: 'originally scheduled for Oct 21, 2026 at 6:00 PM EDT' = 22:00Z.",
+     "evidence_urls": [
+      "https://bo3.gg/matches/alianza-lima-esports-vs-los-ninos-21-10-2026",
+      "https://bo3.gg/teams/alianza-lima-esports",
+      "https://www.hltv.org/matches/2399865/zetta-vs-los-ninos-cct-2026-south-america-series-7",
+      "https://www.hltv.org/team/13833/zetta",
+      "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+     ],
+     "caveats": [
+      "Zero traded volume and zero open interest: the quote is a market-maker ladder, not a traded consensus. The two-way spread is wide (0.16 on Los Ninos, 0.08 on Alianza).",
+      "Kalshi's own occurrence_datetime for this event (2026-10-22T02:00:00Z) is four hours later than the kick-off stated in the same market's rules text (Oct 21 6:00 PM EDT = 22:00Z). The rules text and HotSpawn agree, so 22:00Z is used.",
+      "Disagreement disclosed on the site: our Valve-VRS origination and bo3.gg's own model both favour Zetta, while this exchange quote favours Los Ninos."
+     ]
+    }
+   ],
+   "vrs_a": {
+    "name": "Zetta",
+    "listed": true,
+    "vrs_name": "Zetta",
+    "points": 473.0,
+    "standing": 357,
+    "roster": "Antuanette, BabyRage, Notjuanjo, Slayerhz, zockie",
+    "latest_match_date": "2026-09-28",
+    "details_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0357--zetta--antuanette-babyrage-notjuanjo-slayerhz-zockie.md",
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_b": {
+    "name": "LOS NINOS",
+    "listed": false,
+    "ambiguous": null
+   },
+   "vrs_floor": {
+    "standing": 380,
+    "points": 381
+   },
+   "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "resolution": {
+    "basis": "market",
+    "prob_a": 0.421569,
+    "prob_b": 0.5784309999999999,
+    "n_books": 1,
+    "book_spread_pp": 0.0,
+    "bound": null,
+    "range": null,
+    "delta_points": null
+   },
+   "alt_origination": {
+    "basis": "originated_vrs_bound",
+    "prob_a": 0.5552577748808767,
+    "prob_b": 0.4447422251191233,
+    "bound": {
+     "side": "a",
+     "relation": ">=",
+     "floor_standing": 380,
+     "floor_points": 381
+    },
+    "range": null,
+    "delta_points": 92.0
+   },
+   "pick": "LOS NINOS",
+   "pick_prob": 0.5784309999999999,
+   "pick_side": "b",
+   "confidence": "Lean",
+   "flags": [
+    "exchange_quote_zero_volume",
+    "market_and_rating_model_disagree_on_the_pick",
+    "single_book_quote"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only - never a probability source)",
+     "url": "https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837",
+     "note": "fixture identity, teams and UTC kick-off"
+    },
+    {
+     "label": "HotSpawn fixtures API (same public API the lobby calls)",
+     "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+     "note": "kick-off, lock time and listing status"
+    },
+    {
+     "label": "Valve VRS standings - Zetta #357 (473 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0357--zetta--antuanette-babyrage-notjuanjo-slayerhz-zockie.md",
+     "note": "official Valve rating (context)"
+    },
+    {
+     "label": "Kalshi (regulated prediction-market exchange) - 2.325581 / 1.694915 decimal (event KXCS2GAME-26OCT211800LNALE)",
+     "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211800lnale",
+     "note": "no-vig 42.2% / 57.8%, overround 2.00%"
+    }
+   ]
+  },
+  {
+   "fixture_id": "1081870",
+   "competition": "VOID Autumn Cup 2026",
+   "tier": "C",
+   "stage": "waiting for information",
+   "start_utc": "2026-10-22T05:00:00Z",
+   "lock_utc": "2026-10-22T04:54:00Z",
+   "status": "scheduled",
+   "team_a": "Vitalem Aerem",
+   "team_b": "Rare Atom",
+   "hotspawn_url": "https://www.hotspawn.com/matches/vitalem-aerem-vs-rare-atom-void-autumn-cup-2026-1081870",
+   "seen_in": [
+    "lobby_page",
+    "api"
+   ],
+   "source_board": "data/f7279a54/board.json",
+   "state": "open",
+   "quotes": [
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet",
+     "event_id": "763687838",
+     "public_url": "https://melbet.com/en/line/esports",
+     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+     "decimal_a": 2.59,
+     "decimal_b": 1.47,
+     "prob_a": 0.362069,
+     "prob_b": 0.637931,
+     "overround": 0.066372,
+     "start_utc": "2026-10-22T05:00:00Z",
+     "start_diff_minutes": null,
+     "retrieved_utc": "2026-10-21T19:24:25Z",
+     "origin": "board f7279a54",
+     "raw_format": "decimal",
+     "raw": null,
+     "join_note": null,
+     "evidence_urls": [],
+     "caveats": []
+    }
+   ],
+   "vrs_a": {
+    "name": "Vitalem Aerem",
+    "listed": true,
+    "vrs_name": "Vitalem Aerem",
+    "points": 721.0,
+    "standing": 204,
+    "roster": "B1NGO, BZA, lan, rain, Roninbaby",
+    "latest_match_date": null,
+    "details_url": null,
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_b": {
+    "name": "Rare Atom",
+    "listed": true,
+    "vrs_name": "Rare Atom",
+    "points": 906.0,
+    "standing": 133,
+    "roster": "3gl, ChildKing, kaze, L1haNg, Summer",
+    "latest_match_date": null,
+    "details_url": null,
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_floor": {
+    "standing": 380,
+    "points": 381
+   },
+   "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "resolution": {
+    "basis": "market",
+    "prob_a": 0.362069,
+    "prob_b": 0.637931,
+    "n_books": 1,
+    "book_spread_pp": 0.0,
+    "bound": null,
+    "range": null,
+    "delta_points": null
+   },
+   "alt_origination": {
+    "basis": "originated_vrs",
+    "prob_a": 0.39024378268258825,
+    "prob_b": 0.6097562173174118,
+    "bound": null,
+    "range": [
+     0.39024378268258825,
+     0.39024378268258825
+    ],
+    "delta_points": -185.0
+   },
+   "pick": "Rare Atom",
+   "pick_prob": 0.637931,
+   "pick_side": "b",
+   "confidence": "Solid",
+   "flags": [
+    "single_book_quote"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only - never a probability source)",
+     "url": "https://www.hotspawn.com/matches/vitalem-aerem-vs-rare-atom-void-autumn-cup-2026-1081870",
+     "note": "fixture identity, teams and UTC kick-off"
+    },
+    {
+     "label": "HotSpawn fixtures API (same public API the lobby calls)",
+     "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+     "note": "kick-off, lock time and listing status"
+    },
+    {
+     "label": "Valve VRS standings - Vitalem Aerem #204 (721 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "official Valve rating (context)"
+    },
+    {
+     "label": "Valve VRS standings - Rare Atom #133 (906 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "official Valve rating (context)"
+    },
+    {
+     "label": "Melbet - 2.59 / 1.47 decimal (event 763687838)",
+     "url": "https://melbet.com/en/line/esports",
+     "note": "no-vig 36.2% / 63.8%, overround 6.64%"
+    }
+   ]
+  },
+  {
+   "fixture_id": "1081597",
+   "competition": "CCT Europe 2026 Challengers #8",
+   "tier": "C",
+   "stage": "waiting for information",
+   "start_utc": "2026-10-22T11:00:00Z",
+   "lock_utc": "2026-10-22T10:54:00Z",
+   "status": "scheduled",
+   "team_a": "benched gods",
+   "team_b": "TitanFlow",
+   "hotspawn_url": "https://www.hotspawn.com/matches/benched-gods-vs-titanflow-cct-europe-2026-challengers-8-1081597",
+   "seen_in": [
+    "lobby_page",
+    "api"
+   ],
+   "source_board": "data/f7279a54/board.json",
+   "state": "open",
+   "quotes": [],
+   "vrs_a": {
+    "name": "benched gods",
+    "listed": true,
+    "vrs_name": "benched gods",
+    "points": 811.0,
+    "standing": 157,
+    "roster": "facer, K014NZ, norescue, Wign, yoyoS2",
+    "latest_match_date": "2026-10-02",
+    "details_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0157--benched_gods--facer-k014nz-norescue-wign-yoyos2.md",
+    "ambiguous": true,
+    "alternatives": [
+     {
+      "vrs_name": "benched gods",
+      "standing": 329,
+      "points": 516,
+      "roster": "BloodyK, f1chper, K014NZ, MisterHy, Wign",
+      "latest_match_date": "2026-05-08"
+     }
+    ]
+   },
+   "vrs_b": {
+    "name": "TitanFlow",
+    "listed": false,
+    "ambiguous": null
+   },
+   "vrs_floor": {
+    "standing": 380,
+    "points": 381
+   },
+   "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "resolution": {
+    "basis": "originated_vrs_bound",
+    "prob_a": 0.7383320144418207,
+    "prob_b": 0.2616679855581793,
+    "bound": {
+     "side": "a",
+     "relation": ">=",
+     "floor_standing": 380,
+     "floor_points": 381
+    },
+    "range": null,
+    "delta_points": 430.0
+   },
+   "alt_origination": null,
+   "pick": "benched gods",
+   "pick_prob": 0.7383320144418207,
+   "pick_side": "a",
+   "confidence": "Bound",
+   "flags": [
+    "no_external_price_any_book",
+    "originated_bound_unlisted_opponent",
+    "vrs_duplicate_rows_resolved_by_published_rule"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only - never a probability source)",
+     "url": "https://www.hotspawn.com/matches/benched-gods-vs-titanflow-cct-europe-2026-challengers-8-1081597",
+     "note": "fixture identity, teams and UTC kick-off"
+    },
+    {
+     "label": "HotSpawn fixtures API (same public API the lobby calls)",
+     "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+     "note": "kick-off, lock time and listing status"
+    },
+    {
+     "label": "Valve VRS standings - benched gods #157 (811 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0157--benched_gods--facer-k014nz-norescue-wign-yoyos2.md",
+     "note": "official Valve rating used in the originated line"
+    },
+    {
+     "label": "Valve VRS published table (origination input)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "logistic line: k=0.43077894236569164 x C=0.0056000078 x points delta"
+    }
+   ]
+  },
+  {
+   "fixture_id": "1081600",
+   "competition": "CCT Europe 2026 Challengers #8",
+   "tier": "C",
+   "stage": "waiting for information",
+   "start_utc": "2026-10-22T13:45:00Z",
+   "lock_utc": "2026-10-22T13:39:00Z",
+   "status": "scheduled",
+   "team_a": "Donstu",
+   "team_b": "Banda chuya",
+   "hotspawn_url": "https://www.hotspawn.com/matches/donstu-vs-banda-chuya-cct-europe-2026-challengers-8-1081600",
+   "seen_in": [
+    "lobby_page",
+    "api"
+   ],
+   "source_board": "data/f7279a54/board.json",
+   "state": "open",
+   "quotes": [],
+   "vrs_a": {
+    "name": "Donstu",
+    "listed": true,
+    "vrs_name": "DONSTU",
+    "points": 732.0,
+    "standing": 197,
+    "roster": "Due1yant, gleb86rus, LAKSHERi, NeoLife, phorate",
+    "latest_match_date": "2026-08-30",
+    "details_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0197--donstu--due1yant-gleb86rus-laksheri-neolife-phorate.md",
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_b": {
+    "name": "Banda chuya",
+    "listed": true,
+    "vrs_name": "Banda Chuya",
+    "points": 801.0,
+    "standing": 165,
+    "roster": "AdrieN, ezox, maaryy, Showk, tomiko",
+    "latest_match_date": "2026-10-04",
+    "details_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0165--banda_chuya--adrien-ezox-maaryy-showk-tomiko.md",
+    "ambiguous": true,
+    "alternatives": [
+     {
+      "vrs_name": "Banda Chuya",
+      "standing": 373,
+      "points": 402,
+      "roster": "ezox, manio",
+      "latest_match_date": "2026-09-11"
+     }
+    ]
+   },
+   "vrs_floor": {
+    "standing": 380,
+    "points": 381
+   },
+   "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "resolution": {
+    "basis": "originated_vrs",
+    "prob_a": 0.4584825112594626,
+    "prob_b": 0.5415174887405374,
+    "bound": null,
+    "range": [
+     0.4584825112594626,
+     0.6891354585961278
+    ],
+    "delta_points": -69.0
+   },
+   "alt_origination": null,
+   "pick": "Banda chuya",
+   "pick_prob": 0.5415174887405374,
+   "pick_side": "b",
+   "confidence": "Lean",
+   "flags": [
+    "no_external_price_any_book",
+    "originated_from_official_valve_vrs",
+    "rating_range_wider_than_10pp",
+    "vrs_duplicate_rows_resolved_by_published_rule"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only - never a probability source)",
+     "url": "https://www.hotspawn.com/matches/donstu-vs-banda-chuya-cct-europe-2026-challengers-8-1081600",
+     "note": "fixture identity, teams and UTC kick-off"
+    },
+    {
+     "label": "HotSpawn fixtures API (same public API the lobby calls)",
+     "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+     "note": "kick-off, lock time and listing status"
+    },
+    {
+     "label": "Valve VRS standings - DONSTU #197 (732 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0197--donstu--due1yant-gleb86rus-laksheri-neolife-phorate.md",
+     "note": "official Valve rating used in the originated line"
+    },
+    {
+     "label": "Valve VRS standings - Banda Chuya #165 (801 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0165--banda_chuya--adrien-ezox-maaryy-showk-tomiko.md",
+     "note": "official Valve rating used in the originated line"
+    },
+    {
+     "label": "Valve VRS published table (origination input)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "logistic line: k=0.43077894236569164 x C=0.0056000078 x points delta"
+    }
+   ]
+  },
+  {
+   "fixture_id": "1082688",
+   "competition": "Circuit X Curitiba #4",
+   "tier": "C",
+   "stage": "waiting for information",
+   "start_utc": "2026-10-22T14:00:00Z",
+   "lock_utc": "2026-10-22T13:54:00Z",
+   "status": "scheduled",
+   "team_a": "Imperial",
+   "team_b": "Turma do Pagode",
+   "hotspawn_url": "https://www.hotspawn.com/matches/imperial-vs-turma-do-pagode-circuit-x-curitiba-4-1082688",
+   "seen_in": [
+    "lobby_page",
+    "api"
+   ],
+   "source_board": "data/f7279a54/board.json",
+   "state": "open",
+   "quotes": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "event_id": "32519177",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/imperial-turma-do-pagode-202610221000",
+     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+     "decimal_a": 1.25,
+     "decimal_b": 3.75,
+     "prob_a": 0.75,
+     "prob_b": 0.25,
+     "overround": 0.066667,
+     "start_utc": "2026-10-22T14:00:00Z",
+     "start_diff_minutes": null,
+     "retrieved_utc": "2026-10-21T19:24:24Z",
+     "origin": "board f7279a54",
+     "raw_format": "decimal",
+     "raw": null,
+     "join_note": null,
+     "evidence_urls": [],
+     "caveats": []
+    },
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet",
+     "event_id": "763429585",
+     "public_url": "https://melbet.com/en/line/esports",
+     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+     "decimal_a": 1.24,
+     "decimal_b": 3.79,
+     "prob_a": 0.753479,
+     "prob_b": 0.246521,
+     "overround": 0.070304,
+     "start_utc": "2026-10-22T14:00:00Z",
+     "start_diff_minutes": null,
+     "retrieved_utc": "2026-10-21T19:24:25Z",
+     "origin": "board f7279a54",
+     "raw_format": "decimal",
+     "raw": null,
+     "join_note": null,
+     "evidence_urls": [],
+     "caveats": []
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "event_id": "1638811247",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638811247/markets/related/straight",
+     "decimal_a": 1.234192,
+     "decimal_b": 3.81,
+     "prob_a": 0.755324,
+     "prob_b": 0.244676,
+     "overround": 0.072714,
+     "start_utc": "2026-10-22T14:00:00Z",
+     "start_diff_minutes": null,
+     "retrieved_utc": "2026-10-21T19:24:23Z",
+     "origin": "board f7279a54",
+     "raw_format": "american",
+     "raw": null,
+     "join_note": null,
+     "evidence_urls": [],
+     "caveats": []
+    },
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (via bo3.gg)",
+     "event_id": "132411",
+     "public_url": "https://bo3.gg/matches/imperial-vs-turma-do-pagode-22-10-2026",
+     "api_url": null,
+     "decimal_a": 1.22,
+     "decimal_b": 3.8,
+     "prob_a": 0.756972,
+     "prob_b": 0.243028,
+     "overround": 0.08283,
+     "start_utc": "2026-10-22T14:00:00Z",
+     "start_diff_minutes": 0.0,
+     "retrieved_utc": "2026-10-21T19:28:56Z",
+     "origin": "board fe803b80",
+     "raw_format": "decimal",
+     "raw": null,
+     "join_note": null,
+     "evidence_urls": [],
+     "caveats": []
+    }
+   ],
+   "vrs_a": {
+    "name": "Imperial",
+    "listed": true,
+    "vrs_name": "Imperial",
+    "points": 1297.0,
+    "standing": 52,
+    "roster": "chelo, decenty, noway, saadzin, VINI",
+    "latest_match_date": "2026-09-27",
+    "details_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0052--imperial--chelo-decenty-noway-saadzin-vini.md",
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_b": {
+    "name": "Turma do Pagode",
+    "listed": true,
+    "vrs_name": "Turma do Pagode",
+    "points": 1051.0,
+    "standing": 98,
+    "roster": "ksloks, matios, naitte, Tuurtle, WOOD7",
+    "latest_match_date": "2026-10-04",
+    "details_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0098--turma_do_pagode--ksloks-matios-naitte-tuurtle-wood7.md",
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_floor": {
+    "standing": 380,
+    "points": 381
+   },
+   "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "resolution": {
+    "basis": "market",
+    "prob_a": 0.7539437499999999,
+    "prob_b": 0.2460562500000001,
+    "n_books": 4,
+    "book_spread_pp": 0.7,
+    "bound": null,
+    "range": null,
+    "delta_points": null
+   },
+   "alt_origination": {
+    "basis": "originated_vrs",
+    "prob_a": 0.6441544865461019,
+    "prob_b": 0.35584551345389814,
+    "bound": null,
+    "range": [
+     0.6441544865461019,
+     0.6441544865461019
+    ],
+    "delta_points": 246.0
+   },
+   "pick": "Imperial",
+   "pick_prob": 0.7539437499999999,
+   "pick_side": "a",
+   "confidence": "Strong",
+   "flags": [],
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only - never a probability source)",
+     "url": "https://www.hotspawn.com/matches/imperial-vs-turma-do-pagode-circuit-x-curitiba-4-1082688",
+     "note": "fixture identity, teams and UTC kick-off"
+    },
+    {
+     "label": "HotSpawn fixtures API (same public API the lobby calls)",
+     "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+     "note": "kick-off, lock time and listing status"
+    },
+    {
+     "label": "Valve VRS standings - Imperial #52 (1297 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0052--imperial--chelo-decenty-noway-saadzin-vini.md",
+     "note": "official Valve rating (context)"
+    },
+    {
+     "label": "Valve VRS standings - Turma do Pagode #98 (1051 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0098--turma_do_pagode--ksloks-matios-naitte-tuurtle-wood7.md",
+     "note": "official Valve rating (context)"
+    },
+    {
+     "label": "Bovada - 1.25 / 3.75 decimal (event 32519177)",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/imperial-turma-do-pagode-202610221000",
+     "note": "no-vig 75.0% / 25.0%, overround 6.67%"
+    },
+    {
+     "label": "Melbet - 1.24 / 3.79 decimal (event 763429585)",
+     "url": "https://melbet.com/en/line/esports",
+     "note": "no-vig 75.3% / 24.7%, overround 7.03%"
+    },
+    {
+     "label": "Pinnacle - 1.234192 / 3.81 decimal (event 1638811247)",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "note": "no-vig 75.5% / 24.5%, overround 7.27%"
+    },
+    {
+     "label": "Thunderpick (via bo3.gg) - 1.22 / 3.8 decimal (event 132411)",
+     "url": "https://bo3.gg/matches/imperial-vs-turma-do-pagode-22-10-2026",
+     "note": "no-vig 75.7% / 24.3%, overround 8.28%"
+    }
+   ]
+  },
+  {
+   "fixture_id": "1082689",
+   "competition": "Circuit X Curitiba #4",
+   "tier": "C",
+   "stage": "waiting for information",
+   "start_utc": "2026-10-22T14:00:00Z",
+   "lock_utc": "2026-10-22T13:54:00Z",
+   "status": "scheduled",
+   "team_a": "BESTIA",
+   "team_b": "ShindeN",
+   "hotspawn_url": "https://www.hotspawn.com/matches/bestia-vs-shinden-circuit-x-curitiba-4-1082689",
+   "seen_in": [
+    "lobby_page",
+    "api"
+   ],
+   "source_board": "data/f7279a54/board.json",
+   "state": "open",
+   "quotes": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "event_id": "32518186",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/bestia-shinden-202610221000",
+     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+     "decimal_a": 1.8,
+     "decimal_b": 1.952381,
+     "prob_a": 0.520305,
+     "prob_b": 0.479695,
+     "overround": 0.067751,
+     "start_utc": "2026-10-22T14:00:00Z",
+     "start_diff_minutes": null,
+     "retrieved_utc": "2026-10-21T19:24:24Z",
+     "origin": "board f7279a54",
+     "raw_format": "decimal",
+     "raw": null,
+     "join_note": null,
+     "evidence_urls": [],
+     "caveats": []
+    },
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet",
+     "event_id": "763429577",
+     "public_url": "https://melbet.com/en/line/esports",
+     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+     "decimal_a": 1.81,
+     "decimal_b": 1.98,
+     "prob_a": 0.522427,
+     "prob_b": 0.477573,
+     "overround": 0.057537,
+     "start_utc": "2026-10-22T14:00:00Z",
+     "start_diff_minutes": null,
+     "retrieved_utc": "2026-10-21T19:24:25Z",
+     "origin": "board f7279a54",
+     "raw_format": "decimal",
+     "raw": null,
+     "join_note": null,
+     "evidence_urls": [],
+     "caveats": []
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "event_id": "1638825309",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638825309/markets/related/straight",
+     "decimal_a": 1.813008,
+     "decimal_b": 1.980392,
+     "prob_a": 0.522063,
+     "prob_b": 0.477937,
+     "overround": 0.05652,
+     "start_utc": "2026-10-22T14:00:00Z",
+     "start_diff_minutes": null,
+     "retrieved_utc": "2026-10-21T19:24:22Z",
+     "origin": "board f7279a54",
+     "raw_format": "american",
+     "raw": null,
+     "join_note": null,
+     "evidence_urls": [],
+     "caveats": []
+    },
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (via bo3.gg)",
+     "event_id": "132410",
+     "public_url": "https://bo3.gg/matches/bestia-vs-shinden-22-10-2026",
+     "api_url": null,
+     "decimal_a": 1.78,
+     "decimal_b": 1.92,
+     "prob_a": 0.518919,
+     "prob_b": 0.481081,
+     "overround": 0.082631,
+     "start_utc": "2026-10-22T14:00:00Z",
+     "start_diff_minutes": 0.0,
+     "retrieved_utc": "2026-10-21T19:28:56Z",
+     "origin": "board fe803b80",
+     "raw_format": "decimal",
+     "raw": null,
+     "join_note": null,
+     "evidence_urls": [],
+     "caveats": []
+    }
+   ],
+   "vrs_a": {
+    "name": "BESTIA",
+    "listed": true,
+    "vrs_name": "BESTIA",
+    "points": 1189.0,
+    "standing": 65,
+    "roster": "buda, cass1n, drop, kauez, timo",
+    "latest_match_date": "2026-09-27",
+    "details_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0065--bestia--buda-cass1n-drop-kauez-timo.md",
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_b": {
+    "name": "ShindeN",
+    "listed": true,
+    "vrs_name": "ShindeN",
+    "points": 1121.0,
+    "standing": 74,
+    "roster": "abizz, guty, ivz, naz, tom1jed",
+    "latest_match_date": "2026-09-20",
+    "details_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0074--shinden--abizz-guty-ivz-naz-tom1jed.md",
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_floor": {
+    "standing": 380,
+    "points": 381
+   },
+   "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "resolution": {
+    "basis": "market",
+    "prob_a": 0.5209285,
+    "prob_b": 0.4790715,
+    "n_books": 4,
+    "book_spread_pp": 0.4,
+    "bound": null,
+    "range": null,
+    "delta_points": null
+   },
+   "alt_origination": {
+    "basis": "originated_vrs",
+    "prob_a": 0.5409184958781693,
+    "prob_b": 0.4590815041218307,
+    "bound": null,
+    "range": [
+     0.5409184958781693,
+     0.5409184958781693
+    ],
+    "delta_points": 68.0
+   },
+   "pick": "BESTIA",
+   "pick_prob": 0.5209285,
+   "pick_side": "a",
+   "confidence": "Lean",
+   "flags": [],
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only - never a probability source)",
+     "url": "https://www.hotspawn.com/matches/bestia-vs-shinden-circuit-x-curitiba-4-1082689",
+     "note": "fixture identity, teams and UTC kick-off"
+    },
+    {
+     "label": "HotSpawn fixtures API (same public API the lobby calls)",
+     "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+     "note": "kick-off, lock time and listing status"
+    },
+    {
+     "label": "Valve VRS standings - BESTIA #65 (1189 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0065--bestia--buda-cass1n-drop-kauez-timo.md",
+     "note": "official Valve rating (context)"
+    },
+    {
+     "label": "Valve VRS standings - ShindeN #74 (1121 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0074--shinden--abizz-guty-ivz-naz-tom1jed.md",
+     "note": "official Valve rating (context)"
+    },
+    {
+     "label": "Bovada - 1.8 / 1.952381 decimal (event 32518186)",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/bestia-shinden-202610221000",
+     "note": "no-vig 52.0% / 48.0%, overround 6.78%"
+    },
+    {
+     "label": "Melbet - 1.81 / 1.98 decimal (event 763429577)",
+     "url": "https://melbet.com/en/line/esports",
+     "note": "no-vig 52.2% / 47.8%, overround 5.75%"
+    },
+    {
+     "label": "Pinnacle - 1.813008 / 1.980392 decimal (event 1638825309)",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "note": "no-vig 52.2% / 47.8%, overround 5.65%"
+    },
+    {
+     "label": "Thunderpick (via bo3.gg) - 1.78 / 1.92 decimal (event 132410)",
+     "url": "https://bo3.gg/matches/bestia-vs-shinden-22-10-2026",
+     "note": "no-vig 51.9% / 48.1%, overround 8.26%"
+    }
+   ]
+  },
+  {
+   "fixture_id": "1082882",
+   "competition": "Stake Ranked Episode 6: Closed Qualifier",
+   "tier": "B",
+   "stage": "qualifier",
+   "start_utc": "2026-10-22T14:00:00Z",
+   "lock_utc": "2026-10-22T13:54:00Z",
+   "status": "scheduled",
+   "team_a": "UNiTY",
+   "team_b": "Apogee Betclic",
+   "hotspawn_url": "https://www.hotspawn.com/matches/unity-vs-apogee-betclic-stake-ranked-episode-6-closed-qualifier-1082882",
+   "seen_in": [
+    "lobby_page",
+    "api"
+   ],
+   "source_board": "data/f7279a54/board.json",
+   "state": "open",
+   "quotes": [
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet (1xBet platform)",
+     "event_id": "763696446",
+     "public_url": "https://melbet.com/en/line/esports",
+     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+     "decimal_a": 2.355,
+     "decimal_b": 1.54,
+     "prob_a": 0.395379,
+     "prob_b": 0.604621,
+     "overround": 0.073979,
+     "start_utc": "2026-10-22T14:00:00Z",
+     "start_diff_minutes": 0.0,
+     "retrieved_utc": "2026-10-21T19:24:25Z",
+     "origin": "research 5f903db4",
+     "raw_format": "decimal",
+     "raw": null,
+     "join_note": "HotSpawn 'Apogee Betclic' = book 'Apogee Esports'. Same competition (Stake Ranked Episode 6 Closed Qualifier), same UTC kick-off 14:00Z, and the pairing is the only two-team fixture in that slot. Thunderpick's own bo3.gg slug for this fixture is 'unity-vs-betclic-apogee-esports'.",
+     "evidence_urls": [
+      "https://www.hotspawn.com/matches/unity-vs-apogee-betclic-stake-ranked-episode-6-closed-qualifier-1082882",
+      "https://bo3.gg/matches/unity-vs-betclic-apogee-esports-22-10-2026"
+     ],
+     "caveats": [
+      "The collectors left this row blank because 'Apogee Betclic' did not normalise to 'Apogee Esports'."
+     ]
+    },
+    {
+     "source_key": "thunderpick",
+     "source_name": "Thunderpick (published through bo3.gg)",
+     "event_id": "132327",
+     "public_url": "https://bo3.gg/matches/unity-vs-betclic-apogee-esports-22-10-2026",
+     "api_url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=132327",
+     "decimal_a": 2.4,
+     "decimal_b": 1.5,
+     "prob_a": 0.384615,
+     "prob_b": 0.615385,
+     "overround": 0.083333,
+     "start_utc": "2026-10-22T14:00:00Z",
+     "start_diff_minutes": 0.0,
+     "retrieved_utc": "2026-10-21T19:28:56Z",
+     "origin": "research 5f903db4",
+     "raw_format": "decimal",
+     "raw": null,
+     "join_note": "Same fixture as the Melbet quote: identical kick-off 14:00Z and identical competition; bo3.gg's slug names both spellings of the opponent.",
+     "evidence_urls": [
+      "https://bo3.gg/matches/unity-vs-betclic-apogee-esports-22-10-2026"
+     ],
+     "caveats": [
+      "A Kalshi event for the same pairing (KXCS2GAME-26OCT221230APOGEEUNITY, 'Apogee Esports vs. UNiTY esports') is priced at a different kick-off (16:30Z) and is therefore NOT joined to this fixture; recorded as a clock conflict on the Flagged page."
+     ]
+    }
+   ],
+   "vrs_a": {
+    "name": "UNiTY",
+    "listed": true,
+    "vrs_name": "UNiTY",
+    "points": 1167.0,
+    "standing": 69,
+    "roster": "2high, Dytor, KWERTZZ, M1key, Sn0w",
+    "latest_match_date": null,
+    "details_url": null,
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_b": {
+    "name": "Apogee Betclic",
+    "listed": false,
+    "ambiguous": null
+   },
+   "vrs_floor": {
+    "standing": 380,
+    "points": 381
+   },
+   "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "resolution": {
+    "basis": "market",
+    "prob_a": 0.389997,
+    "prob_b": 0.6100030000000001,
+    "n_books": 2,
+    "book_spread_pp": 1.1,
+    "bound": null,
+    "range": null,
+    "delta_points": null
+   },
+   "alt_origination": {
+    "basis": "originated_vrs_bound",
+    "prob_a": 0.8694516686589614,
+    "prob_b": 0.1305483313410386,
+    "bound": {
+     "side": "a",
+     "relation": ">=",
+     "floor_standing": 380,
+     "floor_points": 381
+    },
+    "range": null,
+    "delta_points": 786.0
+   },
+   "pick": "Apogee Betclic",
+   "pick_prob": 0.6100030000000001,
+   "pick_side": "b",
+   "confidence": "Solid",
+   "flags": [
+    "market_and_rating_model_disagree_on_the_pick"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only - never a probability source)",
+     "url": "https://www.hotspawn.com/matches/unity-vs-apogee-betclic-stake-ranked-episode-6-closed-qualifier-1082882",
+     "note": "fixture identity, teams and UTC kick-off"
+    },
+    {
+     "label": "HotSpawn fixtures API (same public API the lobby calls)",
+     "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+     "note": "kick-off, lock time and listing status"
+    },
+    {
+     "label": "Valve VRS standings - UNiTY #69 (1167 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "official Valve rating (context)"
+    },
+    {
+     "label": "Melbet (1xBet platform) - 2.355 / 1.54 decimal (event 763696446)",
+     "url": "https://melbet.com/en/line/esports",
+     "note": "no-vig 39.5% / 60.5%, overround 7.40%"
+    },
+    {
+     "label": "Thunderpick (published through bo3.gg) - 2.4 / 1.5 decimal (event 132327)",
+     "url": "https://bo3.gg/matches/unity-vs-betclic-apogee-esports-22-10-2026",
+     "note": "no-vig 38.5% / 61.5%, overround 8.33%"
+    }
+   ]
+  },
+  {
+   "fixture_id": "1082858",
+   "competition": "DFRAG Invitational 2026",
+   "tier": "B",
+   "stage": "waiting for information",
+   "start_utc": "2026-10-26T03:00:00Z",
+   "lock_utc": "2026-10-26T02:54:00Z",
+   "status": "scheduled",
+   "team_a": "Ground Zero",
+   "team_b": "Off Chops",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "seen_in": [
+    "lobby_page",
+    "api"
+   ],
+   "source_board": "data/f7279a54/board.json",
+   "state": "open",
+   "quotes": [],
+   "vrs_a": {
+    "name": "Ground Zero",
+    "listed": true,
+    "vrs_name": "Ground Zero",
+    "points": 878.0,
+    "standing": 136,
+    "roster": "apocdud, hazr, Omichella, sliimey, vision",
+    "latest_match_date": null,
+    "details_url": null,
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_b": {
+    "name": "Off Chops",
+    "listed": false,
+    "ambiguous": null
+   },
+   "vrs_floor": {
+    "standing": 380,
+    "points": 381
+   },
+   "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "resolution": {
+    "basis": "originated_vrs_bound",
+    "prob_a": 0.7683371624736038,
+    "prob_b": 0.23166283752639616,
+    "bound": {
+     "side": "a",
+     "relation": ">=",
+     "floor_standing": 380,
+     "floor_points": 381
+    },
+    "range": null,
+    "delta_points": 497.0
+   },
+   "alt_origination": null,
+   "pick": "Ground Zero",
+   "pick_prob": 0.7683371624736038,
+   "pick_side": "a",
+   "confidence": "Bound",
+   "flags": [
+    "no_external_price_any_book",
+    "originated_bound_unlisted_opponent"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only - never a probability source)",
+     "url": "https://play.hotspawn.com/lobby",
+     "note": "fixture identity, teams and UTC kick-off"
+    },
+    {
+     "label": "HotSpawn fixtures API (same public API the lobby calls)",
+     "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+     "note": "kick-off, lock time and listing status"
+    },
+    {
+     "label": "Valve VRS standings - Ground Zero #136 (878 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "official Valve rating used in the originated line"
+    },
+    {
+     "label": "Valve VRS published table (origination input)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "logistic line: k=0.43077894236569164 x C=0.0056000078 x points delta"
+    }
+   ]
+  },
+  {
+   "fixture_id": "1082859",
+   "competition": "DFRAG Invitational 2026",
+   "tier": "B",
+   "stage": "waiting for information",
+   "start_utc": "2026-10-26T03:00:00Z",
+   "lock_utc": "2026-10-26T02:54:00Z",
+   "status": "scheduled",
+   "team_a": "NEXVOID",
+   "team_b": "Alter Ego",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "seen_in": [
+    "lobby_page",
+    "api"
+   ],
+   "source_board": "data/f7279a54/board.json",
+   "state": "open",
+   "quotes": [],
+   "vrs_a": {
+    "name": "NEXVOID",
+    "listed": true,
+    "vrs_name": "NEXVOID",
+    "points": 995.0,
+    "standing": 113,
+    "roster": "AccuracyTG, erkaSt, MiQ, xerolte, Zesta",
+    "latest_match_date": null,
+    "details_url": null,
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_b": {
+    "name": "Alter Ego",
+    "listed": true,
+    "vrs_name": "Alter Ego",
+    "points": 819.0,
+    "standing": 155,
+    "roster": "adeX, BnTeT, Gratisfaction, laxiee, PokemoN",
+    "latest_match_date": null,
+    "details_url": null,
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_floor": {
+    "standing": 380,
+    "points": 381
+   },
+   "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "resolution": {
+    "basis": "originated_vrs",
+    "prob_a": 0.6045778020619172,
+    "prob_b": 0.39542219793808275,
+    "bound": null,
+    "range": [
+     0.6045778020619172,
+     0.6045778020619172
+    ],
+    "delta_points": 176.0
+   },
+   "alt_origination": null,
+   "pick": "NEXVOID",
+   "pick_prob": 0.6045778020619172,
+   "pick_side": "a",
+   "confidence": "Solid",
+   "flags": [
+    "no_external_price_any_book",
+    "originated_from_official_valve_vrs"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only - never a probability source)",
+     "url": "https://play.hotspawn.com/lobby",
+     "note": "fixture identity, teams and UTC kick-off"
+    },
+    {
+     "label": "HotSpawn fixtures API (same public API the lobby calls)",
+     "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+     "note": "kick-off, lock time and listing status"
+    },
+    {
+     "label": "Valve VRS standings - NEXVOID #113 (995 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "official Valve rating used in the originated line"
+    },
+    {
+     "label": "Valve VRS standings - Alter Ego #155 (819 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "official Valve rating used in the originated line"
+    },
+    {
+     "label": "Valve VRS published table (origination input)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "logistic line: k=0.43077894236569164 x C=0.0056000078 x points delta"
+    }
+   ]
+  },
+  {
+   "fixture_id": "1082860",
+   "competition": "DFRAG Invitational 2026",
+   "tier": "B",
+   "stage": "waiting for information",
+   "start_utc": "2026-10-27T03:00:00Z",
+   "lock_utc": "2026-10-27T02:54:00Z",
+   "status": "scheduled",
+   "team_a": "FlyQuest",
+   "team_b": "Staqued",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "seen_in": [
+    "lobby_page",
+    "api"
+   ],
+   "source_board": "data/f7279a54/board.json",
+   "state": "open",
+   "quotes": [],
+   "vrs_a": {
+    "name": "FlyQuest",
+    "listed": true,
+    "vrs_name": "FlyQuest",
+    "points": 1093.0,
+    "standing": 86,
+    "roster": "aliStair, INS, jks, nettik, Vexite",
+    "latest_match_date": null,
+    "details_url": null,
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_b": {
+    "name": "Staqued",
+    "listed": false,
+    "ambiguous": null
+   },
+   "vrs_floor": {
+    "standing": 380,
+    "points": 381
+   },
+   "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "resolution": {
+    "basis": "originated_vrs_bound",
+    "prob_a": 0.8478199836159859,
+    "prob_b": 0.15218001638401413,
+    "bound": {
+     "side": "a",
+     "relation": ">=",
+     "floor_standing": 380,
+     "floor_points": 381
+    },
+    "range": null,
+    "delta_points": 712.0
+   },
+   "alt_origination": null,
+   "pick": "FlyQuest",
+   "pick_prob": 0.8478199836159859,
+   "pick_side": "a",
+   "confidence": "Bound",
+   "flags": [
+    "no_external_price_any_book",
+    "originated_bound_unlisted_opponent"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only - never a probability source)",
+     "url": "https://play.hotspawn.com/lobby",
+     "note": "fixture identity, teams and UTC kick-off"
+    },
+    {
+     "label": "HotSpawn fixtures API (same public API the lobby calls)",
+     "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+     "note": "kick-off, lock time and listing status"
+    },
+    {
+     "label": "Valve VRS standings - FlyQuest #86 (1093 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "official Valve rating used in the originated line"
+    },
+    {
+     "label": "Valve VRS published table (origination input)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "logistic line: k=0.43077894236569164 x C=0.0056000078 x points delta"
+    }
+   ]
+  },
+  {
+   "fixture_id": "1082861",
+   "competition": "DFRAG Invitational 2026",
+   "tier": "B",
+   "stage": "waiting for information",
+   "start_utc": "2026-10-27T03:00:00Z",
+   "lock_utc": "2026-10-27T02:54:00Z",
+   "status": "scheduled",
+   "team_a": "Rooster",
+   "team_b": "Abyssal",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "seen_in": [
+    "lobby_page",
+    "api"
+   ],
+   "source_board": "data/f7279a54/board.json",
+   "state": "open",
+   "quotes": [],
+   "vrs_a": {
+    "name": "Rooster",
+    "listed": true,
+    "vrs_name": "Rooster",
+    "points": 718.0,
+    "standing": 205,
+    "roster": "ADK, chelleos, damyo, rekonz, SkulL",
+    "latest_match_date": null,
+    "details_url": null,
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_b": {
+    "name": "Abyssal",
+    "listed": true,
+    "vrs_name": "Abyssal",
+    "points": 734.0,
+    "standing": 195,
+    "roster": "blood, dangeR, foggers, gump, vinhy",
+    "latest_match_date": null,
+    "details_url": null,
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_floor": {
+    "standing": 380,
+    "points": 381
+   },
+   "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "resolution": {
+    "basis": "originated_vrs",
+    "prob_a": 0.4903517360479436,
+    "prob_b": 0.5096482639520564,
+    "bound": null,
+    "range": [
+     0.4903517360479436,
+     0.4903517360479436
+    ],
+    "delta_points": -16.0
+   },
+   "alt_origination": null,
+   "pick": "Abyssal",
+   "pick_prob": 0.5096482639520564,
+   "pick_side": "b",
+   "confidence": "Toss-up",
+   "flags": [
+    "no_external_price_any_book",
+    "originated_from_official_valve_vrs"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only - never a probability source)",
+     "url": "https://play.hotspawn.com/lobby",
+     "note": "fixture identity, teams and UTC kick-off"
+    },
+    {
+     "label": "HotSpawn fixtures API (same public API the lobby calls)",
+     "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+     "note": "kick-off, lock time and listing status"
+    },
+    {
+     "label": "Valve VRS standings - Rooster #205 (718 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "official Valve rating used in the originated line"
+    },
+    {
+     "label": "Valve VRS standings - Abyssal #195 (734 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "official Valve rating used in the originated line"
+    },
+    {
+     "label": "Valve VRS published table (origination input)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "logistic line: k=0.43077894236569164 x C=0.0056000078 x points delta"
+    }
+   ]
+  },
+  {
+   "fixture_id": "1082792",
+   "competition": "Moscow Cyber Games 2026",
+   "tier": "B",
+   "stage": "waiting for information",
+   "start_utc": "2026-10-31T09:00:00Z",
+   "lock_utc": "2026-10-31T08:54:00Z",
+   "status": "scheduled",
+   "team_a": "HOTU",
+   "team_b": "The Huns",
+   "hotspawn_url": "https://www.hotspawn.com/matches/hotu-vs-the-huns-moscow-cyber-games-2026-1082792",
+   "seen_in": [
+    "lobby_page",
+    "api"
+   ],
+   "source_board": "data/f7279a54/board.json",
+   "state": "open",
+   "quotes": [],
+   "vrs_a": {
+    "name": "HOTU",
+    "listed": true,
+    "vrs_name": "HOTU",
+    "points": 1437.0,
+    "standing": 31,
+    "roster": "dwushka, frontales, kade0, mizu, n0rb3r7",
+    "latest_match_date": "2026-10-02",
+    "details_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0031--hotu--dwushka-frontales-kade0-mizu-n0rb3r7.md",
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_b": {
+    "name": "The Huns",
+    "listed": true,
+    "vrs_name": "The Huns",
+    "points": 944.0,
+    "standing": 122,
+    "roster": "Annihilation, Bart4k, bexyz, controlez, Cozen",
+    "latest_match_date": "2026-10-04",
+    "details_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0122--the_huns--annihilation-bart4k-bexyz-controlez-cozen.md",
+    "ambiguous": true,
+    "alternatives": [
+     {
+      "vrs_name": "The Huns",
+      "standing": 213,
+      "points": 701,
+      "roster": "Bart4k, controlez, nin9, sk0R, xerolte",
+      "latest_match_date": "2026-05-17"
+     }
+    ]
+   },
+   "vrs_floor": {
+    "standing": 380,
+    "points": 381
+   },
+   "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "resolution": {
+    "basis": "originated_vrs",
+    "prob_a": 0.7666151594792249,
+    "prob_b": 0.23338484052077513,
+    "bound": null,
+    "range": [
+     0.7666151594792249,
+     0.8551404363406466
+    ],
+    "delta_points": 493.0
+   },
+   "alt_origination": null,
+   "pick": "HOTU",
+   "pick_prob": 0.7666151594792249,
+   "pick_side": "a",
+   "confidence": "Strong",
+   "flags": [
+    "no_external_price_any_book",
+    "originated_from_official_valve_vrs",
+    "vrs_duplicate_rows_resolved_by_published_rule"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only - never a probability source)",
+     "url": "https://www.hotspawn.com/matches/hotu-vs-the-huns-moscow-cyber-games-2026-1082792",
+     "note": "fixture identity, teams and UTC kick-off"
+    },
+    {
+     "label": "HotSpawn fixtures API (same public API the lobby calls)",
+     "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+     "note": "kick-off, lock time and listing status"
+    },
+    {
+     "label": "Valve VRS standings - HOTU #31 (1437 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0031--hotu--dwushka-frontales-kade0-mizu-n0rb3r7.md",
+     "note": "official Valve rating used in the originated line"
+    },
+    {
+     "label": "Valve VRS standings - The Huns #122 (944 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0122--the_huns--annihilation-bart4k-bexyz-controlez-cozen.md",
+     "note": "official Valve rating used in the originated line"
+    },
+    {
+     "label": "Valve VRS published table (origination input)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "logistic line: k=0.43077894236569164 x C=0.0056000078 x points delta"
+    }
+   ]
+  },
+  {
+   "fixture_id": "1082793",
+   "competition": "Moscow Cyber Games 2026",
+   "tier": "B",
+   "stage": "waiting for information",
+   "start_utc": "2026-10-31T13:00:00Z",
+   "lock_utc": "2026-10-31T12:54:00Z",
+   "status": "scheduled",
+   "team_a": "5star",
+   "team_b": "1WIN",
+   "hotspawn_url": "https://www.hotspawn.com/matches/5star-vs-1win-moscow-cyber-games-2026-1082793",
+   "seen_in": [
+    "lobby_page",
+    "api"
+   ],
+   "source_board": "data/f7279a54/board.json",
+   "state": "open",
+   "quotes": [],
+   "vrs_a": {
+    "name": "5star",
+    "listed": true,
+    "vrs_name": "5star",
+    "points": 1110.0,
+    "standing": 80,
+    "roster": "ariucle, clouden, hoolig4n, NEUZ, rate",
+    "latest_match_date": "2026-10-04",
+    "details_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0080--5star--ariucle-clouden-hoolig4n-neuz-rate.md",
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_b": {
+    "name": "1WIN",
+    "listed": true,
+    "vrs_name": "1win",
+    "points": 1383.0,
+    "standing": 38,
+    "roster": "ArtFr0st, Ax1Le, BELCHONOKK, fame, nafany",
+    "latest_match_date": "2026-09-12",
+    "details_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0038--1win--artfr0st-ax1le-belchonokk-fame-nafany.md",
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_floor": {
+    "standing": 380,
+    "points": 381
+   },
+   "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "resolution": {
+    "basis": "originated_vrs",
+    "prob_a": 0.3410596188538507,
+    "prob_b": 0.6589403811461493,
+    "bound": null,
+    "range": [
+     0.3410596188538507,
+     0.3410596188538507
+    ],
+    "delta_points": -273.0
+   },
+   "alt_origination": null,
+   "pick": "1WIN",
+   "pick_prob": 0.6589403811461493,
+   "pick_side": "b",
+   "confidence": "Solid",
+   "flags": [
+    "no_external_price_any_book",
+    "originated_from_official_valve_vrs"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only - never a probability source)",
+     "url": "https://www.hotspawn.com/matches/5star-vs-1win-moscow-cyber-games-2026-1082793",
+     "note": "fixture identity, teams and UTC kick-off"
+    },
+    {
+     "label": "HotSpawn fixtures API (same public API the lobby calls)",
+     "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+     "note": "kick-off, lock time and listing status"
+    },
+    {
+     "label": "Valve VRS standings - 5star #80 (1110 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0080--5star--ariucle-clouden-hoolig4n-neuz-rate.md",
+     "note": "official Valve rating used in the originated line"
+    },
+    {
+     "label": "Valve VRS standings - 1win #38 (1383 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0038--1win--artfr0st-ax1le-belchonokk-fame-nafany.md",
+     "note": "official Valve rating used in the originated line"
+    },
+    {
+     "label": "Valve VRS published table (origination input)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "logistic line: k=0.43077894236569164 x C=0.0056000078 x points delta"
+    }
+   ]
+  },
+  {
+   "fixture_id": "1080200",
+   "competition": "FRAG University 2026",
+   "tier": "C",
+   "stage": "waiting for information",
+   "start_utc": "2026-11-12T00:00:00Z",
+   "lock_utc": "2026-11-11T23:54:00Z",
+   "status": "started",
+   "team_a": "Wildcard",
+   "team_b": "DENDELE",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "seen_in": [
+    "api"
+   ],
+   "source_board": "data/fe803b80/board.json",
+   "state": "api_only",
+   "quotes": [],
+   "vrs_a": {
+    "name": "Wildcard",
+    "listed": true,
+    "vrs_name": "Wildcard",
+    "points": 1239.0,
+    "standing": 58,
+    "roster": "Cxzi, fr3nd, HexT, nEMANHA, reck",
+    "latest_match_date": null,
+    "details_url": null,
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_b": {
+    "name": "DENDELE",
+    "listed": true,
+    "vrs_name": "DENDELE",
+    "points": 1368.0,
+    "standing": 39,
+    "roster": "doc, gafolo, koala, maxxkor, rdnzao",
+    "latest_match_date": null,
+    "details_url": null,
+    "ambiguous": false,
+    "alternatives": []
+   },
+   "vrs_floor": {
+    "standing": 380,
+    "points": 381
+   },
+   "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "resolution": {
+    "basis": "originated_vrs",
+    "prob_a": 0.42282304524364195,
+    "prob_b": 0.5771769547563581,
+    "bound": null,
+    "range": [
+     0.42282304524364195,
+     0.42282304524364195
+    ],
+    "delta_points": -129.0
+   },
+   "alt_origination": null,
+   "pick": "DENDELE",
+   "pick_prob": 0.5771769547563581,
+   "pick_side": "b",
+   "confidence": "Lean",
+   "flags": [
+    "api_status_conflict_future_fixture_marked_started",
+    "fixtures_api_only_not_rendered_in_lobby",
+    "no_external_price_any_book",
+    "originated_from_official_valve_vrs"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only - never a probability source)",
+     "url": "https://play.hotspawn.com/lobby",
+     "note": "fixture identity, teams and UTC kick-off"
+    },
+    {
+     "label": "HotSpawn fixtures API (same public API the lobby calls)",
+     "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
+     "note": "kick-off, lock time and listing status"
+    },
+    {
+     "label": "Valve VRS standings - Wildcard #58 (1239 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "official Valve rating used in the originated line"
+    },
+    {
+     "label": "Valve VRS standings - DENDELE #39 (1368 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "official Valve rating used in the originated line"
+    },
+    {
+     "label": "Valve VRS published table (origination input)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "note": "logistic line: k=0.43077894236569164 x C=0.0056000078 x points delta"
+    }
+   ]
+  }
+ ],
+ "attempted_sources": [
+  {
+   "source": "Kalshi KXCS2GAME (exchange)",
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=false",
+   "read_utc": "2026-10-21T19:36:00Z",
+   "covers": [
+    "1082837"
+   ],
+   "misses": [
+    "1081597",
+    "1081600",
+    "1082688",
+    "1082689",
+    "1081870",
+    "1082858",
+    "1082859",
+    "1082860",
+    "1082861",
+    "1082792",
+    "1082793"
+   ],
+   "note": "37 open CS2 events, all dated 21-23 Oct 2026. The DFRAG Invitational fixtures (26-27 Oct) and Moscow Cyber Games fixtures (31 Oct) have no open event at all, and the 22 Oct CCT/VOID/Circuit X slots other than 26OCT220100RAVA are absent. For 1081870 (Rare Atom vs Vitalem Aerem) Kalshi does have a ladder, but it is 0.30/0.84 vs 0.13/0.59 with zero volume, so it is recorded as directional corroboration and not used as a price."
+  },
+  {
+   "source": "Melbet line feed (1xBet platform)",
+   "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+   "read_utc": "2026-10-21T19:24:25Z",
+   "covers": [
+    "1082882"
+   ],
+   "misses": [
+    "1081597",
+    "1081600",
+    "1082858",
+    "1082859",
+    "1082860",
+    "1082861",
+    "1082792",
+    "1082793"
+   ],
+   "note": "Near-name collisions were rejected, not joined: 'The Audacity vs The Huns' (22 Oct 05:00Z, eXTREMESLAND Mongolia Qualifier) is a different fixture from HOTU vs The Huns (31 Oct 09:00Z, Moscow Cyber Games); '5Star vs TheONE 1337' (22 Oct 08:00Z, eXTREMESLAND Mongolia) is a different '5Star' from Valve-rated 5star (ariucle, clouden, hoolig4n, NEUZ, rate) which plays 1WIN on 31 Oct; 'Luminosity vs HOTU' (27 Oct 17:00Z, Tesla Cup) is not the HotSpawn fixture."
+  },
+  {
+   "source": "Thunderpick (via bo3.gg)",
+   "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.discipline_id%5D%5Beq%5D=1&filter%5Bmatches.status%5D%5Bin%5D=upcoming",
+   "read_utc": "2026-10-21T19:28:56Z",
+   "covers": [
+    "1082882"
+   ],
+   "misses": [
+    "1081597",
+    "1081600",
+    "1082688",
+    "1082689",
+    "1081870",
+    "1082858",
+    "1082859",
+    "1082860",
+    "1082861",
+    "1082792",
+    "1082793"
+   ],
+   "note": "48 Thunderpick quotes were published for the upcoming window; none of them is one of the unpriced HotSpawn fixtures."
+  },
+  {
+   "source": "Pinnacle (guest API via cs2-hub)",
+   "url": "https://www.pinnacle.com/en/esports/cs2-hub",
+   "read_utc": "2026-10-21T19:24:21Z",
+   "covers": [
+    "1082688",
+    "1082689"
+   ],
+   "misses": [
+    "1081597",
+    "1081600",
+    "1082837",
+    "1081870",
+    "1082858",
+    "1082859",
+    "1082860",
+    "1082861",
+    "1082792",
+    "1082793"
+   ],
+   "note": "Pinnacle prices the PGL Masters Bucharest slate and the two Circuit X Curitiba matches; it does not price tier-C CCT/DFRAG/MCG fixtures."
+  },
+  {
+   "source": "Bovada",
+   "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+   "read_utc": "2026-10-21T19:24:21Z",
+   "covers": [
+    "1082688",
+    "1082689"
+   ],
+   "misses": [
+    "1081597",
+    "1081600",
+    "1082837",
+    "1081870",
+    "1082858",
+    "1082859",
+    "1082860",
+    "1082861",
+    "1082792",
+    "1082793"
+   ],
+   "note": "Same coverage pattern as Pinnacle: no tier-C lines."
+  },
+  {
+   "source": "HotSpawn match pages (HLTV / bookmaker identity cross-check)",
+   "url": "https://play.hotspawn.com/lobby",
+   "read_utc": "2026-10-21T19:36:00Z",
+   "covers": [
+    "1082837",
+    "1081870",
+    "1081597",
+    "1081600",
+    "1082688",
+    "1082689",
+    "1082882",
+    "1082792",
+    "1082793"
+   ],
+   "misses": [
+    "1082858",
+    "1082859",
+    "1082860",
+    "1082861"
+   ],
+   "note": "The four DFRAG Invitational fixtures are rendered in the lobby with a 'Who will win?' card but no 'View Match' permalink, so no HotSpawn match page exists to cross-check. That is a HotSpawn-side gap, recorded on the Flagged page."
+  }
+ ],
+ "read_log": [
+  {
+   "source": "HotSpawn Pick'ems lobby",
+   "url": "https://play.hotspawn.com/lobby",
+   "read_utc": "2026-10-21T19:36:00Z",
+   "result": "78 CS2 fixtures listed for week 273; 13 are currently open for picks (7 under 'Closing Soon' + 6 under 'Upcoming'), each with a two-sided pick card.",
+   "note": "Fixture discovery only. The crowd-pick percentages on this page are NOT read, stored or used anywhere."
+  },
+  {
+   "source": "Kalshi public market-data API (KXCS2GAME series)",
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=false",
+   "read_utc": "2026-10-21T19:36:00Z",
+   "result": "Open KXCS2GAME events delivered across three payload pages, all dated 21-23 Oct 2026. Three of them are the same pairing as a HotSpawn fixture: 26OCT211800LNALE, 26OCT220100RAVA and 26OCT221230APOGEEUNITY.",
+   "note": "Event payload was read in full (3 chunks). Each event carries two mutually-exclusive binary markets (one per team) with yes_bid/yes_ask in dollars."
+  },
+  {
+   "source": "Kalshi market ladder (Rare Atom vs Vitalem Aerem)",
+   "url": "https://api.elections.kalshi.com/trade-api/v2/markets?event_ticker=KXCS2GAME-26OCT220100RAVA",
+   "read_utc": "2026-10-21T19:44:00Z",
+   "result": "Rare Atom yes 0.30 bid / 0.84 ask; Vitalem Aerem 0.13 bid / 0.59 ask; zero volume and zero open interest. Rules text: Oct 22, 2026 at 1:00 AM EDT (= 05:00Z, the HotSpawn kick-off); the event's occurrence_datetime says 09:00Z.",
+   "note": "Not used as a probability input: a 0.54-wide two-way ladder with no trades is a market-maker placeholder, not a consensus price. The Melbet line for the same fixture is used instead, and this ladder is recorded as directional corroboration only."
+  },
+  {
+   "source": "Valve official Counter-Strike Regional Standings (GitHub, ValveSoftware)",
+   "url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026",
+   "read_utc": "2026-10-21T19:34:00Z",
+   "result": "40 published standings files; the newest is standings_global_2026_10_05.md (no 2026_10_12 or 2026_10_19 file exists). 380 rows in the global table.",
+   "note": "Confirms the committed data/19d6c262/vrs_global.json snapshot (2026_10_05) is Valve's newest published rating table, i.e. our ratings are 16 days old by Valve's own publishing cadence."
+  },
+  {
+   "source": "bo3.gg match page (Alianza Lima Esports vs Los Ninos)",
+   "url": "https://bo3.gg/matches/alianza-lima-esports-vs-los-ninos-21-10-2026",
+   "read_utc": "2026-10-21T19:37:00Z",
+   "result": "CCT South America 2026 Series 7, group stage round 5, Bo3, Oct 21 18:00 (same slot as HotSpawn fixture 1082837). Lineup listed: zockie, Slayerhz, NotJuanjo, BabyRage, Antuanette.",
+   "note": "That five is identical to the roster Valve publishes for 'Zetta' (#357, 473 pts), which is the alias evidence for joining Kalshi's 'Alianza Lima Esports' market to HotSpawn's 'Zetta'."
+  },
+  {
+   "source": "bo3.gg team page (Banda Chuya)",
+   "url": "https://bo3.gg/teams/banda-chuya",
+   "read_utc": "2026-10-21T19:37:00Z",
+   "result": "Squad shown in last-8-match stats: AdrieN, showk, ezox, maaryy, tomiko. Recent matches incl. mellren 19-10-2026, regnum4games 08-10-2026, benched-gods 30-09-2026.",
+   "note": "Identical to Valve's five-man 'Banda Chuya' row (#165, 801 pts). Valve also publishes a two-player remnant 'Banda Chuya' row (#373, 402 pts) with roster ezox, manio - not an active five, so it is not used."
+  }
+ ],
+ "calibration_check": {
+  "available": true,
+  "pairs": 60,
+  "k_used": 0.43077894236569164,
+  "mae_at_k_used": 0.077025,
+  "k_best_grid": 0.448,
+  "mae_at_best": 0.07701,
+  "grid": "k from 0.005 to 2.000 in steps of 0.001, fixed C = 0.0056000078",
+  "favourite_flips": 9,
+  "favourite_flips_note": "pairs where the rating model's favourite differs from the market's favourite - the same error mode that produces the Zetta v LOS NINOS conflict",
+  "source": "data/f7279a54/calibration_pairs.json"
+ },
+ "limitations": [
+  {
+   "id": "L1",
+   "title": "Reference books do not price tier-C CS2",
+   "detail": "9 of 14 open fixtures have no price at Bovada, Melbet, Pinnacle, Thunderpick or Kalshi (all five read today). Those rows carry an originated line from Valve's official rating table instead of a blank.",
+   "source": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=false"
+  },
+  {
+   "id": "L2",
+   "title": "Originated lines are models, not market prices",
+   "detail": "Formula p = 1/(1+exp(-k*C*points_delta)) with Valve's published C=0.0056000078 and this project's fitted k=0.43077894236569164 (60 market-vs-rating pairs). The fit's own mean absolute error is 7.70 percentage points, so treat originated probabilities as +/-8 pp.",
+   "source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js"
+  },
+  {
+   "id": "L3",
+   "title": "Valve's rating table is 16 days old",
+   "detail": "The newest published global table is 2026_10_05; Valve publishes roughly monthly. Promotion/relegation, roster changes and results after 5 Oct are not reflected. Valve rows also carry a latest_match_date per roster, which is published alongside every rating used here.",
+   "source": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026"
+  },
+  {
+   "id": "L4",
+   "title": "One-sided ratings become bounds, not points",
+   "detail": "3 fixtures have exactly one rated side. The unrated side is at or below Valve's published floor (#380, 381 pts), so those rows show '>=' on the rated side and '<=' on the other. They are directional, not calibrated.",
+   "source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+  },
+  {
+   "id": "L5",
+   "title": "Thin exchange book on the one Kalshi-priced fixture",
+   "detail": "The Kalshi quote used for Zetta v LOS NINOS has zero traded volume and a 0.16 wide two-way spread (Los Ninos 0.55/0.63, Alianza Lima 0.39/0.47). Our VRS origination and bo3.gg's own model both favour the other side, so the row is flagged as a basis conflict and the pick is shown with Lean confidence.",
+   "source": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211800lnale"
+  },
+  {
+   "id": "L6",
+   "title": "Clock conflicts are not silently joined",
+   "detail": "Books occasionally list the same pairing at a different kick-off (e.g. Kalshi's Apogee Esports vs UNiTY esports event is priced at 16:30Z while HotSpawn and two other books have 14:00Z). Quotes are joined only when the kick-off agrees within 90 minutes; conflicts are listed on Flagged for review.",
+   "source": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=false"
+  },
+  {
+   "id": "L7",
+   "title": "HotSpawn's own listing is not always complete",
+   "detail": "Four DFRAG Invitational fixtures render a pick card with no match permalink, and one fixture (Wildcard v DENDELE, 12 Nov) exists in the fixtures API but is not rendered in the lobby and is marked 'started' months early. It is included here as an API-only row so no fixture is dropped.",
+   "source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
+  }
+ ],
+ "irregularities": [
+  {
+   "id": "R1",
+   "severity": "data",
+   "title": "Valve publishes two rows for the same organisation (different rosters)",
+   "detail": "1081597 benched gods v TitanFlow; 1081600 Donstu v Banda chuya; 1082792 HOTU v The Huns. Both rows are in standings_global_2026_10_05.md with different points. This build applies the published roster rule (full five, newest latest_match_date) and keeps the alternative in the row data, so the choice is auditable.",
+   "source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "affected": [
+    "1081597",
+    "1081600",
+    "1082792"
+   ]
+  },
+  {
+   "id": "R2",
+   "severity": "upstream",
+   "title": "Two collectors disagree on the same fixture and one leaves rows blank",
+   "detail": "data/fe803b80/board.json stores 13 open rows with the top-level pick/probability set to null while their own 'line' or 'model' block holds the numbers, and it also keeps a Kalshi quote whose sides are inverted (Turma do Pagode labelled at 0.78 when the exchange prices Imperial there). This build reads raw decimals and re-derives every no-vig price itself, and it does not import that inverted quote.",
+   "source": "data/fe803b80/board.json",
+   "affected": [
+    "1082837",
+    "1081870",
+    "1081597",
+    "1081600",
+    "1082688",
+    "1082689",
+    "1082858",
+    "1082859",
+    "1082860",
+    "1082861",
+    "1082792",
+    "1082793",
+    "1080200"
+   ]
+  },
+  {
+   "id": "R3",
+   "severity": "upstream",
+   "title": "Primary board resolves duplicate Valve rows the other way round",
+   "detail": "Both collectors mishandle Valve's duplicate rows, in opposite ways. data/f7279a54/board.json flags 'Banda chuya', 'The Huns' and 'benched gods' as ambiguous and therefore publishes no rating for those sides at all; data/fe803b80/board.json instead silently picks the older/lower rows (Banda Chuya #373 402 pts, The Huns #213 701 pts, benched gods #329 516 pts), which flips the Banda Chuya pick. bo3.gg's squad page for Banda Chuya lists exactly Valve's five-man row (#165, 801 pts, latest match 2026-10-04), and Valve's own latest_match_date column agrees, so the five-man row is the active one. Both the selected and the alternative values are published on every affected row.",
+   "source": "data/fe803b80/board.json + https://bo3.gg/teams/banda-chuya",
+   "affected": [
+    "1081600",
+    "1082792",
+    "1081597"
+   ]
+  },
+  {
+   "id": "R4",
+   "severity": "upstream",
+   "title": "Kalshi market timestamps are shifted against its own rules text",
+   "detail": "Two independent events show the same offset: KXCS2GAME-26OCT211800LNALE's rules text says 'Oct 21, 2026 at 6:00 PM EDT' (22:00Z) while its occurrence_datetime says 2026-10-22T02:00:00Z, and KXCS2GAME-26OCT220100RAVA's rules text says 'Oct 22, 2026 at 1:00 AM EDT' (05:00Z) while its occurrence_datetime says 09:00Z - a +4h shift on both. The rules text agrees with HotSpawn, HLTV and bo3.gg, so the rules-text kick-off is used and the event clocks are treated as unreliable.",
+   "source": "https://api.elections.kalshi.com/trade-api/v2/markets?event_ticker=KXCS2GAME-26OCT211800LNALE",
+   "affected": [
+    "1082837"
+   ]
+  },
+  {
+   "id": "R5",
+   "severity": "site",
+   "title": "The previous root landing page was not readable on a phone",
+   "detail": "The root index.html carried 12 header links and ~30 session cards before this session. This build adds one phone-first executive summary at the top of the root page that links straight to the picks, unresolved, sources, method and flagged pages, and keeps the older desks below it as an archive.",
+   "source": "https://play.hotspawn.com/lobby",
+   "affected": []
+  },
+  {
+   "id": "R6",
+   "severity": "repo",
+   "title": "Pre-existing test failures on the base commit",
+   "detail": "On the base commit a98242a, `python3 -m unittest discover -s tests` reports 1112 tests with 1 failure and 16 errors (missing modules test_3faf40e8, test_5468b0ba, test_58cb2600, test_5a40690b, test_6ffacd40, test_778756a1, test_94b3d48a, test_98dcfc7e, test_dc741cc1, test_e1b48771, test_ff88c096, test_project, plus four assertion errors in test_69e4c06a / test_current_lines and one in test_verify_7cd2e67a). They are unrelated to this section and are recorded, not hidden.",
+   "source": "https://github.com/buffedlizard55-lab/MaltaProj2/commit/a98242a9891a3ef2c44bc3df879711a53e5cd1a8",
+   "affected": []
+  }
+ ]
+}

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Every open HotSpawn CS2 pick'em match with a pick, both win probabilities and the source for every number.">
+<title>Method · Every-match CS2 picks</title>
+<style>
+:root{--bg:#0b1220;--card:#121c2e;--card2:#0f1727;--ink:#e8eefc;--dim:#93a4c3;--line:#25334d;
+--good:#7ef0b2;--warn:#ffd479;--bad:#ff9aa2;--accent:#7cc4ff;--market:#7ef0b2;--model:#7cc4ff;--bound:#ffd479}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:1080px;margin:0 auto;padding:12px 14px 64px}
+header.top{position:sticky;top:0;z-index:5;background:rgba(11,18,32,.96);border-bottom:1px solid var(--line);
+backdrop-filter:blur(6px)}
+header.top .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;
+max-width:1080px;margin:0 auto;padding:8px 14px}
+.brand{font-weight:700;font-size:15px;letter-spacing:.2px}
+.brand span{color:var(--good)}
+nav{display:flex;flex-wrap:wrap;gap:6px}
+nav a{display:inline-block;padding:8px 11px;border:1px solid var(--line);border-radius:999px;
+text-decoration:none;color:var(--ink);font-size:13px;min-height:38px}
+nav a.active{background:var(--good);color:#0b2417;border-color:var(--good);font-weight:700}
+h1{font-size:24px;line-height:1.2;margin:10px 0 4px}
+h2{font-size:18px;margin:26px 0 8px}
+h3{font-size:15px;margin:18px 0 6px}
+p{margin:8px 0}
+.eyebrow{color:var(--dim);text-transform:uppercase;letter-spacing:.09em;font-size:11px;margin:14px 0 2px}
+.lede{color:var(--dim)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0}
+@media(min-width:640px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:11px}
+.tile b{display:block;font-size:24px;line-height:1.1}
+.tile small{color:var(--dim);font-size:12px}
+.cta{display:grid;gap:10px;margin:14px 0}
+@media(min-width:640px){.cta{grid-template-columns:1fr 1fr}}
+.cta a{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);
+border:1px solid var(--line);border-radius:14px;padding:15px 16px;text-decoration:none;color:var(--ink);
+font-weight:700;min-height:56px}
+.cta a.primary{background:var(--good);color:#08200f;border-color:var(--good)}
+.cta a span.small{font-weight:400;color:inherit;opacity:.75;font-size:12px}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;
+border:1px solid var(--line);white-space:nowrap}
+.badge.market{color:#08200f;background:var(--market);border-color:var(--market)}
+.badge.model{color:#04121f;background:var(--model);border-color:var(--model)}
+.badge.bound{color:#2a1d00;background:var(--bound);border-color:var(--bound)}
+.badge.flag{color:var(--warn);background:transparent;border-color:var(--warn)}
+.badge.plain{color:var(--dim)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.pick{font-weight:800;font-size:15px}
+.prob{font-variant-numeric:tabular-nums}
+.prob.win{color:var(--good);font-weight:700}
+.prob.lose{color:var(--dim)}
+.muted{color:var(--dim);font-size:12px}
+.src{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:12px}
+.src a{text-decoration:underline}
+.match{font-weight:700}
+@media(max-width:639px){
+ table thead{display:none}
+ table,thead,tbody,tr,td,th{display:block;width:100%}
+ tr{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;padding:10px 12px}
+ td{border:0;padding:4px 0}
+ td[data-l]{display:flex;gap:10px;justify-content:space-between;align-items:baseline}
+ td[data-l]::before{content:attr(data-l);color:var(--dim);font-size:11px;text-transform:uppercase;
+ letter-spacing:.06em;flex:0 0 42%}
+ td.num{text-align:right}
+}
+.callout{border-left:4px solid var(--warn);background:#1a1608;padding:10px 12px;border-radius:8px;margin:12px 0}
+.callout.good{border-color:var(--good);background:#0b1f16}
+.callout.bad{border-color:var(--bad);background:#221010}
+ul,ol{padding-left:20px}
+li{margin:5px 0}
+footer{color:var(--dim);font-size:12px;border-top:1px solid var(--line);margin-top:26px;padding-top:12px}
+code{background:#0a1322;padding:1px 5px;border-radius:5px;font-size:13px}
+.tbl-scroll{overflow-x:auto}
+</style>
+</head>
+<body>
+<header class="top"><div class="bar">
+<div class="brand">Every-match picks <span>· CS2</span></div>
+<nav><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="sources.html">Sources</a><a href="method.html" class="active">Method</a><a href="flagged.html">Flagged</a><a href="../index.html">Site home</a></nav>
+</div></header>
+<main class="wrap">
+
+<p class="eyebrow">Method</p>
+<h1>How each number is produced (and how to check it)</h1>
+<h2>1 · Fixture discovery</h2>
+<p>The HotSpawn Pick'ems lobby is a client-rendered page that calls the public fixtures API
+<a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures" target="_blank" rel="noopener">phpstack…/api/v1/fixtures</a>.
+This build uses both: the lobby page for the rendered pick cards and the API for kick-off, lock time
+and status. Every fixture keeps its HotSpawn id and, where HotSpawn publishes one, its match permalink.
+HotSpawn's crowd-pick percentages are <strong>not</strong> parsed anywhere in this pipeline.</p>
+
+<h2>2 · Prices → probabilities</h2>
+<p>For each book with a two-sided price: implied = 1/decimal, then normalise the pair to 100%
+(<code>p = implied_a / (implied_a + implied_b)</code>). The overround is published next to the price so
+you can see the book's margin. When several books price the same fixture the no-vig probabilities are
+averaged; the spread between books is shown on the row.</p>
+<p>Quote joins are evidence-gated: a quote is used only when the kick-off agrees within
+90 minutes and the pairing is either an exact name match, a
+documented alias with the roster/kick-off evidence on <a href="sources.html">Sources</a>, or a
+publisher-ordered quote already attached to that fixture id. Everything that fails those gates is
+dropped, not coerced.</p>
+
+<h2>3 · Originated lines (no book prices the match)</h2>
+<p><code>p = 1 / (1 + exp(-k · C · (points_a - points_b)))</code></p>
+<ul>
+<li><strong>C = 0.0056000078</strong> — Valve's own rating slope, from
+<a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js" target="_blank" rel="noopener">model/fit.js</a>.</li>
+<li><strong>k = 0.43077894236569164</strong> — this project's fitted market-vs-rating scale factor.</li>
+<li><strong>points</strong> — the official Valve VRS points for each side, from
+<a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">standings_global_2026_10_05.md</a>.</li>
+</ul>
+<h3>Calibration re-checked here, not assumed</h3>
+<div class="tbl-scroll"><table><thead><tr><th>Check</th><th>Result</th></tr></thead><tbody>
+<tr><td data-l="Pairs">Market-vs-rating pairs</td><td data-l="Value">60</td></tr>
+<tr><td data-l="MAE">Mean absolute error at k used</td><td data-l="Value">7.7 pp</td></tr>
+<tr><td data-l="Best fit">Best k on the grid</td><td data-l="Value">0.448 at 7.7 pp</td></tr>
+<tr><td data-l="Grid">Search</td><td data-l="Value">k from 0.005 to 2.000 in steps of 0.001, fixed C = 0.0056000078</td></tr>
+<tr><td data-l="Flips">Favourite flips vs market</td><td data-l="Value">9 of 60</td></tr>
+</tbody></table></div>
+<p class="muted">pairs where the rating model&#x27;s favourite differs from the market&#x27;s favourite - the same error mode that produces the Zetta v LOS NINOS conflict</p>
+
+<h2>4 · Duplicate Valve rows</h2>
+<p>When Valve&#x27;s standings list the same organisation more than once (one row per counted roster), select the row whose roster lists a full five and whose latest published match date is the most recent; break ties on higher points. Alternatives are published on the Flagged for review page.</p>
+<p class="muted">Three fixtures on today's board hit this rule (Banda Chuya, The Huns, benched gods).
+Every alternative row Valve publishes for those teams is kept in the board data next to the chosen one,
+and the pick is flagged <span class="badge flag">vrs duplicate rows resolved by published rule</span>.</p>
+
+<h2>5 · Bounds instead of point estimates</h2>
+<p>If one side has no row in Valve&#x27;s published table, that side is at or below the published floor (#380, 381 pts). The listed side&#x27;s number is published as a lower bound and the unlisted side&#x27;s number as an upper bound. It is never presented as a point estimate.</p>
+
+<h2>6 · Verification in this repository</h2>
+<ul>
+<li><code>python3 scripts/5f903db4/build.py</code> re-derives every probability from the raw decimals
+and Valve points stored in <code>data/5f903db4/board.json</code>.</li>
+<li><code>python3 -m unittest tests.test_5f903db4 -v</code> re-computes the no-vig prices and the
+originated lines from the raw inputs, asserts that every row has a pick and two probabilities, that
+every row carries at least one https source, that the bounds are marked, and that no HotSpawn
+crowd percentage appears anywhere in the published pages.</li>
+<li>The workflow <code>.github/workflows/everypick-5f903db4.yml</code> re-runs collection, build and
+tests every four hours and only commits when the tests pass.</li>
+</ul>
+<p class="muted">Inputs: primary board 2026-10-21T19:24:28Z ·
+extra board 2026-10-21T19:29:18Z ·
+Valve table 2026_10_05.</p>
+
+<footer>
+<p>Every figure on this page is either a bookmaker/exchange price (no-vig) or a line originated from
+Valve's official rating table; the basis is printed on every row. HotSpawn's crowd-pick percentages
+are never used. Board built 2026-10-21 19:48:16 UTC.</p>
+</footer>
+</main>
+</body>
+</html>

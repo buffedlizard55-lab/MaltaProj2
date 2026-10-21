@@ -1,3 +1,32 @@
+# Coordination — session `5f903db4` (a pick + both win probabilities for EVERY open HotSpawn CS2 match, phone-first executive summary, unresolved & limitations, 2026-10-21)
+
+Session: `5f903db4` (environment-fixed branch `arena/5f903db4-maltaproj2`; the environment forbids a
+`session-<id>/<task>` branch, so scope is separated by directory as in every prior session).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-5F903DB4-EVERYPICK: (1) give every open HotSpawn CS2 fixture a pick and both win probabilities, including the low-tier fixtures no book prices, using the required ladder (market lines first → exchange/secondary books → HLTV/bo3.gg identity checks → documented official-Valve-VRS origination → labelled bound → explicit unresolved row); (2) publish a separate **Unresolved picks & limitations** section and surface it in the executive summary; (3) rebuild the front door as one phone-first executive summary with in-site links to the updated picks lists; (4) refresh automatically every 4 hours with no manual input; (5) line-by-line repo review with irregularities flagged; (6) tests, integration, PR → `main`, merge, Pages verification. | in progress | 5f903db4 | 2026-10-21 19:35 | `everypick/**`, `scripts/5f903db4/**`, `data/5f903db4/**`, `tests/test_5f903db4.py`, `.github/workflows/everypick-5f903db4.yml`, `COORDINATION.md` (this section only). Read-only inputs: `data/f7279a54/**`, `data/fe803b80/**`, `data/19d6c262/vrs_global.json`, every other session directory. Integration (additive, at close-out): `scripts/build_site.py` (one hook + NAV entries), root `index.html` (regenerated), `README.md` (one row). |
+
+## Log — 5f903db4
+- 2026-10-21 19:35 UTC: Read `COORDINATION.md` end to end first. No live claim covers `everypick/**`,
+  `scripts/5f903db4/**` or `data/5f903db4/**`; the newest sections (`51197e5b`, `a5c08976`,
+  `e1b48771`) are closed out. Claimed `T-5F903DB4-EVERYPICK` with that non-overlapping scope and
+  pushed the claim before any other edit.
+- 2026-10-21 19:36 UTC: **Live verification of every source used** (recorded with URLs and read times
+  in `scripts/5f903db4/research.json` → `read_log`): HotSpawn lobby (78 CS2 fixtures in week 273,
+  **13 open**, 6 closing soon + 7 upcoming), Kalshi public market-data API (37 open KXCS2GAME events,
+  all 21–23 Oct), Valve `counter-strike_regional_standings` contents API (40 standings files, newest
+  `standings_global_2026_10_05.md` — no 10-12 or 10-19 file is published), bo3.gg match page for
+  Alianza Lima vs Los Niños (lineup identical to Valve's "Zetta" five) and bo3.gg team page for Banda
+  Chuya (lineup identical to Valve's five-man row #165).
+- 2026-10-21 19:40 UTC: Built `scripts/5f903db4/{core,build,site}.py` and
+  `data/5f903db4/board.json`: **14 rows (13 lobby-open + 1 API-only) · 14 with a pick and both
+  probabilities · 5 from real betting lines · 6 originated from official Valve VRS · 3 published as
+  bounds · 0 unresolved**. New market joins found by name-variant research that the collectors miss:
+  Melbet `763696446` (`UNiTY` / `Apogee Esports`) and Thunderpick `132327` (`UNiTY` / `Betclic`) for
+  fixture `1082882`, and Kalshi `KXCS2GAME-26OCT211800LNALE` for fixture `1082837` (HotSpawn "Zetta" =
+  exchange "Alianza Lima Esports").
+
 # Coordination — session `51197e5b` (Resolve a pick for EVERY open HotSpawn CS2 match — esportsbook/exchange + official Valve VRS + bo3.gg resolution, mobile-first dashboard & repo audit, 2026-10-21)
 
 Session: `51197e5b` (environment-fixed branch `arena/51197e5b-maltaproj2`; the environment forbids switching to a `session-<id>/<task>` branch, so scope is separated by directory as in prior sessions).
