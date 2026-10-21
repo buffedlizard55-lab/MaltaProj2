@@ -56,9 +56,20 @@ jobs:
             echo "No material changes since prior capture."
             exit 0
           fi
-          git commit -m "chore(7adc7718): auto-refresh HotSpawn CS2 lobby picks $(date -u +%Y-%m-%dT%H:%MZ)"
-          for i in 1 2 3; do
-            git pull --rebase origin main && git push origin main && exit 0
-            sleep 5
+          for i in 1 2 3 4 5; do
+            git commit -m "chore(7adc7718): auto-refresh HotSpawn CS2 lobby picks $(date -u +%Y-%m-%dT%H:%MZ)" || true
+            git push origin HEAD:main && exit 0
+            sleep 4
+            git fetch origin main
+            git reset --hard origin/main
+            python scripts/7adc7718/collect.py
+            python scripts/7adc7718/resolve.py
+            python scripts/7adc7718/build.py
+            python scripts/build_site.py
+            git add data/7adc7718/ lobby/ index.html cs2.html flagged.html methodology.html probabilities.html tournaments.html research.html day-one.html lol.html tournament-*.html data/lines.json data/current_probabilities.json evidence/matching_evidence.json
+            if git diff --cached --quiet; then
+              echo "No material changes since prior capture."
+              exit 0
+            fi
           done
           exit 1
