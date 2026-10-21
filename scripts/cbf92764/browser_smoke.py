@@ -15,7 +15,7 @@ worker.start()
 URL=os.environ.get('DASHBOARD_TEST_URL',f'http://127.0.0.1:{server.server_port}/dashboard/')
 with sync_playwright() as pw:
     browser=pw.chromium.launch(executable_path=os.environ.get('CHROME_BIN','/usr/bin/google-chrome'),headless=True,
-                              args=['--no-sandbox','--disable-dev-shm-usage','--no-zygote','--single-process'])
+                              args=['--no-sandbox','--disable-dev-shm-usage'])
     page=browser.new_page()
     errors=[];page.on('pageerror',lambda error:errors.append(str(error)))
     for width in (320,390,768,1280):
