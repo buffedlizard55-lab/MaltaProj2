@@ -55,7 +55,7 @@ jobs:
           set +e
           python3 -m unittest discover -s tests -v > /tmp/suite.txt 2>&1
           echo "suite_exit=$?" >> /tmp/suite.txt
-          { grep -E '^(FAIL|ERROR):|^Ran |^FAILED|^OK|suite_exit' /tmp/suite.txt | tail -80; } > data/907e9435/ci_suite.txt
+          { grep -E '^(FAIL|ERROR):|^Ran |^FAILED|^OK|suite_exit' /tmp/suite.txt | tail -40; echo '--- detail ---'; grep -n -A 6 '^FAIL: test_all_pages_exist' /tmp/suite.txt | head -40; grep -n -A 8 '^FAIL: test_every_match_appears' /tmp/suite.txt | head -30; } > data/907e9435/ci_suite.txt
           git config user.name "pickdesk-bot (907e9435)"
           git config user.email "malta-data-bot@users.noreply.github.com"
           git add data/907e9435/ci_suite.txt
