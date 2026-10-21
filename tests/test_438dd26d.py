@@ -6,8 +6,10 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts" / "438dd26d"))
-import build as B  # noqa: E402
+import importlib.util
+_spec = importlib.util.spec_from_file_location("test_438dd26d_builder", ROOT / "scripts/438dd26d/build.py")
+B = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(B)
 
 BOARD = json.loads((ROOT / "data/fe803b80/board.json").read_text())
 INPUTS = json.loads((ROOT / "data/438dd26d/inputs.json").read_text())
@@ -17,8 +19,11 @@ HTML = (ROOT / "audits/438dd26d/index.html").read_text()
 
 class Formulas(unittest.TestCase):
     def test_no_vig_matches_board_day5_market(self):
-        for fid in ("1080209", "1080210"):
-            row = next(r for r in BOARD["open"] if r["fixture_id"] == fid)
+        # Arithmetic is a live invariant, not a claim that Oct 18 fixtures stay open forever.
+        market_rows = [r for r in BOARD["open"] if r.get("market")]
+        self.assertTrue(market_rows)
+        for row in market_rows:
+            fid = row["fixture_id"]
             rc = B.recompute_market(row)
             self.assertIsNotNone(rc)
             self.assertLessEqual(abs(rc["prob_a"] - row["market"]["prob_a"]), 1e-4, fid)

@@ -58,11 +58,16 @@ def verify_board(board):
     # Independently re-fit the declared through-origin logit slope, not the stored k.
     q = math.log(10) / 400
     c = q / math.sqrt(1 + 3 * q * q * 75 * 75 / math.pi ** 2)
+    from datetime import datetime
+    rating_date = datetime.fromisoformat(board['vrs']['snapshot'].replace('_', '-') + 'T00:00:00+00:00')
+    evaluated = datetime.fromisoformat(board['generated_utc'].replace('Z', '+00:00'))
+    ratings_eligible = 0 <= (evaluated - rating_date).total_seconds() <= 14 * 86400
+    fixtures_eligible = board.get('fixture_observation_age_seconds', float('inf')) <= 4 * 3600
     pairs = []
     for r in board['open']:
         va, vb = (r.get('vrs') or {}).get('team_a'), (r.get('vrs') or {}).get('team_b')
         m = r.get('market')
-        if va and vb and m:
+        if va and vb and m and ratings_eligible and fixtures_eligible:
             # Calibration uses unrounded source consensus, not rounded table output.
             quotes = r['quotes']
             p = sum(WEIGHTS.get(t['source_key'], 1) * quote_probability(t) for t in quotes) / sum(WEIGHTS.get(t['source_key'], 1) for t in quotes)

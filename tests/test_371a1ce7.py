@@ -130,7 +130,7 @@ class BoardRows(unittest.TestCase):
         ids = [r["fixture_id"] for r in self.open + self.locked]
         self.assertEqual(len(ids), len(set(ids)))
         for o in BOARD["open"]:
-            if o["status"] == "scheduled":
+            if o["status"] == "scheduled" and str(o["fixture_id"]) not in {str(a["fixture_id"]) for a in self.anom}:
                 self.assertIn(str(o["fixture_id"]), ids)
         for a in self.anom:
             self.assertNotIn(str(a["fixture_id"]), ids)
@@ -207,7 +207,11 @@ class BoardRows(unittest.TestCase):
         self.assertIsNone(r["leverage"])
 
     def test_locked_rows_move_to_the_locked_table(self):
-        late = datetime(2026, 10, 18, 12, 0, tzinfo=timezone.utc)
+        # Cross an actual retained deadline, rather than permanently testing Oct 18.
+        from datetime import timedelta
+        deadlines = [B.parse_iso(o["lock_utc"]) for o in BOARD["open"] if o.get("lock_utc") and o.get("status") == "scheduled"]
+        self.assertTrue(deadlines)
+        late = max(deadlines) + timedelta(minutes=1)
         op, lk, _ = B.build_rows(BOARD, CROWD, late)
         self.assertTrue(lk)
         for r in lk:

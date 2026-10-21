@@ -73,7 +73,6 @@ def pct(value):
 # available from Research archive rather than crowding every mobile header.
 NAV = [
     ("index.html", "Home"),
-    ("dashboard/picks.html", "Updated CS2 picks"),
     # 371a1ce7: ONE phone-first front door. The primary header is short (10 links); every earlier
     # desk (day5/, finals/, finalday/, desk/, day4/, ...) stays published and is listed on
     # start/archive.html and research.html, and the landing keeps linking them.
@@ -703,7 +702,7 @@ roster investigation are on the <a href="day4/twc-review.html">day 1–3 review<
 <p class="eyebrow">Updated CS2 match desk · start here</p>
 <h2 id="updated-desk-title">All matches. Clear picks. Source-linked probabilities.</h2>
 <p>Open the <a href="dashboard/index.html"><strong>mobile executive summary</strong></a> for the newest retained capture and complete coverage counts. Market picks are preserved; additional evidence is researched only for missing lines. Unsupported values stay blank.</p>
-<p><a class="btn btn-primary" href="dashboard/picks.html">See every updated CS2 pick →</a> <a class="btn ghost" href="dashboard/unresolved.html">Unresolved picks &amp; limitations</a></p>
+<p><a class="btn" style="background:#91f2bf;color:#102419;font-weight:bold" href="dashboard/picks.html">See every updated CS2 pick →</a> <a class="btn ghost" href="dashboard/unresolved.html">Unresolved picks &amp; limitations</a></p>
 <p><a href="dashboard/inventory.html">Complete HotSpawn inventory</a> · <a href="dashboard/sources.html">Evidence &amp; method</a> · <a href="dashboard/flagged.html">Flagged for Review</a>. Four-hour automated checks; freshness and lock warnings on every row.</p>
 </section>
 <section id="executive-summary" aria-labelledby="summary-title">

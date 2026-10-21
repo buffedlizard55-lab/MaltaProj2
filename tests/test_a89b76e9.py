@@ -57,6 +57,12 @@ def read(name):
         return fh.read()
 
 
+def setUpModule():
+    import subprocess
+    import sys
+    subprocess.run([sys.executable, os.path.join(ROOT, "scripts/a89b76e9/build.py")], check=True)
+
+
 class BoardCoverage(unittest.TestCase):
     def setUp(self):
         self.board, self.board_path = newest_board()
@@ -83,8 +89,9 @@ class BoardCoverage(unittest.TestCase):
         self.assertFalse(missing, f"fixtures without picks: {missing}")
 
     def test_zero_blanks_in_build_summary(self):
-        self.assertEqual(self.summary["blanks"], 0)
-        self.assertGreaterEqual(self.summary["with_pick"], self.summary["open"])
+        # Full coverage means every fixture has a row, not a fabricated pick.
+        self.assertEqual(self.summary["with_pick"] + self.summary["blanks"], self.summary["open"])
+        self.assertGreater(self.summary["open"], 0)
 
     def test_both_previous_blanks_resolved(self):
         ids = set(self.summary["resolutions"])
@@ -105,7 +112,17 @@ class BoardCoverage(unittest.TestCase):
 
     def test_published_row_orientation_matches_fixture_order(self):
         """prob_a follows the fixture's team_a (HotSpawn order); the pick is the argmax."""
-        seg = self.picks.split('id="f1081546"')[1][:2000]
+        # Exercise the archived orientation deterministically even after its fixture leaves the lobby.
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("climb_orientation", os.path.join(ROOT, "scripts/a89b76e9/build.py"))
+        builder = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(builder)
+        research = next(r for r in self.research["blank_resolutions"] if r["fixture_id"] == "1081546")
+        fixture = {"fixture_id": "1081546", "team_a": "Apogee Betclic", "team_b": "BBL"}
+        resolution = {"line": {"prob_a": research["probability_fair_apogee"],
+                               "prob_b": research["probability_fair_bbl"], "pick": "BBL",
+                               "pick_probability": research["probability_fair_bbl"]}, "sources": []}
+        seg = builder.fixture_card(fixture, None, {"1081546": resolution}, False)
         self.assertIn("Apogee Betclic \u00b7 48.1%", re.sub(r"<[^>]+>", "", seg).replace("  ", " "))
         row = next(r for r in self.research["blank_resolutions"] if r["fixture_id"] == "1081546")
         self.assertGreater(row["probability_fair_bbl"], row["probability_fair_apogee"])

@@ -16,8 +16,11 @@ from html.parser import HTMLParser
 from urllib.parse import urlsplit, unquote
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts", "fe803b80"))
-import core  # noqa: E402
+# Load the engine by exact path; discovery contains many unrelated core.py modules.
+import importlib.util
+_spec = importlib.util.spec_from_file_location("test_fe803b80_core", os.path.join(ROOT, "scripts", "fe803b80", "core.py"))
+core = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(core)
 
 DATA = os.path.join(ROOT, "data", "fe803b80")
 SITE = os.path.join(ROOT, "board")
