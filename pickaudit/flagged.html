@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="All audit findings with severity and source links.">
+<title>Flagged for review · Pick audit 82e71372</title>
+<style>
+:root{--bg:#0b1220;--card:#121c2e;--card2:#0f1727;--ink:#e8eefc;--dim:#93a4c3;--line:#25334d;
+--good:#7ef0b2;--warn:#ffd479;--bad:#ff9aa2;--crit:#ff6b78;--accent:#7cc4ff;--purple:#c3a7ff}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:1080px;margin:0 auto;padding:12px 14px 64px}
+header.top{position:sticky;top:0;z-index:5;background:rgba(11,18,32,.96);border-bottom:1px solid var(--line);
+backdrop-filter:blur(6px)}
+header.top .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;
+max-width:1080px;margin:0 auto;padding:8px 14px}
+.brand{font-weight:700;font-size:15px;letter-spacing:.2px}
+.brand span{color:var(--accent)}
+nav{display:flex;flex-wrap:wrap;gap:6px}
+nav a{display:inline-block;padding:9px 12px;border:1px solid var(--line);border-radius:999px;
+text-decoration:none;color:var(--ink);font-size:13px;min-height:40px;line-height:1.4}
+nav a.active{background:var(--accent);color:#04121f;border-color:var(--accent);font-weight:700}
+h1{font-size:23px;line-height:1.22;margin:10px 0 4px}
+h2{font-size:18px;margin:26px 0 8px}
+h3{font-size:15px;margin:18px 0 6px}
+p{margin:8px 0}
+.eyebrow{color:var(--dim);text-transform:uppercase;letter-spacing:.09em;font-size:11px;margin:14px 0 2px}
+.lede{color:var(--dim)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0}
+@media(min-width:680px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:11px}
+.tile b{display:block;font-size:23px;line-height:1.15}
+.tile small{color:var(--dim);font-size:12px}
+.cta{display:grid;gap:10px;margin:14px 0}
+@media(min-width:680px){.cta{grid-template-columns:1fr 1fr}}
+.cta a{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);
+border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);
+font-weight:700;min-height:56px}
+.cta a.primary{background:var(--accent);color:#04121f;border-color:var(--accent)}
+.cta a span.small{font-weight:400;opacity:.8;font-size:12px;text-align:right}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;
+border:1px solid var(--line);white-space:nowrap}
+.badge.critical{color:#2a0608;background:var(--crit);border-color:var(--crit)}
+.badge.high{color:#2a1206;background:var(--bad);border-color:var(--bad)}
+.badge.medium{color:#2a1d00;background:var(--warn);border-color:var(--warn)}
+.badge.low{color:#0d1f33;background:var(--accent);border-color:var(--accent)}
+.badge.info{color:var(--dim);background:transparent}
+.badge.good{color:#08200f;background:var(--good);border-color:var(--good)}
+.badge.model{color:#04121f;background:var(--accent);border-color:var(--accent)}
+.badge.market{color:#08200f;background:var(--good);border-color:var(--good)}
+.badge.dir{color:#2a1d00;background:var(--warn);border-color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.muted{color:var(--dim);font-size:12px}
+.src{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:12px}
+.src a{text-decoration:underline;word-break:break-all}
+.match{font-weight:700}
+.pill{display:inline-block;padding:1px 7px;border-radius:999px;font-size:11px;border:1px solid var(--line)}
+.pill.ok{color:var(--good);border-color:var(--good)}
+.pill.no{color:var(--bad);border-color:var(--bad)}
+.pill.warn{color:var(--warn);border-color:var(--warn)}
+@media(max-width:639px){
+ table thead{display:none}
+ table,thead,tbody,tr,td,th{display:block;width:100%}
+ tr{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;padding:10px 12px}
+ td{border:0;padding:4px 0}
+ td[data-l]{display:flex;gap:10px;justify-content:space-between;align-items:baseline}
+ td[data-l]::before{content:attr(data-l);color:var(--dim);font-size:11px;text-transform:uppercase;
+ letter-spacing:.06em;flex:0 0 38%}
+ td.num{text-align:right}
+}
+.callout{border-left:4px solid var(--warn);background:#1a1608;padding:10px 12px;border-radius:8px;margin:12px 0}
+.callout.good{border-color:var(--good);background:#0b1f16}
+.callout.bad{border-color:var(--bad);background:#221010}
+ul,ol{padding-left:20px}
+li{margin:5px 0}
+footer{color:var(--dim);font-size:12px;border-top:1px solid var(--line);margin-top:26px;padding-top:12px}
+code{background:#0a1322;padding:1px 5px;border-radius:5px;font-size:13px}
+.tbl-scroll{overflow-x:auto}
+</style>
+</head>
+<body>
+<header class="top"><div class="bar">
+<div class="brand">Pick audit <span>· independent verification</span></div>
+<nav><a href="index.html">Summary</a><a href="coverage.html">Coverage</a><a href="arithmetic.html">Arithmetic</a><a href="reconciliation.html">Reconciliation</a><a href="links.html">Links</a><a href="mobile.html">Mobile</a><a href="flagged.html" class="active">Flagged</a><a href="method.html">Method</a></nav>
+</div></header>
+<main class="wrap">
+<h1>Flagged for review</h1><p class="lede">Every irregularity, disagreement and unverifiable item found by the audit, with source links. Nothing here blocks the published picks; each item is recorded so it can be reviewed and traced.</p><div class="card"><h3><span class="badge high">High</span> <code>PA-VRS-DUP</code> · Model rows built on Valve &#x27;remnant&#x27; roster rows (&lt;3 players)</h3><p>Valve publishes one row per counted roster, so an organisation can appear several times. Using a sub-five-player remnant overstates the rated opponent. The documented selection rule prefers the full-five, most-recent row. Affected: 1081600 Banda chuya via #373 (ezox, manio) on desk canonical. Example: fixture 1081600 uses Banda Chuya #373 (402 pts, 2 players) instead of #165 (801 pts, full five), flipping the canonical board&#x27;s model pick to Donstu 86.4% where every full-five desk publishes Banda chuya ~54%.</p><div class="src"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">https://github.com/ValveSoftware/counter-strike_regional_standings/bl…</a><a href="../everypick/picks.html" rel="noopener">everypick/picks.html</a><a href="../hotspawn-picks/flagged.html" rel="noopener">hotspawn-picks/flagged.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge high">High</span> <code>PA-CI-01</code> · 2 pre-existing repository test(s) are red</h3><p>Stale fixture sets / stale published arithmetic in data/e1b48771 and data/live; reproduced on pristine main. pickaudit documents but never patches another scope.</p><div class="src"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/pull/215" rel="noopener">https://github.com/buffedlizard55-lab/MaltaProj2/pull/215</a><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/82e71372/ci-status.json" rel="noopener">data/82e71372/ci-status.json</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge medium">Medium</span> <code>PA-CONST-01</code> · The rating slope C is correctly derived but mis-cited as a literal Valve constant</h3><p>The boards cite model/fit.js for C=0.0056000078, but fit.js does not contain that number. The value reproduces to 2e-11 as Q*g(RD) from Valve&#x27;s published Glicko Q (glicko.js; Q=ln(10)/400=0.005756462732485115) at fit.js default RD=75.0 -&gt; 0.005600007780351016. The derivation is documented correctly in scripts/f7279a54/core.py (VALVE_Q/VALVE_G/VALVE_C); the method-page citations that call C a Valve-published fit.js constant should cite glicko.js + fit.js (RD=75) instead. No probability changes if corrected.</p><div class="src"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/glicko.js" rel="noopener">https://github.com/ValveSoftware/counter-strike_regional_standings/bl…</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js" rel="noopener">https://github.com/ValveSoftware/counter-strike_regional_standings/bl…</a><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/scripts/f7279a54/core.py" rel="noopener">scripts/f7279a54/core.py</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge medium">Medium</span> <code>PA-FLIP-1082837</code> · Desks disagree on the pick for Zetta v LOS NINOS</h3><p>Market desks and rating-model desks can disagree; each basis is published, no value is averaged away. See reconciliation.html.</p><div class="src"><a href="../everypick/picks.html" rel="noopener">everypick/picks.html</a><a href="../hotspawn-picks/picks.html" rel="noopener">hotspawn-picks/picks.html</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">https://github.com/ValveSoftware/counter-strike_regional_standings/bl…</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge medium">Medium</span> <code>PA-FLIP-1081600</code> · Desks disagree on the pick for Donstu v Banda chuya</h3><p>Market desks and rating-model desks can disagree; each basis is published, no value is averaged away. See reconciliation.html.</p><div class="src"><a href="../everypick/picks.html" rel="noopener">everypick/picks.html</a><a href="../hotspawn-picks/picks.html" rel="noopener">hotspawn-picks/picks.html</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">https://github.com/ValveSoftware/counter-strike_regional_standings/bl…</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge medium">Medium</span> <code>PA-FLIP-1082882</code> · Desks disagree on the pick for UNiTY v Apogee Betclic</h3><p>Market desks and rating-model desks can disagree; each basis is published, no value is averaged away. See reconciliation.html.</p><div class="src"><a href="../everypick/picks.html" rel="noopener">everypick/picks.html</a><a href="../hotspawn-picks/picks.html" rel="noopener">hotspawn-picks/picks.html</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">https://github.com/ValveSoftware/counter-strike_regional_standings/bl…</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge medium">Medium</span> <code>PA-UNRES-live</code> · Live board (shared): unresolved/limitations section missing or not linked</h3><p>{&quot;desk&quot;: &quot;live&quot;, &quot;dir&quot;: &quot;live&quot;, &quot;unresolved_page&quot;: false, &quot;index_links_unresolved&quot;: false, &quot;limitations_text&quot;: false}</p><div class="src"><a href="../live/index.html" rel="noopener">live/index.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge medium">Medium</span> <code>PA-MODEL-01</code> · One board originates model lines with an unfitted slope (k=1.0)</h3><p>The canonical 30-min board fell back to k=1.0 because its calibration sample (5 pairs) is below its own minimum (6). Its model-only probabilities are more extreme than the 60-pair fitted line (MAE 0.154 vs 0.077) and are cross-checked, not used, by the every-match desks.</p><div class="src"><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/fe803b80/board.json#calibration" rel="noopener">data/fe803b80/board.json#calibration</a><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f7279a54/calibration_pairs.json" rel="noopener">data/f7279a54/calibration_pairs.json</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-ORDER-01</code> · One or more archive desks publish a fixture with the teams in reverse order</h3><p>Desk(s) fullboard label team_a/team_b opposite to HotSpawn for some fixtures; each row is internally consistent (its pick still matches its higher probability). The reconciliation table re-aligns probabilities by team name.</p><div class="src"><a href="reconciliation.html" rel="noopener">pickaudit/reconciliation.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-MOB-index.html</code> · Mobile check(s) failed on index.html</h3><p>meta_description</p><div class="src"><a href="../index.html" rel="noopener">index.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-MOB-fullpicks/index.html</code> · Mobile check(s) failed on fullpicks/index.html</h3><p>meta_description</p><div class="src"><a href="../fullpicks/index.html" rel="noopener">fullpicks/index.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-MOB-fullpicks/picks.html</code> · Mobile check(s) failed on fullpicks/picks.html</h3><p>meta_description</p><div class="src"><a href="../fullpicks/picks.html" rel="noopener">fullpicks/picks.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-MOB-fullpicks/unresolved.html</code> · Mobile check(s) failed on fullpicks/unresolved.html</h3><p>meta_description</p><div class="src"><a href="../fullpicks/unresolved.html" rel="noopener">fullpicks/unresolved.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-MOB-dashboard/index.html</code> · Mobile check(s) failed on dashboard/index.html</h3><p>meta_description</p><div class="src"><a href="../dashboard/index.html" rel="noopener">dashboard/index.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-SRC2-dashboard/picks.html</code> · Current-lobby pick row(s) cite only the HotSpawn discovery link on dashboard/picks.html</h3><p>Probability rows should also cite the book/exchange or Valve source: 1081600, 1082792, 1082793, 1082837</p><div class="src"><a href="../dashboard/picks.html" rel="noopener">dashboard/picks.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-MOB-dashboard/picks.html</code> · Mobile check(s) failed on dashboard/picks.html</h3><p>meta_description</p><div class="src"><a href="../dashboard/picks.html" rel="noopener">dashboard/picks.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-MOB-dashboard/unresolved.html</code> · Mobile check(s) failed on dashboard/unresolved.html</h3><p>meta_description</p><div class="src"><a href="../dashboard/unresolved.html" rel="noopener">dashboard/unresolved.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-MOB-fullboard/picks.html</code> · Mobile check(s) failed on fullboard/picks.html</h3><p>meta_description</p><div class="src"><a href="../fullboard/picks.html" rel="noopener">fullboard/picks.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-MOB-fullboard/unresolved.html</code> · Mobile check(s) failed on fullboard/unresolved.html</h3><p>meta_description</p><div class="src"><a href="../fullboard/unresolved.html" rel="noopener">fullboard/unresolved.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-MOB-live/cs2.html</code> · Mobile check(s) failed on live/cs2.html</h3><p>tap_targets</p><div class="src"><a href="../live/cs2.html" rel="noopener">live/cs2.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-SRC2-climb/picks.html</code> · Current-lobby pick row(s) cite only the HotSpawn discovery link on climb/picks.html</h3><p>Probability rows should also cite the book/exchange or Valve source: 1082837</p><div class="src"><a href="../climb/picks.html" rel="noopener">climb/picks.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-MOB-climb/picks.html</code> · Mobile check(s) failed on climb/picks.html</h3><p>tap_targets</p><div class="src"><a href="../climb/picks.html" rel="noopener">climb/picks.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-SRC2-picks-every-match/picks.html</code> · Current-lobby pick row(s) cite only the HotSpawn discovery link on picks-every-match/picks.html</h3><p>Probability rows should also cite the book/exchange or Valve source: 1081597, 1081600, 1082792, 1082793, 1082837, 1082858, 1082859, 1082860, 1082861, 1082882</p><div class="src"><a href="../picks-every-match/picks.html" rel="noopener">picks-every-match/picks.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-MOB-picks-every-match/picks.html</code> · Mobile check(s) failed on picks-every-match/picks.html</h3><p>meta_description</p><div class="src"><a href="../picks-every-match/picks.html" rel="noopener">picks-every-match/picks.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge low">Low</span> <code>PA-CLIMB-01</code> · Canonical collector leaves current-lobby fixtures blank by design</h3><p>5 current-lobby fixture(s) are blank on the climb collector and are resolved by the every-match desks; 204 blank rows exist across its full open inventory (future weeks included).</p><div class="src"><a href="../climb/picks.html" rel="noopener">climb/picks.html</a><a href="../everypick/picks.html" rel="noopener">everypick/picks.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge info">Info</span> <code>PA-GAP-01</code> · Every open HotSpawn CS2 fixture has a pick on at least one desk</h3><p>14 current-lobby fixtures, each with pick + both probabilities on the every-match desks; zero fully unresolved rows.</p><div class="src"><a href="https://play.hotspawn.com/lobby" rel="noopener">https://play.hotspawn.com/lobby</a><a href="../everypick/picks.html" rel="noopener">everypick/picks.html</a></div><p class="muted">Scope: repository-wide</p></div><div class="card"><h3><span class="badge info">Info</span> <code>PA-ARITH-01</code> · All arithmetic checks reproduced</h3><p>Every stored book no-vig probability, consensus, VRS logistic probability and pick-side rule reproduced within the published tolerances.</p><span class="muted">no link published</span><p class="muted">Scope: repository-wide</p></div>
+<footer>
+<p>Independent audit desk <code>82e71372</code>. Read-only verification of every published pick desk;
+this desk originates no probabilities of its own. HotSpawn is fixture discovery only and is never used
+as a probability input. Blank means not verifiable from an official source — never an inferred value.</p>
+<p><a href="../index.html">Site home</a> · <a href="../everypick/picks.html">Every-match picks</a> ·
+<a href="method.html">Audit method &amp; tolerances</a> · <a href="flagged.html">Flagged for review</a></p>
+</footer>
+</main>
+</body>
+</html>
