@@ -89,8 +89,33 @@ class Test7adc7718Contracts(unittest.TestCase):
         pairs = cal["pairs"]
         sxx = sum(p["delta_points"] ** 2 for p in pairs)
         sxy = sum(p["delta_points"] * p["logit"] for p in pairs)
-        expected_beta = min(0.0040, max(0.0008, sxy / sxx))
+        raw_beta = (sxy / sxx) if (len(pairs) >= 4 and sxx > 0) else 0.00142
+        expected_beta = min(0.0040, max(0.0008, raw_beta))
         self.assertAlmostEqual(cal["beta"], expected_beta, places=7)
+
+    def test_live_hotspawn_ng_state_parser_on_archived_probe(self):
+        import importlib.util
+        probe_path = ROOT / "docs" / "evidence" / "probe" / "lobby.txt"
+        if not probe_path.exists():
+            self.skipTest("Archived lobby probe absent")
+        spec = importlib.util.spec_from_file_location("collect_7adc7718_test", ROOT / "scripts/7adc7718/collect.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        parsed = mod.parse_live_hotspawn_lobby(probe_path.read_bytes())
+        self.assertIsNotNone(parsed)
+        fixtures, permalinks, week_meta = parsed
+        cs2 = [f for f in fixtures if f["sport"] == "cs2"]
+        self.assertGreaterEqual(len(cs2), 50)
+        self.assertTrue(permalinks)
+        self.assertIn("weekId", week_meta)
+        for row in cs2:
+            self.assertTrue(row["team_a"])
+            self.assertTrue(row["team_b"])
+            self.assertRegex(row["start_utc"], r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+            self.assertRegex(row["lock_utc"], r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+
+    def test_independent_row_math(self):
+        cal = self.board["calibration"]
 
         for row in self.board["matches"]:
             tier = row["resolution_tier"]
