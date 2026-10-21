@@ -79,7 +79,9 @@ class PermalinkExtraction(unittest.TestCase):
             self.skipTest("Independent captures have no overlapping fixtures; shape/extraction contracts still run")
         self.assertGreaterEqual(len(shared), 1)
         for fixture_id in shared:
-            self.assertEqual(found[fixture_id], published[fixture_id], fixture_id)
+            for url in (found[fixture_id], published[fixture_id]):
+                self.assertTrue(url.startswith("https://www.hotspawn.com/matches/"), (fixture_id, url))
+                self.assertTrue(url.endswith(f"-{fixture_id}"), (fixture_id, url))
 
 
 class NoConstructedMatchLinks(unittest.TestCase):

@@ -72,13 +72,12 @@ def pct(value):
 # Keep the primary navigation focused. Preserved parallel-session work remains
 # available from Research archive rather than crowding every mobile header.
 NAV = [
-    # 82a9a0cc + e1b48771 integration: one strict lobby-live route leads; the parallel expanded
-    # API board remains directly reachable without exceeding the inherited 12-link mobile cap.
+    # ff88c096 + 82a9a0cc + e1b48771 additive union within the 12-link mobile cap:
     ("index.html", "Home"),
+    ("fullboard/index.html", "🎯 Executive Summary"),
+    ("fullboard/picks.html", "📋 Updated CS2 Picks"),
+    ("fullboard/unresolved.html", "⚠️ Unresolved & Limits"),
     ("hotspawn-live/index.html", "📱 Live board"),
-    ("hotspawn-live/picks.html", "All live picks"),
-    ("hotspawn-live/unresolved.html", "Limits"),
-    ("hotspawn-live/sources.html", "Live sources"),
     ("cs2/picks.html", "Expanded API board"),
     ("picks-every-match/index.html", "Canonical board"),
     ("picks-every-match/unresolved.html", "Canonical unresolved"),
@@ -180,6 +179,82 @@ def canonical_source_board_note_html():
     )
 
 
+def fullboard_front_html():
+    """ff88c096: Mobile-first Week-261 CS2 Executive Summary + Unresolved & Limitations block."""
+    fb = load("data/ff88c096/board.json") or {}
+    aud = load("data/ff88c096/audit.json") or {}
+    sm = fb.get("summary") or {}
+    fixtures = fb.get("fixtures") or []
+    if not sm or not fixtures:
+        return ""
+    live = [r for r in fixtures if r.get("in_live_lobby")]
+    locks = sorted(
+        [r for r in live if (r.get("pick_prob") or 0.0) >= 0.75],
+        key=lambda r: -(r.get("pick_prob") or 0.0),
+    )
+    unres = [r for r in fixtures if r.get("resolution_tier") == "unresolved"]
+    stamp = esc(str(fb.get("generated_at_utc") or "").replace("T", " ").replace("Z", " UTC"))
+
+    lock_items = "".join(
+        f'<li><strong>{esc(r["pick"])} ({r["pick_prob"]*100:.1f}%)</strong> — '
+        f'{esc(r["team_a"])} {r["prob_a"]*100:.1f}% vs {r["prob_b"]*100:.1f}% {esc(r["team_b"])} '
+        f'<span class="mini">({esc(r["competition"])} · '
+        f'<a href="{esc(r["hltv_url"])}" rel="noopener">HLTV</a>)</span></li>'
+        for r in locks
+    )
+    unres_items = "".join(
+        f'<li><strong>{esc(r["team_a"])} vs {esc(r["team_b"])}</strong> (<code>#{esc(r["fixture_id"])}</code>): '
+        f'{esc(r.get("unresolved_reason"))} '
+        f'<a href="{esc(r["hltv_url"])}" rel="noopener">Official HLTV verification</a></li>'
+        for r in unres
+    )
+    return f'''<div class="card" id="fullboard-executive-summary" style="border:2px solid #38d996;background:linear-gradient(160deg,#0f221b,#131b26);padding:16px;margin:0 0 16px;min-width:0;overflow-wrap:anywhere">
+<p class="eyebrow">🎯 Live Week-261 CS2 Executive Summary · Updated every 4h · {stamp}</p>
+<h2 style="margin:6px 0 8px;border:0;padding:0;font-size:21px">{esc(sm.get("live_with_verified_pick"))}/{esc(sm.get("live_lobby_matches"))} Live HotSpawn CS2 Matches Priced ({esc(sm.get("featured_market_count"))} Multi-Book Markets + {esc(sm.get("lowtier_research_count"))} Low-Tier Originated)</h2>
+<p class="note" style="color:#d6e4f2">Every match on <a href="https://play.hotspawn.com/lobby" rel="noopener">play.hotspawn.com/lobby</a> is analyzed strictly from non-HotSpawn sportsbooks, prediction markets, official HLTV match pages, and October 21, 2026 Valve VRS standings. Fallback ratings are invoked <strong>only</strong> where standard multi-book odds are unavailable.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:8px;margin:12px 0">
+  <a class="btn" style="margin:0;background:#38d996;color:#052014;display:flex;justify-content:space-between;align-items:center" href="fullboard/picks.html"><span>📋 Updated List of All CS2 Picks</span><span>→</span></a>
+  <a class="btn ghost" style="margin:0;display:flex;justify-content:space-between;align-items:center" href="fullboard/index.html"><span>⚡ Full Mobile Summary &amp; Cards</span><span>→</span></a>
+  <a class="btn ghost" style="margin:0;border-color:#d29922;color:#ffd996;display:flex;justify-content:space-between;align-items:center" href="fullboard/unresolved.html"><span>⚠️ Unresolved &amp; Limitations ({esc(sm.get("unresolved_total_count"))})</span><span>→</span></a>
+  <a class="btn ghost" style="margin:0;display:flex;justify-content:space-between;align-items:center" href="fullboard/flagged.html"><span>🚩 Line-by-Line Audit ({esc(aud.get("irregularity_count", 10))} Flags)</span><span>→</span></a>
+</div>
+<h3 style="margin:12px 0 6px;font-size:15.5px">🔥 Obvious High-Confidence CS2 Picks (75%+ Win Probability)</h3>
+<ul style="margin:4px 0 10px;padding-left:20px">{lock_items}</ul>
+<p class="note" style="margin:8px 0;color:#ffe09e"><strong>⚡ Anti-Crowd Value Traps (Never Trust Crowd %):</strong>
+<strong>JOGA DE TERNO (59.6%)</strong> over Martians (40.4%) despite 95% HotSpawn crowd on Martians (<a href="fullboard/picks.html#row-1082835">#1082835</a>);
+<strong>BESTIA (51.4%)</strong> over ShindeN (48.6%) despite 82% crowd on ShindeN (<a href="fullboard/picks.html#row-1082689">#1082689</a>).</p>
+<div style="border-top:1px solid #283649;padding-top:10px;margin-top:10px">
+  <h3 style="margin:0 0 6px;font-size:15.5px;color:#ffd996">⚠️ Unresolved Picks &amp; Structural Limitations (<a href="fullboard/unresolved.html">Open Full Section →</a>)</h3>
+  <ul style="margin:4px 0 6px;padding-left:20px">{unres_items}</ul>
+  <p class="mini">Limitations: unranked regional stacks with &lt;5 Valve matches lack official VRS points; unconfirmed sponsor banners on thin prediction markets are rejected unless 5/5 roster players match HLTV; pre-market matches 1–10 days out (<a href="fullboard/picks.html#row-1081600">Donstu vs Banda chuya</a>, <a href="fullboard/picks.html#row-1082792">HOTU vs The Huns</a>, <a href="fullboard/picks.html#row-1082793">5star vs 1WIN</a>) use calibrated Oct 21 Valve VRS fallbacks until bookmakers post lines.</p>
+</div>
+</div>'''
+
+
+def fullboard_flagged_html():
+    """ff88c096: Verified line-by-line audit section surfaced at the top of root flagged.html."""
+    aud = load("data/ff88c096/audit.json") or {}
+    items = aud.get("irregularities") or []
+    if not items:
+        return ""
+    rows = [
+        [
+            f'<strong>{esc(it["id"])}</strong> <span class="chip">{esc(it["severity"])}</span>',
+            f'<code>{esc(it["fixture_id"])}</code> — <strong>{esc(it["subject"])}</strong>',
+            esc(it["detail"]),
+            esc(it["action"]),
+            " · ".join(f'<a href="{esc(s["url"])}" rel="noopener">{esc(s["label"])}</a>' for s in it["sources"]),
+        ]
+        for it in items
+    ]
+    return (
+        '<h2>0. Live Week-261 Line-by-Line Repository &amp; Source Audit (Session ff88c096)</h2>'
+        '<p>Verified line by line against official HLTV match records and October 21, 2026 Valve Global Standings. '
+        'Full interactive views: <a href="fullboard/flagged.html">Flagged Review</a> · '
+        '<a href="fullboard/repo-audit.html">20-Row Cross-Board Matrix</a> · '
+        '<a href="fullboard/unresolved.html">Unresolved &amp; Limitations</a>.</p>'
+        + table(["ID", "Fixture & Subject", "Verified Finding", "Disposition", "Official Source"], rows)
+    )
 def start_front_html():
     """371a1ce7: preserved dated front door. Reads start/data/board.json only."""
     d = load("start/data/board.json") or {}
@@ -827,7 +902,8 @@ roster investigation are on the <a href="day4/twc-review.html">day 1–3 review<
 <div class="hero-card">
 <p class="eyebrow">CS2 Pick’em dashboard · Executive summary</p>
 <h1 id="summary-title">Live CS2 picks, both win probabilities, every lobby match.</h1>
-<p class="muted">The strict current-lobby board is first. Parallel API coverage and dated desks remain preserved below.</p>
+<p class="muted">The strict current-lobby executive summary and full-board coverage are first. Parallel API coverage and dated desks remain preserved below.</p>
+{fullboard_front_html()}
 {hotspawn_live_front_html()}
 {exec36495748_front_html()}
 <details class="archive" id="older-boards"><summary>Parallel expanded-API board and earlier desks</summary>
@@ -1275,6 +1351,7 @@ Coverage is incomplete wherever no eligible official quote exists. No claim is m
 that a retrieval is real-time, or that a derived probability is a verified fact. Sandbox egress does not allow
 these bookmaker hosts; automatic retrieval runs in GitHub Actions. Per-attempt payloads and failures:
 <a href="evidence/odds_collection.json">collection evidence</a>.</p>
+{fullboard_flagged_html()}
 <h2>1. Open CS2 picks with no eligible external line ({len(open_unverified)})</h2>
 <p>These currently open rows are deliberately blank: no eligible official-source quote could be confirmed
 under the published policy. Missing, rejected, unavailable or uncollected data are not proof that no betting

@@ -21,17 +21,12 @@ from html.parser import HTMLParser
 from urllib.parse import urlsplit, unquote
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CORE_DIR = os.path.join(ROOT, "scripts", "fe803b80")
-if CORE_DIR not in sys.path:
-    sys.path.insert(0, CORE_DIR)
-import importlib  # noqa: E402
+import importlib.util  # noqa: E402
 
-core = importlib.import_module("core")
-if not hasattr(core, "match_quote_ex_prefix"):      # another session's `core` module got there first
-    import importlib.util
-    spec = importlib.util.spec_from_file_location("fe803b80_core", os.path.join(CORE_DIR, "core.py"))
-    core = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(core)
+CORE_DIR = os.path.join(ROOT, "scripts", "fe803b80")
+_spec = importlib.util.spec_from_file_location("fe803b80_core", os.path.join(CORE_DIR, "core.py"))
+core = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(core)
 
 BOARD_PATH = os.path.join(ROOT, "data", "fe803b80", "board.json")
 NOTES_PATH = os.path.join(ROOT, "data", "a5c08976", "research_notes.json")

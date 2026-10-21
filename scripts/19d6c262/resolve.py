@@ -23,10 +23,12 @@ from __future__ import annotations
 import json, sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import core  # noqa: E402
+import importlib.util
 
 ROOT = Path(__file__).resolve().parents[2]
+_CORE_SPEC = importlib.util.spec_from_file_location("core_19d6c262", Path(__file__).resolve().parent / "core.py")
+core = importlib.util.module_from_spec(_CORE_SPEC)
+_CORE_SPEC.loader.exec_module(core)
 DATA = ROOT / "data" / "19d6c262"
 BASE = ROOT / "data" / "f7279a54" / "board.json"
 
@@ -43,6 +45,9 @@ ALIASES = {
     "aurora yb": ("Aurora Young Blud",
                   "acronym 'YB' = 'Young Blud'; the only Aurora academy roster in the official "
                   "VRS (the main Aurora side is a separate #9 entry)"),
+    "ex cybershoke": ("CYBERSHOKE",
+                      "ex-CYBERSHOKE is the former CYBERSHOKE 5-player lineup verified on official "
+                      "HLTV match page https://www.hltv.org/matches/2399839/ex-cybershoke-vs-blinkdagger-winline-mpkbk-cis-lan-season-9"),
 }
 
 
