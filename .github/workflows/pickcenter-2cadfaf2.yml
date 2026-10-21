@@ -49,12 +49,17 @@ jobs:
         run: python3 scripts/2cadfaf2/build.py
       - name: Contract, unit and site tests
         run: python3 -m unittest tests.test_2cadfaf2 -v
+      # The published site is built from the committed files, so the root landing page must be
+      # regenerated here, not only during the Pages build. PICKCENTER_INDEX_ONLY keeps this to
+      # index.html alone: no other session's page or data file is touched.
+      - name: Refresh the root executive summary (index.html only)
+        run: PICKCENTER_INDEX_ONLY=1 python3 scripts/build_site.py
       - name: Commit & push with rebase (scope-guarded)
         run: |
           set -euo pipefail
           git config user.name "pickcenter-bot (2cadfaf2)"
           git config user.email "malta-data-bot@users.noreply.github.com"
-          git add data/2cadfaf2 pickcenter
+          git add data/2cadfaf2 pickcenter index.html
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
