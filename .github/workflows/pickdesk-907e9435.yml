@@ -43,6 +43,9 @@ jobs:
         run: python3 scripts/907e9435/build.py
       - name: Contract tests (coverage, sources, join gate, assumption policy, rendered pages)
         run: python3 -m unittest tests.test_907e9435 -v
+      - name: Install the shared test requirements (diagnostic parity with the Pages build)
+        if: always()
+        run: pip install -r scripts/requirements.txt
       - name: Full repository suite (diagnostic; records the tail so a red shared build is readable)
         if: always()
         env:
