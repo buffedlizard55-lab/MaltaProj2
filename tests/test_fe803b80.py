@@ -15,6 +15,8 @@ import unittest
 from html.parser import HTMLParser
 from urllib.parse import urlsplit, unquote
 
+import importlib.util
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Load the engine by exact path; discovery contains many unrelated core.py modules.
 import importlib.util
@@ -222,9 +224,10 @@ class BoardTests(unittest.TestCase):
                      "board section not generated in this checkout")
 class SiteTests(unittest.TestCase):
     PAGES = ("index.html", "picks.html", "lines.html", "tournaments.html", "results.html",
-             "flagged.html", "method.html")
+             "flagged.html", "unresolved.html", "method.html")
     REQUIRED_LINKS = {"index.html", "picks.html", "lines.html", "tournaments.html",
-                      "results.html", "flagged.html", "method.html", "assets/board.css"}
+                      "results.html", "flagged.html", "unresolved.html", "method.html",
+                      "assets/board.css"}
 
     def test_all_pages_exist_mobile_first_and_self_linked(self):
         for name in self.PAGES:

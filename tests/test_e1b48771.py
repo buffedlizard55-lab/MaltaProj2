@@ -33,6 +33,14 @@ def soup(name):
 
 
 class Coverage(unittest.TestCase):
+    def test_source_schema_cannot_be_selected_by_timestamp_alone(self):
+        compatible = json.loads((ROOT / 'data/fe803b80/board.json').read_text())
+        canonical = json.loads((ROOT / 'data/c64a5e19/board.json').read_text())
+        self.assertTrue(BUILD.supported_board(compatible))
+        self.assertFalse(BUILD.supported_board(canonical))
+        canonical['generated_utc'] = '2099-01-01T00:00:00Z'
+        self.assertFalse(BUILD.supported_board(canonical))
+
     def test_exactly_the_open_hotspawn_fixtures_and_nothing_else(self):
         want = {str(f["fixture_id"]) for f in SOURCE_BOARD["open"]}
         got = [str(r["fixture_id"]) for r in BOARD["rows"]]
@@ -111,7 +119,9 @@ class Evidence(unittest.TestCase):
 
     def test_researched_rows_keep_their_attempt_ledger(self):
         for fid in RESOLUTIONS["fixtures"]:
-            row = next(r for r in BOARD["rows"] if r["fixture_id"] == fid)
+            row = next((r for r in BOARD["rows"] if r["fixture_id"] == fid), None)
+            if row is None:          # fixture locked/closed since the research was done
+                continue
             self.assertGreaterEqual(len(row["attempts"]), 3, fid)
             self.assertTrue(row["limitations"], fid)
             for attempt in row["attempts"]:

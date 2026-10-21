@@ -573,7 +573,7 @@ def build_pages(model: dict, out: Path) -> None:
         f'<td>{e(f["start_utc"])}</td><td>—</td><td>{why_blank(f)}</td><td><a href="{e(f["hotspawn_url"])}" rel="noopener">HotSpawn #{e(f["fixture_id"])}</a></td></tr>'
         for f in sorted(open_unpriced, key=lambda f: (f["game"] != "cs2", f["start_utc"] or "")))
     body = ('<h2>Open fixtures with no eligible external line</h2><div class="note">Probability and pick are intentionally <b>blank</b> here: no checked bookmaker/aggregator line passed the join + freshness rules. Nothing is estimated. '
-            'The source link is the official HotSpawn fixture record only.</div>'
+            'The source link is the <a href="https://play.hotspawn.com/lobby" rel="noopener">official HotSpawn lobby</a> / fixture record only.</div>'
             f'<p>{len(open_unpriced)} fixtures ({S["open_unpriced_cs2"]} CS2).</p><div class="scroll"><table><thead><tr><th>Game</th><th>Match</th><th>Tournament</th><th>Start (UTC)</th><th>Probability / pick</th><th>Why blank</th><th>Source</th></tr></thead><tbody>{rows}</tbody></table></div>')
     (out / "unpriced.html").write_text(page("No line yet", "unpriced.html", body, gen), encoding="utf-8")
     # ---- locked

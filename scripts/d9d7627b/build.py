@@ -3,7 +3,7 @@
 
 Reads `data/d9d7627b/board.json` and writes a clean mobile-first static site:
 
-  index.html                  (repo root = executive-summary front door)
+  Shared root is centrally generated; this isolated renderer never overwrites it.
   hotspawn-cs2/index.html     (same executive summary inside the section)
   hotspawn-cs2/picks.html     (every open match: pick, both win %, evidence)
   hotspawn-cs2/unresolved.html(unresolved picks + limitations, per match)
@@ -14,6 +14,19 @@ Every number on these pages is rendered from board.json, which is itself re-deri
 from the stored snapshot (raw prices kept per quote). Nothing is hand-typed per match.
 """
 from __future__ import annotations
+import importlib.util as _ilu, sys as _sys
+from pathlib import Path as _Path
+def _load_d9(name):
+    key = f"d9d7627b_{name}"
+    if key in _sys.modules:
+        return _sys.modules[key]
+    p = _Path(__file__).resolve().parent / f"{name}.py" if (_Path(__file__).resolve().parent / f"{name}.py").exists() else _Path(__file__).resolve().parents[1] / "scripts" / "d9d7627b" / f"{name}.py"
+    spec = _ilu.spec_from_file_location(key, p)
+    mod = _ilu.module_from_spec(spec)
+    _sys.modules[key] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
 
 import html
 import json
@@ -22,7 +35,7 @@ from pathlib import Path
 from urllib.parse import quote as urlquote
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import core  # noqa: E402
+core = _load_d9('core')
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "d9d7627b"
@@ -363,9 +376,9 @@ Earlier boards remain live, e.g.
 <a href="{'start/index.html' if base else '../start/index.html'}">start</a>,
 <a href="{'desk/index.html' if base else '../desk/index.html'}">desk</a>,
 <a href="{'ourline/index.html' if base else '../ourline/index.html'}">ourline</a>,
-<a href="{'cs2/index.html' if base else '../cs2/index.html'}">cs2</a> — they are
-dated research snapshots, superseded by the picks above. The collector snapshot that seeds
-this board is documented on the <a href="{base}method.html">method page</a>.</p>
+<a href="{'cs2/index.html' if base else '../cs2/index.html'}">cs2</a>,
+<a href="{'hotspawn-live/index.html' if base else '../hotspawn-live/index.html'}">hotspawn-live</a> — they are
+dated research snapshots, superseded by the picks above.</p>
 """
 
 

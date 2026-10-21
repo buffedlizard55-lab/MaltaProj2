@@ -12,6 +12,8 @@ SCRIPTS = [
     'scripts/c64a5e19/browser_smoke.py',
     'scripts/browser_778756a1.py',
     'scripts/69e4c06a/browser_smoke.py',
+    'scripts/ff88c096/browser_check.py',
+    'scripts/7adc7718/browser_smoke.py',
 ]
 for script in SCRIPTS:
     print('Browser verification:', script, flush=True)

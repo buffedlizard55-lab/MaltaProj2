@@ -1,0 +1,65 @@
+name: fullpicks (51197e5b)
+
+# Session 51197e5b — automated 4-hourly refresh for fullpicks/ and data/51197e5b/board.json.
+# Keeps featured primary-bookmaker lines (f7279a54) unchanged and resolves every unpriced
+# open HotSpawn CS2 fixture via licensed esportsbooks, Kalshi exchange, Official Valve VRS,
+# and bo3.gg match history. Scope guard: commits only data/51197e5b/** and fullpicks/**.
+on:
+  push:
+    branches: ['arena/51197e5b-maltaproj2', 'main']
+    paths:
+      - 'scripts/51197e5b/**'
+      - 'tests/test_51197e5b.py'
+      - '.github/workflows/fullpicks-51197e5b.yml'
+  schedule:
+    - cron: '28 */4 * * *'   # every 4 hours (within the 4-8h requirement)
+  workflow_run:
+    workflows: ['ourline (f7279a54)']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fullpicks-51197e5b-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          fetch-depth: 50
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Resolve a pick for every open HotSpawn CS2 match
+        run: python3 scripts/51197e5b/resolve.py
+      - name: Build mobile-first fullpicks dashboard
+        run: python3 scripts/51197e5b/build.py
+      - name: Run contract and source verification tests
+        run: python3 -m unittest tests.test_51197e5b -v
+      - name: Commit and push with rebase (never discards other sessions' work)
+        env:
+          REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+        run: |
+          set -euo pipefail
+          git config user.name "fullpicks-bot (51197e5b)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/51197e5b fullpicks
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "fullpicks(51197e5b): refresh every-match picks $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase -X ours origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then
+              exit 0
+            fi
+            sleep $((attempt * 6))
+          done
+          exit 1

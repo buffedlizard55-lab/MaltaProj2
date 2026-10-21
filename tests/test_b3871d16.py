@@ -86,6 +86,7 @@ class TestCoverage(Fixture):
         self.assertIn("no probability published", self.html["unresolved.html"])
 
     def test_day5_cards_are_present_and_priced(self):
+        open_ids = {str(r["fixture_id"]) for r in self.board["open"]}
         for fid in ("1080209", "1080210"):
             row = self.day5.get(fid)
             self.assertIsNotNone(row, "a day-5 card must still be on the desk after its lock")

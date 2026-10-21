@@ -10,23 +10,22 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-# Isolate this session's generic CLI module names during repository-wide discovery.
-# Each module retains its own references, but neither sys.path nor sys.modules may
-# redirect other sessions' subsequent imports (notably the root collect.py).
-import importlib
-saved_path = sys.path[:]
-saved_modules = {name: sys.modules.pop(name, None) for name in ('core', 'collect', 'resolve')}
-try:
-    sys.path.insert(0, str(ROOT / "scripts" / "d9d7627b"))
-    core = importlib.import_module('core')
-    collect = importlib.import_module('collect')
-    resolve_mod = importlib.import_module('resolve')
-finally:
-    sys.path[:] = saved_path
-    for name, previous in saved_modules.items():
-        sys.modules.pop(name, None)
-        if previous is not None:
-            sys.modules[name] = previous
+import importlib.util as _ilu, sys as _sys
+from pathlib import Path as _Path
+def _load_d9(name):
+    key = f"d9d7627b_{name}"
+    if key in _sys.modules:
+        return _sys.modules[key]
+    p = _Path(__file__).resolve().parent / f"{name}.py" if (_Path(__file__).resolve().parent / f"{name}.py").exists() else _Path(__file__).resolve().parents[1] / "scripts" / "d9d7627b" / f"{name}.py"
+    spec = _ilu.spec_from_file_location(key, p)
+    mod = _ilu.module_from_spec(spec)
+    _sys.modules[key] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+core = _load_d9('core')
+collect = _load_d9('collect')
+resolve_mod = _load_d9('resolve')
 
 PAYLOADS = ROOT / "data" / "f7279a54" / "source_payloads.json"
 SEED_SNAPSHOT = ROOT / "data" / "f7279a54" / "snapshot.json"

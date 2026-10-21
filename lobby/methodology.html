@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methodology &amp; Sources · HotSpawn CS2 Pick'em Desk</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #0b1017;
+  --surface: #131b26;
+  --surface-2: #192434;
+  --border: #28364a;
+  --ink: #ecf2f8;
+  --muted: #9fb0c3;
+  --brand: #58a6ff;
+  --pick: #2ea043;
+  --pick-bg: rgba(46, 160, 67, 0.16);
+  --pick-ink: #7ee787;
+  --amber: #d29922;
+  --amber-bg: rgba(210, 153, 34, 0.16);
+  --amber-ink: #f2cc60;
+  --red: #f85149;
+  --red-bg: rgba(248, 81, 73, 0.15);
+  --red-ink: #ffa198;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+a { color: var(--brand); text-decoration: none; text-underline-offset: 3px; }
+a:hover, a:focus-visible { text-decoration: underline; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid var(--amber-ink);
+  outline-offset: 2px;
+}
+.skip-link {
+  position: absolute; left: -9999px; top: 8px; z-index: 100;
+  background: var(--pick-ink); color: #06210e; font-weight: 700;
+  padding: 12px 16px; border-radius: 8px;
+}
+.skip-link:focus { left: 12px; }
+.topbar {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(11, 16, 23, 0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 16px; }
+.topbar-inner { padding: 10px 0 8px; }
+.brand-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.brand { font-weight: 800; font-size: 15px; letter-spacing: 0.02em; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.brand-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--pick-ink); box-shadow: 0 0 10px var(--pick); }
+.home-pill {
+  font-size: 12.5px; font-weight: 600; color: var(--muted);
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: 8px 12px; min-height: 44px; display: inline-flex; align-items: center;
+}
+nav.primary-nav {
+  display: flex; gap: 6px; overflow-x: auto; padding: 8px 0 4px;
+  scrollbar-width: thin; -webkit-overflow-scrolling: touch;
+}
+nav.primary-nav a {
+  flex: 0 0 auto; white-space: nowrap;
+  padding: 10px 13px; min-height: 44px;
+  display: inline-flex; align-items: center;
+  border-radius: 999px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--muted);
+  font-size: 13.5px; font-weight: 600;
+}
+nav.primary-nav a[aria-current="page"] {
+  background: var(--pick-bg); border-color: var(--pick); color: var(--pick-ink);
+}
+main { padding: 20px 0 56px; }
+h1 { font-size: clamp(1.45rem, 4.6vw, 2.05rem); line-height: 1.2; margin: 6px 0 8px; }
+h2 { font-size: 1.18rem; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 1rem; margin: 14px 0 6px; }
+.eyebrow { color: var(--pick-ink); font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin: 0; }
+.lede { color: var(--muted); max-width: 780px; margin: 0 0 16px; font-size: 14.5px; }
+.hero-box {
+  background: linear-gradient(145deg, #132033 0%, #111926 100%);
+  border: 1px solid #2d4260; border-radius: 16px; padding: 20px; margin-bottom: 18px;
+}
+.kpi-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px; margin: 16px 0;
+}
+.kpi {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 14px;
+}
+.kpi b { display: block; font-size: 1.55rem; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.kpi span { color: var(--muted); font-size: 12.5px; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 46px; padding: 10px 16px; border-radius: 10px;
+  font-weight: 700; font-size: 14px; border: 1px solid var(--border);
+  background: var(--surface-2); color: var(--ink); text-decoration: none;
+}
+.btn-go { background: var(--pick); border-color: var(--pick); color: #04190a; }
+.btn-warn { background: var(--amber-bg); border-color: var(--amber); color: var(--amber-ink); }
+.cat-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px; margin: 14px 0 22px;
+}
+.cat-card {
+  display: block; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 13px; padding: 15px 16px; color: var(--ink); text-decoration: none;
+}
+.cat-card:hover { border-color: var(--brand); text-decoration: none; }
+.cat-card.highlight { border-color: var(--pick); }
+.cat-card.warn-card { border-color: var(--amber); }
+.cat-card strong { display: block; font-size: 15.5px; margin-bottom: 4px; }
+.cat-card p { margin: 0; font-size: 13px; color: var(--muted); }
+.callout {
+  border-radius: 12px; padding: 14px 16px; margin: 16px 0;
+  background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--amber);
+}
+.callout.danger { border-left-color: var(--red); background: #191318; }
+.callout.ok { border-left-color: var(--pick); }
+.toolbar {
+  display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; align-items: center;
+}
+.toolbar input, .toolbar select {
+  min-height: 44px; padding: 9px 12px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--ink);
+  font: inherit; font-size: 14px;
+}
+.toolbar input { flex: 1 1 230px; }
+.table-wrap { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--surface); }
+table.picks-table { width: 100%; border-collapse: collapse; font-size: 13.8px; }
+table.picks-table th {
+  background: var(--surface-2); color: var(--muted); text-align: left;
+  font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 11px 12px; border-bottom: 1px solid var(--border);
+}
+table.picks-table td {
+  padding: 13px 12px; border-bottom: 1px solid var(--border); vertical-align: top;
+  overflow-wrap: anywhere;
+}
+table.picks-table tr:last-child td { border-bottom: 0; }
+table.picks-table tr.is-blank { background: rgba(248, 81, 73, 0.05); }
+.meta-line { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.team-probs { display: flex; flex-direction: column; gap: 6px; min-width: 205px; }
+.t-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.t-row.picked { font-weight: 800; color: var(--pick-ink); }
+.t-pct { font-variant-numeric: tabular-nums; font-weight: 800; font-size: 14.5px; }
+.dual-bar {
+  display: flex; height: 9px; border-radius: 999px; overflow: hidden;
+  background: #253346; gap: 2px;
+}
+.dual-bar span.bar-a { background: #58a6ff; }
+.dual-bar span.bar-b { background: #a371f7; }
+.dual-bar.pick-a span.bar-a { background: var(--pick); }
+.dual-bar.pick-b span.bar-b { background: var(--pick); }
+.pick-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 11px; border-radius: 999px; font-weight: 800; font-size: 13.5px;
+  background: var(--pick-bg); border: 1px solid var(--pick); color: var(--pick-ink);
+}
+.pick-pill.blank {
+  background: var(--red-bg); border-color: var(--red); color: var(--red-ink);
+}
+.badge {
+  display: inline-block; padding: 3px 8px; border-radius: 6px;
+  font-size: 11.5px; font-weight: 700; margin: 4px 4px 0 0;
+  border: 1px solid var(--border); background: var(--surface-2); color: var(--muted);
+}
+.badge.featured_market { border-color: #2f81f7; color: #9ecbff; }
+.badge.rescue_exchange { border-color: var(--amber); color: var(--amber-ink); }
+.badge.rescue_vrs_model { border-color: #a371f7; color: #d2a8ff; }
+.badge.unresolved_blank { border-color: var(--red); color: var(--red-ink); }
+.badge.flag-chip { border-color: var(--amber); background: var(--amber-bg); color: var(--amber-ink); }
+.src-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.src-link {
+  display: inline-flex; align-items: center; min-height: 36px;
+  padding: 5px 10px; border-radius: 8px; font-size: 12.5px; font-weight: 600;
+  background: var(--surface-2); border: 1px solid var(--border); color: var(--brand);
+}
+footer {
+  border-top: 1px solid var(--border); margin-top: 36px; padding: 20px 0 36px;
+  color: var(--muted); font-size: 12.5px;
+}
+@media (max-width: 760px) {
+  .wrap { padding: 0 12px; }
+  .hero-box { padding: 15px; border-radius: 13px; }
+  .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cta-row .btn { width: 100%; }
+  .table-wrap { border: 0; background: transparent; overflow: visible; }
+  table.picks-table, table.picks-table tbody, table.picks-table tr, table.picks-table td {
+    display: block; width: 100%;
+  }
+  table.picks-table thead { display: none; }
+  table.picks-table tr {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 12px; margin-bottom: 12px;
+  }
+  table.picks-table td { border-bottom: 0; padding: 6px 0; }
+  table.picks-table td::before {
+    content: attr(data-label);
+    display: block; font-size: 11px; font-weight: 800; letter-spacing: 0.05em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+  }
+  .team-probs { min-width: 0; }
+  .src-link { min-height: 44px; padding: 8px 12px; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand-row">
+      <a class="brand" href="index.html"><span class="brand-dot"></span>HOTSPAWN CS2 PICK'EM · FULL LOBBY</a>
+      <a class="home-pill" href="../index.html">← Root Dashboard</a>
+    </div>
+    <nav class="primary-nav" aria-label="CS2 Pick'em sections"><a href="index.html">Summary</a><a href="picks.html">All Picks</a><a href="featured.html">Featured</a><a href="low-tier.html">Low-Tier Rescues</a><a href="unresolved.html">Unresolved</a><a href="flagged.html">Flagged</a><a href="inventory.html">Full Inventory</a><a href="methodology.html" aria-current="page">Method</a></nav>
+  </div>
+</header>
+<main id="main-content" class="wrap" tabindex="-1">
+
+    <p class="eyebrow">Reproducible Engineering Specification</p>
+    <h1>Methodology, Lobby Reverse-Engineering &amp; Calibration</h1>
+    <h2>1. HotSpawn Lobby Reverse-Engineering &amp; 4-Hour Auto-Refresh</h2>
+    <p><code>https://play.hotspawn.com/lobby</code> is an Angular SSR application whose inline
+    <code>&lt;script id="ng-state" type="application/json"&gt;</code> embeds the full JSON response from
+    <code>/api/v1/fixtures</code> alongside published <code>/matches/&lt;slug&gt;-&lt;id&gt;</code> permalinks.
+    <code>.github/workflows/lobby-7adc7718.yml</code> runs every 4 hours (<code>17 */4 * * *</code>) and on manual dispatch,
+    re-collecting open CS2 matches, re-pricing lines, running unit verification, and pushing updated pages to <code>main</code>.</p>
+    <h2>2. Strict 4-Tier Probability Waterfall (Zero Crowd Bias)</h2>
+    <ol>
+      <li><strong>Tier 1 — Primary Sportsbooks:</strong> Proportional de-vigged consensus across Pinnacle (weight 2), Bovada (1), and Melbet (1): <code>p_A = (1/d_A) / (1/d_A + 1/d_B)</code>.</li>
+      <li><strong>Tier 2 — HLTV + Exchange Order Books (Uncovered Matches Only):</strong> Verified HLTV match identity + active two-sided <code>Kalshi KXCS2GAME</code> contracts within tight bid/ask spread limits.</li>
+      <li><strong>Tier 3 — Originated Official Oct-21 Valve VRS Logistic Model (Uncovered Matches Only):</strong> Through-origin logistic regression <code>p_a = 1 / (1 + exp(-beta * (vrs_points_a - vrs_points_b)))</code> fitted across <strong>5</strong> live Week-273 fixtures with both sportsbook lines and official <a href="https://www.hltv.org/valve-ranking/teams/2026/october/21" rel="noopener">Oct 21, 2026 HLTV Valve Global Standings</a> (<code>β = 0.000855</code>, in-sample MAE <code>5.7pp</code>).</li>
+      <li><strong>Tier 4 — Honest Refusal:</strong> Missing market + unrated opponent stays blank (<code>—</code>) and flagged.</li>
+    </ol>
+    <h2>3. Live Week-273 Calibration Pairs (5 Fixtures)</h2>
+    <div class="table-wrap"><table class="picks-table"><thead><tr>
+      <th scope="col">Fixture</th><th scope="col">VRS Δ (A − B)</th>
+      <th scope="col">De-Vigged Book p(A)</th><th scope="col">Audit Row</th>
+    </tr></thead><tbody><tr><td data-label="Match">Lavked vs Spirit Academy (#1081141)</td><td data-label="Oct-21 VRS Δ">-494 pts</td><td data-label="No-Vig Book Prob">44.9%</td><td data-label="Source"><a class="src-link" href="picks.html#m-1081141">Row #1081141 →</a></td></tr><tr><td data-label="Match">Fluxo vs Galorys (#1082684)</td><td data-label="Oct-21 VRS Δ">+405 pts</td><td data-label="No-Vig Book Prob">63.4%</td><td data-label="Source"><a class="src-link" href="picks.html#m-1082684">Row #1082684 →</a></td></tr><tr><td data-label="Match">BRUTE vs Sangal (#1082177)</td><td data-label="Oct-21 VRS Δ">-508 pts</td><td data-label="No-Vig Book Prob">38.2%</td><td data-label="Source"><a class="src-link" href="picks.html#m-1082177">Row #1082177 →</a></td></tr><tr><td data-label="Match">Metizport vs GenOne (#1082178)</td><td data-label="Oct-21 VRS Δ">+309 pts</td><td data-label="No-Vig Book Prob">65.8%</td><td data-label="Source"><a class="src-link" href="picks.html#m-1082178">Row #1082178 →</a></td></tr><tr><td data-label="Match">BESTIA vs ShindeN (#1082689)</td><td data-label="Oct-21 VRS Δ">+382 pts</td><td data-label="No-Vig Book Prob">50.3%</td><td data-label="Source"><a class="src-link" href="picks.html#m-1082689">Row #1082689 →</a></td></tr></tbody></table></div>
+    
+<footer>
+  <p><strong>Snapshot observed:</strong> <code>2026-10-21T12:51:33Z</code> ·
+  <strong>Evaluated:</strong> <code>2026-10-21T13:07:23Z</code> ·
+  <strong>Auto-refresh:</strong> every 4 hours (<code>17 */4 * * *</code> via GitHub Actions).<br>
+  <strong>Strict integrity rule:</strong> HotSpawn crowd pick percentages are <em>never</em> used as match probabilities.
+  Unconfirmed values remain blank (<code>—</code>) and flagged on <a href="flagged.html">Flagged for Review</a>.<br>
+  Data exports: <a href="../data/7adc7718/board.json">board.json</a> ·
+  <a href="../data/7adc7718/picks.csv">picks.csv</a> ·
+  <a href="../data/7adc7718/repo_audit.json">repo_audit.json</a> ·
+  <a href="../index.html">Main Dashboard Home</a>. 18+; independent analytical research, not affiliated with HotSpawn.</p>
+</footer>
+</main>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('time[data-utc]').forEach(function (el) {
+    var d = new Date(el.getAttribute('data-utc'));
+    if (!isNaN(d.getTime())) {
+      el.title = el.getAttribute('data-utc');
+      el.textContent = d.toLocaleString([], {
+        month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short'
+      });
+    }
+  });
+  var qInput = document.getElementById('match-filter');
+  var tierSel = document.getElementById('tier-filter');
+  var statusEl = document.getElementById('filter-count');
+  function applyFilters() {
+    var q = (qInput ? qInput.value : '').trim().toLowerCase();
+    var tier = tierSel ? tierSel.value : '';
+    var rows = Array.prototype.slice.call(document.querySelectorAll('tr[data-row]'));
+    var shown = 0;
+    rows.forEach(function (tr) {
+      var okQ = !q || tr.getAttribute('data-search').indexOf(q) !== -1;
+      var okT = !tier || tr.getAttribute('data-tier') === tier;
+      tr.hidden = !(okQ && okT);
+      if (!tr.hidden) shown++;
+    });
+    if (statusEl && rows.length) {
+      statusEl.textContent = shown + ' of ' + rows.length + ' matches shown';
+    }
+  }
+  if (qInput) qInput.addEventListener('input', applyFilters);
+  if (tierSel) tierSel.addEventListener('change', applyFilters);
+  applyFilters();
+});
+</script>
+</body>
+</html>

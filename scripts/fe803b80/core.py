@@ -152,9 +152,82 @@ ALIASES: dict[str, dict] = {
                      "https://bo3.gg/teams/sokerorg",
                      "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct141300skrforzer"],
     },
+    # HotSpawn / HLTV / Valve list the Peruvian roster as "Zetta"; bo3.gg's team record for the
+    # same five players (zockie, Slayerhz, NotJuanjo, BabyRage, Antuanette) is named
+    # "Alianza Lima Esports" (team id 25489, slug alianza-lima-esports). bo3.gg's CCT South
+    # America 2026 Series 7 round-5 slot "Alianza Lima Esports vs Los Niños" is the same match
+    # HLTV (2399865) and HotSpawn (1082837) list as Zetta vs LOS NINOS at the same kick-off.
+    # Session a5c08976, verified 2026-10-21.
+    "alianzalima": {
+        "canonical": "zetta",
+        "note": "bo3.gg team 25489 'Alianza Lima Esports' fields the identical five-man roster "
+                "(zockie, Slayerhz, NotJuanjo, BabyRage, Antuanette) that HLTV team 13833 and "
+                "Valve's Americas standings list as 'Zetta'; same CCT SA Series 7 round-5 slot "
+                "vs Los Niños at the same kick-off.",
+        "evidence": ["https://bo3.gg/teams/alianza-lima-esports",
+                     "https://bo3.gg/matches/alianza-lima-esports-vs-los-ninos-21-10-2026",
+                     "https://www.hltv.org/team/13833/zetta",
+                     "https://www.hltv.org/matches/2399865/zetta-vs-los-ninos-cct-2026-south-america-series-7",
+                     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_americas_2026_10_05.md"],
+    },
     # HotSpawn 'EAC' == bo3.gg/Thunderpick 'EAC' (Esport Academy Copenhagen) - same spelling,
     # no alias needed. Kept out of the table on purpose: no undocumented expansion is applied.
 }
+
+# "ex-" rosters. HLTV (and HotSpawn, which follows HLTV naming) prefix a roster that has left its
+# organisation with "ex-" (e.g. "ex-CYBERSHOKE"); bookmakers keep pricing the same match under the
+# organisation name. The prefix is NEVER folded inside canon(): "ex-X" and "X" are different
+# teams for ratings (Valve's "CYBERSHOKE" row is the org's current roster). It is only accepted
+# as a *market quote* join, and only when the opponent matches exactly and the kick-off is the
+# same to the minute (TIME_EXACT_H) — i.e. the same scheduled match, differently labelled.
+EX_PREFIXES = ("ex-", "ex ")
+EX_PREFIX_EVIDENCE: dict[str, dict] = {
+    # HLTV lists the WINLINE MPKBK CIS LAN Season 9 group opener as "ex-CYBERSHOKE vs BlinkDagger"
+    # (roster bl1x1, Mokuj1n, nota, yiksrezo, shoke); Bovada, Melbet and Kalshi price the same
+    # 15:00 UTC CIS LAN Championship match as "CYBERSHOKE vs BlinkDagger". Session a5c08976.
+    "cybershoke": {
+        "note": "HLTV names the roster 'ex-CYBERSHOKE' at WINLINE MPKBK CIS LAN Season 9 (match "
+                "2399839, 21 Oct 2026 vs BlinkDagger); bookmakers list the same match under "
+                "'CYBERSHOKE'. Joined on the identical opponent and kick-off only; the roster is "
+                "not mapped to CYBERSHOKE's Valve VRS row.",
+        "evidence": ["https://www.hltv.org/matches/2399839/ex-cybershoke-vs-blinkdagger-winline-mpkbk-cis-lan-season-9",
+                     "https://www.hltv.org/events/9426/matches",
+                     "https://www.hltv.org/team/14106/ex-cybershoke"],
+    },
+}
+
+
+def strip_ex_prefix(name: str | None) -> str | None:
+    """Return the organisation name behind an "ex-" roster label, else None."""
+    text = str(name or "").strip()
+    low = text.lower()
+    for prefix in EX_PREFIXES:
+        if low.startswith(prefix) and len(text) > len(prefix):
+            return text[len(prefix):]
+    return None
+
+
+def same_team_ex(fixture_name: str | None, quote_name: str | None) -> tuple[bool, list[str], str | None]:
+    """True when exactly one of the two labels is an "ex-" roster of the other.
+
+    Returns (matched, evidence, note). Never used for ratings; see match_quote.
+    """
+    fx_org = strip_ex_prefix(fixture_name)
+    qt_org = strip_ex_prefix(quote_name)
+    if (fx_org is None) == (qt_org is None):
+        return False, [], None
+    org = fx_org if fx_org is not None else qt_org
+    other = quote_name if fx_org is not None else fixture_name
+    key_org, _, _ = canon(org)
+    key_other, _, _ = canon(other)
+    if not key_org or key_org != key_other:
+        return False, [], None
+    labelled = fixture_name if fx_org is not None else quote_name
+    doc = EX_PREFIX_EVIDENCE.get(key_org) or {}
+    note = doc.get("note") or (f"'{labelled}' is HLTV-style naming for a roster that left "
+                               f"'{org}'; bookmakers price the same match under the organisation "
+                               "name. Joined only because the opponent and the kick-off are identical.")
+    return True, list(doc.get("evidence") or []), note
 
 
 def canon(name: str | None) -> tuple[str, list[str], str | None]:
@@ -296,12 +369,13 @@ def elo_expected(rating_a: float, rating_b: float) -> float:
 
 
 def elo_run(matches: list[dict], seed: dict[str, float] | None = None,
-            k: float = ELO_K, passes: int = 8) -> dict[str, float]:
+            k: float = ELO_K, passes: int = 8, default: float = ELO_BASE) -> dict[str, float]:
     """Plain Elo over an externally sourced result list.
 
     ``matches`` items: {"key_a","key_b","winner": "a"|"b", "start_utc"}. Seeds (when a team has an
     official VRS rating, its rating is mapped onto the Elo scale) are re-applied at the start of
-    every pass so that seeded teams stay anchored to the official rating.
+    every pass so that seeded teams stay anchored to the official rating. ``default`` is the
+    starting rating of a team that has no seed (the caller states what it means).
     """
     seed = seed or {}
     ratings: dict[str, float] = dict(seed)
@@ -314,8 +388,8 @@ def elo_run(matches: list[dict], seed: dict[str, float] | None = None,
             a, b = m["key_a"], m["key_b"]
             if not a or not b or a == b:
                 continue
-            ra = ratings.setdefault(a, ELO_BASE)
-            rb = ratings.setdefault(b, ELO_BASE)
+            ra = ratings.setdefault(a, default)
+            rb = ratings.setdefault(b, default)
             ea = elo_expected(ra, rb)
             sa = 1.0 if m["winner"] == "a" else 0.0
             ratings[a] = ra + k * (sa - ea)
@@ -450,12 +524,43 @@ def match_quote(fixture: dict, quote: dict) -> dict | None:
     elif ab and ba:
         swapped, notes, evidence = True, [n for n in (n3, n4) if n], sorted(set(e3 + e4))
     else:
-        return None
+        return match_quote_ex_prefix(fixture, quote)
     diff = hours_apart(parse_iso(fixture["start_utc"]), parse_iso(quote.get("start_utc")))
     if diff is not None and diff > TIME_TOLERANCE_H:
         return None
     return {"swapped": swapped, "alias_notes": notes, "alias_evidence": evidence,
-            "start_diff_h": diff}
+            "start_diff_h": diff, "ex_prefix": False}
+
+
+def match_quote_ex_prefix(fixture: dict, quote: dict) -> dict | None:
+    """The guarded "ex-" route: one side is an "ex-<org>" roster label, the other the org name.
+
+    Accepted only when (1) the *other* team matches exactly (after canon), (2) exactly one of the
+    two labels carries the prefix, and (3) both sources state the same kick-off within
+    TIME_EXACT_H. A missing start time on either side fails closed. The join is marked
+    ``ex_prefix=True`` so the row can be flagged and the evidence published.
+    """
+    fx_start, qt_start = parse_iso(fixture.get("start_utc")), parse_iso(quote.get("start_utc"))
+    diff = hours_apart(fx_start, qt_start)
+    if diff is None or diff > TIME_EXACT_H:
+        return None
+    for swapped, (qa, qb) in ((False, (quote["team_a"], quote["team_b"])),
+                              (True, (quote["team_b"], quote["team_a"]))):
+        exact_a, ea, na = same_team(fixture["team_a"], qa)
+        exact_b, eb, nb = same_team(fixture["team_b"], qb)
+        if exact_a and not exact_b:
+            ok, ev, note = same_team_ex(fixture["team_b"], qb)
+            exact_notes, exact_ev = ([na] if na else []), ea
+        elif exact_b and not exact_a:
+            ok, ev, note = same_team_ex(fixture["team_a"], qa)
+            exact_notes, exact_ev = ([nb] if nb else []), eb
+        else:
+            continue
+        if ok:
+            return {"swapped": swapped, "alias_notes": exact_notes + [note],
+                    "alias_evidence": sorted(set(exact_ev + ev)), "start_diff_h": diff,
+                    "ex_prefix": True}
+    return None
 
 
 def oriented_prob(quote: dict, swapped: bool) -> float | None:

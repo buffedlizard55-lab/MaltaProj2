@@ -141,7 +141,8 @@ def newest_board():
         priced = sum(1 for r in rows
                      if (r.get("line") or {}).get("pick")
                      or (r.get("line") or {}).get("pick_team"))
-        key = (priced, gen)
+        unpriced = len(rows) - priced
+        key = (unpriced == 0, priced, gen)
         if best_key is None or key > best_key:
             best, best_path, best_key = data, path, key
     return best or {}, best_path or ""
