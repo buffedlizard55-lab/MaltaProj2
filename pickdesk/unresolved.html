@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Unresolved &amp; limitations · HotSpawn CS2 picks</title>
+<link rel="icon" href="../favicon.ico">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--card2:#1c2430;--line:#2b3441;--text:#e6edf3;--muted:#93a1b1;
+--ok:#2ea043;--okbg:#12261a;--warn:#d29922;--warnbg:#2a2113;--bad:#f85149;--badbg:#2a1416;
+--model:#58a6ff;--modelbg:#0d2233;--pick:#7ee2a8}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding-bottom:40px}
+a{color:#79c0ff;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:rgba(13,17,23,.97);border-bottom:1px solid var(--line);
+backdrop-filter:blur(6px)}
+.wrap{max-width:980px;margin:0 auto;padding:0 14px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0}
+.brand{font-weight:800;font-size:17px;letter-spacing:.2px}
+.brand span{color:var(--pick)}
+nav{display:flex;gap:6px;overflow-x:auto;padding:0 0 8px;-webkit-overflow-scrolling:touch}
+nav a{white-space:nowrap;font-size:13px;padding:7px 11px;border:1px solid var(--line);border-radius:999px;
+color:var(--text);background:var(--card)}
+nav a[aria-current=page]{border-color:var(--pick);color:var(--pick)}
+h1{font-size:24px;line-height:1.25;margin:18px 0 8px}
+h2{font-size:19px;margin:26px 0 8px}
+h3{font-size:16px;margin:18px 0 6px}
+p{margin:8px 0}
+.lede{color:var(--muted)}
+.hero{background:linear-gradient(160deg,#152132,#101722);border:1px solid #26374d;border-radius:16px;
+padding:18px 16px;margin:14px 0}
+.hero .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--pick);margin:0 0 6px}
+.hero h1{margin:0 0 6px;font-size:23px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.stat b{display:block;font-size:21px;line-height:1.2}
+.stat span{font-size:12px;color:var(--muted)}
+.btns{display:grid;gap:9px;margin:12px 0 4px}
+.btn{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 15px;
+border-radius:12px;background:var(--card2);border:1px solid var(--line);color:var(--text);font-weight:600;
+min-height:48px}
+.btn small{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:2px}
+.btn.primary{background:var(--pick);color:#08130d;border-color:var(--pick)}
+.btn.primary small{color:#0d3520}
+.btn .arw{font-size:18px;opacity:.8}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.card .match{font-size:17px;font-weight:700;line-height:1.3}
+.meta{font-size:12px;color:var(--muted);margin-top:3px}
+.badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.03em;padding:3px 8px;
+border-radius:999px;border:1px solid transparent;vertical-align:middle}
+.badge.ok{background:var(--okbg);color:#7ee2a8;border-color:#1c5b30}
+.badge.model{background:var(--modelbg);color:#9ecbff;border-color:#1f4a6b}
+.badge.warn{background:var(--warnbg);color:#e3b341;border-color:#5c4520}
+.badge.bad{background:var(--badbg);color:#ff8b84;border-color:#6b2a26}
+.pickrow{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:11px 0 2px}
+.pickname{font-size:19px;font-weight:800;color:var(--pick)}
+.pickprob{font-size:19px;font-weight:800}
+.bar{height:10px;border-radius:6px;background:#0a0f15;overflow:hidden;margin:6px 0 2px;
+border:1px solid #232c38}
+.bar>i{display:block;height:100%}
+.team{display:flex;justify-content:space-between;font-size:14px;padding:3px 0}
+.team b{font-variant-numeric:tabular-nums}
+.team.win b{color:var(--pick)}
+details{margin-top:10px;border-top:1px solid #232c38;padding-top:8px}
+summary{cursor:pointer;font-size:13px;color:var(--muted);font-weight:600}
+ul{margin:6px 0 6px 18px;padding:0}li{margin:4px 0;font-size:14px}
+.small{font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid #232c38;vertical-align:top}
+th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.note{border-left:3px solid var(--warn);background:var(--warnbg);padding:10px 12px;border-radius:0 10px 10px 0;
+font-size:13.5px;margin:12px 0}
+.err{border-left-color:var(--bad);background:var(--badbg)}
+.ok{border-left-color:var(--ok);background:var(--okbg)}
+footer{color:var(--muted);font-size:12px;padding:24px 0 0;border-top:1px solid var(--line);margin-top:28px}
+code{background:#0a0f15;padding:1px 5px;border-radius:5px;font-size:12.5px}
+@media(min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}.btns{grid-template-columns:1fr 1fr}}
+</style></head>
+<body>
+<header><div class="wrap">
+<div class="top"><div class="brand">HotSpawn <span>CS2 picks</span></div>
+<div class="small">built 21 Oct 19:56 UTC</div></div>
+<nav><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html" aria-current=page>Unresolved</a><a href="flagged.html">Flagged</a><a href="method.html">Method</a><a href="sources.html">Sources</a></nav>
+</div></header>
+<main class="wrap">
+
+<h1>Unresolved picks &amp; limitations</h1>
+<p class="lede">The separate section for every open match whose pick is <em>not</em> backed by a
+verified external price. Nothing here is silently filled in: an assumption is labelled an
+assumption, and where the sources contradict each other the pick is withheld.</p>
+<div class="note"><p><strong>Summary:</strong> 3 assumption rows,
+1 withheld rows, 1 row(s) with a conflicting listing.</p></div>
+
+<h2>1. Withheld — no defensible value (1)</h2>
+
+<article class="card" id="u-1082837">
+<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
+<div><div class="match">Zetta <span class="small">vs</span> LOS NINOS</div>
+<div class="meta">CCT South America 2026 Series #7 · Wed 21 Oct 22:00 UTC · HotSpawn id 1082837</div></div>
+<span class="badge bad>Withheld</span></div>
+<p class="small">Withheld: no pick or win probability is published for this row. Under the two documented assumptions for the unrated opponent the favourite changes (team A between 34.4% and 55.5%), so no direction is defensible.</p><p class='small'>Team A range under the two documented assumptions: 34.4%–55.5%. Pick: <strong>none</strong>.</p>
+<details open><summary>Why this row is here</summary><ul><li>Under the two documented assumptions for the unrated opponent the favourite changes (team A between 34.4% and 55.5%), so no direction is defensible.</li></ul></details>
+<details open><summary>Source-by-source attempts</summary><ul><li><strong>HLTV match listings</strong> — HTTPError 403 — not machine-readable; no HLTV number is used anywhere on this site (<a href='https://www.hltv.org/matches' rel='noopener'>source</a>)</li><li><strong>Bookmakers (Pinnacle, Bovada, Melbet)</strong> — HTTP 200 — no market priced this pairing (0 price(s) rejected by the join gate) (<a href='https://www.pinnacle.com/en/esports/cs2-hub' rel='noopener'>source</a>)</li><li><strong>Kalshi exchange (KXCS2GAME)</strong> — HTTP 200 — a same-kickoff market exists but names a different opponent (<a href='https://kalshi.com/markets/kxcs2game' rel='noopener'>source</a>)</li><li><strong>Official Valve Regional Standings</strong> — HTTP 200 — Withheld: no pick or win probability is published for this row. Under the two documented assumptions for the unrated opponent the favourite changes (team A between 34.4% and 55.5%), so no direction is defensible. (<a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md' rel='noopener'>source</a>)</li><li><a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md' rel='noopener'>Valve Regional Standings (official)</a> — Zetta #357 (473 pts)</li><li><a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0357--zetta--antuanette-babyrage-notjuanjo-slayerhz-zockie.md' rel='noopener'>Valve roster details (official)</a> — Zetta roster Antuanette, BabyRage, Notjuanjo, Slayerhz, zockie</li></ul></details>
+<details open><summary>Conflicting listing</summary><ul><li><a href='https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211800lnale' rel='noopener'>Kalshi (exchange)</a> — Kalshi (exchange) lists this 21 Oct 22:00 UTC slot as &#x27;Los Ninos vs Alianza Lima Esports&#x27;, not &#x27;Zetta vs LOS NINOS&#x27;.</li></ul></details>
+</article>
+
+<h2>2. Assumption — one side has no official rating (3)</h2>
+<p class="small">Rule: the pick is the rated side, and the probability is published as a
+<em>range</em> between two documented assumptions for the unrated side — Valve's official VRS floor
+(#380,
+381 pts) and the VRS median
+(740 pts across
+380 ranked teams). If those two assumptions disagree
+about the favourite, the row moves to section 1.</p>
+
+<article class="card" id="u-1081597">
+<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
+<div><div class="match">benched gods <span class="small">vs</span> TitanFlow</div>
+<div class="meta">CCT Europe 2026 Challengers #8 · Thu 22 Oct 11:00 UTC · HotSpawn id 1081597</div></div>
+<span class="badge warn>Assumption</span></div>
+<p class="small">TitanFlow is not in Valve&#x27;s official standings table, so it has no rating. The pick is the rated side (benched gods); the probability is a range between two documented assumptions for the unrated side: the official VRS floor (#380, 381 pts) and the VRS median (740 pts over 380 ranked teams).</p><p class='small'>Team A range under the two documented assumptions: 54.3%–73.8%. Pick: <strong>benched gods</strong> (54.3%–73.8%).</p>
+<details open><summary>Why this row is here</summary><ul><li>Valve lists 40 counted matches for the chosen benched gods roster (#157, latest 2026-10-02); duplicate entries #329 were rejected on roster size and match recency.</li><li>TitanFlow has no official rating (no_rating); no bookmaker or exchange priced this fixture, so no verified probability exists. The published number is an assumption, not evidence.</li><li>Unrated does not mean weak: in this same capture UNiTY (VRS #69) is priced at only 39.5% against unrated Apogee Betclic, so an unrated opponent can be the favourite. Treat this row as directional only.</li></ul></details>
+<details open><summary>Source-by-source attempts</summary><ul><li><strong>HLTV match listings</strong> — HTTPError 403 — not machine-readable; no HLTV number is used anywhere on this site (<a href='https://www.hltv.org/matches' rel='noopener'>source</a>)</li><li><strong>Bookmakers (Pinnacle, Bovada, Melbet)</strong> — HTTP 200 — no market priced this pairing (0 price(s) rejected by the join gate) (<a href='https://www.pinnacle.com/en/esports/cs2-hub' rel='noopener'>source</a>)</li><li><strong>Kalshi exchange (KXCS2GAME)</strong> — HTTP 200 — no market for this pairing (<a href='https://kalshi.com/markets/kxcs2game' rel='noopener'>source</a>)</li><li><strong>Official Valve Regional Standings</strong> — HTTP 200 — TitanFlow is not in Valve&#x27;s official standings table, so it has no rating. The pick is the rated side (benched gods); the probability is a range between two documented assumptions for the unrated side: the official VRS floor (#380, 381 pts) and the VRS median (740 pts over 380 ranked teams). (<a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md' rel='noopener'>source</a>)</li><li><a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md' rel='noopener'>Valve Regional Standings (official)</a> — benched gods #157 (811 pts)</li><li><a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0157--benched_gods--facer-k014nz-norescue-wign-yoyos2.md' rel='noopener'>Valve roster details (official)</a> — benched gods roster facer, K014NZ, norescue, Wign, yoyoS2</li></ul></details>
+
+</article>
+<article class="card" id="u-1082858">
+<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
+<div><div class="match">Ground Zero <span class="small">vs</span> Off Chops</div>
+<div class="meta">DFRAG Invitational 2026 · Mon 26 Oct 03:00 UTC · HotSpawn id 1082858</div></div>
+<span class="badge warn>Assumption</span></div>
+<p class="small">Off Chops is not in Valve&#x27;s official standings table, so it has no rating. The pick is the rated side (Ground Zero); the probability is a range between two documented assumptions for the unrated side: the official VRS floor (#380, 381 pts) and the VRS median (740 pts over 380 ranked teams).</p><p class='small'>Team A range under the two documented assumptions: 58.2%–76.8%. Pick: <strong>Ground Zero</strong> (58.2%–76.8%).</p>
+<details open><summary>Why this row is here</summary><ul><li>Off Chops has no official rating (no_rating); no bookmaker or exchange priced this fixture, so no verified probability exists. The published number is an assumption, not evidence.</li><li>Unrated does not mean weak: in this same capture UNiTY (VRS #69) is priced at only 39.5% against unrated Apogee Betclic, so an unrated opponent can be the favourite. Treat this row as directional only.</li></ul></details>
+<details open><summary>Source-by-source attempts</summary><ul><li><strong>HLTV match listings</strong> — HTTPError 403 — not machine-readable; no HLTV number is used anywhere on this site (<a href='https://www.hltv.org/matches' rel='noopener'>source</a>)</li><li><strong>Bookmakers (Pinnacle, Bovada, Melbet)</strong> — HTTP 200 — no market priced this pairing (0 price(s) rejected by the join gate) (<a href='https://www.pinnacle.com/en/esports/cs2-hub' rel='noopener'>source</a>)</li><li><strong>Kalshi exchange (KXCS2GAME)</strong> — HTTP 200 — no market for this pairing (<a href='https://kalshi.com/markets/kxcs2game' rel='noopener'>source</a>)</li><li><strong>Official Valve Regional Standings</strong> — HTTP 200 — Off Chops is not in Valve&#x27;s official standings table, so it has no rating. The pick is the rated side (Ground Zero); the probability is a range between two documented assumptions for the unrated side: the official VRS floor (#380, 381 pts) and the VRS median (740 pts over 380 ranked teams). (<a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md' rel='noopener'>source</a>)</li><li><a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md' rel='noopener'>Valve Regional Standings (official)</a> — Ground Zero #136 (878 pts)</li><li><a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0136--ground_zero--apocdud-hazr-omichella-sliimey-vision.md' rel='noopener'>Valve roster details (official)</a> — Ground Zero roster apocdud, hazr, Omichella, sliimey, vision</li></ul></details>
+
+</article>
+<article class="card" id="u-1082860">
+<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
+<div><div class="match">FlyQuest <span class="small">vs</span> Staqued</div>
+<div class="meta">DFRAG Invitational 2026 · Tue 27 Oct 03:00 UTC · HotSpawn id 1082860</div></div>
+<span class="badge warn>Assumption</span></div>
+<p class="small">Staqued is not in Valve&#x27;s official standings table, so it has no rating. The pick is the rated side (FlyQuest); the probability is a range between two documented assumptions for the unrated side: the official VRS floor (#380, 381 pts) and the VRS median (740 pts over 380 ranked teams).</p><p class='small'>Team A range under the two documented assumptions: 70.1%–84.8%. Pick: <strong>FlyQuest</strong> (70.1%–84.8%).</p>
+<details open><summary>Why this row is here</summary><ul><li>Staqued has no official rating (no_rating); no bookmaker or exchange priced this fixture, so no verified probability exists. The published number is an assumption, not evidence.</li><li>Unrated does not mean weak: in this same capture UNiTY (VRS #69) is priced at only 39.5% against unrated Apogee Betclic, so an unrated opponent can be the favourite. Treat this row as directional only.</li></ul></details>
+<details open><summary>Source-by-source attempts</summary><ul><li><strong>HLTV match listings</strong> — HTTPError 403 — not machine-readable; no HLTV number is used anywhere on this site (<a href='https://www.hltv.org/matches' rel='noopener'>source</a>)</li><li><strong>Bookmakers (Pinnacle, Bovada, Melbet)</strong> — HTTP 200 — no market priced this pairing (0 price(s) rejected by the join gate) (<a href='https://www.pinnacle.com/en/esports/cs2-hub' rel='noopener'>source</a>)</li><li><strong>Kalshi exchange (KXCS2GAME)</strong> — HTTP 200 — no market for this pairing (<a href='https://kalshi.com/markets/kxcs2game' rel='noopener'>source</a>)</li><li><strong>Official Valve Regional Standings</strong> — HTTP 200 — Staqued is not in Valve&#x27;s official standings table, so it has no rating. The pick is the rated side (FlyQuest); the probability is a range between two documented assumptions for the unrated side: the official VRS floor (#380, 381 pts) and the VRS median (740 pts over 380 ranked teams). (<a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md' rel='noopener'>source</a>)</li><li><a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md' rel='noopener'>Valve Regional Standings (official)</a> — FlyQuest #86 (1093 pts)</li><li><a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0086--flyquest--alistair-ins-jks-nettik-vexite.md' rel='noopener'>Valve roster details (official)</a> — FlyQuest roster aliStair, INS, jks, nettik, Vexite</li></ul></details>
+
+</article>
+
+<h2>3. Structural limitations that apply to the whole board</h2>
+<ul>
+<li><strong>No HotSpawn crowd data.</strong> HotSpawn's pick'em percentages are never read; the
+collector drops those fields. This is deliberate, per the project requirement.</li>
+<li><strong>HLTV is not machine-readable from automation.</strong> Every capture attempts
+<a href="https://www.hltv.org/matches" rel="noopener">hltv.org/matches</a> and records the answer.
+At this capture it answered HTTP 403, so no HLTV number is used anywhere on this site. HLTV match
+pages are linked only where another source identifies the fixture.</li>
+<li><strong>Valve publishes monthly.</strong> The newest official standings file is
+2026_10_05; it is verified to be the newest
+in Valve's repository, so comparisons can lag results by up to a month.</li>
+<li><strong>Bookmaker coverage is a snapshot.</strong> If no book had a market open at capture
+time, the row falls to the rating model or the assumption rule. It may be priced again on the next
+4-hourly refresh — the board rebuilds automatically.</li>
+<li><strong>Unrated does not mean weak.</strong> In this capture UNiTY (VRS #69) is priced at 39.5%
+against unrated Apogee Betclic, which is why an unrated opponent can never be assumed to be the
+underdog.</li>
+<li><strong>Withheld rows are not zero.</strong> A withheld pick means "the sources do not support a
+number", not "the match is a coin flip".</li>
+</ul>
+
+<footer>
+<p><strong>Data capture:</strong> Wed 21 Oct 19:52 UTC (live mode).
+<strong>Build:</strong> 21 Oct 19:56 UTC.
+<strong>Valve standings:</strong> snapshot 2026_10_05.</p>
+<p>HotSpawn is used for fixture discovery and settlement only. Its crowd pick percentage is never
+read or used as a probability. Every number on this site is derived from a linked external source
+or from Valve's official standings, and anything that could not be confirmed is left blank and
+listed on <a href="unresolved.html">Unresolved</a> / <a href="flagged.html">Flagged</a>.</p>
+<p><a href="../index.html">← All boards on this site</a> · <a href="https://play.hotspawn.com/lobby"
+rel="noopener">HotSpawn lobby</a> · <a href="https://www.hotspawn.com/pickem" rel="noopener">Pick'em</a></p>
+</footer>
+</main></body></html>

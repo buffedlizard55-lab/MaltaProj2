@@ -74,10 +74,10 @@ def pct(value):
 NAV = [
     # Evidence-only desk leads; all parallel research remains linked, at most 12 mobile links.
     ("index.html", "Home"),
-    ("dashboard/picks.html", "\U0001F4F1 Today's picks"),
-    ("dashboard/unresolved.html", "Unresolved"),
-    ("dashboard/flagged.html", "Flagged"),
-    ("dashboard/sources.html", "Method"),
+    ("everypick/picks.html", "\U0001F4F1 Every pick"),
+    ("everypick/unresolved.html", "Unresolved"),
+    ("everypick/flagged.html", "Flagged"),
+    ("everypick/method.html", "Method"),
     ("hotspawn-live/index.html", "Alternative live board"),
     ("picks-every-match/index.html", "Canonical board"),
     ("picks-every-match/unresolved.html", "Canonical unresolved"),
@@ -839,7 +839,7 @@ def everypick_hero_html():
     return f'''<!-- everypick:start -->
 <section id="every-match-executive-summary" aria-labelledby="ems-title">
 <p class="eyebrow">● START HERE · every open HotSpawn CS2 match · refreshed every four hours</p>
-<h2 id="ems-title" style="margin-top:6px;font-size:clamp(1.25rem,5vw,1.7rem);line-height:1.25">Every match. A pick. Both win probabilities. A source you can open.</h2>
+<h1 id="ems-title" style="margin-top:6px;font-size:clamp(1.35rem,5.4vw,1.85rem);line-height:1.25">Every match. A pick. Both win probabilities. A source you can open.</h1>
 <p><strong>{s.get("lobby_open", 0)}</strong> open lobby matches <strong>+{s.get("api_only", 0)}</strong>
 API-only · <strong>{s.get("with_pick", 0)}</strong> with a pick and two probabilities ·
 <strong>{s.get("market", 0)}</strong> priced from real betting lines ·
@@ -855,7 +855,9 @@ official Valve ratings · <strong>{s.get("unresolved", 0)}</strong> unresolved. 
 <a class="btn live-board-cta" href="everypick/flagged.html"><span><strong>Flagged for review</strong> · irregularities and unverified items</span><span>→</span></a>
 </div>
 <p class="note">Every other desk on this site is an earlier session's own board and is kept below as an
-archive. If you only open one page, open <a href="everypick/picks.html">All picks</a>.</p>
+archive. If you only open one page, open <a href="everypick/picks.html">All picks</a>. A stricter
+cross-check of the same fixtures — it withholds any row whose two documented bounds disagree about the
+favourite instead of publishing a value — is at <a href="pickdesk/index.html">pickdesk/</a>.</p>
 </section>
 <!-- everypick:end -->
 
@@ -1000,8 +1002,8 @@ and is left <strong>explicitly blank</strong> and flagged on <a href="lobby/flag
 
     return f"""
 <section id="updated-match-desk" aria-labelledby="updated-desk-title" class="hero-card">
-<p class="eyebrow">Updated CS2 match desk · start here</p>
-<h1 id="updated-desk-title">All matches. Clear picks. Source-linked probabilities.</h1>
+<p class="eyebrow">Parallel desks &amp; archive · other source policies</p>
+<h2 id="updated-desk-title">All matches. Clear picks. Source-linked probabilities.</h2>
 <p>Open the <a href="dashboard/index.html"><strong>mobile executive summary</strong></a> for the newest retained capture and complete coverage counts. Market picks are preserved; additional evidence is researched only for missing lines. Unsupported values stay blank.</p>
 <p><a class="btn" style="background:#91f2bf;color:#102419;font-weight:bold" href="dashboard/picks.html">See every updated CS2 pick →</a> <a class="btn ghost" href="dashboard/unresolved.html">Unresolved picks &amp; limitations</a></p>
 <p><a href="dashboard/inventory.html">Complete HotSpawn inventory</a> · <a href="dashboard/sources.html">Evidence &amp; method</a> · <a href="dashboard/flagged.html">Flagged for Review</a>. Four-hour automated checks; freshness and lock warnings on every row.</p>
