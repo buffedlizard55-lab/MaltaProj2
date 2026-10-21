@@ -1,0 +1,295 @@
+{
+ "session": "5f903db4",
+ "schema": 1,
+ "purpose": "Hand-verified evidence that the automated collectors could not join: name-variant book quotes, team aliases and attempt ledgers. Every entry records the page that publishes the number, the exact read time and the reason the join is safe. Nothing here is inferred from HotSpawn crowd percentages.",
+ "read_log": [
+  {
+   "source": "HotSpawn Pick'ems lobby",
+   "url": "https://play.hotspawn.com/lobby",
+   "read_utc": "2026-10-21T19:36:00Z",
+   "result": "78 CS2 fixtures listed for week 273; 13 are currently open for picks (7 under 'Closing Soon' + 6 under 'Upcoming'), each with a two-sided pick card.",
+   "note": "Fixture discovery only. The crowd-pick percentages on this page are NOT read, stored or used anywhere."
+  },
+  {
+   "source": "Kalshi public market-data API (KXCS2GAME series)",
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=false",
+   "read_utc": "2026-10-21T19:36:00Z",
+   "result": "Open KXCS2GAME events delivered across three payload pages, all dated 21-23 Oct 2026. Three of them are the same pairing as a HotSpawn fixture: 26OCT211800LNALE, 26OCT220100RAVA and 26OCT221230APOGEEUNITY.",
+   "note": "Event payload was read in full (3 chunks). Each event carries two mutually-exclusive binary markets (one per team) with yes_bid/yes_ask in dollars."
+  },
+  {
+   "source": "Kalshi market ladder (Rare Atom vs Vitalem Aerem)",
+   "url": "https://api.elections.kalshi.com/trade-api/v2/markets?event_ticker=KXCS2GAME-26OCT220100RAVA",
+   "read_utc": "2026-10-21T19:44:00Z",
+   "result": "Rare Atom yes 0.30 bid / 0.84 ask; Vitalem Aerem 0.13 bid / 0.59 ask; zero volume and zero open interest. Rules text: Oct 22, 2026 at 1:00 AM EDT (= 05:00Z, the HotSpawn kick-off); the event's occurrence_datetime says 09:00Z.",
+   "note": "Not used as a probability input: a 0.54-wide two-way ladder with no trades is a market-maker placeholder, not a consensus price. The Melbet line for the same fixture is used instead, and this ladder is recorded as directional corroboration only."
+  },
+  {
+   "source": "Valve official Counter-Strike Regional Standings (GitHub, ValveSoftware)",
+   "url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026",
+   "read_utc": "2026-10-21T19:34:00Z",
+   "result": "40 published standings files; the newest is standings_global_2026_10_05.md (no 2026_10_12 or 2026_10_19 file exists). 380 rows in the global table.",
+   "note": "Confirms the committed data/19d6c262/vrs_global.json snapshot (2026_10_05) is Valve's newest published rating table, i.e. our ratings are 16 days old by Valve's own publishing cadence."
+  },
+  {
+   "source": "bo3.gg match page (Alianza Lima Esports vs Los Ninos)",
+   "url": "https://bo3.gg/matches/alianza-lima-esports-vs-los-ninos-21-10-2026",
+   "read_utc": "2026-10-21T19:37:00Z",
+   "result": "CCT South America 2026 Series 7, group stage round 5, Bo3, Oct 21 18:00 (same slot as HotSpawn fixture 1082837). Lineup listed: zockie, Slayerhz, NotJuanjo, BabyRage, Antuanette.",
+   "note": "That five is identical to the roster Valve publishes for 'Zetta' (#357, 473 pts), which is the alias evidence for joining Kalshi's 'Alianza Lima Esports' market to HotSpawn's 'Zetta'."
+  },
+  {
+   "source": "bo3.gg team page (Banda Chuya)",
+   "url": "https://bo3.gg/teams/banda-chuya",
+   "read_utc": "2026-10-21T19:37:00Z",
+   "result": "Squad shown in last-8-match stats: AdrieN, showk, ezox, maaryy, tomiko. Recent matches incl. mellren 19-10-2026, regnum4games 08-10-2026, benched-gods 30-09-2026.",
+   "note": "Identical to Valve's five-man 'Banda Chuya' row (#165, 801 pts). Valve also publishes a two-player remnant 'Banda Chuya' row (#373, 402 pts) with roster ezox, manio - not an active five, so it is not used."
+  }
+ ],
+ "quotes": [
+  {
+   "fixture_id": "1082837",
+   "source_key": "kalshi",
+   "source_name": "Kalshi (regulated prediction-market exchange)",
+   "event_id": "KXCS2GAME-26OCT211800LNALE",
+   "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211800lnale",
+   "api_url": "https://api.elections.kalshi.com/trade-api/v2/markets?event_ticker=KXCS2GAME-26OCT211800LNALE",
+   "quoted_team_a": "Alianza Lima Esports",
+   "quoted_team_b": "Los Ninos",
+   "decimal_a": 2.325581,
+   "decimal_b": 1.694915,
+   "raw_format": "yes bid/ask mid in USD (1 contract pays $1)",
+   "raw": {
+    "alianza_lima_yes_bid": 0.39,
+    "alianza_lima_yes_ask": 0.47,
+    "los_ninos_yes_bid": 0.55,
+    "los_ninos_yes_ask": 0.63,
+    "market_updated_time": "2026-10-21T03:25:00.307953Z",
+    "los_ninos_ticker": "KXCS2GAME-26OCT211800LNALE-LN",
+    "alianza_ticker": "KXCS2GAME-26OCT211800LNALE-ALE",
+    "volume_dollars": 0.0,
+    "open_interest": 0.0
+   },
+   "start_utc": "2026-10-21T22:00:00Z",
+   "retrieved_utc": "2026-10-21T19:36:00Z",
+   "league": "CCT South America Series 7 2026",
+   "swapped": true,
+   "join_note": "HotSpawn 'Zetta' = Kalshi 'Alianza Lima Esports': identical five-man roster (zockie, Slayerhz, NotJuanjo, BabyRage, Antuanette), same CCT SA Series 7 round-5 slot, same 22:00Z kick-off. Kalshi's own rules text: 'originally scheduled for Oct 21, 2026 at 6:00 PM EDT' = 22:00Z.",
+   "evidence_urls": [
+    "https://bo3.gg/matches/alianza-lima-esports-vs-los-ninos-21-10-2026",
+    "https://bo3.gg/teams/alianza-lima-esports",
+    "https://www.hltv.org/matches/2399865/zetta-vs-los-ninos-cct-2026-south-america-series-7",
+    "https://www.hltv.org/team/13833/zetta",
+    "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+   ],
+   "caveats": [
+    "Zero traded volume and zero open interest: the quote is a market-maker ladder, not a traded consensus. The two-way spread is wide (0.16 on Los Ninos, 0.08 on Alianza).",
+    "Kalshi's own occurrence_datetime for this event (2026-10-22T02:00:00Z) is four hours later than the kick-off stated in the same market's rules text (Oct 21 6:00 PM EDT = 22:00Z). The rules text and HotSpawn agree, so 22:00Z is used.",
+    "Disagreement disclosed on the site: our Valve-VRS origination and bo3.gg's own model both favour Zetta, while this exchange quote favours Los Ninos."
+   ],
+   "declared_order": "ab",
+   "declared_order_note": "Quoted order is the fixture order (HotSpawn team_a first) after the name-variant join documented in join_note."
+  },
+  {
+   "fixture_id": "1082882",
+   "source_key": "melbet",
+   "source_name": "Melbet (1xBet platform)",
+   "event_id": "763696446",
+   "public_url": "https://melbet.com/en/line/esports",
+   "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+   "quoted_team_a": "UNiTY",
+   "quoted_team_b": "Apogee Esports",
+   "decimal_a": 2.355,
+   "decimal_b": 1.54,
+   "raw_format": "decimal",
+   "start_utc": "2026-10-22T14:00:00Z",
+   "retrieved_utc": "2026-10-21T19:24:25Z",
+   "league": "CS 2. Stake Ranked Closed Qualifier",
+   "swapped": false,
+   "join_note": "HotSpawn 'Apogee Betclic' = book 'Apogee Esports'. Same competition (Stake Ranked Episode 6 Closed Qualifier), same UTC kick-off 14:00Z, and the pairing is the only two-team fixture in that slot. Thunderpick's own bo3.gg slug for this fixture is 'unity-vs-betclic-apogee-esports'.",
+   "evidence_urls": [
+    "https://www.hotspawn.com/matches/unity-vs-apogee-betclic-stake-ranked-episode-6-closed-qualifier-1082882",
+    "https://bo3.gg/matches/unity-vs-betclic-apogee-esports-22-10-2026"
+   ],
+   "caveats": [
+    "The collectors left this row blank because 'Apogee Betclic' did not normalise to 'Apogee Esports'."
+   ],
+   "declared_order": "ab",
+   "declared_order_note": "Quoted order is the fixture order (HotSpawn team_a first) after the name-variant join documented in join_note."
+  },
+  {
+   "fixture_id": "1082882",
+   "source_key": "thunderpick",
+   "source_name": "Thunderpick (published through bo3.gg)",
+   "event_id": "132327",
+   "public_url": "https://bo3.gg/matches/unity-vs-betclic-apogee-esports-22-10-2026",
+   "api_url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.id%5D%5Beq%5D=132327",
+   "quoted_team_a": "UNiTY",
+   "quoted_team_b": "Betclic",
+   "decimal_a": 2.4,
+   "decimal_b": 1.5,
+   "raw_format": "decimal",
+   "start_utc": "2026-10-22T14:00:00Z",
+   "retrieved_utc": "2026-10-21T19:28:56Z",
+   "league": "Stake Ranked Episode 6: Closed Qualifier",
+   "swapped": false,
+   "join_note": "Same fixture as the Melbet quote: identical kick-off 14:00Z and identical competition; bo3.gg's slug names both spellings of the opponent.",
+   "evidence_urls": [
+    "https://bo3.gg/matches/unity-vs-betclic-apogee-esports-22-10-2026"
+   ],
+   "caveats": [
+    "A Kalshi event for the same pairing (KXCS2GAME-26OCT221230APOGEEUNITY, 'Apogee Esports vs. UNiTY esports') is priced at a different kick-off (16:30Z) and is therefore NOT joined to this fixture; recorded as a clock conflict on the Flagged page."
+   ],
+   "declared_order": "ab",
+   "declared_order_note": "Quoted order is the fixture order (HotSpawn team_a first) after the name-variant join documented in join_note."
+  }
+ ],
+ "aliases": {
+  "1082837": {
+   "team_a_vrs": null,
+   "team_b_vrs": null,
+   "note": "HotSpawn 'Zetta' is not the name in the Kalshi market; the exchange calls the same five 'Alianza Lima Esports'. Valve lists the five as 'Zetta' #357 (473 pts). 'LOS NINOS' has no row in Valve's global table and is not carried by Kalshi under that name for any other slot."
+  },
+  "1082882": {
+   "team_a_vrs": "UNiTY",
+   "team_b_vrs": null,
+   "note": "'Apogee Betclic' has no row in Valve's global table under either spelling."
+  }
+ },
+ "attempted_sources": [
+  {
+   "source": "Kalshi KXCS2GAME (exchange)",
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=false",
+   "read_utc": "2026-10-21T19:36:00Z",
+   "covers": [
+    "1082837"
+   ],
+   "misses": [
+    "1081597",
+    "1081600",
+    "1082688",
+    "1082689",
+    "1081870",
+    "1082858",
+    "1082859",
+    "1082860",
+    "1082861",
+    "1082792",
+    "1082793"
+   ],
+   "note": "37 open CS2 events, all dated 21-23 Oct 2026. The DFRAG Invitational fixtures (26-27 Oct) and Moscow Cyber Games fixtures (31 Oct) have no open event at all, and the 22 Oct CCT/VOID/Circuit X slots other than 26OCT220100RAVA are absent. For 1081870 (Rare Atom vs Vitalem Aerem) Kalshi does have a ladder, but it is 0.30/0.84 vs 0.13/0.59 with zero volume, so it is recorded as directional corroboration and not used as a price."
+  },
+  {
+   "source": "Melbet line feed (1xBet platform)",
+   "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+   "read_utc": "2026-10-21T19:24:25Z",
+   "covers": [
+    "1082882"
+   ],
+   "misses": [
+    "1081597",
+    "1081600",
+    "1082858",
+    "1082859",
+    "1082860",
+    "1082861",
+    "1082792",
+    "1082793"
+   ],
+   "note": "Near-name collisions were rejected, not joined: 'The Audacity vs The Huns' (22 Oct 05:00Z, eXTREMESLAND Mongolia Qualifier) is a different fixture from HOTU vs The Huns (31 Oct 09:00Z, Moscow Cyber Games); '5Star vs TheONE 1337' (22 Oct 08:00Z, eXTREMESLAND Mongolia) is a different '5Star' from Valve-rated 5star (ariucle, clouden, hoolig4n, NEUZ, rate) which plays 1WIN on 31 Oct; 'Luminosity vs HOTU' (27 Oct 17:00Z, Tesla Cup) is not the HotSpawn fixture."
+  },
+  {
+   "source": "Thunderpick (via bo3.gg)",
+   "url": "https://api.bo3.gg/api/v1/matches/?filter%5Bmatches.discipline_id%5D%5Beq%5D=1&filter%5Bmatches.status%5D%5Bin%5D=upcoming",
+   "read_utc": "2026-10-21T19:28:56Z",
+   "covers": [
+    "1082882"
+   ],
+   "misses": [
+    "1081597",
+    "1081600",
+    "1082688",
+    "1082689",
+    "1081870",
+    "1082858",
+    "1082859",
+    "1082860",
+    "1082861",
+    "1082792",
+    "1082793"
+   ],
+   "note": "48 Thunderpick quotes were published for the upcoming window; none of them is one of the unpriced HotSpawn fixtures."
+  },
+  {
+   "source": "Pinnacle (guest API via cs2-hub)",
+   "url": "https://www.pinnacle.com/en/esports/cs2-hub",
+   "read_utc": "2026-10-21T19:24:21Z",
+   "covers": [
+    "1082688",
+    "1082689"
+   ],
+   "misses": [
+    "1081597",
+    "1081600",
+    "1082837",
+    "1081870",
+    "1082858",
+    "1082859",
+    "1082860",
+    "1082861",
+    "1082792",
+    "1082793"
+   ],
+   "note": "Pinnacle prices the PGL Masters Bucharest slate and the two Circuit X Curitiba matches; it does not price tier-C CCT/DFRAG/MCG fixtures."
+  },
+  {
+   "source": "Bovada",
+   "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+   "read_utc": "2026-10-21T19:24:21Z",
+   "covers": [
+    "1082688",
+    "1082689"
+   ],
+   "misses": [
+    "1081597",
+    "1081600",
+    "1082837",
+    "1081870",
+    "1082858",
+    "1082859",
+    "1082860",
+    "1082861",
+    "1082792",
+    "1082793"
+   ],
+   "note": "Same coverage pattern as Pinnacle: no tier-C lines."
+  },
+  {
+   "source": "HotSpawn match pages (HLTV / bookmaker identity cross-check)",
+   "url": "https://play.hotspawn.com/lobby",
+   "read_utc": "2026-10-21T19:36:00Z",
+   "covers": [
+    "1082837",
+    "1081870",
+    "1081597",
+    "1081600",
+    "1082688",
+    "1082689",
+    "1082882",
+    "1082792",
+    "1082793"
+   ],
+   "misses": [
+    "1082858",
+    "1082859",
+    "1082860",
+    "1082861"
+   ],
+   "note": "The four DFRAG Invitational fixtures are rendered in the lobby with a 'Who will win?' card but no 'View Match' permalink, so no HotSpawn match page exists to cross-check. That is a HotSpawn-side gap, recorded on the Flagged page."
+  }
+ ],
+ "notes": [
+  "Reference books do not price most tier-C CS2 fixtures. Rather than leave rows blank, every unpriced fixture is given an originated line from Valve's official VRS table, labelled 'originated' everywhere it appears, with the exact formula, the fitted slope and the model's own measured error published next to it.",
+  "No value in this file is derived from HotSpawn's crowd-pick percentages."
+ ]
+}

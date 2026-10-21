@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Every open HotSpawn CS2 pick'em match with a pick, both win probabilities and the source for every number.">
+<title>Executive summary · Every-match CS2 picks</title>
+<style>
+:root{--bg:#0b1220;--card:#121c2e;--card2:#0f1727;--ink:#e8eefc;--dim:#93a4c3;--line:#25334d;
+--good:#7ef0b2;--warn:#ffd479;--bad:#ff9aa2;--accent:#7cc4ff;--market:#7ef0b2;--model:#7cc4ff;--bound:#ffd479}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:1080px;margin:0 auto;padding:12px 14px 64px}
+header.top{position:sticky;top:0;z-index:5;background:rgba(11,18,32,.96);border-bottom:1px solid var(--line);
+backdrop-filter:blur(6px)}
+header.top .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;
+max-width:1080px;margin:0 auto;padding:8px 14px}
+.brand{font-weight:700;font-size:15px;letter-spacing:.2px}
+.brand span{color:var(--good)}
+nav{display:flex;flex-wrap:wrap;gap:6px}
+nav a{display:inline-block;padding:8px 11px;border:1px solid var(--line);border-radius:999px;
+text-decoration:none;color:var(--ink);font-size:13px;min-height:38px}
+nav a.active{background:var(--good);color:#0b2417;border-color:var(--good);font-weight:700}
+h1{font-size:24px;line-height:1.2;margin:10px 0 4px}
+h2{font-size:18px;margin:26px 0 8px}
+h3{font-size:15px;margin:18px 0 6px}
+p{margin:8px 0}
+.eyebrow{color:var(--dim);text-transform:uppercase;letter-spacing:.09em;font-size:11px;margin:14px 0 2px}
+.lede{color:var(--dim)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0}
+@media(min-width:640px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:11px}
+.tile b{display:block;font-size:24px;line-height:1.1}
+.tile small{color:var(--dim);font-size:12px}
+.cta{display:grid;gap:10px;margin:14px 0}
+@media(min-width:640px){.cta{grid-template-columns:1fr 1fr}}
+.cta a{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);
+border:1px solid var(--line);border-radius:14px;padding:15px 16px;text-decoration:none;color:var(--ink);
+font-weight:700;min-height:56px}
+.cta a.primary{background:var(--good);color:#08200f;border-color:var(--good)}
+.cta a span.small{font-weight:400;color:inherit;opacity:.75;font-size:12px}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;
+border:1px solid var(--line);white-space:nowrap}
+.badge.market{color:#08200f;background:var(--market);border-color:var(--market)}
+.badge.model{color:#04121f;background:var(--model);border-color:var(--model)}
+.badge.bound{color:#2a1d00;background:var(--bound);border-color:var(--bound)}
+.badge.flag{color:var(--warn);background:transparent;border-color:var(--warn)}
+.badge.plain{color:var(--dim)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.pick{font-weight:800;font-size:15px}
+.prob{font-variant-numeric:tabular-nums}
+.prob.win{color:var(--good);font-weight:700}
+.prob.lose{color:var(--dim)}
+.muted{color:var(--dim);font-size:12px}
+.src{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:12px}
+.src a{text-decoration:underline}
+.match{font-weight:700}
+@media(max-width:639px){
+ table thead{display:none}
+ table,thead,tbody,tr,td,th{display:block;width:100%}
+ tr{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;padding:10px 12px}
+ td{border:0;padding:4px 0}
+ td[data-l]{display:flex;gap:10px;justify-content:space-between;align-items:baseline}
+ td[data-l]::before{content:attr(data-l);color:var(--dim);font-size:11px;text-transform:uppercase;
+ letter-spacing:.06em;flex:0 0 42%}
+ td.num{text-align:right}
+}
+.callout{border-left:4px solid var(--warn);background:#1a1608;padding:10px 12px;border-radius:8px;margin:12px 0}
+.callout.good{border-color:var(--good);background:#0b1f16}
+.callout.bad{border-color:var(--bad);background:#221010}
+ul,ol{padding-left:20px}
+li{margin:5px 0}
+footer{color:var(--dim);font-size:12px;border-top:1px solid var(--line);margin-top:26px;padding-top:12px}
+code{background:#0a1322;padding:1px 5px;border-radius:5px;font-size:13px}
+.tbl-scroll{overflow-x:auto}
+</style>
+</head>
+<body>
+<header class="top"><div class="bar">
+<div class="brand">Every-match picks <span>· CS2</span></div>
+<nav><a href="index.html" class="active">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="sources.html">Sources</a><a href="method.html">Method</a><a href="flagged.html">Flagged</a><a href="../index.html">Site home</a></nav>
+</div></header>
+<main class="wrap">
+
+<p class="eyebrow">Executive summary · HotSpawn CS2 pick'em</p>
+<h1>Every open match has a pick, both win probabilities and a source you can open.</h1>
+<p class="lede">Built 2026-10-21 19:47:34 UTC from the 13 CS2 fixtures open in the HotSpawn
+Pick'ems lobby plus 1 fixture the HotSpawn API lists but the lobby does not render.
+No blanks, no crowd-percentage shortcuts: each row is either a real bookmaker/exchange price or a
+line originated from Valve's official rating table, and the row says which.</p>
+
+<div class="tiles">
+<div class="tile"><b>13</b><small>open lobby matches covered (+1 API-only)</small></div>
+<div class="tile"><b>14</b><small>matches with a pick and two probabilities</small></div>
+<div class="tile"><b>5</b><small>priced from real betting lines</small></div>
+<div class="tile"><b>0</b><small>unresolved (see limitations)</small></div>
+</div>
+
+<h2>Where the picks are</h2>
+<p class="lede">Everything below is one tap away on a phone. This page is the summary; the lists
+live on their own pages and are refreshed every four hours.</p>
+<div class="cta">
+<a class="primary" href="picks.html"><span>All picks · every match<span class="small"><br>pick, both probabilities, basis, source links</span></span><span>→</span></a>
+<a href="unresolved.html"><span>Unresolved &amp; limitations<span class="small"><br>what could not be priced from a book and why</span></span><span>→</span></a>
+<a href="sources.html"><span>Sources &amp; read times<span class="small"><br>every book, exchange and official table used</span></span><span>→</span></a>
+<a href="method.html"><span>Method &amp; verification<span class="small"><br>formula, fitted slope, join rules, tests</span></span><span>→</span></a>
+<a href="flagged.html"><span>Flagged for review<span class="small"><br>irregularities found in the data and the repo</span></span><span>→</span></a>
+<a href="../index.html"><span>Site home<span class="small"><br>other boards and archives</span></span><span>→</span></a>
+</div>
+
+<h2>Next matches</h2>
+<p class="lede">The six fixtures that lock soonest. The full list is on
+<a href="picks.html">All picks</a>.</p>
+<div class="tbl-scroll"><table id="next"><thead><tr><th>Match</th><th>Kick-off</th><th>Pick</th><th class="num">A win</th><th class="num">B win</th><th>Basis</th><th>Sources</th></tr></thead><tbody><tr id="f1082837">
+<td data-l="Match"><span class="match">Zetta vs LOS NINOS</span><div class="muted">CCT South America 2026 Series #7 · tier C</div></td>
+<td data-l="Kick-off">21 Oct · 22:00 UTC<div class="muted">in 2h
+ · locks 21:54 UTC</div></td>
+<td data-l="Pick"><span class="pick">LOS NINOS</span><div class="muted">Lean · 57.8% to win</div></td>
+<td class="num" data-l="Zetta"><span class="prob lose">42.2%</span></td>
+<td class="num" data-l="LOS NINOS"><span class="prob win">57.8%</span></td>
+<td data-l="Basis"><span class="badge market">Market · 1 book</span><div class="muted"><span class="badge flag">exchange quote zero volume</span> <span class="badge flag">market and rating model disagree on the pick</span> <span class="badge flag">single book quote</span></div></td>
+<td data-l="Sources"><div class="src"><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211800lnale" target="_blank" rel="noopener">Kalshi</a><a href="https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837" target="_blank" rel="noopener">HotSpawn Pick&#x27;ems lobby</a><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures" target="_blank" rel="noopener">HotSpawn fixtures API</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0357--zetta--antuanette-babyrage-notjuanjo-slayerhz-zockie.md" target="_blank" rel="noopener">Valve VRS standings</a></div></td>
+</tr><tr id="f1081870">
+<td data-l="Match"><span class="match">Vitalem Aerem vs Rare Atom</span><div class="muted">VOID Autumn Cup 2026 · tier C</div></td>
+<td data-l="Kick-off">22 Oct · 05:00 UTC<div class="muted">in 9h
+ · locks 04:54 UTC</div></td>
+<td data-l="Pick"><span class="pick">Rare Atom</span><div class="muted">Solid · 63.8% to win</div></td>
+<td class="num" data-l="Vitalem Aerem"><span class="prob lose">36.2%</span></td>
+<td class="num" data-l="Rare Atom"><span class="prob win">63.8%</span></td>
+<td data-l="Basis"><span class="badge market">Market · 1 book</span><div class="muted"><span class="badge flag">single book quote</span></div></td>
+<td data-l="Sources"><div class="src"><a href="https://melbet.com/en/line/esports" target="_blank" rel="noopener">Melbet</a><a href="https://www.hotspawn.com/matches/vitalem-aerem-vs-rare-atom-void-autumn-cup-2026-1081870" target="_blank" rel="noopener">HotSpawn Pick&#x27;ems lobby</a><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures" target="_blank" rel="noopener">HotSpawn fixtures API</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS standings</a></div></td>
+</tr><tr id="f1081597">
+<td data-l="Match"><span class="match">benched gods vs TitanFlow</span><div class="muted">CCT Europe 2026 Challengers #8 · tier C</div></td>
+<td data-l="Kick-off">22 Oct · 11:00 UTC<div class="muted">in 15h
+ · locks 10:54 UTC</div></td>
+<td data-l="Pick"><span class="pick">benched gods</span><div class="muted">Bound · 73.8% to win</div></td>
+<td class="num" data-l="benched gods"><span class="prob win">≥ 73.8%</span></td>
+<td class="num" data-l="TitanFlow"><span class="prob lose">≤ 26.2%</span></td>
+<td data-l="Basis"><span class="badge bound">Bound · one side unrated</span><div class="muted"><span class="badge flag">no external price any book</span> <span class="badge flag">originated bound unlisted opponent</span> <span class="badge flag">vrs duplicate rows resolved by published rule</span></div></td>
+<td data-l="Sources"><div class="src"><a href="https://www.hotspawn.com/matches/benched-gods-vs-titanflow-cct-europe-2026-challengers-8-1081597" target="_blank" rel="noopener">HotSpawn Pick&#x27;ems lobby</a><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures" target="_blank" rel="noopener">HotSpawn fixtures API</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0157--benched_gods--facer-k014nz-norescue-wign-yoyos2.md" target="_blank" rel="noopener">Valve VRS standings</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS published table</a></div></td>
+</tr><tr id="f1081600">
+<td data-l="Match"><span class="match">Donstu vs Banda chuya</span><div class="muted">CCT Europe 2026 Challengers #8 · tier C</div></td>
+<td data-l="Kick-off">22 Oct · 13:45 UTC<div class="muted">in 18h
+ · locks 13:39 UTC</div></td>
+<td data-l="Pick"><span class="pick">Banda chuya</span><div class="muted">Lean · 54.2% to win</div></td>
+<td class="num" data-l="Donstu"><span class="prob lose">45.8%</span></td>
+<td class="num" data-l="Banda chuya"><span class="prob win">54.2%</span></td>
+<td data-l="Basis"><span class="badge model">Originated · Valve VRS</span><div class="muted"><span class="badge flag">no external price any book</span> <span class="badge flag">originated from official valve vrs</span> <span class="badge flag">rating range wider than 10pp</span></div></td>
+<td data-l="Sources"><div class="src"><a href="https://www.hotspawn.com/matches/donstu-vs-banda-chuya-cct-europe-2026-challengers-8-1081600" target="_blank" rel="noopener">HotSpawn Pick&#x27;ems lobby</a><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures" target="_blank" rel="noopener">HotSpawn fixtures API</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0197--donstu--due1yant-gleb86rus-laksheri-neolife-phorate.md" target="_blank" rel="noopener">Valve VRS standings</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS published table</a></div></td>
+</tr><tr id="f1082688">
+<td data-l="Match"><span class="match">Imperial vs Turma do Pagode</span><div class="muted">Circuit X Curitiba #4 · tier C</div></td>
+<td data-l="Kick-off">22 Oct · 14:00 UTC<div class="muted">in 18h
+ · locks 13:54 UTC</div></td>
+<td data-l="Pick"><span class="pick">Imperial</span><div class="muted">Strong · 75.4% to win</div></td>
+<td class="num" data-l="Imperial"><span class="prob win">75.4%</span></td>
+<td class="num" data-l="Turma do Pagode"><span class="prob lose">24.6%</span></td>
+<td data-l="Basis"><span class="badge market">Market · 4 books</span><div class="muted"></div></td>
+<td data-l="Sources"><div class="src"><a href="https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/imperial-turma-do-pagode-202610221000" target="_blank" rel="noopener">Bovada</a><a href="https://melbet.com/en/line/esports" target="_blank" rel="noopener">Melbet</a><a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle</a><a href="https://bo3.gg/matches/imperial-vs-turma-do-pagode-22-10-2026" target="_blank" rel="noopener">Thunderpick</a></div></td>
+</tr><tr id="f1082689">
+<td data-l="Match"><span class="match">BESTIA vs ShindeN</span><div class="muted">Circuit X Curitiba #4 · tier C</div></td>
+<td data-l="Kick-off">22 Oct · 14:00 UTC<div class="muted">in 18h
+ · locks 13:54 UTC</div></td>
+<td data-l="Pick"><span class="pick">BESTIA</span><div class="muted">Lean · 52.1% to win</div></td>
+<td class="num" data-l="BESTIA"><span class="prob win">52.1%</span></td>
+<td class="num" data-l="ShindeN"><span class="prob lose">47.9%</span></td>
+<td data-l="Basis"><span class="badge market">Market · 4 books</span><div class="muted"></div></td>
+<td data-l="Sources"><div class="src"><a href="https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/bestia-shinden-202610221000" target="_blank" rel="noopener">Bovada</a><a href="https://melbet.com/en/line/esports" target="_blank" rel="noopener">Melbet</a><a href="https://www.pinnacle.com/en/esports/cs2-hub" target="_blank" rel="noopener">Pinnacle</a><a href="https://bo3.gg/matches/bestia-vs-shinden-22-10-2026" target="_blank" rel="noopener">Thunderpick</a></div></td>
+</tr></tbody></table></div>
+
+<h2>How a pick is produced</h2>
+<ol>
+<li><strong>Real prices first.</strong> Two-way bookmaker and exchange prices are converted to
+no-vig probabilities (each book's two implied probabilities normalised to 100%), then averaged.
+Every book price, its decimal odds and its overround is printed on the row.</li>
+<li><strong>Official ratings only when no book prices the match.</strong> Valve's published VRS
+points go through <code>p = 1/(1+exp(-k·C·Δpoints))</code> with Valve's own C = 0.0056000078 and
+this project's fitted k = 0.4308 (re-fitted here: best k on a 60-pair grid is
+0.448, MAE 7.70 pp).</li>
+<li><strong>One-sided ratings become bounds.</strong> If a team has no row in Valve's table, its
+chance is at or below Valve's published floor, so the row shows <code>≥</code> / <code>≤</code>
+instead of pretending to a point estimate.</li>
+<li><strong>Nothing is guessed.</strong> A fixture that fits none of the above is published as
+unresolved with the attempt ledger. Right now that list is empty and the limitations are listed on
+<a href="unresolved.html">Unresolved &amp; limitations</a>.</li>
+</ol>
+<div class="callout"><strong>Read this before betting a pick.</strong> Market rows are consensus
+prices; originated rows are models with a measured error of about ±8 pp, and three fixtures rest on
+a single unrated opponent, so they are directional. Details and the conflicting-signal rows are on
+<a href="unresolved.html">Unresolved &amp; limitations</a> and
+<a href="flagged.html">Flagged for review</a>.</div>
+
+<footer>
+<p>Every figure on this page is either a bookmaker/exchange price (no-vig) or a line originated from
+Valve's official rating table; the basis is printed on every row. HotSpawn's crowd-pick percentages
+are never used. Board built 2026-10-21 19:47:34 UTC.</p>
+</footer>
+</main>
+</body>
+</html>
