@@ -89,6 +89,19 @@ Session: `e1b48771` (environment-fixed branch `arena/e1b48771-maltaproj2`; the e
   shows Zetta #366 while Valve's file says #357 — the official file is used.
 - **Close-out.** See the PR/merge entry appended below once the pull request is merged and Pages verified.
 
+# Coordination — session `82a9a0cc` (canonical HotSpawn CS2 every-match picks + phone-first front door, 2026-10-21)
+
+Session: `82a9a0cc` (environment-fixed branch `arena/82a9a0cc-maltaproj2`; Arena forbids creating or switching to the requested `session-<id>/<task>` branch, so this session remains on its fixed branch and isolates work by path).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-82A9A0CC-HOTSPAWN-LIVE: audit the freshest committed HotSpawn CS2 inventory; preserve featured external-market picks; resolve every remaining low-tier/unpriced fixture through the evidence ladder (eligible esportsbook line → official Valve VRS team/roster evidence → explicitly labelled conservative one-sided bound); publish one canonical phone-first `hotspawn-live/` section with an executive summary, every-match picks, separate unresolved/limitations, sources, method and flagged-review pages; source-link every row; never use HotSpawn crowd ownership as probability; automate refresh every 4 hours; test all arithmetic, coverage, links and mobile contracts; final additive landing integration, PR, merge and Pages verification | in progress | 82a9a0cc | 2026-10-21T12:35:00Z | `hotspawn-live/**`, `scripts/82a9a0cc/**`, `data/82a9a0cc/**`, `tests/test_82a9a0cc.py`, `.github/workflows/hotspawn-live-82a9a0cc.yml`, and this section of `COORDINATION.md`. Read-only inputs: all existing `data/*/board.json`, collectors, boards, and session pages. Final-integration-only additive scope after validation: `scripts/build_site.py`, `scripts/stage_site.py`, generated root `index.html`, and one `README.md` entry. |
+
+## Log — 82a9a0cc
+- 2026-10-21T12:35Z: Claim posted before any implementation file edit. Read the shared board and current open PR/workflow lists. The newest every-match session (`19d6c262`) is recorded done/merged; open PRs #191/#179/#176/#164/#121/#107/#98 are all older than 60 minutes and touch prior scopes. No live claim overlaps the unique `hotspawn-live/**`, `scripts/82a9a0cc/**`, `data/82a9a0cc/**`, test, or workflow paths. Existing boards remain read-only. Shared landing/staging files are touched only in the final additive integration step after this isolated section passes its own verification.
+
+---
+
 # Coordination — session `19d6c262` (Resolve a pick for EVERY open HotSpawn CS2 match — VRS-model + lower-bound resolution of the currently-unpriced fixtures, 2026-10-19)
 
 Session: `19d6c262` (environment-fixed branch `arena/19d6c262-maltaproj2`; the environment forbids a `session-<id>/<task>` branch, so scope is separated by directory as in prior sessions).
