@@ -44,23 +44,24 @@ jobs:
       - run: python scripts/build.py
       - name: Re-evaluate canonical picks against source deadlines
         run: |
-          python scripts/c64a5e19/build.py
-          python scripts/69e4c06a/build.py
-          python scripts/5468b0ba/build_audit.py
-          python scripts/98dcfc7e/build.py
-          python scripts/5a40690b/build.py
-          python scripts/7c2622db/build.py
-          python scripts/7c2622db/verify.py
-          python scripts/6ffacd40/audit.py
-          python scripts/a89b76e9/build.py
-          python scripts/e1b48771/build.py
-          python scripts/ff88c096/resolve.py
-          python scripts/ff88c096/audit_repo.py
-          python scripts/ff88c096/build.py
-          python scripts/7adc7718/collect.py
-          python scripts/7adc7718/resolve.py
-          python scripts/7adc7718/build.py
-          python scripts/build_site.py
+          set -o pipefail
+          python scripts/c64a5e19/build.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/c64a5e19/build.py
+          python scripts/69e4c06a/build.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/69e4c06a/build.py
+          python scripts/5468b0ba/build_audit.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/5468b0ba/build_audit.py
+          python scripts/98dcfc7e/build.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/98dcfc7e/build.py
+          python scripts/5a40690b/build.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/5a40690b/build.py
+          python scripts/7c2622db/build.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/7c2622db/build.py
+          python scripts/7c2622db/verify.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/7c2622db/verify.py
+          python scripts/6ffacd40/audit.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/6ffacd40/audit.py
+          python scripts/a89b76e9/build.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/a89b76e9/build.py
+          python scripts/e1b48771/build.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/e1b48771/build.py
+          python scripts/ff88c096/resolve.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/ff88c096/resolve.py
+          python scripts/ff88c096/audit_repo.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/ff88c096/audit_repo.py
+          python scripts/ff88c096/build.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/ff88c096/build.py
+          python scripts/7adc7718/collect.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/7adc7718/collect.py
+          python scripts/7adc7718/resolve.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/7adc7718/resolve.py
+          python scripts/7adc7718/build.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/7adc7718/build.py
+          python scripts/build_site.py 2>&1 | python scripts/cbf92764/annotate_output.py scripts/build_site.py
       - name: Recheck generated site and every source-linked row
         run: python -m unittest discover -s tests -v
       - name: Browser smoke tests
