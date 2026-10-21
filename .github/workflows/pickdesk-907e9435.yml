@@ -43,26 +43,6 @@ jobs:
         run: python3 scripts/907e9435/build.py
       - name: Contract tests (coverage, sources, join gate, assumption policy, rendered pages)
         run: python3 -m unittest tests.test_907e9435 -v
-      - name: Install the shared test requirements (diagnostic parity with the Pages build)
-        if: always()
-        run: pip install -r scripts/requirements.txt
-      - name: Full repository suite (diagnostic; records the tail so a red shared build is readable)
-        if: always()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REF_NAME: ${{ github.ref_name }}
-        run: |
-          set +e
-          python3 -m unittest discover -s tests -v > /tmp/suite.txt 2>&1
-          echo "suite_exit=$?" >> /tmp/suite.txt
-          { grep -E '^(FAIL|ERROR):|^Ran |^FAILED|^OK|suite_exit' /tmp/suite.txt | tail -40; echo '--- detail ---'; grep -n -A 6 '^FAIL: test_all_pages_exist' /tmp/suite.txt | head -40; grep -n -A 8 '^FAIL: test_every_match_appears' /tmp/suite.txt | head -30; } > data/907e9435/ci_suite.txt
-          git config user.name "pickdesk-bot (907e9435)"
-          git config user.email "malta-data-bot@users.noreply.github.com"
-          git add data/907e9435/ci_suite.txt
-          git commit -m "ci(907e9435): shared suite diagnostics [skip ci]" || true
-          git pull --rebase origin "$REF_NAME" || true
-          git push origin "HEAD:$REF_NAME" || true
-          exit 0
       - name: Commit the rendered board (rebase, never discards other sessions' work)
         env:
           REF_NAME: ${{ github.ref_name }}

@@ -4,12 +4,12 @@
 Reads ``data/907e9435/snapshot.json`` and writes:
 
 * ``data/907e9435/board.json``           — the machine-readable board (one row per open fixture)
-* ``everypick/index.html``               — mobile executive summary + "where the picks are"
-* ``everypick/picks.html``               — every open fixture: pick, both probabilities, sources
-* ``everypick/unresolved.html``          — the required separate unresolved + limitations section
-* ``everypick/flagged.html``             — irregularities, alias decisions, rejected prices
-* ``everypick/method.html``              — ladder, formulas, gates, limitations
-* ``everypick/sources.html``             — source ledger with status and observation time
+* ``pickdesk/index.html``               — mobile executive summary + "where the picks are"
+* ``pickdesk/picks.html``               — every open fixture: pick, both probabilities, sources
+* ``pickdesk/unresolved.html``          — the required separate unresolved + limitations section
+* ``pickdesk/flagged.html``             — irregularities, alias decisions, rejected prices
+* ``pickdesk/method.html``              — ladder, formulas, gates, limitations
+* ``pickdesk/sources.html``             — source ledger with status and observation time
 
 Nothing here invents a value: a probability is published only where it is derived from a retained
 source (bookmaker price, exchange order book or the official Valve rating table), and every
@@ -30,7 +30,7 @@ import core  # noqa: E402
 
 SNAPSHOT = ROOT / "data" / "907e9435" / "snapshot.json"
 OUT_DATA = ROOT / "data" / "907e9435"
-OUT_SITE = ROOT / "everypick"
+OUT_SITE = ROOT / "pickdesk"
 CAL_PAIRS = ROOT / "data" / "f7279a54" / "calibration_pairs.json"
 BASE_BOARD = ROOT / "data" / "f7279a54" / "board.json"
 TRACK = ROOT / "data" / "f7279a54" / "track_record.json"
