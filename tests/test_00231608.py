@@ -63,7 +63,7 @@ class LiveFallbackQuotes(unittest.TestCase):
                      'team_a': fixture['team_a'], 'team_b': fixture['team_b'],
                      'decimal_a': 2.0, 'decimal_b': 2.0, 'event_id': 'synthetic-live-test',
                      'start_utc': fixture['start_utc'], 'declared_order': 'ab',
-                     'retrieved_utc': '2026-10-21T20:00:00Z',
+                     'retrieved_utc': build.now_utc(),
                      'api_url': 'https://example.invalid/synthetic-test-only'}
             def load(path, default=None):
                 if path == build.LIVE:
@@ -74,3 +74,27 @@ class LiveFallbackQuotes(unittest.TestCase):
                 self.assertEqual(row['resolution']['basis'], 'market')
                 self.assertEqual(row['resolution']['prob_a'], 0.5)
                 self.assertIn('synthetic-live-test', [q['event_id'] for q in row['quotes']])
+
+
+class QuoteExpiry(unittest.TestCase):
+    def test_eight_hour_boundary_and_invalid_dates(self):
+        from datetime import datetime, timezone
+        ref = datetime(2026, 10, 21, 20, tzinfo=timezone.utc)
+        for seen, expected in [('2026-10-21T12:00:00Z', True),
+                               ('2026-10-21T11:59:59Z', False),
+                               ('2026-10-21T20:00:01Z', False),
+                               ('2026-10-21T19:00:00', False),
+                               ('bad', False), (None, False)]:
+            with self.subTest(seen=seen):
+                self.assertEqual(build.quote_is_fresh({'retrieved_utc': seen}, ref), expected)
+
+    def test_primary_source_timestamp_schema_is_preserved(self):
+        fixture = {'team_a': 'A', 'team_b': 'B', 'start_utc': '2026-10-22T05:00:00Z'}
+        quote = {'decimal_a': 2.0, 'decimal_b': 2.0,
+                 'retrieved_utc': build.now_utc(),
+                 'start_utc_at_source': '2026-10-22T05:00:00Z'}
+        record = build.quote_record(fixture, quote, 'synthetic primary-schema test')
+        self.assertIsNotNone(record)
+        self.assertEqual(record['start_diff_minutes'], 0.0)
+        quote['start_utc_at_source'] = '2026-10-23T05:00:00Z'
+        self.assertIsNone(build.quote_record(fixture, quote, 'synthetic mismatch test'))

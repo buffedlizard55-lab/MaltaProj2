@@ -10,6 +10,8 @@ The prior owner marked this scope done at 19:53 UTC. No new parallel dashboard w
 
 ## Verification log — 00231608
 
+- Added an eight-hour quote expiry gate (aware UTC timestamp required, future-dated/missing/ambiguous observations rejected), and explicit market start validation including the primary collector’s `start_utc_at_source` schema. No source kick-off is replaced by a guessed fixture start. Boundary and primary-schema regressions pass; 31 targeted tests PASS. Hosted PR build 39667696042 fails the inherited cross-board arithmetic phase; do not claim all CI passed. Workflow-dispatch attempt received HTTP 403 (integration lacks actions dispatch permission), so no successful refresh run is claimed.
+
 - Main advanced during the task (automated collectors). Merge conflicts were limited to generated everypick JSON/HTML and the root summary. Preserved main’s newer raw captures and all other root sections, then regenerated only the claimed board/pages/marked summary using the repaired source. No raw evidence or foreign code was discarded.
 
 - Official live GitHub reads: [Valve readme](https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/readme.md) and [2026 table listing](https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026); latest global file is 2026_10_05. [Official standings](https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md) blob `2aa2805394fbc68f36a5752a5b16026f2ab2fed5`, SHA256 `df96e7fc3cd91a2687ec08cac0128e50cc4e4e55346581679572e881d79ae61b`. All 23 published rating-side rank, name, points and stored roster values matched the official table line by line. This does **not** verify current match rosters.

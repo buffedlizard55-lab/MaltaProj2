@@ -267,8 +267,13 @@ class ResearchEvidence(unittest.TestCase):
             row = by_id.get(str(q["fixture_id"]))
             self.assertIsNotNone(row, q["fixture_id"])
             events = {str(x["event_id"]) for x in row["quotes"]}
-            self.assertIn(str(q["event_id"]), events,
-                          f"{q['event_id']} was researched but did not join the row")
+            # Historical research is retained for audit, not kept tradable forever.
+            seen = q.get("retrieved_utc")
+            from datetime import datetime, timezone
+            age = (datetime.now(timezone.utc) - datetime.fromisoformat(seen.replace("Z", "+00:00"))).total_seconds()
+            if 0 <= age <= 8 * 3600:
+                self.assertIn(str(q["event_id"]), events,
+                              f"{q['event_id']} was researched but did not join the row")
 
     def test_vrs_snapshot_claim_matches_the_committed_file(self):
         vrs = core.load(ROOT / "data" / "19d6c262" / "vrs_global.json", {})

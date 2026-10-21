@@ -163,7 +163,7 @@ def page(title, active, body, stamp=""):
 <main class="wrap" id="main-content" tabindex="-1">
 <div class="callout"><strong>Source freshness matters.</strong> This is a retained evidence snapshot, not
 live odds. Four-hour scheduled checks are a target, not a guarantee. Check the fixture and quote
-read times before using a pick. Sources inaccessible during this session were not reverified.
+read times before using a pick. The builder excludes prices older than eight hours. Sources inaccessible during this session were not reverified.
 <a href="unresolved.html">Unresolved picks &amp; limitations</a>.</div>
 {body}
 <footer>

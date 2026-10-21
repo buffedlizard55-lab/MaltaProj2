@@ -1,6 +1,6 @@
 {
  "session": "5f903db4",
- "generated_utc": "2026-10-21T20:08:01Z",
+ "generated_utc": "2026-10-21T20:10:27Z",
  "policy": {
   "ladder": [
    "featured market quotes (bovada / melbet / pinnacle)",
@@ -19,6 +19,8 @@
   "C_source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js",
   "vrs_select_rule": "When Valve's standings list the same organisation more than once (one row per counted roster), select the row whose roster lists a full five and whose latest published match date is the most recent; break ties on higher points. Alternatives are published on the Flagged for review page.",
   "bound_rule": "An unlisted team has no verified rating. Absence from Valve's table does not prove it is weaker than the last listed team. Without an external quote or ratings for both teams, probabilities and picks remain blank and the fixture is published as unresolved.",
+  "quote_max_age_hours": 8,
+  "quote_freshness_rule": "UTC-aware observation required; reject future or older than 8 hours",
   "quote_join_tolerance_minutes": 90
  },
  "sources": {
@@ -237,7 +239,7 @@
      "prob_b": 0.637931,
      "overround": 0.066372,
      "start_utc": "2026-10-22T05:00:00Z",
-     "start_diff_minutes": null,
+     "start_diff_minutes": 0.0,
      "retrieved_utc": "2026-10-21T19:50:11Z",
      "origin": "board f7279a54",
      "raw_format": "decimal",
@@ -558,7 +560,7 @@
      "prob_b": 0.25,
      "overround": 0.066667,
      "start_utc": "2026-10-22T14:00:00Z",
-     "start_diff_minutes": null,
+     "start_diff_minutes": 0.0,
      "retrieved_utc": "2026-10-21T19:50:10Z",
      "origin": "board f7279a54",
      "raw_format": "decimal",
@@ -579,7 +581,7 @@
      "prob_b": 0.246521,
      "overround": 0.070304,
      "start_utc": "2026-10-22T14:00:00Z",
-     "start_diff_minutes": null,
+     "start_diff_minutes": 0.0,
      "retrieved_utc": "2026-10-21T19:50:11Z",
      "origin": "board f7279a54",
      "raw_format": "decimal",
@@ -600,7 +602,7 @@
      "prob_b": 0.244676,
      "overround": 0.072714,
      "start_utc": "2026-10-22T14:00:00Z",
-     "start_diff_minutes": null,
+     "start_diff_minutes": 0.0,
      "retrieved_utc": "2026-10-21T19:50:09Z",
      "origin": "board f7279a54",
      "raw_format": "american",
@@ -759,7 +761,7 @@
      "prob_b": 0.479695,
      "overround": 0.067751,
      "start_utc": "2026-10-22T14:00:00Z",
-     "start_diff_minutes": null,
+     "start_diff_minutes": 0.0,
      "retrieved_utc": "2026-10-21T19:50:10Z",
      "origin": "board f7279a54",
      "raw_format": "decimal",
@@ -780,7 +782,7 @@
      "prob_b": 0.477573,
      "overround": 0.057537,
      "start_utc": "2026-10-22T14:00:00Z",
-     "start_diff_minutes": null,
+     "start_diff_minutes": 0.0,
      "retrieved_utc": "2026-10-21T19:50:11Z",
      "origin": "board f7279a54",
      "raw_format": "decimal",
@@ -801,7 +803,7 @@
      "prob_b": 0.477937,
      "overround": 0.05652,
      "start_utc": "2026-10-22T14:00:00Z",
-     "start_diff_minutes": null,
+     "start_diff_minutes": 0.0,
      "retrieved_utc": "2026-10-21T19:50:06Z",
      "origin": "board f7279a54",
      "raw_format": "american",
@@ -1913,6 +1915,12 @@
   "source": "data/f7279a54/calibration_pairs.json"
  },
  "limitations": [
+  {
+   "id": "L8",
+   "title": "Eight-hour price expiry",
+   "detail": "Retained prices expire after eight hours. Missing or timezone-ambiguous observation times, future timestamps, and missing or ambiguous market start times are rejected. Rejected prices do not silently survive a failed refresh; a row falls back to a labelled two-rated-team model or an unresolved blank.",
+   "source": "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/scripts/5f903db4/build.py"
+  },
   {
    "id": "L1",
    "title": "Reference books do not price tier-C CS2",

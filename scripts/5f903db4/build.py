@@ -51,6 +51,7 @@ NEWEST_VRS_VERIFIED = {
              "returns 40 standings files; the newest global table is 2026_10_05. No 2026_10_12 or "
              "2026_10_19 file is published, so the 2026_10_05 table is current-by-publisher."),
 }
+MAX_QUOTE_AGE_S = 8 * 60 * 60
 TOLERANCE_S = 90 * 60  # quotes are joined only when the kick-off agrees to within 90 minutes
 
 
@@ -129,21 +130,35 @@ def reorient(decimal_a, decimal_b, quoted_a, quoted_b, team_a, team_b,
     return None
 
 
+def quote_is_fresh(q: dict, reference=None) -> bool:
+    """Reject missing, ambiguous, future-dated or older-than-eight-hour observations."""
+    seen = parse_ts(q.get("retrieved_utc"))
+    reference = reference or datetime.now(timezone.utc)
+    if seen is None or seen.tzinfo is None:
+        return False
+    age = (reference - seen).total_seconds()
+    return 0 <= age <= MAX_QUOTE_AGE_S
+
+
 def quote_record(fixture: dict, q: dict, origin: str) -> dict | None:
+    if not quote_is_fresh(q):
+        return None
     pair = reorient(q.get("decimal_a"), q.get("decimal_b"),
                     q.get("team_a") or q.get("quoted_team_a"),
                     q.get("team_b") or q.get("quoted_team_b"),
                     fixture["team_a"], fixture["team_b"], q.get("declared_order"))
     if not pair:
         return None
-    start = q.get("start_utc")
+    start = q.get("start_utc") or q.get("start_utc_at_source")
     fstart = parse_ts(fixture["start_utc"])
-    if start and fstart:
-        diff = abs((parse_ts(start) - fstart).total_seconds())
+    qstart = parse_ts(start)
+    if qstart and fstart and qstart.tzinfo and fstart.tzinfo:
+        diff = abs((qstart - fstart).total_seconds())
         if diff > TOLERANCE_S:
             return None
     else:
-        diff = None
+        # Do not match a two-way market to a fixture without an unambiguous aware start.
+        return None
     nv = core.novig(*pair)
     if not nv:
         return None
@@ -435,6 +450,8 @@ def build() -> dict:
                            "does not prove it is weaker than the last listed team. Without an "
                            "external quote or ratings for both teams, probabilities and picks "
                            "remain blank and the fixture is published as unresolved."),
+            "quote_max_age_hours": MAX_QUOTE_AGE_S // 3600,
+            "quote_freshness_rule": "UTC-aware observation required; reject future or older than 8 hours",
             "quote_join_tolerance_minutes": TOLERANCE_S // 60,
         },
         "sources": {
@@ -521,6 +538,12 @@ def calibration_check() -> dict:
 
 def limitations(rows, bound, vrs_doc) -> list:
     out = [
+        {"id": "L8", "title": "Eight-hour price expiry",
+         "detail": "Retained prices expire after eight hours. Missing or timezone-ambiguous observation "
+                   "times, future timestamps, and missing or ambiguous market start times are rejected. "
+                   "Rejected prices do not silently survive a failed refresh; a row falls back to "
+                   "a labelled two-rated-team model or an unresolved blank.",
+         "source": "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/scripts/5f903db4/build.py"},
         {"id": "L1", "title": "Reference books do not price tier-C CS2",
          "detail": (f"{len([r for r in rows if r['resolution']['basis'] != 'market'])} of {len(rows)} "
                     "retained fixtures have no accepted price from Bovada, Melbet, Pinnacle, Thunderpick or Kalshi "
