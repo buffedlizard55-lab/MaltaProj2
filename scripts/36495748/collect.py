@@ -132,8 +132,9 @@ def kalshi_probe(want: list[dict]) -> dict:
     return joins
 
 
-def bo3_probe(want: list[dict], pages=12) -> dict:
+def bo3_probe(want: list[dict], pages=40) -> dict:
     seen, found = 0, {}
+    listed_unpriced: set = set()
     want_keys = {tuple(sorted((core.norm(w["team_a"]), core.norm(w["team_b"])))): w for w in want}
     for off in range(0, pages * 10, 10):
         data, meta = fetch(BO3.format(off=off))
