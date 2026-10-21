@@ -2,7 +2,9 @@
 
 | Task | Status | Owner | Scope |
 |---|---|---|---|
-| Repair unsupported unranked-team bounds in completed everypick desk; retain market and two-rated-team models, publish missing evidence, test and integrate | in progress | 00231608 | scripts/5f903db4/build.py, scripts/5f903db4/site.py, scripts/5f903db4/stage_root.py, everypick/**, data/5f903db4/board.json, tests/test_00231608.py, COORDINATION.md (this section) |
+| Repair unsupported unranked-team bounds in completed everypick desk; retain market and two-rated-team models, publish missing evidence, test and integrate | in progress | 00231608 | scripts/5f903db4/build.py, scripts/5f903db4/site.py, scripts/5f903db4/stage_root.py, everypick/**, data/5f903db4/board.json, tests/test_00231608.py, tests/test_5f903db4.py (contract updated for explicit unresolved evidence), COORDINATION.md (this section) |
+
+Scope addition: the completed owner’s contract suite is updated to require blanks plus a reason for unresolved rows, retaining all source/math/coverage assertions. Integration scope takeover (only the completed 5f903db4 helper): `scripts/build_site.py::everypick_hero_html` and root `<!-- everypick:start/end -->` block, plus focused tests for that block. The original owner closed this work at 19:53; ff88c096’s broad integration claim is over 60 minutes old. No other navigation or session sections will change. This is required so the executive summary does not contradict the evidence gaps.
 
 The prior owner marked this scope done at 19:53 UTC. No new parallel dashboard will be added. Environment fixes this session to arena/00231608-maltaproj2 rather than the requested session branch convention. Existing active root integration scopes will not be edited. Official source access is limited to GitHub hosts in this sandbox; blocked HLTV/book/lobby reads will be recorded as inaccessible, not verified.
 
