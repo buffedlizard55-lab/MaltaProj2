@@ -1,6 +1,11 @@
 name: Auto-Refresh HotSpawn CS2 Lobby & Picks (7adc7718)
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/7adc7718/**'
+      - '.github/workflows/lobby-7adc7718.yml'
   schedule:
     # Auto-check play.hotspawn.com/lobby + external CS2 odds every 4 hours (within 4-8h window)
     - cron: '17 */4 * * *'

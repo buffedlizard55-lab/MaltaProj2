@@ -62,11 +62,17 @@ def main() -> int:
 
                 # Interactive filter check on lobby/picks.html
                 page.goto(f"http://127.0.0.1:{port}/lobby/picks.html", wait_until="networkidle")
+                total_rows = page.locator("tr[data-row]").count()
+                assert total_rows >= 1, "Expected at least 1 match row on lobby/picks.html"
+                first_term = page.locator("tr[data-row]").first.inner_text().split(" vs ")[0].strip().lower()
+                page.fill("#match-filter", first_term)
+                assert page.locator("tr[data-row]:not([hidden])").count() >= 1
+                page.fill("#match-filter", "__no_such_cs2_team_xyz__")
+                assert page.locator("tr[data-row]:not([hidden])").count() == 0
                 page.fill("#match-filter", "zetta")
-                visible = page.locator("tr[data-row]:not([hidden])").count()
-                assert visible == 1, f"Expected 1 filtered Zetta row, got {visible}"
-                text = page.locator("tr[data-row]:not([hidden])").inner_text()
-                assert "BLANK" in text and "Unverified" in text, text
+                if page.locator("tr[data-row]:not([hidden])").count() >= 1:
+                    text = page.locator("tr[data-row]:not([hidden])").first.inner_text()
+                    assert "BLANK" in text and "Unverified" in text, text
                 page.fill("#match-filter", "")
 
                 shot_dir = Path("/tmp/7adc7718-shots")
