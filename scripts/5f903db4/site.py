@@ -28,6 +28,8 @@ STYLE = """
 --good:#7ef0b2;--warn:#ffd479;--bad:#ff9aa2;--accent:#7cc4ff;--market:#7ef0b2;--model:#7cc4ff;--bound:#ffd479}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
+a:focus-visible{outline:3px solid var(--good);outline-offset:3px}
+.skip{position:absolute;left:-10000px}.skip:focus{position:static;display:block;padding:12px;background:var(--card)}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,
 "Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 a{color:var(--accent)}
@@ -39,8 +41,8 @@ max-width:1080px;margin:0 auto;padding:8px 14px}
 .brand{font-weight:700;font-size:15px;letter-spacing:.2px}
 .brand span{color:var(--good)}
 nav{display:flex;flex-wrap:wrap;gap:6px}
-nav a{display:inline-block;padding:8px 11px;border:1px solid var(--line);border-radius:999px;
-text-decoration:none;color:var(--ink);font-size:13px;min-height:38px}
+nav a{display:inline-block;padding:11px 12px;border:1px solid var(--line);border-radius:999px;
+text-decoration:none;color:var(--ink);font-size:13px;min-height:44px}
 nav a.active{background:var(--good);color:#0b2417;border-color:var(--good);font-weight:700}
 h1{font-size:24px;line-height:1.2;margin:10px 0 4px}
 h2{font-size:18px;margin:26px 0 8px}
@@ -148,16 +150,21 @@ def page(title, active, body, stamp=""):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
-<meta name="description" content="Every open HotSpawn CS2 pick'em match with a pick, both win probabilities and the source for every number.">
+<meta name="description" content="Retained HotSpawn CS2 fixtures, supported picks, sourced model estimates and unresolved evidence gaps.">
 <title>{esc(title)} · Every-match CS2 picks</title>
 <style>{STYLE}</style>
 </head>
 <body>
+<a class="skip" href="#main-content">Skip to picks and summary</a>
 <header class="top"><div class="bar">
 <div class="brand">Every-match picks <span>· CS2</span></div>
 <nav>{links}<a href="../index.html">Site home</a></nav>
 </div></header>
-<main class="wrap">
+<main class="wrap" id="main-content" tabindex="-1">
+<div class="callout"><strong>Source freshness matters.</strong> This is a retained evidence snapshot, not
+live odds. Four-hour scheduled checks are a target, not a guarantee. Check the fixture and quote
+read times before using a pick. The builder excludes prices older than eight hours. Sources inaccessible during this session were not reverified.
+<a href="unresolved.html">Unresolved picks &amp; limitations</a>.</div>
 {body}
 <footer>
 <p>Every figure on this page is either a bookmaker/exchange price (no-vig) or a line originated from
@@ -266,11 +273,11 @@ def render_index(board):
     stamp = board["generated_utc"].replace("T", " ").replace("Z", " UTC")
     body = f"""
 <p class="eyebrow">Executive summary · HotSpawn CS2 pick'em</p>
-<h1>Every open match has a pick, both win probabilities and a source you can open.</h1>
+<h1>Every retained match, clear picks where supported, and visible evidence gaps.</h1>
 <p class="lede">Built {esc(stamp)} from the {s['lobby_open']} CS2 fixtures open in the HotSpawn
 Pick'ems lobby plus {s['api_only']} fixture the HotSpawn API lists but the lobby does not render.
-No blanks, no crowd-percentage shortcuts: each row is either a real bookmaker/exchange price or a
-line originated from Valve's official rating table, and the row says which.</p>
+Retained evidence, not a live verification claim: resolved rows use external prices or a labelled
+model based on Valve ratings. Missing evidence stays blank. HotSpawn crowd percentages are never used.</p>
 
 <div class="tiles">
 <div class="tile"><b>{s['lobby_open']}</b><small>open lobby matches covered (+{s['api_only']} API-only)</small></div>
@@ -305,16 +312,14 @@ Every book price, its decimal odds and its overround is printed on the row.</li>
 points go through <code>p = 1/(1+exp(-k·C·Δpoints))</code> with Valve's own C = {core.VALVE_C} and
 this project's fitted k = {core.CAL_K:.4f} (re-fitted here: best k on a 60-pair grid is
 {board['calibration_check'].get('k_best_grid')}, MAE {board['calibration_check'].get('mae_at_best', 0)*100:.2f} pp).</li>
-<li><strong>One-sided ratings become bounds.</strong> If a team has no row in Valve's table, its
-chance is at or below Valve's published floor, so the row shows <code>≥</code> / <code>≤</code>
-instead of pretending to a point estimate.</li>
-<li><strong>Nothing is guessed.</strong> A fixture that fits none of the above is published as
-unresolved with the attempt ledger. Right now that list is empty and the limitations are listed on
-<a href="unresolved.html">Unresolved &amp; limitations</a>.</li>
+<li><strong>Missing rankings stay unresolved.</strong> Absence from Valve's table is not a
+strength bound. Without external prices or ratings for both teams, pick and probability cells stay blank.</li>
+<li><strong>Nothing is guessed.</strong> {s['unresolved']} fixtures are unresolved. See the separate
+<a href="unresolved.html">Unresolved picks &amp; limitations</a> list for evidence gaps.</li>
 </ol>
 <div class="callout"><strong>Read this before betting a pick.</strong> Market rows are consensus
-prices; originated rows are models with a measured error of about ±8 pp, and three fixtures rest on
-a single unrated opponent, so they are directional. Details and the conflicting-signal rows are on
+prices; originated rows are model estimates, not official odds. The roughly 8 pp in-sample
+market-fit error is not a confidence interval or verified match-outcome accuracy. Details and the conflicting-signal rows are on
 <a href="unresolved.html">Unresolved &amp; limitations</a> and
 <a href="flagged.html">Flagged for review</a>.</div>
 """
@@ -373,9 +378,8 @@ def render_picks(board):
                 f'<p class="muted">{esc(r.get("competition"))} · kick-off {esc(when(r.get("start_utc")))}'
                 f' · lock {esc(when(r.get("lock_utc")))}</p>'
                 + (f'<ul>{quote_lines}</ul>' if quote_lines else
-                   '<p>No bookmaker or exchange price exists for this fixture (see the attempt ledger on '
-                   '<a href="unresolved.html">Unresolved</a>). The line is originated from Valve\'s '
-                   'official rating table.</p>')
+                   '<p>No accepted price is present in the retained evidence for this fixture (see the attempt ledger on '
+                   '<a href="unresolved.html">Unresolved</a>). Ratings are model inputs only when both teams are listed; otherwise this row remains unresolved.</p>')
                 + f'<p class="muted">Ratings: ' + " · ".join(vrs_lines) + '</p>'
                 + (f'<p class="muted">{esc(d)}</p>' if d else "")
                 + (f'<p>{flags_html(r)}</p>' if r.get("flags") else "")
@@ -387,13 +391,13 @@ def render_picks(board):
 <p class="eyebrow">All picks · {len(rows)} matches</p>
 <h1>Every open HotSpawn CS2 match</h1>
 <p class="lede">One row per match: the pick, both teams' win probabilities, how the number was
-produced and a link to the source. Sorted by kick-off. <strong>≥</strong> and <strong>≤</strong> mark a bound, not a point estimate.</p>
+produced and a link to the source. Sorted by kick-off. Unsupported probabilities and picks remain blank.</p>
 {block("Priced from real betting lines", market,
        "Every fixture a bookmaker or exchange prices. No-vig probabilities, averaged across books where more than one quotes it.")}
 {block("Originated from Valve's official rating table", orig,
-       "No book or exchange prices these fixtures. The pick comes from Valve's published VRS points with the fitted slope shown on Method.")}
+       "No accepted external price is present in the retained capture. These are model estimates using Valve VRS points, not official odds.")}
 {block("Directional bounds (one side has no published rating)", bound,
-       "One team has no row in Valve's global table. Its chance is at or below Valve's published floor, so the other side is shown as a lower bound.")}
+       "Legacy bounds are no longer generated: a missing rating does not establish relative strength.")}
 {block("Unresolved", other, "No pick could be produced. Nothing here is guessed.")}
 <p class="muted">Generated {esc(board['generated_utc'].replace('T', ' ').replace('Z', ' UTC'))}.
 Board data: <code>data/5f903db4/board.json</code>.</p>
@@ -403,18 +407,13 @@ Board data: <code>data/5f903db4/board.json</code>.</p>
 
 def render_unresolved(board):
     s = board["summary"]
-    bound = [r for r in board["rows"] if r["resolution"]["basis"] == "originated_vrs_bound"]
+    unresolved = [r for r in board["rows"] if r["resolution"]["basis"] == "unresolved"]
     rows_html = "".join(
-        f'<tr><td data-l="Match"><span class="match">{esc(r["team_a"])} vs {esc(r["team_b"])}</span>'
-        f'<div class="muted">{esc(r.get("competition"))}</div></td>'
-        f'<td data-l="Shown as">{prob_cell(r, "a")} / {prob_cell(r, "b")}</td>'
-        f'<td data-l="Why">'
-        f'{esc((r.get("vrs_a") or {}).get("name") if (r.get("vrs_a") or {}).get("listed") else (r.get("vrs_b") or {}).get("name"))} '
-        f'is rated, the opponent has no row in Valve\'s global table. Bound computed against Valve\'s '
-        f'published floor (#{esc((r.get("vrs_floor") or {}).get("standing"))}, '
-        f'{esc((r.get("vrs_floor") or {}).get("points"))} pts).</td>'
-        f'<td data-l="Source"><a href="{esc(r["vrs_page_url"])}" target="_blank" rel="noopener">Valve standings</a></td></tr>'
-        for r in bound)
+        f'<tr id="unresolved-{esc(r["fixture_id"])}"><td data-l="Match">'
+        f'{esc(r["team_a"])} vs {esc(r["team_b"])}</td>'
+        f'<td data-l="Pick / probability">— / —</td>'
+        f'<td data-l="Why">{esc(r["resolution"].get("reason", "Missing verified evidence"))}</td>'
+        f'<td data-l="Sources">{source_links(r)}</td></tr>' for r in unresolved)
 
     attempts = []
     for a in board.get("attempted_sources") or []:
@@ -434,19 +433,14 @@ def render_unresolved(board):
     body = f"""
 <p class="eyebrow">Unresolved picks &amp; limitations</p>
 <h1>{("No match is unresolved today" if s["unresolved"] == 0 else str(s["unresolved"]) + " matches could not be resolved into a pick")}</h1>
-<div class="callout good"><strong>Coverage: {s['with_pick']} of {s['rows']} rows carry a pick</strong>
-({s['market']} from real betting lines, {s['originated_both_rated']} originated from Valve's official
-ratings, {s['originated_bound']} published as bounds). Nothing on the picks list is blank. This page
-exists because the numbers are not all equally strong — here is exactly where the weak spots are.</div>
-<p class="lede">Why this page exists: most tier-C CS2 fixtures are simply not priced. Bovada,
-Melbet, Pinnacle, Thunderpick and Kalshi were all read today and none of them carry a line for the
-fixtures listed below. Rather than skip those matches (the previous behaviour) each one gets a line
-originated from Valve's official rating table, labelled as such on every page.</p>
-
-<h2>Directional rows (bound, not a point estimate)</h2>
-<p class="lede">{len(bound)} fixtures have one team that Valve does not rate. The rated side's number
-is a lower bound; the unrated side's number is an upper bound.</p>
-<div class="tbl-scroll"><table><thead><tr><th>Match</th><th>Shown as</th><th>Why</th><th>Source</th>
+<div class="callout"><strong>Coverage: {s['with_pick']} of {s['rows']} retained rows carry a pick</strong>
+({s['market']} market-based, {s['originated_both_rated']} model estimates).
+{s['unresolved']} unresolved fixtures remain on the full picks list with blank values.</div>
+<p class="lede">No accepted external price is present for the fixtures below, and at least one
+team lacks a published Valve rating. Absence is not evidence that a team is weaker than the
+lowest-ranked team. No rating, percentage, or pick is imputed.</p>
+<h2>Unresolved picks — missing evidence</h2>
+<div class="tbl-scroll"><table><thead><tr><th>Match</th><th>Pick / probability</th><th>Why</th><th>Sources</th>
 </tr></thead><tbody>{rows_html}</tbody></table></div>
 
 <h2>Limitations</h2>
@@ -454,7 +448,8 @@ is a lower bound; the unrated side's number is an upper bound.</p>
 
 <h2>Attempt ledger — what each source was asked and what it returned</h2>
 <p class="lede">Fixture ids match the HotSpawn ids used on <a href="picks.html">All picks</a>.
-This is the evidence that a row without a market price is not a row we forgot to look up.</p>
+These are historical source-read records, not proof that a source currently has no market.
+Live third-party reads were inaccessible during this session; review the recorded timestamps.</p>
 <div class="tbl-scroll"><table><thead><tr><th>Source</th><th>Priced these fixtures</th><th>No line for</th>
 <th>Notes</th></tr></thead><tbody>{''.join(attempts)}</tbody></table></div>
 
@@ -464,7 +459,7 @@ This is the evidence that a row without a market price is not a row we forgot to
 <li>Valve publishing a newer standings file: the pipeline re-reads the official repository tree and
 picks the newest file, so ratings update without a code change.</li>
 <li>Valve publishing a rating row for each team that is unrated today (TitanFlow, Off Chops,
-Staqued, LOS NINOS, Apogee Betclic) — the bound on that row then becomes a point estimate.</li>
+Staqued, LOS NINOS, Apogee Betclic) — estimates require verified ratings for both sides.</li>
 </ul>
 """
     return page("Unresolved and limitations", "unresolved.html", body, _stamp(board))
@@ -562,7 +557,7 @@ dropped, not coerced.</p>
 Every alternative row Valve publishes for those teams is kept in the board data next to the chosen one,
 and the pick is flagged <span class="badge flag">vrs duplicate rows resolved by published rule</span>.</p>
 
-<h2>5 · Bounds instead of point estimates</h2>
+<h2>5 · Missing evidence stays unresolved</h2>
 <p>{esc(pol.get('bound_rule'))}</p>
 
 <h2>6 · Verification in this repository</h2>
@@ -570,8 +565,8 @@ and the pick is flagged <span class="badge flag">vrs duplicate rows resolved by 
 <li><code>python3 scripts/5f903db4/build.py</code> re-derives every probability from the raw decimals
 and Valve points stored in <code>data/5f903db4/board.json</code>.</li>
 <li><code>python3 -m unittest tests.test_5f903db4 -v</code> re-computes the no-vig prices and the
-originated lines from the raw inputs, asserts that every row has a pick and two probabilities, that
-every row carries at least one https source, that the bounds are marked, and that no HotSpawn
+originated lines from the raw inputs, asserts that resolved rows have a pick and two probabilities,
+unresolved rows stay blank, every row carries at least one https source, and no HotSpawn
 crowd percentage appears anywhere in the published pages.</li>
 <li>The workflow <code>.github/workflows/everypick-5f903db4.yml</code> re-runs collection, build and
 tests every four hours and only commits when the tests pass.</li>
@@ -611,7 +606,7 @@ def render_flagged(board):
             + _source_line(r.get("source")) + "</div>")
     unverified = "".join(
         f'<tr><td data-l="Match">{esc(r["team_a"])} vs {esc(r["team_b"])}</td>'
-        f'<td data-l="Blank">{esc(", ".join(s for s in [("no betting line at any source") if not r["quotes"] else "", ("opponent unrated in Valve table") if r["resolution"]["basis"] == "originated_vrs_bound" else ""] if s))}</td>'
+        f'<td data-l="Blank">{esc(", ".join(s for s in [("no betting line at any source") if not r["quotes"] else "", ("opponent unrated in Valve table") if r["resolution"]["basis"] == "unresolved" else ""] if s))}</td>'
         f'<td data-l="Shown instead">{prob_cell(r, "a")} / {prob_cell(r, "b")}</td></tr>'
         for r in board["rows"] if not r["quotes"])
     body = f"""
@@ -620,7 +615,7 @@ def render_flagged(board):
 <p class="lede">Published deliberately: nothing here blocks the picks list, but you should see it
 before you trust a number. Every item links to the page or file that shows it.</p>
 {''.join(cards)}
-<h2>Values left blank or replaced by a labelled bound</h2>
+<h2>Unverified values left blank</h2>
 <p class="lede">A blank in the source evidence means the value could not be confirmed from an official
 source. None of these rows was filled with an invented number: each got a documented originated line
 instead, and each is marked.</p>

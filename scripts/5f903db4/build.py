@@ -17,7 +17,7 @@ Rules enforced here (and re-checked by tests/test_5f903db4.py):
   * every open fixture gets a pick and two probabilities, or an explicit "unresolved" row;
   * a probability is either re-derived from a published bookmaker price (no-vig) or originated
     from the official Valve VRS points with the published formula and slope;
-  * a one-sided rating becomes a labelled bound, never a point estimate;
+  * a one-sided rating stays unresolved; an absent ranking is not a strength bound;
   * HotSpawn's crowd-pick percentage is never read;
   * duplicate Valve rows are resolved by a published rule and all alternatives are kept.
 """
@@ -51,6 +51,7 @@ NEWEST_VRS_VERIFIED = {
              "returns 40 standings files; the newest global table is 2026_10_05. No 2026_10_12 or "
              "2026_10_19 file is published, so the 2026_10_05 table is current-by-publisher."),
 }
+MAX_QUOTE_AGE_S = 8 * 60 * 60
 TOLERANCE_S = 90 * 60  # quotes are joined only when the kick-off agrees to within 90 minutes
 
 
@@ -129,21 +130,35 @@ def reorient(decimal_a, decimal_b, quoted_a, quoted_b, team_a, team_b,
     return None
 
 
+def quote_is_fresh(q: dict, reference=None) -> bool:
+    """Reject missing, ambiguous, future-dated or older-than-eight-hour observations."""
+    seen = parse_ts(q.get("retrieved_utc"))
+    reference = reference or datetime.now(timezone.utc)
+    if seen is None or seen.tzinfo is None:
+        return False
+    age = (reference - seen).total_seconds()
+    return 0 <= age <= MAX_QUOTE_AGE_S
+
+
 def quote_record(fixture: dict, q: dict, origin: str) -> dict | None:
+    if not quote_is_fresh(q):
+        return None
     pair = reorient(q.get("decimal_a"), q.get("decimal_b"),
                     q.get("team_a") or q.get("quoted_team_a"),
                     q.get("team_b") or q.get("quoted_team_b"),
                     fixture["team_a"], fixture["team_b"], q.get("declared_order"))
     if not pair:
         return None
-    start = q.get("start_utc")
+    start = q.get("start_utc") or q.get("start_utc_at_source")
     fstart = parse_ts(fixture["start_utc"])
-    if start and fstart:
-        diff = abs((parse_ts(start) - fstart).total_seconds())
+    qstart = parse_ts(start)
+    if qstart and fstart and qstart.tzinfo and fstart.tzinfo:
+        diff = abs((qstart - fstart).total_seconds())
         if diff > TOLERANCE_S:
             return None
     else:
-        diff = None
+        # Do not match a two-way market to a fixture without an unambiguous aware start.
+        return None
     nv = core.novig(*pair)
     if not nv:
         return None
@@ -227,9 +242,7 @@ def originate(side_a: dict, side_b: dict, floor: dict | None) -> dict:
     """Originate a probability from official Valve VRS points.
 
     Both sides rated      -> point estimate, plus a range over Valve's other published rows.
-    One side unlisted     -> the unlisted side is at or below Valve's published floor, so the
-                             listed side's number is a LOWER bound and the unlisted side's number
-                             is an UPPER bound. Published as a bound, never as a point estimate.
+    Either side unlisted  -> unresolved. Missing rankings do not establish a strength bound.
     """
     k = core.CAL_K
     if side_a["listed"] and side_b["listed"]:
@@ -244,26 +257,13 @@ def originate(side_a: dict, side_b: dict, floor: dict | None) -> dict:
                 "bound": None, "range": [min(cands), max(cands)] if cands else None,
                 "delta_points": side_a["points"] - side_b["points"]}
 
-    if not floor or not floor.get("points"):
-        return {"basis": "unresolved", "prob_a": None, "prob_b": None, "bound": None,
-                "range": None, "delta_points": None}
-
-    if side_a["listed"] and not side_b["listed"]:
-        p = core.vrs_prob(side_a["points"], float(floor["points"]), k)
-        return {"basis": "originated_vrs_bound", "prob_a": p, "prob_b": 1.0 - p,
-                "bound": {"side": "a", "relation": ">=", "floor_standing": floor.get("standing"),
-                          "floor_points": floor.get("points")},
-                "range": None,
-                "delta_points": side_a["points"] - float(floor["points"])}
-    if side_b["listed"] and not side_a["listed"]:
-        p = core.vrs_prob(side_b["points"], float(floor["points"]), k)
-        return {"basis": "originated_vrs_bound", "prob_a": 1.0 - p, "prob_b": p,
-                "bound": {"side": "b", "relation": ">=", "floor_standing": floor.get("standing"),
-                          "floor_points": floor.get("points")},
-                "range": None,
-                "delta_points": side_b["points"] - float(floor["points"])}
-    return {"basis": "unresolved", "prob_a": None, "prob_b": None, "bound": None, "range": None,
-            "delta_points": None}
+    # Absence from a standings table does not bound a team's latent strength.
+    # Ineligible/new rosters and incomplete match histories can be unlisted too.
+    # Keep missing evidence blank rather than substituting the last ranked team.
+    return {"basis": "unresolved", "prob_a": None, "prob_b": None, "bound": None,
+            "range": None, "delta_points": None,
+            "reason": "No retained external quote and no published Valve rating for both teams; "
+                      "an unlisted team cannot be assigned the standings floor."}
 
 
 # ---------------------------------------------------------------------------------------- main
@@ -290,13 +290,19 @@ def build() -> dict:
     extra_quotes: dict[str, list] = {}
     for m in extra.get("open") or []:
         extra_quotes[str(m.get("fixture_id"))] = m.get("quotes") or []
-    # live collector output (CI) is merged on the same dedupe keys
+    # Keep the independently collected live quotes on the primary path. The secondary-board
+    # path intentionally accepts only Thunderpick (its historical Kalshi rows have an order
+    # irregularity). Routing our own Kalshi/Melbet quotes there silently discarded them.
+    # Live observations precede retained duplicates of the same source/event.
+    live_by_fixture = {}
     for m in live.get("fixtures") or []:
         if m.get("quotes"):
-            extra_quotes.setdefault(str(m.get("fixture_id")), []).extend(m["quotes"])
+            live_by_fixture.setdefault(str(m.get("fixture_id")), []).extend(m["quotes"])
     for q in live.get("quotes") or []:
         if q.get("fixture_id"):
-            extra_quotes.setdefault(str(q["fixture_id"]), []).append(q)
+            live_by_fixture.setdefault(str(q["fixture_id"]), []).append(q)
+    for fid, quotes in live_by_fixture.items():
+        primary_quotes[fid] = quotes + primary_quotes.get(fid, [])
 
     aliases = {}
     for fid, spec in (research.get("aliases") or {}).items():
@@ -360,6 +366,7 @@ def build() -> dict:
                 flags.append("originated_bound_unlisted_opponent")
             if row["resolution"]["basis"] == "unresolved":
                 flags.append("unresolved")
+                flags.append("missing_rating_not_a_strength_bound")
 
         row["alt_origination"] = alt if quotes else None
         res = row["resolution"]
@@ -428,7 +435,7 @@ def build() -> dict:
             "ladder": ["featured market quotes (bovada / melbet / pinnacle)",
                        "exchange + secondary book quotes (kalshi, thunderpick via bo3.gg)",
                        "official Valve VRS origination with the published formula",
-                       "explicit bound when only one side is rated",
+                       "missing rating on either side remains unresolved without external prices",
                        "explicit unresolved row (never a guessed number)"],
             "never_used": "HotSpawn crowd-pick percentages",
             "formula": "p = 1 / (1 + exp(-k * C * (points_a - points_b)))",
@@ -439,10 +446,12 @@ def build() -> dict:
             "C": core.VALVE_C,
             "C_source": core.VALVE_C_URL,
             "vrs_select_rule": core.VRS_SELECT_RULE,
-            "bound_rule": ("If one side has no row in Valve's published table, that side is at or "
-                           "below the published floor (#380, 381 pts). The listed side's number is "
-                           "published as a lower bound and the unlisted side's number as an upper "
-                           "bound. It is never presented as a point estimate."),
+            "bound_rule": ("An unlisted team has no verified rating. Absence from Valve's table "
+                           "does not prove it is weaker than the last listed team. Without an "
+                           "external quote or ratings for both teams, probabilities and picks "
+                           "remain blank and the fixture is published as unresolved."),
+            "quote_max_age_hours": MAX_QUOTE_AGE_S // 3600,
+            "quote_freshness_rule": "UTC-aware observation required; reject future or older than 8 hours",
             "quote_join_tolerance_minutes": TOLERANCE_S // 60,
         },
         "sources": {
@@ -529,17 +538,23 @@ def calibration_check() -> dict:
 
 def limitations(rows, bound, vrs_doc) -> list:
     out = [
+        {"id": "L8", "title": "Eight-hour price expiry",
+         "detail": "Retained prices expire after eight hours. Missing or timezone-ambiguous observation "
+                   "times, future timestamps, and missing or ambiguous market start times are rejected. "
+                   "Rejected prices do not silently survive a failed refresh; a row falls back to "
+                   "a labelled two-rated-team model or an unresolved blank.",
+         "source": "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/scripts/5f903db4/build.py"},
         {"id": "L1", "title": "Reference books do not price tier-C CS2",
          "detail": (f"{len([r for r in rows if r['resolution']['basis'] != 'market'])} of {len(rows)} "
-                    "open fixtures have no price at Bovada, Melbet, Pinnacle, Thunderpick or Kalshi "
-                    "(all five read today). Those rows carry an originated line from Valve's official "
-                    "rating table instead of a blank."),
+                    "retained fixtures have no accepted price from Bovada, Melbet, Pinnacle, Thunderpick or Kalshi "
+                    "in the retained source captures. Those rows carry an originated line from Valve's official "
+                    "rating table only when both teams have a rating; otherwise they remain unresolved."),
          "source": core.KALSHI_EVENTS},
         {"id": "L2", "title": "Originated lines are models, not market prices",
          "detail": (f"Formula p = 1/(1+exp(-k*C*points_delta)) with Valve's published C={core.VALVE_C} "
                     f"and this project's fitted k={core.CAL_K} ({core.CAL_PAIRS} market-vs-rating pairs). "
                     f"The fit's own mean absolute error is {core.CAL_MAE*100:.2f} percentage points, so "
-                    "treat originated probabilities as +/-8 pp."),
+                    "this is in-sample market-fit error, not a confidence interval or demonstrated outcome accuracy."),
          "source": core.VALVE_C_URL},
         {"id": "L3", "title": "Valve's rating table is 16 days old",
          "detail": ("The newest published global table is 2026_10_05; Valve publishes roughly monthly. "
@@ -547,11 +562,11 @@ def limitations(rows, bound, vrs_doc) -> list:
                     "Valve rows also carry a latest_match_date per roster, which is published alongside "
                     "every rating used here."),
          "source": NEWEST_VRS_VERIFIED["api_url"]},
-        {"id": "L4", "title": "One-sided ratings become bounds, not points",
-         "detail": (f"{len(bound)} fixtures have exactly one rated side. The unrated side is at or "
-                    "below Valve's published floor (#380, 381 pts), so those rows show '>=' on the "
-                    "rated side and '<=' on the other. They are directional, not calibrated."),
-         "source": VRS_PAGE},
+        {"id": "L4", "title": "Missing rankings are not probability bounds",
+         "detail": ("No verified rating is available for at least one team in each unresolved "
+                    "fixture. No floor rating is imputed. A new external two-way price or verified "
+                    "ratings for both teams are needed before publishing a pick."),
+         "source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/readme.md"},
         {"id": "L5", "title": "Thin exchange book on the one Kalshi-priced fixture",
          "detail": ("The Kalshi quote used for Zetta v LOS NINOS has zero traded volume and a 0.16 "
                     "wide two-way spread (Los Ninos 0.55/0.63, Alianza Lima 0.39/0.47). Our VRS "
@@ -575,7 +590,16 @@ def limitations(rows, bound, vrs_doc) -> list:
 
 
 def irregularities(rows, primary, extra, research, vrs_doc) -> list:
-    out = []
+    out = [{"id": "R7", "severity": "evidence",
+            "title": "Unsupported unranked-team probability bounds removed",
+            "detail": "Earlier versions substituted Valve's lowest published rating for an unlisted "
+                      "opponent and claimed a directional bound. No official evidence establishes "
+                      "that ordering. Those fixtures now remain visible with blank picks and "
+                      "probabilities. Retained third-party reads have not been reverified live in "
+                      "this network-restricted session. Model estimates are not official odds, "
+                      "and in-sample calibration MAE is not a confidence interval.",
+            "source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/readme.md",
+            "affected": [r["fixture_id"] for r in rows if r["resolution"]["basis"] == "unresolved"]}]
     dupes = [r for r in rows if "vrs_duplicate_rows_resolved_by_published_rule" in r["flags"]]
     if dupes:
         out.append({

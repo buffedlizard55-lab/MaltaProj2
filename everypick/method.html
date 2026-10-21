@@ -4,13 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
-<meta name="description" content="Every open HotSpawn CS2 pick'em match with a pick, both win probabilities and the source for every number.">
+<meta name="description" content="Retained HotSpawn CS2 fixtures, supported picks, sourced model estimates and unresolved evidence gaps.">
 <title>Method · Every-match CS2 picks</title>
 <style>
 :root{--bg:#0b1220;--card:#121c2e;--card2:#0f1727;--ink:#e8eefc;--dim:#93a4c3;--line:#25334d;
 --good:#7ef0b2;--warn:#ffd479;--bad:#ff9aa2;--accent:#7cc4ff;--market:#7ef0b2;--model:#7cc4ff;--bound:#ffd479}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
+a:focus-visible{outline:3px solid var(--good);outline-offset:3px}
+.skip{position:absolute;left:-10000px}.skip:focus{position:static;display:block;padding:12px;background:var(--card)}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,
 "Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 a{color:var(--accent)}
@@ -22,8 +24,8 @@ max-width:1080px;margin:0 auto;padding:8px 14px}
 .brand{font-weight:700;font-size:15px;letter-spacing:.2px}
 .brand span{color:var(--good)}
 nav{display:flex;flex-wrap:wrap;gap:6px}
-nav a{display:inline-block;padding:8px 11px;border:1px solid var(--line);border-radius:999px;
-text-decoration:none;color:var(--ink);font-size:13px;min-height:38px}
+nav a{display:inline-block;padding:11px 12px;border:1px solid var(--line);border-radius:999px;
+text-decoration:none;color:var(--ink);font-size:13px;min-height:44px}
 nav a.active{background:var(--good);color:#0b2417;border-color:var(--good);font-weight:700}
 h1{font-size:24px;line-height:1.2;margin:10px 0 4px}
 h2{font-size:18px;margin:26px 0 8px}
@@ -84,11 +86,16 @@ code{background:#0a1322;padding:1px 5px;border-radius:5px;font-size:13px}
 </style>
 </head>
 <body>
+<a class="skip" href="#main-content">Skip to picks and summary</a>
 <header class="top"><div class="bar">
 <div class="brand">Every-match picks <span>· CS2</span></div>
 <nav><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="sources.html">Sources</a><a href="method.html" class="active">Method</a><a href="flagged.html">Flagged</a><a href="../index.html">Site home</a></nav>
 </div></header>
-<main class="wrap">
+<main class="wrap" id="main-content" tabindex="-1">
+<div class="callout"><strong>Source freshness matters.</strong> This is a retained evidence snapshot, not
+live odds. Four-hour scheduled checks are a target, not a guarantee. Check the fixture and quote
+read times before using a pick. The builder excludes prices older than eight hours. Sources inaccessible during this session were not reverified.
+<a href="unresolved.html">Unresolved picks &amp; limitations</a>.</div>
 
 <p class="eyebrow">Method</p>
 <h1>How each number is produced (and how to check it)</h1>
@@ -135,16 +142,16 @@ dropped, not coerced.</p>
 Every alternative row Valve publishes for those teams is kept in the board data next to the chosen one,
 and the pick is flagged <span class="badge flag">vrs duplicate rows resolved by published rule</span>.</p>
 
-<h2>5 · Bounds instead of point estimates</h2>
-<p>If one side has no row in Valve&#x27;s published table, that side is at or below the published floor (#380, 381 pts). The listed side&#x27;s number is published as a lower bound and the unlisted side&#x27;s number as an upper bound. It is never presented as a point estimate.</p>
+<h2>5 · Missing evidence stays unresolved</h2>
+<p>An unlisted team has no verified rating. Absence from Valve&#x27;s table does not prove it is weaker than the last listed team. Without an external quote or ratings for both teams, probabilities and picks remain blank and the fixture is published as unresolved.</p>
 
 <h2>6 · Verification in this repository</h2>
 <ul>
 <li><code>python3 scripts/5f903db4/build.py</code> re-derives every probability from the raw decimals
 and Valve points stored in <code>data/5f903db4/board.json</code>.</li>
 <li><code>python3 -m unittest tests.test_5f903db4 -v</code> re-computes the no-vig prices and the
-originated lines from the raw inputs, asserts that every row has a pick and two probabilities, that
-every row carries at least one https source, that the bounds are marked, and that no HotSpawn
+originated lines from the raw inputs, asserts that resolved rows have a pick and two probabilities,
+unresolved rows stay blank, every row carries at least one https source, and no HotSpawn
 crowd percentage appears anywhere in the published pages.</li>
 <li>The workflow <code>.github/workflows/everypick-5f903db4.yml</code> re-runs collection, build and
 tests every four hours and only commits when the tests pass.</li>
@@ -156,7 +163,7 @@ Valve table 2026_10_05.</p>
 <footer>
 <p>Every figure on this page is either a bookmaker/exchange price (no-vig) or a line originated from
 Valve's official rating table; the basis is printed on every row. HotSpawn's crowd-pick percentages
-are never used. Board built 2026-10-21 20:07:18 UTC.</p>
+are never used. Board built 2026-10-21 20:10:27 UTC.</p>
 </footer>
 </main>
 </body>
