@@ -2,7 +2,17 @@
 import os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-URL=os.environ.get('DASHBOARD_TEST_URL','http://127.0.0.1:8767/dashboard/')
+# Use an ephemeral port: another maintained suite owns port 8767.
+import functools
+import threading
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+class QuietHandler(SimpleHTTPRequestHandler):
+    def log_message(self, *args):
+        pass
+server = ThreadingHTTPServer(('0.0.0.0', 0), functools.partial(QuietHandler, directory=str(Path(__file__).resolve().parents[2])))
+worker = threading.Thread(target=server.serve_forever, daemon=True)
+worker.start()
+URL=os.environ.get('DASHBOARD_TEST_URL',f'http://127.0.0.1:{server.server_port}/dashboard/')
 with sync_playwright() as pw:
     browser=pw.chromium.launch(executable_path=os.environ.get('CHROME_BIN','/usr/bin/google-chrome'),headless=True,
                               args=['--no-sandbox','--disable-dev-shm-usage','--no-zygote','--single-process'])
@@ -44,4 +54,5 @@ with sync_playwright() as pw:
     assert plain.locator('table').count()>0
     assert plain.locator('tbody tr a[href^="https://"]').count()>0
     browser.close()
+server.shutdown();server.server_close();worker.join(timeout=10)
 print('PASS: all dashboard pages at 320/390/768/1280px; no overflow, filtering, source links, expiry and no-JS fallback')
