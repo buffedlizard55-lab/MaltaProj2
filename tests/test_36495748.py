@@ -187,6 +187,36 @@ class TestSiteContract(unittest.TestCase):
         self.assertIn("scripts/36495748/collect.py", wf)
 
 
+class TestKalshiProbeParser(unittest.TestCase):
+    """Regression test with market payloads transcribed from the live Kalshi trade API
+    read on 2026-10-21 (single-event endpoint, KXCS2GAME-26OCT211000ILLG2A)."""
+
+    EVENT = {"event_ticker": "KXCS2GAME-26OCT211000ILLG2A", "title": "ILLYRIANS vs. G2 Ares",
+             "markets": [
+                 {"yes_sub_title": "ILLYRIANS", "status": "active",
+                  "yes_bid_dollars": "0.4600", "yes_ask_dollars": "0.5100",
+                  "rules_primary": "If ILLYRIANS wins the CCT Europe Series #11 2026: ILLYRIANS vs. G2 Ares CS2 match originally scheduled for Oct 21, 2026 at 10:00 AM EDT, then the market resolves to Yes.",
+                  "rules_secondary": "The following market refers to the full match..."},
+                 {"yes_sub_title": "G2 Ares", "status": "active",
+                  "yes_bid_dollars": "0.4800", "yes_ask_dollars": "0.5400",
+                  "rules_primary": "If G2 Ares wins the CCT Europe Series #11 2026: ILLYRIANS vs. G2 Ares CS2 match originally scheduled for Oct 21, 2026 at 10:00 AM EDT, then the market resolves to Yes.",
+                  "rules_secondary": "The following market refers to the full match..."}]}
+
+    def test_rules_start_and_mids(self):
+        collect = _load("exec36495748_collect_for_tests", "collect.py")
+        start = collect.rules_start_utc(self.EVENT["markets"][0])
+        self.assertEqual(str(start), "2026-10-21 14:00:00+00:00")
+        self.assertEqual(collect._mid_cents(self.EVENT["markets"][0]), 48.5)
+        self.assertEqual(collect._mid_cents(self.EVENT["markets"][1]), 51.0)
+        pages = iter([({"events": [], "cursor": "NEXT"}, {"status": 200, "error": None}),
+                      ({"events": [self.EVENT], "cursor": ""}, {"status": 200, "error": None})])
+        collect.fetch = lambda url, want_json=True, timeout=25: next(pages)
+        joins = collect.kalshi_probe([{"fixture_id": "X1", "team_a": "G2 Ares", "team_b": "ILLYRIANS",
+                                        "start_utc": "2026-10-21T14:00:00Z"}])
+        self.assertEqual(joins["X1"]["mid_cents"], {"ILLYRIANS": 48.5, "G2 Ares": 51.0})
+        self.assertIn("14:00:00Z", joins["X1"]["start_verified"])
+
+
 class TestOfficialFile(unittest.TestCase):
     def test_pinned_file_is_structurally_the_official_table(self):
         rows = vrs_rows()
