@@ -45,8 +45,14 @@ class Evidence(unittest.TestCase):
         return B.resolve(board or self.board,snap or self.snap,research or self.research,self.md,clock or self.clock)
 
     def test_report_replays_exactly(self):
-        reproduced=self.resolved();actual=copy.deepcopy(self.report);actual.pop('input')
+        reproduced=self.resolved();actual=copy.deepcopy(self.report);actual.pop('input');actual.pop('provider_replay')
         self.assertEqual(reproduced,actual)
+
+    def test_official_provider_json_replays_every_consumed_price(self):
+        result=B.PAYLOAD_VERIFIER.verify(self.folder)
+        self.assertEqual(result['failures'],[])
+        self.assertEqual(result,self.report['provider_replay'])
+        self.assertEqual(result['consumed_quotes_checked'],sum(len(r.get('quotes',[])) for r in self.board['open']))
 
     def test_every_listed_fixture_exactly_once(self):
         want={r['fixture_id'] for r in self.snap['hotspawn']['fixtures'] if 'lobby_page' in r.get('seen_in',[])}

@@ -33,3 +33,5 @@ def strict_join(fixture, quote):
     return info if info and not info.get('rejected') else None
 
 RULES = load_module("cbf_kalshi_rules", ROOT / "scripts/69e4c06a/kalshi.py")
+
+PAYLOAD_VERIFIER = load_module("cbf_official_payload_replay", ROOT / "scripts/ae75c5c3/verify_source_payloads.py")

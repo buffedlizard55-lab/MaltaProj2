@@ -8,7 +8,7 @@ import re
 from collections import Counter
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from common import ROOT, DATA, SITE, CORE, now, read, write, strict_join, RULES
+from common import ROOT, DATA, SITE, CORE, now, read, write, strict_join, RULES, PAYLOAD_VERIFIER
 
 LOBBY = 'https://play.hotspawn.com/lobby'
 VRS_REPO = 'https://github.com/ValveSoftware/counter-strike_regional_standings'
@@ -117,6 +117,8 @@ def resolve(board, snap, research, md, clock):
                     'pick': None, 'prob_a': None, 'prob_b': None, 'basis': None, 'quotes': [],
                     'flags': [], 'attempts': [], 'sources': [{'label': 'HotSpawn fixture inventory', 'url': LOBBY}],
                     'valid_until_utc': CORE.to_iso(min(end, lock)) if lock else CORE.to_iso(end)})
+        if row['hotspawn_url'] != LOBBY:
+            row['sources'].append({'label': 'Official match permalink', 'url': row['hotspawn_url']})
         row['state'] = ('open' if lock and lock > clock and fx.get('status') == 'scheduled'
                         else 'status conflict' if lock and lock > clock else 'locked / past')
         if not lock:
@@ -225,7 +227,12 @@ def build():
     folder,b,s = select_input()
     research = read(DATA/'research.json', {})
     md = (DATA/'valve-standings.md').read_text() if (DATA/'valve-standings.md').exists() else ''
+    # Replay the official bookmaker response JSON, not just normalized quote fields.
+    provider_replay = PAYLOAD_VERIFIER.verify(folder)
+    if provider_replay['failures']:
+        raise ValueError('Official provider payload replay failed: ' + '; '.join(provider_replay['failures']))
     report = resolve(b,s,research,md,now())
+    report['provider_replay'] = provider_replay
     report['input'] = {'folder':str(folder.relative_to(ROOT)), 'board_sha256':hashlib.sha256((folder/'board.json').read_bytes()).hexdigest(),
                        'snapshot_sha256':hashlib.sha256((folder/'snapshot.json').read_bytes()).hexdigest()}
     write(DATA/'report.json',report)
