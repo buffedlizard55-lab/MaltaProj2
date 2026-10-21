@@ -1,0 +1,91 @@
+name: hotspawn-live (82a9a0cc)
+
+# Independent current-match layer over the strict f7279a54 fixture/market collector. The
+# upstream collector's files are restored before commit; this workflow owns only
+# data/82a9a0cc/** and hotspawn-live/**. Unsupported future fixtures remain blank and visible.
+
+on:
+  push:
+    branches: ['arena/82a9a0cc-maltaproj2', 'main']
+    paths:
+      - 'scripts/82a9a0cc/**'
+      - 'data/82a9a0cc/**'
+      - 'hotspawn-live/**'
+      - 'tests/test_82a9a0cc.py'
+      - '.github/workflows/hotspawn-live-82a9a0cc.yml'
+  schedule:
+    - cron: '17 */4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: hotspawn-live-82a9a0cc-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Refresh the strict HotSpawn inventory and featured-market evidence
+        run: |
+          python3 scripts/f7279a54/collect.py
+          python3 scripts/f7279a54/build.py
+      - name: Verify the latest official Valve snapshot and capture read-only inputs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/82a9a0cc/check_valve.py
+          python3 scripts/82a9a0cc/capture.py
+      - name: Resolve every supported gap and render the mobile dashboard
+        run: |
+          python3 scripts/82a9a0cc/resolve.py
+          python3 scripts/82a9a0cc/build.py
+      - name: Restore read-only upstream scope
+        run: git restore data/f7279a54 ourline
+      - name: Contract and provenance tests
+        run: python3 -m unittest tests.test_82a9a0cc -v
+      - name: Scope guard
+        run: |
+          set -euo pipefail
+          bad="$(git status --porcelain | awk '{print $2}' | grep -Ev '^(data/82a9a0cc/|hotspawn-live/)' || true)"
+          if [ -n "$bad" ]; then
+            echo "Unexpected path outside the refresh scope:"; echo "$bad"; exit 1
+          fi
+      - name: Commit, rebase, push, and dispatch Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.head_ref || github.ref_name }}
+        run: |
+          set -euo pipefail
+          git config user.name "hotspawn-live-bot (82a9a0cc)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/82a9a0cc hotspawn-live
+          if git diff --cached --quiet; then
+            echo "No source or board changes"
+            exit 0
+          fi
+          git commit -m "live(82a9a0cc): refresh complete HotSpawn CS2 board $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$BRANCH" && git push origin "HEAD:refs/heads/$BRANCH"; then
+              if [ "$BRANCH" = "main" ]; then
+                gh workflow run pages.yml --ref main || echo "Pages dispatch failed; hourly publish remains available"
+              fi
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            git fetch origin "$BRANCH"
+            sleep $((attempt * 8))
+          done
+          echo "Could not publish after five rebase attempts"
+          exit 1
