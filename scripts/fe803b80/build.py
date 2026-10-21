@@ -104,6 +104,7 @@ def resolve_market(fixture: dict, quote_index: dict) -> tuple[list[dict], list[d
             "live": qt.get("live"), "start_utc": qt.get("start_utc"),
             "alias_notes": info.get("alias_notes") or [], "alias_evidence": info.get("alias_evidence") or [],
             "start_diff_h": info.get("start_diff_h"), "swapped": info["swapped"],
+            "ex_prefix": bool(info.get("ex_prefix")),
             "lock_evidence": "no",
         })
     return joined, rejected
@@ -146,8 +147,17 @@ def elo_for(rows: list[dict], history: dict, vrs_teams: dict, bo3_ids: dict) -> 
         anchor = sorted(points)[len(points) // 2]
     seed = {f"bo3:{bo3_ids[key]}": core.ELO_BASE + (rec["points"] - anchor)
             for key, rec in vrs_teams.items() if bo3_ids.get(key)}
-    ratings = core.elo_run(matches, seed=seed)
+    # A team Valve does not list at all has no official rating. Valve's regional standings list
+    # every team with enough rated activity down to roughly 380-400 points, so an unlisted team
+    # starts at the LOWEST points value Valve publishes in this snapshot (the "floor"), not at the
+    # median: starting it at the median would silently rank it alongside the ~190th team in the
+    # world. Its own bo3.gg results then move it from there. Documented modelling choice.
+    all_points = [rec["points"] for rec in vrs_teams.values()]
+    floor_points = min(all_points) if all_points else anchor
+    unlisted_start = core.ELO_BASE + (floor_points - anchor)
+    ratings = core.elo_run(matches, seed=seed, default=unlisted_start)
     info = {"matches": len(matches), "teams_seeded": len(seed), "anchor_vrs_points": anchor,
+            "floor_vrs_points": floor_points, "unlisted_team_start": round(unlisted_start, 1),
             "k": core.ELO_K, "passes": 8}
     return ratings, info
 
@@ -256,6 +266,13 @@ def main() -> int:
         key_b, evidence_b, note_b = core.canon(fx["team_b"])
         joined, rejected = resolve_market(fx, quote_index)
         market = core.consensus(joined)
+        # alias notes/evidence can come from canon() (name table) or from the guarded "ex-" join
+        join_notes = list(dict.fromkeys(n for qt in joined for n in (qt.get("alias_notes") or []) if n))
+        join_evidence = [u for qt in joined for u in (qt.get("alias_evidence") or [])]
+        extra_notes = [n for n in join_notes if n not in (note_a, note_b)]
+        if extra_notes:
+            note_a = " ".join(x for x in [note_a] + extra_notes if x)
+        evidence_a = evidence_a + join_evidence
         vrs_a, vrs_b = vrs_teams.get(key_a), vrs_teams.get(key_b)
         model = {}
         if vrs_a and vrs_b:
@@ -326,11 +343,34 @@ def main() -> int:
         pa = core.elo_expected(ra, rb)
         row["model"]["prob_a"] = pa
         row["model"]["basis"] = "originated_elo" if from_history else "originated_rank"
+
+        def side_info(key, bo3_id):
+            """How this side's rating was obtained — official seed, result history, or floor."""
+            vrs_rec = vrs_teams.get(key)
+            n_hist = len(history.get(str(bo3_id)) or []) if bo3_id else 0
+            played = sum(1 for tid in history for m in (history.get(tid) or [])
+                         if str(m.get("team1_id")) == str(bo3_id)
+                         or str(m.get("team2_id")) == str(bo3_id)) if bo3_id else 0
+            if not from_history:
+                return {"seed": "bo3.gg rank", "vrs_points": None, "history_matches": 0}
+            if vrs_rec and bo3_ids.get(key) == str(bo3_id):
+                return {"seed": "valve_vrs", "vrs_points": vrs_rec["points"],
+                        "vrs_standing": vrs_rec["standing"], "vrs_region": vrs_rec["region"],
+                        "history_matches": played}
+            return {"seed": "floor_unlisted", "vrs_points": None,
+                    "floor_vrs_points": elo_info.get("floor_vrs_points"),
+                    "history_matches": played or n_hist}
+
+        side_a, side_b = side_info(row["key_a"], ida), side_info(row["key_b"], idb)
         row["model"]["elo"] = {"rating_a": round(ra, 1), "rating_b": round(rb, 1),
                                "matches": elo_info["matches"] if from_history else 0,
                                "rank_a": rank_a, "rank_b": rank_b,
                                "source_a": "bo3.gg history" if from_history else "bo3.gg rank",
-                               "source_b": "bo3.gg history" if from_history else "bo3.gg rank"}
+                               "source_b": "bo3.gg history" if from_history else "bo3.gg rank",
+                               "bo3_id_a": ida, "bo3_id_b": idb,
+                               "side_a": side_a, "side_b": side_b,
+                               "anchor_vrs_points": elo_info.get("anchor_vrs_points"),
+                               "unlisted_team_start": elo_info.get("unlisted_team_start")}
 
     # --------------------------------------------------------------- final line, pick, flags --
     for row in rows:
@@ -340,11 +380,16 @@ def main() -> int:
         line = core.blend(market_pa, n_sources, model_pa)
         if line:
             pick_a = line["prob_a"] >= 0.5
+            # An Elo/rank-originated number is a directional estimate: the pick is still shown,
+            # but the row says so (the confidence label is kept comparable, the flag is explicit).
+            directional = (line["basis"] == "model"
+                           and row["model"].get("basis") in ("originated_elo", "originated_rank"))
             row["line"] = {**line,
                            "pick": row["team_a"] if pick_a else row["team_b"],
                            "pick_probability": line["prob_a"] if pick_a else line["prob_b"],
                            "confidence": core.confidence_label(
-                               line["prob_a"] if pick_a else line["prob_b"])}
+                               line["prob_a"] if pick_a else line["prob_b"]),
+                           "directional": directional}
         else:
             row["line"] = None
         flags = []
@@ -352,6 +397,13 @@ def main() -> int:
             flags.append("no_external_price_for_this_fixture")
         if row["model"].get("basis") == "originated_elo":
             flags.append("originated_elo_line_no_official_rating")
+            elo_sides = (row["model"].get("elo") or {})
+            if any((elo_sides.get(s) or {}).get("seed") == "floor_unlisted"
+                   for s in ("side_a", "side_b")):
+                flags.append("originated_elo_unlisted_team_started_at_vrs_floor")
+            flags.append("directional_estimate_only")
+        if any(q.get("ex_prefix") for q in row["quotes"]):
+            flags.append("alias_ex_prefix_opponent_and_kickoff_triangulated")
         if row["model"].get("basis") == "originated_rank":
             flags.append("originated_rank_line_bo3gg_ranking")
         if row["model"].get("basis") == "valve_vrs" and row["market"] is None:
@@ -394,12 +446,39 @@ def main() -> int:
                                        "note": "official Valve regional standings snapshot",
                                        "kind": "rating"})
         if row["model"].get("basis") == "originated_elo":
+            elo_meta = row["model"].get("elo") or {}
             row["sources"].append({"label": "bo3.gg published match results (Elo input)",
                                    "url": "https://bo3.gg/matches",
                                    "read_utc": snap.get("generated_utc"),
-                                   "note": f"{row['model'].get('elo', {}).get('matches', 0)} "
-                                           "finished matches",
+                                   "note": f"{elo_meta.get('matches', 0)} finished matches",
                                    "kind": "rating"})
+            for side, key, label in (("side_a", row["key_a"], row["team_a"]),
+                                     ("side_b", row["key_b"], row["team_b"])):
+                meta = elo_meta.get(side) or {}
+                bo3_id = elo_meta.get("bo3_id_a" if side == "side_a" else "bo3_id_b")
+                slug = slug_index.get(key) or ((bo3.get("teams") or {}).get(str(bo3_id)) or {}).get("slug")
+                team_url = f"https://bo3.gg/teams/{slug}" if slug else "https://bo3.gg/teams"
+                if meta.get("seed") == "valve_vrs":
+                    region = meta.get("vrs_region")
+                    url = next((e["page_url"] for e in (snap.get("vrs") or {}).get("evidence", [])
+                                if str(e.get("region", "")).split("_")[0] == region), None)
+                    row["sources"].append({
+                        "label": f"Valve VRS {region} standings · {label} "
+                                 f"#{meta.get('vrs_standing')} ({meta.get('vrs_points'):g} pts) "
+                                 "— Elo seed",
+                        "url": url or "https://github.com/ValveSoftware/counter-strike_regional_standings",
+                        "read_utc": snap.get("generated_utc"),
+                        "note": "official Valve regional standings snapshot; seeds this side's Elo",
+                        "kind": "rating"})
+                else:
+                    row["sources"].append({
+                        "label": f"bo3.gg team page · {label} "
+                                 f"({meta.get('history_matches', 0)} finished matches in the Elo input)",
+                        "url": team_url, "read_utc": snap.get("generated_utc"),
+                        "note": "not listed in Valve's standings: started at the lowest points value "
+                                f"Valve publishes ({meta.get('floor_vrs_points')}), then moved by its "
+                                "own published results — a directional estimate, not a rating",
+                        "kind": "rating"})
         if row["model"].get("basis") == "originated_rank":
             for key, label in ((row["key_a"], row["team_a"]), (row["key_b"], row["team_b"])):
                 slug = slug_index.get(key)
