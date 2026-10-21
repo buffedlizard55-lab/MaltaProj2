@@ -64,5 +64,16 @@
       "https://www.hltv.org/matches/2399888/ground-zero-vs-off-chops-dfrag-invitational-2026#betting",
       "https://egamersworld.com/counterstrike/match/rW6Ymkl0D/benched-gods-vs-titanflow-EcLgERbZn"
     ]
+  },
+  {
+    "title": "Integration blocker: newly merged audit links escape the staged site",
+    "finding": "After rebasing onto main 7d74dec3, full static staging stops because pickboard/flagged.html links to ../scripts/f7279a54/collect.py and ../scripts/f7279a54/core.py. The files exist in the repository but are not shipped in the staged Pages artifact. This is a newly inherited staging defect, not a missing betting line. The owning session was notified on PR #213 and the active integration owner on PR #215; this session has not edited their claimed files. It does not invalidate the independent audit or source research, but the combined staged build cannot be described as green until fixed.",
+    "read_date_utc": "2026-10-21",
+    "method": "Executed scripts/stage_site.py against rebased integration; reviewed source-link renderer and reported exact failing paths",
+    "fixture_id": null,
+    "urls": [
+      "https://github.com/buffedlizard55-lab/MaltaProj2/blob/7d74dec358c8b91722e01ddc9953cf0fe67d424f/scripts/86f3af65/site.py",
+      "https://github.com/buffedlizard55-lab/MaltaProj2/pull/213"
+    ]
   }
 ]
