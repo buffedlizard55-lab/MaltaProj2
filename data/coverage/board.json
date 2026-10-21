@@ -1,5 +1,5 @@
 {
- "generated_at_utc": "2026-10-21T15:37:13Z",
+ "generated_at_utc": "2026-10-21T19:37:52Z",
  "rules": {
   "fixture_source": "HotSpawn Pick'ems public fixtures endpoint (discovery only)",
   "probability_sources": "external bookmakers / exchanges / fitted models — never HotSpawn",
@@ -14,17 +14,17 @@
  "summary": {
   "cs2_fixtures_in_window": 204,
   "listed_by_lobby": 73,
-  "picks_open": 9,
-  "open_with_probability": 8,
-  "open_market": 5,
+  "picks_open": 6,
+  "open_with_probability": 5,
+  "open_market": 2,
   "open_exchange": 0,
   "open_estimate": 3,
   "open_blank": 1,
-  "with_probability": 126,
-  "market": 12,
-  "exchange": 2,
-  "estimate": 112,
-  "blank": 78
+  "with_probability": 125,
+  "market": 11,
+  "exchange": 1,
+  "estimate": 113,
+  "blank": 79
  },
  "model": {
   "preference": "bt",
@@ -380,20 +380,20 @@
   },
   "evaluation": {
    "evaluation_window_days": 14,
-   "matches_in_window": 199,
-   "matches_with_book_price": 105,
+   "matches_in_window": 183,
+   "matches_with_book_price": 98,
    "note": "Out-of-sample window: the Bradley-Terry model used here is refitted with every match inside the window excluded, and the Valve VRS snapshot used predates the window. The book price pair bo3.gg keeps for a finished match is the last price it held (updated in-play), so it is deliberately NOT scored here as a benchmark - on 2026-10-14 it implied the eventual winner in 100% of 4,000 settled matches. Fewer model rows than matches in the window means the model had no rating for both teams.",
    "bt": {
-    "n": 27,
-    "brier": 0.24978,
-    "log_loss": 0.73833,
-    "accuracy": 0.6296
+    "n": 24,
+    "brier": 0.23265,
+    "log_loss": 0.64555,
+    "accuracy": 0.625
    },
    "vrs": {
-    "n": 126,
-    "brier": 0.25177,
-    "log_loss": 0.73008,
-    "accuracy": 0.6429
+    "n": 115,
+    "brier": 0.25287,
+    "log_loss": 0.73457,
+    "accuracy": 0.6435
    },
    "baseline_coin_flip_brier": 0.25
   }
@@ -454,8 +454,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -9.191130700687395,
-     "rating_b": -3.5562174605430927,
+     "rating_a": -9.188073923925543,
+     "rating_b": -3.5553274237037553,
      "appearances_a": 9.0,
      "appearances_b": 1.0
     },
@@ -530,8 +530,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.907802900907642,
-     "rating_b": 3.2854511939181124,
+     "rating_a": 4.906770659903138,
+     "rating_b": 3.2844359609503835,
      "appearances_a": 6.0,
      "appearances_b": 9.0
     },
@@ -681,7 +681,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": 0.14779241483305822,
+     "rating_b": 0.14679354285660828,
      "appearances_a": 0.0,
      "appearances_b": 5.0
     },
@@ -794,7 +794,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": 6.584550786654272,
+     "rating_b": 6.583507829952183,
      "appearances_a": 0.0,
      "appearances_b": 5.0
     },
@@ -946,7 +946,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": -9.528958521452791,
+     "rating_b": -9.526049339950486,
      "appearances_a": 0.0,
      "appearances_b": 1.0
     },
@@ -1022,7 +1022,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": -5.096326367372763,
+     "rating_b": -5.09506835891418,
      "appearances_a": 0.0,
      "appearances_b": 4.0
     },
@@ -1150,18 +1150,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.02441911669632461,
-    "prob_b": 0.9755808833036754,
+    "prob_a": 0.024417601363558396,
+    "prob_b": 0.9755823986364416,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "b",
     "pick_team": "sAw",
-    "pick_probability": 0.9755808833036754
+    "pick_probability": 0.9755823986364416
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.02441911669632461,
+     "prob_a": 0.024417601363558396,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -1171,8 +1171,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.2734161179738288,
-     "rating_b": 4.9610828926072505,
+     "rating_a": 1.272431988219311,
+     "rating_b": 4.96016237322253,
      "appearances_a": 18.0,
      "appearances_b": 9.0
     },
@@ -1247,7 +1247,7 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 3.8499525025715333,
+     "rating_a": 3.8488998675482056,
      "rating_b": null,
      "appearances_a": 7.0,
      "appearances_b": 0.0
@@ -1360,7 +1360,7 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 0.4337099300820354,
+     "rating_a": 0.4326940577152921,
      "rating_b": null,
      "appearances_a": 5.0,
      "appearances_b": 0.0
@@ -1436,7 +1436,7 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.785744850374164,
+     "rating_a": 2.7847367177981224,
      "rating_b": null,
      "appearances_a": 14.0,
      "appearances_b": 0.0
@@ -1512,7 +1512,7 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.4008557882780694,
+     "rating_a": 2.400436078233108,
      "rating_b": null,
      "appearances_a": 6.0,
      "appearances_b": 0.0
@@ -1700,7 +1700,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": 2.050667279989541,
+     "rating_b": 2.0496603043956467,
      "appearances_a": 0.0,
      "appearances_b": 9.0
     },
@@ -1851,8 +1851,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -4.748679507728542,
-     "rating_b": 1.0677153174479512,
+     "rating_a": -4.747617046272433,
+     "rating_b": 1.0667153530636646,
      "appearances_a": 3.0,
      "appearances_b": 12.0
     },
@@ -1927,8 +1927,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.1867064658365516,
-     "rating_b": -0.5736201531630006,
+     "rating_a": 2.186540473817536,
+     "rating_b": -0.5739530321012766,
      "appearances_a": 6.0,
      "appearances_b": 5.0
     },
@@ -2153,8 +2153,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -5.480981677030969,
-     "rating_b": 1.41082480894417,
+     "rating_a": -5.479833150028095,
+     "rating_b": 1.4106766911999076,
      "appearances_a": 6.0,
      "appearances_b": 15.0
     },
@@ -2230,7 +2230,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": 0.04725194483034999,
+     "rating_b": 0.04646027175482388,
      "appearances_a": 0.0,
      "appearances_b": 9.0
     },
@@ -2342,8 +2342,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.2952076805257793,
-     "rating_b": 1.918175717869494,
+     "rating_a": 2.295083912666865,
+     "rating_b": 1.9180876182354452,
      "appearances_a": 7.0,
      "appearances_b": 5.0
     },
@@ -2418,7 +2418,7 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 0.4165012993720923,
+     "rating_a": 0.4155004456398403,
      "rating_b": null,
      "appearances_a": 19.0,
      "appearances_b": 0.0
@@ -2531,7 +2531,7 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.9610828926072505,
+     "rating_a": 4.96016237322253,
      "rating_b": null,
      "appearances_a": 9.0,
      "appearances_b": 0.0
@@ -2644,7 +2644,7 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 3.255196254272874,
+     "rating_a": 3.2541912671078688,
      "rating_b": null,
      "appearances_a": 19.0,
      "appearances_b": 0.0
@@ -2757,8 +2757,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 3.255196254272874,
-     "rating_b": -5.9591684692895,
+     "rating_a": 3.2541912671078688,
+     "rating_b": -5.958218463372728,
      "appearances_a": 19.0,
      "appearances_b": 1.0
     },
@@ -2908,7 +2908,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": -5.9591684692895,
+     "rating_b": -5.958218463372728,
      "appearances_a": 0.0,
      "appearances_b": 1.0
     },
@@ -3020,7 +3020,7 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.070594923255715,
+     "rating_a": 1.0695905917899904,
      "rating_b": null,
      "appearances_a": 6.0,
      "appearances_b": 0.0
@@ -3096,8 +3096,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -4.748679507728542,
-     "rating_b": -3.5562174605430927,
+     "rating_a": -4.747617046272433,
+     "rating_b": -3.5553274237037553,
      "appearances_a": 3.0,
      "appearances_b": 1.0
     },
@@ -3225,18 +3225,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.8619312235092672,
-    "prob_b": 0.1380687764907328,
+    "prob_a": 0.8619345652869049,
+    "prob_b": 0.13806543471309507,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "6666",
-    "pick_probability": 0.8619312235092672
+    "pick_probability": 0.8619345652869049
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.8619312235092672,
+     "prob_a": 0.8619345652869049,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -3246,8 +3246,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.1996601323018306,
-     "rating_b": 2.368236593308103,
+     "rating_a": 4.19866858595161,
+     "rating_b": 2.3672169658736157,
      "appearances_a": 11.0,
      "appearances_b": 9.0
     },
@@ -3338,18 +3338,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.7859226998445256,
-    "prob_b": 0.21407730015547444,
+    "prob_a": 0.7859193915529323,
+    "prob_b": 0.21408060844706767,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "ASTRAL",
-    "pick_probability": 0.7859226998445256
+    "pick_probability": 0.7859193915529323
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.7859226998445256,
+     "prob_a": 0.7859193915529323,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -3359,8 +3359,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.368236593308103,
-     "rating_b": 1.0677153174479512,
+     "rating_a": 2.3672169658736157,
+     "rating_b": 1.0667153530636646,
      "appearances_a": 9.0,
      "appearances_b": 12.0
     },
@@ -3472,8 +3472,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.584550786654272,
-     "rating_b": 4.907802900907642,
+     "rating_a": 6.583507829952183,
+     "rating_b": 4.906770659903138,
      "appearances_a": 5.0,
      "appearances_b": 6.0
     },
@@ -3548,8 +3548,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.5833475660945058,
-     "rating_b": -0.5736201531630006,
+     "rating_a": 2.582985356563238,
+     "rating_b": -0.5739530321012766,
      "appearances_a": 11.0,
      "appearances_b": 5.0
     },
@@ -3603,18 +3603,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.9581913729831953,
-    "prob_b": 0.041808627016804656,
+    "prob_a": 0.9581917102139433,
+    "prob_b": 0.04180828978605666,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "6666",
-    "pick_probability": 0.9581913729831953
+    "pick_probability": 0.9581917102139433
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.9581913729831953,
+     "prob_a": 0.9581917102139433,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -3624,8 +3624,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.1996601323018306,
-     "rating_b": 1.0677153174479512,
+     "rating_a": 4.19866858595161,
+     "rating_b": 1.0667153530636646,
      "appearances_a": 11.0,
      "appearances_b": 12.0
     },
@@ -3737,7 +3737,7 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 0.06891286407996731,
+     "rating_a": 0.068800494819018,
      "rating_b": null,
      "appearances_a": 8.0,
      "appearances_b": 0.0
@@ -3813,8 +3813,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.4008557882780694,
-     "rating_b": 0.04725194483034999,
+     "rating_a": 2.400436078233108,
+     "rating_b": 0.04646027175482388,
      "appearances_a": 6.0,
      "appearances_b": 9.0
     },
@@ -3927,7 +3927,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": 1.5698597470653517,
+     "rating_b": 1.5688464907890582,
      "appearances_a": 0.0,
      "appearances_b": 14.0
     },
@@ -4039,8 +4039,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 3.155095258211903,
-     "rating_b": 1.5698597470653517,
+     "rating_a": 3.154079807040673,
+     "rating_b": 1.5688464907890582,
      "appearances_a": 4.0,
      "appearances_b": 14.0
     },
@@ -4115,8 +4115,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.71994773572406,
-     "rating_b": 12.873181349211873,
+     "rating_a": 6.718859800551324,
+     "rating_b": 12.871239147067904,
      "appearances_a": 6.0,
      "appearances_b": 3.0
     },
@@ -4229,7 +4229,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": 1.2754860978127425,
+     "rating_b": 1.2745169252777824,
      "appearances_a": 0.0,
      "appearances_b": 9.0
     },
@@ -4304,8 +4304,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -0.37933115790572663,
-     "rating_b": -0.6719721620741339,
+     "rating_a": -0.37883544727302565,
+     "rating_b": -0.6714613386293881,
      "appearances_a": 4.0,
      "appearances_b": 6.0
     },
@@ -4359,18 +4359,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.9608633800562738,
-    "prob_b": 0.03913661994372619,
+    "prob_a": 0.9608613246212622,
+    "prob_b": 0.03913867537873783,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "Nuclear TigeRES",
-    "pick_probability": 0.9608633800562738
+    "pick_probability": 0.9608613246212622
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.9608633800562738,
+     "prob_a": 0.9608613246212622,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -4380,8 +4380,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.139398007246927,
-     "rating_b": 2.9386243728691865,
+     "rating_a": 6.138346956603976,
+     "rating_b": 2.9376279794858275,
      "appearances_a": 13.0,
      "appearances_b": 25.0
     },
@@ -4456,8 +4456,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 0.8786914904179488,
-     "rating_b": -4.407357626605133,
+     "rating_a": 0.8791269321597631,
+     "rating_b": -4.405297149807398,
      "appearances_a": 7.0,
      "appearances_b": 1.0
     },
@@ -4532,8 +4532,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 3.086301909357389,
-     "rating_b": 2.7692824816846713,
+     "rating_a": 3.0852881292363836,
+     "rating_b": 2.7682645591825756,
      "appearances_a": 7.0,
      "appearances_b": 6.0
     },
@@ -4645,8 +4645,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.77948075011332,
-     "rating_b": -0.4053886754886802,
+     "rating_a": 5.778505728949637,
+     "rating_b": -0.4048684655829881,
      "appearances_a": 2.0,
      "appearances_b": 5.0
     },
@@ -4759,7 +4759,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": 2.731785289241647,
+     "rating_b": 2.7307689338140753,
      "appearances_a": 0.0,
      "appearances_b": 9.0
     },
@@ -4834,8 +4834,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.2952076805257793,
-     "rating_b": -1.8719964060333651,
+     "rating_a": 2.295083912666865,
+     "rating_b": -1.8714925035849106,
      "appearances_a": 7.0,
      "appearances_b": 2.0
     },
@@ -4910,8 +4910,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -0.37933115790572663,
-     "rating_b": 0.8786914904179488,
+     "rating_a": -0.37883544727302565,
+     "rating_b": 0.8791269321597631,
      "appearances_a": 4.0,
      "appearances_b": 7.0
     },
@@ -5060,8 +5060,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.77948075011332,
-     "rating_b": 0.8786914904179488,
+     "rating_a": 5.778505728949637,
+     "rating_b": 0.8791269321597631,
      "appearances_a": 2.0,
      "appearances_b": 7.0
     },
@@ -5136,8 +5136,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.4522215046937597,
-     "rating_b": 3.086301909357389,
+     "rating_a": 1.4512521917222627,
+     "rating_b": 3.0852881292363836,
      "appearances_a": 13.0,
      "appearances_b": 7.0
     },
@@ -5191,18 +5191,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.6980517444898706,
-    "prob_b": 0.3019482555101294,
+    "prob_a": 0.698049812043996,
+    "prob_b": 0.30195018795600403,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "PCIFIC",
-    "pick_probability": 0.6980517444898706
+    "pick_probability": 0.698049812043996
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.6980517444898706,
+     "prob_a": 0.698049812043996,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -5212,8 +5212,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.8773921868162406,
-     "rating_b": 2.039354617618739,
+     "rating_a": 2.8763899409488363,
+     "rating_b": 2.03836154000052,
      "appearances_a": 14.0,
      "appearances_b": 10.0
     },
@@ -5288,8 +5288,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.992568851051971,
-     "rating_b": 3.400144904083252,
+     "rating_a": 5.991539042989807,
+     "rating_b": 3.399131800839749,
      "appearances_a": 6.0,
      "appearances_b": 11.0
     },
@@ -5454,18 +5454,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.13859816428991814,
-    "prob_b": 0.8614018357100819,
+    "prob_a": 0.13859712481966316,
+    "prob_b": 0.8614028751803369,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "b",
     "pick_team": "BASEMENT BOYS",
-    "pick_probability": 0.8614018357100819
+    "pick_probability": 0.8614028751803369
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.13859816428991814,
+     "prob_a": 0.13859712481966316,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -5475,8 +5475,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.537537356385943,
-     "rating_b": 4.364519618074487,
+     "rating_a": 2.5365365386491834,
+     "rating_b": 4.363527506969187,
      "appearances_a": 8.0,
      "appearances_b": 9.0
     },
@@ -5530,18 +5530,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.6392367343822882,
-    "prob_b": 0.36076326561771177,
+    "prob_a": 0.6392352483905417,
+    "prob_b": 0.3607647516094583,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "Sashi",
-    "pick_probability": 0.6392367343822882
+    "pick_probability": 0.6392352483905417
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.6392367343822882,
+     "prob_a": 0.6392352483905417,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -5551,8 +5551,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.3764555091984794,
-     "rating_b": 0.8044026163957146,
+     "rating_a": 1.375464948272686,
+     "rating_b": 0.8034184991203834,
      "appearances_a": 11.0,
      "appearances_b": 11.0
     },
@@ -5627,7 +5627,7 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.9707899339522408,
+     "rating_a": 1.9697939880684425,
      "rating_b": null,
      "appearances_a": 28.0,
      "appearances_b": 0.0
@@ -5740,8 +5740,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 3.8188211138154355,
-     "rating_b": 2.731785289241647,
+     "rating_a": 3.8178052647642384,
+     "rating_b": 2.7307689338140753,
      "appearances_a": 7.0,
      "appearances_b": 9.0
     },
@@ -5795,18 +5795,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.29173764492345705,
-    "prob_b": 0.708262355076543,
+    "prob_a": 0.2917346198607714,
+    "prob_b": 0.7082653801392286,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "b",
     "pick_team": "Leo",
-    "pick_probability": 0.708262355076543
+    "pick_probability": 0.7082653801392286
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.29173764492345705,
+     "prob_a": 0.2917346198607714,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -5816,8 +5816,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.368236593308103,
-     "rating_b": 3.255196254272874,
+     "rating_a": 2.3672169658736157,
+     "rating_b": 3.2541912671078688,
      "appearances_a": 9.0,
      "appearances_b": 19.0
     },
@@ -5892,8 +5892,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 0.4165012993720923,
-     "rating_b": 2.9854095819818207,
+     "rating_a": 0.4155004456398403,
+     "rating_b": 2.9844059727142955,
      "appearances_a": 19.0,
      "appearances_b": 5.0
     },
@@ -6005,8 +6005,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.4522215046937597,
-     "rating_b": 1.588993130249762,
+     "rating_a": 1.4512521917222627,
+     "rating_b": 1.5880220890123544,
      "appearances_a": 13.0,
      "appearances_b": 6.0
     },
@@ -6097,18 +6097,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.2536823492202721,
-    "prob_b": 0.7463176507797279,
+    "prob_a": 0.25367797163813804,
+    "prob_b": 0.7463220283618619,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "b",
     "pick_team": "BASEMENT BOYS",
-    "pick_probability": 0.7463176507797279
+    "pick_probability": 0.7463220283618619
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.2536823492202721,
+     "prob_a": 0.25367797163813804,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -6118,8 +6118,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 3.2854511939181124,
-     "rating_b": 4.364519618074487,
+     "rating_a": 3.2844359609503835,
+     "rating_b": 4.363527506969187,
      "appearances_a": 9.0,
      "appearances_b": 9.0
     },
@@ -6173,18 +6173,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.930399758164722,
-    "prob_b": 0.06960024183527802,
+    "prob_a": 0.9304061757366131,
+    "prob_b": 0.0695938242633869,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "sAw",
-    "pick_probability": 0.930399758164722
+    "pick_probability": 0.9304061757366131
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.930399758164722,
+     "prob_a": 0.9304061757366131,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -6194,8 +6194,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.9610828926072505,
-     "rating_b": 2.368236593308103,
+     "rating_a": 4.96016237322253,
+     "rating_b": 2.3672169658736157,
      "appearances_a": 9.0,
      "appearances_b": 9.0
     },
@@ -6270,8 +6270,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 3.8188211138154355,
-     "rating_b": 1.3764555091984794,
+     "rating_a": 3.8178052647642384,
+     "rating_b": 1.375464948272686,
      "appearances_a": 7.0,
      "appearances_b": 11.0
     },
@@ -6346,8 +6346,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -0.2240627365554182,
-     "rating_b": 2.032239855767811,
+     "rating_a": -0.22505243306649017,
+     "rating_b": 2.031237645852742,
      "appearances_a": 7.0,
      "appearances_b": 8.0
     },
@@ -6496,8 +6496,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 3.172495507471855,
-     "rating_b": 6.139398007246927,
+     "rating_a": 3.17144920139007,
+     "rating_b": 6.138346956603976,
      "appearances_a": 3.0,
      "appearances_b": 13.0
     },
@@ -6572,7 +6572,7 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.070594923255715,
+     "rating_a": 1.0695905917899904,
      "rating_b": null,
      "appearances_a": 6.0,
      "appearances_b": 0.0
@@ -6664,18 +6664,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.739220146723234,
-    "prob_b": 0.260779853276766,
+    "prob_a": 0.7392176517365276,
+    "prob_b": 0.26078234826347235,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "Drama",
-    "pick_probability": 0.739220146723234
+    "pick_probability": 0.7392176517365276
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.739220146723234,
+     "prob_a": 0.7392176517365276,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -6685,8 +6685,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 3.400144904083252,
-     "rating_b": 2.358225706723836,
+     "rating_a": 3.399131800839749,
+     "rating_b": 2.3572255460067493,
      "appearances_a": 11.0,
      "appearances_b": 8.0
     },
@@ -6740,18 +6740,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.7247226703914302,
-    "prob_b": 0.27527732960856977,
+    "prob_a": 0.7247220462506428,
+    "prob_b": 0.27527795374935715,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "ex-Zero Tenacity",
-    "pick_probability": 0.7247226703914302
+    "pick_probability": 0.7247220462506428
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.7247226703914302,
+     "prob_a": 0.7247220462506428,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -6761,8 +6761,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.93879993122318,
-     "rating_b": 1.9707899339522408,
+     "rating_a": 2.937800856811962,
+     "rating_b": 1.9697939880684425,
      "appearances_a": 19.0,
      "appearances_b": 28.0
     },
@@ -6816,18 +6816,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.8729594382384793,
-    "prob_b": 0.12704056176152068,
+    "prob_a": 0.8729558629438714,
+    "prob_b": 0.1270441370561286,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "HyperSpirit",
-    "pick_probability": 0.8729594382384793
+    "pick_probability": 0.8729558629438714
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.8729594382384793,
+     "prob_a": 0.8729558629438714,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -6837,8 +6837,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.731785289241647,
-     "rating_b": 0.8044026163957146,
+     "rating_a": 2.7307689338140753,
+     "rating_b": 0.8034184991203834,
      "appearances_a": 9.0,
      "appearances_b": 11.0
     },
@@ -6913,8 +6913,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.977739587835115,
-     "rating_b": 1.1666829256967803,
+     "rating_a": 4.976702992585989,
+     "rating_b": 1.1656966961828832,
      "appearances_a": 11.0,
      "appearances_b": 5.0
     },
@@ -7005,18 +7005,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.29173764492345705,
-    "prob_b": 0.708262355076543,
+    "prob_a": 0.2917346198607714,
+    "prob_b": 0.7082653801392286,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "b",
     "pick_team": "Leo",
-    "pick_probability": 0.708262355076543
+    "pick_probability": 0.7082653801392286
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.29173764492345705,
+     "prob_a": 0.2917346198607714,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -7026,8 +7026,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.368236593308103,
-     "rating_b": 3.255196254272874,
+     "rating_a": 2.3672169658736157,
+     "rating_b": 3.2541912671078688,
      "appearances_a": 9.0,
      "appearances_b": 19.0
     },
@@ -7118,18 +7118,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.8614018357100819,
-    "prob_b": 0.1385981642899181,
+    "prob_a": 0.8614028751803368,
+    "prob_b": 0.13859712481966324,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "BASEMENT BOYS",
-    "pick_probability": 0.8614018357100819
+    "pick_probability": 0.8614028751803368
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.8614018357100819,
+     "prob_a": 0.8614028751803368,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -7139,8 +7139,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.364519618074487,
-     "rating_b": 2.537537356385943,
+     "rating_a": 4.363527506969187,
+     "rating_b": 2.5365365386491834,
      "appearances_a": 9.0,
      "appearances_b": 8.0
     },
@@ -7231,18 +7231,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.20500038388343916,
-    "prob_b": 0.7949996161165609,
+    "prob_a": 0.20500458778019748,
+    "prob_b": 0.7949954122198025,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "b",
     "pick_team": "HyperSpirit",
-    "pick_probability": 0.7949996161165609
+    "pick_probability": 0.7949954122198025
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.20500038388343916,
+     "prob_a": 0.20500458778019748,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -7252,8 +7252,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.3764555091984794,
-     "rating_b": 2.731785289241647,
+     "rating_a": 1.375464948272686,
+     "rating_b": 2.7307689338140753,
      "appearances_a": 11.0,
      "appearances_b": 9.0
     },
@@ -7402,8 +7402,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.75790215619876,
-     "rating_b": 3.160273656749716,
+     "rating_a": 4.756880563412195,
+     "rating_b": 3.1592404779206738,
      "appearances_a": 16.0,
      "appearances_b": 6.0
     },
@@ -7552,8 +7552,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.1600928620585522,
-     "rating_b": 4.659903744197888,
+     "rating_a": 1.1593617227078743,
+     "rating_b": 4.6591044107636765,
      "appearances_a": 5.0,
      "appearances_b": 6.0
     },
@@ -7718,18 +7718,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.37318704369108097,
-    "prob_b": 0.6268129563089191,
+    "prob_a": 0.3731932736423284,
+    "prob_b": 0.6268067263576715,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "b",
     "pick_team": "Bushido Wildcats",
-    "pick_probability": 0.6268129563089191
+    "pick_probability": 0.6268067263576715
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.37318704369108097,
+     "prob_a": 0.3731932736423284,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -7739,8 +7739,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.4522215046937597,
-     "rating_b": 1.9707899339522408,
+     "rating_a": 1.4512521917222627,
+     "rating_b": 1.9697939880684425,
      "appearances_a": 13.0,
      "appearances_b": 28.0
     },
@@ -7815,8 +7815,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 3.086301909357389,
-     "rating_b": 0.956602462719777,
+     "rating_a": 3.0852881292363836,
+     "rating_b": 0.9555928148999802,
      "appearances_a": 7.0,
      "appearances_b": 9.0
     },
@@ -7891,8 +7891,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 3.8990099953240898,
-     "rating_b": 2.9386243728691865,
+     "rating_a": 3.8979699325134236,
+     "rating_b": 2.9376279794858275,
      "appearances_a": 7.0,
      "appearances_b": 25.0
     },
@@ -7967,8 +7967,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 3.172495507471855,
-     "rating_b": -0.8724568354496524,
+     "rating_a": 3.17144920139007,
+     "rating_b": -0.8724570065094511,
      "appearances_a": 3.0,
      "appearances_b": 2.0
     },
@@ -8080,8 +8080,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.739506618016933,
-     "rating_b": 1.546727814657114,
+     "rating_a": 6.738801932439355,
+     "rating_b": 1.5459762790944127,
      "appearances_a": 11.0,
      "appearances_b": 5.0
     },
@@ -8156,8 +8156,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.7692824816846713,
-     "rating_b": 2.039354617618739,
+     "rating_a": 2.7682645591825756,
+     "rating_b": 2.03836154000052,
      "appearances_a": 6.0,
      "appearances_b": 10.0
     },
@@ -8269,8 +8269,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.366692844799895,
-     "rating_b": 4.364519618074487,
+     "rating_a": 4.365611121268735,
+     "rating_b": 4.363527506969187,
      "appearances_a": 2.0,
      "appearances_b": 9.0
     },
@@ -8324,18 +8324,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.8757167238502918,
-    "prob_b": 0.12428327614970824,
+    "prob_a": 0.8757134848402424,
+    "prob_b": 0.12428651515975764,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "Eternal Fire",
-    "pick_probability": 0.8757167238502918
+    "pick_probability": 0.8757134848402424
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.8757167238502918,
+     "prob_a": 0.8757134848402424,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -8345,8 +8345,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.237930412742899,
-     "rating_b": 3.2854511939181124,
+     "rating_a": 5.236885419900153,
+     "rating_b": 3.2844359609503835,
      "appearances_a": 13.0,
      "appearances_b": 9.0
     },
@@ -8458,8 +8458,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.198053496245831,
-     "rating_b": 5.992568851051971,
+     "rating_a": 5.197012404775946,
+     "rating_b": 5.991539042989807,
      "appearances_a": 11.0,
      "appearances_b": 6.0
     },
@@ -8513,18 +8513,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.13847121170338986,
-    "prob_b": 0.8615287882966102,
+    "prob_a": 0.13846808692914017,
+    "prob_b": 0.8615319130708599,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "b",
     "pick_team": "MAYBE",
-    "pick_probability": 0.8615287882966102
+    "pick_probability": 0.8615319130708599
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.13847121170338986,
+     "prob_a": 0.13846808692914017,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -8534,8 +8534,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -0.5525599277911453,
-     "rating_b": 1.2754860978127425,
+     "rating_a": -0.5535552938224801,
+     "rating_b": 1.2745169252777824,
      "appearances_a": 12.0,
      "appearances_b": 9.0
     },
@@ -8610,8 +8610,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.366692844799895,
-     "rating_b": 2.368236593308103,
+     "rating_a": 4.365611121268735,
+     "rating_b": 2.3672169658736157,
      "appearances_a": 2.0,
      "appearances_b": 9.0
     },
@@ -8723,8 +8723,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.93879993122318,
-     "rating_b": 3.086301909357389,
+     "rating_a": 2.937800856811962,
+     "rating_b": 3.0852881292363836,
      "appearances_a": 19.0,
      "appearances_b": 7.0
     },
@@ -8910,8 +8910,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.7692824816846713,
-     "rating_b": 2.671930761570667,
+     "rating_a": 2.7682645591825756,
+     "rating_b": 2.6709272402703426,
      "appearances_a": 6.0,
      "appearances_b": 16.0
     },
@@ -9002,18 +9002,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.9849542731072571,
-    "prob_b": 0.015045726892742861,
+    "prob_a": 0.9849537476925149,
+    "prob_b": 0.01504625230748513,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "Heroic",
-    "pick_probability": 0.9849542731072571
+    "pick_probability": 0.9849537476925149
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.9849542731072571,
+     "prob_a": 0.9849537476925149,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -9023,8 +9023,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.913286482607406,
-     "rating_b": 2.731785289241647,
+     "rating_a": 6.912234673155035,
+     "rating_b": 2.7307689338140753,
      "appearances_a": 9.0,
      "appearances_b": 9.0
     },
@@ -9078,18 +9078,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.8328136124615846,
-    "prob_b": 0.16718638753841542,
+    "prob_a": 0.8327943844228635,
+    "prob_b": 0.16720561557713653,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "SinnerS",
-    "pick_probability": 0.8328136124615846
+    "pick_probability": 0.8327943844228635
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.8328136124615846,
+     "prob_a": 0.8327943844228635,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -9099,8 +9099,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.566783472097037,
-     "rating_b": 4.9610828926072505,
+     "rating_a": 6.565724861418202,
+     "rating_b": 4.96016237322253,
      "appearances_a": 10.0,
      "appearances_b": 9.0
     },
@@ -9154,18 +9154,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.9510967374998077,
-    "prob_b": 0.04890326250019228,
+    "prob_a": 0.9510953283897884,
+    "prob_b": 0.048904671610211614,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "Luminosity",
-    "pick_probability": 0.9510967374998077
+    "pick_probability": 0.9510953283897884
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.9510967374998077,
+     "prob_a": 0.9510953283897884,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -9175,8 +9175,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.336008260501052,
-     "rating_b": 2.368236593308103,
+     "rating_a": 5.334958337683897,
+     "rating_b": 2.3672169658736157,
      "appearances_a": 10.0,
      "appearances_b": 9.0
     },
@@ -9267,18 +9267,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.9515602640871067,
-    "prob_b": 0.0484397359128933,
+    "prob_a": 0.9515579703347697,
+    "prob_b": 0.04844202966523026,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "Luminosity",
-    "pick_probability": 0.9515602640871067
+    "pick_probability": 0.9515579703347697
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.9515602640871067,
+     "prob_a": 0.9515579703347697,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -9288,8 +9288,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.336008260501052,
-     "rating_b": 2.358225706723836,
+     "rating_a": 5.334958337683897,
+     "rating_b": 2.3572255460067493,
      "appearances_a": 10.0,
      "appearances_b": 8.0
     },
@@ -9417,18 +9417,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.9145369643706958,
-    "prob_b": 0.08546303562930424,
+    "prob_a": 0.9145318064678016,
+    "prob_b": 0.08546819353219837,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "FOKUS",
-    "pick_probability": 0.9145369643706958
+    "pick_probability": 0.9145318064678016
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.9145369643706958,
+     "prob_a": 0.9145318064678016,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -9438,8 +9438,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.309133867904795,
-     "rating_b": 2.93879993122318,
+     "rating_a": 5.308068802950472,
+     "rating_b": 2.937800856811962,
      "appearances_a": 10.0,
      "appearances_b": 19.0
     },
@@ -9514,8 +9514,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.31937933378121,
-     "rating_b": 3.8188211138154355,
+     "rating_a": 4.318338250655277,
+     "rating_b": 3.8178052647642384,
      "appearances_a": 7.0,
      "appearances_b": 7.0
     },
@@ -9590,8 +9590,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -4.403344784395722,
-     "rating_b": -1.8719964060333651,
+     "rating_a": -4.401901864876629,
+     "rating_b": -1.8714925035849106,
      "appearances_a": 2.0,
      "appearances_b": 2.0
     },
@@ -9704,7 +9704,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": 2.039354617618739,
+     "rating_b": 2.03836154000052,
      "appearances_a": 0.0,
      "appearances_b": 10.0
     },
@@ -9758,18 +9758,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.9028497677849392,
-    "prob_b": 0.0971502322150608,
+    "prob_a": 0.9028581734375924,
+    "prob_b": 0.09714182656240755,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "sAw",
-    "pick_probability": 0.9028497677849392
+    "pick_probability": 0.9028581734375924
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.9028497677849392,
+     "prob_a": 0.9028581734375924,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -9779,8 +9779,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.9610828926072505,
-     "rating_b": 2.731785289241647,
+     "rating_a": 4.96016237322253,
+     "rating_b": 2.7307689338140753,
      "appearances_a": 9.0,
      "appearances_b": 9.0
     },
@@ -9929,8 +9929,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -1.582607422038004,
-     "rating_b": 5.782529291862283,
+     "rating_a": -1.5822975740397667,
+     "rating_b": 5.781476450277601,
      "appearances_a": 3.0,
      "appearances_b": 9.0
     },
@@ -10042,8 +10042,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.368236593308103,
-     "rating_b": 3.8188211138154355,
+     "rating_a": 2.3672169658736157,
+     "rating_b": 3.8178052647642384,
      "appearances_a": 9.0,
      "appearances_b": 7.0
     },
@@ -10097,18 +10097,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.46556590271410897,
-    "prob_b": 0.534434097285891,
+    "prob_a": 0.465568100080204,
+    "prob_b": 0.534431899919796,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "b",
     "pick_team": "Luminosity",
-    "pick_probability": 0.534434097285891
+    "pick_probability": 0.534431899919796
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.46556590271410897,
+     "prob_a": 0.465568100080204,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -10118,8 +10118,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.198053496245831,
-     "rating_b": 5.336008260501052,
+     "rating_a": 5.197012404775946,
+     "rating_b": 5.334958337683897,
      "appearances_a": 11.0,
      "appearances_b": 10.0
     },
@@ -10453,8 +10453,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.1600928620585522,
-     "rating_b": 7.555527187617264,
+     "rating_a": 1.1593617227078743,
+     "rating_b": 7.554759181839783,
      "appearances_a": 5.0,
      "appearances_b": 6.0
     },
@@ -10603,8 +10603,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.528138152356702,
-     "rating_b": 4.159159826551293,
+     "rating_a": 4.527116662754818,
+     "rating_b": 4.158122920834713,
      "appearances_a": 23.0,
      "appearances_b": 2.0
     },
@@ -10695,18 +10695,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.6344213102992212,
-    "prob_b": 0.3655786897007788,
+    "prob_a": 0.6344112277008185,
+    "prob_b": 0.3655887722991815,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "FOKUS",
-    "pick_probability": 0.6344213102992212
+    "pick_probability": 0.6344112277008185
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.6344213102992212,
+     "prob_a": 0.6344112277008185,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -10716,8 +10716,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.309133867904795,
-     "rating_b": 4.75790215619876,
+     "rating_a": 5.308068802950472,
+     "rating_b": 4.756880563412195,
      "appearances_a": 10.0,
      "appearances_b": 16.0
     },
@@ -10771,18 +10771,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.22539085895493324,
-    "prob_b": 0.7746091410450667,
+    "prob_a": 0.22539356595017976,
+    "prob_b": 0.7746064340498202,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "b",
     "pick_team": "Fire Flux",
-    "pick_probability": 0.7746091410450667
+    "pick_probability": 0.7746064340498202
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.22539085895493324,
+     "prob_a": 0.22539356595017976,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -10792,8 +10792,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.785744850374164,
-     "rating_b": 4.0202673723591635,
+     "rating_a": 2.7847367177981224,
+     "rating_b": 4.019243734963161,
      "appearances_a": 14.0,
      "appearances_b": 17.0
     },
@@ -10884,18 +10884,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.250306084630737,
-    "prob_b": 0.749693915369263,
+    "prob_a": 0.2503051434394578,
+    "prob_b": 0.7496948565605421,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "b",
     "pick_team": "HAVU",
-    "pick_probability": 0.749693915369263
+    "pick_probability": 0.7496948565605421
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.250306084630737,
+     "prob_a": 0.2503051434394578,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -10905,8 +10905,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.2734161179738288,
-     "rating_b": 2.370396620868505,
+     "rating_a": 1.272431988219311,
+     "rating_b": 2.369417506715739,
      "appearances_a": 18.0,
      "appearances_b": 13.0
     },
@@ -10981,8 +10981,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.31937933378121,
-     "rating_b": 4.366692844799895,
+     "rating_a": 4.318338250655277,
+     "rating_b": 4.365611121268735,
      "appearances_a": 7.0,
      "appearances_b": 2.0
     },
@@ -11036,18 +11036,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.2945450825466362,
-    "prob_b": 0.7054549174533638,
+    "prob_a": 0.29455607087112273,
+    "prob_b": 0.7054439291288772,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "b",
     "pick_team": "Eternal Fire",
-    "pick_probability": 0.7054549174533638
+    "pick_probability": 0.7054439291288772
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.2945450825466362,
+     "prob_a": 0.29455607087112273,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -11057,8 +11057,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.364519618074487,
-     "rating_b": 5.237930412742899,
+     "rating_a": 4.363527506969187,
+     "rating_b": 5.236885419900153,
      "appearances_a": 9.0,
      "appearances_b": 13.0
     },
@@ -11133,8 +11133,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.992568851051971,
-     "rating_b": 2.358225706723836,
+     "rating_a": 5.991539042989807,
+     "rating_b": 2.3572255460067493,
      "appearances_a": 6.0,
      "appearances_b": 8.0
     },
@@ -11177,55 +11177,10 @@
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [],
-   "exchange": {
-    "event_ticker": "KXCS2GAME-26OCT210500NEXCW",
-    "title": "NEXVOID vs. Chinggis Warriors",
-    "sub_title": "NEXVOID vs. Chinggis Warriors (Oct 21)",
-    "source_public_url": "https://kalshi.com/markets/kxcs2game",
-    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-21T15:37:08Z",
-    "rules_primary": "If NEXVOID wins the VOID Autumn Cup 2026: NEXVOID vs. Chinggis Warriors CS2 match originally scheduled for Oct 21, 2026 at 5:00 AM EDT, then the market resolves to Yes.",
-    "stated_start_utc": "2026-10-21T09:00:00Z",
-    "stated_start_raw": "Oct 21, 2026 at 5:00 AM EDT",
-    "expected_end_utc": null,
-    "start_time_source": "market rule text",
-    "start_delta_min": -120,
-    "sides": [
-     {
-      "ticker": "KXCS2GAME-26OCT210500NEXCW-NEX",
-      "team": "NEXVOID",
-      "yes_bid": 0.0,
-      "yes_ask": 0.01,
-      "last_price": 0.03,
-      "bid_size": 0.0,
-      "ask_size": 100.01,
-      "volume": 10058.74,
-      "open_interest": 5975.13,
-      "status": "active",
-      "mid": 0.005,
-      "spread": 0.01
-     },
-     {
-      "ticker": "KXCS2GAME-26OCT210500NEXCW-CW",
-      "team": "Chinggis Warriors",
-      "yes_bid": 0.99,
-      "yes_ask": 1.0,
-      "last_price": 0.99,
-      "bid_size": 902.18,
-      "ask_size": 0.0,
-      "volume": 7539.46,
-      "open_interest": 3686.99,
-      "status": "active",
-      "mid": 0.995,
-      "spread": 0.01
-     }
-    ],
-    "orientation": "ba"
-   },
+   "exchange": null,
    "exchange_usable": false,
    "exchange_reasons": [
-    "mid outside [0.02, 0.98]",
-    "mid outside [0.02, 0.98]"
+    "no two-sided Kalshi book matched"
    ],
    "flags": [
     "picks_locked_or_past"
@@ -11233,18 +11188,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.6667719042191783,
-    "prob_b": 0.3332280957808217,
+    "prob_a": 0.6667595001617413,
+    "prob_b": 0.33324049983825865,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "Chinggis Warriors",
-    "pick_probability": 0.6667719042191783
+    "pick_probability": 0.6667595001617413
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.6667719042191783,
+     "prob_a": 0.6667595001617413,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -11254,8 +11209,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 7.433127404952915,
-     "rating_b": 6.739506618016933,
+     "rating_a": 7.432366892821183,
+     "rating_b": 6.738801932439355,
      "appearances_a": 9.0,
      "appearances_b": 11.0
     },
@@ -11309,18 +11264,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.4142306880005734,
-    "prob_b": 0.5857693119994266,
+    "prob_a": 0.4142290377272916,
+    "prob_b": 0.5857709622727084,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "b",
     "pick_team": "Heroic",
-    "pick_probability": 0.5857693119994266
+    "pick_probability": 0.5857709622727084
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.4142306880005734,
+     "prob_a": 0.4142290377272916,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -11330,8 +11285,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.566783472097037,
-     "rating_b": 6.913286482607406,
+     "rating_a": 6.565724861418202,
+     "rating_b": 6.912234673155035,
      "appearances_a": 10.0,
      "appearances_b": 9.0
     },
@@ -11420,7 +11375,7 @@
      "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638793168/markets/related/straight",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:38Z",
-     "age_hours": 0.38,
+     "age_hours": 4.39,
      "start_delta_min": 6,
      "decimal_odds_a": 5.22,
      "decimal_odds_b": 1.140056,
@@ -11439,7 +11394,7 @@
      "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638873883/markets/related/straight",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:42Z",
-     "age_hours": 0.38,
+     "age_hours": 4.39,
      "start_delta_min": 0,
      "decimal_odds_a": 2.71,
      "decimal_odds_b": 1.425532,
@@ -11450,53 +11405,11 @@
      "orientation": "ab"
     }
    ],
-   "exchange": {
-    "event_ticker": "KXCS2GAME-26OCT210700PHACBBP",
-    "title": "Phantom Academy vs. Bebop",
-    "sub_title": "Phantom Academy vs. Bebop (Oct 21)",
-    "source_public_url": "https://kalshi.com/markets/kxcs2game",
-    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-21T15:37:08Z",
-    "rules_primary": "If Phantom Academy wins the CCT Europe Challengers Series 2026: Phantom Academy vs. Bebop CS2 match originally scheduled for Oct 21, 2026 at 7:00 AM EDT, then the market resolves to Yes.",
-    "stated_start_utc": "2026-10-21T11:00:00Z",
-    "stated_start_raw": "Oct 21, 2026 at 7:00 AM EDT",
-    "expected_end_utc": null,
-    "start_time_source": "market rule text",
-    "start_delta_min": -165,
-    "sides": [
-     {
-      "ticker": "KXCS2GAME-26OCT210700PHACBBP-PHAC",
-      "team": "Phantom Academy",
-      "yes_bid": 0.58,
-      "yes_ask": 0.6,
-      "last_price": 0.59,
-      "bid_size": 6.0,
-      "ask_size": 102.0,
-      "volume": 7627.67,
-      "open_interest": 5275.89,
-      "status": "active",
-      "mid": 0.59,
-      "spread": 0.02
-     },
-     {
-      "ticker": "KXCS2GAME-26OCT210700PHACBBP-BBP",
-      "team": "Bebop",
-      "yes_bid": 0.41,
-      "yes_ask": 0.42,
-      "last_price": 0.44,
-      "bid_size": 1.0,
-      "ask_size": 2.0,
-      "volume": 6036.9,
-      "open_interest": 3343.39,
-      "status": "active",
-      "mid": 0.415,
-      "spread": 0.01
-     }
-    ],
-    "orientation": "ab"
-   },
-   "exchange_usable": true,
-   "exchange_reasons": [],
+   "exchange": null,
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "no two-sided Kalshi book matched"
+   ],
    "flags": [
     "picks_locked_or_past"
    ],
@@ -11558,7 +11471,7 @@
      "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638873764/markets/related/straight",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:38Z",
-     "age_hours": 0.38,
+     "age_hours": 4.39,
      "start_delta_min": 0,
      "decimal_odds_a": 1.078989,
      "decimal_odds_b": 7.32,
@@ -11577,7 +11490,7 @@
      "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638849060/markets/related/straight",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:42Z",
-     "age_hours": 0.38,
+     "age_hours": 4.39,
      "start_delta_min": 4,
      "decimal_odds_a": 1.046555,
      "decimal_odds_b": 9.9,
@@ -11588,53 +11501,11 @@
      "orientation": "ba"
     }
    ],
-   "exchange": {
-    "event_ticker": "KXCS2GAME-26OCT210700PGFAL",
-    "title": "Privateer Gaming vs. Falcons Force",
-    "sub_title": "Privateer Gaming vs. Falcons Force (Oct 21)",
-    "source_public_url": "https://kalshi.com/markets/kxcs2game",
-    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-21T15:37:08Z",
-    "rules_primary": "If Privateer Gaming wins the CCT Europe Challengers Series 2026: Privateer Gaming vs. Falcons Force CS2 match originally scheduled for Oct 21, 2026 at 7:00 AM EDT, then the market resolves to Yes.",
-    "stated_start_utc": "2026-10-21T11:00:00Z",
-    "stated_start_raw": "Oct 21, 2026 at 7:00 AM EDT",
-    "expected_end_utc": null,
-    "start_time_source": "market rule text",
-    "start_delta_min": -165,
-    "sides": [
-     {
-      "ticker": "KXCS2GAME-26OCT210700PGFAL-PG",
-      "team": "Privateer Gaming",
-      "yes_bid": 0.29,
-      "yes_ask": 0.34,
-      "last_price": 0.32,
-      "bid_size": 163.0,
-      "ask_size": 1.0,
-      "volume": 2662.24,
-      "open_interest": 2547.56,
-      "status": "active",
-      "mid": 0.315,
-      "spread": 0.05
-     },
-     {
-      "ticker": "KXCS2GAME-26OCT210700PGFAL-FAL",
-      "team": "Falcons Force",
-      "yes_bid": 0.66,
-      "yes_ask": 0.68,
-      "last_price": 0.8,
-      "bid_size": 15.0,
-      "ask_size": 4.0,
-      "volume": 1306.97,
-      "open_interest": 1261.97,
-      "status": "active",
-      "mid": 0.67,
-      "spread": 0.02
-     }
-    ],
-    "orientation": "ba"
-   },
-   "exchange_usable": true,
-   "exchange_reasons": [],
+   "exchange": null,
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "no two-sided Kalshi book matched"
+   ],
    "flags": [
     "picks_locked_or_past"
    ],
@@ -11719,8 +11590,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.0202998603781275,
-     "rating_b": 9.844979488979012,
+     "rating_a": 4.01926525758437,
+     "rating_b": 9.843113387543388,
      "appearances_a": 4.0,
      "appearances_b": 2.0
     },
@@ -11763,70 +11634,58 @@
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [],
-   "exchange": {
-    "event_ticker": "KXCS2GAME-26OCT211000ILLG2A",
-    "title": "ILLYRIANS vs. G2 Ares",
-    "sub_title": "ILLYRIANS vs. G2 Ares (Oct 21)",
-    "source_public_url": "https://kalshi.com/markets/kxcs2game",
-    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-21T15:37:08Z",
-    "rules_primary": "If ILLYRIANS wins the CCT Europe Series #11 2026: ILLYRIANS vs. G2 Ares CS2 match originally scheduled for Oct 21, 2026 at 10:00 AM EDT, then the market resolves to Yes.",
-    "stated_start_utc": "2026-10-21T14:00:00Z",
-    "stated_start_raw": "Oct 21, 2026 at 10:00 AM EDT",
-    "expected_end_utc": null,
-    "start_time_source": "market rule text",
-    "start_delta_min": 0,
-    "sides": [
-     {
-      "ticker": "KXCS2GAME-26OCT211000ILLG2A-ILL",
-      "team": "ILLYRIANS",
-      "yes_bid": 0.5,
-      "yes_ask": 0.55,
-      "last_price": 0.45,
-      "bid_size": 560.0,
-      "ask_size": 139.56,
-      "volume": 5883.06,
-      "open_interest": 3263.0,
-      "status": "active",
-      "mid": 0.525,
-      "spread": 0.05
-     },
-     {
-      "ticker": "KXCS2GAME-26OCT211000ILLG2A-G2A",
-      "team": "G2 Ares",
-      "yes_bid": 0.44,
-      "yes_ask": 0.49,
-      "last_price": 0.51,
-      "bid_size": 92.75,
-      "ask_size": 24.0,
-      "volume": 12339.83,
-      "open_interest": 6099.91,
-      "status": "active",
-      "mid": 0.465,
-      "spread": 0.05
-     }
-    ],
-    "orientation": "ba"
-   },
-   "exchange_usable": true,
-   "exchange_reasons": [],
+   "exchange": null,
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "no two-sided Kalshi book matched"
+   ],
    "flags": [
     "picks_locked_or_past"
    ],
    "published": {
-    "basis": "exchange",
-    "label": "Kalshi exchange mid price (two-sided book inside the published spread limit)",
-    "prob_a": 0.465,
-    "prob_b": 0.5349999999999999,
-    "source_url": "https://kalshi.com/markets/kxcs2game",
-    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "spread": 0.05,
-    "retrieved_at_utc": "2026-10-21T15:37:08Z",
-    "pick_side": "b",
-    "pick_team": "ILLYRIANS",
-    "pick_probability": 0.5349999999999999
+    "basis": "bt",
+    "label": "originated estimate — model output, not a market price",
+    "prob_a": 0.7279841878505766,
+    "prob_b": 0.2720158121494234,
+    "source_url": "https://bo3.gg/matches/finished",
+    "source_api_url": "https://bo3.gg/api/v1/matches",
+    "pick_side": "a",
+    "pick_team": "G2 Ares",
+    "pick_probability": 0.7279841878505766
    },
-   "estimate_inputs": {}
+   "estimate_inputs": {
+    "model_preference": "bt",
+    "bt": {
+     "prob_a": 0.7279841878505766,
+     "note": "ok",
+     "matches_used": 1146,
+     "teams": 456,
+     "half_life_days": 60.0,
+     "ridge": 0.02,
+     "min_matches": 8,
+     "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
+     "source_public": "https://bo3.gg/matches/finished",
+     "source_api": "https://bo3.gg/api/v1/matches",
+     "rating_a": 3.0227806704672147,
+     "rating_b": 2.03836154000052,
+     "appearances_a": 15.0,
+     "appearances_b": 10.0
+    },
+    "vrs": {
+     "prob_a": 0.5728722513945045,
+     "note": "ok",
+     "rating_diff": 51.0,
+     "scale": 400.0,
+     "team_a_points": 913,
+     "team_b_points": 862,
+     "team_a_snapshot": "2026_10_05",
+     "team_b_snapshot": "2026_10_05",
+     "source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+     "team_b_source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+     "team_a_standing": 129,
+     "team_b_standing": 141
+    }
+   }
   },
   {
    "fixture_id": "1081141",
@@ -11860,7 +11719,7 @@
      "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638873656/markets/related/straight",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:36Z",
-     "age_hours": 0.38,
+     "age_hours": 4.39,
      "start_delta_min": 0,
      "decimal_odds_a": 1.490196,
      "decimal_odds_b": 2.54,
@@ -11879,7 +11738,7 @@
      "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638860640/markets/related/straight",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:37Z",
-     "age_hours": 0.38,
+     "age_hours": 4.39,
      "start_delta_min": 15,
      "decimal_odds_a": 2.03,
      "decimal_odds_b": 1.746269,
@@ -11890,53 +11749,11 @@
      "orientation": "ab"
     }
    ],
-   "exchange": {
-    "event_ticker": "KXCS2GAME-26OCT211000TSALAV",
-    "title": "Spirit Academy vs. Lavked",
-    "sub_title": "Spirit Academy vs. Lavked (Oct 21)",
-    "source_public_url": "https://kalshi.com/markets/kxcs2game",
-    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-21T15:37:08Z",
-    "rules_primary": "If Spirit Academy wins the CCT Europe Series #12 2026: Spirit Academy vs. Lavked CS2 match originally scheduled for Oct 21, 2026 at 10:00 AM EDT, then the market resolves to Yes.",
-    "stated_start_utc": "2026-10-21T14:00:00Z",
-    "stated_start_raw": "Oct 21, 2026 at 10:00 AM EDT",
-    "expected_end_utc": null,
-    "start_time_source": "market rule text",
-    "start_delta_min": 0,
-    "sides": [
-     {
-      "ticker": "KXCS2GAME-26OCT211000TSALAV-TSA",
-      "team": "Spirit Academy",
-      "yes_bid": 0.26,
-      "yes_ask": 0.29,
-      "last_price": 0.27,
-      "bid_size": 105.87,
-      "ask_size": 5.0,
-      "volume": 41931.81,
-      "open_interest": 19542.38,
-      "status": "active",
-      "mid": 0.275,
-      "spread": 0.03
-     },
-     {
-      "ticker": "KXCS2GAME-26OCT211000TSALAV-LAV",
-      "team": "Lavked",
-      "yes_bid": 0.71,
-      "yes_ask": 0.73,
-      "last_price": 0.72,
-      "bid_size": 1.0,
-      "ask_size": 96.85,
-      "volume": 32934.51,
-      "open_interest": 10585.51,
-      "status": "active",
-      "mid": 0.72,
-      "spread": 0.02
-     }
-    ],
-    "orientation": "ba"
-   },
-   "exchange_usable": true,
-   "exchange_reasons": [],
+   "exchange": null,
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "no two-sided Kalshi book matched"
+   ],
    "flags": [
     "picks_locked_or_past"
    ],
@@ -12021,8 +11838,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -0.2133267113210498,
-     "rating_b": 0.04725194483034999,
+     "rating_a": -0.21303503925110132,
+     "rating_b": 0.04646027175482388,
      "appearances_a": 1.0,
      "appearances_b": 9.0
     },
@@ -12074,7 +11891,7 @@
      "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638799596/markets/related/straight",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:37Z",
-     "age_hours": 0.38,
+     "age_hours": 4.39,
      "start_delta_min": 0,
      "decimal_odds_a": 1.483092,
      "decimal_odds_b": 2.58,
@@ -12151,7 +11968,7 @@
      "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638868489/markets/related/straight",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:38Z",
-     "age_hours": 0.38,
+     "age_hours": 4.39,
      "start_delta_min": 0,
      "decimal_odds_a": 1.606061,
      "decimal_odds_b": 2.3,
@@ -12228,7 +12045,7 @@
      "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:43Z",
-     "age_hours": 0.37,
+     "age_hours": 4.39,
      "start_delta_min": null,
      "decimal_odds_a": 2.45,
      "decimal_odds_b": 1.526316,
@@ -12239,54 +12056,10 @@
      "orientation": "ba"
     }
    ],
-   "exchange": {
-    "event_ticker": "KXCS2GAME-26OCT210500SNGBRUTE",
-    "title": "Sangal vs. Brute",
-    "sub_title": "Sangal vs. Brute (Oct 21)",
-    "source_public_url": "https://kalshi.com/markets/kxcs2game",
-    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-21T15:37:08Z",
-    "rules_primary": "If Sangal wins the Stake Ranked Episode 6: Closed Qualifier 2026: Sangal vs. Brute CS2 match originally scheduled for Oct 21, 2026 at 5:00 AM EDT, then the market resolves to Yes.",
-    "stated_start_utc": "2026-10-21T09:00:00Z",
-    "stated_start_raw": "Oct 21, 2026 at 5:00 AM EDT",
-    "expected_end_utc": null,
-    "start_time_source": "market rule text",
-    "start_delta_min": -360,
-    "sides": [
-     {
-      "ticker": "KXCS2GAME-26OCT210500SNGBRUTE-SNG",
-      "team": "Sangal",
-      "yes_bid": 0.36,
-      "yes_ask": 0.37,
-      "last_price": 0.38,
-      "bid_size": 1.0,
-      "ask_size": 908.0,
-      "volume": 4180.85,
-      "open_interest": 3694.5,
-      "status": "active",
-      "mid": 0.365,
-      "spread": 0.01
-     },
-     {
-      "ticker": "KXCS2GAME-26OCT210500SNGBRUTE-BRUTE",
-      "team": "Brute",
-      "yes_bid": 0.64,
-      "yes_ask": 0.66,
-      "last_price": 0.64,
-      "bid_size": 221.7,
-      "ask_size": 203.63,
-      "volume": 838.86,
-      "open_interest": 832.34,
-      "status": "active",
-      "mid": 0.65,
-      "spread": 0.02
-     }
-    ],
-    "orientation": "ba"
-   },
+   "exchange": null,
    "exchange_usable": false,
    "exchange_reasons": [
-    "stated start time differs by -360 min"
+    "no two-sided Kalshi book matched"
    ],
    "flags": [
     "picks_locked_or_past"
@@ -12377,69 +12150,18 @@
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [],
-   "exchange": {
-    "event_ticker": "KXCS2GAME-26OCT211100TFUPG",
-    "title": "Team flacons vs. UPGRADE",
-    "sub_title": "Team flacons vs. UPGRADE (Oct 21)",
-    "source_public_url": "https://kalshi.com/markets/kxcs2game",
-    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-21T15:37:08Z",
-    "rules_primary": "If Team flacons wins the CIS LAN Championship 2026: Team flacons vs. UPGRADE CS2 match originally scheduled for Oct 21, 2026 at 11:00 AM EDT, then the market resolves to Yes.",
-    "stated_start_utc": "2026-10-21T15:00:00Z",
-    "stated_start_raw": "Oct 21, 2026 at 11:00 AM EDT",
-    "expected_end_utc": null,
-    "start_time_source": "market rule text",
-    "start_delta_min": 0,
-    "sides": [
-     {
-      "ticker": "KXCS2GAME-26OCT211100TFUPG-TF",
-      "team": "Team flacons",
-      "yes_bid": 0.0,
-      "yes_ask": 0.06,
-      "last_price": 0.01,
-      "bid_size": 0.0,
-      "ask_size": 5.0,
-      "volume": 524.43,
-      "open_interest": 388.61,
-      "status": "active",
-      "mid": 0.03,
-      "spread": 0.06
-     },
-     {
-      "ticker": "KXCS2GAME-26OCT211100TFUPG-UPG",
-      "team": "UPGRADE",
-      "yes_bid": 0.96,
-      "yes_ask": 1.0,
-      "last_price": 0.99,
-      "bid_size": 5.0,
-      "ask_size": 0.0,
-      "volume": 1903.71,
-      "open_interest": 1407.71,
-      "status": "active",
-      "mid": 0.98,
-      "spread": 0.04
-     }
-    ],
-    "orientation": "ba"
-   },
-   "exchange_usable": true,
-   "exchange_reasons": [],
+   "exchange": null,
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "no two-sided Kalshi book matched"
+   ],
    "flags": [
+    "no_probability_available",
+    "no official Valve CS2 Regional Standings entry for: flacons",
+    "blank_no_published_probability",
     "picks_locked_or_past"
    ],
-   "published": {
-    "basis": "exchange",
-    "label": "Kalshi exchange mid price (two-sided book inside the published spread limit)",
-    "prob_a": 0.98,
-    "prob_b": 0.020000000000000018,
-    "source_url": "https://kalshi.com/markets/kxcs2game",
-    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "spread": 0.04,
-    "retrieved_at_utc": "2026-10-21T15:37:08Z",
-    "pick_side": "a",
-    "pick_team": "UPGRADE",
-    "pick_probability": 0.98
-   },
+   "published": null,
    "estimate_inputs": {}
   },
   {
@@ -12454,7 +12176,7 @@
    "team_a": "JOGA DE TERNO",
    "team_b": "Martians",
    "listed_in_lobby": true,
-   "picks_open": true,
+   "picks_open": false,
    "sources": {
     "hotspawn_match": "https://www.hotspawn.com/matches/joga-de-terno-vs-martians-cct-south-america-2026-series-7-1082835",
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
@@ -12466,63 +12188,6 @@
    },
    "market_quotes": [
     {
-     "source_key": "bo3gg_thunderpick",
-     "source_name": "Thunderpick prices via bo3.gg",
-     "source_kind": "licensed bookmaker price republished by an esports results site",
-     "market_type": "match winner (moneyline, full match)",
-     "source_public_url": "https://bo3.gg/matches/joga-de-terno-vs-martians-21-10-2026",
-     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132581",
-     "provider_market_url": "https://thunderpick.io/match/2863346",
-     "retrieved_at_utc": "2026-10-21T15:37:06Z",
-     "age_hours": 0.0,
-     "start_delta_min": 0,
-     "decimal_odds_a": 1.48,
-     "decimal_odds_b": 2.49,
-     "prob_a": 0.6272040302267003,
-     "prob_b": 0.37279596977329976,
-     "overround": 1.0772821013784868,
-     "via": null,
-     "orientation": "ab"
-    },
-    {
-     "source_key": "bo3gg_thunderpick",
-     "source_name": "Thunderpick prices via bo3.gg",
-     "source_kind": "licensed bookmaker price republished by an esports results site",
-     "market_type": "match winner (moneyline, full match)",
-     "source_public_url": "https://bo3.gg/matches/joga-de-terno-vs-martians-21-10-2026",
-     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132581",
-     "provider_market_url": "https://thunderpick.io/match/2863346",
-     "retrieved_at_utc": "2026-10-21T15:37:06Z",
-     "age_hours": 0.0,
-     "start_delta_min": 0,
-     "decimal_odds_a": 1.48,
-     "decimal_odds_b": 2.49,
-     "prob_a": 0.6272040302267003,
-     "prob_b": 0.37279596977329976,
-     "overround": 1.0772821013784868,
-     "via": null,
-     "orientation": "ab"
-    },
-    {
-     "source_key": "bo3gg_thunderpick",
-     "source_name": "Thunderpick prices via bo3.gg",
-     "source_kind": "licensed bookmaker price republished by an esports results site",
-     "market_type": "match winner (moneyline, full match)",
-     "source_public_url": "https://bo3.gg/matches/joga-de-terno-vs-martians-21-10-2026",
-     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132581",
-     "provider_market_url": "https://thunderpick.io/match/2863346",
-     "retrieved_at_utc": "2026-10-21T15:37:06Z",
-     "age_hours": 0.0,
-     "start_delta_min": 0,
-     "decimal_odds_a": 1.48,
-     "decimal_odds_b": 2.49,
-     "prob_a": 0.6272040302267003,
-     "prob_b": 0.37279596977329976,
-     "overround": 1.0772821013784868,
-     "via": null,
-     "orientation": "ab"
-    },
-    {
      "source_key": "bovada",
      "source_name": "Bovada",
      "source_kind": "licensed bookmaker",
@@ -12531,7 +12196,7 @@
      "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:43Z",
-     "age_hours": 0.37,
+     "age_hours": 4.39,
      "start_delta_min": null,
      "decimal_odds_a": 1.5,
      "decimal_odds_b": 2.5,
@@ -12550,7 +12215,7 @@
      "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:48Z",
-     "age_hours": 0.37,
+     "age_hours": 4.38,
      "start_delta_min": 0,
      "decimal_odds_a": 1.49,
      "decimal_odds_b": 2.47,
@@ -12561,70 +12226,20 @@
      "orientation": "ab"
     }
    ],
-   "exchange": {
-    "event_ticker": "KXCS2GAME-26OCT211200MARJDT",
-    "title": "Martians vs. Joga de terno",
-    "sub_title": "Martians vs. Joga de terno (Oct 21)",
-    "source_public_url": "https://kalshi.com/markets/kxcs2game",
-    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-21T15:37:08Z",
-    "rules_primary": "If Martians wins the CCT South America Series 7 2026: Martians vs. Joga de terno CS2 match originally scheduled for Oct 21, 2026 at 12:00 PM EDT, then the market resolves to Yes.",
-    "stated_start_utc": "2026-10-21T16:00:00Z",
-    "stated_start_raw": "Oct 21, 2026 at 12:00 PM EDT",
-    "expected_end_utc": null,
-    "start_time_source": "market rule text",
-    "start_delta_min": 0,
-    "sides": [
-     {
-      "ticker": "KXCS2GAME-26OCT211200MARJDT-MAR",
-      "team": "Martians",
-      "yes_bid": 0.37,
-      "yes_ask": 0.39,
-      "last_price": 0.37,
-      "bid_size": 0.1,
-      "ask_size": 117.0,
-      "volume": 52.18,
-      "open_interest": 52.18,
-      "status": "active",
-      "mid": 0.38,
-      "spread": 0.02
-     },
-     {
-      "ticker": "KXCS2GAME-26OCT211200MARJDT-JDT",
-      "team": "Joga de terno",
-      "yes_bid": 0.61,
-      "yes_ask": 0.64,
-      "last_price": 0.66,
-      "bid_size": 116.1,
-      "ask_size": 281.44,
-      "volume": 94.8,
-      "open_interest": 79.8,
-      "status": "active",
-      "mid": 0.625,
-      "spread": 0.03
-     }
-    ],
-    "orientation": "ba"
-   },
-   "exchange_usable": true,
-   "exchange_reasons": [],
-   "flags": [],
+   "exchange": null,
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "no two-sided Kalshi book matched"
+   ],
+   "flags": [
+    "picks_locked_or_past"
+   ],
    "published": {
     "basis": "market",
-    "label": "market consensus of 3 external source(s), proportional no-vig",
-    "prob_a": 0.625313801321358,
-    "prob_b": 0.37468619867864195,
+    "label": "market consensus of 2 external source(s), proportional no-vig",
+    "prob_a": 0.6243686868686869,
+    "prob_b": 0.37563131313131315,
     "sources": [
-     {
-      "source_key": "bo3gg_thunderpick",
-      "source_name": "Thunderpick prices via bo3.gg",
-      "source_public_url": "https://bo3.gg/matches/joga-de-terno-vs-martians-21-10-2026",
-      "retrieved_at_utc": "2026-10-21T15:37:06Z",
-      "decimal_odds_a": 1.48,
-      "decimal_odds_b": 2.49,
-      "overround": 1.0773,
-      "prob_a": 0.6272040302267003
-     },
      {
       "source_key": "bovada",
       "source_name": "Bovada",
@@ -12651,7 +12266,7 @@
     ],
     "pick_side": "a",
     "pick_team": "JOGA DE TERNO",
-    "pick_probability": 0.625313801321358
+    "pick_probability": 0.6243686868686869
    },
    "estimate_inputs": {}
   },
@@ -12667,7 +12282,7 @@
    "team_a": "Metizport",
    "team_b": "GenOne",
    "listed_in_lobby": true,
-   "picks_open": true,
+   "picks_open": false,
    "sources": {
     "hotspawn_match": "https://www.hotspawn.com/matches/metizport-vs-genone-stake-ranked-episode-6-closed-qualifier-1082178",
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
@@ -12687,7 +12302,7 @@
      "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638811273/markets/related/straight",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:41Z",
-     "age_hours": 0.38,
+     "age_hours": 4.39,
      "start_delta_min": 0,
      "decimal_odds_a": 1.421941,
      "decimal_odds_b": 2.77,
@@ -12706,7 +12321,7 @@
      "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:43Z",
-     "age_hours": 0.37,
+     "age_hours": 4.39,
      "start_delta_min": null,
      "decimal_odds_a": 1.434783,
      "decimal_odds_b": 2.75,
@@ -12725,7 +12340,7 @@
      "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:48Z",
-     "age_hours": 0.37,
+     "age_hours": 4.38,
      "start_delta_min": 0,
      "decimal_odds_a": 1.43,
      "decimal_odds_b": 2.763,
@@ -12736,56 +12351,14 @@
      "orientation": "ab"
     }
    ],
-   "exchange": {
-    "event_ticker": "KXCS2GAME-26OCT210800MZPG1",
-    "title": "Metizport vs. GenOne",
-    "sub_title": "Metizport vs. GenOne (Oct 21)",
-    "source_public_url": "https://kalshi.com/markets/kxcs2game",
-    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-21T15:37:08Z",
-    "rules_primary": "If Metizport wins the Stake Ranked Episode 6: Closed Qualifier 2026: Metizport vs. GenOne CS2 match originally scheduled for Oct 21, 2026 at 8:00 AM EDT, then the market resolves to Yes.",
-    "stated_start_utc": "2026-10-21T12:00:00Z",
-    "stated_start_raw": "Oct 21, 2026 at 8:00 AM EDT",
-    "expected_end_utc": null,
-    "start_time_source": "market rule text",
-    "start_delta_min": -330,
-    "sides": [
-     {
-      "ticker": "KXCS2GAME-26OCT210800MZPG1-MZP",
-      "team": "Metizport",
-      "yes_bid": 0.65,
-      "yes_ask": 0.69,
-      "last_price": 0.68,
-      "bid_size": 1225.0,
-      "ask_size": 430.0,
-      "volume": 296.05,
-      "open_interest": 296.05,
-      "status": "active",
-      "mid": 0.67,
-      "spread": 0.04
-     },
-     {
-      "ticker": "KXCS2GAME-26OCT210800MZPG1-G1",
-      "team": "GenOne",
-      "yes_bid": 0.3,
-      "yes_ask": 0.34,
-      "last_price": 0.35,
-      "bid_size": 591.0,
-      "ask_size": 617.0,
-      "volume": 150.62,
-      "open_interest": 150.62,
-      "status": "active",
-      "mid": 0.32,
-      "spread": 0.04
-     }
-    ],
-    "orientation": "ab"
-   },
+   "exchange": null,
    "exchange_usable": false,
    "exchange_reasons": [
-    "stated start time differs by -330 min"
+    "no two-sided Kalshi book matched"
    ],
-   "flags": [],
+   "flags": [
+    "picks_locked_or_past"
+   ],
    "published": {
     "basis": "market",
     "label": "market consensus of 3 external source(s), proportional no-vig",
@@ -12844,7 +12417,7 @@
    "team_a": "Damajuana",
    "team_b": "Hacha",
    "listed_in_lobby": true,
-   "picks_open": true,
+   "picks_open": false,
    "sources": {
     "hotspawn_match": "https://www.hotspawn.com/matches/damajuana-vs-hacha-cct-south-america-2026-series-7-1082836",
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
@@ -12864,7 +12437,7 @@
      "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:48Z",
-     "age_hours": 0.37,
+     "age_hours": 4.38,
      "start_delta_min": 0,
      "decimal_odds_a": 2.075,
      "decimal_odds_b": 1.69,
@@ -12881,7 +12454,7 @@
     "sub_title": "Hacha Esports vs. Damajuana (Oct 21)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-21T15:37:08Z",
+    "retrieved_at_utc": "2026-10-21T19:37:48Z",
     "rules_primary": "If Hacha Esports wins the CCT South America Series 7 2026: Hacha Esports vs. Damajuana CS2 match originally scheduled for Oct 21, 2026 at 3:00 PM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-21T19:00:00Z",
     "stated_start_raw": "Oct 21, 2026 at 3:00 PM EDT",
@@ -12892,40 +12465,39 @@
      {
       "ticker": "KXCS2GAME-26OCT211500HACDAM-HAC",
       "team": "Hacha Esports",
-      "yes_bid": 0.56,
-      "yes_ask": 0.61,
-      "last_price": 0.0,
-      "bid_size": 11.0,
-      "ask_size": 29.0,
-      "volume": 0.0,
-      "open_interest": 0.0,
+      "yes_bid": 0.75,
+      "yes_ask": 0.76,
+      "last_price": 0.71,
+      "bid_size": 1.0,
+      "ask_size": 156.0,
+      "volume": 1440.05,
+      "open_interest": 1425.05,
       "status": "active",
-      "mid": 0.585,
-      "spread": 0.05
+      "mid": 0.755,
+      "spread": 0.01
      },
      {
       "ticker": "KXCS2GAME-26OCT211500HACDAM-DAM",
       "team": "Damajuana",
-      "yes_bid": 0.39,
-      "yes_ask": 0.44,
-      "last_price": 0.0,
-      "bid_size": 250.0,
-      "ask_size": 14.0,
-      "volume": 0.0,
-      "open_interest": 0.0,
+      "yes_bid": 0.22,
+      "yes_ask": 0.25,
+      "last_price": 0.26,
+      "bid_size": 11.0,
+      "ask_size": 1.0,
+      "volume": 145.0,
+      "open_interest": 109.64,
       "status": "active",
-      "mid": 0.415,
-      "spread": 0.05
+      "mid": 0.235,
+      "spread": 0.03
      }
     ],
     "orientation": "ba"
    },
-   "exchange_usable": false,
-   "exchange_reasons": [
-    "no traded volume or open interest",
-    "no traded volume or open interest"
+   "exchange_usable": true,
+   "exchange_reasons": [],
+   "flags": [
+    "picks_locked_or_past"
    ],
-   "flags": [],
    "published": {
     "basis": "market",
     "label": "market consensus of 1 external source(s), proportional no-vig",
@@ -13041,8 +12613,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -0.97304271947575,
-     "rating_b": 2.9882048215334636,
+     "rating_a": -0.9740083839259003,
+     "rating_b": 2.987192657167409,
      "appearances_a": 5.0,
      "appearances_b": 6.0
     },
@@ -13084,72 +12656,14 @@
     "team_b": 14,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
-   "market_quotes": [
-    {
-     "source_key": "bo3gg_thunderpick",
-     "source_name": "Thunderpick prices via bo3.gg",
-     "source_kind": "licensed bookmaker price republished by an esports results site",
-     "market_type": "match winner (moneyline, full match)",
-     "source_public_url": "https://bo3.gg/matches/quintessence-vs-ryvex-22-10-2026",
-     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132215",
-     "provider_market_url": "https://thunderpick.io/match/2862798",
-     "retrieved_at_utc": "2026-10-21T15:37:07Z",
-     "age_hours": 0.0,
-     "start_delta_min": 0,
-     "decimal_odds_a": 1.55,
-     "decimal_odds_b": 2.24,
-     "prob_a": 0.5910290237467017,
-     "prob_b": 0.4089709762532981,
-     "overround": 1.0915898617511521,
-     "via": null,
-     "orientation": "ab"
-    },
-    {
-     "source_key": "bo3gg_thunderpick",
-     "source_name": "Thunderpick prices via bo3.gg",
-     "source_kind": "licensed bookmaker price republished by an esports results site",
-     "market_type": "match winner (moneyline, full match)",
-     "source_public_url": "https://bo3.gg/matches/quintessence-vs-ryvex-22-10-2026",
-     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132215",
-     "provider_market_url": "https://thunderpick.io/match/2862798",
-     "retrieved_at_utc": "2026-10-21T15:37:07Z",
-     "age_hours": 0.0,
-     "start_delta_min": 0,
-     "decimal_odds_a": 1.55,
-     "decimal_odds_b": 2.24,
-     "prob_a": 0.5910290237467017,
-     "prob_b": 0.4089709762532981,
-     "overround": 1.0915898617511521,
-     "via": null,
-     "orientation": "ab"
-    },
-    {
-     "source_key": "bo3gg_thunderpick",
-     "source_name": "Thunderpick prices via bo3.gg",
-     "source_kind": "licensed bookmaker price republished by an esports results site",
-     "market_type": "match winner (moneyline, full match)",
-     "source_public_url": "https://bo3.gg/matches/quintessence-vs-ryvex-22-10-2026",
-     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132215",
-     "provider_market_url": "https://thunderpick.io/match/2862798",
-     "retrieved_at_utc": "2026-10-21T15:37:07Z",
-     "age_hours": 0.0,
-     "start_delta_min": 0,
-     "decimal_odds_a": 1.55,
-     "decimal_odds_b": 2.24,
-     "prob_a": 0.5910290237467017,
-     "prob_b": 0.4089709762532981,
-     "overround": 1.0915898617511521,
-     "via": null,
-     "orientation": "ab"
-    }
-   ],
+   "market_quotes": [],
    "exchange": {
     "event_ticker": "KXCS2GAME-26OCT220945QUIRYV",
     "title": "Quintessence vs. Ryvex",
     "sub_title": "Quintessence vs. Ryvex (Oct 22)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-21T15:37:08Z",
+    "retrieved_at_utc": "2026-10-21T19:37:48Z",
     "rules_primary": "If Quintessence wins the CCT Europe Challengers Series 2026: Quintessence vs. Ryvex CS2 match originally scheduled for Oct 22, 2026 at 9:45 AM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-22T13:45:00Z",
     "stated_start_raw": "Oct 22, 2026 at 9:45 AM EDT",
@@ -13160,30 +12674,30 @@
      {
       "ticker": "KXCS2GAME-26OCT220945QUIRYV-QUI",
       "team": "Quintessence",
-      "yes_bid": 0.59,
-      "yes_ask": 0.66,
+      "yes_bid": 0.6,
+      "yes_ask": 0.67,
       "last_price": 0.62,
-      "bid_size": 366.0,
-      "ask_size": 446.0,
+      "bid_size": 19.0,
+      "ask_size": 250.0,
       "volume": 279.0,
       "open_interest": 279.0,
       "status": "active",
-      "mid": 0.625,
+      "mid": 0.635,
       "spread": 0.07
      },
      {
       "ticker": "KXCS2GAME-26OCT220945QUIRYV-RYV",
       "team": "Ryvex",
-      "yes_bid": 0.35,
-      "yes_ask": 0.41,
+      "yes_bid": 0.34,
+      "yes_ask": 0.39,
       "last_price": 0.39,
-      "bid_size": 326.0,
-      "ask_size": 467.0,
+      "bid_size": 5.0,
+      "ask_size": 1.0,
       "volume": 15.0,
       "open_interest": 15.0,
       "status": "active",
-      "mid": 0.38,
-      "spread": 0.06
+      "mid": 0.365,
+      "spread": 0.05
      }
     ],
     "orientation": "ab"
@@ -13194,26 +12708,17 @@
     "picks_locked_or_past"
    ],
    "published": {
-    "basis": "market",
-    "label": "market consensus of 1 external source(s), proportional no-vig",
-    "prob_a": 0.5910290237467017,
-    "prob_b": 0.40897097625329826,
-    "sources": [
-     {
-      "source_key": "bo3gg_thunderpick",
-      "source_name": "Thunderpick prices via bo3.gg",
-      "source_public_url": "https://bo3.gg/matches/quintessence-vs-ryvex-22-10-2026",
-      "retrieved_at_utc": "2026-10-21T15:37:07Z",
-      "decimal_odds_a": 1.55,
-      "decimal_odds_b": 2.24,
-      "overround": 1.0916,
-      "prob_a": 0.5910290237467017
-     }
-    ],
-    "via": [],
+    "basis": "exchange",
+    "label": "Kalshi exchange mid price (two-sided book inside the published spread limit)",
+    "prob_a": 0.635,
+    "prob_b": 0.365,
+    "source_url": "https://kalshi.com/markets/kxcs2game",
+    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
+    "spread": 0.07,
+    "retrieved_at_utc": "2026-10-21T19:37:48Z",
     "pick_side": "a",
     "pick_team": "Quintessence",
-    "pick_probability": 0.5910290237467017
+    "pick_probability": 0.635
    },
    "estimate_inputs": {}
   },
@@ -13241,101 +12746,6 @@
    },
    "market_quotes": [
     {
-     "source_key": "bo3gg_thunderpick",
-     "source_name": "Thunderpick prices via bo3.gg",
-     "source_kind": "licensed bookmaker price republished by an esports results site",
-     "market_type": "match winner (moneyline, full match)",
-     "source_public_url": "https://bo3.gg/matches/imperial-vs-turma-do-pagode-22-10-2026",
-     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132411",
-     "provider_market_url": "https://thunderpick.io/match/2859701",
-     "retrieved_at_utc": "2026-10-21T15:37:07Z",
-     "age_hours": 0.0,
-     "start_delta_min": 0,
-     "decimal_odds_a": 1.17,
-     "decimal_odds_b": 4.4,
-     "prob_a": 0.7899461400359067,
-     "prob_b": 0.21005385996409334,
-     "overround": 1.081973581973582,
-     "via": null,
-     "orientation": "ab"
-    },
-    {
-     "source_key": "bo3gg_thunderpick",
-     "source_name": "Thunderpick prices via bo3.gg",
-     "source_kind": "licensed bookmaker price republished by an esports results site",
-     "market_type": "match winner (moneyline, full match)",
-     "source_public_url": "https://bo3.gg/matches/imperial-vs-turma-do-pagode-22-10-2026",
-     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132411",
-     "provider_market_url": "https://thunderpick.io/match/2859701",
-     "retrieved_at_utc": "2026-10-21T15:37:07Z",
-     "age_hours": 0.0,
-     "start_delta_min": 0,
-     "decimal_odds_a": 1.17,
-     "decimal_odds_b": 4.4,
-     "prob_a": 0.7899461400359067,
-     "prob_b": 0.21005385996409334,
-     "overround": 1.081973581973582,
-     "via": null,
-     "orientation": "ab"
-    },
-    {
-     "source_key": "bo3gg_thunderpick",
-     "source_name": "Thunderpick prices via bo3.gg",
-     "source_kind": "licensed bookmaker price republished by an esports results site",
-     "market_type": "match winner (moneyline, full match)",
-     "source_public_url": "https://bo3.gg/matches/imperial-vs-turma-do-pagode-22-10-2026",
-     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132411",
-     "provider_market_url": "https://thunderpick.io/match/2859701",
-     "retrieved_at_utc": "2026-10-21T15:37:07Z",
-     "age_hours": 0.0,
-     "start_delta_min": 0,
-     "decimal_odds_a": 1.17,
-     "decimal_odds_b": 4.4,
-     "prob_a": 0.7899461400359067,
-     "prob_b": 0.21005385996409334,
-     "overround": 1.081973581973582,
-     "via": null,
-     "orientation": "ab"
-    },
-    {
-     "source_key": "bo3gg_thunderpick",
-     "source_name": "Thunderpick prices via bo3.gg",
-     "source_kind": "licensed bookmaker price republished by an esports results site",
-     "market_type": "match winner (moneyline, full match)",
-     "source_public_url": "https://bo3.gg/matches/imperial-vs-turma-do-pagode-22-10-2026",
-     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132411",
-     "provider_market_url": "https://thunderpick.io/match/2859701",
-     "retrieved_at_utc": "2026-10-21T15:37:07Z",
-     "age_hours": 0.0,
-     "start_delta_min": 0,
-     "decimal_odds_a": 1.17,
-     "decimal_odds_b": 4.4,
-     "prob_a": 0.7899461400359067,
-     "prob_b": 0.21005385996409334,
-     "overround": 1.081973581973582,
-     "via": null,
-     "orientation": "ab"
-    },
-    {
-     "source_key": "bo3gg_thunderpick",
-     "source_name": "Thunderpick prices via bo3.gg",
-     "source_kind": "licensed bookmaker price republished by an esports results site",
-     "market_type": "match winner (moneyline, full match)",
-     "source_public_url": "https://bo3.gg/matches/imperial-vs-turma-do-pagode-22-10-2026",
-     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132411",
-     "provider_market_url": "https://thunderpick.io/match/2859701",
-     "retrieved_at_utc": "2026-10-21T15:37:07Z",
-     "age_hours": 0.0,
-     "start_delta_min": 0,
-     "decimal_odds_a": 1.17,
-     "decimal_odds_b": 4.4,
-     "prob_a": 0.7899461400359067,
-     "prob_b": 0.21005385996409334,
-     "overround": 1.081973581973582,
-     "via": null,
-     "orientation": "ab"
-    },
-    {
      "source_key": "pinnacle",
      "source_name": "Pinnacle",
      "source_kind": "licensed bookmaker",
@@ -13344,7 +12754,7 @@
      "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638811247/markets/related/straight",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:35Z",
-     "age_hours": 0.38,
+     "age_hours": 4.39,
      "start_delta_min": 0,
      "decimal_odds_a": 1.243902,
      "decimal_odds_b": 3.73,
@@ -13363,7 +12773,7 @@
      "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:43Z",
-     "age_hours": 0.37,
+     "age_hours": 4.39,
      "start_delta_min": null,
      "decimal_odds_a": 1.25,
      "decimal_odds_b": 3.75,
@@ -13382,7 +12792,7 @@
      "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:48Z",
-     "age_hours": 0.37,
+     "age_hours": 4.38,
      "start_delta_min": 0,
      "decimal_odds_a": 1.25,
      "decimal_odds_b": 3.71,
@@ -13399,7 +12809,7 @@
     "sub_title": "Turma do Pagode vs. Imperial (Oct 22)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-21T15:37:08Z",
+    "retrieved_at_utc": "2026-10-21T19:37:48Z",
     "rules_primary": "If Turma do Pagode wins the Circuit X Curitiba 2026: Turma do Pagode vs. Imperial CS2 match originally scheduled for Oct 22, 2026 at 10:00 AM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-22T14:00:00Z",
     "stated_start_raw": "Oct 22, 2026 at 10:00 AM EDT",
@@ -13410,30 +12820,30 @@
      {
       "ticker": "KXCS2GAME-26OCT221000TDPIMP-TDP",
       "team": "Turma do Pagode",
-      "yes_bid": 0.2,
-      "yes_ask": 0.24,
+      "yes_bid": 0.21,
+      "yes_ask": 0.26,
       "last_price": 0.2,
-      "bid_size": 271.0,
-      "ask_size": 92.0,
+      "bid_size": 536.0,
+      "ask_size": 583.0,
       "volume": 67.0,
       "open_interest": 37.05,
       "status": "active",
-      "mid": 0.22,
-      "spread": 0.04
+      "mid": 0.235,
+      "spread": 0.05
      },
      {
       "ticker": "KXCS2GAME-26OCT221000TDPIMP-IMP",
       "team": "Imperial",
       "yes_bid": 0.76,
-      "yes_ask": 0.81,
+      "yes_ask": 0.8,
       "last_price": 0.0,
-      "bid_size": 339.0,
-      "ask_size": 250.0,
+      "bid_size": 91.0,
+      "ask_size": 288.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.785,
-      "spread": 0.05
+      "mid": 0.78,
+      "spread": 0.04
      }
     ],
     "orientation": "ba"
@@ -13445,20 +12855,10 @@
    "flags": [],
    "published": {
     "basis": "market",
-    "label": "market consensus of 4 external source(s), proportional no-vig",
-    "prob_a": 0.7594610658589107,
-    "prob_b": 0.2405389341410893,
+    "label": "market consensus of 3 external source(s), proportional no-vig",
+    "prob_a": 0.7492993744665787,
+    "prob_b": 0.2507006255334213,
     "sources": [
-     {
-      "source_key": "bo3gg_thunderpick",
-      "source_name": "Thunderpick prices via bo3.gg",
-      "source_public_url": "https://bo3.gg/matches/imperial-vs-turma-do-pagode-22-10-2026",
-      "retrieved_at_utc": "2026-10-21T15:37:07Z",
-      "decimal_odds_a": 1.17,
-      "decimal_odds_b": 4.4,
-      "overround": 1.082,
-      "prob_a": 0.7899461400359067
-     },
      {
       "source_key": "pinnacle",
       "source_name": "Pinnacle",
@@ -13495,7 +12895,7 @@
     ],
     "pick_side": "a",
     "pick_team": "Imperial",
-    "pick_probability": 0.7594610658589107
+    "pick_probability": 0.7492993744665787
    },
    "estimate_inputs": {}
   },
@@ -13523,82 +12923,6 @@
    },
    "market_quotes": [
     {
-     "source_key": "bo3gg_thunderpick",
-     "source_name": "Thunderpick prices via bo3.gg",
-     "source_kind": "licensed bookmaker price republished by an esports results site",
-     "market_type": "match winner (moneyline, full match)",
-     "source_public_url": "https://bo3.gg/matches/bestia-vs-shinden-22-10-2026",
-     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132410",
-     "provider_market_url": "https://thunderpick.io/match/2859702",
-     "retrieved_at_utc": "2026-10-21T15:37:07Z",
-     "age_hours": 0.0,
-     "start_delta_min": 0,
-     "decimal_odds_a": 1.65,
-     "decimal_odds_b": 2.1,
-     "prob_a": 0.56,
-     "prob_b": 0.44,
-     "overround": 1.0822510822510822,
-     "via": null,
-     "orientation": "ab"
-    },
-    {
-     "source_key": "bo3gg_thunderpick",
-     "source_name": "Thunderpick prices via bo3.gg",
-     "source_kind": "licensed bookmaker price republished by an esports results site",
-     "market_type": "match winner (moneyline, full match)",
-     "source_public_url": "https://bo3.gg/matches/bestia-vs-shinden-22-10-2026",
-     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132410",
-     "provider_market_url": "https://thunderpick.io/match/2859702",
-     "retrieved_at_utc": "2026-10-21T15:37:07Z",
-     "age_hours": 0.0,
-     "start_delta_min": 0,
-     "decimal_odds_a": 1.65,
-     "decimal_odds_b": 2.1,
-     "prob_a": 0.56,
-     "prob_b": 0.44,
-     "overround": 1.0822510822510822,
-     "via": null,
-     "orientation": "ab"
-    },
-    {
-     "source_key": "bo3gg_thunderpick",
-     "source_name": "Thunderpick prices via bo3.gg",
-     "source_kind": "licensed bookmaker price republished by an esports results site",
-     "market_type": "match winner (moneyline, full match)",
-     "source_public_url": "https://bo3.gg/matches/bestia-vs-shinden-22-10-2026",
-     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132410",
-     "provider_market_url": "https://thunderpick.io/match/2859702",
-     "retrieved_at_utc": "2026-10-21T15:37:07Z",
-     "age_hours": 0.0,
-     "start_delta_min": 0,
-     "decimal_odds_a": 1.65,
-     "decimal_odds_b": 2.1,
-     "prob_a": 0.56,
-     "prob_b": 0.44,
-     "overround": 1.0822510822510822,
-     "via": null,
-     "orientation": "ab"
-    },
-    {
-     "source_key": "bo3gg_thunderpick",
-     "source_name": "Thunderpick prices via bo3.gg",
-     "source_kind": "licensed bookmaker price republished by an esports results site",
-     "market_type": "match winner (moneyline, full match)",
-     "source_public_url": "https://bo3.gg/matches/bestia-vs-shinden-22-10-2026",
-     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132410",
-     "provider_market_url": "https://thunderpick.io/match/2859702",
-     "retrieved_at_utc": "2026-10-21T15:37:07Z",
-     "age_hours": 0.0,
-     "start_delta_min": 0,
-     "decimal_odds_a": 1.65,
-     "decimal_odds_b": 2.1,
-     "prob_a": 0.56,
-     "prob_b": 0.44,
-     "overround": 1.0822510822510822,
-     "via": null,
-     "orientation": "ab"
-    },
-    {
      "source_key": "pinnacle",
      "source_name": "Pinnacle",
      "source_kind": "licensed bookmaker",
@@ -13607,7 +12931,7 @@
      "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638825309/markets/related/straight",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:36Z",
-     "age_hours": 0.38,
+     "age_hours": 4.39,
      "start_delta_min": 0,
      "decimal_odds_a": 1.877193,
      "decimal_odds_b": 1.909091,
@@ -13626,7 +12950,7 @@
      "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:43Z",
-     "age_hours": 0.37,
+     "age_hours": 4.39,
      "start_delta_min": null,
      "decimal_odds_a": 1.87,
      "decimal_odds_b": 1.87,
@@ -13645,7 +12969,7 @@
      "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "provider_market_url": null,
      "retrieved_at_utc": "2026-10-21T15:14:48Z",
-     "age_hours": 0.37,
+     "age_hours": 4.38,
      "start_delta_min": 0,
      "decimal_odds_a": 1.88,
      "decimal_odds_b": 1.91,
@@ -13661,23 +12985,15 @@
    "exchange_reasons": [
     "no two-sided Kalshi book matched"
    ],
-   "flags": [],
+   "flags": [
+    "coin_flip_inside_band"
+   ],
    "published": {
     "basis": "market",
-    "label": "market consensus of 4 external source(s), proportional no-vig",
-    "prob_a": 0.5170425232811372,
-    "prob_b": 0.4829574767188628,
+    "label": "market consensus of 3 external source(s), proportional no-vig",
+    "prob_a": 0.5027233643748495,
+    "prob_b": 0.49727663562515045,
     "sources": [
-     {
-      "source_key": "bo3gg_thunderpick",
-      "source_name": "Thunderpick prices via bo3.gg",
-      "source_public_url": "https://bo3.gg/matches/bestia-vs-shinden-22-10-2026",
-      "retrieved_at_utc": "2026-10-21T15:37:07Z",
-      "decimal_odds_a": 1.65,
-      "decimal_odds_b": 2.1,
-      "overround": 1.0823,
-      "prob_a": 0.56
-     },
      {
       "source_key": "pinnacle",
       "source_name": "Pinnacle",
@@ -13712,9 +13028,9 @@
     "via": [
      "data/live/quotes.json (session 3cd9787c, read-only)"
     ],
-    "pick_side": "a",
-    "pick_team": "BESTIA",
-    "pick_probability": 0.5170425232811372
+    "pick_side": "coin_flip",
+    "pick_team": null,
+    "pick_probability": null
    },
    "estimate_inputs": {}
   },
@@ -13771,8 +13087,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.886193162648652,
-     "rating_b": 5.628307263954888,
+     "rating_a": 4.885153724074699,
+     "rating_b": 5.627478283098348,
      "appearances_a": 9.0,
      "appearances_b": 5.0
     },
@@ -13845,8 +13161,8 @@
      "corpus_generated_at_utc": "2026-10-21T05:20:45Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.07991788670767,
-     "rating_b": 5.326050939950877,
+     "rating_a": 4.079175164813375,
+     "rating_b": 5.324999202278799,
      "appearances_a": 5.0,
      "appearances_b": 16.0
     },
@@ -13871,24 +13187,156 @@
   {
    "source_key": "bo3gg_thunderpick",
    "source_name": "Thunderpick prices via bo3.gg",
-   "team_a": "FaZe",
-   "team_b": "Envy",
-   "start_time_utc": "2026-10-21T15:45:00Z",
-   "decimal_odds_a": 1.6,
-   "decimal_odds_b": 2.21,
-   "source_public_url": "https://bo3.gg/matches/envyus-vs-faze-21-10-2026",
+   "team_a": "Eternal Fire",
+   "team_b": "BC.Game",
+   "start_time_utc": "2026-10-21T20:05:00Z",
+   "decimal_odds_a": 2.49,
+   "decimal_odds_b": 1.5,
+   "source_public_url": "https://bo3.gg/matches/eternal-fire-vs-bc-game-21-10-2026",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
   },
   {
    "source_key": "bo3gg_thunderpick",
    "source_name": "Thunderpick prices via bo3.gg",
-   "team_a": "ENCE Prospects",
-   "team_b": "TheChampionGG",
-   "start_time_utc": "2026-10-22T13:00:00Z",
-   "decimal_odds_a": 2.1,
-   "decimal_odds_b": 1.65,
-   "source_public_url": "https://bo3.gg/matches/ence-prospects-vs-thechampiongg-22-10-2026",
+   "team_a": "FaZe",
+   "team_b": "HEROIC",
+   "start_time_utc": "2026-10-21T20:15:00Z",
+   "decimal_odds_a": 2.03,
+   "decimal_odds_b": 1.68,
+   "source_public_url": "https://bo3.gg/matches/faze-vs-heroic-21-10-2026",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "bo3gg_thunderpick",
+   "source_name": "Thunderpick prices via bo3.gg",
+   "team_a": "ALKA",
+   "team_b": "JOGA DE TERNO",
+   "start_time_utc": "2026-10-21T21:00:00Z",
+   "decimal_odds_a": 1.46,
+   "decimal_odds_b": 2.53,
+   "source_public_url": "https://bo3.gg/matches/alka-vs-joga-de-terno-21-10-2026",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "bo3gg_thunderpick",
+   "source_name": "Thunderpick prices via bo3.gg",
+   "team_a": "Passion Academy",
+   "team_b": "WonderKids",
+   "start_time_utc": "2026-10-22T08:00:00Z",
+   "decimal_odds_a": 1.38,
+   "decimal_odds_b": 2.8,
+   "source_public_url": "https://bo3.gg/matches/passion-academy-vs-wonderkids-22-10-2026",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "bo3gg_thunderpick",
+   "source_name": "Thunderpick prices via bo3.gg",
+   "team_a": "FaZe",
+   "team_b": "HEROIC",
+   "start_time_utc": "2026-10-21T20:15:00Z",
+   "decimal_odds_a": 2.03,
+   "decimal_odds_b": 1.68,
+   "source_public_url": "https://bo3.gg/matches/faze-vs-heroic-21-10-2026",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "bo3gg_thunderpick",
+   "source_name": "Thunderpick prices via bo3.gg",
+   "team_a": "ALKA",
+   "team_b": "JOGA DE TERNO",
+   "start_time_utc": "2026-10-21T21:00:00Z",
+   "decimal_odds_a": 1.46,
+   "decimal_odds_b": 2.53,
+   "source_public_url": "https://bo3.gg/matches/alka-vs-joga-de-terno-21-10-2026",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "bo3gg_thunderpick",
+   "source_name": "Thunderpick prices via bo3.gg",
+   "team_a": "Passion Academy",
+   "team_b": "WonderKids",
+   "start_time_utc": "2026-10-22T08:00:00Z",
+   "decimal_odds_a": 1.38,
+   "decimal_odds_b": 2.8,
+   "source_public_url": "https://bo3.gg/matches/passion-academy-vs-wonderkids-22-10-2026",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "bo3gg_thunderpick",
+   "source_name": "Thunderpick prices via bo3.gg",
+   "team_a": "ALKA",
+   "team_b": "JOGA DE TERNO",
+   "start_time_utc": "2026-10-21T21:00:00Z",
+   "decimal_odds_a": 1.46,
+   "decimal_odds_b": 2.53,
+   "source_public_url": "https://bo3.gg/matches/alka-vs-joga-de-terno-21-10-2026",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "bo3gg_thunderpick",
+   "source_name": "Thunderpick prices via bo3.gg",
+   "team_a": "Passion Academy",
+   "team_b": "WonderKids",
+   "start_time_utc": "2026-10-22T08:00:00Z",
+   "decimal_odds_a": 1.38,
+   "decimal_odds_b": 2.8,
+   "source_public_url": "https://bo3.gg/matches/passion-academy-vs-wonderkids-22-10-2026",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "bo3gg_thunderpick",
+   "source_name": "Thunderpick prices via bo3.gg",
+   "team_a": "ALKA",
+   "team_b": "JOGA DE TERNO",
+   "start_time_utc": "2026-10-21T21:00:00Z",
+   "decimal_odds_a": 1.46,
+   "decimal_odds_b": 2.53,
+   "source_public_url": "https://bo3.gg/matches/alka-vs-joga-de-terno-21-10-2026",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "bo3gg_thunderpick",
+   "source_name": "Thunderpick prices via bo3.gg",
+   "team_a": "Passion Academy",
+   "team_b": "WonderKids",
+   "start_time_utc": "2026-10-22T08:00:00Z",
+   "decimal_odds_a": 1.38,
+   "decimal_odds_b": 2.8,
+   "source_public_url": "https://bo3.gg/matches/passion-academy-vs-wonderkids-22-10-2026",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "bo3gg_thunderpick",
+   "source_name": "Thunderpick prices via bo3.gg",
+   "team_a": "Passion Academy",
+   "team_b": "WonderKids",
+   "start_time_utc": "2026-10-22T08:00:00Z",
+   "decimal_odds_a": 1.38,
+   "decimal_odds_b": 2.8,
+   "source_public_url": "https://bo3.gg/matches/passion-academy-vs-wonderkids-22-10-2026",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "bo3gg_thunderpick",
+   "source_name": "Thunderpick prices via bo3.gg",
+   "team_a": "FORZE Reload",
+   "team_b": "Just Players",
+   "start_time_utc": "2026-10-22T11:00:00Z",
+   "decimal_odds_a": 1.32,
+   "decimal_odds_b": 3.1,
+   "source_public_url": "https://bo3.gg/matches/forze-reload-vs-just-players-22-10-2026",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
   },
@@ -15034,7 +14482,7 @@
   }
  ],
  "inputs": {
-  "quotes_total": 128,
+  "quotes_total": 124,
   "lobby_listed_ids": [],
   "lobby_counters": {},
   "vrs_snapshots": {
