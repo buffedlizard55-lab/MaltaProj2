@@ -50,6 +50,10 @@ jobs:
           python scripts/browser_smoke.py
           python scripts/build_site.py
           python scripts/browser_current_smoke.py
+          python -m http.server 8767 --bind 0.0.0.0 >/tmp/cs2-dashboard-http.log 2>&1 &
+          dashboard_server=$!
+          trap 'kill "$dashboard_server"' EXIT
+          python scripts/cbf92764/browser_smoke.py
           python scripts/browser_479ef53e.py
           python scripts/ae75c5c3/browser_smoke.py
           python scripts/c64a5e19/browser_smoke.py

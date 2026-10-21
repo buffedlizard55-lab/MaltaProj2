@@ -26,6 +26,12 @@ class Links(HTMLParser):
     def handle_endtag(self,tag):
         if tag=='tr':self.rows.append(self.current);self.current=None
 
+def setUpModule():
+    # Upstream collectors refresh more often than this section's four-hour schedule.
+    # Re-render at verification time instead of comparing unrelated capture versions.
+    B.build()
+
+
 class Evidence(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
