@@ -20,7 +20,7 @@ def fixture(fid='1'):
 
 def sample():
     snap=dict(collected_to_utc='2026-10-21T19:59:00Z',hotspawn=dict(fixtures=[fixture()],permalinks={}),access_log=dict(hotspawn_lobby_page=dict(status=200,error=None,at_utc='2026-10-21T19:00:00Z',age_header='60',fixtures_in_transfer_state=1)))
-    q=dict(public_url='https://melbet.com/en/line/esports',retrieved_utc='2026-10-21T19:00:00Z',decimal_a=2.,decimal_b=2.,prob_a=.5)
+    q=dict(public_url='https://melbet.com/en/line/esports',retrieved_utc='2026-10-21T19:00:00Z',decimal_a=5/3,decimal_b=2.5,prob_a=.6)
     row={**fixture(), 'pick':'Alpha','resolution':dict(basis='market',prob_a=.6,prob_b=.4),'quotes':[q], 'sources':[dict(url='https://melbet.com/en/line/esports')]}
     return snap,dict(rows=[row])
 
@@ -75,6 +75,11 @@ class ArithmeticAndCoverage(unittest.TestCase):
     def test_arithmetic_mismatch_flagged(self):
         s,b=sample();b['rows'][0]['quotes'][0]['prob_a']=.9
         self.assertIn('quote_arithmetic_conflict',codes(run_audit(s,b)))
+    def test_valid_market_arithmetic_has_no_flags(self):
+        s,b=sample();self.assertEqual(codes(run_audit(s,b)),[])
+    def test_aggregate_probability_must_reproduce(self):
+        s,b=sample();b['rows'][0]['resolution'].update(prob_a=.7,prob_b=.3)
+        self.assertIn('market_consensus_conflict',codes(run_audit(s,b)))
     def test_invalid_odds_flagged(self):
         s,b=sample();b['rows'][0]['quotes'][0]['decimal_a']=float('inf')
         self.assertIn('quote_not_reproducible',codes(run_audit(s,b)))

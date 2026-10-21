@@ -169,6 +169,7 @@ def audit(snap, board, rating_text, rating_meta, clock, research):
             quotes = r.get('quotes') or []
             if not quotes:
                 issue('missing_quote', 'Market-labelled pick has no retained two-sided quote.')
+            reproduced = []
             for q in quotes:
                 qurl = q.get('public_url') or q.get('api_url')
                 if urlsplit(str(qurl or '')).hostname not in BOOK_HOSTS or not official_url(qurl):
@@ -181,6 +182,7 @@ def audit(snap, board, rating_text, rating_meta, clock, research):
                     if not all(math.isfinite(x) and x > 1 for x in (a,b)):
                         raise ValueError('invalid odds')
                     expected = (1/a) / (1/a+1/b)
+                    reproduced.append(expected)
                     if abs(expected-float(q['prob_a'])) > .0001:
                         issue('quote_arithmetic_conflict', 'Stored no-vig probability does not reproduce from its displayed two-way odds.', qurl if official_url(qurl) else url)
                 except (KeyError, ValueError, TypeError, ZeroDivisionError):
@@ -188,9 +190,21 @@ def audit(snap, board, rating_text, rating_meta, clock, research):
                 raw = q.get('raw') or {}
                 if raw.get('volume_dollars') == 0:
                     issue('zero_volume_exchange', 'Quote has zero traded volume; it is not a traded consensus.', qurl if official_url(qurl) else url)
+            # The audited board documents an equal-weight mean after quote selection.
+            if valid and reproduced and len(reproduced) == len(quotes) and abs(sum(reproduced)/len(reproduced)-pa) > .00011:
+                issue('market_consensus_conflict', 'Published win probability does not reproduce as the board’s documented mean of retained no-vig quotes.')
         elif basis == 'originated_vrs':
             if not vrs_ok or not all(rating_matches(r.get('vrs_'+s) or {}, index) for s in ('a','b')):
                 issue('rating_input_unverified', 'Both exact rating/standing/team/roster tuples must match the pinned official file.', rating_meta.get('html_url') or url)
+            try:
+                policy = board['policy']
+                delta = float(r['vrs_a']['points']) - float(r['vrs_b']['points'])
+                x = float(policy['k']) * float(policy['C']) * delta
+                expected = 1 / (1 + math.exp(-x))
+                if not valid or not math.isfinite(expected) or abs(expected-pa) > .00011:
+                    raise ValueError('Model number does not reproduce')
+            except (KeyError, TypeError, ValueError, OverflowError):
+                issue('model_arithmetic_unverified', 'Published model probability cannot be reproduced from its stated slope and two rating inputs.', rating_meta.get('html_url') or url)
             # Even matching published inputs do not validate a live roster or predicted probability.
             issue('model_not_book_odds', 'Model estimate, not an official win probability. Current lineup equivalence and predictive accuracy require separate evidence.', rating_meta.get('html_url') or url)
         else:
