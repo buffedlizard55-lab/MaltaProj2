@@ -150,7 +150,13 @@ def row_from_board(fx):
         "prob_a": line.get("prob_a"),
         "prob_b": line.get("prob_b"),
         "basis": line.get("basis") or ("unresolved" if not line else "model"),
-        "basis_label": BASIS_LABEL.get(line.get("basis"), "Unresolved"),
+        "basis_label": (
+            # the canonical board labels its own Elo/ranking-originated rows "directional";
+            # never present them as the official Valve VRS curve
+            "Originated by the automated board's own Elo over published results "
+            "(directional estimate, no book price)"
+            if line.get("basis") == "model" and line.get("directional")
+            else BASIS_LABEL.get(line.get("basis"), "Unresolved")),
         "confidence": line.get("confidence"),
         "sources": picks,
         "flags": fx.get("flags") or [],
@@ -193,7 +199,17 @@ def build():
     for fx in board["open"]:
         line = fx.get("line") or {}
         if line.get("pick") and line.get("prob_a") is not None:
-            rows.append(row_from_board(fx))
+            row = row_from_board(fx)
+            res = resolutions.get(str(fx.get("fixture_id")))
+            if res:
+                # The canonical board now prices/originates this row itself (e.g. after an alias
+                # or join rule landed). Keep this session's research ledger attached so the
+                # attempts and limitations stay visible; the board's own number is what is shown.
+                row["attempts"] = res.get("attempts") or []
+                row["limitations"] = (res.get("limitations") or []) + [
+                    "Now resolved by the automated board itself; this session's earlier research "
+                    "ledger is kept for review and is no longer the source of the number."]
+            rows.append(row)
         elif str(fx.get("fixture_id")) in resolutions:
             rows.append(row_from_resolution(fx, resolutions[str(fx.get("fixture_id"))]))
         else:
