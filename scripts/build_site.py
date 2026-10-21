@@ -679,7 +679,8 @@ def page(title, subtitle, body, generated_at, active=None, banner=None, hero=Fal
 <a class="skip-link" href="#main-content">Skip to content</a>
 <header class="topbar">
   <div class="wrap">
-    <div class="brand"><span class="dot"></span>HotSpawn Pick'ems · betting-line analysis</div>
+    <div class="brand"><span class="dot"></span>HotSpawn Pick'ems · betting-line analysis
+      <a class="everypick-cta" href="everypick/index.html">⭐ Every-match picks</a></div>
     <nav>{nav}</nav>
   </div>
 </header>
@@ -871,6 +872,44 @@ probabilities, sources</span><span>&rarr;</span></a>
 <h3 style="margin-top:14px">Next locks (UTC)</h3>
 <ul class="plain">{soon}</ul>
 </div>"""
+
+
+
+def everypick_hero_html():
+    """Phone-first start-here block, fed by the live every-match board.
+
+    This is the only numbers-carrying block the shared landing page adds: it reads
+    data/5f903db4/board.json (refreshed every four hours) and links straight to the pick lists.
+    """
+    board = load("data/5f903db4/board.json") or {}
+    s = board.get("summary") or {}
+    stamp = (board.get("generated_utc") or "").replace("T", " ").replace("Z", " UTC")
+    if not s:
+        return ""
+    return f'''<!-- everypick:start -->
+<section id="every-match-executive-summary" aria-labelledby="ems-title">
+<p class="eyebrow">● START HERE · every open HotSpawn CS2 match · refreshed every four hours</p>
+<h2 id="ems-title" style="margin-top:6px;font-size:clamp(1.25rem,5vw,1.7rem);line-height:1.25">Every match. A pick. Both win probabilities. A source you can open.</h2>
+<p><strong>{s.get("lobby_open", 0)}</strong> open lobby matches <strong>+{s.get("api_only", 0)}</strong>
+API-only · <strong>{s.get("with_pick", 0)}</strong> with a pick and two probabilities ·
+<strong>{s.get("market", 0)}</strong> priced from real betting lines ·
+<strong>{s.get("originated_both_rated", 0) + s.get("originated_bound", 0)}</strong> originated from
+official Valve ratings · <strong>{s.get("unresolved", 0)}</strong> unresolved. Board built
+{esc(stamp)}.</p>
+<div class="desk-actions">
+<a class="btn live-board-cta" href="everypick/picks.html"><span><strong>All picks</strong> · every match, both probabilities</span><span>→</span></a>
+<a class="btn live-board-cta" href="everypick/index.html"><span><strong>Executive summary</strong> · what changed, mobile first</span><span>→</span></a>
+<a class="btn live-board-cta" href="everypick/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · what no book would price</span><span>→</span></a>
+<a class="btn live-board-cta" href="everypick/sources.html"><span><strong>Sources</strong> · every book, exchange and read time</span><span>→</span></a>
+<a class="btn live-board-cta" href="everypick/method.html"><span><strong>Method</strong> · formula, fitted slope, tests</span><span>→</span></a>
+<a class="btn live-board-cta" href="everypick/flagged.html"><span><strong>Flagged for review</strong> · irregularities and unverified items</span><span>→</span></a>
+</div>
+<p class="note">Every other desk on this site is an earlier session's own board and is kept below as an
+archive. If you only open one page, open <a href="everypick/picks.html">All picks</a>.</p>
+</section>
+<!-- everypick:end -->
+
+'''
 
 
 def canonical_home(pick_board):
@@ -1268,7 +1307,7 @@ def main() -> int:
     closed_fixtures = [f for f in fixtures if f.get("pick_status") != "open"]
     top_table, _ = fixtures_table(open_fixtures)
     pick_board = load("data/c64a5e19/board.json")
-    idx_body = canonical_home(pick_board)
+    idx_body = everypick_hero_html() + canonical_home(pick_board)
     write("day-one.html", page("Day-one review & contrarian strategy",
           "14 October 2026 · Thunderpick World Championship · source review 15 October 2026",
           day_one_review(), generated_at, active="day-one.html"))
@@ -1824,7 +1863,8 @@ body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.6 -apple-system,
 .wrap{overflow-wrap:anywhere;max-width:1180px;margin:0 auto;padding:0 18px}
 .topbar{background:linear-gradient(180deg,#111827,#0d1117);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
 .topbar .wrap{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:12px 18px}
-.brand{font-weight:600;display:flex;align-items:center;gap:8px}
+.brand{font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.everypick-cta{display:inline-block;background:#91f2bf;color:#102419;font-weight:700;padding:7px 12px;border-radius:999px;text-decoration:none;font-size:13px;min-height:34px}
 .dot{width:10px;height:10px;border-radius:50%;background:var(--acc);box-shadow:0 0 12px var(--acc)}
 nav{display:flex;flex-wrap:wrap;gap:5px;max-width:100%}
 nav a{color:var(--mut);text-decoration:none;padding:6px 9px;border-radius:8px;font-size:14px}

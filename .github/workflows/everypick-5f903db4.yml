@@ -1,0 +1,80 @@
+name: everypick (5f903db4)
+
+# Session 5f903db4 / EVERYPICK. Keeps a pick + both win probabilities on every open HotSpawn CS2
+# fixture, refreshed every four hours with no manual input.
+#
+# Scope guard: this workflow writes only data/5f903db4/**, everypick/** and the single marked
+# start-here block in the root index.html (via scripts/5f903db4/stage_root.py). It never edits
+# another session's board, script or page.
+on:
+  push:
+    branches: ['arena/5f903db4-maltaproj2', 'main']
+    paths:
+      - 'scripts/5f903db4/**'
+      - 'tests/test_5f903db4.py'
+      - '.github/workflows/everypick-5f903db4.yml'
+  schedule:
+    - cron: '17 */4 * * *'   # every four hours, on the hour-17
+  workflow_run:
+    workflows: ['board (fe803b80)', 'ourline (f7279a54)', 'update-data']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: everypick-5f903db4-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Collect live prices (Kalshi, Melbet, Thunderpick/bo3.gg) and confirm Valve's newest table
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/5f903db4/collect.py
+
+      - name: Build the board (every number re-derived from raw odds / official VRS points)
+        run: python3 scripts/5f903db4/build.py
+
+      - name: Render the phone-first pages
+        run: python3 scripts/5f903db4/site.py
+
+      - name: Refresh the root page's start-here block only
+        run: python3 scripts/5f903db4/stage_root.py
+
+      - name: Tests (re-derive every probability, enforce the no-blank rule, check every link)
+        run: python3 -m unittest tests.test_5f903db4 -v
+
+      - name: Commit and push (rebase before every push)
+        env:
+          REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config user.name "everypick-bot (5f903db4)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/5f903db4 everypick index.html
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "everypick(5f903db4): refresh every-match picks $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then
+              if [ "$REF_NAME" = "main" ]; then gh workflow run pages.yml --ref main || echo "pages dispatch failed"; fi
+              exit 0
+            fi
+            sleep $((attempt * 7))
+          done
+          exit 1
