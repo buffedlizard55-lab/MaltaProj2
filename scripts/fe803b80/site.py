@@ -105,8 +105,25 @@ code{background:var(--panel2);padding:1px 5px;border-radius:6px;font-size:.9em;w
 """
 
 PAGES = [("index.html", "Summary"), ("picks.html", "All picks"), ("lines.html", "Lines"),
-         ("tournaments.html", "Tournaments"), ("results.html", "Results"),
+         ("tournaments.html", "Tournaments"), ("unresolved.html", "Unresolved"),
+         ("results.html", "Results"),
          ("flagged.html", "Flagged"), ("method.html", "Method")]
+
+# How a number on a row was obtained, and what that method cannot do. Published on the unresolved
+# page so a reviewer sees the limitation next to the number, not only in a footnote.
+BOUND_BASES = {
+    "vrs_floor_bound": "One-sided Valve VRS bound",
+    "vrs_alias_candidate_bound": "Valve VRS bound through an unconfirmed alias",
+    "vrs_alias_candidate": "Valve VRS line through an unconfirmed alias",
+}
+ORIGIN_BASES = {
+    "valve_vrs": "Official Valve VRS rating model",
+    "originated_elo": "This project's Elo over published bo3.gg results",
+    "originated_rank": "bo3.gg published world ranking mapped to the Elo scale",
+    "originated_hltv_rank": "HLTV published ranking mapped to the Elo scale",
+}
+BOUND_SET = tuple(BOUND_BASES)
+ORIGIN_SET = tuple(ORIGIN_BASES)
 
 
 def esc(v) -> str:
@@ -132,8 +149,11 @@ def basis_badge(row) -> str:
         origin = (row.get("model") or {}).get("basis")
         label = {"valve_vrs": "originated · Valve VRS",
                  "originated_elo": "originated · Elo (bo3.gg results)",
-                 "originated_rank": "originated · bo3.gg ranking"}.get(
+                 "originated_rank": "originated · bo3.gg ranking",
+                 "originated_hltv_rank": "originated · HLTV ranking"}.get(
                      origin, "originated · ratings")
+        if origin in BOUND_BASES:
+            label = "bound · " + BOUND_BASES[origin].lower()
         return f'<span class="badge model">{esc(label)}</span>'
     return '<span class="badge bad">no source</span>'
 
@@ -218,6 +238,9 @@ def render_index(board: dict) -> str:
     s = board["summary"]
     calib = board.get("calibration") or {}
     track = board.get("track_record") or {}
+    open_rows = board.get("open") or []
+    bounded = [r for r in open_rows if (r.get("model") or {}).get("basis") in BOUND_BASES]
+    no_number = [r for r in open_rows if not (r.get("line") or {}).get("pick")]
     body = f"""
 <h1>Executive summary</h1>
 <p class="sub">Every Counter-Strike 2 fixture in the HotSpawn pick'em lobby, with a pick and a
@@ -232,11 +255,16 @@ probability for each one — including tier-C matches no bookmaker prices.</p>
 
 <div class="note good"><strong>Where the picks are →</strong> the live list is on
 <a href="picks.html">All picks</a>. Each match shows the pick, the win probability, the basis
-(market, market+model, or originated from ratings) and the source link for every number.</div>
+(market, market+model, or originated from ratings) and the source link for every number.
+Fixtures that no bookmaker prices are listed with the assumption they depend on on
+<a href="unresolved.html">Unresolved picks &amp; limitations</a>.</div>
 
 <div class="jump">
   <a href="picks.html"><b>All picks — every open fixture</b>
     <span>Pick, probability, confidence and the source link for each match. Updated automatically.</span></a>
+  <a href="unresolved.html"><b>Unresolved picks &amp; limitations</b>
+    <span>The {len(bounded)} fixture(s) priced under a stated assumption, the {len(no_number)} with no
+    number at all, and what each method can and cannot do — with the per-match source ledger.</span></a>
   <a href="lines.html"><b>Betting lines used</b>
     <span>The exact Pinnacle / Bovada / Kalshi / Melbet / Thunderpick prices behind each market row.</span></a>
   <a href="tournaments.html"><b>By tournament</b>
@@ -259,6 +287,9 @@ probability for each one — including tier-C matches no bookmaker prices.</p>
   <li><span class="badge model">originated</span> no reachable bookmaker prices this fixture, so the
       line is originated here: official Valve VRS points, or — when the teams have no VRS row — this
       project's own Elo built from published bo3.gg match results. Labelled, never mixed silently.</li>
+  <li><span class="badge model">bound</span> the number depends on a stated assumption (an unrated
+      opponent placed on Valve's published floor, or a former-name alias candidate). The assumption
+      is written out on the row and on the <a href="unresolved.html">unresolved page</a>.</li>
   <li><span class="badge bad">unverified</span> nothing sourced could support a number; the cell
       stays blank and the row is on the flagged page.</li>
 </ul>
@@ -269,6 +300,9 @@ probability for each one — including tier-C matches no bookmaker prices.</p>
 <tr><td>Open · basis = market</td><td class="num">{s['open_market_only']}</td></tr>
 <tr><td>Open · basis = market+model</td><td class="num">{s['open_market_model']}</td></tr>
 <tr><td>Open · basis = originated model</td><td class="num">{s['open_model_only']}</td></tr>
+<tr><td>Open · priced under a stated assumption (see unresolved)</td>
+    <td class="num">{len(bounded)}</td></tr>
+<tr><td>Open · no number at all (see unresolved)</td><td class="num">{len(no_number)}</td></tr>
 <tr><td>Open · blank with a flag</td><td class="num">{s['open_blank']}</td></tr>
 <tr><td>Listed but locked/past (kept for results)</td><td class="num">{s['closed']}</td></tr>
 <tr><td>External quotes collected</td><td class="num">{s['quotes_total']}</td></tr>
@@ -334,13 +368,187 @@ A pick and a probability are shown for each match; the basis tells you where the
 List is re-generated automatically from the lobby, so it follows HotSpawn as it adds matches.</p>
 <div class="note">{len(priced)} of {len(rows)} open fixtures are priced by a reachable external
 bookmaker or exchange. The other {len(rows) - len(priced)} have an <strong>originated line</strong>
-(Valve VRS rating model or this project's own Elo over published results) — labelled on the row and
-listed on <a href="flagged.html">Flagged for review</a>.</div>
+(Valve VRS rating model, a bounded one-sided estimate, or this project's own Elo over published
+results) — labelled on the row, with the assumption and the per-match source ledger on
+<a href="unresolved.html">Unresolved picks &amp; limitations</a>.</div>
 {''.join(fixture_card(r) for r in rows) if rows else '<p>No open fixtures in the current lobby read.</p>'}
 <p class="src">Sorted by kickoff (UTC). Blank rows are never estimated: they appear with a flag
 instead, and are counted in the executive summary.</p>
 """
     return page("All picks", "picks.html", body, board)
+
+
+def attempt_table(row: dict) -> str:
+    """The per-fixture source ledger: what was tried for this match and what each source said."""
+    rows = []
+    for entry in row.get("attempts") or []:
+        rows.append(f"<tr><td>{esc(entry.get('source'))}</td><td>{esc(entry.get('state'))}</td>"
+                    f"<td>{esc(entry.get('joined'))}</td></tr>")
+    if not rows:
+        return "<p class=\"src\">No source attempt was recorded for this row.</p>"
+    return ("<table class='resp'><thead><tr><th>Source</th><th>Answer</th><th>Price joined</th>"
+            "</tr></thead><tbody>" + "".join(rows) + "</tbody></table>")
+
+
+def render_unresolved(board: dict) -> str:
+    """The separate 'Unresolved picks & limitations' section.
+
+    Section A lists the rows that carry no number at all. Section B lists the rows whose number is
+    an estimate that depends on a stated assumption, with that assumption written out. Section C
+    states what each resolution method can and cannot do, including the sources that are blocked.
+    """
+    rows = board.get("open") or []
+    blank = [r for r in rows if not (r.get("line") or {}).get("pick")]
+    bounded, originated = [], []
+    for r in rows:
+        origin = (r.get("model") or {}).get("basis")
+        if (r.get("market") or {}).get("prob_a"):
+            continue            # a bookmaker price is the published number, not an estimate
+        if origin in BOUND_SET:
+            bounded.append(r)
+        elif origin in ORIGIN_SET:
+            originated.append(r)
+    access = board.get("access") or {}
+    hltv = access.get("hltv_ranking") or {}
+    hltv_state = ("not attempted in this build" if not hltv else
+                  f"HTTP {hltv.get('status')}" + (f" — {hltv.get('error')}" if hltv.get("error") else ""))
+    vrs = access.get("valve_vrs") or {}
+    vrs_snapshot = vrs.get("snapshot") or "unavailable"
+
+    blank_rows = []
+    for r in blank:
+        blank_rows.append(f"""<article class="fixture">
+  <div class="meta">{esc(fmt(r.get('start_utc')))} · {esc(r.get('competition') or '')} ·
+    tier {esc(r.get('tier') or '—')}</div>
+  <div class="teams">
+    <div class="team"><div class="nm">{esc(r['team_a'])}</div><div class="pr">—</div></div>
+    <div class="team"><div class="nm">{esc(r['team_b'])}</div><div class="pr">—</div></div>
+  </div>
+  <div><span class="badge bad">no number</span>{''.join(f' <span class="badge">{esc(f)}</span>' for f in (r.get('flags') or []))}</div>
+  <details open><summary>What was tried for this match</summary>
+    {attempt_table(r)}
+    <p class="src">Fixture reference:
+      <a href="{esc(r['hotspawn_url'])}" rel="noopener">{esc(r['hotspawn_url_kind'])}</a></p>
+  </details>
+</article>""")
+
+    bound_rows = []
+    for r in bounded:
+        floor = (r.get("model") or {}).get("floor") or {}
+        line = r.get("line") or {}
+        bound_rows.append(f"""<article class="fixture">
+  <div class="meta">{esc(fmt(r.get('start_utc')))} · {esc(r.get('competition') or '')}</div>
+  <div class="teams">
+    <div class="team{' win' if line.get('pick') == r['team_a'] else ''}">
+      <div class="nm">{esc(r['team_a'])}</div><div class="pr">{pct(line.get('prob_a'))}</div></div>
+    <div class="team{' win' if line.get('pick') == r['team_b'] else ''}">
+      <div class="nm">{esc(r['team_b'])}</div><div class="pr">{pct(line.get('prob_b'))}</div></div>
+  </div>
+  <div><span class="badge pick">PICK {esc(line.get('pick'))} {pct(line.get('pick_probability'))}</span>
+    <span class="badge model">{esc(BOUND_BASES.get((r.get('model') or {}).get('basis'), 'bound'))}</span></div>
+  <details open><summary>The assumption behind this number</summary>
+    <p>{esc(floor.get('assumption') or '')}</p>
+    <p class="src">Rated side: {esc(floor.get('rated_vrs_name'))} ·
+      {esc(floor.get('rated_points'))} points (official Valve VRS, standing
+      {esc(floor.get('rated_standing'))}) · rating source:
+      {esc(floor.get('rating_source'))}. Unrated opponent placed on the
+      {esc(floor.get('floor_points'))}-point floor.</p>
+    {attempt_table(r)}
+    <p class="src">{src_links(r)}</p>
+  </details>
+</article>""")
+
+    origin_rows = []
+    for r in originated:
+        line = r.get("line") or {}
+        origin = (r.get("model") or {}).get("basis")
+        origin_rows.append(f"""<article class="fixture">
+  <div class="meta">{esc(fmt(r.get('start_utc')))} · {esc(r.get('competition') or '')}</div>
+  <div class="teams">
+    <div class="team{' win' if line.get('pick') == r['team_a'] else ''}">
+      <div class="nm">{esc(r['team_a'])}</div><div class="pr">{pct(line.get('prob_a'))}</div></div>
+    <div class="team{' win' if line.get('pick') == r['team_b'] else ''}">
+      <div class="nm">{esc(r['team_b'])}</div><div class="pr">{pct(line.get('prob_b'))}</div></div>
+  </div>
+  <div><span class="badge pick">PICK {esc(line.get('pick'))} {pct(line.get('pick_probability'))}</span>
+    <span class="badge model">{esc(ORIGIN_BASES.get(origin, 'originated'))}</span></div>
+  <details><summary>How this number was produced</summary>
+    {attempt_table(r)}
+    <p class="src">{src_links(r)}</p>
+  </details>
+</article>""")
+
+    body = f"""
+<h1>Unresolved picks &amp; limitations</h1>
+<p class="sub">This page exists so that no gap is hidden. It lists every open fixture whose number
+is <em>not</em> a bookmaker or exchange price, the assumption each such number depends on, and
+what each resolution method can and cannot do.</p>
+
+<div class="cards">
+  <div class="card"><div class="n">{len(blank)}</div><div class="l">fixtures with no number at all</div></div>
+  <div class="card"><div class="n">{len(bounded)}</div><div class="l">priced under a stated assumption</div></div>
+  <div class="card"><div class="n">{len(originated)}</div><div class="l">originated from ratings / results</div></div>
+  <div class="card"><div class="n">{len(rows) - len(blank) - len(bounded) - len(originated)}</div>
+    <div class="l">priced by a bookmaker or exchange</div></div>
+</div>
+
+<h2>A · No number at all ({len(blank)})</h2>
+<p>These fixtures have no published two-way price in any reachable source and no official rating
+for at least one side, and no evidence that would let this project originate one. The probability
+stays blank: it is never estimated, and HotSpawn's crowd percentage is never used as a substitute.</p>
+{''.join(blank_rows) if blank_rows else '<p>None in this build — every open fixture carries a number.</p>'}
+
+<h2>B · Priced under a stated assumption ({len(bounded)})</h2>
+<p>These fixtures carry a number, but the number depends on an assumption that is written out on the
+row. Read them as a bounded estimate, never as a market price.</p>
+{''.join(bound_rows) if bound_rows else '<p>None in this build.</p>'}
+
+<h2>C · Originated lines ({len(originated)})</h2>
+<p>No reachable bookmaker priced these fixtures, so the line is originated from published ratings or
+published results with a documented formula. It is an estimate, not a price.</p>
+{''.join(origin_rows) if origin_rows else '<p>None in this build.</p>'}
+
+<h2>D · What each method can and cannot do</h2>
+<table class="resp"><thead><tr><th>Method</th><th>Uses</th><th>Limitation</th></tr></thead><tbody>
+<tr><td>External prices (Pinnacle, Bovada, the 1xBet platform LineFeed, Kalshi, Polymarket,
+        Thunderpick via bo3.gg)</td>
+    <td>The books' own two-way prices, margin removed with the proportional no-vig method.</td>
+    <td>Only fixtures a book lists are covered. Tier-C qualifiers and regional cups are often
+        unlisted, and a thin exchange book is refused rather than used.</td></tr>
+<tr><td>Official Valve VRS</td>
+    <td>Valve's published regional standings (snapshot {esc(vrs_snapshot)}), read from the official
+        repository.</td>
+    <td>Published roughly monthly, so it lags the lobby by up to a few weeks, and it lists rosters,
+        not fixtures. A roster that is absent from the table has no published rating.</td></tr>
+<tr><td>One-sided VRS bound</td>
+    <td>One rated roster against an unrated opponent placed on Valve's published 400-point floor.</td>
+    <td>The floor is an assumption about the unrated side; a real unlisted roster can be stronger,
+        so the number is a bound, not a probability.</td></tr>
+<tr><td>Alias candidate</td>
+    <td>A HotSpawn listing under a former name matched against Valve's official rows for that name.</td>
+    <td>The identity is a candidate, not a confirmed match: HotSpawn may list a different roster
+        under that name. The weakest official row is used so the estimate stays conservative.</td></tr>
+<tr><td>bo3.gg published results / ranking</td>
+    <td>Finished-match results and the published world ranking of each team.</td>
+    <td>Many tier-C teams have no published ranking and few finished results; the Elo over a handful
+        of matches is noisy.</td></tr>
+<tr><td>HLTV</td>
+    <td>The public HLTV team ranking, if the page answers an automated read.</td>
+    <td>Answered {esc(hltv_state)} in this build — a blocked page is published as blocked and is
+        never treated as "the team has no ranking".</td></tr>
+<tr><td>bo3.gg fixture identity</td>
+    <td>The same slot, the same competition and the same opponent on bo3.gg.</td>
+    <td>Only fires when one side's name matches exactly and the slot and competition agree; no
+        substring or fuzzy matching is used.</td></tr>
+<tr><td>HotSpawn</td>
+    <td>Fixture discovery and the final score used to settle the track record.</td>
+    <td>The crowd "picked %" is never read, stored or used as a probability.</td></tr>
+</tbody></table>
+
+<div class="note info"><strong>Every row has a source link.</strong> A row without a source link is
+a bug, not a gap: the board's contract tests fail if any published row loses its link.</div>
+"""
+    return page("Unresolved picks & limitations", "unresolved.html", body, board)
 
 
 def render_lines(board: dict) -> str:
@@ -533,7 +741,10 @@ are refused at the parser (<code>core.FIXTURE_KEYS</code>) and cannot reach a pr
 <ul class="tight">
 <li><strong>Pinnacle</strong> — licensed bookmaker, public guest odds API (moneyline, period 0, not alternate, status open).</li>
 <li><strong>Bovada</strong> — licensed bookmaker, public coupon JSON (moneyline, main period).</li>
-<li><strong>Melbet / 22bet / Betwinner</strong> — licensed bookmakers on the 1xBet platform (mirror family; one quote per event).</li>
+<li><strong>1xBet platform (1xBet / Melbet / 22bet / Betwinner)</strong> — licensed bookmakers on the
+1xBet platform (mirror family; one quote per event, cited to the mirror that published it).</li>
+<li><strong>Polymarket</strong> — CFTC-regulated prediction market; only a two-outcome match market
+whose outcome names match the two teams and whose event carries a start time is used.</li>
 <li><strong>Kalshi</strong> — CFTC-regulated exchange, series <code>KXCS2GAME</code>; mid of the bid/ask, and books wider than 10&nbsp;cents or one-sided are rejected.</li>
 <li><strong>Thunderpick</strong> — licensed esports bookmaker; its two-way coefficients are read from the
 public <code>bet_updates</code> block of the bo3.gg API, which is what covers the tier-C events no other
@@ -558,6 +769,23 @@ published curve is too steep at the ends.</li>
 finished matches bo3.gg publishes (result and score only — a factual record, not a price):
 <code>1500 + (VRS points − anchor)</code> seeds teams that do have a VRS row, 8 passes, K=20.
 This build used {elo.get('matches', 0)} finished matches and seeded {elo.get('teams_seeded', 0)} teams.</li>
+<li><strong>One-sided Valve VRS bound.</strong> When exactly one roster is listed in Valve's published
+standings, the unlisted opponent is placed on the <strong>400-point floor</strong> that Valve's own
+model starts every roster at, and the number is published as a <em>bound under that assumption</em>
+(<code>σ(k·C·(points − 400))</code>), never as a price. The row names the assumption and links the
+official standings row it used.</li>
+<li><strong>Alias candidate.</strong> HotSpawn sometimes lists a team under a former name
+("ex-…"). When removing that prefix matches an official Valve row, the weakest official row for that
+name is used and the row is flagged <code>alias_candidate_identity_unconfirmed</code>: the identity
+is a candidate, not a confirmed match.</li>
+<li><strong>bo3.gg fixture identity.</strong> A HotSpawn team that bo3.gg does not list can still be
+mapped when bo3.gg publishes the <em>same fixture</em> — same slot, same competition and one side's
+name matching exactly. The other side is then that team's bo3.gg record, and the bo3.gg match URL
+is published as the evidence. No substring or fuzzy matching is used.</li>
+<li><strong>HLTV.</strong> The public HLTV team ranking is read when the page answers an automated
+read; the ranking positions are mapped onto the Elo scale with the same documented formula as the
+bo3.gg ranking. When HLTV blocks the request the attempt is published as blocked — it is never read
+as "this team has no ranking".</li>
 </ul>
 <p>Ratings used: Valve regional standings snapshot <strong>{esc(vrs.get('snapshot') or '—')}</strong>
 ({esc(snaps) or 'no snapshot read'}), fetched from the official
@@ -578,6 +806,12 @@ repository.</p>
 <ul class="tight">
 <li>Originated lines are model output, not market prices; they are labelled on every row and counted
 separately in the executive summary.</li>
+<li>A bounded line (one-sided VRS floor, alias candidate) depends on a stated assumption about a
+roster that no official source rates. Every such row is listed on the
+<a href="unresolved.html">unresolved picks &amp; limitations</a> page with its assumption and the
+per-match source ledger.</li>
+<li>The Valve standings snapshot is published roughly monthly, so it lags the lobby; a roster that
+is not in the table has no published rating at all.</li>
 <li>Sources can be blocked from the collector's network. Every failure is published on the flagged
 page; a blocked source never silently becomes a blank probability.</li>
 <li>Kalshi kickoff times are encoded in US Eastern time in the event ticker and are used only for
@@ -607,6 +841,7 @@ def main() -> int:
         "lines.html": render_lines(board),
         "tournaments.html": render_tournaments(board),
         "results.html": render_results(board),
+        "unresolved.html": render_unresolved(board),
         "flagged.html": render_flagged(board),
         "method.html": render_method(board),
     }

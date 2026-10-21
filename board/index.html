@@ -11,7 +11,7 @@ listed in the HotSpawn pick'em lobby, with external betting lines and clearly la
 <body>
 <header class="top"><div class="inner">
   <div class="brand"><span class="dot"></span> Full pick coverage · every HotSpawn CS2 fixture</div>
-  <nav class="pages" aria-label="Board sections"><a href="index.html" aria-current=page>Summary</a><a href="picks.html">All picks</a><a href="lines.html">Lines</a><a href="tournaments.html">Tournaments</a><a href="results.html">Results</a><a href="flagged.html">Flagged</a><a href="method.html">Method</a></nav>
+  <nav class="pages" aria-label="Board sections"><a href="index.html" aria-current=page>Summary</a><a href="picks.html">All picks</a><a href="lines.html">Lines</a><a href="tournaments.html">Tournaments</a><a href="unresolved.html">Unresolved</a><a href="results.html">Results</a><a href="flagged.html">Flagged</a><a href="method.html">Method</a></nav>
 </div></header>
 <main class="wrap">
 
@@ -21,18 +21,23 @@ probability for each one — including tier-C matches no bookmaker prices.</p>
 
 <div class="cards">
   <div class="card"><div class="n">20</div><div class="l">CS2 fixtures open for picks</div></div>
-  <div class="card"><div class="n">18</div><div class="l">have a pick + probability</div></div>
+  <div class="card"><div class="n">20</div><div class="l">have a pick + probability</div></div>
   <div class="card"><div class="n">12</div><div class="l">priced by a bookmaker/exchange</div></div>
-  <div class="card"><div class="n">2</div><div class="l">blank &amp; flagged (no source)</div></div>
+  <div class="card"><div class="n">0</div><div class="l">blank &amp; flagged (no source)</div></div>
 </div>
 
 <div class="note good"><strong>Where the picks are →</strong> the live list is on
 <a href="picks.html">All picks</a>. Each match shows the pick, the win probability, the basis
-(market, market+model, or originated from ratings) and the source link for every number.</div>
+(market, market+model, or originated from ratings) and the source link for every number.
+Fixtures that no bookmaker prices are listed with the assumption they depend on on
+<a href="unresolved.html">Unresolved picks &amp; limitations</a>.</div>
 
 <div class="jump">
   <a href="picks.html"><b>All picks — every open fixture</b>
     <span>Pick, probability, confidence and the source link for each match. Updated automatically.</span></a>
+  <a href="unresolved.html"><b>Unresolved picks &amp; limitations</b>
+    <span>The 2 fixture(s) priced under a stated assumption, the 0 with no
+    number at all, and what each method can and cannot do — with the per-match source ledger.</span></a>
   <a href="lines.html"><b>Betting lines used</b>
     <span>The exact Pinnacle / Bovada / Kalshi / Melbet / Thunderpick prices behind each market row.</span></a>
   <a href="tournaments.html"><b>By tournament</b>
@@ -55,6 +60,9 @@ probability for each one — including tier-C matches no bookmaker prices.</p>
   <li><span class="badge model">originated</span> no reachable bookmaker prices this fixture, so the
       line is originated here: official Valve VRS points, or — when the teams have no VRS row — this
       project's own Elo built from published bo3.gg match results. Labelled, never mixed silently.</li>
+  <li><span class="badge model">bound</span> the number depends on a stated assumption (an unrated
+      opponent placed on Valve's published floor, or a former-name alias candidate). The assumption
+      is written out on the row and on the <a href="unresolved.html">unresolved page</a>.</li>
   <li><span class="badge bad">unverified</span> nothing sourced could support a number; the cell
       stays blank and the row is on the flagged page.</li>
 </ul>
@@ -64,8 +72,11 @@ probability for each one — including tier-C matches no bookmaker prices.</p>
 <tr><td>Open fixtures</td><td class="num">20</td></tr>
 <tr><td>Open · basis = market</td><td class="num">4</td></tr>
 <tr><td>Open · basis = market+model</td><td class="num">8</td></tr>
-<tr><td>Open · basis = originated model</td><td class="num">6</td></tr>
-<tr><td>Open · blank with a flag</td><td class="num">2</td></tr>
+<tr><td>Open · basis = originated model</td><td class="num">8</td></tr>
+<tr><td>Open · priced under a stated assumption (see unresolved)</td>
+    <td class="num">2</td></tr>
+<tr><td>Open · no number at all (see unresolved)</td><td class="num">0</td></tr>
+<tr><td>Open · blank with a flag</td><td class="num">0</td></tr>
 <tr><td>Listed but locked/past (kept for results)</td><td class="num">221</td></tr>
 <tr><td>External quotes collected</td><td class="num">157</td></tr>
 <tr><td>Quotes that joined a lobby fixture</td><td class="num">59</td></tr>
@@ -73,7 +84,7 @@ probability for each one — including tier-C matches no bookmaker prices.</p>
 <tr><td>Valve VRS calibration pairs / k</td>
     <td class="num">15 / 0.405</td></tr>
 <tr><td>Track record settled picks</td>
-    <td class="num">6908 (5257 won)</td></tr>
+    <td class="num">7136 (5411 won)</td></tr>
 </tbody></table>
 
 <div class="note info"><strong>Mobile first.</strong> This section is built for a phone: one column,
@@ -86,7 +97,7 @@ Use the pills at the top of any page to jump between sections, and
 
 <footer>
   <p>Board data: <code>data/fe803b80/board.json</code> · wall clock of the last published build:
-  <strong>2026-10-21 12:37:51 UTC</strong> · lobby read
+  <strong>2026-10-21 12:48:22 UTC</strong> · lobby read
   2026-10-21 12:36:36 UTC.</p>
   <p>HotSpawn is used to discover fixtures and to settle results — never to set a probability.
   Crowd "picked %" values are not read, stored or displayed here. Originated lines are model

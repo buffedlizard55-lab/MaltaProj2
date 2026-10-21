@@ -11,7 +11,7 @@ listed in the HotSpawn pick'em lobby, with external betting lines and clearly la
 <body>
 <header class="top"><div class="inner">
   <div class="brand"><span class="dot"></span> Full pick coverage · every HotSpawn CS2 fixture</div>
-  <nav class="pages" aria-label="Board sections"><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="lines.html">Lines</a><a href="tournaments.html">Tournaments</a><a href="results.html">Results</a><a href="flagged.html">Flagged</a><a href="method.html" aria-current=page>Method</a></nav>
+  <nav class="pages" aria-label="Board sections"><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="lines.html">Lines</a><a href="tournaments.html">Tournaments</a><a href="unresolved.html">Unresolved</a><a href="results.html">Results</a><a href="flagged.html">Flagged</a><a href="method.html" aria-current=page>Method</a></nav>
 </div></header>
 <main class="wrap">
 
@@ -29,7 +29,10 @@ are refused at the parser (<code>core.FIXTURE_KEYS</code>) and cannot reach a pr
 <ul class="tight">
 <li><strong>Pinnacle</strong> — licensed bookmaker, public guest odds API (moneyline, period 0, not alternate, status open).</li>
 <li><strong>Bovada</strong> — licensed bookmaker, public coupon JSON (moneyline, main period).</li>
-<li><strong>Melbet / 22bet / Betwinner</strong> — licensed bookmakers on the 1xBet platform (mirror family; one quote per event).</li>
+<li><strong>1xBet platform (1xBet / Melbet / 22bet / Betwinner)</strong> — licensed bookmakers on the
+1xBet platform (mirror family; one quote per event, cited to the mirror that published it).</li>
+<li><strong>Polymarket</strong> — CFTC-regulated prediction market; only a two-outcome match market
+whose outcome names match the two teams and whose event carries a start time is used.</li>
 <li><strong>Kalshi</strong> — CFTC-regulated exchange, series <code>KXCS2GAME</code>; mid of the bid/ask, and books wider than 10&nbsp;cents or one-sided are rejected.</li>
 <li><strong>Thunderpick</strong> — licensed esports bookmaker; its two-way coefficients are read from the
 public <code>bet_updates</code> block of the bo3.gg API, which is what covers the tier-C events no other
@@ -54,6 +57,23 @@ published curve is too steep at the ends.</li>
 finished matches bo3.gg publishes (result and score only — a factual record, not a price):
 <code>1500 + (VRS points − anchor)</code> seeds teams that do have a VRS row, 8 passes, K=20.
 This build used 723 finished matches and seeded 96 teams.</li>
+<li><strong>One-sided Valve VRS bound.</strong> When exactly one roster is listed in Valve's published
+standings, the unlisted opponent is placed on the <strong>400-point floor</strong> that Valve's own
+model starts every roster at, and the number is published as a <em>bound under that assumption</em>
+(<code>σ(k·C·(points − 400))</code>), never as a price. The row names the assumption and links the
+official standings row it used.</li>
+<li><strong>Alias candidate.</strong> HotSpawn sometimes lists a team under a former name
+("ex-…"). When removing that prefix matches an official Valve row, the weakest official row for that
+name is used and the row is flagged <code>alias_candidate_identity_unconfirmed</code>: the identity
+is a candidate, not a confirmed match.</li>
+<li><strong>bo3.gg fixture identity.</strong> A HotSpawn team that bo3.gg does not list can still be
+mapped when bo3.gg publishes the <em>same fixture</em> — same slot, same competition and one side's
+name matching exactly. The other side is then that team's bo3.gg record, and the bo3.gg match URL
+is published as the evidence. No substring or fuzzy matching is used.</li>
+<li><strong>HLTV.</strong> The public HLTV team ranking is read when the page answers an automated
+read; the ranking positions are mapped onto the Elo scale with the same documented formula as the
+bo3.gg ranking. When HLTV blocks the request the attempt is published as blocked — it is never read
+as "this team has no ranking".</li>
 </ul>
 <p>Ratings used: Valve regional standings snapshot <strong>2026_10_05</strong>
 (americas (83 teams), asia (43 teams), europe (224 teams), global (349 teams)), fetched from the official
@@ -74,6 +94,12 @@ repository.</p>
 <ul class="tight">
 <li>Originated lines are model output, not market prices; they are labelled on every row and counted
 separately in the executive summary.</li>
+<li>A bounded line (one-sided VRS floor, alias candidate) depends on a stated assumption about a
+roster that no official source rates. Every such row is listed on the
+<a href="unresolved.html">unresolved picks &amp; limitations</a> page with its assumption and the
+per-match source ledger.</li>
+<li>The Valve standings snapshot is published roughly monthly, so it lags the lobby; a roster that
+is not in the table has no published rating at all.</li>
 <li>Sources can be blocked from the collector's network. Every failure is published on the flagged
 page; a blocked source never silently becomes a blank probability.</li>
 <li>Kalshi kickoff times are encoded in US Eastern time in the event ticker and are used only for
@@ -91,7 +117,7 @@ offline.</p>
 
 <footer>
   <p>Board data: <code>data/fe803b80/board.json</code> · wall clock of the last published build:
-  <strong>2026-10-21 12:37:51 UTC</strong> · lobby read
+  <strong>2026-10-21 12:48:22 UTC</strong> · lobby read
   2026-10-21 12:36:36 UTC.</p>
   <p>HotSpawn is used to discover fixtures and to settle results — never to set a probability.
   Crowd "picked %" values are not read, stored or displayed here. Originated lines are model

@@ -54,18 +54,20 @@ PIN_HEADERS = {"X-API-Key": "CmX2KcMrXuFmNg6YFbmTxE0y9CIrOi0R", "Referer": "http
 BOVADA = "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2"
 LINEFEED = {mirror: f"https://{mirror}.com/service-api/LineFeed/Get1x2_VZip"
                      "?sports=40&count=1000&lng=en&mode=4&country=1"
-            for mirror in ("melbet", "22bet", "betwinner")}
+            for mirror in ("1xbet", "melbet", "22bet", "betwinner")}
 KALSHI = ("https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME"
           "&status=open&with_nested_markets=true&limit=200")
 BO3 = "https://api.bo3.gg/api/v1"
 BO3_MATCHES = (f"{BO3}/matches/?filter%5Bmatches.discipline_id%5D%5Beq%5D=1"
                "&sort=start_date&page%5Blimit%5D=100")
 POLY = "https://gamma-api.polymarket.com/events?closed=false&limit=100&tag_slug=counter-strike"
+HLTV_RANKING = "https://www.hltv.org/ranking/teams"
 VRS_REPO = "ValveSoftware/counter-strike_regional_standings"
 PROP_RE = re.compile(r"\(|\)|\byes\b|\bno\b|kills?|\bmaps?\b|total|handicap|rounds?|pistol", re.I)
 LOG: dict = {}
 MAX_BO3_HISTORY_TEAMS = 40
 MAX_BO3_TEAM_SEARCHES = 24
+MAX_HLTV_REQUESTS = 2
 
 
 def fetch(url: str, headers: dict | None = None, timeout: int = 45) -> tuple[bytes, dict]:
@@ -230,11 +232,16 @@ def collect_bovada(quotes: list) -> None:
 
 
 # --------------------------------------------------------- 1xBet-platform mirrors (melbet etc.)
-LINEFEED_MIRROR_ORDER = ("melbet", "22bet", "betwinner")
+LINEFEED_MIRROR_ORDER = ("1xbet", "melbet", "22bet", "betwinner")
 
 
 def collect_linefeed(quotes: list) -> None:
-    """One quote per event, using the first mirror that carries it (the mirrors are one platform)."""
+    """One quote per event, using the first mirror that carries it (the mirrors are one platform).
+
+    The 1xBet platform is reachable through several white-label mirrors; the first mirror that
+    carries an event is the one cited, so the published link points at the book the price came
+    from. The platform is one source: the event id is identical across mirrors.
+    """
     seen_events: set[str] = set()
     for mirror in LINEFEED_MIRROR_ORDER:
         data, meta = fetch_json(LINEFEED[mirror], {"Accept": "application/json"})
@@ -256,12 +263,133 @@ def collect_linefeed(quotes: list) -> None:
             if not prices.get(1) or not prices.get(3):
                 continue
             seen_events.add(key)
-            quotes.append(q("melbet", "Melbet (1xBet platform)", "https://melbet.com/en/line/esports",
+            public = ("https://melbet.com/en/line/esports" if mirror == "melbet"
+                      else f"https://{mirror}.com/en/line/esports")
+            quotes.append(q("melbet", "1xBet platform (1xBet / Melbet LineFeed)", public,
                             LINEFEED[mirror], key, a, b, float(prices[1]), float(prices[3]),
                             core.parse_any(ev.get("S")), league, "decimal", prices[1], prices[3],
                             extra={"mirror": mirror}))
             written += 1
         LOG[f"linefeed_{mirror}"]["quotes"] = written
+
+
+# ------------------------------------------------------------------------------- Polymarket
+def _json_list(value):
+    """Polymarket publishes outcomes/prices as JSON-encoded strings; accept either shape."""
+    if isinstance(value, list):
+        return value
+    if isinstance(value, str):
+        try:
+            parsed = json.loads(value)
+        except ValueError:
+            return []
+        return parsed if isinstance(parsed, list) else []
+    return []
+
+
+def collect_polymarket(quotes: list) -> None:
+    """Two-way match-winner markets Polymarket publishes for CS2 (prediction market, not a book).
+
+    A market is only used when it publishes exactly two named outcomes whose names match the two
+    teams of a fixture, both prices are inside (0,1) and the event carries a start time. Anything
+    else (yes/no questions, outrights, single-sided books) is skipped and counted, so a market that
+    cannot be joined can never become a probability.
+    """
+    data, meta = fetch_json(POLY, {"Accept": "application/json"})
+    LOG["polymarket"] = meta
+    events = data if isinstance(data, list) else ((data or {}).get("data")
+                                                  if isinstance(data, dict) else [])
+    if not isinstance(events, list):
+        events = []
+    written = 0
+    skipped = 0
+    for ev in events:
+        if not isinstance(ev, dict):
+            continue
+        markets = ev.get("markets") if isinstance(ev.get("markets"), list) else []
+        for mk in markets:
+            if not isinstance(mk, dict):
+                continue
+            if mk.get("closed") is True or mk.get("archived") is True:
+                continue
+            outcomes = _json_list(mk.get("outcomes"))
+            prices = _json_list(mk.get("outcomePrices"))
+            if len(outcomes) != 2 or len(prices) != 2:
+                skipped += 1
+                continue
+            try:
+                p1, p2 = float(prices[0]), float(prices[1])
+            except (TypeError, ValueError):
+                skipped += 1
+                continue
+            if not (0.01 < p1 < 0.99 and 0.01 < p2 < 0.99):
+                skipped += 1
+                continue
+            name1, name2 = str(outcomes[0]), str(outcomes[1])
+            if not name1 or not name2 or PROP_RE.search(f"{name1} {name2}"):
+                skipped += 1
+                continue
+            start = core.parse_any(mk.get("startDate") or mk.get("start_date")
+                                   or ev.get("startDate") or ev.get("start_date"))
+            slug = mk.get("slug") or ev.get("slug")
+            ticker = mk.get("conditionId") or mk.get("id") or ev.get("id")
+            public = f"https://polymarket.com/event/{slug}" if slug else "https://polymarket.com"
+            quotes.append(q("polymarket", "Polymarket (prediction market)", public, POLY, ticker,
+                            name1, name2, 1.0 / p1, 1.0 / p2, start,
+                            str(mk.get("question") or ev.get("title") or ""), "yes mid ($)",
+                            round(p1, 4), round(p2, 4),
+                            extra={"provider": "polymarket", "price_a": round(p1, 4),
+                                   "price_b": round(p2, 4)}))
+            written += 1
+    LOG["polymarket"]["quotes"] = written
+    LOG["polymarket"]["skipped_markets"] = skipped
+
+
+# ------------------------------------------------------------------------------------- HLTV
+HLTV_TEAM_RE = re.compile(r'href="/team/(\d+)/([^"?#]+)"')
+
+
+def collect_hltv_teams(names: list[str]) -> dict:
+    """Attempt the public HLTV team ranking page and record exactly what came back.
+
+    HLTV is the first place this project looks for a team that no bookmaker prices, so the attempt
+    is recorded per run: the page's HTTP status, and, when it answers, the ranking position it
+    publishes for each name. A blocked source is published as a blocked source — it is never
+    silently treated as "no ranking exists".
+    """
+    out: dict[str, dict] = {}
+    body, meta = fetch(HLTV_RANKING, {"Accept": "text/html"}, timeout=30)
+    LOG["hltv_ranking"] = meta
+    meta["first_bytes"] = body[:160].decode("utf-8", "replace") if body else ""
+    if not body or meta.get("status") != 200:
+        LOG["hltv_ranking"]["parsed"] = 0
+        return out
+    html = body.decode("utf-8", "replace")
+    wanted = {core.norm(n): n for n in names if n}
+    seen = 0
+    for row in html.split("<tr"):
+        cells = re.findall(r'<td[^>]*>(.*?)</td>', row, re.S)
+        if len(cells) < 2:
+            continue
+        links = HLTV_TEAM_RE.findall(row)
+        if not links:
+            continue
+        seen += 1
+        team_id, slug = links[0]
+        label = re.sub(r"<[^>]+>", " ", cells[1] if len(cells) > 1 else "")
+        label = re.sub(r"\s+", " ", label).strip()
+        key = core.norm(label)
+        if key not in wanted:
+            continue
+        rank_text = re.sub(r"<[^>]+>", " ", cells[0])
+        rank_match = re.search(r"(\d{1,4})", rank_text)
+        rank = int(rank_match.group(1)) if rank_match else None
+        out[wanted[key]] = {"rank": rank, "team_id": team_id, "slug": slug,
+                            "url": f"https://www.hltv.org/team/{team_id}/{slug}",
+                            "label": label}
+    LOG["hltv_ranking"]["rows"] = seen
+    LOG["hltv_ranking"]["parsed"] = len(out)
+    return out
 
 
 # ---------------------------------------------------------------------------------- Kalshi
@@ -606,6 +734,96 @@ def build_quote_index(quotes: list[dict]) -> dict:
     return idx
 
 
+# ------------------------------------------------------------------ identity resolution
+IDENTITY_TIME_TOLERANCE_H = 3.0
+
+
+def resolve_identities(fixtures: list[dict], bo3: dict, quotes: list[dict]) -> dict:
+    """Map a HotSpawn team name onto the bo3.gg record of the *same fixture*.
+
+    A bo3.gg upcoming match qualifies as evidence only when all three hold:
+
+    * its kick-off is within ``IDENTITY_TIME_TOLERANCE_H`` of the HotSpawn fixture,
+    * its tournament name matches the HotSpawn competition after the documented normalisation, and
+    * exactly one of its two team names matches one of the HotSpawn team names.
+
+    The other side of that bo3.gg match is then the identity candidate for the other HotSpawn
+    name. Nothing else is ever joined: no substring match, no fuzzy match, no guessing. The result
+    is published with the bo3.gg match URL so a reviewer can check it.
+    """
+    teams = bo3.get("teams") or {}
+    tours = bo3.get("tournaments") or {}
+    quote_index = build_quote_index(quotes)
+    out: dict[str, dict] = {}
+    for fx in fixtures:
+        if str(fx.get("status")) not in ("scheduled", "started"):
+            continue
+        key_a = core.canon(fx["team_a"])[0]
+        key_b = core.canon(fx["team_b"])[0]
+        if not key_a or not key_b:
+            continue
+        # a fixture that already has a price does not need an identity alias
+        candidates = quote_index.get(key_a, []) + quote_index.get(key_b, [])
+        if any(core.match_quote(fx, qt) for qt in candidates):
+            continue
+        comp_key = core.canon(fx.get("competition"))[0]
+        start = core.parse_iso(fx.get("start_utc"))
+        if not start or not comp_key:
+            continue
+        for m in bo3.get("matches") or []:
+            t1, t2 = m.get("team1_id"), m.get("team2_id")
+            if not t1 or not t2:
+                continue
+            m_start = core.parse_iso(str(m.get("start_date") or "").replace("Z", "+00:00"))
+            if not m_start:
+                continue
+            diff_h = abs((m_start - start).total_seconds()) / 3600.0
+            if diff_h > IDENTITY_TIME_TOLERANCE_H:
+                continue
+            tour = tours.get(str(m.get("tournament_id"))) or {}
+            tour_key = core.canon(tour.get("name"))[0]
+            if tour_key != comp_key:
+                continue
+            name1 = (teams.get(str(t1)) or {}).get("name") or ""
+            name2 = (teams.get(str(t2)) or {}).get("name") or ""
+            k1, k2 = core.canon(name1)[0], core.canon(name2)[0]
+            hit = []
+            if k1 in (key_a, key_b):
+                hit.append((k1, t1, name1))
+            if k2 in (key_a, key_b):
+                hit.append((k2, t2, name2))
+            if len(hit) != 1:          # both sides match, or neither does -> no evidence
+                continue
+            matched_key, matched_id, matched_name = hit[0]
+            other_id, other_name = (t2, name2) if matched_id == t1 else (t1, name1)
+            if not other_name:
+                continue
+            hot_name = fx["team_a"] if matched_key == key_a else fx["team_b"]
+            other_hot_name = fx["team_b"] if matched_key == key_a else fx["team_a"]
+            slug = (teams.get(str(other_id)) or {}).get("slug")
+            out.setdefault(fx["fixture_id"], {})[other_hot_name] = {
+                "hotspawn_name": other_hot_name,
+                "bo3_team_id": str(other_id),
+                "bo3_team_name": other_name,
+                "bo3_slug": slug,
+                "bo3_match_url": f"https://bo3.gg/matches/{m.get('slug')}",
+                "bo3_match_slug": m.get("slug"),
+                "bo3_tournament": tour.get("name"),
+                "bo3_tournament_id": str(m.get("tournament_id")),
+                "matched_side": {"hotspawn_name": hot_name, "bo3_team_name": matched_name,
+                                 "bo3_team_id": str(matched_id)},
+                "start_utc": m.get("start_date"),
+                "start_diff_h": round(diff_h, 3),
+                "evidence": (f"bo3.gg lists '{matched_name}' vs '{other_name}' in "
+                             f"{tour.get('name')} at {m.get('start_date')}, the same slot and the "
+                             f"same competition as the HotSpawn fixture '{hot_name}' vs "
+                             f"'{other_hot_name}'"),
+            }
+    LOG["identity_resolution"] = {"fixtures_resolved": len(out),
+                                  "identities": sum(len(v) for v in out.values())}
+    return out
+
+
 def main() -> int:
     started = core.now_utc()
     quotes: list[dict] = []
@@ -616,7 +834,8 @@ def main() -> int:
     for name, fn in (("pinnacle", lambda: collect_pinnacle(quotes)),
                      ("bovada", lambda: collect_bovada(quotes)),
                      ("linefeed", lambda: collect_linefeed(quotes)),
-                     ("kalshi", lambda: collect_kalshi(quotes, rejected))):
+                     ("kalshi", lambda: collect_kalshi(quotes, rejected)),
+                     ("polymarket", lambda: collect_polymarket(quotes))):
         try:
             fn()
         except Exception as exc:  # noqa: BLE001 - one failed source never stops the run
@@ -679,6 +898,33 @@ def main() -> int:
     except Exception as exc:  # noqa: BLE001
         LOG["bo3gg_history"] = {"error": f"{type(exc).__name__}: {exc}"[:300]}
 
+    # ---- identity resolution: the same fixture on bo3.gg lets a renamed HotSpawn team be
+    #      mapped onto the bo3.gg record of that fixture, with the match URL as the evidence.
+    identities: dict = {}
+    try:
+        identities = resolve_identities(hotspawn["fixtures"], bo3, quotes)
+    except Exception as exc:  # noqa: BLE001
+        LOG["identity_resolution"] = {"error": f"{type(exc).__name__}: {exc}"[:300]}
+
+    # ---- HLTV: the first place this project looks for a team no bookmaker prices. The attempt
+    #      and its HTTP status are recorded; a blocked page stays a blocked page.
+    hltv_teams: dict = {}
+    try:
+        vrs_keys = {core.canon(name)[0] for region in (vrs.get("regions") or {}).values()
+                    for name in region}
+        wanted: list[str] = []
+        for fx in hotspawn["fixtures"]:
+            if str(fx.get("status")) not in ("scheduled", "started"):
+                continue
+            for name in (fx["team_a"], fx["team_b"]):
+                key = core.canon(name)[0]
+                if key and key not in vrs_keys and name not in wanted:
+                    wanted.append(name)
+        if wanted:
+            hltv_teams = collect_hltv_teams(wanted[:MAX_HLTV_REQUESTS])
+    except Exception as exc:  # noqa: BLE001
+        LOG["hltv_ranking"] = {"error": f"{type(exc).__name__}: {exc}"[:300]}
+
     for name, url in (("hltv_matches", "https://www.hltv.org/matches"),
                       ("polymarket", POLY),
                       ("linefeed_22bet", LINEFEED["22bet"]),
@@ -697,6 +943,8 @@ def main() -> int:
         "rejected_quotes": rejected,
         "bo3gg": bo3,
         "bo3gg_history": history,
+        "identities": identities,
+        "hltv_teams": hltv_teams,
         "vrs": {k: v for k, v in vrs.items() if k != "regions"},
         "vrs_regions": vrs.get("regions", {}),
         "access": LOG,
@@ -707,6 +955,8 @@ def main() -> int:
     print(f"hotspawn fixtures={len(hotspawn['fixtures'])} quotes={len(quotes)} "
           f"rejected={len(rejected)} bo3_matches={len(bo3['matches'])} "
           f"vrs_global={len(vrs.get('teams_global') or {})} "
+          f"identities={sum(len(v) for v in identities.values())} "
+          f"hltv_teams={len(hltv_teams)} "
           f"seconds={doc['collection_seconds']}")
     return 0
 

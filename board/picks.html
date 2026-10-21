@@ -11,7 +11,7 @@ listed in the HotSpawn pick'em lobby, with external betting lines and clearly la
 <body>
 <header class="top"><div class="inner">
   <div class="brand"><span class="dot"></span> Full pick coverage · every HotSpawn CS2 fixture</div>
-  <nav class="pages" aria-label="Board sections"><a href="index.html">Summary</a><a href="picks.html" aria-current=page>All picks</a><a href="lines.html">Lines</a><a href="tournaments.html">Tournaments</a><a href="results.html">Results</a><a href="flagged.html">Flagged</a><a href="method.html">Method</a></nav>
+  <nav class="pages" aria-label="Board sections"><a href="index.html">Summary</a><a href="picks.html" aria-current=page>All picks</a><a href="lines.html">Lines</a><a href="tournaments.html">Tournaments</a><a href="unresolved.html">Unresolved</a><a href="results.html">Results</a><a href="flagged.html">Flagged</a><a href="method.html">Method</a></nav>
 </div></header>
 <main class="wrap">
 
@@ -21,8 +21,9 @@ A pick and a probability are shown for each match; the basis tells you where the
 List is re-generated automatically from the lobby, so it follows HotSpawn as it adds matches.</p>
 <div class="note">12 of 20 open fixtures are priced by a reachable external
 bookmaker or exchange. The other 8 have an <strong>originated line</strong>
-(Valve VRS rating model or this project's own Elo over published results) — labelled on the row and
-listed on <a href="flagged.html">Flagged for review</a>.</div>
+(Valve VRS rating model, a bounded one-sided estimate, or this project's own Elo over published
+results) — labelled on the row, with the assumption and the per-match source ledger on
+<a href="unresolved.html">Unresolved picks &amp; limitations</a>.</div>
 
 <article class="fixture">
   <div class="meta">2026-10-21 13:45:00 UTC · CCT Europe 2026 Challengers #8 · tier C · Bo? · 2 pts</div>
@@ -163,14 +164,14 @@ listed on <a href="flagged.html">Flagged for review</a>.</div>
 <article class="fixture">
   <div class="meta">2026-10-21 15:00:00 UTC · CIS LAN Championship #9 · tier C · Bo? · 2 pts</div>
   <div class="teams">
-    <div class="team"><div class="nm">ex-CYBERSHOKE</div>
-      <div class="pr">—</div></div>
+    <div class="team win"><div class="nm">ex-CYBERSHOKE</div>
+      <div class="pr">70.6%</div></div>
     <div class="team"><div class="nm">BlinkDagger</div>
-      <div class="pr">—</div></div>
+      <div class="pr">29.4%</div></div>
   </div>
-  <div><span class="badge bad">no source</span> <span class="badge">no_external_price_for_this_fixture</span> <span class="badge">tier_c_event_low_coverage</span> <span class="badge">no_source_input_available_row_left_blank</span></div>
+  <div><span class="badge model">bound · valve vrs bound through an unconfirmed alias</span> <span class="badge pick">PICK ex-CYBERSHOKE 70.6%</span> <span class="badge">Bound (alias candidate)</span> <span class="badge">no_external_price_for_this_fixture</span> <span class="badge">alias_candidate_identity_unconfirmed</span> <span class="badge">tier_c_event_low_coverage</span></div>
   <details><summary>Numbers and sources</summary>
-    <div class="src"><a href="https://www.hotspawn.com/matches/ex-cybershoke-vs-blinkdagger-cis-lan-championship-9-1082762" rel="noopener">HotSpawn Pick&#x27;ems lobby (fixture discovery only)</a> <span class="src">read 2026-10-21 12:36:36 UTC</span></div>
+    <div class="src"><a href="https://www.hotspawn.com/matches/ex-cybershoke-vs-blinkdagger-cis-lan-championship-9-1082762" rel="noopener">HotSpawn Pick&#x27;ems lobby (fixture discovery only)</a> <span class="src">read 2026-10-21 12:36:36 UTC</span><br><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve VRS global standings · CYBERSHOKE #171 (786 pts)</a> <span class="src">read 2026-10-21 12:37:51 UTC</span><br><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve VRS floor assumption · 400 points (the minimum the official model awards a roster)</a> <span class="src">read 2026-10-21 12:37:51 UTC</span><br><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Alias candidate · HotSpawn name vs Valve&#x27;s official rows</a> <span class="src">read 2026-10-21 12:37:51 UTC</span></div>
     <p class="src">Fixture reference:
       <a href="https://www.hotspawn.com/matches/ex-cybershoke-vs-blinkdagger-cis-lan-championship-9-1082762" rel="noopener">match page</a>
       · lock 2026-10-21 14:54:00 UTC</p>
@@ -248,14 +249,14 @@ listed on <a href="flagged.html">Flagged for review</a>.</div>
 <article class="fixture">
   <div class="meta">2026-10-21 22:00:00 UTC · CCT South America 2026 Series #7 · tier C · Bo? · 2 pts</div>
   <div class="teams">
-    <div class="team"><div class="nm">Zetta</div>
-      <div class="pr">—</div></div>
+    <div class="team win"><div class="nm">Zetta</div>
+      <div class="pr">54.1%</div></div>
     <div class="team"><div class="nm">LOS NINOS</div>
-      <div class="pr">—</div></div>
+      <div class="pr">45.9%</div></div>
   </div>
-  <div><span class="badge bad">no source</span> <span class="badge">no_external_price_for_this_fixture</span> <span class="badge">tier_c_event_low_coverage</span> <span class="badge">no_source_input_available_row_left_blank</span></div>
+  <div><span class="badge model">bound · one-sided valve vrs bound</span> <span class="badge pick">PICK Zetta 54.1%</span> <span class="badge">Bound (unrated opponent)</span> <span class="badge">no_external_price_for_this_fixture</span> <span class="badge">one_sided_vrs_floor_bound_unrated_opponent_on_valve_floor</span> <span class="badge">tier_c_event_low_coverage</span></div>
   <details><summary>Numbers and sources</summary>
-    <div class="src"><a href="https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837" rel="noopener">HotSpawn Pick&#x27;ems lobby (fixture discovery only)</a> <span class="src">read 2026-10-21 12:36:36 UTC</span></div>
+    <div class="src"><a href="https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837" rel="noopener">HotSpawn Pick&#x27;ems lobby (fixture discovery only)</a> <span class="src">read 2026-10-21 12:36:36 UTC</span><br><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve VRS global standings · Zetta #357 (473 pts)</a> <span class="src">read 2026-10-21 12:37:51 UTC</span><br><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve VRS floor assumption · 400 points (the minimum the official model awards a roster)</a> <span class="src">read 2026-10-21 12:37:51 UTC</span></div>
     <p class="src">Fixture reference:
       <a href="https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837" rel="noopener">match page</a>
       · lock 2026-10-21 21:54:00 UTC</p>
@@ -369,7 +370,7 @@ instead, and are counted in the executive summary.</p>
 
 <footer>
   <p>Board data: <code>data/fe803b80/board.json</code> · wall clock of the last published build:
-  <strong>2026-10-21 12:37:51 UTC</strong> · lobby read
+  <strong>2026-10-21 12:48:22 UTC</strong> · lobby read
   2026-10-21 12:36:36 UTC.</p>
   <p>HotSpawn is used to discover fixtures and to settle results — never to set a probability.
   Crowd "picked %" values are not read, stored or displayed here. Originated lines are model

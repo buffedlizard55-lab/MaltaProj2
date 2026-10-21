@@ -25,6 +25,7 @@ import core  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "fe803b80"
+HLTV_RANKING_PAGE = "https://www.hltv.org/ranking/teams"
 
 
 def load(name, default=None):
@@ -34,12 +35,16 @@ def load(name, default=None):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def vrs_lookup(vrs_regions: dict) -> tuple[dict, list[str]]:
+def vrs_lookup(vrs_regions: dict) -> tuple[dict, list[str], dict]:
     """canonical team key -> {"points","standing","region"}; global first, then the regions.
 
     Region keys are normalised to their bare name, so a snapshot whose keys carry the standings date
     (``global_2026_10``) joins exactly like ``global``. A team that appears in two regions with
     different points is recorded as ambiguous and published on the flagged page.
+
+    The third return value keeps *every* official row published under a name, so a name that maps
+    to more than one roster (Valve publishes two "CYBERSHOKE" rows) can be resolved conservatively
+    instead of silently taking the first one.
     """
     ordered: dict[str, dict] = {}
     for raw_region, rows in (vrs_regions or {}).items():
@@ -47,19 +52,25 @@ def vrs_lookup(vrs_regions: dict) -> tuple[dict, list[str]]:
         if region in ("global", "europe", "americas", "asia"):
             ordered.setdefault(region, {}).update(rows or {})
     out: dict[str, dict] = {}
+    candidates: dict[str, list[dict]] = {}
     ambiguous: list[str] = []
     for region in ("global", "europe", "americas", "asia"):
         for name, row in (ordered.get(region) or {}).items():
             key, _, _ = core.canon(name)
             if not key:
                 continue
+            record = {"points": float(row["points"]), "standing": int(row["standing"]),
+                      "region": region, "vrs_name": name}
+            bucket = candidates.setdefault(key, [])
+            if not any(abs(float(c["points"]) - record["points"]) < 1e-9
+                       and c["region"] == region for c in bucket):
+                bucket.append(record)
             if key in out:
                 if abs(float(out[key]["points"]) - float(row["points"])) > 1e-9:
                     ambiguous.append(f"{key}:{region}:{name}")
                 continue
-            out[key] = {"points": float(row["points"]), "standing": int(row["standing"]),
-                        "region": region, "vrs_name": name}
-    return out, sorted(set(ambiguous))
+            out[key] = record
+    return out, sorted(set(ambiguous)), candidates
 
 
 def build_quotes_index(quotes: list[dict]) -> dict:
@@ -169,6 +180,106 @@ def rank_to_rating(rank) -> float | None:
     return core.ELO_BASE + max(0.0, 300.0 - min(value, 300.0))
 
 
+def alias_candidate(name: str, vrs_candidates: dict) -> dict | None:
+    """Official Valve rows a former-name listing ("ex-...") could refer to.
+
+    Only the ``ex-`` prefix is removed; the rest of the name still has to match an official row
+    exactly. When several official rows share that name (Valve publishes two "CYBERSHOKE"
+    rosters), the weakest one is kept so the resulting line is the most conservative official
+    reading. The result is a *candidate*: it is published as an explicit, flagged assumption.
+    """
+    for key in core.ex_prefix_candidates(name):
+        rows = vrs_candidates.get(key) or []
+        if not rows:
+            continue
+        weakest = min(rows, key=lambda r: float(r["points"]))
+        return {"key": key, "rows": rows, "weakest": weakest}
+    return None
+
+
+def vrs_page_url(snap: dict, region: str) -> str | None:
+    """The official Valve page that published the standings row of a region."""
+    for entry in (snap.get("vrs") or {}).get("evidence", []):
+        if str(entry.get("region", "")).split("_")[0] == region:
+            return entry.get("page_url")
+    return None
+
+
+MARKET_SOURCE_ORDER = (("pinnacle", "Pinnacle (guest odds API)"),
+                       ("bovada", "Bovada"),
+                       ("linefeed_melbet", "1xBet platform (1xBet / Melbet LineFeed)"),
+                       ("kalshi", "Kalshi (CFTC exchange)"),
+                       ("polymarket", "Polymarket (prediction market)"),
+                       ("bo3gg_matches", "Thunderpick prices published by bo3.gg"))
+
+
+def attempt_ledger(snap: dict, row: dict) -> list[dict]:
+    """What was tried for this fixture and what each source answered.
+
+    The ledger is published on the unresolved page so a reviewer can see that a blank row is the
+    result of an exhausted search (or of a blocked source), never of an oversight.
+    """
+    access = snap.get("access") or {}
+    joined_sources = set((row.get("market") or {}).get("sources") or [])
+    out: list[dict] = []
+    joined_counts: dict[str, int] = {}
+    for quote in row.get("quotes") or []:
+        key = quote.get("source_key")
+        joined_counts[key] = joined_counts.get(key, 0) + 1
+    source_keys = {"pinnacle": "pinnacle", "bovada": "bovada",
+                   "linefeed_melbet": "melbet", "kalshi": "kalshi",
+                   "polymarket": "polymarket", "bo3gg_matches": "thunderpick"}
+    for key, label in MARKET_SOURCE_ORDER:
+        meta = access.get(key) or {}
+        if key == "bo3gg_matches":
+            state = (f"reachable ({meta.get('matches', 0)} upcoming matches, "
+                     f"{access.get('thunderpick_quotes', 0)} Thunderpick prices)")
+        else:
+            code, err = meta.get("status"), meta.get("error")
+            if err:
+                state = f"not reachable ({err})"
+            elif code == 200:
+                count = meta.get("quotes")
+                state = ("reachable (HTTP 200" + (f", {count} quotes" if count is not None else "")
+                         + ")")
+            elif code:
+                state = f"answered HTTP {code}"
+            else:
+                state = "no answer recorded"
+        count = joined_counts.get(source_keys.get(key, ""), 0)
+        out.append({"source": label, "state": state,
+                    "joined": (f"yes ({count} price{'s' if count != 1 else ''})" if count else "no")})
+    hltv = access.get("hltv_ranking") or {}
+    if hltv.get("error"):
+        hltv_state = f"not reachable ({hltv['error']})"
+    elif hltv.get("status") == 200:
+        hltv_state = (f"reachable (HTTP 200, {hltv.get('parsed', 0)} of the requested team names "
+                      f"published a ranking position)")
+    elif hltv.get("status"):
+        hltv_state = f"answered HTTP {hltv['status']}"
+    else:
+        hltv_state = "not attempted"
+    out.append({"source": "HLTV team ranking", "state": hltv_state, "joined": "no"})
+    vrs = access.get("valve_vrs") or {}
+    vrs_state = ("read (snapshot " + str(vrs.get("snapshot")) + ")" if vrs.get("snapshot")
+                 else (f"not reachable ({vrs.get('error')})" if vrs.get("error") else "no answer"))
+    out.append({"source": "Valve VRS official standings", "state": vrs_state,
+                "joined": "yes" if (row.get("vrs_a") or row.get("vrs_b")
+                                    or row.get("model", {}).get("floor")) else "no"})
+    ident = access.get("identity_resolution") or {}
+    if ident.get("error"):
+        ident_state = f"not reachable ({ident['error']})"
+    elif row.get("identity"):
+        ident_state = (f"resolved {len(row['identity'])} team name(s) from the same fixture on bo3.gg "
+                       f"({ident.get('identities', 0)} identity joins in this snapshot)")
+    else:
+        ident_state = (f"searched, no same-fixture match published for this slot "
+                       f"({ident.get('identities', 0)} identity joins in this snapshot)")
+    out.append({"source": "bo3.gg fixture identity (same slot + same competition)",
+                "state": ident_state, "joined": "yes" if row.get("identity") else "no"})
+    return out
+
+
 def mark_first_seen(rows: list[dict], build_utc: str) -> dict:
     """Record when each fixture id was first listed here, so the board can show what is new."""
     path = DATA / "fixtures_seen.json"
@@ -202,7 +313,9 @@ def main() -> int:
     permalinks = snap["hotspawn"].get("permalinks") or {}
     quotes = snap.get("quotes") or []
     rejected_quotes = snap.get("rejected_quotes") or []
-    vrs_teams, vrs_ambiguous = vrs_lookup(snap.get("vrs_regions") or {})
+    vrs_teams, vrs_ambiguous, vrs_candidates = vrs_lookup(snap.get("vrs_regions") or {})
+    identities = snap.get("identities") or {}
+    hltv_teams = snap.get("hltv_teams") or {}
     bo3 = snap.get("bo3gg") or {}
 
     # canonical bo3.gg team id per canonical name (from the team records collected upstream)
@@ -257,6 +370,24 @@ def main() -> int:
         joined, rejected = resolve_market(fx, quote_index)
         market = core.consensus(joined)
         vrs_a, vrs_b = vrs_teams.get(key_a), vrs_teams.get(key_b)
+        # A renamed HotSpawn team is mapped onto the bo3.gg record of the *same fixture* only
+        # when the same slot, the same competition and the opponent all agree; the evidence URL
+        # travels with the row.
+        ident = identities.get(fx["fixture_id"]) or {}
+        identity: dict[str, dict] = {}
+        for side, key, name in (("a", key_a, fx["team_a"]), ("b", key_b, fx["team_b"])):
+            rec = ident.get(name)
+            if not rec:
+                continue
+            identity[side] = rec
+            known = bo3_ids.get(key)
+            if known is None:
+                bo3_ids[key] = rec["bo3_team_id"]
+                if rec.get("bo3_slug"):
+                    slug_index[key] = rec["bo3_slug"]
+            elif known != rec["bo3_team_id"]:
+                rec = dict(rec, conflict_with_team_id=known)
+                identity[side] = rec
         model = {}
         if vrs_a and vrs_b:
             model["vrs"] = {"delta": vrs_a["points"] - vrs_b["points"],
@@ -278,7 +409,8 @@ def main() -> int:
             "alias_note": " ".join(x for x in (note_a, note_b) if x) or None,
             "alias_evidence": sorted(set(evidence_a + evidence_b)),
             "market": market, "quotes": joined, "rejected_joins": rejected,
-            "model": model, "vrs_a": ({**vrs_a, "bo3_id": bo3_ids.get(key_a)} if vrs_a else None),
+            "model": model, "identity": identity,
+            "vrs_a": ({**vrs_a, "bo3_id": bo3_ids.get(key_a)} if vrs_a else None),
             "vrs_b": ({**vrs_b, "bo3_id": bo3_ids.get(key_b)} if vrs_b else None),
         })
 
@@ -293,6 +425,68 @@ def main() -> int:
         if v:
             row["model"]["prob_a"] = core.vrs_prob(v["points_a"], v["points_b"], k=calib["k"])
             row["model"]["basis"] = "valve_vrs"
+    # ---- official Valve rating on one side only ---------------------------------------------
+    # A fixture where exactly one roster is listed in Valve's published standings is priced with a
+    # *bound under a stated assumption*: the unlisted opponent is placed on the 400-point floor
+    # Valve's own model starts every roster at. The number is labelled, flagged and published on
+    # the unresolved page; it is never presented as a bookmaker price.
+    for row in rows:
+        if row["model"].get("prob_a") is not None:
+            continue
+        if row.get("market"):
+            # A published bookmaker/exchange price is the better number: the floor bound only fills
+            # a gap, it never overrides or dilutes a real price.
+            continue
+        sides: dict[str, dict] = {}
+        for side, team_name, exact in (("a", row["team_a"], row.get("vrs_a")),
+                                       ("b", row["team_b"], row.get("vrs_b"))):
+            if exact:
+                sides[side] = {"points": float(exact["points"]), "standing": exact["standing"],
+                               "region": exact["region"], "vrs_name": exact["vrs_name"],
+                               "source": "exact_official_row", "key": core.canon(team_name)[0],
+                               "candidates": []}
+                continue
+            cand = alias_candidate(team_name, vrs_candidates)
+            if cand:
+                sides[side] = {"points": float(cand["weakest"]["points"]),
+                               "standing": cand["weakest"]["standing"],
+                               "region": cand["weakest"]["region"],
+                               "vrs_name": cand["weakest"]["vrs_name"],
+                               "source": "alias_candidate", "key": cand["key"],
+                               "candidates": cand["rows"]}
+        if len(sides) == 1:
+            side, rated = next(iter(sides.items()))
+            prob_rated = core.vrs_floor_prob(rated["points"], core.VRS_FLOOR_POINTS, k=calib["k"])
+            row["model"]["prob_a"] = prob_rated if side == "a" else 1.0 - prob_rated
+            row["model"]["basis"] = ("vrs_alias_candidate_bound" if rated["source"] == "alias_candidate"
+                                     else "vrs_floor_bound")
+            row["model"]["floor"] = {
+                "rated_side": side,
+                "rated_points": rated["points"],
+                "rated_standing": rated["standing"],
+                "rated_region": rated["region"],
+                "rated_vrs_name": rated["vrs_name"],
+                "rating_source": rated["source"],
+                "floor_points": core.VRS_FLOOR_POINTS,
+                "prob_rated": prob_rated,
+                "assumption": ("The opponent is not listed in Valve's published standings, so it is "
+                               "placed on the 400-point floor that Valve's own model starts every "
+                               "roster at. This is a bound under that assumption, not a price."),
+            }
+        elif len(sides) == 2:
+            pa, pb = sides.get("a"), sides.get("b")
+            row["model"]["prob_a"] = core.vrs_prob(pa["points"], pb["points"], k=calib["k"])
+            row["model"]["basis"] = ("vrs_alias_candidate" if any(s["source"] == "alias_candidate"
+                                                                  for s in sides.values())
+                                     else "valve_vrs")
+            row["model"]["vrs"] = {"delta": pa["points"] - pb["points"],
+                                   "points_a": pa["points"], "points_b": pb["points"],
+                                   "standing_a": pa["standing"], "standing_b": pb["standing"],
+                                   "region_a": pa["region"], "region_b": pb["region"],
+                                   "vrs_name_a": pa["vrs_name"], "vrs_name_b": pb["vrs_name"],
+                                   "alias_candidate_sides": [s for s, v in sides.items()
+                                                            if v["source"] == "alias_candidate"]}
+
     needed_keys = sorted({r["key_a"] for r in rows if not r["model"].get("prob_a")} |
                          {r["key_b"] for r in rows if not r["model"].get("prob_a")})
     history = snap.get("bo3gg_history") or {}
@@ -332,6 +526,31 @@ def main() -> int:
                                "source_a": "bo3.gg history" if from_history else "bo3.gg rank",
                                "source_b": "bo3.gg history" if from_history else "bo3.gg rank"}
 
+    # ---- HLTV ranking, when the public ranking page answered --------------------------------
+    # HLTV publishes a world ranking per team. When the page is reachable the two ranking
+    # positions are mapped onto the same documented scale as the bo3.gg ranking and the fixture is
+    # originated from them. When HLTV answers 403 (it usually does for automated readers) the
+    # attempt is published as a blocked source instead of being treated as "no ranking exists".
+    hltv_index: dict[str, dict] = {}
+    for name, rec in (hltv_teams or {}).items():
+        key = core.canon(name)[0]
+        if key:
+            hltv_index.setdefault(key, rec)
+    for row in rows:
+        if row["model"].get("prob_a") is not None:
+            continue
+        ha, hb = hltv_index.get(row["key_a"]), hltv_index.get(row["key_b"])
+        if not ha or not hb or not ha.get("rank") or not hb.get("rank"):
+            continue
+        ra, rb = rank_to_rating(ha["rank"]), rank_to_rating(hb["rank"])
+        if ra is None or rb is None:
+            continue
+        row["model"]["prob_a"] = core.elo_expected(ra, rb)
+        row["model"]["basis"] = "originated_hltv_rank"
+        row["model"]["hltv"] = {"rank_a": ha["rank"], "rank_b": hb["rank"],
+                                "rating_a": round(ra, 1), "rating_b": round(rb, 1),
+                                "url_a": ha.get("url"), "url_b": hb.get("url")}
+
     # --------------------------------------------------------------- final line, pick, flags --
     for row in rows:
         market_pa = row["market"]["prob_a"] if row["market"] else None
@@ -340,11 +559,15 @@ def main() -> int:
         line = core.blend(market_pa, n_sources, model_pa)
         if line:
             pick_a = line["prob_a"] >= 0.5
+            confidence = core.confidence_label(line["prob_a"] if pick_a else line["prob_b"])
+            if row["model"].get("basis") == "vrs_floor_bound":
+                confidence = "Bound (unrated opponent)"
+            elif row["model"].get("basis") in ("vrs_alias_candidate_bound", "vrs_alias_candidate"):
+                confidence = "Bound (alias candidate)"
             row["line"] = {**line,
                            "pick": row["team_a"] if pick_a else row["team_b"],
                            "pick_probability": line["prob_a"] if pick_a else line["prob_b"],
-                           "confidence": core.confidence_label(
-                               line["prob_a"] if pick_a else line["prob_b"])}
+                           "confidence": confidence}
         else:
             row["line"] = None
         flags = []
@@ -354,6 +577,16 @@ def main() -> int:
             flags.append("originated_elo_line_no_official_rating")
         if row["model"].get("basis") == "originated_rank":
             flags.append("originated_rank_line_bo3gg_ranking")
+        if row["model"].get("basis") == "originated_hltv_rank":
+            flags.append("originated_hltv_rank_line")
+        if row["model"].get("basis") == "vrs_floor_bound":
+            flags.append("one_sided_vrs_floor_bound_unrated_opponent_on_valve_floor")
+        if row["model"].get("basis") == "vrs_alias_candidate_bound":
+            flags.append("alias_candidate_identity_unconfirmed")
+        if row["model"].get("basis") == "vrs_alias_candidate":
+            flags.append("alias_candidate_identity_unconfirmed")
+        if row.get("identity"):
+            flags.append("team_identity_confirmed_by_same_fixture_on_bo3gg")
         if row["model"].get("basis") == "valve_vrs" and row["market"] is None:
             flags.append("originated_vrs_line")
         if row["tier"] == "C":
@@ -411,6 +644,65 @@ def main() -> int:
                     "note": "external published ranking; mapped to the Elo scale by a documented "
                             "formula, so this line is originated, not a market price",
                     "kind": "rating"})
+        if row["model"].get("basis") in ("vrs_floor_bound", "vrs_alias_candidate_bound"):
+            floor = row["model"].get("floor") or {}
+            rated_side = floor.get("rated_side") or "a"
+            rated = row.get("vrs_a") if rated_side == "a" else row.get("vrs_b")
+            rated = rated or {"region": floor.get("rated_region"),
+                              "vrs_name": floor.get("rated_vrs_name"),
+                              "standing": floor.get("rated_standing"),
+                              "points": floor.get("rated_points")}
+            url = vrs_page_url(snap, str(rated.get("region") or "global"))
+            row["sources"].append({
+                "label": f"Valve VRS {rated.get('region')} standings · {rated.get('vrs_name')} "
+                         f"#{rated.get('standing')} ({rated.get('points'):g} pts)",
+                "url": url, "read_utc": snap.get("generated_utc"),
+                "note": "official Valve regional standings snapshot",
+                "kind": "rating"})
+            row["sources"].append({
+                "label": "Valve VRS floor assumption · 400 points (the minimum the official model "
+                         "awards a roster)",
+                "url": url, "read_utc": snap.get("generated_utc"),
+                "note": ("the unrated opponent is placed on Valve's published floor, so this row is "
+                         "a bound under that assumption, not a bookmaker price"),
+                "kind": "assumption"})
+            if floor.get("rating_source") == "alias_candidate":
+                row["sources"].append({
+                    "label": "Alias candidate · HotSpawn name vs Valve's official rows",
+                    "url": url, "read_utc": snap.get("generated_utc"),
+                    "note": (f"HotSpawn lists this team under a former name; Valve's official table "
+                             f"publishes {floor.get('rated_vrs_name')}. The identity is a "
+                             f"candidate, not a confirmed match — see the unresolved page."),
+                    "kind": "assumption"})
+        if row["model"].get("basis") == "vrs_alias_candidate":
+            vrs = row["model"].get("vrs") or {}
+            for side, name_key, standing_key, points_key in (("a", "vrs_name_a", "standing_a",
+                                                               "points_a"),
+                                                              ("b", "vrs_name_b", "standing_b",
+                                                               "points_b")):
+                if side not in (vrs.get("alias_candidate_sides") or []):
+                    continue
+                url = vrs_page_url(snap, str(vrs.get(f"region_{side}") or "global"))
+                row["sources"].append({
+                    "label": f"Alias candidate · Valve VRS {vrs.get(f'region_{side}')} standings · "
+                             f"{vrs.get(name_key)} #{vrs.get(standing_key)} "
+                             f"({vrs.get(points_key):g} pts)",
+                    "url": url, "read_utc": snap.get("generated_utc"),
+                    "note": ("the identity of this side is a candidate: HotSpawn lists a former name "
+                             "and Valve's official table publishes the roster under the current "
+                             "name. See the unresolved page."),
+                    "kind": "assumption"})
+        if row["model"].get("basis") == "originated_hltv_rank":
+            hltv = row["model"].get("hltv") or {}
+            row["sources"].append({
+                "label": f"HLTV team ranking · {row['team_a']} #{hltv.get('rank_a')} / "
+                         f"{row['team_b']} #{hltv.get('rank_b')}",
+                "url": hltv.get("url_a") or HLTV_RANKING_PAGE,
+                "read_utc": snap.get("generated_utc"),
+                "note": "public HLTV ranking positions mapped to the Elo scale by the documented "
+                        "formula; an originated line, not a market price",
+                "kind": "rating"})
+        row["attempts"] = attempt_ledger(snap, row)
         if row["winner"] in ("a", "b") and row["hotspawn_url_kind"] == "match page":
             row["sources"].append({"label": "HotSpawn match page (final score, settlement only)",
                                    "url": row["hotspawn_url"],
@@ -489,6 +781,12 @@ def main() -> int:
         "open_market_model": sum(1 for r in open_rows if r["line"] and r["line"]["basis"] == "market+model"),
         "open_model_only": sum(1 for r in open_rows if r["line"] and r["line"]["basis"] == "model"),
         "open_with_pick": sum(1 for r in open_rows if r["line"]),
+        "open_bounded": sum(1 for r in open_rows if r["line"]
+                             and not (r.get("market") or {}).get("prob_a")
+                             and (r.get("model") or {}).get("basis") in core.BOUND_BASES),
+        "open_originated": sum(1 for r in open_rows if r["line"]
+                               and not (r.get("market") or {}).get("prob_a")
+                               and (r.get("model") or {}).get("basis") in core.ORIGIN_BASES),
         "open_blank": sum(1 for r in open_rows if not r["line"]),
         "quotes_total": len(quotes),
         "quotes_joined_events": len(matched_ids),

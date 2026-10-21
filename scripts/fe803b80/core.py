@@ -223,7 +223,8 @@ def sigmoid(x: float) -> float:
 
 # ---------------------------------------------------------------------------- market consensus
 # Weighting is a stated modelling choice (published on board/method.html), not a source value.
-SOURCE_WEIGHTS = {"pinnacle": 2.0, "bovada": 1.5, "kalshi": 1.0, "melbet": 1.0, "thunderpick": 1.5}
+SOURCE_WEIGHTS = {"pinnacle": 2.0, "bovada": 1.5, "kalshi": 1.0, "melbet": 1.0, "thunderpick": 1.5,
+                  "1xbet": 1.0, "polymarket": 1.0}
 KALSHI_MAX_SPREAD = 0.10   # wider bid/ask on either side means "no usable price"
 
 
@@ -256,6 +257,51 @@ def vrs_prob(points_a: float, points_b: float, k: float = 1.0) -> float:
     """P(team A beats team B) from Valve VRS points; k scales Valve's slope (k=1 -> Valve)."""
     return sigmoid(k * VALVE_C * (float(points_a) - float(points_b)))
 
+
+# Valve's own published model starts every roster at 400 points
+# ("400 + ((Roster_Average - Min_Average) / (Max_Average - Min_Average)) * 1600" — see the
+# per-team detail files in the official repository). A roster that is absent from the published
+# table has therefore no more than that 400-point floor, which is the assumption the one-sided
+# bound below makes explicit and labels.
+VRS_FLOOR_POINTS = 400.0
+
+
+def vrs_floor_prob(points_rated: float, floor_points: float = VRS_FLOOR_POINTS,
+                   k: float = 1.0) -> float:
+    """P(rated roster beats an unrated opponent) with the opponent placed on Valve's floor.
+
+    This is a *bound under a stated assumption*, never a price: the unrated opponent is placed on
+    the lowest rank value Valve's published model can award (400 points), so the number is the
+    most favourable reading the official data supports for the rated side.
+    """
+    return sigmoid(k * VALVE_C * (float(points_rated) - float(floor_points)))
+
+
+EX_PREFIX_RE = re.compile(r"^ex[-_ ]+", re.I)
+
+
+def ex_prefix_candidates(name: str | None) -> list[str]:
+    """Canonical keys to try when a source lists a team under a former name ("ex-...").
+
+    Only the prefix is removed; the rest of the name still has to match an official row exactly.
+    The result is a *candidate*, never an automatic join: a candidate that is not confirmed by a
+    published source is published as an explicit, flagged assumption.
+    """
+    if not name:
+        return []
+    stripped = EX_PREFIX_RE.sub("", str(name)).strip()
+    if not stripped or stripped.casefold() == str(name).strip().casefold():
+        return []
+    key, _, _ = canon(stripped)
+    return [key] if key else []
+
+
+# Model bases and what they mean for a published number. A "bound" depends on a stated assumption
+# (an unrated opponent placed on Valve's published floor, or an unconfirmed former-name alias);
+# an "origin" is a line derived from published ratings or published results with a documented
+# formula. Both are published on the unresolved page next to the number they produce.
+BOUND_BASES = ("vrs_floor_bound", "vrs_alias_candidate_bound", "vrs_alias_candidate")
+ORIGIN_BASES = ("valve_vrs", "originated_elo", "originated_rank", "originated_hltv_rank")
 
 CAL_MIN_PAIRS = 6
 CAL_K_BOUNDS = (0.25, 1.5)
