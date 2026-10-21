@@ -435,7 +435,9 @@ class DatedResearchAndDecisions(unittest.TestCase):
         self.assertIn('python3 scripts/69e4c06a/build.py', refresh)
         self.assertIn('data/69e4c06a/day3.json twc-2026', refresh)
         self.assertIn('python scripts/69e4c06a/build.py', pages)
-        self.assertIn('scripts/69e4c06a/browser_smoke.py', pages)
+        self.assertIn('scripts/cbf92764/browser_checks.py', pages)
+        browser_runner = (ROOT / 'scripts/cbf92764/browser_checks.py').read_text()
+        self.assertIn('scripts/69e4c06a/browser_smoke.py', browser_runner)
         self.assertIn("'twc-2026'", stage)
         self.assertIn('_twc.build(OUT)', stage)
 

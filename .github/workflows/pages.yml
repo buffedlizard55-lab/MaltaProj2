@@ -1,7 +1,7 @@
 name: Verify and publish dashboard
 on:
   push:
-    branches: [main, arena/ff88c096-maltaproj2, arena/778756a1-maltaproj2, arena/3faf40e8-maltaproj2, arena/ef111e02-maltaproj2, arena/d4ec32a9-maltaproj2, arena/ae75c5c3-maltaproj2, arena/8723ad37-maltaproj2, arena/479ef53e-maltaproj2, arena/69e4c06a-maltaproj2, arena/5468b0ba-maltaproj2, arena/5a40690b-maltaproj2]
+    branches: [main, arena/ff88c096-maltaproj2, arena/cbf92764-maltaproj2, arena/778756a1-maltaproj2, arena/3faf40e8-maltaproj2, arena/ef111e02-maltaproj2, arena/d4ec32a9-maltaproj2, arena/ae75c5c3-maltaproj2, arena/8723ad37-maltaproj2, arena/479ef53e-maltaproj2, arena/69e4c06a-maltaproj2, arena/5468b0ba-maltaproj2, arena/5a40690b-maltaproj2]
   pull_request:
     branches: [main]
   schedule:
@@ -44,47 +44,42 @@ jobs:
       - run: python scripts/build.py
       - name: Re-evaluate canonical picks against source deadlines
         run: |
-          python scripts/c64a5e19/build.py
-          python scripts/69e4c06a/build.py
-          python scripts/5468b0ba/build_audit.py
-          python scripts/98dcfc7e/build.py
-          python scripts/5a40690b/build.py
-          python scripts/7c2622db/build.py
-          python scripts/7c2622db/verify.py
-          python scripts/6ffacd40/audit.py
-          python scripts/a89b76e9/build.py
-          python scripts/e1b48771/build.py
-          python scripts/ff88c096/resolve.py
-          python scripts/ff88c096/audit_repo.py
-          python scripts/ff88c096/build.py
-          python scripts/7adc7718/collect.py
-          python scripts/7adc7718/resolve.py
-          python scripts/7adc7718/build.py
-          python scripts/build_site.py
+          run_check() {
+            local output status
+            output="$(mktemp)"
+            if "$@" > "$output" 2>&1; then
+              cat "$output"
+              rm -f "$output"
+            else
+              status=$?
+              python scripts/cbf92764/annotate_output.py "$*" < "$output"
+              rm -f "$output"
+              return "$status"
+            fi
+          }
+          run_check python scripts/c64a5e19/build.py
+          run_check python scripts/69e4c06a/build.py
+          run_check python scripts/5468b0ba/build_audit.py
+          run_check python scripts/98dcfc7e/build.py
+          run_check python scripts/5a40690b/build.py
+          run_check python scripts/7c2622db/build.py
+          run_check python scripts/7c2622db/verify.py
+          run_check python scripts/6ffacd40/audit.py
+          run_check python scripts/a89b76e9/build.py
+          run_check python scripts/e1b48771/build.py
+          run_check python scripts/ff88c096/resolve.py
+          run_check python scripts/ff88c096/audit_repo.py
+          run_check python scripts/ff88c096/build.py
+          run_check python scripts/7adc7718/collect.py
+          run_check python scripts/7adc7718/resolve.py
+          run_check python scripts/7adc7718/build.py
+          run_check python scripts/build_site.py
       - name: Recheck generated site and every source-linked row
         run: python -m unittest discover -s tests -v
       - name: Browser smoke tests
         run: |
           pip install playwright==1.55.0
-          run_smoke() {
-            if ! out=$("$@" 2>&1); then
-              echo "$out"
-              msg=$(printf '%s' "$out" | tail -n 8 | tr '\n' ' ')
-              echo "::error title=Smoke failed ($*)::$msg"
-              exit 1
-            fi
-            echo "$out"
-          }
-          run_smoke python scripts/browser_smoke.py
-          run_smoke python scripts/build_site.py
-          run_smoke python scripts/browser_current_smoke.py
-          run_smoke python scripts/browser_479ef53e.py
-          run_smoke python scripts/ae75c5c3/browser_smoke.py
-          run_smoke python scripts/c64a5e19/browser_smoke.py
-          run_smoke python scripts/browser_778756a1.py
-          run_smoke python scripts/69e4c06a/browser_smoke.py
-          run_smoke python scripts/ff88c096/browser_check.py
-          run_smoke python scripts/7adc7718/browser_smoke.py
+          python scripts/cbf92764/browser_checks.py
       - name: Stage all session-owned published sections
         run: python scripts/stage_site.py
       - uses: actions/upload-pages-artifact@v3
@@ -114,4 +109,6 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
       - name: Verify actual public dashboard
-        run: python scripts/check_deployment.py
+        run: |
+          python scripts/check_deployment.py
+          python scripts/cbf92764/check_deployment.py

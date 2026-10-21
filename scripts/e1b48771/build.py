@@ -107,12 +107,25 @@ def load_json(path, default=None):
 
 
 # ------------------------------------------------------------------ inputs
+def supported_board(doc):
+    """Only fe-style rows have this renderer's explicit rating and line.pick schema.
+
+    Canonical verified-every-match rows use line.pick_team instead. A newer timestamp
+    does not make those incompatible rows safe to interpret as this board's inputs.
+    """
+    return (isinstance(doc, dict) and isinstance(doc.get("open"), list) and bool(doc["open"])
+            and all(isinstance(row, dict) and "vrs_a" in row and "vrs_b" in row
+                    and "hotspawn_url" in row and (row.get("line") is None
+                    or (isinstance(row["line"], dict) and "pick" in row["line"]))
+                    for row in doc["open"]))
+
+
 def newest_board():
     """Freshest committed full-coverage board that has an ``open`` list and Valve VRS ``calibration.k``."""
     best, best_dt, best_path = None, None, None
     for path in glob.glob(os.path.join(ROOT, "data", "*", "board.json")):
         doc = load_json(path)
-        if not isinstance(doc, dict) or not isinstance(doc.get("open"), list) or not doc["open"]:
+        if not supported_board(doc):
             continue
         if not any("pick" in (fx.get("line") or {}) for fx in doc["open"]):
             continue

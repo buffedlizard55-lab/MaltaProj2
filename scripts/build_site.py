@@ -72,13 +72,13 @@ def pct(value):
 # Keep the primary navigation focused. Preserved parallel-session work remains
 # available from Research archive rather than crowding every mobile header.
 NAV = [
-    # ff88c096 + 82a9a0cc + e1b48771 additive union within the 12-link mobile cap:
+    # Evidence-only desk leads; all parallel research remains linked, at most 12 mobile links.
     ("index.html", "Home"),
-    ("fullboard/index.html", "🎯 Executive Summary"),
-    ("fullboard/picks.html", "📋 Updated CS2 Picks"),
-    ("fullboard/unresolved.html", "⚠️ Unresolved & Limits"),
-    ("hotspawn-live/index.html", "📱 Live board"),
-    ("cs2/picks.html", "Expanded API board"),
+    ("dashboard/picks.html", "\U0001F4F1 Today's picks"),
+    ("dashboard/unresolved.html", "Unresolved"),
+    ("dashboard/flagged.html", "Flagged"),
+    ("dashboard/sources.html", "Method"),
+    ("hotspawn-live/index.html", "Alternative live board"),
     ("picks-every-match/index.html", "Canonical board"),
     ("picks-every-match/unresolved.html", "Canonical unresolved"),
     ("picks-every-match/method.html", "Canonical method"),
@@ -622,6 +622,7 @@ def page(title, subtitle, body, generated_at, active=None, banner=None, hero=Fal
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)} · HotSpawn Pick'ems betting-line analysis</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -805,7 +806,7 @@ def cs2_front_html(*, archived=False):
     return f"""
 <div class="hero-card" id="cs2-front">
 <p class="eyebrow">📱 Every HotSpawn CS2 match · built {esc(fmt_time(d.get('generated_utc')))}</p>
-{heading}
+<h2>Independent research board &mdash; different evidence policy</h2>
 <p><strong>{esc(sm.get('with_pick'))} of {esc(sm.get('open'))} open matches</strong> carry a pick with both teams'
 win probability ({esc(coverage)}% coverage): {esc(sm.get('market'))} from external betting lines and
 {esc((sm.get('model') or 0) + (sm.get('originated') or 0) + (sm.get('research_market') or 0))} built from
@@ -959,17 +960,32 @@ and is left <strong>explicitly blank</strong> and flagged on <a href="lobby/flag
 </div>"""
 
     return f"""
+<section id="updated-match-desk" aria-labelledby="updated-desk-title" class="hero-card">
+<p class="eyebrow">Updated CS2 match desk · start here</p>
+<h1 id="updated-desk-title">All matches. Clear picks. Source-linked probabilities.</h1>
+<p>Open the <a href="dashboard/index.html"><strong>mobile executive summary</strong></a> for the newest retained capture and complete coverage counts. Market picks are preserved; additional evidence is researched only for missing lines. Unsupported values stay blank.</p>
+<p><a class="btn" style="background:#91f2bf;color:#102419;font-weight:bold" href="dashboard/picks.html">See every updated CS2 pick →</a> <a class="btn ghost" href="dashboard/unresolved.html">Unresolved picks &amp; limitations</a></p>
+<p><a href="dashboard/inventory.html">Complete HotSpawn inventory</a> · <a href="dashboard/sources.html">Evidence &amp; method</a> · <a href="dashboard/flagged.html">Flagged for Review</a>. Four-hour automated checks; freshness and lock warnings on every row.</p>
+</section>
 <section id="executive-summary" aria-labelledby="summary-title">
 <div class="hero-card">
 <p class="eyebrow">CS2 Pick’em dashboard · Executive summary</p>
-<h1 id="summary-title">Live CS2 picks, both win probabilities, every lobby match.</h1>
-<p class="muted">The strict current-lobby executive summary and full-board coverage are first. Parallel API coverage and dated desks remain preserved below.</p>
+<h2 id="summary-title">Alternative source policies &amp; preserved research</h2>
+<p class="muted">The evidence-only current desk is above. These parallel boards use different assumptions and are preserved for review.</p>
+<details class="archive" id="parallel-lobby-archive"><summary>Alternative lobby scenario board — different evidence policy</summary>
+{hotspawn_live_front_html()}
+<p>The floor scenario is an assumption, not a verified rating for an unrated team. It is not imported into the current desk.</p></details>
+<details class="archive" id="additional-parallel-research"><summary>Additional live research boards — alternate estimates &amp; assumptions</summary>
+<p>These are independently authored estimates with different identity, calibration, roster and floor assumptions, not verified win probabilities or imports into the current evidence-only desk. Check each source ledger and limitation.</p>
 {lobby_front_html()}
 {fullboard_front_html()}
-{hotspawn_live_front_html()}
 {exec36495748_front_html()}
+<p><a href="fullpicks/index.html">Fullpicks summary</a> · <a href="fullpicks/picks.html">Picks</a> · <a href="fullpicks/unresolved.html">Unresolved</a> · <a href="fullpicks/tournaments.html">Tournaments</a> · <a href="fullpicks/flagged.html">Flagged</a></p>
+</details>
 <details class="archive" id="older-boards"><summary>Parallel expanded-API board and earlier desks</summary>
 {cs2_front_html(archived=True)}
+<p>Mixed best-book prices, unsupported aliases and an unrated-team floor differ from the current desk: <a href="dashboard/flagged.html">limitations</a>.</p>
+<p><a href="hotspawn-cs2/index.html">Additional CS2 research board</a> · <a href="hotspawn-cs2/picks.html">All research picks</a> · <a href="hotspawn-cs2/unresolved.html">Unresolved</a>. Direction-only picks for an unrated opponent are not source-verified and are not imported into the current desk.</p>
 {start_front_html()}
 <p class="note">🐟 <a href="climb/index.html"><strong>Climb desk (a89b76e9)</strong></a> —
 <a href="climb/picks.html">a pick for every captured match</a> · <a href="climb/twc.html">TWC final day archive</a> ·

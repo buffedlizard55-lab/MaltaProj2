@@ -3,7 +3,7 @@
 
 Reads `data/d9d7627b/board.json` and writes a clean mobile-first static site:
 
-  index.html                  (repo root = executive-summary front door)
+  Shared root is centrally generated; this isolated renderer never overwrites it.
   hotspawn-cs2/index.html     (same executive summary inside the section)
   hotspawn-cs2/picks.html     (every open match: pick, both win %, evidence)
   hotspawn-cs2/unresolved.html(unresolved picks + limitations, per match)
@@ -673,34 +673,20 @@ collection for thin/one-sided order books (stored in snapshot.json).</p>
 <ul class="tight">{fail_lis or "<li>None — every source responded.</li>"}</ul>
 <h2>F7 · Alias / word-order joins used ({len(alias_rows)} fixtures)</h2>
 <p>Rows where a published alias or an exact word-order variant was needed to join a price or
-a VRS rating. Each is also flagged on its pick card. Fixture IDs: 
+a VRS rating. Each is also flagged on its pick card. Fixture IDs:
 {esc(", ".join(r["fixture_id"] for r in alias_rows)) or "none"}.</p>
-<h2>F8 · Repository-level (pre-existing, not caused by this board)</h2>
+<h2>F8 · Repository integration and refresh limitations</h2>
 <ul class="tight">
-<li>The legacy verification workflow
-<a href="{REPO}/actions/workflows/pages.yml">&ldquo;Verify and publish dashboard&rdquo;</a>
-fails on <code>main</code> in its &ldquo;Validate preserved evidence and arithmetic&rdquo;
-step (stale assertions from earlier sessions, first documented 2026-10-19). GitHub Pages
-serves this repo in legacy branch mode (<code>main:/</code>) and is <b>built</b>, so the
-site is live; the failing workflow is a separate harness owned by earlier sessions and is
-left untouched here.</li>
-<li>Two earlier sessions&rsquo; test files assert on the <i>previous</i> landing page and
-fail by design after this consolidation (measured 2026-10-21: <code>tests/test_1fac4be2.py</code>
-2 failures — it pins the old primary CTA to <code>picks-every-match/index.html</code>;
-<code>tests/test_3e1be203.py</code> 1 failure — it pins an <code>id="desk-front"</code> card
-in the root page). Both passed against the old landing and are owned by their sessions;
-the new front door supersedes those assertions. This board&rsquo;s own suite
-(<code>tests/test_d9d7627b.py</code>, 32 tests) passes.</li>
-<li><b>Root-page contention:</b> several sessions&rsquo; workflows publish a root
-<code>index.html</code> (<code>update-data.yml</code> via <code>scripts/build_site.py</code>,
-currently failing; <code>hotspawn-live-82a9a0cc.yml</code> every 4h; this board every 2h).
-The root URL therefore shows whichever pipeline refreshed last. This board&rsquo;s stable,
-never-overwritten home is <a href="{base}index.html">hotspawn-cs2/</a> — bookmark that.
-Root ownership should be settled by a future coordination pass (see COORDINATION.md,
-session d9d7627b).</li>
-<li>GitHub&rsquo;s <code>schedule</code> trigger has historically dropped runs in this repo;
-this board&rsquo;s workflow therefore also runs on demand and its freshness is printed at
-the top of every page.</li>
+<li>Earlier handoffs recorded failures in the repository-wide
+<a href="{REPO}/actions/workflows/pages.yml">Pages verification workflow</a>.
+Final integration repairs are recorded in COORDINATION.md; consult the latest run,
+not this historical board, for the current status.</li>
+<li>The shared root now belongs to <code>scripts/build_site.py</code>, which preserves
+all sections and the canonical navigation contracts. This board refreshes only
+<code>hotspawn-cs2/</code> and <code>data/d9d7627b/</code>; it does not overwrite root
+<code>index.html</code>. Alternative source policies are labelled on that front door.</li>
+<li>GitHub scheduled runs are best-effort, not a guarantee of freshness. This board
+also supports on-demand refresh and prints its source collection time.</li>
 </ul>
 """
 
@@ -714,11 +700,11 @@ def main() -> int:
     coll = board.get("collected_to_utc")
     updated = (f'Updated {t_el(gen)} · market data collected {t_el(coll)} · '
                f'auto-refresh every few hours')
+    # Final integration: the shared front door belongs to scripts/build_site.py.
+    # Refresh this isolated section only; never overwrite other sessions' navigation.
     pages = {
         SECTION / "index.html": shell("Executive summary", "summary", "", updated,
                                       summary_body(board, "")),
-        ROOT / "index.html": shell("Executive summary", "summary", "hotspawn-cs2/", updated,
-                                   summary_body(board, "hotspawn-cs2/")),
         SECTION / "picks.html": shell("All picks", "picks", "", updated,
                                       picks_body(board, "")),
         SECTION / "unresolved.html": shell("Unresolved picks & limitations", "unresolved",
