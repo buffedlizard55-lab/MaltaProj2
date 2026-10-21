@@ -114,6 +114,8 @@ def newest_board():
         doc = load_json(path)
         if not isinstance(doc, dict) or not isinstance(doc.get("open"), list) or not doc["open"]:
             continue
+        if not any("pick" in (fx.get("line") or {}) for fx in doc["open"]):
+            continue
         if not isinstance(doc.get("calibration"), dict) or "k" not in doc["calibration"]:
             continue
         dt = parse_iso(doc.get("generated_utc"))
