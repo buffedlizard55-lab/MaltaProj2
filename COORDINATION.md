@@ -63,6 +63,18 @@ Session: `5f903db4` (environment-fixed branch `arena/5f903db4-maltaproj2`; the e
   `Alianza Lima Esports` alias — `scripts/5f903db4/build.py` now carries both joins as documented
   aliases, so they survive the 4-hourly run; (3) three rows are bounds, not points, because Valve
   publishes no rating for one side — the `≥`/`≤` marks must not be stripped by any downstream board.
+# Coordination — session `f3e5123c` (Pick for EVERY HotSpawn CS2 match incl. low-tier/non-Polymarket — HLTV-first then esportsbooks/exchange then official Valve VRS fallback research, ONE obvious mobile entry point + executive summary with internal links + separate Unresolved & Limitations section, line-by-line audit, 2026-10-21)
+
+Session: `f3e5123c` (environment-fixed branch `arena/f3e5123c-maltaproj2`; the environment forbids switching to a `session-<id>/<task>` branch, so scope is separated by directory as in prior sessions).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-F3E5123C-EVERYPICK: (1) line-by-line repo review of freshest upstream snapshots (`data/f7279a54/**` 19:24Z, `data/fe803b80/**` 19:29Z, `data/51197e5b/board.json`) flagging: Kalshi Zetta/Alianza-Lima alias market missed by 51197e5b flipping 1082837, fe803b80 unfitted k=1.0/Elo overconfidence vs fitted k=0.4308, fe803b80 counting api-only 1080200 as open, stale root `index.html` counts (9 open/12 open vs live 13); (2) resolve a pick + both win % for **every** open CS2 match on HotSpawn (`https://play.hotspawn.com/lobby`) keeping featured primary-bookmaker lines byte-for-byte unchanged and applying fallback research ONLY to unpriced matches (HLTV → esportsbooks/exchange Pinnacle/Bovada/Melbet/Thunderpick/Kalshi/Polymarket → official Valve VRS → bo3.gg form), never using HotSpawn crowd % as probability; (3) publish ONE mobile-first front door `hotspawn-picks/` (executive summary linking to every updated pick list on the site, at-a-glance picks, separate Unresolved & Limitations section, tournaments, sources, flagged, method); (4) 4-hourly refresh `.github/workflows/hotspawn-picks-f3e5123c.yml` + dynamic tests `tests/test_f3e5123c.py`; (5) additive integration + PR to `main` + merge + Pages verification | in progress | f3e5123c | 2026-10-21 19:40 | `hotspawn-picks/**`, `scripts/f3e5123c/**`, `data/f3e5123c/**`, `tests/test_f3e5123c.py`, `.github/workflows/hotspawn-picks-f3e5123c.yml`, `COORDINATION.md` (this section only). Read-only inputs: `data/f7279a54/**`, `data/fe803b80/**`, `data/51197e5b/**`, `data/19d6c262/vrs_global.json`, all other session dirs. Integration (additive, at close-out only): `scripts/stage_site.py` (one entry + re-render call), `scripts/build_site.py` (one additive front-door note + stamp), root `index.html` regeneration, `README.md` one row. |
+
+## Log — f3e5123c
+- 2026-10-21 19:40 UTC: Read `COORDINATION.md` head + freshest boards before any edits. Claimed `T-F3E5123C-EVERYPICK` with non-overlapping scope `hotspawn-picks/**`, `scripts/f3e5123c/**`, `data/f3e5123c/**`; pushing claim immediately. No other session has claimed this scope.
+
+---
 
 # Coordination — session `51197e5b` (Resolve a pick for EVERY open HotSpawn CS2 match — esportsbook/exchange + official Valve VRS + bo3.gg resolution, mobile-first dashboard & repo audit, 2026-10-21)
 
