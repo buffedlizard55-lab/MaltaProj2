@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a1019">
+<title>Method · HotSpawn CS2 Pick Center</title>
+<style>
+:root{--bg:#0a1019;--card:#131c2b;--card2:#18233a;--ink:#eef4fc;--mut:#a2b3cc;--grn:#3ee08f;
+--amb:#ffcf7d;--red:#ff9d9d;--blu:#8cc9ff;--line:#26374f;--chip:#1d2b43;--violet:#c3a8ff}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;padding-bottom:78px}
+a{color:var(--blu)}
+.wrap{max-width:980px;margin:0 auto;padding:12px 14px 34px}
+header.top{position:sticky;top:0;z-index:30;background:#0b1320f2;border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+header.top .in{max-width:980px;margin:0 auto;padding:9px 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.logo{font-weight:800;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:.2px}
+.logo b{color:var(--grn)}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+nav.tabs a{min-height:42px;display:inline-flex;align-items:center;padding:7px 12px;border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;font-size:14.5px;background:var(--card)}
+nav.tabs a.on{background:var(--grn);color:#052416;font-weight:800;border-color:var(--grn)}
+nav.bottom{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#0b1320fa;border-top:1px solid var(--line);display:none}
+nav.bottom a{flex:1;text-align:center;color:var(--ink);text-decoration:none;padding:10px 2px 12px;font-size:13px;min-height:58px;display:flex;flex-direction:column;justify-content:center;gap:2px}
+nav.bottom a.on{color:var(--grn);font-weight:800}
+nav.bottom span.ico{font-size:17px;line-height:1}
+h1{font-size:27px;line-height:1.22;margin:12px 0 6px;letter-spacing:-.2px}
+h2{font-size:21px;margin:26px 0 8px}
+h3{font-size:18px;margin:0 0 6px}
+p{margin:8px 0}
+.lede{color:var(--mut);font-size:16.5px}
+.stamp{font-size:14px;color:var(--mut)}
+.hero{background:linear-gradient(165deg,#0d2c1f,#11203a);border:2px solid var(--grn);border-radius:16px;padding:16px;margin:14px 0}
+.hero h1{margin-top:0}
+.cta{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:58px;background:var(--grn);color:#052416;font-weight:800;font-size:18px;text-decoration:none;border-radius:13px;padding:14px 16px;margin:10px 0 6px}
+.cta small{display:block;font-weight:600;font-size:13.5px;color:#08492c}
+.cta.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.cta.alt small{color:var(--mut)}
+.cta.warn{background:#2a200f;color:var(--amb);border:1px solid var(--amb)}
+.cta.warn small{color:#e7c68f}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:12px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px;text-align:center}
+.stat b{display:block;font-size:25px;line-height:1.2}
+.stat span{font-size:12.5px;color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px;margin:11px 0}
+.card.open{border-left:4px solid var(--grn)}
+.card.closed{opacity:.94}
+.rowtop{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+.chip{display:inline-block;border-radius:999px;padding:2px 9px;font-size:12.5px;font-weight:700;border:1px solid var(--line);background:var(--chip);white-space:nowrap}
+.chip.open{background:#0f3a25;border-color:var(--grn);color:#a9f7cd}
+.chip.live{background:#3a1d12;border-color:#ff9d5c;color:#ffc79f}
+.chip.closed{color:var(--mut)}
+.chip.market{border-color:var(--grn);color:#a9f7cd}
+.chip.model{border-color:var(--violet);color:#ded0ff}
+.chip.bound{border-color:var(--amb);color:var(--amb)}
+.chip.blank{border-color:var(--red);color:var(--red)}
+.when{font-size:13.5px;color:var(--mut)}
+.pickline{font-size:17px;margin:4px 0 8px}
+.pickline b{background:#0f3a25;border:1px solid var(--grn);color:#c8ffe4;border-radius:999px;padding:2px 10px}
+.pickline .pc{font-weight:800;color:var(--grn)}
+.bar{display:flex;height:30px;border-radius:9px;overflow:hidden;border:1px solid var(--line);font-size:12.5px;font-weight:700;margin:6px 0 4px}
+.bar i{display:flex;align-items:center;padding:0 7px;font-style:normal;white-space:nowrap;overflow:hidden}
+.bar .a{background:#173f2c;color:#c6ffe1}
+.bar .b{background:#3b2c12;color:#ffe6b6;justify-content:flex-end}
+.meta{font-size:13.5px;color:var(--mut)}
+details{background:var(--card2);border:1px solid var(--line);border-radius:11px;padding:9px 12px;margin:9px 0 2px}
+summary{cursor:pointer;font-weight:700;min-height:40px;display:flex;align-items:center;font-size:15px}
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin:8px 0}
+th,td{border:1px solid var(--line);padding:7px 8px;vertical-align:top;text-align:left}
+th{background:var(--card2);font-size:13px;text-transform:uppercase;letter-spacing:.3px;color:var(--mut)}
+code{background:#08101a;border:1px solid var(--line);border-radius:6px;padding:1px 5px;font-size:13px;word-break:break-all}
+.note{background:#101a29;border:1px solid var(--line);border-radius:11px;padding:11px 13px;margin:10px 0;font-size:15px}
+.warnbox{background:#2a200f;border:1px solid var(--amb);border-radius:12px;padding:11px 13px;margin:10px 0}
+.errbox{background:#2b1418;border:1px solid var(--red);border-radius:12px;padding:11px 13px;margin:10px 0}
+.okbox{background:#0e2b1c;border:1px solid var(--grn);border-radius:12px;padding:11px 13px;margin:10px 0}
+.links a{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:52px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 13px;margin:8px 0;color:var(--ink);text-decoration:none}
+.links a small{display:block;color:var(--mut);font-size:13.5px}
+.links a b{font-size:16.5px}
+.dayhead{position:sticky;top:54px;z-index:10;background:#0b1320f4;padding:8px 2px;margin:18px 0 4px;font-weight:800;font-size:15.5px;color:var(--grn);border-bottom:1px solid var(--line)}
+.blank{color:var(--red);font-weight:700}
+.small{font-size:13.5px;color:var(--mut)}
+footer{color:var(--mut);font-size:13.5px;margin-top:30px;border-top:1px solid var(--line);padding-top:12px}
+@media(max-width:780px){
+ body{font-size:16.5px}nav.tabs{display:none}nav.bottom{display:flex}
+ table,thead,tbody,tr,th,td{display:block;width:100%}
+ thead{display:none}tr{background:var(--card);border:1px solid var(--line);border-radius:11px;margin:9px 0;padding:4px}
+ th,td{border:none;padding:5px 7px}td:before{content:attr(data-h) " ";font-weight:700;color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.4px}
+ td.noH:before{content:""}.stats{grid-template-columns:1fr 1fr}.dayhead{top:50px}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+<a class="logo" href="index.html">Pick<b>Center</b></a>
+<nav class="tabs"><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="sources.html">Sources</a><a href="results.html">Results</a><a href="flagged.html">Flagged</a><a href="method.html" class="on">Method</a></nav>
+</div></header>
+<main class="wrap">
+<div class="stamp">Captured 2026-10-21 20:23 UTC · live capture · refreshed every 4 hours</div>
+
+<h1>Method</h1>
+<p class="lede">The same rules every run, published so any row can be checked by hand.</p>
+
+<h2>1. Inventory: the lobby, not a guess</h2>
+<p>Every run re-reads the public lobby page's Angular transfer state
+(<code>https://play.hotspawn.com/lobby</code>, the same <code>/api/v1/fixtures</code> payload the page
+itself calls) and keeps every Counter-Strike 2 fixture the week lists — including the ones with
+stale kickoff times. The page's own counters are recorded as the coverage check
+(listed:
+78 fixtures in the inventory).</p>
+
+<h2>2. Prices: external only</h2>
+<p>Pinnacle, Bovada, Melbet and the Kalshi <code>KXCS2GAME</code> exchange are read every run. A price
+joins a fixture only when <strong>both</strong> team names match after normalisation (or through a
+published alias with linked evidence) <strong>and</strong> the start times agree within
+5.0 minutes. Kalshi tickers carry US-Eastern wall-clock time
+and are converted with the real New York zone, so the November DST change does not shift a price.</p>
+<p>Per-source probabilities are proportional de-vig values: <code>p = (1/d) / (1/dA + 1/dB)</code>.
+The consensus is a weighted mean (Pinnacle 2.0, others 1.0). Any quote older than
+8.0 hours is dropped and the row is labelled.</p>
+
+<h2>3. Origination: Valve's own ratings</h2>
+<p>Valve's official Regional Standings give each team a rating in points. Their published model uses a
+logistic curve; Valve's own README says its slope is too steep, so the slope here is <em>fitted</em>
+to book lines rather than assumed:</p>
+<p><code>logit(p) = k · C · (points_A − points_B)</code>, with
+<code>C = g · ln(10) / 400</code> for a fixed rating deviation and
+<code>k = 0.4307789423656918</code> fitted from 60 pre-lock
+(fixture, market probability) pairs
+(<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/f7279a54/calibration_pairs.json">source</a>), bounded to [0.25,
+1.5]. Mean absolute error on those pairs:
+0.07702503405478646 versus 0.12247910190606133 for Valve's raw slope.</p>
+
+<h2>4. Bounds instead of invented numbers</h2>
+<p>When exactly one side is rated, the rated team's chance is computed against Valve's
+<strong>lowest</strong> published rating (381 pts). That is a floor for
+the rated team: a real opponent is at least as strong as the weakest rated team, so the true
+probability cannot be lower. The row says so.</p>
+
+<h2>5. What is never done</h2>
+<ul>
+<li>No HotSpawn crowd percentage is read, stored or used. It is a popularity poll, not a price.</li>
+<li>No probability is inferred from a team name, a roster guess or a "looks stronger" judgement.</li>
+<li>No price is borrowed from a differently timed fixture. Near misses are listed, not joined.</li>
+<li>No missing value is filled. It stays blank and appears on the Unresolved page.</li>
+</ul>
+
+<h2>6. Refresh and verification</h2>
+<p>The workflow runs every 4 hours (and on demand) and re-captures the lobby, the books and Valve's
+file, then rebuilds this site. 8 checks run before anything is
+published: probabilities sum to 1, the pick is always the higher probability, every market line
+reproduces its stored consensus, every model line recomputes from its published delta and k, every
+originated line links the official file it came from, and the board contains no crowd data.</p>
+<p class="small">Board JSON: <a href="../data/2cadfaf2/board.json">data/2cadfaf2/board.json</a> ·
+capture: <code>2026-10-21T20:23:53Z</code> · generated
+<code>2026-10-21T20:23:53Z</code>.</p>
+
+<footer>
+<p><strong>Sources.</strong> Fixtures and lock times: the official HotSpawn lobby
+(<a href="https://play.hotspawn.com/lobby">play.hotspawn.com/lobby</a>). Prices: Pinnacle, Bovada, Melbet and the Kalshi
+exchange, each linked on the row it prices. Ratings: Valve's official Regional Standings
+(<a href="https://github.com/ValveSoftware/counter-strike_regional_standings">github.com/ValveSoftware/counter-strike_regional_standings</a>).
+HotSpawn crowd percentages are never used.</p>
+<p>Estimates, not guarantees. 18+. If a value is not on a row, it was not verified — the row links
+the <a href="unresolved.html">Unresolved &amp; limitations</a> section instead of guessing.</p>
+</footer>
+</main>
+<nav class="bottom" aria-label="Sections"><a href="picks.html"><span class="ico" aria-hidden="true">🎯</span>Picks</a><a href="unresolved.html"><span class="ico" aria-hidden="true">⚠</span>Unresolved</a><a href="sources.html"><span class="ico" aria-hidden="true">🔗</span>Sources</a><a href="index.html"><span class="ico" aria-hidden="true">📋</span>Summary</a></nav>
+</body>
+</html>

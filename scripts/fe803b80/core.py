@@ -170,6 +170,28 @@ ALIASES: dict[str, dict] = {
                      "https://www.hltv.org/matches/2399865/zetta-vs-los-ninos-cct-2026-south-america-series-7",
                      "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_americas_2026_10_05.md"],
     },
+    # HotSpawn lists the Stake Ranked Episode 6 closed-qualifier fixture as
+    # "UNiTY vs Apogee Betclic". The same organisation is priced by Melbet as "Apogee Esports"
+    # (event 763696446) and by Thunderpick/bo3.gg as "Betclic" (match 132327), and HLTV team
+    # 12916 plus Valve's standings list it as "Betclic"; Liquipedia carries the full name
+    # "Betclic Apogee Esports". Without the alias the fixture keeps a blank row even though two
+    # licensed books price it at the same kick-off. Verified 2026-10-21.
+    "apogee": {
+        "canonical": "betclic",
+        "note": "Melbet's 'Apogee Esports' and Thunderpick/bo3.gg's 'Betclic' are the same roster "
+                "HotSpawn lists as 'Apogee Betclic' (HLTV team 12916 'Betclic', Liquipedia "
+                "'Betclic Apogee Esports'); both prices carry the same 2026-10-22T14:00Z kick-off.",
+        "evidence": ["https://www.hltv.org/team/12916/betclic",
+                     "https://liquipedia.net/counterstrike/Betclic_Apogee_Esports",
+                     "https://bo3.gg/matches/unity-vs-betclic-apogee-esports-22-10-2026"],
+    },
+    "apogeebetclic": {
+        "canonical": "betclic",
+        "note": "HotSpawn's 'Apogee Betclic' is the organisation HLTV (team 12916) and Valve's "
+                "standings list as 'Betclic'; the books price it as 'Apogee Esports' / 'Betclic'.",
+        "evidence": ["https://www.hltv.org/team/12916/betclic",
+                     "https://liquipedia.net/counterstrike/Betclic_Apogee_Esports"],
+    },
     # HotSpawn 'EAC' == bo3.gg/Thunderpick 'EAC' (Esport Academy Copenhagen) - same spelling,
     # no alias needed. Kept out of the table on purpose: no undocumented expansion is applied.
 }

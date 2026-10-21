@@ -32,13 +32,16 @@ _subprocess.run([_sys.executable, str(ROOT/'scripts/ff88c096/build.py')], check=
 # snapshots before staging (additive; writes only hotspawn-picks/** and data/f3e5123c/**).
 _subprocess.run([_sys.executable, str(ROOT/'scripts/f3e5123c/resolve.py')], check=False)
 _subprocess.run([_sys.executable, str(ROOT/'scripts/f3e5123c/build.py')], check=False)
+# 2cadfaf2 pickcenter/: render the phone-first pick centre from its own committed board before
+# staging (additive; writes only pickcenter/** and never fails the stage step).
+_subprocess.run([_sys.executable, str(ROOT/'scripts/2cadfaf2/build.py')], check=False)
 # 51197e5b fullpicks/ board: re-render from committed snapshots before staging (additive; writes only fullpicks/** and data/51197e5b/**).
 _subprocess.run([_sys.executable, str(ROOT/'scripts/51197e5b/build.py')], check=False)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
 shutil.copy2(ROOT/'favicon.ico', OUT/'favicon.ico')
 (OUT/'.nojekyll').write_text('', encoding='utf-8')
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','today','desk','finals','day5','finalday','start','climb','now','everymatch','dashboard','cs2','hotspawn-live','hotspawn-cs2','fullboard','lobby','fullpicks','hotspawn-picks','everypick','pickboard'):  # lobby: 7adc7718; hotspawn-cs2: d9d7627b; cs2: e1b48771; hotspawn-live: 82a9a0cc; fullboard: ff88c096; fullpicks: 51197e5b (additive entries)
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','today','desk','finals','day5','finalday','start','climb','now','everymatch','dashboard','cs2','hotspawn-live','hotspawn-cs2','fullboard','lobby','fullpicks','hotspawn-picks','everypick','pickboard','pickcenter'):  # lobby: 7adc7718; hotspawn-cs2: d9d7627b; cs2: e1b48771; hotspawn-live: 82a9a0cc; fullboard: ff88c096; fullpicks: 51197e5b (additive entries)
 # 'finals' added by session 782adb47 (TWC Day-5 finals desk), additive single entry: root NAV +
 # landing front door link finals/index.html, so the artifact must carry the directory.
 # 'day5' added by session 7900154b (TWC 2026 day-5 final desk + every-match picks), additive
