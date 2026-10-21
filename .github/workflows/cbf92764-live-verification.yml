@@ -1,0 +1,27 @@
+name: Post-merge public verification (cbf92764)
+on:
+  push:
+    branches: [arena/cbf92764-maltaproj2]
+    paths:
+      - scripts/cbf92764/verify_publication.py
+      - .github/workflows/cbf92764-live-verification.yml
+permissions:
+  contents: read
+  actions: write
+  pages: write
+concurrency:
+  group: cbf92764-public-verification
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Recover only terminal legacy runs and verify actual public content
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/cbf92764/verify_publication.py
