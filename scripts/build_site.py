@@ -897,12 +897,54 @@ roster investigation are on the <a href="day4/twc-review.html">day 1–3 review<
     rows = pick_board.get("open")
     directional = sum(bool((r.get("line") or {}).get("pick_team")) for r in rows) if rows is not None else "—"
     tied = sum(bool(r.get("line")) and r["line"]["prob_a"] == r["line"]["prob_b"] for r in rows) if rows is not None else "—"
+    def lobby_front_html():
+        """7adc7718: Mobile-first Executive Summary for the live auto-updating CS2 Lobby Picks suite."""
+        b = load("data/7adc7718/board.json") or {}
+        s = b.get("summary") or {}
+        if not s:
+            return ""
+        cal = b.get("calibration") or {}
+        rows_7 = b.get("matches") or []
+        unresolved = [r for r in rows_7 if r.get("resolution_tier") == "unresolved_blank"]
+        unres_items = "".join(
+            f'<li><a href="lobby/unresolved.html#m-{esc(r.get("fixture_id"))}"><strong>'
+            f'{esc(r.get("team_a"))} vs {esc(r.get("team_b"))}</strong></a> '
+            f'({esc(r.get("competition"))}, {esc(fmt_time(r.get("start_utc")))}) &mdash; '
+            f'<strong>Blank / Unverified</strong> (<a href="{esc(r.get("hltv_url"))}" rel="noopener">Official HLTV</a>)</li>'
+            for r in unresolved
+        ) or '<li>0 blank open matches at current capture &mdash; full limitations on <a href="lobby/unresolved.html">Unresolved &amp; Limitations</a>.</li>'
+        rescued = (s.get("rescue_exchange") or 0) + (s.get("rescue_vrs_model") or 0)
+        return f"""
+<div class="hero-card" id="lobby-7adc7718-front">
+<p class="eyebrow">Auto-Updated Every 4 Hours &middot; Week {esc(s.get('week_id'))} CS2 Pick&rsquo;em Executive Summary &middot; {esc(fmt_time(b.get('fixture_snapshot_utc')))}</p>
+<h2 id="lobby-summary-title">HotSpawn CS2 Lobby &mdash; Verified Win Probabilities &amp; Picks (7adc7718)</h2>
+<p><strong>{esc(s.get('resolved_with_pick'))} of {esc(s.get('open_matches'))} open CS2 matches ({esc(s.get('coverage_pct'))}%)</strong>
+have verified team win probabilities and recommended picks across <strong>{esc(s.get('featured_market'))} featured sportsbook matches</strong>
+and <strong>{esc(rescued)} rescued low-tier matches</strong> (HLTV + Kalshi order books + empirical Oct 21 Valve VRS line,
+<code>&beta;={esc(cal.get('beta'))}</code>). <strong>{esc(s.get('unresolved_blank'))} match</strong> has no verifiable opponent rating or external odds
+and is left <strong>explicitly blank</strong> and flagged on <a href="lobby/flagged.html">Flagged for Review</a>.
+<strong>0% HotSpawn crowd share weight.</strong></p>
+<div class="hero-actions">
+<a class="btn btn-hero" href="lobby/picks.html"><span><strong>All {esc(s.get('open_matches'))} Open CS2 Picks</strong> &middot; mobile probabilities, picks &amp; official sources</span><span>&rarr;</span></a>
+<a class="btn" href="lobby/index.html"><span><strong>Lobby Executive Summary</strong> &middot; category hub &amp; KPI breakdown</span><span>&rarr;</span></a>
+<a class="btn" href="lobby/featured.html"><span><strong>Featured Sportsbook Picks ({esc(s.get('featured_market'))})</strong> &middot; Pinnacle / Bovada / Melbet no-vig</span><span>&rarr;</span></a>
+<a class="btn" href="lobby/low-tier.html"><span><strong>Rescued Low-Tier Picks ({esc(rescued)})</strong> &middot; HLTV + Kalshi + Valve VRS</span><span>&rarr;</span></a>
+<a class="btn" href="lobby/unresolved.html"><span><strong>Unresolved Picks &amp; Limitations ({esc(s.get('unresolved_blank'))} blank)</strong> &middot; unverified rows &amp; structural limits</span><span>&rarr;</span></a>
+<a class="btn" href="lobby/flagged.html"><span><strong>Flagged for Review ({esc(s.get('flagged_items'))})</strong> &middot; every irregularity with official links</span><span>&rarr;</span></a>
+<a class="btn" href="lobby/inventory.html"><span><strong>Full Lobby Inventory ({esc(s.get('cs2_total_in_week'))})</strong> &middot; reverse-engineered Week-{esc(s.get('week_id'))} slate</span><span>&rarr;</span></a>
+<a class="btn" href="lobby/methodology.html"><span><strong>4-Tier Methodology</strong> &middot; zero crowd contamination &amp; 4h cron</span><span>&rarr;</span></a>
+</div>
+<h3 style="margin-top:14px">Unresolved Picks &amp; Limitations (Executive Summary Notice)</h3>
+<ul class="plain">{unres_items}</ul>
+</div>"""
+
     return f"""
 <section id="executive-summary" aria-labelledby="summary-title">
 <div class="hero-card">
 <p class="eyebrow">CS2 Pick’em dashboard · Executive summary</p>
 <h1 id="summary-title">Live CS2 picks, both win probabilities, every lobby match.</h1>
 <p class="muted">The strict current-lobby executive summary and full-board coverage are first. Parallel API coverage and dated desks remain preserved below.</p>
+{lobby_front_html()}
 {fullboard_front_html()}
 {hotspawn_live_front_html()}
 {exec36495748_front_html()}

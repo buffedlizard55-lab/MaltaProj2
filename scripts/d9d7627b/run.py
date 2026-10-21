@@ -5,6 +5,19 @@ Default (live) mode: collect -> resolve -> build. With --from-snapshot the colle
 step is skipped (replay/CI validation against the committed snapshot).
 """
 from __future__ import annotations
+import importlib.util as _ilu, sys as _sys
+from pathlib import Path as _Path
+def _load_d9(name):
+    key = f"d9d7627b_{name}"
+    if key in _sys.modules:
+        return _sys.modules[key]
+    p = _Path(__file__).resolve().parent / f"{name}.py" if (_Path(__file__).resolve().parent / f"{name}.py").exists() else _Path(__file__).resolve().parents[1] / "scripts" / "d9d7627b" / f"{name}.py"
+    spec = _ilu.spec_from_file_location(key, p)
+    mod = _ilu.module_from_spec(spec)
+    _sys.modules[key] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
 
 import argparse
 import subprocess

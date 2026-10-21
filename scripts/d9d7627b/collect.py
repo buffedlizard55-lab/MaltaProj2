@@ -19,6 +19,19 @@ session f7279a54 and re-verified against recorded payloads on 2026-10-21):
   * ValveSoftware/counter-strike_regional_standings via api.github.com (official VRS)
 """
 from __future__ import annotations
+import importlib.util as _ilu, sys as _sys
+from pathlib import Path as _Path
+def _load_d9(name):
+    key = f"d9d7627b_{name}"
+    if key in _sys.modules:
+        return _sys.modules[key]
+    p = _Path(__file__).resolve().parent / f"{name}.py" if (_Path(__file__).resolve().parent / f"{name}.py").exists() else _Path(__file__).resolve().parents[1] / "scripts" / "d9d7627b" / f"{name}.py"
+    spec = _ilu.spec_from_file_location(key, p)
+    mod = _ilu.module_from_spec(spec)
+    _sys.modules[key] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
 
 import base64
 import hashlib
@@ -33,7 +46,7 @@ from datetime import timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import core  # noqa: E402
+core = _load_d9('core')
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "data" / "d9d7627b"

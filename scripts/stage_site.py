@@ -29,7 +29,7 @@ _subprocess.run([_sys.executable, str(ROOT/'scripts/82a9a0cc/build.py')], check=
 _subprocess.run([_sys.executable, str(ROOT/'scripts/ff88c096/build.py')], check=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','today','desk','finals','day5','finalday','start','climb','now','everymatch','cs2','hotspawn-live','fullboard'):  # cs2: e1b48771; hotspawn-live: 82a9a0cc; fullboard: ff88c096; other entries remain additive
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','today','desk','finals','day5','finalday','start','climb','now','everymatch','cs2','hotspawn-live','hotspawn-cs2','fullboard','lobby'):  # lobby: 7adc7718; hotspawn-cs2: d9d7627b; cs2: e1b48771; hotspawn-live: 82a9a0cc; fullboard: ff88c096 (additive entries)
 # 'finals' added by session 782adb47 (TWC Day-5 finals desk), additive single entry: root NAV +
 # landing front door link finals/index.html, so the artifact must carry the directory.
 # 'day5' added by session 7900154b (TWC 2026 day-5 final desk + every-match picks), additive

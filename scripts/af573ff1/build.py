@@ -28,8 +28,15 @@ import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import core  # noqa: E402
+import importlib.util as _iu, sys as _sys
+from pathlib import Path as _Path
+if 'core_af573ff1' in _sys.modules:
+    core = _sys.modules['core_af573ff1']
+else:
+    _core_spec = _iu.spec_from_file_location('core_af573ff1', _Path(__file__).resolve().parent / 'core.py')
+    core = _iu.module_from_spec(_core_spec)
+    _sys.modules['core_af573ff1'] = core
+    _core_spec.loader.exec_module(core)
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "af573ff1"

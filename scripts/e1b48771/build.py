@@ -108,11 +108,13 @@ def load_json(path, default=None):
 
 # ------------------------------------------------------------------ inputs
 def newest_board():
-    """Freshest committed full-coverage board that has an ``open`` list."""
+    """Freshest committed full-coverage board that has an ``open`` list and Valve VRS ``calibration.k``."""
     best, best_dt, best_path = None, None, None
     for path in glob.glob(os.path.join(ROOT, "data", "*", "board.json")):
         doc = load_json(path)
         if not isinstance(doc, dict) or not isinstance(doc.get("open"), list) or not doc["open"]:
+            continue
+        if not isinstance(doc.get("calibration"), dict) or "k" not in doc["calibration"]:
             continue
         dt = parse_iso(doc.get("generated_utc"))
         if dt is None:
