@@ -237,7 +237,10 @@ def main():
     snap = load(DATA / 'snapshot.json', None)
     if not snap:
         raise SystemExit('No captured snapshot; refusing to invent fixtures')
-    board = build_board(snap, 'data/c64a5e19/snapshot.json', core.now_utc())
+    now_dt = core.now_utc()
+    snap_dt = core.parse_iso(snap.get('collected_to_utc'))
+    eval_dt = now_dt if snap_dt and abs((now_dt - snap_dt).total_seconds()) <= 4 * 3600 else None
+    board = build_board(snap, 'data/c64a5e19/snapshot.json', eval_dt)
     DATA.mkdir(parents=True, exist_ok=True)
     (DATA / 'board.json').write_text(json.dumps(board, indent=1, ensure_ascii=False, allow_nan=False) + '\n')
     # Fail publication if any consumed quote cannot be reconstructed from the provider.

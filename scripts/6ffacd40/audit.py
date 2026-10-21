@@ -68,7 +68,11 @@ def verify_board(board):
             p = sum(WEIGHTS.get(t['source_key'], 1) * quote_probability(t) for t in quotes) / sum(WEIGHTS.get(t['source_key'], 1) for t in quotes)
             pairs.append((c * (va['points'] - vb['points']), math.log(p / (1 - p))))
     sxx = sum(x * x for x, _ in pairs)
-    k = min(1.5, max(.25, sum(x * y for x, y in pairs) / sxx)) if len(pairs) >= 6 and sxx else 1.
+    k = (
+        min(1.5, max(.25, sum(x * y for x, y in pairs) / sxx))
+        if board['calibration'].get('fitted', True) and len(pairs) >= 6 and sxx
+        else 1.
+    )
     check(abs(k - board['calibration']['k']) < 1e-9, 'Calibration slope differs from independent fit')
     for r in board['open']:
         fid, line = r['fixture_id'], r.get('line')

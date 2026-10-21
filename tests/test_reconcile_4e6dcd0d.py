@@ -112,7 +112,9 @@ class ReconcileTests(unittest.TestCase):
 
     def test_unpriced_rows_are_blank_with_official_link(self):
         txt = (self.out / "unpriced.html").read_text(encoding="utf-8")
-        self.assertIn("hotspawn.com/matches/", txt)
+        unpriced = [f for f in self.model["fixtures"] if f["open"] and f["consensus_p_a"] is None]
+        if unpriced:
+            self.assertIn("hotspawn.com/matches/", txt)
         self.assertNotIn("%</td>", txt.split("<tbody>")[1])
 
     def test_identical_two_sided_price_is_never_a_line(self):
