@@ -1,0 +1,64 @@
+name: CS2 coverage and freshness audit
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '29 */4 * * *'
+  push:
+    branches: [main, arena/741a34ac-maltaproj2]
+    paths:
+      - 'scripts/741a34ac/**'
+      - 'tests/test_741a34ac.py'
+      - '.github/workflows/coverage-audit-741a34ac.yml'
+  workflow_run:
+    workflows: ['everypick (5f903db4)', 'ourline (f7279a54)']
+    types: [completed]
+permissions:
+  contents: write
+concurrency:
+  group: coverage-audit-${{ github.event_name == 'workflow_run' && 'main' || github.ref }}
+  cancel-in-progress: false
+jobs:
+  audit:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Read official lobby and latest official Valve file
+        run: python scripts/741a34ac/collect.py
+      - name: Audit every retained listing without changing picks
+        run: |
+          python scripts/741a34ac/audit.py
+          python -m unittest discover -s tests -p test_741a34ac.py -v
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cs2-coverage-audit-${{ github.run_id }}
+          path: |
+            data/741a34ac/
+            audits/741a34ac/
+          retention-days: 14
+      - name: Publish only audit scope, with rebase and regeneration on concurrency
+        env:
+          REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+        run: |
+          set -euo pipefail
+          git config user.name 'cs2-coverage-audit'
+          git config user.email 'malta-data-bot@users.noreply.github.com'
+          for attempt in 1 2 3 4; do
+            git add data/741a34ac audits/741a34ac
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'audit: update retained CS2 coverage and freshness [skip ci]'
+            git pull --rebase origin "$REF_NAME"
+            python scripts/741a34ac/audit.py
+            python -m unittest discover -s tests -p test_741a34ac.py -v
+            git add data/741a34ac audits/741a34ac
+            if ! git diff --cached --quiet; then git commit -m 'audit: reconcile latest pick board [skip ci]'; fi
+            if git push origin "HEAD:$REF_NAME"; then exit 0; fi
+          done
+          exit 1
