@@ -8,6 +8,10 @@ Scope addition: the completed owner’s contract suite is updated to require bla
 
 The prior owner marked this scope done at 19:53 UTC. No new parallel dashboard will be added. Environment fixes this session to arena/00231608-maltaproj2 rather than the requested session branch convention. Existing active root integration scopes will not be edited. Official source access is limited to GitHub hosts in this sandbox; blocked HLTV/book/lobby reads will be recorded as inaccessible, not verified.
 
+## Publication handoff — 00231608
+
+PR [#219](https://github.com/buffedlizard55-lab/MaltaProj2/pull/219) is OPEN, not merged or deployed. Implementation and scoped verification complete (31 tests and staged local-link build pass). Publication remains **in progress / blocked by failed shared build**, not awaiting user review. Full hosted build [39667696042](https://github.com/buffedlizard55-lab/MaltaProj2/actions/runs/39667696042) failed preserved-evidence arithmetic. Active session 907e9435 (commit f4dcadc at 20:10 UTC) owns the live/e1/shared-CI repair in PR #215 and has been notified; its work was not overwritten. Do not merge #219 until the shared build succeeds. GitHub Pages API still reported building during this session; there is no verified deployment of this patch. User approval is not being requested. Repo-wide live line-by-line verification could not be completed under the network restrictions and active parallel scopes; only the exact scoped verification below is claimed.
+
 ## Verification log — 00231608
 
 - Added an eight-hour quote expiry gate (aware UTC timestamp required, future-dated/missing/ambiguous observations rejected), and explicit market start validation including the primary collector’s `start_utc_at_source` schema. No source kick-off is replaced by a guessed fixture start. Boundary and primary-schema regressions pass; 31 targeted tests PASS. Hosted PR build 39667696042 fails the inherited cross-board arithmetic phase; do not claim all CI passed. Workflow-dispatch attempt received HTTP 403 (integration lacks actions dispatch permission), so no successful refresh run is claimed.
