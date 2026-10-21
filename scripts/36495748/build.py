@@ -35,8 +35,15 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import core  # noqa: E402
+# Load core.py under a unique module name: many sessions in this repo have their own
+# core.py/build.py, and a bare `import core` silently binds whichever was imported first
+# (observed 2026-10-21: AttributeError 'module core has no attribute norm' under discover).
+import importlib.util  # noqa: E402
+
+_spec = importlib.util.spec_from_file_location(
+    "exec36495748_core", Path(__file__).resolve().parent / "core.py")
+core = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(core)
 
 SESSION = "36495748"
 DATA = ROOT / "data" / SESSION
@@ -557,7 +564,7 @@ def row_evidence(r) -> list[str]:
         for q in (d["market"]["quotes"]):
             if not q.get("usable"):
                 continue
-            items.append(f'{esc(q["source_name"])} {esc(q["decimal_a"])}/{esc(q["decimal_b"])} '
+            items.append(f'{esc(q["source_name"])} {float(q["decimal_a"]):.3f}/{float(q["decimal_b"]):.3f} '
                          f'({" / ".join(map(esc, q["names_at_source"]))}, read {esc(q["retrieved_utc"])}) '
                          f'<a href="{esc(q["public_url"])}">source</a>')
         chk = d["market"].get("rederivation_check")

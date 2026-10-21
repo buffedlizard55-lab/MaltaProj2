@@ -33,8 +33,15 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import core  # noqa: E402
+# Load core.py under a unique module name: many sessions in this repo have their own
+# core.py/build.py, and a bare `import core` silently binds whichever was imported first
+# (observed 2026-10-21: AttributeError 'module core has no attribute norm' under discover).
+import importlib.util  # noqa: E402
+
+_spec = importlib.util.spec_from_file_location(
+    "exec36495748_core", Path(__file__).resolve().parent / "core.py")
+core = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(core)
 
 DATA = ROOT / "data" / "36495748"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; hotspawn-picks-research/36495748)", "Accept": "application/json,*/*"}

@@ -13,9 +13,20 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts" / "36495748"))
-import core  # noqa: E402
-import build as desk_build  # noqa: E402
+# Unique-name loading: several sessions ship their own core.py/build.py, and under
+# `unittest discover` a bare `import core`/`import build` binds whichever loaded first.
+import importlib.util  # noqa: E402
+
+
+def _load(modname, filename):
+    spec = importlib.util.spec_from_file_location(modname, ROOT / "scripts" / "36495748" / filename)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+core = _load("exec36495748_core_for_tests", "core.py")
+desk_build = _load("exec36495748_build_for_tests", "build.py")
 
 DATA = ROOT / "data" / "36495748"
 SITE = ROOT / "audits" / "36495748"
