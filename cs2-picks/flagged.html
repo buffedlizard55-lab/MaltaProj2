@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Irregularities and unverified items in the verified CS2 pick desk.">
+<title>Flagged for review · CS2 picks, independently verified</title>
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<style>
+:root{--bg:#0b1220;--card:#121c2e;--card2:#0f1727;--ink:#e8eefc;--dim:#93a4c3;--line:#25334d;
+--good:#7ef0b2;--warn:#ffd479;--bad:#ff9aa2;--accent:#7cc4ff;--market:#7ef0b2;--model:#7cc4ff;--bound:#ffd479}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:880px;margin:0 auto;padding:12px 14px 72px}
+header.top{position:sticky;top:0;z-index:5;background:rgba(11,18,32,.97);border-bottom:1px solid var(--line)}
+header.top .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;
+max-width:880px;margin:0 auto;padding:8px 14px}
+.brand{font-weight:800;font-size:15px;letter-spacing:.2px}
+.brand span{color:var(--good)}
+nav{display:flex;flex-wrap:wrap;gap:6px}
+nav a{display:inline-flex;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:999px;
+text-decoration:none;color:var(--ink);font-size:13px;min-height:40px}
+nav a.active{background:var(--good);color:#0b2417;border-color:var(--good);font-weight:800}
+h1{font-size:clamp(1.35rem,5vw,1.8rem);line-height:1.22;margin:12px 0 6px}
+h2{font-size:1.15rem;margin:26px 0 8px}
+h3{font-size:1rem;margin:16px 0 6px}
+p{margin:8px 0}
+.eyebrow{color:var(--dim);text-transform:uppercase;letter-spacing:.09em;font-size:11px;margin:16px 0 2px}
+.lede{color:var(--dim)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0}
+@media(min-width:640px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px}
+.tile b{display:block;font-size:26px;line-height:1.1}
+.tile small{color:var(--dim);font-size:12px}
+.cta{display:grid;gap:10px;margin:14px 0}
+@media(min-width:640px){.cta{grid-template-columns:1fr 1fr}}
+.cta a{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);
+border:1px solid var(--line);border-radius:14px;padding:15px 16px;text-decoration:none;color:var(--ink);
+font-weight:700;min-height:58px}
+.cta a.primary{background:var(--good);color:#08200f;border-color:var(--good)}
+.cta a span.small{font-weight:400;color:inherit;opacity:.78;font-size:12px}
+.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:800;
+border:1px solid var(--line);white-space:nowrap}
+.badge.market{color:#08200f;background:var(--market);border-color:var(--market)}
+.badge.model{color:#04121f;background:var(--model);border-color:var(--model)}
+.badge.bound{color:#2a1d00;background:var(--bound);border-color:var(--bound)}
+.badge.flag{color:var(--warn);background:transparent;border-color:var(--warn)}
+.badge.verify{color:#08200f;background:var(--good);border-color:var(--good)}
+.badge.api{color:var(--dim);background:transparent;border-color:var(--dim)}
+.match-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px;margin:12px 0}
+.match-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.match-title{font-weight:800;font-size:1.05rem}
+.match-meta{color:var(--dim);font-size:12.5px;margin-top:2px}
+.pick-line{margin:12px 0 8px;padding:10px 12px;border-radius:12px;background:#0b1f16;border:1px solid #1e4a2e;
+font-weight:800}
+.pick-line small{font-weight:400;color:var(--dim)}
+.bar-row{display:grid;grid-template-columns:1fr;gap:6px;margin:8px 0}
+.barline{display:grid;grid-template-columns:minmax(0,1fr) 74px;gap:10px;align-items:center}
+.barname{font-size:13.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.barwrap{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1fr) 74px;gap:10px;align-items:center}
+.bar{height:14px;border-radius:999px;background:#1a253a;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:999px}
+.bar.a i{background:var(--accent)}
+.bar.b i{background:var(--good)}
+.bar.alt i{background:var(--dim)}
+.pct{font-variant-numeric:tabular-nums;font-weight:800;text-align:right;font-size:14px}
+.pct.dim{color:var(--dim);font-weight:600}
+.src{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.src a{display:inline-flex;align-items:center;font-size:12px;padding:7px 11px;border:1px solid var(--line);
+border-radius:999px;text-decoration:none;min-height:36px;color:var(--ink)}
+.src a:hover{border-color:var(--accent)}
+.flags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.muted{color:var(--dim);font-size:12.5px}
+.callout{border-left:4px solid var(--warn);background:#1a1608;padding:11px 13px;border-radius:8px;margin:12px 0}
+.callout.good{border-color:var(--good);background:#0b1f16}
+.callout.bad{border-color:var(--bad);background:#221010}
+ul,ol{padding-left:20px}
+li{margin:6px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.07em}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tbl-scroll{overflow-x:auto}
+footer{color:var(--dim);font-size:12px;border-top:1px solid var(--line);margin-top:30px;padding-top:14px}
+code{background:#0a1322;padding:1px 5px;border-radius:5px;font-size:12.5px}
+@media(max-width:639px){
+ table thead{display:none}
+ table,tbody,tr,td,th{display:block;width:100%}
+ table tr{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;padding:10px 12px}
+ table td{border:0;padding:4px 0}
+ td[data-l]{display:flex;gap:10px;justify-content:space-between;align-items:baseline}
+ td[data-l]::before{content:attr(data-l);color:var(--dim);font-size:11px;text-transform:uppercase;
+ letter-spacing:.06em;flex:0 0 38%}
+ td.num{text-align:right}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="bar">
+<div class="brand">CS2 picks <span>· verified</span></div>
+<nav><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="sources.html">Sources</a><a href="method.html">Method</a><a href="flagged.html" class="active">Flagged</a><a href="../index.html">Site home</a></nav>
+</div></header>
+<main class="wrap" id="flagged">
+
+<p class="eyebrow">Flagged for review</p>
+<h1>Irregularities, citation notes and unverified items</h1>
+<p class="lede">Nothing here blocks publication. Each item links its source so it can be checked manually.</p>
+<ol><li><strong>[R1] Valve publishes two rows for the same organisation (different rosters)</strong><br>1081597 benched gods v TitanFlow; 1081600 Donstu v Banda chuya; 1082792 HOTU v The Huns. Both rows are in standings_global_2026_10_05.md with different points. This build applies the published roster rule (full five, newest latest_match_date) and keeps the alternative in the row data, so the choice is auditable. <a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md' target='_blank' rel='noopener'>source ↗</a></li><li><strong>[R2] Two collectors disagree on the same fixture and one leaves rows blank</strong><br>data/fe803b80/board.json stores 14 open rows with the top-level pick/probability set to null while their own &#x27;line&#x27; or &#x27;model&#x27; block holds the numbers, and it also keeps a Kalshi quote whose sides are inverted (Turma do Pagode labelled at 0.78 when the exchange prices Imperial there). This build reads raw decimals and re-derives every no-vig price itself, and it does not import that inverted quote. <code>data/fe803b80/board.json</code></li><li><strong>[R3] Primary board resolves duplicate Valve rows the other way round</strong><br>Both collectors mishandle Valve&#x27;s duplicate rows, in opposite ways. data/f7279a54/board.json flags &#x27;Banda chuya&#x27;, &#x27;The Huns&#x27; and &#x27;benched gods&#x27; as ambiguous and therefore publishes no rating for those sides at all; data/fe803b80/board.json instead silently picks the older/lower rows (Banda Chuya #373 402 pts, The Huns #213 701 pts, benched gods #329 516 pts), which flips the Banda Chuya pick. bo3.gg&#x27;s squad page for Banda Chuya lists exactly Valve&#x27;s five-man row (#165, 801 pts, latest match 2026-10-04), and Valve&#x27;s own latest_match_date column agrees, so the five-man row is the active one. Both the selected and the alternative values are published on every affected row. <code>data/fe803b80/board.json + https://bo3.gg/teams/banda-chuya</code></li><li><strong>[R4] Kalshi market timestamps are shifted against its own rules text</strong><br>Two independent events show the same offset: KXCS2GAME-26OCT211800LNALE&#x27;s rules text says &#x27;Oct 21, 2026 at 6:00 PM EDT&#x27; (22:00Z) while its occurrence_datetime says 2026-10-22T02:00:00Z, and KXCS2GAME-26OCT220100RAVA&#x27;s rules text says &#x27;Oct 22, 2026 at 1:00 AM EDT&#x27; (05:00Z) while its occurrence_datetime says 09:00Z - a +4h shift on both. The rules text agrees with HotSpawn, HLTV and bo3.gg, so the rules-text kick-off is used and the event clocks are treated as unreliable. <a href='https://api.elections.kalshi.com/trade-api/v2/markets?event_ticker=KXCS2GAME-26OCT211800LNALE' target='_blank' rel='noopener'>source ↗</a></li><li><strong>[R5] The previous root landing page was not readable on a phone</strong><br>The root index.html carried 12 header links and ~30 session cards before this session. This build adds one phone-first executive summary at the top of the root page that links straight to the picks, unresolved, sources, method and flagged pages, and keeps the older desks below it as an archive. <a href='https://play.hotspawn.com/lobby' target='_blank' rel='noopener'>source ↗</a></li><li><strong>[R6] Pre-existing test failures on the base commit</strong><br>On the base commit a98242a, `python3 -m unittest discover -s tests` reports 1112 tests with 1 failure and 16 errors (missing modules test_3faf40e8, test_5468b0ba, test_58cb2600, test_5a40690b, test_6ffacd40, test_778756a1, test_94b3d48a, test_98dcfc7e, test_dc741cc1, test_e1b48771, test_ff88c096, test_project, plus four assertion errors in test_69e4c06a / test_current_lines and one in test_verify_7cd2e67a). They are unrelated to this section and are recorded, not hidden. <a href='https://github.com/buffedlizard55-lab/MaltaProj2/commit/a98242a9891a3ef2c44bc3df879711a53e5cd1a8' target='_blank' rel='noopener'>source ↗</a></li><li><strong>[BCE97E13-R1] Slope C=0.0056000078 is derived, not a literal constant</strong><br>The number is not written verbatim in Valve&#x27;s repository. It is the effective logistic slope produced by model/glicko.js (Q = ln(10)/400) combined with model/fit.js defaultGlickoParams.rd = 75 via setFixedRD: C = ln(10)*g(75)/400. Live re-derivation gave 0.005600007780351016 (match=True). Value verified correct; citation should name both files. <a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/glicko.js' target='_blank' rel='noopener'>source ↗</a></li></ol>
+<h2>Per-row verification flags</h2>
+<p>Rows carrying warning badges (single-book quotes, zero-volume exchange ladders, stale VRS snapshot,
+duplicate Valve rows resolved by the published rule) are listed with their evidence on
+<a href="picks.html">All picks</a> and the canonical
+<a href="../everypick/flagged.html">everypick flagged page</a>.</p>
+
+<footer>
+<p>Independent verification desk (session bce97e13). Every probability is re-derived from the stored
+book/exchange decimal odds or the official Valve regional standings; the basis is printed on every
+row. HotSpawn crowd-pick percentages are never used. Unverifiable values stay blank and are flagged.
+Board built 2026-10-21T20:52:47Z.</p>
+</footer>
+</main>
+</body>
+</html>

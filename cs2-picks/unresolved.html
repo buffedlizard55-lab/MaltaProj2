@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Unresolved HotSpawn CS2 picks and the limitations of betting-line and rating origination.">
+<title>Unresolved &amp; limitations · CS2 picks, independently verified</title>
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<style>
+:root{--bg:#0b1220;--card:#121c2e;--card2:#0f1727;--ink:#e8eefc;--dim:#93a4c3;--line:#25334d;
+--good:#7ef0b2;--warn:#ffd479;--bad:#ff9aa2;--accent:#7cc4ff;--market:#7ef0b2;--model:#7cc4ff;--bound:#ffd479}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:880px;margin:0 auto;padding:12px 14px 72px}
+header.top{position:sticky;top:0;z-index:5;background:rgba(11,18,32,.97);border-bottom:1px solid var(--line)}
+header.top .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;
+max-width:880px;margin:0 auto;padding:8px 14px}
+.brand{font-weight:800;font-size:15px;letter-spacing:.2px}
+.brand span{color:var(--good)}
+nav{display:flex;flex-wrap:wrap;gap:6px}
+nav a{display:inline-flex;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:999px;
+text-decoration:none;color:var(--ink);font-size:13px;min-height:40px}
+nav a.active{background:var(--good);color:#0b2417;border-color:var(--good);font-weight:800}
+h1{font-size:clamp(1.35rem,5vw,1.8rem);line-height:1.22;margin:12px 0 6px}
+h2{font-size:1.15rem;margin:26px 0 8px}
+h3{font-size:1rem;margin:16px 0 6px}
+p{margin:8px 0}
+.eyebrow{color:var(--dim);text-transform:uppercase;letter-spacing:.09em;font-size:11px;margin:16px 0 2px}
+.lede{color:var(--dim)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0}
+@media(min-width:640px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px}
+.tile b{display:block;font-size:26px;line-height:1.1}
+.tile small{color:var(--dim);font-size:12px}
+.cta{display:grid;gap:10px;margin:14px 0}
+@media(min-width:640px){.cta{grid-template-columns:1fr 1fr}}
+.cta a{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);
+border:1px solid var(--line);border-radius:14px;padding:15px 16px;text-decoration:none;color:var(--ink);
+font-weight:700;min-height:58px}
+.cta a.primary{background:var(--good);color:#08200f;border-color:var(--good)}
+.cta a span.small{font-weight:400;color:inherit;opacity:.78;font-size:12px}
+.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:800;
+border:1px solid var(--line);white-space:nowrap}
+.badge.market{color:#08200f;background:var(--market);border-color:var(--market)}
+.badge.model{color:#04121f;background:var(--model);border-color:var(--model)}
+.badge.bound{color:#2a1d00;background:var(--bound);border-color:var(--bound)}
+.badge.flag{color:var(--warn);background:transparent;border-color:var(--warn)}
+.badge.verify{color:#08200f;background:var(--good);border-color:var(--good)}
+.badge.api{color:var(--dim);background:transparent;border-color:var(--dim)}
+.match-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px;margin:12px 0}
+.match-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.match-title{font-weight:800;font-size:1.05rem}
+.match-meta{color:var(--dim);font-size:12.5px;margin-top:2px}
+.pick-line{margin:12px 0 8px;padding:10px 12px;border-radius:12px;background:#0b1f16;border:1px solid #1e4a2e;
+font-weight:800}
+.pick-line small{font-weight:400;color:var(--dim)}
+.bar-row{display:grid;grid-template-columns:1fr;gap:6px;margin:8px 0}
+.barline{display:grid;grid-template-columns:minmax(0,1fr) 74px;gap:10px;align-items:center}
+.barname{font-size:13.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.barwrap{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1fr) 74px;gap:10px;align-items:center}
+.bar{height:14px;border-radius:999px;background:#1a253a;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:999px}
+.bar.a i{background:var(--accent)}
+.bar.b i{background:var(--good)}
+.bar.alt i{background:var(--dim)}
+.pct{font-variant-numeric:tabular-nums;font-weight:800;text-align:right;font-size:14px}
+.pct.dim{color:var(--dim);font-weight:600}
+.src{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.src a{display:inline-flex;align-items:center;font-size:12px;padding:7px 11px;border:1px solid var(--line);
+border-radius:999px;text-decoration:none;min-height:36px;color:var(--ink)}
+.src a:hover{border-color:var(--accent)}
+.flags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.muted{color:var(--dim);font-size:12.5px}
+.callout{border-left:4px solid var(--warn);background:#1a1608;padding:11px 13px;border-radius:8px;margin:12px 0}
+.callout.good{border-color:var(--good);background:#0b1f16}
+.callout.bad{border-color:var(--bad);background:#221010}
+ul,ol{padding-left:20px}
+li{margin:6px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.07em}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tbl-scroll{overflow-x:auto}
+footer{color:var(--dim);font-size:12px;border-top:1px solid var(--line);margin-top:30px;padding-top:14px}
+code{background:#0a1322;padding:1px 5px;border-radius:5px;font-size:12.5px}
+@media(max-width:639px){
+ table thead{display:none}
+ table,tbody,tr,td,th{display:block;width:100%}
+ table tr{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;padding:10px 12px}
+ table td{border:0;padding:4px 0}
+ td[data-l]{display:flex;gap:10px;justify-content:space-between;align-items:baseline}
+ td[data-l]::before{content:attr(data-l);color:var(--dim);font-size:11px;text-transform:uppercase;
+ letter-spacing:.06em;flex:0 0 38%}
+ td.num{text-align:right}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="bar">
+<div class="brand">CS2 picks <span>· verified</span></div>
+<nav><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html" class="active">Unresolved</a><a href="sources.html">Sources</a><a href="method.html">Method</a><a href="flagged.html">Flagged</a><a href="../index.html">Site home</a></nav>
+</div></header>
+<main class="wrap" id="unresolved">
+
+<p class="eyebrow">Unresolved picks &amp; limitations</p>
+<h1>What could not be priced, and what the originated lines can and cannot tell you</h1>
+
+<div class="callout good"><p style="margin:0"><strong>0 unresolved matches at this refresh.</strong>
+Every fixture open in the HotSpawn lobby (and the one API-only fixture) has a pick with both win
+probabilities. This section is kept permanently: the next refresh can introduce a fixture that no
+book prices and no rating covers, and it will be listed here as an explicit blank rather than guessed.</p></div>
+<h2>Why a low-tier match may have no bookmaker price</h2>
+<p class="lede">Reference books (Pinnacle, Bovada, Melbet, Thunderpick) and the Kalshi exchange do not
+list most tier-C CS2 fixtures. The resolution ladder is applied in this order and every attempt is
+recorded: <strong>featured book lines → other esportsbooks / betting lines → Kalshi exchange →
+HLTV/bo3.gg identity checks → official Valve VRS origination → labelled bound → explicit unresolved
+blank</strong>. HotSpawn's own crowd percentage is never used.</p>
+<h2>Current limitations</h2>
+<ol><li><strong>Reference books do not price tier-C CS2.</strong> 9 of 14 open fixtures have no price at Bovada, Melbet, Pinnacle, Thunderpick or Kalshi (all five read today). Those rows carry an originated line from Valve&#x27;s official rating table instead of a blank. <a href='https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&amp;status=open&amp;limit=200&amp;with_nested_markets=false' target='_blank' rel='noopener'>source ↗</a></li><li><strong>Originated lines are models, not market prices.</strong> Formula p = 1/(1+exp(-k*C*points_delta)) with Valve&#x27;s published C=0.0056000078 and this project&#x27;s fitted k=0.43077894236569164 (60 market-vs-rating pairs). The fit&#x27;s own mean absolute error is 7.70 percentage points, so treat originated probabilities as +/-8 pp. <a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js' target='_blank' rel='noopener'>source ↗</a></li><li><strong>Valve&#x27;s rating table is 16 days old.</strong> The newest published global table is 2026_10_05; Valve publishes roughly monthly. Promotion/relegation, roster changes and results after 5 Oct are not reflected. Valve rows also carry a latest_match_date per roster, which is published alongside every rating used here. <a href='https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026' target='_blank' rel='noopener'>source ↗</a></li><li><strong>One-sided ratings become bounds, not points.</strong> 3 fixtures have exactly one rated side. The unrated side is at or below Valve&#x27;s published floor (#380, 381 pts), so those rows show &#x27;&gt;=&#x27; on the rated side and &#x27;&lt;=&#x27; on the other. They are directional, not calibrated. <a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md' target='_blank' rel='noopener'>source ↗</a></li><li><strong>Thin exchange book on the one Kalshi-priced fixture.</strong> The Kalshi quote used for Zetta v LOS NINOS has zero traded volume and a 0.16 wide two-way spread (Los Ninos 0.55/0.63, Alianza Lima 0.39/0.47). Our VRS origination and bo3.gg&#x27;s own model both favour the other side, so the row is flagged as a basis conflict and the pick is shown with Lean confidence. <a href='https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211800lnale' target='_blank' rel='noopener'>source ↗</a></li><li><strong>Clock conflicts are not silently joined.</strong> Books occasionally list the same pairing at a different kick-off (e.g. Kalshi&#x27;s Apogee Esports vs UNiTY esports event is priced at 16:30Z while HotSpawn and two other books have 14:00Z). Quotes are joined only when the kick-off agrees within 90 minutes; conflicts are listed on Flagged for review. <a href='https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&amp;status=open&amp;limit=200&amp;with_nested_markets=false' target='_blank' rel='noopener'>source ↗</a></li><li><strong>HotSpawn&#x27;s own listing is not always complete.</strong> Four DFRAG Invitational fixtures render a pick card with no match permalink, and one fixture (Wildcard v DENDELE, 12 Nov) exists in the fixtures API but is not rendered in the lobby and is marked &#x27;started&#x27; months early. It is included here as an API-only row so no fixture is dropped. <a href='https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures' target='_blank' rel='noopener'>source ↗</a></li></ol>
+<h2>Directional bounds (one side unrated)</h2>
+<p>These 3 fixtures have exactly one team in Valve's table. The unrated side is at or
+below Valve's published floor (#380, 381 points), so the rated side is shown as a lower bound
+<code>≥</code> and the other as <code>≤</code> — a direction, not a calibrated point.</p>
+<ul><li>benched gods vs TitanFlow (<a href='../cs2-picks/picks.html#f1081597'>card</a>)</li><li>Ground Zero vs Off Chops (<a href='../cs2-picks/picks.html#f1082858'>card</a>)</li><li>FlyQuest vs Staqued (<a href='../cs2-picks/picks.html#f1082860'>card</a>)</li></ul>
+<h2>What makes a row unresolved</h2>
+<ul>
+ <li>no book or exchange prices the fixture <em>and</em> neither team appears in Valve's official standings;</li>
+ <li>team identity cannot be confirmed across HLTV / bo3.gg / Valve (name or roster mismatch);</li>
+ <li>the only quote fails the kick-off tolerance or has no two-way price;</li>
+ <li>any re-derivation check in <a href="method.html">Method</a> fails — the row is then flagged, never silently changed.</li>
+</ul>
+
+<footer>
+<p>Independent verification desk (session bce97e13). Every probability is re-derived from the stored
+book/exchange decimal odds or the official Valve regional standings; the basis is printed on every
+row. HotSpawn crowd-pick percentages are never used. Unverifiable values stay blank and are flagged.
+Board built 2026-10-21T20:52:47Z.</p>
+</footer>
+</main>
+</body>
+</html>

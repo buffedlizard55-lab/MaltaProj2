@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Source ledger with read times for every verified CS2 pick.">
+<title>Sources · CS2 picks, independently verified</title>
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<style>
+:root{--bg:#0b1220;--card:#121c2e;--card2:#0f1727;--ink:#e8eefc;--dim:#93a4c3;--line:#25334d;
+--good:#7ef0b2;--warn:#ffd479;--bad:#ff9aa2;--accent:#7cc4ff;--market:#7ef0b2;--model:#7cc4ff;--bound:#ffd479}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:880px;margin:0 auto;padding:12px 14px 72px}
+header.top{position:sticky;top:0;z-index:5;background:rgba(11,18,32,.97);border-bottom:1px solid var(--line)}
+header.top .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;
+max-width:880px;margin:0 auto;padding:8px 14px}
+.brand{font-weight:800;font-size:15px;letter-spacing:.2px}
+.brand span{color:var(--good)}
+nav{display:flex;flex-wrap:wrap;gap:6px}
+nav a{display:inline-flex;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:999px;
+text-decoration:none;color:var(--ink);font-size:13px;min-height:40px}
+nav a.active{background:var(--good);color:#0b2417;border-color:var(--good);font-weight:800}
+h1{font-size:clamp(1.35rem,5vw,1.8rem);line-height:1.22;margin:12px 0 6px}
+h2{font-size:1.15rem;margin:26px 0 8px}
+h3{font-size:1rem;margin:16px 0 6px}
+p{margin:8px 0}
+.eyebrow{color:var(--dim);text-transform:uppercase;letter-spacing:.09em;font-size:11px;margin:16px 0 2px}
+.lede{color:var(--dim)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0}
+@media(min-width:640px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px}
+.tile b{display:block;font-size:26px;line-height:1.1}
+.tile small{color:var(--dim);font-size:12px}
+.cta{display:grid;gap:10px;margin:14px 0}
+@media(min-width:640px){.cta{grid-template-columns:1fr 1fr}}
+.cta a{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);
+border:1px solid var(--line);border-radius:14px;padding:15px 16px;text-decoration:none;color:var(--ink);
+font-weight:700;min-height:58px}
+.cta a.primary{background:var(--good);color:#08200f;border-color:var(--good)}
+.cta a span.small{font-weight:400;color:inherit;opacity:.78;font-size:12px}
+.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:800;
+border:1px solid var(--line);white-space:nowrap}
+.badge.market{color:#08200f;background:var(--market);border-color:var(--market)}
+.badge.model{color:#04121f;background:var(--model);border-color:var(--model)}
+.badge.bound{color:#2a1d00;background:var(--bound);border-color:var(--bound)}
+.badge.flag{color:var(--warn);background:transparent;border-color:var(--warn)}
+.badge.verify{color:#08200f;background:var(--good);border-color:var(--good)}
+.badge.api{color:var(--dim);background:transparent;border-color:var(--dim)}
+.match-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px;margin:12px 0}
+.match-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.match-title{font-weight:800;font-size:1.05rem}
+.match-meta{color:var(--dim);font-size:12.5px;margin-top:2px}
+.pick-line{margin:12px 0 8px;padding:10px 12px;border-radius:12px;background:#0b1f16;border:1px solid #1e4a2e;
+font-weight:800}
+.pick-line small{font-weight:400;color:var(--dim)}
+.bar-row{display:grid;grid-template-columns:1fr;gap:6px;margin:8px 0}
+.barline{display:grid;grid-template-columns:minmax(0,1fr) 74px;gap:10px;align-items:center}
+.barname{font-size:13.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.barwrap{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1fr) 74px;gap:10px;align-items:center}
+.bar{height:14px;border-radius:999px;background:#1a253a;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:999px}
+.bar.a i{background:var(--accent)}
+.bar.b i{background:var(--good)}
+.bar.alt i{background:var(--dim)}
+.pct{font-variant-numeric:tabular-nums;font-weight:800;text-align:right;font-size:14px}
+.pct.dim{color:var(--dim);font-weight:600}
+.src{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.src a{display:inline-flex;align-items:center;font-size:12px;padding:7px 11px;border:1px solid var(--line);
+border-radius:999px;text-decoration:none;min-height:36px;color:var(--ink)}
+.src a:hover{border-color:var(--accent)}
+.flags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.muted{color:var(--dim);font-size:12.5px}
+.callout{border-left:4px solid var(--warn);background:#1a1608;padding:11px 13px;border-radius:8px;margin:12px 0}
+.callout.good{border-color:var(--good);background:#0b1f16}
+.callout.bad{border-color:var(--bad);background:#221010}
+ul,ol{padding-left:20px}
+li{margin:6px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.07em}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tbl-scroll{overflow-x:auto}
+footer{color:var(--dim);font-size:12px;border-top:1px solid var(--line);margin-top:30px;padding-top:14px}
+code{background:#0a1322;padding:1px 5px;border-radius:5px;font-size:12.5px}
+@media(max-width:639px){
+ table thead{display:none}
+ table,tbody,tr,td,th{display:block;width:100%}
+ table tr{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;padding:10px 12px}
+ table td{border:0;padding:4px 0}
+ td[data-l]{display:flex;gap:10px;justify-content:space-between;align-items:baseline}
+ td[data-l]::before{content:attr(data-l);color:var(--dim);font-size:11px;text-transform:uppercase;
+ letter-spacing:.06em;flex:0 0 38%}
+ td.num{text-align:right}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="bar">
+<div class="brand">CS2 picks <span>· verified</span></div>
+<nav><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="sources.html" class="active">Sources</a><a href="method.html">Method</a><a href="flagged.html">Flagged</a><a href="../index.html">Site home</a></nav>
+</div></header>
+<main class="wrap" id="sources">
+
+<p class="eyebrow">Sources &amp; read times</p>
+<h1>Every number traces to an openable, timestamped source</h1>
+
+<div class="card">
+ <h3 style="margin-top:0">Official Valve source — live check</h3>
+ <p>Live: <strong>True</strong> · fetched 2026-10-21T20:52:44Z</p>
+ <p>Newest global table: <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">standings_global_2026_10_05.md ↗</a>
+  (380 teams, floor {"standing": 380, "points": 381, "team": "Fruju"})</p>
+ <p>Slope re-derivation: C = 0.005600007780351016
+  (canonical 0.0056000078, match=True)</p>
+</div>
+<div class="tbl-scroll"><table><thead><tr><th>Source</th><th class="num">Rows priced</th><th>Last read (UTC)</th><th>Open</th></tr></thead>
+<tbody><tr><td data-l='Source'>Bovada</td><td class='num' data-l='Rows priced'>2</td><td data-l='Last read (UTC)'>2026-10-21T20:20:11Z</td><td data-l='Open'><a href='https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/bestia-shinden-202610221000' target='_blank' rel='noopener'>bovada.lv ↗</a><br><a href='https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/imperial-turma-do-pagode-202610221000' target='_blank' rel='noopener'>bovada.lv ↗</a></td></tr><tr><td data-l='Source'>Kalshi (regulated prediction-market exchange)</td><td class='num' data-l='Rows priced'>1</td><td data-l='Last read (UTC)'>2026-10-21T19:36:00Z</td><td data-l='Open'><a href='https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211800lnale' target='_blank' rel='noopener'>kalshi.com ↗</a></td></tr><tr><td data-l='Source'>Melbet</td><td class='num' data-l='Rows priced'>3</td><td data-l='Last read (UTC)'>2026-10-21T20:20:12Z</td><td data-l='Open'><a href='https://melbet.com/en/line/esports' target='_blank' rel='noopener'>melbet.com ↗</a></td></tr><tr><td data-l='Source'>Melbet (1xBet platform)</td><td class='num' data-l='Rows priced'>1</td><td data-l='Last read (UTC)'>2026-10-21T19:24:25Z</td><td data-l='Open'><a href='https://melbet.com/en/line/esports' target='_blank' rel='noopener'>melbet.com ↗</a></td></tr><tr><td data-l='Source'>Pinnacle</td><td class='num' data-l='Rows priced'>2</td><td data-l='Last read (UTC)'>2026-10-21T20:20:07Z, 2026-10-21T20:20:08Z</td><td data-l='Open'><a href='https://www.pinnacle.com/en/esports/cs2-hub' target='_blank' rel='noopener'>pinnacle.com ↗</a></td></tr><tr><td data-l='Source'>Thunderpick (published through bo3.gg)</td><td class='num' data-l='Rows priced'>1</td><td data-l='Last read (UTC)'>2026-10-21T19:28:56Z</td><td data-l='Open'><a href='https://bo3.gg/matches/unity-vs-betclic-apogee-esports-22-10-2026' target='_blank' rel='noopener'>bo3.gg ↗</a></td></tr><tr><td data-l='Source'>Thunderpick (via bo3.gg)</td><td class='num' data-l='Rows priced'>2</td><td data-l='Last read (UTC)'>2026-10-21T20:23:56Z</td><td data-l='Open'><a href='https://bo3.gg/matches/bestia-vs-shinden-22-10-2026' target='_blank' rel='noopener'>bo3.gg ↗</a><br><a href='https://bo3.gg/matches/imperial-vs-turma-do-pagode-22-10-2026' target='_blank' rel='noopener'>bo3.gg ↗</a></td></tr><tr><td data-l='Source'>Valve official regional standings</td><td class='num' data-l='Rows priced'>0</td><td data-l='Last read (UTC)'>—</td><td data-l='Open'><a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0031--hotu--dwushka-frontales-kade0-mizu-n0rb3r7.md' target='_blank' rel='noopener'>github.com ↗</a><br><a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0038--1win--artfr0st-ax1le-belchonokk-fame-nafany.md' target='_blank' rel='noopener'>github.com ↗</a><br><a href='https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0052--imperial--chelo-decenty-noway-saadzin-vini.md' target='_blank' rel='noopener'>github.com ↗</a></td></tr></tbody></table></div>
+<p class="muted">Raw HotSpawn lobby capture: 2026-10-21T20:09:07Z
+(play.hotspawn.com/lobby transfer-state + public fixtures API). HotSpawn supplies fixtures and lock
+times only — never probabilities.</p>
+
+<footer>
+<p>Independent verification desk (session bce97e13). Every probability is re-derived from the stored
+book/exchange decimal odds or the official Valve regional standings; the basis is printed on every
+row. HotSpawn crowd-pick percentages are never used. Unverifiable values stay blank and are flagged.
+Board built 2026-10-21T20:52:47Z.</p>
+</footer>
+</main>
+</body>
+</html>

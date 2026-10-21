@@ -999,6 +999,37 @@ archive. If you only open one page, open <a href="everypick/picks.html">All pick
 '''
 
 
+def bce97e13_hero_html():
+    """Independent verification-desk block (session bce97e13).
+
+    Additive hook: reads data/bce97e13/board.json (re-derived every four hours from raw decimal
+    odds and the live official Valve standings) and links to the phone-first cs2-picks/ desk.
+    Returns an empty string when the board is absent so the shared build never breaks.
+    """
+    board = load("data/bce97e13/board.json") or {}
+    s = board.get("summary") or {}
+    if not s:
+        return ""
+    return f'''<!-- bce97e13:start -->
+<section id="bce97e13-verified-desk" aria-labelledby="bce-title"
+ style="background:#0f1727;border:1px solid #25334d;border-radius:16px;padding:16px 18px;margin:12px 0">
+<p class="eyebrow" style="color:#7cc4ff;margin-top:0">Independent verification desk · re-derived from source every four hours</p>
+<h2 id="bce-title" style="margin:6px 0;font-size:clamp(1.1rem,4.5vw,1.35rem)">
+<a href="cs2-picks/picks.html" style="color:#e8eefc;text-decoration:none">&#10003; {s.get('verified_rows', 0)}/{s.get('open_fixtures_total', 0)} open CS2 picks independently verified — simplest mobile view →</a></h2>
+<p style="margin:6px 0 10px;font-size:14px">Every probability is re-derived here from book/exchange decimal odds or the official
+Valve standings table. <strong>{s.get('market_rows', 0)} market</strong> ·
+<strong>{s.get('originated_vrs_rows', 0)} Valve-rating model</strong> ·
+<strong>{s.get('bound_rows', 0)} directional bounds</strong> ·
+<strong>{s.get('unresolved', 0)} unresolved</strong>.
+<a href="cs2-picks/index.html">Executive summary</a> ·
+<a href="cs2-picks/unresolved.html">Unresolved &amp; limitations</a> ·
+<a href="cs2-picks/sources.html">Sources</a> ·
+<a href="cs2-picks/method.html">Method</a> ·
+<a href="cs2-picks/flagged.html">Flagged</a></p>
+</section>
+<!-- bce97e13:end -->'''
+
+
 def canonical_home(pick_board):
     """Render the strict canonical snapshot and clearly dated secondary boards."""
     pick_summary = pick_board.get("summary") or {}
@@ -1394,7 +1425,8 @@ def main() -> int:
     top_table, _ = fixtures_table(open_fixtures)
     pick_board = load("data/c64a5e19/board.json")
     idx_body = (pickcenter_hero_html() + pickboard_front_html()
-                + everypick_hero_html() + canonical_home(pick_board))
+                + everypick_hero_html() + bce97e13_hero_html()
+                + canonical_home(pick_board))
     write("day-one.html", page("Day-one review & contrarian strategy",
           "14 October 2026 · Thunderpick World Championship · source review 15 October 2026",
           day_one_review(), generated_at, active="day-one.html"))
