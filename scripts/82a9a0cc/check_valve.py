@@ -27,18 +27,34 @@ def get_json(url: str):
 def main() -> int:
     now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     tree_url = API + "/git/trees/main?recursive=1"
-    tree = get_json(tree_url)
-    pattern = re.compile(r"^live/2026/standings_global_(\d{4}_\d{2}_\d{2})\.md$")
-    choices = sorted((m.group(1), item["path"]) for item in tree.get("tree", [])
-                     if (m := pattern.match(item.get("path", ""))))
-    if not choices:
-        raise RuntimeError("No official 2026 global standings file found")
-    snapshot, path = choices[-1]
-    content_url = API + "/contents/" + path
-    meta = get_json(content_url)
-    commits_url = API + "/commits?" + urllib.parse.urlencode({"path": path, "per_page": 1})
-    commits = get_json(commits_url)
-    commit = commits[0] if commits else {}
+    try:
+        tree = get_json(tree_url)
+        pattern = re.compile(r"^live/2026/standings_global_(\d{4}_\d{2}_\d{2})\.md$")
+        choices = sorted((m.group(1), item["path"]) for item in tree.get("tree", [])
+                         if (m := pattern.match(item.get("path", ""))))
+        if not choices:
+            raise RuntimeError("No official 2026 global standings file found")
+        snapshot, path = choices[-1]
+        content_url = API + "/contents/" + path
+        meta = get_json(content_url)
+        commits_url = API + "/commits?" + urllib.parse.urlencode({"path": path, "per_page": 1})
+        commits = get_json(commits_url)
+        commit = commits[0] if commits else {}
+    except Exception as exc:
+        # A workflow installation token can be rejected across repositories; never relabel a
+        # failed request as a fresh verification. Keep the last successful official check visible.
+        try:
+            retained = json.loads(OUT.read_text())
+        except (OSError, ValueError):
+            raise RuntimeError(f"official Valve check failed with no retained verification: {exc}") from exc
+        if not retained.get("page_url") or not retained.get("blob_sha"):
+            raise RuntimeError(f"official Valve check failed and retained verification is incomplete: {exc}") from exc
+        retained["last_attempt_utc"] = now
+        retained["last_attempt_status"] = "retained_previous_after_network_error"
+        retained["last_attempt_error"] = f"{type(exc).__name__}: {exc}"
+        OUT.write_text(json.dumps(retained, indent=2) + "\n")
+        print(f"WARNING: retained prior official Valve verification after network error: {exc}")
+        return 0
     result = {
         "checked_utc": now,
         "repository": "ValveSoftware/counter-strike_regional_standings",

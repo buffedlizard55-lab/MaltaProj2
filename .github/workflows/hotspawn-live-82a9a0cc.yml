@@ -42,10 +42,10 @@ jobs:
           python3 scripts/f7279a54/collect.py
           python3 scripts/f7279a54/build.py
       - name: Verify the latest official Valve snapshot and capture read-only inputs
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+        # Deliberately unauthenticated: this queries ValveSoftware's public repository, while the
+        # workflow installation token is scoped to this repository and can be rejected cross-repo.
         run: |
-          python3 scripts/82a9a0cc/check_valve.py
+          env -u GITHUB_TOKEN -u GH_TOKEN python3 scripts/82a9a0cc/check_valve.py
           python3 scripts/82a9a0cc/capture.py
       - name: Resolve every supported gap and render the mobile dashboard
         run: |
