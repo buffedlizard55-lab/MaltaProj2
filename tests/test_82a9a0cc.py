@@ -4,6 +4,7 @@ import math
 import re
 import subprocess
 import sys
+import tempfile
 import unittest
 from html.parser import HTMLParser
 from pathlib import Path
@@ -13,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "82a9a0cc"
 SITE = ROOT / "hotspawn-live"
 sys.path.insert(0, str(ROOT / "scripts" / "82a9a0cc"))
-from core import SOURCE_WEIGHTS, market_consensus, quote_probability, vrs_probability  # noqa: E402
+from hotspawn_core import SOURCE_WEIGHTS, market_consensus, quote_probability, vrs_probability  # noqa: E402
 
 
 class AuditParser(HTMLParser):
@@ -160,6 +161,21 @@ class HotSpawnLiveDataTests(unittest.TestCase):
         self.assertEqual(self.board["inventory"]["hotspawn_probability_policy"],
                          "never use crowd pick ownership as a probability, prior, feature, or tiebreak")
 
+    def test_failed_official_recheck_retains_and_labels_last_success(self):
+        spec = importlib.util.spec_from_file_location("valve_check_82a9a0cc", ROOT / "scripts" / "82a9a0cc" / "check_valve.py")
+        module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as tmp:
+            module.OUT = Path(tmp) / "official_check.json"
+            retained = self.source["official_check"].copy()
+            module.OUT.write_text(json.dumps(retained))
+            module.get_json = lambda _url: (_ for _ in ()).throw(OSError("simulated block"))
+            self.assertEqual(module.main(), 0)
+            after = json.loads(module.OUT.read_text())
+            self.assertEqual(after["checked_utc"], retained["checked_utc"])
+            self.assertEqual(after["blob_sha"], retained["blob_sha"])
+            self.assertEqual(after["last_attempt_status"], "retained_previous_after_network_error")
+            self.assertIn("simulated block", after["last_attempt_error"])
+
 
 class HotSpawnLiveSiteTests(unittest.TestCase):
     @classmethod
@@ -223,6 +239,27 @@ class HotSpawnLiveSiteTests(unittest.TestCase):
         for script in ("check_valve.py", "capture.py", "resolve.py", "build.py"):
             self.assertIn(script, workflow)
         self.assertIn("tests/test_82a9a0cc.py", workflow)
+
+    def test_root_handoff_is_first_and_legacy_primary_contract_is_preserved(self):
+        text = (ROOT / "index.html").read_text()
+        live = text.index('id="hotspawn-live-front"')
+        archive = text.index('id="older-boards"')
+        primary = text.index('<div class="actions primary-actions">')
+        self.assertLess(live, archive)
+        self.assertLess(archive, primary)
+        self.assertEqual(text.count('class="btn btn-primary"'), 1)
+        self.assertIn('class="btn btn-primary" href="picks-every-match/index.html"', text)
+        for target in ("hotspawn-live/index.html", "hotspawn-live/picks.html",
+                       "hotspawn-live/unresolved.html", "hotspawn-live/sources.html"):
+            self.assertIn(f'href="{target}"', text[:primary])
+        archived = text[archive:primary]
+        self.assertIn('id="start-front"', archived)
+        self.assertIn('href="climb/index.html"', archived)
+
+    def test_live_directory_is_in_pages_stage(self):
+        stage = (ROOT / "scripts" / "stage_site.py").read_text()
+        self.assertIn("'hotspawn-live'", stage)
+        self.assertIn("scripts/82a9a0cc/build.py", stage)
 
 
 def html_escape(value):
