@@ -45,7 +45,7 @@ jobs:
       - name: Install the only third-party dependency used by the audit
         run: pip install -r scripts/requirements.txt
 
-      - name: Probe the two drift-prone repository tests (observation only)
+      - name: Probe full repository suite in a detached worktree (observation only)
         run: python3 scripts/82e71372/ci_probe.py
 
       - name: Run the independent audit (full external link checks on this runner)

@@ -889,20 +889,20 @@ def main():
     if ci_sidecar.exists():
         ci.update(json.loads(ci_sidecar.read_text(encoding="utf-8")))
     else:
-        ci["known_red_tests"] = [
-            "tests.test_e1b48771.Coverage.test_exactly_the_open_hotspawn_fixtures_and_nothing_else",
-            "tests.test_verify_7cd2e67a.PublishedArithmetic.test_live_board_picks_and_edges_reproduce"
-        ]
-        ci["note"] = ("Both reds are stale-board drift in closed sessions' scopes and are inside "
-                      "open PR #215; pickaudit neither edits nor masks them. The CI runner re-probes "
-                      "them on every audit run and writes ci-status.json.")
+        ci["known_red_tests"] = []
+        ci["note"] = ("No ci-status.json sidecar found; ci_probe.py writes one on every workflow "
+                      "and local audit run. An empty red list here means 'not probed', not 'green'.")
     if ci.get("known_red_tests"):
+        reds = "; ".join(ci["known_red_tests"])
+        refs = ["data/82e71372/ci-status.json"]
+        if any("e1b48771" in t or "verify_7cd2e67a" in t for t in ci["known_red_tests"]):
+            refs.insert(0, "https://github.com/buffedlizard55-lab/MaltaProj2/pull/215")
         finding("PA-CI-01", "high",
-                f"{len(ci['known_red_tests'])} pre-existing repository test(s) are red",
-                "Stale fixture sets / stale published arithmetic in data/e1b48771 and data/live; "
-                "reproduced on pristine main. pickaudit documents but never patches another scope.",
-                ["https://github.com/buffedlizard55-lab/MaltaProj2/pull/215",
-                 "data/82e71372/ci-status.json"])
+                f"{len(ci['known_red_tests'])} repository test(s) are red",
+                f"Full-suite probe ({ci.get('checked_utc', 'unknown time')}) red tests: {reds}. "
+                "Each belongs to its owning session's scope (root integration block or published "
+                "board); pickaudit documents and re-probes but never patches another scope.",
+                refs)
     else:
         finding("PA-CI-01", "info", "The previously red repository tests now pass",
                 "Both drift tests are green in the latest probe.",

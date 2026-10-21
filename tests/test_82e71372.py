@@ -193,7 +193,14 @@ class CiStateContract(unittest.TestCase):
         ci = audit_doc["ci"]
         self.assertIn("known_red_tests", ci)
         self.assertIsInstance(ci["known_red_tests"], list)
-        self.assertLessEqual(len(ci["known_red_tests"]), 2)
+        # the audit's red list must mirror the full-suite probe exactly
+        self.assertEqual(
+            ci["known_red_tests"],
+            ci["full_suite"]["failures_and_errors"],
+        )
+        ci_finding = next(f for f in audit_doc["findings"] if f["id"] == "PA-CI-01")
+        self.assertEqual(ci_finding["severity"] == "high",
+                         bool(ci["known_red_tests"]))
         ids = {f["id"] for f in audit_doc["findings"]}
         self.assertIn("PA-CI-01", ids)  # green or red, the state must be published
 
