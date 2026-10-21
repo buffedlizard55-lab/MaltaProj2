@@ -3,6 +3,7 @@ import copy
 import importlib.util
 import json
 import math
+import re
 import sys
 import unittest
 from datetime import timedelta
@@ -204,6 +205,33 @@ class Pages(unittest.TestCase):
         t=(B.SITE/'index.html').read_text()
         for name in ('picks.html','unresolved.html','flagged.html','sources.html','inventory.html'):self.assertIn(f'href="{name}"',t)
         self.assertIn('Unresolved picks &amp; limitations',t)
+
+
+class LiveLobbySchemaReplay(unittest.TestCase):
+    def setUp(self):
+        spec = importlib.util.spec_from_file_location('live_7adc_parser', ROOT / 'scripts/7adc7718/collect.py')
+        self.collect = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.collect)
+
+    def test_actual_official_fixture_fields_replay_without_crowd(self):
+        raw = (ROOT / 'docs/evidence/probe/lobby.txt').read_bytes()
+        rows, links, week = self.collect.parse_live_hotspawn_lobby(raw)
+        state = json.loads(re.search(r'<script[^>]*id="ng-state"[^>]*>(.*?)</script>', raw.decode(), re.S)[1])
+        captured = next(v['b'] for v in state.values() if isinstance(v, dict) and str(v.get('u', '')).endswith('/api/v1/fixtures'))
+        expected = {r['fixture_id']: r for f in captured if (r := B.CORE.fixture_from_hotspawn(f))}
+        self.assertEqual({r['fixture_id'] for r in rows}, set(expected))
+        self.assertEqual(len(rows), 86)
+        for row in rows:
+            original = expected[row['fixture_id']]
+            for key in ('team_a', 'team_b', 'start_utc', 'lock_utc', 'points', 'competition'):
+                self.assertEqual(row[key], original[key], (row['fixture_id'], key))
+            self.assertEqual(row['sport'], 'cs2')
+        self.assertNotIn('picked_percent', json.dumps(rows))
+        self.assertEqual(week['weekId'], 270)
+
+    def test_unrecognized_live_schema_is_not_a_fresh_empty_inventory(self):
+        html = b'<script id="ng-state">{"x":{"u":"https://example.test/api/v1/fixtures","b":[{"id":"1","sport_alias":"cs2"}]}}</script>'
+        self.assertIsNone(self.collect.parse_live_hotspawn_lobby(html))
 
 
 class PublishedStrictDashboard(unittest.TestCase):

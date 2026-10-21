@@ -83,13 +83,17 @@ def parse_live_hotspawn_lobby(html_bytes: bytes) -> tuple[list[dict], dict[str, 
     except ValueError:
         return None
     permalinks: dict[str, str] = {}
-    for url in re.findall(r"https://www\.hotspawn\.com/matches/[a-z0-9-]+-(\d+)", text):
-        full = re.search(rf"https://www\.hotspawn\.com/matches/[a-z0-9-]+-{url}\b", text)
-        if full:
-            permalinks[str(url)] = full.group(0)
+    from html import unescape
+    decoded = unescape(text).replace("\\/", "/")
+    for full, fid in re.findall(r"(https://www\.hotspawn\.com/matches/[a-z0-9-]+-(\d+))", decoded):
+        permalinks[fid] = full
 
     fixtures_raw = None
     week_meta = {}
+    for val in state.values():
+        if (isinstance(val, dict) and str(val.get("u", "")).endswith("/api/v1/week-prizes/widget")
+                and isinstance(val.get("b"), dict)):
+            week_meta = {k: val["b"].get(k) for k in ("weekId", "sportAlias", "status", "weekStartUtc", "weekEndUtc", "cutoffUtc")}
     for val in state.values():
         if isinstance(val, dict) and str(val.get("u", "")).endswith("/api/v1/fixtures"):
             body = val.get("b") or {}
@@ -102,24 +106,36 @@ def parse_live_hotspawn_lobby(html_bytes: bytes) -> tuple[list[dict], dict[str, 
     if fixtures_raw is None:
         return None
 
+    if not isinstance(fixtures_raw, list):
+        return None
+
+    def source_time(value):
+        if value is None or isinstance(value, bool):
+            return None
+        try:
+            if isinstance(value, (int, float)) or str(value).isdigit():
+                return datetime.fromtimestamp(float(value) / 1000.0, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+            stamp = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+            return stamp.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ") if stamp.tzinfo else None
+        except (ValueError, TypeError, OverflowError, OSError):
+            return None
+
     normalized = []
     for fx in fixtures_raw:
+        if not isinstance(fx, dict):
+            return None
         fid = str(fx.get("id") or fx.get("fixture_id") or "")
         if not fid:
             continue
         cat = fx.get("category") if isinstance(fx.get("category"), dict) else {}
-        sport = str(cat.get("slug") or cat.get("name") or fx.get("game") or fx.get("sport") or "").lower()
+        sport = str(fx.get("sport_alias") or cat.get("slug") or cat.get("name") or fx.get("game") or fx.get("sport") or "").lower()
         t_home = fx.get("teamA") if isinstance(fx.get("teamA"), dict) else (fx.get("homeTeam") if isinstance(fx.get("homeTeam"), dict) else None)
         t_away = fx.get("teamB") if isinstance(fx.get("teamB"), dict) else (fx.get("awayTeam") if isinstance(fx.get("awayTeam"), dict) else None)
-        ta = t_home.get("name") if t_home else fx.get("team_a")
-        tb = t_away.get("name") if t_away else fx.get("team_b")
+        ta = fx.get("participants0_name") or (t_home.get("name") if t_home else fx.get("team_a"))
+        tb = fx.get("participants1_name") or (t_away.get("name") if t_away else fx.get("team_b"))
         tour = fx.get("tournament") if isinstance(fx.get("tournament"), dict) else {}
-        start_val = fx.get("scheduledStartTime") or fx.get("start_utc") or fx.get("scheduled_start_time")
-        lock_val = fx.get("locksAt") or fx.get("lock_utc")
-        if isinstance(start_val, (int, float)):
-            start_val = datetime.fromtimestamp(start_val / 1000.0, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-        if isinstance(lock_val, (int, float)):
-            lock_val = datetime.fromtimestamp(lock_val / 1000.0, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        start_val = source_time(fx.get("scheduled_start_time") or fx.get("scheduledStartTime") or fx.get("start_utc"))
+        lock_val = source_time(fx.get("lock_time") or fx.get("locksAt") or fx.get("lock_utc"))
         # Deliberately strip any crowd pick percentages from normalized fixture records.
         normalized.append({
             "fixture_id": fid,
@@ -127,15 +143,18 @@ def parse_live_hotspawn_lobby(html_bytes: bytes) -> tuple[list[dict], dict[str, 
             "status": str(fx.get("status") or "").lower(),
             "competition": fx.get("tournamentName") or tour.get("name") or fx.get("competition") or fx.get("competition_name") or "",
             "tier": fx.get("tier") or tour.get("tier"),
-            "points": fx.get("points"),
+            "points": fx.get("offered_points", fx.get("points")),
             "start_utc": start_val,
-            "lock_utc": lock_val or start_val,
+            "lock_utc": lock_val,
             "team_a": ta,
             "team_b": tb,
             "seen_in": ["lobby_page", "fixtures_api"] if fid in permalinks else ["fixtures_api"],
             "hotspawn_url": permalinks.get(fid, LOBBY_URL),
             "permalink_verified": fid in permalinks,
         })
+    cs2 = [row for row in normalized if row["sport"] == "cs2"]
+    if not cs2 or any(not row["team_a"] or not row["team_b"] or not row["start_utc"] for row in cs2):
+        return None  # Preserve the last valid inventory with its original observation time.
     return normalized, permalinks, week_meta
 
 
