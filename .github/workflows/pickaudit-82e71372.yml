@@ -1,0 +1,83 @@
+name: pickaudit (82e71372)
+
+# Session 82e71372 / PICKAUDIT. Independent verification of every published HotSpawn CS2
+# pick desk: coverage, arithmetic, official Valve points, source links, reconciliation,
+# mobile checks. Refreshes every eight hours with no manual input.
+#
+# Scope guard: this workflow writes only data/82e71372/** and pickaudit/**. It never edits
+# another session's board, script or page.
+
+on:
+  push:
+    branches: ['arena/82e71372-maltaproj2', 'main']
+    paths:
+      - 'scripts/82e71372/**'
+      - 'tests/test_82e71372.py'
+      - '.github/workflows/pickaudit-82e71372.yml'
+  schedule:
+    - cron: '23 */8 * * *'   # every eight hours at minute 23
+  workflow_run:
+    workflows: ['everypick (5f903db4)', 'hotspawn-picks (f3e5123c)', 'fullpicks (51197e5b)',
+                'board (fe803b80)', 'ourline (f7279a54)', 'update-data']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: pickaudit-82e71372-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install the only third-party dependency used by the audit
+        run: pip install -r scripts/requirements.txt
+
+      - name: Probe full repository suite in a detached worktree (observation only)
+        run: python3 scripts/82e71372/ci_probe.py
+
+      - name: Run the independent audit (full external link checks on this runner)
+        env:
+          PICKAUDIT_LIVE_LINKS: '1'
+        run: python3 scripts/82e71372/audit.py
+
+      - name: Render the mobile audit dashboard
+        run: python3 scripts/82e71372/site.py
+
+      - name: Re-audit against the rendered pages (self-check must be clean)
+        env:
+          PICKAUDIT_LIVE_LINKS: '1'
+        run: python3 scripts/82e71372/audit.py && python3 scripts/82e71372/site.py
+
+      - name: Contract tests
+        run: python3 -m unittest tests.test_82e71372 -v
+
+      - name: Commit and push (rebase before every push; scope-guarded paths only)
+        env:
+          REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config user.name "pickaudit-bot (82e71372)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/82e71372 pickaudit
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "pickaudit(82e71372): refresh independent pick verification $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then exit 0; fi
+            sleep $((attempt * 7))
+          done
+          exit 1
