@@ -6501,3 +6501,24 @@ day-5 number to one of those reads. Nothing on the section is derived from a Hot
 - **Method:** `everypick/method.html` (formula, k fit, duplicate-roster rule, join tolerance).
 - **Auto-refresh:** `.github/workflows/everypick-5f903db4.yml` every 4h (`17 */4`), plus `hotspawn-picks`, `board`, `ourline`, `lobby`, `fullpicks`, `fullboard` — all 4–8h.
 - **Verification:** every row has an https source link; if a value can't be confirmed it's blank+flagged (currently 0 blanks, but policy enforced). No hallucinated odds, no HotSpawn crowd as probability.
+
+---
+
+---
+
+# Coordination — session `2cadfaf2` (Complete HotSpawn CS2 inventory + picks for every listed fixture, one mobile pick centre, unresolved & limitations section, live 4-hourly collector, merge-gate repair, 2026-10-21)
+
+Session: `2cadfaf2` (environment-fixed branch `arena/2cadfaf2-maltaproj2`; the environment forbids a
+`session-<id>/<task>` branch, so scope is separated by directory as in every prior session).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-2CADFAF2-PICKCENTER: (1) inventory **all 78 CS2 fixtures the lobby lists for week 273** (not just the 13 open) and give every one of them a pick + both win probabilities where a verified basis exists; (2) publish a separate **Unresolved picks & limitations** section and surface it in the executive summary; (3) one phone-first canonical desk `pickcenter/` (executive summary with in-site links to every updated picks list, mobile cards, bottom tab bar) replacing the multi-hub confusion at the root; (4) a **live** collector (`scripts/2cadfaf2/collect.py`) that actually re-fetches the HotSpawn lobby + Pinnacle/Bovada/Melbet/Kalshi + official Valve VRS every 4 hours instead of re-rendering a frozen snapshot; (5) repair the red merge gate (`pages.yml` → `Validate preserved evidence and arithmetic`) so the site can publish; (6) line-by-line verification, tests, PR → `main`, merge, Pages verification. | in progress | 2cadfaf2 | 2026-10-21 20:15 | `pickcenter/**`, `scripts/2cadfaf2/**`, `data/2cadfaf2/**`, `tests/test_2cadfaf2.py`, `.github/workflows/pickcenter-2cadfaf2.yml`, `COORDINATION.md` (this section only). Read-only inputs: `data/f7279a54/**`, `data/f3e5123c/**`, `data/5f903db4/**`, `data/19d6c262/**`, `scripts/f7279a54/**` (imported as a library), all other session dirs. Integration (additive, at close-out): `scripts/build_site.py` (one hero + NAV row + stamp entry), `scripts/stage_site.py` (one directory), root `index.html` regeneration, `README.md` one row. Merge-gate repair (documented, minimal): `scripts/live/build_live.py` tie rule + regenerated `data/live/board.json`/`verification.json`/`live/*.html`. |
+
+## Log — 2cadfaf2
+- 2026-10-21 20:15 UTC: Read `COORDINATION.md` (head + all `# Coordination — session` sections) and the
+  freshest boards before any edit. No live claim covers `pickcenter/**`, `scripts/2cadfaf2/**` or
+  `data/2cadfaf2/**`; the newest sections (`f3e5123c`, `5f903db4`, `51197e5b`, `a5c08976`) are closed
+  out, and the two open PRs (#215 `pickdesk/` + `scripts/907e9435/**`, #219 `everypick/**`) claim
+  non-overlapping directories. Claimed `T-2CADFAF2-PICKCENTER` with that non-overlapping scope and am
+  pushing this claim before any other edit.
