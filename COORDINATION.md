@@ -5,7 +5,7 @@ Session: `5f903db4` (environment-fixed branch `arena/5f903db4-maltaproj2`; the e
 
 | Task | Status | Owner | Claimed UTC | File scope |
 |---|---|---|---|---|
-| T-5F903DB4-EVERYPICK: (1) give every open HotSpawn CS2 fixture a pick and both win probabilities, including the low-tier fixtures no book prices, using the required ladder (market lines first → exchange/secondary books → HLTV/bo3.gg identity checks → documented official-Valve-VRS origination → labelled bound → explicit unresolved row); (2) publish a separate **Unresolved picks & limitations** section and surface it in the executive summary; (3) rebuild the front door as one phone-first executive summary with in-site links to the updated picks lists; (4) refresh automatically every 4 hours with no manual input; (5) line-by-line repo review with irregularities flagged; (6) tests, integration, PR → `main`, merge, Pages verification. | in progress | 5f903db4 | 2026-10-21 19:35 | `everypick/**`, `scripts/5f903db4/**`, `data/5f903db4/**`, `tests/test_5f903db4.py`, `.github/workflows/everypick-5f903db4.yml`, `COORDINATION.md` (this section only). Read-only inputs: `data/f7279a54/**`, `data/fe803b80/**`, `data/19d6c262/vrs_global.json`, every other session directory. Integration (additive, at close-out): `scripts/build_site.py` (one hook + NAV entries), root `index.html` (regenerated), `README.md` (one row). |
+| T-5F903DB4-EVERYPICK: (1) give every open HotSpawn CS2 fixture a pick and both win probabilities, including the low-tier fixtures no book prices, using the required ladder (market lines first → exchange/secondary books → HLTV/bo3.gg identity checks → documented official-Valve-VRS origination → labelled bound → explicit unresolved row); (2) publish a separate **Unresolved picks & limitations** section and surface it in the executive summary; (3) rebuild the front door as one phone-first executive summary with in-site links to the updated picks lists; (4) refresh automatically every 4 hours with no manual input; (5) line-by-line repo review with irregularities flagged; (6) tests, integration, PR → `main`, merge, Pages verification. | done — see close-out below | 5f903db4 | 2026-10-21 19:35 | `everypick/**`, `scripts/5f903db4/**`, `data/5f903db4/**`, `tests/test_5f903db4.py`, `.github/workflows/everypick-5f903db4.yml`, `COORDINATION.md` (this section only). Read-only inputs: `data/f7279a54/**`, `data/fe803b80/**`, `data/19d6c262/vrs_global.json`, every other session directory. Integration (additive, at close-out): `scripts/build_site.py` (one hook + NAV entries), root `index.html` (regenerated), `README.md` (one row). |
 
 ## Log — 5f903db4
 - 2026-10-21 19:35 UTC: Read `COORDINATION.md` end to end first. No live claim covers `everypick/**`,
@@ -26,6 +26,43 @@ Session: `5f903db4` (environment-fixed branch `arena/5f903db4-maltaproj2`; the e
   Melbet `763696446` (`UNiTY` / `Apogee Esports`) and Thunderpick `132327` (`UNiTY` / `Betclic`) for
   fixture `1082882`, and Kalshi `KXCS2GAME-26OCT211800LNALE` for fixture `1082837` (HotSpawn "Zetta" =
   exchange "Alianza Lima Esports").
+
+- 2026-10-21 19:48 UTC: **Integration + PR.** `scripts/build_site.py` gained one additive hook
+  (`everypick_hero_html()`, ~line 826) that renders the phone-first start-here card at the top of the
+  landing page, plus `.everypick-cta` CSS and `flex-wrap` on `.brand`; `scripts/5f903db4/stage_root.py`
+  rewrites only the `<!-- everypick:start/end -->` block, so the root page stays a generated artefact.
+  Branch history was rebuilt on top of `origin/main` so the PR touched only this session's 20 paths
+  (the earlier rebase had replayed 69 foreign regenerated pages from other sessions — stripped).
+  **PR #214** https://github.com/buffedlizard55-lab/MaltaProj2/pull/214 — 22 files, +8608/−18, with
+  coverage table, sourcing ladder, page map, automation, integration notes, verification and R1–R6.
+- 2026-10-21 19:50 UTC: **CI: one pre-existing failing step, no new failures.** `build` fails at
+  "Validate preserved evidence and arithmetic" (`python -m unittest discover -s tests`): 1234 tests,
+  exactly 2 red — `tests/test_e1b48771.py::Coverage::test_exactly_the_open_hotspawn_fixtures_and_nothing_else`
+  and `tests/test_verify_7cd2e67a.py::PublishedArithmetic::test_live_board_picks_and_edges_reproduce`.
+  Both reproduce on a pristine `origin/main` worktree (`/tmp/mainchk`, since removed) — other sessions'
+  boards drifted after their last regeneration, this branch adds nothing to them. Re-running
+  `scripts/e1b48771/build.py` locally was tried and made that suite worse (2F+1E, it needs live
+  captures), so the working tree was reverted to `main`'s copies and the failures are left documented
+  as **R6** on `everypick/flagged.html` rather than patched inside another session's scope.
+  `everypick (5f903db4)` and `climb` workflows on the branch are green.
+- 2026-10-21 19:51 UTC: **Merged.** `gh pr merge 214 --merge` → merge commit
+  `ece85e9f68fef64baf0bca79d44b754d456e5310` (19:51:15Z), plus the bot's own
+  `everypick(5f903db4): refresh every-match picks 2026-10-21T19:51Z`. **Pages built** (`builds/latest`
+  = `built` for `ebd65f8`, 19:51:58Z). Live pages verified:
+  https://buffedlizard55-lab.github.io/MaltaProj2/everypick/ (executive summary, 13 open + 1 API-only,
+  14 picks, 5 market, 0 unresolved), `/everypick/picks.html` (full rows + row-by-row evidence),
+  `/everypick/unresolved.html`, `/everypick/sources.html`, `/everypick/method.html`,
+  `/everypick/flagged.html`, and the root https://buffedlizard55-lab.github.io/MaltaProj2/ which now
+  opens with the "START HERE · every open HotSpawn CS2 match · refreshed every four hours" card and
+  six one-tap buttons (All picks leading). Board rebuilt after the merge from the same snapshot:
+  **14 rows · 14 picks · 5 market · 6 originated · 3 bounds · 0 unresolved**, unchanged.
+- 2026-10-21 19:53 UTC: **Close-out.** `T-5F903DB4-EVERYPICK` done. Standing items handed over:
+  (1) the merge gate `build` job stays red until another session refreshes `data/e1b48771/` and
+  `data/verify_7cd2e67a/` arithmetic (R6); (2) the ladder's step 2 (esportsbook name-variant joins)
+  still has to be re-done by hand each refresh for `UNiTY`/`Apogee Esports` and the `Zetta` =
+  `Alianza Lima Esports` alias — `scripts/5f903db4/build.py` now carries both joins as documented
+  aliases, so they survive the 4-hourly run; (3) three rows are bounds, not points, because Valve
+  publishes no rating for one side — the `≥`/`≤` marks must not be stripped by any downstream board.
 
 # Coordination — session `51197e5b` (Resolve a pick for EVERY open HotSpawn CS2 match — esportsbook/exchange + official Valve VRS + bo3.gg resolution, mobile-first dashboard & repo audit, 2026-10-21)
 
