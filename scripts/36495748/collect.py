@@ -157,7 +157,7 @@ def kalshi_probe(want: list[dict]) -> dict:
         batch = (data or {}).get("events") or []
         events.extend(batch)
         cursor = (data or {}).get("cursor") or ""
-        if not batch or not cursor:
+        if not cursor:
             break
     tickers_seen = sorted({ev.get("event_ticker") for ev in events if ev.get("event_ticker")})
     diag = {"two_market_events": 0, "name_matches": [], "start_mismatches": []}
