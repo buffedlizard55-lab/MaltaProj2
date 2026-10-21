@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from core import (  # noqa: E402
+from hotspawn_core import (  # noqa: E402
     SOURCE_WEIGHTS,
     SPORTSBOOKS,
     make_line,
