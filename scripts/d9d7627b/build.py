@@ -362,7 +362,8 @@ Earlier boards remain live, e.g.
 <a href="{'picks-every-match/index.html' if base else '../picks-every-match/index.html'}">picks-every-match</a>,
 <a href="{'start/index.html' if base else '../start/index.html'}">start</a>,
 <a href="{'desk/index.html' if base else '../desk/index.html'}">desk</a>,
-<a href="{'ourline/index.html' if base else '../ourline/index.html'}">ourline</a> — they are
+<a href="{'ourline/index.html' if base else '../ourline/index.html'}">ourline</a>,
+<a href="{'cs2/index.html' if base else '../cs2/index.html'}">cs2</a> — they are
 dated research snapshots, superseded by the picks above. The collector snapshot that seeds
 this board is documented on the <a href="{base}method.html">method page</a>.</p>
 """

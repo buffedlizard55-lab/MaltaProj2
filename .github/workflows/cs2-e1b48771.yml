@@ -1,0 +1,90 @@
+name: cs2 picks (e1b48771)
+
+# Session e1b48771 / T-CS2-EVERY-MATCH.
+#
+# Keeps https://buffedlizard55-lab.github.io/MaltaProj2/cs2/ current: every HotSpawn CS2 fixture with a
+# pick, both win probabilities and a source on every row, plus the separate Unresolved & limitations,
+# Flagged for review and Method pages, and the phone-first landing page that links them.
+#
+# Where the fixtures come from: the automated collector behind data/fe803b80/board.json re-reads the
+# HotSpawn lobby (play.hotspawn.com/lobby) and its public fixtures API every 30 minutes and prices each
+# fixture from external bookmakers, exchanges and Thunderpick-via-bo3.gg, falling back to the official
+# Valve regional standings. This workflow rebuilds the published section from the freshest committed
+# capture every 4 hours (inside the requested 4-8 hour window), and immediately after that collector
+# finishes. It never invents a number: a fixture without a supported line stays blank and is listed on
+# the Unresolved page.
+#
+# Scope: this workflow writes only cs2/**, data/e1b48771/** and the root index.html landing block it
+# owns (through scripts/e1b48771/refresh_landing.py). Other sessions' pages are never rewritten.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/e1b48771/**'
+      - 'scripts/build_site.py'
+      - 'tests/test_e1b48771.py'
+      - '.github/workflows/cs2-e1b48771.yml'
+  schedule:
+    - cron: '23 */4 * * *'
+  workflow_run:
+    workflows: ['board (fe803b80)']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: cs2-e1b48771-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: scripts/requirements.txt
+
+      - run: pip install -r scripts/requirements.txt
+
+      - name: Rebuild cs2/ from the freshest HotSpawn capture
+        run: python3 scripts/e1b48771/build.py
+
+      - name: Contract tests (coverage, arithmetic, sources, mobile)
+        run: python3 -m unittest tests.test_e1b48771 -v
+
+      - name: Refresh the landing page only
+        run: python3 scripts/e1b48771/refresh_landing.py
+
+      - name: Commit and push (rebase before every push; drops nothing outside this scope)
+        env:
+          REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+        run: |
+          set -euo pipefail
+          git config user.name "cs2-board-bot (e1b48771)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          # Only this session's outputs are staged. Everything else the renderer may have touched is
+          # restored, so another session's board can never be published from this job.
+          git add cs2 data/e1b48771 index.html
+          git checkout -- . || true
+          if git diff --cached --quiet; then
+            echo "no change to publish"
+            exit 0
+          fi
+          git commit -m "cs2(e1b48771): refresh full-coverage picks $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          for attempt in 1 2 3; do
+            git pull --rebase origin "${REF_NAME}" && git push origin "HEAD:${REF_NAME}" && break
+            echo "push attempt ${attempt} failed, retrying"; sleep 5
+          done
+          # GitHub Pages is configured in legacy mode (branch main, "/"), so the push above is what
+          # publishes the site; no extra dispatch is needed and no workflow token is spent on it.
