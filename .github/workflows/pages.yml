@@ -35,6 +35,8 @@ jobs:
           python scripts/907e9435/build.py
           python scripts/build_site.py
       - name: Validate preserved evidence and arithmetic
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: python -m unittest discover -s tests -v
       - name: Verify independent audit handoffs
         run: |
@@ -77,6 +79,8 @@ jobs:
           run_check python scripts/7adc7718/build.py
           run_check python scripts/build_site.py
       - name: Recheck generated site and every source-linked row
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: python -m unittest discover -s tests -v
       - name: Browser smoke tests
         run: |
