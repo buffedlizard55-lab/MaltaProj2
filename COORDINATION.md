@@ -6522,3 +6522,11 @@ Session: `2cadfaf2` (environment-fixed branch `arena/2cadfaf2-maltaproj2`; the e
   out, and the two open PRs (#215 `pickdesk/` + `scripts/907e9435/**`, #219 `everypick/**`) claim
   non-overlapping directories. Claimed `T-2CADFAF2-PICKCENTER` with that non-overlapping scope and am
   pushing this claim before any other edit.
+## Session 741a34ac — independent coverage/freshness integration audit (2026-10-21)
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-741A34AC-AUDIT: independent row-by-row current-lobby coverage, freshness and source-evidence audit; no duplicate picks board; phone-readable audit + Flagged for Review; scheduled audit and regression tests; coordinate integration/deployment with active PRs #215 and #219. | in progress | 741a34ac | 2026-10-21 20:14 UTC | `scripts/741a34ac/**`, `data/741a34ac/**`, `audits/741a34ac/**`, `tests/test_741a34ac.py`, `.github/workflows/coverage-audit-741a34ac.yml`; COORDINATION.md this section only. Shared landing/staging changes requested from #215, not edited here. |
+
+- Read the complete coordination file with a local ownership scan and inspected open PR scopes before starting. Active #215 owns the front door/Pages repair and #219 owns evidence-safe everypick fallbacks. Do not duplicate their changes. Retain environment-fixed branch `arena/741a34ac-maltaproj2` (higher-priority platform constraint).
+- Direct non-GitHub source access is restricted in this sandbox; do not claim a fresh HotSpawn/HLTV/book read from committed snapshots. A hosted collection may provide a newer retained observation, explicitly timestamped.
