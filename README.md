@@ -14,6 +14,8 @@ are now resolved without guessing — an evidence-gated `ex-` roster join (HLTV 
 same opponent and kick-off) and a roster-verified alias (bo3.gg "Alianza Lima Esports" = Zetta) that lets the Elo rung
 originate a clearly labelled directional line.
 
+**🧭📱 DEEP-RESEARCH DESK (2026-10-21, session `36495748`): [Executive summary — every-match resolution ladder](https://buffedlizard55-lab.github.io/MaltaProj2/audits/36495748/) — a phone-first desk with a pick and both win probabilities for every open HotSpawn CS2 match (20/20 priced at build: 11 market · 2 exchange · 5 official-VRS model · 2 directional), plus a separate [Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/audits/36495748/unresolved.html) section and [Flagged for review](https://buffedlizard55-lab.github.io/MaltaProj2/audits/36495748/flagged.html) (includes two upstream fixtures priced off disbanded rosters — one pick flips). Fallback research (HLTV, Kalshi, bo3.gg, official Valve standings) resolved the low-tier fixtures the books don't cover. Session `36495748`; refreshed every ~4 hours.**
+
 **📱 Start here — [Every HotSpawn CS2 match has a pick](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/) (session `e1b48771`).**
 One page per match with both win probabilities, the pick and the source behind it; a separate
 [Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/unresolved.html) page,

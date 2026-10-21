@@ -1,0 +1,96 @@
+name: exec desk every-match ladder (36495748)
+
+# Refreshes the session-36495748 desk (audits/36495748/): a pick, or a documented reason,
+# for every open HotSpawn CS2 match. Scope guard: this workflow may only write
+# audits/36495748/** and data/36495748/**. HotSpawn supplies fixtures only - the ladder
+# never derives a probability from HotSpawn crowd/ownership data.
+
+on:
+  push:
+    branches: ['main', 'arena/36495748-maltaproj2']
+    paths:
+      - 'scripts/36495748/**'
+      - 'data/36495748/overrides.json'
+      - 'tests/test_36495748.py'
+      - '.github/workflows/36495748-refresh.yml'
+  schedule:
+    - cron: '23 */4 * * *'
+  workflow_run:
+    workflows: ['ourline (f7279a54)', 'update-data', 'board (fe803b80)']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: exec36495748-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Cadence gate (workflow_run only - refresh if last desk build is >= 3.5h old)
+        id: gate
+        run: |
+          python3 - <<'PY'
+          import datetime as dt, json, os, pathlib
+          ev = os.environ.get('GITHUB_EVENT_NAME', '')
+          run_it = True
+          if ev == 'workflow_run':
+              p = pathlib.Path('data/36495748/board.json')
+              if p.exists():
+                  ts = json.loads(p.read_text()).get('built_utc', '')
+                  if ts:
+                      age = (dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(ts.replace('Z', '+00:00'))).total_seconds()
+                      run_it = age >= 12600
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+              fh.write(f"should_run={'true' if run_it else 'false'}\n")
+          print(f"event={ev} should_run={run_it}")
+          PY
+      - name: Probe fallbacks for fixtures the strict board leaves unpriced (Kalshi, bo3.gg, HLTV status, Valve file check)
+        if: steps.gate.outputs.should_run == 'true'
+        run: python3 scripts/36495748/collect.py
+        continue-on-error: true
+      - name: Build desk (ladder + verification gates; a failed gate refuses to publish)
+        if: steps.gate.outputs.should_run == 'true'
+        run: python3 scripts/36495748/build.py
+      - name: Contract tests
+        if: steps.gate.outputs.should_run == 'true'
+        run: python3 -m unittest tests.test_36495748 -v 2>&1 | tee exec36495748_tests.log
+      - name: Commit and push (test-gated, rebase before every push, scoped paths only)
+        if: steps.gate.outputs.should_run == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+        run: |
+          set -euo pipefail
+          git config user.name "exec-desk-bot (36495748)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          rm -f exec36495748_tests.log
+          git add audits/36495748 data/36495748
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "exec(36495748): refresh every-match ladder desk $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$BRANCH" && git push origin "HEAD:refs/heads/$BRANCH"; then
+              if [ "$BRANCH" = "main" ]; then
+                gh workflow run pages.yml --ref main || echo "pages dispatch failed"
+              fi
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            git fetch origin "$BRANCH" && git rebase "origin/$BRANCH" 2>/dev/null || true
+            sleep $((attempt * 9))
+          done
+          echo "could not rebase onto $BRANCH after 5 attempts; leaving commit on runner"
+          exit 1
