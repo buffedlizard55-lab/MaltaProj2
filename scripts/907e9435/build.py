@@ -679,9 +679,18 @@ Valve's own details file. The alternative entries and their dates are shown on e
         + ", ".join(esc(f.split(':', 1)[1]) for f in r['flags'] if f.startswith('not_in_vrs')))
     }</ul>
 
-<h2>4. Conflicting listings at the same kickoff ({len(conflicts)})</h2>
+<h2>4. Conflicting listings at the same kickoff ({len(conflicts)} at this capture)</h2>
 <ul>{rlist([c for r in conflicts for c in r['conflicts']],
             lambda c: f"<a href='{esc(c['url'])}' rel='noopener'>{esc(c['source_name'])}</a> — {esc(c['note'])}")}</ul>
+<details open><summary>Dated observation from the retained 2026-10-21T19:24:28Z capture</summary>
+<ul><li><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211800lnale" rel="noopener">Kalshi
+KXCS2GAME-26OCT211800LNALE</a> priced “Los Ninos vs Alianza Lima Esports” for the 2026-10-21T22:00:00Z
+kickoff, whose own rules text places it in the same CCT South America event that HotSpawn lists as
+“Zetta vs LOS NINOS” for the same minute. A parallel board also reports a bo3.gg page naming Alianza
+Lima for that slot. Two independent external sources therefore disagree with the HotSpawn pairing, so
+the pick for fixture 1082837 is withheld instead of guessing which fixture settles. The market was no
+longer two-sided at the next capture, so this section can show zero items on a later build — the
+observation is dated, not a live claim.</li></ul></details>
 
 <h2>5. Prices rejected by the join gate ({len(rejected)})</h2>
 <details><summary>Why a price was not used</summary>
