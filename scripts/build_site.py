@@ -622,6 +622,7 @@ def page(title, subtitle, body, generated_at, active=None, banner=None, hero=Fal
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)} · HotSpawn Pick'ems betting-line analysis</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>

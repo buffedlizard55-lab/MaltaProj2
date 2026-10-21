@@ -235,6 +235,13 @@ class LiveLobbySchemaReplay(unittest.TestCase):
 
 
 class PublishedStrictDashboard(unittest.TestCase):
+    def test_root_icon_is_real_declared_and_staged(self):
+        icon = (ROOT / 'favicon.ico').read_bytes()
+        self.assertEqual(icon[:6], b'\x00\x00\x01\x00\x01\x00')
+        self.assertGreater(len(icon), 1000)
+        self.assertIn('href="favicon.ico"', (ROOT / 'index.html').read_text())
+        self.assertIn("shutil.copy2(ROOT/'favicon.ico', OUT/'favicon.ico')", (ROOT / 'scripts/stage_site.py').read_text())
+
     def setUp(self):
         spec = importlib.util.spec_from_file_location('cbf_deployment_check', ROOT / 'scripts/cbf92764/check_deployment.py')
         self.check = importlib.util.module_from_spec(spec)
