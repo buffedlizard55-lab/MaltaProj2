@@ -77,4 +77,6 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
       - name: Verify actual public dashboard
-        run: python scripts/check_deployment.py
+        run: |
+          python scripts/check_deployment.py
+          python scripts/cbf92764/check_deployment.py

@@ -205,4 +205,28 @@ class Pages(unittest.TestCase):
         for name in ('picks.html','unresolved.html','flagged.html','sources.html','inventory.html'):self.assertIn(f'href="{name}"',t)
         self.assertIn('Unresolved picks &amp; limitations',t)
 
+
+class PublishedStrictDashboard(unittest.TestCase):
+    def setUp(self):
+        spec = importlib.util.spec_from_file_location('cbf_deployment_check', ROOT / 'scripts/cbf92764/check_deployment.py')
+        self.check = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.check)
+        self.report = json.loads((ROOT / 'data/cbf92764/report.json').read_text())
+        self.pages = {name: (ROOT / 'dashboard' / (name + '.html')).read_text() for name in self.check.NAMES}
+        self.root = (ROOT / 'index.html').read_text()
+
+    def test_live_contract_against_checked_in_pages(self):
+        self.check.verify(self.report, self.pages, self.root)
+        workflow = (ROOT / '.github/workflows/pages.yml').read_text()
+        self.assertIn('python scripts/cbf92764/check_deployment.py', workflow)
+
+    def test_live_contract_rejects_missing_rows_and_false_replay(self):
+        broken = copy.deepcopy(self.report)
+        broken['provider_replay']['failures'] = ['deliberate corrupted source']
+        with self.assertRaises(AssertionError):
+            self.check.verify(broken, self.pages, self.root)
+        self.pages['inventory'] = self.pages['inventory'].replace('id="m', 'id="lost-m')
+        with self.assertRaises(AssertionError):
+            self.check.verify(self.report, self.pages, self.root)
+
 if __name__=='__main__':unittest.main()
