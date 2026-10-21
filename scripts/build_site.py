@@ -72,17 +72,16 @@ def pct(value):
 # Keep the primary navigation focused. Preserved parallel-session work remains
 # available from Research archive rather than crowding every mobile header.
 NAV = [
-    # 82a9a0cc + e1b48771 integration: one strict lobby-live route leads; the parallel expanded
-    # API board remains directly reachable without exceeding the inherited 12-link mobile cap.
+    # Union 7adc7718 + 82a9a0cc + d9d7627b + e1b48771 within the 12-link mobile cap.
     ("index.html", "Home"),
+    ("lobby/picks.html", "CS2 Lobby Picks"),
+    ("lobby/unresolved.html", "Unresolved & Limits"),
+    ("lobby/flagged.html", "Flagged"),
     ("hotspawn-live/index.html", "📱 Live board"),
-    ("hotspawn-live/picks.html", "All live picks"),
-    ("hotspawn-live/unresolved.html", "Limits"),
-    ("hotspawn-live/sources.html", "Live sources"),
+    ("hotspawn-cs2/index.html", "CS2 Board"),
     ("cs2/picks.html", "Expanded API board"),
     ("picks-every-match/index.html", "Canonical board"),
     ("picks-every-match/unresolved.html", "Canonical unresolved"),
-    ("picks-every-match/method.html", "Canonical method"),
     ("day-one.html", "Day one"),
     ("flagged.html", "Site flags"),
     ("research.html", "Archive"),
@@ -622,6 +621,49 @@ def source_health_table(odds_evidence, probe_evidence):
     return table(["Source", "Probed URL", "Result", "Response preview"], out)
 
 
+def lobby_front_html():
+    """7adc7718: Mobile-first Executive Summary for the live auto-updating CS2 Lobby Picks suite."""
+    b = load("data/7adc7718/board.json") or {}
+    s = b.get("summary") or {}
+    if not s:
+        return ""
+    cal = b.get("calibration") or {}
+    rows = b.get("matches") or []
+    unresolved = [r for r in rows if r.get("resolution_tier") == "unresolved_blank"]
+    unres_items = "".join(
+        f'<li><a href="lobby/unresolved.html#m-{esc(r.get("fixture_id"))}"><strong>'
+        f'{esc(r.get("team_a"))} vs {esc(r.get("team_b"))}</strong></a> '
+        f'({esc(r.get("competition"))}, {esc(fmt_time(r.get("start_utc")))}) &mdash; '
+        f'<strong>Blank / Unverified</strong> (<a href="{esc(r.get("hltv_url"))}" rel="noopener">Official HLTV</a>)</li>'
+        for r in unresolved
+    ) or "<li>0 blank open matches at current capture &mdash; full limitations documented on <a href=\"lobby/unresolved.html\">Unresolved &amp; Limitations</a>.</li>"
+    rescued = (s.get("rescue_exchange") or 0) + (s.get("rescue_vrs_model") or 0)
+    return f"""
+<div class="hero-card" id="lobby-7adc7718-front">
+<p class="eyebrow">Auto-Updated Every 4 Hours &middot; Week {esc(s.get('week_id'))} Live CS2 Pick&rsquo;em Executive Summary &middot; {esc(fmt_time(b.get('fixture_snapshot_utc')))}</p>
+<h2 id="lobby-summary-title">HotSpawn CS2 Lobby &mdash; Verified Win Probabilities &amp; Picks</h2>
+<p><strong>{esc(s.get('resolved_with_pick'))} of {esc(s.get('open_matches'))} open CS2 matches ({esc(s.get('coverage_pct'))}%)</strong>
+have verified team win probabilities and recommended picks across <strong>{esc(s.get('featured_market'))} featured sportsbook matches</strong>
+and <strong>{esc(rescued)} rescued low-tier matches</strong> (HLTV + Kalshi order books + empirical Oct 21 Valve VRS line,
+<code>&beta;={esc(cal.get('beta'))}</code>). <strong>{esc(s.get('unresolved_blank'))} match</strong> has no verifiable opponent rating or external odds
+and is left <strong>explicitly blank</strong> and flagged on <a href="lobby/flagged.html">Flagged for Review</a>.
+<strong>0% HotSpawn crowd share weight.</strong></p>
+<div class="hero-actions">
+<a class="btn btn-hero" href="lobby/picks.html"><span><strong>All {esc(s.get('open_matches'))} Open CS2 Picks</strong> &middot; mobile probabilities, picks &amp; official sources</span><span>&rarr;</span></a>
+<a class="btn" href="lobby/index.html"><span><strong>Lobby Executive Summary</strong> &middot; category hub &amp; KPI breakdown</span><span>&rarr;</span></a>
+<a class="btn" href="lobby/featured.html"><span><strong>Featured Sportsbook Picks ({esc(s.get('featured_market'))})</strong> &middot; Pinnacle / Bovada / Melbet no-vig</span><span>&rarr;</span></a>
+<a class="btn" href="lobby/low-tier.html"><span><strong>Rescued Low-Tier Picks ({esc(rescued)})</strong> &middot; HLTV + Kalshi + Valve VRS</span><span>&rarr;</span></a>
+<a class="btn" href="lobby/unresolved.html"><span><strong>Unresolved Picks &amp; Limitations ({esc(s.get('unresolved_blank'))} blank)</strong> &middot; unverified rows &amp; structural limits</span><span>&rarr;</span></a>
+<a class="btn" href="lobby/flagged.html"><span><strong>Flagged for Review ({esc(s.get('flagged_items'))})</strong> &middot; every irregularity with official links</span><span>&rarr;</span></a>
+<a class="btn" href="lobby/inventory.html"><span><strong>Full Lobby Inventory ({esc(s.get('cs2_total_in_week'))})</strong> &middot; reverse-engineered Week-{esc(s.get('week_id'))} slate</span><span>&rarr;</span></a>
+<a class="btn" href="lobby/methodology.html"><span><strong>4-Tier Methodology</strong> &middot; zero crowd contamination &amp; 4h cron</span><span>&rarr;</span></a>
+</div>
+<h3 style="margin-top:14px">Unresolved Picks &amp; Limitations (Executive Summary Notice)</h3>
+<ul class="plain">{unres_items}</ul>
+<p class="note">Limitations: HotSpawn crowd pick shares are strictly excluded from every probability; primary sportsbooks skip unranked academy/regional qualifiers; Valve VRS points measure prior roster history rather than map vetoes or stand-ins; and any match where an opponent is unranked with zero external book/exchange markets is left blank rather than guessed. Full analysis: <a href="lobby/unresolved.html">Unresolved Picks &amp; Limitations</a>.</p>
+</div>"""
+
+
 def cs2_front_html(*, archived=False):
     """e1b48771: the parallel expanded-API CS2 pick board.
 
@@ -768,8 +810,12 @@ roster investigation are on the <a href="day4/twc-review.html">day 1–3 review<
 <div class="hero-card">
 <p class="eyebrow">CS2 Pick’em dashboard · Executive summary</p>
 <h1 id="summary-title">Live CS2 picks, both win probabilities, every lobby match.</h1>
-<p class="muted">The strict current-lobby board is first. Parallel API coverage and dated desks remain preserved below.</p>
+<p class="muted">Verified Week-273 CS2 lobby picks, probabilities, unresolved limitations, and flagged source audits are first below.</p>
+{lobby_front_html()}
 {hotspawn_live_front_html()}
+<p class="note">🎯 <a href="hotspawn-cs2/index.html"><strong>Consolidated VRS-Model Board (d9d7627b)</strong></a> &mdash;
+<a href="hotspawn-cs2/picks.html">all picks</a> &middot; <a href="hotspawn-cs2/unresolved.html">unresolved</a> &middot;
+<a href="hotspawn-cs2/flagged.html">flagged</a> &middot; <a href="hotspawn-cs2/method.html">method</a>.</p>
 <details class="archive" id="older-boards"><summary>Parallel expanded-API board and earlier desks</summary>
 {cs2_front_html(archived=True)}
 {start_front_html()}
@@ -1304,7 +1350,11 @@ www.hotspawn.com (search returns seasons 1–4 only): identity unresolved, flagg
 </ul>
 """
     write("flagged.html", page("Flagged for review", "Unverified rows, irregularities and source failures.",
-                               flagged_body, generated_at, active="flagged.html"))
+                               '<p class="note"><strong>Current Week-273 Flagged for Review Ledger:</strong> '
+                               'See <a href="lobby/flagged.html"><strong>lobby/flagged.html</strong></a> for all '
+                               '11 live source-linked irregularities (unverified blank rows, slug reversals, '
+                               'core rebrands, single-book divergence, and API ghosts).</p>' + flagged_body,
+                               generated_at, active="flagged.html"))
 
     # --------------------------------------------------------- probabilities (session 188aaa4f)
     # Complete inventory, but only the fresh primary-bookmaker pipeline can supply a pick.

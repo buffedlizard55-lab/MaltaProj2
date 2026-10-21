@@ -32,9 +32,14 @@ _subprocess.run([_sys.executable, str(ROOT/'scripts/e1b48771/build.py')], check=
 # 82a9a0cc strict live-lobby board: render only from its retained, audited board so staged HTML and
 # machine data remain byte-for-value aligned. Collection stays in its isolated four-hour workflow.
 _subprocess.run([_sys.executable, str(ROOT/'scripts/82a9a0cc/build.py')], check=True)
+# 7adc7718 lobby/ full CS2 pick'em probability & pick suite: re-render from the freshest capture +
+# verified official ledger before staging, so published lobby/* pages always match staged data.
+_subprocess.run([_sys.executable, str(ROOT/'scripts/7adc7718/collect.py')], check=False)
+_subprocess.run([_sys.executable, str(ROOT/'scripts/7adc7718/resolve.py')], check=False)
+_subprocess.run([_sys.executable, str(ROOT/'scripts/7adc7718/build.py')], check=False)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','today','desk','finals','day5','finalday','start','climb','now','everymatch','cs2','hotspawn-live'):  # cs2: e1b48771; hotspawn-live: 82a9a0cc; other entries remain additive
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','today','desk','finals','day5','finalday','start','climb','now','everymatch','cs2','hotspawn-live','hotspawn-cs2','lobby'):  # lobby: 7adc7718; hotspawn-cs2: d9d7627b; hotspawn-live: 82a9a0cc; cs2: e1b48771 (additive entries)
 # 'finals' added by session 782adb47 (TWC Day-5 finals desk), additive single entry: root NAV +
 # landing front door link finals/index.html, so the artifact must carry the directory.
 # 'day5' added by session 7900154b (TWC 2026 day-5 final desk + every-match picks), additive

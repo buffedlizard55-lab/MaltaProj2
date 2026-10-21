@@ -1,5 +1,18 @@
 #!/usr/bin/env python3
 """One-off seed importer (session d9d7627b).
+import importlib.util as _ilu, sys as _sys
+from pathlib import Path as _Path
+def _load_d9(name):
+    key = f"d9d7627b_{name}"
+    if key in _sys.modules:
+        return _sys.modules[key]
+    p = _Path(__file__).resolve().parent / f"{name}.py" if (_Path(__file__).resolve().parent / f"{name}.py").exists() else _Path(__file__).resolve().parents[1] / "scripts" / "d9d7627b" / f"{name}.py"
+    spec = _ilu.spec_from_file_location(key, p)
+    mod = _ilu.module_from_spec(spec)
+    _sys.modules[key] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
 
 The build sandbox cannot reach bookmaker/HotSpawn hosts, so the first publish is seeded
 from the freshest committed collector snapshot in this repo (session f7279a54, collected
@@ -15,7 +28,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import core  # noqa: E402
+core = _load_d9('core')
 
 ROOT = Path(__file__).resolve().parents[2]
 SRC = ROOT / "data" / "f7279a54"

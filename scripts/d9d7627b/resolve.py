@@ -1,5 +1,18 @@
 #!/usr/bin/env python3
 """Resolver for the HotSpawn CS2 every-match picks board (session d9d7627b).
+import importlib.util as _ilu, sys as _sys
+from pathlib import Path as _Path
+def _load_d9(name):
+    key = f"d9d7627b_{name}"
+    if key in _sys.modules:
+        return _sys.modules[key]
+    p = _Path(__file__).resolve().parent / f"{name}.py" if (_Path(__file__).resolve().parent / f"{name}.py").exists() else _Path(__file__).resolve().parents[1] / "scripts" / "d9d7627b" / f"{name}.py"
+    spec = _ilu.spec_from_file_location(key, p)
+    mod = _ilu.module_from_spec(spec)
+    _sys.modules[key] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
 
 Reads `data/d9d7627b/snapshot.json`, applies the published resolution chain to every
 fixture, and writes `data/d9d7627b/board.json` (+ appends calibration observations).
@@ -25,7 +38,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import core  # noqa: E402
+core = _load_d9('core')
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "d9d7627b"
