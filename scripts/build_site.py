@@ -945,8 +945,8 @@ and <strong>{esc(rescued)} rescued low-tier matches</strong> (HLTV + Kalshi orde
 <code>&beta;={esc(cal.get('beta'))}</code>). <strong>{esc(s.get('unresolved_blank'))} match</strong> has no verifiable opponent rating or external odds
 and is left <strong>explicitly blank</strong> and flagged on <a href="lobby/flagged.html">Flagged for Review</a>.
 <strong>0% HotSpawn crowd share weight.</strong></p>
-<div class="hero-actions">
-<a class="btn btn-hero" href="lobby/picks.html"><span><strong>All {esc(s.get('open_matches'))} Open CS2 Picks</strong> &middot; mobile probabilities, picks &amp; official sources</span><span>&rarr;</span></a>
+<div class="desk-actions">
+<a class="btn" href="lobby/picks.html"><span><strong>All {esc(s.get('open_matches'))} Open CS2 Picks</strong> &middot; mobile probabilities, picks &amp; official sources</span><span>&rarr;</span></a>
 <a class="btn" href="lobby/index.html"><span><strong>Lobby Executive Summary</strong> &middot; category hub &amp; KPI breakdown</span><span>&rarr;</span></a>
 <a class="btn" href="lobby/featured.html"><span><strong>Featured Sportsbook Picks ({esc(s.get('featured_market'))})</strong> &middot; Pinnacle / Bovada / Melbet no-vig</span><span>&rarr;</span></a>
 <a class="btn" href="lobby/low-tier.html"><span><strong>Rescued Low-Tier Picks ({esc(rescued)})</strong> &middot; HLTV + Kalshi + Valve VRS</span><span>&rarr;</span></a>
