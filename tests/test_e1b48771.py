@@ -75,7 +75,7 @@ class Arithmetic(unittest.TestCase):
 
     def test_originated_line_reproduces_from_official_valve_points(self):
         res = RESOLUTIONS["fixtures"]["1082837"]
-        k = SOURCE_BOARD["calibration"]["k"]
+        k = res.get("calibration_k", 0.4046378)  # pinned to the 12:37Z capture in resolutions.json
         zetta, floor = 473.0, 381.0          # Valve 2026-10-05: Zetta #357; lowest published rating
         expected = 1 / (1 + math.exp(-k * BUILD.valve_c() * (zetta - floor)))
         self.assertAlmostEqual(expected, res["prob_a"], places=5)

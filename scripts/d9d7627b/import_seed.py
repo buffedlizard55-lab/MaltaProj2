@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """One-off seed importer (session d9d7627b).
+
+The build sandbox cannot reach bookmaker/HotSpawn hosts, so the first publish is seeded
+from the freshest committed collector snapshot in this repo (session f7279a54, collected
+2026-10-21T12:28Z). This converts `data/f7279a54/snapshot.json` + `calibration_pairs.json`
+into this pipeline's formats, with the seed provenance recorded in the outputs and printed
+on every generated page. Live runs (collect.py in GitHub Actions) replace the seed.
+"""
+from __future__ import annotations
 import importlib.util as _ilu, sys as _sys
 from pathlib import Path as _Path
 def _load_d9(name):
@@ -13,14 +21,6 @@ def _load_d9(name):
     spec.loader.exec_module(mod)
     return mod
 
-
-The build sandbox cannot reach bookmaker/HotSpawn hosts, so the first publish is seeded
-from the freshest committed collector snapshot in this repo (session f7279a54, collected
-2026-10-21T12:28Z). This converts `data/f7279a54/snapshot.json` + `calibration_pairs.json`
-into this pipeline's formats, with the seed provenance recorded in the outputs and printed
-on every generated page. Live runs (collect.py in GitHub Actions) replace the seed.
-"""
-from __future__ import annotations
 
 import hashlib
 import json

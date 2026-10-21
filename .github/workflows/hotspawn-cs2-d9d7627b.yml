@@ -64,7 +64,9 @@ jobs:
         with:
           python-version: '3.12'
       - name: Collect live (HotSpawn + books + VRS), resolve, build
-        run: python scripts/d9d7627b/run.py
+        run: |
+          python scripts/d9d7627b/run.py
+          python scripts/build_site.py
       - name: Unit + parser-replay + board-invariant tests
         run: python -m unittest discover -s tests -p 'test_d9d7627b.py' -v
       - name: Internal link check
