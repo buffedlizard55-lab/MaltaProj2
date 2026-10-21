@@ -418,14 +418,23 @@ def pick_card(row: dict, board: dict, anchor: bool = True) -> str:
                      "<div class='small' style='max-width:52%;text-align:right'>No defensible value — "
                      "see <a href='unresolved.html#u-" + esc(row['fixture_id']) + "'>Unresolved</a></div></div>"
                      + rng_note)
-    evidence = "".join(
-        f"<li><a href='{esc(e.get('url'))}' rel='noopener'>{esc(e.get('source_name'))}</a> "
-        f"— {esc(' / '.join(str(x) for x in (e.get('names_at_source') or []) if x))}"
-        + (f", {pct(e.get('prob_a'))} for {esc(row['team_a'])}" if e.get("prob_a") is not None else "")
-        + (f", observed {esc(fmt_dt(e.get('observed_utc')))}" if e.get("observed_utc") else "")
-        + (f", kickoff Δ {esc(e.get('start_diff_min'))} min" if e.get("start_diff_min") is not None else "")
-        + "</li>"
-        for e in row.get("evidence") or [])
+    def _ev_line(e):
+        bits = []
+        names = [str(x) for x in (e.get("names_at_source") or []) if x]
+        if names:
+            bits.append(" / ".join(names))
+        if e.get("prob_a") is not None:
+            bits.append(pct(e.get("prob_a")) + " for " + esc(row["team_a"]))
+        if e.get("observed_utc"):
+            bits.append("observed " + esc(fmt_dt(e.get("observed_utc"))))
+        if e.get("start_diff_min") is not None:
+            bits.append("kickoff Δ " + esc(e.get("start_diff_min")) + " min")
+        tail = " — " + ", ".join(bits) if bits else ""
+        detail = ("<div class='small'>" + esc(e.get("detail")) + "</div>") if e.get("detail") else ""
+        return ("<li><a href='" + esc(e.get("url")) + "' rel='noopener'>"
+                + esc(e.get("source_name")) + "</a>" + tail + detail + "</li>")
+
+    evidence = "".join(_ev_line(e) for e in row.get("evidence") or [])
     limitations = "".join(f"<li>{esc(x)}</li>" for x in row.get("limitations") or [])
     conflicts = "".join(
         f"<li><a href='{esc(c['url'])}' rel='noopener'>{esc(c['source_name'])}</a> — {esc(c['note'])}</li>"

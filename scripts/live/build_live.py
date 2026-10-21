@@ -402,7 +402,7 @@ def build_board(fixtures_doc: dict, quotes_doc: dict, ratings_doc: dict, now) ->
         if row["market"]:
             prob_a = row["market"]["prob_a"]
             basis = "market"
-            edge = abs(prob_a - 0.5)
+            edge = abs(prob_a - row["market"]["prob_b"])
             side = None if (row["market"]["prob_b"] is None) else ("a" if prob_a > row["market"]["prob_b"] else "b")
             if row["market"]["spread_a"] is not None and row["market"]["spread_a"] > 0.25:
                 row["flags"].append("wide_source_disagreement")
