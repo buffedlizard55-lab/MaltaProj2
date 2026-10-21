@@ -67,7 +67,8 @@ def main():
     build = gate.wait_for_legacy(REPO, TARGET, attempts=180, interval=5)
     print('::notice::Verified successful legacy publication: ' + build['commit'], flush=True)
     os.environ['GITHUB_SHA'] = build['commit']
-    load('cbf_original_live_check', 'scripts/check_deployment.py').main()
+    # The repository-wide checker executes its checks at module top level.
+    load('cbf_original_live_check', 'scripts/check_deployment.py')
     strict = load('cbf_strict_live_check', 'scripts/cbf92764/check_deployment.py')
     strict.main()
     print('::notice::PASS actual HTTPS root, dashboard, six category pages, assets, full inventory, per-row source links, provider replay and unresolved summary', flush=True)
