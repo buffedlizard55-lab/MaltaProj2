@@ -3,8 +3,8 @@
 
 Every published number is re-derived here from the raw inputs (decimal odds, Valve VRS points,
 no-vig arithmetic) instead of being trusted.  The tests also enforce the product rules:
-  * every open HotSpawn CS2 fixture has a pick and two probabilities;
-  * a value that cannot be sourced is a labelled bound or an explicit unresolved row, never invented;
+  * every retained fixture is visible; resolved fixtures have a pick and two probabilities;
+  * a value that cannot be sourced stays blank on an explicit unresolved row;
   * every row carries at least one https source link;
   * HotSpawn's crowd-pick percentages never appear in the pages;
   * the phone-first pages exist and their internal links resolve.
@@ -56,7 +56,13 @@ class BoardCoverage(unittest.TestCase):
     def test_every_row_has_a_pick_and_two_probabilities(self):
         for r in self.rows:
             with self.subTest(fixture=r["fixture_id"]):
-                self.assertTrue(r.get("pick"), "a pick is required")
+                if r["resolution"]["basis"] == "unresolved":
+                    self.assertIsNone(r.get("pick"))
+                    self.assertIsNone(r["resolution"].get("prob_a"))
+                    self.assertIsNone(r["resolution"].get("prob_b"))
+                    self.assertTrue(r["resolution"].get("reason"))
+                    continue
+                self.assertTrue(r.get("pick"), "a resolved fixture requires a pick")
                 self.assertIsNotNone(r["resolution"].get("prob_a"))
                 self.assertIsNotNone(r["resolution"].get("prob_b"))
                 self.assertAlmostEqual(r["resolution"]["prob_a"] + r["resolution"]["prob_b"],
@@ -66,6 +72,9 @@ class BoardCoverage(unittest.TestCase):
     def test_pick_is_the_higher_probability(self):
         for r in self.rows:
             res = r["resolution"]
+            if res["basis"] == "unresolved":
+                self.assertIsNone(r["pick"])
+                continue
             expected = r["team_a"] if res["prob_a"] >= res["prob_b"] else r["team_b"]
             self.assertEqual(expected, r["pick"], r["fixture_id"])
             self.assertEqual(res["prob_a"] >= res["prob_b"], r["pick_side"] == "a", r["fixture_id"])
@@ -216,7 +225,8 @@ class BoardCoverage(unittest.TestCase):
         text = (EVERYPICK / "picks.html").read_text(encoding="utf-8")
         for r in self.rows:
             self.assertIn(f'id="f{r["fixture_id"]}"', text, r["fixture_id"])
-            self.assertIn(html.escape(r["pick"]), text, r["fixture_id"])
+            if r.get("pick"):
+                self.assertIn(html.escape(r["pick"]), text, r["fixture_id"])
 
     def test_executive_summary_links_every_pick_page(self):
         text = (EVERYPICK / "index.html").read_text(encoding="utf-8")

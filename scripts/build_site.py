@@ -865,13 +865,13 @@ def everypick_hero_html():
         return ""
     return f'''<!-- everypick:start -->
 <section id="every-match-executive-summary" aria-labelledby="ems-title">
-<p class="eyebrow">● START HERE · every open HotSpawn CS2 match · refreshed every four hours</p>
-<h2 id="ems-title" style="margin-top:6px;font-size:clamp(1.25rem,5vw,1.7rem);line-height:1.25">Every match. A pick. Both win probabilities. A source you can open.</h2>
+<p class="eyebrow">START HERE · retained HotSpawn CS2 matches · four-hour refresh target</p>
+<h2 id="ems-title" style="margin-top:6px;font-size:clamp(1.25rem,5vw,1.7rem);line-height:1.25">All matches in one list. Supported picks, clear probabilities, visible gaps.</h2>
 <p><strong>{s.get("lobby_open", 0)}</strong> open lobby matches <strong>+{s.get("api_only", 0)}</strong>
 API-only · <strong>{s.get("with_pick", 0)}</strong> with a pick and two probabilities ·
 <strong>{s.get("market", 0)}</strong> priced from real betting lines ·
 <strong>{s.get("originated_both_rated", 0) + s.get("originated_bound", 0)}</strong> originated from
-official Valve ratings · <strong>{s.get("unresolved", 0)}</strong> unresolved. Board built
+a model using official Valve ratings · <strong>{s.get("unresolved", 0)}</strong> unresolved. Missing evidence stays blank. Board built
 {esc(stamp)}.</p>
 <div class="desk-actions">
 <a class="btn live-board-cta" href="everypick/picks.html"><span><strong>All picks</strong> · every match, both probabilities</span><span>→</span></a>

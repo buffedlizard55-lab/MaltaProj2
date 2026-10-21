@@ -1,12 +1,12 @@
 {
  "session": "5f903db4",
- "generated_utc": "2026-10-21T19:52:55Z",
+ "generated_utc": "2026-10-21T20:07:02Z",
  "policy": {
   "ladder": [
    "featured market quotes (bovada / melbet / pinnacle)",
    "exchange + secondary book quotes (kalshi, thunderpick via bo3.gg)",
    "official Valve VRS origination with the published formula",
-   "explicit bound when only one side is rated",
+   "missing rating on either side remains unresolved without external prices",
    "explicit unresolved row (never a guessed number)"
   ],
   "never_used": "HotSpawn crowd-pick percentages",
@@ -18,7 +18,7 @@
   "C": 0.0056000078,
   "C_source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js",
   "vrs_select_rule": "When Valve's standings list the same organisation more than once (one row per counted roster), select the row whose roster lists a full five and whose latest published match date is the most recent; break ties on higher points. Alternatives are published on the Flagged for review page.",
-  "bound_rule": "If one side has no row in Valve's published table, that side is at or below the published floor (#380, 381 pts). The listed side's number is published as a lower bound and the unlisted side's number as an upper bound. It is never presented as a point estimate.",
+  "bound_rule": "An unlisted team has no verified rating. Absence from Valve's table does not prove it is weaker than the last listed team. Without an external quote or ratings for both teams, probabilities and picks remain blank and the fixture is published as unresolved.",
   "quote_join_tolerance_minutes": 90
  },
  "sources": {
@@ -45,7 +45,7 @@
   },
   "extra_board": {
    "path": "data/fe803b80/board.json",
-   "generated_utc": "2026-10-21T19:29:18Z"
+   "generated_utc": "2026-10-21T19:56:12Z"
   },
   "vrs": {
    "path": "data/19d6c262/vrs_global.json",
@@ -66,11 +66,11 @@
   "rows": 14,
   "lobby_open": 13,
   "api_only": 1,
-  "with_pick": 14,
-  "unresolved": 0,
+  "with_pick": 11,
+  "unresolved": 3,
   "market": 5,
   "originated_both_rated": 6,
-  "originated_bound": 3,
+  "originated_bound": 0,
   "single_book": 2,
   "ambiguous_rating_rows": 3
  },
@@ -168,17 +168,13 @@
     "delta_points": null
    },
    "alt_origination": {
-    "basis": "originated_vrs_bound",
-    "prob_a": 0.5552577748808767,
-    "prob_b": 0.4447422251191233,
-    "bound": {
-     "side": "a",
-     "relation": ">=",
-     "floor_standing": 380,
-     "floor_points": 381
-    },
+    "basis": "unresolved",
+    "prob_a": null,
+    "prob_b": null,
+    "bound": null,
     "range": null,
-    "delta_points": 92.0
+    "delta_points": null,
+    "reason": "No retained external quote and no published Valve rating for both teams; an unlisted team cannot be assigned the standings floor."
    },
    "pick": "LOS NINOS",
    "pick_prob": 0.5784309999999999,
@@ -186,7 +182,6 @@
    "confidence": "Lean",
    "flags": [
     "exchange_quote_zero_volume",
-    "market_and_rating_model_disagree_on_the_pick",
     "single_book_quote"
    ],
    "sources": [
@@ -386,26 +381,23 @@
    },
    "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
    "resolution": {
-    "basis": "originated_vrs_bound",
-    "prob_a": 0.7383320144418207,
-    "prob_b": 0.2616679855581793,
-    "bound": {
-     "side": "a",
-     "relation": ">=",
-     "floor_standing": 380,
-     "floor_points": 381
-    },
+    "basis": "unresolved",
+    "prob_a": null,
+    "prob_b": null,
+    "bound": null,
     "range": null,
-    "delta_points": 430.0
+    "delta_points": null,
+    "reason": "No retained external quote and no published Valve rating for both teams; an unlisted team cannot be assigned the standings floor."
    },
    "alt_origination": null,
-   "pick": "benched gods",
-   "pick_prob": 0.7383320144418207,
-   "pick_side": "a",
-   "confidence": "Bound",
+   "pick": null,
+   "pick_prob": null,
+   "pick_side": null,
+   "confidence": null,
    "flags": [
+    "missing_rating_not_a_strength_bound",
     "no_external_price_any_book",
-    "originated_bound_unlisted_opponent",
+    "unresolved",
     "vrs_duplicate_rows_resolved_by_published_rule"
    ],
    "sources": [
@@ -630,7 +622,7 @@
      "overround": 0.08283,
      "start_utc": "2026-10-22T14:00:00Z",
      "start_diff_minutes": 0.0,
-     "retrieved_utc": "2026-10-21T19:28:56Z",
+     "retrieved_utc": "2026-10-21T19:55:53Z",
      "origin": "board fe803b80",
      "raw_format": "decimal",
      "raw": null,
@@ -831,7 +823,7 @@
      "overround": 0.082631,
      "start_utc": "2026-10-22T14:00:00Z",
      "start_diff_minutes": 0.0,
-     "retrieved_utc": "2026-10-21T19:28:56Z",
+     "retrieved_utc": "2026-10-21T19:55:53Z",
      "origin": "board fe803b80",
      "raw_format": "decimal",
      "raw": null,
@@ -1041,25 +1033,19 @@
     "delta_points": null
    },
    "alt_origination": {
-    "basis": "originated_vrs_bound",
-    "prob_a": 0.8694516686589614,
-    "prob_b": 0.1305483313410386,
-    "bound": {
-     "side": "a",
-     "relation": ">=",
-     "floor_standing": 380,
-     "floor_points": 381
-    },
+    "basis": "unresolved",
+    "prob_a": null,
+    "prob_b": null,
+    "bound": null,
     "range": null,
-    "delta_points": 786.0
+    "delta_points": null,
+    "reason": "No retained external quote and no published Valve rating for both teams; an unlisted team cannot be assigned the standings floor."
    },
    "pick": "Apogee Betclic",
    "pick_prob": 0.6100030000000001,
    "pick_side": "b",
    "confidence": "Solid",
-   "flags": [
-    "market_and_rating_model_disagree_on_the_pick"
-   ],
+   "flags": [],
    "sources": [
     {
      "label": "HotSpawn Pick'ems lobby (fixture discovery only - never a probability source)",
@@ -1129,26 +1115,23 @@
    },
    "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
    "resolution": {
-    "basis": "originated_vrs_bound",
-    "prob_a": 0.7683371624736038,
-    "prob_b": 0.23166283752639616,
-    "bound": {
-     "side": "a",
-     "relation": ">=",
-     "floor_standing": 380,
-     "floor_points": 381
-    },
+    "basis": "unresolved",
+    "prob_a": null,
+    "prob_b": null,
+    "bound": null,
     "range": null,
-    "delta_points": 497.0
+    "delta_points": null,
+    "reason": "No retained external quote and no published Valve rating for both teams; an unlisted team cannot be assigned the standings floor."
    },
    "alt_origination": null,
-   "pick": "Ground Zero",
-   "pick_prob": 0.7683371624736038,
-   "pick_side": "a",
-   "confidence": "Bound",
+   "pick": null,
+   "pick_prob": null,
+   "pick_side": null,
+   "confidence": null,
    "flags": [
+    "missing_rating_not_a_strength_bound",
     "no_external_price_any_book",
-    "originated_bound_unlisted_opponent"
+    "unresolved"
    ],
    "sources": [
     {
@@ -1309,26 +1292,23 @@
    },
    "vrs_page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
    "resolution": {
-    "basis": "originated_vrs_bound",
-    "prob_a": 0.8478199836159859,
-    "prob_b": 0.15218001638401413,
-    "bound": {
-     "side": "a",
-     "relation": ">=",
-     "floor_standing": 380,
-     "floor_points": 381
-    },
+    "basis": "unresolved",
+    "prob_a": null,
+    "prob_b": null,
+    "bound": null,
     "range": null,
-    "delta_points": 712.0
+    "delta_points": null,
+    "reason": "No retained external quote and no published Valve rating for both teams; an unlisted team cannot be assigned the standings floor."
    },
    "alt_origination": null,
-   "pick": "FlyQuest",
-   "pick_prob": 0.8478199836159859,
-   "pick_side": "a",
-   "confidence": "Bound",
+   "pick": null,
+   "pick_prob": null,
+   "pick_side": null,
+   "confidence": null,
    "flags": [
+    "missing_rating_not_a_strength_bound",
     "no_external_price_any_book",
-    "originated_bound_unlisted_opponent"
+    "unresolved"
    ],
    "sources": [
     {
@@ -1936,13 +1916,13 @@
   {
    "id": "L1",
    "title": "Reference books do not price tier-C CS2",
-   "detail": "9 of 14 open fixtures have no price at Bovada, Melbet, Pinnacle, Thunderpick or Kalshi (all five read today). Those rows carry an originated line from Valve's official rating table instead of a blank.",
+   "detail": "9 of 14 retained fixtures have no accepted price from Bovada, Melbet, Pinnacle, Thunderpick or Kalshi in the retained source captures. Those rows carry an originated line from Valve's official rating table only when both teams have a rating; otherwise they remain unresolved.",
    "source": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=false"
   },
   {
    "id": "L2",
    "title": "Originated lines are models, not market prices",
-   "detail": "Formula p = 1/(1+exp(-k*C*points_delta)) with Valve's published C=0.0056000078 and this project's fitted k=0.43077894236569164 (60 market-vs-rating pairs). The fit's own mean absolute error is 7.70 percentage points, so treat originated probabilities as +/-8 pp.",
+   "detail": "Formula p = 1/(1+exp(-k*C*points_delta)) with Valve's published C=0.0056000078 and this project's fitted k=0.43077894236569164 (60 market-vs-rating pairs). The fit's own mean absolute error is 7.70 percentage points, so this is in-sample market-fit error, not a confidence interval or demonstrated outcome accuracy.",
    "source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js"
   },
   {
@@ -1953,9 +1933,9 @@
   },
   {
    "id": "L4",
-   "title": "One-sided ratings become bounds, not points",
-   "detail": "3 fixtures have exactly one rated side. The unrated side is at or below Valve's published floor (#380, 381 pts), so those rows show '>=' on the rated side and '<=' on the other. They are directional, not calibrated.",
-   "source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+   "title": "Missing rankings are not probability bounds",
+   "detail": "No verified rating is available for at least one team in each unresolved fixture. No floor rating is imputed. A new external two-way price or verified ratings for both teams are needed before publishing a pick.",
+   "source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/readme.md"
   },
   {
    "id": "L5",
@@ -1977,6 +1957,18 @@
   }
  ],
  "irregularities": [
+  {
+   "id": "R7",
+   "severity": "evidence",
+   "title": "Unsupported unranked-team probability bounds removed",
+   "detail": "Earlier versions substituted Valve's lowest published rating for an unlisted opponent and claimed a directional bound. No official evidence establishes that ordering. Those fixtures now remain visible with blank picks and probabilities. Retained third-party reads have not been reverified live in this network-restricted session. Model estimates are not official odds, and in-sample calibration MAE is not a confidence interval.",
+   "source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/readme.md",
+   "affected": [
+    "1081597",
+    "1082858",
+    "1082860"
+   ]
+  },
   {
    "id": "R1",
    "severity": "data",

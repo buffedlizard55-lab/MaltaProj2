@@ -4,13 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
-<meta name="description" content="Every open HotSpawn CS2 pick'em match with a pick, both win probabilities and the source for every number.">
+<meta name="description" content="Retained HotSpawn CS2 fixtures, supported picks, sourced model estimates and unresolved evidence gaps.">
 <title>Executive summary · Every-match CS2 picks</title>
 <style>
 :root{--bg:#0b1220;--card:#121c2e;--card2:#0f1727;--ink:#e8eefc;--dim:#93a4c3;--line:#25334d;
 --good:#7ef0b2;--warn:#ffd479;--bad:#ff9aa2;--accent:#7cc4ff;--market:#7ef0b2;--model:#7cc4ff;--bound:#ffd479}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
+a:focus-visible{outline:3px solid var(--good);outline-offset:3px}
+.skip{position:absolute;left:-10000px}.skip:focus{position:static;display:block;padding:12px;background:var(--card)}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,
 "Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 a{color:var(--accent)}
@@ -22,8 +24,8 @@ max-width:1080px;margin:0 auto;padding:8px 14px}
 .brand{font-weight:700;font-size:15px;letter-spacing:.2px}
 .brand span{color:var(--good)}
 nav{display:flex;flex-wrap:wrap;gap:6px}
-nav a{display:inline-block;padding:8px 11px;border:1px solid var(--line);border-radius:999px;
-text-decoration:none;color:var(--ink);font-size:13px;min-height:38px}
+nav a{display:inline-block;padding:11px 12px;border:1px solid var(--line);border-radius:999px;
+text-decoration:none;color:var(--ink);font-size:13px;min-height:44px}
 nav a.active{background:var(--good);color:#0b2417;border-color:var(--good);font-weight:700}
 h1{font-size:24px;line-height:1.2;margin:10px 0 4px}
 h2{font-size:18px;margin:26px 0 8px}
@@ -84,24 +86,29 @@ code{background:#0a1322;padding:1px 5px;border-radius:5px;font-size:13px}
 </style>
 </head>
 <body>
+<a class="skip" href="#main-content">Skip to picks and summary</a>
 <header class="top"><div class="bar">
 <div class="brand">Every-match picks <span>· CS2</span></div>
 <nav><a href="index.html" class="active">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="sources.html">Sources</a><a href="method.html">Method</a><a href="flagged.html">Flagged</a><a href="../index.html">Site home</a></nav>
 </div></header>
-<main class="wrap">
+<main class="wrap" id="main-content" tabindex="-1">
+<div class="callout"><strong>Source freshness matters.</strong> This is a retained evidence snapshot, not
+live odds. Four-hour scheduled checks are a target, not a guarantee. Check the fixture and quote
+read times before using a pick. Sources inaccessible during this session were not reverified.
+<a href="unresolved.html">Unresolved picks &amp; limitations</a>.</div>
 
 <p class="eyebrow">Executive summary · HotSpawn CS2 pick'em</p>
-<h1>Every open match has a pick, both win probabilities and a source you can open.</h1>
-<p class="lede">Built 2026-10-21 19:52:55 UTC from the 13 CS2 fixtures open in the HotSpawn
+<h1>Every retained match, clear picks where supported, and visible evidence gaps.</h1>
+<p class="lede">Built 2026-10-21 20:07:02 UTC from the 13 CS2 fixtures open in the HotSpawn
 Pick'ems lobby plus 1 fixture the HotSpawn API lists but the lobby does not render.
-No blanks, no crowd-percentage shortcuts: each row is either a real bookmaker/exchange price or a
-line originated from Valve's official rating table, and the row says which.</p>
+Retained evidence, not a live verification claim: resolved rows use external prices or a labelled
+model based on Valve ratings. Missing evidence stays blank. HotSpawn crowd percentages are never used.</p>
 
 <div class="tiles">
 <div class="tile"><b>13</b><small>open lobby matches covered (+1 API-only)</small></div>
-<div class="tile"><b>14</b><small>matches with a pick and two probabilities</small></div>
+<div class="tile"><b>11</b><small>matches with a pick and two probabilities</small></div>
 <div class="tile"><b>5</b><small>priced from real betting lines</small></div>
-<div class="tile"><b>0</b><small>unresolved (see limitations)</small></div>
+<div class="tile"><b>3</b><small>unresolved (see limitations)</small></div>
 </div>
 
 <h2>Where the picks are</h2>
@@ -126,7 +133,7 @@ live on their own pages and are refreshed every four hours.</p>
 <td data-l="Pick"><span class="pick">LOS NINOS</span><div class="muted">Lean · 57.8% to win</div></td>
 <td class="num" data-l="Zetta"><span class="prob lose">42.2%</span></td>
 <td class="num" data-l="LOS NINOS"><span class="prob win">57.8%</span></td>
-<td data-l="Basis"><span class="badge market">Market · 1 book</span><div class="muted"><span class="badge flag">exchange quote zero volume</span> <span class="badge flag">market and rating model disagree on the pick</span> <span class="badge flag">single book quote</span></div></td>
+<td data-l="Basis"><span class="badge market">Market · 1 book</span><div class="muted"><span class="badge flag">exchange quote zero volume</span> <span class="badge flag">single book quote</span></div></td>
 <td data-l="Sources"><div class="src"><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211800lnale" target="_blank" rel="noopener">Kalshi</a><a href="https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837" target="_blank" rel="noopener">HotSpawn Pick&#x27;ems lobby</a><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures" target="_blank" rel="noopener">HotSpawn fixtures API</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0357--zetta--antuanette-babyrage-notjuanjo-slayerhz-zockie.md" target="_blank" rel="noopener">Valve VRS standings</a></div></td>
 </tr><tr id="f1081870">
 <td data-l="Match"><span class="match">Vitalem Aerem vs Rare Atom</span><div class="muted">VOID Autumn Cup 2026 · tier C</div></td>
@@ -141,10 +148,10 @@ live on their own pages and are refreshed every four hours.</p>
 <td data-l="Match"><span class="match">benched gods vs TitanFlow</span><div class="muted">CCT Europe 2026 Challengers #8 · tier C</div></td>
 <td data-l="Kick-off">22 Oct · 11:00 UTC<div class="muted">in 15h
  · locks 10:54 UTC</div></td>
-<td data-l="Pick"><span class="pick">benched gods</span><div class="muted">Bound · 73.8% to win</div></td>
-<td class="num" data-l="benched gods"><span class="prob win">≥ 73.8%</span></td>
-<td class="num" data-l="TitanFlow"><span class="prob lose">≤ 26.2%</span></td>
-<td data-l="Basis"><span class="badge bound">Bound · one side unrated</span><div class="muted"><span class="badge flag">no external price any book</span> <span class="badge flag">originated bound unlisted opponent</span> <span class="badge flag">vrs duplicate rows resolved by published rule</span></div></td>
+<td data-l="Pick"><span class="pick">—</span><div class="muted"> to win</div></td>
+<td class="num" data-l="benched gods"><span class="prob">—</span></td>
+<td class="num" data-l="TitanFlow"><span class="prob">—</span></td>
+<td data-l="Basis"><span class="badge flag">Unresolved</span><div class="muted"><span class="badge flag">missing rating not a strength bound</span> <span class="badge flag">no external price any book</span> <span class="badge flag">unresolved</span></div></td>
 <td data-l="Sources"><div class="src"><a href="https://www.hotspawn.com/matches/benched-gods-vs-titanflow-cct-europe-2026-challengers-8-1081597" target="_blank" rel="noopener">HotSpawn Pick&#x27;ems lobby</a><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures" target="_blank" rel="noopener">HotSpawn fixtures API</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0157--benched_gods--facer-k014nz-norescue-wign-yoyos2.md" target="_blank" rel="noopener">Valve VRS standings</a><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS published table</a></div></td>
 </tr><tr id="f1081600">
 <td data-l="Match"><span class="match">Donstu vs Banda chuya</span><div class="muted">CCT Europe 2026 Challengers #8 · tier C</div></td>
@@ -184,23 +191,21 @@ Every book price, its decimal odds and its overround is printed on the row.</li>
 points go through <code>p = 1/(1+exp(-k·C·Δpoints))</code> with Valve's own C = 0.0056000078 and
 this project's fitted k = 0.4308 (re-fitted here: best k on a 60-pair grid is
 0.448, MAE 7.70 pp).</li>
-<li><strong>One-sided ratings become bounds.</strong> If a team has no row in Valve's table, its
-chance is at or below Valve's published floor, so the row shows <code>≥</code> / <code>≤</code>
-instead of pretending to a point estimate.</li>
-<li><strong>Nothing is guessed.</strong> A fixture that fits none of the above is published as
-unresolved with the attempt ledger. Right now that list is empty and the limitations are listed on
-<a href="unresolved.html">Unresolved &amp; limitations</a>.</li>
+<li><strong>Missing rankings stay unresolved.</strong> Absence from Valve's table is not a
+strength bound. Without external prices or ratings for both teams, pick and probability cells stay blank.</li>
+<li><strong>Nothing is guessed.</strong> 3 fixtures are unresolved. See the separate
+<a href="unresolved.html">Unresolved picks &amp; limitations</a> list for evidence gaps.</li>
 </ol>
 <div class="callout"><strong>Read this before betting a pick.</strong> Market rows are consensus
-prices; originated rows are models with a measured error of about ±8 pp, and three fixtures rest on
-a single unrated opponent, so they are directional. Details and the conflicting-signal rows are on
+prices; originated rows are model estimates, not official odds. The roughly 8 pp in-sample
+market-fit error is not a confidence interval or verified match-outcome accuracy. Details and the conflicting-signal rows are on
 <a href="unresolved.html">Unresolved &amp; limitations</a> and
 <a href="flagged.html">Flagged for review</a>.</div>
 
 <footer>
 <p>Every figure on this page is either a bookmaker/exchange price (no-vig) or a line originated from
 Valve's official rating table; the basis is printed on every row. HotSpawn's crowd-pick percentages
-are never used. Board built 2026-10-21 19:52:55 UTC.</p>
+are never used. Board built 2026-10-21 20:07:02 UTC.</p>
 </footer>
 </main>
 </body>
