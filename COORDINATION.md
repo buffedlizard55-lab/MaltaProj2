@@ -1,3 +1,14 @@
+# Coordination — session `907e9435` (every-match picks front door: fix the missing joins, publish one clean mobile board, 2026-10-21)
+
+Session: `907e9435` (environment-fixed branch `arena/907e9435-maltaproject2`… see note; the environment fixes the branch name to `arena/907e9435-maltaproj2` and forbids switching branches, so scope is separated by directory as in prior sessions).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-907E9435-EVERYPICK: (1) line-by-line review of the freshest canonical board `data/f7279a54/board.json` (2026-10-21T19:24:28Z, 13 open lobby fixtures, only 3 with a line) against the retained raw quotes and the official Valve VRS snapshot; (2) resolve a pick and a two-sided win probability for every open HotSpawn CS2 fixture with an evidence ladder — featured bookmaker consensus first, then missed/alias book joins, then the Kalshi exchange re-joined on the exchange's own stated schedule, then the calibrated official Valve VRS model, and a labelled floor-assumption row only where one side has no official rating (never presented as verified); (3) publish one clean, phone-first board `everypick/` (executive summary that links every updated pick list on the site, `picks.html`, `unresolved.html` as the required separate unresolved+limitations section, `flagged.html`, `method.html`, `sources.html`) and make it the root landing page's primary action; (4) automated 4-hour refresh `scripts/907e9435/` + `.github/workflows/everypick-907e9435.yml` + contract tests `tests/test_907e9435.py`; (5) additive integration in `scripts/stage_site.py` + `scripts/build_site.py` (root landing only), PR to `main`, merge, Pages verification | in progress | 907e9435 | 2026-10-21 19:55 | `everypick/**`, `scripts/907e9435/**`, `data/907e9435/**`, `tests/test_907e9435.py`, `.github/workflows/everypick-907e9435.yml`, this COORDINATION.md section only; additive integration lines in `scripts/stage_site.py` and `scripts/build_site.py` (root landing hero + NAV entry) and the regenerated root `index.html`, `README.md` (one row). Read-only inputs: `data/f7279a54/**`, `data/51197e5b/**`, `data/fe803b80/**`, and every other session directory. |
+
+## Log — 907e9435
+- 2026-10-21 19:55 UTC: Read `COORDINATION.md` before any edits. Claimed `T-907E9435-EVERYPICK` with the non-overlapping scope above and pushing this claim immediately.
+
 # Coordination — session `51197e5b` (Resolve a pick for EVERY open HotSpawn CS2 match — esportsbook/exchange + official Valve VRS + bo3.gg resolution, mobile-first dashboard & repo audit, 2026-10-21)
 
 Session: `51197e5b` (environment-fixed branch `arena/51197e5b-maltaproj2`; the environment forbids switching to a `session-<id>/<task>` branch, so scope is separated by directory as in prior sessions).
