@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Executive summary · HotSpawn CS2 picks</title>
+<link rel="icon" href="../favicon.ico">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--card2:#1c2430;--line:#2b3441;--text:#e6edf3;--muted:#93a1b1;
+--ok:#2ea043;--okbg:#12261a;--warn:#d29922;--warnbg:#2a2113;--bad:#f85149;--badbg:#2a1416;
+--model:#58a6ff;--modelbg:#0d2233;--pick:#7ee2a8}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding-bottom:40px}
+a{color:#79c0ff;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:rgba(13,17,23,.97);border-bottom:1px solid var(--line);
+backdrop-filter:blur(6px)}
+.wrap{max-width:980px;margin:0 auto;padding:0 14px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0}
+.brand{font-weight:800;font-size:17px;letter-spacing:.2px}
+.brand span{color:var(--pick)}
+nav{display:flex;gap:6px;overflow-x:auto;padding:0 0 8px;-webkit-overflow-scrolling:touch}
+nav a{white-space:nowrap;font-size:13px;padding:7px 11px;border:1px solid var(--line);border-radius:999px;
+color:var(--text);background:var(--card)}
+nav a[aria-current=page]{border-color:var(--pick);color:var(--pick)}
+h1{font-size:24px;line-height:1.25;margin:18px 0 8px}
+h2{font-size:19px;margin:26px 0 8px}
+h3{font-size:16px;margin:18px 0 6px}
+p{margin:8px 0}
+.lede{color:var(--muted)}
+.hero{background:linear-gradient(160deg,#152132,#101722);border:1px solid #26374d;border-radius:16px;
+padding:18px 16px;margin:14px 0}
+.hero .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--pick);margin:0 0 6px}
+.hero h1{margin:0 0 6px;font-size:23px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.stat b{display:block;font-size:21px;line-height:1.2}
+.stat span{font-size:12px;color:var(--muted)}
+.btns{display:grid;gap:9px;margin:12px 0 4px}
+.btn{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 15px;
+border-radius:12px;background:var(--card2);border:1px solid var(--line);color:var(--text);font-weight:600;
+min-height:48px}
+.btn small{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:2px}
+.btn.primary{background:var(--pick);color:#08130d;border-color:var(--pick)}
+.btn.primary small{color:#0d3520}
+.btn .arw{font-size:18px;opacity:.8}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.card .match{font-size:17px;font-weight:700;line-height:1.3}
+.meta{font-size:12px;color:var(--muted);margin-top:3px}
+.badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.03em;padding:3px 8px;
+border-radius:999px;border:1px solid transparent;vertical-align:middle}
+.badge.ok{background:var(--okbg);color:#7ee2a8;border-color:#1c5b30}
+.badge.model{background:var(--modelbg);color:#9ecbff;border-color:#1f4a6b}
+.badge.warn{background:var(--warnbg);color:#e3b341;border-color:#5c4520}
+.badge.bad{background:var(--badbg);color:#ff8b84;border-color:#6b2a26}
+.pickrow{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:11px 0 2px}
+.pickname{font-size:19px;font-weight:800;color:var(--pick)}
+.pickprob{font-size:19px;font-weight:800}
+.bar{height:10px;border-radius:6px;background:#0a0f15;overflow:hidden;margin:6px 0 2px;
+border:1px solid #232c38}
+.bar>i{display:block;height:100%}
+.team{display:flex;justify-content:space-between;font-size:14px;padding:3px 0}
+.team b{font-variant-numeric:tabular-nums}
+.team.win b{color:var(--pick)}
+details{margin-top:10px;border-top:1px solid #232c38;padding-top:8px}
+summary{cursor:pointer;font-size:13px;color:var(--muted);font-weight:600}
+ul{margin:6px 0 6px 18px;padding:0}li{margin:4px 0;font-size:14px}
+.small{font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid #232c38;vertical-align:top}
+th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.note{border-left:3px solid var(--warn);background:var(--warnbg);padding:10px 12px;border-radius:0 10px 10px 0;
+font-size:13.5px;margin:12px 0}
+.err{border-left-color:var(--bad);background:var(--badbg)}
+.ok{border-left-color:var(--ok);background:var(--okbg)}
+footer{color:var(--muted);font-size:12px;padding:24px 0 0;border-top:1px solid var(--line);margin-top:28px}
+code{background:#0a0f15;padding:1px 5px;border-radius:5px;font-size:12.5px}
+@media(min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}.btns{grid-template-columns:1fr 1fr}}
+</style></head>
+<body>
+<header><div class="wrap">
+<div class="top"><div class="brand">HotSpawn <span>CS2 picks</span></div>
+<div class="small">built 21 Oct 19:44 UTC</div></div>
+<nav><a href="index.html" aria-current=page>Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="flagged.html">Flagged</a><a href="method.html">Method</a><a href="sources.html">Sources</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero">
+<p class="eyebrow">Executive summary · refreshed every 4 hours</p>
+<h1>Every open HotSpawn CS2 match, one pick each</h1>
+<p>Right now HotSpawn lists <strong>13 open CS2 pick'em matches</strong>.
+<strong>4</strong> are priced by an external
+bookmaker or exchange, <strong>5</strong> are originated from Valve's official rating
+table, <strong>3</strong> rest on a published assumption, and
+<strong>1</strong> is withheld because the sources contradict each other or nothing
+verifiable exists. HotSpawn's crowd percentage is never used.</p>
+<div class="btns">
+<a class="btn primary" href="picks.html"><span>See all 13 picks<small>pick, both win probabilities and the source for every row</small></span><span class="arw">→</span></a>
+<a class="btn" href="unresolved.html"><span>Unresolved &amp; limitations (4)<small>what was tried, what is an assumption, what is withheld</small></span><span class="arw">→</span></a>
+</div>
+<div class="stats">
+<div class="stat"><b>12/13</b><span>matches with a pick</span></div>
+<div class="stat"><b>4</b><span>verified external price</span></div>
+<div class="stat"><b>5</b><span>originated (Valve VRS)</span></div>
+<div class="stat"><b>4</b><span>assumption or withheld</span></div>
+</div>
+<p class="small">Valve standings snapshot <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">2026_10_05</a>
+· slope k = 0.4308 fitted on 60 priced fixtures · data captured Wed 21 Oct 19:24 UTC.</p>
+</section>
+
+<h2>Where the picks are on this site</h2>
+<div class="btns">
+<a class="btn" href="picks.html"><span>All 13 open picks<small>the full updated list, mobile cards</small></span><span class="arw">→</span></a>
+<a class="btn" href="unresolved.html"><span>Unresolved picks &amp; limitations<small>the separate section for rows we cannot verify</small></span><span class="arw">→</span></a>
+<a class="btn" href="flagged.html"><span>Flagged for review<small>irregularities, alias decisions, rejected prices</small></span><span class="arw">→</span></a>
+<a class="btn" href="method.html"><span>Method &amp; formulas<small>the resolution ladder, gates and calibration</small></span><span class="arw">→</span></a>
+<a class="btn" href="sources.html"><span>Source ledger<small>every URL, its HTTP status and when it was read</small></span><span class="arw">→</span></a>
+<a class="btn" href="../index.html"><span>Other boards on this site<small>every parallel session's picks and evidence</small></span><span class="arw">→</span></a>
+</div>
+
+<h2>Next matches</h2>
+<div class="card"><div class='team'><span>Rare Atom <span class='small'>to beat Vitalem Aerem</span></span><b>63.8%</b></div><div class='meta' style='margin:0 0 8px'>VOID Autumn Cup 2026 · Thu 22 Oct 05:00 UTC · <span class='badge ok'>Verified · one book</span></div><div class='team'><span>benched gods <span class='small'>to beat TitanFlow</span></span><b>64.0%</b></div><div class='meta' style='margin:0 0 8px'>CCT Europe 2026 Challengers #8 · Thu 22 Oct 11:00 UTC · <span class='badge warn'>Assumption</span></div><div class='team'><span>Banda chuya <span class='small'>to beat Donstu</span></span><b>54.1%</b></div><div class='meta' style='margin:0 0 8px'>CCT Europe 2026 Challengers #8 · Thu 22 Oct 13:45 UTC · <span class='badge model'>Originated · official VRS</span></div><div class='team'><span>Imperial <span class='small'>to beat Turma do Pagode</span></span><b>75.7%</b></div><div class='meta' style='margin:0 0 8px'>Circuit X Curitiba #4 · Thu 22 Oct 14:00 UTC · <span class='badge ok'>Verified · bookmakers</span></div></div>
+
+<h2 id="unresolved">Unresolved picks &amp; limitations (4)</h2>
+<div class="note"><ul><li><a href='picks.html#m-1082837'>Zetta vs LOS NINOS</a> (CCT South America 2026 Series #7, 21 Oct 22:00 UTC) — <strong>Withheld</strong>: Under the two documented assumptions for the unrated opponent the favourite changes (team A between 34.4% and 55.5%), so no direction is defensible.</li><li><a href='picks.html#m-1081597'>benched gods vs TitanFlow</a> (CCT Europe 2026 Challengers #8, 22 Oct 11:00 UTC) — <strong>Assumption</strong>: Valve lists 40 counted matches for the chosen benched gods roster (#157, latest 2026-10-02); duplicate entries #329 were rejected on roster size and match recency.</li><li><a href='picks.html#m-1082858'>Ground Zero vs Off Chops</a> (DFRAG Invitational 2026, 26 Oct 03:00 UTC) — <strong>Assumption</strong>: Off Chops has no official rating (no_rating); no bookmaker or exchange priced this fixture, so no verified probability exists. The published number is an assumption, not evidence.</li><li><a href='picks.html#m-1082860'>FlyQuest vs Staqued</a> (DFRAG Invitational 2026, 27 Oct 03:00 UTC) — <strong>Assumption</strong>: Staqued has no official rating (no_rating); no bookmaker or exchange priced this fixture, so no verified probability exists. The published number is an assumption, not evidence.</li></ul>
+<p class="small">Full detail — including the source-by-source attempts, the two documented
+assumptions used for unrated opponents and the fixtures whose opponent identity is contradicted by
+another source — is on <a href="unresolved.html">Unresolved &amp; limitations</a>.</p></div>
+
+<h2>How to read a row</h2>
+<div class="card">
+<p><span class="badge ok">Verified · bookmakers</span> both sides priced by two or more external
+books, de-vigged and averaged.</p>
+<p><span class="badge ok">Verified · one book</span> one external price; the book and its event are
+linked on the row.</p>
+<p><span class="badge ok">Verified · exchange</span> a Kalshi order-book mid inside the 10¢ spread gate.</p>
+<p><span class="badge model">Originated · official VRS</span> no book prices it; the number comes from
+Valve's official ranking points with a slope fitted on real bookmaker prices. It is a model line,
+not a market price.</p>
+<p><span class="badge warn">Assumption</span> the opponent has no official rating and nothing priced
+the match; the range shows what the number would be under the VRS floor and the VRS median.</p>
+<p><span class="badge bad">Withheld</span> the sources disagree or nothing verifiable exists; values
+are blank on purpose.</p>
+</div>
+
+<footer>
+<p><strong>Data capture:</strong> Wed 21 Oct 19:24 UTC (bootstrap mode).
+<strong>Build:</strong> 21 Oct 19:44 UTC.
+<strong>Valve standings:</strong> snapshot 2026_10_05.</p>
+<p>HotSpawn is used for fixture discovery and settlement only. Its crowd pick percentage is never
+read or used as a probability. Every number on this site is derived from a linked external source
+or from Valve's official standings, and anything that could not be confirmed is left blank and
+listed on <a href="unresolved.html">Unresolved</a> / <a href="flagged.html">Flagged</a>.</p>
+<p><a href="../index.html">← All boards on this site</a> · <a href="https://play.hotspawn.com/lobby"
+rel="noopener">HotSpawn lobby</a> · <a href="https://www.hotspawn.com/pickem" rel="noopener">Pick'em</a></p>
+</footer>
+</main></body></html>

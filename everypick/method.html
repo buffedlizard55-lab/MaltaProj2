@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Method · HotSpawn CS2 picks</title>
+<link rel="icon" href="../favicon.ico">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--card2:#1c2430;--line:#2b3441;--text:#e6edf3;--muted:#93a1b1;
+--ok:#2ea043;--okbg:#12261a;--warn:#d29922;--warnbg:#2a2113;--bad:#f85149;--badbg:#2a1416;
+--model:#58a6ff;--modelbg:#0d2233;--pick:#7ee2a8}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding-bottom:40px}
+a{color:#79c0ff;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:rgba(13,17,23,.97);border-bottom:1px solid var(--line);
+backdrop-filter:blur(6px)}
+.wrap{max-width:980px;margin:0 auto;padding:0 14px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0}
+.brand{font-weight:800;font-size:17px;letter-spacing:.2px}
+.brand span{color:var(--pick)}
+nav{display:flex;gap:6px;overflow-x:auto;padding:0 0 8px;-webkit-overflow-scrolling:touch}
+nav a{white-space:nowrap;font-size:13px;padding:7px 11px;border:1px solid var(--line);border-radius:999px;
+color:var(--text);background:var(--card)}
+nav a[aria-current=page]{border-color:var(--pick);color:var(--pick)}
+h1{font-size:24px;line-height:1.25;margin:18px 0 8px}
+h2{font-size:19px;margin:26px 0 8px}
+h3{font-size:16px;margin:18px 0 6px}
+p{margin:8px 0}
+.lede{color:var(--muted)}
+.hero{background:linear-gradient(160deg,#152132,#101722);border:1px solid #26374d;border-radius:16px;
+padding:18px 16px;margin:14px 0}
+.hero .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--pick);margin:0 0 6px}
+.hero h1{margin:0 0 6px;font-size:23px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.stat b{display:block;font-size:21px;line-height:1.2}
+.stat span{font-size:12px;color:var(--muted)}
+.btns{display:grid;gap:9px;margin:12px 0 4px}
+.btn{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 15px;
+border-radius:12px;background:var(--card2);border:1px solid var(--line);color:var(--text);font-weight:600;
+min-height:48px}
+.btn small{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:2px}
+.btn.primary{background:var(--pick);color:#08130d;border-color:var(--pick)}
+.btn.primary small{color:#0d3520}
+.btn .arw{font-size:18px;opacity:.8}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.card .match{font-size:17px;font-weight:700;line-height:1.3}
+.meta{font-size:12px;color:var(--muted);margin-top:3px}
+.badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.03em;padding:3px 8px;
+border-radius:999px;border:1px solid transparent;vertical-align:middle}
+.badge.ok{background:var(--okbg);color:#7ee2a8;border-color:#1c5b30}
+.badge.model{background:var(--modelbg);color:#9ecbff;border-color:#1f4a6b}
+.badge.warn{background:var(--warnbg);color:#e3b341;border-color:#5c4520}
+.badge.bad{background:var(--badbg);color:#ff8b84;border-color:#6b2a26}
+.pickrow{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:11px 0 2px}
+.pickname{font-size:19px;font-weight:800;color:var(--pick)}
+.pickprob{font-size:19px;font-weight:800}
+.bar{height:10px;border-radius:6px;background:#0a0f15;overflow:hidden;margin:6px 0 2px;
+border:1px solid #232c38}
+.bar>i{display:block;height:100%}
+.team{display:flex;justify-content:space-between;font-size:14px;padding:3px 0}
+.team b{font-variant-numeric:tabular-nums}
+.team.win b{color:var(--pick)}
+details{margin-top:10px;border-top:1px solid #232c38;padding-top:8px}
+summary{cursor:pointer;font-size:13px;color:var(--muted);font-weight:600}
+ul{margin:6px 0 6px 18px;padding:0}li{margin:4px 0;font-size:14px}
+.small{font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid #232c38;vertical-align:top}
+th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.note{border-left:3px solid var(--warn);background:var(--warnbg);padding:10px 12px;border-radius:0 10px 10px 0;
+font-size:13.5px;margin:12px 0}
+.err{border-left-color:var(--bad);background:var(--badbg)}
+.ok{border-left-color:var(--ok);background:var(--okbg)}
+footer{color:var(--muted);font-size:12px;padding:24px 0 0;border-top:1px solid var(--line);margin-top:28px}
+code{background:#0a0f15;padding:1px 5px;border-radius:5px;font-size:12.5px}
+@media(min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}.btns{grid-template-columns:1fr 1fr}}
+</style></head>
+<body>
+<header><div class="wrap">
+<div class="top"><div class="brand">HotSpawn <span>CS2 picks</span></div>
+<div class="small">built 21 Oct 19:44 UTC</div></div>
+<nav><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="flagged.html">Flagged</a><a href="method.html" aria-current=page>Method</a><a href="sources.html">Sources</a></nav>
+</div></header>
+<main class="wrap">
+
+<h1>Method</h1>
+<p class="lede">How a pick and a probability are produced for every open HotSpawn CS2 match, in the
+order the sources are consulted, and what each label means.</p>
+
+<h2>1. Resolution ladder (first match wins)</h2>
+<div class="tablewrap"><table><thead><tr><th>Step</th><th>Source</th><th>What it produces</th><th>Label</th></tr></thead><tbody>
+<tr><td>1</td><td>Pinnacle, Bovada, Melbet LineFeed, Kalshi</td><td>De-vigged two-way prices, joined on
+both names + kickoff ±5 min; weighted mean (Pinnacle ×2)</td><td><span class="badge ok">Verified</span></td></tr>
+<tr><td>2</td><td>Kalshi exchange order book</td><td>Mid of bid/ask, both sides inside the 10¢ spread
+gate, kickoff from the exchange's own rules text</td><td><span class="badge ok">Verified</span></td></tr>
+<tr><td>3</td><td>Official Valve Regional Standings</td><td>Points difference through Valve's own
+Glicko curve with a fitted slope k</td><td><span class="badge model">Originated</span></td></tr>
+<tr><td>4</td><td>Documented assumption</td><td>Rated side only, published as a range between the VRS
+floor and the VRS median for the unrated opponent</td><td><span class="badge warn">Assumption</span></td></tr>
+<tr><td>5</td><td>—</td><td>Nothing: values are left blank and the reason is published</td>
+<td><span class="badge bad">Withheld</span></td></tr>
+</tbody></table></div>
+<p class="small">HotSpawn is discovery and settlement only. Its crowd pick percentage is never read,
+and no HotSpawn figure enters a probability.</p>
+
+<h2>2. De-vigging</h2>
+<p>For decimal prices <code>d_a, d_b</code>: <code>i_a = 1/d_a</code>, <code>i_b = 1/d_b</code>,
+<code>p_a = i_a/(i_a+i_b)</code>. A book is rejected if its implied total is outside
+0.95–1.30. American prices are converted first; Kalshi dollars are converted with
+<code>d = 1/price</code>. Every stored probability is re-derived from the raw prices at build time.</p>
+
+<h2>3. Valve rating model</h2>
+<p>Valve's own model (<a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/glicko.js" rel="noopener">model/glicko.js</a>,
+evaluated with a fixed RD of 75 as in
+<a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js" rel="noopener">model/fit.js</a>)
+gives <code>g = 0.9728</code>, so
+<code>p_A = 1/(1+10^(−k·g·Δ/400))</code>. The slope <code>k</code> is fitted by least squares of
+<code>logit(market)</code> on <code>g·Δ/400</code> over the retained calibration pairs:
+<strong>k = 0.4308</strong> on 60 priced fixtures
+(unbounded fit 0.4308 if it fell outside the published bounds [0.25, 1.5]).
+Valve's README states its own curve overstates big gaps, which is why the slope is learned from
+bookmaker prices instead of assumed.</p>
+
+<h2>4. Assumption rule for unrated opponents</h2>
+<p>If exactly one roster is in Valve's table, the opponent has no rating. The board then computes the
+rated side's probability twice: once with the opponent at the official VRS floor
+(#380, 381 pts) and
+once with the opponent at the VRS median (740 pts across
+380 ranked teams). The published range is those two numbers. The pick is
+published only if both assumptions agree on the favourite; otherwise the row is withheld. These rows
+are never counted as verified.</p>
+
+<h2>5. Join gates</h2>
+<ul>
+<li>Normalisation strips case, accents, punctuation and generic words
+(<code>Team</code>, <code>Esports</code>, <code>Gaming</code>, …). No prefix or substring matches:
+“B8” never matches “B8 Academy”.</li>
+<li>Published aliases (e.g. <code>Apogee Esports → Apogee Betclic</code>) are applied only with an
+agreeing opponent <em>and</em> kickoff, and are listed on <a href="flagged.html">Flagged</a>.</li>
+<li>Kickoff tolerance is five minutes. A quote without an established kickoff is never joined.</li>
+<li>Duplicate Valve rows for one organisation are resolved only with official evidence: five-player
+roster, newest counted match in Valve's details file; ties are refused.</li>
+</ul>
+
+<h2>6. Confidence labels</h2>
+<p><strong>Strong</strong> ≥70% · <strong>Solid</strong> ≥60% · <strong>Lean</strong> ≥53% ·
+<strong>Toss-up</strong> below that · <strong>Assumption</strong> for rows in the assumption tier.
+Labels describe the probability, not the quality of the evidence; read the badge for that.</p>
+
+<h2>7. Refresh</h2>
+<p>Every 4 hours (and on demand) the workflow collects HotSpawn, Pinnacle, Bovada, Melbet, Kalshi and
+Valve's standings, rebuilds this board, runs the contract tests and commits the rendered pages.
+If the lobby page cannot be read the previous inventory is kept and the failure is recorded in the
+source ledger instead of publishing an empty board.</p>
+
+<h2>8. What is deliberately not done</h2>
+<ul><li>No HotSpawn crowd or pick'em percentages.</li>
+<li>No scraped or guessed odds; unreachable sources are reported, not estimated.</li>
+<li>No value is carried forward from a previous board when its quote has expired.</li>
+<li>No blending of the model into a verified market pick.</li></ul>
+
+<footer>
+<p><strong>Data capture:</strong> Wed 21 Oct 19:24 UTC (bootstrap mode).
+<strong>Build:</strong> 21 Oct 19:44 UTC.
+<strong>Valve standings:</strong> snapshot 2026_10_05.</p>
+<p>HotSpawn is used for fixture discovery and settlement only. Its crowd pick percentage is never
+read or used as a probability. Every number on this site is derived from a linked external source
+or from Valve's official standings, and anything that could not be confirmed is left blank and
+listed on <a href="unresolved.html">Unresolved</a> / <a href="flagged.html">Flagged</a>.</p>
+<p><a href="../index.html">← All boards on this site</a> · <a href="https://play.hotspawn.com/lobby"
+rel="noopener">HotSpawn lobby</a> · <a href="https://www.hotspawn.com/pickem" rel="noopener">Pick'em</a></p>
+</footer>
+</main></body></html>

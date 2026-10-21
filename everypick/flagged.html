@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Flagged for review · HotSpawn CS2 picks</title>
+<link rel="icon" href="../favicon.ico">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--card2:#1c2430;--line:#2b3441;--text:#e6edf3;--muted:#93a1b1;
+--ok:#2ea043;--okbg:#12261a;--warn:#d29922;--warnbg:#2a2113;--bad:#f85149;--badbg:#2a1416;
+--model:#58a6ff;--modelbg:#0d2233;--pick:#7ee2a8}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding-bottom:40px}
+a{color:#79c0ff;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:rgba(13,17,23,.97);border-bottom:1px solid var(--line);
+backdrop-filter:blur(6px)}
+.wrap{max-width:980px;margin:0 auto;padding:0 14px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0}
+.brand{font-weight:800;font-size:17px;letter-spacing:.2px}
+.brand span{color:var(--pick)}
+nav{display:flex;gap:6px;overflow-x:auto;padding:0 0 8px;-webkit-overflow-scrolling:touch}
+nav a{white-space:nowrap;font-size:13px;padding:7px 11px;border:1px solid var(--line);border-radius:999px;
+color:var(--text);background:var(--card)}
+nav a[aria-current=page]{border-color:var(--pick);color:var(--pick)}
+h1{font-size:24px;line-height:1.25;margin:18px 0 8px}
+h2{font-size:19px;margin:26px 0 8px}
+h3{font-size:16px;margin:18px 0 6px}
+p{margin:8px 0}
+.lede{color:var(--muted)}
+.hero{background:linear-gradient(160deg,#152132,#101722);border:1px solid #26374d;border-radius:16px;
+padding:18px 16px;margin:14px 0}
+.hero .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--pick);margin:0 0 6px}
+.hero h1{margin:0 0 6px;font-size:23px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.stat b{display:block;font-size:21px;line-height:1.2}
+.stat span{font-size:12px;color:var(--muted)}
+.btns{display:grid;gap:9px;margin:12px 0 4px}
+.btn{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 15px;
+border-radius:12px;background:var(--card2);border:1px solid var(--line);color:var(--text);font-weight:600;
+min-height:48px}
+.btn small{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:2px}
+.btn.primary{background:var(--pick);color:#08130d;border-color:var(--pick)}
+.btn.primary small{color:#0d3520}
+.btn .arw{font-size:18px;opacity:.8}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.card .match{font-size:17px;font-weight:700;line-height:1.3}
+.meta{font-size:12px;color:var(--muted);margin-top:3px}
+.badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.03em;padding:3px 8px;
+border-radius:999px;border:1px solid transparent;vertical-align:middle}
+.badge.ok{background:var(--okbg);color:#7ee2a8;border-color:#1c5b30}
+.badge.model{background:var(--modelbg);color:#9ecbff;border-color:#1f4a6b}
+.badge.warn{background:var(--warnbg);color:#e3b341;border-color:#5c4520}
+.badge.bad{background:var(--badbg);color:#ff8b84;border-color:#6b2a26}
+.pickrow{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:11px 0 2px}
+.pickname{font-size:19px;font-weight:800;color:var(--pick)}
+.pickprob{font-size:19px;font-weight:800}
+.bar{height:10px;border-radius:6px;background:#0a0f15;overflow:hidden;margin:6px 0 2px;
+border:1px solid #232c38}
+.bar>i{display:block;height:100%}
+.team{display:flex;justify-content:space-between;font-size:14px;padding:3px 0}
+.team b{font-variant-numeric:tabular-nums}
+.team.win b{color:var(--pick)}
+details{margin-top:10px;border-top:1px solid #232c38;padding-top:8px}
+summary{cursor:pointer;font-size:13px;color:var(--muted);font-weight:600}
+ul{margin:6px 0 6px 18px;padding:0}li{margin:4px 0;font-size:14px}
+.small{font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid #232c38;vertical-align:top}
+th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.note{border-left:3px solid var(--warn);background:var(--warnbg);padding:10px 12px;border-radius:0 10px 10px 0;
+font-size:13.5px;margin:12px 0}
+.err{border-left-color:var(--bad);background:var(--badbg)}
+.ok{border-left-color:var(--ok);background:var(--okbg)}
+footer{color:var(--muted);font-size:12px;padding:24px 0 0;border-top:1px solid var(--line);margin-top:28px}
+code{background:#0a0f15;padding:1px 5px;border-radius:5px;font-size:12.5px}
+@media(min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}.btns{grid-template-columns:1fr 1fr}}
+</style></head>
+<body>
+<header><div class="wrap">
+<div class="top"><div class="brand">HotSpawn <span>CS2 picks</span></div>
+<div class="small">built 21 Oct 19:44 UTC</div></div>
+<nav><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="flagged.html" aria-current=page>Flagged</a><a href="method.html">Method</a><a href="sources.html">Sources</a></nav>
+</div></header>
+<main class="wrap">
+
+<h1>Flagged for review</h1>
+<p class="lede">Every decision that a human should be able to check: published name aliases,
+duplicate-rating choices, rejected prices, conflicting listings, stale HotSpawn rows and the
+repository irregularities found while building this board. Each item carries the link used.</p>
+
+<h2>1. Name aliases that changed a pick (1)</h2>
+<ul><li>UNiTY vs Apogee Betclic — Melbet lists the opponent of UNiTY as &#x27;Apogee Esports&#x27; in &#x27;CS 2. Stake Ranked Closed Qualifier&#x27; at 2026-10-22T14:00:00Z; HotSpawn lists &#x27;Apogee Betclic&#x27; in &#x27;Stake Ranked Episode 6: Closed Qualifier&#x27; at the same kickoff with the same opponent (fixture 1082882). &#x27;Betclic&#x27; is a sponsor suffix, so the alias is applied only with the agreeing opponent and start time. Flagged for review on flagged.html.</li></ul>
+<p class="small">Full alias records live in <code>scripts/907e9435/core.py</code> (<code>ALIASES</code>)
+and each one is applied only when the opponent <em>and</em> the kickoff both agree within five minutes.</p>
+
+<h2>2. Duplicate Valve ratings resolved with official evidence (3)</h2>
+<ul><li>benched gods vs TitanFlow — Valve lists 40 counted matches for the chosen benched gods roster (#157, latest 2026-10-02); duplicate entries #329 were rejected on roster size and match recency.</li><li>Donstu vs Banda chuya — Valve lists 89 counted matches for the chosen Banda chuya roster (#165, latest 2026-10-04); duplicate entries #373 were rejected on roster size and match recency.</li><li>HOTU vs The Huns — Valve lists 37 counted matches for the chosen The Huns roster (#122, latest 2026-10-04); duplicate entries #213 were rejected on roster size and match recency.</li></ul>
+<p class="small">Rule: prefer a five-player roster, then the roster with the newest counted match in
+Valve's own details file. The alternative entries and their dates are shown on each row.</p>
+
+<h2>3. Teams with no official rating (4)</h2>
+<ul><li>Zetta vs LOS NINOS — not in Valve's standings: LOS NINOS</li><li>benched gods vs TitanFlow — not in Valve's standings: TitanFlow</li><li>Ground Zero vs Off Chops — not in Valve's standings: Off Chops</li><li>FlyQuest vs Staqued — not in Valve's standings: Staqued</li></ul>
+
+<h2>4. Conflicting listings at the same kickoff (1)</h2>
+<ul><li><a href='https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211800lnale' rel='noopener'>Kalshi (exchange)</a> — Kalshi (exchange) lists this 21 Oct 22:00 UTC slot as &#x27;Los Ninos vs Alianza Lima Esports&#x27;, not &#x27;Zetta vs LOS NINOS&#x27;.</li></ul>
+
+<h2>5. Prices rejected by the join gate (20)</h2>
+<details><summary>Why a price was not used</summary>
+<ul><li>kalshi: A Great Chaos vs DNK (2026-10-21T17:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: mellren vs los kogutos (2026-10-21T17:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: MORROW vs Dark Moon (2026-10-21T17:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: NEXVOID vs Morningstar (2026-10-22T03:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: Rare Atom vs Vitalem Aerem (2026-10-22T05:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: ex-6666 vs Bushido Wildcats (2026-10-22T08:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: TTG Esports vs eSuba (2026-10-22T08:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: Elite Klan vs Revenge (2026-10-22T10:30:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: Falcons Force vs Phantom Academy (2026-10-22T11:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: Just_Players vs FORZE Reload (2026-10-22T11:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: TitanFlow vs MORROW (2026-10-22T11:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: TheChampionGG vs ENCE Prospects (2026-10-22T13:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: los kogutos vs Donstu Esports (2026-10-22T13:45:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: XI Esport vs KAMUI (2026-10-22T14:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: Apogee Esports vs UNiTY esports (2026-10-22T16:30:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: Chinggis Warriors vs Lynn Vision (2026-10-23T03:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: The Chosen Few vs Copenhagen Wolves (2026-10-23T08:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: Ducks vs Rcave (2026-10-23T14:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: Revise vs RoundsGG (2026-10-23T17:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li><li>kalshi: Hermine Esports Club vs OldBoys (2026-10-23T18:00:00Z) — thin or one-sided order book (bid/ask missing or spread &gt; 10c)</li></ul>
+<p class="small">A price is only joined when both names match after documented normalisation
+(plus a published alias) <em>and</em> the kickoff agrees within five minutes. Anything else is
+rejected and listed here rather than forced onto a fixture.</p></details>
+
+<h2>6. HotSpawn listing hygiene</h2>
+<ul>
+<li><strong>61 stale listings</strong>: fixtures the lobby and
+API still report as <code>scheduled</code> although their kickoff has passed by more than two days
+(June–July 2026 and two mid-October rows). They are excluded from the open board and listed on the
+source page instead of being priced.</li>
+<li><strong>API/lobby disagreement</strong>: fixtures present in the public API but absent from the
+lobby page (or the reverse) are kept only when the lobby page lists them, because the pick'em game
+is the lobby.</li>
+<li><strong>Kalshi timestamps</strong>: the exchange's <code>occurrence_datetime</code> field is
+four hours later than the kickoff stated in its own <code>rules_primary</code> text on all 33 open
+events. The board uses the rules text (EDT/EST → UTC) and never the field. This is documented on
+<a href="method.html">Method</a>.</li>
+</ul>
+
+<h2>7. Repository irregularities found during the line-by-line review</h2>
+<ul>
+<li><strong>The canonical board never joins Kalshi.</strong> <code>scripts/f7279a54/collect.py</code>
+returns a JSON <code>null</code> from <code>kalshi_start()</code>, so every Kalshi quote is marked
+<code>start_is_approx</code> and rejected by <code>match_quote()</code>. Result: 13 usable exchange
+quotes are captured and then discarded every run. This board re-derives the kickoff from the
+exchange's own rules text; the canonical board is unchanged (owned by another session).</li>
+<li><strong>A real Melbet line is missed on fixture 1082882.</strong> Melbet prices
+“UNiTY vs Apogee Esports” (event 763696446) at the same 2026-10-22T14:00:00Z kickoff as HotSpawn's
+“UNiTY vs Apogee Betclic”, but the canonical board leaves the match unpriced and the fallback board
+<code>fullpicks/</code> publishes a Valve floor estimate of UNiTY 87.0%. The market has UNiTY at
+39.5%, so that estimate is 47 points away from the only real price that exists. The alias is
+published here and the row is flagged for review.</li>
+<li><strong>Rendered-vs-data lag on the archive boards.</strong> Root pages are only regenerated
+when a session runs <code>scripts/build_site.py</code>, while sub-boards refresh every 4 hours; at the
+start of this session the root page advertised a <code>fullpicks</code> snapshot of 14:14:56Z while
+that board's own data was 18:58:41Z. This board avoids the gap by committing the rendered pages in
+the same job as the data. Separately, <code>fullpicks/index.html</code> still labels its board
+“All 19 Open CS2 Picks” while its own summary counts 13 open matches — a hard-coded label.</li>
+<li><strong>Third-party data that cannot be re-verified here.</strong> Some parallel boards quote
+bo3.gg team pages and match histories. bo3.gg is not reachable from this build environment
+(connection refused), so no bo3.gg number is used as an input on this site; its claims are left to
+the boards that captured them and are flagged there.</li>
+<li><strong>Root landing page.</strong> The root page stacks more than ten parallel boards with
+different policies and conflicting counts (12/12, 9/9, 7/7 …). This board is added to the root page
+as the single primary action, with the parallel boards kept under an archive heading.</li>
+<li><strong>Valve snapshot age.</strong> The official standings file is
+2026_10_05, i.e. the newest Valve publishes; any board claiming
+a fresher official rating on 2026-10-21 should be checked.</li>
+</ul>
+
+<footer>
+<p><strong>Data capture:</strong> Wed 21 Oct 19:24 UTC (bootstrap mode).
+<strong>Build:</strong> 21 Oct 19:44 UTC.
+<strong>Valve standings:</strong> snapshot 2026_10_05.</p>
+<p>HotSpawn is used for fixture discovery and settlement only. Its crowd pick percentage is never
+read or used as a probability. Every number on this site is derived from a linked external source
+or from Valve's official standings, and anything that could not be confirmed is left blank and
+listed on <a href="unresolved.html">Unresolved</a> / <a href="flagged.html">Flagged</a>.</p>
+<p><a href="../index.html">← All boards on this site</a> · <a href="https://play.hotspawn.com/lobby"
+rel="noopener">HotSpawn lobby</a> · <a href="https://www.hotspawn.com/pickem" rel="noopener">Pick'em</a></p>
+</footer>
+</main></body></html>

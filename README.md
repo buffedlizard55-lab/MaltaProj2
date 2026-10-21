@@ -2,6 +2,22 @@
 
 **Live dashboard: https://buffedlizard55-lab.github.io/MaltaProj2/**
 
+## Every open match, one pick each (2026-10-21, session `907e9435`)
+
+**📱 Start here on a phone: [everypick — every open HotSpawn CS2 match, one pick each](https://buffedlizard55-lab.github.io/MaltaProj2/everypick/).**
+One card per open pick'em match with the pick, both teams' win probabilities, the basis badge and the
+source link on the row: `4` verified external bookmaker/exchange prices, `5` originated from Valve's
+official Regional Standings, `3` labelled assumptions for unrated opponents and `1` withheld because
+two sources disagree about the opponent. The separate
+[Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/everypick/unresolved.html)
+section lists every row that is not backed by a verified price, what was tried source by source, and
+[Flagged for review](https://buffedlizard55-lab.github.io/MaltaProj2/everypick/flagged.html) carries
+the alias decisions, rejected prices and repository irregularities; [Method](https://buffedlizard55-lab.github.io/MaltaProj2/everypick/method.html)
+and the [source ledger](https://buffedlizard55-lab.github.io/MaltaProj2/everypick/sources.html)
+document the ladder and every endpoint. HotSpawn supplies fixtures only — its crowd percentage is
+never read. Rebuilt and committed every 4 hours by `.github/workflows/everypick-907e9435.yml`
+(`scripts/907e9435/`, tests `tests/test_907e9435.py`).
+
 ## Current evidence-only dashboard
 
 Start with the [mobile summary](https://buffedlizard55-lab.github.io/MaltaProj2/dashboard/) or [all current picks](https://buffedlizard55-lab.github.io/MaltaProj2/dashboard/picks.html). Every retained lobby fixture is accounted for; unsupported probabilities and picks remain blank in [Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/dashboard/unresolved.html). [Sources](https://buffedlizard55-lab.github.io/MaltaProj2/dashboard/sources.html) · [Flagged for Review](https://buffedlizard55-lab.github.io/MaltaProj2/dashboard/flagged.html). External prices lead, rule-backed exchange quotes are labelled, and originated Valve estimates are experimental—not verified probabilities. No inferred unrated-team floor or direction-only assumption is imported. Four-hour automated research is a best-effort target; stale rows disable themselves.

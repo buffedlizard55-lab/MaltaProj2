@@ -1,0 +1,65 @@
+name: everypick (907e9435)
+
+# Session 907e9435 — 4-hourly refresh for everypick/ and data/907e9435/.
+# Collects HotSpawn (discovery only), Pinnacle, Bovada, Melbet, the Kalshi exchange and Valve's
+# official standings, resolves a pick for every open CS2 pick'em fixture through the evidence
+# ladder, rebuilds the mobile board, runs the contract tests and commits the *rendered* pages so the
+# published site can never lag its own data.
+# Scope guard: commits only data/907e9435/** and everypick/**.
+on:
+  push:
+    branches: ['arena/907e9435-maltaproj2', 'main']
+    paths:
+      - 'scripts/907e9435/**'
+      - 'tests/test_907e9435.py'
+      - '.github/workflows/everypick-907e9435.yml'
+  schedule:
+    - cron: '17 */4 * * *'   # every 4 hours (inside the 4-8 hour requirement)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: everypick-907e9435-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Collect HotSpawn inventory, external prices and official Valve standings
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/907e9435/collect.py --live
+      - name: Resolve every open fixture and build the mobile board
+        run: python3 scripts/907e9435/build.py
+      - name: Contract tests (coverage, sources, join gate, assumption policy, rendered pages)
+        run: python3 -m unittest tests.test_907e9435 -v
+      - name: Commit the rendered board (rebase, never discards other sessions' work)
+        env:
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          git config user.name "everypick-bot (907e9435)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/907e9435 everypick
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "everypick(907e9435): refresh picks $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then
+              exit 0
+            fi
+            sleep $((attempt * 6))
+          done
+          exit 1

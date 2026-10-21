@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Sources · HotSpawn CS2 picks</title>
+<link rel="icon" href="../favicon.ico">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--card2:#1c2430;--line:#2b3441;--text:#e6edf3;--muted:#93a1b1;
+--ok:#2ea043;--okbg:#12261a;--warn:#d29922;--warnbg:#2a2113;--bad:#f85149;--badbg:#2a1416;
+--model:#58a6ff;--modelbg:#0d2233;--pick:#7ee2a8}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding-bottom:40px}
+a{color:#79c0ff;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:rgba(13,17,23,.97);border-bottom:1px solid var(--line);
+backdrop-filter:blur(6px)}
+.wrap{max-width:980px;margin:0 auto;padding:0 14px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0}
+.brand{font-weight:800;font-size:17px;letter-spacing:.2px}
+.brand span{color:var(--pick)}
+nav{display:flex;gap:6px;overflow-x:auto;padding:0 0 8px;-webkit-overflow-scrolling:touch}
+nav a{white-space:nowrap;font-size:13px;padding:7px 11px;border:1px solid var(--line);border-radius:999px;
+color:var(--text);background:var(--card)}
+nav a[aria-current=page]{border-color:var(--pick);color:var(--pick)}
+h1{font-size:24px;line-height:1.25;margin:18px 0 8px}
+h2{font-size:19px;margin:26px 0 8px}
+h3{font-size:16px;margin:18px 0 6px}
+p{margin:8px 0}
+.lede{color:var(--muted)}
+.hero{background:linear-gradient(160deg,#152132,#101722);border:1px solid #26374d;border-radius:16px;
+padding:18px 16px;margin:14px 0}
+.hero .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--pick);margin:0 0 6px}
+.hero h1{margin:0 0 6px;font-size:23px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.stat b{display:block;font-size:21px;line-height:1.2}
+.stat span{font-size:12px;color:var(--muted)}
+.btns{display:grid;gap:9px;margin:12px 0 4px}
+.btn{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 15px;
+border-radius:12px;background:var(--card2);border:1px solid var(--line);color:var(--text);font-weight:600;
+min-height:48px}
+.btn small{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:2px}
+.btn.primary{background:var(--pick);color:#08130d;border-color:var(--pick)}
+.btn.primary small{color:#0d3520}
+.btn .arw{font-size:18px;opacity:.8}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.card .match{font-size:17px;font-weight:700;line-height:1.3}
+.meta{font-size:12px;color:var(--muted);margin-top:3px}
+.badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.03em;padding:3px 8px;
+border-radius:999px;border:1px solid transparent;vertical-align:middle}
+.badge.ok{background:var(--okbg);color:#7ee2a8;border-color:#1c5b30}
+.badge.model{background:var(--modelbg);color:#9ecbff;border-color:#1f4a6b}
+.badge.warn{background:var(--warnbg);color:#e3b341;border-color:#5c4520}
+.badge.bad{background:var(--badbg);color:#ff8b84;border-color:#6b2a26}
+.pickrow{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:11px 0 2px}
+.pickname{font-size:19px;font-weight:800;color:var(--pick)}
+.pickprob{font-size:19px;font-weight:800}
+.bar{height:10px;border-radius:6px;background:#0a0f15;overflow:hidden;margin:6px 0 2px;
+border:1px solid #232c38}
+.bar>i{display:block;height:100%}
+.team{display:flex;justify-content:space-between;font-size:14px;padding:3px 0}
+.team b{font-variant-numeric:tabular-nums}
+.team.win b{color:var(--pick)}
+details{margin-top:10px;border-top:1px solid #232c38;padding-top:8px}
+summary{cursor:pointer;font-size:13px;color:var(--muted);font-weight:600}
+ul{margin:6px 0 6px 18px;padding:0}li{margin:4px 0;font-size:14px}
+.small{font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid #232c38;vertical-align:top}
+th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.note{border-left:3px solid var(--warn);background:var(--warnbg);padding:10px 12px;border-radius:0 10px 10px 0;
+font-size:13.5px;margin:12px 0}
+.err{border-left-color:var(--bad);background:var(--badbg)}
+.ok{border-left-color:var(--ok);background:var(--okbg)}
+footer{color:var(--muted);font-size:12px;padding:24px 0 0;border-top:1px solid var(--line);margin-top:28px}
+code{background:#0a0f15;padding:1px 5px;border-radius:5px;font-size:12.5px}
+@media(min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}.btns{grid-template-columns:1fr 1fr}}
+</style></head>
+<body>
+<header><div class="wrap">
+<div class="top"><div class="brand">HotSpawn <span>CS2 picks</span></div>
+<div class="small">built 21 Oct 19:44 UTC</div></div>
+<nav><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="flagged.html">Flagged</a><a href="method.html">Method</a><a href="sources.html" aria-current=page>Sources</a></nav>
+</div></header>
+<main class="wrap">
+
+<h1>Source ledger</h1>
+<p class="lede">Every endpoint this board reads, the HTTP status it answered at the capture, and
+what the data was used for. A failed source is shown as failed — it is never converted into a
+probability.</p>
+<div class="tablewrap"><table><thead><tr><th>Source</th><th>Status</th><th>Read (UTC)</th><th>Link</th>
+</tr></thead><tbody><tr><td><strong>Retained capture</strong><div class='small'>bootstrap provenance</div></td><td><span class='badge model'>info</span><div class='small'></div></td><td class='small'>—</td><td class='small'>—</td></tr><tr><td><strong>Bovada</strong><div class='small'>two-way match-winner prices</div></td><td><span class='badge ok'>200</span><div class='small'></div></td><td class='small'>Wed 21 Oct 19:24 UTC</td><td class='small'><a href='https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2' rel='noopener'>endpoint</a></td></tr><tr><td><strong>HLTV</strong><div class='small'>probe only — automation is refused</div></td><td><span class='badge bad'>403</span><div class='small'>HTTPError 403</div></td><td class='small'>Wed 21 Oct 19:24 UTC</td><td class='small'><a href='https://www.hltv.org/matches' rel='noopener'>endpoint</a></td></tr><tr><td><strong>HotSpawn fixtures API</strong><div class='small'>fixture inventory and status</div></td><td><span class='badge ok'>200</span><div class='small'></div></td><td class='small'>Wed 21 Oct 19:24 UTC</td><td class='small'><a href='https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures' rel='noopener'>endpoint</a></td></tr><tr><td><strong>HotSpawn lobby page</strong><div class='small'>fixture discovery (public page transfer state)</div></td><td><span class='badge ok'>200</span><div class='small'></div></td><td class='small'>Wed 21 Oct 19:24 UTC</td><td class='small'><a href='https://play.hotspawn.com/lobby' rel='noopener'>endpoint</a></td></tr><tr><td><strong>Kalshi trade API (KXCS2GAME)</strong><div class='small'>exchange order books</div></td><td><span class='badge ok'>200</span><div class='small'></div></td><td class='small'>Wed 21 Oct 19:24 UTC</td><td class='small'><a href='https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&amp;status=open&amp;with_nested_markets=true&amp;limit=200' rel='noopener'>endpoint</a></td></tr><tr><td><strong>Kalshi rebuild (this board)</strong><div class='small'>kickoff from rules text + spread gate</div></td><td><span class='badge model'>info</span><div class='small'></div></td><td class='small'>—</td><td class='small'>—</td></tr><tr><td><strong>Melbet LineFeed</strong><div class='small'>two-way match-winner prices</div></td><td><span class='badge ok'>200</span><div class='small'></div></td><td class='small'>Wed 21 Oct 19:24 UTC</td><td class='small'><a href='https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1' rel='noopener'>endpoint</a></td></tr><tr><td><strong>Pinnacle (guest odds API)</strong><div class='small'>two-way match-winner prices</div></td><td><span class='badge ok'>200</span><div class='small'></div></td><td class='small'>Wed 21 Oct 19:24 UTC</td><td class='small'><a href='https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups' rel='noopener'>endpoint</a></td></tr><tr><td><strong>Polymarket gamma API</strong><div class='small'>probe: no usable CS2 match markets observed</div></td><td><span class='badge ok'>200</span><div class='small'></div></td><td class='small'>Wed 21 Oct 19:24 UTC</td><td class='small'><a href='https://gamma-api.polymarket.com/events?closed=false&amp;limit=200&amp;tag_slug=counter-strike' rel='noopener'>endpoint</a></td></tr><tr><td><strong>Valve standings file</strong><div class='small'>official ratings, rosters, details files</div></td><td><span class='badge ok'>200</span><div class='small'></div></td><td class='small'>Wed 21 Oct 19:44 UTC</td><td class='small'><a href='https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md' rel='noopener'>endpoint</a></td></tr><tr><td><strong>Valve standings repository tree</strong><div class='small'>newest official snapshot discovery</div></td><td><span class='badge ok'>200</span><div class='small'></div></td><td class='small'>Wed 21 Oct 19:44 UTC</td><td class='small'><a href='https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/git/trees/main?recursive=1' rel='noopener'>endpoint</a></td></tr></tbody></table></div>
+
+<h2>Official rating source</h2>
+<p>Valve Regional Standings, snapshot <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">2026_10_05</a>
+· 380 ranked teams · floor #380
+(381 pts) · median 740 pts ·
+top 2046 pts.
+Newest-snapshot check: <a href="https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/git/trees/main?recursive=1" rel="noopener">repository tree</a>.</p>
+
+<h2>Calibration inputs</h2>
+<p>60 retained fixture-level pairs
+(<code>data/f7279a54/calibration_pairs.json</code>) of a market consensus and a Valve points
+difference. Refitted at every build; the fit is published on <a href="method.html">Method</a>.</p>
+
+<h2>Published-pick track record (canonical board)</h2>
+<p>From <code>data/f7279a54/track_record.json</code>:
+<strong>130</strong> graded picks,
+accuracy <strong>72.3%</strong>,
+mean Brier <strong>0.2012</strong>.
+This is the canonical collector's record, reproduced here for context, not this board's own record.</p>
+<div class="tablewrap"><table><thead><tr><th>Line basis</th><th>Graded</th><th>Accuracy</th><th>Mean Brier</th></tr></thead><tbody>
+<tr><td>market</td><td>122</td><td>72.1%</td><td>0.2025</td></tr><tr><td>model</td><td>8</td><td>75.0%</td><td>0.181</td></tr>
+</tbody></table></div>
+
+<h2>Provenance of this build</h2>
+<pre class="small" style="white-space:pre-wrap">{
+ &quot;book_quotes_from&quot;: &quot;data/f7279a54/snapshot.json&quot;,
+ &quot;book_quotes_captured_utc&quot;: &quot;2026-10-21T19:24:28Z&quot;,
+ &quot;vrs_fetched_utc&quot;: &quot;2026-10-21T19:44:27Z&quot;,
+ &quot;note&quot;: &quot;Bookmaker/exchange/Kalshi payloads are the retained capture from the canonical collector; the Valve standings were fetched fresh from Valve&#x27;s official repository during this build.&quot;
+}</pre>
+<p class="small">Capture mode: <strong>bootstrap</strong> · snapshot
+2026-10-21T19:24:28Z · build 2026-10-21T19:44:27Z.</p>
+
+<footer>
+<p><strong>Data capture:</strong> Wed 21 Oct 19:24 UTC (bootstrap mode).
+<strong>Build:</strong> 21 Oct 19:44 UTC.
+<strong>Valve standings:</strong> snapshot 2026_10_05.</p>
+<p>HotSpawn is used for fixture discovery and settlement only. Its crowd pick percentage is never
+read or used as a probability. Every number on this site is derived from a linked external source
+or from Valve's official standings, and anything that could not be confirmed is left blank and
+listed on <a href="unresolved.html">Unresolved</a> / <a href="flagged.html">Flagged</a>.</p>
+<p><a href="../index.html">← All boards on this site</a> · <a href="https://play.hotspawn.com/lobby"
+rel="noopener">HotSpawn lobby</a> · <a href="https://www.hotspawn.com/pickem" rel="noopener">Pick'em</a></p>
+</footer>
+</main></body></html>
