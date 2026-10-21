@@ -1,41 +1,42 @@
 {
-  "checked_utc": "2026-10-21T20:51:27Z",
-  "known_red_tests": [
-    "tests.test_e1b48771.Coverage.test_exactly_the_open_hotspawn_fixtures_and_nothing_else",
-    "tests.test_verify_7cd2e67a.PublishedArithmetic.test_live_board_picks_and_edges_reproduce"
-  ],
-  "all_known_green": false,
-  "results": [
+  "checked_utc": "2026-10-21T21:08:12Z",
+  "probe_head": "6bc1a03bcf32e0d8632b630981dea9ca649268db",
+  "full_suite": {
+    "ran": 1356,
+    "passed": false,
+    "failures_and_errors": [
+      "test_bce97e13.RootIntegration.test_root_contains_marked_verification_block"
+    ]
+  },
+  "watchlist": [
     {
       "test": "tests.test_e1b48771.Coverage.test_exactly_the_open_hotspawn_fixtures_and_nothing_else",
-      "passed": false,
-      "returncode": 1,
+      "passed": true,
+      "returncode": 0,
       "tail": [
-        "'1082860'",
-        "'1082859'",
-        "'1082858'",
-        "",
+        ".",
         "----------------------------------------------------------------------",
         "Ran 1 test in 0.000s",
         "",
-        "FAILED (failures=1)"
+        "OK"
       ]
     },
     {
       "test": "tests.test_verify_7cd2e67a.PublishedArithmetic.test_live_board_picks_and_edges_reproduce",
-      "passed": false,
-      "returncode": 1,
+      "passed": true,
+      "returncode": 0,
       "tail": [
-        "  File \"/home/user/MaltaProj2/tests/test_verify_7cd2e67a.py\", line 255, in test_live_board_picks_and_edges_reproduce",
-        "    self.assertEqual(side, pub[\"pick_side\"], row[\"fixture_id\"])",
-        "AssertionError: 'a' != None : 1081205",
-        "",
+        ".",
         "----------------------------------------------------------------------",
-        "Ran 1 test in 0.005s",
+        "Ran 1 test in 0.004s",
         "",
-        "FAILED (failures=1)"
+        "OK"
       ]
     }
   ],
-  "note": "pickaudit only observes these tests; their boards belong to other scopes. An empty known_red_tests list means the drift has been fixed upstream."
+  "known_red_tests": [
+    "test_bce97e13.RootIntegration.test_root_contains_marked_verification_block"
+  ],
+  "all_known_green": false,
+  "note": "pickaudit only observes the suite inside a detached worktree at HEAD; red tests belong to their owning scopes and are never patched here. An empty known_red_tests list means the full suite is green at probe_head."
 }
