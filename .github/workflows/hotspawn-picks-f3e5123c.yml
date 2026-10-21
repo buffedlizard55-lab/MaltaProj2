@@ -1,0 +1,64 @@
+name: hotspawn-picks (f3e5123c)
+
+# Session f3e5123c — 4-hourly every-match HotSpawn CS2 picks (hotspawn-picks/).
+# Featured f7279a54 lines are never altered; unpriced lobby fixtures are resolved
+# HLTV-first, then esportsbooks/exchange, then official Valve VRS. Commits ONLY
+# data/f3e5123c/** and hotspawn-picks/** (scope guard below).
+on:
+  push:
+    branches: ['arena/f3e5123c-maltaproj2', 'main']
+    paths:
+      - 'scripts/f3e5123c/**'
+      - 'tests/test_f3e5123c.py'
+      - '.github/workflows/hotspawn-picks-f3e5123c.yml'
+  schedule:
+    - cron: '41 */4 * * *' # every 4 hours (inside the 4-8h requirement)
+  workflow_run:
+    workflows: ['ourline (f7279a54)', 'board (fe803b80)']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hotspawn-picks-f3e5123c-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          fetch-depth: 50
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Resolve a pick for every open HotSpawn CS2 match
+        run: python3 scripts/f3e5123c/resolve.py
+      - name: Build mobile-first hotspawn-picks site
+        run: python3 scripts/f3e5123c/build.py
+      - name: Contract & source-verification tests
+        run: python3 -m unittest tests.test_f3e5123c -v
+      - name: Commit & push with rebase (scope-guarded)
+        env:
+          REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+        run: |
+          set -euo pipefail
+          git config user.name "hotspawn-picks-bot (f3e5123c)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/f3e5123c hotspawn-picks
+          if git diff --cached --quiet; then
+            echo "No changes to commit"; exit 0
+          fi
+          git commit -m "picks(f3e5123c): refresh every-match picks $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase -X ours origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then
+              exit 0
+            fi
+            sleep $((attempt * 6))
+          done
+          exit 1
