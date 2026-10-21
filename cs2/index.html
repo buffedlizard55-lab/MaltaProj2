@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Every HotSpawn CS2 match, one pick, sourced · HotSpawn CS2 picks</title>
+<style>
+:root{--bg:#0b1220;--panel:#121c30;--panel2:#0f1728;--line:#26324b;--text:#e8eefc;--muted:#9db0d0;
+--accent:#22d3a6;--accent2:#ffb020;--danger:#ff6b6b;--info:#7aa2ff}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--info)}
+.wrap{max-width:880px;margin:0 auto;padding:0 14px}
+header.top{position:sticky;top:0;z-index:20;background:rgba(11,18,32,.97);border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
+header.top .wrap{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 14px}
+.brand{font-weight:700;font-size:15px;letter-spacing:.2px}
+.brand span{color:var(--accent)}
+nav{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;width:100%}
+nav a{flex:0 0 auto;padding:9px 12px;border:1px solid var(--line);border-radius:999px;color:var(--text);
+text-decoration:none;font-size:14px;white-space:nowrap;min-height:38px;display:flex;align-items:center}
+nav a.active{background:var(--accent);color:#062018;border-color:var(--accent);font-weight:700}
+main{padding:16px 0 40px}
+h1{font-size:24px;line-height:1.25;margin:6px 0 8px}
+h2{font-size:19px;margin:26px 0 8px}
+h3{font-size:16px;margin:18px 0 6px}
+p{margin:8px 0}
+.eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:12px;color:var(--accent);margin:0;font-weight:700}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.card.hi{border-color:var(--accent);box-shadow:0 0 0 1px rgba(34,211,166,.25) inset}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.stat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px}
+.stat b{display:block;font-size:26px;line-height:1.1}
+.stat span{font-size:12.5px;color:var(--muted)}
+.actions{display:grid;gap:10px;margin:14px 0}
+.btn{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:15px 16px;border-radius:14px;
+background:var(--panel);border:1px solid var(--line);color:var(--text);text-decoration:none;font-weight:600;min-height:52px}
+.btn small{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:2px}
+.btn.primary{background:var(--accent);color:#062018;border-color:var(--accent)}
+.btn.primary small{color:#0a3b2c}
+.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.b-market{background:rgba(34,211,166,.16);color:#6ff0cd;border:1px solid rgba(34,211,166,.45)}
+.b-model{background:rgba(255,176,32,.14);color:#ffcf70;border:1px solid rgba(255,176,32,.4)}
+.b-research{background:rgba(122,162,255,.15);color:#a9c1ff;border:1px solid rgba(122,162,255,.45)}
+.b-none{background:rgba(255,107,107,.14);color:#ff9a9a;border:1px solid rgba(255,107,107,.4)}
+.match{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px;margin:12px 0}
+.match .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
+.match .when{font-variant-numeric:tabular-nums;font-weight:700}
+.match .comp{font-size:12.5px;color:var(--muted)}
+.teams{display:grid;grid-template-columns:1fr auto;gap:6px 10px;margin:10px 0 6px;align-items:center}
+.teams .name{font-size:16px}
+.teams .p{font-variant-numeric:tabular-nums;font-weight:700}
+.teams .picked{color:var(--accent)}
+.bar{height:8px;border-radius:999px;background:#1c2740;overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.bar .a{background:var(--accent)}
+.bar .b{background:#37507e}
+.pickline{margin:8px 0 2px;font-size:15px}
+.pickline strong{color:var(--accent)}
+.chips{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:11.5px;padding:3px 8px;border-radius:999px;background:#1a2540;border:1px solid var(--line);color:var(--muted)}
+details.src{margin-top:8px}
+details.src summary{cursor:pointer;font-size:13px;color:var(--info);padding:6px 0;min-height:34px}
+details.src ul{margin:6px 0 0 18px;padding:0;font-size:12.5px;color:var(--muted)}
+details.src li{margin:5px 0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.tablewrap{overflow-x:auto}
+.note{background:var(--panel2);border-left:3px solid var(--accent2);padding:10px 12px;border-radius:8px;font-size:13.5px;color:var(--muted)}
+.warn{border-left-color:var(--danger)}
+ul.plain{margin:8px 0 8px 20px;padding:0}
+ul.plain li{margin:6px 0}
+footer{border-top:1px solid var(--line);padding:16px 0 40px;color:var(--muted);font-size:12.5px}
+input[type=search]{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);
+background:var(--panel2);color:var(--text);font-size:16px;min-height:48px}
+.sticky-cta{position:sticky;bottom:10px;margin:16px 0 0}
+@media(max-width:719px){
+ table#tbl thead{display:none}
+ table#tbl tr{display:block;border-bottom:1px solid var(--line);padding:10px 0}
+ table#tbl td{display:block;border:0;padding:3px 0}
+ table#tbl td:before{content:attr(data-label) ": ";color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+}
+@media(min-width:720px){.stats{grid-template-columns:repeat(5,minmax(0,1fr))}h1{font-size:30px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+<div class="brand">CS2 Pick'ems <span>· every match has a pick</span></div>
+<nav><a href="index.html" class="active">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="flagged.html">Flagged</a><a href="method.html">Method</a><a href="../index.html">Site home</a></nav>
+</div></header>
+<main class="wrap">
+<p class="eyebrow">Executive summary</p>
+<h1>Every HotSpawn CS2 match, one pick, sourced</h1>
+<div class="note "></div>
+
+<div class="card hi">
+<p class="eyebrow">Executive summary</p>
+<p style="font-size:17px;margin:6px 0 4px"><strong>20 of 20 open HotSpawn CS2 matches have a pick</strong>
+(100.0% coverage), each with both teams' win probability and the source behind it.</p>
+<p class="muted small">Fixture capture 21 Oct 12:37 UTC · board rebuilt 21 Oct 12:46 UTC ·
+refresh every 4 hours.</p>
+</div>
+
+<div class="stats">
+<div class="stat"><b>20</b><span>open CS2 matches</span></div>
+<div class="stat"><b>20</b><span>with a pick</span></div>
+<div class="stat"><b>12</b><span>from betting lines</span></div>
+<div class="stat"><b>8</b><span>researched / originated</span></div>
+<div class="stat"><b>0</b><span>unresolved</span></div>
+</div>
+
+<div class="actions">
+<a class="btn primary" href="picks.html"><span>All picks — every match<small>pick, both win probabilities, basis, sources</small></span><span>→</span></a>
+<a class="btn" href="unresolved.html"><span>Unresolved &amp; limitations<small>where no betting line exists, what we tried, what it means</small></span><span>→</span></a>
+<a class="btn" href="method.html"><span>Method &amp; sources<small>how the lobby is read and how each probability is made</small></span><span>→</span></a>
+<a class="btn" href="flagged.html"><span>Flagged for review<small>irregularities, rejected quotes, name conflicts</small></span><span>→</span></a>
+</div>
+
+<h2>Next locks</h2>
+<ul class="plain"><li><a href="picks.html#fx-1081583"><strong>Bebop</strong> 50.4%</a> — Phantom Academy v Bebop, 21 Oct 13:45 UTC</li><li><a href="picks.html#fx-1081584"><strong>Falcons Force</strong> 77.9%</a> — Falcons Force v Privateer, 21 Oct 13:45 UTC</li><li><a href="picks.html#fx-1079187"><strong>BET-M</strong> 53.8%</a> — Butterfly v BET-M, 21 Oct 14:00 UTC</li></ul>
+
+<h2>Where the picks are</h2>
+<div class="actions">
+<a class="btn" href="picks.html"><span>All picks<small>every open match: pick, both win probabilities, basis and the sources on each row</small></span><span>→</span></a>
+<a class="btn" href="unresolved.html"><span>Unresolved &amp; limitations<small>every row without a market price, the attempt ledger and what the number cannot prove</small></span><span>→</span></a>
+<a class="btn" href="flagged.html"><span>Flagged for review<small>name conflicts, duplicate rating rows, rejected placeholder quotes, ageing snapshots</small></span><span>→</span></a>
+<a class="btn" href="method.html"><span>Method &amp; sources<small>the reverse-engineered HotSpawn lobby, the priority ladder and the formulas</small></span><span>→</span></a>
+</div>
+
+<div class="note sticky-cta">📱 Phone tip: <a href="picks.html">All picks</a> is one card per match, sorted by lock time.
+<a href="picks.html">Open the picks list →</a></div>
+
+</main>
+<footer class="wrap">
+<p>Built <strong>21 Oct 12:46 UTC</strong> from the freshest committed HotSpawn lobby capture and its
+external betting lines. Fixtures come from HotSpawn; every probability comes from an external source linked on
+its row. HotSpawn's crowd pick percentage is never read. Not affiliated with HotSpawn or any bookmaker.
+Estimates are not guarantees — 18+, gamble responsibly.</p>
+<p><a href="../index.html">Site home</a> · <a href="picks.html">All picks</a> ·
+<a href="unresolved.html">Unresolved &amp; limitations</a> · <a href="method.html">Method &amp; sources</a> ·
+<a href="flagged.html">Flagged for review</a></p>
+</footer>
+</body>
+</html>
