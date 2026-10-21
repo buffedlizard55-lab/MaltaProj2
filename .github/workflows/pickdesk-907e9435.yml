@@ -43,6 +43,16 @@ jobs:
         run: python3 scripts/907e9435/build.py
       - name: Contract tests (coverage, sources, join gate, assumption policy, rendered pages)
         run: python3 -m unittest tests.test_907e9435 -v
+      - name: Full repository suite (diagnostic; records the tail so a red shared build is readable)
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          python3 -m unittest discover -s tests -v > /tmp/suite.txt 2>&1
+          echo "suite_exit=$?" >> /tmp/suite.txt
+          { grep -E '^(FAIL|ERROR):|^Ran |^FAILED|^OK|suite_exit' /tmp/suite.txt | tail -60; } > data/907e9435/ci_suite.txt
+          exit 0
       - name: Commit the rendered board (rebase, never discards other sessions' work)
         env:
           REF_NAME: ${{ github.ref_name }}
