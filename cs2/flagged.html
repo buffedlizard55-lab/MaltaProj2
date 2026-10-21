@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Flagged for review · HotSpawn CS2 picks</title>
+<style>
+:root{--bg:#0b1220;--panel:#121c30;--panel2:#0f1728;--line:#26324b;--text:#e8eefc;--muted:#9db0d0;
+--accent:#22d3a6;--accent2:#ffb020;--danger:#ff6b6b;--info:#7aa2ff}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--info)}
+.wrap{max-width:880px;margin:0 auto;padding:0 14px}
+header.top{position:sticky;top:0;z-index:20;background:rgba(11,18,32,.97);border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
+header.top .wrap{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 14px}
+.brand{font-weight:700;font-size:15px;letter-spacing:.2px}
+.brand span{color:var(--accent)}
+nav{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;width:100%}
+nav a{flex:0 0 auto;padding:9px 12px;border:1px solid var(--line);border-radius:999px;color:var(--text);
+text-decoration:none;font-size:14px;white-space:nowrap;min-height:38px;display:flex;align-items:center}
+nav a.active{background:var(--accent);color:#062018;border-color:var(--accent);font-weight:700}
+main{padding:16px 0 40px}
+h1{font-size:24px;line-height:1.25;margin:6px 0 8px}
+h2{font-size:19px;margin:26px 0 8px}
+h3{font-size:16px;margin:18px 0 6px}
+p{margin:8px 0}
+.eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:12px;color:var(--accent);margin:0;font-weight:700}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.card.hi{border-color:var(--accent);box-shadow:0 0 0 1px rgba(34,211,166,.25) inset}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.stat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px}
+.stat b{display:block;font-size:26px;line-height:1.1}
+.stat span{font-size:12.5px;color:var(--muted)}
+.actions{display:grid;gap:10px;margin:14px 0}
+.btn{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:15px 16px;border-radius:14px;
+background:var(--panel);border:1px solid var(--line);color:var(--text);text-decoration:none;font-weight:600;min-height:52px}
+.btn small{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:2px}
+.btn.primary{background:var(--accent);color:#062018;border-color:var(--accent)}
+.btn.primary small{color:#0a3b2c}
+.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.b-market{background:rgba(34,211,166,.16);color:#6ff0cd;border:1px solid rgba(34,211,166,.45)}
+.b-model{background:rgba(255,176,32,.14);color:#ffcf70;border:1px solid rgba(255,176,32,.4)}
+.b-research{background:rgba(122,162,255,.15);color:#a9c1ff;border:1px solid rgba(122,162,255,.45)}
+.b-none{background:rgba(255,107,107,.14);color:#ff9a9a;border:1px solid rgba(255,107,107,.4)}
+.match{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px;margin:12px 0}
+.match .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
+.match .when{font-variant-numeric:tabular-nums;font-weight:700}
+.match .comp{font-size:12.5px;color:var(--muted)}
+.teams{display:grid;grid-template-columns:1fr auto;gap:6px 10px;margin:10px 0 6px;align-items:center}
+.teams .name{font-size:16px}
+.teams .p{font-variant-numeric:tabular-nums;font-weight:700}
+.teams .picked{color:var(--accent)}
+.bar{height:8px;border-radius:999px;background:#1c2740;overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.bar .a{background:var(--accent)}
+.bar .b{background:#37507e}
+.pickline{margin:8px 0 2px;font-size:15px}
+.pickline strong{color:var(--accent)}
+.chips{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:11.5px;padding:3px 8px;border-radius:999px;background:#1a2540;border:1px solid var(--line);color:var(--muted)}
+details.src{margin-top:8px}
+details.src summary{cursor:pointer;font-size:13px;color:var(--info);padding:6px 0;min-height:34px}
+details.src ul{margin:6px 0 0 18px;padding:0;font-size:12.5px;color:var(--muted)}
+details.src li{margin:5px 0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.tablewrap{overflow-x:auto}
+.note{background:var(--panel2);border-left:3px solid var(--accent2);padding:10px 12px;border-radius:8px;font-size:13.5px;color:var(--muted)}
+.warn{border-left-color:var(--danger)}
+ul.plain{margin:8px 0 8px 20px;padding:0}
+ul.plain li{margin:6px 0}
+footer{border-top:1px solid var(--line);padding:16px 0 40px;color:var(--muted);font-size:12.5px}
+input[type=search]{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);
+background:var(--panel2);color:var(--text);font-size:16px;min-height:48px}
+.sticky-cta{position:sticky;bottom:10px;margin:16px 0 0}
+@media(max-width:719px){
+ table#tbl thead{display:none}
+ table#tbl tr{display:block;border-bottom:1px solid var(--line);padding:10px 0}
+ table#tbl td{display:block;border:0;padding:3px 0}
+ table#tbl td:before{content:attr(data-label) ": ";color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+}
+@media(min-width:720px){.stats{grid-template-columns:repeat(5,minmax(0,1fr))}h1{font-size:30px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+<div class="brand">CS2 Pick'ems <span>· every match has a pick</span></div>
+<nav><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="flagged.html" class="active">Flagged</a><a href="method.html">Method</a><a href="../index.html">Site home</a></nav>
+</div></header>
+<main class="wrap">
+<p class="eyebrow">Irregularities</p>
+<h1>Flagged for review</h1>
+
+
+<div class="card">
+<p>Everything that could not be confirmed cleanly, with the source that shows it. None of these items changes a pick
+silently: each is either excluded from the numbers or stated on the row it affects.</p>
+</div>
+<article class="card" id="F1"><h3>F1 · Polymarket lists a different opponent for the same 22:00 UTC Los Niños fixture</h3><p class="small">Polymarket's <a href="https://polymarket.com/event/cs2-ale1-ln-2026-10-21" rel="noopener">cs2-ale1-ln-2026-10-21</a> describes 'Alianza Lima Esports vs Los Niños', 21 Oct 22:00 UTC, CCT South America Series 7 Round 5. HLTV's <a href="https://www.hltv.org/matches/2399865/zetta-vs-los-ninos-cct-2026-south-america-series-7" rel="noopener">match 2399865</a> lists 'Zetta vs LOS NINOS' at the same time and event. Both cannot be right; HotSpawn follows HLTV. The Polymarket market is quoted 0.50/0.50 with a 0.05 bid / 0.95 ask and $5 volume, so no price was taken from it.</p></article><article class="card" id="F2"><h3>F2 · Valve publishes two CYBERSHOKE rows with different rosters</h3><p class="small"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">2026-10-05 global standings</a>: #61 CYBERSHOKE 1201 pts (Alkaren, alpha, Mokuj1n, nota, yiksrezo) and #171 CYBERSHOKE 786 pts (alpha, bl1x1, fluffy, glowiing, Mokuj1n). HotSpawn's 'ex-CYBERSHOKE' cannot be joined unambiguously, so the rating is only a sanity check for that fixture; the pick uses the bookmaker price.</p></article><article class="card" id="F3"><h3>F3 · Aggregated odds page mixes two bookmakers in one two-way line</h3><p class="small"><a href="https://kushvsporte.ru/event/6990334-cybershoke-blinkdagger" rel="noopener">kushvsporte.ru</a> shows П1 1.12 labelled PARI and П2 5.59 labelled WinLine. Best-price aggregation understates the true overround; the no-vig split (83.31% / 16.69%) is therefore an estimate of the market. The raw decimal odds are published so the arithmetic can be re-done.</p></article><article class="card" id="F4"><h3>F4 · Placeholder 1.8/1.8 quotes rejected</h3><p class="small">egamersworld publishes 1.80 / 1.80 with 0% / 0% for both fixtures researched here (<a href="https://egamersworld.com/counterstrike/match/4yp_dlKtNl/ex-cybershoke-vs-blinkdagger-5sOoK5oHU4" rel="noopener">CYBERSHOKE–BlinkDagger</a>, <a href="https://egamersworld.com/counterstrike/match/0U32SId-H/zetta-vs-los-ninos-Wi0PWrNpb" rel="noopener">Zetta–LOS NINOS</a>). Symmetric 1.80/1.80 with zero volume is the site's unfilled default, not a line; it is excluded.</p></article><article class="card" id="F5"><h3>F5 · Upstream board's track-record block is not reproducible</h3><p class="small">The source board's <code>track_record.by_basis</code> reports 90.6% (market) and 69.2% (model) hit rates over 6,908 settled rows. Prior verification sessions found the settled rows re-derive the pick from the result, so the figure cannot be quoted as an out-of-sample record. It is deliberately not shown anywhere in this section.</p></article><article class="card" id="F6"><h3>F6 · Valve standings snapshot is 16 days old</h3><p class="small">The newest published file is <code>standings_global_2026_10_05.md</code> (checked via api.github.com, 388 rows). Valve publishes roughly monthly, so the model rows can lag roster changes. Affects every VRS-model and originated row.</p></article><article class="card" id="F7"><h3>F7 · One open fixture is not on the lobby page</h3><p class="small">The capture carries 'Wildcard v DENDELE' (12 Nov) from HotSpawn's public fixtures API but the lobby page's weekly view does not show it. It is kept on the picks list (it is a real HotSpawn fixture) and marked in its row.</p></article><article class="card" id="F8"><h3>F8 · HLTV publishes no odds; HLTV ranks and VRS ranks disagree</h3><p class="small">HLTV's match pages for these fixtures carry a betting panel with no numbers, so HLTV is used for identity, rosters and form only — never as a probability. HLTV's VRS widget shows Zetta at #366 while Valve's 2026-10-05 file lists #357; the official Valve file is used.</p></article>
+<h2>Unverified values</h2>
+<p>No probability in this section is blank on a row that claims one. The only blank-capable field is a missing market
+price, and every such row states its substitute basis. Values that could not be confirmed were left out rather than filled.</p>
+
+</main>
+<footer class="wrap">
+<p>Built <strong>21 Oct 12:49 UTC</strong> from the freshest committed HotSpawn lobby capture and its
+external betting lines. Fixtures come from HotSpawn; every probability comes from an external source linked on
+its row. HotSpawn's crowd pick percentage is never read. Not affiliated with HotSpawn or any bookmaker.
+Estimates are not guarantees — 18+, gamble responsibly.</p>
+<p><a href="../index.html">Site home</a> · <a href="picks.html">All picks</a> ·
+<a href="unresolved.html">Unresolved &amp; limitations</a> · <a href="method.html">Method &amp; sources</a> ·
+<a href="flagged.html">Flagged for review</a></p>
+</footer>
+</body>
+</html>

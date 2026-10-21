@@ -2,6 +2,14 @@
 
 **Live dashboard: https://buffedlizard55-lab.github.io/MaltaProj2/**
 
+**📱 Start here — [Every HotSpawn CS2 match has a pick](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/) (session `e1b48771`).**
+One page per match with both win probabilities, the pick and the source behind it; a separate
+[Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/unresolved.html) page,
+[Flagged for review](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/flagged.html) and
+[Method & sources](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/method.html). The phone-first landing page
+links all four. Rebuilt every 4 hours from the freshest HotSpawn lobby capture. HotSpawn supplies fixtures only —
+never a probability. See the [session log in COORDINATION.md](COORDINATION.md).
+
 **📱🏆 FINAL DAY (today 18 Oct): start with the [final-day desk](https://buffedlizard55-lab.github.io/MaltaProj2/finalday/) — books priced it overnight: FURIA 68.2% v BETBOOM, Falcons 62.8% v Aurora (Thunderpick via bo3.gg, read live); BETBOOM fail the 35% climb floor, Aurora the only conditional gamble. Plus every open HotSpawn pick + [unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/finalday/unresolved.html). Session `36186ad8`, 4-hourly.**
 
 **📱 Phone? Start here: [Start page](https://buffedlizard55-lab.github.io/MaltaProj2/start/) — one page with today's TWC final-day picks, a pick and both win probabilities for every open HotSpawn CS2 match, an [Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/start/unresolved.html) section and a [Flagged for review](https://buffedlizard55-lab.github.io/MaltaProj2/start/flagged.html) page. Session `371a1ce7`; rebuilt every 4 hours. Earlier desks are listed in its [Archive](https://buffedlizard55-lab.github.io/MaltaProj2/start/archive.html).**
@@ -33,6 +41,7 @@ not enter the probability parser; the TWC strategy category labels it only as ch
 
 | Page | Content |
 |---|---|
+| [`cs2/`](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/) (sub-site) | Session `e1b48771` **full-coverage pick board and phone-first front door**. `cs2/index.html` is the executive summary (coverage counts, next locks, in-site links); `cs2/picks.html` gives **every** open HotSpawn CS2 fixture a pick with both win probabilities, the basis (`market` / `market+model` / `Valve VRS model` / `researched price` / `originated`) and a source link plus read time on every row; `cs2/unresolved.html` is the separate Unresolved & limitations section (works every fixture without a bookmaker price, with the HLTV -> esportsbooks -> Polymarket -> Valve VRS attempt ledger); `cs2/flagged.html` carries F1-F8; `cs2/method.html` documents the reverse-engineered lobby (public `/api/v1/fixtures` endpoint), the priority ladder and the formulas. Root `index.html` was rebuilt as one phone-first summary that links these pages, with every earlier session's desk collapsed into one archive. At build: 20 open fixtures, **20 with a pick, 0 blank** (12 market, 6 VRS model, 1 researched book price, 1 documented VRS lower bound). Rebuilt every 4 hours and after each collector run by `.github/workflows/cs2-e1b48771.yml` |
 | `index.html` | Every currently open CS2 pick first, coverage summary, lines, probabilities and timestamps |
 | `twc-2026/` | Day-two → day-three research: all eight TWC day-one/day-two results, three primary Aurora signing announcements, canonical day-three estimates, a declared optional leaderboard risk rule, an explicitly unlisted Group B preview, expected-points tradeoffs and source-linked unknowns. Derived forecasts refresh with the four-hour canonical workflow; dated editorial facts never reprice matches. |
 | `cs2.html` | Exact lobby-embedded CS2 inventory split into open picks and listed-but-closed rows |

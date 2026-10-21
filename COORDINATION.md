@@ -1,3 +1,83 @@
+# Coordination — session `e1b48771` (full-coverage CS2 picks for every HotSpawn match + phone-first site)
+
+Session: `e1b48771` (environment-fixed branch `arena/e1b48771-maltaproj2`; the environment forbids a
+`session-<id>/<task>` branch, so scope is separated by directory as in every prior session).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-E1B48771-CS2: (1) give **every** open HotSpawn CS2 fixture a pick, including the low-tier fixtures no featured board prices; (2) research the ones the automated board leaves blank — HLTV first, then esportsbooks / betting lines, then prediction markets, then a documented official-Valve origination; (3) publish a separate **Unresolved & limitations** section and surface it in the executive summary; (4) rebuild the confusing landing page as one phone-first executive summary with in-site links to the picks lists, with every earlier session's desk collapsed into an archive; (5) keep it fresh every 4 hours; (6) tests, integration, PR to `main`, merge, Pages verification. | done — see close-out | e1b48771 | 2026-10-21 12:41 | `cs2/**`, `scripts/e1b48771/**`, `data/e1b48771/**`, `tests/test_e1b48771.py`, `.github/workflows/cs2-e1b48771.yml`, `unresolved.html` (new root page required by the nav contract), `COORDINATION.md` (this section only). Integration (additive, this session also acted as integrator): `scripts/build_site.py` NAV + landing rewrite, `scripts/stage_site.py` section entry + re-render hook, `assets/style.css` additive rules, root `index.html` regeneration, `README.md` one row + one phone line. Read-only inputs: `data/fe803b80/**` and every other board. |
+
+## Log — e1b48771
+
+- **2026-10-21 12:41 UTC — claim.** Read `COORDINATION.md` end to end first: the newest entries are `19d6c262`
+  (everymatch, merged; PR #193) and `a666cd41` (provenance audit). No live claim overlaps `cs2/**`,
+  `scripts/e1b48771/**` or `data/e1b48771/**`, so the task was claimed here before any file was edited. Scope is
+  deliberately non-overlapping: this session does not edit any other session's board, script or page (the shared
+  `build_site.py` / `stage_site.py` / `index.html` edits are the integration step this brief asks for).
+- **Inputs at claim time.** Freshest committed board `data/fe803b80/board.json`, generated
+  `2026-10-21T12:37:51Z` (fixture read `12:36:36Z`, 20 open / 221 closed, 157 quotes; sources bovada 37,
+  melbet 38, thunderpick 40, kalshi 29, pinnacle 13). Live lobby read (`https://play.hotspawn.com/lobby`, 2 chunks,
+  ~12:33–12:36Z) lists **19** open fixtures; the board's 20 include `Wildcard v DENDELE` (12 Nov) from the fixtures
+  API only. Coverage is therefore complete against the lobby plus one API-only fixture (F7).
+- **Reverse-engineering check.** The lobby is a client-rendered page calling
+  `https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures` (public, 200, ~9.6 MB, 12,000 rows). Fixtures
+  carry a UTC kickoff and a lock time six minutes earlier; each row links a public match page
+  `https://www.hotspawn.com/matches/<slug>-<fixture_id>`. Week 273, 2026-10-19 → 2026-10-25. HotSpawn crowd
+  percentages are not read anywhere in this section (tested).
+- **The two blanks, researched line by line (the whole point of the task).**
+  1. **1082762 ex-CYBERSHOKE v BlinkDagger** (CIS LAN Championship #9, 15:00Z). HLTV lists the fixture but publishes
+     no odds (`https://www.hltv.org/matches`, betting panel advertises only); bo3.gg has **no** BlinkDagger record
+     (`https://bo3.gg/teams/blinkdagger`) so no Thunderpick coefficient; egamersworld shows the 1.80/1.80 placeholder
+     (rejected); Polymarket has the match but at 0.40/0.87 with a $10 book (rejected as a price, kept as
+     corroboration). **Resolved from an external bookmaker price:** kushvsporte.ru's odds board for the fixture
+     (`https://kushvsporte.ru/event/6990334-cybershoke-blinkdagger`, read 12:40Z — the page's own 02:20:20 countdown
+     to an 18:00 MSK start pins the read) quotes **П1 1.12 (PARI) / П2 5.59 (WinLine)** → no-vig 83.31% / 16.69%
+     (overround 1.0717). Pick **ex-CYBERSHOKE**.
+  2. **1082837 Zetta v LOS NINOS** (CCT South America Series 7, 22:00Z). HLTV
+     (`https://www.hltv.org/matches/2399865/zetta-vs-los-ninos-cct-2026-south-america-series-7`) confirms the fixture
+     and rosters but publishes no odds; bo3.gg 404s; kushvsporte's CCT South America board has no event page for it;
+     egamersworld placeholder; **Polymarket lists this slot against "Alianza Lima Esports", not Zetta** (F1), at
+     0.50/0.50 with a 0.05/0.95 book — unusable. **Resolved by documented origination from the official Valve table:**
+     `standings_global_2026_10_05.md` lists Zetta #357 (473 pts) and does not list LOS NINOS; the weakest published
+     rating is #380 Fruju (381 pts). With the board's fitted slope k = 0.4046378 and Valve's own slope
+     C = 0.0056000078, `p = 1/(1+exp(-k·C·(473−381))) = 55.19%` → pick **Zetta 55.19%**, published as a **lower
+     bound** (an unrated opponent is at or below the floor, so Zetta's true chance is ≥ this).
+- **Verification performed.** Valve file re-read through `api.github.com` (388 rows; newest published file confirmed —
+  the repo has no `standings_global_2026_10_19.md`). Both fixture identities cross-checked against HotSpawn's match
+  page and HLTV's match page (same teams, same UTC kickoff). Prices re-read from the page that publishes them and the
+  decimal odds stored verbatim in `scripts/e1b48771/resolutions.json`; the no-vig and VRS arithmetic is re-derived by
+  `tests/test_e1b48771.py` from those raw numbers, not from the rendered HTML. Every row in `cs2/picks.html` was
+  checked to carry an https source (mechanical test).
+- **Result on the 12:37:51Z board: 20 open · 20 with a pick · 0 unresolved** = 12 market (`market` / `market+model`),
+  6 official-Valve-VRS model rows, 1 researched external book price, 1 originated lower bound. The 6 model rows and
+  both researched rows are listed with their attempt ledger on `cs2/unresolved.html` — that page is the required
+  separate section, not a silent footnote.
+- **Site work.** `cs2/` (zero-JS, self-contained, viewport meta, 48px tap targets, cards + a mobile-stacked table,
+  source drawer per row). Root `index.html` rebuilt: one executive summary, four labelled actions, four counts, the
+  strict-board accounting line and a single collapsed archive containing every earlier session's desk. Nav is 12
+  entries (contract maximum) and every pre-existing required href is still present.
+- **Automation.** `.github/workflows/cs2-e1b48771.yml`: cron `23 */4 * * *` (4-hourly), plus on push to `main` for this
+  scope, plus `workflow_run` after each `board (fe803b80)` collector run. It rebuilds, runs the 17 contract tests,
+  refreshes only the landing page through `scripts/e1b48771/refresh_landing.py` (so other sessions' root pages are
+  never rewritten), and commits only `cs2/`, `data/e1b48771/` and `index.html` after a rebase. Legacy Pages publishes
+  on push.
+- **Tests.** `python3 -m unittest tests.test_e1b48771 -v` → **17 tests OK**. Targeted regressions re-run:
+  `test_3faf40e8`, `test_6ffacd40`, `test_778756a1`, `test_dc741cc1`, `test_58cb2600`, `test_69e4c06a` → only the two
+  pre-existing `test_6ffacd40` failures ("Calibration slope differs from independent fit", raised by re-deriving
+  `data/fe803b80` data this session does not touch) remain. `python3 scripts/stage_site.py` →
+  `PASS: all staged local links resolve across all session sections`; `python3 scripts/build_site.py` →
+  `site built: 36 files, no broken internal links`.
+- **Irregularities flagged (published on `cs2/flagged.html`, non-blocking).** F1 Polymarket names the 22:00Z Los
+  Niños opponent "Alianza Lima Esports" while HLTV/HotSpawn say Zetta — one of them is wrong, and the Polymarket book
+  is unusable anyway. F2 Valve publishes two CYBERSHOKE rows (#61 1201 pts, #171 786 pts) with different rosters, so
+  the rating is not joined for that fixture (the price is used instead). F3 kushvsporte aggregates best price per
+  side from two bookmakers (PARI + WinLine), so its no-vig split is a market estimate rather than one book's line.
+  F4 1.80/1.80 placeholder quotes on egamersworld rejected. F5 the upstream board's `track_record` hit rates are not
+  reproducible (pick re-derived from the result, per the earlier `b3871d16` finding) and are not published here.
+  F6 Valve snapshot is 16 days old. F7 `Wildcard v DENDELE` is API-only, not on the lobby page. F8 HLTV's VRS widget
+  shows Zetta #366 while Valve's file says #357 — the official file is used.
+- **Close-out.** See the PR/merge entry appended below once the pull request is merged and Pages verified.
+
 # Coordination — session `19d6c262` (Resolve a pick for EVERY open HotSpawn CS2 match — VRS-model + lower-bound resolution of the currently-unpriced fixtures, 2026-10-19)
 
 Session: `19d6c262` (environment-fixed branch `arena/19d6c262-maltaproj2`; the environment forbids a `session-<id>/<task>` branch, so scope is separated by directory as in prior sessions).
@@ -5999,3 +6079,4 @@ day-5 number to one of those reads. Nothing on the section is derived from a Hot
 - Additional official-source resolution: UPGRADE–flacons now has a direct Kalshi exchange line. Reused the separately maintained explicit-full-match-rules parser read-only (`scripts/69e4c06a/kalshi.py`) and independently replayed the two official contract rules, EDT kickoff, yes bid/ask midpoints and reported volumes from the retained raw exchange JSON. This is **not** a ticker-time inference or an executable bookmaker price. Both sides need narrow spreads and ≥20 reported contracts; zero-volume 50/50 quotes do not create an artificial pick. Result: 15/19 open fixtures with picks (11 featured + 1 rule-backed exchange + 3 model), 4 honestly unresolved. Added mutation/zero-volume/independent arithmetic regression checks. Extra bo3.gg team-ID reads will distinguish genuine no-price rows from absent inline team names; no slug-based identity joins.
 - Rebase conflict 2026-10-21 12:53 UTC: this branch's own hosted refresh bot committed newer generated dashboard/research files while the exchange-rule enhancement was being committed. Paused the push. Preserved the bot's latest raw capture/research (no other session's evidence discarded), replayed the exchange augmentation from that capture, then regenerated all conflicted HTML/report files using the new code. Resolved source changes remain unchanged; the combined report uses the newer actual capture timestamps, not a merge-time clock for observations.
 - Final-integration checkpoint: `python -m unittest discover -s tests` → **1,066 tests, OK (11 skips)**. `scripts/stage_site.py` → **PASS: all staged local links resolve across all session sections**. PR opened: https://github.com/buffedlizard55-lab/MaltaProj2/pull/196. Added new dashboard Chromium checks to the existing full Pages build, not a bypass workflow. New-section tests re-render against the currently selected capture first, because upstream source refreshes are more frequent than this section's own four-hour schedule.
+- Concurrent integration conflict (PR #195, e1b48771) discovered while preparing PR #196: main gained a second session's new cs2/ front door and staging hook after this session's claim. Stopped on the conflicts; unioned both staging entries/hooks and retained every cs2/ file. The narrow landing renderer now offers this evidence-first dashboard first, while the other research board remains explicitly labelled and collapsed (its assumed floor for unrated LOS NINOS is not a verified strength bound; its CYBERSHOKE/ex-CYBERSHOKE join and mixed-book aggregator quote are not adopted here). Those differences are published on dashboard/flagged.html with source/code links. No e1b48771 collector/board/resolution was changed. Integration merged origin/main into the fixed session branch rather than rewriting already-published branch history; normal branch-only pushes remain fast-forward. An attempted rebase was aborted before resolution for that reason.
