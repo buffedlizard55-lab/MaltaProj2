@@ -52,7 +52,7 @@ class Evidence(unittest.TestCase):
         self.assertEqual(c['listed'],len(rows))
         self.assertEqual(c['open']+c['locked_or_conflicting'],len(rows))
         self.assertEqual(c['with_pick']+c['unresolved'],c['open'])
-        self.assertEqual(c['featured']+c['secondary']+c['model'],sum(r['prob_a'] is not None for r in rows))
+        self.assertEqual(c['featured']+c['secondary']+c['exchange']+c['model'],sum(r['prob_a'] is not None for r in rows))
 
     def test_all_rows_have_official_inventory_source(self):
         for r in self.report['rows']:
@@ -129,6 +129,33 @@ class Evidence(unittest.TestCase):
         if not row:self.skipTest('no market prices in this source capture')
         row['quotes'][0]['raw_a']=3.14
         with self.assertRaises(ValueError):self.resolved(board=board)
+
+    def test_exchange_price_replays_from_official_rules_and_midpoints(self):
+        for r in self.report['rows']:
+            if r['basis']!='rule-backed exchange':continue
+            for q in r['quotes']:
+                evidence=q['kickoff_evidence'];outcomes=evidence['outcomes']
+                self.assertEqual(evidence['start_utc'],q['start_utc'])
+                raw=[(o['bid_dollars']+o['ask_dollars'])/2 for o in outcomes]
+                p=raw[0]/sum(raw)
+                if q['swapped']:p=1-p
+                self.assertAlmostEqual(r['prob_a'],round(p,4))
+                self.assertTrue(all(float(o['volume_contracts_reported'])>=20 for o in outcomes))
+
+    def test_mutated_exchange_rules_fail_closed(self):
+        research=copy.deepcopy(self.research)
+        for src in research.get('exchange_payload',{}).get('sources',{}).values():
+            for event in (src.get('payload') or {}).get('events',[]):
+                event['markets'][0]['rules_primary']='No verified kickoff'
+        result=self.resolved(research=research)
+        self.assertFalse(any(r['basis']=='rule-backed exchange' for r in result['rows']))
+
+    def test_zero_volume_exchange_quotes_do_not_make_picks(self):
+        research=copy.deepcopy(self.research)
+        for src in research.get('exchange_payload',{}).get('sources',{}).values():
+            for event in (src.get('payload') or {}).get('events',[]):
+                for market in event['markets']:market['volume_fp']='0.00'
+        self.assertFalse(any(r['basis']=='rule-backed exchange' for r in self.resolved(research=research)['rows']))
 
     def test_secondary_wrong_opponent_or_time_cannot_join(self):
         fx={'team_a':'A','team_b':'B','start_utc':'2026-10-21T10:00:00Z'}

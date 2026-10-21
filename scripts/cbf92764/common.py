@@ -31,3 +31,5 @@ def now():
 def strict_join(fixture, quote):
     info = CORE.match_quote(fixture, quote)
     return info if info and not info.get('rejected') else None
+
+RULES = load_module("cbf_kalshi_rules", ROOT / "scripts/69e4c06a/kalshi.py")

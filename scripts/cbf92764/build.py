@@ -8,7 +8,7 @@ import re
 from collections import Counter
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from common import ROOT, DATA, SITE, CORE, now, read, write, strict_join
+from common import ROOT, DATA, SITE, CORE, now, read, write, strict_join, RULES
 
 LOBBY = 'https://play.hotspawn.com/lobby'
 VRS_REPO = 'https://github.com/ValveSoftware/counter-strike_regional_standings'
@@ -139,7 +139,10 @@ def resolve(board, snap, research, md, clock):
             # Research must be fresh, and joins independently require both names,
             # pre-match state and a verified source kickoff within the strict window.
             extras = []
-            for q in research.get('quotes', []):
+            exchange_quotes = RULES.enrich_quotes(research.get('exchange_quotes', []), research.get('exchange_payload', {}))
+            eligible_exchange = [q for q in exchange_quotes if q.get('kickoff_evidence')
+                                 and all(float(o.get('volume_contracts_reported') or 0) >= 20 for o in q['kickoff_evidence']['outcomes'])]
+            for q in research.get('quotes', []) + eligible_exchange:
                 age = (clock-parse(q['retrieved_utc'])).total_seconds() if parse(q.get('retrieved_utc')) else 1e9
                 join = strict_join(fx, q)
                 nv = CORE.rederive_quote(q)
@@ -149,14 +152,15 @@ def resolve(board, snap, research, md, clock):
             extras = list({(q['source_key'], q['event_id']): q for q in extras}.values())
             if extras and end > clock:
                 pa = sum(q['prob_a'] for q in extras)/len(extras)
-                row.update(basis='secondary published odds', prob_a=round(pa,4), prob_b=round(1-pa,4), quotes=extras)
-                row['flags'].append('Secondary odds publisher; not independently confirmed on bookmaker site.')
+                exchange = all(q['source_key']=='kalshi' for q in extras)
+                row.update(basis='rule-backed exchange' if exchange else 'secondary published odds', prob_a=round(pa,4), prob_b=round(1-pa,4), quotes=extras)
+                row['flags'].append('Normalized exchange midpoints, not executable bookmaker odds; contract rules verify kickoff; liquidity/accuracy not guaranteed.' if exchange else 'Secondary odds publisher; not independently confirmed on bookmaker site.')
             elif model_ok and end > clock and (pair := model_pair(fx,index)):
                 pa = CORE.vrs_prob(pair[0]['points'], pair[1]['points'], calibration['k'])
                 row.update(basis='originated rating model', prob_a=round(pa,4), prob_b=round(1-pa,4), ratings=pair)
                 row['flags'].append('Experimental computed estimate, not a bookmaker line or verified win chance. '
                                     f"Standings dated {rating_date.date()} ({(clock-rating_date).days} days old); current roster not confirmed.")
-                row['sources'].append({'label': 'Valve official standings (exact blob)', 'url': official['source_url']})
+                row['sources'].append({'label': 'Valve official standings (retained hash)', 'url': official['source_url']})
             else:
                 for side in ('a','b'):
                     candidates = index.get(CORE.canon(fx['team_'+side])[0], [])
@@ -183,6 +187,7 @@ def resolve(board, snap, research, md, clock):
             'summary': {'listed':len(rows),'open':len(opened),'with_pick':sum(bool(r['pick']) for r in opened),
                         'unresolved':sum(not r['pick'] for r in opened), 'featured':sum(r['basis']=='featured market' for r in opened),
                         'secondary':sum(r['basis']=='secondary published odds' for r in opened),
+                        'exchange':sum(r['basis']=='rule-backed exchange' for r in opened),
                         'model':sum(r['basis']=='originated rating model' for r in opened),
                         'locked_or_conflicting':len(rows)-len(opened)},
             'source_access': board['access'], 'rows':rows}
@@ -229,11 +234,11 @@ def build():
     actions='<div class="actions"><a class="primary" href="picks.html">See every updated pick →</a><a href="unresolved.html">Unresolved &amp; limitations</a></div>'
     summary=f'''<p class="intro">One match list. A clear pick, both win probabilities, and the evidence behind them.</p>{actions}
 <div class="metrics"><div><b>{c['open']}</b>Open matches</div><div><b>{c['with_pick']}</b>With a pick</div><div><b>{c['unresolved']}</b>Unresolved / no edge</div></div>
-<section><h2>Executive summary</h2><p>{c['listed']} CS2 fixtures retained from the lobby. {c['featured']} featured market lines are preserved; {c['secondary']} additional secondary price lines; {c['model']} explicitly labelled originated rating estimates. {c['locked_or_conflicting']} past, locked or status-conflicting listings remain visible in <a href="inventory.html">the complete inventory</a>, not presented as actionable picks.</p><p>Automatic checks target every four hours. The existing market collector also refreshes more often. GitHub schedules are best-effort, not a freshness guarantee. Expired rows are visibly disabled rather than silently kept as current.</p></section>
+<section><h2>Executive summary</h2><p>{c['listed']} CS2 fixtures retained from the lobby. {c['featured']} featured market lines are preserved; {c['secondary']} additional secondary price lines; {c['exchange']} official rule-backed exchange lines; {c['model']} explicitly labelled originated rating estimates. {c['locked_or_conflicting']} past, locked or status-conflicting listings remain visible in <a href="inventory.html">the complete inventory</a>, not presented as actionable picks.</p><p>Automatic checks target every four hours. The existing market collector also refreshes more often. GitHub schedules are best-effort, not a freshness guarantee. Expired rows are visibly disabled rather than silently kept as current.</p></section>
 <section id="unresolved"><h2>Unresolved picks &amp; limitations</h2><p><strong>{c['unresolved']} open matches have no supported directional pick.</strong> We try HLTV, external esportsbooks/exchanges and published esports odds, then our documented rating model. Blocked access, absent two-way odds, ambiguous rosters or insufficient evidence leave values blank and flagged. An unlisted team is never assigned the lowest rating or an invented 50% line.</p><a href="unresolved.html">Review each unresolved fixture and source attempts →</a></section>
 <section><h2>Find what you need</h2><div class="cards"><a href="picks.html"><h3>All current picks</h3><p>Team, win chance, deadline and source in a phone-friendly table.</p></a><a href="sources.html"><h3>Method &amp; evidence</h3><p>Raw odds, no-vig calculation, rating model and access logs.</p></a><a href="flagged.html"><h3>Flagged for Review</h3><p>Unverified values, source failures, stale inputs and inherited repository defects.</p></a></div></section>'''
     filter_ui='<label for="search">Find a team or tournament</label><input id="search" type="search" placeholder="Search matches…"><p id="filter-count" aria-live="polite"></p>'
-    research_text=f'''<h2>Source hierarchy</h2><ol><li>Preserve eligible featured Pinnacle, Bovada and Melbet match-winner consensus, or independently timestamped exchange prices. No dependence on Polymarket coverage.</li><li>Only for missing featured prices: try HLTV first (never bypass its access controls), then esportsbook/exchange feeds and bo3.gg published coefficients. A secondary publisher is labelled, not claimed as direct bookmaker verification.</li><li>If no eligible price exists: originate a separate experimental rating-model estimate only from two unique official Valve ratings, a fresh check of the latest official file (≤8 h), dated standings ≤35 days old, and at least six current matched market/rating calibration pairs. Duplicate-name rosters are refused.</li><li>If evidence is still inadequate, retain the row with blank probabilities/pick and the reason. No lowest-ranked proxy, no unsupported aliases or fabricated research.</li></ol>
+    research_text=f'''<h2>Source hierarchy</h2><ol><li>Preserve eligible featured Pinnacle, Bovada and Melbet match-winner consensus, or independently timestamped exchange prices. No dependence on Polymarket coverage.</li><li>Only for missing featured prices: try HLTV first (never bypass its access controls), then esportsbook/exchange feeds and bo3.gg published coefficients. A secondary publisher is labelled, not claimed as direct bookmaker verification. Official Kalshi rules can verify an explicit full-match kickoff and both yes bid/ask midpoints; both sides need narrow spreads and ≥20 reported contracts. Normalized midpoints are not executable odds; zero-volume 50/50 quotes do not overrule a rating estimate.</li><li>If no eligible price exists: originate a separate experimental rating-model estimate only from two unique official Valve ratings, a fresh check of the latest official file (≤8 h), dated standings ≤35 days old, and at least six current matched market/rating calibration pairs. Duplicate-name rosters are refused.</li><li>If evidence is still inadequate, retain the row with blank probabilities/pick and the reason. No lowest-ranked proxy, no unsupported aliases or fabricated research.</li></ol>
 <h2>Calculations, not source facts</h2><p>For decimal odds a,b: P(A)=(1/a)/((1/a)+(1/b)); P(B)=1−P(A). Consensus uses the existing source weights (Pinnacle 2; others 1) with one vote per source. Featured probabilities are replayed from raw odds and must match the upstream line to 0.0001.</p><p>Originated model: P(A)=1/(1+exp(−k·g·ln(10)/400·(ratingA−ratingB))), with g=1/sqrt(1+3·(ln(10)/400)²·75²/π²). k is a bounded through-origin least-squares fit of market logits against rating deltas using only this capture's prices. This is an unvalidated market-calibrated estimate, not a verified outcome probability or a backtested accuracy claim. It does not account for current veto, lineup or format changes.</p><p>Current calibration: {report['calibration']['n_pairs']} pairs; k={report['calibration']['k']:.4f}; fitted={report['calibration']['fitted']}. <a href="{VRS_REPO}/blob/main/model/glicko.js">Valve model</a> · <a href="{VRS_REPO}/blob/main/model/fit.js">Valve fitting code</a> · <a href="{VRS_REPO}">Official repository and caveats</a>.</p>
 <h2>Coverage &amp; freshness</h2><p>The public lobby transfer state defines membership; the fixtures API is also checked, but its thousands of historical rows do not expand lobby membership. Missing page access preserves the last inventory with its original observation time. HTTP cache Age reduces the usable lifetime. Quotes and fixtures expire after four hours or the lock deadline, whichever is sooner. Started/ended/conflicting rows cannot become current picks. A refresh can legitimately find fewer matches; no count is hard-coded.</p><p><a href="../data/cbf92764/research.json">Raw fallback research</a> · <a href="../data/cbf92764/valve-standings.md">Exact retained Valve file</a> · <a href="../data/cbf92764/report.json">Per-row report, source hashes and calibration pairs</a>.</p>'''
     access='<table><caption>Latest upstream source access; HTTP success does not prove match coverage.</caption><thead><tr><th>Source</th><th>Read (UTC)</th><th>Result</th><th>Official endpoint</th></tr></thead><tbody>'+''.join(f'<tr><td data-label="Source">{esc(k)}</td><td data-label="Time">{esc(stamp(v.get("at_utc")))}</td><td data-label="Result">HTTP {esc(v.get("status"))} {esc(v.get("error"))}</td><td data-label="Source"><a href="{esc(v.get("url"))}">Source endpoint</a></td></tr>' for k,v in report['source_access'].items())+'</tbody></table>'

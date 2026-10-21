@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-10-21T12:51:45Z",
+  "generated_utc": "2026-10-21T12:53:27Z",
   "capture_utc": "2026-10-21T12:51:42Z",
   "inventory_observed_utc": "2026-10-21T10:52:39Z",
   "valid_until_utc": "2026-10-21T14:52:39Z",
@@ -60,16 +60,17 @@
     "latest_file": "standings_global_2026_10_05.md",
     "path": "live/2026/standings_global_2026_10_05.md",
     "sha": "2aa2805394fbc68f36a5752a5b16026f2ab2fed5",
-    "source_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/2aa2805394fbc68f36a5752a5b16026f2ab2fed5",
+    "source_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
     "checked_utc": "2026-10-21T12:51:45Z"
   },
   "summary": {
     "listed": 90,
     "open": 19,
-    "with_pick": 14,
-    "unresolved": 5,
+    "with_pick": 15,
+    "unresolved": 4,
     "featured": 11,
     "secondary": 0,
+    "exchange": 1,
     "model": 3,
     "locked_or_conflicting": 71
   },
@@ -2563,8 +2564,8 @@
           "url": "https://play.hotspawn.com/lobby"
         },
         {
-          "label": "Valve official standings (exact blob)",
-          "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/2aa2805394fbc68f36a5752a5b16026f2ab2fed5"
+          "label": "Valve official standings (retained hash)",
+          "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
         }
       ],
       "valid_until_utc": "2026-10-21T13:54:00Z",
@@ -2676,8 +2677,8 @@
           "url": "https://play.hotspawn.com/lobby"
         },
         {
-          "label": "Valve official standings (exact blob)",
-          "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/2aa2805394fbc68f36a5752a5b16026f2ab2fed5"
+          "label": "Valve official standings (retained hash)",
+          "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
         }
       ],
       "valid_until_utc": "2026-10-21T13:54:00Z",
@@ -3431,14 +3432,68 @@
       "start_utc": "2026-10-21T15:00:00Z",
       "lock_utc": "2026-10-21T14:54:00Z",
       "hotspawn_url": "https://www.hotspawn.com/matches/upgrade-vs-flacons-cis-lan-championship-9-1082763",
-      "pick": null,
-      "prob_a": null,
-      "prob_b": null,
-      "basis": null,
-      "quotes": [],
+      "pick": "UPGRADE",
+      "prob_a": 0.9507,
+      "prob_b": 0.0493,
+      "basis": "rule-backed exchange",
+      "quotes": [
+        {
+          "source_key": "kalshi",
+          "source_name": "Kalshi (exchange)",
+          "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211100tfupg",
+          "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+          "event_id": "KXCS2GAME-26OCT211100TFUPG",
+          "team_a": "Team flacons",
+          "team_b": "UPGRADE",
+          "decimal_a": 20.0,
+          "decimal_b": 1.0363,
+          "raw_format": "yes mid ($)",
+          "raw_a": 0.05,
+          "raw_b": 0.965,
+          "prob_a": 0.9507389162561576,
+          "overround": 0.014999999999999902,
+          "start_utc": "2026-10-21T15:00:00Z",
+          "league": "Team flacons vs. UPGRADE",
+          "live": false,
+          "retrieved_utc": "2026-10-21T12:51:39Z",
+          "start_is_approx": false,
+          "fallback_only": true,
+          "kickoff_evidence": {
+            "kind": "explicit_full_match_contract_rules",
+            "start_utc": "2026-10-21T15:00:00Z",
+            "rules_primary": [
+              "If Team flacons wins the CIS LAN Championship 2026: Team flacons vs. UPGRADE CS2 match originally scheduled for Oct 21, 2026 at 11:00 AM EDT, then the market resolves to Yes.",
+              "If UPGRADE wins the CIS LAN Championship 2026: Team flacons vs. UPGRADE CS2 match originally scheduled for Oct 21, 2026 at 11:00 AM EDT, then the market resolves to Yes."
+            ],
+            "outcomes": [
+              {
+                "team": "Team flacons",
+                "bid_dollars": 0.04,
+                "ask_dollars": 0.06,
+                "mid_dollars": 0.05,
+                "volume_contracts_reported": "225.52",
+                "volume_24h_contracts_reported": "225.52"
+              },
+              {
+                "team": "UPGRADE",
+                "bid_dollars": 0.96,
+                "ask_dollars": 0.97,
+                "mid_dollars": 0.965,
+                "volume_contracts_reported": "1215.66",
+                "volume_24h_contracts_reported": "1201.66"
+              }
+            ],
+            "occurrence_datetime_not_used": [
+              "2026-10-21T19:00:00Z",
+              "2026-10-21T19:00:00Z"
+            ],
+            "limitation": "Normalized two-outcome yes midpoints, not executable bookmaker odds. Reported volume can be low or zero; no liquidity or calibration guarantee."
+          },
+          "swapped": true
+        }
+      ],
       "flags": [
-        "flacons: no exact unique Valve rating",
-        "No verified eligible two-sided match-winner price; pick and probabilities left blank / unverified."
+        "Normalized exchange midpoints, not executable bookmaker odds; contract rules verify kickoff; liquidity/accuracy not guaranteed."
       ],
       "attempts": [
         {
@@ -3511,6 +3566,10 @@
         {
           "label": "HotSpawn fixture inventory",
           "url": "https://play.hotspawn.com/lobby"
+        },
+        {
+          "label": "Kalshi (exchange)",
+          "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211100tfupg"
         }
       ],
       "valid_until_utc": "2026-10-21T14:52:39Z",
@@ -4660,8 +4719,8 @@
           "url": "https://play.hotspawn.com/lobby"
         },
         {
-          "label": "Valve official standings (exact blob)",
-          "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/2aa2805394fbc68f36a5752a5b16026f2ab2fed5"
+          "label": "Valve official standings (retained hash)",
+          "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
         }
       ],
       "valid_until_utc": "2026-10-21T14:52:39Z",

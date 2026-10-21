@@ -43,5 +43,5 @@ with sync_playwright() as pw:
     plain=context.new_page();plain.goto(URL+'picks.html')
     assert plain.locator('table').count()>0
     assert plain.locator('tbody tr a[href^="https://"]').count()>0
-    context.close();browser.close()
+    browser.close()
 print('PASS: all dashboard pages at 320/390/768/1280px; no overflow, filtering, source links, expiry and no-JS fallback')
