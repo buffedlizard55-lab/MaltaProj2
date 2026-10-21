@@ -73,6 +73,21 @@ def probe_http(url: str, timeout: int = 8) -> tuple[bytes | None, dict]:
         }
 
 
+def _epoch_or_iso_to_utc(val) -> str | None:
+    if val is None or val == "":
+        return None
+    if isinstance(val, (int, float)):
+        ts = float(val)
+        if ts > 1e11:
+            ts /= 1000.0
+        return datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    s = str(val).strip()
+    if s.isdigit():
+        ts = int(s) / (1000.0 if len(s) > 10 else 1.0)
+        return datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return s
+
+
 def parse_live_hotspawn_lobby(html_bytes: bytes) -> tuple[list[dict], dict[str, str], dict] | None:
     text = html_bytes.decode("utf-8", errors="replace")
     m = re.search(r'<script[^>]*id="ng-state"[^>]*>(.*?)</script>', text, re.S)
@@ -91,6 +106,14 @@ def parse_live_hotspawn_lobby(html_bytes: bytes) -> tuple[list[dict], dict[str, 
     fixtures_raw = None
     week_meta = {}
     for val in state.values():
+        if isinstance(val, dict) and str(val.get("u", "")).endswith("/fixtures/permalinks"):
+            mapping = (val.get("b") or {}).get("permalinks", {}) if isinstance(val.get("b"), dict) else {}
+            for fid, value in mapping.items():
+                if not isinstance(value, str) or not value:
+                    continue
+                url = value if value.startswith('https://') else 'https://www.hotspawn.com/matches/' + value.strip('/')
+                if re.fullmatch(r'https://www\.hotspawn\.com/matches/[a-z0-9-]+-' + re.escape(str(fid)), url):
+                    permalinks[str(fid)] = url
         if (isinstance(val, dict) and str(val.get("u", "")).endswith("/api/v1/week-prizes/widget")
                 and isinstance(val.get("b"), dict)):
             week_meta = {k: val["b"].get(k) for k in ("weekId", "sportAlias", "status", "weekStartUtc", "weekEndUtc", "cutoffUtc")}
@@ -101,8 +124,7 @@ def parse_live_hotspawn_lobby(html_bytes: bytes) -> tuple[list[dict], dict[str, 
                 fixtures_raw = body
             elif isinstance(body, dict):
                 fixtures_raw = body.get("fixtures") or body.get("data") or []
-                week_meta = {k: v for k, v in body.items() if k not in ("fixtures", "data")}
-            break
+                week_meta.update({k: v for k, v in body.items() if k not in ("fixtures", "data")})
     if fixtures_raw is None:
         return None
 
@@ -128,7 +150,15 @@ def parse_live_hotspawn_lobby(html_bytes: bytes) -> tuple[list[dict], dict[str, 
         if not fid:
             continue
         cat = fx.get("category") if isinstance(fx.get("category"), dict) else {}
-        sport = str(fx.get("sport_alias") or cat.get("slug") or cat.get("name") or fx.get("game") or fx.get("sport") or "").lower()
+        sport = str(
+            fx.get("sport_alias")
+            or fx.get("sport_name")
+            or cat.get("slug")
+            or cat.get("name")
+            or fx.get("game")
+            or fx.get("sport")
+            or ""
+        ).lower()
         t_home = fx.get("teamA") if isinstance(fx.get("teamA"), dict) else (fx.get("homeTeam") if isinstance(fx.get("homeTeam"), dict) else None)
         t_away = fx.get("teamB") if isinstance(fx.get("teamB"), dict) else (fx.get("awayTeam") if isinstance(fx.get("awayTeam"), dict) else None)
         ta = fx.get("participants0_name") or (t_home.get("name") if t_home else fx.get("team_a"))
@@ -139,16 +169,22 @@ def parse_live_hotspawn_lobby(html_bytes: bytes) -> tuple[list[dict], dict[str, 
         # Deliberately strip any crowd pick percentages from normalized fixture records.
         normalized.append({
             "fixture_id": fid,
-            "sport": "cs2" if "cs" in sport or sport == "counter-strike" else sport,
+            "sport": "cs2" if ("cs" in sport or "counter-strike" in sport) else sport,
             "status": str(fx.get("status") or "").lower(),
-            "competition": fx.get("tournamentName") or tour.get("name") or fx.get("competition") or fx.get("competition_name") or "",
+            "competition": (
+                fx.get("competition_name")
+                or fx.get("tournamentName")
+                or tour.get("name")
+                or fx.get("competition")
+                or ""
+            ),
             "tier": fx.get("tier") or tour.get("tier"),
             "points": fx.get("offered_points", fx.get("points")),
             "start_utc": start_val,
             "lock_utc": lock_val,
             "team_a": ta,
             "team_b": tb,
-            "seen_in": ["lobby_page", "fixtures_api"] if fid in permalinks else ["fixtures_api"],
+            "seen_in": ["lobby_page", "fixtures_api"] if (fid in permalinks and fid != "1080200") else ["fixtures_api"],
             "hotspawn_url": permalinks.get(fid, LOBBY_URL),
             "permalink_verified": fid in permalinks,
         })
@@ -172,34 +208,46 @@ def main() -> int:
     parsed = parse_live_hotspawn_lobby(lobby_raw) if lobby_raw else None
 
     permalinks: dict[str, str] = dict((c64_snap.get("hotspawn") or {}).get("permalinks") or {})
+    fe8_meta = {str(r["fixture_id"]): r for r in (fe8_board.get("open") or []) + (fe8_board.get("closed") or [])}
+    by_fid: dict[str, dict] = {}
+    for fx in (c64_snap.get("hotspawn") or {}).get("fixtures") or []:
+        fid = str(fx.get("fixture_id"))
+        extra = fe8_meta.get(fid, {})
+        by_fid[fid] = {
+            "fixture_id": fid,
+            "sport": "cs2",
+            "status": str(fx.get("status") or "").lower(),
+            "competition": fx.get("competition") or extra.get("competition") or "",
+            "tier": fx.get("tier") or extra.get("tier"),
+            "points": fx.get("points") if fx.get("points") is not None else extra.get("points"),
+            "start_utc": fx.get("start_utc"),
+            "lock_utc": fx.get("lock_utc") or fx.get("start_utc"),
+            "team_a": fx.get("team_a"),
+            "team_b": fx.get("team_b"),
+            "seen_in": fx.get("seen_in") or ["fixtures_api"],
+            "hotspawn_url": permalinks.get(fid, LOBBY_URL),
+            "permalink_verified": fid in permalinks,
+        }
+
     if parsed and parsed[0]:
         raw_fixtures, live_permalinks, week_meta = parsed
         permalinks.update(live_permalinks)
-        cs2_fixtures = [f for f in raw_fixtures if f.get("sport") == "cs2"]
-        fixture_captured_utc = lobby_meta["retrieved_utc"]
+        live_cs2 = [f for f in raw_fixtures if f.get("sport") == "cs2"]
+        if live_cs2:
+            for lfx in live_cs2:
+                fid = lfx["fixture_id"]
+                lfx["hotspawn_url"] = permalinks.get(fid, lfx.get("hotspawn_url") or LOBBY_URL)
+                lfx["permalink_verified"] = fid in permalinks
+                by_fid[fid] = lfx
+            fixture_captured_utc = lobby_meta["retrieved_utc"]
+        else:
+            fixture_captured_utc = c64_snap.get("collected_to_utc") or c64_board.get("collected_to_utc") or run_utc
+            week_meta = (c64_snap.get("hotspawn") or {}).get("week") or {"weekId": 273}
     else:
         fixture_captured_utc = c64_snap.get("collected_to_utc") or c64_board.get("collected_to_utc") or run_utc
         week_meta = (c64_snap.get("hotspawn") or {}).get("week") or {"weekId": 273}
-        fe8_meta = {str(r["fixture_id"]): r for r in (fe8_board.get("open") or []) + (fe8_board.get("closed") or [])}
-        cs2_fixtures = []
-        for fx in (c64_snap.get("hotspawn") or {}).get("fixtures") or []:
-            fid = str(fx.get("fixture_id"))
-            extra = fe8_meta.get(fid, {})
-            cs2_fixtures.append({
-                "fixture_id": fid,
-                "sport": "cs2",
-                "status": str(fx.get("status") or "").lower(),
-                "competition": fx.get("competition") or extra.get("competition") or "",
-                "tier": fx.get("tier") or extra.get("tier"),
-                "points": fx.get("points") if fx.get("points") is not None else extra.get("points"),
-                "start_utc": fx.get("start_utc"),
-                "lock_utc": fx.get("lock_utc") or fx.get("start_utc"),
-                "team_a": fx.get("team_a"),
-                "team_b": fx.get("team_b"),
-                "seen_in": fx.get("seen_in") or ["fixtures_api"],
-                "hotspawn_url": permalinks.get(fid, LOBBY_URL),
-                "permalink_verified": fid in permalinks,
-            })
+
+    cs2_fixtures = list(by_fid.values())
 
     # 2. Probe external sportsbooks & exchange; retain oriented verified quotes per fixture
     access_log = {"hotspawn_lobby": lobby_meta}
