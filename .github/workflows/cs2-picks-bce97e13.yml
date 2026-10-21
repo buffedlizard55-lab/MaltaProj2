@@ -1,0 +1,79 @@
+name: cs2-picks verification desk (bce97e13)
+
+# Session bce97e13 / independent verification desk. Re-verifies every open HotSpawn CS2 pick on
+# the canonical every-match board against raw decimal odds and the live official Valve standings,
+# then re-renders the phone-first cs2-picks/ pages. Refreshes every four hours with no manual input.
+#
+# Scope guard: this workflow writes only data/bce97e13/**, cs2-picks/** and the single marked
+# <!-- bce97e13:start/end --> block in the root index.html. It never edits another session's files.
+on:
+  push:
+    branches: ['arena/bce97e13-maltaproj2', 'main']
+    paths:
+      - 'scripts/bce97e13/**'
+      - 'tests/test_bce97e13.py'
+      - '.github/workflows/cs2-picks-bce97e13.yml'
+  schedule:
+    - cron: '53 */4 * * *'   # every four hours at :53, after the :17/:41 collector runs
+  workflow_run:
+    workflows: ['everypick (5f903db4)', 'Auto-Refresh HotSpawn CS2 Lobby & Picks (7adc7718)']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: cs2-picks-bce97e13-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify-and-publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          fetch-depth: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Live-check the official Valve standings source (contents API)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/bce97e13/fetch_valve.py
+
+      - name: Re-verify every pick and build the normalised board
+        run: python3 scripts/bce97e13/verify.py
+
+      - name: Render the phone-first cs2-picks pages
+        run: python3 scripts/bce97e13/site.py
+
+      - name: Refresh the root page verification block only
+        run: python3 scripts/bce97e13/stage_root.py
+
+      - name: Tests (coverage, arithmetic, official identity, sources, no-crowd, links)
+        run: python3 -m unittest tests.test_bce97e13 -v
+
+      - name: Commit and push (rebase before every push)
+        env:
+          REF_NAME: ${{ github.event_name == 'workflow_run' && 'main' || github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "cs2-picks-bot (bce97e13)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/bce97e13 cs2-picks index.html
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "cs2-picks(bce97e13): re-verify every-match picks $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin "$REF_NAME" && git push origin "HEAD:$REF_NAME"; then
+              if [ "$REF_NAME" = "main" ]; then gh workflow run pages.yml --ref main || echo "pages dispatch failed"; fi
+              exit 0
+            fi
+            sleep $((attempt * 7))
+          done
+          exit 1

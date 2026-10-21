@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Independently verified win probabilities and picks for every open HotSpawn CS2 match.">
+<title>Executive summary · CS2 picks, independently verified</title>
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<style>
+:root{--bg:#0b1220;--card:#121c2e;--card2:#0f1727;--ink:#e8eefc;--dim:#93a4c3;--line:#25334d;
+--good:#7ef0b2;--warn:#ffd479;--bad:#ff9aa2;--accent:#7cc4ff;--market:#7ef0b2;--model:#7cc4ff;--bound:#ffd479}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,
+"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:880px;margin:0 auto;padding:12px 14px 72px}
+header.top{position:sticky;top:0;z-index:5;background:rgba(11,18,32,.97);border-bottom:1px solid var(--line)}
+header.top .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;
+max-width:880px;margin:0 auto;padding:8px 14px}
+.brand{font-weight:800;font-size:15px;letter-spacing:.2px}
+.brand span{color:var(--good)}
+nav{display:flex;flex-wrap:wrap;gap:6px}
+nav a{display:inline-flex;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:999px;
+text-decoration:none;color:var(--ink);font-size:13px;min-height:40px}
+nav a.active{background:var(--good);color:#0b2417;border-color:var(--good);font-weight:800}
+h1{font-size:clamp(1.35rem,5vw,1.8rem);line-height:1.22;margin:12px 0 6px}
+h2{font-size:1.15rem;margin:26px 0 8px}
+h3{font-size:1rem;margin:16px 0 6px}
+p{margin:8px 0}
+.eyebrow{color:var(--dim);text-transform:uppercase;letter-spacing:.09em;font-size:11px;margin:16px 0 2px}
+.lede{color:var(--dim)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0}
+@media(min-width:640px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px}
+.tile b{display:block;font-size:26px;line-height:1.1}
+.tile small{color:var(--dim);font-size:12px}
+.cta{display:grid;gap:10px;margin:14px 0}
+@media(min-width:640px){.cta{grid-template-columns:1fr 1fr}}
+.cta a{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);
+border:1px solid var(--line);border-radius:14px;padding:15px 16px;text-decoration:none;color:var(--ink);
+font-weight:700;min-height:58px}
+.cta a.primary{background:var(--good);color:#08200f;border-color:var(--good)}
+.cta a span.small{font-weight:400;color:inherit;opacity:.78;font-size:12px}
+.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:800;
+border:1px solid var(--line);white-space:nowrap}
+.badge.market{color:#08200f;background:var(--market);border-color:var(--market)}
+.badge.model{color:#04121f;background:var(--model);border-color:var(--model)}
+.badge.bound{color:#2a1d00;background:var(--bound);border-color:var(--bound)}
+.badge.flag{color:var(--warn);background:transparent;border-color:var(--warn)}
+.badge.verify{color:#08200f;background:var(--good);border-color:var(--good)}
+.badge.api{color:var(--dim);background:transparent;border-color:var(--dim)}
+.match-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px;margin:12px 0}
+.match-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.match-title{font-weight:800;font-size:1.05rem}
+.match-meta{color:var(--dim);font-size:12.5px;margin-top:2px}
+.pick-line{margin:12px 0 8px;padding:10px 12px;border-radius:12px;background:#0b1f16;border:1px solid #1e4a2e;
+font-weight:800}
+.pick-line small{font-weight:400;color:var(--dim)}
+.bar-row{display:grid;grid-template-columns:1fr;gap:6px;margin:8px 0}
+.barline{display:grid;grid-template-columns:minmax(0,1fr) 74px;gap:10px;align-items:center}
+.barname{font-size:13.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.barwrap{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1fr) 74px;gap:10px;align-items:center}
+.bar{height:14px;border-radius:999px;background:#1a253a;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:999px}
+.bar.a i{background:var(--accent)}
+.bar.b i{background:var(--good)}
+.bar.alt i{background:var(--dim)}
+.pct{font-variant-numeric:tabular-nums;font-weight:800;text-align:right;font-size:14px}
+.pct.dim{color:var(--dim);font-weight:600}
+.src{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.src a{display:inline-flex;align-items:center;font-size:12px;padding:7px 11px;border:1px solid var(--line);
+border-radius:999px;text-decoration:none;min-height:36px;color:var(--ink)}
+.src a:hover{border-color:var(--accent)}
+.flags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.muted{color:var(--dim);font-size:12.5px}
+.callout{border-left:4px solid var(--warn);background:#1a1608;padding:11px 13px;border-radius:8px;margin:12px 0}
+.callout.good{border-color:var(--good);background:#0b1f16}
+.callout.bad{border-color:var(--bad);background:#221010}
+ul,ol{padding-left:20px}
+li{margin:6px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.07em}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tbl-scroll{overflow-x:auto}
+footer{color:var(--dim);font-size:12px;border-top:1px solid var(--line);margin-top:30px;padding-top:14px}
+code{background:#0a1322;padding:1px 5px;border-radius:5px;font-size:12.5px}
+@media(max-width:639px){
+ table thead{display:none}
+ table,tbody,tr,td,th{display:block;width:100%}
+ table tr{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;padding:10px 12px}
+ table td{border:0;padding:4px 0}
+ td[data-l]{display:flex;gap:10px;justify-content:space-between;align-items:baseline}
+ td[data-l]::before{content:attr(data-l);color:var(--dim);font-size:11px;text-transform:uppercase;
+ letter-spacing:.06em;flex:0 0 38%}
+ td.num{text-align:right}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="bar">
+<div class="brand">CS2 picks <span>· verified</span></div>
+<nav><a href="index.html" class="active">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="sources.html">Sources</a><a href="method.html">Method</a><a href="flagged.html">Flagged</a><a href="../index.html">Site home</a></nav>
+</div></header>
+<main class="wrap" id="summary">
+
+<p class="eyebrow">Executive summary · HotSpawn CS2 pick'em · independent verification desk</p>
+<h1>Every open CS2 match has a pick, both win probabilities, and a source you can open.</h1>
+<p class="lede">Built 2026-10-21T20:25:21Z from the 13
+fixtures open in the HotSpawn lobby plus 1 API-only fixture.
+Each number below is independently re-derived here, not copied: book/exchange prices are de-vigged
+from their decimal odds and every model row is recomputed from Valve's official rating table.</p>
+
+<div class="tiles">
+ <div class="tile"><b>13</b><small>open lobby matches (+1 API-only)</small></div>
+ <div class="tile"><b>14/14</b><small>picks independently verified</small></div>
+ <div class="tile"><b>5</b><small>from real betting lines</small></div>
+ <div class="tile"><b>0</b><small>unresolved (blank, never guessed)</small></div>
+</div>
+
+<h2>Where the picks are</h2>
+<p class="lede">One tap on a phone. The lists refresh automatically every four hours.</p>
+<div class="cta">
+ <a class="primary" href="picks.html"><span>All picks · every match<span class="small"><br>pick, both probabilities, probability bars, source per row</span></span><span>→</span></a>
+ <a href="unresolved.html"><span>Unresolved &amp; limitations<span class="small"><br>0 blank row(s) · why low-tier matches lack book prices</span></span><span>→</span></a>
+ <a href="sources.html"><span>Sources &amp; read times<span class="small"><br>every book, exchange and the official Valve table</span></span><span>→</span></a>
+ <a href="method.html"><span>Method &amp; verification<span class="small"><br>HLTV → esportsbooks → exchange → Valve VRS ladder</span></span><span>→</span></a>
+ <a href="flagged.html"><span>Flagged for review<span class="small"><br>irregularities and citation notes</span></span><span>→</span></a>
+ <a href="../everypick/picks.html"><span>Canonical every-match board<span class="small"><br>the desk these picks are verified against</span></span><span>→</span></a>
+</div>
+
+<h2>Next matches locking</h2>
+<div class="tbl-scroll"><table><thead><tr><th>Match</th><th>Kick-off</th><th>Pick</th><th>Basis</th></tr></thead>
+<tbody>
+ <tr><td data-l="Match"><strong>Zetta vs LOS NINOS</strong>
+  <div class="muted">CCT South America 2026 Series #7</div></td>
+  <td data-l="Kick-off">21 Oct · 22:00 UTC<div class="muted">in 1h</div></td>
+  <td data-l="Pick">LOS NINOS <strong>(57.8%)</strong></td>
+  <td data-l="Basis"><span class="badge market">Market · 1 book</span></td></tr>
+ <tr><td data-l="Match"><strong>Vitalem Aerem vs Rare Atom</strong>
+  <div class="muted">VOID Autumn Cup 2026</div></td>
+  <td data-l="Kick-off">22 Oct · 05:00 UTC<div class="muted">in 8h</div></td>
+  <td data-l="Pick">Rare Atom <strong>(63.8%)</strong></td>
+  <td data-l="Basis"><span class="badge market">Market · 1 book</span></td></tr>
+ <tr><td data-l="Match"><strong>benched gods vs TitanFlow</strong>
+  <div class="muted">CCT Europe 2026 Challengers #8</div></td>
+  <td data-l="Kick-off">22 Oct · 11:00 UTC<div class="muted">in 14h</div></td>
+  <td data-l="Pick">benched gods <strong>(73.8%)</strong></td>
+  <td data-l="Basis"><span class="badge bound">Bound · one side unrated</span></td></tr>
+ <tr><td data-l="Match"><strong>Donstu vs Banda chuya</strong>
+  <div class="muted">CCT Europe 2026 Challengers #8</div></td>
+  <td data-l="Kick-off">22 Oct · 13:45 UTC<div class="muted">in 17h</div></td>
+  <td data-l="Pick">Banda chuya <strong>(54.2%)</strong></td>
+  <td data-l="Basis"><span class="badge model">Originated · Valve VRS</span></td></tr>
+ <tr><td data-l="Match"><strong>Imperial vs Turma do Pagode</strong>
+  <div class="muted">Circuit X Curitiba #4</div></td>
+  <td data-l="Kick-off">22 Oct · 14:00 UTC<div class="muted">in 17h</div></td>
+  <td data-l="Pick">Imperial <strong>(75.4%)</strong></td>
+  <td data-l="Basis"><span class="badge market">Market · 4 books</span></td></tr></tbody></table></div>
+<p class="muted">The full list of 14 fixtures (including the API-only card) is on <a href="picks.html">All picks</a>.</p>
+
+<h2>Unresolved picks &amp; limitations (summary)</h2>
+<div class="callout good">
+ <p style="margin-top:0"><strong>0 match(es) unresolved today.</strong>
+ Every open fixture resolved to a pick with both probabilities — but nine rows are originated models or directional bounds rather than market prices, and they carry real limitations.</p>
+ <ul style="margin-bottom:0"><li><strong>Reference books do not price tier-C CS2</strong></li><li><strong>Originated lines are models, not market prices</strong></li><li><strong>Valve&#x27;s rating table is 16 days old</strong></li><li><strong>One-sided ratings become bounds, not points</strong></li><li><strong>Thin exchange book on the one Kalshi-priced fixture</strong></li><li><strong>Clock conflicts are not silently joined</strong></li><li><strong>HotSpawn&#x27;s own listing is not always complete</strong></li></ul>
+ <p style="margin-bottom:0"><a href="unresolved.html">Full unresolved &amp; limitations page →</a></p>
+</div>
+
+<h2>Verification status</h2>
+<div class="card">
+ <p>✓ Arithmetic: 14/14 rows re-derived within tolerance
+  (market no-vig from decimal odds; Valve logistic from official points).</p>
+ <p>✓ Official identity: 9 originated rows checked against the official table — live official check 2026-10-21T20:23:29Z · newest table standings_global_2026_10_05.md.</p>
+ <p>✓ Source links: 14/14 rows carry an openable external source plus their HotSpawn permalink.</p>
+ <p>✓ No HotSpawn crowd/vote percentage is read on any row.</p>
+</div>
+
+<footer>
+<p>Independent verification desk (session bce97e13). Every probability is re-derived from the stored
+book/exchange decimal odds or the official Valve regional standings; the basis is printed on every
+row. HotSpawn crowd-pick percentages are never used. Unverifiable values stay blank and are flagged.
+Board built 2026-10-21T20:25:21Z.</p>
+</footer>
+</main>
+</body>
+</html>

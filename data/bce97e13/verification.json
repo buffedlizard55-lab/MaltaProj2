@@ -1,0 +1,214 @@
+{
+ "session": "bce97e13",
+ "generated_utc": "2026-10-21T20:25:21Z",
+ "inputs": {
+  "raw_lobby_snapshot": "data/7adc7718/raw_snapshot.json",
+  "raw_snapshot_utc": "2026-10-21T20:09:07Z",
+  "canonical_board": "data/5f903db4/board.json",
+  "canonical_generated_utc": "2026-10-21T20:18:23Z",
+  "committed_vrs": "data/5f903db4/vrs_global.json",
+  "valve_live": {
+   "live": true,
+   "fetched_utc": "2026-10-21T20:23:29Z",
+   "repo": "ValveSoftware/counter-strike_regional_standings",
+   "contents_api": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026",
+   "directory_sha": "603a68f75d86e9928a08f1e2c1b3ef97fabd491f",
+   "global_tables_available": [
+    "standings_global_2026_01_05.md",
+    "standings_global_2026_02_02.md",
+    "standings_global_2026_03_02.md",
+    "standings_global_2026_04_06.md",
+    "standings_global_2026_05_04.md",
+    "standings_global_2026_06_01.md",
+    "standings_global_2026_07_06.md",
+    "standings_global_2026_08_03.md",
+    "standings_global_2026_09_07.md",
+    "standings_global_2026_10_05.md"
+   ],
+   "newest_global_table": "standings_global_2026_10_05.md",
+   "newest_table_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "table_blob_sha": "2aa2805394fbc68f36a5752a5b16026f2ab2fed5",
+   "n_teams_parsed": 380,
+   "floor": {
+    "standing": 380,
+    "points": 381,
+    "team": "Fruju"
+   },
+   "slope_check": {
+    "q_literal_present": true,
+    "fixed_rd": 75,
+    "derived_slope_c": 0.005600007780351016,
+    "canonical_slope_c": 0.0056000078,
+    "abs_diff": 1.9648983828890465e-11,
+    "matches_canonical": true,
+    "evidence_urls": [
+     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/glicko.js",
+     "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js"
+    ]
+   }
+  }
+ },
+ "summary": {
+  "open_lobby_fixtures": 13,
+  "open_fixtures_total": 14,
+  "canonical_rows": 14,
+  "verified_rows": 14,
+  "unverified_rows": 0,
+  "unresolved": 0,
+  "api_only_fixtures": 1,
+  "market_rows": 5,
+  "originated_vrs_rows": 6,
+  "bound_rows": 3,
+  "checks_passed": {
+   "coverage": 14,
+   "arithmetic": 14,
+   "identity": 9,
+   "sources": 14,
+   "no_crowd": 14
+  },
+  "checks_total": 14,
+  "all_open_fixtures_covered": true
+ },
+ "limitations": [
+  {
+   "id": "L1",
+   "title": "Reference books do not price tier-C CS2",
+   "detail": "9 of 14 open fixtures have no price at Bovada, Melbet, Pinnacle, Thunderpick or Kalshi (all five read today). Those rows carry an originated line from Valve's official rating table instead of a blank.",
+   "source": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=false"
+  },
+  {
+   "id": "L2",
+   "title": "Originated lines are models, not market prices",
+   "detail": "Formula p = 1/(1+exp(-k*C*points_delta)) with Valve's published C=0.0056000078 and this project's fitted k=0.43077894236569164 (60 market-vs-rating pairs). The fit's own mean absolute error is 7.70 percentage points, so treat originated probabilities as +/-8 pp.",
+   "source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/fit.js"
+  },
+  {
+   "id": "L3",
+   "title": "Valve's rating table is 16 days old",
+   "detail": "The newest published global table is 2026_10_05; Valve publishes roughly monthly. Promotion/relegation, roster changes and results after 5 Oct are not reflected. Valve rows also carry a latest_match_date per roster, which is published alongside every rating used here.",
+   "source": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026"
+  },
+  {
+   "id": "L4",
+   "title": "One-sided ratings become bounds, not points",
+   "detail": "3 fixtures have exactly one rated side. The unrated side is at or below Valve's published floor (#380, 381 pts), so those rows show '>=' on the rated side and '<=' on the other. They are directional, not calibrated.",
+   "source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+  },
+  {
+   "id": "L5",
+   "title": "Thin exchange book on the one Kalshi-priced fixture",
+   "detail": "The Kalshi quote used for Zetta v LOS NINOS has zero traded volume and a 0.16 wide two-way spread (Los Ninos 0.55/0.63, Alianza Lima 0.39/0.47). Our VRS origination and bo3.gg's own model both favour the other side, so the row is flagged as a basis conflict and the pick is shown with Lean confidence.",
+   "source": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211800lnale"
+  },
+  {
+   "id": "L6",
+   "title": "Clock conflicts are not silently joined",
+   "detail": "Books occasionally list the same pairing at a different kick-off (e.g. Kalshi's Apogee Esports vs UNiTY esports event is priced at 16:30Z while HotSpawn and two other books have 14:00Z). Quotes are joined only when the kick-off agrees within 90 minutes; conflicts are listed on Flagged for review.",
+   "source": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=false"
+  },
+  {
+   "id": "L7",
+   "title": "HotSpawn's own listing is not always complete",
+   "detail": "Four DFRAG Invitational fixtures render a pick card with no match permalink, and one fixture (Wildcard v DENDELE, 12 Nov) exists in the fixtures API but is not rendered in the lobby and is marked 'started' months early. It is included here as an API-only row so no fixture is dropped.",
+   "source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
+  }
+ ],
+ "irregularities": [
+  {
+   "id": "R1",
+   "severity": "data",
+   "title": "Valve publishes two rows for the same organisation (different rosters)",
+   "detail": "1081597 benched gods v TitanFlow; 1081600 Donstu v Banda chuya; 1082792 HOTU v The Huns. Both rows are in standings_global_2026_10_05.md with different points. This build applies the published roster rule (full five, newest latest_match_date) and keeps the alternative in the row data, so the choice is auditable.",
+   "source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+   "affected": [
+    "1081597",
+    "1081600",
+    "1082792"
+   ]
+  },
+  {
+   "id": "R2",
+   "severity": "upstream",
+   "title": "Two collectors disagree on the same fixture and one leaves rows blank",
+   "detail": "data/fe803b80/board.json stores 13 open rows with the top-level pick/probability set to null while their own 'line' or 'model' block holds the numbers, and it also keeps a Kalshi quote whose sides are inverted (Turma do Pagode labelled at 0.78 when the exchange prices Imperial there). This build reads raw decimals and re-derives every no-vig price itself, and it does not import that inverted quote.",
+   "source": "data/fe803b80/board.json",
+   "affected": [
+    "1082837",
+    "1081870",
+    "1081597",
+    "1081600",
+    "1082688",
+    "1082689",
+    "1082858",
+    "1082859",
+    "1082860",
+    "1082861",
+    "1082792",
+    "1082793",
+    "1080200"
+   ]
+  },
+  {
+   "id": "R3",
+   "severity": "upstream",
+   "title": "Primary board resolves duplicate Valve rows the other way round",
+   "detail": "Both collectors mishandle Valve's duplicate rows, in opposite ways. data/f7279a54/board.json flags 'Banda chuya', 'The Huns' and 'benched gods' as ambiguous and therefore publishes no rating for those sides at all; data/fe803b80/board.json instead silently picks the older/lower rows (Banda Chuya #373 402 pts, The Huns #213 701 pts, benched gods #329 516 pts), which flips the Banda Chuya pick. bo3.gg's squad page for Banda Chuya lists exactly Valve's five-man row (#165, 801 pts, latest match 2026-10-04), and Valve's own latest_match_date column agrees, so the five-man row is the active one. Both the selected and the alternative values are published on every affected row.",
+   "source": "data/fe803b80/board.json + https://bo3.gg/teams/banda-chuya",
+   "affected": [
+    "1081600",
+    "1082792",
+    "1081597"
+   ]
+  },
+  {
+   "id": "R4",
+   "severity": "upstream",
+   "title": "Kalshi market timestamps are shifted against its own rules text",
+   "detail": "Two independent events show the same offset: KXCS2GAME-26OCT211800LNALE's rules text says 'Oct 21, 2026 at 6:00 PM EDT' (22:00Z) while its occurrence_datetime says 2026-10-22T02:00:00Z, and KXCS2GAME-26OCT220100RAVA's rules text says 'Oct 22, 2026 at 1:00 AM EDT' (05:00Z) while its occurrence_datetime says 09:00Z - a +4h shift on both. The rules text agrees with HotSpawn, HLTV and bo3.gg, so the rules-text kick-off is used and the event clocks are treated as unreliable.",
+   "source": "https://api.elections.kalshi.com/trade-api/v2/markets?event_ticker=KXCS2GAME-26OCT211800LNALE",
+   "affected": [
+    "1082837"
+   ]
+  },
+  {
+   "id": "R5",
+   "severity": "site",
+   "title": "The previous root landing page was not readable on a phone",
+   "detail": "The root index.html carried 12 header links and ~30 session cards before this session. This build adds one phone-first executive summary at the top of the root page that links straight to the picks, unresolved, sources, method and flagged pages, and keeps the older desks below it as an archive.",
+   "source": "https://play.hotspawn.com/lobby",
+   "affected": []
+  },
+  {
+   "id": "R6",
+   "severity": "repo",
+   "title": "Pre-existing test failures on the base commit",
+   "detail": "On the base commit a98242a, `python3 -m unittest discover -s tests` reports 1112 tests with 1 failure and 16 errors (missing modules test_3faf40e8, test_5468b0ba, test_58cb2600, test_5a40690b, test_6ffacd40, test_778756a1, test_94b3d48a, test_98dcfc7e, test_dc741cc1, test_e1b48771, test_ff88c096, test_project, plus four assertion errors in test_69e4c06a / test_current_lines and one in test_verify_7cd2e67a). They are unrelated to this section and are recorded, not hidden.",
+   "source": "https://github.com/buffedlizard55-lab/MaltaProj2/commit/a98242a9891a3ef2c44bc3df879711a53e5cd1a8",
+   "affected": []
+  },
+  {
+   "id": "BCE97E13-R1",
+   "severity": "citation",
+   "title": "Slope C=0.0056000078 is derived, not a literal constant",
+   "detail": "The number is not written verbatim in Valve's repository. It is the effective logistic slope produced by model/glicko.js (Q = ln(10)/400) combined with model/fit.js defaultGlickoParams.rd = 75 via setFixedRD: C = ln(10)*g(75)/400. Live re-derivation gave 0.005600007780351016 (match=True). Value verified correct; citation should name both files.",
+   "source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/model/glicko.js"
+  }
+ ],
+ "unresolved": [],
+ "api_only": [
+  {
+   "fixture_id": "1080200",
+   "team_a": "Wildcard",
+   "team_b": "DENDELE",
+   "competition": "FRAG University 2026",
+   "start_utc": "2026-11-12T00:00:00Z",
+   "status": "started",
+   "seen_in": [
+    "api"
+   ],
+   "pick": "DENDELE",
+   "pick_prob": 0.5771769547563581,
+   "note": "listed by the HotSpawn fixtures API but not rendered as a lobby pick card; the API reports it 'started' weeks before its 12 Nov kick-off"
+  }
+ ]
+}
