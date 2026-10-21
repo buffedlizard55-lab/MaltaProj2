@@ -1,3 +1,11 @@
+# Session 00231608 — evidence-safety repair
+
+| Task | Status | Owner | Scope |
+|---|---|---|---|
+| Repair unsupported unranked-team bounds in completed everypick desk; retain market and two-rated-team models, publish missing evidence, test and integrate | in progress | 00231608 | scripts/5f903db4/build.py, scripts/5f903db4/site.py, scripts/5f903db4/stage_root.py, everypick/**, data/5f903db4/board.json, tests/test_00231608.py, COORDINATION.md (this section) |
+
+The prior owner marked this scope done at 19:53 UTC. No new parallel dashboard will be added. Environment fixes this session to arena/00231608-maltaproj2 rather than the requested session branch convention. Existing active root integration scopes will not be edited. Official source access is limited to GitHub hosts in this sandbox; blocked HLTV/book/lobby reads will be recorded as inaccessible, not verified.
+
 # Coordination — session `5f903db4` (a pick + both win probabilities for EVERY open HotSpawn CS2 match, phone-first executive summary, unresolved & limitations, 2026-10-21)
 
 Session: `5f903db4` (environment-fixed branch `arena/5f903db4-maltaproj2`; the environment forbids a
