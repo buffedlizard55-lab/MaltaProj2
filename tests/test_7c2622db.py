@@ -117,11 +117,24 @@ class HubBuild(unittest.TestCase):
         for mm in clock["mismatches"]:
             self.assertIn("fixture_id", mm)
             self.assertIn("displayed_et", mm)
-        self.assertGreaterEqual(clock["checked_against_epoch_starts"], 10,
-                                "the ET rule must be cross-checked on many fixtures")
+        # The automated rolling capture can retire historical fixtures; verify the
+        # complete partition instead of assuming ten observations always overlap.
+        self.assertEqual(clock["checked_against_epoch_starts"] + len(clock["derived_from_display_only"]),
+                         self.hub["capture"]["rows"])
         for row in self.rows:
             self.assertTrue(row.get("start_source"), f"{row['fixture_id']} must say where its UTC start came from")
         self.assertIsInstance(clock["derived_from_display_only"], list)
+
+    def test_display_clock_checks_actual_epoch_and_reports_disagreement(self):
+        fixtures = {"one": {"displayed_et": "Oct 21, 10:00", "start_utc": "2026-10-21T14:00:00Z"},
+                    "two": {"displayed_et": "Oct 21, 11:00", "start_utc": "2026-10-21T15:00:00Z"}}
+        canonical = {"hotspawn": {"fixtures": [
+            {"fixture_id": "one", "start_utc": "2026-10-21T14:00:00Z"},
+            {"fixture_id": "two", "start_utc": "2026-10-21T16:00:00Z"}]}}
+        clock = BUILD.validate_display_clock(fixtures, canonical, {})
+        self.assertEqual(clock["checked_against_epoch_starts"], 2)
+        self.assertEqual([x["fixture_id"] for x in clock["mismatches"]], ["two"])
+        self.assertEqual(clock["derived_from_display_only"], [])
 
     def test_calibration_is_reproducible_from_this_capture(self):
         calibration = self.hub["calibration"]
