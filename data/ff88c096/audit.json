@@ -1,0 +1,836 @@
+{
+  "schema": "ff88c096-audit-v1",
+  "audited_at_utc": "2026-10-21T12:40:00Z",
+  "total_rows_verified": 20,
+  "irregularity_count": 10,
+  "irregularities": [
+    {
+      "id": "IR-FF-01",
+      "severity": "critical",
+      "category": "Stale / Completed Backend Fixture",
+      "fixture_id": "1080200",
+      "subject": "Wildcard vs DENDELE — FRAG University 2026 Grand Final already played Oct 12 (Wildcard won 3–2)",
+      "detail": "HotSpawn's /api/v1/fixtures feed still serves fixture 1080200 with startDate 2026-11-12T00:00:00Z (a 1-month '10 -> 11' typo for 2026-10-12T00:00:00Z). Official HLTV #2399407 confirms Wildcard beat DENDELE 3–2 in Syracuse on Oct 11–12, 2026. Sibling boards (data/fe803b80/board.json, now/) published a pre-match pick ('DENDELE 57.3%') on a finished match; fullboard quarantines 1080200 as blank/completed.",
+      "action": "Left blank (no pre-match pick) & isolated in Unresolved / Flagged.",
+      "sources": [
+        {
+          "label": "HLTV #2399407 (Wildcard 3–2 DENDELE)",
+          "url": "https://www.hltv.org/matches/2399407/wildcard-vs-dendele-frag-university-2026"
+        },
+        {
+          "label": "HotSpawn Live Lobby",
+          "url": "https://play.hotspawn.com/lobby"
+        }
+      ]
+    },
+    {
+      "id": "IR-FF-02",
+      "severity": "high",
+      "category": "Stale Valve VRS Direction Flip",
+      "fixture_id": "1081600",
+      "subject": "Donstu vs Banda chuya — Oct 21 Valve VRS flips favorite from Donstu to Banda chuya",
+      "detail": "Earlier boards (data/fe803b80/board.json, now/, everymatch/) used the 16-day-old 2026_10_05 VRS file (DONSTU 732 vs Banda Chuya 402 -> Donstu 61.3%). Official October 21, 2026 Valve Global Standings rank #164 Banda Chuya (785 pts) ahead of #187 DONSTU (729 pts), matching HLTV #2399697's 3-month map pool advantage across Cache/Dust2/Mirage/Nuke and flipping the verified pick to Banda chuya.",
+      "action": "Updated fallback rating inputs to verified Oct 21 Valve VRS (#164 Banda Chuya 785 vs #187 DONSTU 729).",
+      "sources": [
+        {
+          "label": "HLTV #2399697 (Donstu vs Banda Chuya)",
+          "url": "https://www.hltv.org/matches/2399697/donstu-vs-banda-chuya-cct-2026-challengers-europe-series-8"
+        },
+        {
+          "label": "Valve Global Standings (21 Oct 2026)",
+          "url": "https://www.hltv.org/valve-ranking/teams/2026/october/21"
+        }
+      ]
+    },
+    {
+      "id": "IR-FF-03",
+      "severity": "high",
+      "category": "Unverified Org Identity & Unranked Opponent",
+      "fixture_id": "1082837",
+      "subject": "Zetta vs LOS NINOS — Rejected unconfirmed 'Alianza Lima Esports' quote & synthetic VRS floor",
+      "detail": "At 2026-10-21T22:00:00Z, Polymarket lists 'Alianza Lima Esports vs Los Niños' ($5 vol, 2.08 / 1.89), whereas official HLTV #2399865 lists Zetta (#241 HLTV, #366 Valve VRS 465 pts) vs LOS NINOS (Unranked on both Valve VRS and HLTV despite a 2–2 Swiss record beating #238 Grêmio 2–1). Earlier boards invented either 50/50 or a synthetic #380/381-pt floor; fullboard leaves probability blank and flagged.",
+      "action": "Probability & pick left explicitly blank (unverified); verified Zetta VRS (465 pts) and HLTV roster linked.",
+      "sources": [
+        {
+          "label": "HLTV #2399865 (Zetta vs LOS NINOS)",
+          "url": "https://www.hltv.org/matches/2399865/zetta-vs-los-ninos-cct-2026-south-america-series-7"
+        },
+        {
+          "label": "Polymarket CCT South America",
+          "url": "https://polymarket.com/esports/cs2/cct-south-america"
+        }
+      ]
+    },
+    {
+      "id": "IR-FF-04",
+      "severity": "high",
+      "category": "Upstream HotSpawn Permalink Corruption (3 Cross-Wired Match Slugs)",
+      "fixture_id": "1082178, 1082684, 1082836",
+      "subject": "play.hotspawn.com/lobby emits wrong team/event URL slugs on cards 1082178, 1082684, and 1082836",
+      "detail": "Line-by-line inspection of data/picks_permalinks.json and live play.hotspawn.com/lobby revealed that HotSpawn's own SSR links card 1082178 (DAMAJUANA vs Hacha) to '...metizport-vs-genone-...-1082178', card 1082684 (PARIVISION vs BIG) to '...fluxo-vs-galorys-...-1082684', and card 1082836 (Fluxo W7M vs Galorys) to '...damajuana-vs-hacha-...-1082836'. All three matches are now anchored directly to their verified HLTV pages.",
+      "action": "Attached verified official HLTV match URLs (#2399864, #2398999, #2399806) alongside flagged HotSpawn URLs.",
+      "sources": [
+        {
+          "label": "HLTV #2399864 (Damajuana vs Hacha)",
+          "url": "https://www.hltv.org/matches/2399864/damajuana-vs-hacha-cct-2026-south-america-series-7"
+        },
+        {
+          "label": "HLTV #2399806 (Fluxo vs Galorys)",
+          "url": "https://www.hltv.org/matches/2399806/fluxo-vs-galorys-circuit-x-curitiba-season-4"
+        },
+        {
+          "label": "HLTV #2398999 (BIG vs PARIVISION)",
+          "url": "https://www.hltv.org/matches/2398999/big-vs-parivision-1win-private-club-season-2"
+        }
+      ]
+    },
+    {
+      "id": "IR-FF-05",
+      "severity": "medium",
+      "category": "Upstream Slug Team-Order Inversion",
+      "fixture_id": "1082177, 1082688",
+      "subject": "BRUTE vs Sangal (1082177) & Turma do Pagode vs Imperial (1082688) invert slug order vs card order",
+      "detail": "HotSpawn card 1082177 lists BRUTE as team_a and Sangal as team_b, but mutated its permalink mid-week from 'brute-vs-sangal-...-1082177' to 'sangal-vs-brute-...-1082177' (breaking test_verify_7cd2e67a.py). Similarly 1082688 uses slug 'imperial-vs-turma-do-pagode-...-1082688' while Imperial is team_b.",
+      "action": "Repaired test_verify_7cd2e67a.py invariant and locked quote orientation strictly to card team_a / team_b.",
+      "sources": [
+        {
+          "label": "HLTV #2399782 (Sangal vs BRUTE)",
+          "url": "https://www.hltv.org/matches/2399782/sangal-vs-brute-stake-ranked-episode-6-closed-qualifier"
+        },
+        {
+          "label": "HLTV #2399810 (Imperial vs Turma do Pagode)",
+          "url": "https://www.hltv.org/matches/2399810/imperial-vs-turma-do-pagode-circuit-x-curitiba-season-4"
+        }
+      ]
+    },
+    {
+      "id": "IR-FF-06",
+      "severity": "high",
+      "category": "Dropped Multi-Book Market Line ('ex-' Prefix Bug)",
+      "fixture_id": "1082762",
+      "subject": "ex-CYBERSHOKE vs BlinkDagger — 4 active sportsbooks/exchanges missed due to 'ex-' prefix",
+      "detail": "OURLINE and b3871d16 left 1082762 completely blank even though Bovada (1.125/5.75), Melbet (1.12/5.59), Polymarket (1.22/5.56), and Kalshi (1.235/5.263) all price CYBERSHOKE vs BlinkDagger at 15:00 UTC.",
+      "action": "Fixed 'ex-' normalization and resolved ex-CYBERSHOKE at 82.7% across all 4 live markets.",
+      "sources": [
+        {
+          "label": "HLTV #2399839 (ex-CYBERSHOKE vs BlinkDagger)",
+          "url": "https://www.hltv.org/matches/2399839/ex-cybershoke-vs-blinkdagger-winline-mpkbk-cis-lan-season-9"
+        },
+        {
+          "label": "Polymarket CIS LAN Championship",
+          "url": "https://polymarket.com/esports/cs2/cis-lan-championship"
+        }
+      ]
+    },
+    {
+      "id": "IR-FF-07",
+      "severity": "medium",
+      "category": "Kalshi EDT-vs-UTC Timezone Offset",
+      "fixture_id": "1081583, 1081584, 1081141, 1079648, 1082831, 1082836, 1082684, 1082177, 1082762, 1082763, 1082835",
+      "subject": "11 open CFTC Kalshi KXCS2GAME markets previously rejected on 4-hour EDT offset",
+      "detail": "Kalshi encodes US Eastern local kickoff inside market tickers (e.g. '26oct210945' = 09:45 EDT = 13:45 UTC). Parsing the ticker digits as UTC caused a 4.0-hour mismatch across 11 open matches.",
+      "action": "Added America/New_York -> UTC ticker parser in scripts/ff88c096/collect.py and verified every contract.",
+      "sources": [
+        {
+          "label": "Kalshi KXCS2GAME Open Markets API",
+          "url": "https://api.elections.kalshi.com/trade-api/v2/markets?series_ticker=KXCS2GAME&status=open&limit=200"
+        }
+      ]
+    },
+    {
+      "id": "IR-FF-08",
+      "severity": "medium",
+      "category": "Duplicate Valve VRS Roster Entry",
+      "fixture_id": "1082792",
+      "subject": "HOTU vs The Huns — Duplicate 'The Huns' lineup in Oct 5 VRS (#213 / 701 pts vs active #125 / 926 pts)",
+      "detail": "OURLINE dropped 1082792 completely ('ambiguous_vrs_name') while fe803b80 matched the wrong 701-pt entry (inflating HOTU to 96.2%). Active lineup on HLTV #2399437 (Bart4k, controlez, Cozen, DarkMeister, bexyz) is #125 on Oct 21 Valve VRS with 926 points vs #34 HOTU (1390 points -> 85.4% HOTU).",
+      "action": "Matched active 5-player roster on HLTV #2399437 to exact Oct 21 Valve VRS #125 (926 pts).",
+      "sources": [
+        {
+          "label": "HLTV #2399437 (HOTU vs The Huns)",
+          "url": "https://www.hltv.org/matches/2399437/hotu-vs-the-huns-gluck-moscow-cyber-games-2026"
+        },
+        {
+          "label": "Valve Global Standings (21 Oct 2026)",
+          "url": "https://www.hltv.org/valve-ranking/teams/2026/october/21"
+        }
+      ]
+    },
+    {
+      "id": "IR-FF-09",
+      "severity": "medium",
+      "category": "Extreme HotSpawn Crowd vs Market Divergence",
+      "fixture_id": "1082835, 1082689",
+      "subject": "HotSpawn crowd picks Martians 95% (true fair 40.4%) and ShindeN 82% (true fair 48.6%)",
+      "detail": "On 1082835 (JOGA DE TERNO vs Martians), 95% of HotSpawn pickers chose Martians even though all 5 external sportsbooks/exchanges price JOGA DE TERNO at 59.6% (+54.6 pp crowd error). On 1082689 (BESTIA vs ShindeN), 82% of HotSpawn pickers chose ShindeN despite books + VRS favoring BESTIA (51.4%).",
+      "action": "HotSpawn crowd % strictly banned from probability calculation and surfaced as Anti-Crowd Value Alerts.",
+      "sources": [
+        {
+          "label": "HLTV #2399863 (Joga de Terno vs Martians)",
+          "url": "https://www.hltv.org/matches/2399863/joga-de-terno-vs-martians-cct-2026-south-america-series-7"
+        },
+        {
+          "label": "HLTV #2399811 (BESTIA vs ShindeN)",
+          "url": "https://www.hltv.org/matches/2399811/bestia-vs-shinden-circuit-x-curitiba-season-4"
+        }
+      ]
+    },
+    {
+      "id": "IR-FF-10",
+      "severity": "low",
+      "category": "Same-Day Dual-Tournament Fixture Hazard",
+      "fixture_id": "1082684",
+      "subject": "PARIVISION vs BIG scheduled twice on 2026-10-21 across two separate tournaments",
+      "detail": "PARIVISION and BIG play in both 1win Private Club Season 2 (HLTV #2398999) and Stake Ranked Episode 6 Closed Qualifier on Oct 21, 2026. Strict start-time windowing prevents mixing live maps across series.",
+      "action": "Verified exact BO3 pre-match moneyline odds across 5 external sources (55.1% PARIVISION / 44.9% BIG).",
+      "sources": [
+        {
+          "label": "HLTV #2398999 (BIG vs PARIVISION)",
+          "url": "https://www.hltv.org/matches/2398999/big-vs-parivision-1win-private-club-season-2"
+        }
+      ]
+    }
+  ],
+  "row_matrix": [
+    {
+      "fixture_id": "1081583",
+      "match": "Phantom Academy vs Bebop",
+      "competition": "CCT Europe 2026 Challengers #8",
+      "start_utc": "2026-10-21T13:45:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": "Bebop",
+      "fe803b80_pick": "Bebop",
+      "everymatch_pick": "Bebop",
+      "fullboard_pick": "Bebop",
+      "fullboard_prob_a": 0.477159,
+      "fullboard_prob_b": 0.522841,
+      "resolution_tier": "featured_market",
+      "market_source_count": 4,
+      "vrs_oct21_a": null,
+      "vrs_oct21_b": {
+        "rank": 227,
+        "points": 656,
+        "team": "Bebop"
+      },
+      "permalink_in_repo": "https://www.hotspawn.com/matches/phantom-academy-vs-bebop-cct-europe-2026-challengers-8-1081583",
+      "hotspawn_slug_anomaly": null,
+      "audit_status": "verified_clean",
+      "official_hltv_url": "https://www.hltv.org/matches/2399693/phantom-academy-vs-bebop-cct-2026-challengers-europe-series-8",
+      "hotspawn_url": "https://www.hotspawn.com/matches/phantom-academy-vs-bebop-cct-europe-2026-challengers-8-1081583",
+      "notes": [
+        "Kalshi EDT ticker 26oct210945pabebop (09:45 EDT = 13:45 UTC) rescued from unmatched pool."
+      ]
+    },
+    {
+      "fixture_id": "1081584",
+      "match": "Falcons Force vs Privateer",
+      "competition": "CCT Europe 2026 Challengers #8",
+      "start_utc": "2026-10-21T13:45:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": "Falcons Force",
+      "fe803b80_pick": "Falcons Force",
+      "everymatch_pick": "Falcons Force",
+      "fullboard_pick": "Falcons Force",
+      "fullboard_prob_a": 0.805256,
+      "fullboard_prob_b": 0.194744,
+      "resolution_tier": "featured_market",
+      "market_source_count": 5,
+      "vrs_oct21_a": {
+        "rank": 115,
+        "points": 968,
+        "team": "Falcons Force"
+      },
+      "vrs_oct21_b": null,
+      "permalink_in_repo": "https://www.hotspawn.com/matches/falcons-force-vs-privateer-cct-europe-2026-challengers-8-1081584",
+      "hotspawn_slug_anomaly": null,
+      "audit_status": "verified_clean",
+      "official_hltv_url": "https://www.hltv.org/matches/2399694/falcons-force-vs-privateer-cct-2026-challengers-europe-series-8",
+      "hotspawn_url": "https://www.hotspawn.com/matches/falcons-force-vs-privateer-cct-europe-2026-challengers-8-1081584",
+      "notes": [
+        "5 independent markets aligned on Falcons Force heavy favorite (~80%+); Kalshi EDT ticker rescued."
+      ]
+    },
+    {
+      "fixture_id": "1081141",
+      "match": "Lavked vs Spirit Academy",
+      "competition": "CCT Europe 2026 Series #12",
+      "start_utc": "2026-10-21T14:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": "Spirit Academy",
+      "fe803b80_pick": "Spirit Academy",
+      "everymatch_pick": "Spirit Academy",
+      "fullboard_pick": "Spirit Academy",
+      "fullboard_prob_a": 0.437952,
+      "fullboard_prob_b": 0.562048,
+      "resolution_tier": "featured_market",
+      "market_source_count": 4,
+      "vrs_oct21_a": {
+        "rank": 154,
+        "points": 815,
+        "team": "Lavked"
+      },
+      "vrs_oct21_b": {
+        "rank": 112,
+        "points": 979,
+        "team": "Spirit Academy"
+      },
+      "permalink_in_repo": "https://www.hotspawn.com/matches/lavked-vs-spirit-academy-cct-europe-2026-series-12-1081141",
+      "hotspawn_slug_anomaly": null,
+      "audit_status": "verified_clean",
+      "official_hltv_url": "https://www.hltv.org/matches/2399491/lavked-vs-spirit-academy-cct-2026-europe-series-12",
+      "hotspawn_url": "https://www.hotspawn.com/matches/lavked-vs-spirit-academy-cct-europe-2026-series-12-1081141",
+      "notes": [
+        "4 external markets + Oct 21 Valve VRS confirm Spirit Academy moderate favorite."
+      ]
+    },
+    {
+      "fixture_id": "1079648",
+      "match": "G2 Ares vs ILLYRIANS",
+      "competition": "CCT Europe 2026 Series #11",
+      "start_utc": "2026-10-21T14:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": null,
+      "fe803b80_pick": "G2 Ares",
+      "everymatch_pick": "G2 Ares",
+      "fullboard_pick": "G2 Ares",
+      "fullboard_prob_a": 0.500757,
+      "fullboard_prob_b": 0.499243,
+      "resolution_tier": "featured_market",
+      "market_source_count": 2,
+      "vrs_oct21_a": {
+        "rank": 118,
+        "points": 960,
+        "team": "G2 Ares"
+      },
+      "vrs_oct21_b": {
+        "rank": 123,
+        "points": 930,
+        "team": "Illyrians"
+      },
+      "permalink_in_repo": "https://www.hotspawn.com/matches/g2-ares-vs-illyrians-cct-europe-2026-series-11-1079648",
+      "hotspawn_slug_anomaly": null,
+      "audit_status": "rescued_lowtier_gap",
+      "official_hltv_url": "https://www.hltv.org/matches/2399325/g2-ares-vs-illyrians-cct-2026-europe-series-11",
+      "hotspawn_url": "https://www.hotspawn.com/matches/g2-ares-vs-illyrians-cct-europe-2026-series-11-1079648",
+      "notes": [
+        "Previously unpriced in OURLINE/b3871d16; rescued via live Polymarket ($516 vol, 1.92/1.96) + Kalshi EDT contract, corroborated by Oct 21 Valve VRS #118 G2 Ares (960) vs #123 Illyrians (930)."
+      ]
+    },
+    {
+      "fixture_id": "1079187",
+      "match": "Butterfly vs BET-M",
+      "competition": "NODWIN Clutch Series #13",
+      "start_utc": "2026-10-21T14:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": null,
+      "fe803b80_pick": "BET-M",
+      "everymatch_pick": "BET-M",
+      "fullboard_pick": "BET-M",
+      "fullboard_prob_a": 0.376777,
+      "fullboard_prob_b": 0.623223,
+      "resolution_tier": "lowtier_research",
+      "market_source_count": 1,
+      "vrs_oct21_a": {
+        "rank": 96,
+        "points": 1082,
+        "team": "Butterfly"
+      },
+      "vrs_oct21_b": {
+        "rank": 74,
+        "points": 1149,
+        "team": "BET-M"
+      },
+      "permalink_in_repo": "https://www.hotspawn.com/matches/butterfly-vs-bet-m-nodwin-clutch-series-13-1079187",
+      "hotspawn_slug_anomaly": null,
+      "audit_status": "rescued_lowtier_gap",
+      "official_hltv_url": "https://www.hltv.org/matches/2399104/butterfly-vs-bet-m-nodwin-clutch-series-13",
+      "hotspawn_url": "https://www.hotspawn.com/matches/butterfly-vs-bet-m-nodwin-clutch-series-13-1079187",
+      "notes": [
+        "Low-tier research resolution: 0 traditional sportsbook lines; rescued single live Polymarket line ('Butterfly vs BET-M 33', 2.63/1.59, $41 vol) corroborated by HLTV #79 vs #114 and Valve VRS 1149 vs 1082."
+      ]
+    },
+    {
+      "fixture_id": "1082831",
+      "match": "paiN vs BARCA",
+      "competition": "Circuit X Curitiba Season #4",
+      "start_utc": "2026-10-21T14:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": "paiN",
+      "fe803b80_pick": "paiN",
+      "everymatch_pick": "paiN",
+      "fullboard_pick": "paiN",
+      "fullboard_prob_a": 0.575823,
+      "fullboard_prob_b": 0.424177,
+      "resolution_tier": "featured_market",
+      "market_source_count": 5,
+      "vrs_oct21_a": {
+        "rank": 60,
+        "points": 1211,
+        "team": "paiN"
+      },
+      "vrs_oct21_b": {
+        "rank": 85,
+        "points": 1077,
+        "team": "Largadosypelados"
+      },
+      "permalink_in_repo": "https://www.hotspawn.com/matches/pain-vs-barca-circuit-x-curitiba-4-1082831",
+      "hotspawn_slug_anomaly": null,
+      "audit_status": "verified_clean",
+      "official_hltv_url": "https://www.hltv.org/matches/2399805/pain-vs-barca-circuit-x-curitiba-season-4",
+      "hotspawn_url": "https://www.hotspawn.com/matches/pain-vs-barca-circuit-x-curitiba-4-1082831",
+      "notes": [
+        "BARCA = Largadosypelados confirmed 5/5 players (pancc, happ, zmb, divine, Alisson) on HLTV #2399805, unlocking all 5 sharp/exchange books."
+      ]
+    },
+    {
+      "fixture_id": "1082836",
+      "match": "Fluxo W7M vs Galorys",
+      "competition": "Circuit X Curitiba Season #4",
+      "start_utc": "2026-10-21T14:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": "Hacha",
+      "fe803b80_pick": "Hacha",
+      "everymatch_pick": "Hacha",
+      "fullboard_pick": "Fluxo W7M",
+      "fullboard_prob_a": 0.604972,
+      "fullboard_prob_b": 0.395028,
+      "resolution_tier": "featured_market",
+      "market_source_count": 5,
+      "vrs_oct21_a": {
+        "rank": 49,
+        "points": 1280,
+        "team": "Fluxo"
+      },
+      "vrs_oct21_b": {
+        "rank": 92,
+        "points": 1044,
+        "team": "Galorys"
+      },
+      "permalink_in_repo": "https://www.hotspawn.com/matches/damajuana-vs-hacha-cct-south-america-2026-series-7-1082836",
+      "hotspawn_slug_anomaly": "HotSpawn lobby card 1082836 ('Fluxo W7M vs Galorys') publishes a corrupted URL slug ('damajuana-vs-hacha-cct-south-america-2026-series-7-1082836'); verified true match via HLTV #2399806.",
+      "audit_status": "verified_with_upstream_slug_flag",
+      "official_hltv_url": "https://www.hltv.org/matches/2399806/fluxo-vs-galorys-circuit-x-curitiba-season-4",
+      "hotspawn_url": "https://www.hotspawn.com/matches/damajuana-vs-hacha-cct-south-america-2026-series-7-1082836",
+      "notes": [
+        "Caught upstream HotSpawn permalink corruption on card 1082836; all 5 external markets price Fluxo W7M at 60–63%."
+      ]
+    },
+    {
+      "fixture_id": "1082684",
+      "match": "PARIVISION vs BIG",
+      "competition": "1win Private Club Season #2",
+      "start_utc": "2026-10-21T15:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": "Fluxo",
+      "fe803b80_pick": "Fluxo",
+      "everymatch_pick": "Fluxo",
+      "fullboard_pick": "PARIVISION",
+      "fullboard_prob_a": 0.546197,
+      "fullboard_prob_b": 0.453803,
+      "resolution_tier": "featured_market",
+      "market_source_count": 5,
+      "vrs_oct21_a": {
+        "rank": 13,
+        "points": 1609,
+        "team": "PARIVISION"
+      },
+      "vrs_oct21_b": {
+        "rank": 35,
+        "points": 1378,
+        "team": "BIG"
+      },
+      "permalink_in_repo": "https://www.hotspawn.com/matches/fluxo-vs-galorys-circuit-x-curitiba-4-1082684",
+      "hotspawn_slug_anomaly": "HotSpawn lobby card 1082684 ('PARIVISION vs BIG') publishes corrupted URL slug 'fluxo-vs-galorys-circuit-x-curitiba-4-1082684'; also note PARIVISION and BIG play two distinct BO3s on Oct 21 (1win Private Club S2 & Stake Ranked Ep 6 CQ).",
+      "audit_status": "verified_with_upstream_slug_flag",
+      "official_hltv_url": "https://www.hltv.org/matches/2398999/big-vs-parivision-1win-private-club-season-2",
+      "hotspawn_url": "https://www.hotspawn.com/matches/fluxo-vs-galorys-circuit-x-curitiba-4-1082684",
+      "notes": [
+        "Caught upstream HotSpawn permalink corruption on card 1082684 AND same-day dual-tournament schedule hazard (HLTV #2398999 vs Stake Ranked CQ)."
+      ]
+    },
+    {
+      "fixture_id": "1082177",
+      "match": "BRUTE vs Sangal",
+      "competition": "Stake Ranked Episode 6 Closed Qualifier",
+      "start_utc": "2026-10-21T15:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": "Sangal",
+      "fe803b80_pick": "Sangal",
+      "everymatch_pick": "Sangal",
+      "fullboard_pick": "Sangal",
+      "fullboard_prob_a": 0.364626,
+      "fullboard_prob_b": 0.635374,
+      "resolution_tier": "featured_market",
+      "market_source_count": 5,
+      "vrs_oct21_a": {
+        "rank": 107,
+        "points": 995,
+        "team": "BRUTE"
+      },
+      "vrs_oct21_b": {
+        "rank": 38,
+        "points": 1351,
+        "team": "Sangal"
+      },
+      "permalink_in_repo": "https://www.hotspawn.com/matches/sangal-vs-brute-stake-ranked-episode-6-closed-qualifier-1082177",
+      "hotspawn_slug_anomaly": "HotSpawn card order is BRUTE (team_a) vs Sangal (team_b), while HotSpawn mutated its URL slug mid-week from 'brute-vs-sangal-...-1082177' to 'sangal-vs-brute-...-1082177'.",
+      "audit_status": "verified_with_upstream_slug_flag",
+      "official_hltv_url": "https://www.hltv.org/matches/2399782/sangal-vs-brute-stake-ranked-episode-6-closed-qualifier",
+      "hotspawn_url": "https://www.hotspawn.com/matches/sangal-vs-brute-stake-ranked-episode-6-closed-qualifier-1082177",
+      "notes": [
+        "Deep $29.6K Polymarket liquidity + Pinnacle/Melbet/Thunderpick/Kalshi all confirm Sangal ~63.3%; orientation strictly anchored to card order (BRUTE = team_a, Sangal = team_b)."
+      ]
+    },
+    {
+      "fixture_id": "1082762",
+      "match": "ex-CYBERSHOKE vs BlinkDagger",
+      "competition": "Winline MPKBK CIS LAN Season #9",
+      "start_utc": "2026-10-21T15:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": null,
+      "fe803b80_pick": "ex-CYBERSHOKE",
+      "everymatch_pick": "ex-CYBERSHOKE",
+      "fullboard_pick": "ex-CYBERSHOKE",
+      "fullboard_prob_a": 0.826762,
+      "fullboard_prob_b": 0.173238,
+      "resolution_tier": "featured_market",
+      "market_source_count": 4,
+      "vrs_oct21_a": {
+        "rank": 191,
+        "points": 726,
+        "team": "CYBERSHOKE"
+      },
+      "vrs_oct21_b": null,
+      "permalink_in_repo": "https://www.hotspawn.com/matches/ex-cybershoke-vs-blinkdagger-cis-lan-championship-9-1082762",
+      "hotspawn_slug_anomaly": null,
+      "audit_status": "rescued_lowtier_gap",
+      "official_hltv_url": "https://www.hltv.org/matches/2399839/ex-cybershoke-vs-blinkdagger-winline-mpkbk-cis-lan-season-9",
+      "hotspawn_url": "https://www.hotspawn.com/matches/ex-cybershoke-vs-blinkdagger-cis-lan-championship-9-1082762",
+      "notes": [
+        "Previously dropped as NO PICK across OURLINE/b3871d16 due to 'ex-' prefix; 4 live sportsbooks/exchanges + HLTV #2399839 confirm ex-CYBERSHOKE ~82.7% lock."
+      ]
+    },
+    {
+      "fixture_id": "1082763",
+      "match": "UPGRADE vs flacons",
+      "competition": "Winline MPKBK CIS LAN Season #9",
+      "start_utc": "2026-10-21T15:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": null,
+      "fe803b80_pick": "UPGRADE",
+      "everymatch_pick": "UPGRADE",
+      "fullboard_pick": "UPGRADE",
+      "fullboard_prob_a": 0.93606,
+      "fullboard_prob_b": 0.06394,
+      "resolution_tier": "featured_market",
+      "market_source_count": 3,
+      "vrs_oct21_a": {
+        "rank": 67,
+        "points": 1185,
+        "team": "UPGRADE"
+      },
+      "vrs_oct21_b": null,
+      "permalink_in_repo": "https://www.hotspawn.com/matches/upgrade-vs-flacons-cis-lan-championship-9-1082763",
+      "hotspawn_slug_anomaly": null,
+      "audit_status": "rescued_lowtier_gap",
+      "official_hltv_url": "https://www.hltv.org/matches/2399840/upgrade-vs-flacons-winline-mpkbk-cis-lan-season-9",
+      "hotspawn_url": "https://www.hotspawn.com/matches/upgrade-vs-flacons-cis-lan-championship-9-1082763",
+      "notes": [
+        "3 external markets (Thunderpick, Kalshi, Polymarket) + HLTV #74 / Valve VRS #67 confirm UPGRADE >93% lock; flacons VRS left explicitly blank (Unranked)."
+      ]
+    },
+    {
+      "fixture_id": "1082835",
+      "match": "JOGA DE TERNO vs Martians",
+      "competition": "CCT South America 2026 Series #7",
+      "start_utc": "2026-10-21T16:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": "JOGA DE TERNO",
+      "fe803b80_pick": "JOGA DE TERNO",
+      "everymatch_pick": "JOGA DE TERNO",
+      "fullboard_pick": "JOGA DE TERNO",
+      "fullboard_prob_a": 0.595616,
+      "fullboard_prob_b": 0.404384,
+      "resolution_tier": "featured_market",
+      "market_source_count": 5,
+      "vrs_oct21_a": {
+        "rank": 208,
+        "points": 694,
+        "team": "Joga de Terno"
+      },
+      "vrs_oct21_b": {
+        "rank": 259,
+        "points": 592,
+        "team": "Martians"
+      },
+      "permalink_in_repo": "https://www.hotspawn.com/matches/joga-de-terno-vs-martians-cct-south-america-2026-series-7-1082835",
+      "hotspawn_slug_anomaly": null,
+      "audit_status": "verified_clean",
+      "official_hltv_url": "https://www.hltv.org/matches/2399863/joga-de-terno-vs-martians-cct-2026-south-america-series-7",
+      "hotspawn_url": "https://www.hotspawn.com/matches/joga-de-terno-vs-martians-cct-south-america-2026-series-7-1082835",
+      "notes": [
+        "EXTREME ANTI-CROWD ANOMALY: HotSpawn crowd backs Martians at 95%, whereas ALL 5 external books + VRS make JOGA DE TERNO ~59.6% favorite (+54.6 pp crowd mispricing)."
+      ]
+    },
+    {
+      "fixture_id": "1082178",
+      "match": "DAMAJUANA vs Hacha",
+      "competition": "CCT South America 2026 Series #7",
+      "start_utc": "2026-10-21T19:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": "Metizport",
+      "fe803b80_pick": "Metizport",
+      "everymatch_pick": "Metizport",
+      "fullboard_pick": "Hacha",
+      "fullboard_prob_a": 0.411497,
+      "fullboard_prob_b": 0.588503,
+      "resolution_tier": "featured_market",
+      "market_source_count": 4,
+      "vrs_oct21_a": {
+        "rank": 290,
+        "points": 548,
+        "team": "Damajuana"
+      },
+      "vrs_oct21_b": {
+        "rank": 244,
+        "points": 621,
+        "team": "Hacha"
+      },
+      "permalink_in_repo": "https://www.hotspawn.com/matches/metizport-vs-genone-stake-ranked-episode-6-closed-qualifier-1082178",
+      "hotspawn_slug_anomaly": "HotSpawn lobby card 1082178 ('DAMAJUANA vs Hacha') publishes corrupted URL slug 'metizport-vs-genone-stake-ranked-episode-6-closed-qualifier-1082178'; verified true match via HLTV #2399864.",
+      "audit_status": "verified_with_upstream_slug_flag",
+      "official_hltv_url": "https://www.hltv.org/matches/2399864/damajuana-vs-hacha-cct-2026-south-america-series-7",
+      "hotspawn_url": "https://www.hotspawn.com/matches/metizport-vs-genone-stake-ranked-episode-6-closed-qualifier-1082178",
+      "notes": [
+        "Caught upstream HotSpawn permalink corruption on card 1082178; Pinnacle, Melbet, Bovada, and Polymarket all confirm Hacha ~58.9%."
+      ]
+    },
+    {
+      "fixture_id": "1082837",
+      "match": "Zetta vs LOS NINOS",
+      "competition": "CCT South America 2026 Series #7",
+      "start_utc": "2026-10-21T22:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": null,
+      "fe803b80_pick": "Zetta",
+      "everymatch_pick": "Zetta",
+      "fullboard_pick": null,
+      "fullboard_prob_a": null,
+      "fullboard_prob_b": null,
+      "resolution_tier": "unresolved",
+      "market_source_count": 0,
+      "vrs_oct21_a": {
+        "rank": 366,
+        "points": 465,
+        "team": "Zetta"
+      },
+      "vrs_oct21_b": null,
+      "permalink_in_repo": "https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837",
+      "hotspawn_slug_anomaly": null,
+      "audit_status": "flagged_unverified_blank",
+      "official_hltv_url": "https://www.hltv.org/matches/2399865/zetta-vs-los-ninos-cct-2026-south-america-series-7",
+      "hotspawn_url": "https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837",
+      "notes": [
+        "Left intentionally blank/unverified per strict non-inference rules: neither unconfirmed org alias ('Alianza Lima Esports') nor synthetic #380 VRS floor may be fabricated."
+      ]
+    },
+    {
+      "fixture_id": "1081600",
+      "match": "Donstu vs Banda chuya",
+      "competition": "CCT Europe 2026 Challengers #8",
+      "start_utc": "2026-10-22T13:45:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": null,
+      "fe803b80_pick": "Donstu",
+      "everymatch_pick": "Banda chuya",
+      "fullboard_pick": "Banda chuya",
+      "fullboard_prob_a": 0.450444,
+      "fullboard_prob_b": 0.549556,
+      "resolution_tier": "lowtier_research",
+      "market_source_count": 0,
+      "vrs_oct21_a": {
+        "rank": 187,
+        "points": 729,
+        "team": "DONSTU"
+      },
+      "vrs_oct21_b": {
+        "rank": 164,
+        "points": 785,
+        "team": "Banda Chuya"
+      },
+      "permalink_in_repo": "https://www.hotspawn.com/matches/donstu-vs-banda-chuya-cct-europe-2026-challengers-8-1081600",
+      "hotspawn_slug_anomaly": null,
+      "audit_status": "flagged_stale_vrs_pick_flip",
+      "official_hltv_url": "https://www.hltv.org/matches/2399697/donstu-vs-banda-chuya-cct-2026-challengers-europe-series-8",
+      "hotspawn_url": "https://www.hotspawn.com/matches/donstu-vs-banda-chuya-cct-europe-2026-challengers-8-1081600",
+      "notes": [
+        "CRITICAL STALE-VRS FLIP: Stale Oct 5 VRS had Donstu 732 > Banda Chuya 402 (picking Donstu 61.3%), whereas live Oct 21 Valve VRS has #164 Banda Chuya (785 pts) ahead of #187 DONSTU (729 pts), matching HLTV's superior 3m map winrates across Cache/Dust2/Mirage/Nuke."
+      ]
+    },
+    {
+      "fixture_id": "1082688",
+      "match": "Turma do Pagode vs Imperial",
+      "competition": "Circuit X Curitiba Season #4",
+      "start_utc": "2026-10-22T14:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": "Imperial",
+      "fe803b80_pick": "Imperial",
+      "everymatch_pick": "Imperial",
+      "fullboard_pick": "Imperial",
+      "fullboard_prob_a": 0.229475,
+      "fullboard_prob_b": 0.770525,
+      "resolution_tier": "featured_market",
+      "market_source_count": 5,
+      "vrs_oct21_a": {
+        "rank": 218,
+        "points": 674,
+        "team": "Turma do Pagode"
+      },
+      "vrs_oct21_b": {
+        "rank": 29,
+        "points": 1418,
+        "team": "Imperial"
+      },
+      "permalink_in_repo": "https://www.hotspawn.com/matches/imperial-vs-turma-do-pagode-circuit-x-curitiba-4-1082688",
+      "hotspawn_slug_anomaly": "HotSpawn URL slug puts imperial-vs-turma-do-pagode while card displays Turma do Pagode (team_a) vs Imperial (team_b).",
+      "audit_status": "verified_with_upstream_slug_flag",
+      "official_hltv_url": "https://www.hltv.org/matches/2399810/imperial-vs-turma-do-pagode-circuit-x-curitiba-season-4",
+      "hotspawn_url": "https://www.hotspawn.com/matches/imperial-vs-turma-do-pagode-circuit-x-curitiba-4-1082688",
+      "notes": [
+        "5 external books price Imperial at ~77.5% lock; orientation strictly verified against card order (Imperial = team_b)."
+      ]
+    },
+    {
+      "fixture_id": "1082689",
+      "match": "BESTIA vs ShindeN",
+      "competition": "Circuit X Curitiba Season #4",
+      "start_utc": "2026-10-22T14:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": "BESTIA",
+      "fe803b80_pick": "BESTIA",
+      "everymatch_pick": "BESTIA",
+      "fullboard_pick": "BESTIA",
+      "fullboard_prob_a": 0.513604,
+      "fullboard_prob_b": 0.486396,
+      "resolution_tier": "featured_market",
+      "market_source_count": 4,
+      "vrs_oct21_a": {
+        "rank": 73,
+        "points": 1154,
+        "team": "BESTIA"
+      },
+      "vrs_oct21_b": {
+        "rank": 79,
+        "points": 1118,
+        "team": "ShindeN"
+      },
+      "permalink_in_repo": "https://www.hotspawn.com/matches/bestia-vs-shinden-circuit-x-curitiba-4-1082689",
+      "hotspawn_slug_anomaly": null,
+      "audit_status": "verified_clean",
+      "official_hltv_url": "https://www.hltv.org/matches/2399811/bestia-vs-shinden-circuit-x-curitiba-season-4",
+      "hotspawn_url": "https://www.hotspawn.com/matches/bestia-vs-shinden-circuit-x-curitiba-4-1082689",
+      "notes": [
+        "ANTI-CROWD ANOMALY: HotSpawn crowd has 82% on ShindeN even though Pinnacle/Melbet/Thunderpick + Oct 21 Valve VRS (1154 vs 1118) favor BESTIA (~51.4%)."
+      ]
+    },
+    {
+      "fixture_id": "1082792",
+      "match": "HOTU vs The Huns",
+      "competition": "GLuck Moscow Cyber Games 2026",
+      "start_utc": "2026-10-31T09:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": null,
+      "fe803b80_pick": "HOTU",
+      "everymatch_pick": "HOTU",
+      "fullboard_pick": "HOTU",
+      "fullboard_prob_a": 0.838597,
+      "fullboard_prob_b": 0.161403,
+      "resolution_tier": "lowtier_research",
+      "market_source_count": 0,
+      "vrs_oct21_a": {
+        "rank": 34,
+        "points": 1390,
+        "team": "HOTU"
+      },
+      "vrs_oct21_b": {
+        "rank": 125,
+        "points": 926,
+        "team": "The Huns"
+      },
+      "permalink_in_repo": "https://www.hotspawn.com/matches/hotu-vs-the-huns-moscow-cyber-games-2026-1082792",
+      "hotspawn_slug_anomaly": null,
+      "audit_status": "rescued_lowtier_gap",
+      "official_hltv_url": "https://www.hltv.org/matches/2399437/hotu-vs-the-huns-gluck-moscow-cyber-games-2026",
+      "hotspawn_url": "https://www.hotspawn.com/matches/hotu-vs-the-huns-moscow-cyber-games-2026-1082792",
+      "notes": [
+        "10 days pre-match LAN SF in Moscow (Oct 31, 0 books open yet); resolved via live Oct 21 Valve VRS #34 HOTU (1390) vs active #125 The Huns lineup Bart4k/controlez/Cozen/DarkMeister/bexyz (926), fixing fe803b80's wrong #213/701 duplicate join and OURLINE's dropped blank."
+      ]
+    },
+    {
+      "fixture_id": "1082793",
+      "match": "5star vs 1WIN",
+      "competition": "GLuck Moscow Cyber Games 2026",
+      "start_utc": "2026-10-31T09:00:00Z",
+      "in_live_lobby": true,
+      "ourline_pick": null,
+      "fe803b80_pick": "1WIN",
+      "everymatch_pick": "1WIN",
+      "fullboard_pick": "1WIN",
+      "fullboard_prob_a": 0.237788,
+      "fullboard_prob_b": 0.762212,
+      "resolution_tier": "lowtier_research",
+      "market_source_count": 0,
+      "vrs_oct21_a": {
+        "rank": 64,
+        "points": 1191,
+        "team": "5star"
+      },
+      "vrs_oct21_b": {
+        "rank": 17,
+        "points": 1519,
+        "team": "1win"
+      },
+      "permalink_in_repo": "https://www.hotspawn.com/matches/5star-vs-1win-moscow-cyber-games-2026-1082793",
+      "hotspawn_slug_anomaly": null,
+      "audit_status": "rescued_lowtier_gap",
+      "official_hltv_url": "https://www.hltv.org/matches/2399438/1win-vs-5star-gluck-moscow-cyber-games-2026",
+      "hotspawn_url": "https://www.hotspawn.com/matches/5star-vs-1win-moscow-cyber-games-2026-1082793",
+      "notes": [
+        "10 days pre-match LAN SF in Moscow (Oct 31, 0 books open yet); resolved via live Oct 21 Valve VRS #17 1win (1519 pts) vs #64 5star (1191 pts), capturing 1win's +136 pt surge since Oct 5."
+      ]
+    },
+    {
+      "fixture_id": "1080200",
+      "match": "Wildcard vs DENDELE",
+      "competition": "FRAG University 2026",
+      "start_utc": "2026-11-12T00:00:00Z",
+      "in_live_lobby": false,
+      "ourline_pick": null,
+      "fe803b80_pick": "DENDELE",
+      "everymatch_pick": null,
+      "fullboard_pick": null,
+      "fullboard_prob_a": null,
+      "fullboard_prob_b": null,
+      "resolution_tier": "unresolved",
+      "market_source_count": 0,
+      "vrs_oct21_a": {
+        "rank": 40,
+        "points": 1346,
+        "team": "Wildcard"
+      },
+      "vrs_oct21_b": {
+        "rank": 39,
+        "points": 1349,
+        "team": "DENDELE"
+      },
+      "permalink_in_repo": "https://play.hotspawn.com/lobby",
+      "hotspawn_slug_anomaly": "Hidden from live play.hotspawn.com/lobby; retained in HotSpawn /api/v1/fixtures only due to a 1-month date typo ('2026-11-12T00:00:00Z' instead of '2026-10-12T00:00:00Z').",
+      "audit_status": "flagged_phantom_completed",
+      "official_hltv_url": "https://www.hltv.org/matches/2399407/wildcard-vs-dendele-frag-university-2026",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "notes": [
+        "Quarantined in Unresolved & Flagged for Review so no bogus pre-match pick is emitted on an already-finished match (unlike fe803b80 / b3871d16 which emitted DENDELE 57.3%)."
+      ]
+    }
+  ]
+}
