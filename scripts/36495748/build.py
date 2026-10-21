@@ -333,6 +333,12 @@ def build_board() -> dict:
             result = {"basis": "unresolved", "prob_a": None, "prob_b": None,
                       "vrs": {"a": va, "b": vb, "state_a": vstate_a, "state_b": vstate_b}}
 
+        # The published ladder always shows all five rungs; fill the ones never reached.
+        seen = {entry["rung"]: entry for entry in ladder}
+        priced_at = next((e["rung"] for e in ladder if e["outcome"].startswith("priced")), None)
+        ladder = [seen.get(rn) or {"rung": rn, "outcome": "not_needed",
+                                    "detail": f"priced at rung {priced_at}"} for rn in (1, 2, 3, 4, 5)]
+
         # pick (+ coin-flip exchange tiebreak by official points, documented)
         pick, pick_prob, pick_note = None, None, None
         if result["prob_a"] is not None:
