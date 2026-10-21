@@ -13,7 +13,7 @@ Alternative research: [hotspawn-cs2](https://buffedlizard55-lab.github.io/MaltaP
 ### Additional parallel research (different evidence standards)
 
 **📱 Source board — [every open HotSpawn CS2 match, 0 blank](https://buffedlizard55-lab.github.io/MaltaProj2/board/picks.html) (canonical 30-minute collector `fe803b80`, maintained by session `a5c08976`).**
-The board every live view above derives from: a pick with both win probabilities and a source link on every row;
+Source for the expanded research views, not the independent evidence-only dashboard: a pick with both win probabilities and a source link on every row;
 [Unresolved picks & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/board/unresolved.html) (blank rows with their
 source-attempt ledger, directional-only estimates, dated manual research notes, standing limits),
 [Flagged for review](https://buffedlizard55-lab.github.io/MaltaProj2/board/flagged.html) and
