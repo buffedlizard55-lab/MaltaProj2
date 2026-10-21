@@ -1,7 +1,11 @@
 {
   "session": "a5c08976",
   "purpose": "Manual research ledger for lobby fixtures the automated sources could not resolve, plus irregularities noticed while verifying. Every entry is dated and linked. Nothing here sets a probability: entries only document name identities (aliases), source attempts and discrepancies. Rendered on board/unresolved.html.",
-  "research_order": ["HLTV match / event / team pages first", "esportsbooks and esports betting feeds second", "originate our own line from official ratings (Valve VRS) and published results (bo3.gg) last"],
+  "research_order": [
+    "HLTV match / event / team pages first",
+    "esportsbooks and esports betting feeds second",
+    "originate our own line from official ratings (Valve VRS) and published results (bo3.gg) last"
+  ],
   "entries": [
     {
       "fixture_id": "1082762",
@@ -35,6 +39,18 @@
       "read_utc": "2026-10-21T13:05:00Z"
     },
     {
+      "fixture_id": "1082762",
+      "title": "Cross-check: independent session e1b48771 found the same price on a different book aggregator",
+      "status": "corroboration",
+      "finding": "Session e1b48771 (merged to main 2026-10-21 ~12:50 UTC) resolved the same row from kushvsporte.ru's odds board for 'CYBERSHOKE - BlinkDagger' (PARI 1.12 / WinLine 5.59 → no-vig 83.3% / 16.7%). This board's Bovada + Melbet + Kalshi consensus is 82.7% — the same price within 0.6 points, from different operators, which corroborates that the bookmakers' 'CYBERSHOKE' is HLTV's 'ex-CYBERSHOKE' for this match.",
+      "effect": "None on the number (kushvsporte.ru is not a collector source); recorded as agreement between two independent resolutions.",
+      "urls": [
+        "https://kushvsporte.ru/event/6990334-cybershoke-blinkdagger",
+        "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/scripts/e1b48771/resolutions.json"
+      ],
+      "read_utc": "2026-10-21T13:40:00Z"
+    },
+    {
       "fixture_id": "1082831",
       "title": "paiN vs BARCA — Circuit X Curitiba #4, 2026-10-21 14:00 UTC (irregularity, no change)",
       "status": "irregularity noted — board already correct",
@@ -45,6 +61,19 @@
         "https://www.hltv.org/matches/2399805/pain-vs-barca-circuit-x-curitiba-season-4"
       ],
       "read_utc": "2026-10-21T13:20:00Z"
+    },
+    {
+      "fixture_id": "1082837",
+      "title": "Cross-check: two directional methods for Zetta vs LOS NINOS disagree on size, not direction",
+      "status": "limitation — directional only",
+      "finding": "Session e1b48771 published Zetta 55.2% as a documented LOWER BOUND (Valve curve, Zetta 473 pts vs the 381-pt floor, k = 0.4046). This board's Elo gives Zetta 75.8% because it also counts Los Niños's published 1-4 record since 13 Sep (losses to Quintessência twice, Procyon, Meia Noite; win over Grêmio), which pushes an unlisted team below the floor. Both are model output: same pick, different size. Neither is a bookmaker price; no bookmaker had priced the match at build time.",
+      "effect": "Row stays labelled directional and flagged; it switches to a market basis automatically if a quote joins before the 21:54 UTC lock.",
+      "urls": [
+        "https://bo3.gg/teams/los-ninos",
+        "https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/scripts/e1b48771/resolutions.json",
+        "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+      ],
+      "read_utc": "2026-10-21T13:40:00Z"
     },
     {
       "fixture_id": "1081600",
