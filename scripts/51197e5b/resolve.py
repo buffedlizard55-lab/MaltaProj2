@@ -23,12 +23,14 @@ Strict rules enforced:
 """
 from __future__ import annotations
 
+import importlib.util
 import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import core  # noqa: E402
+_CORE_SPEC = importlib.util.spec_from_file_location("fullpicks_core_51197e5b", Path(__file__).resolve().parent / "core.py")
+core = importlib.util.module_from_spec(_CORE_SPEC)
+_CORE_SPEC.loader.exec_module(core)
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT_DIR = ROOT / "data" / "51197e5b"

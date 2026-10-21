@@ -118,7 +118,57 @@ crowd ownership is never a probability. Open the board for its current as-of sta
 <a class="btn live-board-cta" href="hotspawn-live/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · blank-row policy</span><span>→</span></a>
 <a class="btn live-board-cta" href="hotspawn-live/sources.html"><span><strong>Sources &amp; row ledger</strong> · verify every line</span><span>→</span></a>
 </div>
+''' + canonical_source_board_note_html() + fullpicks_note_html() + '''
 </div>'''
+
+
+def fullpicks_note_html():
+    """51197e5b: additive pointer to fullpicks/ (featured market unchanged + 4-step fallback ladder)."""
+    d = load("data/51197e5b/board.json") or {}
+    sm = d.get("summary") or {}
+    if not sm:
+        return ""
+    stamp = esc(str(d.get("base_generated_utc", "")).replace("T", " ").replace("Z", " UTC"))
+    return (
+        '<p class="note" id="fullpicks-board">'
+        '<strong>Full-coverage fallback board (51197e5b, 4h refresh):</strong> '
+        f'<a href="fullpicks/index.html">executive summary ({sm.get("with_pick", 0)}/{sm.get("open", 0)} open picks)</a> · '
+        f'<a href="fullpicks/picks.html">all {sm.get("open", 0)} open picks</a> '
+        f'({sm.get("featured_market", 0)} featured market unchanged, {sm.get("fallback_resolved", 0)} fallback-resolved) · '
+        '<a href="fullpicks/unresolved.html">Unresolved &amp; limitations</a> · '
+        '<a href="fullpicks/tournaments.html">By category</a> · '
+        '<a href="fullpicks/flagged.html">Flagged for Review (R1–R7)</a> · '
+        f'<span class="muted">snapshot {stamp}</span></p>'
+    )
+
+
+def canonical_source_board_note_html():
+    """a5c08976: one line pointing at the 30-minute collector board every live view is built from.
+
+    Reads data/fe803b80/board.json only; shows the board's own build stamp next to its counts so a
+    reader can see how fresh the numbers are. Returns "" when that board is absent.
+    """
+    d = load("data/fe803b80/board.json") or {}
+    sm = d.get("summary") or {}
+    if not sm:
+        return ""
+    open_rows = d.get("open") or []
+    directional = sum(1 for r in open_rows if (r.get("line") or {}).get("directional"))
+    stamp = esc(str(d.get("generated_utc", "")).replace("T", " ").replace("Z", " UTC"))
+    blank = sm.get("open_blank", 0)
+    return (
+        '<p class="note" id="canonical-source-board">'
+        '<strong>Source board (refreshes every 30 min):</strong> '
+        f'<a href="board/picks.html">all {sm.get("open", 0)} open lobby matches · '
+        f'{sm.get("open_with_pick", 0)} with a pick</a> '
+        f'({sm.get("open_with_market", 0)} from betting lines, '
+        f'{sm.get("open_model_only", 0)} originated from ratings'
+        + (f', {directional} directional' if directional else '')
+        + f', {blank} blank) · '
+        '<a href="board/unresolved.html">Unresolved picks &amp; limitations</a> · '
+        '<a href="board/flagged.html">Flagged for review</a> · '
+        f'<span class="muted">board built {stamp}</span></p>'
+    )
 
 
 def start_front_html():

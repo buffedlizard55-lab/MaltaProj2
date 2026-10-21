@@ -11,7 +11,7 @@ listed in the HotSpawn pick'em lobby, with external betting lines and clearly la
 <body>
 <header class="top"><div class="inner">
   <div class="brand"><span class="dot"></span> Full pick coverage · every HotSpawn CS2 fixture</div>
-  <nav class="pages" aria-label="Board sections"><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="lines.html">Lines</a><a href="tournaments.html">Tournaments</a><a href="results.html">Results</a><a href="flagged.html">Flagged</a><a href="method.html" aria-current=page>Method</a></nav>
+  <nav class="pages" aria-label="Board sections"><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="lines.html">Lines</a><a href="tournaments.html">Tournaments</a><a href="results.html">Results</a><a href="flagged.html">Flagged</a><a href="unresolved.html">Unresolved &amp; limits</a><a href="method.html" aria-current=page>Method</a></nav>
 </div></header>
 <main class="wrap">
 
@@ -47,13 +47,17 @@ and labels it:</p>
 difference equals ~90% win probability. With <code>C = g·ln(10)/400</code>, <code>g = 1/√(1+3Q²RD²/π²)</code>,
 <code>Q = ln(10)/400</code>, <code>RD = 75</code> (Valve's <code>model/glicko.js</code> and
 <code>defaultGlickoParams</code>), the model probability is <code>σ(k·C·Δpoints)</code>. The slope
-<code>k</code> is fitted from this build's own market/VRS pairs (<code>k = 0.40463779170181613</code> over
-15 pairs; Valve's own curve would be k=1) because Valve's README states the
+<code>k</code> is fitted from this build's own market/VRS pairs (<code>k = 0.25</code> over
+17 pairs; Valve's own curve would be k=1) because Valve's README states the
 published curve is too steep at the ends.</li>
-<li><strong>Our Elo (last resort).</strong> When neither team has a VRS row, an Elo is computed from the
-finished matches bo3.gg publishes (result and score only — a factual record, not a price):
-<code>1500 + (VRS points − anchor)</code> seeds teams that do have a VRS row, 8 passes, K=20.
-This build used 723 finished matches and seeded 96 teams.</li>
+<li><strong>Our Elo (last resort, directional).</strong> When at least one team has no VRS row, an Elo is
+computed from the finished matches bo3.gg publishes (result and score only — a factual record, not a
+price): <code>1500 + (VRS points − anchor)</code> seeds teams that do have a VRS row; a team Valve does not
+list at all starts at the <em>lowest</em> points value Valve publishes in the snapshot
+(381.0 pts → Elo 788.0) rather than at the
+median, and is then moved by its own results; 8 passes, K=20. This build used 723
+finished matches and seeded 99 teams. Rows built this way are labelled
+<em>directional estimate</em> and listed on <a href="unresolved.html">Unresolved picks &amp; limitations</a>.</li>
 </ul>
 <p>Ratings used: Valve regional standings snapshot <strong>2026_10_05</strong>
 (americas (83 teams), asia (43 teams), europe (224 teams), global (349 teams)), fetched from the official
@@ -64,6 +68,9 @@ repository.</p>
 <ul class="tight">
 <li>Both team names must match after normalisation (case/accents/punctuation folded; a leading
 "Team/The" and a trailing "Team/Esports/Gaming/GG/Club" dropped) — or a published alias must apply.</li>
+<li>"ex-" roster labels (HLTV/HotSpawn "ex-Org" vs a bookmaker's "Org") join only when the opponent is
+identical and both sources state the same kick-off within 15 minutes; the join is flagged with its
+evidence and is never used to borrow the organisation's Valve rating.</li>
 <li>The source's own start time must be within 14 hours of the lobby kickoff; differences over
 3 hours are flagged on the row.</li>
 <li>Exactly one price per fixture and source; the first qualifying moneyline is used.</li>
@@ -91,8 +98,8 @@ offline.</p>
 
 <footer>
   <p>Board data: <code>data/fe803b80/board.json</code> · wall clock of the last published build:
-  <strong>2026-10-21 12:37:51 UTC</strong> · lobby read
-  2026-10-21 12:36:36 UTC.</p>
+  <strong>2026-10-21 13:06:37 UTC</strong> · lobby read
+  2026-10-21 13:03:24 UTC.</p>
   <p>HotSpawn is used to discover fixtures and to settle results — never to set a probability.
   Crowd "picked %" values are not read, stored or displayed here. Originated lines are model
   output, clearly labelled, and are not betting advice or a guarantee. Model estimates only.

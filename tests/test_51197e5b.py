@@ -196,6 +196,20 @@ class FullPicksContractTests(unittest.TestCase):
         self.assertIn("scripts/51197e5b/build.py", wf)
         self.assertIn("git add data/51197e5b fullpicks", wf)
 
+    def test_staging_and_landing_integration(self):
+        stage = (ROOT / "scripts" / "stage_site.py").read_text(encoding="utf-8")
+        self.assertIn("'fullpicks'", stage)
+        self.assertIn("scripts/51197e5b/build.py", stage)
+        landing = (ROOT / "index.html").read_text(encoding="utf-8")
+        for href in (
+            "fullpicks/index.html",
+            "fullpicks/picks.html",
+            "fullpicks/unresolved.html",
+            "fullpicks/tournaments.html",
+            "fullpicks/flagged.html",
+        ):
+            self.assertIn(f'href="{href}"', landing)
+
 
 if __name__ == "__main__":
     unittest.main()
