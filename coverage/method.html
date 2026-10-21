@@ -59,23 +59,23 @@ last (in-play) price and leaks the result, so it is not scored here as a benchma
 score and log loss (lower is better; a coin flip has a Brier score of
 0.25).</p>
 <table><thead><tr><th>Predictor</th><th>Matches</th><th>Brier</th><th>Log loss</th><th>Accuracy</th></tr></thead>
-<tbody><tr><td>bt</td><td>15</td><td>0.28167</td><td>0.94485</td><td>0.6</td></tr><tr><td>vrs</td><td>68</td><td>0.18814</td><td>0.54785</td><td>0.6765</td></tr></tbody></table>
-<p class="sub">Matches in the evaluation window: 116,
-of which 67 also carried a book price (not scored - see above). Published originated estimates
+<tbody><tr><td>bt</td><td>29</td><td>0.26192</td><td>0.76457</td><td>0.5517</td></tr><tr><td>vrs</td><td>136</td><td>0.25782</td><td>0.74286</td><td>0.6397</td></tr></tbody></table>
+<p class="sub">Matches in the evaluation window: 214,
+of which 117 also carried a book price (not scored - see above). Published originated estimates
 use <strong>vrs</strong> in this snapshot, chosen by the lower Brier score.
 Out-of-sample window: the Bradley-Terry model used here is refitted with every match inside the window excluded, and the Valve VRS snapshot used predates the window. The book price pair bo3.gg keeps for a finished match is the last price it held (updated in-play), so it is deliberately NOT scored here as a benchmark - on 2026-10-14 it implied the eventual winner in 100% of 4,000 settled matches. Fewer model rows than matches in the window means the model had no rating for both teams.</p>
 
 <h2>Snapshot facts</h2>
 <table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody>
-<tr><td>Generated (UTC)</td><td>2026-10-21T00:08:26Z</td></tr>
-<tr><td>CS2 fixtures in window</td><td>193</td></tr>
-<tr><td>Listed by the lobby page</td><td>81</td></tr>
-<tr><td>Still open for picks</td><td>18</td></tr>
-<tr><td>Market / exchange / estimate / blank</td><td>12 / 3 / 105 / 73</td></tr>
-<tr><td>External quotes read this run</td><td>109</td></tr>
-<tr><td>Quotes refused by the join rules</td><td>82</td></tr>
+<tr><td>Generated (UTC)</td><td>2026-10-21T05:20:48Z</td></tr>
+<tr><td>CS2 fixtures in window</td><td>212</td></tr>
+<tr><td>Listed by the lobby page</td><td>93</td></tr>
+<tr><td>Still open for picks</td><td>29</td></tr>
+<tr><td>Market / exchange / estimate / blank</td><td>20 / 2 / 112 / 78</td></tr>
+<tr><td>External quotes read this run</td><td>120</td></tr>
+<tr><td>Quotes refused by the join rules</td><td>61</td></tr>
 <tr><td>Valve VRS snapshots</td><td>{&quot;americas&quot;: &quot;2026_10_05&quot;, &quot;asia&quot;: &quot;2026_10_05&quot;, &quot;europe&quot;: &quot;2026_10_05&quot;, &quot;global&quot;: &quot;2026_10_05&quot;}</td></tr>
-<tr><td>Bradley-Terry corpus</td><td>1105 matches / 447 teams (generated 2026-10-14T02:35:39Z)</td></tr>
+<tr><td>Bradley-Terry corpus</td><td>1146 matches / 456 teams (generated 2026-10-21T05:20:45Z)</td></tr>
 <tr><td>Verification</td><td>10 of 10 checks passed</td></tr>
 </tbody></table>
 
@@ -98,7 +98,7 @@ future accuracy.</li>
 <p>Fixture discovery: HotSpawn Pick'ems lobby (public endpoints). Probabilities: external bookmakers,
 exchanges and the labelled originated models described on the method page — HotSpawn's crowd
 percentage is published for reference and is never used as a probability input.
-Generated 2026-10-21T00:08:26Z UTC. Not affiliated with HotSpawn or any bookmaker. 18+, gamble responsibly.</p>
+Generated 2026-10-21T05:20:48Z UTC. Not affiliated with HotSpawn or any bookmaker. 18+, gamble responsibly.</p>
 </footer>
 </main>
 <script src="assets/coverage.js"></script>
