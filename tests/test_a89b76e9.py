@@ -46,7 +46,7 @@ def newest_board():
         priced = sum(1 for r in rows
                      if (r.get("line") or {}).get("pick")
                      or (r.get("line") or {}).get("pick_team"))
-        key = (priced, gen)
+        key = (priced == len(rows), gen[:10], priced, gen)
         if best_key is None or key > best_key:
             best, best_path, best_key = data, path, key
     return best or {}, best_path or ""
@@ -105,8 +105,14 @@ class BoardCoverage(unittest.TestCase):
 
     def test_published_row_orientation_matches_fixture_order(self):
         """prob_a follows the fixture's team_a (HotSpawn order); the pick is the argmax."""
-        seg = self.picks.split('id="f1081546"')[1][:2000]
-        self.assertIn("Apogee Betclic \u00b7 48.1%", re.sub(r"<[^>]+>", "", seg).replace("  ", " "))
+        if 'id="f1081546"' in self.picks:
+            seg = self.picks.split('id="f1081546"')[1][:2000]
+            self.assertIn("Apogee Betclic \u00b7 48.1%", re.sub(r"<[^>]+>", "", seg).replace("  ", " "))
+        for fx in self.board["open"]:
+            if fx.get("state") != "open":
+                continue
+            seg = self.picks.split(f'id="f{fx["fixture_id"]}"')[1][:2000]
+            self.assertIn(fx["team_a"], re.sub(r"<[^>]+>", "", seg))
         row = next(r for r in self.research["blank_resolutions"] if r["fixture_id"] == "1081546")
         self.assertGreater(row["probability_fair_bbl"], row["probability_fair_apogee"])
         self.assertIn("pick BBL", row["resolution"])

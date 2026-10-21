@@ -11,8 +11,15 @@ are stored so each row can be re-checked against the source.
 from __future__ import annotations
 import base64, json, os, re, sys, urllib.request
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import core  # noqa: E402
+import importlib.util as _iu, sys as _sys
+from pathlib import Path as _Path
+if 'core_19d6c262' in _sys.modules:
+    core = _sys.modules['core_19d6c262']
+else:
+    _core_spec = _iu.spec_from_file_location('core_19d6c262', _Path(__file__).resolve().parent / 'core.py')
+    core = _iu.module_from_spec(_core_spec)
+    _sys.modules['core_19d6c262'] = core
+    _core_spec.loader.exec_module(core)
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "data" / "19d6c262"

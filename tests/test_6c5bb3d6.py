@@ -324,7 +324,8 @@ class DifferentialMath(unittest.TestCase):
         names = {str(r.get("fixture_id")): (r.get("team_a"), r.get("team_b"))
                  for r in load(BOARD).get("rows") or []}
         for fid, row in cls.table.items():
-            row["_team_a"], row["_team_b"] = names.get(fid, (None, None))
+            fallback = tuple(row["match"].split(" vs ", 1)) if " vs " in str(row.get("match", "")) else (None, None)
+            row["_team_a"], row["_team_b"] = names.get(fid, fallback)
 
     def test_edge_formula_on_every_priced_open_row(self):
         """points x (probability - ownership) on every priced open row, no fixture hardcoded."""

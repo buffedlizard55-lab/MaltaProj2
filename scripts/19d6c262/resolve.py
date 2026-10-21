@@ -23,8 +23,15 @@ from __future__ import annotations
 import json, sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import core  # noqa: E402
+import importlib.util as _iu, sys as _sys
+from pathlib import Path as _Path
+if 'core_19d6c262' in _sys.modules:
+    core = _sys.modules['core_19d6c262']
+else:
+    _core_spec = _iu.spec_from_file_location('core_19d6c262', _Path(__file__).resolve().parent / 'core.py')
+    core = _iu.module_from_spec(_core_spec)
+    _sys.modules['core_19d6c262'] = core
+    _core_spec.loader.exec_module(core)
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "19d6c262"
@@ -43,6 +50,9 @@ ALIASES = {
     "aurora yb": ("Aurora Young Blud",
                   "acronym 'YB' = 'Young Blud'; the only Aurora academy roster in the official "
                   "VRS (the main Aurora side is a separate #9 entry)"),
+    "ex cybershoke": ("CYBERSHOKE",
+                      "same 5-man core (bl1x1, Mokuj1n, nota, yiksrezo, shoke) verified on HLTV "
+                      "match 2399839 and official Valve VRS #78 entry"),
 }
 
 

@@ -10,7 +10,7 @@ import json
 import pathlib
 import re
 import unittest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from html.parser import HTMLParser
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -207,7 +207,9 @@ class BoardRows(unittest.TestCase):
         self.assertIsNone(r["leverage"])
 
     def test_locked_rows_move_to_the_locked_table(self):
-        late = datetime(2026, 10, 18, 12, 0, tzinfo=timezone.utc)
+        locks = sorted(B.parse_iso(x["lock_utc"]) for x in BOARD["open"]
+                       if x.get("status") == "scheduled" and B.parse_iso(x.get("lock_utc")))
+        late = locks[0] + timedelta(minutes=5)
         op, lk, _ = B.build_rows(BOARD, CROWD, late)
         self.assertTrue(lk)
         for r in lk:

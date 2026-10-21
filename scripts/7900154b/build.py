@@ -30,7 +30,15 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, HERE)
 
-import core  # noqa: E402  (local module, same directory)
+import importlib.util as _iu, sys as _sys
+from pathlib import Path as _Path
+if 'core_7900154b' in _sys.modules:
+    core = _sys.modules['core_7900154b']
+else:
+    _core_spec = _iu.spec_from_file_location('core_7900154b', _Path(__file__).resolve().parent / 'core.py')
+    core = _iu.module_from_spec(_core_spec)
+    _sys.modules['core_7900154b'] = core
+    _core_spec.loader.exec_module(core)
 
 OUT = os.path.join(ROOT, "day5")
 CANON = "data/c64a5e19/board.json"

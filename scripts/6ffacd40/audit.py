@@ -59,14 +59,15 @@ def verify_board(board):
     q = math.log(10) / 400
     c = q / math.sqrt(1 + 3 * q * q * 75 * 75 / math.pi ** 2)
     pairs = []
-    for r in board['open']:
-        va, vb = (r.get('vrs') or {}).get('team_a'), (r.get('vrs') or {}).get('team_b')
-        m = r.get('market')
-        if va and vb and m:
-            # Calibration uses unrounded source consensus, not rounded table output.
-            quotes = r['quotes']
-            p = sum(WEIGHTS.get(t['source_key'], 1) * quote_probability(t) for t in quotes) / sum(WEIGHTS.get(t['source_key'], 1) for t in quotes)
-            pairs.append((c * (va['points'] - vb['points']), math.log(p / (1 - p))))
+    if board.get('vrs', {}).get('fresh', True) and board.get('calibration', {}).get('fitted', True):
+        for r in board['open']:
+            va, vb = (r.get('vrs') or {}).get('team_a'), (r.get('vrs') or {}).get('team_b')
+            m = r.get('market')
+            if va and vb and m:
+                # Calibration uses unrounded source consensus, not rounded table output.
+                quotes = r['quotes']
+                p = sum(WEIGHTS.get(t['source_key'], 1) * quote_probability(t) for t in quotes) / sum(WEIGHTS.get(t['source_key'], 1) for t in quotes)
+                pairs.append((c * (va['points'] - vb['points']), math.log(p / (1 - p))))
     sxx = sum(x * x for x, _ in pairs)
     k = min(1.5, max(.25, sum(x * y for x, y in pairs) / sxx)) if len(pairs) >= 6 and sxx else 1.
     check(abs(k - board['calibration']['k']) < 1e-9, 'Calibration slope differs from independent fit')

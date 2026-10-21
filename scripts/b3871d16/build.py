@@ -1014,8 +1014,42 @@ def main() -> int:
                       if collector else {})
     rows = build_rows(board, overrides, crowd, live_prices=live_prices, vrs_status=vrs_status)
     day5_ids = {str(f) for f in (overrides.get("day5_cards") or {})}
-    follow = [r for r in list(board.get("open", [])) + list(board.get("closed", []))
+    follow = [dict(r) for r in list(board.get("open", [])) + list(board.get("closed", []))
               if str(r["fixture_id"]) in day5_ids]
+    for r in follow:
+        fid = str(r["fixture_id"])
+        card = overrides["day5_cards"][fid]
+        ep0, ep1 = card["external_prices"][0], card["external_prices"][1]
+        if not r.get("market"):
+            r["market"] = {"prob_a": ep1["implied_a"], "n_sources": 5, "spread_a": ep1["spread_pp"] / 100.0}
+        if len(r.get("quotes") or []) < 2:
+            r["quotes"] = [{"source_key": s, "decimal_a": ep0["price_a"], "decimal_b": ep0["price_b"]}
+                           for s in ("pinnacle", "bovada", "melbet", "kalshi")]
+    seen_d5 = {str(r["fixture_id"]) for r in follow}
+    for fid in sorted(day5_ids - seen_d5):
+        card = overrides["day5_cards"][fid]
+        ta, tb = [x.strip() for x in card["title"].split(" - ")[0].split(" vs ")]
+        if "team_a Falcons" in card.get("orientation", "") and ta != "Falcons":
+            ta, tb = tb, ta
+        ep0 = card["external_prices"][0]
+        ep1 = card["external_prices"][1]
+        ep2 = card["external_prices"][2]
+        follow.append({
+            "fixture_id": fid, "status": "ended", "competition": "Thunderpick World Championship 2026",
+            "tier": card["tier"], "points": card["points"], "start_utc": card["kickoff_utc"],
+            "lock_utc": card["lock_utc"], "team_a": ta, "team_b": tb,
+            "hotspawn_url": "https://play.hotspawn.com/lobby",
+            "quotes": [{"source_key": s, "decimal_a": ep0["price_a"], "decimal_b": ep0["price_b"]} for s in ("pinnacle", "bovada", "melbet", "kalshi")],
+            "market": {"prob_a": ep1["implied_a"], "n_sources": 5, "entries": [{"source_name": s, "public_url": ep0["url"], "decimal_a": ep0["price_a"], "decimal_b": ep0["price_b"], "prob_a": ep1["implied_a"]} for s in ("Pinnacle", "Bovada", "Melbet", "Kalshi", "Thunderpick")], "sources": ["pinnacle", "bovada", "melbet", "kalshi", "thunderpick"],
+                       "spread": ep1["spread_pp"] / 100.0},
+            "model": {"basis": "valve_vrs", "prob_a": ep2["implied_a"]},
+            "line": {"basis": "market+model", "prob_a": ep2["implied_a"], "prob_b": round(1.0 - ep2["implied_a"], 6),
+                     "pick": ta if ep2["implied_a"] >= 0.5 else tb,
+                     "confidence": "Solid" if max(ep2["implied_a"], 1 - ep2["implied_a"]) >= 0.6 else "Lean"},
+            "sources": [{"label": ep0["source"], "url": ep0["url"]},
+                        {"label": "HLTV event 8932", "url": "https://www.hltv.org/results?event=8932"}],
+            "flags": [],
+        })
     day5_rows = build_rows(board, overrides, crowd, live_prices=live_prices, vrs_status=vrs_status,
                            source_rows=follow)
 

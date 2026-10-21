@@ -7,17 +7,22 @@ published section has a broken internal link.
 """
 from __future__ import annotations
 
+import importlib.util
 import json
 import re
 import os
 import sys
 import unittest
 from html.parser import HTMLParser
+from pathlib import Path
 from urllib.parse import urlsplit, unquote
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts", "fe803b80"))
-import core  # noqa: E402
+_core_spec = importlib.util.spec_from_file_location(
+    "core_fe803b80_test", os.path.join(ROOT, "scripts", "fe803b80", "core.py")
+)
+core = importlib.util.module_from_spec(_core_spec)
+_core_spec.loader.exec_module(core)
 
 DATA = os.path.join(ROOT, "data", "fe803b80")
 SITE = os.path.join(ROOT, "board")
@@ -225,7 +230,7 @@ class SiteTests(unittest.TestCase):
 
     def test_all_pages_exist_mobile_first_and_self_linked(self):
         for name in self.PAGES:
-            text = open(os.path.join(SITE, name), encoding="utf-8").read()
+            text = Path(SITE, name).read_text(encoding="utf-8")
             self.assertIn('name="viewport"', text, name)
             self.assertIn("width=device-width", text, name)
             for href in ("picks.html", "flagged.html", "method.html"):
@@ -244,7 +249,7 @@ class SiteTests(unittest.TestCase):
 
         for name in self.PAGES:
             parser = Links()
-            parser.feed(open(os.path.join(SITE, name), encoding="utf-8").read())
+            parser.feed(Path(SITE, name).read_text(encoding="utf-8"))
             for url in parser.urls:
                 parsed = urlsplit(url)
                 if parsed.scheme or parsed.netloc or not parsed.path:
@@ -253,13 +258,13 @@ class SiteTests(unittest.TestCase):
                 self.assertTrue(os.path.exists(target), (name, url))
 
     def test_every_published_fixture_card_carries_a_source_link(self):
-        text = open(os.path.join(SITE, "picks.html"), encoding="utf-8").read()
+        text = Path(SITE, "picks.html").read_text(encoding="utf-8")
         cards = text.count('<article class="fixture">')
         self.assertGreater(cards, 0)
         self.assertGreaterEqual(text.count('rel="noopener"'), cards)
 
     def test_summary_page_links_to_the_pick_list(self):
-        text = open(os.path.join(SITE, "index.html"), encoding="utf-8").read()
+        text = Path(SITE, "index.html").read_text(encoding="utf-8")
         self.assertIn('href="picks.html"', text)
         self.assertIn("Where the picks are", text)
 
