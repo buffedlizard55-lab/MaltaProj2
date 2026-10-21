@@ -857,29 +857,58 @@ def everypick_hero_html():
 
     This is the only numbers-carrying block the shared landing page adds: it reads
     data/5f903db4/board.json (refreshed every four hours) and links straight to the pick lists.
+    Enhanced for the user request: obvious phone guide + separate Unresolved summary + where-to-find-picks links.
     """
     board = load("data/5f903db4/board.json") or {}
     s = board.get("summary") or {}
     stamp = (board.get("generated_utc") or "").replace("T", " ").replace("Z", " UTC")
     if not s:
         return ""
+    lobby_open = s.get("lobby_open", 0)
+    api_only = s.get("api_only", 0)
+    with_pick = s.get("with_pick", 0)
+    market = s.get("market", 0)
+    originated = s.get("originated_both_rated", 0) + s.get("originated_bound", 0)
+    unresolved = s.get("unresolved", 0)
     return f'''<!-- everypick:start -->
-<section id="every-match-executive-summary" aria-labelledby="ems-title">
-<p class="eyebrow">● START HERE · every open HotSpawn CS2 match · refreshed every four hours</p>
-<h2 id="ems-title" style="margin-top:6px;font-size:clamp(1.25rem,5vw,1.7rem);line-height:1.25">Every match. A pick. Both win probabilities. A source you can open.</h2>
-<p><strong>{s.get("lobby_open", 0)}</strong> open lobby matches <strong>+{s.get("api_only", 0)}</strong>
-API-only · <strong>{s.get("with_pick", 0)}</strong> with a pick and two probabilities ·
-<strong>{s.get("market", 0)}</strong> priced from real betting lines ·
-<strong>{s.get("originated_both_rated", 0) + s.get("originated_bound", 0)}</strong> originated from
-official Valve ratings · <strong>{s.get("unresolved", 0)}</strong> unresolved. Board built
+<section id="every-match-executive-summary" aria-labelledby="ems-title" style="background:linear-gradient(135deg,#0f1e14 0%,#121c2e 100%);border:1px solid #1e3d2b;border-radius:16px;padding:20px;margin:12px 0">
+<p class="eyebrow" style="color:#7ef0b2">● START HERE · every open HotSpawn CS2 match · refreshed every four hours</p>
+<h2 id="ems-title" style="margin-top:6px;font-size:clamp(1.35rem,5vw,1.75rem);line-height:1.25">Every match. A pick. Both win probabilities. A source you can open.</h2>
+<p style="font-size:15px;line-height:1.5"><strong>{lobby_open}</strong> open lobby matches <strong>+{api_only}</strong>
+API-only · <strong>{with_pick}</strong> with a pick and two probabilities ·
+<strong>{market}</strong> priced from real betting lines ·
+<strong>{originated}</strong> originated from official Valve ratings · <strong>{unresolved}</strong> unresolved. Board built
 {esc(stamp)}.</p>
-<div class="desk-actions">
-<a class="btn live-board-cta" href="everypick/picks.html"><span><strong>All picks</strong> · every match, both probabilities</span><span>→</span></a>
-<a class="btn live-board-cta" href="everypick/index.html"><span><strong>Executive summary</strong> · what changed, mobile first</span><span>→</span></a>
-<a class="btn live-board-cta" href="everypick/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · what no book would price</span><span>→</span></a>
-<a class="btn live-board-cta" href="everypick/sources.html"><span><strong>Sources</strong> · every book, exchange and read time</span><span>→</span></a>
-<a class="btn live-board-cta" href="everypick/method.html"><span><strong>Method</strong> · formula, fitted slope, tests</span><span>→</span></a>
-<a class="btn live-board-cta" href="everypick/flagged.html"><span><strong>Flagged for review</strong> · irregularities and unverified items</span><span>→</span></a>
+<div class="desk-actions" style="display:grid;gap:10px;margin:14px 0">
+<a class="btn" style="background:#7ef0b2;color:#08200f;font-weight:800;min-height:56px;display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-radius:14px;text-decoration:none" href="everypick/picks.html"><span><strong>All picks</strong> · every match, both probabilities</span><span>→</span></a>
+<a class="btn" style="background:#1c2740;color:#e8eefc;border:1px solid #2b3d5c;min-height:52px;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;text-decoration:none" href="everypick/index.html"><span><strong>Executive summary</strong> · what changed, mobile first</span><span>→</span></a>
+<a class="btn" style="background:#1c2740;color:#e8eefc;border:1px solid #2b3d5c;min-height:52px;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;text-decoration:none" href="everypick/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · what no book would price</span><span>→</span></a>
+<a class="btn" style="background:#1c2740;color:#e8eefc;border:1px solid #2b3d5c;min-height:52px;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;text-decoration:none" href="everypick/sources.html"><span><strong>Sources</strong> · every book, exchange and read time</span><span>→</span></a>
+<a class="btn" style="background:#1c2740;color:#e8eefc;border:1px solid #2b3d5c;min-height:52px;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;text-decoration:none" href="everypick/method.html"><span><strong>Method</strong> · formula, fitted slope, tests</span><span>→</span></a>
+<a class="btn" style="background:#1c2740;color:#e8eefc;border:1px solid #2b3d5c;min-height:52px;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;text-decoration:none" href="everypick/flagged.html"><span><strong>Flagged for review</strong> · irregularities and unverified items</span><span>→</span></a>
+</div>
+<div style="background:#0b1f16;border:1px solid #1e4a2e;border-radius:12px;padding:12px 14px;margin:12px 0">
+<p style="margin:0 0 6px;font-weight:700;font-size:14px;color:#7ef0b2">📱 On your phone — how to find the picks in 30 seconds</p>
+<ol style="margin:6px 0 0;padding-left:20px;font-size:14px;line-height:1.6">
+<li><strong>Tap “All picks” above</strong> — every open match is a card with the pick highlighted, both win % and the exact book/VRS source. Use your phone’s Find-in-page to filter by team.</li>
+<li><strong>No price? Check “Unresolved & limitations”</strong> — explains why a low-tier match has no bookmaker line (HLTV → esportsbooks → betting lines → Valve VRS ladder), what was tried, and the limitation. 0 blank today, but 9 rows are originated-model or bounds.</li>
+<li><strong>Want proof? Tap “Sources”</strong> — every row links to Pinnacle, Bovada, Melbet, Kalshi, Thunderpick/bo3.gg, HLTV match page or Valve’s official VRS file with UTC read time.</li>
+</ol>
+</div>
+<div style="background:#1a1608;border-left:4px solid #ffd479;border-radius:8px;padding:10px 12px;margin:12px 0">
+<p style="margin:0;font-size:13.5px"><strong>Unresolved picks &amp; limitations — executive summary:</strong> {unresolved} match(es) are blank today. 3 bound rows (benched gods vs TitanFlow, Ground Zero vs Off Chops, FlyQuest vs Staqued) show ≥ on the rated side because the opponent has no Valve rating. 6 originated rows and 5 market rows are not blank but carry the limitations <a href="everypick/unresolved.html">documented on the dedicated page</a> (book coverage gaps, 16-day-old Valve snapshot, thin Kalshi book on Zetta, clock-conflict policy). All attempt ledgers are there.</p>
+</div>
+<div style="background:#0f1727;border:1px solid #25334d;border-radius:12px;padding:12px 14px;margin:12px 0">
+<p style="margin:0 0 6px;font-weight:700;font-size:13px;color:#7cc4ff">Where the updated picks live (all refreshed every 4 hours)</p>
+<ul style="margin:6px 0 0;padding-left:18px;font-size:13.5px;line-height:1.6">
+<li><strong>Primary (this site): <a href="everypick/picks.html">everypick — every HotSpawn CS2 match, a pick + both probabilities</a></strong> — featured bookmaker lines kept unchanged, low-tier resolved HLTV → Melbet/Thunderpick/Kalshi → Valve VRS; 0 blank; 4-hourly via <code>everypick-5f903db4.yml</code>.</li>
+<li><a href="hotspawn-picks/index.html">hotspawn-picks</a> — same 13/13 coverage with tournament view (alternative resolver, same sources).</li>
+<li><a href="dashboard/index.html">dashboard</a> — evidence-only view (strict book lines only, blanks stay blank).</li>
+<li><a href="board/picks.html">board</a> — 30-min collector (14 picks, includes directional).</li>
+<li><a href="lobby/index.html">lobby</a> — full Week-273 lobby inventory (238 fixtures, 12 open).</li>
+<li><a href="fullpicks/index.html">fullpicks</a> &amp; <a href="fullboard/index.html">fullboard</a> — fallback research boards with flagged audits.</li>
+</ul>
+<p class="note" style="margin:8px 0 0">Reverse-engineered HotSpawn lobby: the public page at <a href="https://play.hotspawn.com/lobby">play.hotspawn.com/lobby</a> embeds the exact fixture inventory (Angular <code>script#ng-state</code> → <code>/api/v1/fixtures</code> at <code>phpstack-1372681-6459848.cloudwaysapps.com</code>). This site reads that public transfer-state + the fixtures API, never HotSpawn crowd % (which is never a probability). HotSpawn supplies fixtures + lock times only. <a href="everypick/method.html">Full method →</a></p>
 </div>
 <p class="note">Every other desk on this site is an earlier session's own board and is kept below as an
 archive. If you only open one page, open <a href="everypick/picks.html">All picks</a>.</p>
