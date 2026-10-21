@@ -118,6 +118,7 @@ crowd ownership is never a probability. Open the board for its current as-of sta
 <a class="btn live-board-cta" href="hotspawn-live/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · blank-row policy</span><span>→</span></a>
 <a class="btn live-board-cta" href="hotspawn-live/sources.html"><span><strong>Sources &amp; row ledger</strong> · verify every line</span><span>→</span></a>
 </div>
+''' + canonical_source_board_note_html() + '''
 </div>'''
 
 
@@ -148,6 +149,35 @@ HLTV first, then esportsbook/exchange lines, then Valve's official ratings with 
 <a class="btn live-board-cta" href="audits/36495748/flagged.html"><span><strong>Flagged for review</strong> · two identity corrections (one pick flips)</span><span>→</span></a>
 </div>
 </div>'''
+
+
+def canonical_source_board_note_html():
+    """a5c08976: one line pointing at the 30-minute collector board every live view is built from.
+
+    Reads data/fe803b80/board.json only; shows the board's own build stamp next to its counts so a
+    reader can see how fresh the numbers are. Returns "" when that board is absent.
+    """
+    d = load("data/fe803b80/board.json") or {}
+    sm = d.get("summary") or {}
+    if not sm:
+        return ""
+    open_rows = d.get("open") or []
+    directional = sum(1 for r in open_rows if (r.get("line") or {}).get("directional"))
+    stamp = esc(str(d.get("generated_utc", "")).replace("T", " ").replace("Z", " UTC"))
+    blank = sm.get("open_blank", 0)
+    return (
+        '<p class="note" id="canonical-source-board">'
+        '<strong>Source board (refreshes every 30 min):</strong> '
+        f'<a href="board/picks.html">all {sm.get("open", 0)} open lobby matches · '
+        f'{sm.get("open_with_pick", 0)} with a pick</a> '
+        f'({sm.get("open_with_market", 0)} from betting lines, '
+        f'{sm.get("open_model_only", 0)} originated from ratings'
+        + (f', {directional} directional' if directional else '')
+        + f', {blank} blank) · '
+        '<a href="board/unresolved.html">Unresolved picks &amp; limitations</a> · '
+        '<a href="board/flagged.html">Flagged for review</a> · '
+        f'<span class="muted">board built {stamp}</span></p>'
+    )
 
 
 def start_front_html():
