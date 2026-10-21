@@ -380,5 +380,44 @@ class CollectorContract(unittest.TestCase):
         self.assertIn("status", probe)
 
 
+class RootExecutiveSummary(unittest.TestCase):
+    """The root landing page must lead with this desk and link to the live pick list.
+
+    The published site is built from the committed files, so a stale hero is a real defect: the
+    counts on the front page have to be the counts in the board it links to.
+    """
+
+    def setUp(self):
+        self.html = (ROOT / "index.html").read_text(encoding="utf-8")
+        self.board = json.loads((ROOT / "data" / "2cadfaf2" / "board.json").read_text(encoding="utf-8"))
+
+    def test_hero_block_is_present_and_first(self):
+        self.assertIn("<!-- pickcenter:start -->", self.html)
+        self.assertIn("<!-- pickcenter:end -->", self.html)
+        start = self.html.index("<!-- pickcenter:start -->")
+        end = self.html.index("<!-- pickcenter:end -->")
+        # no other start-here desk may sit above it
+        self.assertNotIn("START HERE", self.html[:start])
+        self.assertGreater(end, start)
+
+    def test_hero_links_the_pick_list_and_the_unresolved_section(self):
+        block = self.html[self.html.index("<!-- pickcenter:start -->"):self.html.index("<!-- pickcenter:end -->")]
+        for target in ("pickcenter/picks.html", "pickcenter/unresolved.html",
+                       "pickcenter/index.html", "pickcenter/sources.html"):
+            self.assertIn('href="%s"' % target, block, "the executive summary must link %s" % target)
+
+    def test_hero_counts_match_the_board(self):
+        block = self.html[self.html.index("<!-- pickcenter:start -->"):self.html.index("<!-- pickcenter:end -->")]
+        s = self.board["summary"]
+        for key, label in (("total_rows", "matches listed"), ("with_pick", "with a pick"),
+                           ("unresolved", "unresolved"), ("open", "still open")):
+            self.assertIn("<strong>%s</strong>" % s[key], block,
+                          "hero must show the board's %s count (%s)" % (label, key))
+
+    def test_hero_is_not_a_second_h1(self):
+        self.assertEqual(self.html.count("<h1"), 1, "exactly one h1 per page")
+
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

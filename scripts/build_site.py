@@ -2130,7 +2130,16 @@ document.addEventListener('DOMContentLoaded', function () {
 WRITTEN = []
 
 
+# Session 2cadfaf2: the four-hourly pick-centre workflow refreshes only the root landing page
+# (its hero reads data/2cadfaf2/board.json). With PICKCENTER_INDEX_ONLY=1 every other page and
+# data file stays exactly as committed, so that workflow can never overwrite another session's
+# output while keeping the published executive summary in step with the board it links to.
+ONLY_INDEX = os.environ.get("PICKCENTER_INDEX_ONLY") == "1"
+
+
 def write(rel, content):
+    if ONLY_INDEX and rel != "index.html":
+        return
     path = os.path.join(ROOT, rel)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:
