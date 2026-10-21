@@ -117,7 +117,7 @@ crowd ownership is never a probability. Open the board for its current as-of sta
 <a class="btn live-board-cta" href="hotspawn-live/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · blank-row policy</span><span>→</span></a>
 <a class="btn live-board-cta" href="hotspawn-live/sources.html"><span><strong>Sources &amp; row ledger</strong> · verify every line</span><span>→</span></a>
 </div>
-''' + canonical_source_board_note_html() + fullpicks_note_html() + '''
+''' + hotspawn_picks_note_html() + canonical_source_board_note_html() + fullpicks_note_html() + '''
 </div>'''
 
 
@@ -137,6 +137,26 @@ def fullpicks_note_html():
         '<a href="fullpicks/unresolved.html">Unresolved &amp; limitations</a> · '
         '<a href="fullpicks/tournaments.html">By category</a> · '
         '<a href="fullpicks/flagged.html">Flagged for Review (R1–R7)</a> · '
+        f'<span class="muted">snapshot {stamp}</span></p>'
+    )
+
+def hotspawn_picks_note_html():
+    """f3e5123c: additive START-HERE pointer to hotspawn-picks/ (every-match, featured unchanged)."""
+    d = load("data/f3e5123c/board.json") or {}
+    sm = d.get("summary") or {}
+    if not sm:
+        return ""
+    stamp = esc(str(d.get("generated_utc", "")).replace("T", " ").replace("Z", " UTC"))
+    return (
+        '<p class="note" id="hotspawn-picks-board" style="border:2px solid #38d996;border-radius:10px;padding:10px">'
+        '<strong>🎯 START HERE — every-match HotSpawn CS2 picks (f3e5123c, 4h refresh):</strong> '
+        f'<a href="hotspawn-picks/index.html">executive summary ({sm.get("with_pick", 0)}/{sm.get("open", 0)} open picks)</a> · '
+        f'<a href="hotspawn-picks/picks.html">all {sm.get("open", 0)} picks (phone cards)</a> '
+        f'({sm.get("featured_market", 0)} featured unchanged, {sm.get("fallback_market", 0)} fallback books, '
+        f'{sm.get("vrs_model", 0)} VRS-model, {sm.get("floor_directional", 0)} directional, {sm.get("unresolved", 0)} blank) · '
+        '<a href="hotspawn-picks/unresolved.html">Unresolved &amp; limitations</a> · '
+        '<a href="hotspawn-picks/tournaments.html">By tournament</a> · '
+        '<a href="hotspawn-picks/flagged.html">Flagged F1–F8</a> · '
         f'<span class="muted">snapshot {stamp}</span></p>'
     )
 
@@ -479,6 +499,13 @@ def executive_summary_html():
         if gap_rows else '<p>No unresolved rows in the available strict snapshot; this is not a guarantee of global coverage.</p>'
     )
     stamp_map = [
+        # f3e5123c integration (additive): THE every-match front door. Featured lines unchanged;
+        # low-tier gaps resolved HLTV -> books/exchange -> official VRS with roster-verified
+        # aliases; separate unresolved/limitations section. Start here on mobile.
+        ("hotspawn-picks/index.html", "🎯 Every HotSpawn CS2 pick (f3e5123c) — START HERE",
+         "Pick + both win % for every open lobby match incl. low-tier, basis + sources per row; "
+         "separate Unresolved picks & limitations section.",
+         _board_stamp("data/f3e5123c/board.json", "generated_utc")),
         # 7c2622db integration (additive): the mobile pick'em hub. It publishes a pick and both
         # win probabilities for every fixture in its own dated lobby capture, plus the TWC 2026
         # day-1/2 review and day-3 desk, and its own unresolved/flagged/verification sections.

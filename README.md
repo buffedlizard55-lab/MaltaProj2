@@ -269,3 +269,9 @@ not certified by the canonical verifier and never override its blank rows.
 - Run `python scripts/cbf92764/build.py` then `python -m unittest discover -s tests -p test_cbf92764.py -v`.
   Evidence hashes, raw additional reads and per-row reasons are in `data/cbf92764/`.
   Current picks expire after four hours (including HTTP cache age) or their lock, whichever is earlier.
+
+## 🎯 START HERE — Every HotSpawn CS2 pick, incl. low-tier (f3e5123c, 2026-10-21)
+
+- **Executive summary (mobile front door):** [`hotspawn-picks/index.html`](hotspawn-picks/index.html) → [all picks](hotspawn-picks/picks.html), [unresolved & limitations](hotspawn-picks/unresolved.html), [by tournament](hotspawn-picks/tournaments.html), [line-by-line sources](hotspawn-picks/sources.html), [Flagged F1–F8](hotspawn-picks/flagged.html), [method](hotspawn-picks/method.html).
+- Featured primary-bookmaker lines are copied unchanged; only unpriced matches use the fallback ladder (HLTV identity → Melbet/Thunderpick/Kalshi/Pinnacle/Bovada lines incl. roster-verified sponsor aliases → official Valve VRS model → directional floor/blank). HotSpawn crowd % is never a probability input.
+- Refresh: `.github/workflows/hotspawn-picks-f3e5123c.yml` every 4h (`scripts/f3e5123c/resolve.py` + `build.py`, tests `tests/test_f3e5123c.py`, data `data/f3e5123c/board.json`).
