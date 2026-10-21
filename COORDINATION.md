@@ -1,3 +1,131 @@
+# Coordination — session `86f3af65` (pick for EVERY open HotSpawn CS2 match: esportsbook/exchange lines → official Valve VRS origination, mobile-first front door, repo audit, 2026-10-21)
+
+Session: `86f3af65` (environment-fixed branch `arena/86f3af65-maltaproj2`; this environment
+forbids a `session-<id>/<task>` branch, so scope is separated by directory as in prior sessions).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-86F3AF65-PICKBOARD: (1) resolve a pick **and both win probabilities** for every open CS2 fixture in the HotSpawn Pick'ems lobby through a published ladder — external two-way prices (Pinnacle / Bovada / Melbet) → exchange mids (Kalshi) → originated line from the official Valve Regional Standings → documented floor proxy → blank-and-flagged — with the low-tier and uncovered matches resolved by research rather than dropped; (2) a separate **Unresolved picks & limitations** section, linked from the executive summary; (3) a mobile-first dashboard `pickboard/` (executive summary that links every updated pick list on the site, all picks, unresolved, per-event, sources, flagged, method) plus a prominent start-here card on the root landing page and two NAV entries; (4) a 4-hourly refresh workflow that re-reads HotSpawn's lobby **and** its public fixtures API, the three books, Kalshi and the Valve standings; (5) line-by-line repo review with every irregularity published; (6) PR → `main` → merge → GitHub Pages verification. | in progress — see log | 86f3af65 | 2026-10-21 19:35 | `pickboard/**`, `scripts/86f3af65/**`, `data/86f3af65/**`, `tests/test_86f3af65.py`, `.github/workflows/pickboard-86f3af65.yml`, `COORDINATION.md` (this section only). Integration (additive, close-out): `scripts/build_site.py` (one card + one NAV entry + one eyebrow relabel), `scripts/stage_site.py` (one directory entry), root `index.html` regeneration, `README.md` (one table row). Read-only inputs: `data/f7279a54/**`, `data/fe803b80/board.json`, `data/51197e5b/board.json`, `data/36495748/board.json`, `data/19d6c262/vrs_global.json`. |
+
+## Log — 86f3af65
+
+- 2026-10-21 20:20 UTC: **moved the sub-site from `everypick/` to `pickboard/`.** Session
+  `907e9435` claimed `everypick/` at 19:55Z, after this session's 19:35Z claim. Two four-hourly
+  workflows writing one directory would make the published board flip between two different boards,
+  so this session took the new path; content unchanged, only paths, workflow name and root links.
+- 2026-10-21 20:20 UTC: **`collect.py --live` is green end to end on the runner** — first live run
+  `39667645142`, commit `6e48ad4`, 13/13 open fixtures priced, 0 blank, 6 caveated, capture 150 kB.
+  Three live-only defects were found and fixed: (a) Valve `details/` links were requested at the
+  repo root instead of `live/<year>/`, so live runs read zero roster pages; (b) the roster-page hash
+  called `sha256()` on the base64 string and killed the whole standings collection, making the first
+  live run fall back to pinned data; (c) `persist_valve()` re-fetched every file to hash it, so the
+  pinned hash could disagree with the board that shipped. `collect.py` now pins the bytes it parsed.
+- 2026-10-21 20:20 UTC: **added the freshness strip** to every page (capture time, area age, warning
+  past the 8 h limit or when the capture was not live), and trimmed the committed capture: the
+  HotSpawn API serves 10 514 CS2 rows / 4.8 MB, the board needs 166.
+- 2026-10-21 20:20 UTC: rebased onto `main` (which grew `dashboard/`, `hotspawn-live/`,
+  `picks-every-match/`, `everypick/` from five parallel sessions). Root integration is now **only
+  the `pickboard-front` card on `index.html`** — `main`'s NAV is already at its 12-link mobile cap,
+  and `stage_site.py` gained `pickboard`. 27 tests OK; `build_site.py` 36 files, no broken links.
+
+- 2026-10-21 19:35 UTC: read `COORDINATION.md` first; claimed `T-86F3AF65-PICKBOARD` with the
+  non-overlapping scope above. No other session had a live claim at that time (the most recent
+  entries — `51197e5b`, `a5c08976`, `e1b48771`, `82a9a0cc` — are all closed out).
+- 2026-10-21 19:35 UTC: **environment constraint logged.** This sandbox has outbound network access
+  only to `github.com`, `codeload.github.com`, `api.github.com`, `registry.npmjs.org`, `pypi.org`
+  and `files.pythonhosted.org`. HotSpawn, Pinnacle, Bovada, Melbet, Kalshi, HLTV and bo3.gg are
+  therefore **not reachable from this session**, so the published board is converted from the
+  repository's own pinned capture (`data/f7279a54/snapshot.json`, read live at
+  2026-10-21T19:24Z with every HTTP status, byte count, cache `Age` and payload SHA-256) rather
+  than claimed as a fresh fetch. `collect.py --live` performs the real fetch on the GitHub runner,
+  which does have general internet access; the workflow runs it every four hours.
+- 2026-10-21 20:05 UTC: **live official-source verification that this session *could* perform, and
+  did:** re-read `api.github.com/repos/ValveSoftware/counter-strike_regional_standings` — the
+  newest published global file is still `standings_global_2026_10_05.md`, and its SHA-256
+  (`df96e7fc…7ae61b`) is byte-identical to the copy pinned by session `f7279a54`. Also fetched the
+  americas / asia / europe files and six per-roster `details/…` pages for duplicate-name
+  disambiguation (`data/86f3af65/valve/`).
+
+# Coordination — session `5f903db4` (a pick + both win probabilities for EVERY open HotSpawn CS2 match, phone-first executive summary, unresolved & limitations, 2026-10-21)
+
+Session: `5f903db4` (environment-fixed branch `arena/5f903db4-maltaproj2`; the environment forbids a
+`session-<id>/<task>` branch, so scope is separated by directory as in every prior session).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-5F903DB4-EVERYPICK: (1) give every open HotSpawn CS2 fixture a pick and both win probabilities, including the low-tier fixtures no book prices, using the required ladder (market lines first → exchange/secondary books → HLTV/bo3.gg identity checks → documented official-Valve-VRS origination → labelled bound → explicit unresolved row); (2) publish a separate **Unresolved picks & limitations** section and surface it in the executive summary; (3) rebuild the front door as one phone-first executive summary with in-site links to the updated picks lists; (4) refresh automatically every 4 hours with no manual input; (5) line-by-line repo review with irregularities flagged; (6) tests, integration, PR → `main`, merge, Pages verification. | done — see close-out below | 5f903db4 | 2026-10-21 19:35 | `pickboard/**`, `scripts/5f903db4/**`, `data/5f903db4/**`, `tests/test_5f903db4.py`, `.github/workflows/everypick-5f903db4.yml`, `COORDINATION.md` (this section only). Read-only inputs: `data/f7279a54/**`, `data/fe803b80/**`, `data/19d6c262/vrs_global.json`, every other session directory. Integration (additive, at close-out): `scripts/build_site.py` (one hook + NAV entries), root `index.html` (regenerated), `README.md` (one row). |
+
+## Log — 5f903db4
+- 2026-10-21 19:35 UTC: Read `COORDINATION.md` end to end first. No live claim covers `pickboard/**`,
+  `scripts/5f903db4/**` or `data/5f903db4/**`; the newest sections (`51197e5b`, `a5c08976`,
+  `e1b48771`) are closed out. Claimed `T-5F903DB4-EVERYPICK` with that non-overlapping scope and
+  pushed the claim before any other edit.
+- 2026-10-21 19:36 UTC: **Live verification of every source used** (recorded with URLs and read times
+  in `scripts/5f903db4/research.json` → `read_log`): HotSpawn lobby (78 CS2 fixtures in week 273,
+  **13 open**, 6 closing soon + 7 upcoming), Kalshi public market-data API (37 open KXCS2GAME events,
+  all 21–23 Oct), Valve `counter-strike_regional_standings` contents API (40 standings files, newest
+  `standings_global_2026_10_05.md` — no 10-12 or 10-19 file is published), bo3.gg match page for
+  Alianza Lima vs Los Niños (lineup identical to Valve's "Zetta" five) and bo3.gg team page for Banda
+  Chuya (lineup identical to Valve's five-man row #165).
+- 2026-10-21 19:40 UTC: Built `scripts/5f903db4/{core,build,site}.py` and
+  `data/5f903db4/board.json`: **14 rows (13 lobby-open + 1 API-only) · 14 with a pick and both
+  probabilities · 5 from real betting lines · 6 originated from official Valve VRS · 3 published as
+  bounds · 0 unresolved**. New market joins found by name-variant research that the collectors miss:
+  Melbet `763696446` (`UNiTY` / `Apogee Esports`) and Thunderpick `132327` (`UNiTY` / `Betclic`) for
+  fixture `1082882`, and Kalshi `KXCS2GAME-26OCT211800LNALE` for fixture `1082837` (HotSpawn "Zetta" =
+  exchange "Alianza Lima Esports").
+
+- 2026-10-21 19:48 UTC: **Integration + PR.** `scripts/build_site.py` gained one additive hook
+  (`everypick_hero_html()`, ~line 826) that renders the phone-first start-here card at the top of the
+  landing page, plus `.everypick-cta` CSS and `flex-wrap` on `.brand`; `scripts/5f903db4/stage_root.py`
+  rewrites only the `<!-- everypick:start/end -->` block, so the root page stays a generated artefact.
+  Branch history was rebuilt on top of `origin/main` so the PR touched only this session's 20 paths
+  (the earlier rebase had replayed 69 foreign regenerated pages from other sessions — stripped).
+  **PR #214** https://github.com/buffedlizard55-lab/MaltaProj2/pull/214 — 22 files, +8608/−18, with
+  coverage table, sourcing ladder, page map, automation, integration notes, verification and R1–R6.
+- 2026-10-21 19:50 UTC: **CI: one pre-existing failing step, no new failures.** `build` fails at
+  "Validate preserved evidence and arithmetic" (`python -m unittest discover -s tests`): 1234 tests,
+  exactly 2 red — `tests/test_e1b48771.py::Coverage::test_exactly_the_open_hotspawn_fixtures_and_nothing_else`
+  and `tests/test_verify_7cd2e67a.py::PublishedArithmetic::test_live_board_picks_and_edges_reproduce`.
+  Both reproduce on a pristine `origin/main` worktree (`/tmp/mainchk`, since removed) — other sessions'
+  boards drifted after their last regeneration, this branch adds nothing to them. Re-running
+  `scripts/e1b48771/build.py` locally was tried and made that suite worse (2F+1E, it needs live
+  captures), so the working tree was reverted to `main`'s copies and the failures are left documented
+  as **R6** on `everypick/flagged.html` rather than patched inside another session's scope.
+  `everypick (5f903db4)` and `climb` workflows on the branch are green.
+- 2026-10-21 19:51 UTC: **Merged.** `gh pr merge 214 --merge` → merge commit
+  `ece85e9f68fef64baf0bca79d44b754d456e5310` (19:51:15Z), plus the bot's own
+  `everypick(5f903db4): refresh every-match picks 2026-10-21T19:51Z`. **Pages built** (`builds/latest`
+  = `built` for `ebd65f8`, 19:51:58Z). Live pages verified:
+  https://buffedlizard55-lab.github.io/MaltaProj2/everypick/ (executive summary, 13 open + 1 API-only,
+  14 picks, 5 market, 0 unresolved), `/everypick/picks.html` (full rows + row-by-row evidence),
+  `/everypick/unresolved.html`, `/everypick/sources.html`, `/everypick/method.html`,
+  `/everypick/flagged.html`, and the root https://buffedlizard55-lab.github.io/MaltaProj2/ which now
+  opens with the "START HERE · every open HotSpawn CS2 match · refreshed every four hours" card and
+  six one-tap buttons (All picks leading). Board rebuilt after the merge from the same snapshot:
+  **14 rows · 14 picks · 5 market · 6 originated · 3 bounds · 0 unresolved**, unchanged.
+- 2026-10-21 19:53 UTC: **Close-out.** `T-5F903DB4-EVERYPICK` done. Standing items handed over:
+  (1) the merge gate `build` job stays red until another session refreshes `data/e1b48771/` and
+  `data/verify_7cd2e67a/` arithmetic (R6); (2) the ladder's step 2 (esportsbook name-variant joins)
+  still has to be re-done by hand each refresh for `UNiTY`/`Apogee Esports` and the `Zetta` =
+  `Alianza Lima Esports` alias — `scripts/5f903db4/build.py` now carries both joins as documented
+  aliases, so they survive the 4-hourly run; (3) three rows are bounds, not points, because Valve
+  publishes no rating for one side — the `≥`/`≤` marks must not be stripped by any downstream board.
+# Coordination — session `f3e5123c` (Pick for EVERY HotSpawn CS2 match incl. low-tier/non-Polymarket — HLTV-first then esportsbooks/exchange then official Valve VRS fallback research, ONE obvious mobile entry point + executive summary with internal links + separate Unresolved & Limitations section, line-by-line audit, 2026-10-21)
+
+Session: `f3e5123c` (environment-fixed branch `arena/f3e5123c-maltaproj2`; the environment forbids switching to a `session-<id>/<task>` branch, so scope is separated by directory as in prior sessions).
+
+| Task | Status | Owner | Claimed UTC | File scope |
+|---|---|---|---|---|
+| T-F3E5123C-EVERYPICK [status: done — see close-out]: (1) line-by-line repo review of freshest upstream snapshots (`data/f7279a54/**` 19:24Z, `data/fe803b80/**` 19:29Z, `data/51197e5b/board.json`) flagging: Kalshi Zetta/Alianza-Lima alias market missed by 51197e5b flipping 1082837, fe803b80 unfitted k=1.0/Elo overconfidence vs fitted k=0.4308, fe803b80 counting api-only 1080200 as open, stale root `index.html` counts (9 open/12 open vs live 13); (2) resolve a pick + both win % for **every** open CS2 match on HotSpawn (`https://play.hotspawn.com/lobby`) keeping featured primary-bookmaker lines byte-for-byte unchanged and applying fallback research ONLY to unpriced matches (HLTV → esportsbooks/exchange Pinnacle/Bovada/Melbet/Thunderpick/Kalshi/Polymarket → official Valve VRS → bo3.gg form), never using HotSpawn crowd % as probability; (3) publish ONE mobile-first front door `hotspawn-picks/` (executive summary linking to every updated pick list on the site, at-a-glance picks, separate Unresolved & Limitations section, tournaments, sources, flagged, method); (4) 4-hourly refresh `.github/workflows/hotspawn-picks-f3e5123c.yml` + dynamic tests `tests/test_f3e5123c.py`; (5) additive integration + PR to `main` + merge + Pages verification | PR #213 open — merging | f3e5123c | 2026-10-21 19:40 | `hotspawn-picks/**`, `scripts/f3e5123c/**`, `data/f3e5123c/**`, `tests/test_f3e5123c.py`, `.github/workflows/hotspawn-picks-f3e5123c.yml`, `COORDINATION.md` (this section only). Read-only inputs: `data/f7279a54/**`, `data/fe803b80/**`, `data/51197e5b/**`, `data/19d6c262/vrs_global.json`, all other session dirs. Integration (additive, at close-out only): `scripts/stage_site.py` (one entry + re-render call), `scripts/build_site.py` (one additive front-door note + stamp), root `index.html` regeneration, `README.md` one row. |
+
+## Log — f3e5123c
+- 2026-10-21 19:40 UTC: Read `COORDINATION.md` head + freshest boards before any edits. Claimed `T-F3E5123C-EVERYPICK` with non-overlapping scope `hotspawn-picks/**`, `scripts/f3e5123c/**`, `data/f3e5123c/**`; pushing claim immediately. No other session has claimed this scope.
+- 2026-10-21 20:05 UTC: **CLOSE-OUT `f3e5123c` (`hotspawn-picks/`)** — on freshest boards (`f7279a54` 19:50Z + `fe803b80` 19:56Z, week 273): **13 open lobby matches · 13 picks · 0 blank** (3 featured book lines byte-for-byte unchanged + 2 fallback-market + 5 VRS-model + 3 directional-floor) + 2 status conflicts + 24 locked-recent. Fallback research ONLY on unpriced matches, HLTV-first: **1082837 → LOS NINOS 61.4%** via Kalshi under roster-verified alias Zetta=Alianza Lima (bo3.gg/HLTV 5/5; Polymarket ~$5 vol rejected); **1082882 → Apogee Betclic 61.0%** via Melbet 1.54 + Thunderpick 1.50 (it is HLTV Betclic / VRS #45, fitted-VRS cross-check 59.9% agrees; corrects fullpicks' 86.9% UNiTY floor pick). VRS points verified line-by-line vs Valve file incl. duplicate-Core traps (Banda #165, Huns #122, Betclic #45). Fitted k=0.4308 (n=60) used; fe80 unfitted k=1.0 shown as cross-check only. Flagged F1–F8 on `hotspawn-picks/flagged.html` (incl. fe80 Zetta quote decimal swap in board render, fe80 API-only 14th 'open', stale root counts, Banda HLTV roster gap, null best_of, thin-book hygiene). Tests: `tests/test_f3e5123c.py` 12/12 pass; full suite 1246 tests with only 2 failures reproduced identically on pristine main (`test_verify_7cd2e67a`, `test_e1b48771` clock decay — pre-existing, unrelated files). Staging PASS incl. one-line integration fix carrying `pickboard/` (5f903db4) whose root links otherwise broke the Pages artifact. Refresh: `.github/workflows/hotspawn-picks-f3e5123c.yml` (4h + on upstream board runs, scope-guarded commits). PR + merge + Pages verification follow below.
+- 2026-10-21 20:10 UTC: **MERGED + LIVE.** PR [#217](https://github.com/buffedlizard55-lab/MaltaProj2/pull/217) merged to `main` (`4bb2f6a`, 2026-10-21T20:02:18Z); GitHub Pages status `built`; live verified: https://buffedlizard55-lab.github.io/MaltaProj2/hotspawn-picks/ (13/13 picks) + picks/unresolved pages fetched OK. 4h bot confirmed running on main (refresh commits 20:02Z/20:03Z, workflow runs success). Follow-up polish PR: featured-card ledger-anchor condition. Task `T-F3E5123C-EVERYPICK` = **done**.
+
+---
+
 # Coordination — session `57d93247` (Clean mobile-first executive summary + every-match HLTV → esportsbook fallback verification + GH Pages site polish, 2026-10-21)
 
 Session: `57d93247` (environment-fixed branch `arena/57d93247-maltaproj2`; the environment forbids switching branches, so scope is isolated by directory as in prior sessions).

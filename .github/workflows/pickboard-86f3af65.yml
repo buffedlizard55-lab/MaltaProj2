@@ -1,0 +1,106 @@
+name: pickboard (86f3af65)
+
+# Refreshes the session-86f3af65 board (pickboard/): one pick, with both win probabilities, for
+# every open HotSpawn Counter-Strike 2 fixture - external bookmaker/exchange lines first, official
+# Valve VRS points for the low-tier fixtures the books do not price.
+#
+# Scope guard: this workflow writes only data/86f3af65/**, pickboard/** and
+# data/86f3af65/valve/**. It never edits another session's files.
+#
+# The build is a hard gate: if a fixture comes out blank, a probability stops re-deriving from its
+# cited price, or a HotSpawn URL ends up in a price citation, the tests fail and nothing is
+# published.
+
+on:
+  schedule:
+    - cron: '17 */4 * * *'      # every four hours, off the hour to avoid the cron stampede
+  workflow_dispatch:
+  push:
+    branches: ['main', 'arena/86f3af65-maltaproj2']
+    paths:
+      - 'scripts/86f3af65/**'
+      - 'tests/test_86f3af65.py'
+      - '.github/workflows/pickboard-86f3af65.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pickboard-86f3af65-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Capture sources (HotSpawn lobby + API, Pinnacle, Bovada, Melbet, Kalshi, Valve VRS)
+        id: capture
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -o pipefail
+          python3 scripts/86f3af65/collect.py --live 2>&1 | tee capture.log
+      - name: Record a capture failure in the repository (the runner's log is not readable offline)
+        if: steps.capture.outcome == 'failure'
+        run: |
+          {
+            echo "# capture failure - $(date -u +%Y-%m-%dT%H:%MZ)"
+            echo
+            echo '```'
+            tail -80 capture.log
+            echo '```'
+          } > data/86f3af65/last_capture_error.log
+          git config user.name  "pickboard-bot"
+          git config user.email "pickboard-bot@users.noreply.github.com"
+          git add data/86f3af65/last_capture_error.log
+          git commit -m "pickboard(86f3af65): capture failure log [skip ci]" || true
+          git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}" || true
+          exit 1
+      - name: Build board
+        run: python3 scripts/86f3af65/build.py
+      - name: Render site
+        run: python3 scripts/86f3af65/site.py
+      - name: Verify (coverage, re-derivation, sources, links)
+        id: verify
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          python3 -m unittest tests.test_86f3af65 -v 2>&1 | tee verify.log
+      - name: Record a verification failure in the repository
+        if: steps.verify.outcome == 'failure'
+        run: |
+          {
+            echo "# verification failure - $(date -u +%Y-%m-%dT%H:%MZ)"
+            echo
+            echo '```'
+            tail -120 verify.log
+            echo '```'
+          } > data/86f3af65/last_verify_error.log
+          git config user.name  "pickboard-bot"
+          git config user.email "pickboard-bot@users.noreply.github.com"
+          git add data/86f3af65/last_verify_error.log
+          git commit -m "pickboard(86f3af65): verification failure log [skip ci]" || true
+          git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}" || true
+          exit 1
+      - name: Publish
+        run: |
+          git config user.name  "pickboard-bot"
+          git config user.email "pickboard-bot@users.noreply.github.com"
+          git add data/86f3af65 pickboard
+          if git diff --cached --quiet; then
+            echo "no change this run"
+          else
+            git commit -m "pickboard(86f3af65): refresh $(date -u +%Y-%m-%dT%H:%MZ)"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi

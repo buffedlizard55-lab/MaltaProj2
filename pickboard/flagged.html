@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Flagged for review · CS2 Pick Board</title>
+<meta name="description" content="A pick and both win probabilities for every open HotSpawn
+Counter-Strike 2 fixture, built from external bookmaker lines and official Valve rankings.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="bar">
+    <a class="brand" href="index.html">CS2 <span>Pick Board</span></a>
+    <span class="sub" style="margin-left:auto">13/13 priced</span>
+  </div>
+  <nav class="chips"><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="tournaments.html">Events</a><a href="sources.html">Sources</a><a href="flagged.html" aria-current="page">Flagged</a><a href="method.html">Method</a></nav>
+</header>
+<div class="fresh"><span class="dot" aria-hidden="true"></span>Live capture 2026-10-21 20:14:36 UTC - 0 min old at build time. Rebuilt every 4 h by the scheduled workflow. <a href="sources.html#access">read log</a></div>
+<div class="wrap">
+
+<h1>Flagged for review</h1>
+<p class="lede">Everything that could not be confirmed, everything that disagreed with the rest of
+the repository, and the guard rails that stopped a wrong price from being used. None of this
+blocks the picks — it is published so you can check it.</p>
+
+<h2>Audit checks</h2>
+<div class="card"><table><thead><tr><th>#</th><th>Check</th><th>Result</th><th>Verdict</th>
+<th>Source</th></tr></thead><tbody><tr><td>C1</td><td class="wrapcell">Newest published Valve global standings file in the repository</td><td class="wrapcell">2026_10_05 (380 ranked rows)</td><td>verified</td><td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">source</a></td></tr><tr><td>C2</td><td class="wrapcell">Global file SHA-256 identical to the copy pinned by session f7279a54 (independent re-read of api.github.com in this session)</td><td class="wrapcell">df96e7fc3cd91a2687ec08cac0128e50cc4e4e55346581679572e881d79ae61b</td><td>verified</td><td><a href="https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">source</a></td></tr><tr><td>C3</td><td class="wrapcell">Every team name in the americas / asia / europe files also appears in the global file (so the regional files add no rating that is not already global)</td><td class="wrapcell">380 regional rows, 0 names absent from global</td><td>verified</td><td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_europe_2026_10_05.md" target="_blank" rel="noopener">source</a></td></tr><tr><td>C4</td><td class="wrapcell">Lowest published rank value (used only for the floor proxy)</td><td class="wrapcell">381 points at standing #380 (Fruju)</td><td>verified</td><td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">source</a></td></tr><tr><td>C5</td><td class="wrapcell">Open fixture count derived independently (status scheduled AND lock in future) matches the count published by the canonical capture</td><td class="wrapcell">13 open fixtures, 13 with a pick</td><td>verified</td><td><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures" target="_blank" rel="noopener">source</a></td></tr><tr><td>C6</td><td class="wrapcell">No HotSpawn URL is used as a probability source (fixture discovery only)</td><td class="wrapcell">8 price citations across 13 rows, none on a hotspawn.com host</td><td>verified</td><td><a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">source</a></td></tr><tr><td>C7</td><td class="wrapcell">Fitted VRS slope reproduces the repository&#x27;s own calibration sample</td><td class="wrapcell">k=0.430779 on 60 market pairs, MAE 7.7 pts (Valve&#x27;s own slope: 12.2 pts)</td><td>verified</td><td><a href="../data/f7279a54/calibration_pairs.json" target="_blank" rel="noopener">source</a></td></tr></tbody></table></div>
+
+<h2>Irregularities</h2>
+<div class="flag"><h3><span class="id">F1</span>Two boards in this repository used Valve&#x27;s un-fitted slope (k=1) and produced probabilities up to 23 points away from the calibrated board for the same official rating pair</h3>
+        <p>data/fe803b80/board.json carries calibration n_pairs=5, fitted=false, k=1.0 (below that session&#x27;s own minimum of 6 pairs) yet still publishes VRS-model probabilities. data/51197e5b/board.json and data/36495748/board.json use k=0.430779 fitted on 60 market pairs. Same ratings, different answers: HOTU vs The Huns 98.4% vs 76.7%; FlyQuest vs Staqued 99.2% vs 84.8%. This session publishes one calibration, fitted on the 60 pairs, and refuses to publish a model number it could not fit.</p>
+        <p class="files">Files: <a href="../data/fe803b80/board.json" target="_blank" rel="noopener">data/fe803b80/board.json</a>, <a href="../data/51197e5b/board.json" target="_blank" rel="noopener">data/51197e5b/board.json</a>, <a href="../data/36495748/board.json" target="_blank" rel="noopener">data/36495748/board.json</a>, <a href="../data/f7279a54/calibration_pairs.json" target="_blank" rel="noopener">data/f7279a54/calibration_pairs.json</a> · verdict:
+        <b>irregular</b></p></div><div class="flag"><h3><span class="id">F2</span>Dormant duplicate rosters were used by an earlier board, changing a pick by up to 26 points</h3>
+        <p>Valve publishes one row per roster, so three open fixtures have two rows under the same name. data/fe803b80/board.json priced them with the dormant roster in every case: benched gods #329 (516 pts, last counted match 2026-05-08) instead of #157 (811 pts, 2026-10-02); The Huns #213 (701, 2026-05-12) instead of #122 (944, 2026-10-04); Banda Chuya #373 (402, a two-player roster) instead of #165 (801, 2026-10-04). This session selects the five-player, most recently active roster and publishes the rejected candidate and the probability it would have produced.</p>
+        <p class="files">Files: <a href="../data/fe803b80/board.json" target="_blank" rel="noopener">data/fe803b80/board.json</a>, <a href="../data/86f3af65/valve/standings_global_2026_10_05.md" target="_blank" rel="noopener">data/86f3af65/valve/standings_global_2026_10_05.md</a>, <a href="../data/86f3af65/valve/details/" target="_blank" rel="noopener">data/86f3af65/valve/details/</a> · verdict:
+        <b>needs review</b></p></div><div class="flag"><h3><span class="id">F3</span>A usable Melbet price for UNiTY vs Apogee was never joined because of a sponsor-name variant, leaving the row blank on one board and model-only on another</h3>
+        <p>Melbet lists &#x27;UNiTY vs Apogee Esports&#x27; at 2.355 / 1.54 for 2026-10-22 14:00Z in &#x27;CS 2. Stake Ranked Closed Qualifier&#x27;; HotSpawn lists &#x27;UNiTY vs Apogee Betclic&#x27; at the same minute in &#x27;Stake Ranked Episode 6: Closed Qualifier&#x27;. The canonical collector stores the Melbet quote but cannot join it, so data/fe803b80/board.json leaves the row blank and data/51197e5b/board.json prices it 86.9% UNiTY from the rating model. This session applies the alias, prices it from Melbet (Apogee 60.4%) and flags the 47-point disagreement with the rating model as contested.</p>
+        <p class="files">Files: <a href="../data/f7279a54/snapshot.json" target="_blank" rel="noopener">data/f7279a54/snapshot.json</a>, <a href="../data/fe803b80/board.json" target="_blank" rel="noopener">data/fe803b80/board.json</a>, <a href="../data/51197e5b/board.json" target="_blank" rel="noopener">data/51197e5b/board.json</a> · verdict:
+        <b>needs review</b></p></div><div class="flag"><h3><span class="id">F4</span>The canonical collector can never join a Kalshi quote (start time hard-wired to None)</h3>
+        <p>scripts/f7279a54/collect.py::kalshi_start() returns None for every event, and core.match_quote() rejects a quote without a verifiable kickoff. The exchange therefore cannot enter any pick on that board by construction, even when both names and the ticker time agree. This session keeps the same rule (no guessed timezone -&gt; no join) but publishes every such quote as an observation on the Flagged page instead of dropping it silently.</p>
+        <p class="files">Files: <a href="../scripts/f7279a54/collect.py" target="_blank" rel="noopener">scripts/f7279a54/collect.py</a>, <a href="../scripts/f7279a54/core.py" target="_blank" rel="noopener">scripts/f7279a54/core.py</a> · verdict:
+        <b>irregular</b></p></div><div class="flag"><h3><span class="id">F5</span>Unverifiable roster-identity claim carried as if it were sourced</h3>
+        <p>data/fe803b80/board.json prices fixture 1082837 (Zetta vs LOS NINOS) from a Kalshi market on &#x27;Los Ninos vs Alianza Lima Esports&#x27; after an alias_note claiming Alianza Lima Esports fields Zetta&#x27;s roster, citing bo3.gg. Valve&#x27;s four published files contain no &#x27;Alianza Lima Esports&#x27; row at all, and bo3.gg could not be re-read in this session, so the claim cannot be re-verified. This session publishes that market as an observation only and prices the fixture from official Valve points with the unrated-team floor proxy, both disclosed.</p>
+        <p class="files">Files: <a href="../data/fe803b80/board.json" target="_blank" rel="noopener">data/fe803b80/board.json</a>, <a href="../data/86f3af65/valve/standings_americas_2026_10_05.md" target="_blank" rel="noopener">data/86f3af65/valve/standings_americas_2026_10_05.md</a> · verdict:
+        <b>needs review</b></p></div><div class="flag"><h3><span class="id">F6</span>Never join on one team name: a Kalshi event one minute away from a HotSpawn fixture is a different match</h3>
+        <p>Kalshi lists &#x27;Los Ninos vs Alianza Lima Esports&#x27; at 22:00Z, the same minute as HotSpawn&#x27;s &#x27;Zetta vs LOS NINOS&#x27;. They share one team. Any matcher that accepts a single-name join would silently import the wrong price; this session requires both names plus an agreeing kickoff.</p>
+        <p class="files">Files: <a href="../data/f7279a54/snapshot.json" target="_blank" rel="noopener">data/f7279a54/snapshot.json</a> · verdict:
+        <b>verified-guard</b></p></div><div class="flag"><h3><span class="id">F7</span>Four open fixtures have no HotSpawn match page (lobby URL only)</h3>
+        <p>HotSpawn&#x27;s transfer state publishes permalinks only for some fixtures; the four DFRAG Invitational 2026 fixtures (1082858-1082861) fall back to the lobby page. Their fixture data is still read from the public API, but there is no per-match page to cite.</p>
+        <p class="files">Files: <a href="../data/f7279a54/snapshot.json" target="_blank" rel="noopener">data/f7279a54/snapshot.json</a> · verdict:
+        <b>needs review</b></p></div><div class="flag"><h3><span class="id">F8</span>The fixture feed carries 78 &#x27;scheduled&#x27; CS2 rows of which only 13 are still pickable</h3>
+        <p>Many rows keep status &#x27;scheduled&#x27; long after their lock time has passed (61 such rows in the canonical capture). A consumer that treats &#x27;scheduled&#x27; as &#x27;open&#x27; will publish picks for matches that cannot be entered. This session opens a fixture only when status is scheduled AND its lock time is in the future.</p>
+        <p class="files">Files: <a href="../data/f7279a54/snapshot.json" target="_blank" rel="noopener">data/f7279a54/snapshot.json</a> · verdict:
+        <b>irregular</b></p></div><div class="flag"><h3><span class="id">F9</span>HLTV and Polymarket could not be read from the collection runner</h3>
+        <p>The 19:24Z capture recorded hltv.org/matches -&gt; HTTP 403 with a zero-byte body, and the Polymarket CS2 tag probe returned zero match markets. Neither is used anywhere in this board. HLTV publishes results and match pages, not two-way prices, so it is used here only as a tournament/history pointer.</p>
+        <p class="files">Files: <a href="../data/f7279a54/snapshot.json" target="_blank" rel="noopener">data/f7279a54/snapshot.json (access_log)</a> · verdict:
+        <b>verified-limitation</b></p></div>
+
+<h2>Duplicate roster names in Valve's file that touch an open fixture</h2>
+<div class="card"><table><thead><tr><th>Team</th><th>Every published row</th></tr></thead>
+<tbody><tr><td class="wrapcell">Banda Chuya</td><td class="wrapcell">#165 · 801 pts · 5 players · last match 2026-10-04<br><span class="small sub">AdrieN, ezox, maaryy, Showk, tomiko</span><br>#373 · 402 pts · 2 players · last match 2026-09-11<br><span class="small sub">ezox, manio</span></td></tr><tr><td class="wrapcell">benched gods</td><td class="wrapcell">#157 · 811 pts · 5 players · last match 2026-10-02<br><span class="small sub">facer, K014NZ, norescue, Wign, yoyoS2</span><br>#329 · 516 pts · 5 players · last match 2026-05-08<br><span class="small sub">BloodyK, f1chper, K014NZ, MisterHy, Wign</span></td></tr><tr><td class="wrapcell">The Huns</td><td class="wrapcell">#122 · 944 pts · 5 players · last match 2026-10-04<br><span class="small sub">Annihilation, Bart4k, bexyz, controlez, Cozen</span><br>#213 · 701 pts · 5 players · last match 2026-05-12<br><span class="small sub">Bart4k, controlez, nin9, sk0R, xerolte</span></td></tr></tbody></table>
+<p class="small sub">28 further duplicate names exist in the 380-row file but touch
+no open fixture; they are listed in <a href="../data/86f3af65/board.json">board.json</a>
+(<code>audit.duplicate_vrs_table</code>).</p></div>
+
+<h2>How this board differs from the earlier boards in this repository</h2>
+<p class="sub">Same fixtures, same official ratings, different answers. Any gap of five points or
+more is listed; the file behind each column is committed in the repository.</p>
+<div class="card"><table><thead><tr><th>Fixture</th><th>This board</th>
+<th>fe803b80 (19:29Z)</th><th>51197e5b</th><th>36495748 (16:45Z)</th><th>Max gap</th></tr></thead>
+<tbody><tr><td class="wrapcell">Zetta v LOS NINOS</td><td>55.5%<br><span class="small sub">originated (floor proxy)</span></td><td>38.6%<br><span class="small sub">market</span></td><td>55.5%<br><span class="small sub">floor_estimate</span></td><td>55.5%<br><span class="small sub">directional_floor</span></td><td>17.0 pts</td></tr><tr><td class="wrapcell">benched gods v TitanFlow</td><td>73.8%<br><span class="small sub">originated (floor proxy)</span></td><td>54.0%<br><span class="small sub">model</span></td><td>73.8%<br><span class="small sub">floor_estimate</span></td><td><span class="sub">blank</span><br><span class="small sub">—</span></td><td>19.8 pts</td></tr><tr><td class="wrapcell">Donstu v Banda chuya</td><td>45.9%<br><span class="small sub">originated (Valve VRS)</span></td><td>86.4%<br><span class="small sub">model</span></td><td>45.9%<br><span class="small sub">model</span></td><td>45.9%<br><span class="small sub">vrs_model</span></td><td>40.5 pts</td></tr><tr><td class="wrapcell">UNiTY v Apogee Betclic</td><td>39.5%<br><span class="small sub">market (contested)</span></td><td><span class="sub">blank</span><br><span class="small sub">—</span></td><td>87.0%<br><span class="small sub">floor_estimate</span></td><td><span class="sub">blank</span><br><span class="small sub">—</span></td><td>47.4 pts</td></tr><tr><td class="wrapcell">Ground Zero v Off Chops</td><td>76.8%<br><span class="small sub">originated (floor proxy)</span></td><td>70.9%<br><span class="small sub">model</span></td><td>76.8%<br><span class="small sub">floor_estimate</span></td><td><span class="sub">blank</span><br><span class="small sub">—</span></td><td>5.9 pts</td></tr><tr><td class="wrapcell">NEXVOID v Alter Ego</td><td>60.5%<br><span class="small sub">originated (Valve VRS)</span></td><td>72.8%<br><span class="small sub">model</span></td><td>60.5%<br><span class="small sub">model</span></td><td><span class="sub">blank</span><br><span class="small sub">—</span></td><td>12.4 pts</td></tr><tr><td class="wrapcell">FlyQuest v Staqued</td><td>84.8%<br><span class="small sub">originated (floor proxy)</span></td><td>99.2%<br><span class="small sub">model</span></td><td>84.8%<br><span class="small sub">floor_estimate</span></td><td><span class="sub">blank</span><br><span class="small sub">—</span></td><td>14.5 pts</td></tr><tr><td class="wrapcell">HOTU v The Huns</td><td>76.7%<br><span class="small sub">originated (Valve VRS)</span></td><td>98.4%<br><span class="small sub">model</span></td><td>76.7%<br><span class="small sub">model</span></td><td>76.7%<br><span class="small sub">vrs_model</span></td><td>21.7 pts</td></tr><tr><td class="wrapcell">5star v 1WIN</td><td>34.1%<br><span class="small sub">originated (Valve VRS)</span></td><td>17.8%<br><span class="small sub">model</span></td><td>34.1%<br><span class="small sub">model</span></td><td>34.1%<br><span class="small sub">vrs_model</span></td><td>16.3 pts</td></tr></tbody></table>
+<p class="small sub">Probabilities are for the first-named team of this board's fixture pair.</p>
+</div>
+
+<h2>What is deliberately not on this page</h2>
+<div class="card small"><p>No unverified number is shown anywhere on the site. Where a value could
+not be confirmed — an unlisted team's rating, a roster identity we could not re-read, a source we
+could not reach — the row says so and the assumption is named. See
+<a href="unresolved.html">Unresolved &amp; limitations</a>.</p></div>
+
+<div class="foot">
+  <p><b>Independent research.</b> Not affiliated with HotSpawn, Valve, any bookmaker or any
+  exchange. HotSpawn supplies the fixture list and contest context only; it is never used as a
+  probability. Odds are public, unauthenticated reads and move constantly — check the source
+  link before acting on any number here.</p>
+  <p>Board generated 2026-10-21T20:14:36Z from a capture taken
+  2026-10-21T20:14:36Z. Session <code>86f3af65</code>.
+  Data: <a href="../data/86f3af65/board.json">board.json</a>.</p>
+</div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

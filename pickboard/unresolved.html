@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Unresolved &amp; limitations · CS2 Pick Board</title>
+<meta name="description" content="A pick and both win probabilities for every open HotSpawn
+Counter-Strike 2 fixture, built from external bookmaker lines and official Valve rankings.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="bar">
+    <a class="brand" href="index.html">CS2 <span>Pick Board</span></a>
+    <span class="sub" style="margin-left:auto">13/13 priced</span>
+  </div>
+  <nav class="chips"><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html" aria-current="page">Unresolved</a><a href="tournaments.html">Events</a><a href="sources.html">Sources</a><a href="flagged.html">Flagged</a><a href="method.html">Method</a></nav>
+</header>
+<div class="fresh"><span class="dot" aria-hidden="true"></span>Live capture 2026-10-21 20:14:36 UTC - 0 min old at build time. Rebuilt every 4 h by the scheduled workflow. <a href="sources.html#access">read log</a></div>
+<div class="wrap">
+
+<h1>Unresolved picks &amp; limitations</h1>
+<p class="lede">A separate section for every row that could <b>not</b> be resolved the way the
+featured picks are: no bookmaker prices the match, or a team has no published rating, or two
+sources disagree. Each row keeps its pick — nothing is left blank unless there is genuinely no
+basis — but the limitation is stated here in plain language, with what would change it.</p>
+
+<div class="grid three">
+  <div class="kpi"><div class="n">0</div><div class="l">rows with no pick at all</div></div>
+  <div class="kpi"><div class="n">4</div><div class="l">rows using an unrated-team floor</div></div>
+  <div class="kpi"><div class="n">4</div><div class="l">rows with a source conflict</div></div>
+</div>
+
+<div class="note">
+  <b>Summary of the limitation.</b> Low-tier Counter-Strike fixtures are frequently listed by
+  HotSpawn but not priced by any bookmaker or exchange we can read. For those the pick comes from
+  Valve's official rank values, which are published monthly — the current file is
+  <b>2026_10_05</b> — and from a fitted conversion of the point gap into a
+  probability. That conversion has a mean absolute error of
+  <b>7.7 points of probability</b> on the 60 market
+  observations it was fitted on, so treat originated rows as estimates rather than prices.
+</div>
+
+<h2>1 · Rows where a team has no published Valve rating</h2>
+<p class="sub">The team is absent from the global, americas, asia <i>and</i> europe standings files.
+It is assigned the lowest rank value Valve publishes (381
+points at #380). The pick direction is usually
+robust; the number is an assumption. The sensitivity column shows what the model would say at
+higher assumed ratings for the unrated team.</p>
+<div class="card">
+<table><thead><tr><th>Match</th><th>Pick</th><th>Unrated team</th>
+<th>Sensitivity (assumed points → that team's win chance)</th><th>Source</th></tr></thead><tbody>
+<tr><td class="wrapcell">Zetta v LOS NINOS<br>
+  <span class="small sub">CCT South America 2026 Series #7</span></td>
+  <td>Zetta<br><span class="small sub">55.5%</span></td>
+  <td class="wrapcell">LOS NINOS</td>
+  <td class="wrapcell">400 → 45.6% · 600 → 57.6% · 800 → 68.8%</td>
+  <td><a href="https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837" target="_blank" rel="noopener">lobby</a> ·
+  <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve</a></td></tr><tr><td class="wrapcell">benched gods v TitanFlow<br>
+  <span class="small sub">CCT Europe 2026 Challengers #8</span></td>
+  <td>benched gods<br><span class="small sub">73.8%</span></td>
+  <td class="wrapcell">TitanFlow</td>
+  <td class="wrapcell">400 → 27.1% · 600 → 37.5% · 800 → 49.3%</td>
+  <td><a href="https://www.hotspawn.com/matches/benched-gods-vs-titanflow-cct-europe-2026-challengers-8-1081597" target="_blank" rel="noopener">lobby</a> ·
+  <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve</a></td></tr><tr><td class="wrapcell">Ground Zero v Off Chops<br>
+  <span class="small sub">DFRAG Invitational 2026</span></td>
+  <td>Ground Zero<br><span class="small sub">76.8%</span></td>
+  <td class="wrapcell">Off Chops</td>
+  <td class="wrapcell">400 → 24.0% · 600 → 33.8% · 800 → 45.3%</td>
+  <td><a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">lobby</a> ·
+  <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve</a></td></tr><tr><td class="wrapcell">FlyQuest v Staqued<br>
+  <span class="small sub">DFRAG Invitational 2026</span></td>
+  <td>FlyQuest<br><span class="small sub">84.8%</span></td>
+  <td class="wrapcell">Staqued</td>
+  <td class="wrapcell">400 → 15.8% · 600 → 23.3% · 800 → 33.0%</td>
+  <td><a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">lobby</a> ·
+  <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve</a></td></tr>
+</tbody></table></div>
+
+<h2>2 · Rows where Valve publishes two rosters under one name</h2>
+<p class="sub">Valve keeps one row per roster, so the same organisation name can carry two rank
+values. The policy used here: a roster with fewer than five players cannot field a team
+(excluded); if two five-player rosters remain, the one whose official details page shows the most
+recent counted match is used. Both candidates and the probability the rejected one would have
+produced are shown, so the assumption is visible.</p>
+<div class="card">
+<table><thead><tr><th>Match</th><th>Pick</th><th>Roster used</th><th>Roster rejected</th>
+<th>If the other roster played</th></tr></thead><tbody>
+<tr><td class="wrapcell">benched gods v TitanFlow</td>
+  <td>benched gods<br><span class="small sub">73.8%</span></td>
+  <td class="wrapcell">benched gods #157 (811 pts, roster facer, K014NZ, norescue, Wign, yoyoS2, last counted match 2026-10-02)</td>
+  <td class="wrapcell">benched gods #329 (516 pts, roster BloodyK, f1chper, K014NZ, MisterHy, Wign)</td>
+  <td>58.1% benched gods</td></tr><tr><td class="wrapcell">Donstu v Banda chuya</td>
+  <td>Banda chuya<br><span class="small sub">54.2%</span></td>
+  <td class="wrapcell">Banda chuya #165 (801 pts, roster AdrieN, ezox, maaryy, Showk, tomiko, last counted match 2026-10-04)</td>
+  <td class="wrapcell">Banda chuya #373 (402 pts, roster ezox, manio)</td>
+  <td>68.9% Donstu</td></tr><tr><td class="wrapcell">HOTU v The Huns</td>
+  <td>HOTU<br><span class="small sub">76.7%</span></td>
+  <td class="wrapcell">The Huns #122 (944 pts, roster Annihilation, Bart4k, bexyz, controlez, Cozen, last counted match 2026-10-04)</td>
+  <td class="wrapcell">The Huns #213 (701 pts, roster Bart4k, controlez, nin9, sk0R, xerolte)</td>
+  <td>85.5% HOTU</td></tr>
+</tbody></table></div>
+
+<h2>3 · Rows where the market and the rating model disagree</h2>
+<div class="note bad"><b>UNiTY v Apogee Betclic</b> —
+Stake Ranked Episode 6: Closed Qualifier. Market: UNiTY 39.5%; rating model:
+UNiTY 86.9%. The external price and the originated Valve-VRS line disagree by 47 points; the external price is used because market prices outrank a model here, but treat this row as contested.</div>
+
+<h2>4 · Prices that were seen but deliberately NOT used</h2>
+<p class="sub">Publishing a rejected join is how a reader can tell the difference between "no price
+exists" and "a price exists but could not be safely attached".</p>
+<div class="card">
+<table><thead><tr><th>Fixture</th><th>Source</th><th>Names on the source</th><th>Raw</th>
+<th>Why not used</th></tr></thead><tbody>
+<tr><td class="wrapcell">Zetta v LOS NINOS</td><td><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211800lnale" target="_blank" rel="noopener">Kalshi (exchange)</a></td><td class="wrapcell">Los Ninos v Alianza Lima Esports</td><td>1.6949 / 2.5641</td><td class="wrapcell">only one team name matches this fixture - not admissible (a single-name join can attach another match&#x27;s price)</td></tr><tr><td class="wrapcell">Vitalem Aerem v Rare Atom</td><td><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct220100rava" target="_blank" rel="noopener">Kalshi (exchange)</a></td><td class="wrapcell">Rare Atom v Vitalem Aerem</td><td>1.7857 / 2.7027</td><td class="wrapcell">source kickoff time not verifiable</td></tr><tr><td class="wrapcell">benched gods v TitanFlow</td><td><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct220700titmor" target="_blank" rel="noopener">Kalshi (exchange)</a></td><td class="wrapcell">TitanFlow v MORROW</td><td>2.0 / 2.0</td><td class="wrapcell">only one team name matches this fixture - not admissible (a single-name join can attach another match&#x27;s price)</td></tr><tr><td class="wrapcell">Donstu v Banda chuya</td><td><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct220945lkdon" target="_blank" rel="noopener">Kalshi (exchange)</a></td><td class="wrapcell">los kogutos v Donstu Esports</td><td>1.9048 / 2.0833</td><td class="wrapcell">only one team name matches this fixture - not admissible (a single-name join can attach another match&#x27;s price)</td></tr><tr><td class="wrapcell">Imperial v Turma do Pagode</td><td><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct221000tdpimp" target="_blank" rel="noopener">Kalshi (exchange)</a></td><td class="wrapcell">Turma do Pagode v Imperial</td><td>4.7619 / 1.2821</td><td class="wrapcell">source kickoff time not verifiable</td></tr><tr><td class="wrapcell">UNiTY v Apogee Betclic</td><td><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct221230apogeeunity" target="_blank" rel="noopener">Kalshi (exchange)</a></td><td class="wrapcell">Apogee Esports v UNiTY esports</td><td>2.0 / 1.9608</td><td class="wrapcell">source kickoff time not verifiable</td></tr><tr><td class="wrapcell">NEXVOID v Alter Ego</td><td><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct212300nexmor" target="_blank" rel="noopener">Kalshi (exchange)</a></td><td class="wrapcell">NEXVOID v Morningstar</td><td>1.4388 / 3.9216</td><td class="wrapcell">only one team name matches this fixture - not admissible (a single-name join can attach another match&#x27;s price)</td></tr><tr><td class="wrapcell">HOTU v The Huns</td><td><a href="https://melbet.com/en/line/esports" target="_blank" rel="noopener">Melbet</a></td><td class="wrapcell">The Audacity v The Huns</td><td>3.535 / 1.26</td><td class="wrapcell">only one team name matches this fixture - not admissible (a single-name join can attach another match&#x27;s price)</td></tr><tr><td class="wrapcell">HOTU v The Huns</td><td><a href="https://melbet.com/en/line/esports" target="_blank" rel="noopener">Melbet</a></td><td class="wrapcell">Luminosity v HOTU</td><td>1.71 / 2.02</td><td class="wrapcell">only one team name matches this fixture - not admissible (a single-name join can attach another match&#x27;s price)</td></tr><tr><td class="wrapcell">5star v 1WIN</td><td><a href="https://melbet.com/en/line/esports" target="_blank" rel="noopener">Melbet</a></td><td class="wrapcell">5Star v TheONE 1337</td><td>1.41 / 2.746</td><td class="wrapcell">only one team name matches this fixture - not admissible (a single-name join can attach another match&#x27;s price)</td></tr>
+</tbody></table></div>
+
+<h2>5 · Sources that could not be read, and what that costs us</h2>
+<div class="card small">
+<p><b>HLTV</b> — <code>https://www.hltv.org/matches</code> returned HTTP 403 (HTTPError 403). HLTV publishes match pages and results rather than two-way prices, and its odds panels are populated by partner bookmakers only for covered events; the low-tier fixtures here have no HLTV odds panel. No number on this site depends on HLTV.</p>
+<p><b>Polymarket</b> — <code>https://gamma-api.polymarket.com/events?closed=false&amp;tag_slug=counter-strike</code>
+returned no CS2 match markets at capture time, so that venue is not represented. Polymarket's
+coverage of low-tier CS2 is thin; a listing there would be used as an exchange price (rung 2) if
+both names and the kickoff joined.</p>
+<p><b>Thunderpick</b> is an esportsbook whose prices are visible through bo3.gg match pages. It
+priced the market rows in earlier sessions' captures and added nothing that Pinnacle, Bovada or
+Melbet did not already price, so it appears in the source ledger but is not a separate rung at
+this build.</p>
+<p><b>What would remove each limitation:</b> a bookmaker opening these matches (low-tier CS2 lines
+typically appear in the last 12–24 h before kickoff, so re-running nearer the lock is the single
+most useful action); a published rating for the unrated team; or a roster document confirming
+which of Valve's two rows is being fielded.</p>
+</div>
+
+<h2>6 · Fixtures with no pick at all</h2>
+<p class="sub">None: every open fixture has a pick this build.</p>
+
+<div class="foot">
+  <p><b>Independent research.</b> Not affiliated with HotSpawn, Valve, any bookmaker or any
+  exchange. HotSpawn supplies the fixture list and contest context only; it is never used as a
+  probability. Odds are public, unauthenticated reads and move constantly — check the source
+  link before acting on any number here.</p>
+  <p>Board generated 2026-10-21T20:14:36Z from a capture taken
+  2026-10-21T20:14:36Z. Session <code>86f3af65</code>.
+  Data: <a href="../data/86f3af65/board.json">board.json</a>.</p>
+</div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

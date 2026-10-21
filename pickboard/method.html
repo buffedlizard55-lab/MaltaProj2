@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Method · CS2 Pick Board</title>
+<meta name="description" content="A pick and both win probabilities for every open HotSpawn
+Counter-Strike 2 fixture, built from external bookmaker lines and official Valve rankings.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="bar">
+    <a class="brand" href="index.html">CS2 <span>Pick Board</span></a>
+    <span class="sub" style="margin-left:auto">13/13 priced</span>
+  </div>
+  <nav class="chips"><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="tournaments.html">Events</a><a href="sources.html">Sources</a><a href="flagged.html">Flagged</a><a href="method.html" aria-current="page">Method</a></nav>
+</header>
+<div class="fresh"><span class="dot" aria-hidden="true"></span>Live capture 2026-10-21 20:14:36 UTC - 0 min old at build time. Rebuilt every 4 h by the scheduled workflow. <a href="sources.html#access">read log</a></div>
+<div class="wrap">
+
+<h1>Method</h1>
+<p class="lede">How a HotSpawn fixture becomes a pick: the reverse-engineered lobby, the ladder,
+the arithmetic, and the commands that reproduce every number on this site.</p>
+
+<h2>1 · The HotSpawn Pick'ems lobby, reverse engineered</h2>
+<div class="card small">
+<p>The lobby at <a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">
+play.hotspawn.com/lobby</a> is an Angular single-page app. Its server-rendered transfer state
+(<code>&lt;script id="ng-state"&gt;</code>) contains the same fixture array the page requests from
+the endpoint below, plus the week window, the offered points and the per-match permalinks.</p>
+<table><thead><tr><th>What</th><th>Where</th></tr></thead><tbody>
+<tr><td>Lobby page</td><td class="wrapcell"><code>https://play.hotspawn.com/lobby</code></td></tr>
+<tr><td>Fixtures API (used by the page itself)</td>
+<td class="wrapcell"><code>https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures</code></td></tr>
+<tr><td>Counter-Strike filter</td><td class="wrapcell"><code>sport_alias == "cs2"</code></td></tr>
+<tr><td>Fields used</td><td class="wrapcell"><code>id, competition_name, tier, stage, best_of,
+offered_points, status, scheduled_start_time, lock_time, participants0/1_name,
+participants0/1_score, sport_alias</code></td></tr>
+<tr><td>Fields refused</td><td class="wrapcell">any crowd "picked %" / ownership field — never
+read, never used</td></tr>
+<tr><td>Open definition</td><td class="wrapcell"><code>status == "scheduled"</code> <b>and</b>
+<code>lock_time &gt; now</code>. The feed keeps 61+ rows at "scheduled" long after they locked; a
+consumer that trusts status alone will publish picks for matches that can no longer be entered.</td></tr>
+<tr><td>Freshness</td><td class="wrapcell">the API response carries an <code>Age</code> header
+(upstream cache); both the page and the API are read and merged, and the age is recorded in
+<code>capture.json</code>.</td></tr>
+</tbody></table>
+<p>At this build: <b>166</b> CS2 rows read,
+<b>13</b> open (lock in the future);
+40 further rows locked inside the last 24 hours and are listed
+for context only.</p>
+</div>
+
+<h2>2 · The ladder</h2>
+<div class="card small">
+<table><thead><tr><th>Rung</th><th>Input</th><th>Rule</th><th>Used by</th></tr></thead><tbody>
+<tr><td>1</td><td class="wrapcell">Licensed bookmakers: Pinnacle, Bovada, Melbet</td>
+<td class="wrapcell">Main-period two-way moneyline only. Both names must agree after
+normalisation (or a published alias) <b>and</b> the source kickoff must be within 5 minutes of
+HotSpawn's. Margin removed proportionally; Pinnacle weighted 2, others 1.</td>
+<td>3</td></tr>
+<tr><td>2</td><td class="wrapcell">Kalshi (CFTC-regulated exchange, series
+<code>KXCS2GAME</code>)</td><td class="wrapcell">Mid of the yes bid/ask, rejected if either side is
+missing or the spread exceeds 10c. A price is only usable if the event carries a verifiable
+kickoff — the ticker timestamp is not treated as a kickoff.</td><td>1
+(observation only this build)</td></tr>
+<tr><td>3</td><td class="wrapcell">Official Valve Regional Standings (global file)</td>
+<td class="wrapcell">Point gap → probability with the fitted slope below. Duplicate roster names
+resolved by the published policy.</td><td>5</td></tr>
+<tr><td>4</td><td class="wrapcell">Valve floor value (381 pts, #380)</td>
+<td class="wrapcell">Assigned only to a team absent from all four published files, and labelled
+as an assumption.</td><td>4</td></tr>
+<tr><td>5</td><td class="wrapcell">Nothing</td><td class="wrapcell">Blank row, published with the
+sources attempted.</td><td>0</td></tr>
+</tbody></table>
+</div>
+
+<h2>3 · The arithmetic</h2>
+<div class="card small">
+<p><b>De-vig.</b> For decimals <code>d_a, d_b</code>:
+<code>p_a = (1/d_a) / (1/d_a + 1/d_b)</code>. A book whose implied sum falls outside
+0.95–1.30 is rejected as bad data rather than trimmed.</p>
+<p><b>Valve's curve.</b> Valve publishes its model: <code>Q = ln(10)/400</code>,
+<code>g = 1/sqrt(1 + 3·Q²·RD²/π²)</code> with <code>RD = 75</code>, and expected score
+<code>1/(1 + 10^(g·(r−r₀)/−400))</code>. That is a logistic in the point gap with slope
+<code>C = g·ln(10)/400 = 0.0056000078</code>.</p>
+<p><b>The fitted slope.</b> A straight read of that curve is too steep (Valve's own README says
+so). We fit <code>k</code> in <code>logit(p) = k · C · Δpoints</code> by least squares through the
+origin on <b>60</b> (fixture, market consensus) pairs captured by this repository:
+<code>k = 0.430779</code> (raw 0.430779, bounds [0.25, 1.5]). Mean absolute
+error <b>7.7 probability points</b>; Valve's un-fitted slope scores
+12.2 points on the same sample. Residual sd
+9.3 points — that is the honest error bar on every originated row.</p>
+<p><b>Duplicate rosters.</b> 2026_10_05 publishes one row per roster. Policy: drop
+rosters with fewer than five players; if two five-player rosters remain, take the one whose
+official details page shows the most recent counted match; if they tie, leave the fixture
+unrated.</p>
+<p><b>Contested rows.</b> If a market price and the rating model differ by more than 15 points the
+market is still used (it is a price), but the row is labelled <i>contested</i> and listed on the
+Unresolved page.</p>
+</div>
+
+<h2>4 · Verification performed</h2>
+<div class="card small">
+<ul>
+<li>Valve's newest published global standings was re-listed live from <code>api.github.com</code>:
+<b>2026_10_05</b> is the current file (no later file exists).</li>
+<li>Its SHA-256 matches the copy pinned by an earlier session byte for byte
+(<code>df96e7fc3cd91a2687ec08cac0128e50cc4e4e55346581679572e881d79ae61b</code>).</li>
+<li>All four published files parsed: global=380, americas=89, asia=46, europe=245 rows.
+Every regional name also appears in the global file (check C3), so the global pool is complete.</li>
+<li>Every published probability is recomputed from its cited raw price in
+<code>tests/test_86f3af65.py</code>; any drift fails the build.</li>
+<li>No HotSpawn URL appears among any row's price citations (check C6).</li>
+<li>The 20 official per-roster details pages needed for duplicate names were re-read and their
+dates recorded (<code>data/86f3af65/valve/details/</code>).</li>
+</ul>
+</div>
+
+<h2>5 · Reproduce it</h2>
+<div class="card small">
+<pre style="overflow-x:auto;font-size:12px"><code>python3 scripts/86f3af65/collect.py --live    # or --from-canonical (committed evidence)
+python3 scripts/86f3af65/build.py             # board.json
+python3 scripts/86f3af65/site.py              # pickboard/*.html
+python3 -m unittest tests.test_86f3af65 -v</code></pre>
+<p>Refresh cadence: <code>cron: '17 */4 * * *'</code> in
+<code>.github/workflows/pickboard-86f3af65.yml</code>, plus a manual dispatch. The workflow fails
+loudly if the board comes out with a blank row, a probability that does not re-derive, or a
+HotSpawn-only citation.</p>
+</div>
+
+<div class="foot">
+  <p><b>Independent research.</b> Not affiliated with HotSpawn, Valve, any bookmaker or any
+  exchange. HotSpawn supplies the fixture list and contest context only; it is never used as a
+  probability. Odds are public, unauthenticated reads and move constantly — check the source
+  link before acting on any number here.</p>
+  <p>Board generated 2026-10-21T20:14:36Z from a capture taken
+  2026-10-21T20:14:36Z. Session <code>86f3af65</code>.
+  Data: <a href="../data/86f3af65/board.json">board.json</a>.</p>
+</div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
