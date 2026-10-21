@@ -1,575 +1,40 @@
 {
   "session": "7adc7718",
   "policy": "external-markets-then-hltv-then-exchange-then-vrs-never-crowd-v1",
-  "generated_utc": "2026-10-21T13:59:03Z",
-  "fixture_snapshot_utc": "2026-10-21T13:59:01Z",
+  "generated_utc": "2026-10-21T20:09:10Z",
+  "fixture_snapshot_utc": "2026-10-21T20:09:07Z",
   "refresh_schedule": "17 */4 * * * (every 4 hours via .github/workflows/lobby-7adc7718.yml)",
   "summary": {
     "week_id": 273,
     "cs2_total_in_week": 238,
-    "open_matches": 12,
-    "resolved_with_pick": 11,
-    "featured_market": 6,
-    "rescue_exchange": 2,
+    "open_matches": 9,
+    "resolved_with_pick": 6,
+    "featured_market": 3,
+    "rescue_exchange": 0,
     "rescue_vrs_model": 3,
-    "unresolved_blank": 1,
-    "flagged_items": 11,
-    "coverage_pct": 91.7
+    "unresolved_blank": 3,
+    "flagged_items": 13,
+    "coverage_pct": 66.7
   },
   "calibration": {
     "formula": "p_a = 1 / (1 + exp(-beta * (vrs_points_a - vrs_points_b)))",
     "beta": 0.00142,
     "beta_unclipped": 0.00142,
-    "n_calibration_pairs": 3,
-    "in_sample_mae": 0.0784,
+    "n_calibration_pairs": 1,
+    "in_sample_mae": 0.1107,
     "vrs_snapshot_date": "2026-10-21",
     "vrs_source_url": "https://www.hltv.org/valve-ranking/teams/2026/october/21",
     "pairs": [
       {
-        "fixture_id": "1082177",
-        "match": "BRUTE vs Sangal",
-        "delta_points": -508.0,
-        "market_prob_a": 0.381643,
-        "logit": -0.48258140326936927
-      },
-      {
-        "fixture_id": "1082178",
-        "match": "Metizport vs GenOne",
-        "delta_points": 309.0,
-        "market_prob_a": 0.65942,
-        "logit": 0.6607128405095261
-      },
-      {
         "fixture_id": "1082689",
         "match": "BESTIA vs ShindeN",
         "delta_points": 382.0,
-        "market_prob_a": 0.503095,
-        "logit": 0.012382158198055111
+        "market_prob_a": 0.521715,
+        "logit": 0.08691266886802777
       }
     ]
   },
   "matches": [
-    {
-      "fixture_id": "1082177",
-      "competition": "Stake Ranked Episode 6: Closed Qualifier",
-      "hotspawn_tier": "b",
-      "points": 3,
-      "start_utc": "2026-10-21T15:00:00Z",
-      "lock_utc": "2026-10-21T14:54:00Z",
-      "team_a": "BRUTE",
-      "team_b": "Sangal",
-      "prob_a": 0.381643,
-      "prob_b": 0.618357,
-      "pick": "Sangal",
-      "pick_prob": 0.618357,
-      "confidence": "Solid",
-      "resolution_tier": "featured_market",
-      "resolution_label": "Featured · Multi-Book Market",
-      "book_count": 3,
-      "quotes": [
-        {
-          "source_key": "bovada",
-          "source_name": "Bovada",
-          "kind": "sportsbook",
-          "team_a": "BRUTE",
-          "team_b": "Sangal",
-          "decimal_a": 2.45,
-          "decimal_b": 1.526316,
-          "no_vig_prob_a": 0.383852,
-          "no_vig_prob_b": 0.616148,
-          "overround": 0.063336,
-          "provider_swapped": true,
-          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-          "public_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-          "retrieved_utc": "2026-10-21T13:54:17Z"
-        },
-        {
-          "source_key": "melbet",
-          "source_name": "Melbet",
-          "kind": "sportsbook",
-          "team_a": "BRUTE",
-          "team_b": "Sangal",
-          "decimal_a": 2.458,
-          "decimal_b": 1.54,
-          "no_vig_prob_a": 0.385193,
-          "no_vig_prob_b": 0.614807,
-          "overround": 0.056185,
-          "provider_swapped": true,
-          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "public_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "retrieved_utc": "2026-10-21T13:54:17Z"
-        },
-        {
-          "source_key": "pinnacle",
-          "source_name": "Pinnacle",
-          "kind": "sportsbook",
-          "team_a": "BRUTE",
-          "team_b": "Sangal",
-          "decimal_a": 2.49,
-          "decimal_b": 1.518135,
-          "no_vig_prob_a": 0.378763,
-          "no_vig_prob_b": 0.621237,
-          "overround": 0.060309,
-          "provider_swapped": true,
-          "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638828407/markets/related/straight",
-          "public_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638828407/markets/related/straight",
-          "retrieved_utc": "2026-10-21T13:54:14Z"
-        }
-      ],
-      "vrs_a": {
-        "name": "BRUTE",
-        "rank": 219,
-        "points": 626
-      },
-      "vrs_b": {
-        "name": "Sangal",
-        "rank": 74,
-        "points": 1134
-      },
-      "hltv_url": "https://www.hltv.org/matches/2399782/sangal-vs-brute-stake-ranked-episode-6-closed-qualifier",
-      "hotspawn_url": "https://www.hotspawn.com/matches/sangal-vs-brute-stake-ranked-episode-6-closed-qualifier-1082177",
-      "sources": [
-        {
-          "label": "HLTV Match",
-          "url": "https://www.hltv.org/matches/2399782/sangal-vs-brute-stake-ranked-episode-6-closed-qualifier",
-          "official": true
-        },
-        {
-          "label": "Bovada",
-          "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-          "official": true
-        },
-        {
-          "label": "Melbet",
-          "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "official": true
-        },
-        {
-          "label": "Pinnacle",
-          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638828407/markets/related/straight",
-          "official": true
-        },
-        {
-          "label": "HotSpawn Card",
-          "url": "https://www.hotspawn.com/matches/sangal-vs-brute-stake-ranked-episode-6-closed-qualifier-1082177",
-          "official": true
-        }
-      ],
-      "crowd_display_only": {
-        "crowd_a_pct": 3,
-        "crowd_b_pct": 97,
-        "used_in_probability": false
-      },
-      "flag_ids": [
-        "F-02"
-      ],
-      "note": "HotSpawn API sets team_a=BRUTE, team_b=Sangal while renaming the match URL slug to sangal-vs-brute-...-1082177. Quotes strictly oriented to team_a=BRUTE (38.2%) / team_b=Sangal (61.8%) across Pinnacle, Bovada, and Melbet.",
-      "unresolvable_reason": null
-    },
-    {
-      "fixture_id": "1082762",
-      "competition": "CIS LAN Championship #9",
-      "hotspawn_tier": "c",
-      "points": 2,
-      "start_utc": "2026-10-21T15:00:00Z",
-      "lock_utc": "2026-10-21T14:54:00Z",
-      "team_a": "ex-CYBERSHOKE",
-      "team_b": "BlinkDagger",
-      "prob_a": 0.81,
-      "prob_b": 0.19,
-      "pick": "ex-CYBERSHOKE",
-      "pick_prob": 0.81,
-      "confidence": "Solid",
-      "resolution_tier": "rescue_exchange",
-      "resolution_label": "Low-Tier Rescue · HLTV + Exchange Book",
-      "book_count": 1,
-      "quotes": [
-        {
-          "source_key": "kalshi",
-          "source_name": "Kalshi KXCS2GAME",
-          "kind": "exchange",
-          "team_a": "ex-CYBERSHOKE",
-          "team_b": "BlinkDagger",
-          "decimal_a": 1.234568,
-          "decimal_b": 5.263158,
-          "no_vig_prob_a": 0.81,
-          "no_vig_prob_b": 0.19,
-          "overround": -0.0,
-          "provider_swapped": false,
-          "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-          "public_url": "https://kalshi.com/markets/kxcs2game",
-          "retrieved_utc": "2026-10-21T01:35:00Z"
-        }
-      ],
-      "vrs_a": {
-        "name": "ex-CYBERSHOKE (CYBERSHOKE core)",
-        "rank": 78,
-        "points": 1110
-      },
-      "vrs_b": null,
-      "hltv_url": "https://www.hltv.org/matches/2399839/ex-cybershoke-vs-blinkdagger-winline-mpkbk-cis-lan-season-9",
-      "hotspawn_url": "https://www.hotspawn.com/matches/ex-cybershoke-vs-blinkdagger-cis-lan-championship-9-1082762",
-      "sources": [
-        {
-          "label": "HLTV Match",
-          "url": "https://www.hltv.org/matches/2399839/ex-cybershoke-vs-blinkdagger-winline-mpkbk-cis-lan-season-9",
-          "official": true
-        },
-        {
-          "label": "Kalshi KXCS2GAME",
-          "url": "https://kalshi.com/markets/kxcs2game",
-          "official": true
-        },
-        {
-          "label": "HotSpawn Card",
-          "url": "https://www.hotspawn.com/matches/ex-cybershoke-vs-blinkdagger-cis-lan-championship-9-1082762",
-          "official": true
-        }
-      ],
-      "crowd_display_only": {
-        "crowd_a_pct": 89,
-        "crowd_b_pct": 11,
-        "used_in_probability": false
-      },
-      "flag_ids": [
-        "F-06"
-      ],
-      "note": "Primary sportsbooks unlisted under ex-org tag. HLTV match 2399839 confirms ex-CYBERSHOKE fields the exact 5-man CYBERSHOKE VRS #78 roster (bl1x1, Mokuj1n, nota, yiksrezo, shoke) against unranked BlinkDagger, corroborated by active two-sided Kalshi KXCS2GAME contracts (1.2346 / 5.2632 -> 81.0% / 19.0%).",
-      "unresolvable_reason": null
-    },
-    {
-      "fixture_id": "1082763",
-      "competition": "CIS LAN Championship #9",
-      "hotspawn_tier": "c",
-      "points": 2,
-      "start_utc": "2026-10-21T15:00:00Z",
-      "lock_utc": "2026-10-21T14:54:00Z",
-      "team_a": "UPGRADE",
-      "team_b": "flacons",
-      "prob_a": 0.950739,
-      "prob_b": 0.049261,
-      "pick": "UPGRADE",
-      "pick_prob": 0.950739,
-      "confidence": "Solid",
-      "resolution_tier": "rescue_exchange",
-      "resolution_label": "Low-Tier Rescue · HLTV + Exchange Book",
-      "book_count": 1,
-      "quotes": [
-        {
-          "source_key": "kalshi",
-          "source_name": "Kalshi (exchange)",
-          "kind": "exchange",
-          "team_a": "UPGRADE",
-          "team_b": "flacons",
-          "decimal_a": 1.036269,
-          "decimal_b": 20.0,
-          "no_vig_prob_a": 0.950739,
-          "no_vig_prob_b": 0.049261,
-          "overround": 0.015,
-          "provider_swapped": true,
-          "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-          "public_url": "https://kalshi.com/markets/kxcs2game",
-          "retrieved_utc": "2026-10-21T13:54:17Z"
-        }
-      ],
-      "vrs_a": null,
-      "vrs_b": null,
-      "hltv_url": "https://www.hltv.org/matches/2399840/upgrade-vs-flacons-winline-mpkbk-cis-lan-season-9",
-      "hotspawn_url": "https://www.hotspawn.com/matches/upgrade-vs-flacons-cis-lan-championship-9-1082763",
-      "sources": [
-        {
-          "label": "HLTV Match",
-          "url": "https://www.hltv.org/matches/2399840/upgrade-vs-flacons-winline-mpkbk-cis-lan-season-9",
-          "official": true
-        },
-        {
-          "label": "Kalshi (exchange)",
-          "url": "https://kalshi.com/markets/kxcs2game",
-          "official": true
-        },
-        {
-          "label": "HotSpawn Card",
-          "url": "https://www.hotspawn.com/matches/upgrade-vs-flacons-cis-lan-championship-9-1082763",
-          "official": true
-        }
-      ],
-      "crowd_display_only": {
-        "crowd_a_pct": 95,
-        "crowd_b_pct": 5,
-        "used_in_probability": false
-      },
-      "flag_ids": [],
-      "note": "Primary sportsbooks unlisted; rescued via HLTV match 2399840 + active two-sided Kalshi KXCS2GAME contracts (oriented decimal midpoints 1.0363 / 20.00 -> UPGRADE 95.1% / flacons 4.9%).",
-      "unresolvable_reason": null
-    },
-    {
-      "fixture_id": "1082835",
-      "competition": "CCT South America 2026 Series #7",
-      "hotspawn_tier": "c",
-      "points": 2,
-      "start_utc": "2026-10-21T16:00:00Z",
-      "lock_utc": "2026-10-21T15:54:00Z",
-      "team_a": "JOGA DE TERNO",
-      "team_b": "Martians",
-      "prob_a": 0.624368,
-      "prob_b": 0.375632,
-      "pick": "JOGA DE TERNO",
-      "pick_prob": 0.624368,
-      "confidence": "Solid",
-      "resolution_tier": "featured_market",
-      "resolution_label": "Featured · Multi-Book Market",
-      "book_count": 2,
-      "quotes": [
-        {
-          "source_key": "bovada",
-          "source_name": "Bovada",
-          "kind": "sportsbook",
-          "team_a": "JOGA DE TERNO",
-          "team_b": "Martians",
-          "decimal_a": 1.5,
-          "decimal_b": 2.5,
-          "no_vig_prob_a": 0.625,
-          "no_vig_prob_b": 0.375,
-          "overround": 0.066667,
-          "provider_swapped": false,
-          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-          "public_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-          "retrieved_utc": "2026-10-21T13:54:17Z"
-        },
-        {
-          "source_key": "melbet",
-          "source_name": "Melbet",
-          "kind": "sportsbook",
-          "team_a": "JOGA DE TERNO",
-          "team_b": "Martians",
-          "decimal_a": 1.49,
-          "decimal_b": 2.47,
-          "no_vig_prob_a": 0.623737,
-          "no_vig_prob_b": 0.376263,
-          "overround": 0.075999,
-          "provider_swapped": false,
-          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "public_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "retrieved_utc": "2026-10-21T13:54:17Z"
-        }
-      ],
-      "vrs_a": null,
-      "vrs_b": null,
-      "hltv_url": "https://www.hltv.org/matches/2399863/joga-de-terno-vs-martians-cct-2026-south-america-series-7",
-      "hotspawn_url": "https://www.hotspawn.com/matches/joga-de-terno-vs-martians-cct-south-america-2026-series-7-1082835",
-      "sources": [
-        {
-          "label": "HLTV Match",
-          "url": "https://www.hltv.org/matches/2399863/joga-de-terno-vs-martians-cct-2026-south-america-series-7",
-          "official": true
-        },
-        {
-          "label": "Bovada",
-          "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-          "official": true
-        },
-        {
-          "label": "Melbet",
-          "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "official": true
-        },
-        {
-          "label": "HotSpawn Card",
-          "url": "https://www.hotspawn.com/matches/joga-de-terno-vs-martians-cct-south-america-2026-series-7-1082835",
-          "official": true
-        }
-      ],
-      "crowd_display_only": {
-        "crowd_a_pct": 16,
-        "crowd_b_pct": 84,
-        "used_in_probability": false
-      },
-      "flag_ids": [],
-      "note": "Verified HLTV match record; Bovada and Melbet consensus prices JOGA DE TERNO at 58.1% vs Martians at 41.9%.",
-      "unresolvable_reason": null
-    },
-    {
-      "fixture_id": "1082178",
-      "competition": "Stake Ranked Episode 6: Closed Qualifier",
-      "hotspawn_tier": "b",
-      "points": 3,
-      "start_utc": "2026-10-21T17:30:00Z",
-      "lock_utc": "2026-10-21T17:24:00Z",
-      "team_a": "Metizport",
-      "team_b": "GenOne",
-      "prob_a": 0.65942,
-      "prob_b": 0.34058,
-      "pick": "Metizport",
-      "pick_prob": 0.65942,
-      "confidence": "Solid",
-      "resolution_tier": "featured_market",
-      "resolution_label": "Featured · Multi-Book Market",
-      "book_count": 3,
-      "quotes": [
-        {
-          "source_key": "bovada",
-          "source_name": "Bovada",
-          "kind": "sportsbook",
-          "team_a": "Metizport",
-          "team_b": "GenOne",
-          "decimal_a": 1.434783,
-          "decimal_b": 2.75,
-          "no_vig_prob_a": 0.657143,
-          "no_vig_prob_b": 0.342857,
-          "overround": 0.060606,
-          "provider_swapped": false,
-          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-          "public_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-          "retrieved_utc": "2026-10-21T13:54:17Z"
-        },
-        {
-          "source_key": "melbet",
-          "source_name": "Melbet",
-          "kind": "sportsbook",
-          "team_a": "Metizport",
-          "team_b": "GenOne",
-          "decimal_a": 1.43,
-          "decimal_b": 2.763,
-          "no_vig_prob_a": 0.658955,
-          "no_vig_prob_b": 0.341045,
-          "overround": 0.061226,
-          "provider_swapped": false,
-          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "public_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "retrieved_utc": "2026-10-21T13:54:17Z"
-        },
-        {
-          "source_key": "pinnacle",
-          "source_name": "Pinnacle",
-          "kind": "sportsbook",
-          "team_a": "Metizport",
-          "team_b": "GenOne",
-          "decimal_a": 1.421941,
-          "decimal_b": 2.77,
-          "no_vig_prob_a": 0.660792,
-          "no_vig_prob_b": 0.339208,
-          "overround": 0.064275,
-          "provider_swapped": false,
-          "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638811273/markets/related/straight",
-          "public_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638811273/markets/related/straight",
-          "retrieved_utc": "2026-10-21T13:54:16Z"
-        }
-      ],
-      "vrs_a": {
-        "name": "Metizport",
-        "rank": 76,
-        "points": 1121
-      },
-      "vrs_b": {
-        "name": "GenOne",
-        "rank": 156,
-        "points": 812
-      },
-      "hltv_url": "https://www.hltv.org/matches/2399783/metizport-vs-genone-stake-ranked-episode-6-closed-qualifier",
-      "hotspawn_url": "https://www.hotspawn.com/matches/metizport-vs-genone-stake-ranked-episode-6-closed-qualifier-1082178",
-      "sources": [
-        {
-          "label": "HLTV Match",
-          "url": "https://www.hltv.org/matches/2399783/metizport-vs-genone-stake-ranked-episode-6-closed-qualifier",
-          "official": true
-        },
-        {
-          "label": "Bovada",
-          "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-          "official": true
-        },
-        {
-          "label": "Melbet",
-          "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "official": true
-        },
-        {
-          "label": "Pinnacle",
-          "url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638811273/markets/related/straight",
-          "official": true
-        },
-        {
-          "label": "HotSpawn Card",
-          "url": "https://www.hotspawn.com/matches/metizport-vs-genone-stake-ranked-episode-6-closed-qualifier-1082178",
-          "official": true
-        }
-      ],
-      "crowd_display_only": {
-        "crowd_a_pct": 91,
-        "crowd_b_pct": 9,
-        "used_in_probability": false
-      },
-      "flag_ids": [],
-      "note": "Verified HLTV match record; Pinnacle, Bovada, and Melbet agree within 0.3pp at Metizport 65.8% / GenOne 34.2%.",
-      "unresolvable_reason": null
-    },
-    {
-      "fixture_id": "1082836",
-      "competition": "CCT South America 2026 Series #7",
-      "hotspawn_tier": "c",
-      "points": 2,
-      "start_utc": "2026-10-21T19:00:00Z",
-      "lock_utc": "2026-10-21T18:54:00Z",
-      "team_a": "Damajuana",
-      "team_b": "Hacha",
-      "prob_a": 0.448871,
-      "prob_b": 0.551129,
-      "pick": "Hacha",
-      "pick_prob": 0.551129,
-      "confidence": "Lean",
-      "resolution_tier": "featured_market",
-      "resolution_label": "Featured · Sportsbook Line",
-      "book_count": 1,
-      "quotes": [
-        {
-          "source_key": "melbet",
-          "source_name": "Melbet",
-          "kind": "sportsbook",
-          "team_a": "Damajuana",
-          "team_b": "Hacha",
-          "decimal_a": 2.075,
-          "decimal_b": 1.69,
-          "no_vig_prob_a": 0.448871,
-          "no_vig_prob_b": 0.551129,
-          "overround": 0.073644,
-          "provider_swapped": false,
-          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "public_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "retrieved_utc": "2026-10-21T13:54:17Z"
-        }
-      ],
-      "vrs_a": null,
-      "vrs_b": null,
-      "hltv_url": "https://www.hltv.org/matches/2399864/damajuana-vs-hacha-cct-2026-south-america-series-7",
-      "hotspawn_url": "https://www.hotspawn.com/matches/damajuana-vs-hacha-cct-south-america-2026-series-7-1082836",
-      "sources": [
-        {
-          "label": "HLTV Match",
-          "url": "https://www.hltv.org/matches/2399864/damajuana-vs-hacha-cct-2026-south-america-series-7",
-          "official": true
-        },
-        {
-          "label": "Melbet",
-          "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "official": true
-        },
-        {
-          "label": "HotSpawn Card",
-          "url": "https://www.hotspawn.com/matches/damajuana-vs-hacha-cct-south-america-2026-series-7-1082836",
-          "official": true
-        }
-      ],
-      "crowd_display_only": {
-        "crowd_a_pct": 10,
-        "crowd_b_pct": 90,
-        "used_in_probability": false
-      },
-      "flag_ids": [
-        "F-03"
-      ],
-      "note": "Verified HLTV match record; Melbet full-match moneyline prices Hacha as 55.1% favorite (1.69 decimal) over Damajuana (44.9%, 2.075 decimal) despite 75% HotSpawn crowd ownership on Damajuana.",
-      "unresolvable_reason": null
-    },
     {
       "fixture_id": "1082837",
       "competition": "CCT South America 2026 Series #7",
@@ -618,6 +83,98 @@
       ],
       "note": "Intentionally left blank and flagged as Unverified: zero external betting lines exist and LOS NINOS is unranked on both HLTV and Valve VRS.",
       "unresolvable_reason": "Zero two-way moneyline quotes across Pinnacle, Bovada, Melbet, Kalshi KXCS2GAME, Polymarket, and Thunderpick/bo3.gg. HLTV match 2399865 confirms Zetta is HLTV #241 / Valve VRS #366 (412 pts) while LOS NINOS is 'HLTV: Unranked, VRS: Unranked' with only 3 recorded core BO3s. HLTV community pick share (80%/20%) and HotSpawn crowd share (93%/7%) are strictly non-price sentiment inputs and are refused. Left intentionally blank and flagged as Unverified."
+    },
+    {
+      "fixture_id": "1081870",
+      "competition": "VOID Autumn Cup 2026",
+      "hotspawn_tier": "c",
+      "points": 2,
+      "start_utc": "2026-10-22T05:00:00Z",
+      "lock_utc": "2026-10-22T04:54:00Z",
+      "team_a": "Vitalem Aerem",
+      "team_b": "Rare Atom",
+      "prob_a": 0.362069,
+      "prob_b": 0.637931,
+      "pick": "Rare Atom",
+      "pick_prob": 0.637931,
+      "confidence": "Solid",
+      "resolution_tier": "featured_market",
+      "resolution_label": "Featured · Sportsbook Line",
+      "book_count": 1,
+      "quotes": [
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "kind": "sportsbook",
+          "team_a": "Vitalem Aerem",
+          "team_b": "Rare Atom",
+          "decimal_a": 2.59,
+          "decimal_b": 1.47,
+          "no_vig_prob_a": 0.362069,
+          "no_vig_prob_b": 0.637931,
+          "overround": 0.066372,
+          "provider_swapped": false,
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "public_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-21T20:07:11Z"
+        }
+      ],
+      "vrs_a": null,
+      "vrs_b": null,
+      "hltv_url": null,
+      "hotspawn_url": "https://www.hotspawn.com/matches/vitalem-aerem-vs-rare-atom-void-autumn-cup-2026-1081870",
+      "sources": [
+        {
+          "label": "Melbet",
+          "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "official": true
+        },
+        {
+          "label": "HotSpawn Card",
+          "url": "https://www.hotspawn.com/matches/vitalem-aerem-vs-rare-atom-void-autumn-cup-2026-1081870",
+          "official": true
+        }
+      ],
+      "crowd_display_only": null,
+      "flag_ids": [],
+      "note": "",
+      "unresolvable_reason": null
+    },
+    {
+      "fixture_id": "1081597",
+      "competition": "CCT Europe 2026 Challengers #8",
+      "hotspawn_tier": "c",
+      "points": 2,
+      "start_utc": "2026-10-22T11:00:00Z",
+      "lock_utc": "2026-10-22T10:54:00Z",
+      "team_a": "benched gods",
+      "team_b": "TitanFlow",
+      "prob_a": null,
+      "prob_b": null,
+      "pick": null,
+      "pick_prob": null,
+      "confidence": "Unverified",
+      "resolution_tier": "unresolved_blank",
+      "resolution_label": "Unresolved · Blank (Unverified)",
+      "book_count": 0,
+      "quotes": [],
+      "vrs_a": null,
+      "vrs_b": null,
+      "hltv_url": null,
+      "hotspawn_url": "https://www.hotspawn.com/matches/benched-gods-vs-titanflow-cct-europe-2026-challengers-8-1081597",
+      "sources": [
+        {
+          "label": "HotSpawn Card",
+          "url": "https://www.hotspawn.com/matches/benched-gods-vs-titanflow-cct-europe-2026-challengers-8-1081597",
+          "official": true
+        }
+      ],
+      "crowd_display_only": null,
+      "flag_ids": [
+        "AUTO-UNVERIFIED-1081597"
+      ],
+      "note": "",
+      "unresolvable_reason": null
     },
     {
       "fixture_id": "1081600",
@@ -686,10 +243,10 @@
       "lock_utc": "2026-10-22T13:54:00Z",
       "team_a": "Imperial",
       "team_b": "Turma do Pagode",
-      "prob_a": 0.749453,
-      "prob_b": 0.250547,
+      "prob_a": 0.753532,
+      "prob_b": 0.246468,
       "pick": "Imperial",
-      "pick_prob": 0.749453,
+      "pick_prob": 0.753532,
       "confidence": "Anchor",
       "resolution_tier": "featured_market",
       "resolution_label": "Featured · Multi-Book Market",
@@ -709,7 +266,7 @@
           "provider_swapped": false,
           "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
           "public_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-          "retrieved_utc": "2026-10-21T13:54:17Z"
+          "retrieved_utc": "2026-10-21T20:07:10Z"
         },
         {
           "source_key": "melbet",
@@ -717,15 +274,15 @@
           "kind": "sportsbook",
           "team_a": "Imperial",
           "team_b": "Turma do Pagode",
-          "decimal_a": 1.25,
-          "decimal_b": 3.71,
-          "no_vig_prob_a": 0.747984,
-          "no_vig_prob_b": 0.252016,
-          "overround": 0.069542,
+          "decimal_a": 1.24,
+          "decimal_b": 3.79,
+          "no_vig_prob_a": 0.753479,
+          "no_vig_prob_b": 0.246521,
+          "overround": 0.070304,
           "provider_swapped": false,
           "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
           "public_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "retrieved_utc": "2026-10-21T13:54:17Z"
+          "retrieved_utc": "2026-10-21T20:07:11Z"
         },
         {
           "source_key": "pinnacle",
@@ -733,15 +290,15 @@
           "kind": "sportsbook",
           "team_a": "Imperial",
           "team_b": "Turma do Pagode",
-          "decimal_a": 1.243902,
-          "decimal_b": 3.73,
-          "no_vig_prob_a": 0.749914,
-          "no_vig_prob_b": 0.250086,
-          "overround": 0.072018,
+          "decimal_a": 1.234192,
+          "decimal_b": 3.81,
+          "no_vig_prob_a": 0.755324,
+          "no_vig_prob_b": 0.244676,
+          "overround": 0.072714,
           "provider_swapped": false,
           "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638811247/markets/related/straight",
           "public_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638811247/markets/related/straight",
-          "retrieved_utc": "2026-10-21T13:54:15Z"
+          "retrieved_utc": "2026-10-21T20:07:07Z"
         }
       ],
       "vrs_a": {
@@ -797,10 +354,10 @@
       "lock_utc": "2026-10-22T13:54:00Z",
       "team_a": "BESTIA",
       "team_b": "ShindeN",
-      "prob_a": 0.503095,
-      "prob_b": 0.496905,
+      "prob_a": 0.521715,
+      "prob_b": 0.478285,
       "pick": "BESTIA",
-      "pick_prob": 0.503095,
+      "pick_prob": 0.521715,
       "confidence": "Toss-up",
       "resolution_tier": "featured_market",
       "resolution_label": "Featured · Multi-Book Market",
@@ -812,15 +369,15 @@
           "kind": "sportsbook",
           "team_a": "BESTIA",
           "team_b": "ShindeN",
-          "decimal_a": 1.87,
-          "decimal_b": 1.87,
-          "no_vig_prob_a": 0.5,
-          "no_vig_prob_b": 0.5,
-          "overround": 0.069519,
+          "decimal_a": 1.8,
+          "decimal_b": 1.952381,
+          "no_vig_prob_a": 0.520305,
+          "no_vig_prob_b": 0.479695,
+          "overround": 0.067751,
           "provider_swapped": false,
           "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
           "public_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-          "retrieved_utc": "2026-10-21T13:54:17Z"
+          "retrieved_utc": "2026-10-21T20:07:10Z"
         },
         {
           "source_key": "melbet",
@@ -828,15 +385,15 @@
           "kind": "sportsbook",
           "team_a": "BESTIA",
           "team_b": "ShindeN",
-          "decimal_a": 1.88,
-          "decimal_b": 1.91,
-          "no_vig_prob_a": 0.503958,
-          "no_vig_prob_b": 0.496042,
-          "overround": 0.055475,
+          "decimal_a": 1.81,
+          "decimal_b": 1.98,
+          "no_vig_prob_a": 0.522427,
+          "no_vig_prob_b": 0.477573,
+          "overround": 0.057537,
           "provider_swapped": false,
           "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
           "public_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "retrieved_utc": "2026-10-21T13:54:17Z"
+          "retrieved_utc": "2026-10-21T20:07:11Z"
         },
         {
           "source_key": "pinnacle",
@@ -844,15 +401,15 @@
           "kind": "sportsbook",
           "team_a": "BESTIA",
           "team_b": "ShindeN",
-          "decimal_a": 1.877193,
-          "decimal_b": 1.909091,
-          "no_vig_prob_a": 0.504212,
-          "no_vig_prob_b": 0.495788,
+          "decimal_a": 1.813008,
+          "decimal_b": 1.980392,
+          "no_vig_prob_a": 0.522063,
+          "no_vig_prob_b": 0.477937,
           "overround": 0.05652,
           "provider_swapped": false,
           "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638825309/markets/related/straight",
           "public_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638825309/markets/related/straight",
-          "retrieved_utc": "2026-10-21T13:54:16Z"
+          "retrieved_utc": "2026-10-21T20:07:06Z"
         }
       ],
       "vrs_a": {
@@ -903,6 +460,42 @@
         "F-04"
       ],
       "note": "Verified HLTV LAN match record; Pinnacle, Bovada, and Melbet price a virtual 50.3% / 49.7% coin flip slightly favoring BESTIA.",
+      "unresolvable_reason": null
+    },
+    {
+      "fixture_id": "1082882",
+      "competition": "Stake Ranked Episode 6: Closed Qualifier",
+      "hotspawn_tier": "b",
+      "points": 3,
+      "start_utc": "2026-10-22T14:00:00Z",
+      "lock_utc": "2026-10-22T13:54:00Z",
+      "team_a": "UNiTY",
+      "team_b": "Apogee Betclic",
+      "prob_a": null,
+      "prob_b": null,
+      "pick": null,
+      "pick_prob": null,
+      "confidence": "Unverified",
+      "resolution_tier": "unresolved_blank",
+      "resolution_label": "Unresolved · Blank (Unverified)",
+      "book_count": 0,
+      "quotes": [],
+      "vrs_a": null,
+      "vrs_b": null,
+      "hltv_url": null,
+      "hotspawn_url": "https://www.hotspawn.com/matches/unity-vs-apogee-betclic-stake-ranked-episode-6-closed-qualifier-1082882",
+      "sources": [
+        {
+          "label": "HotSpawn Card",
+          "url": "https://www.hotspawn.com/matches/unity-vs-apogee-betclic-stake-ranked-episode-6-closed-qualifier-1082882",
+          "official": true
+        }
+      ],
+      "crowd_display_only": null,
+      "flag_ids": [
+        "AUTO-UNVERIFIED-1082882"
+      ],
+      "note": "",
       "unresolvable_reason": null
     },
     {
@@ -1067,6 +660,78 @@
       ],
       "note": "Intentionally left blank and flagged as Unverified: zero external betting lines exist and LOS NINOS is unranked on both HLTV and Valve VRS.",
       "unresolvable_reason": "Zero two-way moneyline quotes across Pinnacle, Bovada, Melbet, Kalshi KXCS2GAME, Polymarket, and Thunderpick/bo3.gg. HLTV match 2399865 confirms Zetta is HLTV #241 / Valve VRS #366 (412 pts) while LOS NINOS is 'HLTV: Unranked, VRS: Unranked' with only 3 recorded core BO3s. HLTV community pick share (80%/20%) and HotSpawn crowd share (93%/7%) are strictly non-price sentiment inputs and are refused. Left intentionally blank and flagged as Unverified."
+    },
+    {
+      "fixture_id": "1081597",
+      "competition": "CCT Europe 2026 Challengers #8",
+      "hotspawn_tier": "c",
+      "points": 2,
+      "start_utc": "2026-10-22T11:00:00Z",
+      "lock_utc": "2026-10-22T10:54:00Z",
+      "team_a": "benched gods",
+      "team_b": "TitanFlow",
+      "prob_a": null,
+      "prob_b": null,
+      "pick": null,
+      "pick_prob": null,
+      "confidence": "Unverified",
+      "resolution_tier": "unresolved_blank",
+      "resolution_label": "Unresolved · Blank (Unverified)",
+      "book_count": 0,
+      "quotes": [],
+      "vrs_a": null,
+      "vrs_b": null,
+      "hltv_url": null,
+      "hotspawn_url": "https://www.hotspawn.com/matches/benched-gods-vs-titanflow-cct-europe-2026-challengers-8-1081597",
+      "sources": [
+        {
+          "label": "HotSpawn Card",
+          "url": "https://www.hotspawn.com/matches/benched-gods-vs-titanflow-cct-europe-2026-challengers-8-1081597",
+          "official": true
+        }
+      ],
+      "crowd_display_only": null,
+      "flag_ids": [
+        "AUTO-UNVERIFIED-1081597"
+      ],
+      "note": "",
+      "unresolvable_reason": null
+    },
+    {
+      "fixture_id": "1082882",
+      "competition": "Stake Ranked Episode 6: Closed Qualifier",
+      "hotspawn_tier": "b",
+      "points": 3,
+      "start_utc": "2026-10-22T14:00:00Z",
+      "lock_utc": "2026-10-22T13:54:00Z",
+      "team_a": "UNiTY",
+      "team_b": "Apogee Betclic",
+      "prob_a": null,
+      "prob_b": null,
+      "pick": null,
+      "pick_prob": null,
+      "confidence": "Unverified",
+      "resolution_tier": "unresolved_blank",
+      "resolution_label": "Unresolved · Blank (Unverified)",
+      "book_count": 0,
+      "quotes": [],
+      "vrs_a": null,
+      "vrs_b": null,
+      "hltv_url": null,
+      "hotspawn_url": "https://www.hotspawn.com/matches/unity-vs-apogee-betclic-stake-ranked-episode-6-closed-qualifier-1082882",
+      "sources": [
+        {
+          "label": "HotSpawn Card",
+          "url": "https://www.hotspawn.com/matches/unity-vs-apogee-betclic-stake-ranked-episode-6-closed-qualifier-1082882",
+          "official": true
+        }
+      ],
+      "crowd_display_only": null,
+      "flag_ids": [
+        "AUTO-UNVERIFIED-1082882"
+      ],
+      "note": "",
+      "unresolvable_reason": null
     }
   ],
   "flagged_for_review": [
@@ -1276,6 +941,38 @@
         {
           "label": "Official Valve Standings Repo",
           "url": "https://github.com/ValveSoftware/counter-strike_regional_standings"
+        }
+      ]
+    },
+    {
+      "id": "AUTO-UNVERIFIED-1081597",
+      "severity": "review",
+      "category": "Missing eligible evidence",
+      "fixture_id": "1081597",
+      "match": "benched gods vs TitanFlow",
+      "detail": "This batch has no eligible two-way quote or unique rating pair for this fixture.",
+      "treatment": "Pick and probabilities remain blank / unverified pending a supported refresh.",
+      "sources": [
+        {
+          "label": "HotSpawn Card",
+          "url": "https://www.hotspawn.com/matches/benched-gods-vs-titanflow-cct-europe-2026-challengers-8-1081597",
+          "official": true
+        }
+      ]
+    },
+    {
+      "id": "AUTO-UNVERIFIED-1082882",
+      "severity": "review",
+      "category": "Missing eligible evidence",
+      "fixture_id": "1082882",
+      "match": "UNiTY vs Apogee Betclic",
+      "detail": "This batch has no eligible two-way quote or unique rating pair for this fixture.",
+      "treatment": "Pick and probabilities remain blank / unverified pending a supported refresh.",
+      "sources": [
+        {
+          "label": "HotSpawn Card",
+          "url": "https://www.hotspawn.com/matches/unity-vs-apogee-betclic-stake-ranked-episode-6-closed-qualifier-1082882",
+          "official": true
         }
       ]
     }
@@ -2498,306 +2195,6 @@
       "hotspawn_url": "https://play.hotspawn.com/lobby",
       "permalink_verified": false,
       "state": "closed_scheduled",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
-      "fixture_id": "1079172",
-      "sport": "cs2",
-      "status": "cancelled",
-      "competition": "NODWIN Clutch Series #13",
-      "tier": "B",
-      "points": 3,
-      "start_utc": "2026-10-17T14:00:00Z",
-      "lock_utc": "2026-10-17T13:54:00Z",
-      "team_a": "Black Phoenix",
-      "team_b": "FORZE Reload",
-      "seen_in": [
-        "api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_cancelled",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
-      "fixture_id": "1079635",
-      "sport": "cs2",
-      "status": "forfeited",
-      "competition": "CCT Europe 2026 Series #11",
-      "tier": "B",
-      "points": 3,
-      "start_utc": "2026-10-17T14:00:00Z",
-      "lock_utc": "2026-10-17T13:54:00Z",
-      "team_a": "Bushido Wildcats",
-      "team_b": "Gothic",
-      "seen_in": [
-        "api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_forfeited",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
-      "fixture_id": "1080207",
-      "sport": "cs2",
-      "status": "ended",
-      "competition": "Thunderpick World Championship 2026",
-      "tier": "S",
-      "points": 7,
-      "start_utc": "2026-10-17T14:00:00Z",
-      "lock_utc": "2026-10-17T13:54:00Z",
-      "team_a": "FURIA",
-      "team_b": "Aurora",
-      "seen_in": [
-        "api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_ended",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
-      "fixture_id": "1081516",
-      "sport": "cs2",
-      "status": "ended",
-      "competition": "GLuck Yungstar 2026: Series #3",
-      "tier": "C",
-      "points": 2,
-      "start_utc": "2026-10-17T14:00:00Z",
-      "lock_utc": "2026-10-17T13:54:00Z",
-      "team_a": "VP.Future",
-      "team_b": "QUAZAR",
-      "seen_in": [
-        "api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_ended",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
-      "fixture_id": "1082080",
-      "sport": "cs2",
-      "status": "ended",
-      "competition": "Stake Pulse Beat III",
-      "tier": "B",
-      "points": 3,
-      "start_utc": "2026-10-17T14:00:00Z",
-      "lock_utc": "2026-10-17T13:54:00Z",
-      "team_a": "Heroic",
-      "team_b": "100 Thieves",
-      "seen_in": [
-        "api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_ended",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
-      "fixture_id": "1081515",
-      "sport": "cs2",
-      "status": "ended",
-      "competition": "PGL Bucharest 2027: Closed Qualifier",
-      "tier": "B",
-      "points": 3,
-      "start_utc": "2026-10-17T14:10:00Z",
-      "lock_utc": "2026-10-17T14:04:00Z",
-      "team_a": "Apogee Betclic",
-      "team_b": "Nemesis",
-      "seen_in": [
-        "api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_ended",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
-      "fixture_id": "1080293",
-      "sport": "cs2",
-      "status": "ended",
-      "competition": "Elisa BreakOut Series #2",
-      "tier": "C",
-      "points": 2,
-      "start_utc": "2026-10-17T16:00:00Z",
-      "lock_utc": "2026-10-17T15:54:00Z",
-      "team_a": "HAVU",
-      "team_b": "Phantom",
-      "seen_in": [
-        "api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_ended",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
-      "fixture_id": "1082020",
-      "sport": "cs2",
-      "status": "ended",
-      "competition": "CyberClash Season 2: Closed Qualifier",
-      "tier": "C",
-      "points": 2,
-      "start_utc": "2026-10-17T16:00:00Z",
-      "lock_utc": "2026-10-17T15:54:00Z",
-      "team_a": "Omega",
-      "team_b": "Bushido Wildcats",
-      "seen_in": [
-        "api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_ended",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
-      "fixture_id": "1081518",
-      "sport": "cs2",
-      "status": "ended",
-      "competition": "GLuck Yungstar 2026: Series #3",
-      "tier": "C",
-      "points": 2,
-      "start_utc": "2026-10-17T16:20:00Z",
-      "lock_utc": "2026-10-17T16:14:00Z",
-      "team_a": "Black Phoenix",
-      "team_b": "QUAZAR",
-      "seen_in": [
-        "api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_ended",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
-      "fixture_id": "1079173",
-      "sport": "cs2",
-      "status": "forfeited",
-      "competition": "NODWIN Clutch Series #13",
-      "tier": "B",
-      "points": 3,
-      "start_utc": "2026-10-17T17:00:00Z",
-      "lock_utc": "2026-10-17T16:54:00Z",
-      "team_a": "BakS",
-      "team_b": "Fire Flux",
-      "seen_in": [
-        "api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_forfeited",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
-      "fixture_id": "1079636",
-      "sport": "cs2",
-      "status": "cancelled",
-      "competition": "CCT Europe 2026 Series #11",
-      "tier": "B",
-      "points": 3,
-      "start_utc": "2026-10-17T17:00:00Z",
-      "lock_utc": "2026-10-17T16:54:00Z",
-      "team_a": "Walczaki",
-      "team_b": "The Last Resort",
-      "seen_in": [
-        "api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_cancelled",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
-      "fixture_id": "1080208",
-      "sport": "cs2",
-      "status": "ended",
-      "competition": "Thunderpick World Championship 2026",
-      "tier": "S",
-      "points": 7,
-      "start_utc": "2026-10-17T17:00:00Z",
-      "lock_utc": "2026-10-17T16:54:00Z",
-      "team_a": "Falcons",
-      "team_b": "BetBoom",
-      "seen_in": [
-        "api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_ended",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
-      "fixture_id": "1081517",
-      "sport": "cs2",
-      "status": "ended",
-      "competition": "PGL Bucharest 2027: Closed Qualifier",
-      "tier": "B",
-      "points": 3,
-      "start_utc": "2026-10-17T17:00:00Z",
-      "lock_utc": "2026-10-17T16:54:00Z",
-      "team_a": "BBL",
-      "team_b": "ex-RUSTEC",
-      "seen_in": [
-        "api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_ended",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
-      "fixture_id": "1079593",
-      "sport": "cs2",
-      "status": "ended",
-      "competition": "Stake Pulse Beat III",
-      "tier": "B",
-      "points": 3,
-      "start_utc": "2026-10-17T17:20:00Z",
-      "lock_utc": "2026-10-17T17:14:00Z",
-      "team_a": "MIBR",
-      "team_b": "Ninjas in Pyjamas",
-      "seen_in": [
-        "api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_ended",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
-      "fixture_id": "1082021",
-      "sport": "cs2",
-      "status": "forfeited",
-      "competition": "CyberClash Season 2: Closed Qualifier",
-      "tier": "C",
-      "points": 2,
-      "start_utc": "2026-10-17T19:00:00Z",
-      "lock_utc": "2026-10-17T18:54:00Z",
-      "team_a": "PCIFIC",
-      "team_b": "6yuBoJlbl",
-      "seen_in": [
-        "api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_forfeited",
       "hltv_url": null,
       "note": ""
     },
@@ -5402,26 +4799,6 @@
       "note": ""
     },
     {
-      "fixture_id": "1081868",
-      "sport": "cs2",
-      "status": "scheduled",
-      "competition": "VOID Autumn Cup 2026",
-      "tier": "c",
-      "points": 2,
-      "start_utc": "2026-10-21T09:00:00Z",
-      "lock_utc": "2026-10-21T08:54:00Z",
-      "team_a": "Chinggis Warriors",
-      "team_b": "NEXVOID",
-      "seen_in": [
-        "fixtures_api"
-      ],
-      "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "permalink_verified": false,
-      "state": "closed_scheduled",
-      "hltv_url": null,
-      "note": ""
-    },
-    {
       "fixture_id": "1082834",
       "sport": "cs2",
       "status": "ended",
@@ -5444,269 +4821,300 @@
     {
       "fixture_id": "1079186",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "NODWIN Clutch Series #13",
-      "tier": "b",
+      "tier": "B",
       "points": 3,
       "start_utc": "2026-10-21T11:00:00Z",
       "lock_utc": "2026-10-21T10:54:00Z",
       "team_a": "Just Players",
       "team_b": "Fire Flux",
       "seen_in": [
-        "lobby_page",
-        "fixtures_api"
+        "api"
       ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/just-players-vs-fire-flux-nodwin-clutch-series-13-1079186",
-      "permalink_verified": true,
-      "state": "closed_scheduled",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
       "hltv_url": null,
       "note": ""
     },
     {
       "fixture_id": "1079647",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "CCT Europe 2026 Series #11",
-      "tier": "b",
+      "tier": "B",
       "points": 3,
       "start_utc": "2026-10-21T11:00:00Z",
       "lock_utc": "2026-10-21T10:54:00Z",
       "team_a": "Saint Sinners",
       "team_b": "ex-6666",
       "seen_in": [
-        "lobby_page",
-        "fixtures_api"
+        "api"
       ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/saint-sinners-vs-ex-6666-cct-europe-2026-series-11-1079647",
-      "permalink_verified": true,
-      "state": "closed_scheduled",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
       "hltv_url": null,
       "note": ""
     },
     {
       "fixture_id": "1081140",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "CCT Europe 2026 Series #12",
-      "tier": "b",
+      "tier": "B",
       "points": 3,
       "start_utc": "2026-10-21T11:00:00Z",
       "lock_utc": "2026-10-21T10:54:00Z",
       "team_a": "Inner Circle Academy",
       "team_b": "HAVU",
       "seen_in": [
-        "lobby_page",
-        "fixtures_api"
+        "api"
       ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/inner-circle-academy-vs-havu-cct-europe-2026-series-12-1081140",
-      "permalink_verified": true,
-      "state": "closed_scheduled",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
       "hltv_url": null,
       "note": ""
     },
     {
       "fixture_id": "1081577",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "DraculaN Season 7",
-      "tier": "b",
+      "tier": "B",
       "points": 3,
       "start_utc": "2026-10-21T11:00:00Z",
       "lock_utc": "2026-10-21T10:54:00Z",
       "team_a": "JiJieHao",
       "team_b": "FaZe",
       "seen_in": [
-        "fixtures_api"
+        "api"
       ],
       "hotspawn_url": "https://play.hotspawn.com/lobby",
       "permalink_verified": false,
-      "state": "closed_scheduled",
+      "state": "closed_ended",
       "hltv_url": null,
       "note": ""
     },
     {
       "fixture_id": "1081578",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "DraculaN Season 7",
-      "tier": "b",
+      "tier": "B",
       "points": 3,
       "start_utc": "2026-10-21T11:00:00Z",
       "lock_utc": "2026-10-21T10:54:00Z",
       "team_a": "BASEMENT BOYS",
       "team_b": "Eternal Fire",
       "seen_in": [
-        "fixtures_api"
+        "api"
       ],
       "hotspawn_url": "https://play.hotspawn.com/lobby",
       "permalink_verified": false,
-      "state": "closed_scheduled",
+      "state": "closed_ended",
       "hltv_url": null,
       "note": ""
     },
     {
-      "fixture_id": "1081579",
+      "fixture_id": "1081581",
       "sport": "cs2",
-      "status": "scheduled",
-      "competition": "DraculaN Season 7",
-      "tier": "b",
-      "points": 3,
+      "status": "cancelled",
+      "competition": "CCT Europe 2026 Challengers #8",
+      "tier": "C",
+      "points": 2,
       "start_utc": "2026-10-21T11:00:00Z",
       "lock_utc": "2026-10-21T10:54:00Z",
-      "team_a": "BC.Game",
-      "team_b": "Nexus",
+      "team_a": "TitanFlow",
+      "team_b": "Noir Verse",
       "seen_in": [
-        "fixtures_api"
+        "api"
       ],
       "hotspawn_url": "https://play.hotspawn.com/lobby",
       "permalink_verified": false,
-      "state": "closed_scheduled",
+      "state": "closed_cancelled",
       "hltv_url": null,
       "note": ""
     },
     {
       "fixture_id": "1082796",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "DraculaN Season 7",
-      "tier": "b",
+      "tier": "B",
       "points": 3,
       "start_utc": "2026-10-21T11:00:00Z",
       "lock_utc": "2026-10-21T10:54:00Z",
       "team_a": "SinnerS",
       "team_b": "Heroic",
       "seen_in": [
-        "fixtures_api"
+        "api"
       ],
       "hotspawn_url": "https://play.hotspawn.com/lobby",
       "permalink_verified": false,
-      "state": "closed_scheduled",
+      "state": "closed_ended",
+      "hltv_url": null,
+      "note": ""
+    },
+    {
+      "fixture_id": "1081579",
+      "sport": "cs2",
+      "status": "ended",
+      "competition": "DraculaN Season 7",
+      "tier": "B",
+      "points": 3,
+      "start_utc": "2026-10-21T11:10:00Z",
+      "lock_utc": "2026-10-21T11:04:00Z",
+      "team_a": "BC.Game",
+      "team_b": "Nexus",
+      "seen_in": [
+        "api"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
+      "hltv_url": null,
+      "note": ""
+    },
+    {
+      "fixture_id": "1082862",
+      "sport": "cs2",
+      "status": "forfeited",
+      "competition": "CCT Europe 2026 Challengers #8",
+      "tier": "C",
+      "points": 2,
+      "start_utc": "2026-10-21T11:15:00Z",
+      "lock_utc": "2026-10-21T11:09:00Z",
+      "team_a": "ex-6666",
+      "team_b": "benched gods",
+      "seen_in": [
+        "api"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_forfeited",
+      "hltv_url": null,
+      "note": ""
+    },
+    {
+      "fixture_id": "1081868",
+      "sport": "cs2",
+      "status": "ended",
+      "competition": "VOID Autumn Cup 2026",
+      "tier": "C",
+      "points": 2,
+      "start_utc": "2026-10-21T12:00:00Z",
+      "lock_utc": "2026-10-21T11:54:00Z",
+      "team_a": "Chinggis Warriors",
+      "team_b": "NEXVOID",
+      "seen_in": [
+        "api"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
       "hltv_url": null,
       "note": ""
     },
     {
       "fixture_id": "1082176",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "Stake Ranked Episode 6: Closed Qualifier",
-      "tier": "b",
+      "tier": "B",
       "points": 3,
-      "start_utc": "2026-10-21T12:00:00Z",
-      "lock_utc": "2026-10-21T11:54:00Z",
+      "start_utc": "2026-10-21T12:25:00Z",
+      "lock_utc": "2026-10-21T12:19:00Z",
       "team_a": "Apogee Betclic",
       "team_b": "aimclub",
       "seen_in": [
-        "lobby_page",
-        "fixtures_api"
+        "api"
       ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/apogee-betclic-vs-aimclub-stake-ranked-episode-6-closed-qualifier-1082176",
-      "permalink_verified": true,
-      "state": "closed_scheduled",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
       "hltv_url": null,
       "note": ""
     },
     {
       "fixture_id": "1081583",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "CCT Europe 2026 Challengers #8",
-      "tier": "c",
+      "tier": "C",
       "points": 2,
       "start_utc": "2026-10-21T13:45:00Z",
       "lock_utc": "2026-10-21T13:39:00Z",
       "team_a": "Phantom Academy",
       "team_b": "Bebop",
       "seen_in": [
-        "lobby_page",
-        "fixtures_api"
+        "api"
       ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/phantom-academy-vs-bebop-cct-europe-2026-challengers-8-1081583",
-      "permalink_verified": true,
-      "state": "closed_scheduled",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
       "hltv_url": "https://www.hltv.org/matches/2399693/phantom-academy-vs-bebop-cct-2026-challengers-europe-series-8",
       "note": "Verified HLTV match record; live three-book consensus (Pinnacle, Bovada, Melbet) moved to Bebop 52.4% / Phantom Academy 47.6% ahead of 13:45 UTC lock."
     },
     {
       "fixture_id": "1081584",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "CCT Europe 2026 Challengers #8",
-      "tier": "c",
+      "tier": "C",
       "points": 2,
       "start_utc": "2026-10-21T13:45:00Z",
       "lock_utc": "2026-10-21T13:39:00Z",
       "team_a": "Falcons Force",
       "team_b": "Privateer",
       "seen_in": [
-        "lobby_page",
-        "fixtures_api"
+        "api"
       ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/falcons-force-vs-privateer-cct-europe-2026-challengers-8-1081584",
-      "permalink_verified": true,
-      "state": "closed_scheduled",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
       "hltv_url": "https://www.hltv.org/matches/2399694/falcons-force-vs-privateer-cct-2026-challengers-europe-series-8",
       "note": "Verified HLTV match record; Pinnacle, Bovada, and Melbet tightly agree at 79.9%-80.3% for Falcons Force (oriented from swapped provider quotes)."
     },
     {
-      "fixture_id": "1079187",
-      "sport": "cs2",
-      "status": "scheduled",
-      "competition": "NODWIN Clutch Series #13",
-      "tier": "b",
-      "points": 3,
-      "start_utc": "2026-10-21T14:00:00Z",
-      "lock_utc": "2026-10-21T13:54:00Z",
-      "team_a": "Butterfly",
-      "team_b": "BET-M",
-      "seen_in": [
-        "lobby_page",
-        "fixtures_api"
-      ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/butterfly-vs-bet-m-nodwin-clutch-series-13-1079187",
-      "permalink_verified": true,
-      "state": "closed_scheduled",
-      "hltv_url": "https://www.hltv.org/matches/2399104/butterfly-vs-bet-m-nodwin-clutch-series-13",
-      "note": "Zero primary sportsbook or exchange quotes open at evaluation. Rescued via HLTV match verification + official Oct 21, 2026 Valve Global Standings: Butterfly 1022 pts (#103) vs BET-M 1058 pts (#94), supported by HLTV #114 vs #79 and 2-5 H2H map record."
-    },
-    {
       "fixture_id": "1079648",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "CCT Europe 2026 Series #11",
-      "tier": "b",
+      "tier": "B",
       "points": 3,
       "start_utc": "2026-10-21T14:00:00Z",
       "lock_utc": "2026-10-21T13:54:00Z",
       "team_a": "G2 Ares",
       "team_b": "ILLYRIANS",
       "seen_in": [
-        "lobby_page",
-        "fixtures_api"
+        "api"
       ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/g2-ares-vs-illyrians-cct-europe-2026-series-11-1079648",
-      "permalink_verified": true,
-      "state": "closed_scheduled",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
       "hltv_url": "https://www.hltv.org/matches/2399325/g2-ares-vs-illyrians-cct-2026-europe-series-11",
       "note": "Primary books closed/unlisted at 12:51 UTC capture; rescued via HLTV match 2399325 + active two-sided Kalshi KXCS2GAME order book (oriented decimal midpoints 2.0202 / 1.9802 -> 49.5% G2 Ares / 50.5% ILLYRIANS). Flagged as razor-thin coin flip against Oct 21 VRS (960 vs 930 pts)."
     },
     {
       "fixture_id": "1081141",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "CCT Europe 2026 Series #12",
-      "tier": "b",
+      "tier": "B",
       "points": 3,
       "start_utc": "2026-10-21T14:00:00Z",
       "lock_utc": "2026-10-21T13:54:00Z",
       "team_a": "Lavked",
       "team_b": "Spirit Academy",
       "seen_in": [
-        "lobby_page",
-        "fixtures_api"
+        "api"
       ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/lavked-vs-spirit-academy-cct-europe-2026-series-12-1081141",
-      "permalink_verified": true,
-      "state": "closed_scheduled",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
       "hltv_url": "https://www.hltv.org/matches/2399491/lavked-vs-spirit-academy-cct-2026-europe-series-12",
       "note": "Verified HLTV match record; Pinnacle, Bovada, and Melbet price Spirit Academy as 55.1% favorite over Lavked (44.9%)."
     },
@@ -5733,147 +5141,280 @@
     {
       "fixture_id": "1082684",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "Circuit X Curitiba #4",
-      "tier": "c",
+      "tier": "C",
       "points": 2,
       "start_utc": "2026-10-21T14:00:00Z",
       "lock_utc": "2026-10-21T13:54:00Z",
       "team_a": "Fluxo",
       "team_b": "Galorys",
       "seen_in": [
-        "lobby_page",
-        "fixtures_api"
+        "api"
       ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/fluxo-vs-galorys-circuit-x-curitiba-4-1082684",
-      "permalink_verified": true,
-      "state": "closed_scheduled",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
       "hltv_url": "https://www.hltv.org/matches/2399806/fluxo-vs-galorys-circuit-x-curitiba-season-4",
       "note": "Verified HLTV LAN match record; Pinnacle and Bovada align tightly on Fluxo (63.4%) over Galorys (36.6%)."
     },
     {
       "fixture_id": "1082831",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "Circuit X Curitiba #4",
-      "tier": "c",
+      "tier": "C",
       "points": 2,
       "start_utc": "2026-10-21T14:00:00Z",
       "lock_utc": "2026-10-21T13:54:00Z",
       "team_a": "paiN",
       "team_b": "BARCA",
       "seen_in": [
-        "lobby_page",
-        "fixtures_api"
+        "api"
       ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/pain-vs-barca-circuit-x-curitiba-4-1082831",
-      "permalink_verified": true,
-      "state": "closed_scheduled",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
       "hltv_url": "https://www.hltv.org/matches/2399805/pain-vs-barca-circuit-x-curitiba-season-4",
       "note": "HLTV event VRS tracker confirms BARCA plays with the former LP South American core (not European FC Barcelona). Priced directly from Pinnacle + Melbet at paiN 59.3% / BARCA 40.7%."
     },
     {
-      "fixture_id": "1082177",
+      "fixture_id": "1079187",
       "sport": "cs2",
-      "status": "scheduled",
-      "competition": "Stake Ranked Episode 6: Closed Qualifier",
-      "tier": "b",
+      "status": "ended",
+      "competition": "NODWIN Clutch Series #13",
+      "tier": "B",
       "points": 3,
-      "start_utc": "2026-10-21T15:00:00Z",
-      "lock_utc": "2026-10-21T14:54:00Z",
-      "team_a": "BRUTE",
-      "team_b": "Sangal",
+      "start_utc": "2026-10-21T14:10:00Z",
+      "lock_utc": "2026-10-21T14:04:00Z",
+      "team_a": "Butterfly",
+      "team_b": "BET-M",
       "seen_in": [
-        "lobby_page",
-        "fixtures_api"
+        "api"
       ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/sangal-vs-brute-stake-ranked-episode-6-closed-qualifier-1082177",
-      "permalink_verified": true,
-      "state": "open",
-      "hltv_url": "https://www.hltv.org/matches/2399782/sangal-vs-brute-stake-ranked-episode-6-closed-qualifier",
-      "note": "HotSpawn API sets team_a=BRUTE, team_b=Sangal while renaming the match URL slug to sangal-vs-brute-...-1082177. Quotes strictly oriented to team_a=BRUTE (38.2%) / team_b=Sangal (61.8%) across Pinnacle, Bovada, and Melbet."
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
+      "hltv_url": "https://www.hltv.org/matches/2399104/butterfly-vs-bet-m-nodwin-clutch-series-13",
+      "note": "Zero primary sportsbook or exchange quotes open at evaluation. Rescued via HLTV match verification + official Oct 21, 2026 Valve Global Standings: Butterfly 1022 pts (#103) vs BET-M 1058 pts (#94), supported by HLTV #114 vs #79 and 2-5 H2H map record."
     },
     {
       "fixture_id": "1082762",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "CIS LAN Championship #9",
-      "tier": "c",
+      "tier": "C",
       "points": 2,
-      "start_utc": "2026-10-21T15:00:00Z",
-      "lock_utc": "2026-10-21T14:54:00Z",
+      "start_utc": "2026-10-21T14:40:00Z",
+      "lock_utc": "2026-10-21T14:34:00Z",
       "team_a": "ex-CYBERSHOKE",
       "team_b": "BlinkDagger",
       "seen_in": [
-        "lobby_page",
-        "fixtures_api"
+        "api"
       ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/ex-cybershoke-vs-blinkdagger-cis-lan-championship-9-1082762",
-      "permalink_verified": true,
-      "state": "open",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
       "hltv_url": "https://www.hltv.org/matches/2399839/ex-cybershoke-vs-blinkdagger-winline-mpkbk-cis-lan-season-9",
       "note": "Primary sportsbooks unlisted under ex-org tag. HLTV match 2399839 confirms ex-CYBERSHOKE fields the exact 5-man CYBERSHOKE VRS #78 roster (bl1x1, Mokuj1n, nota, yiksrezo, shoke) against unranked BlinkDagger, corroborated by active two-sided Kalshi KXCS2GAME contracts (1.2346 / 5.2632 -> 81.0% / 19.0%)."
     },
     {
       "fixture_id": "1082763",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "CIS LAN Championship #9",
-      "tier": "c",
+      "tier": "C",
       "points": 2,
-      "start_utc": "2026-10-21T15:00:00Z",
-      "lock_utc": "2026-10-21T14:54:00Z",
+      "start_utc": "2026-10-21T14:40:00Z",
+      "lock_utc": "2026-10-21T14:34:00Z",
       "team_a": "UPGRADE",
       "team_b": "flacons",
       "seen_in": [
-        "lobby_page",
-        "fixtures_api"
+        "api"
       ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/upgrade-vs-flacons-cis-lan-championship-9-1082763",
-      "permalink_verified": true,
-      "state": "open",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
       "hltv_url": "https://www.hltv.org/matches/2399840/upgrade-vs-flacons-winline-mpkbk-cis-lan-season-9",
       "note": "Primary sportsbooks unlisted; rescued via HLTV match 2399840 + active two-sided Kalshi KXCS2GAME contracts (oriented decimal midpoints 1.0363 / 20.00 -> UPGRADE 95.1% / flacons 4.9%)."
     },
     {
+      "fixture_id": "1081586",
+      "sport": "cs2",
+      "status": "ended",
+      "competition": "DraculaN Season 7",
+      "tier": "B",
+      "points": 3,
+      "start_utc": "2026-10-21T15:00:00Z",
+      "lock_utc": "2026-10-21T14:54:00Z",
+      "team_a": "Iberian Soul",
+      "team_b": "BASEMENT BOYS",
+      "seen_in": [
+        "api"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
+      "hltv_url": null,
+      "note": ""
+    },
+    {
+      "fixture_id": "1082177",
+      "sport": "cs2",
+      "status": "ended",
+      "competition": "Stake Ranked Episode 6: Closed Qualifier",
+      "tier": "B",
+      "points": 3,
+      "start_utc": "2026-10-21T15:00:00Z",
+      "lock_utc": "2026-10-21T14:54:00Z",
+      "team_a": "BRUTE",
+      "team_b": "Sangal",
+      "seen_in": [
+        "api"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
+      "hltv_url": "https://www.hltv.org/matches/2399782/sangal-vs-brute-stake-ranked-episode-6-closed-qualifier",
+      "note": "HotSpawn API sets team_a=BRUTE, team_b=Sangal while renaming the match URL slug to sangal-vs-brute-...-1082177. Quotes strictly oriented to team_a=BRUTE (38.2%) / team_b=Sangal (61.8%) across Pinnacle, Bovada, and Melbet."
+    },
+    {
+      "fixture_id": "1082895",
+      "sport": "cs2",
+      "status": "ended",
+      "competition": "DraculaN Season 7",
+      "tier": "B",
+      "points": 3,
+      "start_utc": "2026-10-21T15:15:00Z",
+      "lock_utc": "2026-10-21T15:09:00Z",
+      "team_a": "BBL",
+      "team_b": "Heroic",
+      "seen_in": [
+        "api"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
+      "hltv_url": null,
+      "note": ""
+    },
+    {
+      "fixture_id": "1081585",
+      "sport": "cs2",
+      "status": "ended",
+      "competition": "DraculaN Season 7",
+      "tier": "B",
+      "points": 3,
+      "start_utc": "2026-10-21T15:25:00Z",
+      "lock_utc": "2026-10-21T15:19:00Z",
+      "team_a": "Nexus",
+      "team_b": "sAw",
+      "seen_in": [
+        "api"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
+      "hltv_url": null,
+      "note": ""
+    },
+    {
+      "fixture_id": "1081587",
+      "sport": "cs2",
+      "status": "ended",
+      "competition": "DraculaN Season 7",
+      "tier": "B",
+      "points": 3,
+      "start_utc": "2026-10-21T15:25:00Z",
+      "lock_utc": "2026-10-21T15:19:00Z",
+      "team_a": "Envy",
+      "team_b": "FaZe",
+      "seen_in": [
+        "api"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
+      "hltv_url": null,
+      "note": ""
+    },
+    {
       "fixture_id": "1082835",
       "sport": "cs2",
-      "status": "scheduled",
+      "status": "ended",
       "competition": "CCT South America 2026 Series #7",
-      "tier": "c",
+      "tier": "C",
       "points": 2,
       "start_utc": "2026-10-21T16:00:00Z",
       "lock_utc": "2026-10-21T15:54:00Z",
       "team_a": "JOGA DE TERNO",
       "team_b": "Martians",
       "seen_in": [
-        "lobby_page",
-        "fixtures_api"
+        "api"
       ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/joga-de-terno-vs-martians-cct-south-america-2026-series-7-1082835",
-      "permalink_verified": true,
-      "state": "open",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
       "hltv_url": "https://www.hltv.org/matches/2399863/joga-de-terno-vs-martians-cct-2026-south-america-series-7",
       "note": "Verified HLTV match record; Bovada and Melbet consensus prices JOGA DE TERNO at 58.1% vs Martians at 41.9%."
     },
     {
-      "fixture_id": "1082178",
+      "fixture_id": "1081590",
       "sport": "cs2",
       "status": "scheduled",
-      "competition": "Stake Ranked Episode 6: Closed Qualifier",
+      "competition": "DraculaN Season 7",
       "tier": "b",
+      "points": 3,
+      "start_utc": "2026-10-21T17:00:00Z",
+      "lock_utc": "2026-10-21T16:54:00Z",
+      "team_a": "SinnerS",
+      "team_b": "JiJieHao",
+      "seen_in": [
+        "fixtures_api"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_scheduled",
+      "hltv_url": null,
+      "note": ""
+    },
+    {
+      "fixture_id": "1081591",
+      "sport": "cs2",
+      "status": "scheduled",
+      "competition": "DraculaN Season 7",
+      "tier": "b",
+      "points": 3,
+      "start_utc": "2026-10-21T17:00:00Z",
+      "lock_utc": "2026-10-21T16:54:00Z",
+      "team_a": "Eternal Fire",
+      "team_b": "BC.Game",
+      "seen_in": [
+        "fixtures_api"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_scheduled",
+      "hltv_url": null,
+      "note": ""
+    },
+    {
+      "fixture_id": "1082178",
+      "sport": "cs2",
+      "status": "ended",
+      "competition": "Stake Ranked Episode 6: Closed Qualifier",
+      "tier": "B",
       "points": 3,
       "start_utc": "2026-10-21T17:30:00Z",
       "lock_utc": "2026-10-21T17:24:00Z",
       "team_a": "Metizport",
       "team_b": "GenOne",
       "seen_in": [
-        "lobby_page",
-        "fixtures_api"
+        "api"
       ],
-      "hotspawn_url": "https://www.hotspawn.com/matches/metizport-vs-genone-stake-ranked-episode-6-closed-qualifier-1082178",
-      "permalink_verified": true,
-      "state": "open",
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_ended",
       "hltv_url": "https://www.hltv.org/matches/2399783/metizport-vs-genone-stake-ranked-episode-6-closed-qualifier",
       "note": "Verified HLTV match record; Pinnacle, Bovada, and Melbet agree within 0.3pp at Metizport 65.8% / GenOne 34.2%."
     },
@@ -5894,7 +5435,7 @@
       ],
       "hotspawn_url": "https://www.hotspawn.com/matches/damajuana-vs-hacha-cct-south-america-2026-series-7-1082836",
       "permalink_verified": true,
-      "state": "open",
+      "state": "closed_scheduled",
       "hltv_url": "https://www.hltv.org/matches/2399864/damajuana-vs-hacha-cct-2026-south-america-series-7",
       "note": "Verified HLTV match record; Melbet full-match moneyline prices Hacha as 55.1% favorite (1.69 decimal) over Damajuana (44.9%, 2.075 decimal) despite 75% HotSpawn crowd ownership on Damajuana."
     },
@@ -5918,6 +5459,48 @@
       "state": "open",
       "hltv_url": "https://www.hltv.org/matches/2399865/zetta-vs-los-ninos-cct-2026-south-america-series-7",
       "note": "Intentionally left blank and flagged as Unverified: zero external betting lines exist and LOS NINOS is unranked on both HLTV and Valve VRS."
+    },
+    {
+      "fixture_id": "1081870",
+      "sport": "cs2",
+      "status": "scheduled",
+      "competition": "VOID Autumn Cup 2026",
+      "tier": "c",
+      "points": 2,
+      "start_utc": "2026-10-22T05:00:00Z",
+      "lock_utc": "2026-10-22T04:54:00Z",
+      "team_a": "Vitalem Aerem",
+      "team_b": "Rare Atom",
+      "seen_in": [
+        "lobby_page",
+        "fixtures_api"
+      ],
+      "hotspawn_url": "https://www.hotspawn.com/matches/vitalem-aerem-vs-rare-atom-void-autumn-cup-2026-1081870",
+      "permalink_verified": true,
+      "state": "open",
+      "hltv_url": null,
+      "note": ""
+    },
+    {
+      "fixture_id": "1081597",
+      "sport": "cs2",
+      "status": "scheduled",
+      "competition": "CCT Europe 2026 Challengers #8",
+      "tier": "c",
+      "points": 2,
+      "start_utc": "2026-10-22T11:00:00Z",
+      "lock_utc": "2026-10-22T10:54:00Z",
+      "team_a": "benched gods",
+      "team_b": "TitanFlow",
+      "seen_in": [
+        "lobby_page",
+        "fixtures_api"
+      ],
+      "hotspawn_url": "https://www.hotspawn.com/matches/benched-gods-vs-titanflow-cct-europe-2026-challengers-8-1081597",
+      "permalink_verified": true,
+      "state": "open",
+      "hltv_url": null,
+      "note": ""
     },
     {
       "fixture_id": "1081600",
@@ -6003,6 +5586,107 @@
       "note": "Verified HLTV LAN match record; Pinnacle, Bovada, and Melbet price a virtual 50.3% / 49.7% coin flip slightly favoring BESTIA."
     },
     {
+      "fixture_id": "1082882",
+      "sport": "cs2",
+      "status": "scheduled",
+      "competition": "Stake Ranked Episode 6: Closed Qualifier",
+      "tier": "b",
+      "points": 3,
+      "start_utc": "2026-10-22T14:00:00Z",
+      "lock_utc": "2026-10-22T13:54:00Z",
+      "team_a": "UNiTY",
+      "team_b": "Apogee Betclic",
+      "seen_in": [
+        "lobby_page",
+        "fixtures_api"
+      ],
+      "hotspawn_url": "https://www.hotspawn.com/matches/unity-vs-apogee-betclic-stake-ranked-episode-6-closed-qualifier-1082882",
+      "permalink_verified": true,
+      "state": "open",
+      "hltv_url": null,
+      "note": ""
+    },
+    {
+      "fixture_id": "1082858",
+      "sport": "cs2",
+      "status": "scheduled",
+      "competition": "DFRAG Invitational 2026",
+      "tier": "b",
+      "points": 3,
+      "start_utc": "2026-10-26T03:00:00Z",
+      "lock_utc": "2026-10-26T02:54:00Z",
+      "team_a": "Ground Zero",
+      "team_b": "Off Chops",
+      "seen_in": [
+        "fixtures_api"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_scheduled",
+      "hltv_url": null,
+      "note": ""
+    },
+    {
+      "fixture_id": "1082859",
+      "sport": "cs2",
+      "status": "scheduled",
+      "competition": "DFRAG Invitational 2026",
+      "tier": "b",
+      "points": 3,
+      "start_utc": "2026-10-26T03:00:00Z",
+      "lock_utc": "2026-10-26T02:54:00Z",
+      "team_a": "NEXVOID",
+      "team_b": "Alter Ego",
+      "seen_in": [
+        "fixtures_api"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_scheduled",
+      "hltv_url": null,
+      "note": ""
+    },
+    {
+      "fixture_id": "1082860",
+      "sport": "cs2",
+      "status": "scheduled",
+      "competition": "DFRAG Invitational 2026",
+      "tier": "b",
+      "points": 3,
+      "start_utc": "2026-10-27T03:00:00Z",
+      "lock_utc": "2026-10-27T02:54:00Z",
+      "team_a": "FlyQuest",
+      "team_b": "Staqued",
+      "seen_in": [
+        "fixtures_api"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_scheduled",
+      "hltv_url": null,
+      "note": ""
+    },
+    {
+      "fixture_id": "1082861",
+      "sport": "cs2",
+      "status": "scheduled",
+      "competition": "DFRAG Invitational 2026",
+      "tier": "b",
+      "points": 3,
+      "start_utc": "2026-10-27T03:00:00Z",
+      "lock_utc": "2026-10-27T02:54:00Z",
+      "team_a": "Rooster",
+      "team_b": "Abyssal",
+      "seen_in": [
+        "fixtures_api"
+      ],
+      "hotspawn_url": "https://play.hotspawn.com/lobby",
+      "permalink_verified": false,
+      "state": "closed_scheduled",
+      "hltv_url": null,
+      "note": ""
+    },
+    {
       "fixture_id": "1082792",
       "sport": "cs2",
       "status": "scheduled",
@@ -6069,41 +5753,41 @@
     "hotspawn_lobby": {
       "url": "https://play.hotspawn.com/lobby",
       "http_status": 200,
-      "bytes": 396783,
-      "sha256": "31f26df3ac5eeea6a10ec1a56a7047f52b2553f33b8529f3f65f29aa2924658a",
-      "retrieved_utc": "2026-10-21T13:59:01Z",
+      "bytes": 278328,
+      "sha256": "dabece33670826ba197a7d745ca8c7ab8a73ac2c3e7a30930642ebc03d1fe3b2",
+      "retrieved_utc": "2026-10-21T20:09:07Z",
       "mode": "live_https"
     },
     "pinnacle": {
       "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups",
       "http_status": 200,
-      "bytes": 835788,
-      "sha256": "00baf3db81f08a8188888510cea9cdc5d5b07d26703269ded5cb807b903de4be",
-      "retrieved_utc": "2026-10-21T13:59:02Z",
+      "bytes": 790161,
+      "sha256": "7e2cbe2d3e1821d4b19b18045d9ffe0ed9c225f07cd19106d529276f6f740e02",
+      "retrieved_utc": "2026-10-21T20:09:08Z",
       "mode": "live_https"
     },
     "bovada": {
       "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
       "http_status": 200,
-      "bytes": 306199,
-      "sha256": "23d3bcf2a2ff46c9789d75246797c94079942b76c5e1c40824118dba539be22a",
-      "retrieved_utc": "2026-10-21T13:59:02Z",
+      "bytes": 215662,
+      "sha256": "ce48f3b72cc6b8934443265b2663d2ac7c0675a8fa8f6b4d26ced9d5a1c8d607",
+      "retrieved_utc": "2026-10-21T20:09:08Z",
       "mode": "live_https"
     },
     "melbet": {
       "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
       "http_status": 200,
-      "bytes": 62180,
-      "sha256": "af7b6c795cf82ff8c8672633dcd5a26a336d00db6763db826b0f209673b9dc68",
-      "retrieved_utc": "2026-10-21T13:59:02Z",
+      "bytes": 64372,
+      "sha256": "9df84aa712051a9bd2e24862d4cecbf73266e8e0e00ec27569634c9f486af8ef",
+      "retrieved_utc": "2026-10-21T20:09:09Z",
       "mode": "live_https"
     },
     "kalshi": {
       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
       "http_status": 200,
-      "bytes": 296155,
-      "sha256": "3af2296780bdc0286c4910c2462a40a24795f904e2436095ae3ffaf939c808f1",
-      "retrieved_utc": "2026-10-21T13:59:03Z",
+      "bytes": 176632,
+      "sha256": "af81ca75178021febe8a9410007da1a49f602084114fc9dd88e4b7959f600e87",
+      "retrieved_utc": "2026-10-21T20:09:10Z",
       "mode": "live_https"
     }
   }

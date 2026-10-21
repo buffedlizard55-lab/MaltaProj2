@@ -237,18 +237,18 @@ footer {
     <ol>
       <li><strong>Tier 1 — Primary Sportsbooks:</strong> Proportional de-vigged consensus across Pinnacle (weight 2), Bovada (1), and Melbet (1): <code>p_A = (1/d_A) / (1/d_A + 1/d_B)</code>.</li>
       <li><strong>Tier 2 — HLTV + Exchange Order Books (Uncovered Matches Only):</strong> Verified HLTV match identity + active two-sided <code>Kalshi KXCS2GAME</code> contracts within tight bid/ask spread limits.</li>
-      <li><strong>Tier 3 — Originated Official Oct-21 Valve VRS Logistic Model (Uncovered Matches Only):</strong> Through-origin logistic regression <code>p_a = 1 / (1 + exp(-beta * (vrs_points_a - vrs_points_b)))</code> fitted across <strong>3</strong> live Week-273 fixtures with both sportsbook lines and official <a href="https://www.hltv.org/valve-ranking/teams/2026/october/21" rel="noopener">Oct 21, 2026 HLTV Valve Global Standings</a> (<code>β = 0.001420</code>, in-sample MAE <code>7.8pp</code>).</li>
+      <li><strong>Tier 3 — Originated Official Oct-21 Valve VRS Logistic Model (Uncovered Matches Only):</strong> Through-origin logistic regression <code>p_a = 1 / (1 + exp(-beta * (vrs_points_a - vrs_points_b)))</code> fitted across <strong>1</strong> live Week-273 fixtures with both sportsbook lines and official <a href="https://www.hltv.org/valve-ranking/teams/2026/october/21" rel="noopener">Oct 21, 2026 HLTV Valve Global Standings</a> (<code>β = 0.001420</code>, in-sample MAE <code>11.1pp</code>).</li>
       <li><strong>Tier 4 — Honest Refusal:</strong> Missing market + unrated opponent stays blank (<code>—</code>) and flagged.</li>
     </ol>
-    <h2>3. Live Week-273 Calibration Pairs (3 Fixtures)</h2>
+    <h2>3. Live Week-273 Calibration Pairs (1 Fixtures)</h2>
     <div class="table-wrap"><table class="picks-table"><thead><tr>
       <th scope="col">Fixture</th><th scope="col">VRS Δ (A − B)</th>
       <th scope="col">De-Vigged Book p(A)</th><th scope="col">Audit Row</th>
-    </tr></thead><tbody><tr><td data-label="Match">BRUTE vs Sangal (#1082177)</td><td data-label="Oct-21 VRS Δ">-508 pts</td><td data-label="No-Vig Book Prob">38.2%</td><td data-label="Source"><a class="src-link" href="picks.html#m-1082177">Row #1082177 →</a></td></tr><tr><td data-label="Match">Metizport vs GenOne (#1082178)</td><td data-label="Oct-21 VRS Δ">+309 pts</td><td data-label="No-Vig Book Prob">65.9%</td><td data-label="Source"><a class="src-link" href="picks.html#m-1082178">Row #1082178 →</a></td></tr><tr><td data-label="Match">BESTIA vs ShindeN (#1082689)</td><td data-label="Oct-21 VRS Δ">+382 pts</td><td data-label="No-Vig Book Prob">50.3%</td><td data-label="Source"><a class="src-link" href="picks.html#m-1082689">Row #1082689 →</a></td></tr></tbody></table></div>
+    </tr></thead><tbody><tr><td data-label="Match">BESTIA vs ShindeN (#1082689)</td><td data-label="Oct-21 VRS Δ">+382 pts</td><td data-label="No-Vig Book Prob">52.2%</td><td data-label="Source"><a class="src-link" href="picks.html#m-1082689">Row #1082689 →</a></td></tr></tbody></table></div>
     
 <footer>
-  <p><strong>Snapshot observed:</strong> <code>2026-10-21T13:59:01Z</code> ·
-  <strong>Evaluated:</strong> <code>2026-10-21T13:59:03Z</code> ·
+  <p><strong>Snapshot observed:</strong> <code>2026-10-21T20:09:07Z</code> ·
+  <strong>Evaluated:</strong> <code>2026-10-21T20:09:10Z</code> ·
   <strong>Auto-refresh:</strong> every 4 hours (<code>17 */4 * * *</code> via GitHub Actions).<br>
   <strong>Strict integrity rule:</strong> HotSpawn crowd pick percentages are <em>never</em> used as match probabilities.
   Unconfirmed values remain blank (<code>—</code>) and flagged on <a href="flagged.html">Flagged for Review</a>.<br>
