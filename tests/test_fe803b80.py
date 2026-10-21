@@ -15,9 +15,14 @@ import unittest
 from html.parser import HTMLParser
 from urllib.parse import urlsplit, unquote
 
+import importlib.util
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts", "fe803b80"))
-import core  # noqa: E402
+_FE_CORE_SPEC = importlib.util.spec_from_file_location(
+    "core_fe803b80_test", os.path.join(ROOT, "scripts", "fe803b80", "core.py")
+)
+core = importlib.util.module_from_spec(_FE_CORE_SPEC)
+_FE_CORE_SPEC.loader.exec_module(core)
 
 DATA = os.path.join(ROOT, "data", "fe803b80")
 SITE = os.path.join(ROOT, "board")

@@ -30,7 +30,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "7177d07f"
 sys.path.insert(0, str(ROOT / "scripts" / "f7279a54"))  # read-only reuse of the published VRS math
-import core  # noqa: E402
+import importlib.util as _iu, sys as _sys
+from pathlib import Path as _Path
+if 'core_7177d07f' in _sys.modules:
+    core = _sys.modules['core_7177d07f']
+else:
+    _core_spec = _iu.spec_from_file_location('core_7177d07f', ROOT / "scripts" / "f7279a54" / "core.py")
+    core = _iu.module_from_spec(_core_spec)
+    _sys.modules['core_7177d07f'] = core
+    _core_spec.loader.exec_module(core)
 
 LOBBY = "https://play.hotspawn.com/lobby"
 VALVE_PAGE = ("https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/"
