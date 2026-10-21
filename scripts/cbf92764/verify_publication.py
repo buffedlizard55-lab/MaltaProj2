@@ -72,6 +72,15 @@ def main():
     strict = load('cbf_strict_live_check', 'scripts/cbf92764/check_deployment.py')
     strict.main()
     print('::notice::PASS actual HTTPS root, dashboard, six category pages, assets, full inventory, per-row source links, provider replay and unresolved summary', flush=True)
+    # Retry only this delivery's failed production publisher gates now that a
+    # successful legacy publication exists. Never rerun another workflow/scope.
+    for run_id in (39611749011, 39613200669):
+        run = api(f'actions/runs/{run_id}')
+        if (run.get('conclusion') == 'failure'
+                and run.get('name') == 'Verify and publish dashboard'
+                and run.get('path') == '.github/workflows/pages.yml'):
+            api(f'actions/runs/{run_id}/rerun-failed-jobs', 'POST')
+            print(f'::notice::Retried failed production publisher gate {run_id}', flush=True)
 
 
 if __name__ == '__main__':
