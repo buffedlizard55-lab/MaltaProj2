@@ -32,6 +32,52 @@ def soup(name):
     return BeautifulSoup((ROOT / "cs2" / name).read_text(), "html.parser")
 
 
+def assert_pick_contract(case, row):
+    """Absence of evidence must not be 'fixed' by inventing a number to make CI green."""
+    fid = row["fixture_id"]
+    if row.get("pick") is None:
+        case.assertEqual(row["basis"], "unresolved", fid)
+        for key in ("prob_a", "prob_b", "pick_prob", "confidence"):
+            case.assertIsNone(row.get(key), (fid, key))
+        case.assertTrue(row.get("flags") or row.get("limitations"), fid)
+        case.assertTrue(row.get("basis_label"), fid)
+        case.assertTrue(row.get("sources"), fid)
+        return
+    case.assertIn(row["basis"], ("market", "market+model", "model", "research-market", "originated"))
+    pa, pb = row["prob_a"], row["prob_b"]
+    for p in (pa, pb):
+        case.assertIsInstance(p, (int, float), fid)
+        case.assertNotIsInstance(p, bool, fid)
+        case.assertTrue(math.isfinite(p) and 0 < p < 1, fid)
+    case.assertAlmostEqual(pa + pb, 1.0, places=6, msg=fid)
+    case.assertNotEqual(pa, pb, "A tied probability pair has no directional pick")
+    case.assertEqual(row["pick"], row["team_a"] if pa > pb else row["team_b"], fid)
+    case.assertAlmostEqual(row["pick_prob"], max(pa, pb), places=9)
+
+
+class UnresolvedContract(unittest.TestCase):
+    def example(self):
+        return dict(fixture_id="synthetic-unknown", team_a="A", team_b="B", pick=None,
+                    prob_a=None, prob_b=None, pick_prob=None, confidence=None, basis="unresolved",
+                    basis_label="No supported line - pick withheld", flags=["missing verified line"],
+                    sources=[{"url": "https://play.hotspawn.com/lobby"}])
+
+    def test_explicit_blank_with_sources_is_accepted(self):
+        assert_pick_contract(self, self.example())
+
+    def test_blank_row_with_fabricated_probability_is_rejected(self):
+        row = self.example(); row["prob_a"] = 0.5
+        with self.assertRaises(AssertionError): assert_pick_contract(self, row)
+
+    def test_unexplained_blank_is_rejected(self):
+        row = self.example(); row["flags"] = []
+        with self.assertRaises(AssertionError): assert_pick_contract(self, row)
+
+    def test_blank_row_without_sources_is_rejected(self):
+        row = self.example(); row["sources"] = []
+        with self.assertRaises(AssertionError): assert_pick_contract(self, row)
+
+
 class Coverage(unittest.TestCase):
     def test_source_schema_cannot_be_selected_by_timestamp_alone(self):
         compatible = json.loads((ROOT / 'data/fe803b80/board.json').read_text())
@@ -47,22 +93,18 @@ class Coverage(unittest.TestCase):
         self.assertEqual(len(got), len(set(got)), "a fixture appears twice")
         self.assertEqual(set(got), want)
 
-    def test_every_open_fixture_has_a_pick_and_a_basis(self):
-        self.assertEqual(BOARD["summary"]["open"], len(BOARD["rows"]))
-        self.assertEqual(BOARD["summary"]["with_pick"], len(BOARD["rows"]))
-        self.assertEqual(BOARD["summary"]["unresolved"], 0)
-        for row in BOARD["rows"]:
-            self.assertTrue(row["pick"], row["fixture_id"])
-            self.assertIn(row["basis"], ("market", "market+model", "model", "research-market", "originated"))
+    def test_every_open_fixture_is_resolved_or_explicitly_unresolved(self):
+        rows, summary = BOARD["rows"], BOARD["summary"]
+        resolved = [r for r in rows if r.get("pick") is not None]
+        self.assertEqual(summary["open"], len(rows))
+        self.assertEqual(summary["with_pick"], len(resolved))
+        self.assertEqual(summary["unresolved"], len(rows) - len(resolved))
+        for row in rows:
+            assert_pick_contract(self, row)
 
     def test_probabilities_are_bounded_sum_to_one_and_pick_is_argmax(self):
         for row in BOARD["rows"]:
-            pa, pb = row["prob_a"], row["prob_b"]
-            self.assertAlmostEqual(pa + pb, 1.0, places=6, msg=row["fixture_id"])
-            self.assertTrue(0 < pa < 1 and 0 < pb < 1)
-            expected = row["team_a"] if pa > pb else row["team_b"]
-            self.assertEqual(row["pick"], expected, row["fixture_id"])
-            self.assertAlmostEqual(row["pick_prob"], max(pa, pb), places=9)
+            assert_pick_contract(self, row)
 
     def test_counts_add_up(self):
         s, rows = BOARD["summary"], BOARD["rows"]
@@ -70,7 +112,9 @@ class Coverage(unittest.TestCase):
         self.assertEqual(s["model"], sum(1 for r in rows if r["basis"] == "model"))
         self.assertEqual(s["research_market"], sum(1 for r in rows if r["basis"] == "research-market"))
         self.assertEqual(s["originated"], sum(1 for r in rows if r["basis"] == "originated"))
-        self.assertEqual(s["covered_percent"], 100.0)
+        resolved = sum(r.get("pick") is not None for r in rows)
+        self.assertEqual(s["covered_percent"], round(100.0 * resolved / len(rows), 1) if rows else 0.0)
+        self.assertEqual(s["with_pick"] + s["unresolved"], s["open"])
 
 
 class Arithmetic(unittest.TestCase):
