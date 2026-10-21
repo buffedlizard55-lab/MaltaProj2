@@ -75,8 +75,12 @@ class Arithmetic(unittest.TestCase):
 
     def test_originated_line_reproduces_from_official_valve_points(self):
         res = RESOLUTIONS["fixtures"]["1082837"]
-        k = SOURCE_BOARD["calibration"]["k"]
-        zetta, floor = 473.0, 381.0          # Valve 2026-10-05: Zetta #357; lowest published rating
+        # This archived manual scenario used a fixed calibration snapshot.
+        # A later upstream refresh must not silently change its historical inputs.
+        calculation = res["calculation"]
+        self.assertFalse(calculation["unrated_opponent_rating_verified"])
+        k = calculation["calibration_k"]
+        zetta, floor = calculation["points_a"], calculation["assumed_points_b"]
         expected = 1 / (1 + math.exp(-k * BUILD.valve_c() * (zetta - floor)))
         self.assertAlmostEqual(expected, res["prob_a"], places=5)
         self.assertLess(res["prob_a"], 0.75, "an unrated opponent must not be treated as a walkover")

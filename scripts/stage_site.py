@@ -10,29 +10,24 @@ OUT=ROOT/'out/site'
 if OUT.exists():
     shutil.rmtree(OUT)
 OUT.mkdir(parents=True)
-# 3e1be203 desk: re-render the phone-first desk from the canonical batch before staging, so a
-# scheduled data refresh can never leave its probabilities stale. Additive: this session writes
-# only desk/**, data/3e1be203/** and scripts/3e1be203/**.
+# Historical desks are copied as retained snapshots. Their isolated collectors own
+# their data/rendering. Re-rendering them here against a different current canonical
+# batch mixed quote orientation, missing ownership and fixed historical assumptions.
+# The primary dashboard and live sections below have explicit current-batch gates.
 import subprocess as _subprocess, sys as _sys
-_subprocess.run([_sys.executable, str(ROOT/'scripts/3e1be203/build.py')], check=False)
-# 782adb47 finals: re-render the Day-5 finals desk from the canonical batch before staging (additive;
-# this session writes only finals/**, data/782adb47/**, scripts/782adb47/**).
-_subprocess.run([_sys.executable, str(ROOT/'scripts/782adb47/build.py')], check=False)
-# 7900154b day-5 desk: re-render from the retained raw prices before staging, so the
-# published artifact can never serve a stale board. Writes only day5/**.
+# Other independently scoped renderers retain their original staging contracts.
 _subprocess.run([_sys.executable, str(ROOT/'scripts/7900154b/build.py')], check=False)
-# 371a1ce7 start/ front door: re-render from the newest line board before staging (additive; writes
-# only start/** and data/371a1ce7/** and never fails the stage step).
 _subprocess.run([_sys.executable, str(ROOT/'scripts/371a1ce7/build.py')], check=False)
-# b3871d16 day-5 desk + every-match resolution: re-render from the newest canonical board and this
-# session's own evidence ledger before staging (additive; writes only now/** and never fails the stage step).
 _subprocess.run([_sys.executable, str(ROOT/'scripts/b3871d16/build.py')], check=False)
 # cbf92764: rebuild evidence-only dashboard; preserve e1b48771's independent section as well.
 _subprocess.run([_sys.executable, str(ROOT/'scripts/cbf92764/build.py')], check=True)
 _subprocess.run([_sys.executable, str(ROOT/'scripts/e1b48771/build.py')], check=False)
+# 82a9a0cc strict live-lobby board: render only from its retained, audited board so staged HTML and
+# machine data remain byte-for-value aligned. Collection stays in its isolated four-hour workflow.
+_subprocess.run([_sys.executable, str(ROOT/'scripts/82a9a0cc/build.py')], check=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','today','desk','finals','day5','finalday','start','climb','now','everymatch','dashboard','cs2'):  # Union of both final-integration sections; neither discarded.
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','today','desk','finals','day5','finalday','start','climb','now','everymatch','dashboard','cs2','hotspawn-live','hotspawn-cs2'):  # Union of both final-integration sections; neither discarded.
 # 'finals' added by session 782adb47 (TWC Day-5 finals desk), additive single entry: root NAV +
 # landing front door link finals/index.html, so the artifact must carry the directory.
 # 'day5' added by session 7900154b (TWC 2026 day-5 final desk + every-match picks), additive

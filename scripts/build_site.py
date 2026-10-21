@@ -72,20 +72,18 @@ def pct(value):
 # Keep the primary navigation focused. Preserved parallel-session work remains
 # available from Research archive rather than crowding every mobile header.
 NAV = [
-    # e1b48771: the header is the phone-first pick list plus its evidence pages. The strict
-    # canonical board and its pages stay in the nav (existing contract); every other earlier section
-    # is one tap away in the collapsed archive on the landing page.
+    # Evidence-only desk leads; all parallel research remains linked, at most 12 mobile links.
     ("index.html", "Home"),
     ("dashboard/picks.html", "\U0001F4F1 Today's picks"),
     ("dashboard/unresolved.html", "Unresolved"),
     ("dashboard/flagged.html", "Flagged"),
     ("dashboard/sources.html", "Method"),
+    ("hotspawn-live/index.html", "Alternative live board"),
     ("picks-every-match/index.html", "Canonical board"),
     ("picks-every-match/unresolved.html", "Canonical unresolved"),
     ("picks-every-match/method.html", "Canonical method"),
     ("day-one.html", "Day one"),
     ("flagged.html", "Site flags"),
-    ("unresolved.html", "Root unresolved"),
     ("research.html", "Archive"),
 ]
 
@@ -101,8 +99,29 @@ def _board_stamp(rel, *keys):
 
 
 
+def hotspawn_live_front_html():
+    """Stable handoff to the current 82a9a0cc strict-lobby board.
+
+    Counts and timestamps intentionally live inside the linked board: its four-hour refresh owns
+    only hotspawn-live/**, so this shared root card never claims a stale number between root builds.
+    """
+    return '''<div class="desk-front" id="hotspawn-live-front">
+<p class="eyebrow">● CURRENT LOBBY BOARD · four-hour refresh target · independent of HotSpawn</p>
+<h2>Every open HotSpawn lobby CS2 match, one clear pick</h2>
+<p>Both teams’ win probabilities, the exact market/model basis, lock time and source links on every
+row. External lines lead; documented official Valve VRS scenarios fill supported gaps. HotSpawn
+crowd ownership is never a probability. Open the board for its current as-of stamp.</p>
+<div class="desk-actions">
+<a class="btn live-board-cta" href="hotspawn-live/index.html"><span><strong>Open live dashboard</strong> · executive summary</span><span>→</span></a>
+<a class="btn live-board-cta" href="hotspawn-live/picks.html"><span><strong>All current picks</strong> · both probabilities</span><span>→</span></a>
+<a class="btn live-board-cta" href="hotspawn-live/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · blank-row policy</span><span>→</span></a>
+<a class="btn live-board-cta" href="hotspawn-live/sources.html"><span><strong>Sources &amp; row ledger</strong> · verify every line</span><span>→</span></a>
+</div>
+</div>'''
+
+
 def start_front_html():
-    """371a1ce7: the single phone-first front door (start/). Reads start/data/board.json only."""
+    """371a1ce7: preserved dated front door. Reads start/data/board.json only."""
     d = load("start/data/board.json") or {}
     sm = d.get("summary") or {}
     d5 = d.get("twc_day5") or []
@@ -602,8 +621,11 @@ def source_health_table(odds_evidence, probe_evidence):
     return table(["Source", "Probed URL", "Result", "Response preview"], out)
 
 
-def cs2_front_html():
-    """e1b48771: the phone-first front door for the full-coverage CS2 pick board.
+def cs2_front_html(*, archived=False):
+    """e1b48771: the parallel expanded-API CS2 pick board.
+
+    When archived on the shared landing page it uses h2, preserving the live lobby board as the
+    page's single h1 while retaining every e1b48771 route and source.
 
     Reads only this session's generated board (data/e1b48771/board.json) and returns "" when it
     has not been built, so the landing page degrades to its previous behaviour instead of
@@ -622,10 +644,13 @@ def cs2_front_html():
         f'{esc(fmt_time(r.get("start_utc")))}</span></li>' for r in rows[:3])
     stamp = esc(fmt_time(src.get("generated_utc")) or "unverified")
     coverage = sm.get("covered_percent")
+    heading = ('<h2>Parallel expanded-API board: every listed match has a pick &mdash; and a source</h2>'
+               if archived else
+               '<h1 id="summary-title">Every listed CS2 match has a pick &mdash; and a source</h1>')
     return f"""
 <div class="hero-card" id="cs2-front">
 <p class="eyebrow">📱 Every HotSpawn CS2 match · built {esc(fmt_time(d.get('generated_utc')))}</p>
-<h2 id="summary-title">Independent research board &mdash; different evidence policy</h2>
+<h2>Independent research board &mdash; different evidence policy</h2>
 <p><strong>{esc(sm.get('with_pick'))} of {esc(sm.get('open'))} open matches</strong> carry a pick with both teams'
 win probability ({esc(coverage)}% coverage): {esc(sm.get('market'))} from external betting lines and
 {esc((sm.get('model') or 0) + (sm.get('originated') or 0) + (sm.get('research_market') or 0))} built from
@@ -746,25 +771,28 @@ roster investigation are on the <a href="day4/twc-review.html">day 1–3 review<
 <p><a href="dashboard/inventory.html">Complete HotSpawn inventory</a> · <a href="dashboard/sources.html">Evidence &amp; method</a> · <a href="dashboard/flagged.html">Flagged for Review</a>. Four-hour automated checks; freshness and lock warnings on every row.</p>
 </section>
 <section id="executive-summary" aria-labelledby="summary-title">
-<details class="archive" id="alternative-cs2-research"><summary>Independent CS2 research board (includes assumptions not used in the current desk)</summary>
-{cs2_front_html()}
-<p>See <a href="dashboard/flagged.html">Flagged for Review</a> for the difference between a verified rating and an assumed rating floor for an unranked opponent.</p></details>
 <div class="hero-card">
-<p class="eyebrow">Canonical market-only boards (older evidence standard)</p>
+<p class="eyebrow">CS2 Pick’em dashboard · Executive summary</p>
+<h2 id="summary-title">Alternative source policies &amp; preserved research</h2>
+<p class="muted">The evidence-only current desk is above. These parallel boards use different assumptions and are preserved for review.</p>
+<details class="archive" id="parallel-lobby-archive"><summary>Alternative lobby scenario board — different evidence policy</summary>
+{hotspawn_live_front_html()}
+<p>The floor scenario is an assumption, not a verified rating for an unrated team. It is not imported into the current desk.</p></details>
+<details class="archive" id="older-boards"><summary>Parallel expanded-API board and earlier desks</summary>
+{cs2_front_html(archived=True)}
+<p>Mixed best-book prices, unsupported aliases and an unrated-team floor differ from the current desk: <a href="dashboard/flagged.html">limitations</a>.</p>
+<p><a href="hotspawn-cs2/index.html">Additional CS2 research board</a> · <a href="hotspawn-cs2/picks.html">All research picks</a> · <a href="hotspawn-cs2/unresolved.html">Unresolved</a>. Direction-only picks for an unrated opponent are not source-verified and are not imported into the current desk.</p>
 {start_front_html()}
 <p class="note">🐟 <a href="climb/index.html"><strong>Climb desk (a89b76e9)</strong></a> —
-<a href="climb/picks.html">a pick for every open match</a> (incl. researched resolutions for the rows the
-capture left blank) · <a href="climb/twc.html">TWC final day: safe + contrarian climb picks</a> ·
-<a href="climb/unresolved.html">unresolved &amp; limitations</a> · <a href="climb/flagged.html">flagged A1–A8</a>.
-External lines only; HotSpawn is never a probability.</p>
-<details class="archive" id="older-boards"><summary>Earlier desks from previous sessions (superseded by Start here)</summary>
+<a href="climb/picks.html">a pick for every captured match</a> · <a href="climb/twc.html">TWC final day archive</a> ·
+<a href="climb/unresolved.html">unresolved &amp; limitations</a> · <a href="climb/flagged.html">flagged A1–A8</a>.</p>
 {finals_front_html()}
 {day5_front_html()}
 {desk_front_html()}
 <p class="note"><a href="finalday/index.html">Final-day live desk (36186ad8)</a> · <a href="start/archive.html">Full archive list</a></p>
 </details>
-<h2 id="canonical-title">Every listed match. Evidence before picks.</h2>
-<p class="muted">Canonical market-only boards below. The desk above is the phone front door.</p>
+<h2 id="canonical-title">Preserved canonical market-only board</h2>
+<p class="muted">The legacy primary-action contract remains below for reproducibility and historical verification.</p>
 <div class="actions primary-actions">
 <a class="btn btn-primary" href="picks-every-match/index.html">Open all CS2 picks · every match →</a>
 <a class="btn alt2" href="day4/index.html">TWC day-4 semifinals + lobby picks →</a>

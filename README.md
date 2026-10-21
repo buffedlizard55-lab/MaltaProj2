@@ -2,7 +2,13 @@
 
 **Live dashboard: https://buffedlizard55-lab.github.io/MaltaProj2/**
 
-**📱 Start here — [Every HotSpawn CS2 match has a pick](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/) (session `e1b48771`).**
+## Current evidence-only dashboard
+
+Start with the [mobile summary](https://buffedlizard55-lab.github.io/MaltaProj2/dashboard/) or [all current picks](https://buffedlizard55-lab.github.io/MaltaProj2/dashboard/picks.html). Every retained lobby fixture is accounted for; unsupported probabilities and picks remain blank in [Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/dashboard/unresolved.html). [Sources](https://buffedlizard55-lab.github.io/MaltaProj2/dashboard/sources.html) · [Flagged for Review](https://buffedlizard55-lab.github.io/MaltaProj2/dashboard/flagged.html). External prices lead, rule-backed exchange quotes are labelled, and originated Valve estimates are experimental—not verified probabilities. No inferred unrated-team floor or direction-only assumption is imported. Four-hour automated research is a best-effort target; stale rows disable themselves.
+
+Alternative research: [hotspawn-cs2](https://buffedlizard55-lab.github.io/MaltaProj2/hotspawn-cs2/) (d9d7627b; includes direction-only assumptions, probabilities blank) and [hotspawn-live](https://buffedlizard55-lab.github.io/MaltaProj2/hotspawn-live/) (82a9a0cc; includes hypothetical unrated-floor scenarios). Their isolated schedules do not own the shared root. The central root builder preserves links to every section without certifying alternative assumptions.
+
+**Alternative expanded-API research — [Every HotSpawn CS2 match has a pick](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/) (session `e1b48771`).**
 One page per match with both win probabilities, the pick and the source behind it; a separate
 [Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/unresolved.html) page,
 [Flagged for review](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/flagged.html) and
@@ -10,7 +16,11 @@ One page per match with both win probabilities, the pick and the source behind i
 links all four. Rebuilt every 4 hours from the freshest HotSpawn lobby capture. HotSpawn supplies fixtures only —
 never a probability. See the [session log in COORDINATION.md](COORDINATION.md).
 
-**📱🏆 FINAL DAY (today 18 Oct): start with the [final-day desk](https://buffedlizard55-lab.github.io/MaltaProj2/finalday/) — books priced it overnight: FURIA 68.2% v BETBOOM, Falcons 62.8% v Aurora (Thunderpick via bo3.gg, read live); BETBOOM fail the 35% climb floor, Aurora the only conditional gamble. Plus every open HotSpawn pick + [unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/finalday/unresolved.html). Session `36186ad8`, 4-hourly.**
+## Preserved earlier research notes
+
+The following dated session notes are retained for audit, not promoted as current picks or certified source facts. Their unsupported aliases, unrated-floor and direction-only assumptions are not imported into the evidence-only dashboard.
+
+**📱🏆 FINAL DAY (18 Oct archive): start with the [final-day desk](https://buffedlizard55-lab.github.io/MaltaProj2/finalday/) — books priced it overnight: FURIA 68.2% v BETBOOM, Falcons 62.8% v Aurora (Thunderpick via bo3.gg, read live); BETBOOM fail the 35% climb floor, Aurora the only conditional gamble. Plus every open HotSpawn pick + [unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/finalday/unresolved.html). Session `36186ad8`, 4-hourly.**
 
 **📱 Phone? Start here: [Start page](https://buffedlizard55-lab.github.io/MaltaProj2/start/) — one page with today's TWC final-day picks, a pick and both win probabilities for every open HotSpawn CS2 match, an [Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/start/unresolved.html) section and a [Flagged for review](https://buffedlizard55-lab.github.io/MaltaProj2/start/flagged.html) page. Session `371a1ce7`; rebuilt every 4 hours. Earlier desks are listed in its [Archive](https://buffedlizard55-lab.github.io/MaltaProj2/start/archive.html).**
 

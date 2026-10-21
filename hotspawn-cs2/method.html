@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method &amp; sources · HotSpawn CS2 picks</title>
+<meta name="description" content="A pick and win probability for every open HotSpawn CS2 Pick'em match, from external betting lines and official Valve ratings. Updated automatically.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site"><div class="wrap">
+<p class="site-title"><a href="index.html">🎯 HotSpawn CS2 Pick&rsquo;em — picks for every match</a></p>
+<p class="site-sub">Updated <time datetime="2026-10-21T13:06:23Z" data-local title="2026-10-21T13:06:23Z">2026-10-21 13:06 UTC</time> · market data collected <time datetime="2026-10-21T13:03:02Z" data-local title="2026-10-21T13:03:02Z">2026-10-21 13:03 UTC</time> · auto-refresh every few hours</p>
+<nav class="tabs" aria-label="Picks board"><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="method.html" aria-current="page">Method & sources</a><a href="flagged.html">Flagged</a></nav>
+</div></header>
+<main class="wrap">
+
+<h1>Method &amp; sources</h1>
+<h2>What this board is</h2>
+<p>For every CS2 match in the <a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn Pick&rsquo;em lobby</a>
+we publish a pick and, whenever it can be derived from a source, both teams&rsquo; win
+probabilities. HotSpawn itself is used <b>only</b> to discover which matches exist; its
+crowd &ldquo;picked %&rdquo; is never read into any probability.</p>
+<h2>Resolution chain (first tier that resolves wins)</h2>
+<ol>
+<li><b>Market line.</b> Two-way match-winner prices are collected from Pinnacle, Bovada,
+Melbet, Kalshi and Polymarket. A price joins a fixture only if <i>both</i> team names match
+exactly after normalisation (case/accents/generic words like &ldquo;Esports&rdquo; stripped;
+a published alias table; or an exact same-words reorder) <i>and</i> the book&rsquo;s start
+time is within 30 minutes of HotSpawn&rsquo;s. Each book&rsquo;s margin is removed
+proportionally: <code>fair = (1/odds) / Σ(1/odds)</code>. The published probability is the
+<b>median</b> across books, so any reader can re-derive it from the listed prices.</li>
+<li><b>Our line (VRS model).</b> If no book prices the match but both teams appear uniquely
+in Valve&rsquo;s official <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">VRS
+global standings</a> (snapshot 2026_10_05), we originate a line with
+Valve&rsquo;s own Glicko expected-win formula,
+<code>P(A) = 1/(1+10^(−g·Δ/400))</code> at RD 75, with the slope scaled by
+<b>k = 0.448</b> — fitted by least squares to
+<b>66</b> fixtures where we observed both a market consensus and two VRS
+ratings (mean absolute error vs the market 7.7pp;
+favourite agreement 85%). Valve&rsquo;s unscaled curve
+(k=1) errs by 11.8pp on the same pairs, so we use
+the fitted slope. Model probabilities are capped to 3%–97% and always labelled estimates.</li>
+<li><b>Direction only.</b> If only one side has a verified rating signal (or all candidate
+rosters of one side outrank all of the other), the rated side is the pick and the
+probability stays <b>blank</b>.</li>
+<li><b>Unresolved.</b> No price and no usable rating → no pick. The match is published on the
+<a href="unresolved.html">Unresolved page</a> with the exact limitations. We never
+invent a percentage, and never fill a blank with 50%.</li>
+</ol>
+<h2>Guards against bad joins</h2>
+<ul class="tight">
+<li>No prefix/fuzzy name matching (&ldquo;B8&rdquo; ≠ &ldquo;B8 Academy&rdquo;,
+&ldquo;WBT&rdquo; ≠ &ldquo;WROTBERRY&rdquo;); every alias join is flagged on its row.</li>
+<li>Kalshi prices are never joined: its feed has no verified kickoff time. They are shown as
+&ldquo;seen but NOT used&rdquo; evidence. The same applies to any price whose start time
+disagrees with HotSpawn by &gt;30 min, and to in-play (live) prices.</li>
+<li>Stored derived probabilities are never trusted: the Resolver recomputes every fair %
+from the raw stored prices.</li>
+<li>If HotSpawn is unreachable, the previous fixture inventory is kept and the failure is
+logged — an empty board is never published.</li>
+</ul>
+<h2>Sources used this run</h2>
+<div class="tblwrap"><table><tr><th>Source</th><th>Status</th><th>Yield</th><th>Collected (UTC)</th></tr>
+<tr><td><a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn lobby (fixture discovery only)</a></td><td>OK (HTTP 200)</td><td></td><td class="kbd">2026-10-21T13:02:36Z</td></tr><tr><td><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures" rel="noopener">HotSpawn public fixtures API</a></td><td>OK (HTTP 200)</td><td></td><td class="kbd">2026-10-21T13:02:37Z</td></tr><tr><td><a href="https://www.pinnacle.com/en/esports/cs2-hub" rel="noopener">Pinnacle guest odds API</a></td><td>OK (HTTP 200)</td><td>13 prices</td><td class="kbd">2026-10-21T13:02:43Z</td></tr><tr><td><a href="https://www.bovada.lv/esports" rel="noopener">Bovada coupon JSON</a></td><td>OK (HTTP 200)</td><td>26 prices</td><td class="kbd">2026-10-21T13:02:47Z</td></tr><tr><td><a href="https://melbet.com/en/line/esports" rel="noopener">Melbet LineFeed</a></td><td>OK (HTTP 200)</td><td>38 prices</td><td class="kbd">2026-10-21T13:02:47Z</td></tr><tr><td><a href="https://kalshi.com/markets/kxcs2game" rel="noopener">Kalshi trade API (KXCS2GAME)</a></td><td>OK (HTTP 200)</td><td>31 prices</td><td class="kbd">2026-10-21T13:02:48Z</td></tr><tr><td><a href="https://polymarket.com/" rel="noopener">Polymarket Gamma API</a></td><td>OK (HTTP 200)</td><td>0 prices</td><td class="kbd">2026-10-21T13:02:48Z</td></tr><tr><td><a href="https://www.hltv.org/matches" rel="noopener">HLTV (access probe only)</a></td><td>FAILED (HTTPError 403)</td><td></td><td class="kbd">2026-10-21T13:02:49Z</td></tr><tr><td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve VRS standings (official, GitHub)</a></td><td>OK (HTTP 200)</td><td></td><td class="kbd">2026-10-21T13:02:50Z</td></tr></table></div>
+<p class="small muted">Full access log with response sizes and SHA-256 hashes is stored in
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/d9d7627b/snapshot.json">snapshot.json</a> (<code>access_log</code>).</p>
+<h2>Freshness</h2>
+<p>A GitHub Actions workflow (<a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/hotspawn-cs2-d9d7627b.yml">
+hotspawn-cs2-d9d7627b</a>) re-runs collect → resolve → build every 2 hours and commits only
+when the board changes, so picks are never more than a few hours old (target &lt;4–8h even
+if GitHub drops a scheduled run). New HotSpawn fixtures are picked up automatically; matches
+whose lock time passes move to the &ldquo;Locked&rdquo; section for the record.</p>
+
+<h2>Known limitations</h2>
+<ul class="tight">
+<li>Model lines inherit VRS staleness (monthly snapshots) and ignore maps, vetoes, stand-ins
+and same-day form. Treat them as a prior, not a price.</li>
+<li>HLTV blocks automated reads (HTTP 403 at last probe), so HLTV form/head-to-head is
+linked for manual review rather than collected.</li>
+<li>Some books price a match only minutes before start; a fixture can move from
+&ldquo;model&rdquo; to &ldquo;market&rdquo; between refreshes.</li>
+<li>HotSpawn occasionally lists fixtures as &ldquo;scheduled&rdquo; long after their start
+(see Flagged page) — we account for them but cannot pick them.</li>
+</ul>
+<h2>Verify it yourself</h2>
+<p><a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/d9d7627b/board.json">board.json</a> (what these pages render) ·
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/d9d7627b/snapshot.json">snapshot.json</a> (raw collected prices) ·
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/d9d7627b/calibration.json">calibration.json</a> (model fit pairs) ·
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/scripts/d9d7627b/core.py">core.py</a> (all formulas) ·
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/tests/test_d9d7627b.py">tests</a>.</p>
+
+<footer class="site">
+<p>Probabilities come from external betting markets (de-vigged) or, where no book prices a
+match, an originated line from the official Valve VRS ratings — labelled on every row.
+HotSpawn is used only to discover fixtures; its crowd &ldquo;picked %&rdquo; is never used
+as a probability. Blank = could not be verified from a source (see
+<a href="unresolved.html">Unresolved &amp; limitations</a>). Analysis only — not betting advice.</p>
+<p>Data &amp; code: <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/d9d7627b/board.json">board.json</a> ·
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/scripts/d9d7627b/collect.py">collector</a> ·
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/scripts/d9d7627b/resolve.py">Resolver</a> ·
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/hotspawn-cs2-d9d7627b.yml">refresh runs</a> ·
+<a href="method.html">method</a></p>
+</footer>
+</main>
+<script src="assets/app.js"></script>
+</body>
+</html>
