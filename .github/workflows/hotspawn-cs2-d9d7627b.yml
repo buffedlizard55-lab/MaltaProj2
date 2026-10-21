@@ -1,0 +1,96 @@
+# HotSpawn CS2 every-match picks board (session d9d7627b).
+#
+# Live refresh: collect HotSpawn fixtures + external betting lines + official Valve VRS,
+# resolve a pick for every open match, rebuild the static site, verify, and commit to the
+# triggering branch (main on schedule). GitHub Pages serves this repo in legacy branch
+# mode (main:/), so each refresh commit republishes the site automatically.
+#
+# Cadence: cron every 2 hours. The requirement is a board never older than 4-8 hours;
+# scheduling every 2h keeps that true even when GitHub delays or drops scheduled fires.
+# Runs commit only when the board actually changed.
+name: hotspawn-cs2 picks (d9d7627b)
+
+on:
+  schedule:
+    - cron: '23 */2 * * *'
+  workflow_dispatch:
+  push:
+    branches: [arena/d9d7627b-maltaproj2, main]
+    paths:
+      - 'scripts/d9d7627b/**'
+      - 'tests/test_d9d7627b.py'
+      - 'hotspawn-cs2/assets/**'
+      - '.github/workflows/hotspawn-cs2-d9d7627b.yml'
+  pull_request:
+    paths:
+      - 'scripts/d9d7627b/**'
+      - 'tests/test_d9d7627b.py'
+      - 'hotspawn-cs2/assets/**'
+      - '.github/workflows/hotspawn-cs2-d9d7627b.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hotspawn-cs2-d9d7627b
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Replay pipeline from committed snapshot (no network collection)
+        run: python scripts/d9d7627b/run.py --from-snapshot
+      - name: Unit + parser-replay + board-invariant tests
+        run: python -m unittest discover -s tests -p 'test_d9d7627b.py' -v
+      - name: Internal link check
+        run: python scripts/d9d7627b/check_links.py
+
+  refresh:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Collect live (HotSpawn + books + VRS), resolve, build
+        run: python scripts/d9d7627b/run.py
+      - name: Unit + parser-replay + board-invariant tests
+        run: python -m unittest discover -s tests -p 'test_d9d7627b.py' -v
+      - name: Internal link check
+        run: python scripts/d9d7627b/check_links.py
+      - name: Commit refreshed board (only if changed)
+        run: |
+          set -e
+          BRANCH="${GITHUB_REF_NAME}"
+          git config user.name "hotspawn-cs2-bot (d9d7627b)"
+          git config user.email "d9d7627b@arena.session"
+          git add data/d9d7627b hotspawn-cs2 index.html
+          if git diff --cached --quiet; then
+            echo "No board changes; nothing to commit."
+            exit 0
+          fi
+          STAMP="$(python -c "import json;print(json.load(open('data/d9d7627b/board.json'))['generated_utc'])")"
+          git commit -m "hotspawn-cs2(d9d7627b): refresh picks ${STAMP}"
+          for i in 1 2 3; do
+            if git push origin HEAD:"${BRANCH}"; then
+              echo "Pushed on attempt ${i}."
+              exit 0
+            fi
+            echo "Push rejected (attempt ${i}); rebasing onto latest ${BRANCH}..."
+            git fetch origin "${BRANCH}"
+            git rebase "origin/${BRANCH}" || { git rebase --abort; exit 1; }
+            sleep 5
+          done
+          echo "Failed to push after 3 attempts."
+          exit 1

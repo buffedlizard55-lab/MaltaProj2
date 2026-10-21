@@ -3,272 +3,87 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CS2 picks dashboard · HotSpawn Pick'ems betting-line analysis</title>
-<link rel="stylesheet" href="assets/style.css">
+<title>Executive summary · HotSpawn CS2 picks</title>
+<meta name="description" content="A pick and win probability for every open HotSpawn CS2 Pick'em match, from external betting lines and official Valve ratings. Updated automatically.">
+<link rel="stylesheet" href="hotspawn-cs2/assets/style.css">
 </head>
 <body>
-<a class="skip-link" href="#main-content">Skip to content</a>
-<header class="topbar">
-  <div class="wrap">
-    <div class="brand"><span class="dot"></span>HotSpawn Pick'ems · betting-line analysis</div>
-    <nav><a href="index.html" class="active">Home</a>
-<a href="hotspawn-live/index.html">📱 Live board</a>
-<a href="hotspawn-live/picks.html">All live picks</a>
-<a href="hotspawn-live/unresolved.html">Limits</a>
-<a href="hotspawn-live/sources.html">Live sources</a>
-<a href="cs2/picks.html">Expanded API board</a>
-<a href="picks-every-match/index.html">Canonical board</a>
-<a href="picks-every-match/unresolved.html">Canonical unresolved</a>
-<a href="picks-every-match/method.html">Canonical method</a>
-<a href="day-one.html">Day one</a>
-<a href="flagged.html">Site flags</a>
-<a href="research.html">Archive</a></nav>
-  </div>
-</header>
-<main class="wrap" id="main-content" tabindex="-1">
-  
-<section id="executive-summary" aria-labelledby="summary-title">
-<div class="hero-card">
-<p class="eyebrow">CS2 Pick’em dashboard · Executive summary</p>
-<h1 id="summary-title">Live CS2 picks, both win probabilities, every lobby match.</h1>
-<p class="muted">The strict current-lobby board is first. Parallel API coverage and dated desks remain preserved below.</p>
-<div class="desk-front" id="hotspawn-live-front">
-<p class="eyebrow">● CURRENT LOBBY BOARD · four-hour refresh target · independent of HotSpawn</p>
-<h2>Every open HotSpawn lobby CS2 match, one clear pick</h2>
-<p>Both teams’ win probabilities, the exact market/model basis, lock time and source links on every
-row. External lines lead; documented official Valve VRS scenarios fill supported gaps. HotSpawn
-crowd ownership is never a probability. Open the board for its current as-of stamp.</p>
-<div class="desk-actions">
-<a class="btn live-board-cta" href="hotspawn-live/index.html"><span><strong>Open live dashboard</strong> · executive summary</span><span>→</span></a>
-<a class="btn live-board-cta" href="hotspawn-live/picks.html"><span><strong>All current picks</strong> · both probabilities</span><span>→</span></a>
-<a class="btn live-board-cta" href="hotspawn-live/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · blank-row policy</span><span>→</span></a>
-<a class="btn live-board-cta" href="hotspawn-live/sources.html"><span><strong>Sources &amp; row ledger</strong> · verify every line</span><span>→</span></a>
-</div>
-</div>
-<details class="archive" id="older-boards"><summary>Parallel expanded-API board and earlier desks</summary>
+<header class="site"><div class="wrap">
+<p class="site-title"><a href="hotspawn-cs2/index.html">🎯 HotSpawn CS2 Pick&rsquo;em — picks for every match</a></p>
+<p class="site-sub">Updated <time datetime="2026-10-21T13:06:23Z" data-local title="2026-10-21T13:06:23Z">2026-10-21 13:06 UTC</time> · market data collected <time datetime="2026-10-21T13:03:02Z" data-local title="2026-10-21T13:03:02Z">2026-10-21 13:03 UTC</time> · auto-refresh every few hours</p>
+<nav class="tabs" aria-label="Picks board"><a href="hotspawn-cs2/index.html" aria-current="page">Summary</a><a href="hotspawn-cs2/picks.html">All picks</a><a href="hotspawn-cs2/unresolved.html">Unresolved</a><a href="hotspawn-cs2/method.html">Method & sources</a><a href="hotspawn-cs2/flagged.html">Flagged</a></nav>
+</div></header>
+<main class="wrap">
 
-<div class="hero-card" id="cs2-front">
-<p class="eyebrow">📱 Every HotSpawn CS2 match · built 2026-10-21 12:49:25 UTC</p>
-<h2>Parallel expanded-API board: every listed match has a pick &mdash; and a source</h2>
-<p><strong>20 of 20 open matches</strong> carry a pick with both teams'
-win probability (100.0% coverage): 12 from external betting lines and
-8 built from
-researched books or the official Valve rating table. Fixture capture 2026-10-21 12:37:51 UTC.</p>
-<div class="hero-actions">
-<a class="btn btn-hero" href="cs2/picks.html"><span><strong>All picks</strong> &middot; every match, both win
-probabilities, sources</span><span>&rarr;</span></a>
-<a class="btn" href="cs2/index.html"><span><strong>Summary</strong> &middot; coverage and where everything is</span><span>&rarr;</span></a>
-<a class="btn" href="cs2/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> &middot; no book price, why</span><span>&rarr;</span></a>
-<a class="btn" href="cs2/method.html"><span><strong>Method &amp; sources</strong> &middot; lobby, formulas, refresh</span><span>&rarr;</span></a>
+<h1>Executive summary — every HotSpawn CS2 match, one pick each</h1>
+<p>This page is the front door. Every CS2 match currently open in the
+<a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn Pick&rsquo;em lobby</a> gets a pick and a win
+probability from <b>outside</b> betting lines — or, when no book prices a low-tier match,
+an originated line from the official Valve ratings. Bookmark this page on your phone;
+it refreshes automatically.</p>
+<p class="muted">HotSpawn week 273: 2026-10-19 → 2026-10-25 (UTC).</p>
+
+<div class="stats">
+<div class="stat"><div class="num">19</div><div class="lbl">open CS2 matches</div></div>
+<div class="stat"><div class="num">17</div><div class="lbl">with a pick</div></div>
+<div class="stat"><div class="num">11</div><div class="lbl">from betting lines</div></div>
+<div class="stat"><div class="num">3</div><div class="lbl">our VRS-model line</div></div>
+<div class="stat"><div class="num">3</div><div class="lbl">direction only (% blank)</div></div>
+<div class="stat"><div class="num">2</div><div class="lbl">unresolved</div></div>
 </div>
-<h3 style="margin-top:14px">Next locks (UTC)</h3>
-<ul class="plain"><li><a href="cs2/picks.html#fx-1081583"><strong>Bebop</strong> 50%</a> <span class="muted">&mdash; Phantom Academy v Bebop, 2026-10-21 13:45:00 UTC</span></li><li><a href="cs2/picks.html#fx-1081584"><strong>Falcons Force</strong> 78%</a> <span class="muted">&mdash; Falcons Force v Privateer, 2026-10-21 13:45:00 UTC</span></li><li><a href="cs2/picks.html#fx-1079187"><strong>BET-M</strong> 54%</a> <span class="muted">&mdash; Butterfly v BET-M, 2026-10-21 14:00:00 UTC</span></li></ul>
+<div class="biglinks">
+<a class="biglink" href="hotspawn-cs2/picks.html"><b>👉 All picks — every open match</b><span>Pick, both teams&rsquo; win %, fair odds, and the source behind each number.</span></a>
+<a class="biglink warn" href="hotspawn-cs2/unresolved.html"><b>⚠️ Unresolved picks &amp; limitations (2)</b><span>Matches with no defensible pick yet — exactly which sources were checked and why each failed.</span></a>
+<a class="biglink" href="hotspawn-cs2/method.html"><b>🧮 Method &amp; sources</b><span>How lines are de-vigged, how our own line is originated (k=0.448, 66 calibration pairs), matching rules.</span></a>
+<a class="biglink flag" href="hotspawn-cs2/flagged.html"><b>🚩 Flagged for review</b><span>Stale HotSpawn listings, ambiguous team names, rejected price joins, source failures.</span></a>
 </div>
-<div class="card" id="start-front" style="border:2px solid var(--accent,#ffb020);padding:14px;margin:0 0 16px">
-<p class="eyebrow">📱 Start here · built 2026-10-18 08:56:00 UTC</p>
-<h2 style="margin:4px 0 8px">Today's picks — one page</h2>
-<ul><li><strong>Falcons</strong> 59% over Aurora <span class="muted">(3rd place decider)</span></li><li><strong>FURIA</strong> 71% over BETBOOM <span class="muted">(Grand final)</span></li></ul>
-<p>39 open HotSpawn CS2 matches: 29 priced from betting lines,
-6 from rating models, 4 direction only
-(probability left blank). Each pick shows both teams' win chances and sources.</p>
-<p class="start-links"><a href="start/index.html"><strong>Summary &amp; picks →</strong></a> ·
-<a href="start/picks.html">All picks</a> · <a href="start/twc.html">TWC final day</a> ·
-<a href="start/unresolved.html">Unresolved &amp; limitations</a> · <a href="start/flagged.html">Flagged for review</a></p></div>
-<p class="note">🐟 <a href="climb/index.html"><strong>Climb desk (a89b76e9)</strong></a> —
-<a href="climb/picks.html">a pick for every captured match</a> · <a href="climb/twc.html">TWC final day archive</a> ·
-<a href="climb/unresolved.html">unresolved &amp; limitations</a> · <a href="climb/flagged.html">flagged A1–A8</a>.</p>
-
-<div class="desk-front" id="finals-front">
-<p class="eyebrow">🏆 TWC 2026 FINAL DAY (Sun 18 Oct) · built 2026-10-17 20:52:12 UTC</p>
-<h2>Grand Final: pick <strong>FURIA</strong> (63%) · 3rd place: pick <strong>Falcons</strong> (57%) — no forced underdog switch qualifies</h2>
-<p>Day-4 graded honestly (26.8% BETBOOM beat Falcons), Aurora's July rebuild verified, and every one of the
-18 open HotSpawn matches resolved below the featured tier — 18 picks,
-0 blank — with unresolved limitations on their own page.</p>
-<div class="desk-actions">
-<a class="btn" href="finals/picks.html"><span><strong>All picks</strong> · every open match</span><span>→</span></a>
-<a class="btn" href="finals/twc.html"><span><strong>TWC Days 1–5</strong> · results, roster truth, final case</span><span>→</span></a>
-<a class="btn" href="finals/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · no fresh price, why</span><span>→</span></a>
-<a class="btn" href="finals/method.html"><span><strong>Method &amp; sources</strong> · lobby + formulas</span><span>→</span></a>
+<h2>⏰ Closing soon — next picks to lock</h2>
+<ul class="tight"><li><a href="hotspawn-cs2/picks.html#1081583"><b>Bebop</b> 52%</a> · Phantom Academy vs Bebop · <span data-lock="2026-10-21T13:39:00Z"></span></li><li><a href="hotspawn-cs2/picks.html#1081584"><b>Falcons Force</b> 80%</a> · Falcons Force vs Privateer · <span data-lock="2026-10-21T13:39:00Z"></span></li><li><a href="hotspawn-cs2/picks.html#1079187"><b>BET-M</b> 54%</a> · Butterfly vs BET-M · <span data-lock="2026-10-21T13:54:00Z"></span></li><li><a href="hotspawn-cs2/picks.html#1079648"><b>G2 Ares</b> 53%</a> · G2 Ares vs ILLYRIANS · <span data-lock="2026-10-21T13:54:00Z"></span></li><li><a href="hotspawn-cs2/picks.html#1081141"><b>Spirit Academy</b> 55%</a> · Lavked vs Spirit Academy · <span data-lock="2026-10-21T13:54:00Z"></span></li></ul>
+<h2>How to read a pick</h2>
+<div class="legend">
+<div><span class="badge market">Market line</span><span>Median fair (no-vig) probability across real bookmaker/exchange prices collected this run. Strongest evidence.</span></div>
+<div><span class="badge model">Our line · VRS model</span><span>No book prices this match. Probability originated from both teams&rsquo; official Valve VRS points (Valve&rsquo;s Glicko formula, slope fitted to 66 observed market pairs, typical error ±8pp). An estimate — labelled as one.</span></div>
+<div><span class="badge direction">Direction only</span><span>Only one side has a verified rating and no book prices the match. We pick the rated side and leave the % <b>blank</b> rather than invent one.</span></div>
+<div><span class="badge unresolved">Unresolved</span><span>No price and no usable rating. No pick is published — see the limitations instead of a guess.</span></div>
 </div>
-</div>
+<h2>Unresolved right now &amp; why</h2>
+<ul class="tight"><li><a href="hotspawn-cs2/unresolved.html#1082762"><b>ex-CYBERSHOKE vs BlinkDagger</b></a> <span class="muted">(CIS LAN Championship #9, starts 2026-10-21 15:00 UTC)</span> — No external bookmaker/exchange price could be joined to this fixture under the strict matching rules (both team names exact + start time within 30 min). Sources collected this run:…</li><li><a href="hotspawn-cs2/unresolved.html#1081600"><b>Donstu vs Banda chuya</b></a> <span class="muted">(CCT Europe 2026 Challengers #8, starts 2026-10-22 13:45 UTC)</span> — No external bookmaker/exchange price could be joined to this fixture under the strict matching rules (both team names exact + start time within 30 min). Sources collected this run:…</li></ul>
+<p><a href="hotspawn-cs2/unresolved.html">Full unresolved section with per-match limitations →</a></p>
+<h2>Coverage accounting (nothing silently dropped)</h2>
+<p>HotSpawn currently returns <b>240 CS2 fixtures</b> to this collector:
+<b>19 open</b> for picks, <b>11 locked/started in the last 24h</b>
+(shown at the bottom of the picks page), <b>136 finished</b>,
+<b>13 cancelled</b>, and <b>61 stale listings</b> still marked
+&ldquo;scheduled&rdquo; &gt;24h after their start (listed on the
+<a href="hotspawn-cs2/flagged.html">Flagged page</a>). 108 external prices were
+collected this run; 28 joined an open/locked fixture under the strict rules.</p>
+<h2>Previous research (archive)</h2>
+<p>This board consolidates dozens of earlier one-off &ldquo;desks&rdquo; into one maintained
+page set and is, from 2026-10-21, the single front door. Nothing was deleted: the full
+archive index is at
+<a href="start/archive.html">start/archive.html</a>.
+Earlier boards remain live, e.g.
+<a href="picks-every-match/index.html">picks-every-match</a>,
+<a href="start/index.html">start</a>,
+<a href="desk/index.html">desk</a>,
+<a href="ourline/index.html">ourline</a>,
+<a href="cs2/index.html">cs2</a> — they are
+dated research snapshots, superseded by the picks above. The collector snapshot that seeds
+this board is documented on the <a href="hotspawn-cs2/method.html">method page</a>.</p>
 
-<div class="desk-front" id="day5-front">
-<p class="eyebrow">📱 Start here on your phone · TWC 2026 day 5 · built 2026-10-21 05:17:12 UTC</p>
-<h2>0 open CS2 matches · 0 book-priced · 0 rated · 0 unresolved</h2>
-<p>A pick and both win probabilities for every match the HotSpawn lobby still lists, plus
-the TWC 2026 final-day picks. HotSpawn's crowd split is leaderboard context only, never a
-probability.</p>
-<ul class="desk-next"><li><a href="day5/twc.html">3rd place decider: <b>Falcons</b> 57.6%</a> · Aurora v Falcons · 2026-10-18T11:30:00Z</li><li><a href="day5/twc.html">Grand final: <b>FURIA</b> 63.7%</a> · FURIA v BETBOOM · 2026-10-18T15:00:00Z</li></ul>
-<div class="desk-actions">
-<a class="btn" href="day5/picks.html"><span><strong>Every pick</strong> · all 0 open matches</span><span>→</span></a>
-<a class="btn" href="day5/twc.html"><span><strong>TWC 2026 day 5</strong> · final + third place, day 1→4 review</span><span>→</span></a>
-<a class="btn" href="day5/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · 0 blank</span><span>→</span></a>
-<a class="btn" href="day5/method.html"><span><strong>Method &amp; sources</strong> · every rule</span><span>→</span></a>
-</div>
-<ul class="desk-next"></ul>
-</div>
-
-<div class="desk-front" id="desk-front">
-<p class="eyebrow">📱 Start here on your phone · built 2026-10-17 13:46:27 UTC</p>
-<h2>25 open CS2 matches · 21 priced · 4 bound-only · 0 blank</h2>
-<p>A pick, both win probabilities and the source behind every number — market line first,
-official Valve rating second, and an explicit "no price" when neither exists.</p>
-<div class="desk-actions">
-<a class="btn" href="desk/picks.html"><span><strong>All picks</strong> · every open match</span><span>→</span></a>
-<a class="btn" href="desk/twc.html"><span><strong>TWC 2026 Day 4</strong> · semifinals + day 1–3 review</span><span>→</span></a>
-<a class="btn" href="desk/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · no price, bound only</span><span>→</span></a>
-<a class="btn" href="desk/method.html"><span><strong>Method &amp; sources</strong> · every rule</span><span>→</span></a>
-</div>
-<ul class="desk-next"><li><a href="desk/picks.html#1081515">Nemesis 66%</a> · Apogee Betclic v Nemesis</li><li><a href="desk/picks.html#1079635">Bushido Wildcats 54%</a> · Bushido Wildcats v Gothic</li><li><a href="desk/picks.html#1080207">FURIA 52%</a> · FURIA v Aurora</li></ul>
-</div>
-<p class="note"><a href="finalday/index.html">Final-day live desk (36186ad8)</a> · <a href="start/archive.html">Full archive list</a></p>
-</details>
-<h2 id="canonical-title">Preserved canonical market-only board</h2>
-<p class="muted">The legacy primary-action contract remains below for reproducibility and historical verification.</p>
-<div class="actions primary-actions">
-<a class="btn btn-primary" href="picks-every-match/index.html">Open all CS2 picks · every match →</a>
-<a class="btn alt2" href="day4/index.html">TWC day-4 semifinals + lobby picks →</a>
-<a class="btn ghost" href="twc-2026/index.html">Day 1–3 review &amp; day-4 picks →</a>
-<a class="btn ghost" href="#canonical-unresolved">Unresolved picks &amp; limitations ↓</a>
-</div>
-
-<p class="note"><strong>Two automated pick-list views:</strong>
-<a href="picks-every-match/index.html">every-match picks</a> (canonical, 4-hourly collector; input snapshot
-2026-10-21T12:51:34Z) and the <a href="day4/index.html">day-4 desk</a> (TWC 2026 semifinals plus
-16 of 19 open lobby fixtures with a market/model probability; 3
-remain blank and flagged). Blank rows are never 50/50 estimates — their reasons are listed on the
-<a href="picks-every-match/unresolved.html">canonical unresolved page</a> and the
-<a href="day4/unresolved.html">day-4 unresolved page</a>.</p>
-<p class="note"><strong>Additional dated, research-extended coverage:</strong> the
-<a href="audits/1b35a4a2/index.html">1b35a4a2 audit summary</a> reports 21 lines for 21
-open fixtures in its input snapshot (2026-10-16 22:48:43 UTC); that audit was generated at 2026-10-16 23:57:03 UTC.
-It labels 11 market, 7 research-resolved and 3 Valve-VRS model estimates.
-The research and model values are estimates, not bookmaker prices or verified win chances; this secondary
-board does not replace the canonical list or fill its blanks. See its <a href="audits/1b35a4a2/picks.html">full picks</a>,
-<a href="audits/1b35a4a2/unresolved.html">unresolved picks &amp; limitations</a>,
-<a href="audits/1b35a4a2/flagged.html">Flagged for Review</a> and
-<a href="audits/1b35a4a2/method.html">method</a>. Two citation mismatches were found in the initial snapshot;
-see <a href="flagged.html#audit-1b35-source-mismatch">the site-wide review note</a>. HotSpawn crowd shares are not probabilities.</p>
-
-
-
-<section id="twc-day-4">
-<h2>Day 4 · TWC 2026 semifinals (Malta)</h2>
-<div class="tablewrap"><table class="responsive"><thead><tr><th>Match</th><th>When (UTC)</th>
-<th>Line basis</th><th>Pick</th><th>Sources</th></tr></thead><tbody><tr><td data-label="Match"><strong>Semifinal 1</strong><br>FURIA vs Aurora</td><td data-label="When (UTC)">2026-10-17 14:00</td><td data-label="Line basis">Pinnacle + Bovada + Melbet, blended with Thunderpick</td><td data-label="Pick"><strong>FURIA</strong> 50.7%</td><td data-label="Sources"><a href="https://www.hltv.org/matches/2399414/furia-vs-aurora-thunderpick-world-championship-2026" rel="noopener">HLTV</a> · <a href="https://bo3.gg/matches/furia-vs-aurora-gaming-17-10-2026" rel="noopener">bo3.gg</a> · <a href="desk/twc.html" rel="noopener">desk</a></td></tr><tr><td data-label="Match"><strong>Semifinal 2</strong><br>Falcons vs BetBoom</td><td data-label="When (UTC)">2026-10-17 17:00</td><td data-label="Line basis">Pinnacle + Bovada + Melbet, blended with Thunderpick</td><td data-label="Pick"><strong>Falcons</strong> 73.2%</td><td data-label="Sources"><a href="https://www.hltv.org/matches/2399415/falcons-vs-betboom-thunderpick-world-championship-2026" rel="noopener">HLTV</a> · <a href="https://bo3.gg/matches/falcons-esports-vs-betboom-team-17-10-2026" rel="noopener">bo3.gg</a> · <a href="desk/twc.html" rel="noopener">desk</a></td></tr></tbody></table></div>
-<p class="note">The Thunderpick World Championship Malta playoffs are <strong>not listed on the HotSpawn
-pick'em lobby</strong> (its fixtures API has no Malta competition), so these two rows are priced from
-external bookmakers only. The <a href="desk/twc.html">picks desk</a> above carries the full case. Full reasoning, the verified day-1 to day-3 review and the Aurora
-roster investigation are on the <a href="day4/twc-review.html">day 1–3 review</a>.
-<a class="btn" href="day4/picks.html#twc">Semifinal picks + sources</a></p>
-</section>
-<p class="note">Canonical source snapshot: 2026-10-21T12:51:34Z; its source capture ended
-2026-10-21T12:51:33Z. Day-4 source snapshot: 2026-10-18 13:44:03 UTC;
-that board was generated at 2026-10-18 13:44:12 UTC. A page rebuild is not a new source observation.
-Open the pick lists for per-match expiry checks.</p>
-<p><a href="twc-2026/results.html">Verified day-two results</a> → <a href="twc-2026/index.html">day-three decisions</a> → <a href="twc-2026/day-4.html">Day 1–3 review &amp; Day 4 Semifinals picks</a> · <a href="twc-2026/roster.html">Original Aurora announcements &amp; unknown rest</a> · <a href="twc-2026/flagged.html">Research flags</a>. The upset watchlist never changes the canonical match probabilities.</p>
-<h2 id="strict-canonical">Strict canonical board · no research joins</h2>
-<p class="small muted">These four figures count only what the canonical matcher accepted on its own:
-no re-joined book quotes, no roster-disambiguated Valve rows and no lower bounds. The
-<a href="desk/picks.html">picks desk</a> above starts from the same capture and adds those labelled
-research joins, which is why it can publish a pick for all 32 rows while this strict view still shows
-nine blanks. Both counts are correct for their own rule.</p>
-<div class="cards"><div class="card"><div class="card-num">19</div><div class="card-label">Open CS2 fixtures</div></div><div class="card"><div class="card-num">13</div><div class="card-label">Market-priced matches</div></div><div class="card"><div class="card-num">0</div><div class="card-label">Model estimates</div></div><div class="card"><div class="card-num">6</div><div class="card-label">Unverified / blank</div></div></div>
-<p id="pick-accounting"><strong>13 directional picks</strong> ·
-<strong>0 priced ties — no edge</strong>. A market price is not always a recommendation.
-These categories plus the unverified blanks account for every open row in this snapshot.
-<a href="data/c64a5e19/board.json">Source-linked row data</a>.</p>
-<section id="canonical-unresolved">
-<h2>What remains unresolved?</h2>
-<p><strong>6 open matches have no supported line</strong>
-in this evaluated snapshot. Missing prices, uncertain roster identity, stale evidence or mismatched
-kickoff times are reasons to withhold a pick, not exclude the match. Each row on the
-<a href="picks-every-match/unresolved.html">dedicated unresolved page</a> explains source attempts and limitations.
-<strong>Unsupported probabilities stay blank, not 50/50.</strong> The desk above resolves nine of
-these strict blanks with published evidence — three re-joined book quotes, three roster-disambiguated
-Valve model rows and four lower bounds — and each one is labelled with its basis.</p>
-<p>Primary markets come first. Only uncovered matches use the fallback research ladder:
-HLTV → esportsbooks/exchanges → uniquely identified official Valve ratings.
-An endpoint responding successfully is not proof it prices a match. Model estimates are our
-calculations, not officially verified win chances. <strong>HotSpawn crowd picks never price a match.</strong></p>
-</section>
-<details class="archive"><summary>Dated roster research (not current prices)</summary>
-<p><a href="audits/94b3d48a/index.html">Independent roster audit</a> ·
-<a href="audits/94b3d48a/unresolved.html">Its dated unresolved research</a>.</p></details>
-</div>
-</section>
-<div class="pick-boards-grid" id="where-the-picks">
-
-<a class="board-card board-card-primary" href="picks-every-match/picks.html"><div class="board-card-title">Match picks &amp; probabilities</div><div class="board-card-desc">Every open match: both teams, the pick, the market/model label and the source behind each number. Search by team or tournament.</div><div class="board-card-meta">Input snapshot 2026-10-21T12:51:34Z · refreshed every 4 hours</div></a>
-<a class="board-card board-card-primary" href="day4/picks.html"><div class="board-card-title">Day-4 desk: TWC semifinals + lobby picks</div><div class="board-card-desc">Both TWC 2026 semifinal picks and 16 of 19 open HotSpawn fixtures have a market/model probability. 3 remain blank and flagged where evidence is insufficient; its unresolved and flagged pages explain why.</div><div class="board-card-meta">Source snapshot 2026-10-18 13:44:03 UTC · board generated 2026-10-18 13:44:12 UTC · refreshed every 4 hours</div></a>
-<a class="board-card" href="audits/1b35a4a2/index.html"><div class="board-card-title">Dated research-extended full-coverage audit</div><div class="board-card-desc">The captured board reports 21 lines for 21 open fixtures: 11 market, 7 research-resolved and 3 Valve-VRS model estimates. It is secondary to the canonical board; research/model values are estimates, not bookmaker prices or verified win chances.</div><div class="board-card-meta">Input snapshot 2026-10-16 22:48:43 UTC · audit generated 2026-10-16 23:57:03 UTC</div></a>
-<a class="board-card" href="twc-2026/day-4.html"><div class="board-card-title">Day 1–3 review → Day 4 TWC 2026 Semifinal picks</div><div class="board-card-desc">Aurora 2–0 9z Day 3 decider &amp; BetBoom–Legacy 3-map war synthesized into Day 4 Semifinals (FURIA vs Aurora 50/50 coin-flip &amp; Falcons anchor), plus all open CS2 matches and unresolved limitations.</div></a>
-<a class="board-card" href="picks-every-match/inventory.html"><div class="board-card-title">Full lobby inventory</div><div class="board-card-desc">Every retained CS2 fixture, including locked/past rows. Coverage refers to the captured lobby, not unseen additions.</div></a>
-<a class="board-card" href="twc-2026/index.html"><div class="board-card-title">Day 2 → Day 3: a credible upset, not blind underdogs</div><div class="board-card-desc">All eight TWC results, primary-confirmed July signings, a canonical day-three decision sheet and explicit expected-points tradeoffs. No invented rest penalty.</div></a>
-<a class="board-card" href="day-one.html"><div class="board-card-title">Day one &amp; sensible contrarian strategy</div><div class="board-card-desc">9z–Aurora, all four opening results, roster context and what the evidence does not prove.</div></a>
-
-<a class="board-card" href="flagged.html"><div class="board-card-title">Flagged for Review</div><div class="board-card-desc">Source failures, disputed identities and competing historical boards. No silent assumptions.</div></a>
-<a class="board-card" href="audits/e2d16060/index.html"><div class="board-card-title">Independent line-by-line audit</div><div class="board-card-desc">Dated review of the canonical 21-row snapshot: source links, arithmetic checks, seven explicit unresolved blanks, and mobile/accessibility findings.</div></a>
-</div>
-<p class="note" id="audit-1b35-navigation"><strong>Research-audit navigation:</strong>
-<a href="audits/1b35a4a2/picks.html">full 1b35 picks list</a> ·
-<a href="audits/1b35a4a2/unresolved.html">unresolved picks &amp; limitations</a> ·
-<a href="audits/1b35a4a2/flagged.html">Flagged for Review</a> ·
-<a href="audits/1b35a4a2/method.html">method &amp; sources</a> ·
-<a href="flagged.html#audit-1b35-source-mismatch">integration source-link check</a>.</p>
-<h2>How to use this dashboard</h2>
-<ol class="quick-guide"><li><strong>Choose a match:</strong> open All CS2 picks, then search a team or tournament.</li>
-<li><strong>Read the line:</strong> market prices first; a labelled model only where no accepted market exists.</li>
-<li><strong>For leaderboard risk:</strong> use the TWC decision sheet. A possible upset is not automatically a good pick.</li></ol>
-<p><a href="twc-2026/day-4.html">TWC Day 1–3 → Day 4 Semifinals strategy</a> ·
-<a href="twc-2026/index.html">TWC day-three strategy</a> ·
-<a href="picks-every-match/inventory.html">Full captured lobby</a> ·
-<a href="audits/5a40690b/index.html">Day 1–4 TWC &amp; every-match verification (5a40690b)</a> ·
-<a href="audits/6ffacd40/index.html">16 October coverage &amp; source audit</a> ·
-<a href="audits/98dcfc7e/index.html">Every-match &amp; TWC Day 3 verification (98dcfc7e)</a></p>
-<h2>Automatic updates</h2>
-<p>The canonical collector is scheduled every four hours at 00:12, 04:12, 08:12, 12:12,
-16:12 and 20:12 UTC. It rediscovers lobby fixtures and retries external markets without manual input.
-GitHub scheduling, caches and provider blocks can delay updates; this is not an uptime guarantee.
-Quotes expire after four hours or at pick lock. Source failures preserve inventory without resetting evidence age.</p>
-<p><a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/every-match-c64a5e19.yml">Refresh status</a> ·
-<a href="https://play.hotspawn.com/lobby">Official HotSpawn lobby</a> ·
-<a href="picks-every-match/method.html">Probability method &amp; retained source payloads</a></p>
-<details class="archive"><summary>Historical research and independent audits (not the current pick list)</summary>
-<details class="archive"><summary>Independent parallel TWC review (different capture/policy)</summary>
-<p>Additional preserved work: <a href="day3/index.html">Independent day-three desk (4cf64ea3)</a> · <a href="day3/unresolved.html">Its unresolved picks / limitations</a>. Its alternative source/identity and risk gates are not blended into the canonical board.</p>
-<p>Preserved from session 869a5375: <a href="twc/index.html">TWC Day 1–3 review &amp; Day 3 picks</a> · <a href="twc/unresolved.html">TWC unresolved &amp; limitations</a>. Its rounded forecasts and ownership come from a different capture and strategy. Do not substitute them for the current canonical line or use them to fill a canonical blank.</p></details>
-<details class="archive"><summary>Independent dated roster review</summary>
-<p>Not a current price feed: <a href="audits/94b3d48a/index.html">Audit 94b3d48a</a> ·
-<a href="audits/94b3d48a/unresolved.html">Dated unresolved research</a> ·
-<a href="audits/94b3d48a/flagged.html">Audit limitations</a> ·
-<a href="audits/6c5bb3d6/index.html">Independent line-by-line verification (every probability re-derived from raw quotes and Valve's standings; day-1 upset review and leaderboard-differential cross-check)</a>.</p></details>
-
-<div class="pick-boards-grid"><a class="board-card" href="hub/index.html"><div class="board-card-title">Alternate mobile hub &amp; TWC desk</div><div class="board-card-desc">Mobile front door (session 7c2622db): one card per open match with pick, both probabilities and the crowd share as ownership only, plus the day-1/2 review, its own unresolved &amp; limitations section, flags and verification.</div></a><a class="board-card" href="strategy/index.html"><div class="board-card-title">Independent safe + leaderboard research</div><div class="board-card-desc">Preserved alternative strategy snapshot, with a different source/identity policy and a dated day-one retrospective. Do not use it to fill a canonical blank or add its coverage count to this one.</div></a>
-<a class="board-card" href="day3/index.html"><div class="board-card-title">Independent day-three desk</div><div class="board-card-desc">Preserved session 4cf64ea3 results, all-match research and climb heuristics. Its independent capture/source/risk policy may differ; do not use it to replace canonical prices or fill unsupported canonical rows. Includes its own unresolved section.</div></a>
-<a class="board-card" href="twc/index.html"><div class="board-card-title">Independent parallel TWC review</div><div class="board-card-desc">Preserved session 869a5375 results, group standings and strategy snapshot with its own limitations. Different source capture/policy, not a replacement for the current canonical picks or day-three decision sheet above.</div></a></div>
-<p>Alternate boards have different captures and assumptions; they are not interchangeable current pick lists.
-Do not add their counts together or use an older estimate to fill a current blank.</p>
-<p><a href="research.html">Research archive</a> · <a href="audits/98dcfc7e/index.html">Every-Match &amp; TWC Day 1–3 Verification (98dcfc7e)</a> · <a href="audits/98dcfc7e/unresolved.html">Unresolved &amp; Limitations (98dcfc7e)</a> · <a href="audits/169d010a/index.html">Open-Matches Recheck (169d010a)</a> · <a href="audits/5468b0ba/index.html">Latest Day 1–3 &amp; Every-Match Verification (5468b0ba)</a> · <a href="audits/3faf40e8/index.html">Source integrity audit</a> ·
-<a href="audits/94b3d48a/index.html">Independent roster research (dated)</a> ·
-<a href="verify/b3b89eec/index.html">Independent verification + TWC day-3 audit (b3b89eec)</a> ·
-<a href="summary/gaps.html">Cross-board disagreements</a></p>
-<p>Alternate snapshots: <a href="board/picks.html">Expanded board</a> ·
-<a href="ourline/index.html">Originated lines</a> · <a href="coverage/index.html">Coverage</a> ·
-<a href="live/index.html">Live collector</a> · <a href="fresh/index.html">Independent capture</a> ·
-<a href="cs2.html">Primary bookmaker table</a> · <a href="summary/index.html">Audit hub</a> ·
-<a href="verify/8e7a652d/index.html">Market verification</a> ·
-<a href="https://github.com/ValveSoftware/counter-strike_regional_standings">Official Valve model inputs</a>.</p></details>
-<p class="note">Estimates are not guarantees. 18+; gamble responsibly. Not affiliated with HotSpawn.</p>
-
-
-</main>
-<footer class="wrap">
-  <p>Page generated <strong>2026-10-21 12:54 UTC</strong>. Fixture list and every quoted price are read from the
-  public sources linked on each row; HotSpawn supplies fixtures and separate contest context, never
-  a match-win probability. Values that could not be confirmed against an external source are left blank and
-  listed on the <a href="flagged.html">Flagged for review</a> page.</p>
+<footer class="site">
+<p>Probabilities come from external betting markets (de-vigged) or, where no book prices a
+match, an originated line from the official Valve VRS ratings — labelled on every row.
+HotSpawn is used only to discover fixtures; its crowd &ldquo;picked %&rdquo; is never used
+as a probability. Blank = could not be verified from a source (see
+<a href="hotspawn-cs2/unresolved.html">Unresolved &amp; limitations</a>). Analysis only — not betting advice.</p>
+<p>Data &amp; code: <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/d9d7627b/board.json">board.json</a> ·
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/scripts/d9d7627b/collect.py">collector</a> ·
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/scripts/d9d7627b/resolve.py">Resolver</a> ·
+<a href="https://github.com/buffedlizard55-lab/MaltaProj2/actions/workflows/hotspawn-cs2-d9d7627b.yml">refresh runs</a> ·
+<a href="hotspawn-cs2/method.html">method</a></p>
 </footer>
-<script src="assets/app.js"></script>
+</main>
+<script src="hotspawn-cs2/assets/app.js"></script>
 </body>
 </html>
