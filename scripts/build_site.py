@@ -1242,7 +1242,7 @@ every numeric line links the exact bookmaker source. Blank means no eligible quo
 <input id="filter" class="filter" type="search" placeholder="Filter all CS2 rows by team, tournament, tier or flag…">
 <h2>Open for picks ({n_open})</h2>
 {open_table}
-<details class="archive"><summary>Listed by the lobby but closed, past, or state unverified ({n_closed})</summary>
+<details class="archive"{' open' if not n_open else ''}><summary>Listed by the lobby but closed, past, or state unverified ({n_closed})</summary>
 <p class="note">These rows remain visible for complete lobby coverage. They cannot receive a current prematch pick.</p>
 {closed_table}
 </details>
@@ -1587,7 +1587,7 @@ stay blank and are flagged — nothing is inferred.</div>
 <input id="filter" class="filter" type="search" placeholder="Filter all rows by team, tournament or flag…">
 <h2>Current open picks</h2>
 {table(["Scheduled (UTC)", "Game", "Tier", "Tournament", "Match", "p(A) / p(B) & pick", "External sources", "Official fixture", "Flags"], open_prows, classes="sortable")}
-<details class="archive"><summary>Listed but closed, past, or source-state unverified ({len(closed_prows)})</summary>
+<details class="archive"{' open' if not open_prows else ''}><summary>Listed but closed, past, or source-state unverified ({len(closed_prows)})</summary>
 {table(["Scheduled (UTC)", "Game", "Tier", "Tournament", "Match", "Current probability", "External sources", "Official fixture", "Flags"], closed_prows, classes="sortable")}
 </details>
 <p>Current data: <a href="data/current_probabilities.json">current probabilities</a> ·

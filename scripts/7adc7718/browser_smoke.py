@@ -49,7 +49,12 @@ def main() -> int:
                 page = ctx.new_page()
                 errors: list[str] = []
                 page.on("pageerror", lambda e: errors.append(str(e)))
-                page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+                page.on(
+                    "response",
+                    lambda r: errors.append(f"HTTP {r.status} {r.url}")
+                    if r.status >= 400 and not r.url.endswith("/favicon.ico")
+                    else None,
+                )
 
                 for rel in PAGES:
                     resp = page.goto(f"http://127.0.0.1:{port}/{rel}", wait_until="networkidle")
