@@ -107,9 +107,13 @@ def parse_live_hotspawn_lobby(html_bytes: bytes) -> tuple[list[dict], dict[str, 
         fid = str(fx.get("id") or fx.get("fixture_id") or "")
         if not fid:
             continue
-        sport = str(fx.get("game") or fx.get("sport") or "").lower()
-        ta = (fx.get("teamA") or {}).get("name") if isinstance(fx.get("teamA"), dict) else fx.get("team_a")
-        tb = (fx.get("teamB") or {}).get("name") if isinstance(fx.get("teamB"), dict) else fx.get("team_b")
+        cat = fx.get("category") if isinstance(fx.get("category"), dict) else {}
+        sport = str(cat.get("slug") or cat.get("name") or fx.get("game") or fx.get("sport") or "").lower()
+        t_home = fx.get("teamA") if isinstance(fx.get("teamA"), dict) else (fx.get("homeTeam") if isinstance(fx.get("homeTeam"), dict) else None)
+        t_away = fx.get("teamB") if isinstance(fx.get("teamB"), dict) else (fx.get("awayTeam") if isinstance(fx.get("awayTeam"), dict) else None)
+        ta = t_home.get("name") if t_home else fx.get("team_a")
+        tb = t_away.get("name") if t_away else fx.get("team_b")
+        tour = fx.get("tournament") if isinstance(fx.get("tournament"), dict) else {}
         start_val = fx.get("scheduledStartTime") or fx.get("start_utc") or fx.get("scheduled_start_time")
         lock_val = fx.get("locksAt") or fx.get("lock_utc")
         if isinstance(start_val, (int, float)):
@@ -121,14 +125,14 @@ def parse_live_hotspawn_lobby(html_bytes: bytes) -> tuple[list[dict], dict[str, 
             "fixture_id": fid,
             "sport": "cs2" if "cs" in sport or sport == "counter-strike" else sport,
             "status": str(fx.get("status") or "").lower(),
-            "competition": fx.get("tournamentName") or fx.get("competition") or fx.get("competition_name") or "",
-            "tier": fx.get("tier"),
+            "competition": fx.get("tournamentName") or tour.get("name") or fx.get("competition") or fx.get("competition_name") or "",
+            "tier": fx.get("tier") or tour.get("tier"),
             "points": fx.get("points"),
             "start_utc": start_val,
             "lock_utc": lock_val or start_val,
             "team_a": ta,
             "team_b": tb,
-            "seen_in": ["lobby_page", "fixtures_api"],
+            "seen_in": ["lobby_page", "fixtures_api"] if fid in permalinks else ["fixtures_api"],
             "hotspawn_url": permalinks.get(fid, LOBBY_URL),
             "permalink_verified": fid in permalinks,
         })
