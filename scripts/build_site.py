@@ -74,8 +74,6 @@ def pct(value):
 NAV = [
     # Evidence-only desk leads; all parallel research remains linked, at most 12 mobile links.
     ("index.html", "Home"),
-    # 907e9435: the every-pick board is the primary action (all open matches, one pick each).
-    ("everypick/index.html", "\U0001F4F1 Every pick"),
     ("dashboard/picks.html", "\U0001F4F1 Today's picks"),
     ("dashboard/unresolved.html", "Unresolved"),
     ("dashboard/flagged.html", "Flagged"),
@@ -118,11 +116,15 @@ def everypick_front_html():
     preview = "".join(
         '<tr><td data-label="Match"><strong>{a}</strong> v {b}<br><span class="small">{c}</span></td>'
         '<td data-label="Pick"><strong>{pick}</strong> {prob}</td>'
-        '<td data-label="Basis">{basis}</td></tr>'.format(
+        '<td data-label="Basis">{basis}</td>'
+        '<td data-label="Source"><a href="{src}" rel="noopener">source</a></td></tr>'.format(
             a=esc(r.get("team_a")), b=esc(r.get("team_b")), c=esc(r.get("competition")),
             pick=esc((r.get("pick") or {}).get("team")),
             prob=esc(pct((r.get("pick") or {}).get("prob")) or ""),
-            basis=esc(r.get("tier_label")))
+            basis=esc(r.get("tier_label")),
+            src=esc(next((e.get("url") for e in (r.get("evidence") or [])
+                          if str(e.get("url") or "").startswith("https://")),
+                         r.get("hotspawn_url") or "")))
         for r in rows)
     return f"""<section class="hero-card" id="everypick-front">
 <p class="eyebrow">\u25cf Start here &middot; refreshed every 4 hours &middot; built {stamp}</p>
@@ -139,7 +141,7 @@ percentages are never used. Data captured {capture}.</p>
 <a class="btn" href="everypick/flagged.html"><span><strong>Flagged for review</strong> &middot; alias decisions, rejected prices, repo irregularities</span><span>&rarr;</span></a>
 <a class="btn" href="everypick/method.html"><span><strong>Method &amp; sources</strong> &middot; the ladder, the formulas and every endpoint</span><span>&rarr;</span></a>
 </div>
-<div class="tablewrap"><table class="responsive"><thead><tr><th>Next matches</th><th>Pick</th><th>Basis</th></tr></thead>
+<div class="tablewrap"><table class="responsive"><thead><tr><th>Next matches</th><th>Pick</th><th>Basis</th><th>Source</th></tr></thead>
 <tbody>{preview}</tbody></table></div>
 <p class="small">Mobile view: the picks page is one card per match, with the pick, both teams'
 probabilities and the source links. Everything below on this page is the archive of parallel boards
@@ -1011,7 +1013,7 @@ and is left <strong>explicitly blank</strong> and flagged on <a href="lobby/flag
 {everypick_front_html()}
 <section id="updated-match-desk" aria-labelledby="updated-desk-title" class="hero-card">
 <p class="eyebrow">Parallel desks &amp; archive · other source policies</p>
-<h1 id="updated-desk-title">All matches. Clear picks. Source-linked probabilities.</h1>
+<h2 id="updated-desk-title">All matches. Clear picks. Source-linked probabilities.</h2>
 <p>Open the <a href="dashboard/index.html"><strong>mobile executive summary</strong></a> for the newest retained capture and complete coverage counts. Market picks are preserved; additional evidence is researched only for missing lines. Unsupported values stay blank.</p>
 <p><a class="btn" style="background:#91f2bf;color:#102419;font-weight:bold" href="dashboard/picks.html">See every updated CS2 pick →</a> <a class="btn ghost" href="dashboard/unresolved.html">Unresolved picks &amp; limitations</a></p>
 <p><a href="dashboard/inventory.html">Complete HotSpawn inventory</a> · <a href="dashboard/sources.html">Evidence &amp; method</a> · <a href="dashboard/flagged.html">Flagged for Review</a>. Four-hour automated checks; freshness and lock warnings on every row.</p>
