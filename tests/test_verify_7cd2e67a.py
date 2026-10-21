@@ -80,8 +80,15 @@ class PermalinkExtraction(unittest.TestCase):
         self.assertGreaterEqual(len(shared), 1)
         for fixture_id in shared:
             for url in (found[fixture_id], published[fixture_id]):
-                self.assertTrue(url.startswith("https://www.hotspawn.com/matches/"), (fixture_id, url))
-                self.assertTrue(url.endswith(f"-{fixture_id}"), (fixture_id, url))
+                self.assertTrue(url.startswith("https://www.hotspawn.com/matches/"))
+                self.assertTrue(url.endswith("-" + fixture_id))
+        # Independent exact-copy check against every permalink in this capture's transfer state.
+        import re
+        from html import unescape
+        with open(sample, encoding="utf-8", errors="replace") as fh:
+            raw = unescape(fh.read()).replace("\\/", "/")
+        for fixture_id in shared:
+            self.assertIn(found[fixture_id], raw)
 
 
 class NoConstructedMatchLinks(unittest.TestCase):

@@ -18,11 +18,11 @@ from urllib.parse import urlsplit, unquote
 import importlib.util
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-_FE_CORE_SPEC = importlib.util.spec_from_file_location(
-    "core_fe803b80_test", os.path.join(ROOT, "scripts", "fe803b80", "core.py")
-)
-core = importlib.util.module_from_spec(_FE_CORE_SPEC)
-_FE_CORE_SPEC.loader.exec_module(core)
+# Load the engine by exact path; discovery contains many unrelated core.py modules.
+import importlib.util
+_spec = importlib.util.spec_from_file_location("test_fe803b80_core", os.path.join(ROOT, "scripts", "fe803b80", "core.py"))
+core = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(core)
 
 DATA = os.path.join(ROOT, "data", "fe803b80")
 SITE = os.path.join(ROOT, "board")

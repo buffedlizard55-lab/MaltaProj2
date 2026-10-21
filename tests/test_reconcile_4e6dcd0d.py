@@ -112,10 +112,11 @@ class ReconcileTests(unittest.TestCase):
 
     def test_unpriced_rows_are_blank_with_official_link(self):
         txt = (self.out / "unpriced.html").read_text(encoding="utf-8")
-        unpriced = [f for f in self.model["fixtures"] if f["open"] and f["consensus_p_a"] is None]
-        if unpriced:
-            self.assertIn("hotspawn.com/matches/", txt)
-        self.assertNotIn("%</td>", txt.split("<tbody>")[1])
+        # Zero unpriced rows is valid. Check source + blanks on each actual data row.
+        import re
+        for row in re.findall(r"<tr>.*?</tr>", txt.split("<tbody>")[1], re.S):
+            self.assertRegex(row, r'href="https://(?:www\.hotspawn\.com/matches/|play\.hotspawn\.com/lobby)')
+            self.assertNotIn("%</td>", row)
 
     def test_identical_two_sided_price_is_never_a_line(self):
         for f in self.model["fixtures"]:

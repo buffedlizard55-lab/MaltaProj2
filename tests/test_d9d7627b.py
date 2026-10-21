@@ -339,5 +339,16 @@ class TestBoardInvariants(unittest.TestCase):
                                    msg=r["fixture_id"])
 
 
+class TestPublicationBoundary(unittest.TestCase):
+    def test_isolated_render_never_overwrites_shared_root(self):
+        import subprocess
+        before = (ROOT / 'index.html').read_bytes()
+        subprocess.run([sys.executable, str(ROOT / 'scripts/d9d7627b/build.py')],
+                       check=True, capture_output=True)
+        self.assertEqual((ROOT / 'index.html').read_bytes(), before)
+        workflow = (ROOT / '.github/workflows/hotspawn-cs2-d9d7627b.yml').read_text()
+        self.assertNotIn('git add data/d9d7627b hotspawn-cs2 index.html', workflow)
+
+
 if __name__ == "__main__":
     unittest.main()

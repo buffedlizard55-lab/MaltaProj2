@@ -33,6 +33,14 @@ def soup(name):
 
 
 class Coverage(unittest.TestCase):
+    def test_source_schema_cannot_be_selected_by_timestamp_alone(self):
+        compatible = json.loads((ROOT / 'data/fe803b80/board.json').read_text())
+        canonical = json.loads((ROOT / 'data/c64a5e19/board.json').read_text())
+        self.assertTrue(BUILD.supported_board(compatible))
+        self.assertFalse(BUILD.supported_board(canonical))
+        canonical['generated_utc'] = '2099-01-01T00:00:00Z'
+        self.assertFalse(BUILD.supported_board(canonical))
+
     def test_exactly_the_open_hotspawn_fixtures_and_nothing_else(self):
         want = {str(f["fixture_id"]) for f in SOURCE_BOARD["open"]}
         got = [str(r["fixture_id"]) for r in BOARD["rows"]]
@@ -75,9 +83,12 @@ class Arithmetic(unittest.TestCase):
 
     def test_originated_line_reproduces_from_official_valve_points(self):
         res = RESOLUTIONS["fixtures"]["1082837"]
-        # the collector refits k every 30 minutes; the resolution pins the k it was derived with
-        k = res.get("calibration_k") or SOURCE_BOARD["calibration"]["k"]
-        zetta, floor = 473.0, 381.0          # Valve 2026-10-05: Zetta #357; lowest published rating
+        # This archived manual scenario used a fixed calibration snapshot.
+        # A later upstream refresh must not silently change its historical inputs.
+        calculation = res["calculation"]
+        self.assertFalse(calculation["unrated_opponent_rating_verified"])
+        k = calculation["calibration_k"]
+        zetta, floor = calculation["points_a"], calculation["assumed_points_b"]
         expected = 1 / (1 + math.exp(-k * BUILD.valve_c() * (zetta - floor)))
         self.assertAlmostEqual(expected, res["prob_a"], places=5)
         self.assertLess(res["prob_a"], 0.75, "an unrated opponent must not be treated as a walkover")

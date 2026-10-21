@@ -2,10 +2,18 @@
 
 **Live dashboard: https://buffedlizard55-lab.github.io/MaltaProj2/**
 
-**🎯 CURRENT FRONT DOOR (from 2026-10-21, session `d9d7627b`): the site root above is now a single mobile-first executive summary — a pick and win probability for EVERY open HotSpawn CS2 match, auto-refreshed every ~2 hours. Picks: [hotspawn-cs2/picks.html](https://buffedlizard55-lab.github.io/MaltaProj2/hotspawn-cs2/picks.html) · [Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/hotspawn-cs2/unresolved.html) · [Method & sources](https://buffedlizard55-lab.github.io/MaltaProj2/hotspawn-cs2/method.html) · [Flagged for review](https://buffedlizard55-lab.github.io/MaltaProj2/hotspawn-cs2/flagged.html). Resolution chain: external market lines (Pinnacle/Bovada/Melbet/Kalshi/Polymarket) → originated line from official Valve VRS ratings → direction-only (probability blank) → unresolved with per-source limitations. All earlier desks below are preserved as a research archive (index: [start/archive.html](https://buffedlizard55-lab.github.io/MaltaProj2/start/archive.html)).**
+## Current evidence-only dashboard
+
+Start with the [mobile summary](https://buffedlizard55-lab.github.io/MaltaProj2/dashboard/) or [all current picks](https://buffedlizard55-lab.github.io/MaltaProj2/dashboard/picks.html). Every retained lobby fixture is accounted for; unsupported probabilities and picks remain blank in [Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/dashboard/unresolved.html). [Sources](https://buffedlizard55-lab.github.io/MaltaProj2/dashboard/sources.html) · [Flagged for Review](https://buffedlizard55-lab.github.io/MaltaProj2/dashboard/flagged.html). External prices lead, rule-backed exchange quotes are labelled, and originated Valve estimates are experimental—not verified probabilities. No inferred unrated-team floor or direction-only assumption is imported. Four-hour automated research is a best-effort target; stale rows disable themselves.
+
+Alternative research: [hotspawn-cs2](https://buffedlizard55-lab.github.io/MaltaProj2/hotspawn-cs2/) (d9d7627b; includes direction-only assumptions, probabilities blank) and [hotspawn-live](https://buffedlizard55-lab.github.io/MaltaProj2/hotspawn-live/) (82a9a0cc; includes hypothetical unrated-floor scenarios). Their isolated schedules do not own the shared root. The central root builder preserves links to every section without certifying alternative assumptions.
+
+**Alternative expanded-API research — [Every HotSpawn CS2 match has a pick](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/) (session `e1b48771`).**
+
+### Additional parallel research (different evidence standards)
 
 **📱 Source board — [every open HotSpawn CS2 match, 0 blank](https://buffedlizard55-lab.github.io/MaltaProj2/board/picks.html) (canonical 30-minute collector `fe803b80`, maintained by session `a5c08976`).**
-The board every live view above derives from: a pick with both win probabilities and a source link on every row;
+Source for the expanded research views, not the independent evidence-only dashboard: a pick with both win probabilities and a source link on every row;
 [Unresolved picks & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/board/unresolved.html) (blank rows with their
 source-attempt ledger, directional-only estimates, dated manual research notes, standing limits),
 [Flagged for review](https://buffedlizard55-lab.github.io/MaltaProj2/board/flagged.html) and
@@ -16,7 +24,7 @@ originate a clearly labelled directional line.
 
 **🧭📱 DEEP-RESEARCH DESK (2026-10-21, session `36495748`): [Executive summary — every-match resolution ladder](https://buffedlizard55-lab.github.io/MaltaProj2/audits/36495748/) — a phone-first desk with a pick and both win probabilities for every open HotSpawn CS2 match (20/20 priced at build: 11 market · 2 exchange · 5 official-VRS model · 2 directional), plus a separate [Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/audits/36495748/unresolved.html) section and [Flagged for review](https://buffedlizard55-lab.github.io/MaltaProj2/audits/36495748/flagged.html) (includes two upstream fixtures priced off disbanded rosters — one pick flips). Fallback research (HLTV, Kalshi, bo3.gg, official Valve standings) resolved the low-tier fixtures the books don't cover. Session `36495748`; refreshed every ~4 hours.**
 
-**📱 Start here — [Every HotSpawn CS2 match has a pick](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/) (session `e1b48771`).**
+**Alternative expanded research — [Every HotSpawn CS2 match has a pick](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/) (session `e1b48771`).**
 One page per match with both win probabilities, the pick and the source behind it; a separate
 [Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/unresolved.html) page,
 [Flagged for review](https://buffedlizard55-lab.github.io/MaltaProj2/cs2/flagged.html) and
@@ -24,7 +32,11 @@ One page per match with both win probabilities, the pick and the source behind i
 links all four. Rebuilt every 4 hours from the freshest HotSpawn lobby capture. HotSpawn supplies fixtures only —
 never a probability. See the [session log in COORDINATION.md](COORDINATION.md).
 
-**📱🏆 FINAL DAY (today 18 Oct): start with the [final-day desk](https://buffedlizard55-lab.github.io/MaltaProj2/finalday/) — books priced it overnight: FURIA 68.2% v BETBOOM, Falcons 62.8% v Aurora (Thunderpick via bo3.gg, read live); BETBOOM fail the 35% climb floor, Aurora the only conditional gamble. Plus every open HotSpawn pick + [unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/finalday/unresolved.html). Session `36186ad8`, 4-hourly.**
+## Preserved earlier research notes
+
+The following dated session notes are retained for audit, not promoted as current picks or certified source facts. Their unsupported aliases, unrated-floor and direction-only assumptions are not imported into the evidence-only dashboard.
+
+**📱🏆 FINAL DAY (18 Oct archive): start with the [final-day desk](https://buffedlizard55-lab.github.io/MaltaProj2/finalday/) — books priced it overnight: FURIA 68.2% v BETBOOM, Falcons 62.8% v Aurora (Thunderpick via bo3.gg, read live); BETBOOM fail the 35% climb floor, Aurora the only conditional gamble. Plus every open HotSpawn pick + [unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/finalday/unresolved.html). Session `36186ad8`, 4-hourly.**
 
 **📱 Phone? Start here: [Start page](https://buffedlizard55-lab.github.io/MaltaProj2/start/) — one page with today's TWC final-day picks, a pick and both win probabilities for every open HotSpawn CS2 match, an [Unresolved & limitations](https://buffedlizard55-lab.github.io/MaltaProj2/start/unresolved.html) section and a [Flagged for review](https://buffedlizard55-lab.github.io/MaltaProj2/start/flagged.html) page. Session `371a1ce7`; rebuilt every 4 hours. Earlier desks are listed in its [Archive](https://buffedlizard55-lab.github.io/MaltaProj2/start/archive.html).**
 
@@ -241,3 +253,16 @@ not certified by the canonical verifier and never override its blank rows.
 - **Flagged for Review (Line-by-Line Repository & Source Audit):** [`audits/98dcfc7e/flagged.html`](audits/98dcfc7e/flagged.html)
 - **Methodology & 4–8h Automated Refresh Pipeline:** [`audits/98dcfc7e/methodology.html`](audits/98dcfc7e/methodology.html) (`scripts/98dcfc7e/build.py`, `data/98dcfc7e/audit.json`, `tests/test_98dcfc7e.py`).
 
+
+### Updated CS2 mobile match desk (2026-10-21)
+
+- **[Executive summary](dashboard/index.html)** → **[all current picks](dashboard/picks.html)**,
+  [unresolved & limitations](dashboard/unresolved.html), [complete HotSpawn inventory](dashboard/inventory.html),
+  [line-by-line sources and method](dashboard/sources.html), and [Flagged for Review](dashboard/flagged.html).
+- Four-hour automated discovery/research: `.github/workflows/dashboard-cbf92764.yml`.
+  Reads the public HotSpawn lobby + fixtures API and external books; only missing featured prices trigger
+  extra HLTV / published esports odds research and a strictly labelled experimental Valve-rating fallback.
+  No HotSpawn crowd probability, no lowest-rating proxy for an unranked team, no ambiguous-roster join.
+- Run `python scripts/cbf92764/build.py` then `python -m unittest discover -s tests -p test_cbf92764.py -v`.
+  Evidence hashes, raw additional reads and per-row reasons are in `data/cbf92764/`.
+  Current picks expire after four hours (including HTTP cache age) or their lock, whichever is earlier.
