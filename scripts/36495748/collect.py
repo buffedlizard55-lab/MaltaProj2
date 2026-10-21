@@ -97,44 +97,112 @@ def ticker_start_utc(ticker: str):
     return {"EDT(UTC-4)": base + timedelta(hours=4), "EST(UTC-5)": base + timedelta(hours=5)}
 
 
+_MON3 = {m: i + 1 for i, m in enumerate(
+    ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"])}
+
+
+def rules_start_utc(market: dict):
+    """'...originally scheduled for Oct 19, 2026 at 2:00 PM EDT...' -> aware UTC datetime.
+
+    The rules string names its own offset (EDT/EST), so no DST guessing is involved.
+    Verified against live payloads read on 2026-10-21 (events list + single event).
+    """
+    text = (market.get("rules_primary") or "") + " " + (market.get("rules_secondary") or "")
+    m = re.search(r"scheduled for ([A-Z][a-z]{2}) (\d{1,2}), (\d{4}) at (\d{1,2}):(\d{2}) ([AP]M) (EDT|EST)", text)
+    if not m:
+        return None
+    mon = _MON3.get(m.group(1))
+    if not mon:
+        return None
+    hh = int(m.group(4)) % 12 + (12 if m.group(6) == "PM" else 0)
+    offset = 4 if m.group(7) == "EDT" else 5
+    return datetime(int(m.group(3)), mon, int(m.group(2)), hh, int(m.group(5)),
+                    tzinfo=timezone.utc) + timedelta(hours=offset)
+
+
+def _markets_of(ev: dict) -> list:
+    out = []
+    for mk in ev.get("markets") or []:
+        # full-match binaries only: the rules text names the scheduled start
+        if rules_start_utc(mk) is not None and (mk.get("yes_sub_title") or "").strip():
+            out.append(mk)
+    return out
+
+
+def _mid_cents(mk: dict):
+    bid, ask = mk.get("yes_bid_dollars"), mk.get("yes_ask_dollars")
+    if bid is None:
+        bid, ask = mk.get("yes_bid"), mk.get("yes_ask")
+    try:
+        bid, ask = float(bid), float(ask)
+    except (TypeError, ValueError):
+        return None
+    scale = 100.0 if max(bid, ask) <= 1.0 else 1.0  # dollar strings live in [0,1]
+    if bid <= 0 or ask <= bid or (ask - bid) * scale > 25.0:
+        return None
+    return round((bid + ask) / 2.0 * scale, 2)
+
+
 def kalshi_probe(want: list[dict]) -> dict:
     joins = {}
-    data, meta = fetch(KALSHI_EVENTS)
-    LOG["kalshi"] = meta
-    events = (data or {}).get("events") or []
+    # Paginate: the series keeps already-started-but-unsettled events "open", so one
+    # 200-event page can end before today's fixtures appear (2026-10-21: HTTP 200, 313 KB).
+    events, cursor, pages = [], "", 0
+    for _ in range(8):
+        url = KALSHI_EVENTS + (f"&cursor={cursor}" if cursor else "")
+        data, meta = fetch(url)
+        pages += 1
+        if pages == 1:
+            LOG["kalshi"] = meta
+        batch = (data or {}).get("events") or []
+        events.extend(batch)
+        cursor = (data or {}).get("cursor") or ""
+        if not batch or not cursor:
+            break
+    tickers_seen = sorted({ev.get("event_ticker") for ev in events if ev.get("event_ticker")})
+    diag = {"two_market_events": 0, "name_matches": [], "start_mismatches": []}
     for w in want:
         hs = core.parse_iso(w.get("start_utc"))
         for ev in events:
-            ticker = ev.get("event_ticker") or ""
-            title = f"{ev.get('title', '')} {ev.get('sub_title', '')}"
-            markets = ev.get("markets") or []
-            names = [mk.get("yes_sub_title") or mk.get("subtitle") or "" for mk in markets]
-            pair_ok = len(names) >= 2 and core.same_name(names[0], w["team_a"]) is not core.same_name(names[0], w["team_b"]) \
-                and core.same_name(names[0] if core.same_name(names[1], w["team_a"]) else names[1], w["team_b"] if core.same_name(names[1], w["team_a"]) else w["team_a"])
-            if not pair_ok:
+            mks = _markets_of(ev)
+            if len(mks) == 2:
+                diag["two_market_events"] += 1
+            na = next((mk for mk in mks if core.same_name(mk["yes_sub_title"], w["team_a"])), None)
+            nb = next((mk for mk in mks if core.same_name(mk["yes_sub_title"], w["team_b"])), None)
+            if na is None or nb is None or na is nb or len(mks) != 2:
                 continue
-            starts = ticker_start_utc(ticker)
+            ticker = ev.get("event_ticker") or ""
+            diag["name_matches"].append(f"{w['fixture_id']}:{ticker}")
+            start = rules_start_utc(na)
             hit = None
-            if hs:
-                for label, cand in starts.items():
+            if hs and start and abs((start - hs).total_seconds()) <= 3600:
+                hit = (f"Kalshi rules state the match was scheduled for {start.strftime('%Y-%m-%dT%H:%M:%SZ')} "
+                       f"(EDT/EST converted); HotSpawn start is {w['start_utc']}")
+            if not hit and hs:  # ticker-time fallback (HHMM Eastern)
+                for label, cand in ticker_start_utc(ticker).items():
                     if abs((cand - hs).total_seconds()) <= 3600:
-                        hit = f"ticker time as {label} = {cand.strftime('%Y-%m-%dT%H:%M:%SZ')}, HotSpawn start {w['start_utc']}"
+                        hit = f"ticker-embedded start as {label} = {cand.strftime('%Y-%m-%dT%H:%M:%SZ')}; HotSpawn start {w['start_utc']}"
                         break
             if not hit:
+                diag["start_mismatches"].append(
+                    f"{w['fixture_id']}:{ticker}:rules={start} hotspawn={w.get('start_utc')}")
                 continue
-            mids = {}
-            for mk in markets[:2]:
-                nm = mk.get("yes_sub_title") or mk.get("subtitle") or ""
-                bid, ask = mk.get("yes_bid"), mk.get("yes_ask")
-                if isinstance(bid, (int, float)) and isinstance(ask, (int, float)) and ask > 0:
-                    mids[nm] = round((float(bid) + float(ask)) / 2.0, 2)
-            if len(mids) == 2:
-                joins[w["fixture_id"]] = {
-                    "source_name": "Kalshi (exchange, runner probe)", "event_ticker": ticker,
-                    "url": "https://kalshi.com/markets/kxcs2game/" + ticker.lower(),
-                    "start_verified": hit, "mid_cents": mids,
-                    "note": "Joined by the 36495748 refresher: both names matched after normalisation and the ticker-embedded start equals the HotSpawn start. Verify on the event page.",
-                    "read_ref": None, "title_seen": title[:120]}
+            ma, mb = _mid_cents(na), _mid_cents(nb)
+            if ma is None or mb is None:
+                continue
+            joins[w["fixture_id"]] = {
+                "source_name": "Kalshi (exchange, runner probe)", "event_ticker": ticker,
+                "url": "https://kalshi.com/markets/kxcs2game/" + ticker.lower(),
+                "start_verified": hit,
+                "mid_cents": {na["yes_sub_title"]: ma, nb["yes_sub_title"]: mb},
+                "note": ("Joined by the 36495748 refresher: both names matched after normalisation and the "
+                         "scheduled start stated in the market rules equals the HotSpawn start. "
+                         "Verify on the event page before treating as settled fact."),
+                "read_ref": None, "title_seen": (ev.get("title") or "")[:120]}
+            break
+    LOG["kalshi"] = {**LOG.get("kalshi", {}), "pages": pages, "events": len(events),
+                     "distinct_tickers": len(tickers_seen), "diagnostics": diag,
+                     "sample_tickers": tickers_seen[:6]}
     LOG["kalshi_joins"] = sorted(joins)
     return joins
 
