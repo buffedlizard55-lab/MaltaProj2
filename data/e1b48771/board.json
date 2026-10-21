@@ -1,9 +1,9 @@
 {
  "session": "e1b48771",
- "generated_utc": "2026-10-21T13:12:32Z",
+ "generated_utc": "2026-10-21T13:13:28Z",
  "source_board": {
   "path": "data/fe803b80/board.json",
-  "generated_utc": "2026-10-21T13:05:10Z",
+  "generated_utc": "2026-10-21T13:06:37Z",
   "snapshot_utc": "2026-10-21T13:05:10Z",
   "week": {
    "weekId": 273,
@@ -32,11 +32,11 @@
   "open": 20,
   "with_pick": 20,
   "unresolved": 0,
-  "market": 13,
+  "market": 14,
   "market_plus_model": 9,
-  "model": 5,
-  "research_market": 1,
-  "originated": 1,
+  "model": 6,
+  "research_market": 0,
+  "originated": 0,
   "next_lock_utc": "2026-10-21T13:45:00Z",
   "covered_percent": 100.0
  },
@@ -593,43 +593,52 @@
    "team_b": "BlinkDagger",
    "hotspawn_url": "https://www.hotspawn.com/matches/ex-cybershoke-vs-blinkdagger-cis-lan-championship-9-1082762",
    "pick": "ex-CYBERSHOKE",
-   "pick_prob": 0.833085,
-   "prob_a": 0.833085,
-   "prob_b": 0.166915,
-   "basis": "research-market",
-   "basis_label": "External bookmaker price (PARI / WinLine, aggregated by kushvsporte.ru)",
-   "confidence": "High",
+   "pick_prob": 0.8250374285714285,
+   "prob_a": 0.8250374285714285,
+   "prob_b": 0.17496257142857152,
+   "basis": "market",
+   "basis_label": "Bookmaker / exchange price",
+   "confidence": "Strong",
    "sources": [
     {
-     "label": "kushvsporte.ru — CYBERSHOKE v BlinkDagger odds board (П1 1.12 PARI / П2 5.59 WinLine)",
-     "url": "https://kushvsporte.ru/event/6990334-cybershoke-blinkdagger",
-     "read_utc": "2026-10-21T12:40:00Z",
-     "note": "Decimal odds copied verbatim from the fixture's odds board; the page's own lock countdown (02:20:20 to an 18:00 MSK start = 15:00 UTC) dates the read.",
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://www.hotspawn.com/matches/ex-cybershoke-vs-blinkdagger-cis-lan-championship-9-1082762",
+     "read_utc": "2026-10-21T13:03:24Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Bovada · decimal",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/cis-lan-championship/cybershoke-blinkdagger-202610211100",
+     "read_utc": "2026-10-21T13:03:38Z",
+     "note": "event 32524607",
      "kind": "price"
     },
     {
-     "label": "Valve regional standings — CYBERSHOKE #61 (1201 pts) and #171 (786 pts); BlinkDagger not listed",
-     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T12:41:00Z",
-     "note": "Official Valve global standings as of 2026-10-05, read through api.github.com. Two CYBERSHOKE rows exist, so the rating is used only as a sanity check and never to price this row.",
-     "kind": "rating"
+     "label": "Melbet (1xBet platform) · decimal",
+     "url": "https://melbet.com/en/line/esports",
+     "read_utc": "2026-10-21T13:03:39Z",
+     "note": "event 763402597",
+     "kind": "price"
     },
     {
-     "label": "Polymarket — CYBERSHOKE Esports v BlinkDagger (thin venue, not used as a price)",
-     "url": "https://polymarket.com/event/cs2-cs1-bli4-2026-10-21",
-     "read_utc": "2026-10-21T12:41:00Z",
-     "note": "Map-1 market quoted 0.635/0.365 with a 0.40 bid / 0.87 ask and $10 volume; the spread makes it unusable as a two-way price. Direction agrees with the bookmaker line.",
-     "kind": "corroboration"
+     "label": "Kalshi (exchange) · yes mid ($)",
+     "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211100blics",
+     "read_utc": "2026-10-21T13:03:42Z",
+     "note": "event KXCS2GAME-26OCT211100BLICS",
+     "kind": "price"
     }
    ],
    "flags": [
-    "mixed_best_price_books",
-    "duplicate_valve_rows"
+    "alias_ex_prefix_opponent_and_kickoff_triangulated",
+    "tier_c_event_low_coverage",
+    "alias_applied_see_evidence"
    ],
    "limitations": [
     "The two sides of the quote come from different bookmakers (П1 PARI, П2 WinLine), because the aggregator publishes best available price per side. This is not a single book's two-way line, so the no-vig normalisation is an estimate of the market, not a quote from one book.",
     "Valve publishes two CYBERSHOKE rows (#61 1201 pts, #171 786 pts) with different rosters, so the official rating cannot be joined unambiguously; it is not used for the number.",
-    "BlinkDagger has no bo3.gg record and no Valve rating, so there is no model cross-check."
+    "BlinkDagger has no bo3.gg record and no Valve rating, so there is no model cross-check.",
+    "Now resolved by the automated board itself; this session's earlier research ledger is kept for review and is no longer the source of the number."
    ],
    "attempts": [
     {
@@ -653,7 +662,7 @@
      "result": "Shows 1.8 / 1.8 with 0% / 0% - the known placeholder pair, rejected."
     }
    ],
-   "resolved_by": "session e1b48771 research"
+   "resolved_by": "automated board"
   },
   {
    "fixture_id": "1082763",
@@ -896,38 +905,55 @@
    "team_b": "LOS NINOS",
    "hotspawn_url": "https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837",
    "pick": "Zetta",
-   "pick_prob": 0.551929,
-   "prob_a": 0.551929,
-   "prob_b": 0.448071,
-   "basis": "originated",
-   "basis_label": "Originated — official Valve VRS, unrated opponent at Valve's published floor (381 pts)",
-   "confidence": "Low — directional lower bound",
+   "pick_prob": 0.7583476099994145,
+   "prob_a": 0.7583476099994145,
+   "prob_b": 0.24165239000058547,
+   "basis": "model",
+   "basis_label": "Originated by the automated board's own Elo over published results (directional estimate, no book price)",
+   "confidence": "Strong",
    "sources": [
     {
-     "label": "Valve regional standings — Zetta #357 (473 pts); LOS NINOS not listed; floor #380 Fruju (381 pts)",
-     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T12:41:00Z",
-     "note": "Official Valve global standings as of 2026-10-05 (newest published file; verified through api.github.com). 388-row table, lowest published rating 381.",
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837",
+     "read_utc": "2026-10-21T13:03:24Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "bo3.gg published match results (Elo input)",
+     "url": "https://bo3.gg/matches",
+     "read_utc": "2026-10-21T13:05:10Z",
+     "note": "723 finished matches",
      "kind": "rating"
     },
     {
-     "label": "HLTV match page — Zetta v LOS NINOS (CCT SA Series 7), Zetta #241 / VRS #366, LOS NINOS unranked",
-     "url": "https://www.hltv.org/matches/2399865/zetta-vs-los-ninos-cct-2026-south-america-series-7",
-     "read_utc": "2026-10-21T12:40:00Z",
-     "note": "Fixture identity, rosters and kickoff 18:00 HLTV clock = 22:00 UTC; used to confirm the match, not as a probability.",
-     "kind": "identity"
+     "label": "Valve VRS global standings · Zetta #357 (473 pts) — Elo seed",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-21T13:05:10Z",
+     "note": "official Valve regional standings snapshot; seeds this side's Elo",
+     "kind": "rating"
+    },
+    {
+     "label": "bo3.gg team page · LOS NINOS (5 finished matches in the Elo input)",
+     "url": "https://bo3.gg/teams/los-ninos",
+     "read_utc": "2026-10-21T13:05:10Z",
+     "note": "not listed in Valve's standings: started at the lowest points value Valve publishes (381.0), then moved by its own published results — a directional estimate, not a rating",
+     "kind": "rating"
     }
    ],
    "flags": [
-    "originated_line",
-    "valve_snapshot_aged",
-    "polymarket_name_conflict"
+    "no_external_price_for_this_fixture",
+    "originated_elo_line_no_official_rating",
+    "originated_elo_unlisted_team_started_at_vrs_floor",
+    "directional_estimate_only",
+    "tier_c_event_low_coverage"
    ],
    "limitations": [
     "No bookmaker, exchange or bo3.gg/Thunderpick price exists for this fixture at read time, so the number is originated, not quoted.",
     "LOS NINOS is unrated by Valve, so its strength is bounded below by the weakest published rating (381 pts). The published probability is therefore a LOWER BOUND for Zetta: if LOS NINOS is weaker than the floor, Zetta's true chance is higher.",
     "The calibration slope k = 0.4046 is fitted on the same board's market pairs (n = 15) and carries that fit's error (MAE 0.108 on probability).",
-    "Valve's newest standings file is 2026-10-05, i.e. 16 days old at build time; roster changes after that date are not reflected."
+    "Valve's newest standings file is 2026-10-05, i.e. 16 days old at build time; roster changes after that date are not reflected.",
+    "Now resolved by the automated board itself; this session's earlier research ledger is kept for review and is no longer the source of the number."
    ],
    "attempts": [
     {
@@ -956,7 +982,7 @@
      "result": "Shows 1.8 / 1.8 with 0% / 0% - the known placeholder pair, rejected."
     }
    ],
-   "resolved_by": "session e1b48771 research"
+   "resolved_by": "automated board"
   },
   {
    "fixture_id": "1081600",

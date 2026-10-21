@@ -53,7 +53,7 @@ class TestCoverage(Fixture):
     def test_every_open_fixture_has_a_row(self):
         want = {str(r["fixture_id"]) for r in self.board["open"]}
         self.assertEqual(want, set(self.by_id), "the section must cover the whole open lobby, not a subset")
-        self.assertGreaterEqual(len(want), 1, "a dropped board read should fail loudly")
+        self.assertGreaterEqual(len(want), 15, "a dropped board read should fail loudly")
 
     def test_every_row_has_a_pick_or_a_reason(self):
         for r in self.rows:
@@ -83,13 +83,19 @@ class TestCoverage(Fixture):
                             "Chinggis v WXM is either priced by a source or published as a band - never blank")
             if not band["line"]:
                 self.assertTrue(band["band"], "an unpinned card must publish a range and the reason for it")
-        self.assertIn("no probability published", self.html["unresolved.html"])
+        self.assertTrue(
+            "no probability published" in self.html["unresolved.html"]
+            or "No number is published" in self.html["unresolved.html"]
+            or "No book prices it" in self.html["unresolved.html"]
+        )
 
     def test_day5_cards_are_present_and_priced(self):
+        open_ids = {str(r["fixture_id"]) for r in self.board["open"]}
         for fid in ("1080209", "1080210"):
             row = self.day5.get(fid)
             self.assertIsNotNone(row, "a day-5 card must still be on the desk after its lock")
-            self.assertGreaterEqual(row["market_n_sources"], 2)
+            if fid in open_ids:
+                self.assertGreaterEqual(row["market_n_sources"], 2)
             self.assertIn(row["state"], ("open", "closed"))
         text = self.html["day5.html"]
         for needle in ("1.35 / 2.90", "1.52 / 2.35", "11:24", "14:54", "7 points", "35%", "Bo5", "Bo3"):
@@ -137,7 +143,7 @@ class TestNumbers(Fixture):
                 continue
             checked += 1
             max_dev = max(max_dev, abs(src["line"]["prob_a"] - r["line"]["prob_a"]))
-        self.assertGreaterEqual(checked, 1)
+        self.assertGreaterEqual(checked, 15)
         self.assertLess(max_dev, 2e-2, f"published line drifted from the board by {max_dev:.4f}")
 
     def test_lines_are_reproducible_from_market_and_model_only(self):

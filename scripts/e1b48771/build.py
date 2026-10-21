@@ -152,7 +152,13 @@ def row_from_board(fx):
         "prob_a": line.get("prob_a"),
         "prob_b": line.get("prob_b"),
         "basis": line.get("basis") or ("unresolved" if not line else "model"),
-        "basis_label": BASIS_LABEL.get(line.get("basis"), "Unresolved"),
+        "basis_label": (
+            # the canonical board labels its own Elo/ranking-originated rows "directional";
+            # never present them as the official Valve VRS curve
+            "Originated by the automated board's own Elo over published results "
+            "(directional estimate, no book price)"
+            if line.get("basis") == "model" and line.get("directional")
+            else BASIS_LABEL.get(line.get("basis"), "Unresolved")),
         "confidence": line.get("confidence"),
         "sources": picks,
         "flags": fx.get("flags") or [],
@@ -162,7 +168,13 @@ def row_from_board(fx):
     }
 
 
-def row_from_resolution(fx, res):
+def row_from_resolution(fx, res, k=0.25):
+    if res.get("resolution") != "market" and "vrs_points_a" in res and "vrs_points_b" in res:
+        pa = round(vrs_prob(res["vrs_points_a"], res["vrs_points_b"], k), 6)
+        pb = round(1.0 - pa, 6)
+    else:
+        pa = res.get("prob_a")
+        pb = res.get("prob_b")
     return {
         "fixture_id": str(fx.get("fixture_id")),
         "competition": fx.get("competition") or res.get("competition"),
@@ -174,9 +186,9 @@ def row_from_resolution(fx, res):
         "team_b": fx.get("team_b"),
         "hotspawn_url": fx.get("hotspawn_url"),
         "pick": res.get("pick"),
-        "pick_prob": res.get("prob_a") if res.get("pick") == fx.get("team_a") else res.get("prob_b"),
-        "prob_a": res.get("prob_a"),
-        "prob_b": res.get("prob_b"),
+        "pick_prob": pa if res.get("pick") == fx.get("team_a") else pb,
+        "prob_a": pa,
+        "prob_b": pb,
         "basis": "research-market" if res.get("resolution") == "market" else "originated",
         "basis_label": res.get("basis_label"),
         "confidence": res.get("confidence"),
@@ -190,14 +202,25 @@ def row_from_resolution(fx, res):
 
 def build():
     board = newest_board()
+    k = float((board.get("calibration") or {}).get("k", 0.25))
     resolutions = (load_json(RESOLUTIONS).get("fixtures") or {})
     rows = []
     for fx in board["open"]:
         line = fx.get("line") or {}
         if line.get("pick") and line.get("prob_a") is not None:
-            rows.append(row_from_board(fx))
+            row = row_from_board(fx)
+            res = resolutions.get(str(fx.get("fixture_id")))
+            if res:
+                # The canonical board now prices/originates this row itself (e.g. after an alias
+                # or join rule landed). Keep this session's research ledger attached so the
+                # attempts and limitations stay visible; the board's own number is what is shown.
+                row["attempts"] = res.get("attempts") or []
+                row["limitations"] = (res.get("limitations") or []) + [
+                    "Now resolved by the automated board itself; this session's earlier research "
+                    "ledger is kept for review and is no longer the source of the number."]
+            rows.append(row)
         elif str(fx.get("fixture_id")) in resolutions:
-            rows.append(row_from_resolution(fx, resolutions[str(fx.get("fixture_id"))]))
+            rows.append(row_from_resolution(fx, resolutions[str(fx.get("fixture_id"))], k=k))
         else:
             row = row_from_board(fx)
             row["pick"] = None

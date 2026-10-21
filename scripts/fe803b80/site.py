@@ -9,6 +9,8 @@ board/lines.html        the external market quotes actually used, one row per pr
 board/tournaments.html  the same picks grouped by tournament
 board/results.html      track record of published picks settled from HotSpawn final scores
 board/flagged.html      everything flagged for review: alias joins, originated lines, gaps, failures
+board/unresolved.html   unresolved picks & limitations: blank rows with their source-attempt ledger,
+                        directional (originated) rows, manual research notes, standing limitations
 board/method.html       method, formulas, sources and limitations
 
 Design rules: mobile-first single column, 16 px minimum text, 44 px tap targets, tables that turn
@@ -113,7 +115,11 @@ code{background:var(--panel2);padding:1px 5px;border-radius:6px;font-size:.9em;w
 
 PAGES = [("index.html", "Summary"), ("picks.html", "All picks"), ("lines.html", "Lines"),
          ("tournaments.html", "Tournaments"), ("results.html", "Results"),
-         ("flagged.html", "Flagged"), ("method.html", "Method")]
+         ("flagged.html", "Flagged"), ("unresolved.html", "Unresolved & limits"),
+         ("method.html", "Method")]
+NOTES_PATH = ROOT / "data" / "a5c08976" / "research_notes.json"
+MARKET_SOURCES = (("pinnacle", "Pinnacle"), ("bovada", "Bovada"), ("melbet", "Melbet (1xBet platform)"),
+                  ("kalshi", "Kalshi"), ("thunderpick", "Thunderpick (via bo3.gg)"))
 
 
 def esc(v) -> str:
@@ -141,7 +147,10 @@ def basis_badge(row) -> str:
                  "originated_elo": "originated · Elo (bo3.gg results)",
                  "originated_rank": "originated · bo3.gg ranking"}.get(
                      origin, "originated · ratings")
-        return f'<span class="badge model">{esc(label)}</span>'
+        out = f'<span class="badge model">{esc(label)}</span>'
+        if line.get("directional"):
+            out += ' <span class="badge model">directional estimate</span>'
+        return out
     return '<span class="badge bad">no source</span>'
 
 
@@ -225,6 +234,9 @@ def render_index(board: dict) -> str:
     s = board["summary"]
     calib = board.get("calibration") or {}
     track = board.get("track_record") or {}
+    directional = sum(1 for r in board["open"] if (r.get("line") or {}).get("directional"))
+    model_only = sum(1 for r in board["open"] if (r.get("line") or {}).get("basis") == "model"
+                     and not (r.get("line") or {}).get("directional"))
     body = f"""
 <h1>Executive summary</h1>
 <p class="sub">Every Counter-Strike 2 fixture in the HotSpawn pick'em lobby, with a pick and a
@@ -239,7 +251,10 @@ probability for each one — including tier-C matches no bookmaker prices.</p>
 
 <div class="note good"><strong>Where the picks are →</strong> the live list is on
 <a href="picks.html">All picks</a>. Each match shows the pick, the win probability, the basis
-(market, market+model, or originated from ratings) and the source link for every number.</div>
+(market, market+model, or originated from ratings) and the source link for every number.
+Anything that could <em>not</em> be resolved the same way — blank rows, directional-only estimates
+and the limits of the sources — is on <a href="unresolved.html">Unresolved picks &amp; limitations</a>
+({s['open_blank']} blank, {directional} directional, {model_only} originated from Valve VRS only).</div>
 
 <div class="jump">
   <a href="picks.html"><b>All picks — every open fixture</b>
@@ -250,6 +265,8 @@ probability for each one — including tier-C matches no bookmaker prices.</p>
     <span>The same coverage grouped by event — useful when a whole event is low tier.</span></a>
   <a href="flagged.html"><b>Flagged for review</b>
     <span>Alias joins, originated lines, blocked sources and every unverified gap, with links.</span></a>
+  <a href="unresolved.html"><b>Unresolved picks &amp; limitations</b>
+    <span>Rows no bookmaker prices: what was tried (HLTV, esportsbooks), what was originated, what stays blank.</span></a>
   <a href="results.html"><b>Track record</b>
     <span>Published picks graded against the final scores HotSpawn reports.</span></a>
   <a href="method.html"><b>Method &amp; sources</b>
@@ -276,6 +293,7 @@ probability for each one — including tier-C matches no bookmaker prices.</p>
 <tr><td>Open · basis = market</td><td class="num">{s['open_market_only']}</td></tr>
 <tr><td>Open · basis = market+model</td><td class="num">{s['open_market_model']}</td></tr>
 <tr><td>Open · basis = originated model</td><td class="num">{s['open_model_only']}</td></tr>
+<tr><td>Open · of which directional estimate (own Elo / ranking)</td><td class="num">{directional}</td></tr>
 <tr><td>Open · blank with a flag</td><td class="num">{s['open_blank']}</td></tr>
 <tr><td>Listed but locked/past (kept for results)</td><td class="num">{s['closed']}</td></tr>
 <tr><td>External quotes collected</td><td class="num">{s['quotes_total']}</td></tr>
@@ -308,7 +326,10 @@ def fixture_card(row: dict) -> str:
     badges = basis_badge(row)
     if line:
         badges += f' <span class="badge pick">PICK {esc(pick)} {pct(line.get("pick_probability"))}</span>'
-        badges += f' <span class="badge">{esc(line.get("confidence"))}</span>'
+        conf = line.get("confidence")
+        if line.get("directional"):
+            conf = f"{conf} (model only — directional)"
+        badges += f' <span class="badge">{esc(conf)}</span>'
     badges += "".join(f' <span class="badge">{esc(f)}</span>' for f in (row.get("flags") or [])[:3])
     srcs = src_links(row)
     return f"""
@@ -520,6 +541,165 @@ The board never renders a blocked source as a blank probability without this fla
     return page("Flagged for review", "flagged.html", body, board)
 
 
+def load_notes() -> dict:
+    if NOTES_PATH.exists():
+        try:
+            return json.loads(NOTES_PATH.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            return {}
+    return {}
+
+
+def attempt_ledger(row: dict, board: dict) -> str:
+    """What was tried for one unresolved/originated row, from the stored evidence only."""
+    acc = board.get("access") or {}
+    items = []
+    for key, label in MARKET_SOURCES:
+        if key == "thunderpick":
+            meta = acc.get("bo3gg_matches") or {}
+            n = meta.get("matches")
+            reach = (f"bo3.gg window read ({n} upcoming matches, "
+                     f"{acc.get('thunderpick_quotes', 0)} with a Thunderpick price)"
+                     if n else f"blocked / not reached {esc(meta.get('error') or '')}".strip())
+        else:
+            meta = acc.get("linefeed_melbet" if key == "melbet" else key) or {}
+            status = meta.get("status")
+            reach = ("reached" if status and status < 400 else
+                     f"HTTP {status}" if status else "blocked / not reached")
+        joined = [q for q in (row.get("quotes") or []) if q.get("source_key") == key]
+        if joined:
+            items.append(f"<li>{esc(label)}: priced — <a href=\"{esc(joined[0]['public_url'])}\" "
+                         f"rel=\"noopener\">quote</a></li>")
+        else:
+            items.append(f"<li>{esc(label)}: {esc(reach)}, no quote for this pairing at this kick-off</li>")
+    for side in ("a", "b"):
+        v = row.get(f"vrs_{side}")
+        name = row[f"team_{side}"]
+        if v:
+            items.append(f"<li>Valve VRS: {esc(name)} listed — {esc(v.get('region'))} #{esc(v.get('standing'))}, "
+                         f"{v.get('points'):g} pts</li>")
+        else:
+            items.append(f"<li>Valve VRS: {esc(name)} has no row in the {esc((board.get('vrs') or {}).get('snapshot'))} standings</li>")
+    elo = (row.get("model") or {}).get("elo") or {}
+    if elo:
+        for side in ("a", "b"):
+            meta = elo.get(f"side_{side}") or {}
+            items.append(f"<li>bo3.gg: {esc(row[f'team_{side}'])} id {esc(elo.get(f'bo3_id_{side}'))} — "
+                         f"{esc(meta.get('seed'))}, {esc(meta.get('history_matches', 0))} finished matches in the Elo input</li>")
+    hltv = acc.get("probe_hltv_matches") or {}
+    items.append(f"<li>HLTV from the collector: {esc(hltv.get('status') or hltv.get('error') or 'not probed')} "
+                 "— HLTV is read manually (see research notes below); its match pages carry no moneyline.</li>")
+    return "<ul class='tight'>" + "".join(items) + "</ul>"
+
+
+def render_unresolved(board: dict) -> str:
+    rows = board["open"]
+    blank = [r for r in rows if not r.get("line")]
+    directional = [r for r in rows if (r.get("line") or {}).get("directional")]
+    vrs_only = [r for r in rows if (r.get("line") or {}).get("basis") == "model"
+                and not (r.get("line") or {}).get("directional")]
+    ex_rows = [r for r in rows if "alias_ex_prefix_opponent_and_kickoff_triangulated" in (r.get("flags") or [])]
+    notes = load_notes()
+    acc = board.get("access") or {}
+    vrs = board.get("vrs") or {}
+    elo = board.get("elo") or {}
+
+    def row_block(r, show_pick=True):
+        line = r.get("line") or {}
+        pick = (f"<span class=\"badge pick\">PICK {esc(line.get('pick'))} {pct(line.get('pick_probability'))}</span>"
+                if line and show_pick else "<span class=\"badge bad\">no pick — blank</span>")
+        return f"""<article class="fixture">
+  <div class="meta">{esc(fmt(r.get('start_utc')))} · {esc(r.get('competition'))} · tier {esc(r.get('tier') or '—')} · Bo{esc(r.get('best_of') or '?')}</div>
+  <div><strong>{esc(r['team_a'])}</strong> vs <strong>{esc(r['team_b'])}</strong></div>
+  <div>{basis_badge(r)} {pick}</div>
+  <div class="src">Flags: {esc(', '.join(r.get('flags') or []) or '—')}</div>
+  <details><summary>What was tried for this row</summary>{attempt_ledger(r, board)}
+    <div class="src">Sources on the row: {src_links(r)}</div>
+    <div class="src">Fixture: <a href="{esc(r['hotspawn_url'])}" rel="noopener">{esc(r['hotspawn_url_kind'])}</a></div>
+  </details>
+</article>"""
+
+    note_items = []
+    for e in notes.get("entries") or []:
+        links = " ".join(f'<a href="{esc(u)}" rel="noopener">{esc(u.split("//", 1)[-1][:70])}</a>'
+                         for u in e.get("urls") or [])
+        fid = e.get("fixture_id")
+        note_items.append(f"""<li><strong>{esc(e.get('title'))}</strong>
+<div><span class="badge">{esc(e.get('status'))}</span>{f' <span class="badge">fixture {esc(fid)}</span>' if fid else ''}</div>
+<div>{esc(e.get('finding'))}</div>
+<div class="src">Effect: {esc(e.get('effect'))}</div>
+<div class="src">Read {esc(fmt(e.get('read_utc')))} · {links or '(no link)'}</div></li>""")
+
+    probes = []
+    for key, meta in acc.items():
+        if key.startswith("probe_"):
+            probes.append(f"<li>{esc(key[6:])}: HTTP {esc(meta.get('status') or 'blocked')} "
+                          f"{esc(meta.get('error') or '')}</li>")
+
+    body = f"""
+<h1>Unresolved picks &amp; limitations</h1>
+<p class="sub">The rows that could not be resolved the same way as the priced picks, what was tried
+for each (HLTV first, then esportsbooks, then our own originated line), and the limits of this board.
+Linked from the executive summary. Nothing here is hidden from the pick list — this page explains it.</p>
+
+<div class="cards">
+  <div class="card"><div class="n">{len(blank)}</div><div class="l">blank rows (no pick)</div></div>
+  <div class="card"><div class="n">{len(directional)}</div><div class="l">directional estimates (own Elo / ranking)</div></div>
+  <div class="card"><div class="n">{len(vrs_only)}</div><div class="l">originated from Valve VRS only</div></div>
+  <div class="card"><div class="n">{len(ex_rows)}</div><div class="l">market rows joined via an "ex-" roster label</div></div>
+</div>
+
+<h2>1 · Blank rows — no pick ({len(blank)})</h2>
+<p class="sub">No reachable bookmaker prices these and no rating source covers both teams. The cell stays
+blank and the row is counted as blank in the summary; nothing is inferred to fill it.</p>
+{''.join(row_block(r) for r in blank) if blank else '<p class="note good">No blank rows in this build: every open lobby fixture has a pick.</p>'}
+
+<h2>2 · Directional estimates — originated from our own Elo or a published ranking ({len(directional)})</h2>
+<p class="sub">At least one team has no official Valve rating. The number is a <strong>directional
+estimate</strong>: Valve-listed teams are seeded from their points, an unlisted team starts at the
+lowest points value Valve publishes ({esc(elo.get('floor_vrs_points'))} in this snapshot) and is
+then moved by its own bo3.gg results ({esc(elo.get('matches', 0))} finished matches in the input).
+The pick is shown so the slot is never empty, but treat it as a lean, not a price.</p>
+{''.join(row_block(r) for r in directional) if directional else '<p class="note good">None in this build.</p>'}
+
+<h2>3 · Originated from Valve VRS only — no bookmaker yet ({len(vrs_only)})</h2>
+<p class="sub">Both teams have an official Valve rating but no reachable bookmaker prices the match (yet).
+The probability is Valve's own rating curve with the slope fitted on this board's market pairs; the row
+will switch to a market basis automatically as soon as a quote joins.</p>
+{''.join(row_block(r) for r in vrs_only) if vrs_only else '<p class="note good">None in this build.</p>'}
+
+<h2>4 · Market rows joined through an "ex-" roster label ({len(ex_rows)})</h2>
+<p class="sub">HLTV and HotSpawn label a roster that left its organisation "ex-Org"; bookmakers keep the
+organisation name. The join is accepted only when the opponent is identical and the kick-off is the same
+to the minute, and the row is flagged with the HLTV evidence. The roster is never mapped to the
+organisation's Valve rating.</p>
+{''.join(row_block(r) for r in ex_rows) if ex_rows else '<p class="note good">None in this build.</p>'}
+
+<h2>5 · Manual research notes (dated, linked)</h2>
+<p class="sub">{esc(notes.get('purpose') or 'No research ledger in this checkout.')}</p>
+<ul class="tight">{''.join(note_items) or '<li>No entries.</li>'}</ul>
+
+<h2>6 · Standing limitations of this board</h2>
+<ul class="tight">
+<li><strong>Ratings snapshot.</strong> Valve regional standings <strong>{esc(vrs.get('snapshot') or '—')}</strong>
+are the newest files Valve has published; teams absent from them have no official rating.</li>
+<li><strong>HLTV.</strong> Not reachable from the collector (see probes below) and its match pages publish no
+numeric moneyline for low-tier matches; it is used manually for identity and kick-off verification.</li>
+<li><strong>Bookmaker coverage.</strong> Tier-C events (CIS LAN, CCT South America, NODWIN, Moscow Cyber Games,
+FRAG University) are priced late or not at all by the reachable books; rows switch to a market basis
+automatically when a quote joins.</li>
+<li><strong>Naming.</strong> bo3.gg sometimes lists a different opponent than HLTV/HotSpawn for the same slot;
+the strict opponent + kick-off join keeps such quotes out (they are listed as unmatched, never forced).</li>
+<li><strong>Own Elo.</strong> A directional estimate with K=20, 8 passes, anchored to Valve points (median
+{esc(elo.get('anchor_vrs_points'))} → 1500). It is not a market price and is labelled on every row.</li>
+<li><strong>Reachability probes this build:</strong><ul class="tight">{''.join(probes) or '<li>none recorded</li>'}</ul></li>
+</ul>
+<p class="src">Everything on this page is regenerated with the board; see <a href="method.html">Method</a> for the
+formulas and <a href="flagged.html">Flagged</a> for every row-level flag.</p>
+"""
+    return page("Unresolved picks & limitations", "unresolved.html", body, board)
+
+
 def render_method(board: dict) -> str:
     calib = board.get("calibration") or {}
     elo = board.get("elo") or {}
@@ -561,10 +741,14 @@ difference equals ~90% win probability. With <code>C = g·ln(10)/400</code>, <co
 <code>k</code> is fitted from this build's own market/VRS pairs (<code>k = {calib.get('k')}</code> over
 {calib.get('n_pairs', 0)} pairs; Valve's own curve would be k=1) because Valve's README states the
 published curve is too steep at the ends.</li>
-<li><strong>Our Elo (last resort).</strong> When neither team has a VRS row, an Elo is computed from the
-finished matches bo3.gg publishes (result and score only — a factual record, not a price):
-<code>1500 + (VRS points − anchor)</code> seeds teams that do have a VRS row, 8 passes, K=20.
-This build used {elo.get('matches', 0)} finished matches and seeded {elo.get('teams_seeded', 0)} teams.</li>
+<li><strong>Our Elo (last resort, directional).</strong> When at least one team has no VRS row, an Elo is
+computed from the finished matches bo3.gg publishes (result and score only — a factual record, not a
+price): <code>1500 + (VRS points − anchor)</code> seeds teams that do have a VRS row; a team Valve does not
+list at all starts at the <em>lowest</em> points value Valve publishes in the snapshot
+({elo.get('floor_vrs_points', '—')} pts → Elo {elo.get('unlisted_team_start', '—')}) rather than at the
+median, and is then moved by its own results; 8 passes, K=20. This build used {elo.get('matches', 0)}
+finished matches and seeded {elo.get('teams_seeded', 0)} teams. Rows built this way are labelled
+<em>directional estimate</em> and listed on <a href="unresolved.html">Unresolved picks &amp; limitations</a>.</li>
 </ul>
 <p>Ratings used: Valve regional standings snapshot <strong>{esc(vrs.get('snapshot') or '—')}</strong>
 ({esc(snaps) or 'no snapshot read'}), fetched from the official
@@ -575,6 +759,9 @@ repository.</p>
 <ul class="tight">
 <li>Both team names must match after normalisation (case/accents/punctuation folded; a leading
 "Team/The" and a trailing "Team/Esports/Gaming/GG/Club" dropped) — or a published alias must apply.</li>
+<li>"ex-" roster labels (HLTV/HotSpawn "ex-Org" vs a bookmaker's "Org") join only when the opponent is
+identical and both sources state the same kick-off within 15 minutes; the join is flagged with its
+evidence and is never used to borrow the organisation's Valve rating.</li>
 <li>The source's own start time must be within 14 hours of the lobby kickoff; differences over
 3 hours are flagged on the row.</li>
 <li>Exactly one price per fixture and source; the first qualifying moneyline is used.</li>
@@ -615,6 +802,7 @@ def main() -> int:
         "tournaments.html": render_tournaments(board),
         "results.html": render_results(board),
         "flagged.html": render_flagged(board),
+        "unresolved.html": render_unresolved(board),
         "method.html": render_method(board),
     }
     for name, html_text in pages.items():

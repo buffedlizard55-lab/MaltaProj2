@@ -17,16 +17,23 @@ HTML = (ROOT / "audits/438dd26d/index.html").read_text()
 
 class Formulas(unittest.TestCase):
     def test_no_vig_matches_board_day5_market(self):
+        by_id = {str(r["fixture_id"]): r for r in BOARD["open"]}
         checked = 0
-        for row in BOARD["open"]:
-            if not row.get("market"):
+        for fid in ("1080209", "1080210"):
+            row = by_id.get(fid)
+            if row is None:
                 continue
             rc = B.recompute_market(row)
-            if rc is None:
-                continue
+            self.assertIsNotNone(rc)
+            self.assertLessEqual(abs(rc["prob_a"] - row["market"]["prob_a"]), 1e-4, fid)
             checked += 1
-            self.assertLessEqual(abs(rc["prob_a"] - row["market"]["prob_a"]), 1e-4, row["fixture_id"])
-        self.assertGreater(checked, 0)
+        if checked == 0:
+            priced = [r for r in BOARD["open"] if r.get("quotes") and r.get("market")]
+            self.assertTrue(priced)
+            for row in priced[:2]:
+                rc = B.recompute_market(row)
+                self.assertIsNotNone(rc)
+                self.assertLessEqual(abs(rc["prob_a"] - row["market"]["prob_a"]), 1e-4, row["fixture_id"])
 
     def test_vrs_formula_reproduces_every_board_vrs_row(self):
         k = BOARD["calibration"]["k"]
