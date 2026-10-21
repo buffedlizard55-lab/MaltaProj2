@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sources &amp; Line-by-Line Evidence · HotSpawn CS2 Full-Coverage Picks</title>
+<style>:root {
+  --bg: #0b0f17;
+  --panel: #131a26;
+  --panel2: #182232;
+  --line: #263246;
+  --txt: #edf2f8;
+  --mut: #97a6ba;
+  --acc: #3ddc97;
+  --acc-bg: #0f3828;
+  --blue: #68b5ff;
+  --blue-bg: #132c47;
+  --warn: #ffb84d;
+  --warn-bg: #3b2a10;
+  --bad: #ff6b6b;
+  --bad-bg: #3b181b;
+  --pur: #c29dff;
+  --pur-bg: #2a1d42;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font: 15px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding-bottom: 68px;
+}
+a { color: var(--blue); text-decoration: none; overflow-wrap: anywhere; }
+a:hover, a:focus-visible { text-decoration: underline; }
+header.top {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(11, 15, 23, 0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.bar {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 10px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+}
+.brand {
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--txt);
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand span.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--acc);
+  display: inline-block;
+}
+header.top nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+header.top nav a {
+  padding: 7px 11px;
+  border-radius: 8px;
+  color: var(--txt);
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  font-size: 13.5px;
+  font-weight: 600;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+}
+header.top nav a.on {
+  background: var(--acc);
+  color: #04150d;
+  border-color: var(--acc);
+  font-weight: 800;
+}
+main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 14px;
+}
+h1 { font-size: clamp(20px, 4.5vw, 27px); line-height: 1.2; margin: 8px 0 6px; }
+h2 { font-size: clamp(17px, 3.6vw, 21px); margin: 24px 0 8px; }
+h3 { font-size: 16px; margin: 16px 0 6px; }
+.mut { color: var(--mut); }
+.small { font-size: 13px; color: var(--mut); }
+.hero {
+  background: linear-gradient(145deg, #131e30, #111824);
+  border: 1px solid #2e415c;
+  border-left: 4px solid var(--acc);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 8px 0 16px;
+}
+.callout {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 12px 0;
+}
+.callout.warn { border-left-color: var(--warn); }
+.callout.bad { border-left-color: var(--bad); }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.stat b {
+  display: block;
+  font-size: 24px;
+  line-height: 1.15;
+  color: var(--txt);
+  font-variant-numeric: tabular-nums;
+}
+.stat span { font-size: 12.5px; color: var(--mut); }
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+}
+.qcard {
+  display: block;
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 12px 14px;
+  color: var(--txt);
+  min-height: 62px;
+}
+.qcard:hover { border-color: var(--acc); text-decoration: none; }
+.qcard strong { display: block; font-size: 15px; color: var(--acc); margin-bottom: 3px; }
+.qcard span { display: block; font-size: 13px; color: var(--mut); }
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 12px 0;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.filter-bar input[type="search"] {
+  flex: 1 1 200px;
+  min-height: 38px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #0d131d;
+  color: var(--txt);
+  font-size: 14px;
+}
+.fbtn {
+  padding: 7px 11px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--panel2);
+  color: var(--txt);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 36px;
+}
+.fbtn.active { background: var(--acc); color: #04150d; border-color: var(--acc); font-weight: 800; }
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.b-market { background: var(--blue-bg); color: var(--blue); border: 1px solid #295685; }
+.b-esportsbook { background: var(--pur-bg); color: var(--pur); border: 1px solid #553a82; }
+.b-exchange { background: var(--pur-bg); color: var(--pur); border: 1px solid #553a82; }
+.b-model { background: var(--acc-bg); color: var(--acc); border: 1px solid #1e6b4b; }
+.b-floor { background: var(--warn-bg); color: var(--warn); border: 1px solid #75511c; }
+.b-strong { background: var(--acc-bg); color: var(--acc); }
+.b-solid { background: var(--blue-bg); color: var(--blue); }
+.b-lean { background: var(--warn-bg); color: var(--warn); }
+.b-toss { background: var(--bad-bg); color: #ffa3a3; }
+.b-dir { background: var(--warn-bg); color: var(--warn); }
+.pick-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--acc-bg);
+  color: var(--acc);
+  border: 1px solid #237855;
+  padding: 3px 9px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 13.5px;
+}
+.prob-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+}
+.prob-row .win { font-weight: 800; color: var(--acc); }
+.meter {
+  height: 7px;
+  background: #232f42;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 4px 0 6px;
+}
+.meter > i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--acc), #28a870);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  overflow: hidden;
+  margin: 10px 0 18px;
+}
+th, td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  font-size: 13.5px;
+}
+th {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mut);
+  background: #0f1520;
+}
+code {
+  background: #0d121b;
+  border: 1px solid var(--line);
+  padding: 1px 5px;
+  border-radius: 5px;
+  font-size: 12.5px;
+}
+nav.bnav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 35;
+  background: rgba(11, 15, 23, 0.98);
+  border-top: 1px solid var(--line);
+  display: none;
+}
+nav.bnav a {
+  flex: 1;
+  text-align: center;
+  padding: 8px 4px 10px;
+  color: var(--mut);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-decoration: none;
+}
+nav.bnav a.on { color: var(--acc); font-weight: 800; }
+@media (max-width: 760px) {
+  nav.bnav { display: flex; }
+  table.cards thead { display: none; }
+  table.cards, table.cards tbody, table.cards tr, table.cards td { display: block; width: 100%; }
+  table.cards { border: 0; background: transparent; }
+  table.cards tr {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    margin: 10px 0;
+    padding: 10px 12px;
+  }
+  table.cards td {
+    border: 0;
+    padding: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+  }
+  table.cards td::before {
+    content: attr(data-l);
+    color: var(--mut);
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    flex: 0 0 92px;
+  }
+  table.cards td.full { display: block; }
+  table.cards td.full::before { display: block; margin-bottom: 3px; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="bar">
+    <a class="brand" href="index.html"><span class="dot"></span>HotSpawn CS2 · Every Match Picked</a>
+    <nav aria-label="Section navigation"><a href="index.html">Executive Summary</a><a href="picks.html">All Picks (19)</a><a href="unresolved.html">Unresolved &amp; Limits</a><a href="tournaments.html">By Category</a><a href="sources.html" class="on">Sources &amp; Odds</a><a href="flagged.html">Flagged for Review</a><a href="method.html">Method</a><a href="../index.html">Main Hub</a></nav>
+  </div>
+</header>
+<main data-snapshot-utc="2026-10-21T12:28:48Z">
+  <div class="small" style="margin-bottom:4px">
+    Snapshot UTC: <code>2026-10-21 12:28:48 UTC</code> · Week 273 ·
+    Auto-refreshed every 4 hours · HotSpawn crowd % is never used as a probability input
+  </div>
+  
+<h1>Official Sources, Probe Health &amp; Line-by-Line Evidence Ledger</h1>
+<p class="mut">Every number published on <code>fullpicks/</code> is derived from the verified external sources below. HotSpawn crowd percentages are never read or used.</p>
+
+<h2>1. Upstream Source Access &amp; Probe Log</h2>
+<table class="cards">
+  <thead>
+    <tr>
+      <th>Source Key</th>
+      <th>HTTP Status</th>
+      <th>Observed (UTC)</th>
+      <th>Payload Size &amp; Quotes</th>
+      <th>Official Probed URL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+  <td data-l="Source Key"><code>bovada</code></td>
+  <td data-l="Status"><span class="badge b-strong">HTTP 200 OK</span></td>
+  <td data-l="Timestamp (UTC)">2026-10-21 12:28:43 UTC</td>
+  <td data-l="Bytes / Quotes">352080 B · quotes: 27</td>
+  <td data-l="Official Endpoint" class="full"><a href="https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2">https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2</a></td>
+</tr><tr>
+  <td data-l="Source Key"><code>hltv_probe</code></td>
+  <td data-l="Status"><span class="badge b-toss">HTTP 403 (HTTPError 403)</span></td>
+  <td data-l="Timestamp (UTC)">2026-10-21 12:28:45 UTC</td>
+  <td data-l="Bytes / Quotes">0 B · quotes: n/a</td>
+  <td data-l="Official Endpoint" class="full"><a href="https://www.hltv.org/matches">https://www.hltv.org/matches</a></td>
+</tr><tr>
+  <td data-l="Source Key"><code>hotspawn_api</code></td>
+  <td data-l="Status"><span class="badge b-strong">HTTP 200 OK</span></td>
+  <td data-l="Timestamp (UTC)">2026-10-21 12:28:33 UTC</td>
+  <td data-l="Bytes / Quotes">9609895 B · quotes: n/a</td>
+  <td data-l="Official Endpoint" class="full"><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures">https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures</a></td>
+</tr><tr>
+  <td data-l="Source Key"><code>hotspawn_lobby_page</code></td>
+  <td data-l="Status"><span class="badge b-strong">HTTP 200 OK</span></td>
+  <td data-l="Timestamp (UTC)">2026-10-21 12:28:32 UTC</td>
+  <td data-l="Bytes / Quotes">396783 B · quotes: n/a</td>
+  <td data-l="Official Endpoint" class="full"><a href="https://play.hotspawn.com/lobby">https://play.hotspawn.com/lobby</a></td>
+</tr><tr>
+  <td data-l="Source Key"><code>kalshi</code></td>
+  <td data-l="Status"><span class="badge b-strong">HTTP 200 OK</span></td>
+  <td data-l="Timestamp (UTC)">2026-10-21 12:28:45 UTC</td>
+  <td data-l="Bytes / Quotes">324550 B · quotes: 30</td>
+  <td data-l="Official Endpoint" class="full"><a href="https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&amp;status=open&amp;with_nested_markets=true&amp;limit=200">https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&amp;status=open&amp;with_nested_markets=true&amp;limit=200</a></td>
+</tr><tr>
+  <td data-l="Source Key"><code>melbet</code></td>
+  <td data-l="Status"><span class="badge b-strong">HTTP 200 OK</span></td>
+  <td data-l="Timestamp (UTC)">2026-10-21 12:28:44 UTC</td>
+  <td data-l="Bytes / Quotes">59067 B · quotes: 38</td>
+  <td data-l="Official Endpoint" class="full"><a href="https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1">https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&amp;count=1000&amp;lng=en&amp;mode=4&amp;country=1</a></td>
+</tr><tr>
+  <td data-l="Source Key"><code>pinnacle</code></td>
+  <td data-l="Status"><span class="badge b-strong">HTTP 200 OK</span></td>
+  <td data-l="Timestamp (UTC)">2026-10-21 12:28:40 UTC</td>
+  <td data-l="Bytes / Quotes">897278 B · quotes: 13</td>
+  <td data-l="Official Endpoint" class="full"><a href="https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups">https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups</a></td>
+</tr><tr>
+  <td data-l="Source Key"><code>polymarket_probe</code></td>
+  <td data-l="Status"><span class="badge b-strong">HTTP 200 OK</span></td>
+  <td data-l="Timestamp (UTC)">2026-10-21 12:28:45 UTC</td>
+  <td data-l="Bytes / Quotes">23086 B · quotes: n/a</td>
+  <td data-l="Official Endpoint" class="full"><a href="https://gamma-api.polymarket.com/events?closed=false&amp;limit=200&amp;tag_slug=counter-strike">https://gamma-api.polymarket.com/events?closed=false&amp;limit=200&amp;tag_slug=counter-strike</a></td>
+</tr><tr>
+  <td data-l="Source Key"><code>valve_vrs_file</code></td>
+  <td data-l="Status"><span class="badge b-strong">HTTP 200 OK</span></td>
+  <td data-l="Timestamp (UTC)">2026-10-21 12:28:47 UTC</td>
+  <td data-l="Bytes / Quotes">108544 B · quotes: n/a</td>
+  <td data-l="Official Endpoint" class="full"><a href="https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md">https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md</a></td>
+</tr><tr>
+  <td data-l="Source Key"><code>valve_vrs_tree</code></td>
+  <td data-l="Status"><span class="badge b-strong">HTTP 200 OK</span></td>
+  <td data-l="Timestamp (UTC)">2026-10-21 12:28:46 UTC</td>
+  <td data-l="Bytes / Quotes">7762255 B · quotes: n/a</td>
+  <td data-l="Official Endpoint" class="full"><a href="https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/git/trees/main?recursive=1">https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/git/trees/main?recursive=1</a></td>
+</tr>
+  </tbody>
+</table>
+
+<h2>2. Line-by-Line Quote &amp; Official VRS Rating Ledger (All 19 Open Matches)</h2>
+<table class="cards">
+  <thead>
+    <tr>
+      <th>Fixture</th>
+      <th>Source &amp; Event ID</th>
+      <th>Source Team Names / Ratings</th>
+      <th>Quoted Odds / Formula</th>
+      <th>De-Vigged / Model Win %</th>
+      <th>Official Verification Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+  <td data-l="Fixture"><strong>Phantom Academy</strong> vs <strong>Bebop</strong> (<code>1081583</code>)</td>
+  <td data-l="Source">Bovada (<code>32542246</code>)</td>
+  <td data-l="Names at Source">Phantom Academy vs Bebop</td>
+  <td data-l="Raw Price">decimal: <code>1.952381</code> / <code>1.800</code> (dec 1.952381 / 1.8)</td>
+  <td data-l="De-Vigged Prob">48.0% / 52.0%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.bovada.lv/esports/counter-strike-2/cct-europe-challengers/phantom-academy-bebop-202610210945">Bovada Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Phantom Academy</strong> vs <strong>Bebop</strong> (<code>1081583</code>)</td>
+  <td data-l="Source">Melbet (<code>763550121</code>)</td>
+  <td data-l="Names at Source">Phantom Academy vs Bebop</td>
+  <td data-l="Raw Price">decimal: <code>1.96</code> / <code>1.75</code> (dec 1.96 / 1.75)</td>
+  <td data-l="De-Vigged Prob">47.2% / 52.8%</td>
+  <td data-l="Official Link" class="full"><a href="https://melbet.com/en/line/esports">Melbet Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Phantom Academy</strong> vs <strong>Bebop</strong> (<code>1081583</code>)</td>
+  <td data-l="Source">Pinnacle (<code>1638793168</code>)</td>
+  <td data-l="Names at Source">Phantom Academy vs Bebop</td>
+  <td data-l="Raw Price">american: <code>-104</code> / <code>-127</code> (dec 1.9615384615384617 / 1.7874015748031495)</td>
+  <td data-l="De-Vigged Prob">47.7% / 52.3%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Falcons Force</strong> vs <strong>Privateer</strong> (<code>1081584</code>)</td>
+  <td data-l="Source">Bovada (<code>32542247</code>)</td>
+  <td data-l="Names at Source">Privateer vs Falcons Force</td>
+  <td data-l="Raw Price">decimal: <code>4.750</code> / <code>1.166667</code> (dec 4.75 / 1.166667)</td>
+  <td data-l="De-Vigged Prob">80.3% / 19.7%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.bovada.lv/esports/counter-strike-2/cct-europe-challengers/privateer-falcons-force-202610210945">Bovada Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Falcons Force</strong> vs <strong>Privateer</strong> (<code>1081584</code>)</td>
+  <td data-l="Source">Melbet (<code>763502200</code>)</td>
+  <td data-l="Names at Source">Privateer vs Falcons Force</td>
+  <td data-l="Raw Price">decimal: <code>4.84</code> / <code>1.12</code> (dec 4.84 / 1.12)</td>
+  <td data-l="De-Vigged Prob">81.2% / 18.8%</td>
+  <td data-l="Official Link" class="full"><a href="https://melbet.com/en/line/esports">Melbet Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Falcons Force</strong> vs <strong>Privateer</strong> (<code>1081584</code>)</td>
+  <td data-l="Source">Pinnacle (<code>1638849060</code>)</td>
+  <td data-l="Names at Source">Privateer vs Falcons Force</td>
+  <td data-l="Raw Price">american: <code>384</code> / <code>-812</code> (dec 4.84 / 1.1231527093596059)</td>
+  <td data-l="De-Vigged Prob">81.2% / 18.8%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Butterfly</strong> vs <strong>BET-M</strong> (<code>1079187</code>)</td>
+  <td data-l="Source">Official Valve VRS (2026_10_05)</td>
+  <td data-l="Names at Source">Butterfly #88 (1082 pts) vs BET-M #71 (1149 pts)</td>
+  <td data-l="Raw Price">Calibrated VRS (k=0.4308)</td>
+  <td data-l="De-Vigged Prob">46.0% / 54.0%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.hotspawn.com/matches/butterfly-vs-bet-m-nodwin-clutch-series-13-1079187">HotSpawn (match page)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0088--butterfly--ayano-forester-k1ssly-kurama-nitzie.md">Valve VRS #88 (1082 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0071--bet-m--bluewh1te-executor-raijin-synyx-z1nny.md">Valve VRS #71 (1149 pts)</a> · <a href="https://bo3.gg/matches/butterfly-vs-thirtythree-21-10-2026">bo3.gg Match</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>G2 Ares</strong> vs <strong>ILLYRIANS</strong> (<code>1079648</code>)</td>
+  <td data-l="Source">Kalshi (exchange) (<code>KXCS2GAME-26OCT211000ILLG2A</code>)</td>
+  <td data-l="Names at Source">ILLYRIANS vs G2 Ares</td>
+  <td data-l="Raw Price">yes mid ($): <code>0.485</code> / <code>0.495</code> (dec 2.0619 / 2.0202)</td>
+  <td data-l="De-Vigged Prob">49.5% / 50.5%</td>
+  <td data-l="Official Link" class="full"><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211000illg2a">Kalshi (exchange) Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Lavked</strong> vs <strong>Spirit Academy</strong> (<code>1081141</code>)</td>
+  <td data-l="Source">Bovada (<code>32522774</code>)</td>
+  <td data-l="Names at Source">Lavked vs Spirit Academy</td>
+  <td data-l="Raw Price">decimal: <code>2.150</code> / <code>1.666667</code> (dec 2.15 / 1.666667)</td>
+  <td data-l="De-Vigged Prob">43.7% / 56.3%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-12/lavked-spirit-academy-202610211000">Bovada Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Lavked</strong> vs <strong>Spirit Academy</strong> (<code>1081141</code>)</td>
+  <td data-l="Source">Melbet (<code>763532242</code>)</td>
+  <td data-l="Names at Source">Lavked vs Spirit Academy</td>
+  <td data-l="Raw Price">decimal: <code>2.09</code> / <code>1.73</code> (dec 2.09 / 1.73)</td>
+  <td data-l="De-Vigged Prob">45.3% / 54.7%</td>
+  <td data-l="Official Link" class="full"><a href="https://melbet.com/en/line/esports">Melbet Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Lavked</strong> vs <strong>Spirit Academy</strong> (<code>1081141</code>)</td>
+  <td data-l="Source">Pinnacle (<code>1638860640</code>)</td>
+  <td data-l="Names at Source">Lavked vs Spirit Academy</td>
+  <td data-l="Raw Price">american: <code>109</code> / <code>-137</code> (dec 2.09 / 1.72992700729927)</td>
+  <td data-l="De-Vigged Prob">45.3% / 54.7%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Fluxo</strong> vs <strong>Galorys</strong> (<code>1082684</code>)</td>
+  <td data-l="Source">Bovada (<code>32519969</code>)</td>
+  <td data-l="Names at Source">Fluxo vs Galorys</td>
+  <td data-l="Raw Price">decimal: <code>1.487805</code> / <code>2.550</code> (dec 1.487805 / 2.55)</td>
+  <td data-l="De-Vigged Prob">63.1% / 36.9%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/fluxo-galorys-202610211000">Bovada Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Fluxo</strong> vs <strong>Galorys</strong> (<code>1082684</code>)</td>
+  <td data-l="Source">Pinnacle (<code>1638799596</code>)</td>
+  <td data-l="Names at Source">Fluxo vs Galorys</td>
+  <td data-l="Raw Price">american: <code>-207</code> / <code>158</code> (dec 1.4830917874396135 / 2.58)</td>
+  <td data-l="De-Vigged Prob">63.5% / 36.5%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>paiN</strong> vs <strong>BARCA</strong> (<code>1082831</code>)</td>
+  <td data-l="Source">Melbet (<code>763543490</code>)</td>
+  <td data-l="Names at Source">pain Gaming vs BARCA</td>
+  <td data-l="Raw Price">decimal: <code>1.63</code> / <code>2.258</code> (dec 1.63 / 2.258)</td>
+  <td data-l="De-Vigged Prob">58.1% / 41.9%</td>
+  <td data-l="Official Link" class="full"><a href="https://melbet.com/en/line/esports">Melbet Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>paiN</strong> vs <strong>BARCA</strong> (<code>1082831</code>)</td>
+  <td data-l="Source">Pinnacle (<code>1638868489</code>)</td>
+  <td data-l="Names at Source">paiN vs BARCA</td>
+  <td data-l="Raw Price">american: <code>-163</code> / <code>128</code> (dec 1.6134969325153374 / 2.2800000000000002)</td>
+  <td data-l="De-Vigged Prob">58.6% / 41.4%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>BRUTE</strong> vs <strong>Sangal</strong> (<code>1082177</code>)</td>
+  <td data-l="Source">Bovada (<code>32524788</code>)</td>
+  <td data-l="Names at Source">Sangal Esports vs Brute</td>
+  <td data-l="Raw Price">decimal: <code>1.526316</code> / <code>2.450</code> (dec 1.526316 / 2.45)</td>
+  <td data-l="De-Vigged Prob">38.4% / 61.6%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/sangal-esports-brute-202610211100">Bovada Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>BRUTE</strong> vs <strong>Sangal</strong> (<code>1082177</code>)</td>
+  <td data-l="Source">Melbet (<code>763406841</code>)</td>
+  <td data-l="Names at Source">Sangal Esports vs Brute</td>
+  <td data-l="Raw Price">decimal: <code>1.54</code> / <code>2.458</code> (dec 1.54 / 2.458)</td>
+  <td data-l="De-Vigged Prob">38.5% / 61.5%</td>
+  <td data-l="Official Link" class="full"><a href="https://melbet.com/en/line/esports">Melbet Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>BRUTE</strong> vs <strong>Sangal</strong> (<code>1082177</code>)</td>
+  <td data-l="Source">Pinnacle (<code>1638828407</code>)</td>
+  <td data-l="Names at Source">Sangal vs BRUTE</td>
+  <td data-l="Raw Price">american: <code>-193</code> / <code>149</code> (dec 1.5181347150259068 / 2.49)</td>
+  <td data-l="De-Vigged Prob">37.9% / 62.1%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>ex-CYBERSHOKE</strong> vs <strong>BlinkDagger</strong> (<code>1082762</code>)</td>
+  <td data-l="Source">Bovada (<code>32524607</code>)</td>
+  <td data-l="Names at Source">CYBERSHOKE vs blinkdagger</td>
+  <td data-l="Raw Price">decimal: <code>1.125</code> / <code>5.750</code> (dec 1.125 / 5.75)</td>
+  <td data-l="De-Vigged Prob">83.6% / 16.4%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.bovada.lv/esports/counter-strike-2/cis-lan-championship/cybershoke-blinkdagger-202610211100">Bovada Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>ex-CYBERSHOKE</strong> vs <strong>BlinkDagger</strong> (<code>1082762</code>)</td>
+  <td data-l="Source">Kalshi (exchange) (<code>KXCS2GAME-26OCT211100BLICS</code>)</td>
+  <td data-l="Names at Source">BlinkDagger vs CYBERSHOKE Esports</td>
+  <td data-l="Raw Price">yes mid ($): <code>0.81</code> / <code>0.19</code> (dec 1.2346 / 5.2632)</td>
+  <td data-l="De-Vigged Prob">81.0% / 19.0%</td>
+  <td data-l="Official Link" class="full"><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211100blics">Kalshi (exchange) Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>ex-CYBERSHOKE</strong> vs <strong>BlinkDagger</strong> (<code>1082762</code>)</td>
+  <td data-l="Source">Melbet (<code>763402597</code>)</td>
+  <td data-l="Names at Source">CYBERSHOKE vs BlinkDagger</td>
+  <td data-l="Raw Price">decimal: <code>1.12</code> / <code>5.59</code> (dec 1.12 / 5.59)</td>
+  <td data-l="De-Vigged Prob">83.3% / 16.7%</td>
+  <td data-l="Official Link" class="full"><a href="https://melbet.com/en/line/esports">Melbet Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>UPGRADE</strong> vs <strong>flacons</strong> (<code>1082763</code>)</td>
+  <td data-l="Source">Kalshi (exchange) (<code>KXCS2GAME-26OCT211100TFUPG</code>)</td>
+  <td data-l="Names at Source">Team flacons vs UPGRADE</td>
+  <td data-l="Raw Price">yes mid ($): <code>0.965</code> / <code>0.05</code> (dec 1.0363 / 20.0)</td>
+  <td data-l="De-Vigged Prob">95.1% / 4.9%</td>
+  <td data-l="Official Link" class="full"><a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211100tfupg">Kalshi (exchange) Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>JOGA DE TERNO</strong> vs <strong>Martians</strong> (<code>1082835</code>)</td>
+  <td data-l="Source">Bovada (<code>32554985</code>)</td>
+  <td data-l="Names at Source">Joga De Terno vs Martians</td>
+  <td data-l="Raw Price">decimal: <code>1.606061</code> / <code>2.250</code> (dec 1.606061 / 2.25)</td>
+  <td data-l="De-Vigged Prob">58.4% / 41.6%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/joga-de-terno-martians-202610211200">Bovada Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>JOGA DE TERNO</strong> vs <strong>Martians</strong> (<code>1082835</code>)</td>
+  <td data-l="Source">Melbet (<code>763566242</code>)</td>
+  <td data-l="Names at Source">Joga de terno vs Martians</td>
+  <td data-l="Raw Price">decimal: <code>1.61</code> / <code>2.21</code> (dec 1.61 / 2.21)</td>
+  <td data-l="De-Vigged Prob">57.9% / 42.1%</td>
+  <td data-l="Official Link" class="full"><a href="https://melbet.com/en/line/esports">Melbet Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Metizport</strong> vs <strong>GenOne</strong> (<code>1082178</code>)</td>
+  <td data-l="Source">Bovada (<code>32535167</code>)</td>
+  <td data-l="Names at Source">Metizport vs GenOne</td>
+  <td data-l="Raw Price">decimal: <code>1.434783</code> / <code>2.750</code> (dec 1.434783 / 2.75)</td>
+  <td data-l="De-Vigged Prob">65.7% / 34.3%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/metizport-genone-202610211330">Bovada Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Metizport</strong> vs <strong>GenOne</strong> (<code>1082178</code>)</td>
+  <td data-l="Source">Melbet (<code>763537422</code>)</td>
+  <td data-l="Names at Source">Metizport vs GenOne</td>
+  <td data-l="Raw Price">decimal: <code>1.44</code> / <code>2.75</code> (dec 1.44 / 2.75)</td>
+  <td data-l="De-Vigged Prob">65.6% / 34.4%</td>
+  <td data-l="Official Link" class="full"><a href="https://melbet.com/en/line/esports">Melbet Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Metizport</strong> vs <strong>GenOne</strong> (<code>1082178</code>)</td>
+  <td data-l="Source">Pinnacle (<code>1638811273</code>)</td>
+  <td data-l="Names at Source">Metizport vs GenOne</td>
+  <td data-l="Raw Price">american: <code>-234</code> / <code>176</code> (dec 1.4273504273504274 / 2.76)</td>
+  <td data-l="De-Vigged Prob">65.9% / 34.1%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Damajuana</strong> vs <strong>Hacha</strong> (<code>1082836</code>)</td>
+  <td data-l="Source">Melbet (<code>763566807</code>)</td>
+  <td data-l="Names at Source">DAMAJUANA vs Hacha eSports</td>
+  <td data-l="Raw Price">decimal: <code>2.075</code> / <code>1.69</code> (dec 2.075 / 1.69)</td>
+  <td data-l="De-Vigged Prob">44.9% / 55.1%</td>
+  <td data-l="Official Link" class="full"><a href="https://melbet.com/en/line/esports">Melbet Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Zetta</strong> vs <strong>LOS NINOS</strong> (<code>1082837</code>)</td>
+  <td data-l="Source">Official Valve VRS (2026_10_05)</td>
+  <td data-l="Names at Source">Zetta #357 (473 pts) vs Floor #380 (381 pts)</td>
+  <td data-l="Raw Price">Calibrated VRS (k=0.4308)</td>
+  <td data-l="De-Vigged Prob">55.5% / 44.5%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837">HotSpawn (match page)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0357--zetta--antuanette-babyrage-notjuanjo-slayerhz-zockie.md">Valve VRS #357 (473 pts)</a> · <a href="https://bo3.gg/teams/los-ninos">bo3.gg Los Niños (5m)</a> · <a href="https://bo3.gg/matches/alianza-lima-esports-vs-los-ninos-21-10-2026">bo3.gg Schedule Conflict</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Donstu</strong> vs <strong>Banda chuya</strong> (<code>1081600</code>)</td>
+  <td data-l="Source">Official Valve VRS (2026_10_05)</td>
+  <td data-l="Names at Source">DONSTU #197 (732 pts) vs Banda Chuya #165 (801 pts)</td>
+  <td data-l="Raw Price">Calibrated VRS (k=0.4308)</td>
+  <td data-l="De-Vigged Prob">45.9% / 54.1%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.hotspawn.com/matches/donstu-vs-banda-chuya-cct-europe-2026-challengers-8-1081600">HotSpawn (match page)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0197--donstu--due1yant-gleb86rus-laksheri-neolife-phorate.md">Valve VRS #197 (732 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0165--banda_chuya--adrien-ezox-maaryy-showk-tomiko.md">Valve VRS #165 (801 pts)</a> · <a href="https://bo3.gg/matches/donstu-esports-vs-los-kogutos-22-10-2026">bo3.gg Schedule Conflict</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Imperial</strong> vs <strong>Turma do Pagode</strong> (<code>1082688</code>)</td>
+  <td data-l="Source">Bovada (<code>32519177</code>)</td>
+  <td data-l="Names at Source">Imperial vs Turma do Pagode</td>
+  <td data-l="Raw Price">decimal: <code>1.250</code> / <code>3.750</code> (dec 1.25 / 3.75)</td>
+  <td data-l="De-Vigged Prob">75.0% / 25.0%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/imperial-turma-do-pagode-202610221000">Bovada Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Imperial</strong> vs <strong>Turma do Pagode</strong> (<code>1082688</code>)</td>
+  <td data-l="Source">Melbet (<code>763429585</code>)</td>
+  <td data-l="Names at Source">Imperial Esports vs Turma do Pagode</td>
+  <td data-l="Raw Price">decimal: <code>1.25</code> / <code>3.71</code> (dec 1.25 / 3.71)</td>
+  <td data-l="De-Vigged Prob">74.8% / 25.2%</td>
+  <td data-l="Official Link" class="full"><a href="https://melbet.com/en/line/esports">Melbet Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>Imperial</strong> vs <strong>Turma do Pagode</strong> (<code>1082688</code>)</td>
+  <td data-l="Source">Pinnacle (<code>1638811247</code>)</td>
+  <td data-l="Names at Source">Imperial vs Turma do Pagode</td>
+  <td data-l="Raw Price">american: <code>-410</code> / <code>273</code> (dec 1.2439024390243902 / 3.73)</td>
+  <td data-l="De-Vigged Prob">75.0% / 25.0%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>BESTIA</strong> vs <strong>ShindeN</strong> (<code>1082689</code>)</td>
+  <td data-l="Source">Bovada (<code>32518186</code>)</td>
+  <td data-l="Names at Source">Bestia vs Shinden</td>
+  <td data-l="Raw Price">decimal: <code>1.870</code> / <code>1.870</code> (dec 1.87 / 1.87)</td>
+  <td data-l="De-Vigged Prob">50.0% / 50.0%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/bestia-shinden-202610221000">Bovada Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>BESTIA</strong> vs <strong>ShindeN</strong> (<code>1082689</code>)</td>
+  <td data-l="Source">Melbet (<code>763429577</code>)</td>
+  <td data-l="Names at Source">BESTIA vs Shinden</td>
+  <td data-l="Raw Price">decimal: <code>1.88</code> / <code>1.91</code> (dec 1.88 / 1.91)</td>
+  <td data-l="De-Vigged Prob">50.4% / 49.6%</td>
+  <td data-l="Official Link" class="full"><a href="https://melbet.com/en/line/esports">Melbet Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>BESTIA</strong> vs <strong>ShindeN</strong> (<code>1082689</code>)</td>
+  <td data-l="Source">Pinnacle (<code>1638825309</code>)</td>
+  <td data-l="Names at Source">BESTIA vs ShindeN</td>
+  <td data-l="Raw Price">american: <code>-114</code> / <code>-110</code> (dec 1.8771929824561404 / 1.9090909090909092)</td>
+  <td data-l="De-Vigged Prob">50.4% / 49.6%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle Market</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>HOTU</strong> vs <strong>The Huns</strong> (<code>1082792</code>)</td>
+  <td data-l="Source">Official Valve VRS (2026_10_05)</td>
+  <td data-l="Names at Source">HOTU #31 (1437 pts) vs The Huns #122 (944 pts)</td>
+  <td data-l="Raw Price">Calibrated VRS (k=0.4308)</td>
+  <td data-l="De-Vigged Prob">76.7% / 23.3%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.hotspawn.com/matches/hotu-vs-the-huns-moscow-cyber-games-2026-1082792">HotSpawn (match page)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0031--hotu--dwushka-frontales-kade0-mizu-n0rb3r7.md">Valve VRS #31 (1437 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0122--the_huns--annihilation-bart4k-bexyz-controlez-cozen.md">Valve VRS #122 (944 pts)</a></td>
+</tr><tr>
+  <td data-l="Fixture"><strong>5star</strong> vs <strong>1WIN</strong> (<code>1082793</code>)</td>
+  <td data-l="Source">Official Valve VRS (2026_10_05)</td>
+  <td data-l="Names at Source">5star #80 (1110 pts) vs 1win #38 (1383 pts)</td>
+  <td data-l="Raw Price">Calibrated VRS (k=0.4308)</td>
+  <td data-l="De-Vigged Prob">34.1% / 65.9%</td>
+  <td data-l="Official Link" class="full"><a href="https://www.hotspawn.com/matches/5star-vs-1win-moscow-cyber-games-2026-1082793">HotSpawn (match page)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0080--5star--ariucle-clouden-hoolig4n-neuz-rate.md">Valve VRS #80 (1110 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0038--1win--artfr0st-ax1le-belchonokk-fame-nafany.md">Valve VRS #38 (1383 pts)</a></td>
+</tr>
+  </tbody>
+</table>
+
+</main>
+<nav class="bnav" aria-label="Mobile quick navigation"><a href="index.html">Summary</a><a href="picks.html">All Picks</a><a href="unresolved.html">Unresolved</a><a href="tournaments.html">Categories</a><a href="flagged.html">Flagged</a></nav>
+</body>
+</html>

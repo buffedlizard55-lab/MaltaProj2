@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>All Open CS2 Picks · HotSpawn CS2 Full-Coverage Picks</title>
+<style>:root {
+  --bg: #0b0f17;
+  --panel: #131a26;
+  --panel2: #182232;
+  --line: #263246;
+  --txt: #edf2f8;
+  --mut: #97a6ba;
+  --acc: #3ddc97;
+  --acc-bg: #0f3828;
+  --blue: #68b5ff;
+  --blue-bg: #132c47;
+  --warn: #ffb84d;
+  --warn-bg: #3b2a10;
+  --bad: #ff6b6b;
+  --bad-bg: #3b181b;
+  --pur: #c29dff;
+  --pur-bg: #2a1d42;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font: 15px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding-bottom: 68px;
+}
+a { color: var(--blue); text-decoration: none; overflow-wrap: anywhere; }
+a:hover, a:focus-visible { text-decoration: underline; }
+header.top {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(11, 15, 23, 0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.bar {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 10px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+}
+.brand {
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--txt);
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand span.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--acc);
+  display: inline-block;
+}
+header.top nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+header.top nav a {
+  padding: 7px 11px;
+  border-radius: 8px;
+  color: var(--txt);
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  font-size: 13.5px;
+  font-weight: 600;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+}
+header.top nav a.on {
+  background: var(--acc);
+  color: #04150d;
+  border-color: var(--acc);
+  font-weight: 800;
+}
+main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 14px;
+}
+h1 { font-size: clamp(20px, 4.5vw, 27px); line-height: 1.2; margin: 8px 0 6px; }
+h2 { font-size: clamp(17px, 3.6vw, 21px); margin: 24px 0 8px; }
+h3 { font-size: 16px; margin: 16px 0 6px; }
+.mut { color: var(--mut); }
+.small { font-size: 13px; color: var(--mut); }
+.hero {
+  background: linear-gradient(145deg, #131e30, #111824);
+  border: 1px solid #2e415c;
+  border-left: 4px solid var(--acc);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 8px 0 16px;
+}
+.callout {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 12px 0;
+}
+.callout.warn { border-left-color: var(--warn); }
+.callout.bad { border-left-color: var(--bad); }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.stat b {
+  display: block;
+  font-size: 24px;
+  line-height: 1.15;
+  color: var(--txt);
+  font-variant-numeric: tabular-nums;
+}
+.stat span { font-size: 12.5px; color: var(--mut); }
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+}
+.qcard {
+  display: block;
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 12px 14px;
+  color: var(--txt);
+  min-height: 62px;
+}
+.qcard:hover { border-color: var(--acc); text-decoration: none; }
+.qcard strong { display: block; font-size: 15px; color: var(--acc); margin-bottom: 3px; }
+.qcard span { display: block; font-size: 13px; color: var(--mut); }
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 12px 0;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.filter-bar input[type="search"] {
+  flex: 1 1 200px;
+  min-height: 38px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #0d131d;
+  color: var(--txt);
+  font-size: 14px;
+}
+.fbtn {
+  padding: 7px 11px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--panel2);
+  color: var(--txt);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 36px;
+}
+.fbtn.active { background: var(--acc); color: #04150d; border-color: var(--acc); font-weight: 800; }
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.b-market { background: var(--blue-bg); color: var(--blue); border: 1px solid #295685; }
+.b-esportsbook { background: var(--pur-bg); color: var(--pur); border: 1px solid #553a82; }
+.b-exchange { background: var(--pur-bg); color: var(--pur); border: 1px solid #553a82; }
+.b-model { background: var(--acc-bg); color: var(--acc); border: 1px solid #1e6b4b; }
+.b-floor { background: var(--warn-bg); color: var(--warn); border: 1px solid #75511c; }
+.b-strong { background: var(--acc-bg); color: var(--acc); }
+.b-solid { background: var(--blue-bg); color: var(--blue); }
+.b-lean { background: var(--warn-bg); color: var(--warn); }
+.b-toss { background: var(--bad-bg); color: #ffa3a3; }
+.b-dir { background: var(--warn-bg); color: var(--warn); }
+.pick-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--acc-bg);
+  color: var(--acc);
+  border: 1px solid #237855;
+  padding: 3px 9px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 13.5px;
+}
+.prob-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+}
+.prob-row .win { font-weight: 800; color: var(--acc); }
+.meter {
+  height: 7px;
+  background: #232f42;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 4px 0 6px;
+}
+.meter > i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--acc), #28a870);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  overflow: hidden;
+  margin: 10px 0 18px;
+}
+th, td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  font-size: 13.5px;
+}
+th {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mut);
+  background: #0f1520;
+}
+code {
+  background: #0d121b;
+  border: 1px solid var(--line);
+  padding: 1px 5px;
+  border-radius: 5px;
+  font-size: 12.5px;
+}
+nav.bnav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 35;
+  background: rgba(11, 15, 23, 0.98);
+  border-top: 1px solid var(--line);
+  display: none;
+}
+nav.bnav a {
+  flex: 1;
+  text-align: center;
+  padding: 8px 4px 10px;
+  color: var(--mut);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-decoration: none;
+}
+nav.bnav a.on { color: var(--acc); font-weight: 800; }
+@media (max-width: 760px) {
+  nav.bnav { display: flex; }
+  table.cards thead { display: none; }
+  table.cards, table.cards tbody, table.cards tr, table.cards td { display: block; width: 100%; }
+  table.cards { border: 0; background: transparent; }
+  table.cards tr {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    margin: 10px 0;
+    padding: 10px 12px;
+  }
+  table.cards td {
+    border: 0;
+    padding: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+  }
+  table.cards td::before {
+    content: attr(data-l);
+    color: var(--mut);
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    flex: 0 0 92px;
+  }
+  table.cards td.full { display: block; }
+  table.cards td.full::before { display: block; margin-bottom: 3px; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="bar">
+    <a class="brand" href="index.html"><span class="dot"></span>HotSpawn CS2 · Every Match Picked</a>
+    <nav aria-label="Section navigation"><a href="index.html">Executive Summary</a><a href="picks.html" class="on">All Picks (19)</a><a href="unresolved.html">Unresolved &amp; Limits</a><a href="tournaments.html">By Category</a><a href="sources.html">Sources &amp; Odds</a><a href="flagged.html">Flagged for Review</a><a href="method.html">Method</a><a href="../index.html">Main Hub</a></nav>
+  </div>
+</header>
+<main data-snapshot-utc="2026-10-21T12:28:48Z">
+  <div class="small" style="margin-bottom:4px">
+    Snapshot UTC: <code>2026-10-21 12:28:48 UTC</code> · Week 273 ·
+    Auto-refreshed every 4 hours · HotSpawn crowd % is never used as a probability input
+  </div>
+  
+<h1>All Open HotSpawn CS2 Matches &amp; Picks (19 Open + 3 API Conflicts)</h1>
+<p class="mut">
+  Every open CS2 match from <a href="https://play.hotspawn.com/lobby">play.hotspawn.com/lobby</a> with both teams’ win probabilities,
+  the recommended pick, fair odds, and official external verification links.
+</p>
+
+<div class="filter-bar" role="region" aria-label="Filter matches">
+  <input type="search" id="qsearch" placeholder="Search team, tournament, or fixture ID…" aria-label="Search matches">
+  <button type="button" class="fbtn active" data-filter="all">All Open (19)</button>
+  <button type="button" class="fbtn" data-filter="market">Featured Market (11)</button>
+  <button type="button" class="fbtn" data-filter="esportsbook_exchange">Fallback Books/Exchange (2)</button>
+  <button type="button" class="fbtn" data-filter="model">Valve VRS Model (5)</button>
+  <button type="button" class="fbtn" data-filter="floor_estimate">Directional Floor (1)</button>
+</div>
+
+<table class="cards" id="open-picks-table">
+  <thead>
+    <tr>
+      <th>Match &amp; Tournament</th>
+      <th>Kickoff (UTC)</th>
+      <th>Recommended Pick</th>
+      <th>Win Probabilities &amp; Fair Odds</th>
+      <th>Basis &amp; Confidence</th>
+      <th>Official Source Links</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="fx-1081583" data-row="open" data-basis="market" data-search="phantom academy bebop cct europe 2026 challengers #8">
+  <td data-l="Match" class="full">
+    <div><strong>Phantom Academy</strong> vs <strong>Bebop</strong></div>
+    <div class="small">CCT Europe 2026 Challengers #8 · Tier C · 2 pts · ID <code>1081583</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-21 13:45:00 UTC</div>
+    <div class="small">Locks 2026-10-21 13:39:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ Bebop (52.4%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="">Phantom Academy: 47.6%</span>
+      <span class="win">Bebop: 52.4%</span>
+    </div>
+    <div class="meter" title="Phantom Academy 47.6% / Bebop 52.4%"><i style="width:48%"></i></div>
+    <div class="small">Fair decimal: 2.10 / 1.91</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-market">Featured Market</span></div>
+    <div style="margin-top:4px"><span class="badge b-toss">Toss-up</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/phantom-academy-vs-bebop-cct-europe-2026-challengers-8-1081583">HotSpawn (match page)</a> · <a href="https://www.bovada.lv/esports/counter-strike-2/cct-europe-challengers/phantom-academy-bebop-202610210945">Bovada (1.952381/1.8)</a> · <a href="https://melbet.com/en/line/esports">Melbet (1.96/1.75)</a> · <a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle (1.9615384615384617/1.7874015748031495)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS (2026_10_05)</a></div>
+    <div class="small" style="margin-top:4px">Featured consensus across 3 primary source(s): bovada, melbet, pinnacle.</div>
+  </td>
+</tr>
+<tr id="fx-1081584" data-row="open" data-basis="market" data-search="falcons force privateer cct europe 2026 challengers #8">
+  <td data-l="Match" class="full">
+    <div><strong>Falcons Force</strong> vs <strong>Privateer</strong></div>
+    <div class="small">CCT Europe 2026 Challengers #8 · Tier C · 2 pts · ID <code>1081584</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-21 13:45:00 UTC</div>
+    <div class="small">Locks 2026-10-21 13:39:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ Falcons Force (81.0%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="win">Falcons Force: 81.0%</span>
+      <span class="">Privateer: 19.1%</span>
+    </div>
+    <div class="meter" title="Falcons Force 81.0% / Privateer 19.1%"><i style="width:81%"></i></div>
+    <div class="small">Fair decimal: 1.24 / 5.25</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-market">Featured Market</span></div>
+    <div style="margin-top:4px"><span class="badge b-strong">Strong</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/falcons-force-vs-privateer-cct-europe-2026-challengers-8-1081584">HotSpawn (match page)</a> · <a href="https://www.bovada.lv/esports/counter-strike-2/cct-europe-challengers/privateer-falcons-force-202610210945">Bovada (4.75/1.166667)</a> · <a href="https://melbet.com/en/line/esports">Melbet (4.84/1.12)</a> · <a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle (4.84/1.1231527093596059)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS (2026_10_05)</a></div>
+    <div class="small" style="margin-top:4px">Featured consensus across 3 primary source(s): bovada, melbet, pinnacle.</div>
+  </td>
+</tr>
+<tr id="fx-1079187" data-row="open" data-basis="model" data-search="butterfly bet-m nodwin clutch series #13">
+  <td data-l="Match" class="full">
+    <div><strong>Butterfly</strong> vs <strong>BET-M</strong></div>
+    <div class="small">NODWIN Clutch Series #13 · Tier B · 3 pts · ID <code>1079187</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-21 14:00:00 UTC</div>
+    <div class="small">Locks 2026-10-21 13:54:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ BET-M (54.0%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="">Butterfly: 46.0%</span>
+      <span class="win">BET-M: 54.0%</span>
+    </div>
+    <div class="meter" title="Butterfly 46.0% / BET-M 54.0%"><i style="width:46%"></i></div>
+    <div class="small">Fair decimal: 2.17 / 1.85</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-model">Official Valve VRS Model</span></div>
+    <div style="margin-top:4px"><span class="badge b-lean">Lean</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/butterfly-vs-bet-m-nodwin-clutch-series-13-1079187">HotSpawn (match page)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0088--butterfly--ayano-forester-k1ssly-kurama-nitzie.md">Valve VRS #88 (1082 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0071--bet-m--bluewh1te-executor-raijin-synyx-z1nny.md">Valve VRS #71 (1149 pts)</a> · <a href="https://bo3.gg/matches/butterfly-vs-thirtythree-21-10-2026">bo3.gg Match</a></div>
+    <div class="small" style="margin-top:4px">Originated from Official Valve VRS (2026_10_05): Butterfly #88 (1082 pts) vs BET-M #71 (1149 pts), Δ = -67 pts, market-calibrated slope k = 0.4308.</div>
+  </td>
+</tr>
+<tr id="fx-1079648" data-row="open" data-basis="model" data-search="g2 ares illyrians cct europe 2026 series #11">
+  <td data-l="Match" class="full">
+    <div><strong>G2 Ares</strong> vs <strong>ILLYRIANS</strong></div>
+    <div class="small">CCT Europe 2026 Series #11 · Tier B · 3 pts · ID <code>1079648</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-21 14:00:00 UTC</div>
+    <div class="small">Locks 2026-10-21 13:54:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ G2 Ares (53.1%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="win">G2 Ares: 53.1%</span>
+      <span class="">ILLYRIANS: 46.9%</span>
+    </div>
+    <div class="meter" title="G2 Ares 53.1% / ILLYRIANS 46.9%"><i style="width:53%"></i></div>
+    <div class="small">Fair decimal: 1.88 / 2.13</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-model">Official Valve VRS Model</span></div>
+    <div style="margin-top:4px"><span class="badge b-lean">Lean</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/g2-ares-vs-illyrians-cct-europe-2026-series-11-1079648">HotSpawn (match page)</a> · <a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211000illg2a">Kalshi (exchange) (2.0619/2.0202)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0129--g2_ares--hitori-junyme-shine-tmkj-yksjupe.md">Valve VRS #129 (913 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0141--illyrians--ammar-bledard-cerber-valon-xonn1k.md">Valve VRS #141 (862 pts)</a> · <a href="https://bo3.gg/matches/g2-ares-vs-illyrians-21-10-2026">bo3.gg Match</a></div>
+    <div class="small" style="margin-top:4px">Originated from Official Valve VRS (2026_10_05): G2 Ares #129 (913 pts) vs ILLYRIANS #141 (862 pts), Δ = +51 pts, market-calibrated slope k = 0.4308. Kalshi exchange (KXCS2GAME-26OCT211000ILLG2A) also quotes this exact match near a 50/50 coin-flip (49.5% / 50.5%).</div>
+  </td>
+</tr>
+<tr id="fx-1081141" data-row="open" data-basis="market" data-search="lavked spirit academy cct europe 2026 series #12">
+  <td data-l="Match" class="full">
+    <div><strong>Lavked</strong> vs <strong>Spirit Academy</strong></div>
+    <div class="small">CCT Europe 2026 Series #12 · Tier B · 3 pts · ID <code>1081141</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-21 14:00:00 UTC</div>
+    <div class="small">Locks 2026-10-21 13:54:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ Spirit Academy (55.1%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="">Lavked: 44.9%</span>
+      <span class="win">Spirit Academy: 55.1%</span>
+    </div>
+    <div class="meter" title="Lavked 44.9% / Spirit Academy 55.1%"><i style="width:45%"></i></div>
+    <div class="small">Fair decimal: 2.23 / 1.81</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-market">Featured Market</span></div>
+    <div style="margin-top:4px"><span class="badge b-lean">Lean</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/lavked-vs-spirit-academy-cct-europe-2026-series-12-1081141">HotSpawn (match page)</a> · <a href="https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-12/lavked-spirit-academy-202610211000">Bovada (2.15/1.666667)</a> · <a href="https://melbet.com/en/line/esports">Melbet (2.09/1.73)</a> · <a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle (2.09/1.72992700729927)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS (2026_10_05)</a></div>
+    <div class="small" style="margin-top:4px">Featured consensus across 3 primary source(s): bovada, melbet, pinnacle.</div>
+  </td>
+</tr>
+<tr id="fx-1082684" data-row="open" data-basis="market" data-search="fluxo galorys circuit x curitiba #4">
+  <td data-l="Match" class="full">
+    <div><strong>Fluxo</strong> vs <strong>Galorys</strong></div>
+    <div class="small">Circuit X Curitiba #4 · Tier C · 2 pts · ID <code>1082684</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-21 14:00:00 UTC</div>
+    <div class="small">Locks 2026-10-21 13:54:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ Fluxo (63.4%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="win">Fluxo: 63.4%</span>
+      <span class="">Galorys: 36.6%</span>
+    </div>
+    <div class="meter" title="Fluxo 63.4% / Galorys 36.6%"><i style="width:63%"></i></div>
+    <div class="small">Fair decimal: 1.58 / 2.73</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-market">Featured Market</span></div>
+    <div style="margin-top:4px"><span class="badge b-solid">Solid</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/fluxo-vs-galorys-circuit-x-curitiba-4-1082684">HotSpawn (match page)</a> · <a href="https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/fluxo-galorys-202610211000">Bovada (1.487805/2.55)</a> · <a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle (1.4830917874396135/2.58)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS (2026_10_05)</a></div>
+    <div class="small" style="margin-top:4px">Featured consensus across 2 primary source(s): bovada, pinnacle.</div>
+  </td>
+</tr>
+<tr id="fx-1082831" data-row="open" data-basis="market" data-search="pain barca circuit x curitiba #4">
+  <td data-l="Match" class="full">
+    <div><strong>paiN</strong> vs <strong>BARCA</strong></div>
+    <div class="small">Circuit X Curitiba #4 · Tier C · 2 pts · ID <code>1082831</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-21 14:00:00 UTC</div>
+    <div class="small">Locks 2026-10-21 13:54:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ paiN (58.4%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="win">paiN: 58.4%</span>
+      <span class="">BARCA: 41.6%</span>
+    </div>
+    <div class="meter" title="paiN 58.4% / BARCA 41.6%"><i style="width:58%"></i></div>
+    <div class="small">Fair decimal: 1.71 / 2.40</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-market">Featured Market</span></div>
+    <div style="margin-top:4px"><span class="badge b-lean">Lean</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/pain-vs-barca-circuit-x-curitiba-4-1082831">HotSpawn (match page)</a> · <a href="https://melbet.com/en/line/esports">Melbet (1.63/2.258)</a> · <a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle (1.6134969325153374/2.2800000000000002)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS (2026_10_05)</a></div>
+    <div class="small" style="margin-top:4px">Featured consensus across 2 primary source(s): melbet, pinnacle.</div>
+  </td>
+</tr>
+<tr id="fx-1082177" data-row="open" data-basis="market" data-search="brute sangal stake ranked episode 6: closed qualifier">
+  <td data-l="Match" class="full">
+    <div><strong>BRUTE</strong> vs <strong>Sangal</strong></div>
+    <div class="small">Stake Ranked Episode 6: Closed Qualifier · Tier B · 3 pts · ID <code>1082177</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-21 15:00:00 UTC</div>
+    <div class="small">Locks 2026-10-21 14:54:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ Sangal (61.8%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="">BRUTE: 38.2%</span>
+      <span class="win">Sangal: 61.8%</span>
+    </div>
+    <div class="meter" title="BRUTE 38.2% / Sangal 61.8%"><i style="width:38%"></i></div>
+    <div class="small">Fair decimal: 2.62 / 1.62</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-market">Featured Market</span></div>
+    <div style="margin-top:4px"><span class="badge b-solid">Solid</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/sangal-vs-brute-stake-ranked-episode-6-closed-qualifier-1082177">HotSpawn (match page)</a> · <a href="https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/sangal-esports-brute-202610211100">Bovada (1.526316/2.45)</a> · <a href="https://melbet.com/en/line/esports">Melbet (1.54/2.458)</a> · <a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle (1.5181347150259068/2.49)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS (2026_10_05)</a></div>
+    <div class="small" style="margin-top:4px">Featured consensus across 3 primary source(s): bovada, melbet, pinnacle.</div>
+  </td>
+</tr>
+<tr id="fx-1082762" data-row="open" data-basis="esportsbook" data-search="ex-cybershoke blinkdagger cis lan championship #9">
+  <td data-l="Match" class="full">
+    <div><strong>ex-CYBERSHOKE</strong> vs <strong>BlinkDagger</strong></div>
+    <div class="small">CIS LAN Championship #9 · Tier C · 2 pts · ID <code>1082762</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-21 15:00:00 UTC</div>
+    <div class="small">Locks 2026-10-21 14:54:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ ex-CYBERSHOKE (82.7%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="win">ex-CYBERSHOKE: 82.7%</span>
+      <span class="">BlinkDagger: 17.3%</span>
+    </div>
+    <div class="meter" title="ex-CYBERSHOKE 82.7% / BlinkDagger 17.3%"><i style="width:83%"></i></div>
+    <div class="small">Fair decimal: 1.21 / 5.76</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-esportsbook">Fallback Esportsbook</span></div>
+    <div style="margin-top:4px"><span class="badge b-strong">Strong</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/ex-cybershoke-vs-blinkdagger-cis-lan-championship-9-1082762">HotSpawn (match page)</a> · <a href="https://www.bovada.lv/esports/counter-strike-2/cis-lan-championship/cybershoke-blinkdagger-202610211100">Bovada (1.125/5.75)</a> · <a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211100blics">Kalshi (exchange) (1.2346/5.2632)</a> · <a href="https://melbet.com/en/line/esports">Melbet (1.12/5.59)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0061--cybershoke--alkaren-alpha-mokuj1n-nota-yiksrezo.md">Valve VRS #61 (1201 pts)</a></div>
+    <div class="small" style="margin-top:4px">Resolved from 3 external betting/exchange source(s) (Bovada, Kalshi (exchange), Melbet) after ex-prefix team normalisation, verified by exact opponent (BlinkDagger) and exact UTC kickoff (2026-10-21T15:00:00Z).</div>
+  </td>
+</tr>
+<tr id="fx-1082763" data-row="open" data-basis="exchange" data-search="upgrade flacons cis lan championship #9">
+  <td data-l="Match" class="full">
+    <div><strong>UPGRADE</strong> vs <strong>flacons</strong></div>
+    <div class="small">CIS LAN Championship #9 · Tier C · 2 pts · ID <code>1082763</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-21 15:00:00 UTC</div>
+    <div class="small">Locks 2026-10-21 14:54:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ UPGRADE (95.1%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="win">UPGRADE: 95.1%</span>
+      <span class="">flacons: 4.9%</span>
+    </div>
+    <div class="meter" title="UPGRADE 95.1% / flacons 4.9%"><i style="width:95%"></i></div>
+    <div class="small">Fair decimal: 1.05 / 20.28</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-exchange">Fallback Exchange (Kalshi)</span></div>
+    <div style="margin-top:4px"><span class="badge b-strong">Strong</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/upgrade-vs-flacons-cis-lan-championship-9-1082763">HotSpawn (match page)</a> · <a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211100tfupg">Kalshi (exchange) (1.0363/20.0)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0067--upgrade--dan9armatura-dezl3bio-pleynnn-squezxc-tw1sterzaza.md">Valve VRS #67 (1185 pts)</a></div>
+    <div class="small" style="margin-top:4px">Resolved from CFTC-regulated Kalshi exchange contract KXCS2GAME-26OCT211100TFUPG (EDT ticker start matches 2026-10-21T15:00:00Z UTC). Corroborated by Official Valve VRS: UPGRADE is #67 (1185 pts, 87.4% vs VRS floor #380).</div>
+  </td>
+</tr>
+<tr id="fx-1082835" data-row="open" data-basis="market" data-search="joga de terno martians cct south america 2026 series #7">
+  <td data-l="Match" class="full">
+    <div><strong>JOGA DE TERNO</strong> vs <strong>Martians</strong></div>
+    <div class="small">CCT South America 2026 Series #7 · Tier C · 2 pts · ID <code>1082835</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-21 16:00:00 UTC</div>
+    <div class="small">Locks 2026-10-21 15:54:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ JOGA DE TERNO (58.1%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="win">JOGA DE TERNO: 58.1%</span>
+      <span class="">Martians: 41.9%</span>
+    </div>
+    <div class="meter" title="JOGA DE TERNO 58.1% / Martians 41.9%"><i style="width:58%"></i></div>
+    <div class="small">Fair decimal: 1.72 / 2.39</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-market">Featured Market</span></div>
+    <div style="margin-top:4px"><span class="badge b-lean">Lean</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/joga-de-terno-vs-martians-cct-south-america-2026-series-7-1082835">HotSpawn (match page)</a> · <a href="https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/joga-de-terno-martians-202610211200">Bovada (1.606061/2.25)</a> · <a href="https://melbet.com/en/line/esports">Melbet (1.61/2.21)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS (2026_10_05)</a></div>
+    <div class="small" style="margin-top:4px">Featured consensus across 2 primary source(s): bovada, melbet.</div>
+  </td>
+</tr>
+<tr id="fx-1082178" data-row="open" data-basis="market" data-search="metizport genone stake ranked episode 6: closed qualifier">
+  <td data-l="Match" class="full">
+    <div><strong>Metizport</strong> vs <strong>GenOne</strong></div>
+    <div class="small">Stake Ranked Episode 6: Closed Qualifier · Tier B · 3 pts · ID <code>1082178</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-21 17:30:00 UTC</div>
+    <div class="small">Locks 2026-10-21 17:24:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ Metizport (65.8%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="win">Metizport: 65.8%</span>
+      <span class="">GenOne: 34.2%</span>
+    </div>
+    <div class="meter" title="Metizport 65.8% / GenOne 34.2%"><i style="width:66%"></i></div>
+    <div class="small">Fair decimal: 1.52 / 2.92</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-market">Featured Market</span></div>
+    <div style="margin-top:4px"><span class="badge b-solid">Solid</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/metizport-vs-genone-stake-ranked-episode-6-closed-qualifier-1082178">HotSpawn (match page)</a> · <a href="https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/metizport-genone-202610211330">Bovada (1.434783/2.75)</a> · <a href="https://melbet.com/en/line/esports">Melbet (1.44/2.75)</a> · <a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle (1.4273504273504274/2.76)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS (2026_10_05)</a></div>
+    <div class="small" style="margin-top:4px">Featured consensus across 3 primary source(s): bovada, melbet, pinnacle.</div>
+  </td>
+</tr>
+<tr id="fx-1082836" data-row="open" data-basis="market" data-search="damajuana hacha cct south america 2026 series #7">
+  <td data-l="Match" class="full">
+    <div><strong>Damajuana</strong> vs <strong>Hacha</strong></div>
+    <div class="small">CCT South America 2026 Series #7 · Tier C · 2 pts · ID <code>1082836</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-21 19:00:00 UTC</div>
+    <div class="small">Locks 2026-10-21 18:54:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ Hacha (55.1%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="">Damajuana: 44.9%</span>
+      <span class="win">Hacha: 55.1%</span>
+    </div>
+    <div class="meter" title="Damajuana 44.9% / Hacha 55.1%"><i style="width:45%"></i></div>
+    <div class="small">Fair decimal: 2.23 / 1.81</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-market">Featured Market</span></div>
+    <div style="margin-top:4px"><span class="badge b-lean">Lean</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/damajuana-vs-hacha-cct-south-america-2026-series-7-1082836">HotSpawn (match page)</a> · <a href="https://melbet.com/en/line/esports">Melbet (2.075/1.69)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS (2026_10_05)</a></div>
+    <div class="small" style="margin-top:4px">Featured consensus across 1 primary source(s): melbet.</div>
+  </td>
+</tr>
+<tr id="fx-1082837" data-row="open" data-basis="floor_estimate" data-search="zetta los ninos cct south america 2026 series #7">
+  <td data-l="Match" class="full">
+    <div><strong>Zetta</strong> vs <strong>LOS NINOS</strong></div>
+    <div class="small">CCT South America 2026 Series #7 · Tier C · 2 pts · ID <code>1082837</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-21 22:00:00 UTC</div>
+    <div class="small">Locks 2026-10-21 21:54:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ Zetta (55.5%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="win">Zetta: 55.5%</span>
+      <span class="">LOS NINOS: 44.5%</span>
+    </div>
+    <div class="meter" title="Zetta 55.5% / LOS NINOS 44.5%"><i style="width:56%"></i></div>
+    <div class="small">Fair decimal: 1.80 / 2.25</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-floor">Originated VRS Floor</span></div>
+    <div style="margin-top:4px"><span class="badge b-dir">Directional</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837">HotSpawn (match page)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0357--zetta--antuanette-babyrage-notjuanjo-slayerhz-zockie.md">Valve VRS #357 (473 pts)</a> · <a href="https://bo3.gg/teams/los-ninos">bo3.gg Los Niños (5m)</a> · <a href="https://bo3.gg/matches/alianza-lima-esports-vs-los-ninos-21-10-2026">bo3.gg Schedule Conflict</a></div>
+    <div class="small" style="margin-top:4px">Originated directional lower bound from Official Valve VRS (2026_10_05): Zetta is #357 (473 pts); unrated &#x27;LOS NINOS&#x27; is benchmarked at the official VRS floor (#380 Fruju, 381 pts).</div>
+  </td>
+</tr>
+<tr id="fx-1081600" data-row="open" data-basis="model" data-search="donstu banda chuya cct europe 2026 challengers #8">
+  <td data-l="Match" class="full">
+    <div><strong>Donstu</strong> vs <strong>Banda chuya</strong></div>
+    <div class="small">CCT Europe 2026 Challengers #8 · Tier C · 2 pts · ID <code>1081600</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-22 13:45:00 UTC</div>
+    <div class="small">Locks 2026-10-22 13:39:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ Banda chuya (54.1%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="">Donstu: 45.9%</span>
+      <span class="win">Banda chuya: 54.1%</span>
+    </div>
+    <div class="meter" title="Donstu 45.9% / Banda chuya 54.1%"><i style="width:46%"></i></div>
+    <div class="small">Fair decimal: 2.18 / 1.85</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-model">Official Valve VRS Model</span></div>
+    <div style="margin-top:4px"><span class="badge b-lean">Lean</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/donstu-vs-banda-chuya-cct-europe-2026-challengers-8-1081600">HotSpawn (match page)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0197--donstu--due1yant-gleb86rus-laksheri-neolife-phorate.md">Valve VRS #197 (732 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0165--banda_chuya--adrien-ezox-maaryy-showk-tomiko.md">Valve VRS #165 (801 pts)</a> · <a href="https://bo3.gg/matches/donstu-esports-vs-los-kogutos-22-10-2026">bo3.gg Schedule Conflict</a></div>
+    <div class="small" style="margin-top:4px">Originated from Official Valve VRS (2026_10_05): Donstu #197 (732 pts) vs Banda chuya #165 (801 pts), Δ = -69 pts, market-calibrated slope k = 0.4308.</div>
+  </td>
+</tr>
+<tr id="fx-1082688" data-row="open" data-basis="market" data-search="imperial turma do pagode circuit x curitiba #4">
+  <td data-l="Match" class="full">
+    <div><strong>Imperial</strong> vs <strong>Turma do Pagode</strong></div>
+    <div class="small">Circuit X Curitiba #4 · Tier C · 2 pts · ID <code>1082688</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-22 14:00:00 UTC</div>
+    <div class="small">Locks 2026-10-22 13:54:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ Imperial (75.0%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="win">Imperial: 75.0%</span>
+      <span class="">Turma do Pagode: 25.1%</span>
+    </div>
+    <div class="meter" title="Imperial 75.0% / Turma do Pagode 25.1%"><i style="width:75%"></i></div>
+    <div class="small">Fair decimal: 1.33 / 3.99</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-market">Featured Market</span></div>
+    <div style="margin-top:4px"><span class="badge b-strong">Strong</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/imperial-vs-turma-do-pagode-circuit-x-curitiba-4-1082688">HotSpawn (match page)</a> · <a href="https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/imperial-turma-do-pagode-202610221000">Bovada (1.25/3.75)</a> · <a href="https://melbet.com/en/line/esports">Melbet (1.25/3.71)</a> · <a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle (1.2439024390243902/3.73)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS (2026_10_05)</a></div>
+    <div class="small" style="margin-top:4px">Featured consensus across 3 primary source(s): bovada, melbet, pinnacle.</div>
+  </td>
+</tr>
+<tr id="fx-1082689" data-row="open" data-basis="market" data-search="bestia shinden circuit x curitiba #4">
+  <td data-l="Match" class="full">
+    <div><strong>BESTIA</strong> vs <strong>ShindeN</strong></div>
+    <div class="small">Circuit X Curitiba #4 · Tier C · 2 pts · ID <code>1082689</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-22 14:00:00 UTC</div>
+    <div class="small">Locks 2026-10-22 13:54:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ BESTIA (50.3%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="win">BESTIA: 50.3%</span>
+      <span class="">ShindeN: 49.7%</span>
+    </div>
+    <div class="meter" title="BESTIA 50.3% / ShindeN 49.7%"><i style="width:50%"></i></div>
+    <div class="small">Fair decimal: 1.99 / 2.01</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-market">Featured Market</span></div>
+    <div style="margin-top:4px"><span class="badge b-toss">Toss-up</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/bestia-vs-shinden-circuit-x-curitiba-4-1082689">HotSpawn (match page)</a> · <a href="https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/bestia-shinden-202610221000">Bovada (1.87/1.87)</a> · <a href="https://melbet.com/en/line/esports">Melbet (1.88/1.91)</a> · <a href="https://www.pinnacle.com/en/esports/cs2-hub">Pinnacle (1.8771929824561404/1.9090909090909092)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS (2026_10_05)</a></div>
+    <div class="small" style="margin-top:4px">Featured consensus across 3 primary source(s): bovada, melbet, pinnacle.</div>
+  </td>
+</tr>
+<tr id="fx-1082792" data-row="open" data-basis="model" data-search="hotu the huns moscow cyber games 2026">
+  <td data-l="Match" class="full">
+    <div><strong>HOTU</strong> vs <strong>The Huns</strong></div>
+    <div class="small">Moscow Cyber Games 2026 · Tier B · 3 pts · ID <code>1082792</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-31 09:00:00 UTC</div>
+    <div class="small">Locks 2026-10-31 08:54:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ HOTU (76.7%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="win">HOTU: 76.7%</span>
+      <span class="">The Huns: 23.3%</span>
+    </div>
+    <div class="meter" title="HOTU 76.7% / The Huns 23.3%"><i style="width:77%"></i></div>
+    <div class="small">Fair decimal: 1.30 / 4.29</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-model">Official Valve VRS Model</span></div>
+    <div style="margin-top:4px"><span class="badge b-strong">Strong</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/hotu-vs-the-huns-moscow-cyber-games-2026-1082792">HotSpawn (match page)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0031--hotu--dwushka-frontales-kade0-mizu-n0rb3r7.md">Valve VRS #31 (1437 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0122--the_huns--annihilation-bart4k-bexyz-controlez-cozen.md">Valve VRS #122 (944 pts)</a></div>
+    <div class="small" style="margin-top:4px">Originated from Official Valve VRS (2026_10_05): HOTU #31 (1437 pts) vs The Huns #122 (944 pts), Δ = +493 pts, market-calibrated slope k = 0.4308.</div>
+  </td>
+</tr>
+<tr id="fx-1082793" data-row="open" data-basis="model" data-search="5star 1win moscow cyber games 2026">
+  <td data-l="Match" class="full">
+    <div><strong>5star</strong> vs <strong>1WIN</strong></div>
+    <div class="small">Moscow Cyber Games 2026 · Tier B · 3 pts · ID <code>1082793</code></div>
+  </td>
+  <td data-l="Kickoff (UTC)">
+    <div>2026-10-31 13:00:00 UTC</div>
+    <div class="small">Locks 2026-10-31 12:54:00 UTC</div>
+  </td>
+  <td data-l="Pick">
+    <span class="pick-pill">✓ 1WIN (65.9%)</span>
+  </td>
+  <td data-l="Win Probabilities" class="full">
+    <div class="prob-row">
+      <span class="">5star: 34.1%</span>
+      <span class="win">1WIN: 65.9%</span>
+    </div>
+    <div class="meter" title="5star 34.1% / 1WIN 65.9%"><i style="width:34%"></i></div>
+    <div class="small">Fair decimal: 2.93 / 1.52</div>
+  </td>
+  <td data-l="Basis &amp; Conf">
+    <div><span class="badge b-model">Official Valve VRS Model</span></div>
+    <div style="margin-top:4px"><span class="badge b-solid">Solid</span></div>
+  </td>
+  <td data-l="Verified Sources" class="full">
+    <div><a href="https://www.hotspawn.com/matches/5star-vs-1win-moscow-cyber-games-2026-1082793">HotSpawn (match page)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0080--5star--ariucle-clouden-hoolig4n-neuz-rate.md">Valve VRS #80 (1110 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0038--1win--artfr0st-ax1le-belchonokk-fame-nafany.md">Valve VRS #38 (1383 pts)</a></div>
+    <div class="small" style="margin-top:4px">Originated from Official Valve VRS (2026_10_05): 5star #80 (1110 pts) vs 1WIN #38 (1383 pts), Δ = -273 pts, market-calibrated slope k = 0.4308.</div>
+  </td>
+</tr>
+  </tbody>
+</table>
+
+<h2 id="api-status-conflicts">API-Only &amp; Status-Conflict Fixtures (3)</h2>
+<p class="small">
+  These fixtures appear in the HotSpawn public API (<a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures">api/v1/fixtures</a>) with a conflicting status
+  (<code>cancelled</code> or <code>started</code> weeks ahead of kickoff) or outside the cached lobby HTML transfer state.
+  We resolve a reference pick for each so you are covered even if HotSpawn re-opens the card.
+</p>
+<table class="cards">
+  <thead>
+    <tr>
+      <th>Match &amp; Tournament</th>
+      <th>Kickoff (UTC)</th>
+      <th>HotSpawn Status</th>
+      <th>Reference Pick &amp; Win %</th>
+      <th>Basis</th>
+      <th>Official Sources</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+  <td data-l="Match"><strong>paiN</strong> vs <strong>LP</strong><br><span class="small">Circuit X Curitiba #4 · ID <code>1082683</code></span></td>
+  <td data-l="Kickoff (UTC)">2026-10-21 14:00:00 UTC</td>
+  <td data-l="HotSpawn Status"><span class="badge b-toss">API: cancelled</span></td>
+  <td data-l="Reference Pick"><span class="pick-pill">✓ paiN (61.5%)</span><br><span class="small">paiN 61.5% / LP 38.5%</span></td>
+  <td data-l="Basis"><span class="badge b-esportsbook">Fallback Esportsbook</span></td>
+  <td data-l="Sources" class="full"><a href="https://play.hotspawn.com/lobby">HotSpawn (lobby)</a> · <a href="https://bo3.gg/matches/pain-gaming-vs-largados_e_pelados-21-10-2026">Thunderpick (via bo3.gg) (1.5/2.4)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0054--pain--biguzera-rkzinho-saffee-snow-tatu.md">Valve VRS #54 (1287 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0090--lp--alisson-divine-happ-leomonster-zmb.md">Valve VRS #90 (1072 pts)</a> · <a href="https://bo3.gg/matches/pain-gaming-vs-largados_e_pelados-21-10-2026">bo3.gg Match</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>Quintessence</strong> vs <strong>Ryvex</strong><br><span class="small">CCT Europe 2026 Challengers #8 · ID <code>1081601</code></span></td>
+  <td data-l="Kickoff (UTC)">2026-10-22 13:45:00 UTC</td>
+  <td data-l="HotSpawn Status"><span class="badge b-toss">API: cancelled</span></td>
+  <td data-l="Reference Pick"><span class="pick-pill">✓ Quintessence (59.1%)</span><br><span class="small">Quintessence 59.1% / Ryvex 40.9%</span></td>
+  <td data-l="Basis"><span class="badge b-esportsbook">Fallback Esportsbook</span></td>
+  <td data-l="Sources" class="full"><a href="https://play.hotspawn.com/lobby">HotSpawn (lobby)</a> · <a href="https://bo3.gg/matches/quintessence-vs-ryvex-22-10-2026">Thunderpick (via bo3.gg) (1.55/2.24)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0207--ryvex--jeyn-n0r1-oskvr-swaggy-tvs.md">Valve VRS #207 (714 pts)</a> · <a href="https://bo3.gg/matches/quintessence-vs-ryvex-22-10-2026">bo3.gg Match</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>Wildcard</strong> vs <strong>DENDELE</strong><br><span class="small">FRAG University 2026 · ID <code>1080200</code></span></td>
+  <td data-l="Kickoff (UTC)">2026-11-12 00:00:00 UTC</td>
+  <td data-l="HotSpawn Status"><span class="badge b-toss">API: started</span></td>
+  <td data-l="Reference Pick"><span class="pick-pill">✓ DENDELE (57.7%)</span><br><span class="small">Wildcard 42.3% / DENDELE 57.7%</span></td>
+  <td data-l="Basis"><span class="badge b-model">Official Valve VRS Model</span></td>
+  <td data-l="Sources" class="full"><a href="https://play.hotspawn.com/lobby">HotSpawn (lobby)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0058--wildcard--cxzi-fr3nd-hext-nemanha-reck.md">Valve VRS #58 (1239 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0039--dendele--doc-gafolo-koala-maxxkor-rdnzao.md">Valve VRS #39 (1368 pts)</a></td>
+</tr>
+  </tbody>
+</table>
+
+<h2 id="locked-recent">Recently Locked / Settled CS2 Matches (Last 24 Hours — 25)</h2>
+<table class="cards">
+  <thead>
+    <tr>
+      <th>Match &amp; Tournament</th>
+      <th>Start (UTC)</th>
+      <th>Status &amp; Result</th>
+      <th>Pre-Lock Pick &amp; Probabilities</th>
+      <th>Basis</th>
+      <th>Official Sources</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+  <td data-l="Match"><strong>Apogee Betclic</strong> vs <strong>aimclub</strong><br><span class="small">Stake Ranked Episode 6: Closed Qualifier · ID <code>1082176</code></span></td>
+  <td data-l="Start (UTC)">2026-10-21 12:00:00 UTC</td>
+  <td data-l="Status">scheduled</td>
+  <td data-l="Pre-Lock Pick"><strong>aimclub</strong> (85.4%)<br><span class="small">14.6% / 85.4%</span></td>
+  <td data-l="Basis"><span class="badge b-floor">Originated VRS Floor</span></td>
+  <td data-l="Source"><a href="https://www.hotspawn.com/matches/apogee-betclic-vs-aimclub-stake-ranked-episode-6-closed-qualifier-1082176">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>Just Players</strong> vs <strong>Fire Flux</strong><br><span class="small">NODWIN Clutch Series #13 · ID <code>1079186</code></span></td>
+  <td data-l="Start (UTC)">2026-10-21 11:00:00 UTC</td>
+  <td data-l="Status">scheduled</td>
+  <td data-l="Pre-Lock Pick"><strong>Fire Flux</strong> (56.2%)<br><span class="small">43.8% / 56.2%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://www.hotspawn.com/matches/just-players-vs-fire-flux-nodwin-clutch-series-13-1079186">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>Saint Sinners</strong> vs <strong>ex-6666</strong><br><span class="small">CCT Europe 2026 Series #11 · ID <code>1079647</code></span></td>
+  <td data-l="Start (UTC)">2026-10-21 11:00:00 UTC</td>
+  <td data-l="Status">scheduled</td>
+  <td data-l="Pre-Lock Pick"><strong>ex-6666</strong> (54.1%)<br><span class="small">45.9% / 54.1%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://www.hotspawn.com/matches/saint-sinners-vs-ex-6666-cct-europe-2026-series-11-1079647">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>Inner Circle Academy</strong> vs <strong>HAVU</strong><br><span class="small">CCT Europe 2026 Series #12 · ID <code>1081140</code></span></td>
+  <td data-l="Start (UTC)">2026-10-21 11:00:00 UTC</td>
+  <td data-l="Status">scheduled</td>
+  <td data-l="Pre-Lock Pick"><strong>Inner Circle Academy</strong> (60.0%)<br><span class="small">60.0% / 40.0%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://www.hotspawn.com/matches/inner-circle-academy-vs-havu-cct-europe-2026-series-12-1081140">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>JiJieHao</strong> vs <strong>FaZe</strong><br><span class="small">DraculaN Season 7 · ID <code>1081577</code></span></td>
+  <td data-l="Start (UTC)">2026-10-21 11:00:00 UTC</td>
+  <td data-l="Status">scheduled</td>
+  <td data-l="Pre-Lock Pick"><strong>FaZe</strong> (66.8%)<br><span class="small">33.2% / 66.8%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>BASEMENT BOYS</strong> vs <strong>Eternal Fire</strong><br><span class="small">DraculaN Season 7 · ID <code>1081578</code></span></td>
+  <td data-l="Start (UTC)">2026-10-21 11:00:00 UTC</td>
+  <td data-l="Status">scheduled</td>
+  <td data-l="Pre-Lock Pick"><strong>Eternal Fire</strong> (76.2%)<br><span class="small">23.8% / 76.2%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>BC.Game</strong> vs <strong>Nexus</strong><br><span class="small">DraculaN Season 7 · ID <code>1081579</code></span></td>
+  <td data-l="Start (UTC)">2026-10-21 11:00:00 UTC</td>
+  <td data-l="Status">scheduled</td>
+  <td data-l="Pre-Lock Pick"><strong>BC.Game</strong> (77.9%)<br><span class="small">77.9% / 22.1%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>SinnerS</strong> vs <strong>Heroic</strong><br><span class="small">DraculaN Season 7 · ID <code>1082796</code></span></td>
+  <td data-l="Start (UTC)">2026-10-21 11:00:00 UTC</td>
+  <td data-l="Status">scheduled</td>
+  <td data-l="Pre-Lock Pick"><strong>Heroic</strong> (69.4%)<br><span class="small">30.6% / 69.4%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>Chinggis Warriors</strong> vs <strong>NEXVOID</strong><br><span class="small">VOID Autumn Cup 2026 · ID <code>1081868</code></span></td>
+  <td data-l="Start (UTC)">2026-10-21 09:00:00 UTC</td>
+  <td data-l="Status">scheduled</td>
+  <td data-l="Pre-Lock Pick"><strong>Chinggis Warriors</strong> (55.2%)<br><span class="small">55.2% / 44.8%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>FOKUS</strong> vs <strong>UNiTY</strong><br><span class="small">Stake Ranked Episode 6: Closed Qualifier · ID <code>1082834</code></span></td>
+  <td data-l="Start (UTC)">2026-10-21 09:00:00 UTC</td>
+  <td data-l="Status">ended (Winner: UNiTY)</td>
+  <td data-l="Pre-Lock Pick"><strong>FOKUS</strong> (70.3%)<br><span class="small">70.3% / 29.7%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>ex-6666</strong> vs <strong>BRUTE</strong><br><span class="small">NODWIN Clutch Series #13 · ID <code>1079185</code></span></td>
+  <td data-l="Start (UTC)">2026-10-21 08:00:00 UTC</td>
+  <td data-l="Status">ended (Winner: BRUTE)</td>
+  <td data-l="Pre-Lock Pick"><strong>BRUTE</strong> (60.4%)<br><span class="small">39.6% / 60.4%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>Rare Atom</strong> vs <strong>Lynn Vision</strong><br><span class="small">VOID Autumn Cup 2026 · ID <code>1081867</code></span></td>
+  <td data-l="Start (UTC)">2026-10-21 07:00:00 UTC</td>
+  <td data-l="Status">ended (Winner: Lynn Vision)</td>
+  <td data-l="Pre-Lock Pick"><strong>Lynn Vision</strong> (72.7%)<br><span class="small">27.3% / 72.7%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>WXM</strong> vs <strong>Vitalem Aerem</strong><br><span class="small">VOID Autumn Cup 2026 · ID <code>1081866</code></span></td>
+  <td data-l="Start (UTC)">2026-10-21 04:00:00 UTC</td>
+  <td data-l="Status">ended (Winner: Vitalem Aerem)</td>
+  <td data-l="Pre-Lock Pick"><strong>Vitalem Aerem</strong> (62.5%)<br><span class="small">37.5% / 62.5%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>Morningstar</strong> vs <strong>Alter Ego</strong><br><span class="small">VOID Autumn Cup 2026 · ID <code>1081865</code></span></td>
+  <td data-l="Start (UTC)">2026-10-21 03:00:00 UTC</td>
+  <td data-l="Status">scheduled</td>
+  <td data-l="Pre-Lock Pick"><strong>Alter Ego</strong> (74.2%)<br><span class="small">25.8% / 74.2%</span></td>
+  <td data-l="Basis"><span class="badge b-floor">Originated VRS Floor</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>JOGA DE TERNO</strong> vs <strong>Grêmio</strong><br><span class="small">CCT South America 2026 Series #7 · ID <code>1082734</code></span></td>
+  <td data-l="Start (UTC)">2026-10-20 22:05:00 UTC</td>
+  <td data-l="Status">ended (Winner: Grêmio)</td>
+  <td data-l="Pre-Lock Pick"><strong>Grêmio</strong> (56.0%)<br><span class="small">44.0% / 56.0%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>QUINTESSÊNCIA</strong> vs <strong>LOS NINOS</strong><br><span class="small">CCT South America 2026 Series #7 · ID <code>1082733</code></span></td>
+  <td data-l="Start (UTC)">2026-10-20 19:00:00 UTC</td>
+  <td data-l="Status">ended (Winner: QUINTESSÊNCIA)</td>
+  <td data-l="Pre-Lock Pick"><strong>QUINTESSÊNCIA</strong> (52.0%)<br><span class="small">52.0% / 48.0%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>Nice Try</strong> vs <strong>aimclub</strong><br><span class="small">Stake Ranked Episode 6: Closed Qualifier · ID <code>1082159</code></span></td>
+  <td data-l="Start (UTC)">2026-10-20 17:30:00 UTC</td>
+  <td data-l="Status">ended (Winner: aimclub)</td>
+  <td data-l="Pre-Lock Pick"><strong>Nice Try</strong> (60.0%)<br><span class="small">60.0% / 40.0%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>Lavked</strong> vs <strong>ex-6666</strong><br><span class="small">CCT Europe 2026 Series #11 · ID <code>1079646</code></span></td>
+  <td data-l="Start (UTC)">2026-10-20 17:00:00 UTC</td>
+  <td data-l="Status">ended (Winner: Lavked)</td>
+  <td data-l="Pre-Lock Pick"><strong>ex-6666</strong> (61.4%)<br><span class="small">38.6% / 61.4%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>6yuBoJlbl</strong> vs <strong>ILLYRIANS</strong><br><span class="small">CCT Europe 2026 Series #12 · ID <code>1081138</code></span></td>
+  <td data-l="Start (UTC)">2026-10-20 17:00:00 UTC</td>
+  <td data-l="Status">ended (Winner: ILLYRIANS)</td>
+  <td data-l="Pre-Lock Pick"><strong>ILLYRIANS</strong> (58.4%)<br><span class="small">41.6% / 58.4%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>Damajuana</strong> vs <strong>your end</strong><br><span class="small">CCT South America 2026 Series #7 · ID <code>1082732</code></span></td>
+  <td data-l="Start (UTC)">2026-10-20 16:00:00 UTC</td>
+  <td data-l="Status">ended (Winner: your end)</td>
+  <td data-l="Pre-Lock Pick"><strong>your end</strong> (54.9%)<br><span class="small">45.1% / 54.9%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>JiJieHao</strong> vs <strong>Iberian Soul</strong><br><span class="small">DraculaN Season 7 · ID <code>1081566</code></span></td>
+  <td data-l="Start (UTC)">2026-10-20 15:05:00 UTC</td>
+  <td data-l="Status">ended (Winner: JiJieHao)</td>
+  <td data-l="Pre-Lock Pick"><strong>JiJieHao</strong> (50.0%)<br><span class="small">50.0% / 50.0%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>FOKUS</strong> vs <strong>ex-Zero Tenacity</strong><br><span class="small">Stake Ranked Episode 6: Closed Qualifier · ID <code>1082158</code></span></td>
+  <td data-l="Start (UTC)">2026-10-20 15:00:00 UTC</td>
+  <td data-l="Status">ended (Winner: FOKUS)</td>
+  <td data-l="Pre-Lock Pick"><strong>FOKUS</strong> (66.2%)<br><span class="small">66.2% / 33.8%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>Luminosity</strong> vs <strong>Nexus</strong><br><span class="small">DraculaN Season 7 · ID <code>1082731</code></span></td>
+  <td data-l="Start (UTC)">2026-10-20 14:25:00 UTC</td>
+  <td data-l="Status">ended (Winner: Nexus)</td>
+  <td data-l="Pre-Lock Pick"><strong>Luminosity</strong> (81.4%)<br><span class="small">81.4% / 18.6%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>Heroic</strong> vs <strong>HyperSpirit</strong><br><span class="small">DraculaN Season 7 · ID <code>1081564</code></span></td>
+  <td data-l="Start (UTC)">2026-10-20 14:00:00 UTC</td>
+  <td data-l="Status">ended (Winner: Heroic)</td>
+  <td data-l="Pre-Lock Pick"><strong>Heroic</strong> (87.6%)<br><span class="small">87.6% / 12.4%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr><tr>
+  <td data-l="Match"><strong>SinnerS</strong> vs <strong>sAw</strong><br><span class="small">DraculaN Season 7 · ID <code>1081565</code></span></td>
+  <td data-l="Start (UTC)">2026-10-20 14:00:00 UTC</td>
+  <td data-l="Status">ended (Winner: SinnerS)</td>
+  <td data-l="Pre-Lock Pick"><strong>SinnerS</strong> (64.7%)<br><span class="small">64.7% / 35.3%</span></td>
+  <td data-l="Basis"><span class="badge b-market">Featured Market</span></td>
+  <td data-l="Source"><a href="https://play.hotspawn.com/lobby">HotSpawn Match</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS</a></td>
+</tr>
+  </tbody>
+</table>
+
+<script>
+(function() {
+  var search = document.getElementById('qsearch');
+  var btns = document.querySelectorAll('.fbtn');
+  var rows = document.querySelectorAll('#open-picks-table tbody tr');
+  var activeFilter = 'all';
+  function apply() {
+    var q = (search && search.value || '').toLowerCase().trim();
+    rows.forEach(function(tr) {
+      var b = tr.getAttribute('data-basis') || '';
+      var s = tr.getAttribute('data-search') || '';
+      var id = tr.id || '';
+      var matchFilter = (activeFilter === 'all') ||
+        (activeFilter === 'esportsbook_exchange' && (b === 'esportsbook' || b === 'exchange')) ||
+        (b === activeFilter);
+      var matchSearch = !q || s.indexOf(q) !== -1 || id.indexOf(q) !== -1;
+      tr.style.display = (matchFilter && matchSearch) ? '' : 'none';
+    });
+  }
+  if (search) search.addEventListener('input', apply);
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      btns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      activeFilter = btn.getAttribute('data-filter') || 'all';
+      apply();
+    });
+  });
+})();
+</script>
+
+</main>
+<nav class="bnav" aria-label="Mobile quick navigation"><a href="index.html">Summary</a><a href="picks.html" class="on">All Picks</a><a href="unresolved.html">Unresolved</a><a href="tournaments.html">Categories</a><a href="flagged.html">Flagged</a></nav>
+</body>
+</html>
