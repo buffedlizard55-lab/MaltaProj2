@@ -19,6 +19,12 @@ try:
                 assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth'), (name, width)
                 if name in ('cs2', 'probabilities'):
                     assert page.locator('table tbody tr').count() > 0, name
+                    # Historical rows are intentionally collapsed, not absent.
+                    # Exercise the real disclosure controls before testing filtering.
+                    for archive in page.locator('details').all():
+                        if not archive.evaluate('(el) => el.open'):
+                            archive.locator(':scope > summary').click()
+                    assert page.locator('table tbody tr:visible').count() > 0, name
                     page.locator('#filter').fill('no-such-team-xyz')
                     assert page.locator('table tbody tr:visible').count() == 0, name
                     page.locator('#filter').fill('')
