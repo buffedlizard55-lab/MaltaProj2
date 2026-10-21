@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unresolved &amp; Limitations · HotSpawn CS2 Full-Coverage Picks</title>
+<style>:root {
+  --bg: #0b0f17;
+  --panel: #131a26;
+  --panel2: #182232;
+  --line: #263246;
+  --txt: #edf2f8;
+  --mut: #97a6ba;
+  --acc: #3ddc97;
+  --acc-bg: #0f3828;
+  --blue: #68b5ff;
+  --blue-bg: #132c47;
+  --warn: #ffb84d;
+  --warn-bg: #3b2a10;
+  --bad: #ff6b6b;
+  --bad-bg: #3b181b;
+  --pur: #c29dff;
+  --pur-bg: #2a1d42;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font: 15px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding-bottom: 68px;
+}
+a { color: var(--blue); text-decoration: none; overflow-wrap: anywhere; }
+a:hover, a:focus-visible { text-decoration: underline; }
+header.top {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(11, 15, 23, 0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.bar {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 10px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+}
+.brand {
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--txt);
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand span.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--acc);
+  display: inline-block;
+}
+header.top nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+header.top nav a {
+  padding: 7px 11px;
+  border-radius: 8px;
+  color: var(--txt);
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  font-size: 13.5px;
+  font-weight: 600;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+}
+header.top nav a.on {
+  background: var(--acc);
+  color: #04150d;
+  border-color: var(--acc);
+  font-weight: 800;
+}
+main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 14px;
+}
+h1 { font-size: clamp(20px, 4.5vw, 27px); line-height: 1.2; margin: 8px 0 6px; }
+h2 { font-size: clamp(17px, 3.6vw, 21px); margin: 24px 0 8px; }
+h3 { font-size: 16px; margin: 16px 0 6px; }
+.mut { color: var(--mut); }
+.small { font-size: 13px; color: var(--mut); }
+.hero {
+  background: linear-gradient(145deg, #131e30, #111824);
+  border: 1px solid #2e415c;
+  border-left: 4px solid var(--acc);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 8px 0 16px;
+}
+.callout {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 12px 0;
+}
+.callout.warn { border-left-color: var(--warn); }
+.callout.bad { border-left-color: var(--bad); }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.stat b {
+  display: block;
+  font-size: 24px;
+  line-height: 1.15;
+  color: var(--txt);
+  font-variant-numeric: tabular-nums;
+}
+.stat span { font-size: 12.5px; color: var(--mut); }
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+}
+.qcard {
+  display: block;
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 12px 14px;
+  color: var(--txt);
+  min-height: 62px;
+}
+.qcard:hover { border-color: var(--acc); text-decoration: none; }
+.qcard strong { display: block; font-size: 15px; color: var(--acc); margin-bottom: 3px; }
+.qcard span { display: block; font-size: 13px; color: var(--mut); }
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 12px 0;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.filter-bar input[type="search"] {
+  flex: 1 1 200px;
+  min-height: 38px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #0d131d;
+  color: var(--txt);
+  font-size: 14px;
+}
+.fbtn {
+  padding: 7px 11px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--panel2);
+  color: var(--txt);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 36px;
+}
+.fbtn.active { background: var(--acc); color: #04150d; border-color: var(--acc); font-weight: 800; }
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.b-market { background: var(--blue-bg); color: var(--blue); border: 1px solid #295685; }
+.b-esportsbook { background: var(--pur-bg); color: var(--pur); border: 1px solid #553a82; }
+.b-exchange { background: var(--pur-bg); color: var(--pur); border: 1px solid #553a82; }
+.b-model { background: var(--acc-bg); color: var(--acc); border: 1px solid #1e6b4b; }
+.b-floor { background: var(--warn-bg); color: var(--warn); border: 1px solid #75511c; }
+.b-strong { background: var(--acc-bg); color: var(--acc); }
+.b-solid { background: var(--blue-bg); color: var(--blue); }
+.b-lean { background: var(--warn-bg); color: var(--warn); }
+.b-toss { background: var(--bad-bg); color: #ffa3a3; }
+.b-dir { background: var(--warn-bg); color: var(--warn); }
+.pick-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--acc-bg);
+  color: var(--acc);
+  border: 1px solid #237855;
+  padding: 3px 9px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 13.5px;
+}
+.prob-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+}
+.prob-row .win { font-weight: 800; color: var(--acc); }
+.meter {
+  height: 7px;
+  background: #232f42;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 4px 0 6px;
+}
+.meter > i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--acc), #28a870);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  overflow: hidden;
+  margin: 10px 0 18px;
+}
+th, td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  font-size: 13.5px;
+}
+th {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mut);
+  background: #0f1520;
+}
+code {
+  background: #0d121b;
+  border: 1px solid var(--line);
+  padding: 1px 5px;
+  border-radius: 5px;
+  font-size: 12.5px;
+}
+nav.bnav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 35;
+  background: rgba(11, 15, 23, 0.98);
+  border-top: 1px solid var(--line);
+  display: none;
+}
+nav.bnav a {
+  flex: 1;
+  text-align: center;
+  padding: 8px 4px 10px;
+  color: var(--mut);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-decoration: none;
+}
+nav.bnav a.on { color: var(--acc); font-weight: 800; }
+@media (max-width: 760px) {
+  nav.bnav { display: flex; }
+  table.cards thead { display: none; }
+  table.cards, table.cards tbody, table.cards tr, table.cards td { display: block; width: 100%; }
+  table.cards { border: 0; background: transparent; }
+  table.cards tr {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    margin: 10px 0;
+    padding: 10px 12px;
+  }
+  table.cards td {
+    border: 0;
+    padding: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+  }
+  table.cards td::before {
+    content: attr(data-l);
+    color: var(--mut);
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    flex: 0 0 92px;
+  }
+  table.cards td.full { display: block; }
+  table.cards td.full::before { display: block; margin-bottom: 3px; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="bar">
+    <a class="brand" href="index.html"><span class="dot"></span>HotSpawn CS2 · Every Match Picked</a>
+    <nav aria-label="Section navigation"><a href="index.html">Executive Summary</a><a href="picks.html">All Picks (19)</a><a href="unresolved.html" class="on">Unresolved &amp; Limits</a><a href="tournaments.html">By Category</a><a href="sources.html">Sources &amp; Odds</a><a href="flagged.html">Flagged for Review</a><a href="method.html">Method</a><a href="../index.html">Main Hub</a></nav>
+  </div>
+</header>
+<main data-snapshot-utc="2026-10-21T12:54:30Z">
+  <div class="small" style="margin-bottom:4px">
+    Snapshot UTC: <code>2026-10-21 12:54:30 UTC</code> · Week 273 ·
+    Auto-refreshed every 4 hours · HotSpawn crowd % is never used as a probability input
+  </div>
+  
+<h1>Unresolved Picks &amp; Limitations — Fallback Research Ledger</h1>
+<div class="callout warn">
+  <strong>Scope Rule:</strong> The 11 matches already resolved by the featured primary-bookmaker route
+  (<a href="../ourline/index.html">OURLINE f7279a54</a>) are never modified here.
+  Information sources below (HLTV probe → Esportsbooks &amp; Kalshi Exchange → Official Valve VRS → <code>bo3.gg</code> match history)
+  are used <strong>only</strong> for the 8 open matches that had no featured pick.
+  Currently <strong>0 open matches remain without a pick</strong>.
+</div>
+
+<h2>Step-by-Step Resolution &amp; Limitations for the 8 Non-Featured Open Matches</h2>
+<table class="cards">
+  <thead>
+    <tr>
+      <th>Match &amp; Kickoff</th>
+      <th>Resolved Pick &amp; Win %</th>
+      <th>4-Step Research Ledger (HLTV → Books/Kalshi → Valve VRS → bo3.gg)</th>
+      <th>Documented Limitations &amp; Official Links</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="unres-1079187">
+  <td data-l="Match">
+    <strong>Butterfly</strong> vs <strong>BET-M</strong><br>
+    <span class="small">NODWIN Clutch Series #13 · Tier B · 2026-10-21 14:00:00 UTC · ID <code>1079187</code></span>
+  </td>
+  <td data-l="Resolved Pick">
+    <span class="pick-pill">✓ BET-M (54.0%)</span><br>
+    <span class="small">Butterfly: 46.0% · BET-M: 54.0%</span><br>
+    <div style="margin-top:4px"><span class="badge b-model">Official Valve VRS Model</span> <span class="badge b-lean">Lean</span></div>
+  </td>
+  <td data-l="4-Step Research Ledger" class="full">
+    <ul style="margin:0;padding-left:18px" class="small"><li><strong>Step 1 (HLTV.org match listings — <a href="https://www.hltv.org/matches">HTTP 403</a>):</strong> Automated probe to https://www.hltv.org/matches returned HTTP 403 (HTTPError 403); HLTV match pages confirm fixture rosters/schedules where listed but do not expose a machine-readable two-way odds feed.</li><li><strong>Step 2 (Licensed Esportsbooks &amp; Kalshi Exchange (Pinnacle, Bovada, Melbet, Thunderpick, Kalshi) — <a href="https://www.pinnacle.com/en/esports/cs2-hub">0 quotes for this pairing</a>):</strong> Checked all 163 captured pre-match quotes across Pinnacle, Bovada, Melbet, Thunderpick (bo3.gg), and Kalshi KXCS2GAME; no open market prices this fixture.</li><li><strong>Step 3 (Official Valve VRS (2026_10_05) — <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">both teams rated</a>):</strong> Butterfly is VRS #88 (1082 pts, roster: ayano, Forester, k1ssly, Kurama, nitzie) and BET-M is VRS #71 (1149 pts, roster: bluewh1te, executor, Raijin, synyx, z1Nny); Δ = -67 pts -&gt; calibrated VRS win prob 46.0% / 54.0% (k = 0.4308).</li><li><strong>Step 4 (bo3.gg team profiles &amp; match history — <a href="https://bo3.gg/matches/butterfly-vs-thirtythree-21-10-2026">checked</a>):</strong> Butterfly (bo3.gg #24855, rank=88, recorded matches=0); BET-M (bo3.gg #22191, rank=71, recorded matches=0)</li></ul>
+  </td>
+  <td data-l="Limitations &amp; Sources" class="full">
+    <ul style="margin:0 0 6px;padding-left:18px" class="small"><li>No primary bookmaker two-way line was open at capture time; line is originated from Official Valve Regional Standings (2026_10_05, published 2026-10-05) with fitted slope k = 0.4308.</li></ul>
+    <div><a href="https://www.hotspawn.com/matches/butterfly-vs-bet-m-nodwin-clutch-series-13-1079187">HotSpawn (match page)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0088--butterfly--ayano-forester-k1ssly-kurama-nitzie.md">Valve VRS #88 (1082 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0071--bet-m--bluewh1te-executor-raijin-synyx-z1nny.md">Valve VRS #71 (1149 pts)</a> · <a href="https://bo3.gg/matches/butterfly-vs-thirtythree-21-10-2026">bo3.gg Match</a></div>
+  </td>
+</tr><tr id="unres-1079648">
+  <td data-l="Match">
+    <strong>G2 Ares</strong> vs <strong>ILLYRIANS</strong><br>
+    <span class="small">CCT Europe 2026 Series #11 · Tier B · 2026-10-21 14:00:00 UTC · ID <code>1079648</code></span>
+  </td>
+  <td data-l="Resolved Pick">
+    <span class="pick-pill">✓ G2 Ares (53.1%)</span><br>
+    <span class="small">G2 Ares: 53.1% · ILLYRIANS: 46.9%</span><br>
+    <div style="margin-top:4px"><span class="badge b-model">Official Valve VRS Model</span> <span class="badge b-lean">Lean</span></div>
+  </td>
+  <td data-l="4-Step Research Ledger" class="full">
+    <ul style="margin:0;padding-left:18px" class="small"><li><strong>Step 1 (HLTV.org match listings — <a href="https://www.hltv.org/matches">HTTP 403</a>):</strong> Automated probe to https://www.hltv.org/matches returned HTTP 403 (HTTPError 403); HLTV match pages confirm fixture rosters/schedules where listed but do not expose a machine-readable two-way odds feed.</li><li><strong>Step 2 (Licensed Esportsbooks &amp; Kalshi Exchange — <a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211000illg2a">1 quote(s) matched</a>):</strong> Found 1 external price(s): Kalshi (exchange) (ILLYRIANS vs G2 Ares, dec 2.0408/2.0408 -&gt; 50.0%/50.0%).</li><li><strong>Step 3 (Official Valve VRS (2026_10_05) — <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">both teams rated</a>):</strong> G2 Ares is VRS #129 (913 pts, roster: hitori, Junyme, SHiNE, TMKj, yksjupe) and ILLYRIANS is VRS #141 (862 pts, roster: ammar, BledarD, cerber, vAloN, xonn1k); Δ = +51 pts -&gt; calibrated VRS win prob 53.1% / 46.9% (k = 0.4308).</li><li><strong>Step 4 (bo3.gg team profiles &amp; match history — <a href="https://bo3.gg/matches/g2-ares-vs-illyrians-21-10-2026">checked</a>):</strong> G2 Ares (bo3.gg #10994, rank=129, recorded matches=0); ILLYRIANS (bo3.gg #3022, rank=141, recorded matches=0)</li></ul>
+  </td>
+  <td data-l="Limitations &amp; Sources" class="full">
+    <ul style="margin:0 0 6px;padding-left:18px" class="small"><li>No primary bookmaker two-way line was open at capture time; line is originated from Official Valve Regional Standings (2026_10_05, published 2026-10-05) with fitted slope k = 0.4308. Kalshi exchange (KXCS2GAME-26OCT211000ILLG2A) also quotes this exact match near a 50/50 coin-flip (50.0% / 50.0%).</li></ul>
+    <div><a href="https://www.hotspawn.com/matches/g2-ares-vs-illyrians-cct-europe-2026-series-11-1079648">HotSpawn (match page)</a> · <a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211000illg2a">Kalshi (exchange) (2.0408/2.0408)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0129--g2_ares--hitori-junyme-shine-tmkj-yksjupe.md">Valve VRS #129 (913 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0141--illyrians--ammar-bledard-cerber-valon-xonn1k.md">Valve VRS #141 (862 pts)</a> · <a href="https://bo3.gg/matches/g2-ares-vs-illyrians-21-10-2026">bo3.gg Match</a></div>
+  </td>
+</tr><tr id="unres-1082762">
+  <td data-l="Match">
+    <strong>ex-CYBERSHOKE</strong> vs <strong>BlinkDagger</strong><br>
+    <span class="small">CIS LAN Championship #9 · Tier C · 2026-10-21 15:00:00 UTC · ID <code>1082762</code></span>
+  </td>
+  <td data-l="Resolved Pick">
+    <span class="pick-pill">✓ ex-CYBERSHOKE (82.3%)</span><br>
+    <span class="small">ex-CYBERSHOKE: 82.3% · BlinkDagger: 17.7%</span><br>
+    <div style="margin-top:4px"><span class="badge b-esportsbook">Fallback Esportsbook</span> <span class="badge b-strong">Strong</span></div>
+  </td>
+  <td data-l="4-Step Research Ledger" class="full">
+    <ul style="margin:0;padding-left:18px" class="small"><li><strong>Step 1 (HLTV.org match listings — <a href="https://www.hltv.org/matches">HTTP 403</a>):</strong> Automated probe to https://www.hltv.org/matches returned HTTP 403 (HTTPError 403); HLTV match pages confirm fixture rosters/schedules where listed but do not expose a machine-readable two-way odds feed.</li><li><strong>Step 2 (Licensed Esportsbooks &amp; Kalshi Exchange — <a href="https://www.bovada.lv/esports/counter-strike-2/cis-lan-championship/cybershoke-blinkdagger-202610211100">3 quote(s) matched</a>):</strong> Found 3 external price(s): Bovada (CYBERSHOKE vs blinkdagger, dec 1.125/5.75 -&gt; 83.6%/16.4%); Kalshi (exchange) (BlinkDagger vs CYBERSHOKE Esports, dec 1.25/5.0 -&gt; 80.0%/20.0%); Melbet (CYBERSHOKE vs BlinkDagger, dec 1.12/5.59 -&gt; 83.3%/16.7%).</li><li><strong>Step 3 (Official Valve VRS (2026_10_05) — <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">one team rated, opponent unrated</a>):</strong> CYBERSHOKE is VRS #61 (1201 pts, roster: Alkaren, alpha, Mokuj1n, nota, yiksrezo); &#x27;BlinkDagger&#x27; is not listed in the 380-team global VRS table. Against the VRS floor (#380 Fruju, 381 pts), calibrated lower bound is 87.8% for CYBERSHOKE.</li><li><strong>Step 4 (bo3.gg team profiles &amp; match history — <a href="https://bo3.gg/matches">checked</a>):</strong> BlinkDagger (bo3.gg #246, rank=unranked, recorded matches=0)</li></ul>
+  </td>
+  <td data-l="Limitations &amp; Sources" class="full">
+    <ul style="margin:0 0 6px;padding-left:18px" class="small"><li>HotSpawn lists &#x27;ex-CYBERSHOKE&#x27; with the &#x27;ex-&#x27; prefix while Bovada, Melbet, and Kalshi list the team as &#x27;CYBERSHOKE&#x27; / &#x27;CYBERSHOKE Esports&#x27; in the same CIS LAN Championship #9 slot at 2026-10-21T15:00:00Z.</li></ul>
+    <div><a href="https://www.hotspawn.com/matches/ex-cybershoke-vs-blinkdagger-cis-lan-championship-9-1082762">HotSpawn (match page)</a> · <a href="https://www.bovada.lv/esports/counter-strike-2/cis-lan-championship/cybershoke-blinkdagger-202610211100">Bovada (1.125/5.75)</a> · <a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211100blics">Kalshi (exchange) (1.25/5.0)</a> · <a href="https://melbet.com/en/line/esports">Melbet (1.12/5.59)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0061--cybershoke--alkaren-alpha-mokuj1n-nota-yiksrezo.md">Valve VRS #61 (1201 pts)</a></div>
+  </td>
+</tr><tr id="unres-1082763">
+  <td data-l="Match">
+    <strong>UPGRADE</strong> vs <strong>flacons</strong><br>
+    <span class="small">CIS LAN Championship #9 · Tier C · 2026-10-21 15:00:00 UTC · ID <code>1082763</code></span>
+  </td>
+  <td data-l="Resolved Pick">
+    <span class="pick-pill">✓ UPGRADE (95.1%)</span><br>
+    <span class="small">UPGRADE: 95.1% · flacons: 4.9%</span><br>
+    <div style="margin-top:4px"><span class="badge b-exchange">Fallback Exchange (Kalshi)</span> <span class="badge b-strong">Strong</span></div>
+  </td>
+  <td data-l="4-Step Research Ledger" class="full">
+    <ul style="margin:0;padding-left:18px" class="small"><li><strong>Step 1 (HLTV.org match listings — <a href="https://www.hltv.org/matches">HTTP 403</a>):</strong> Automated probe to https://www.hltv.org/matches returned HTTP 403 (HTTPError 403); HLTV match pages confirm fixture rosters/schedules where listed but do not expose a machine-readable two-way odds feed.</li><li><strong>Step 2 (Licensed Esportsbooks &amp; Kalshi Exchange — <a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211100tfupg">1 quote(s) matched</a>):</strong> Found 1 external price(s): Kalshi (exchange) (Team flacons vs UPGRADE, dec 1.0363/20.0 -&gt; 95.1%/4.9%).</li><li><strong>Step 3 (Official Valve VRS (2026_10_05) — <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">one team rated, opponent unrated</a>):</strong> UPGRADE is VRS #67 (1185 pts, roster: DAN9ARMATURA, dezl3bio, pleynnn, SquEzxc, tw1sterzaza); &#x27;flacons&#x27; is not listed in the 380-team global VRS table. Against the VRS floor (#380 Fruju, 381 pts), calibrated lower bound is 87.4% for UPGRADE.</li><li><strong>Step 4 (bo3.gg team profiles &amp; match history — <a href="https://bo3.gg/matches">checked</a>):</strong> No additional bo3.gg match history found.</li></ul>
+  </td>
+  <td data-l="Limitations &amp; Sources" class="full">
+    <ul style="margin:0 0 6px;padding-left:18px" class="small"><li>Primary sportsbooks (Pinnacle/Bovada/Melbet) had no open pre-match line at capture time; priced from Kalshi exchange (KXCS2GAME-26OCT211100TFUPG) where ticker time matches 2026-10-21T15:00:00Z UTC. Corroborated by Official Valve VRS: UPGRADE is #67 (1185 pts, 87.4% vs VRS floor #380).</li></ul>
+    <div><a href="https://www.hotspawn.com/matches/upgrade-vs-flacons-cis-lan-championship-9-1082763">HotSpawn (match page)</a> · <a href="https://kalshi.com/markets/kxcs2game/kxcs2game-26oct211100tfupg">Kalshi (exchange) (1.0363/20.0)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0067--upgrade--dan9armatura-dezl3bio-pleynnn-squezxc-tw1sterzaza.md">Valve VRS #67 (1185 pts)</a></div>
+  </td>
+</tr><tr id="unres-1082837">
+  <td data-l="Match">
+    <strong>Zetta</strong> vs <strong>LOS NINOS</strong><br>
+    <span class="small">CCT South America 2026 Series #7 · Tier C · 2026-10-21 22:00:00 UTC · ID <code>1082837</code></span>
+  </td>
+  <td data-l="Resolved Pick">
+    <span class="pick-pill">✓ Zetta (55.5%)</span><br>
+    <span class="small">Zetta: 55.5% · LOS NINOS: 44.5%</span><br>
+    <div style="margin-top:4px"><span class="badge b-floor">Originated VRS Floor</span> <span class="badge b-dir">Directional</span></div>
+  </td>
+  <td data-l="4-Step Research Ledger" class="full">
+    <ul style="margin:0;padding-left:18px" class="small"><li><strong>Step 1 (HLTV.org match listings — <a href="https://www.hltv.org/matches">HTTP 403</a>):</strong> Automated probe to https://www.hltv.org/matches returned HTTP 403 (HTTPError 403); HLTV match pages confirm fixture rosters/schedules where listed but do not expose a machine-readable two-way odds feed.</li><li><strong>Step 2 (Licensed Esportsbooks &amp; Kalshi Exchange (Pinnacle, Bovada, Melbet, Thunderpick, Kalshi) — <a href="https://www.pinnacle.com/en/esports/cs2-hub">0 quotes for this pairing</a>):</strong> Checked all 163 captured pre-match quotes across Pinnacle, Bovada, Melbet, Thunderpick (bo3.gg), and Kalshi KXCS2GAME; no open market prices this fixture.</li><li><strong>Step 3 (Official Valve VRS (2026_10_05) — <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">one team rated, opponent unrated</a>):</strong> Zetta is VRS #357 (473 pts, roster: Antuanette, BabyRage, Notjuanjo, Slayerhz, zockie); &#x27;LOS NINOS&#x27; is not listed in the 380-team global VRS table. Against the VRS floor (#380 Fruju, 381 pts), calibrated lower bound is 55.5% for Zetta.</li><li><strong>Step 4 (bo3.gg team profiles &amp; match history — <a href="https://bo3.gg/matches/alianza-lima-esports-vs-los-ninos-21-10-2026">checked</a>):</strong> LOS NINOS (bo3.gg #25310, rank=unranked, recorded matches=5); At 2026-10-21T22:00:00Z, bo3.gg lists &#x27;Alianza Lima Esports vs Los Niños&#x27; instead of HotSpawn&#x27;s &#x27;Zetta vs LOS NINOS&#x27;.</li></ul>
+  </td>
+  <td data-l="Limitations &amp; Sources" class="full">
+    <ul style="margin:0 0 6px;padding-left:18px" class="small"><li>&#x27;LOS NINOS&#x27; is not rated in Official Valve VRS (2026_10_05), and no sportsbook or exchange offered a valid two-way market. The probability (55.5%) benchmarks Zetta (#357, 473 pts) against the VRS floor (#380, 381 pts) and is a directional estimate.</li><li>bo3.gg match-history cross-check (https://bo3.gg/teams/los-ninos): &#x27;LOS NINOS&#x27; has 5 recent recorded matches (1W-4L: lost to quintessencia-vs-los-ninos-20-10-2026, lost to procyon-gaming-vs-los-ninos-16-10-2026, beat gremio-vs-los-ninos-13-10-2026). Treat this low-tier SA fixture as contested.</li><li>Schedule discrepancy flagged for manual review: At 2026-10-21T22:00:00Z, bo3.gg lists &#x27;Alianza Lima Esports vs Los Niños&#x27; instead of HotSpawn&#x27;s &#x27;Zetta vs LOS NINOS&#x27;. (https://bo3.gg/matches/alianza-lima-esports-vs-los-ninos-21-10-2026).</li></ul>
+    <div><a href="https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837">HotSpawn (match page)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0357--zetta--antuanette-babyrage-notjuanjo-slayerhz-zockie.md">Valve VRS #357 (473 pts)</a> · <a href="https://bo3.gg/teams/los-ninos">bo3.gg Los Niños (5m)</a> · <a href="https://bo3.gg/matches/alianza-lima-esports-vs-los-ninos-21-10-2026">bo3.gg Schedule Conflict</a></div>
+  </td>
+</tr><tr id="unres-1081600">
+  <td data-l="Match">
+    <strong>Donstu</strong> vs <strong>Banda chuya</strong><br>
+    <span class="small">CCT Europe 2026 Challengers #8 · Tier C · 2026-10-22 13:45:00 UTC · ID <code>1081600</code></span>
+  </td>
+  <td data-l="Resolved Pick">
+    <span class="pick-pill">✓ Banda chuya (54.1%)</span><br>
+    <span class="small">Donstu: 45.9% · Banda chuya: 54.1%</span><br>
+    <div style="margin-top:4px"><span class="badge b-model">Official Valve VRS Model</span> <span class="badge b-lean">Lean</span></div>
+  </td>
+  <td data-l="4-Step Research Ledger" class="full">
+    <ul style="margin:0;padding-left:18px" class="small"><li><strong>Step 1 (HLTV.org match listings — <a href="https://www.hltv.org/matches">HTTP 403</a>):</strong> Automated probe to https://www.hltv.org/matches returned HTTP 403 (HTTPError 403); HLTV match pages confirm fixture rosters/schedules where listed but do not expose a machine-readable two-way odds feed.</li><li><strong>Step 2 (Licensed Esportsbooks &amp; Kalshi Exchange (Pinnacle, Bovada, Melbet, Thunderpick, Kalshi) — <a href="https://www.pinnacle.com/en/esports/cs2-hub">0 quotes for this pairing</a>):</strong> Checked all 163 captured pre-match quotes across Pinnacle, Bovada, Melbet, Thunderpick (bo3.gg), and Kalshi KXCS2GAME; no open market prices this fixture.</li><li><strong>Step 3 (Official Valve VRS (2026_10_05) — <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">both teams rated</a>):</strong> Donstu is VRS #197 (732 pts, roster: Due1yant, gleb86rus, LAKSHERi, NeoLife, phorate) and Banda chuya is VRS #165 (801 pts, roster: AdrieN, ezox, maaryy, Showk, tomiko); Δ = -69 pts -&gt; calibrated VRS win prob 45.8% / 54.2% (k = 0.4308).</li><li><strong>Step 4 (bo3.gg team profiles &amp; match history — <a href="https://bo3.gg/matches/donstu-esports-vs-los-kogutos-22-10-2026">checked</a>):</strong> Donstu (bo3.gg #18843, rank=197, recorded matches=0); Banda chuya (bo3.gg #23072, rank=165, recorded matches=0); At 2026-10-22T13:45:00Z, bo3.gg lists &#x27;DONSTU vs los kogutos&#x27; instead of HotSpawn&#x27;s &#x27;Donstu vs Banda chuya&#x27;.</li></ul>
+  </td>
+  <td data-l="Limitations &amp; Sources" class="full">
+    <ul style="margin:0 0 6px;padding-left:18px" class="small"><li>No primary bookmaker two-way line was open at capture time; line is originated from Official Valve Regional Standings (2026_10_05, published 2026-10-05) with fitted slope k = 0.4308.</li><li>Banda chuya: disambiguated duplicate VRS entries to #165 (801 pts, 5-player roster AdrieN, ezox, maaryy, Showk, tomiko, latest counted match 2026-10-04).</li><li>Schedule discrepancy flagged for manual review: At 2026-10-22T13:45:00Z, bo3.gg lists &#x27;DONSTU vs los kogutos&#x27; instead of HotSpawn&#x27;s &#x27;Donstu vs Banda chuya&#x27;. (https://bo3.gg/matches/donstu-esports-vs-los-kogutos-22-10-2026).</li></ul>
+    <div><a href="https://www.hotspawn.com/matches/donstu-vs-banda-chuya-cct-europe-2026-challengers-8-1081600">HotSpawn (match page)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0197--donstu--due1yant-gleb86rus-laksheri-neolife-phorate.md">Valve VRS #197 (732 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0165--banda_chuya--adrien-ezox-maaryy-showk-tomiko.md">Valve VRS #165 (801 pts)</a> · <a href="https://bo3.gg/matches/donstu-esports-vs-los-kogutos-22-10-2026">bo3.gg Schedule Conflict</a></div>
+  </td>
+</tr><tr id="unres-1082792">
+  <td data-l="Match">
+    <strong>HOTU</strong> vs <strong>The Huns</strong><br>
+    <span class="small">Moscow Cyber Games 2026 · Tier B · 2026-10-31 09:00:00 UTC · ID <code>1082792</code></span>
+  </td>
+  <td data-l="Resolved Pick">
+    <span class="pick-pill">✓ HOTU (76.7%)</span><br>
+    <span class="small">HOTU: 76.7% · The Huns: 23.3%</span><br>
+    <div style="margin-top:4px"><span class="badge b-model">Official Valve VRS Model</span> <span class="badge b-strong">Strong</span></div>
+  </td>
+  <td data-l="4-Step Research Ledger" class="full">
+    <ul style="margin:0;padding-left:18px" class="small"><li><strong>Step 1 (HLTV.org match listings — <a href="https://www.hltv.org/matches">HTTP 403</a>):</strong> Automated probe to https://www.hltv.org/matches returned HTTP 403 (HTTPError 403); HLTV match pages confirm fixture rosters/schedules where listed but do not expose a machine-readable two-way odds feed.</li><li><strong>Step 2 (Licensed Esportsbooks &amp; Kalshi Exchange (Pinnacle, Bovada, Melbet, Thunderpick, Kalshi) — <a href="https://www.pinnacle.com/en/esports/cs2-hub">0 quotes for this pairing</a>):</strong> Checked all 163 captured pre-match quotes across Pinnacle, Bovada, Melbet, Thunderpick (bo3.gg), and Kalshi KXCS2GAME; no open market prices this fixture.</li><li><strong>Step 3 (Official Valve VRS (2026_10_05) — <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">both teams rated</a>):</strong> HOTU is VRS #31 (1437 pts, roster: dwushka, frontales, kade0, mizu, n0rb3r7) and The Huns is VRS #122 (944 pts, roster: Annihilation, Bart4k, bexyz, controlez, Cozen); Δ = +493 pts -&gt; calibrated VRS win prob 76.7% / 23.3% (k = 0.4308).</li><li><strong>Step 4 (bo3.gg team profiles &amp; match history — <a href="https://bo3.gg/matches">checked</a>):</strong> HOTU (bo3.gg #2720, rank=31, recorded matches=0)</li></ul>
+  </td>
+  <td data-l="Limitations &amp; Sources" class="full">
+    <ul style="margin:0 0 6px;padding-left:18px" class="small"><li>No primary bookmaker two-way line was open at capture time; line is originated from Official Valve Regional Standings (2026_10_05, published 2026-10-05) with fitted slope k = 0.4308.</li><li>The Huns: disambiguated duplicate VRS entries to #122 (944 pts, 5-player roster Annihilation, Bart4k, bexyz, controlez, Cozen, latest counted match 2026-10-04).</li></ul>
+    <div><a href="https://www.hotspawn.com/matches/hotu-vs-the-huns-moscow-cyber-games-2026-1082792">HotSpawn (match page)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0031--hotu--dwushka-frontales-kade0-mizu-n0rb3r7.md">Valve VRS #31 (1437 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0122--the_huns--annihilation-bart4k-bexyz-controlez-cozen.md">Valve VRS #122 (944 pts)</a></div>
+  </td>
+</tr><tr id="unres-1082793">
+  <td data-l="Match">
+    <strong>5star</strong> vs <strong>1WIN</strong><br>
+    <span class="small">Moscow Cyber Games 2026 · Tier B · 2026-10-31 13:00:00 UTC · ID <code>1082793</code></span>
+  </td>
+  <td data-l="Resolved Pick">
+    <span class="pick-pill">✓ 1WIN (65.9%)</span><br>
+    <span class="small">5star: 34.1% · 1WIN: 65.9%</span><br>
+    <div style="margin-top:4px"><span class="badge b-model">Official Valve VRS Model</span> <span class="badge b-solid">Solid</span></div>
+  </td>
+  <td data-l="4-Step Research Ledger" class="full">
+    <ul style="margin:0;padding-left:18px" class="small"><li><strong>Step 1 (HLTV.org match listings — <a href="https://www.hltv.org/matches">HTTP 403</a>):</strong> Automated probe to https://www.hltv.org/matches returned HTTP 403 (HTTPError 403); HLTV match pages confirm fixture rosters/schedules where listed but do not expose a machine-readable two-way odds feed.</li><li><strong>Step 2 (Licensed Esportsbooks &amp; Kalshi Exchange (Pinnacle, Bovada, Melbet, Thunderpick, Kalshi) — <a href="https://www.pinnacle.com/en/esports/cs2-hub">0 quotes for this pairing</a>):</strong> Checked all 163 captured pre-match quotes across Pinnacle, Bovada, Melbet, Thunderpick (bo3.gg), and Kalshi KXCS2GAME; no open market prices this fixture.</li><li><strong>Step 3 (Official Valve VRS (2026_10_05) — <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">both teams rated</a>):</strong> 5star is VRS #80 (1110 pts, roster: ariucle, clouden, hoolig4n, NEUZ, rate) and 1WIN is VRS #38 (1383 pts, roster: ArtFr0st, Ax1Le, BELCHONOKK, fame, nafany); Δ = -273 pts -&gt; calibrated VRS win prob 34.1% / 65.9% (k = 0.4308).</li><li><strong>Step 4 (bo3.gg team profiles &amp; match history — <a href="https://bo3.gg/matches">checked</a>):</strong> No additional bo3.gg match history found.</li></ul>
+  </td>
+  <td data-l="Limitations &amp; Sources" class="full">
+    <ul style="margin:0 0 6px;padding-left:18px" class="small"><li>No primary bookmaker two-way line was open at capture time; line is originated from Official Valve Regional Standings (2026_10_05, published 2026-10-05) with fitted slope k = 0.4308.</li></ul>
+    <div><a href="https://www.hotspawn.com/matches/5star-vs-1win-moscow-cyber-games-2026-1082793">HotSpawn (match page)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0080--5star--ariucle-clouden-hoolig4n-neuz-rate.md">Valve VRS #80 (1110 pts)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0038--1win--artfr0st-ax1le-belchonokk-fame-nafany.md">Valve VRS #38 (1383 pts)</a></div>
+  </td>
+</tr>
+  </tbody>
+</table>
+
+<h2>Duplicate-Name Active-Roster Disambiguations in Official Valve VRS</h2>
+<p class="small">
+  Valve’s official standings table (<a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">standings_global_2026_10_05.md</a>) lists lineups rather than organisations,
+  so an organisation that changed 3+ players appears twice. Rather than dropping the team or letting the lower row overwrite the higher row
+  (which caused <code>fe803b80</code> to rate Banda Chuya at 402 pts instead of 801 pts), we select the active 5-player roster with the most recent counted match date:
+</p>
+<table class="cards">
+  <thead>
+    <tr>
+      <th>Team Key</th>
+      <th>Chosen Active Roster</th>
+      <th>Disambiguation Rule</th>
+      <th>All Official Valve VRS Candidates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+  <td data-l="Team Key"><strong>bandachuya</strong></td>
+  <td data-l="Chosen Active Roster">#165 (801 pts) · AdrieN, ezox, maaryy, Showk, tomiko (latest match 2026-10-04)</td>
+  <td data-l="Disambiguation Rule">Selected active 5-player roster with most recent official Valve counted match date.</td>
+  <td data-l="All Official Valve VRS Candidates" class="full"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0165--banda_chuya--adrien-ezox-maaryy-showk-tomiko.md">#165 (801 pts, 5p: AdrieN, ezox, maaryy, Showk, tomiko, last match 2026-10-04)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0373--banda_chuya--ezox-manio.md">#373 (402 pts, 2p: ezox, manio, last match 2026-09-11)</a></td>
+</tr><tr>
+  <td data-l="Team Key"><strong>bebop</strong></td>
+  <td data-l="Chosen Active Roster">#212 (702 pts) · faydett, iDISBALANCE, KENSI, Pipw, redzed (latest match 2026-10-02)</td>
+  <td data-l="Disambiguation Rule">Selected active 5-player roster with most recent official Valve counted match date.</td>
+  <td data-l="All Official Valve VRS Candidates" class="full"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0212--bebop--faydett-idisbalance-kensi-pipw-redzed.md">#212 (702 pts, 5p: faydett, iDISBALANCE, KENSI, Pipw, redzed, last match 2026-10-02)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0282--bebop--danistzz-faydett-idisbalance-lov1kus-norwi.md">#282 (597 pts, 5p: danistzz, faydett, iDISBALANCE, lov1kus, Norwi, last match 2026-06-18)</a></td>
+</tr><tr>
+  <td data-l="Team Key"><strong>brute</strong></td>
+  <td data-l="Chosen Active Roster">#75 (1116 pts) · aidKiT, hfah, nbqq, tAk, ZEDKO (latest match 2026-09-27)</td>
+  <td data-l="Disambiguation Rule">Selected active 5-player roster with most recent official Valve counted match date.</td>
+  <td data-l="All Official Valve VRS Candidates" class="full"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0075--brute--aidkit-hfah-nbqq-tak-zedko.md">#75 (1116 pts, 5p: aidKiT, hfah, nbqq, tAk, ZEDKO, last match 2026-09-27)</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0218--brute--hfah-kad1m-majky-nbqq-realzen.md">#218 (689 pts, 5p: hfah, KAD1M, majky, nbqq, realzen, last match 2026-05-25)</a></td>
+</tr>
+  </tbody>
+</table>
+
+<h2>Standing Methodological Limitations</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Limitation</th>
+      <th>Impact on Picks</th>
+      <th>Official Verification Source</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>L1 · HLTV Cloudflare Block (HTTP 403)</strong></td>
+      <td>Automated runners receive HTTP 403 from <code>https://www.hltv.org/matches</code>; HLTV match pages also carry no machine-readable two-way odds API.</td>
+      <td><a href="https://www.hltv.org/matches">hltv.org/matches</a></td>
+    </tr>
+    <tr>
+      <td><strong>L2 · Polymarket CS2 Coverage Gap</strong></td>
+      <td>Polymarket’s <code>counter-strike</code> tag has 0 valid liquid match-winner books for low-tier CCT / CIS LAN / Moscow Cyber Games matches.</td>
+      <td><a href="https://gamma-api.polymarket.com/events?closed=false&amp;limit=200&amp;tag_slug=counter-strike">Polymarket Gamma API</a></td>
+    </tr>
+    <tr>
+      <td><strong>L3 · Valve VRS Snapshot Cadence (2026-10-05)</strong></td>
+      <td>Valve publishes official global standings roughly monthly; <code>standings_global_2026_10_05.md</code> is the newest official file in the repository (16 days old).</td>
+      <td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS 2026-10-05</a></td>
+    </tr>
+    <tr>
+      <td><strong>L4 · Unrated Low-Tier Opponents (Directional Floor)</strong></td>
+      <td>When one team is unrated in VRS (e.g. <code>LOS NINOS</code> in 1082837), benchmarking against the #380 / 381-pt VRS floor yields a directional lower bound, not a calibrated bookmaker line.</td>
+      <td><a href="https://bo3.gg/teams/los-ninos">bo3.gg Los Niños</a> · <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">Valve VRS Floor #380</a></td>
+    </tr>
+  </tbody>
+</table>
+
+</main>
+<nav class="bnav" aria-label="Mobile quick navigation"><a href="index.html">Summary</a><a href="picks.html">All Picks</a><a href="unresolved.html" class="on">Unresolved</a><a href="tournaments.html">Categories</a><a href="flagged.html">Flagged</a></nav>
+</body>
+</html>

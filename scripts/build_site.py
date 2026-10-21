@@ -117,8 +117,28 @@ crowd ownership is never a probability. Open the board for its current as-of sta
 <a class="btn live-board-cta" href="hotspawn-live/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · blank-row policy</span><span>→</span></a>
 <a class="btn live-board-cta" href="hotspawn-live/sources.html"><span><strong>Sources &amp; row ledger</strong> · verify every line</span><span>→</span></a>
 </div>
-''' + canonical_source_board_note_html() + '''
+''' + canonical_source_board_note_html() + fullpicks_note_html() + '''
 </div>'''
+
+
+def fullpicks_note_html():
+    """51197e5b: additive pointer to fullpicks/ (featured market unchanged + 4-step fallback ladder)."""
+    d = load("data/51197e5b/board.json") or {}
+    sm = d.get("summary") or {}
+    if not sm:
+        return ""
+    stamp = esc(str(d.get("base_generated_utc", "")).replace("T", " ").replace("Z", " UTC"))
+    return (
+        '<p class="note" id="fullpicks-board">'
+        '<strong>Full-coverage fallback board (51197e5b, 4h refresh):</strong> '
+        f'<a href="fullpicks/index.html">executive summary ({sm.get("with_pick", 0)}/{sm.get("open", 0)} open picks)</a> · '
+        f'<a href="fullpicks/picks.html">all {sm.get("open", 0)} open picks</a> '
+        f'({sm.get("featured_market", 0)} featured market unchanged, {sm.get("fallback_resolved", 0)} fallback-resolved) · '
+        '<a href="fullpicks/unresolved.html">Unresolved &amp; limitations</a> · '
+        '<a href="fullpicks/tournaments.html">By category</a> · '
+        '<a href="fullpicks/flagged.html">Flagged for Review (R1–R7)</a> · '
+        f'<span class="muted">snapshot {stamp}</span></p>'
+    )
 
 
 def exec36495748_front_html():
