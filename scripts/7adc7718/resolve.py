@@ -146,6 +146,7 @@ def main() -> int:
     beta = calibration["beta"]
 
     resolved_open = []
+    all_flags = list(ledger.get("flagged_irregularities") or [])
     for fx in open_raw:
         fid = fx["fixture_id"]
         quotes = snap["quotes_by_fixture"].get(fid, [])
@@ -208,6 +209,19 @@ def main() -> int:
 
         crow = crowd_by_id.get(fid, {})
         row_flags = [f["id"] for f in flags_by_fixture.get(fid, [])]
+        if tier == "unresolved_blank" and not row_flags:
+            # A previously priced fixture can lose its eligible quote at a source
+            # deadline, or a new fixture may not have an editorial ledger entry.
+            # Preserve the blank and publish the actual missing-evidence finding.
+            flag_id = "AUTO-UNVERIFIED-" + fid
+            row_flags.append(flag_id)
+            all_flags.append({
+                "id": flag_id, "severity": "review", "category": "Missing eligible evidence",
+                "fixture_id": fid, "match": fx["team_a"] + " vs " + fx["team_b"],
+                "detail": "This batch has no eligible two-way quote or unique rating pair for this fixture.",
+                "treatment": "Pick and probabilities remain blank / unverified pending a supported refresh.",
+                "sources": list(sources),
+            })
 
         resolved_open.append({
             "fixture_id": fid,
@@ -267,7 +281,7 @@ def main() -> int:
         "rescue_exchange": sum(1 for r in resolved_open if r["resolution_tier"] == "rescue_exchange"),
         "rescue_vrs_model": sum(1 for r in resolved_open if r["resolution_tier"] == "rescue_vrs_model"),
         "unresolved_blank": sum(1 for r in resolved_open if r["resolution_tier"] == "unresolved_blank"),
-        "flagged_items": len(ledger.get("flagged_irregularities") or []),
+        "flagged_items": len(all_flags),
         "coverage_pct": round(
             100.0 * sum(1 for r in resolved_open if r["pick"] is not None) / len(resolved_open), 1
         ),
@@ -283,7 +297,7 @@ def main() -> int:
         "calibration": calibration,
         "matches": resolved_open,
         "unresolved": [r for r in resolved_open if r["resolution_tier"] == "unresolved_blank"],
-        "flagged_for_review": ledger.get("flagged_irregularities") or [],
+        "flagged_for_review": all_flags,
         "inventory": inventory_rows,
         "access": snap["access"],
     }

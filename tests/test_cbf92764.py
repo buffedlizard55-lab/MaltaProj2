@@ -234,6 +234,36 @@ class LiveLobbySchemaReplay(unittest.TestCase):
         self.assertIsNone(self.collect.parse_live_hotspawn_lobby(html))
 
 
+class RollingEvidenceExpiry(unittest.TestCase):
+    def test_new_or_expired_unpriced_fixture_is_blank_and_flagged_not_a_build_crash(self):
+        import tempfile
+        spec = importlib.util.spec_from_file_location('rolling_7adc_resolver', ROOT / 'scripts/7adc7718/resolve.py')
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp)
+            module.DATA_DIR = folder
+            module.SNAPSHOT_PATH = folder / 'raw_snapshot.json'
+            module.LEDGER_PATH = folder / 'ledger.json'
+            module.CROWD_PATH = folder / 'absent-crowd.json'
+            fixture = {'fixture_id': 'new-unpriced', 'team_a': 'Unrated A', 'team_b': 'Unrated B',
+                       'status': 'scheduled', 'competition': 'Synthetic expiry regression',
+                       'start_utc': '2026-10-21T15:00:00Z', 'lock_utc': '2026-10-21T14:54:00Z',
+                       'seen_in': ['lobby_page'], 'hotspawn_url': 'https://play.hotspawn.com/lobby'}
+            snapshot = {'fixture_snapshot_utc': '2026-10-21T13:00:00Z', 'schedule': 'test',
+                        'fixtures': [fixture], 'quotes_by_fixture': {}, 'access': {}, 'week': {}}
+            module.SNAPSHOT_PATH.write_text(json.dumps(snapshot))
+            module.LEDGER_PATH.write_text(json.dumps({'policy': 'test', 'flagged_irregularities': []}))
+            self.assertEqual(module.main(), 0)
+            report = json.loads((folder / 'board.json').read_text())
+            row = report['matches'][0]
+            self.assertIsNone(row['prob_a']); self.assertIsNone(row['prob_b']); self.assertIsNone(row['pick'])
+            self.assertTrue(row['flag_ids'])
+            self.assertEqual(report['summary']['unresolved_blank'], 1)
+            self.assertEqual(report['flagged_for_review'][0]['id'], row['flag_ids'][0])
+            self.assertEqual(report['flagged_for_review'][0]['sources'][-1]['url'], fixture['hotspawn_url'])
+
+
 class PublishedStrictDashboard(unittest.TestCase):
     def test_root_icon_is_real_declared_and_staged(self):
         icon = (ROOT / 'favicon.ico').read_bytes()
