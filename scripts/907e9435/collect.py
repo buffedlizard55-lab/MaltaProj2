@@ -265,12 +265,16 @@ def bootstrap_snapshot(source: Path, payloads_path: Path | None) -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Collect one everypick snapshot.")
+    ap.add_argument("--live", action="store_true",
+                    help="fetch every public source directly (default when --bootstrap is absent)")
     ap.add_argument("--bootstrap", action="store_true",
                     help="build from a retained capture instead of fetching the books")
     ap.add_argument("--from", dest="source", default=str(ROOT / "data" / "f7279a54" / "snapshot.json"))
     ap.add_argument("--payloads", default=str(ROOT / "data" / "f7279a54" / "source_payloads.json"))
     args = ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
+    if args.live and args.bootstrap:
+        ap.error("choose either --live or --bootstrap")
     snap = (bootstrap_snapshot(Path(args.source), Path(args.payloads)) if args.bootstrap
             else live_snapshot())
     snap["session"] = core.SESSION
