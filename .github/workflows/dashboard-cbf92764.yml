@@ -1,0 +1,64 @@
+name: Verified CS2 dashboard
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '43 */4 * * *'
+  push:
+    branches: [main, arena/cbf92764-maltaproj2]
+    paths: ['scripts/cbf92764/**', 'dashboard/**', 'tests/test_cbf92764.py', '.github/workflows/dashboard-cbf92764.yml']
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: verified-cs2-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Research fixture inventory and missing lines from public sources
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/cbf92764/collect.py
+      - name: Build and independently verify every published row
+        run: |
+          python scripts/cbf92764/build.py
+          python -m unittest discover -s tests -p test_cbf92764.py -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cs2-evidence-${{ github.run_id }}
+          path: |
+            data/cbf92764/
+            dashboard/
+          retention-days: 14
+      - name: Publish only this session's evidence and mobile pages
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config user.name 'verified-cs2-bot (cbf92764)'
+          git config user.email 'malta-data-bot@users.noreply.github.com'
+          # Keep generated intermediate HTML and unneeded history out of Git.
+          rm -rf data/cbf92764/upstream/rendered
+          git add dashboard data/cbf92764
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "dashboard: refresh independently verified CS2 picks"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin "$REF_NAME"
+            if git push origin "HEAD:$REF_NAME"; then
+              if [ "$REF_NAME" = main ]; then gh workflow run pages.yml --ref main; fi
+              exit 0
+            fi
+            sleep $((attempt*5))
+          done
+          exit 1

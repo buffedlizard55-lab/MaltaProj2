@@ -216,3 +216,16 @@ not certified by the canonical verifier and never override its blank rows.
 - **Flagged for Review (Line-by-Line Repository & Source Audit):** [`audits/98dcfc7e/flagged.html`](audits/98dcfc7e/flagged.html)
 - **Methodology & 4–8h Automated Refresh Pipeline:** [`audits/98dcfc7e/methodology.html`](audits/98dcfc7e/methodology.html) (`scripts/98dcfc7e/build.py`, `data/98dcfc7e/audit.json`, `tests/test_98dcfc7e.py`).
 
+
+### Updated CS2 mobile match desk (2026-10-21)
+
+- **[Executive summary](dashboard/index.html)** → **[all current picks](dashboard/picks.html)**,
+  [unresolved & limitations](dashboard/unresolved.html), [complete HotSpawn inventory](dashboard/inventory.html),
+  [line-by-line sources and method](dashboard/sources.html), and [Flagged for Review](dashboard/flagged.html).
+- Four-hour automated discovery/research: `.github/workflows/dashboard-cbf92764.yml`.
+  Reads the public HotSpawn lobby + fixtures API and external books; only missing featured prices trigger
+  extra HLTV / published esports odds research and a strictly labelled experimental Valve-rating fallback.
+  No HotSpawn crowd probability, no lowest-rating proxy for an unranked team, no ambiguous-roster join.
+- Run `python scripts/cbf92764/build.py` then `python -m unittest discover -s tests -p test_cbf92764.py -v`.
+  Evidence hashes, raw additional reads and per-row reasons are in `data/cbf92764/`.
+  Current picks expire after four hours (including HTTP cache age) or their lock, whichever is earlier.

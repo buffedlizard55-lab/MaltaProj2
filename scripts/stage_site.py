@@ -27,9 +27,11 @@ _subprocess.run([_sys.executable, str(ROOT/'scripts/371a1ce7/build.py')], check=
 # b3871d16 day-5 desk + every-match resolution: re-render from the newest canonical board and this
 # session's own evidence ledger before staging (additive; writes only now/** and never fails the stage step).
 _subprocess.run([_sys.executable, str(ROOT/'scripts/b3871d16/build.py')], check=False)
+# cbf92764: rebuild the evidence-only current dashboard before staging.
+_subprocess.run([_sys.executable, str(ROOT/'scripts/cbf92764/build.py')], check=True)
 for file in ROOT.glob('*.html'):
     shutil.copy2(file,OUT/file.name)
-for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','today','desk','finals','day5','finalday','start','climb','now','everymatch'):  # finalday: 36186ad8; start: 371a1ce7; climb: a89b76e9; now: b3871d16; everymatch: 19d6c262 (additive entries)
+for name in ('assets','data','docs','pickem','evidence','audits','verify','current','verify961','picks','site','market','live','fresh','ourline','picks-every-match','summary','coverage','board','exec','picks-all','unresolved','strategy','twc','day3','twc-2026','hub','day4','today','desk','finals','day5','finalday','start','climb','now','everymatch','dashboard'):  # finalday: 36186ad8; start: 371a1ce7; climb: a89b76e9; now: b3871d16; everymatch: 19d6c262 (additive entries)
 # 'finals' added by session 782adb47 (TWC Day-5 finals desk), additive single entry: root NAV +
 # landing front door link finals/index.html, so the artifact must carry the directory.
 # 'day5' added by session 7900154b (TWC 2026 day-5 final desk + every-match picks), additive
