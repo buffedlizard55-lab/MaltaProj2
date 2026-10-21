@@ -1,0 +1,86 @@
+name: pickcenter (2cadfaf2)
+
+# Session 2cadfaf2 — the Pick Center: one mobile desk covering every CS2 fixture the HotSpawn
+# lobby lists, refreshed from a **live** capture every four hours.
+#
+# Unlike the earlier every-match desks this workflow does not re-render a frozen snapshot:
+# `collect.py` re-reads the lobby page, the public fixtures API, Pinnacle, Bovada, Melbet, the
+# Kalshi exchange and Valve's official Regional Standings on every run. If a source is
+# unreachable the capture is labelled `committed_snapshot_fallback` and the desk says so at the
+# top of every page — it never presents an old read as a new one.
+#
+# Commits ONLY data/2cadfaf2/** and pickcenter/** (scope guard below). The root landing page is
+# regenerated from committed data by scripts/build_site.py during the Pages build, so its hero
+# can never disagree with this desk.
+on:
+  push:
+    branches: ['main', 'arena/2cadfaf2-maltaproj2']
+    paths:
+      - 'scripts/2cadfaf2/**'
+      - 'tests/test_2cadfaf2.py'
+      - '.github/workflows/pickcenter-2cadfaf2.yml'
+  schedule:
+    - cron: '23 */4 * * *' # every four hours, inside the 4-8h requirement
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pickcenter-2cadfaf2-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Live capture (lobby, books, exchange, official Valve standings)
+        run: python3 scripts/2cadfaf2/collect.py
+      - name: Resolve a pick for every listed fixture
+        run: python3 scripts/2cadfaf2/resolve.py
+      - name: Build the mobile pick centre
+        run: python3 scripts/2cadfaf2/build.py
+      - name: Contract, unit and site tests
+        run: python3 -m unittest tests.test_2cadfaf2 -v
+      - name: Commit & push with rebase (scope-guarded)
+        run: |
+          set -euo pipefail
+          git config user.name "pickcenter-bot (2cadfaf2)"
+          git config user.email "malta-data-bot@users.noreply.github.com"
+          git add data/2cadfaf2 pickcenter
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "picks(2cadfaf2): refresh pick centre $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase -X ours origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              exit 0
+            fi
+            echo "push attempt ${attempt} failed; retrying"
+            sleep $((attempt * 5))
+          done
+          exit 1
+      - name: Summary
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          p = pathlib.Path('data/2cadfaf2/board.json')
+          if p.exists():
+              b = json.loads(p.read_text())
+              s = b.get('summary', {})
+              print(f"mode={b.get('mode')} captured={b.get('captured_utc')}")
+              print(f"listed={s.get('listed_in_lobby')} rows={s.get('total_rows')} open={s.get('open')} "
+                    f"with_pick={s.get('with_pick')} market={s.get('market_rows')} model={s.get('model_rows')} "
+                    f"bound={s.get('bound_rows')} unresolved={s.get('unresolved')}")
+              failed = [c for c in b.get('verification', []) if not c.get('passed')]
+              print(f"checks={len(b.get('verification', []))} failed={len(failed)}")
+          PY

@@ -78,7 +78,7 @@ NAV = [
     ("dashboard/unresolved.html", "Unresolved"),
     ("dashboard/flagged.html", "Flagged"),
     ("dashboard/sources.html", "Method"),
-    ("hotspawn-live/index.html", "Alternative live board"),
+    ("pickcenter/index.html", "\U0001F3AF Pick Center"),
     ("picks-every-match/index.html", "Canonical board"),
     ("picks-every-match/unresolved.html", "Canonical unresolved"),
     ("picks-every-match/method.html", "Canonical method"),
@@ -499,6 +499,13 @@ def executive_summary_html():
         if gap_rows else '<p>No unresolved rows in the available strict snapshot; this is not a guarantee of global coverage.</p>'
     )
     stamp_map = [
+        # 2cadfaf2 integration (additive): the single pick-centre front door. Full 78-fixture
+        # inventory, market -> Valve VRS -> explicit bound -> unresolved ladder, separate
+        # unresolved/limitations section, live 4-hourly capture.
+        ("pickcenter/index.html", "\U0001F3AF Pick Center \u2014 every listed CS2 match",
+         "Pick + both win % for every fixture the lobby lists (incl. the ones it never rescheduled), "
+         "basis and source link per row; separate Unresolved & limitations page.",
+         _board_stamp("data/2cadfaf2/board.json", "generated_utc")),
         # f3e5123c integration (additive): THE every-match front door. Featured lines unchanged;
         # low-tier gaps resolved HLTV -> books/exchange -> official VRS with roster-verified
         # aliases; separate unresolved/limitations section. Start here on mobile.
@@ -852,6 +859,47 @@ probabilities, sources</span><span>&rarr;</span></a>
 
 
 
+def pickcenter_hero_html():
+    """Session 2cadfaf2: the one start-here block for the whole site.
+
+    Reads data/2cadfaf2/board.json, which the four-hourly workflow rewrites from a live capture,
+    and routes every visitor to the pick lists in three taps or fewer. Counts come from the board
+    so this card can never disagree with the desk it links to.
+    """
+    board = load("data/2cadfaf2/board.json") or {}
+    s = board.get("summary") or {}
+    if not s:
+        return ""
+    stamp = esc(str(board.get("generated_utc", "")).replace("T", " ").replace("Z", " UTC"))
+    stale = (s.get("by_state") or {}).get("stale", 0)
+    mode = board.get("mode")
+    freshness = ("live capture" if mode == "live" else "committed capture")
+    return f'''<!-- pickcenter:start -->
+<section id="pickcenter-hero" aria-labelledby="pickcenter-title" class="hero-card">
+<p class="eyebrow">\u25CF START HERE \u00b7 every CS2 match the HotSpawn lobby lists \u00b7 rebuilt every 4 hours</p>
+<h2 id="pickcenter-title" style="font-size:clamp(1.35rem,5.4vw,1.9rem);line-height:1.22;margin:6px 0 8px">Every match. One pick. Both win probabilities.</h2>
+<p><strong>{s.get("total_rows", 0)}</strong> matches listed \u00b7
+<strong>{s.get("with_pick", 0)}</strong> with a pick and both probabilities \u00b7
+<strong>{s.get("open", 0)}</strong> still open (<strong>{s.get("open_with_pick", 0)}/{s.get("open", 0)}</strong> picked) \u00b7
+<strong>{s.get("market_rows", 0)}</strong> from real book/exchange prices \u00b7
+<strong>{s.get("model_rows", 0)}</strong> from official Valve ratings \u00b7
+<strong>{s.get("bound_rows", 0)}</strong> explicit bounds \u00b7
+<strong>{s.get("unresolved", 0)}</strong> unresolved (named, never guessed).</p>
+<div class="desk-actions">
+<a class="btn live-board-cta" href="pickcenter/picks.html"><span><strong>All picks</strong> \u00b7 every listed match, phone cards</span><span>\u2192</span></a>
+<a class="btn live-board-cta" href="pickcenter/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> \u00b7 every blank row, with the reason</span><span>\u2192</span></a>
+<a class="btn live-board-cta" href="pickcenter/index.html"><span><strong>Executive summary</strong> \u00b7 what is covered, what is not</span><span>\u2192</span></a>
+<a class="btn live-board-cta" href="pickcenter/sources.html"><span><strong>Sources</strong> \u00b7 every feed, read time and quote ledger</span><span>\u2192</span></a>
+<a class="btn live-board-cta" href="pickcenter/results.html"><span><strong>Results</strong> \u00b7 pre-lock picks graded</span><span>\u2192</span></a>
+<a class="btn live-board-cta" href="pickcenter/method.html"><span><strong>Method</strong> \u00b7 the ladder, the fit, the rules</span><span>\u2192</span></a>
+</div>
+<p class="note">This is the single entry point for picks. It covers <strong>all {s.get("total_rows", 0)}</strong> CS2 fixtures the lobby counts for the week \u2014 including the <strong>{stale}</strong> it has never rescheduled \u2014 so nothing is silently dropped. Board built {stamp} ({esc(freshness)}); everything below this card is an earlier session\u2019s own board, kept as an archive.</p>
+</section>
+<!-- pickcenter:end -->
+
+'''
+
+
 def pickboard_front_html():
     """Front-door card for the session-86f3af65 board in pickboard/.
 
@@ -866,7 +914,7 @@ def pickboard_front_html():
     when = fmt_time(cap.get("captured_utc"))
     market = (c.get("market") or 0) + (c.get("market_contested") or 0)
     return f'''<section class="desk-front" id="pickboard-front" aria-labelledby="pickboard-title">
-<p class="eyebrow">📱 every open CS2 match · one pick + both probabilities · refreshed every 4h</p>
+<p class="eyebrow">● Earlier pickboard desk (86f3af65) · kept for the record</p>
 <h2 id="pickboard-title">A pick for every match, or the reason there isn&rsquo;t one</h2>
 <p><strong>{esc(c.get("with_pick"))} of {esc(c.get("open"))} open HotSpawn CS2 fixtures</strong> carry a
 pick and both teams&rsquo; win probabilities &mdash; {esc(market)} from external betting lines,
@@ -1089,7 +1137,7 @@ and is left <strong>explicitly blank</strong> and flagged on <a href="lobby/flag
 
     return f"""
 <section id="updated-match-desk" aria-labelledby="updated-desk-title" class="hero-card">
-<p class="eyebrow">Updated CS2 match desk · start here</p>
+<p class="eyebrow">Earlier CS2 match desk (dashboard) · kept for the record</p>
 <h1 id="updated-desk-title">All matches. Clear picks. Source-linked probabilities.</h1>
 <p>Open the <a href="dashboard/index.html"><strong>mobile executive summary</strong></a> for the newest retained capture and complete coverage counts. Market picks are preserved; additional evidence is researched only for missing lines. Unsupported values stay blank.</p>
 <p><a class="btn" style="background:#91f2bf;color:#102419;font-weight:bold" href="dashboard/picks.html">See every updated CS2 pick →</a> <a class="btn ghost" href="dashboard/unresolved.html">Unresolved picks &amp; limitations</a></p>
@@ -1345,8 +1393,8 @@ def main() -> int:
     closed_fixtures = [f for f in fixtures if f.get("pick_status") != "open"]
     top_table, _ = fixtures_table(open_fixtures)
     pick_board = load("data/c64a5e19/board.json")
-    idx_body = (pickboard_front_html() + everypick_hero_html()
-                + canonical_home(pick_board))
+    idx_body = (pickcenter_hero_html() + pickboard_front_html()
+                + everypick_hero_html() + canonical_home(pick_board))
     write("day-one.html", page("Day-one review & contrarian strategy",
           "14 October 2026 · Thunderpick World Championship · source review 15 October 2026",
           day_one_review(), generated_at, active="day-one.html"))

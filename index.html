@@ -18,7 +18,7 @@
 <a href="dashboard/unresolved.html">Unresolved</a>
 <a href="dashboard/flagged.html">Flagged</a>
 <a href="dashboard/sources.html">Method</a>
-<a href="hotspawn-live/index.html">Alternative live board</a>
+<a href="pickcenter/index.html">🎯 Pick Center</a>
 <a href="picks-every-match/index.html">Canonical board</a>
 <a href="picks-every-match/unresolved.html">Canonical unresolved</a>
 <a href="picks-every-match/method.html">Canonical method</a>
@@ -28,8 +28,31 @@
   </div>
 </header>
 <main class="wrap" id="main-content" tabindex="-1">
-  <section class="desk-front" id="pickboard-front" aria-labelledby="pickboard-title">
-<p class="eyebrow">📱 every open CS2 match · one pick + both probabilities · refreshed every 4h</p>
+  <!-- pickcenter:start -->
+<section id="pickcenter-hero" aria-labelledby="pickcenter-title" class="hero-card">
+<p class="eyebrow">● START HERE · every CS2 match the HotSpawn lobby lists · rebuilt every 4 hours</p>
+<h2 id="pickcenter-title" style="font-size:clamp(1.35rem,5.4vw,1.9rem);line-height:1.22;margin:6px 0 8px">Every match. One pick. Both win probabilities.</h2>
+<p><strong>78</strong> matches listed ·
+<strong>74</strong> with a pick and both probabilities ·
+<strong>13</strong> still open (<strong>13/13</strong> picked) ·
+<strong>8</strong> from real book/exchange prices ·
+<strong>35</strong> from official Valve ratings ·
+<strong>31</strong> explicit bounds ·
+<strong>4</strong> unresolved (named, never guessed).</p>
+<div class="desk-actions">
+<a class="btn live-board-cta" href="pickcenter/picks.html"><span><strong>All picks</strong> · every listed match, phone cards</span><span>→</span></a>
+<a class="btn live-board-cta" href="pickcenter/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · every blank row, with the reason</span><span>→</span></a>
+<a class="btn live-board-cta" href="pickcenter/index.html"><span><strong>Executive summary</strong> · what is covered, what is not</span><span>→</span></a>
+<a class="btn live-board-cta" href="pickcenter/sources.html"><span><strong>Sources</strong> · every feed, read time and quote ledger</span><span>→</span></a>
+<a class="btn live-board-cta" href="pickcenter/results.html"><span><strong>Results</strong> · pre-lock picks graded</span><span>→</span></a>
+<a class="btn live-board-cta" href="pickcenter/method.html"><span><strong>Method</strong> · the ladder, the fit, the rules</span><span>→</span></a>
+</div>
+<p class="note">This is the single entry point for picks. It covers <strong>all 78</strong> CS2 fixtures the lobby counts for the week — including the <strong>62</strong> it has never rescheduled — so nothing is silently dropped. Board built 2026-10-21 20:18:27 UTC (committed capture); everything below this card is an earlier session’s own board, kept as an archive.</p>
+</section>
+<!-- pickcenter:end -->
+
+<section class="desk-front" id="pickboard-front" aria-labelledby="pickboard-title">
+<p class="eyebrow">● Earlier pickboard desk (86f3af65) · kept for the record</p>
 <h2 id="pickboard-title">A pick for every match, or the reason there isn&rsquo;t one</h2>
 <p><strong>13 of 13 open HotSpawn CS2 fixtures</strong> carry a
 pick and both teams&rsquo; win probabilities &mdash; 4 from external betting lines,
@@ -93,7 +116,7 @@ archive. If you only open one page, open <a href="everypick/picks.html">All pick
 
 
 <section id="updated-match-desk" aria-labelledby="updated-desk-title" class="hero-card">
-<p class="eyebrow">Updated CS2 match desk · start here</p>
+<p class="eyebrow">Earlier CS2 match desk (dashboard) · kept for the record</p>
 <h1 id="updated-desk-title">All matches. Clear picks. Source-linked probabilities.</h1>
 <p>Open the <a href="dashboard/index.html"><strong>mobile executive summary</strong></a> for the newest retained capture and complete coverage counts. Market picks are preserved; additional evidence is researched only for missing lines. Unsupported values stay blank.</p>
 <p><a class="btn" style="background:#91f2bf;color:#102419;font-weight:bold" href="dashboard/picks.html">See every updated CS2 pick →</a> <a class="btn ghost" href="dashboard/unresolved.html">Unresolved picks &amp; limitations</a></p>
@@ -117,7 +140,7 @@ crowd ownership is never a probability. Open the board for its current as-of sta
 <a class="btn live-board-cta" href="hotspawn-live/unresolved.html"><span><strong>Unresolved &amp; limitations</strong> · blank-row policy</span><span>→</span></a>
 <a class="btn live-board-cta" href="hotspawn-live/sources.html"><span><strong>Sources &amp; row ledger</strong> · verify every line</span><span>→</span></a>
 </div>
-<p class="note" id="hotspawn-picks-board" style="border:2px solid #38d996;border-radius:10px;padding:10px"><strong>🎯 START HERE — every-match HotSpawn CS2 picks (f3e5123c, 4h refresh):</strong> <a href="hotspawn-picks/index.html">executive summary (13/13 open picks)</a> · <a href="hotspawn-picks/picks.html">all 13 picks (phone cards)</a> (3 featured unchanged, 2 fallback books, 5 VRS-model, 3 directional, 0 blank) · <a href="hotspawn-picks/unresolved.html">Unresolved &amp; limitations</a> · <a href="hotspawn-picks/tournaments.html">By tournament</a> · <a href="hotspawn-picks/flagged.html">Flagged F1–F8</a> · <span class="muted">snapshot 2026-10-21 19:50:18 UTC</span></p><p class="note" id="canonical-source-board"><strong>Source board (refreshes every 30 min):</strong> <a href="board/picks.html">all 14 open lobby matches · 13 with a pick</a> (4 from betting lines, 9 originated from ratings, 3 directional, 1 blank) · <a href="board/unresolved.html">Unresolved picks &amp; limitations</a> · <a href="board/flagged.html">Flagged for review</a> · <span class="muted">board built 2026-10-21 19:56:12 UTC</span></p><p class="note" id="fullpicks-board"><strong>Full-coverage fallback board (51197e5b, 4h refresh):</strong> <a href="fullpicks/index.html">executive summary (13/13 open picks)</a> · <a href="fullpicks/picks.html">all 13 open picks</a> (3 featured market unchanged, 10 fallback-resolved) · <a href="fullpicks/unresolved.html">Unresolved &amp; limitations</a> · <a href="fullpicks/tournaments.html">By category</a> · <a href="fullpicks/flagged.html">Flagged for Review (R1–R7)</a> · <span class="muted">snapshot 2026-10-21 19:50:18 UTC</span></p>
+<p class="note" id="hotspawn-picks-board" style="border:2px solid #38d996;border-radius:10px;padding:10px"><strong>🎯 START HERE — every-match HotSpawn CS2 picks (f3e5123c, 4h refresh):</strong> <a href="hotspawn-picks/index.html">executive summary (13/13 open picks)</a> · <a href="hotspawn-picks/picks.html">all 13 picks (phone cards)</a> (3 featured unchanged, 2 fallback books, 5 VRS-model, 3 directional, 0 blank) · <a href="hotspawn-picks/unresolved.html">Unresolved &amp; limitations</a> · <a href="hotspawn-picks/tournaments.html">By tournament</a> · <a href="hotspawn-picks/flagged.html">Flagged F1–F8</a> · <span class="muted">snapshot 2026-10-21 19:50:18 UTC</span></p><p class="note" id="canonical-source-board"><strong>Source board (refreshes every 30 min):</strong> <a href="board/picks.html">all 14 open lobby matches · 14 with a pick</a> (5 from betting lines, 9 originated from ratings, 3 directional, 0 blank) · <a href="board/unresolved.html">Unresolved picks &amp; limitations</a> · <a href="board/flagged.html">Flagged for review</a> · <span class="muted">board built 2026-10-21 20:19:40 UTC</span></p><p class="note" id="fullpicks-board"><strong>Full-coverage fallback board (51197e5b, 4h refresh):</strong> <a href="fullpicks/index.html">executive summary (13/13 open picks)</a> · <a href="fullpicks/picks.html">all 13 open picks</a> (3 featured market unchanged, 10 fallback-resolved) · <a href="fullpicks/unresolved.html">Unresolved &amp; limitations</a> · <a href="fullpicks/tournaments.html">By category</a> · <a href="fullpicks/flagged.html">Flagged for Review (R1–R7)</a> · <span class="muted">snapshot 2026-10-21 19:50:18 UTC</span></p>
 </div>
 <p>The floor scenario is an assumption, not a verified rating for an unrated team. It is not imported into the current desk.</p></details>
 <details class="archive" id="additional-parallel-research"><summary>Additional live research boards — alternate estimates &amp; assumptions</summary>
@@ -186,12 +209,12 @@ HLTV first, then esportsbook/exchange lines, then Valve's official ratings with 
 <details class="archive" id="older-boards"><summary>Parallel expanded-API board and earlier desks</summary>
 
 <div class="hero-card" id="cs2-front">
-<p class="eyebrow">📱 Every HotSpawn CS2 match · built 2026-10-21 16:44:56 UTC</p>
+<p class="eyebrow">📱 Every HotSpawn CS2 match · built 2026-10-21 20:26:03 UTC</p>
 <h2>Independent research board &mdash; different evidence policy</h2>
-<p><strong>9 of 9 open matches</strong> carry a pick with both teams'
-win probability (100.0% coverage): 4 from external betting lines and
-5 built from
-researched books or the official Valve rating table. Fixture capture 2026-10-21 16:19:14 UTC.</p>
+<p><strong>14 of 14 open matches</strong> carry a pick with both teams'
+win probability (100.0% coverage): 5 from external betting lines and
+9 built from
+researched books or the official Valve rating table. Fixture capture 2026-10-21 20:19:40 UTC.</p>
 <div class="hero-actions">
 <a class="btn btn-hero" href="cs2/picks.html"><span><strong>All picks</strong> &middot; every match, both win
 probabilities, sources</span><span>&rarr;</span></a>
@@ -200,7 +223,7 @@ probabilities, sources</span><span>&rarr;</span></a>
 <a class="btn" href="cs2/method.html"><span><strong>Method &amp; sources</strong> &middot; lobby, formulas, refresh</span><span>&rarr;</span></a>
 </div>
 <h3 style="margin-top:14px">Next locks (UTC)</h3>
-<ul class="plain"><li><a href="cs2/picks.html#fx-1082178"><strong>Metizport</strong> 65%</a> <span class="muted">&mdash; Metizport v GenOne, 2026-10-21 17:30:00 UTC</span></li><li><a href="cs2/picks.html#fx-1082836"><strong>Hacha</strong> 58%</a> <span class="muted">&mdash; Damajuana v Hacha, 2026-10-21 19:00:00 UTC</span></li><li><a href="cs2/picks.html#fx-1082837"><strong>Zetta</strong> 76%</a> <span class="muted">&mdash; Zetta v LOS NINOS, 2026-10-21 22:00:00 UTC</span></li></ul>
+<ul class="plain"><li><a href="cs2/picks.html#fx-1082837"><strong>LOS NINOS</strong> 61%</a> <span class="muted">&mdash; Zetta v LOS NINOS, 2026-10-21 22:00:00 UTC</span></li><li><a href="cs2/picks.html#fx-1081870"><strong>Rare Atom</strong> 62%</a> <span class="muted">&mdash; Vitalem Aerem v Rare Atom, 2026-10-22 05:00:00 UTC</span></li><li><a href="cs2/picks.html#fx-1081597"><strong>benched gods</strong> 54%</a> <span class="muted">&mdash; benched gods v TitanFlow, 2026-10-22 11:00:00 UTC</span></li></ul>
 </div>
 <p>Mixed best-book prices, unsupported aliases and an unrated-team floor differ from the current desk: <a href="dashboard/flagged.html">limitations</a>.</p>
 <p><a href="hotspawn-cs2/index.html">Additional CS2 research board</a> · <a href="hotspawn-cs2/picks.html">All research picks</a> · <a href="hotspawn-cs2/unresolved.html">Unresolved</a>. Direction-only picks for an unrated opponent are not source-verified and are not imported into the current desk.</p>
@@ -404,7 +427,7 @@ Do not add their counts together or use an older estimate to fill a current blan
 
 </main>
 <footer class="wrap">
-  <p>Page generated <strong>2026-10-21 20:26 UTC</strong>. Fixture list and every quoted price are read from the
+  <p>Page generated <strong>2026-10-21 20:27 UTC</strong>. Fixture list and every quoted price are read from the
   public sources linked on each row; HotSpawn supplies fixtures and separate contest context, never
   a match-win probability. Values that could not be confirmed against an external source are left blank and
   listed on the <a href="flagged.html">Flagged for review</a> page.</p>

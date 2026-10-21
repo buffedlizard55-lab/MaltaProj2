@@ -402,7 +402,10 @@ def build_board(fixtures_doc: dict, quotes_doc: dict, ratings_doc: dict, now) ->
         if row["market"]:
             prob_a = row["market"]["prob_a"]
             basis = "market"
-            edge = abs(prob_a - 0.5)
+            # The published `edge` is the distance between the two probabilities, so the tie rule
+            # must be measured the same way; measuring it against 0.5 made the stated rule
+            # ("an edge below 0.005 is a coin flip") disagree with the value it published.
+            edge = abs(prob_a - row["market"]["prob_b"])
             side = None if (row["market"]["prob_b"] is None) else ("a" if prob_a > row["market"]["prob_b"] else "b")
             if row["market"]["spread_a"] is not None and row["market"]["spread_a"] > 0.25:
                 row["flags"].append("wide_source_disagreement")
