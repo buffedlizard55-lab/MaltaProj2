@@ -376,9 +376,9 @@ Earlier boards remain live, e.g.
 <a href="{'start/index.html' if base else '../start/index.html'}">start</a>,
 <a href="{'desk/index.html' if base else '../desk/index.html'}">desk</a>,
 <a href="{'ourline/index.html' if base else '../ourline/index.html'}">ourline</a>,
-<a href="{'cs2/index.html' if base else '../cs2/index.html'}">cs2</a> — they are
-dated research snapshots, superseded by the picks above. The collector snapshot that seeds
-this board is documented on the <a href="{base}method.html">method page</a>.</p>
+<a href="{'cs2/index.html' if base else '../cs2/index.html'}">cs2</a>,
+<a href="{'hotspawn-live/index.html' if base else '../hotspawn-live/index.html'}">hotspawn-live</a> — they are
+dated research snapshots, superseded by the picks above.</p>
 """
 
 
@@ -691,10 +691,13 @@ fail by design after this consolidation (measured 2026-10-21: <code>tests/test_1
 in the root page). Both passed against the old landing and are owned by their sessions;
 the new front door supersedes those assertions. This board&rsquo;s own suite
 (<code>tests/test_d9d7627b.py</code>, 32 tests) passes.</li>
-<li><code>update-data.yml</code> (hourly) regenerates a root page via
-<code>scripts/build_site.py</code> when it succeeds; it has been failing on main. If it is
-revived, root-page ownership needs re-coordination — this board&rsquo;s workflow also
-publishes the root executive summary every 2 hours (see COORDINATION.md, session d9d7627b).</li>
+<li><b>Root-page contention:</b> several sessions&rsquo; workflows publish a root
+<code>index.html</code> (<code>update-data.yml</code> via <code>scripts/build_site.py</code>,
+currently failing; <code>hotspawn-live-82a9a0cc.yml</code> every 4h; this board every 2h).
+The root URL therefore shows whichever pipeline refreshed last. This board&rsquo;s stable,
+never-overwritten home is <a href="{base}index.html">hotspawn-cs2/</a> — bookmark that.
+Root ownership should be settled by a future coordination pass (see COORDINATION.md,
+session d9d7627b).</li>
 <li>GitHub&rsquo;s <code>schedule</code> trigger has historically dropped runs in this repo;
 this board&rsquo;s workflow therefore also runs on demand and its freshness is printed at
 the top of every page.</li>
