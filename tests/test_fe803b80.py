@@ -16,8 +16,14 @@ from html.parser import HTMLParser
 from urllib.parse import urlsplit, unquote
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts", "fe803b80"))
-import core  # noqa: E402
+# The module is loaded under a unique name: several sessions keep a file called ``core`` and a
+# plain ``import core`` would silently pick up another session's module when the whole suite runs
+# in one process (see COORDINATION.md, session c9c97561).
+import importlib.util as _ilu
+_core_spec = _ilu.spec_from_file_location(
+    "fe803b80_core", os.path.join(ROOT, "scripts", "fe803b80", "core.py"))
+core = _ilu.module_from_spec(_core_spec)
+_core_spec.loader.exec_module(core)
 
 DATA = os.path.join(ROOT, "data", "fe803b80")
 SITE = os.path.join(ROOT, "board")
@@ -114,7 +120,9 @@ class BoardTests(unittest.TestCase):
                     line["pick_probability"],
                     line["prob_a"] if line["pick"] == row["team_a"] else line["prob_b"],
                     places=6)
-                self.assertIn(line["confidence"], ("Strong", "Solid", "Lean", "Toss-up"))
+                self.assertIn(line["confidence"],
+                              ("Strong", "Solid", "Lean", "Toss-up",
+                               "Bound (unrated opponent)", "Bound (alias candidate)"))
             else:
                 self.assertIn("no_source_input_available_row_left_blank", row["flags"])
 
@@ -167,18 +175,30 @@ class BoardTests(unittest.TestCase):
             if (row.get("line") or {}).get("basis") != "model":
                 continue
             basis = row["model"].get("basis")
-            self.assertIn(basis, ("valve_vrs", "originated_elo", "originated_rank"),
+            self.assertIn(basis, ("valve_vrs", "originated_elo", "originated_rank",
+                                  "originated_hltv_rank", "vrs_floor_bound",
+                                  "vrs_alias_candidate_bound", "vrs_alias_candidate"),
                           row["fixture_id"])
             urls = " ".join(s.get("url") or "" for s in row["sources"])
-            if basis == "valve_vrs":
+            if basis in ("valve_vrs", "vrs_floor_bound", "vrs_alias_candidate_bound",
+                         "vrs_alias_candidate"):
                 self.assertTrue(row["model"].get("prob_a") is not None)
                 self.assertIn("counter-strike_regional_standings", urls, row["fixture_id"])
+            elif basis == "originated_hltv_rank":
+                self.assertIn("hltv.org", urls, row["fixture_id"])
             else:
                 self.assertIn("bo3.gg", urls, row["fixture_id"])
                 self.assertTrue(row["model"].get("elo"), row["fixture_id"])
             if basis == "originated_rank":
                 self.assertIn("originated_rank_line_bo3gg_ranking", row["flags"],
                               row["fixture_id"])
+            if basis in ("vrs_floor_bound", "vrs_alias_candidate_bound", "vrs_alias_candidate"):
+                # a bounded line must publish the assumption it depends on
+                kinds = {s.get("kind") for s in row["sources"]}
+                self.assertIn("assumption", kinds, row["fixture_id"])
+                if basis == "vrs_alias_candidate_bound":
+                    self.assertIn("alias_candidate_identity_unconfirmed", row["flags"],
+                                  row["fixture_id"])
 
     def test_hotspawn_crowd_percentages_are_absent_everywhere(self):
         """The only permitted mention of crowd-picks is the note that they are never used."""

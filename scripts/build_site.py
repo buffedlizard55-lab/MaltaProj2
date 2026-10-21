@@ -642,6 +642,92 @@ probabilities, sources</span><span>&rarr;</span></a>
 </div>"""
 
 
+def full_coverage_front_html():
+    """The phone front door: one list, one number per team, one place to look.
+
+    Reads the canonical full-coverage board (data/fe803b80/board.json), which is refreshed
+    continuously from the public HotSpawn lobby and prices every open fixture from external
+    bookmakers/exchanges or from a clearly labelled official-rating line. HotSpawn's crowd
+    percentage is never used here.
+    """
+    board = load("data/fe803b80/board.json") or {}
+    rows = board.get("open") or []
+    if not rows:
+        return ""
+    summary = board.get("summary") or {}
+    stamp = esc(fmt_time(board.get("generated_utc")) or "unverified")
+    open_n = summary.get("open", len(rows))
+    priced = summary.get("open_with_market", 0)
+    bounded = summary.get("open_bounded", 0)
+    originated = summary.get("open_originated", 0)
+    blank = summary.get("open_blank", 0)
+    lines = []
+    for row in rows:
+        line = row.get("line") or {}
+        pick = line.get("pick")
+        prob_a = line.get("prob_a")
+        prob_b = line.get("prob_b")
+        basis = (line.get("basis") or "").replace("+", " + ")
+        model = row.get("model") or {}
+        if basis == "model":
+            basis = {"valve_vrs": "Valve VRS model",
+                     "originated_elo": "Elo over published results",
+                     "originated_rank": "bo3.gg ranking",
+                     "originated_hltv_rank": "HLTV ranking",
+                     "vrs_floor_bound": "VRS floor bound",
+                     "vrs_alias_candidate_bound": "VRS bound (alias candidate)",
+                     "vrs_alias_candidate": "VRS line (alias candidate)"}.get(model.get("basis"),
+                                                                             "originated")
+        elif basis:
+            basis = basis.replace("market", "market price").replace("model", "model")
+        sources = row.get("sources") or []
+        priced_sources = [s for s in sources if s.get("kind") == "price"]
+        other_sources = [s for s in sources if s.get("kind") in ("rating", "identity", "assumption")]
+        links = []
+        for s in (priced_sources + other_sources)[:3]:
+            if s.get("url"):
+                links.append(f'<a href="{esc(s["url"])}" rel="noopener">{esc(s.get("label"))}</a>')
+        src_cell = " · ".join(links) if links else '<span class="blank">—</span>'
+        start = str(row.get("start_utc") or "")[:16].replace("T", " ")
+        team_a = esc(row.get("team_a"))
+        team_b = esc(row.get("team_b"))
+        pick_cell = (f'<strong class="ok">{esc(pick)}</strong>'
+                     if pick else '<span class="blank">—</span>')
+        lines.append(
+            '<tr>'
+            f'<td data-label="Match"><strong>{team_a}</strong> vs {team_b}'
+            f'<br><span class="mini">{esc(row.get("competition") or "")}</span></td>'
+            f'<td data-label="Start (UTC)">{esc(start)}</td>'
+            f'<td data-label="{team_a} win">{pct(prob_a) or "—"}</td>'
+            f'<td data-label="{team_b} win">{pct(prob_b) or "—"}</td>'
+            f'<td data-label="Pick">{pick_cell}</td>'
+            f'<td data-label="Basis">{esc(basis or "—")}</td>'
+            f'<td data-label="Sources">{src_cell}</td>'
+            '</tr>')
+    return f'''
+<div class="card" id="front-door" style="border:2px solid var(--ok);padding:14px;margin:0 0 16px">
+<p class="eyebrow">📱 Where the picks are · board built {stamp}</p>
+<h2 style="margin:4px 0 8px">A pick for every Counter-Strike 2 match on the HotSpawn lobby</h2>
+<p style="margin:0 0 10px"><strong>{esc(open_n)}</strong> open fixtures ·
+<strong>{esc(open_n - blank)}</strong> carry a pick and a win probability for each team ·
+<strong>{esc(priced)}</strong> are priced by a bookmaker or exchange ·
+<strong>{esc(bounded)}</strong> are priced under a stated assumption ·
+<strong>{esc(originated)}</strong> come from published ratings or results ·
+<strong>{esc(blank)}</strong> have no number at all (listed, not guessed).</p>
+<p class="start-links" style="margin:0 0 10px">
+<a class="btn" href="board/picks.html" style="margin:4px 8px 4px 0"><strong>All picks — every open match →</strong></a>
+<a class="btn ghost" href="board/unresolved.html" style="margin:4px 8px 4px 0">Unresolved picks &amp; limitations</a>
+<a class="btn ghost" href="board/flagged.html" style="margin:4px 8px 4px 0">Flagged for review</a>
+<a class="btn ghost" href="board/method.html" style="margin:4px 8px 4px 0">Method &amp; sources</a>
+</p>
+<div class="tablewrap"><table class="responsive"><thead><tr><th>Match</th><th>Start (UTC)</th>
+<th>Team 1 win</th><th>Team 2 win</th><th>Pick</th><th>Basis</th><th>Sources</th></tr></thead>
+<tbody>{"".join(lines)}</tbody></table></div>
+<p class="mini" style="margin:6px 0 0">Every number links to the source it came from. HotSpawn is
+used to list the fixtures and to settle the results — never to set a probability. Estimates are
+model output, not betting advice.</p>
+</div>'''
+
 def canonical_home(pick_board):
     """Render the strict canonical snapshot and clearly dated secondary boards."""
     pick_summary = pick_board.get("summary") or {}
@@ -740,6 +826,7 @@ roster investigation are on the <a href="day4/twc-review.html">day 1–3 review<
     return f"""
 <section id="executive-summary" aria-labelledby="summary-title">
 {cs2_front_html()}
+{full_coverage_front_html()}
 <div class="hero-card">
 <p class="eyebrow">Canonical market-only boards (older evidence standard)</p>
 {start_front_html()}
