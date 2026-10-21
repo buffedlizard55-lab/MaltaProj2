@@ -852,6 +852,39 @@ probabilities, sources</span><span>&rarr;</span></a>
 
 
 
+def pickboard_front_html():
+    """Front-door card for the session-86f3af65 board in pickboard/.
+
+    Returns "" when this session's board is absent from the checkout, so a partially staged
+    site never shows a card that links nowhere.
+    """
+    b = load("data/86f3af65/board.json")
+    c = b.get("coverage") or {}
+    if not c.get("open"):
+        return ""
+    cap = b.get("capture") or {}
+    when = fmt_time(cap.get("captured_utc"))
+    market = (c.get("market") or 0) + (c.get("market_contested") or 0)
+    return f'''<section class="desk-front" id="pickboard-front" aria-labelledby="pickboard-title">
+<p class="eyebrow">📱 every open CS2 match · one pick + both probabilities · refreshed every 4h</p>
+<h2 id="pickboard-title">A pick for every match, or the reason there isn&rsquo;t one</h2>
+<p><strong>{esc(c.get("with_pick"))} of {esc(c.get("open"))} open HotSpawn CS2 fixtures</strong> carry a
+pick and both teams&rsquo; win probabilities &mdash; {esc(market)} from external betting lines,
+{esc(c.get("originated_vrs"))} originated from Valve&rsquo;s official rankings,
+{esc(c.get("originated_floor"))} from a disclosed rating floor. {esc(c.get("unresolved"))} blank,
+{esc(c.get("caveated"))} published with a stated limitation. Capture {esc(when)}.</p>
+<p>
+<a class="btn live-board-cta" href="pickboard/index.html"><span><strong>Executive summary</strong> &middot; where the updated picks live</span><span>&rarr;</span></a>
+<a class="btn live-board-cta" href="pickboard/picks.html"><span><strong>All picks</strong> &middot; every match, both probabilities</span><span>&rarr;</span></a>
+<a class="btn live-board-cta" href="pickboard/unresolved.html"><span><strong>Unresolved picks &amp; limitations</strong> &middot; what could not be sourced</span><span>&rarr;</span></a>
+<a class="btn live-board-cta" href="pickboard/flagged.html"><span><strong>Flagged for review</strong> &middot; repo irregularities &amp; disagreements</span><span>&rarr;</span></a>
+</p>
+<p class="muted">Also: <a href="pickboard/tournaments.html">picks by event</a> &middot;
+<a href="pickboard/sources.html">every raw quote and rating row</a> &middot;
+<a href="pickboard/method.html">method &amp; the reverse-engineered lobby</a>.</p>
+</section>
+'''
+
 def everypick_hero_html():
     """Phone-first start-here block, fed by the live every-match board.
 
@@ -1312,7 +1345,8 @@ def main() -> int:
     closed_fixtures = [f for f in fixtures if f.get("pick_status") != "open"]
     top_table, _ = fixtures_table(open_fixtures)
     pick_board = load("data/c64a5e19/board.json")
-    idx_body = everypick_hero_html() + canonical_home(pick_board)
+    idx_body = (pickboard_front_html() + everypick_hero_html()
+                + canonical_home(pick_board))
     write("day-one.html", page("Day-one review & contrarian strategy",
           "14 October 2026 · Thunderpick World Championship · source review 15 October 2026",
           day_one_review(), generated_at, active="day-one.html"))
