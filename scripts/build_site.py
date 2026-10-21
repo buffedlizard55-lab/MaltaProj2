@@ -74,10 +74,10 @@ def pct(value):
 NAV = [
     # Evidence-only desk leads; all parallel research remains linked, at most 12 mobile links.
     ("index.html", "Home"),
-    ("dashboard/picks.html", "\U0001F4F1 Today's picks"),
-    ("dashboard/unresolved.html", "Unresolved"),
-    ("dashboard/flagged.html", "Flagged"),
-    ("dashboard/sources.html", "Method"),
+    ("everypick/picks.html", "\U0001F4F1 Every pick"),
+    ("everypick/unresolved.html", "Unresolved"),
+    ("everypick/flagged.html", "Flagged"),
+    ("everypick/method.html", "Method"),
     ("hotspawn-live/index.html", "Alternative live board"),
     ("picks-every-match/index.html", "Canonical board"),
     ("picks-every-match/unresolved.html", "Canonical unresolved"),
@@ -97,56 +97,6 @@ def _board_stamp(rel, *keys):
             return str(value).replace("T", " ").replace("Z", " UTC")
     return None
 
-
-
-def everypick_front_html():
-    """907e9435: mobile-first front door for the board that covers every open match.
-
-    Reads its own board.json so the counts on the landing page can never be staler than the board
-    they link to, and links the separate unresolved/limitations section from the executive summary.
-    """
-    b = load("data/907e9435/board.json") or {}
-    s = b.get("summary") or {}
-    if not s:
-        return ""
-    stamp = esc(fmt_time(b.get("generated_utc")) or "unverified")
-    capture = esc(fmt_time(b.get("snapshot_utc")) or "unverified")
-    rows = sorted([r for r in (b.get("open") or []) if r.get("pick")],
-                  key=lambda r: r.get("start_utc") or "")[:3]
-    preview = "".join(
-        '<tr><td data-label="Match"><strong>{a}</strong> v {b}<br><span class="small">{c}</span></td>'
-        '<td data-label="Pick"><strong>{pick}</strong> {prob}</td>'
-        '<td data-label="Basis">{basis}</td>'
-        '<td data-label="Source"><a href="{src}" rel="noopener">source</a></td></tr>'.format(
-            a=esc(r.get("team_a")), b=esc(r.get("team_b")), c=esc(r.get("competition")),
-            pick=esc((r.get("pick") or {}).get("team")),
-            prob=esc(pct((r.get("pick") or {}).get("prob")) or ""),
-            basis=esc(r.get("tier_label")),
-            src=esc(next((e.get("url") for e in (r.get("evidence") or [])
-                          if str(e.get("url") or "").startswith("https://")),
-                         r.get("hotspawn_url") or "")))
-        for r in rows)
-    return f"""<section class="hero-card" id="everypick-front">
-<p class="eyebrow">\u25cf Start here &middot; refreshed every 4 hours &middot; built {stamp}</p>
-<h1>Every open HotSpawn CS2 match has a pick</h1>
-<p><strong>{esc(s.get('with_pick'))} of {esc(s.get('open'))}</strong> open pick'em matches carry a pick:
-<strong>{esc(s.get('verified_picks'))}</strong> with a verified external bookmaker/exchange price,
-<strong>{esc(s.get('vrs_model'))}</strong> originated from Valve's official rating table,
-<strong>{esc(s.get('assumption'))}</strong> labelled as an assumption and
-<strong>{esc(s.get('unresolved'))}</strong> withheld because the sources disagree. HotSpawn crowd
-percentages are never used. Data captured {capture}.</p>
-<div class="desk-actions">
-<a class="btn btn-hero" href="everypick/picks.html"><span><strong>Open every pick</strong> &middot; {esc(s.get('open'))} matches, both win probabilities, source on every row</span><span>&rarr;</span></a>
-<a class="btn" href="everypick/unresolved.html"><span><strong>Unresolved &amp; limitations ({esc(s.get('assumption', 0) + s.get('unresolved', 0))})</strong> &middot; the separate section for rows we cannot verify</span><span>&rarr;</span></a>
-<a class="btn" href="everypick/flagged.html"><span><strong>Flagged for review</strong> &middot; alias decisions, rejected prices, repo irregularities</span><span>&rarr;</span></a>
-<a class="btn" href="everypick/method.html"><span><strong>Method &amp; sources</strong> &middot; the ladder, the formulas and every endpoint</span><span>&rarr;</span></a>
-</div>
-<div class="tablewrap"><table class="responsive"><thead><tr><th>Next matches</th><th>Pick</th><th>Basis</th><th>Source</th></tr></thead>
-<tbody>{preview}</tbody></table></div>
-<p class="small">Mobile view: the picks page is one card per match, with the pick, both teams'
-probabilities and the source links. Everything below on this page is the archive of parallel boards
-with other policies.</p>
-</section>"""
 
 
 def hotspawn_live_front_html():
@@ -889,7 +839,7 @@ def everypick_hero_html():
     return f'''<!-- everypick:start -->
 <section id="every-match-executive-summary" aria-labelledby="ems-title">
 <p class="eyebrow">● START HERE · every open HotSpawn CS2 match · refreshed every four hours</p>
-<h2 id="ems-title" style="margin-top:6px;font-size:clamp(1.25rem,5vw,1.7rem);line-height:1.25">Every match. A pick. Both win probabilities. A source you can open.</h2>
+<h1 id="ems-title" style="margin-top:6px;font-size:clamp(1.35rem,5.4vw,1.85rem);line-height:1.25">Every match. A pick. Both win probabilities. A source you can open.</h1>
 <p><strong>{s.get("lobby_open", 0)}</strong> open lobby matches <strong>+{s.get("api_only", 0)}</strong>
 API-only · <strong>{s.get("with_pick", 0)}</strong> with a pick and two probabilities ·
 <strong>{s.get("market", 0)}</strong> priced from real betting lines ·
@@ -905,7 +855,9 @@ official Valve ratings · <strong>{s.get("unresolved", 0)}</strong> unresolved. 
 <a class="btn live-board-cta" href="everypick/flagged.html"><span><strong>Flagged for review</strong> · irregularities and unverified items</span><span>→</span></a>
 </div>
 <p class="note">Every other desk on this site is an earlier session's own board and is kept below as an
-archive. If you only open one page, open <a href="everypick/picks.html">All picks</a>.</p>
+archive. If you only open one page, open <a href="everypick/picks.html">All picks</a>. A stricter
+cross-check of the same fixtures — it withholds any row whose two documented bounds disagree about the
+favourite instead of publishing a value — is at <a href="pickdesk/index.html">pickdesk/</a>.</p>
 </section>
 <!-- everypick:end -->
 
@@ -1049,7 +1001,6 @@ and is left <strong>explicitly blank</strong> and flagged on <a href="lobby/flag
 </div>"""
 
     return f"""
-{everypick_front_html()}
 <section id="updated-match-desk" aria-labelledby="updated-desk-title" class="hero-card">
 <p class="eyebrow">Parallel desks &amp; archive · other source policies</p>
 <h2 id="updated-desk-title">All matches. Clear picks. Source-linked probabilities.</h2>

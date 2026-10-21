@@ -1,4 +1,4 @@
-"""Contract tests for session 907e9435 (everypick board).
+"""Contract tests for session 907e9435 (pickdesk board).
 
 These tests run against the committed capture and the rendered pages, so a regression in the
 resolution ladder, the join gate, the assumption policy or the published HTML fails the workflow
@@ -21,7 +21,7 @@ import core  # noqa: E402
 
 BOARD = ROOT / "data" / "907e9435" / "board.json"
 SNAPSHOT = ROOT / "data" / "907e9435" / "snapshot.json"
-SITE = ROOT / "everypick"
+SITE = ROOT / "pickdesk"
 
 
 def load(path: Path):
