@@ -1,7 +1,7 @@
 name: Verify and publish dashboard
 on:
   push:
-    branches: [main, arena/778756a1-maltaproj2, arena/3faf40e8-maltaproj2, arena/ef111e02-maltaproj2, arena/d4ec32a9-maltaproj2, arena/ae75c5c3-maltaproj2, arena/8723ad37-maltaproj2, arena/479ef53e-maltaproj2, arena/69e4c06a-maltaproj2, arena/5468b0ba-maltaproj2, arena/5a40690b-maltaproj2]
+    branches: [main, arena/ff88c096-maltaproj2, arena/778756a1-maltaproj2, arena/3faf40e8-maltaproj2, arena/ef111e02-maltaproj2, arena/d4ec32a9-maltaproj2, arena/ae75c5c3-maltaproj2, arena/8723ad37-maltaproj2, arena/479ef53e-maltaproj2, arena/69e4c06a-maltaproj2, arena/5468b0ba-maltaproj2, arena/5a40690b-maltaproj2]
   pull_request:
     branches: [main]
   schedule:
@@ -23,6 +23,15 @@ jobs:
           cache: pip
           cache-dependency-path: scripts/requirements.txt
       - run: pip install -r scripts/requirements.txt
+      - name: Sync downstream derived boards with latest upstream captures
+        run: |
+          python scripts/6ffacd40/audit.py
+          python scripts/a89b76e9/build.py
+          python scripts/e1b48771/build.py
+          python scripts/ff88c096/resolve.py
+          python scripts/ff88c096/audit_repo.py
+          python scripts/ff88c096/build.py
+          python scripts/build_site.py
       - name: Validate preserved evidence and arithmetic
         run: python -m unittest discover -s tests -v
       - name: Verify independent audit handoffs
@@ -42,6 +51,16 @@ jobs:
           python scripts/5a40690b/build.py
           python scripts/7c2622db/build.py
           python scripts/7c2622db/verify.py
+          python scripts/6ffacd40/audit.py
+          python scripts/a89b76e9/build.py
+          python scripts/e1b48771/build.py
+          python scripts/ff88c096/resolve.py
+          python scripts/ff88c096/audit_repo.py
+          python scripts/ff88c096/build.py
+          python scripts/7adc7718/collect.py
+          python scripts/7adc7718/resolve.py
+          python scripts/7adc7718/build.py
+          python scripts/build_site.py
       - name: Recheck generated site and every source-linked row
         run: python -m unittest discover -s tests -v
       - name: Browser smoke tests
@@ -55,6 +74,8 @@ jobs:
           python scripts/c64a5e19/browser_smoke.py
           python scripts/browser_778756a1.py
           python scripts/69e4c06a/browser_smoke.py
+          python scripts/ff88c096/browser_check.py
+          python scripts/7adc7718/browser_smoke.py
       - name: Stage all session-owned published sections
         run: python scripts/stage_site.py
       - uses: actions/upload-pages-artifact@v3

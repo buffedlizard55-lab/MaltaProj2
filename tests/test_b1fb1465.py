@@ -33,7 +33,9 @@ def _load_local(_name: str):
     spec = importlib.util.spec_from_file_location(f"b1fb1465_{_name}", HERE / f"{_name}.py")
     assert spec and spec.loader
     module = importlib.util.module_from_spec(spec)
-    sys.modules[_name] = module  # intra-package `import core` during exec resolves to this one
+    sys.modules[_name] = module
+    if _name == "core":
+        sys.modules["core_b1fb1465"] = module
     spec.loader.exec_module(module)
     return module
 
@@ -415,6 +417,7 @@ class EndToEnd(unittest.TestCase):
         self.assertEqual(verify.main(), 0)
 
     def test_verify_catches_an_unflagged_name_decision(self):
+        import contextlib, io
         build.main()
         render.main()
         path = self.root / "data" / "b1fb1465" / "board.json"
@@ -423,9 +426,11 @@ class EndToEnd(unittest.TestCase):
             if row.get("label_disagreements"):
                 row["flags"] = [f for f in row["flags"] if f != "opponent_label_disagreement"]
         path.write_text(json.dumps(board), encoding="utf-8")
-        self.assertEqual(verify.main(), 1)
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(verify.main(), 1)
 
     def test_verify_catches_an_unevidenced_name_decision(self):
+        import contextlib, io
         build.main()
         render.main()
         path = self.root / "data" / "b1fb1465" / "board.json"
@@ -436,27 +441,33 @@ class EndToEnd(unittest.TestCase):
             for ld in row.get("label_disagreements") or []:
                 ld["evidence"] = []
         path.write_text(json.dumps(board), encoding="utf-8")
-        self.assertEqual(verify.main(), 1)
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(verify.main(), 1)
 
     def test_verify_catches_a_tampered_probability(self):
+        import contextlib, io
         build.main()
         render.main()
         path = self.root / "data" / "b1fb1465" / "board.json"
         board = json.loads(path.read_text())
         board["open"][0]["market"]["quotes"][0]["prob_a"] += 0.2
         path.write_text(json.dumps(board), encoding="utf-8")
-        self.assertEqual(verify.main(), 1)
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(verify.main(), 1)
 
     def test_verify_catches_a_missing_source_link(self):
+        import contextlib, io
         build.main()
         render.main()
         path = self.root / "data" / "b1fb1465" / "board.json"
         board = json.loads(path.read_text())
         board["open"][0]["sources"] = []
         path.write_text(json.dumps(board), encoding="utf-8")
-        self.assertEqual(verify.main(), 1)
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(verify.main(), 1)
 
     def test_verify_catches_a_wrong_pick(self):
+        import contextlib, io
         build.main()
         render.main()
         path = self.root / "data" / "b1fb1465" / "board.json"
@@ -465,7 +476,8 @@ class EndToEnd(unittest.TestCase):
             if row["pick"]:
                 row["pick"] = row["team_b"] if row["pick"] == row["team_a"] else row["team_a"]
         path.write_text(json.dumps(board), encoding="utf-8")
-        self.assertEqual(verify.main(), 1)
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(verify.main(), 1)
 
     def test_unresolved_rows_stay_blank(self):
         snapshot_path = self.root / "data" / "b1fb1465" / "snapshot.json"

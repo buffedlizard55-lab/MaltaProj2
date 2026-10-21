@@ -1,0 +1,59 @@
+name: Auto-Refresh HotSpawn CS2 Lobby & Picks (7adc7718)
+
+on:
+  schedule:
+    # Auto-check play.hotspawn.com/lobby + external CS2 odds every 4 hours (within 4-8h window)
+    - cron: '17 */4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lobby-7adc7718-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh-lobby-picks:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 20
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: scripts/requirements.txt
+
+      - run: pip install -r scripts/requirements.txt
+
+      - name: Discover open HotSpawn CS2 matches & external lines
+        run: |
+          python scripts/7adc7718/collect.py
+          python scripts/7adc7718/resolve.py
+          python scripts/7adc7718/build.py
+          python scripts/build_site.py
+
+      - name: Verify zero crowd contamination, math parity & zero broken links
+        run: |
+          python -m unittest tests/test_7adc7718.py -v
+          python scripts/stage_site.py
+
+      - name: Commit & push refreshed CS2 picks to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/7adc7718/ lobby/ index.html cs2.html flagged.html methodology.html probabilities.html tournaments.html research.html day-one.html lol.html tournament-*.html data/lines.json data/current_probabilities.json evidence/matching_evidence.json
+          if git diff --cached --quiet; then
+            echo "No material changes since prior capture."
+            exit 0
+          fi
+          git commit -m "chore(7adc7718): auto-refresh HotSpawn CS2 lobby picks $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin main && exit 0
+            sleep 5
+          done
+          exit 1

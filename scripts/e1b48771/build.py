@@ -108,11 +108,13 @@ def load_json(path, default=None):
 
 # ------------------------------------------------------------------ inputs
 def newest_board():
-    """Freshest committed full-coverage board that has an ``open`` list."""
+    """Freshest committed full-coverage board that has an ``open`` list and Valve VRS ``calibration.k``."""
     best, best_dt, best_path = None, None, None
     for path in glob.glob(os.path.join(ROOT, "data", "*", "board.json")):
         doc = load_json(path)
         if not isinstance(doc, dict) or not isinstance(doc.get("open"), list) or not doc["open"]:
+            continue
+        if not isinstance(doc.get("calibration"), dict) or "k" not in doc["calibration"]:
             continue
         dt = parse_iso(doc.get("generated_utc"))
         if dt is None:
@@ -166,7 +168,13 @@ def row_from_board(fx):
     }
 
 
-def row_from_resolution(fx, res):
+def row_from_resolution(fx, res, k=0.25):
+    if res.get("resolution") != "market" and "vrs_points_a" in res and "vrs_points_b" in res:
+        pa = round(vrs_prob(res["vrs_points_a"], res["vrs_points_b"], k), 6)
+        pb = round(1.0 - pa, 6)
+    else:
+        pa = res.get("prob_a")
+        pb = res.get("prob_b")
     return {
         "fixture_id": str(fx.get("fixture_id")),
         "competition": fx.get("competition") or res.get("competition"),
@@ -178,9 +186,9 @@ def row_from_resolution(fx, res):
         "team_b": fx.get("team_b"),
         "hotspawn_url": fx.get("hotspawn_url"),
         "pick": res.get("pick"),
-        "pick_prob": res.get("prob_a") if res.get("pick") == fx.get("team_a") else res.get("prob_b"),
-        "prob_a": res.get("prob_a"),
-        "prob_b": res.get("prob_b"),
+        "pick_prob": pa if res.get("pick") == fx.get("team_a") else pb,
+        "prob_a": pa,
+        "prob_b": pb,
         "basis": "research-market" if res.get("resolution") == "market" else "originated",
         "basis_label": res.get("basis_label"),
         "confidence": res.get("confidence"),
@@ -194,6 +202,7 @@ def row_from_resolution(fx, res):
 
 def build():
     board = newest_board()
+    k = float((board.get("calibration") or {}).get("k", 0.25))
     resolutions = (load_json(RESOLUTIONS).get("fixtures") or {})
     rows = []
     for fx in board["open"]:
@@ -211,7 +220,7 @@ def build():
                     "ledger is kept for review and is no longer the source of the number."]
             rows.append(row)
         elif str(fx.get("fixture_id")) in resolutions:
-            rows.append(row_from_resolution(fx, resolutions[str(fx.get("fixture_id"))]))
+            rows.append(row_from_resolution(fx, resolutions[str(fx.get("fixture_id"))], k=k))
         else:
             row = row_from_board(fx)
             row["pick"] = None

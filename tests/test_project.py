@@ -5,6 +5,7 @@ from pathlib import Path
 from urllib.parse import urlsplit, unquote
 from bs4 import BeautifulSoup
 ROOT=Path(__file__).resolve().parents[1]
+sys.modules.pop('collect', None)
 sys.path.insert(0,str(ROOT/'scripts'))
 from collect import parse_lobby, iso_ms
 from model import fair_line, american_to_decimal

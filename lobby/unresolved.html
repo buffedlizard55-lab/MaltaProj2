@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unresolved CS2 Picks &amp; Limitations · HotSpawn CS2 Pick'em Desk</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #0b1017;
+  --surface: #131b26;
+  --surface-2: #192434;
+  --border: #28364a;
+  --ink: #ecf2f8;
+  --muted: #9fb0c3;
+  --brand: #58a6ff;
+  --pick: #2ea043;
+  --pick-bg: rgba(46, 160, 67, 0.16);
+  --pick-ink: #7ee787;
+  --amber: #d29922;
+  --amber-bg: rgba(210, 153, 34, 0.16);
+  --amber-ink: #f2cc60;
+  --red: #f85149;
+  --red-bg: rgba(248, 81, 73, 0.15);
+  --red-ink: #ffa198;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+a { color: var(--brand); text-decoration: none; text-underline-offset: 3px; }
+a:hover, a:focus-visible { text-decoration: underline; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid var(--amber-ink);
+  outline-offset: 2px;
+}
+.skip-link {
+  position: absolute; left: -9999px; top: 8px; z-index: 100;
+  background: var(--pick-ink); color: #06210e; font-weight: 700;
+  padding: 12px 16px; border-radius: 8px;
+}
+.skip-link:focus { left: 12px; }
+.topbar {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(11, 16, 23, 0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 16px; }
+.topbar-inner { padding: 10px 0 8px; }
+.brand-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.brand { font-weight: 800; font-size: 15px; letter-spacing: 0.02em; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.brand-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--pick-ink); box-shadow: 0 0 10px var(--pick); }
+.home-pill {
+  font-size: 12.5px; font-weight: 600; color: var(--muted);
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: 8px 12px; min-height: 44px; display: inline-flex; align-items: center;
+}
+nav.primary-nav {
+  display: flex; gap: 6px; overflow-x: auto; padding: 8px 0 4px;
+  scrollbar-width: thin; -webkit-overflow-scrolling: touch;
+}
+nav.primary-nav a {
+  flex: 0 0 auto; white-space: nowrap;
+  padding: 10px 13px; min-height: 44px;
+  display: inline-flex; align-items: center;
+  border-radius: 999px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--muted);
+  font-size: 13.5px; font-weight: 600;
+}
+nav.primary-nav a[aria-current="page"] {
+  background: var(--pick-bg); border-color: var(--pick); color: var(--pick-ink);
+}
+main { padding: 20px 0 56px; }
+h1 { font-size: clamp(1.45rem, 4.6vw, 2.05rem); line-height: 1.2; margin: 6px 0 8px; }
+h2 { font-size: 1.18rem; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 1rem; margin: 14px 0 6px; }
+.eyebrow { color: var(--pick-ink); font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin: 0; }
+.lede { color: var(--muted); max-width: 780px; margin: 0 0 16px; font-size: 14.5px; }
+.hero-box {
+  background: linear-gradient(145deg, #132033 0%, #111926 100%);
+  border: 1px solid #2d4260; border-radius: 16px; padding: 20px; margin-bottom: 18px;
+}
+.kpi-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px; margin: 16px 0;
+}
+.kpi {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 14px;
+}
+.kpi b { display: block; font-size: 1.55rem; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.kpi span { color: var(--muted); font-size: 12.5px; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 46px; padding: 10px 16px; border-radius: 10px;
+  font-weight: 700; font-size: 14px; border: 1px solid var(--border);
+  background: var(--surface-2); color: var(--ink); text-decoration: none;
+}
+.btn-go { background: var(--pick); border-color: var(--pick); color: #04190a; }
+.btn-warn { background: var(--amber-bg); border-color: var(--amber); color: var(--amber-ink); }
+.cat-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px; margin: 14px 0 22px;
+}
+.cat-card {
+  display: block; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 13px; padding: 15px 16px; color: var(--ink); text-decoration: none;
+}
+.cat-card:hover { border-color: var(--brand); text-decoration: none; }
+.cat-card.highlight { border-color: var(--pick); }
+.cat-card.warn-card { border-color: var(--amber); }
+.cat-card strong { display: block; font-size: 15.5px; margin-bottom: 4px; }
+.cat-card p { margin: 0; font-size: 13px; color: var(--muted); }
+.callout {
+  border-radius: 12px; padding: 14px 16px; margin: 16px 0;
+  background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--amber);
+}
+.callout.danger { border-left-color: var(--red); background: #191318; }
+.callout.ok { border-left-color: var(--pick); }
+.toolbar {
+  display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; align-items: center;
+}
+.toolbar input, .toolbar select {
+  min-height: 44px; padding: 9px 12px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--ink);
+  font: inherit; font-size: 14px;
+}
+.toolbar input { flex: 1 1 230px; }
+.table-wrap { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--surface); }
+table.picks-table { width: 100%; border-collapse: collapse; font-size: 13.8px; }
+table.picks-table th {
+  background: var(--surface-2); color: var(--muted); text-align: left;
+  font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 11px 12px; border-bottom: 1px solid var(--border);
+}
+table.picks-table td {
+  padding: 13px 12px; border-bottom: 1px solid var(--border); vertical-align: top;
+  overflow-wrap: anywhere;
+}
+table.picks-table tr:last-child td { border-bottom: 0; }
+table.picks-table tr.is-blank { background: rgba(248, 81, 73, 0.05); }
+.meta-line { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.team-probs { display: flex; flex-direction: column; gap: 6px; min-width: 205px; }
+.t-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.t-row.picked { font-weight: 800; color: var(--pick-ink); }
+.t-pct { font-variant-numeric: tabular-nums; font-weight: 800; font-size: 14.5px; }
+.dual-bar {
+  display: flex; height: 9px; border-radius: 999px; overflow: hidden;
+  background: #253346; gap: 2px;
+}
+.dual-bar span.bar-a { background: #58a6ff; }
+.dual-bar span.bar-b { background: #a371f7; }
+.dual-bar.pick-a span.bar-a { background: var(--pick); }
+.dual-bar.pick-b span.bar-b { background: var(--pick); }
+.pick-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 11px; border-radius: 999px; font-weight: 800; font-size: 13.5px;
+  background: var(--pick-bg); border: 1px solid var(--pick); color: var(--pick-ink);
+}
+.pick-pill.blank {
+  background: var(--red-bg); border-color: var(--red); color: var(--red-ink);
+}
+.badge {
+  display: inline-block; padding: 3px 8px; border-radius: 6px;
+  font-size: 11.5px; font-weight: 700; margin: 4px 4px 0 0;
+  border: 1px solid var(--border); background: var(--surface-2); color: var(--muted);
+}
+.badge.featured_market { border-color: #2f81f7; color: #9ecbff; }
+.badge.rescue_exchange { border-color: var(--amber); color: var(--amber-ink); }
+.badge.rescue_vrs_model { border-color: #a371f7; color: #d2a8ff; }
+.badge.unresolved_blank { border-color: var(--red); color: var(--red-ink); }
+.badge.flag-chip { border-color: var(--amber); background: var(--amber-bg); color: var(--amber-ink); }
+.src-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.src-link {
+  display: inline-flex; align-items: center; min-height: 36px;
+  padding: 5px 10px; border-radius: 8px; font-size: 12.5px; font-weight: 600;
+  background: var(--surface-2); border: 1px solid var(--border); color: var(--brand);
+}
+footer {
+  border-top: 1px solid var(--border); margin-top: 36px; padding: 20px 0 36px;
+  color: var(--muted); font-size: 12.5px;
+}
+@media (max-width: 760px) {
+  .wrap { padding: 0 12px; }
+  .hero-box { padding: 15px; border-radius: 13px; }
+  .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cta-row .btn { width: 100%; }
+  .table-wrap { border: 0; background: transparent; overflow: visible; }
+  table.picks-table, table.picks-table tbody, table.picks-table tr, table.picks-table td {
+    display: block; width: 100%;
+  }
+  table.picks-table thead { display: none; }
+  table.picks-table tr {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 12px; margin-bottom: 12px;
+  }
+  table.picks-table td { border-bottom: 0; padding: 6px 0; }
+  table.picks-table td::before {
+    content: attr(data-label);
+    display: block; font-size: 11px; font-weight: 800; letter-spacing: 0.05em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+  }
+  .team-probs { min-width: 0; }
+  .src-link { min-height: 44px; padding: 8px 12px; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand-row">
+      <a class="brand" href="index.html"><span class="brand-dot"></span>HOTSPAWN CS2 PICK'EM · FULL LOBBY</a>
+      <a class="home-pill" href="../index.html">← Root Dashboard</a>
+    </div>
+    <nav class="primary-nav" aria-label="CS2 Pick'em sections"><a href="index.html">Summary</a><a href="picks.html">All Picks</a><a href="featured.html">Featured</a><a href="low-tier.html">Low-Tier Rescues</a><a href="unresolved.html" aria-current="page">Unresolved</a><a href="flagged.html">Flagged</a><a href="inventory.html">Full Inventory</a><a href="methodology.html">Method</a></nav>
+  </div>
+</header>
+<main id="main-content" class="wrap" tabindex="-1">
+
+    <p class="eyebrow">Unresolved Picks &amp; Methodological Boundaries</p>
+    <h1>Unresolved CS2 Picks &amp; Limitations (1 Blank, 4 Model Estimates)</h1>
+    <p class="lede">Where external betting markets and official team ratings both lack coverage, this system
+    withholds a number instead of inventing 50/50 odds, floor ratings, or crowd-derived estimates.</p>
+    <h2>1. Open Matches Left Blank &amp; Flagged Unverified (1)</h2>
+    <div class="table-wrap"><table class="picks-table"><thead><tr><th scope="col">Match &amp; Schedule</th><th scope="col">Win Probabilities</th><th scope="col">Recommended Pick &amp; Evidence</th><th scope="col">Verified Sources</th></tr></thead><tbody><tr id="m-1082837" class="is-blank" data-row="1" data-tier="unresolved_blank" data-search="zetta los ninos cct south america 2026 series #7 unresolved"><td data-label="Match &amp; Lock"><strong>Zetta vs LOS NINOS</strong><div class="meta-line">CCT South America 2026 Series #7 · Tier C · 2 pts</div><div class="meta-line">Kickoff: <time data-utc="2026-10-21T22:00:00Z">2026-10-21T22:00:00Z</time></div></td><td data-label="Team Win Probabilities"><div class="team-probs"><div class="t-row"><span>Zetta</span><span class="t-pct">—</span></div><div class="meta-line">No verified market or opponent rating — kept blank</div><div class="t-row"><span>LOS NINOS</span><span class="t-pct">—</span></div></div></td><td data-label="Recommended Pick &amp; Basis"><div class="pick-pill blank">⚠ BLANK · Unverified</div><div><span class="badge unresolved_blank">Unresolved · Blank (Unverified)</span><span class="badge">Unverified</span><a class="badge flag-chip" href="flagged.html#f-01">Flag F-01</a></div><div class="meta-line">Zero two-way moneyline quotes across Pinnacle, Bovada, Melbet, Kalshi KXCS2GAME, Polymarket, and Thunderpick/bo3.gg. HLTV match 2399865 confirms Zetta is HLTV #241 / Valve VRS #366 (412 pts) while LOS NINOS is &#x27;HLTV: Unranked, VRS: Unranked&#x27; with only 3 recorded core BO3s. HLTV community pick share (80%/20%) and HotSpawn crowd share (93%/7%) are strictly non-price sentiment inputs and are refused. Left intentionally blank and flagged as Unverified.</div></td><td data-label="Official / Verified Sources"><div class="src-list"><a class="src-link" href="https://www.hltv.org/matches/2399865/zetta-vs-los-ninos-cct-2026-south-america-series-7" rel="noopener">HLTV Match ↗</a><a class="src-link" href="https://www.hotspawn.com/matches/zetta-vs-los-ninos-cct-south-america-2026-series-7-1082837" rel="noopener">HotSpawn Card ↗</a></div></td></tr></tbody></table></div>
+    <h2>2. Originated Model Lines Subject to Rating-Model Limitations (4)</h2>
+    <p class="lede">These matches have verified official Oct 21, 2026 Valve Global Standings points for both teams
+    and receive a reproducible originated pick, but carry no live sportsbook price yet:</p>
+    <div class="table-wrap"><table class="picks-table"><thead><tr><th scope="col">Match &amp; Schedule</th><th scope="col">Win Probabilities</th><th scope="col">Recommended Pick &amp; Evidence</th><th scope="col">Verified Sources</th></tr></thead><tbody><tr id="m-1079187" class="" data-row="1" data-tier="rescue_vrs_model" data-search="butterfly bet-m nodwin clutch series #13 bet-m"><td data-label="Match &amp; Lock"><strong>Butterfly vs BET-M</strong><div class="meta-line">NODWIN Clutch Series #13 · Tier B · 3 pts</div><div class="meta-line">Kickoff: <time data-utc="2026-10-21T14:00:00Z">2026-10-21T14:00:00Z</time></div></td><td data-label="Team Win Probabilities"><div class="team-probs"><div class="t-row"><span>Butterfly</span><span class="t-pct">49.2%</span></div><div class="dual-bar pick-b" role="img" aria-label="Butterfly 49.2% vs BET-M 50.8%"><span class="bar-a" style="width:49.2%"></span><span class="bar-b" style="width:50.8%"></span></div><div class="t-row picked"><span>BET-M</span><span class="t-pct">50.8%</span></div></div></td><td data-label="Recommended Pick &amp; Basis"><div class="pick-pill">✓ PICK: BET-M (50.8%)</div><div><span class="badge rescue_vrs_model">Low-Tier Rescue · Originated Oct-21 VRS Line</span><span class="badge">Toss-up</span><a class="badge flag-chip" href="flagged.html#f-07">Flag F-07</a></div><div class="meta-line">Oct 21 Valve VRS: Butterfly 1022pt (#103) vs BET-M 1058pt (#94)</div></td><td data-label="Official / Verified Sources"><div class="src-list"><a class="src-link" href="https://www.hltv.org/matches/2399104/butterfly-vs-bet-m-nodwin-clutch-series-13" rel="noopener">HLTV Match ↗</a><a class="src-link" href="https://www.hltv.org/valve-ranking/teams/2026/october/21" rel="noopener">Valve VRS (Oct 21) ↗</a><a class="src-link" href="https://www.hotspawn.com/matches/butterfly-vs-bet-m-nodwin-clutch-series-13-1079187" rel="noopener">HotSpawn Card ↗</a></div></td></tr><tr id="m-1081600" class="" data-row="1" data-tier="rescue_vrs_model" data-search="donstu banda chuya cct europe 2026 challengers #8 banda chuya"><td data-label="Match &amp; Lock"><strong>Donstu vs Banda chuya</strong><div class="meta-line">CCT Europe 2026 Challengers #8 · Tier C · 2 pts</div><div class="meta-line">Kickoff: <time data-utc="2026-10-22T13:45:00Z">2026-10-22T13:45:00Z</time></div></td><td data-label="Team Win Probabilities"><div class="team-probs"><div class="t-row"><span>Donstu</span><span class="t-pct">48.8%</span></div><div class="dual-bar pick-b" role="img" aria-label="Donstu 48.8% vs Banda chuya 51.2%"><span class="bar-a" style="width:48.8%"></span><span class="bar-b" style="width:51.2%"></span></div><div class="t-row picked"><span>Banda chuya</span><span class="t-pct">51.2%</span></div></div></td><td data-label="Recommended Pick &amp; Basis"><div class="pick-pill">✓ PICK: Banda chuya (51.2%)</div><div><span class="badge rescue_vrs_model">Low-Tier Rescue · Originated Oct-21 VRS Line</span><span class="badge">Toss-up</span><a class="badge flag-chip" href="flagged.html#f-08">Flag F-08</a></div><div class="meta-line">Oct 21 Valve VRS: Donstu 729pt (#187) vs Banda chuya 785pt (#165)</div></td><td data-label="Official / Verified Sources"><div class="src-list"><a class="src-link" href="https://www.hltv.org/matches/2399697/donstu-vs-banda-chuya-cct-2026-challengers-europe-series-8" rel="noopener">HLTV Match ↗</a><a class="src-link" href="https://www.hltv.org/valve-ranking/teams/2026/october/21" rel="noopener">Valve VRS (Oct 21) ↗</a><a class="src-link" href="https://www.hotspawn.com/matches/donstu-vs-banda-chuya-cct-europe-2026-challengers-8-1081600" rel="noopener">HotSpawn Card ↗</a></div></td></tr><tr id="m-1082792" class="" data-row="1" data-tier="rescue_vrs_model" data-search="hotu the huns moscow cyber games 2026 hotu"><td data-label="Match &amp; Lock"><strong>HOTU vs The Huns</strong><div class="meta-line">Moscow Cyber Games 2026 · Tier B · 3 pts</div><div class="meta-line">Kickoff: <time data-utc="2026-10-31T09:00:00Z">2026-10-31T09:00:00Z</time></div></td><td data-label="Team Win Probabilities"><div class="team-probs"><div class="t-row picked"><span>HOTU</span><span class="t-pct">59.8%</span></div><div class="dual-bar pick-a" role="img" aria-label="HOTU 59.8% vs The Huns 40.2%"><span class="bar-a" style="width:59.8%"></span><span class="bar-b" style="width:40.2%"></span></div><div class="t-row"><span>The Huns</span><span class="t-pct">40.2%</span></div></div></td><td data-label="Recommended Pick &amp; Basis"><div class="pick-pill">✓ PICK: HOTU (59.8%)</div><div><span class="badge rescue_vrs_model">Low-Tier Rescue · Originated Oct-21 VRS Line</span><span class="badge">Lean</span></div><div class="meta-line">Oct 21 Valve VRS: HOTU 1390pt (#34) vs The Huns 926pt (#125)</div></td><td data-label="Official / Verified Sources"><div class="src-list"><a class="src-link" href="https://www.hltv.org/matches/2399437/hotu-vs-the-huns-gluck-moscow-cyber-games-2026" rel="noopener">HLTV Match ↗</a><a class="src-link" href="https://www.hltv.org/valve-ranking/teams/2026/october/21" rel="noopener">Valve VRS (Oct 21) ↗</a><a class="src-link" href="https://www.hotspawn.com/matches/hotu-vs-the-huns-moscow-cyber-games-2026-1082792" rel="noopener">HotSpawn Card ↗</a></div></td></tr><tr id="m-1082793" class="" data-row="1" data-tier="rescue_vrs_model" data-search="5star 1win moscow cyber games 2026 1win"><td data-label="Match &amp; Lock"><strong>5star vs 1WIN</strong><div class="meta-line">Moscow Cyber Games 2026 · Tier B · 3 pts</div><div class="meta-line">Kickoff: <time data-utc="2026-10-31T13:00:00Z">2026-10-31T13:00:00Z</time></div></td><td data-label="Team Win Probabilities"><div class="team-probs"><div class="t-row"><span>5star</span><span class="t-pct">43.0%</span></div><div class="dual-bar pick-b" role="img" aria-label="5star 43.0% vs 1WIN 57.0%"><span class="bar-a" style="width:43.0%"></span><span class="bar-b" style="width:57.0%"></span></div><div class="t-row picked"><span>1WIN</span><span class="t-pct">57.0%</span></div></div></td><td data-label="Recommended Pick &amp; Basis"><div class="pick-pill">✓ PICK: 1WIN (57.0%)</div><div><span class="badge rescue_vrs_model">Low-Tier Rescue · Originated Oct-21 VRS Line</span><span class="badge">Lean</span></div><div class="meta-line">Oct 21 Valve VRS: 5star 1191pt (#64) vs 1WIN 1519pt (#17)</div></td><td data-label="Official / Verified Sources"><div class="src-list"><a class="src-link" href="https://www.hltv.org/matches/2399438/1win-vs-5star-gluck-moscow-cyber-games-2026" rel="noopener">HLTV Match ↗</a><a class="src-link" href="https://www.hltv.org/valve-ranking/teams/2026/october/21" rel="noopener">Valve VRS (Oct 21) ↗</a><a class="src-link" href="https://www.hotspawn.com/matches/5star-vs-1win-moscow-cyber-games-2026-1082793" rel="noopener">HotSpawn Card ↗</a></div></td></tr></tbody></table></div>
+    <h2>3. Structural Limitations When Generating Low-Tier CS2 Picks</h2>
+    <div class="callout">
+      <ul>
+        <li><strong>Late Tier-C Market Posting:</strong> Regional qualifiers (CCT Challengers, CIS LAN, Moscow Cyber Games 10 days out) often receive sportsbook moneyline markets only 1–4 hours before map veto. Our 4-hour cron automatically upgrades model/blank rows to live market consensus as soon as books open.</li>
+        <li><strong>Unrated New / Mix Rosters:</strong> Newly formed South American or open-qualifier mixes (such as <code>LOS NINOS</code> in #1082837, with 0 VRS points and 3 HLTV maps) have neither betting odds nor official Valve ratings; assigning an arbitrary floor rating would fabricate certainty.</li>
+        <li><strong>Strict Prohibition of Crowd &amp; Fan Votes:</strong> HotSpawn crowd percentages (e.g. 93% Zetta, 75% Damajuana) and HLTV reader predictions measure contest popularity, never calibrated win probability.</li>
+        <li><strong>Series Winner vs Pre-Veto Map Variance:</strong> Pre-match lines reflect BO3/BO5 series-winner expectations prior to map veto and cannot price unannounced stand-ins after lock.</li>
+      </ul>
+    </div>
+    
+<footer>
+  <p><strong>Snapshot observed:</strong> <code>2026-10-21T12:51:33Z</code> ·
+  <strong>Evaluated:</strong> <code>2026-10-21T13:07:23Z</code> ·
+  <strong>Auto-refresh:</strong> every 4 hours (<code>17 */4 * * *</code> via GitHub Actions).<br>
+  <strong>Strict integrity rule:</strong> HotSpawn crowd pick percentages are <em>never</em> used as match probabilities.
+  Unconfirmed values remain blank (<code>—</code>) and flagged on <a href="flagged.html">Flagged for Review</a>.<br>
+  Data exports: <a href="../data/7adc7718/board.json">board.json</a> ·
+  <a href="../data/7adc7718/picks.csv">picks.csv</a> ·
+  <a href="../data/7adc7718/repo_audit.json">repo_audit.json</a> ·
+  <a href="../index.html">Main Dashboard Home</a>. 18+; independent analytical research, not affiliated with HotSpawn.</p>
+</footer>
+</main>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('time[data-utc]').forEach(function (el) {
+    var d = new Date(el.getAttribute('data-utc'));
+    if (!isNaN(d.getTime())) {
+      el.title = el.getAttribute('data-utc');
+      el.textContent = d.toLocaleString([], {
+        month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short'
+      });
+    }
+  });
+  var qInput = document.getElementById('match-filter');
+  var tierSel = document.getElementById('tier-filter');
+  var statusEl = document.getElementById('filter-count');
+  function applyFilters() {
+    var q = (qInput ? qInput.value : '').trim().toLowerCase();
+    var tier = tierSel ? tierSel.value : '';
+    var rows = Array.prototype.slice.call(document.querySelectorAll('tr[data-row]'));
+    var shown = 0;
+    rows.forEach(function (tr) {
+      var okQ = !q || tr.getAttribute('data-search').indexOf(q) !== -1;
+      var okT = !tier || tr.getAttribute('data-tier') === tier;
+      tr.hidden = !(okQ && okT);
+      if (!tr.hidden) shown++;
+    });
+    if (statusEl && rows.length) {
+      statusEl.textContent = shown + ' of ' + rows.length + ' matches shown';
+    }
+  }
+  if (qInput) qInput.addEventListener('input', applyFilters);
+  if (tierSel) tierSel.addEventListener('change', applyFilters);
+  applyFilters();
+});
+</script>
+</body>
+</html>

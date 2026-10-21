@@ -10,7 +10,7 @@
 <body>
 <header class="site"><div class="wrap">
 <p class="site-title"><a href="index.html">🎯 HotSpawn CS2 Pick&rsquo;em — picks for every match</a></p>
-<p class="site-sub">Updated <time datetime="2026-10-21T13:06:23Z" data-local title="2026-10-21T13:06:23Z">2026-10-21 13:06 UTC</time> · market data collected <time datetime="2026-10-21T13:03:02Z" data-local title="2026-10-21T13:03:02Z">2026-10-21 13:03 UTC</time> · auto-refresh every few hours</p>
+<p class="site-sub">Updated <time datetime="2026-10-21T13:14:44Z" data-local title="2026-10-21T13:14:44Z">2026-10-21 13:14 UTC</time> · market data collected <time datetime="2026-10-21T13:03:02Z" data-local title="2026-10-21T13:03:02Z">2026-10-21 13:03 UTC</time> · auto-refresh every few hours</p>
 <nav class="tabs" aria-label="Picks board"><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="method.html">Method & sources</a><a href="flagged.html" aria-current="page">Flagged</a></nav>
 </div></header>
 <main class="wrap">
@@ -62,10 +62,13 @@ fail by design after this consolidation (measured 2026-10-21: <code>tests/test_1
 in the root page). Both passed against the old landing and are owned by their sessions;
 the new front door supersedes those assertions. This board&rsquo;s own suite
 (<code>tests/test_d9d7627b.py</code>, 32 tests) passes.</li>
-<li><code>update-data.yml</code> (hourly) regenerates a root page via
-<code>scripts/build_site.py</code> when it succeeds; it has been failing on main. If it is
-revived, root-page ownership needs re-coordination — this board&rsquo;s workflow also
-publishes the root executive summary every 2 hours (see COORDINATION.md, session d9d7627b).</li>
+<li><b>Root-page contention:</b> several sessions&rsquo; workflows publish a root
+<code>index.html</code> (<code>update-data.yml</code> via <code>scripts/build_site.py</code>,
+currently failing; <code>hotspawn-live-82a9a0cc.yml</code> every 4h; this board every 2h).
+The root URL therefore shows whichever pipeline refreshed last. This board&rsquo;s stable,
+never-overwritten home is <a href="index.html">hotspawn-cs2/</a> — bookmark that.
+Root ownership should be settled by a future coordination pass (see COORDINATION.md,
+session d9d7627b).</li>
 <li>GitHub&rsquo;s <code>schedule</code> trigger has historically dropped runs in this repo;
 this board&rsquo;s workflow therefore also runs on demand and its freshness is printed at
 the top of every page.</li>

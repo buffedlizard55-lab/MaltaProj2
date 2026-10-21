@@ -117,3 +117,21 @@ for attempt in range(12):
         time.sleep(10)
 print('PASS: live TWC results, original roster timeline, source-linked decisions, assets and canonical consistency')
 print('TWC source collection:', twc['source_collected_utc'])
+
+# Session 7adc7718: verify live root Executive Summary + all 8 mobile-first lobby/*.html subpages.
+for attempt in range(12):
+    try:
+        root = public_get('index.html')
+        assert 'lobby/picks.html' in root and 'lobby/unresolved.html' in root and 'lobby/flagged.html' in root
+        lobby_board = json.loads(public_get('data/7adc7718/board.json'))
+        assert lobby_board['session'] == '7adc7718'
+        for name in ('index', 'picks', 'featured', 'low-tier', 'unresolved', 'flagged', 'inventory', 'methodology'):
+            body = public_get('lobby/' + name + '.html')
+            assert 'name="viewport"' in body, name
+        break
+    except Exception as exc:
+        if attempt == 11:
+            raise RuntimeError('Public 7adc7718 lobby dashboard did not pass semantic checks') from exc
+        time.sleep(10)
+print('PASS: live 7adc7718 Executive Summary and all 8 lobby/* mobile-first pages verified on public GitHub Pages')
+
