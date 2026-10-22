@@ -1,0 +1,46 @@
+# verification failure - 2026-10-22T05:00Z
+
+```
+test_checks_all_verified (tests.test_86f3af65.TestAudit.test_checks_all_verified) ... ok
+test_disagreements_are_computed_not_asserted (tests.test_86f3af65.TestAudit.test_disagreements_are_computed_not_asserted) ... ok
+test_findings_have_files_or_urls (tests.test_86f3af65.TestAudit.test_findings_have_files_or_urls) ... ok
+test_coverage_counters_are_consistent (tests.test_86f3af65.TestCoverage.test_coverage_counters_are_consistent) ... ok
+test_every_open_fixture_has_a_pick (tests.test_86f3af65.TestCoverage.test_every_open_fixture_has_a_pick) ... ok
+test_hotspawn_crowd_percent_is_not_read (tests.test_86f3af65.TestCoverage.test_hotspawn_crowd_percent_is_not_read) ... ok
+test_open_definition_matches_capture (tests.test_86f3af65.TestCoverage.test_open_definition_matches_capture) ... ok
+test_calibration_is_fitted_and_in_bounds (tests.test_86f3af65.TestProbabilitiesReDerive.test_calibration_is_fitted_and_in_bounds) ... ok
+test_market_rows_re_derive_from_quoted_decimals (tests.test_86f3af65.TestProbabilitiesReDerive.test_market_rows_re_derive_from_quoted_decimals) ... FAIL
+test_model_rows_re_derive_from_valve_points (tests.test_86f3af65.TestProbabilitiesReDerive.test_model_rows_re_derive_from_valve_points) ... ok
+test_access_log_is_anchored (tests.test_86f3af65.TestSite.test_access_log_is_anchored) ... ok
+test_every_internal_link_resolves (tests.test_86f3af65.TestSite.test_every_internal_link_resolves) ... ok
+test_every_pick_is_on_the_picks_page (tests.test_86f3af65.TestSite.test_every_pick_is_on_the_picks_page) ... ok
+test_flagged_page_publishes_every_finding (tests.test_86f3af65.TestSite.test_flagged_page_publishes_every_finding) ... ok
+test_freshness_is_stated_on_every_page (tests.test_86f3af65.TestSite.test_freshness_is_stated_on_every_page)
+A reader must be able to see how old the numbers are without reading the board. ... ok
+test_pages_exist_and_have_no_placeholder_text (tests.test_86f3af65.TestSite.test_pages_exist_and_have_no_placeholder_text) ... ok
+test_sources_page_cites_every_quote (tests.test_86f3af65.TestSite.test_sources_page_cites_every_quote) ... ok
+test_unresolved_page_lists_every_caveated_row (tests.test_86f3af65.TestSite.test_unresolved_page_lists_every_caveated_row) ... ok
+test_every_row_has_a_source_link (tests.test_86f3af65.TestSources.test_every_row_has_a_source_link) ... ok
+test_no_hotspawn_price_source (tests.test_86f3af65.TestSources.test_no_hotspawn_price_source) ... ok
+test_unrated_rows_carry_the_assumption (tests.test_86f3af65.TestSources.test_unrated_rows_carry_the_assumption) ... ok
+test_absent_team_only_gets_a_floor_when_asked (tests.test_86f3af65.TestValveStandings.test_absent_team_only_gets_a_floor_when_asked) ... ok
+test_capture_details_paths_resolve_inside_the_repository (tests.test_86f3af65.TestValveStandings.test_capture_details_paths_resolve_inside_the_repository) ... ok
+test_duplicate_policy_prefers_five_player_active_roster (tests.test_86f3af65.TestValveStandings.test_duplicate_policy_prefers_five_player_active_roster) ... ok
+test_duplicate_resolution_never_rests_on_missing_evidence (tests.test_86f3af65.TestValveStandings.test_duplicate_resolution_never_rests_on_missing_evidence)
+A roster-selected row must be supported by a dated official details page. ... ok
+test_files_match_live_read_hashes (tests.test_86f3af65.TestValveStandings.test_files_match_live_read_hashes) ... ok
+test_regional_files_add_no_name (tests.test_86f3af65.TestValveStandings.test_regional_files_add_no_name) ... ok
+
+======================================================================
+FAIL: test_market_rows_re_derive_from_quoted_decimals (tests.test_86f3af65.TestProbabilitiesReDerive.test_market_rows_re_derive_from_quoted_decimals)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/MaltaProj2/MaltaProj2/tests/test_86f3af65.py", line 87, in test_market_rows_re_derive_from_quoted_decimals
+    self.assertAlmostEqual(nv["prob_a"] if same else nv["prob_b"], p, places=5)
+AssertionError: 0.47582047094769003 != 0.47581391436022547 within 5 places (6.556587464567887e-06 difference)
+
+----------------------------------------------------------------------
+Ran 27 tests in 0.074s
+
+FAILED (failures=1)
+```
