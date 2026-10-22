@@ -1,47 +1,59 @@
 {
- "generated_at_utc": "2026-10-22T05:23:58Z",
+ "generated_at_utc": "2026-10-22T12:25:41Z",
  "hotspawn_permalinks": {
   "url": "https://play.hotspawn.com/lobby",
   "status": 200,
   "error": null,
-  "permalinks": 30
+  "permalinks": 37
  },
  "fixtures": {
   "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
   "status": 200,
   "error": null,
-  "count": 12048,
+  "count": 12066,
   "skipped": {
-   "ended": 10832,
+   "ended": 10841,
    "other_sport": 1
   },
   "by_game": {
-   "LoL": 324,
-   "CS2": 891
+   "CS2": 901,
+   "LoL": 323
   }
  },
  "pinnacle": {
   "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups",
   "status": 200,
   "error": null,
-  "matchups_total": 52,
-  "matchups_relevant": 26
+  "matchups_total": 68,
+  "matchups_relevant": 38,
+  "market_errors": [
+   {
+    "id": 1638721255,
+    "status": 403,
+    "error": "HTTPError 403"
+   }
+  ]
  },
  "bovada": {
   "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
   "status": 200,
   "error": null,
-  "events_scanned": 32,
+  "events_scanned": 45,
   "moneyline_rows": {
-   "cs2": 21,
+   "cs2": 34,
    "lol": 9
   }
  },
  "linefeed_sports": {
   "url": "https://melbet.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
-  "status": 0,
-  "error": "URLError: <urlopen error _ssl.c:999: The handshake operation timed out>",
-  "esports_sport_ids": []
+  "status": 200,
+  "error": null,
+  "esports_sport_ids": [
+   [
+    40,
+    "Esports"
+   ]
+  ]
  },
  "linefeed": {
   "sport_ids": [
@@ -53,32 +65,14 @@
     "urls": [
      "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"
     ],
-    "events": 43,
-    "moneyline_events": 43,
-    "by_league": {
-     "CS 2. MaceMedia VOID Autumn Cup": 1,
-     "CS 2. CCT Europe Series": 2,
-     "CS 2. Fiesta Series. Closed Qualifier": 4,
-     "CS 2. NODWIN Clutch Series": 2,
-     "CS 2. eXTREMESLAND. Mongolia Qualifier": 1,
-     "CS 2. Private Club": 1,
-     "CS 2. CIS LAN Championship": 4,
-     "CS 2. DraculaN": 3,
-     "CS 2. ESL Challenger League. Europe": 2,
-     "CS 2. United 21": 1,
-     "CS 2. Circuit X Curitiba": 2,
-     "CS 2. Stake Ranked Closed Qualifier": 2,
-     "CS 2. ESEA Advanced. Europe": 3,
-     "CS 2. CCT South America": 2,
-     "CS 2. PGL Masters Bucharest": 8,
-     "CS 2. RLG Tesla Cup": 2,
-     "CS 2. Stake Ranked": 3
-    },
-    "errors": [],
-    "game_counts": {
-     "cs2": 47
-    },
-    "matching_ids": null,
+    "events": 0,
+    "moneyline_events": 0,
+    "by_league": {},
+    "errors": [
+     "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1 -> 0 URLError: <urlopen error _ssl.c:999: The handshake operation timed out>"
+    ],
+    "game_counts": {},
+    "matching_ids": 0,
     "price_mismatches": []
    },
    {
@@ -89,29 +83,25 @@
     "events": 43,
     "moneyline_events": 43,
     "by_league": {
-     "CS 2. MaceMedia VOID Autumn Cup": 1,
-     "CS 2. CCT Europe Series": 2,
-     "CS 2. Fiesta Series. Closed Qualifier": 4,
-     "CS 2. NODWIN Clutch Series": 2,
-     "CS 2. eXTREMESLAND. Mongolia Qualifier": 1,
-     "CS 2. Private Club": 1,
-     "CS 2. CIS LAN Championship": 4,
+     "CS 2. CCT South America": 7,
      "CS 2. DraculaN": 3,
      "CS 2. ESL Challenger League. Europe": 2,
-     "CS 2. United 21": 1,
+     "CS 2. United 21": 2,
+     "CS 2. CCT Europe Series 12": 3,
      "CS 2. Circuit X Curitiba": 2,
+     "CS 2. Fiesta Series. Closed Qualifier": 3,
      "CS 2. Stake Ranked Closed Qualifier": 2,
+     "CS 2. CIS LAN Championship": 3,
+     "CS 2. CCT Europe Series 11": 3,
      "CS 2. ESEA Advanced. Europe": 3,
-     "CS 2. CCT South America": 2,
-     "CS 2. PGL Masters Bucharest": 8,
-     "CS 2. RLG Tesla Cup": 2,
-     "CS 2. Stake Ranked": 3
+     "CS 2. XPrime Championship": 2,
+     "CS 2. PGL Masters Bucharest": 8
     },
     "errors": [],
     "game_counts": {
      "cs2": 47
     },
-    "matching_ids": 43,
+    "matching_ids": null,
     "price_mismatches": []
    },
    {
@@ -122,23 +112,19 @@
     "events": 43,
     "moneyline_events": 43,
     "by_league": {
-     "CS 2. MaceMedia VOID Autumn Cup": 1,
-     "CS 2. CCT Europe Series": 2,
-     "CS 2. Fiesta Series. Closed Qualifier": 4,
-     "CS 2. NODWIN Clutch Series": 2,
-     "CS 2. eXTREMESLAND. Mongolia Qualifier": 1,
-     "CS 2. Private Club": 1,
-     "CS 2. CIS LAN Championship": 4,
+     "CS 2. CCT South America": 7,
      "CS 2. DraculaN": 3,
      "CS 2. ESL Challenger League. Europe": 2,
-     "CS 2. United 21": 1,
+     "CS 2. United 21": 2,
+     "CS 2. CCT Europe Series 12": 3,
      "CS 2. Circuit X Curitiba": 2,
+     "CS 2. Fiesta Series. Closed Qualifier": 3,
      "CS 2. Stake Ranked Closed Qualifier": 2,
+     "CS 2. CIS LAN Championship": 3,
+     "CS 2. CCT Europe Series 11": 3,
      "CS 2. ESEA Advanced. Europe": 3,
-     "CS 2. CCT South America": 2,
-     "CS 2. PGL Masters Bucharest": 8,
-     "CS 2. RLG Tesla Cup": 2,
-     "CS 2. Stake Ranked": 3
+     "CS 2. XPrime Championship": 2,
+     "CS 2. PGL Masters Bucharest": 8
     },
     "errors": [],
     "game_counts": {
@@ -148,7 +134,7 @@
     "price_mismatches": []
    }
   ],
-  "primary": "melbet",
+  "primary": "22bet",
   "published_quotes": 43
  },
  "polymarket": {
@@ -158,10 +144,36 @@
   "fresh_markets": 0
  },
  "joins": {
-  "quotes_total": 99,
-  "quotes_joined": 34,
-  "unused_quotes": 65,
+  "quotes_total": 119,
+  "quotes_joined": 57,
+  "unused_quotes": 62,
   "diagnostics": [
+   {
+    "source": "pinnacle",
+    "source_league": "CS2 - PGL Masters Bucharest",
+    "teams": "Aurora vs The MongolZ",
+    "quote_start_time_utc": "2026-10-24T07:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "League of Legends - World Championship",
+    "teams": "LOS vs T1",
+    "quote_start_time_utc": "2026-10-23T22:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1067678",
+      "teams": "L\u00d8S vs T1",
+      "competition": "Worlds 2026 Main Event",
+      "start_time_utc": "2026-10-23T23:00:00Z",
+      "start_time_delta_min": 60.0
+     }
+    ]
+   },
    {
     "source": "pinnacle",
     "source_league": "CS2 - PGL Masters Bucharest",
@@ -173,60 +185,100 @@
    },
    {
     "source": "pinnacle",
-    "source_league": "League of Legends - World Championship",
-    "teams": "Liquid vs CTBC Flying Oyster",
-    "quote_start_time_utc": "2026-10-23T18:00:00Z",
-    "reason": "both team names match a fixture but the source start time is outside the 90 min tolerance",
-    "full_name_matches": [
-     {
-      "fixture_id": "1067879",
-      "teams": "Team Liquid vs CTBC Flying Oyster",
-      "competition": "Worlds 2026 Main Event",
-      "start_time_utc": "2026-10-23T22:00:00Z",
-      "start_time_delta_min": 240.0
-     }
-    ],
-    "partial_name_matches": []
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "League of Legends - World Championship",
-    "teams": "Bilibili vs Movistar KOI",
-    "quote_start_time_utc": "2026-10-24T00:00:00Z",
-    "reason": "both team names match a fixture but the source start time is outside the 90 min tolerance",
-    "full_name_matches": [
-     {
-      "fixture_id": "1067680",
-      "teams": "Bilibili Gaming vs Movistar KOI",
-      "competition": "Worlds 2026 Main Event",
-      "start_time_utc": "2026-10-23T19:00:00Z",
-      "start_time_delta_min": 300.0
-     }
-    ],
-    "partial_name_matches": []
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "League of Legends - EMEA Masters",
-    "teams": "Solary vs Galions",
-    "quote_start_time_utc": "2026-10-22T16:00:00Z",
-    "reason": "both team names match a fixture but the source start time is outside the 90 min tolerance",
-    "full_name_matches": [
-     {
-      "fixture_id": "1081205",
-      "teams": "Galions vs Solary",
-      "competition": "EM 2026 Summer Main Event",
-      "start_time_utc": "2026-10-22T12:00:00Z",
-      "start_time_delta_min": 240.0
-     }
-    ],
+    "source_league": "CS2 - PGL Masters Bucharest",
+    "teams": "G2 vs Natus Vincere",
+    "quote_start_time_utc": "2026-10-24T16:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
     "partial_name_matches": [
      {
-      "fixture_id": "1073831",
-      "teams": "Solary vs Saigon Warriors",
-      "competition": "World Star Challengers Invitational 2026",
-      "start_time_utc": "2026-09-25T12:00:00Z",
-      "start_time_delta_min": 39120.0
+      "fixture_id": "1002415",
+      "teams": "CarritoSpain vs G2 Esports",
+      "competition": "Roman Imperium Cup VII",
+      "start_time_utc": "2026-03-29T14:45:00Z",
+      "start_time_delta_min": 301035.0
+     }
+    ]
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "CS2 - ESL Challenger League Europe",
+    "teams": "LPH vs KUUSAMO",
+    "quote_start_time_utc": "2026-10-22T13:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1081783",
+      "teams": "LPH vs Walczaki",
+      "competition": "CyberClash Season 2: Closed Qualifier",
+      "start_time_utc": "2026-10-15T22:30:00Z",
+      "start_time_delta_min": 9510.0
+     }
+    ]
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "CS2 - CCT South America Series",
+    "teams": "Low Cortisol vs Gremio",
+    "quote_start_time_utc": "2026-10-22T22:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1022800",
+      "teams": "FURY vs low cortisol",
+      "competition": "ESL Challenger League Season 51: Oceania - Cup #4",
+      "start_time_utc": "2026-04-26T09:00:00Z",
+      "start_time_delta_min": 258540.0
+     },
+     {
+      "fixture_id": "1057611",
+      "teams": "ex-KR\u00dc vs Gr\u00eamio",
+      "competition": "CCT South America 2026 Series #4",
+      "start_time_utc": "2026-07-15T19:00:00Z",
+      "start_time_delta_min": 142740.0
+     },
+     {
+      "fixture_id": "1069761",
+      "teams": "Gr\u00eamio vs Blitzkrieg",
+      "competition": "CCT South America 2026 Series #5",
+      "start_time_utc": "2026-08-28T16:00:00Z",
+      "start_time_delta_min": 79560.0
+     }
+    ]
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "CS2 - PGL Masters Bucharest",
+    "teams": "MOUZ vs Liquid",
+    "quote_start_time_utc": "2026-10-24T10:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1061819",
+      "teams": "Team Liquid vs atputies",
+      "competition": "Stake Pulse Beat I",
+      "start_time_utc": "2026-08-01T10:00:00Z",
+      "start_time_delta_min": 120960.0
+     }
+    ]
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "CS2 - Private Club",
+    "teams": "BIG vs The MongolZ",
+    "quote_start_time_utc": "2026-10-22T11:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "980749",
+      "teams": "BIG vs ARCRED",
+      "competition": "CCT Season 3 European Series #13",
+      "start_time_utc": "2026-01-28T18:00:00Z",
+      "start_time_delta_min": 384060.0
      }
     ]
    },
@@ -246,6 +298,23 @@
       "start_time_delta_min": 26400.0
      }
     ]
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "League of Legends - World Championship",
+    "teams": "Bilibili vs Movistar KOI",
+    "quote_start_time_utc": "2026-10-24T00:00:00Z",
+    "reason": "both team names match a fixture but the source start time is outside the 90 min tolerance",
+    "full_name_matches": [
+     {
+      "fixture_id": "1067680",
+      "teams": "Bilibili Gaming vs Movistar KOI",
+      "competition": "Worlds 2026 Main Event",
+      "start_time_utc": "2026-10-23T19:00:00Z",
+      "start_time_delta_min": 300.0
+     }
+    ],
+    "partial_name_matches": []
    },
    {
     "source": "pinnacle",
@@ -304,171 +373,6 @@
    },
    {
     "source": "pinnacle",
-    "source_league": "CS2 - Private Club",
-    "teams": "BIG vs The MongolZ",
-    "quote_start_time_utc": "2026-10-22T11:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "980749",
-      "teams": "BIG vs ARCRED",
-      "competition": "CCT Season 3 European Series #13",
-      "start_time_utc": "2026-01-28T18:00:00Z",
-      "start_time_delta_min": 384060.0
-     }
-    ]
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "League of Legends - EMEA Masters",
-    "teams": "Solary (Kills) vs Galions (Kills)",
-    "quote_start_time_utc": "2026-10-22T16:00:00Z",
-    "reason": "neither team name matches any fixture in the current lobby list",
-    "full_name_matches": [],
-    "partial_name_matches": []
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "CS2 - DraculaN",
-    "teams": "FaZe vs BC.Game",
-    "quote_start_time_utc": "2026-10-22T13:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "997878",
-      "teams": "GRINGOS vs BC.Game",
-      "competition": "Roman Imperium Cup VI",
-      "start_time_utc": "2026-03-13T17:30:00Z",
-      "start_time_delta_min": 320850.0
-     },
-     {
-      "fixture_id": "998834",
-      "teams": "V\u00e4ster\u00e5s vs BC.Game",
-      "competition": "JOURNEY Spring 2026",
-      "start_time_utc": "2026-03-25T11:00:00Z",
-      "start_time_delta_min": 303960.0
-     },
-     {
-      "fixture_id": "998835",
-      "teams": "BC.Game vs HEROIC Academy",
-      "competition": "JOURNEY Spring 2026",
-      "start_time_utc": "2026-03-25T14:00:00Z",
-      "start_time_delta_min": 303780.0
-     }
-    ]
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "League of Legends - World Championship",
-    "teams": "LOS vs T1",
-    "quote_start_time_utc": "2026-10-23T22:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "1067678",
-      "teams": "L\u00d8S vs T1",
-      "competition": "Worlds 2026 Main Event",
-      "start_time_utc": "2026-10-23T23:00:00Z",
-      "start_time_delta_min": 60.0
-     }
-    ]
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "League of Legends - World Championship",
-    "teams": "Hanwha Life vs Top Esports",
-    "quote_start_time_utc": "2026-10-23T21:00:00Z",
-    "reason": "both team names match a fixture but the source start time is outside the 90 min tolerance",
-    "full_name_matches": [
-     {
-      "fixture_id": "1067677",
-      "teams": "Hanwha Life Esports vs Top Esports",
-      "competition": "Worlds 2026 Main Event",
-      "start_time_utc": "2026-10-23T18:00:00Z",
-      "start_time_delta_min": 180.0
-     }
-    ],
-    "partial_name_matches": []
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "CS2 - PGL Masters Bucharest",
-    "teams": "MOUZ vs Liquid",
-    "quote_start_time_utc": "2026-10-24T10:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "1061819",
-      "teams": "Team Liquid vs atputies",
-      "competition": "Stake Pulse Beat I",
-      "start_time_utc": "2026-08-01T10:00:00Z",
-      "start_time_delta_min": 120960.0
-     }
-    ]
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "CS2 - PGL Masters Bucharest",
-    "teams": "G2 vs Natus Vincere",
-    "quote_start_time_utc": "2026-10-24T16:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "1002415",
-      "teams": "CarritoSpain vs G2 Esports",
-      "competition": "Roman Imperium Cup VII",
-      "start_time_utc": "2026-03-29T14:45:00Z",
-      "start_time_delta_min": 301035.0
-     }
-    ]
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "CS2 - PGL Masters Bucharest",
-    "teams": "Aurora vs The MongolZ",
-    "quote_start_time_utc": "2026-10-24T07:00:00Z",
-    "reason": "neither team name matches any fixture in the current lobby list",
-    "full_name_matches": [],
-    "partial_name_matches": []
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "CS2 - DraculaN",
-    "teams": "SINNERS vs Eternal Fire",
-    "quote_start_time_utc": "2026-10-22T16:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "979103",
-      "teams": "MASONIC vs Eternal Fire",
-      "competition": "European Pro League Series 4",
-      "start_time_utc": "2026-01-22T11:30:00Z",
-      "start_time_delta_min": 393390.0
-     },
-     {
-      "fixture_id": "980789",
-      "teams": "Nemiga Gaming vs Eternal Fire",
-      "competition": "A1 Gaming League Season 11",
-      "start_time_utc": "2026-02-15T16:30:00Z",
-      "start_time_delta_min": 358530.0
-     },
-     {
-      "fixture_id": "995768",
-      "teams": "Eternal Fire vs Fuzos",
-      "competition": "CCT Season 3 European Series #18 Play-In",
-      "start_time_utc": "2026-03-02T12:00:00Z",
-      "start_time_delta_min": 337200.0
-     }
-    ]
-   },
-   {
-    "source": "pinnacle",
     "source_league": "CS2 - PGL Masters Bucharest",
     "teams": "Legacy vs Nemiga",
     "quote_start_time_utc": "2026-10-24T13:00:00Z",
@@ -499,9 +403,9 @@
     ]
    },
    {
-    "source": "bovada",
-    "source_league": "World Championship '26",
-    "teams": "Team Liquid vs CTBC Flying Oyster",
+    "source": "pinnacle",
+    "source_league": "League of Legends - World Championship",
+    "teams": "Liquid vs CTBC Flying Oyster",
     "quote_start_time_utc": "2026-10-23T18:00:00Z",
     "reason": "both team names match a fixture but the source start time is outside the 90 min tolerance",
     "full_name_matches": [
@@ -511,6 +415,23 @@
       "competition": "Worlds 2026 Main Event",
       "start_time_utc": "2026-10-23T22:00:00Z",
       "start_time_delta_min": 240.0
+     }
+    ],
+    "partial_name_matches": []
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "League of Legends - World Championship",
+    "teams": "Hanwha Life vs Top Esports",
+    "quote_start_time_utc": "2026-10-23T21:00:00Z",
+    "reason": "both team names match a fixture but the source start time is outside the 90 min tolerance",
+    "full_name_matches": [
+     {
+      "fixture_id": "1067677",
+      "teams": "Hanwha Life Esports vs Top Esports",
+      "competition": "Worlds 2026 Main Event",
+      "start_time_utc": "2026-10-23T18:00:00Z",
+      "start_time_delta_min": 180.0
      }
     ],
     "partial_name_matches": []
@@ -531,23 +452,6 @@
       "start_time_delta_min": 0.0
      }
     ]
-   },
-   {
-    "source": "bovada",
-    "source_league": "World Championship '26",
-    "teams": "Bilibili Gaming vs Movistar KOI",
-    "quote_start_time_utc": "2026-10-24T00:00:00Z",
-    "reason": "both team names match a fixture but the source start time is outside the 90 min tolerance",
-    "full_name_matches": [
-     {
-      "fixture_id": "1067680",
-      "teams": "Bilibili Gaming vs Movistar KOI",
-      "competition": "Worlds 2026 Main Event",
-      "start_time_utc": "2026-10-23T19:00:00Z",
-      "start_time_delta_min": 300.0
-     }
-    ],
-    "partial_name_matches": []
    },
    {
     "source": "bovada",
@@ -746,32 +650,66 @@
    },
    {
     "source": "bovada",
-    "source_league": "DraculaN",
-    "teams": "SinnerS vs Eternal Fire",
-    "quote_start_time_utc": "2026-10-22T16:00:00Z",
+    "source_league": "Europe",
+    "teams": "Lph Gaming vs KUUSAMO",
+    "quote_start_time_utc": "2026-10-22T13:00:00Z",
     "reason": "no fixture has both team names, even though one team name matches others",
     "full_name_matches": [],
     "partial_name_matches": [
      {
-      "fixture_id": "979103",
-      "teams": "MASONIC vs Eternal Fire",
-      "competition": "European Pro League Series 4",
-      "start_time_utc": "2026-01-22T11:30:00Z",
-      "start_time_delta_min": 393390.0
+      "fixture_id": "1081783",
+      "teams": "LPH vs Walczaki",
+      "competition": "CyberClash Season 2: Closed Qualifier",
+      "start_time_utc": "2026-10-15T22:30:00Z",
+      "start_time_delta_min": 9510.0
+     }
+    ]
+   },
+   {
+    "source": "bovada",
+    "source_league": "Europe",
+    "teams": "Maybe vs Team Spirit Academy Green",
+    "quote_start_time_utc": "2026-10-22T13:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1067544",
+      "teams": "MAYBE vs FORZE Reload",
+      "competition": "CCT Europe 2026 Contenders #8",
+      "start_time_utc": "2026-08-22T15:30:00Z",
+      "start_time_delta_min": 87690.0
+     }
+    ]
+   },
+   {
+    "source": "bovada",
+    "source_league": "Europe",
+    "teams": "Saint Sinners vs Dark Moon",
+    "quote_start_time_utc": "2026-10-22T13:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1071373",
+      "teams": "Dark Moon vs WBT Academy",
+      "competition": "ESL Challenger League Season 52: Europe - Cup #6",
+      "start_time_utc": "2026-09-08T17:00:00Z",
+      "start_time_delta_min": 63120.0
      },
      {
-      "fixture_id": "980789",
-      "teams": "Nemiga Gaming vs Eternal Fire",
-      "competition": "A1 Gaming League Season 11",
-      "start_time_utc": "2026-02-15T16:30:00Z",
-      "start_time_delta_min": 358530.0
+      "fixture_id": "1071799",
+      "teams": "Saint Sinners vs Mai Tai",
+      "competition": "CCT Europe 2026 Series #9 Play-In",
+      "start_time_utc": "2026-09-10T11:00:00Z",
+      "start_time_delta_min": 60600.0
      },
      {
-      "fixture_id": "995768",
-      "teams": "Eternal Fire vs Fuzos",
-      "competition": "CCT Season 3 European Series #18 Play-In",
-      "start_time_utc": "2026-03-02T12:00:00Z",
-      "start_time_delta_min": 337200.0
+      "fixture_id": "1072482",
+      "teams": "Saint Sinners vs Vexar",
+      "competition": "Fiesta Series 2",
+      "start_time_utc": "2026-09-11T14:00:00Z",
+      "start_time_delta_min": 58980.0
      }
     ]
    },
@@ -791,6 +729,63 @@
       "start_time_delta_min": 384060.0
      }
     ]
+   },
+   {
+    "source": "bovada",
+    "source_league": "South America",
+    "teams": "Tropa Do Kingui vs Martians",
+    "quote_start_time_utc": "2026-10-22T13:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1082919",
+      "teams": "Projeto do KinGui vs Martians",
+      "competition": "CCT South America 2026 Series #7",
+      "start_time_utc": "2026-10-22T13:00:00Z",
+      "start_time_delta_min": 0.0
+     }
+    ]
+   },
+   {
+    "source": "bovada",
+    "source_league": "South America",
+    "teams": "Low Cortisol vs Gremio Esports",
+    "quote_start_time_utc": "2026-10-22T22:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1022800",
+      "teams": "FURY vs low cortisol",
+      "competition": "ESL Challenger League Season 51: Oceania - Cup #4",
+      "start_time_utc": "2026-04-26T09:00:00Z",
+      "start_time_delta_min": 258540.0
+     },
+     {
+      "fixture_id": "1057611",
+      "teams": "ex-KR\u00dc vs Gr\u00eamio",
+      "competition": "CCT South America 2026 Series #4",
+      "start_time_utc": "2026-07-15T19:00:00Z",
+      "start_time_delta_min": 142740.0
+     },
+     {
+      "fixture_id": "1069761",
+      "teams": "Gr\u00eamio vs Blitzkrieg",
+      "competition": "CCT South America 2026 Series #5",
+      "start_time_utc": "2026-08-28T16:00:00Z",
+      "start_time_delta_min": 79560.0
+     }
+    ]
+   },
+   {
+    "source": "bovada",
+    "source_league": "United 21",
+    "teams": "Elite Klan Vellamo vs RvgG",
+    "quote_start_time_utc": "2026-10-22T10:30:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
    },
    {
     "source": "bovada",
@@ -820,6 +815,37 @@
       "competition": "ESL Challenger League Season 51: Europe - Cup #2",
       "start_time_utc": "2026-03-18T14:00:00Z",
       "start_time_delta_min": 313740.0
+     }
+    ]
+   },
+   {
+    "source": "bovada",
+    "source_league": "CIS LAN Championship",
+    "teams": "Team Ace vs CYBERSHOKE",
+    "quote_start_time_utc": "2026-10-22T14:30:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1000223",
+      "teams": "Eternal Fire vs CYBERSHOKE",
+      "competition": "BC.Game Masters Championship",
+      "start_time_utc": "2026-03-24T11:30:00Z",
+      "start_time_delta_min": 305460.0
+     },
+     {
+      "fixture_id": "1000232",
+      "teams": "CYBERSHOKE vs HyperSpirit",
+      "competition": "BC.Game Masters Championship",
+      "start_time_utc": "2026-03-24T14:30:00Z",
+      "start_time_delta_min": 305280.0
+     },
+     {
+      "fixture_id": "1002403",
+      "teams": "Ascend vs CYBERSHOKE",
+      "competition": "Roman Imperium Cup VII",
+      "start_time_utc": "2026-03-28T20:00:00Z",
+      "start_time_delta_min": 299190.0
      }
     ]
    },
@@ -856,89 +882,18 @@
    },
    {
     "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. Fiesta Series. Closed Qualifier",
-    "teams": "eSuba vs TTG",
-    "quote_start_time_utc": "2026-10-22T08:00:00Z",
-    "reason": "neither team name matches any fixture in the current lobby list",
-    "full_name_matches": [],
-    "partial_name_matches": []
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. eXTREMESLAND. Mongolia Qualifier",
-    "teams": "5Star vs TheONE 1337",
-    "quote_start_time_utc": "2026-10-22T08:00:00Z",
+    "source_league": "CS 2. CCT South America",
+    "teams": "Tropa do KinGui vs Martians",
+    "quote_start_time_utc": "2026-10-22T13:00:00Z",
     "reason": "no fixture has both team names, even though one team name matches others",
     "full_name_matches": [],
     "partial_name_matches": [
      {
-      "fixture_id": "999269",
-      "teams": "5star vs Change The Game",
-      "competition": "ESL Challenger League Season 51: Asia - Cup #2",
-      "start_time_utc": "2026-03-20T14:00:00Z",
-      "start_time_delta_min": 310680.0
-     },
-     {
-      "fixture_id": "999306",
-      "teams": "The QUBE vs 5star",
-      "competition": "ESL Challenger League Season 51: Asia - Cup #2",
-      "start_time_utc": "2026-03-22T14:00:00Z",
-      "start_time_delta_min": 307800.0
-     },
-     {
-      "fixture_id": "1004086",
-      "teams": "Legion vs 5star",
-      "competition": "ESL Challenger League Season 51: Asia - Cup #3",
-      "start_time_utc": "2026-04-03T13:00:00Z",
-      "start_time_delta_min": 290580.0
-     }
-    ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. Fiesta Series. Closed Qualifier",
-    "teams": "Eternal Premium vs A Great Chaos",
-    "quote_start_time_utc": "2026-10-22T11:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "996814",
-      "teams": "eternal premium vs MASONIC",
-      "competition": "ESEA Season 56: Advanced Division - Europe",
-      "start_time_utc": "2026-03-09T18:30:00Z",
-      "start_time_delta_min": 326430.0
-     },
-     {
-      "fixture_id": "1052747",
-      "teams": "Sashi Academy vs eternal premium",
-      "competition": "European Pro League Series 8 Play-In",
-      "start_time_utc": "2026-06-26T13:10:00Z",
-      "start_time_delta_min": 169790.0
-     },
-     {
-      "fixture_id": "1060175",
-      "teams": "Mai Tai vs eternal premium",
-      "competition": "CCT Europe 2026 Series #6 Play-In",
-      "start_time_utc": "2026-07-25T08:00:00Z",
-      "start_time_delta_min": 128340.0
-     }
-    ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. Private Club",
-    "teams": "BIG vs TheMongolz",
-    "quote_start_time_utc": "2026-10-22T11:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "980749",
-      "teams": "BIG vs ARCRED",
-      "competition": "CCT Season 3 European Series #13",
-      "start_time_utc": "2026-01-28T18:00:00Z",
-      "start_time_delta_min": 384060.0
+      "fixture_id": "1082919",
+      "teams": "Projeto do KinGui vs Martians",
+      "competition": "CCT South America 2026 Series #7",
+      "start_time_utc": "2026-10-22T13:00:00Z",
+      "start_time_delta_min": 0.0
      }
     ]
    },
@@ -987,6 +942,23 @@
       "competition": "CyberClash Season 2: Closed Qualifier",
       "start_time_utc": "2026-10-15T22:30:00Z",
       "start_time_delta_min": 9510.0
+     }
+    ]
+   },
+   {
+    "source": "linefeed_1xbet_platform",
+    "source_league": "CS 2. ESL Challenger League. Europe",
+    "teams": "MAYBE vs Team Spirit Academy Green",
+    "quote_start_time_utc": "2026-10-22T13:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1067544",
+      "teams": "MAYBE vs FORZE Reload",
+      "competition": "CCT Europe 2026 Contenders #8",
+      "start_time_utc": "2026-08-22T15:30:00Z",
+      "start_time_delta_min": 87690.0
      }
     ]
    }
