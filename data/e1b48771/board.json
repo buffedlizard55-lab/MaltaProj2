@@ -1,10 +1,10 @@
 {
  "session": "e1b48771",
- "generated_utc": "2026-10-21T23:42:17Z",
+ "generated_utc": "2026-10-22T01:54:25Z",
  "source_board": {
   "path": "data/fe803b80/board.json",
-  "generated_utc": "2026-10-21T23:16:45Z",
-  "snapshot_utc": "2026-10-21T23:16:45Z",
+  "generated_utc": "2026-10-22T01:32:34Z",
+  "snapshot_utc": "2026-10-22T01:32:34Z",
   "week": {
    "weekId": 273,
    "sportAlias": "cs2",
@@ -14,12 +14,12 @@
    "cutoffUtc": "2026-10-25T23:59:59.999Z"
   },
   "calibration": {
-   "n_pairs": 5,
-   "k": 1.0,
-   "fitted": false,
-   "k_raw": null,
-   "mae_prob": 0.16092767591560833,
-   "mae_prob_valve": 0.16092767591560833,
+   "n_pairs": 9,
+   "k": 0.25,
+   "fitted": true,
+   "k_raw": 0.21548318167527078,
+   "mae_prob": 0.0871562488680315,
+   "mae_prob_valve": 0.18673033881987205,
    "min_pairs": 6,
    "bounds": [
     0.25,
@@ -29,18 +29,76 @@
   "vrs_snapshot": "2026_10_05"
  },
  "summary": {
-  "open": 13,
-  "with_pick": 13,
+  "open": 36,
+  "with_pick": 36,
   "unresolved": 0,
-  "market": 4,
-  "market_plus_model": 4,
-  "model": 9,
+  "market": 11,
+  "market_plus_model": 10,
+  "model": 25,
   "research_market": 0,
   "originated": 0,
-  "next_lock_utc": "2026-10-22T05:00:00Z",
+  "next_lock_utc": "2026-10-22T03:00:00Z",
   "covered_percent": 100.0
  },
  "rows": [
+  {
+   "fixture_id": "1081869",
+   "competition": "VOID Autumn Cup 2026",
+   "tier": "C",
+   "points": 2,
+   "start_utc": "2026-10-22T03:00:00Z",
+   "lock_utc": "2026-10-22T02:54:00Z",
+   "team_a": "Morningstar",
+   "team_b": "NEXVOID",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "NEXVOID",
+   "pick_prob": 0.8312624589318364,
+   "prob_a": 0.16873754106816366,
+   "prob_b": 0.8312624589318364,
+   "basis": "model",
+   "basis_label": "Originated by the automated board's own Elo over published results (directional estimate, no book price)",
+   "confidence": "Strong",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "bo3.gg published match results (Elo input)",
+     "url": "https://bo3.gg/matches",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "756 finished matches",
+     "kind": "rating"
+    },
+    {
+     "label": "bo3.gg team page · Morningstar (26 finished matches in the Elo input)",
+     "url": "https://bo3.gg/teams/morningstar",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "not listed in Valve's standings: started at the lowest points value Valve publishes (381.0), then moved by its own published results — a directional estimate, not a rating",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · NEXVOID #113 (995 pts) — Elo seed",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot; seeds this side's Elo",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_elo_line_no_official_rating",
+    "originated_elo_unlisted_team_started_at_vrs_floor",
+    "directional_estimate_only",
+    "tier_c_event_low_coverage"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
   {
    "fixture_id": "1081870",
    "competition": "VOID Autumn Cup 2026",
@@ -52,9 +110,9 @@
    "team_b": "Rare Atom",
    "hotspawn_url": "https://www.hotspawn.com/matches/vitalem-aerem-vs-rare-atom-void-autumn-cup-2026-1081870",
    "pick": "Rare Atom",
-   "pick_prob": 0.6645855883691524,
-   "prob_a": 0.3354144116308476,
-   "prob_b": 0.6645855883691524,
+   "pick_prob": 0.6583836325660859,
+   "prob_a": 0.34161636743391405,
+   "prob_b": 0.6583836325660859,
    "basis": "market+model",
    "basis_label": "Bookmaker consensus + Valve VRS model",
    "confidence": "Solid",
@@ -62,33 +120,369 @@
     {
      "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
      "url": "https://www.hotspawn.com/matches/vitalem-aerem-vs-rare-atom-void-autumn-cup-2026-1081870",
-     "read_utc": "2026-10-21T23:15:25Z",
+     "read_utc": "2026-10-22T01:31:17Z",
      "note": "listing and kick-off time; not used as a probability source",
      "kind": "discovery"
     },
     {
      "label": "Melbet (1xBet platform) · decimal",
      "url": "https://melbet.com/en/line/esports",
-     "read_utc": "2026-10-21T23:15:37Z",
+     "read_utc": "2026-10-22T01:31:27Z",
      "note": "event 763687838",
+     "kind": "price"
+    },
+    {
+     "label": "Kalshi (exchange) · yes mid ($)",
+     "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct220100rava",
+     "read_utc": "2026-10-22T01:31:29Z",
+     "note": "event KXCS2GAME-26OCT220100RAVA",
      "kind": "price"
     },
     {
      "label": "Valve VRS global standings · Vitalem Aerem #204 (721 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     },
     {
      "label": "Valve VRS global standings · Rare Atom #133 (906 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     }
    ],
    "flags": [
+    "tier_c_event_low_coverage"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1079188",
+   "competition": "NODWIN Clutch Series #13",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-22T08:00:00Z",
+   "lock_utc": "2026-10-22T07:54:00Z",
+   "team_a": "Bushido Wildcats",
+   "team_b": "ex-6666",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "Bushido Wildcats",
+   "pick_prob": 0.5299902780686587,
+   "prob_a": 0.5299902780686587,
+   "prob_b": 0.4700097219313413,
+   "basis": "market+model",
+   "basis_label": "Bookmaker consensus + Valve VRS model",
+   "confidence": "Toss-up",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Melbet (1xBet platform) · decimal",
+     "url": "https://melbet.com/en/line/esports",
+     "read_utc": "2026-10-22T01:31:27Z",
+     "note": "event 763758130",
+     "kind": "price"
+    },
+    {
+     "label": "bo3.gg published match results (Elo input)",
+     "url": "https://bo3.gg/matches",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "756 finished matches",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · Bushido Wildcats #114 (982 pts) — Elo seed",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot; seeds this side's Elo",
+     "kind": "rating"
+    },
+    {
+     "label": "bo3.gg team page · ex-6666 (10 finished matches in the Elo input)",
+     "url": "https://bo3.gg/teams/ex-6666",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "not listed in Valve's standings: started at the lowest points value Valve publishes (381.0), then moved by its own published results — a directional estimate, not a rating",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "originated_elo_line_no_official_rating",
+    "originated_elo_unlisted_team_started_at_vrs_floor",
+    "directional_estimate_only"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1079650",
+   "competition": "CCT Europe 2026 Series #11",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-22T08:00:00Z",
+   "lock_utc": "2026-10-22T07:54:00Z",
+   "team_a": "GenOne",
+   "team_b": "Spirit Academy",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "GenOne",
+   "pick_prob": 0.5709186976796791,
+   "prob_a": 0.5709186976796791,
+   "prob_b": 0.42908130232032093,
+   "basis": "model",
+   "basis_label": "Originated from official Valve VRS (no book price)",
+   "confidence": "Lean",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Valve VRS global standings · GenOne #66 (1185 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · Spirit Academy #115 (981 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_vrs_line"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1081143",
+   "competition": "CCT Europe 2026 Series #12",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-22T08:00:00Z",
+   "lock_utc": "2026-10-22T07:54:00Z",
+   "team_a": "BakS",
+   "team_b": "Azuolas",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "BakS",
+   "pick_prob": 0.5630132657045528,
+   "prob_a": 0.5630132657045528,
+   "prob_b": 0.4369867342954472,
+   "basis": "model",
+   "basis_label": "Originated from official Valve VRS (no book price)",
+   "confidence": "Lean",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Valve VRS global standings · BAKS #100 (1044 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · Azuolas #140 (863 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_vrs_line"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1079189",
+   "competition": "NODWIN Clutch Series #13",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-22T11:00:00Z",
+   "lock_utc": "2026-10-22T10:54:00Z",
+   "team_a": "FORZE Reload",
+   "team_b": "Just Players",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "FORZE Reload",
+   "pick_prob": 0.6533405667024312,
+   "prob_a": 0.6533405667024312,
+   "prob_b": 0.34665943329756876,
+   "basis": "market+model",
+   "basis_label": "Bookmaker consensus + Valve VRS model",
+   "confidence": "Solid",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Pinnacle · american",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "read_utc": "2026-10-22T01:31:24Z",
+     "note": "event 1638938861",
+     "kind": "price"
+    },
+    {
+     "label": "Melbet (1xBet platform) · decimal",
+     "url": "https://melbet.com/en/line/esports",
+     "read_utc": "2026-10-22T01:31:27Z",
+     "note": "event 763777742",
+     "kind": "price"
+    },
+    {
+     "label": "Kalshi (exchange) · yes mid ($)",
+     "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct220700jusforzer",
+     "read_utc": "2026-10-22T01:31:29Z",
+     "note": "event KXCS2GAME-26OCT220700JUSFORZER",
+     "kind": "price"
+    },
+    {
+     "label": "Thunderpick (via bo3.gg) · decimal",
+     "url": "https://bo3.gg/matches/forze-reload-vs-just-players-22-10-2026",
+     "read_utc": "2026-10-22T01:32:16Z",
+     "note": "event 131190",
+     "kind": "price"
+    },
+    {
+     "label": "Valve VRS global standings · FORZE Reload #84 (1100 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · Just Players #347 (485 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1079651",
+   "competition": "CCT Europe 2026 Series #11",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-22T11:00:00Z",
+   "lock_utc": "2026-10-22T10:54:00Z",
+   "team_a": "Butterfly",
+   "team_b": "Lavked",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "Butterfly",
+   "pick_prob": 0.5763971133850262,
+   "prob_a": 0.5763971133850262,
+   "prob_b": 0.4236028866149738,
+   "basis": "model",
+   "basis_label": "Originated from official Valve VRS (no book price)",
+   "confidence": "Lean",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Valve VRS global standings · Butterfly #88 (1082 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · Lavked #143 (862 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_vrs_line"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1081596",
+   "competition": "CCT Europe 2026 Challengers #8",
+   "tier": "C",
+   "points": 2,
+   "start_utc": "2026-10-22T11:00:00Z",
+   "lock_utc": "2026-10-22T10:54:00Z",
+   "team_a": "Falcons Force",
+   "team_b": "Phantom Academy",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "Falcons Force",
+   "pick_prob": 0.5080493157066323,
+   "prob_a": 0.5080493157066323,
+   "prob_b": 0.49195068429336775,
+   "basis": "model",
+   "basis_label": "Originated from official Valve VRS (no book price)",
+   "confidence": "Toss-up",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Valve VRS global standings · Falcons Force #161 (806 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · Phantom Academy #172 (783 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_vrs_line",
     "tier_c_event_low_coverage"
    ],
    "limitations": [],
@@ -106,9 +500,9 @@
    "team_b": "TitanFlow",
    "hotspawn_url": "https://www.hotspawn.com/matches/benched-gods-vs-titanflow-cct-europe-2026-challengers-8-1081597",
    "pick": "benched gods",
-   "pick_prob": 0.5415510465927347,
-   "prob_a": 0.5415510465927347,
-   "prob_b": 0.4584489534072653,
+   "pick_prob": 0.541984488928201,
+   "prob_a": 0.541984488928201,
+   "prob_b": 0.45801551107179905,
    "basis": "model",
    "basis_label": "Originated by the automated board's own Elo over published results (directional estimate, no book price)",
    "confidence": "Lean",
@@ -116,28 +510,28 @@
     {
      "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
      "url": "https://www.hotspawn.com/matches/benched-gods-vs-titanflow-cct-europe-2026-challengers-8-1081597",
-     "read_utc": "2026-10-21T23:15:25Z",
+     "read_utc": "2026-10-22T01:31:17Z",
      "note": "listing and kick-off time; not used as a probability source",
      "kind": "discovery"
     },
     {
      "label": "bo3.gg published match results (Elo input)",
      "url": "https://bo3.gg/matches",
-     "read_utc": "2026-10-21T23:16:45Z",
-     "note": "735 finished matches",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "756 finished matches",
      "kind": "rating"
     },
     {
      "label": "Valve VRS global standings · benched gods #329 (516 pts) — Elo seed",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot; seeds this side's Elo",
      "kind": "rating"
     },
     {
      "label": "bo3.gg team page · TitanFlow (9 finished matches in the Elo input)",
      "url": "https://bo3.gg/teams/titanflow",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "not listed in Valve's standings: started at the lowest points value Valve publishes (381.0), then moved by its own published results — a directional estimate, not a rating",
      "kind": "rating"
     }
@@ -154,6 +548,133 @@
    "resolved_by": "automated board"
   },
   {
+   "fixture_id": "1082767",
+   "competition": "CIS LAN Championship #9",
+   "tier": "C",
+   "points": 2,
+   "start_utc": "2026-10-22T11:30:00Z",
+   "lock_utc": "2026-10-22T11:24:00Z",
+   "team_a": "Nemesis",
+   "team_b": "WW",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "Nemesis",
+   "pick_prob": 0.708092887570099,
+   "prob_a": 0.708092887570099,
+   "prob_b": 0.291907112429901,
+   "basis": "market+model",
+   "basis_label": "Bookmaker consensus + Valve VRS model",
+   "confidence": "Strong",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Bovada · decimal",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/cis-lan-championship/team-nemesis-ww-202610220600",
+     "read_utc": "2026-10-22T01:31:27Z",
+     "note": "event 32576774",
+     "kind": "price"
+    },
+    {
+     "label": "Melbet (1xBet platform) · decimal",
+     "url": "https://melbet.com/en/line/esports",
+     "read_utc": "2026-10-22T01:31:27Z",
+     "note": "event 763723219",
+     "kind": "price"
+    },
+    {
+     "label": "Valve VRS global standings · Nemesis #29 (1455 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · WW #108 (1023 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "tier_c_event_low_coverage"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1081598",
+   "competition": "DraculaN Season 7",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-22T13:00:00Z",
+   "lock_utc": "2026-10-22T12:54:00Z",
+   "team_a": "JiJieHao",
+   "team_b": "Nexus",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "JiJieHao",
+   "pick_prob": 0.6107152146647087,
+   "prob_a": 0.6107152146647087,
+   "prob_b": 0.3892847853352913,
+   "basis": "market+model",
+   "basis_label": "Bookmaker consensus + Valve VRS model",
+   "confidence": "Solid",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Bovada · decimal",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/draculan/jijiehao-nexus-202610220900",
+     "read_utc": "2026-10-22T01:31:27Z",
+     "note": "event 32588570",
+     "kind": "price"
+    },
+    {
+     "label": "Melbet (1xBet platform) · decimal",
+     "url": "https://melbet.com/en/line/esports",
+     "read_utc": "2026-10-22T01:31:27Z",
+     "note": "event 763806688",
+     "kind": "price"
+    },
+    {
+     "label": "Thunderpick (via bo3.gg) · decimal",
+     "url": "https://bo3.gg/matches/jijiehao-vs-nexus-22-10-2026",
+     "read_utc": "2026-10-22T01:32:16Z",
+     "note": "event 132065",
+     "kind": "price"
+    },
+    {
+     "label": "Valve VRS global standings · JiJieHao #30 (1454 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · Nexus #111 (1008 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
    "fixture_id": "1081600",
    "competition": "CCT Europe 2026 Challengers #8",
    "tier": "C",
@@ -164,31 +685,31 @@
    "team_b": "Banda chuya",
    "hotspawn_url": "https://www.hotspawn.com/matches/donstu-vs-banda-chuya-cct-europe-2026-challengers-8-1081600",
    "pick": "Donstu",
-   "pick_prob": 0.8638924109228937,
-   "prob_a": 0.8638924109228937,
-   "prob_b": 0.1361075890771063,
+   "pick_prob": 0.6134886765596118,
+   "prob_a": 0.6134886765596118,
+   "prob_b": 0.3865113234403882,
    "basis": "model",
    "basis_label": "Originated from official Valve VRS (no book price)",
-   "confidence": "Strong",
+   "confidence": "Solid",
    "sources": [
     {
      "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
      "url": "https://www.hotspawn.com/matches/donstu-vs-banda-chuya-cct-europe-2026-challengers-8-1081600",
-     "read_utc": "2026-10-21T23:15:25Z",
+     "read_utc": "2026-10-22T01:31:17Z",
      "note": "listing and kick-off time; not used as a probability source",
      "kind": "discovery"
     },
     {
      "label": "Valve VRS global standings · DONSTU #197 (732 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     },
     {
      "label": "Valve VRS global standings · Banda Chuya #373 (402 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     }
@@ -197,6 +718,111 @@
     "no_external_price_for_this_fixture",
     "originated_vrs_line",
     "tier_c_event_low_coverage"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1079652",
+   "competition": "CCT Europe 2026 Series #11",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-22T14:00:00Z",
+   "lock_utc": "2026-10-22T13:54:00Z",
+   "team_a": "Acend",
+   "team_b": "ex-6666",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "Acend",
+   "pick_prob": 0.9448614841591876,
+   "prob_a": 0.9448614841591876,
+   "prob_b": 0.05513851584081242,
+   "basis": "model",
+   "basis_label": "Originated by the automated board's own Elo over published results (directional estimate, no book price)",
+   "confidence": "Strong",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "bo3.gg published match results (Elo input)",
+     "url": "https://bo3.gg/matches",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "756 finished matches",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · Acend #63 (1197 pts) — Elo seed",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot; seeds this side's Elo",
+     "kind": "rating"
+    },
+    {
+     "label": "bo3.gg team page · ex-6666 (10 finished matches in the Elo input)",
+     "url": "https://bo3.gg/teams/ex-6666",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "not listed in Valve's standings: started at the lowest points value Valve publishes (381.0), then moved by its own published results — a directional estimate, not a rating",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_elo_line_no_official_rating",
+    "originated_elo_unlisted_team_started_at_vrs_floor",
+    "directional_estimate_only"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1081145",
+   "competition": "CCT Europe 2026 Series #12",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-22T14:00:00Z",
+   "lock_utc": "2026-10-22T13:54:00Z",
+   "team_a": "Lavked",
+   "team_b": "HAVU",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "HAVU",
+   "pick_prob": 0.5262259457421269,
+   "prob_a": 0.4737740542578731,
+   "prob_b": 0.5262259457421269,
+   "basis": "model",
+   "basis_label": "Originated from official Valve VRS (no book price)",
+   "confidence": "Toss-up",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Valve VRS global standings · Lavked #143 (862 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · HAVU #124 (937 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_vrs_line"
    ],
    "limitations": [],
    "attempts": [],
@@ -213,9 +839,9 @@
    "team_b": "Turma do Pagode",
    "hotspawn_url": "https://www.hotspawn.com/matches/imperial-vs-turma-do-pagode-circuit-x-curitiba-4-1082688",
    "pick": "Imperial",
-   "pick_prob": 0.7639968079138806,
-   "prob_a": 0.7639968079138806,
-   "prob_b": 0.23600319208611942,
+   "pick_prob": 0.7354300527944192,
+   "prob_a": 0.7354300527944192,
+   "prob_b": 0.2645699472055808,
    "basis": "market+model",
    "basis_label": "Bookmaker consensus + Valve VRS model",
    "confidence": "Strong",
@@ -223,56 +849,56 @@
     {
      "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
      "url": "https://www.hotspawn.com/matches/imperial-vs-turma-do-pagode-circuit-x-curitiba-4-1082688",
-     "read_utc": "2026-10-21T23:15:25Z",
+     "read_utc": "2026-10-22T01:31:17Z",
      "note": "listing and kick-off time; not used as a probability source",
      "kind": "discovery"
     },
     {
      "label": "Pinnacle · american",
      "url": "https://www.pinnacle.com/en/esports/cs2-hub",
-     "read_utc": "2026-10-21T23:15:34Z",
+     "read_utc": "2026-10-22T01:31:24Z",
      "note": "event 1638811247",
      "kind": "price"
     },
     {
      "label": "Bovada · decimal",
      "url": "https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/imperial-turma-do-pagode-202610221000",
-     "read_utc": "2026-10-21T23:15:36Z",
+     "read_utc": "2026-10-22T01:31:27Z",
      "note": "event 32519177",
      "kind": "price"
     },
     {
      "label": "Melbet (1xBet platform) · decimal",
      "url": "https://melbet.com/en/line/esports",
-     "read_utc": "2026-10-21T23:15:37Z",
+     "read_utc": "2026-10-22T01:31:27Z",
      "note": "event 763429585",
      "kind": "price"
     },
     {
      "label": "Kalshi (exchange) · yes mid ($)",
      "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct221000tdpimp",
-     "read_utc": "2026-10-21T23:15:38Z",
+     "read_utc": "2026-10-22T01:31:29Z",
      "note": "event KXCS2GAME-26OCT221000TDPIMP",
      "kind": "price"
     },
     {
      "label": "Thunderpick (via bo3.gg) · decimal",
      "url": "https://bo3.gg/matches/imperial-vs-turma-do-pagode-22-10-2026",
-     "read_utc": "2026-10-21T23:16:27Z",
+     "read_utc": "2026-10-22T01:32:16Z",
      "note": "event 132411",
      "kind": "price"
     },
     {
      "label": "Valve VRS global standings · Imperial #52 (1297 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     },
     {
      "label": "Valve VRS global standings · Turma do Pagode #98 (1051 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     }
@@ -295,9 +921,9 @@
    "team_b": "ShindeN",
    "hotspawn_url": "https://www.hotspawn.com/matches/bestia-vs-shinden-circuit-x-curitiba-4-1082689",
    "pick": "BESTIA",
-   "pick_prob": 0.5208673969875997,
-   "prob_a": 0.5208673969875997,
-   "prob_b": 0.47913260301240035,
+   "pick_prob": 0.5101681082860121,
+   "prob_a": 0.5101681082860121,
+   "prob_b": 0.4898318917139879,
    "basis": "market+model",
    "basis_label": "Bookmaker consensus + Valve VRS model",
    "confidence": "Toss-up",
@@ -305,49 +931,49 @@
     {
      "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
      "url": "https://www.hotspawn.com/matches/bestia-vs-shinden-circuit-x-curitiba-4-1082689",
-     "read_utc": "2026-10-21T23:15:25Z",
+     "read_utc": "2026-10-22T01:31:17Z",
      "note": "listing and kick-off time; not used as a probability source",
      "kind": "discovery"
     },
     {
      "label": "Pinnacle · american",
      "url": "https://www.pinnacle.com/en/esports/cs2-hub",
-     "read_utc": "2026-10-21T23:15:34Z",
+     "read_utc": "2026-10-22T01:31:24Z",
      "note": "event 1638825309",
      "kind": "price"
     },
     {
      "label": "Bovada · decimal",
      "url": "https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/bestia-shinden-202610221000",
-     "read_utc": "2026-10-21T23:15:36Z",
+     "read_utc": "2026-10-22T01:31:27Z",
      "note": "event 32518186",
      "kind": "price"
     },
     {
      "label": "Melbet (1xBet platform) · decimal",
      "url": "https://melbet.com/en/line/esports",
-     "read_utc": "2026-10-21T23:15:37Z",
+     "read_utc": "2026-10-22T01:31:27Z",
      "note": "event 763429577",
      "kind": "price"
     },
     {
      "label": "Thunderpick (via bo3.gg) · decimal",
      "url": "https://bo3.gg/matches/bestia-vs-shinden-22-10-2026",
-     "read_utc": "2026-10-21T23:16:27Z",
+     "read_utc": "2026-10-22T01:32:16Z",
      "note": "event 132410",
      "kind": "price"
     },
     {
      "label": "Valve VRS global standings · BESTIA #65 (1189 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     },
     {
      "label": "Valve VRS global standings · ShindeN #74 (1121 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     }
@@ -369,59 +995,699 @@
    "team_a": "UNiTY",
    "team_b": "Apogee Betclic",
    "hotspawn_url": "https://www.hotspawn.com/matches/unity-vs-apogee-betclic-stake-ranked-episode-6-closed-qualifier-1082882",
-   "pick": "UNiTY",
-   "pick_prob": 0.5029721608627798,
-   "prob_a": 0.5029721608627798,
-   "prob_b": 0.49702783913722015,
+   "pick": "Apogee Betclic",
+   "pick_prob": 0.5700864609793539,
+   "prob_a": 0.4299135390206461,
+   "prob_b": 0.5700864609793539,
    "basis": "market+model",
    "basis_label": "Bookmaker consensus + Valve VRS model",
-   "confidence": "Toss-up",
+   "confidence": "Lean",
    "sources": [
     {
      "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
      "url": "https://www.hotspawn.com/matches/unity-vs-apogee-betclic-stake-ranked-episode-6-closed-qualifier-1082882",
-     "read_utc": "2026-10-21T23:15:25Z",
+     "read_utc": "2026-10-22T01:31:17Z",
      "note": "listing and kick-off time; not used as a probability source",
      "kind": "discovery"
     },
     {
      "label": "Melbet (1xBet platform) · decimal",
      "url": "https://melbet.com/en/line/esports",
-     "read_utc": "2026-10-21T23:15:37Z",
+     "read_utc": "2026-10-22T01:31:27Z",
      "note": "event 763696446",
-     "kind": "price"
-    },
-    {
-     "label": "Kalshi (exchange) · yes mid ($)",
-     "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct221230apogeeunity",
-     "read_utc": "2026-10-21T23:15:38Z",
-     "note": "event KXCS2GAME-26OCT221230APOGEEUNITY",
      "kind": "price"
     },
     {
      "label": "Thunderpick (via bo3.gg) · decimal",
      "url": "https://bo3.gg/matches/unity-vs-betclic-apogee-esports-22-10-2026",
-     "read_utc": "2026-10-21T23:16:27Z",
+     "read_utc": "2026-10-22T01:32:16Z",
      "note": "event 132327",
      "kind": "price"
     },
     {
      "label": "Valve VRS global standings · UNiTY #69 (1167 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     },
     {
      "label": "Valve VRS global standings · Betclic #183 (765 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     }
    ],
    "flags": [
     "alias_applied_see_evidence"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1082180",
+   "competition": "Stake Ranked Episode 6: Closed Qualifier",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-22T16:30:00Z",
+   "lock_utc": "2026-10-22T16:24:00Z",
+   "team_a": "Sangal",
+   "team_b": "Metizport",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "Sangal",
+   "pick_prob": 0.5282310635275701,
+   "prob_a": 0.5282310635275701,
+   "prob_b": 0.4717689364724299,
+   "basis": "market+model",
+   "basis_label": "Bookmaker consensus + Valve VRS model",
+   "confidence": "Toss-up",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Pinnacle · american",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "read_utc": "2026-10-22T01:31:26Z",
+     "note": "event 1638942915",
+     "kind": "price"
+    },
+    {
+     "label": "Bovada · decimal",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/stake-ranked-qualifiers/sangal-esports-metizport-202610221230",
+     "read_utc": "2026-10-22T01:31:27Z",
+     "note": "event 32583175",
+     "kind": "price"
+    },
+    {
+     "label": "Melbet (1xBet platform) · decimal",
+     "url": "https://melbet.com/en/line/esports",
+     "read_utc": "2026-10-22T01:31:27Z",
+     "note": "event 763829221",
+     "kind": "price"
+    },
+    {
+     "label": "Kalshi (exchange) · yes mid ($)",
+     "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct221230mzpsng",
+     "read_utc": "2026-10-22T01:31:29Z",
+     "note": "event KXCS2GAME-26OCT221230MZPSNG",
+     "kind": "price"
+    },
+    {
+     "label": "Thunderpick (via bo3.gg) · decimal",
+     "url": "https://bo3.gg/matches/sangal-vs-metizport-22-10-2026",
+     "read_utc": "2026-10-22T01:32:16Z",
+     "note": "event 132326",
+     "kind": "price"
+    },
+    {
+     "label": "Valve VRS global standings · Sangal #40 (1362 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · Metizport #53 (1290 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1079653",
+   "competition": "CCT Europe 2026 Series #11",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-22T17:00:00Z",
+   "lock_utc": "2026-10-22T16:54:00Z",
+   "team_a": "Rune Eaters",
+   "team_b": "FORZE Reload",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "Rune Eaters",
+   "pick_prob": 0.5034999476969348,
+   "prob_a": 0.5034999476969348,
+   "prob_b": 0.49650005230306515,
+   "basis": "model",
+   "basis_label": "Originated from official Valve VRS (no book price)",
+   "confidence": "Toss-up",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Valve VRS global standings · Rune Eaters #81 (1110 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · FORZE Reload #84 (1100 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_vrs_line"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1081146",
+   "competition": "CCT Europe 2026 Series #12",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-22T17:00:00Z",
+   "lock_utc": "2026-10-22T16:54:00Z",
+   "team_a": "6yuBoJlbl",
+   "team_b": "ex-6666",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "6yuBoJlbl",
+   "pick_prob": 0.8661264858849257,
+   "prob_a": 0.8661264858849257,
+   "prob_b": 0.1338735141150743,
+   "basis": "model",
+   "basis_label": "Originated by the automated board's own Elo over published results (directional estimate, no book price)",
+   "confidence": "Strong",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "bo3.gg published match results (Elo input)",
+     "url": "https://bo3.gg/matches",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "756 finished matches",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · 6yuBoJlbl #110 (1015 pts) — Elo seed",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot; seeds this side's Elo",
+     "kind": "rating"
+    },
+    {
+     "label": "bo3.gg team page · ex-6666 (10 finished matches in the Elo input)",
+     "url": "https://bo3.gg/teams/ex-6666",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "not listed in Valve's standings: started at the lowest points value Valve publishes (381.0), then moved by its own published results — a directional estimate, not a rating",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_elo_line_no_official_rating",
+    "originated_elo_unlisted_team_started_at_vrs_floor",
+    "directional_estimate_only"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1082769",
+   "competition": "CIS LAN Championship #9",
+   "tier": "C",
+   "points": 2,
+   "start_utc": "2026-10-22T17:30:00Z",
+   "lock_utc": "2026-10-22T17:24:00Z",
+   "team_a": "K27",
+   "team_b": "NEXORA",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "K27",
+   "pick_prob": 0.8919952,
+   "prob_a": 0.8919952,
+   "prob_b": 0.10800480000000001,
+   "basis": "market",
+   "basis_label": "Bookmaker / exchange price",
+   "confidence": "Strong",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Bovada · decimal",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/cis-lan-championship/k27-nexora-202610221200",
+     "read_utc": "2026-10-22T01:31:27Z",
+     "note": "event 32575989",
+     "kind": "price"
+    },
+    {
+     "label": "Melbet (1xBet platform) · decimal",
+     "url": "https://melbet.com/en/line/esports",
+     "read_utc": "2026-10-22T01:31:27Z",
+     "note": "event 763723224",
+     "kind": "price"
+    }
+   ],
+   "flags": [
+    "tier_c_event_low_coverage"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1082770",
+   "competition": "CIS LAN Championship #9",
+   "tier": "C",
+   "points": 2,
+   "start_utc": "2026-10-22T20:30:00Z",
+   "lock_utc": "2026-10-22T20:24:00Z",
+   "team_a": "UPGRADE",
+   "team_b": "Virtus.pro",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "Virtus.pro",
+   "pick_prob": 0.5954304459025062,
+   "prob_a": 0.4045695540974938,
+   "prob_b": 0.5954304459025062,
+   "basis": "market+model",
+   "basis_label": "Bookmaker consensus + Valve VRS model",
+   "confidence": "Lean",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Pinnacle · american",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "read_utc": "2026-10-22T01:31:25Z",
+     "note": "event 1638942910",
+     "kind": "price"
+    },
+    {
+     "label": "Bovada · decimal",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/cis-lan-championship/upgrade-virtus-pro-202610221630",
+     "read_utc": "2026-10-22T01:31:27Z",
+     "note": "event 32589585",
+     "kind": "price"
+    },
+    {
+     "label": "Melbet (1xBet platform) · decimal",
+     "url": "https://melbet.com/en/line/esports",
+     "read_utc": "2026-10-22T01:31:27Z",
+     "note": "event 763827901",
+     "kind": "price"
+    },
+    {
+     "label": "Valve VRS global standings · UPGRADE #67 (1185 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · Virtus.pro #51 (1309 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "tier_c_event_low_coverage"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1081871",
+   "competition": "VOID Autumn Cup 2026",
+   "tier": "C",
+   "points": 2,
+   "start_utc": "2026-10-23T03:00:00Z",
+   "lock_utc": "2026-10-23T02:54:00Z",
+   "team_a": "Lynn Vision",
+   "team_b": "Chinggis Warriors",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "Lynn Vision",
+   "pick_prob": 0.6697381481943365,
+   "prob_a": 0.6697381481943365,
+   "prob_b": 0.3302618518056635,
+   "basis": "model",
+   "basis_label": "Originated from official Valve VRS (no book price)",
+   "confidence": "Solid",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Valve VRS global standings · Lynn Vision #64 (1190 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · Chinggis Warriors #220 (685 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_vrs_line",
+    "tier_c_event_low_coverage"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1079654",
+   "competition": "CCT Europe 2026 Series #11",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-23T08:00:00Z",
+   "lock_utc": "2026-10-23T07:54:00Z",
+   "team_a": "ex-Zero Tenacity",
+   "team_b": "ex-RUSTEC",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "ex-Zero Tenacity",
+   "pick_prob": 0.5838991135355754,
+   "prob_a": 0.5838991135355754,
+   "prob_b": 0.41610088646442456,
+   "basis": "model",
+   "basis_label": "Originated from official Valve VRS (no book price)",
+   "confidence": "Lean",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Valve VRS global standings · ex-Zero Tenacity #93 (1066 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · ex-RUSTEC #152 (824 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_vrs_line"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1079655",
+   "competition": "CCT Europe 2026 Series #11",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-23T11:00:00Z",
+   "lock_utc": "2026-10-23T10:54:00Z",
+   "team_a": "Nuclear TigeRES",
+   "team_b": "ILLYRIANS",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "Nuclear TigeRES",
+   "pick_prob": 0.65628919081686,
+   "prob_a": 0.65628919081686,
+   "prob_b": 0.34371080918314,
+   "basis": "model",
+   "basis_label": "Originated from official Valve VRS (no book price)",
+   "confidence": "Solid",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Valve VRS global standings · Nuclear TigeRES #46 (1324 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · Illyrians #141 (862 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_vrs_line"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1081148",
+   "competition": "CCT Europe 2026 Series #12",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-23T11:00:00Z",
+   "lock_utc": "2026-10-23T10:54:00Z",
+   "team_a": "Inner Circle Academy",
+   "team_b": "Spirit Academy",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "Inner Circle Academy",
+   "pick_prob": 0.5290173971432183,
+   "prob_a": 0.5290173971432183,
+   "prob_b": 0.47098260285678173,
+   "basis": "model",
+   "basis_label": "Originated from official Valve VRS (no book price)",
+   "confidence": "Toss-up",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Valve VRS global standings · Inner Circle Academy #94 (1064 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · Spirit Academy #115 (981 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_vrs_line"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1081149",
+   "competition": "CCT Europe 2026 Series #12",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-23T14:00:00Z",
+   "lock_utc": "2026-10-23T13:54:00Z",
+   "team_a": "FORZE Reload",
+   "team_b": "LFO 10",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "FORZE Reload",
+   "pick_prob": 0.9762428231477438,
+   "prob_a": 0.9762428231477438,
+   "prob_b": 0.0237571768522562,
+   "basis": "model",
+   "basis_label": "Originated by the automated board's own Elo over published results (directional estimate, no book price)",
+   "confidence": "Strong",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "bo3.gg published match results (Elo input)",
+     "url": "https://bo3.gg/matches",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "756 finished matches",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · FORZE Reload #84 (1100 pts) — Elo seed",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot; seeds this side's Elo",
+     "kind": "rating"
+    },
+    {
+     "label": "bo3.gg team page · LFO 10 (11 finished matches in the Elo input)",
+     "url": "https://bo3.gg/teams/sokerorg",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "not listed in Valve's standings: started at the lowest points value Valve publishes (381.0), then moved by its own published results — a directional estimate, not a rating",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_elo_line_no_official_rating",
+    "originated_elo_unlisted_team_started_at_vrs_floor",
+    "directional_estimate_only",
+    "alias_applied_see_evidence"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1079657",
+   "competition": "CCT Europe 2026 Series #11",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-23T17:00:00Z",
+   "lock_utc": "2026-10-23T16:54:00Z",
+   "team_a": "BakS",
+   "team_b": "BRUTE",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "BakS",
+   "pick_prob": 0.6217542238840574,
+   "prob_a": 0.6217542238840574,
+   "prob_b": 0.37824577611594257,
+   "basis": "model",
+   "basis_label": "Originated from official Valve VRS (no book price)",
+   "confidence": "Solid",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Valve VRS global standings · BAKS #100 (1044 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · BRUTE #218 (689 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_vrs_line"
+   ],
+   "limitations": [],
+   "attempts": [],
+   "resolved_by": "automated board"
+  },
+  {
+   "fixture_id": "1081150",
+   "competition": "CCT Europe 2026 Series #12",
+   "tier": "B",
+   "points": 3,
+   "start_utc": "2026-10-23T17:00:00Z",
+   "lock_utc": "2026-10-23T16:54:00Z",
+   "team_a": "ex-RUSTEC",
+   "team_b": "Saint Sinners",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "pick": "ex-RUSTEC",
+   "pick_prob": 0.504899849947846,
+   "prob_a": 0.504899849947846,
+   "prob_b": 0.495100150052154,
+   "basis": "model",
+   "basis_label": "Originated from official Valve VRS (no book price)",
+   "confidence": "Toss-up",
+   "sources": [
+    {
+     "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
+     "url": "https://play.hotspawn.com/lobby",
+     "read_utc": "2026-10-22T01:31:17Z",
+     "note": "listing and kick-off time; not used as a probability source",
+     "kind": "discovery"
+    },
+    {
+     "label": "Valve VRS global standings · ex-RUSTEC #152 (824 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    },
+    {
+     "label": "Valve VRS global standings · Saint Sinners #158 (810 pts)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "official Valve regional standings snapshot",
+     "kind": "rating"
+    }
+   ],
+   "flags": [
+    "no_external_price_for_this_fixture",
+    "originated_vrs_line"
    ],
    "limitations": [],
    "attempts": [],
@@ -438,9 +1704,9 @@
    "team_b": "Off Chops",
    "hotspawn_url": "https://play.hotspawn.com/lobby",
    "pick": "Ground Zero",
-   "pick_prob": 0.7092501147471997,
-   "prob_a": 0.7092501147471997,
-   "prob_b": 0.2907498852528003,
+   "pick_prob": 0.7092501044602098,
+   "prob_a": 0.7092501044602098,
+   "prob_b": 0.29074989553979025,
    "basis": "model",
    "basis_label": "Originated by the automated board's own Elo over published results (directional estimate, no book price)",
    "confidence": "Strong",
@@ -448,28 +1714,28 @@
     {
      "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
      "url": "https://play.hotspawn.com/lobby",
-     "read_utc": "2026-10-21T23:15:25Z",
+     "read_utc": "2026-10-22T01:31:17Z",
      "note": "listing and kick-off time; not used as a probability source",
      "kind": "discovery"
     },
     {
      "label": "bo3.gg published match results (Elo input)",
      "url": "https://bo3.gg/matches",
-     "read_utc": "2026-10-21T23:16:45Z",
-     "note": "735 finished matches",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "756 finished matches",
      "kind": "rating"
     },
     {
      "label": "Valve VRS global standings · Ground Zero #136 (878 pts) — Elo seed",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot; seeds this side's Elo",
      "kind": "rating"
     },
     {
      "label": "bo3.gg team page · Off Chops (6 finished matches in the Elo input)",
      "url": "https://bo3.gg/teams/off-chops",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "not listed in Valve's standings: started at the lowest points value Valve publishes (381.0), then moved by its own published results — a directional estimate, not a rating",
      "kind": "rating"
     }
@@ -495,31 +1761,31 @@
    "team_b": "Alter Ego",
    "hotspawn_url": "https://play.hotspawn.com/lobby",
    "pick": "NEXVOID",
-   "pick_prob": 0.7282182354771827,
-   "prob_a": 0.7282182354771827,
-   "prob_b": 0.2717817645228173,
+   "pick_prob": 0.5612903050621361,
+   "prob_a": 0.5612903050621361,
+   "prob_b": 0.43870969493786394,
    "basis": "model",
    "basis_label": "Originated from official Valve VRS (no book price)",
-   "confidence": "Strong",
+   "confidence": "Lean",
    "sources": [
     {
      "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
      "url": "https://play.hotspawn.com/lobby",
-     "read_utc": "2026-10-21T23:15:25Z",
+     "read_utc": "2026-10-22T01:31:17Z",
      "note": "listing and kick-off time; not used as a probability source",
      "kind": "discovery"
     },
     {
      "label": "Valve VRS global standings · NEXVOID #113 (995 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     },
     {
      "label": "Valve VRS global standings · Alter Ego #155 (819 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     }
@@ -543,9 +1809,9 @@
    "team_b": "Staqued",
    "hotspawn_url": "https://play.hotspawn.com/lobby",
    "pick": "FlyQuest",
-   "pick_prob": 0.9923909167238786,
-   "prob_a": 0.9923909167238786,
-   "prob_b": 0.00760908327612142,
+   "pick_prob": 0.9923858785698556,
+   "prob_a": 0.9923858785698556,
+   "prob_b": 0.007614121430144394,
    "basis": "model",
    "basis_label": "Originated by the automated board's own Elo over published results (directional estimate, no book price)",
    "confidence": "Strong",
@@ -553,28 +1819,28 @@
     {
      "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
      "url": "https://play.hotspawn.com/lobby",
-     "read_utc": "2026-10-21T23:15:25Z",
+     "read_utc": "2026-10-22T01:31:17Z",
      "note": "listing and kick-off time; not used as a probability source",
      "kind": "discovery"
     },
     {
      "label": "bo3.gg published match results (Elo input)",
      "url": "https://bo3.gg/matches",
-     "read_utc": "2026-10-21T23:16:45Z",
-     "note": "735 finished matches",
+     "read_utc": "2026-10-22T01:32:34Z",
+     "note": "756 finished matches",
      "kind": "rating"
     },
     {
      "label": "Valve VRS global standings · FlyQuest #86 (1093 pts) — Elo seed",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot; seeds this side's Elo",
      "kind": "rating"
     },
     {
      "label": "bo3.gg team page · Staqued (2 finished matches in the Elo input)",
      "url": "https://bo3.gg/teams/staqued",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "not listed in Valve's standings: started at the lowest points value Valve publishes (381.0), then moved by its own published results — a directional estimate, not a rating",
      "kind": "rating"
     }
@@ -600,9 +1866,9 @@
    "team_b": "Abyssal",
    "hotspawn_url": "https://play.hotspawn.com/lobby",
    "pick": "Abyssal",
-   "pick_prob": 0.5223850571815125,
-   "prob_a": 0.4776149428184875,
-   "prob_b": 0.5223850571815125,
+   "pick_prob": 0.5055997736364568,
+   "prob_a": 0.4944002263635432,
+   "prob_b": 0.5055997736364568,
    "basis": "model",
    "basis_label": "Originated from official Valve VRS (no book price)",
    "confidence": "Toss-up",
@@ -610,21 +1876,21 @@
     {
      "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
      "url": "https://play.hotspawn.com/lobby",
-     "read_utc": "2026-10-21T23:15:25Z",
+     "read_utc": "2026-10-22T01:31:17Z",
      "note": "listing and kick-off time; not used as a probability source",
      "kind": "discovery"
     },
     {
      "label": "Valve VRS global standings · Rooster #205 (718 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     },
     {
      "label": "Valve VRS global standings · Abyssal #195 (734 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     }
@@ -648,9 +1914,9 @@
    "team_b": "The Huns",
    "hotspawn_url": "https://www.hotspawn.com/matches/hotu-vs-the-huns-moscow-cyber-games-2026-1082792",
    "pick": "HOTU",
-   "pick_prob": 0.9840403890422114,
-   "prob_a": 0.9840403890422114,
-   "prob_b": 0.01595961095778864,
+   "pick_prob": 0.7369937143172608,
+   "prob_a": 0.7369937143172608,
+   "prob_b": 0.2630062856827392,
    "basis": "model",
    "basis_label": "Originated from official Valve VRS (no book price)",
    "confidence": "Strong",
@@ -658,21 +1924,21 @@
     {
      "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
      "url": "https://www.hotspawn.com/matches/hotu-vs-the-huns-moscow-cyber-games-2026-1082792",
-     "read_utc": "2026-10-21T23:15:25Z",
+     "read_utc": "2026-10-22T01:31:17Z",
      "note": "listing and kick-off time; not used as a probability source",
      "kind": "discovery"
     },
     {
      "label": "Valve VRS global standings · HOTU #31 (1437 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     },
     {
      "label": "Valve VRS global standings · The Huns #213 (701 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     }
@@ -696,31 +1962,31 @@
    "team_b": "1WIN",
    "hotspawn_url": "https://www.hotspawn.com/matches/5star-vs-1win-moscow-cyber-games-2026-1082793",
    "pick": "1WIN",
-   "pick_prob": 0.8218309830568107,
-   "prob_a": 0.17816901694318926,
-   "prob_b": 0.8218309830568107,
+   "pick_prob": 0.5944037344292161,
+   "prob_a": 0.4055962655707838,
+   "prob_b": 0.5944037344292161,
    "basis": "model",
    "basis_label": "Originated from official Valve VRS (no book price)",
-   "confidence": "Strong",
+   "confidence": "Lean",
    "sources": [
     {
      "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
      "url": "https://www.hotspawn.com/matches/5star-vs-1win-moscow-cyber-games-2026-1082793",
-     "read_utc": "2026-10-21T23:15:25Z",
+     "read_utc": "2026-10-22T01:31:17Z",
      "note": "listing and kick-off time; not used as a probability source",
      "kind": "discovery"
     },
     {
      "label": "Valve VRS global standings · 5star #80 (1110 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     },
     {
      "label": "Valve VRS global standings · 1win #38 (1383 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     }
@@ -744,31 +2010,31 @@
    "team_b": "DENDELE",
    "hotspawn_url": "https://play.hotspawn.com/lobby",
    "pick": "DENDELE",
-   "pick_prob": 0.6731355151646794,
-   "prob_a": 0.32686448483532066,
-   "prob_b": 0.6731355151646794,
+   "pick_prob": 0.545027742114025,
+   "prob_a": 0.4549722578859749,
+   "prob_b": 0.545027742114025,
    "basis": "model",
    "basis_label": "Originated from official Valve VRS (no book price)",
-   "confidence": "Solid",
+   "confidence": "Lean",
    "sources": [
     {
      "label": "HotSpawn Pick'ems lobby (fixture discovery only)",
      "url": "https://play.hotspawn.com/lobby",
-     "read_utc": "2026-10-21T23:15:25Z",
+     "read_utc": "2026-10-22T01:31:17Z",
      "note": "listing and kick-off time; not used as a probability source",
      "kind": "discovery"
     },
     {
      "label": "Valve VRS global standings · Wildcard #58 (1239 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     },
     {
      "label": "Valve VRS global standings · DENDELE #39 (1368 pts)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-     "read_utc": "2026-10-21T23:16:45Z",
+     "read_utc": "2026-10-22T01:32:34Z",
      "note": "official Valve regional standings snapshot",
      "kind": "rating"
     }
