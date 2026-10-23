@@ -1,0 +1,41 @@
+now/: 20 open fixtures - 12 priced, 8 rating-only, 0 band, 0 with no pick -> 7 pages
+test_climb_advice_only_exists_when_the_sample_clears_the_floor (tests.test_b3871d16.TestCoverage.test_climb_advice_only_exists_when_the_sample_clears_the_floor)
+The sample grows minute by minute, so the rule is what gets asserted, not the number. ... ok
+test_day5_cards_are_present_and_priced (tests.test_b3871d16.TestCoverage.test_day5_cards_are_present_and_priced) ... ok
+test_every_open_fixture_has_a_row (tests.test_b3871d16.TestCoverage.test_every_open_fixture_has_a_row) ... ok
+test_every_row_has_a_pick_or_a_reason (tests.test_b3871d16.TestCoverage.test_every_row_has_a_pick_or_a_reason) ... ok
+test_the_two_previously_blank_rows_are_resolved (tests.test_b3871d16.TestCoverage.test_the_two_previously_blank_rows_are_resolved) ... skipped 'Historical gap fixtures have left the current board; per-row live evidence tests still run'
+test_band_rows_publish_a_range_not_a_point (tests.test_b3871d16.TestNumbers.test_band_rows_publish_a_range_not_a_point) ... ok
+test_crowd_join_is_refused_when_names_disagree (tests.test_b3871d16.TestNumbers.test_crowd_join_is_refused_when_names_disagree) ... ok
+test_every_row_has_at_least_one_external_link (tests.test_b3871d16.TestNumbers.test_every_row_has_at_least_one_external_link) ... ok
+test_lines_are_reproducible_from_market_and_model_only (tests.test_b3871d16.TestNumbers.test_lines_are_reproducible_from_market_and_model_only)
+The published probability must be derivable from the recorded market/model inputs. ... ok
+test_no_probability_is_derived_from_hotspawn_ownership (tests.test_b3871d16.TestNumbers.test_no_probability_is_derived_from_hotspawn_ownership) ... 
+  test_no_probability_is_derived_from_hotspawn_ownership (tests.test_b3871d16.TestNumbers.test_no_probability_is_derived_from_hotspawn_ownership) (fixture='1079195') ... FAIL
+test_price_links_never_point_at_hotspawn (tests.test_b3871d16.TestNumbers.test_price_links_never_point_at_hotspawn) ... ok
+test_probabilities_are_bounded_and_sum_to_one (tests.test_b3871d16.TestNumbers.test_probabilities_are_bounded_and_sum_to_one) ... ok
+test_un_overridden_rows_match_the_canonical_board_exactly (tests.test_b3871d16.TestNumbers.test_un_overridden_rows_match_the_canonical_board_exactly) ... ok
+test_coordination_board_records_this_session (tests.test_b3871d16.TestPipeline.test_coordination_board_records_this_session) ... ok
+test_evidence_ledger_is_valid_and_every_claim_points_at_a_read (tests.test_b3871d16.TestPipeline.test_evidence_ledger_is_valid_and_every_claim_points_at_a_read) ... ok
+test_staging_publishes_this_section (tests.test_b3871d16.TestPipeline.test_staging_publishes_this_section) ... ok
+test_workflow_exists_cron_four_hours_and_stays_in_scope (tests.test_b3871d16.TestPipeline.test_workflow_exists_cron_four_hours_and_stays_in_scope) ... ok
+test_executive_summary_links_into_the_pick_lists (tests.test_b3871d16.TestSite.test_executive_summary_links_into_the_pick_lists) ... ok
+test_flagged_page_lists_every_irregularity_with_a_link (tests.test_b3871d16.TestSite.test_flagged_page_lists_every_irregularity_with_a_link) ... ok
+test_internal_links_resolve (tests.test_b3871d16.TestSite.test_internal_links_resolve) ... ok
+test_limitations_are_surfaced_in_the_summary (tests.test_b3871d16.TestSite.test_limitations_are_surfaced_in_the_summary) ... ok
+test_mobile_contract (tests.test_b3871d16.TestSite.test_mobile_contract) ... ok
+test_no_invented_dates_from_last_year (tests.test_b3871d16.TestSite.test_no_invented_dates_from_last_year) ... ok
+test_read_times_are_published (tests.test_b3871d16.TestSite.test_read_times_are_published) ... ok
+
+======================================================================
+FAIL: test_no_probability_is_derived_from_hotspawn_ownership (tests.test_b3871d16.TestNumbers.test_no_probability_is_derived_from_hotspawn_ownership) (fixture='1079195')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/MaltaProj2/MaltaProj2/tests/test_b3871d16.py", line 172, in test_no_probability_is_derived_from_hotspawn_ownership
+    self.assertNotEqual((round(line["prob_a"] * 100), round(line["prob_b"] * 100)), crowd_pct,
+AssertionError: (59, 41) == (59, 41) : a line equal to the crowd split means the crowd was used as a price
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.176s
+
+FAILED (failures=1, skipped=1)
