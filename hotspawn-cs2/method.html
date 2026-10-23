@@ -10,7 +10,7 @@
 <body>
 <header class="site"><div class="wrap">
 <p class="site-title"><a href="index.html">🎯 HotSpawn CS2 Pick&rsquo;em — picks for every match</a></p>
-<p class="site-sub">Updated <time datetime="2026-10-22T21:46:35Z" data-local title="2026-10-22T21:46:35Z">2026-10-22 21:46 UTC</time> · market data collected <time datetime="2026-10-22T21:46:35Z" data-local title="2026-10-22T21:46:35Z">2026-10-22 21:46 UTC</time> · auto-refresh every few hours</p>
+<p class="site-sub">Updated <time datetime="2026-10-23T07:43:34Z" data-local title="2026-10-23T07:43:34Z">2026-10-23 07:43 UTC</time> · market data collected <time datetime="2026-10-23T07:43:34Z" data-local title="2026-10-23T07:43:34Z">2026-10-23 07:43 UTC</time> · auto-refresh every few hours</p>
 <nav class="tabs" aria-label="Picks board"><a href="index.html">Summary</a><a href="picks.html">All picks</a><a href="unresolved.html">Unresolved</a><a href="method.html" aria-current="page">Method & sources</a><a href="flagged.html">Flagged</a></nav>
 </div></header>
 <main class="wrap">
@@ -35,10 +35,10 @@ in Valve&rsquo;s official <a href="https://github.com/ValveSoftware/counter-stri
 global standings</a> (snapshot 2026_10_05), we originate a line with
 Valve&rsquo;s own Glicko expected-win formula,
 <code>P(A) = 1/(1+10^(−g·Δ/400))</code> at RD 75, with the slope scaled by
-<b>k = 0.442</b> — fitted by least squares to
-<b>81</b> fixtures where we observed both a market consensus and two VRS
-ratings (mean absolute error vs the market 7.7pp;
-favourite agreement 81%). Valve&rsquo;s unscaled curve
+<b>k = 0.45</b> — fitted by least squares to
+<b>87</b> fixtures where we observed both a market consensus and two VRS
+ratings (mean absolute error vs the market 7.5pp;
+favourite agreement 82%). Valve&rsquo;s unscaled curve
 (k=1) errs by 11.7pp on the same pairs, so we use
 the fitted slope. Model probabilities are capped to 3%–97% and always labelled estimates.</li>
 <li><b>Direction only.</b> If only one side has a verified rating signal (or all candidate
@@ -62,7 +62,7 @@ logged — an empty board is never published.</li>
 </ul>
 <h2>Sources used this run</h2>
 <div class="tblwrap"><table><tr><th>Source</th><th>Status</th><th>Yield</th><th>Collected (UTC)</th></tr>
-<tr><td><a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn lobby (fixture discovery only)</a></td><td>OK (HTTP 200)</td><td></td><td class="kbd">2026-10-22T21:46:21Z</td></tr><tr><td><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures" rel="noopener">HotSpawn public fixtures API</a></td><td>OK (HTTP 200)</td><td></td><td class="kbd">2026-10-22T21:46:22Z</td></tr><tr><td><a href="https://www.pinnacle.com/en/esports/cs2-hub" rel="noopener">Pinnacle guest odds API</a></td><td>OK (HTTP 200)</td><td>10 prices</td><td class="kbd">2026-10-22T21:46:29Z</td></tr><tr><td><a href="https://www.bovada.lv/esports" rel="noopener">Bovada coupon JSON</a></td><td>OK (HTTP 200)</td><td>11 prices</td><td class="kbd">2026-10-22T21:46:31Z</td></tr><tr><td><a href="https://melbet.com/en/line/esports" rel="noopener">Melbet LineFeed</a></td><td>OK (HTTP 200)</td><td>41 prices</td><td class="kbd">2026-10-22T21:46:32Z</td></tr><tr><td><a href="https://kalshi.com/markets/kxcs2game" rel="noopener">Kalshi trade API (KXCS2GAME)</a></td><td>OK (HTTP 200)</td><td>16 prices</td><td class="kbd">2026-10-22T21:46:33Z</td></tr><tr><td><a href="https://polymarket.com/" rel="noopener">Polymarket Gamma API</a></td><td>OK (HTTP 200)</td><td>0 prices</td><td class="kbd">2026-10-22T21:46:33Z</td></tr><tr><td><a href="https://www.hltv.org/matches" rel="noopener">HLTV (access probe only)</a></td><td>FAILED (HTTPError 403)</td><td></td><td class="kbd">2026-10-22T21:46:33Z</td></tr><tr><td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve VRS standings (official, GitHub)</a></td><td>OK (HTTP 200)</td><td></td><td class="kbd">2026-10-22T21:46:35Z</td></tr></table></div>
+<tr><td><a href="https://play.hotspawn.com/lobby" rel="noopener">HotSpawn lobby (fixture discovery only)</a></td><td>OK (HTTP 200)</td><td></td><td class="kbd">2026-10-23T07:43:19Z</td></tr><tr><td><a href="https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures" rel="noopener">HotSpawn public fixtures API</a></td><td>OK (HTTP 200)</td><td></td><td class="kbd">2026-10-23T07:43:20Z</td></tr><tr><td><a href="https://www.pinnacle.com/en/esports/cs2-hub" rel="noopener">Pinnacle guest odds API</a></td><td>OK (HTTP 200)</td><td>23 prices</td><td class="kbd">2026-10-23T07:43:27Z</td></tr><tr><td><a href="https://www.bovada.lv/esports" rel="noopener">Bovada coupon JSON</a></td><td>OK (HTTP 200)</td><td>27 prices</td><td class="kbd">2026-10-23T07:43:31Z</td></tr><tr><td><a href="https://melbet.com/en/line/esports" rel="noopener">Melbet LineFeed</a></td><td>OK (HTTP 200)</td><td>38 prices</td><td class="kbd">2026-10-23T07:43:32Z</td></tr><tr><td><a href="https://kalshi.com/markets/kxcs2game" rel="noopener">Kalshi trade API (KXCS2GAME)</a></td><td>OK (HTTP 200)</td><td>31 prices</td><td class="kbd">2026-10-23T07:43:33Z</td></tr><tr><td><a href="https://polymarket.com/" rel="noopener">Polymarket Gamma API</a></td><td>OK (HTTP 200)</td><td>0 prices</td><td class="kbd">2026-10-23T07:43:32Z</td></tr><tr><td><a href="https://www.hltv.org/matches" rel="noopener">HLTV (access probe only)</a></td><td>FAILED (HTTPError 403)</td><td></td><td class="kbd">2026-10-23T07:43:33Z</td></tr><tr><td><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve VRS standings (official, GitHub)</a></td><td>OK (HTTP 200)</td><td></td><td class="kbd">2026-10-23T07:43:34Z</td></tr></table></div>
 <p class="small muted">Full access log with response sizes and SHA-256 hashes is stored in
 <a href="https://github.com/buffedlizard55-lab/MaltaProj2/blob/main/data/d9d7627b/snapshot.json">snapshot.json</a> (<code>access_log</code>).</p>
 <h2>Freshness</h2>
