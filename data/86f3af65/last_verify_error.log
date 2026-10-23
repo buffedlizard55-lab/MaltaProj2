@@ -1,4 +1,4 @@
-# verification failure - 2026-10-23T05:06Z
+# verification failure - 2026-10-23T13:34Z
 
 ```
 test_checks_all_verified (tests.test_86f3af65.TestAudit.test_checks_all_verified) ... ok
@@ -35,12 +35,12 @@ test_regional_files_add_no_name (tests.test_86f3af65.TestValveStandings.test_reg
 FAIL: test_market_rows_re_derive_from_quoted_decimals (tests.test_86f3af65.TestProbabilitiesReDerive.test_market_rows_re_derive_from_quoted_decimals)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/home/runner/work/MaltaProj2/MaltaProj2/tests/test_86f3af65.py", line 90, in test_market_rows_re_derive_from_quoted_decimals
-    self.assertAlmostEqual(row["prob_a"], expect, places=5,
-AssertionError: 0.4933155080213904 != 0.5066844919786095 within 5 places (0.013368983957219138 difference) : 1081606 drifted from its quoted prices
+  File "/home/runner/work/MaltaProj2/MaltaProj2/tests/test_86f3af65.py", line 87, in test_market_rows_re_derive_from_quoted_decimals
+    self.assertAlmostEqual(nv["prob_a"] if same else nv["prob_b"], p, places=5)
+AssertionError: 0.49790010301381443 != 0.49789411616055257 within 5 places (5.986853261863434e-06 difference)
 
 ----------------------------------------------------------------------
-Ran 27 tests in 0.054s
+Ran 27 tests in 0.085s
 
 FAILED (failures=1)
 ```
