@@ -62,7 +62,7 @@ footer{max-width:980px;margin:18px auto;padding:0 12px 28px;color:var(--mut);fon
 <li><strong>De-vig:</strong> p = (1/odds) ÷ (1/oddsA + 1/oddsB).</li>
 <li><strong>Several books:</strong> weighted mean of de-vigged probabilities (Pinnacle 2, Bovada 1.5, Thunderpick 1.5, Kalshi 1, Melbet 1).</li>
 <li><strong>Blend with ratings:</strong> logit blend, market weight 0.85 with two or more books, 0.75 with one (TWC uses one book).</li>
-<li><strong>Valve model:</strong> p = 1/(1+e<sup>−k·c·Δpoints</sup>), c from Valve's own Glicko code, slope k fitted to published market pairs (board k = 0.294012099875523; TWC k = 0.40188 fitted to 48 pairs).</li>
+<li><strong>Valve model:</strong> p = 1/(1+e<sup>−k·c·Δpoints</sup>), c from Valve's own Glicko code, slope k fitted to published market pairs (board k = 0.25; TWC k = 0.40188 fitted to 48 pairs).</li>
 <li><strong>Pick:</strong> the side with the higher probability. If only one side has any rating or result history: that side, probability blank.</li>
 <li><strong>Climb rule:</strong> keep the pick unless the other side is ≥40% on our line, ≤25% of the crowd and beats its crowd share by ≥15 pts, with at least one book price behind it. Contrarian is only worth it when it is close to a coin-flip.</li>
 <li><strong>TWC credible upset:</strong> an underdog at or above 35% on the de-vigged book price.</li></ul>
@@ -73,6 +73,6 @@ footer{max-width:980px;margin:18px auto;padding:0 12px 28px;color:var(--mut);fon
 <p>The lobby is an Angular page. Its public fixtures API (<code>/api/v1/fixtures</code>) lists every fixture with status, kickoff, lock time (6 minutes before kickoff), points and per-side <code>picked_percent</code>; the page's embedded state carries the same list. We use it for discovery, locks, results and the crowd split only.</p>
 
 </main>
-<footer>Built <strong>Fri 23 Oct 05:12 UTC</strong> · <a href="../index.html">Site home</a> · <a href="../flagged.html">Site-wide flagged items</a>.
+<footer>Built <strong>Fri 23 Oct 13:36 UTC</strong> · <a href="../index.html">Site home</a> · <a href="../flagged.html">Site-wide flagged items</a>.
 HotSpawn supplies the match list and crowd shares only — never a win probability. Estimates are not guarantees. 18+; gamble responsibly.</footer>
 </body></html>
