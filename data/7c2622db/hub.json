@@ -1,25 +1,33 @@
 {
  "session": "7c2622db",
- "generated_utc": "2026-10-22T23:35:46Z",
+ "generated_utc": "2026-10-23T05:54:14Z",
  "policy": "market first, exchange second, own model line third (official ratings only), blank and flagged otherwise; HotSpawn crowd shares are ownership only",
  "counts": {
-  "open": 22,
-  "with_pick": 17,
-  "market": 11,
-  "exchange": 1,
-  "model": 5,
-  "unresolved": 5,
-  "locked": 256
+  "open": 30,
+  "with_pick": 24,
+  "market": 17,
+  "exchange": 0,
+  "model": 7,
+  "unresolved": 6,
+  "locked": 261
  },
  "calibration": {
-  "n_pairs": 5,
-  "k": 1.0,
-  "fitted": false,
-  "note": "fewer than 6 eligible priced pairs in this capture, Valve's own slope (k=1) is used and every model row says so"
+  "n_pairs": 9,
+  "k": 0.48481,
+  "fitted": true,
+  "k_raw": 0.48481,
+  "mae_prob": 0.0521,
+  "mae_prob_valve": 0.11409,
+  "min_pairs": 6,
+  "bounds": [
+   0.25,
+   1.5
+  ],
+  "note": "slope learned from this capture's own bookmaker consensus over official Valve ratings, through the origin, clamped to the published bounds"
  },
  "inputs": {
-  "capture_line": "manual lobby capture 2026-10-16T04:30:00Z (31 rows) merged with the automated capture 2026-10-22T23:35:45Z (254 rows)",
-  "quote_line": "merged: hub collection at 2026-10-22T23:35:45Z + canonical every-match collection (read-only) at 2026-10-22T23:19:34Z at 2026-10-22T23:35:45Z (79 quotes)",
+  "capture_line": "manual lobby capture 2026-10-16T04:30:00Z (31 rows) merged with the automated capture 2026-10-23T05:54:13Z (267 rows)",
+  "quote_line": "merged: hub collection at 2026-10-23T05:54:13Z + canonical every-match collection (read-only) at 2026-10-23T04:42:12Z at 2026-10-23T05:54:13Z (123 quotes)",
   "vrs_line": "hub collection, official snapshot 2026_10_05",
   "exchange_line": "None (0 market(s))",
   "capture_info": {
@@ -100,369 +108,6 @@
  },
  "rows": [
   {
-   "fixture_id": "1081871",
-   "competition": "VOID Autumn Cup 2026",
-   "tier": "C",
-   "tier_label": null,
-   "stage": "waiting for information",
-   "multiplier": null,
-   "points": 2,
-   "best_of": null,
-   "status": "scheduled",
-   "start_utc": "2026-10-23T03:00:00Z",
-   "lock_utc": "2026-10-23T02:54:00Z",
-   "start_display_et": null,
-   "start_source": "no displayed time captured",
-   "team_a": "Lynn Vision",
-   "team_b": "Chinggis Warriors",
-   "hotspawn_url": "https://www.hotspawn.com/matches/lynn-vision-vs-chinggis-warriors-void-autumn-cup-2026-1081871",
-   "hotspawn_url_kind": "match page",
-   "listed_in": [
-    "automated_capture"
-   ],
-   "flags": [
-    "ambiguous_vrs_name:Chinggis Warriors"
-   ],
-   "sources": [
-    {
-     "label": "HotSpawn match page (fixture, points, lock, crowd share)",
-     "url": "https://www.hotspawn.com/matches/lynn-vision-vs-chinggis-warriors-void-autumn-cup-2026-1081871"
-    },
-    {
-     "label": "HotSpawn lobby (fixture discovery)",
-     "url": "https://play.hotspawn.com/lobby"
-    },
-    {
-     "label": "Melbet full-match price (1.27/3.595 decimal, fetched 2026-10-22T23:35:35Z via collection)",
-     "url": "https://melbet.com/en/line/esports"
-    },
-    {
-     "label": "Kalshi (exchange) full-match price (0.26/0.735 yes mid ($), fetched 2026-10-22T23:35:36Z via collection)",
-     "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct222300cwlvg"
-    }
-   ],
-   "quotes_bookmaker": [
-    {
-     "source_key": "melbet",
-     "source_name": "Melbet",
-     "event_id": "763952639",
-     "public_url": "https://melbet.com/en/line/esports",
-     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-     "league": "CS 2. MaceMedia VOID Autumn Cup",
-     "fetched_utc": "2026-10-22T23:35:35Z",
-     "age_hours": 0.003082621666666667,
-     "swapped": false,
-     "alias_notes": [],
-     "raw_a": 1.27,
-     "raw_b": 3.595,
-     "raw_format": "decimal",
-     "decimal_a": 1.27,
-     "decimal_b": 3.595,
-     "start_utc_at_source": "2026-10-23T03:00:00Z",
-     "prob_a": 0.7389516957862281,
-     "overround": 0.0655656916320786
-    }
-   ],
-   "quotes_bookmaker_expired": [],
-   "quotes_exchange": [
-    {
-     "source_key": "kalshi",
-     "source_name": "Kalshi (exchange)",
-     "event_id": "KXCS2GAME-26OCT222300CWLVG",
-     "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct222300cwlvg",
-     "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-     "league": "Chinggis Warriors vs. Lynn Vision",
-     "fetched_utc": "2026-10-22T23:35:36Z",
-     "age_hours": 0.002804843888888889,
-     "swapped": true,
-     "alias_notes": [],
-     "raw_a": 0.26,
-     "raw_b": 0.735,
-     "raw_format": "yes mid ($)",
-     "decimal_a": 3.8462,
-     "decimal_b": 1.3605,
-     "start_utc_at_source": "2026-10-23T03:00:00Z",
-     "prob_a": 0.7386934673366834,
-     "overround": -0.0050000000000000044
-    }
-   ],
-   "exchange_reading": null,
-   "ownership": {
-    "a": 1.0,
-    "b": 0.0,
-    "as_rendered": [
-     100,
-     0
-    ],
-    "total_picks": 30,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
-    "source": "hub lobby capture"
-   },
-   "ownership_rounding_note": null,
-   "vrs": null,
-   "model_raw": null,
-   "basis": "market",
-   "market_consensus": {
-    "prob_a": 0.7389516957862281,
-    "prob_b": 0.2610483042137719,
-    "n_sources": 1,
-    "sources": [
-     "melbet"
-    ],
-    "spread_a": null
-   },
-   "prob": {
-    "a": 0.7389516957862281,
-    "b": 0.2610483042137719
-   },
-   "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
-   "valid_until_utc": "2026-10-23T05:35:35Z",
-   "pick": {
-    "side": "a",
-    "team": "Lynn Vision",
-    "prob": 0.7389516957862281,
-    "fair_decimal": 1.353,
-    "confidence": "Strong"
-   },
-   "differential_points": -0.5220966084275438,
-   "climb_candidates": [
-    {
-     "side": "a",
-     "team": "Lynn Vision",
-     "market_prob": 0.7389516957862281,
-     "ownership": 1.0,
-     "model_prob": null,
-     "differential_points": -0.5220966084275438,
-     "gate": {
-      "pass": false,
-      "reasons": [
-       "crowd ownership 100% is not a minority position",
-       "ownership gap -26.1% below the 15% minimum",
-       "no dated source-linked fact recorded for this side"
-      ]
-     },
-     "facts": []
-    },
-    {
-     "side": "b",
-     "team": "Chinggis Warriors",
-     "market_prob": 0.2610483042137719,
-     "ownership": 0.0,
-     "model_prob": null,
-     "differential_points": 0.5220966084275438,
-     "gate": {
-      "pass": false,
-      "reasons": [
-       "market reading 26.1% below the 30% floor",
-       "no dated source-linked fact recorded for this side"
-      ]
-     },
-     "facts": []
-    }
-   ],
-   "climb": {
-    "team": "Chinggis Warriors",
-    "side": "b",
-    "activated": false,
-    "kind": "contrarian underdog",
-    "crowd_majority_side": "a",
-    "market_prob": 0.2610483042137719,
-    "ownership": 0.0,
-    "model_prob": null,
-    "differential_points": 0.5220966084275438,
-    "gate": {
-     "pass": false,
-     "reasons": [
-      "market reading 26.1% below the 30% floor",
-      "no dated source-linked fact recorded for this side"
-     ]
-    },
-    "crowd_fade": true
-   }
-  },
-  {
-   "fixture_id": "1081872",
-   "competition": "VOID Autumn Cup 2026",
-   "tier": "C",
-   "tier_label": null,
-   "stage": "waiting for information",
-   "multiplier": null,
-   "points": 2,
-   "best_of": null,
-   "status": "scheduled",
-   "start_utc": "2026-10-23T05:00:00Z",
-   "lock_utc": "2026-10-23T04:54:00Z",
-   "start_display_et": null,
-   "start_source": "no displayed time captured",
-   "team_a": "NEXVOID",
-   "team_b": "Rare Atom",
-   "hotspawn_url": "https://www.hotspawn.com/matches/nexvoid-vs-rare-atom-void-autumn-cup-2026-1081872",
-   "hotspawn_url_kind": "match page",
-   "listed_in": [
-    "automated_capture"
-   ],
-   "flags": [],
-   "sources": [
-    {
-     "label": "HotSpawn match page (fixture, points, lock, crowd share)",
-     "url": "https://www.hotspawn.com/matches/nexvoid-vs-rare-atom-void-autumn-cup-2026-1081872"
-    },
-    {
-     "label": "HotSpawn lobby (fixture discovery)",
-     "url": "https://play.hotspawn.com/lobby"
-    },
-    {
-     "label": "Melbet full-match price (1.44/2.689 decimal, fetched 2026-10-22T23:35:35Z via collection)",
-     "url": "https://melbet.com/en/line/esports"
-    },
-    {
-     "label": "Official Valve standings 2026_10_05 (#113 vs #133)",
-     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
-    }
-   ],
-   "quotes_bookmaker": [
-    {
-     "source_key": "melbet",
-     "source_name": "Melbet",
-     "event_id": "763977976",
-     "public_url": "https://melbet.com/en/line/esports",
-     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-     "league": "CS 2. MaceMedia VOID Autumn Cup",
-     "fetched_utc": "2026-10-22T23:35:35Z",
-     "age_hours": 0.003082621666666667,
-     "swapped": false,
-     "alias_notes": [],
-     "raw_a": 1.44,
-     "raw_b": 2.689,
-     "raw_format": "decimal",
-     "decimal_a": 1.44,
-     "decimal_b": 2.689,
-     "start_utc_at_source": "2026-10-23T05:00:00Z",
-     "prob_a": 0.6512472753693388,
-     "overround": 0.06632990372298675
-    }
-   ],
-   "quotes_bookmaker_expired": [],
-   "quotes_exchange": [],
-   "exchange_reading": null,
-   "ownership": {
-    "a": 0.72,
-    "b": 0.28,
-    "as_rendered": [
-     72,
-     28
-    ],
-    "total_picks": 21,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
-    "source": "hub lobby capture"
-   },
-   "ownership_rounding_note": null,
-   "vrs": {
-    "snapshot": "2026_10_05",
-    "page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-    "team_a": {
-     "team": "NEXVOID",
-     "standing": 113,
-     "points": 995,
-     "roster": "AccuracyTG, erkaSt, MiQ, xerolte, Zesta",
-     "details_path": "live/2026/details/2026_10_05/0113--nexvoid--accuracytg-erkast-miq-xerolte-zesta.md"
-    },
-    "team_b": {
-     "team": "Rare Atom",
-     "standing": 133,
-     "points": 906,
-     "roster": "3gl, ChildKing, kaze, L1haNg, Summer",
-     "details_path": "live/2026/details/2026_10_05/0133--rare_atom--3gl-childking-kaze-l1hang-summer.md"
-    }
-   },
-   "model_raw": {
-    "delta_points": 89.0,
-    "k": 1.0,
-    "prob_a": 0.622083414447724,
-    "label": "own calibrated calculation from the official Valve ratings"
-   },
-   "basis": "market",
-   "market_consensus": {
-    "prob_a": 0.6512472753693388,
-    "prob_b": 0.3487527246306612,
-    "n_sources": 1,
-    "sources": [
-     "melbet"
-    ],
-    "spread_a": null
-   },
-   "prob": {
-    "a": 0.6512472753693388,
-    "b": 0.3487527246306612
-   },
-   "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
-   "valid_until_utc": "2026-10-23T05:35:35Z",
-   "pick": {
-    "side": "a",
-    "team": "NEXVOID",
-    "prob": 0.6512472753693388,
-    "fair_decimal": 1.536,
-    "confidence": "Solid"
-   },
-   "differential_points": -0.13750544926132235,
-   "climb_candidates": [
-    {
-     "side": "a",
-     "team": "NEXVOID",
-     "market_prob": 0.6512472753693388,
-     "ownership": 0.72,
-     "model_prob": 0.622083414447724,
-     "differential_points": -0.13750544926132235,
-     "gate": {
-      "pass": false,
-      "reasons": [
-       "crowd ownership 72% is not a minority position",
-       "ownership gap -6.9% below the 15% minimum",
-       "no dated source-linked fact recorded for this side"
-      ]
-     },
-     "facts": []
-    },
-    {
-     "side": "b",
-     "team": "Rare Atom",
-     "market_prob": 0.3487527246306612,
-     "ownership": 0.28,
-     "model_prob": 0.37791658555227603,
-     "differential_points": 0.13750544926132235,
-     "gate": {
-      "pass": false,
-      "reasons": [
-       "ownership gap 6.9% below the 15% minimum",
-       "no dated source-linked fact recorded for this side"
-      ]
-     },
-     "facts": []
-    }
-   ],
-   "climb": {
-    "team": "Rare Atom",
-    "side": "b",
-    "activated": false,
-    "kind": "contrarian underdog",
-    "crowd_majority_side": "a",
-    "market_prob": 0.3487527246306612,
-    "ownership": 0.28,
-    "model_prob": 0.37791658555227603,
-    "differential_points": 0.13750544926132235,
-    "gate": {
-     "pass": false,
-     "reasons": [
-      "ownership gap 6.9% below the 15% minimum",
-      "no dated source-linked fact recorded for this side"
-     ]
-    },
-    "crowd_fade": true
-   }
-  },
-  {
    "fixture_id": "1079654",
    "competition": "CCT Europe 2026 Series #11",
    "tier": "B",
@@ -496,15 +141,15 @@
      "url": "https://play.hotspawn.com/lobby"
     },
     {
-     "label": "Bovada full-match price (1.870/1.870 decimal, fetched 2026-10-22T23:35:35Z via collection)",
+     "label": "Bovada full-match price (1.769230/2.00 decimal, fetched 2026-10-23T05:53:58Z via collection)",
      "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/ex-zero-tenacity-ex-rustec-202610230400"
     },
     {
-     "label": "Melbet full-match price (1.9/1.8 decimal, fetched 2026-10-22T23:35:35Z via collection)",
+     "label": "Melbet full-match price (1.85/1.85 decimal, fetched 2026-10-23T05:53:59Z via collection)",
      "url": "https://melbet.com/en/line/esports"
     },
     {
-     "label": "Kalshi (exchange) full-match price (0.445/0.55 yes mid ($), fetched 2026-10-22T23:35:36Z via collection)",
+     "label": "Kalshi (exchange) full-match price (0.445/0.555 yes mid ($), fetched 2026-10-23T05:53:59Z via collection)",
      "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct230400exrexz"
     }
    ],
@@ -516,18 +161,18 @@
      "public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/ex-zero-tenacity-ex-rustec-202610230400",
      "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
      "league": "Series 11",
-     "fetched_utc": "2026-10-22T23:35:35Z",
-     "age_hours": 0.003082621666666667,
+     "fetched_utc": "2026-10-23T05:53:58Z",
+     "age_hours": 0.004574167777777778,
      "swapped": false,
      "alias_notes": [],
-     "raw_a": "1.870",
-     "raw_b": "1.870",
+     "raw_a": "1.769230",
+     "raw_b": "2.00",
      "raw_format": "decimal",
-     "decimal_a": 1.87,
-     "decimal_b": 1.87,
+     "decimal_a": 1.7692,
+     "decimal_b": 2.0,
      "start_utc_at_source": "2026-10-23T08:00:00Z",
-     "prob_a": 0.5,
-     "overround": 0.06951871657753994
+     "prob_a": 0.5306123531861945,
+     "overround": 0.06521763705114658
     },
     {
      "source_key": "melbet",
@@ -536,18 +181,18 @@
      "public_url": "https://melbet.com/en/line/esports",
      "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "league": "CS 2. CCT Europe Series 11",
-     "fetched_utc": "2026-10-22T23:35:35Z",
-     "age_hours": 0.003082621666666667,
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
      "swapped": false,
      "alias_notes": [],
-     "raw_a": 1.9,
-     "raw_b": 1.8,
+     "raw_a": 1.85,
+     "raw_b": 1.85,
      "raw_format": "decimal",
-     "decimal_a": 1.9,
-     "decimal_b": 1.8,
+     "decimal_a": 1.85,
+     "decimal_b": 1.85,
      "start_utc_at_source": "2026-10-23T08:00:00Z",
-     "prob_a": 0.4864864864864864,
-     "overround": 0.08187134502923987
+     "prob_a": 0.5,
+     "overround": 0.08108108108108092
     }
    ],
    "quotes_bookmaker_expired": [],
@@ -559,18 +204,18 @@
      "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct230400exrexz",
      "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
      "league": "ex-RUSTEC vs. ex-Zero Tenacity",
-     "fetched_utc": "2026-10-22T23:35:36Z",
-     "age_hours": 0.002804843888888889,
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
      "swapped": true,
      "alias_notes": [],
      "raw_a": 0.445,
-     "raw_b": 0.55,
+     "raw_b": 0.555,
      "raw_format": "yes mid ($)",
      "decimal_a": 2.2472,
-     "decimal_b": 1.8182,
+     "decimal_b": 1.8018,
      "start_utc_at_source": "2026-10-23T08:00:00Z",
-     "prob_a": 0.5527638190954774,
-     "overround": -0.004999999999999893
+     "prob_a": 0.5549999999999999,
+     "overround": -1.1102230246251565e-16
     }
    ],
    "exchange_reading": null,
@@ -581,9 +226,9 @@
      97,
      3
     ],
-    "total_picks": 28,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 35,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -591,42 +236,42 @@
    "model_raw": null,
    "basis": "market",
    "market_consensus": {
-    "prob_a": 0.4932432432432432,
-    "prob_b": 0.5067567567567568,
+    "prob_a": 0.5153061765930973,
+    "prob_b": 0.4846938234069027,
     "n_sources": 2,
     "sources": [
      "bovada",
      "melbet"
     ],
-    "spread_a": 0.013513513513513598
+    "spread_a": 0.030612353186194485
    },
    "prob": {
-    "a": 0.4932432432432432,
-    "b": 0.5067567567567568
+    "a": 0.5153061765930973,
+    "b": 0.4846938234069027
    },
    "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
-   "valid_until_utc": "2026-10-23T05:35:35Z",
+   "valid_until_utc": "2026-10-23T11:53:59Z",
    "pick": {
-    "side": "b",
-    "team": "ex-RUSTEC",
-    "prob": 0.5067567567567568,
-    "fair_decimal": 1.973,
+    "side": "a",
+    "team": "ex-Zero Tenacity",
+    "prob": 0.5153061765930973,
+    "fair_decimal": 1.941,
     "confidence": "Toss-up"
    },
-   "differential_points": 1.4302702702702703,
+   "differential_points": -1.364081470220708,
    "climb_candidates": [
     {
      "side": "a",
      "team": "ex-Zero Tenacity",
-     "market_prob": 0.4932432432432432,
+     "market_prob": 0.5153061765930973,
      "ownership": 0.97,
      "model_prob": null,
-     "differential_points": -1.4302702702702703,
+     "differential_points": -1.364081470220708,
      "gate": {
       "pass": false,
       "reasons": [
        "crowd ownership 97% is not a minority position",
-       "ownership gap -47.7% below the 15% minimum",
+       "ownership gap -45.5% below the 15% minimum",
        "no dated source-linked fact recorded for this side"
       ]
      },
@@ -635,10 +280,10 @@
     {
      "side": "b",
      "team": "ex-RUSTEC",
-     "market_prob": 0.5067567567567568,
+     "market_prob": 0.4846938234069027,
      "ownership": 0.03,
      "model_prob": null,
-     "differential_points": 1.4302702702702703,
+     "differential_points": 1.364081470220708,
      "gate": {
       "pass": false,
       "reasons": [
@@ -652,12 +297,12 @@
     "team": "ex-RUSTEC",
     "side": "b",
     "activated": false,
-    "kind": "fade the crowd",
+    "kind": "contrarian underdog",
     "crowd_majority_side": "a",
-    "market_prob": 0.5067567567567568,
+    "market_prob": 0.4846938234069027,
     "ownership": 0.03,
     "model_prob": null,
-    "differential_points": 1.4302702702702703,
+    "differential_points": 1.364081470220708,
     "gate": {
      "pass": false,
      "reasons": [
@@ -666,6 +311,70 @@
     },
     "crowd_fade": true
    }
+  },
+  {
+   "fixture_id": "1081149",
+   "competition": "CCT Europe 2026 Series #12",
+   "tier": "B",
+   "tier_label": null,
+   "stage": "waiting for information",
+   "multiplier": null,
+   "points": 3,
+   "best_of": null,
+   "status": "scheduled",
+   "start_utc": "2026-10-23T08:00:00Z",
+   "lock_utc": "2026-10-23T07:54:00Z",
+   "start_display_et": null,
+   "start_source": "no displayed time captured",
+   "team_a": "FORZE Reload",
+   "team_b": "LFO 10",
+   "hotspawn_url": "https://www.hotspawn.com/matches/forze-reload-vs-lfo-10-cct-europe-2026-series-12-1081149",
+   "hotspawn_url_kind": "match page",
+   "listed_in": [
+    "automated_capture"
+   ],
+   "flags": [
+    "not_in_vrs:LFO 10",
+    "no_line_unverified"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn match page (fixture, points, lock, crowd share)",
+     "url": "https://www.hotspawn.com/matches/forze-reload-vs-lfo-10-cct-europe-2026-series-12-1081149"
+    },
+    {
+     "label": "HotSpawn lobby (fixture discovery)",
+     "url": "https://play.hotspawn.com/lobby"
+    }
+   ],
+   "quotes_bookmaker": [],
+   "quotes_bookmaker_expired": [],
+   "quotes_exchange": [],
+   "exchange_reading": null,
+   "ownership": {
+    "a": 0.97,
+    "b": 0.03,
+    "as_rendered": [
+     97,
+     3
+    ],
+    "total_picks": 34,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
+    "source": "hub lobby capture"
+   },
+   "ownership_rounding_note": null,
+   "vrs": null,
+   "model_raw": null,
+   "basis": "unresolved",
+   "prob": {
+    "a": null,
+    "b": null
+   },
+   "ladder": "4 - no defensible price or rating pair in this capture",
+   "pick_blocked_reason": "LFO 10: not_in_vrs",
+   "pick": null,
+   "climb": null
   },
   {
    "fixture_id": "1079655",
@@ -688,9 +397,7 @@
    "listed_in": [
     "automated_capture"
    ],
-   "flags": [
-    "model_estimate_not_verified_win_probability"
-   ],
+   "flags": [],
    "sources": [
     {
      "label": "HotSpawn match page (fixture, points, lock, crowd share)",
@@ -701,11 +408,36 @@
      "url": "https://play.hotspawn.com/lobby"
     },
     {
+     "label": "Bovada full-match price (1.125/5.750 decimal, fetched 2026-10-23T05:53:58Z via collection)",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/nuclear-tigeres-illyrians-202610230700"
+    },
+    {
      "label": "Official Valve standings 2026_10_05 (#46 vs #141)",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
     }
    ],
-   "quotes_bookmaker": [],
+   "quotes_bookmaker": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "event_id": "32611573",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/nuclear-tigeres-illyrians-202610230700",
+     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+     "league": "Series 11",
+     "fetched_utc": "2026-10-23T05:53:58Z",
+     "age_hours": 0.004574167777777778,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": "1.125",
+     "raw_b": "5.750",
+     "raw_format": "decimal",
+     "decimal_a": 1.125,
+     "decimal_b": 5.75,
+     "start_utc_at_source": "2026-10-23T11:00:00Z",
+     "prob_a": 0.8363636363636364,
+     "overround": 0.0628019323671496
+    }
+   ],
    "quotes_bookmaker_expired": [],
    "quotes_exchange": [],
    "exchange_reading": null,
@@ -716,9 +448,9 @@
      100,
      0
     ],
-    "total_picks": 27,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 32,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -742,51 +474,87 @@
    },
    "model_raw": {
     "delta_points": 462.0,
-    "k": 1.0,
-    "prob_a": 0.9300334703006695,
+    "k": 0.4848050766043969,
+    "prob_a": 0.7780414999371175,
     "label": "own calibrated calculation from the official Valve ratings"
    },
-   "basis": "model",
-   "model": {
-    "prob_a": 0.9300334703006695,
-    "prob_b": 0.06996652969933048,
-    "delta_points": 462.0,
-    "k": 1.0
+   "basis": "market",
+   "market_consensus": {
+    "prob_a": 0.8363636363636364,
+    "prob_b": 0.16363636363636358,
+    "n_sources": 1,
+    "sources": [
+     "bovada"
+    ],
+    "spread_a": null
    },
    "prob": {
-    "a": 0.9300334703006695,
-    "b": 0.06996652969933048
+    "a": 0.8363636363636364,
+    "b": 0.16363636363636358
    },
-   "ladder": "3 - own logistic rating-difference line over the official Valve standings",
-   "valid_until_utc": null,
+   "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
+   "valid_until_utc": "2026-10-23T11:53:58Z",
    "pick": {
     "side": "a",
     "team": "Nuclear TigeRES",
-    "prob": 0.9300334703006695,
-    "fair_decimal": 1.075,
+    "prob": 0.8363636363636364,
+    "fair_decimal": 1.196,
     "confidence": "Strong"
    },
-   "differential_points": -0.20989958909799145,
-   "climb_candidates": [],
+   "differential_points": -0.49090909090909074,
+   "climb_candidates": [
+    {
+     "side": "a",
+     "team": "Nuclear TigeRES",
+     "market_prob": 0.8363636363636364,
+     "ownership": 1.0,
+     "model_prob": 0.7780414999371175,
+     "differential_points": -0.49090909090909074,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "crowd ownership 100% is not a minority position",
+       "ownership gap -16.4% below the 15% minimum",
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    },
+    {
+     "side": "b",
+     "team": "ILLYRIANS",
+     "market_prob": 0.16363636363636358,
+     "ownership": 0.0,
+     "model_prob": 0.22195850006288254,
+     "differential_points": 0.49090909090909074,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "market reading 16.4% below the 30% floor",
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    }
+   ],
    "climb": {
-    "team": "Nuclear TigeRES",
-    "side": "a",
+    "team": "ILLYRIANS",
+    "side": "b",
     "activated": false,
-    "kind": "fade the crowd",
+    "kind": "contrarian underdog",
     "crowd_majority_side": "a",
-    "market_prob": null,
-    "ownership": 1.0,
-    "model_prob": 0.9300334703006695,
-    "differential_points": null,
+    "market_prob": 0.16363636363636358,
+    "ownership": 0.0,
+    "model_prob": 0.22195850006288254,
+    "differential_points": 0.49090909090909074,
     "gate": {
      "pass": false,
      "reasons": [
-      "no market or exchange reading",
-      "crowd ownership 100% is not a minority position",
+      "market reading 16.4% below the 30% floor",
       "no dated source-linked fact recorded for this side"
      ]
     },
-    "crowd_fade": false
+    "crowd_fade": true
    }
   },
   {
@@ -821,19 +589,19 @@
      "url": "https://play.hotspawn.com/lobby"
     },
     {
-     "label": "Bovada full-match price (1.909091/1.833333 decimal, fetched 2026-10-22T23:35:35Z via collection)",
-     "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/inner-circle-academy-spirit-academy-202610230700"
+     "label": "Bovada full-match price (2.100/1.690 decimal, fetched 2026-10-23T05:53:58Z via collection)",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-12/inner-circle-academy-spirit-academy-202610230700"
     },
     {
-     "label": "Melbet full-match price (2.18/1.68 decimal, fetched 2026-10-22T23:35:35Z via collection)",
+     "label": "Melbet full-match price (2.134/1.7 decimal, fetched 2026-10-23T05:53:59Z via collection)",
      "url": "https://melbet.com/en/line/esports"
     },
     {
-     "label": "Pinnacle full-match price (112/-141 american, fetched 2026-10-22T23:35:33Z via collection)",
+     "label": "Pinnacle full-match price (115/-146 american, fetched 2026-10-23T05:53:52Z via collection)",
      "url": "https://www.pinnacle.com/en/esports/cs2-hub"
     },
     {
-     "label": "Kalshi (exchange) full-match price (0.535/0.45 yes mid ($), fetched 2026-10-22T23:35:36Z via collection)",
+     "label": "Kalshi (exchange) full-match price (0.555/0.43 yes mid ($), fetched 2026-10-23T05:53:59Z via collection)",
      "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct230700tsainn"
     },
     {
@@ -846,21 +614,21 @@
      "source_key": "bovada",
      "source_name": "Bovada",
      "event_id": "32594374",
-     "public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/inner-circle-academy-spirit-academy-202610230700",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-12/inner-circle-academy-spirit-academy-202610230700",
      "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-     "league": "Series 11",
-     "fetched_utc": "2026-10-22T23:35:35Z",
-     "age_hours": 0.003082621666666667,
+     "league": "Series 12",
+     "fetched_utc": "2026-10-23T05:53:58Z",
+     "age_hours": 0.004574167777777778,
      "swapped": false,
      "alias_notes": [],
-     "raw_a": "1.909091",
-     "raw_b": "1.833333",
+     "raw_a": "2.100",
+     "raw_b": "1.690",
      "raw_format": "decimal",
-     "decimal_a": 1.9091,
-     "decimal_b": 1.8333,
+     "decimal_a": 2.1,
+     "decimal_b": 1.69,
      "start_utc_at_source": "2026-10-23T11:00:00Z",
-     "prob_a": 0.4898784851743148,
-     "overround": 0.06926414349433152
+     "prob_a": 0.445910290237467,
+     "overround": 0.06790645252183714
     },
     {
      "source_key": "melbet",
@@ -869,18 +637,18 @@
      "public_url": "https://melbet.com/en/line/esports",
      "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "league": "CS 2. CCT Europe Series 12",
-     "fetched_utc": "2026-10-22T23:35:35Z",
-     "age_hours": 0.003082621666666667,
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
      "swapped": false,
      "alias_notes": [],
-     "raw_a": 2.18,
-     "raw_b": 1.68,
+     "raw_a": 2.134,
+     "raw_b": 1.7,
      "raw_format": "decimal",
-     "decimal_a": 2.18,
-     "decimal_b": 1.68,
+     "decimal_a": 2.134,
+     "decimal_b": 1.7,
      "start_utc_at_source": "2026-10-23T11:00:00Z",
-     "prob_a": 0.4352331606217616,
-     "overround": 0.05395369156837049
+     "prob_a": 0.44340114762649974,
+     "overround": 0.05683885550471368
     },
     {
      "source_key": "pinnacle",
@@ -889,18 +657,18 @@
      "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
      "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638935653/markets/related/straight",
      "league": "CS2 - CCT European Series 12",
-     "fetched_utc": "2026-10-22T23:35:33Z",
-     "age_hours": 0.003638177222222222,
+     "fetched_utc": "2026-10-23T05:53:52Z",
+     "age_hours": 0.006240834444444445,
      "swapped": false,
      "alias_notes": [],
-     "raw_a": 112,
-     "raw_b": -141,
+     "raw_a": 115,
+     "raw_b": -146,
      "raw_format": "american",
-     "decimal_a": 2.12,
-     "decimal_b": 1.7092,
+     "decimal_a": 2.15,
+     "decimal_b": 1.6849,
      "start_utc_at_source": "2026-10-23T11:00:00Z",
-     "prob_a": 0.44636242406282417,
-     "overround": 0.0567603538714474
+     "prob_a": 0.43936417217360246,
+     "overround": 0.05861221402911698
     }
    ],
    "quotes_bookmaker_expired": [],
@@ -912,31 +680,31 @@
      "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct230700tsainn",
      "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
      "league": "Spirit Academy vs. Inner Circle Academy",
-     "fetched_utc": "2026-10-22T23:35:36Z",
-     "age_hours": 0.002804843888888889,
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
      "swapped": true,
      "alias_notes": [],
-     "raw_a": 0.535,
-     "raw_b": 0.45,
+     "raw_a": 0.555,
+     "raw_b": 0.43,
      "raw_format": "yes mid ($)",
-     "decimal_a": 1.8692,
-     "decimal_b": 2.2222,
+     "decimal_a": 1.8018,
+     "decimal_b": 2.3256,
      "start_utc_at_source": "2026-10-23T11:00:00Z",
-     "prob_a": 0.4568527918781725,
-     "overround": -0.015000000000000013
+     "prob_a": 0.4365482233502538,
+     "overround": -0.014999999999999902
     }
    ],
    "exchange_reading": null,
    "ownership": {
-    "a": 0.13,
-    "b": 0.87,
+    "a": 0.12,
+    "b": 0.88,
     "as_rendered": [
-     13,
-     87
+     12,
+     88
     ],
-    "total_picks": 28,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 34,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -960,44 +728,44 @@
    },
    "model_raw": {
     "delta_points": 83.0,
-    "k": 1.0,
-    "prob_a": 0.6141524030337129,
+    "k": 0.4848050766043969,
+    "prob_a": 0.5560972575438605,
     "label": "own calibrated calculation from the official Valve ratings"
    },
    "basis": "market",
    "market_consensus": {
-    "prob_a": 0.45445912348043116,
-    "prob_b": 0.5455408765195688,
+    "prob_a": 0.44200994555279294,
+    "prob_b": 0.5579900544472071,
     "n_sources": 3,
     "sources": [
      "bovada",
      "melbet",
      "pinnacle"
     ],
-    "spread_a": 0.05464532455255322
+    "spread_a": 0.0065461180638645144
    },
    "prob": {
-    "a": 0.45445912348043116,
-    "b": 0.5455408765195688
+    "a": 0.44200994555279294,
+    "b": 0.5579900544472071
    },
    "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
-   "valid_until_utc": "2026-10-23T05:35:35Z",
+   "valid_until_utc": "2026-10-23T11:53:59Z",
    "pick": {
     "side": "b",
     "team": "Spirit Academy",
-    "prob": 0.5455408765195688,
-    "fair_decimal": 1.833,
+    "prob": 0.5579900544472071,
+    "fair_decimal": 1.792,
     "confidence": "Lean"
    },
-   "differential_points": -0.9733773704412935,
+   "differential_points": -0.9660298366583788,
    "climb_candidates": [
     {
      "side": "a",
      "team": "Inner Circle Academy",
-     "market_prob": 0.45445912348043116,
-     "ownership": 0.13,
-     "model_prob": 0.6141524030337129,
-     "differential_points": 0.9733773704412935,
+     "market_prob": 0.44200994555279294,
+     "ownership": 0.12,
+     "model_prob": 0.5560972575438605,
+     "differential_points": 0.9660298366583788,
      "gate": {
       "pass": false,
       "reasons": [
@@ -1009,17 +777,17 @@
     {
      "side": "b",
      "team": "Spirit Academy",
-     "market_prob": 0.5455408765195688,
-     "ownership": 0.87,
-     "model_prob": 0.3858475969662871,
-     "differential_points": -0.9733773704412935,
+     "market_prob": 0.5579900544472071,
+     "ownership": 0.88,
+     "model_prob": 0.4439027424561395,
+     "differential_points": -0.9660298366583788,
      "gate": {
       "pass": false,
       "reasons": [
-       "crowd ownership 87% is not a minority position",
-       "ownership gap -32.4% below the 15% minimum",
+       "crowd ownership 88% is not a minority position",
+       "ownership gap -32.2% below the 15% minimum",
        "no dated source-linked fact recorded for this side",
-       "rating model 38.6% sits 16.0% below the market reading (limit 10%)"
+       "rating model 44.4% sits 11.4% below the market reading (limit 10%)"
       ]
      },
      "facts": []
@@ -1031,10 +799,10 @@
     "activated": false,
     "kind": "contrarian underdog",
     "crowd_majority_side": "b",
-    "market_prob": 0.45445912348043116,
-    "ownership": 0.13,
-    "model_prob": 0.6141524030337129,
-    "differential_points": 0.9733773704412935,
+    "market_prob": 0.44200994555279294,
+    "ownership": 0.12,
+    "model_prob": 0.5560972575438605,
+    "differential_points": 0.9660298366583788,
     "gate": {
      "pass": false,
      "reasons": [
@@ -1045,8 +813,8 @@
    }
   },
   {
-   "fixture_id": "1082923",
-   "competition": "CCT South America 2026 Series #7",
+   "fixture_id": "1081605",
+   "competition": "CCT Europe 2026 Challengers #8",
    "tier": "C",
    "tier_label": null,
    "stage": "waiting for information",
@@ -1054,206 +822,25 @@
    "points": 2,
    "best_of": null,
    "status": "scheduled",
-   "start_utc": "2026-10-23T13:00:00Z",
-   "lock_utc": "2026-10-23T12:54:00Z",
+   "start_utc": "2026-10-23T11:00:00Z",
+   "lock_utc": "2026-10-23T10:54:00Z",
    "start_display_et": null,
    "start_source": "no displayed time captured",
-   "team_a": "Alka",
-   "team_b": "LOS NINOS",
-   "hotspawn_url": "https://www.hotspawn.com/matches/alka-vs-los-ninos-cct-south-america-2026-series-7-1082923",
+   "team_a": "Phantom Academy",
+   "team_b": "Banda chuya",
+   "hotspawn_url": "https://www.hotspawn.com/matches/phantom-academy-vs-banda-chuya-cct-europe-2026-challengers-8-1081605",
    "hotspawn_url_kind": "match page",
    "listed_in": [
     "automated_capture"
    ],
    "flags": [
-    "not_in_vrs:LOS NINOS"
-   ],
-   "sources": [
-    {
-     "label": "HotSpawn match page (fixture, points, lock, crowd share)",
-     "url": "https://www.hotspawn.com/matches/alka-vs-los-ninos-cct-south-america-2026-series-7-1082923"
-    },
-    {
-     "label": "HotSpawn lobby (fixture discovery)",
-     "url": "https://play.hotspawn.com/lobby"
-    },
-    {
-     "label": "Melbet full-match price (1.28/3.38 decimal, fetched 2026-10-22T23:35:35Z via collection)",
-     "url": "https://melbet.com/en/line/esports"
-    },
-    {
-     "label": "Kalshi (exchange) full-match price (0.25/0.735 yes mid ($), fetched 2026-10-22T23:35:36Z via collection)",
-     "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct230900lnalkaa"
-    }
-   ],
-   "quotes_bookmaker": [
-    {
-     "source_key": "melbet",
-     "source_name": "Melbet",
-     "event_id": "763896919",
-     "public_url": "https://melbet.com/en/line/esports",
-     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-     "league": "CS 2. CCT South America",
-     "fetched_utc": "2026-10-22T23:35:35Z",
-     "age_hours": 0.003082621666666667,
-     "swapped": false,
-     "alias_notes": [],
-     "raw_a": 1.28,
-     "raw_b": 3.38,
-     "raw_format": "decimal",
-     "decimal_a": 1.28,
-     "decimal_b": 3.38,
-     "start_utc_at_source": "2026-10-23T13:00:00Z",
-     "prob_a": 0.7253218884120172,
-     "overround": 0.07710798816568043
-    }
-   ],
-   "quotes_bookmaker_expired": [],
-   "quotes_exchange": [
-    {
-     "source_key": "kalshi",
-     "source_name": "Kalshi (exchange)",
-     "event_id": "KXCS2GAME-26OCT230900LNALKAA",
-     "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct230900lnalkaa",
-     "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-     "league": "Los Ninos vs. ALKA",
-     "fetched_utc": "2026-10-22T23:35:36Z",
-     "age_hours": 0.002804843888888889,
-     "swapped": true,
-     "alias_notes": [],
-     "raw_a": 0.25,
-     "raw_b": 0.735,
-     "raw_format": "yes mid ($)",
-     "decimal_a": 4.0,
-     "decimal_b": 1.3605,
-     "start_utc_at_source": "2026-10-23T13:00:00Z",
-     "prob_a": 0.7461928934010152,
-     "overround": -0.015000000000000013
-    }
-   ],
-   "exchange_reading": null,
-   "ownership": {
-    "a": 0.3,
-    "b": 0.7,
-    "as_rendered": [
-     30,
-     70
-    ],
-    "total_picks": 24,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
-    "source": "hub lobby capture"
-   },
-   "ownership_rounding_note": null,
-   "vrs": null,
-   "model_raw": null,
-   "basis": "market",
-   "market_consensus": {
-    "prob_a": 0.7253218884120172,
-    "prob_b": 0.27467811158798283,
-    "n_sources": 1,
-    "sources": [
-     "melbet"
-    ],
-    "spread_a": null
-   },
-   "prob": {
-    "a": 0.7253218884120172,
-    "b": 0.27467811158798283
-   },
-   "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
-   "valid_until_utc": "2026-10-23T05:35:35Z",
-   "pick": {
-    "side": "a",
-    "team": "Alka",
-    "prob": 0.7253218884120172,
-    "fair_decimal": 1.379,
-    "confidence": "Strong"
-   },
-   "differential_points": 0.8506437768240344,
-   "climb_candidates": [
-    {
-     "side": "a",
-     "team": "Alka",
-     "market_prob": 0.7253218884120172,
-     "ownership": 0.3,
-     "model_prob": null,
-     "differential_points": 0.8506437768240344,
-     "gate": {
-      "pass": false,
-      "reasons": [
-       "no dated source-linked fact recorded for this side"
-      ]
-     },
-     "facts": []
-    },
-    {
-     "side": "b",
-     "team": "LOS NINOS",
-     "market_prob": 0.27467811158798283,
-     "ownership": 0.7,
-     "model_prob": null,
-     "differential_points": -0.8506437768240342,
-     "gate": {
-      "pass": false,
-      "reasons": [
-       "market reading 27.5% below the 30% floor",
-       "crowd ownership 70% is not a minority position",
-       "ownership gap -42.5% below the 15% minimum",
-       "no dated source-linked fact recorded for this side"
-      ]
-     },
-     "facts": []
-    }
-   ],
-   "climb": {
-    "team": "Alka",
-    "side": "a",
-    "activated": false,
-    "kind": "fade the crowd",
-    "crowd_majority_side": "b",
-    "market_prob": 0.7253218884120172,
-    "ownership": 0.3,
-    "model_prob": null,
-    "differential_points": 0.8506437768240344,
-    "gate": {
-     "pass": false,
-     "reasons": [
-      "no dated source-linked fact recorded for this side"
-     ]
-    },
-    "crowd_fade": true
-   }
-  },
-  {
-   "fixture_id": "1081149",
-   "competition": "CCT Europe 2026 Series #12",
-   "tier": "B",
-   "tier_label": null,
-   "stage": "waiting for information",
-   "multiplier": null,
-   "points": 3,
-   "best_of": null,
-   "status": "scheduled",
-   "start_utc": "2026-10-23T14:00:00Z",
-   "lock_utc": "2026-10-23T13:54:00Z",
-   "start_display_et": null,
-   "start_source": "no displayed time captured",
-   "team_a": "FORZE Reload",
-   "team_b": "LFO 10",
-   "hotspawn_url": "https://www.hotspawn.com/matches/forze-reload-vs-lfo-10-cct-europe-2026-series-12-1081149",
-   "hotspawn_url_kind": "match page",
-   "listed_in": [
-    "automated_capture"
-   ],
-   "flags": [
-    "not_in_vrs:LFO 10",
+    "ambiguous_vrs_name:Banda chuya",
     "no_line_unverified"
    ],
    "sources": [
     {
      "label": "HotSpawn match page (fixture, points, lock, crowd share)",
-     "url": "https://www.hotspawn.com/matches/forze-reload-vs-lfo-10-cct-europe-2026-series-12-1081149"
+     "url": "https://www.hotspawn.com/matches/phantom-academy-vs-banda-chuya-cct-europe-2026-challengers-8-1081605"
     },
     {
      "label": "HotSpawn lobby (fixture discovery)",
@@ -1271,9 +858,9 @@
      100,
      0
     ],
-    "total_picks": 27,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 12,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -1285,9 +872,669 @@
     "b": null
    },
    "ladder": "4 - no defensible price or rating pair in this capture",
-   "pick_blocked_reason": "LFO 10: not_in_vrs",
+   "pick_blocked_reason": "Banda chuya: ambiguous_vrs_name",
    "pick": null,
    "climb": null
+  },
+  {
+   "fixture_id": "1081606",
+   "competition": "DraculaN Season 7",
+   "tier": "B",
+   "tier_label": null,
+   "stage": "waiting for information",
+   "multiplier": null,
+   "points": 3,
+   "best_of": null,
+   "status": "scheduled",
+   "start_utc": "2026-10-23T13:00:00Z",
+   "lock_utc": "2026-10-23T12:54:00Z",
+   "start_display_et": null,
+   "start_source": "no displayed time captured",
+   "team_a": "JiJieHao",
+   "team_b": "Eternal Fire",
+   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_url_kind": "lobby",
+   "listed_in": [
+    "automated_capture"
+   ],
+   "flags": [],
+   "sources": [
+    {
+     "label": "HotSpawn lobby (fixture discovery)",
+     "url": "https://play.hotspawn.com/lobby"
+    },
+    {
+     "label": "Bovada full-match price (1.833333/1.909091 decimal, fetched 2026-10-23T05:53:58Z via collection)",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/draculan/jijiehao-eternal-fire-202610230900"
+    },
+    {
+     "label": "Melbet full-match price (1.92/1.82 decimal, fetched 2026-10-23T05:53:59Z via collection)",
+     "url": "https://melbet.com/en/line/esports"
+    },
+    {
+     "label": "Kalshi (exchange) full-match price (0.545/0.455 yes mid ($), fetched 2026-10-23T05:53:59Z via collection)",
+     "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct230900efjjh"
+    },
+    {
+     "label": "Official Valve standings 2026_10_05 (#30 vs #33)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+    }
+   ],
+   "quotes_bookmaker": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "event_id": "32629568",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/draculan/jijiehao-eternal-fire-202610230900",
+     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+     "league": "DraculaN",
+     "fetched_utc": "2026-10-23T05:53:58Z",
+     "age_hours": 0.004574167777777778,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": "1.833333",
+     "raw_b": "1.909091",
+     "raw_format": "decimal",
+     "decimal_a": 1.8333,
+     "decimal_b": 1.9091,
+     "start_utc_at_source": "2026-10-23T13:00:00Z",
+     "prob_a": 0.5101215148256852,
+     "overround": 0.06926414349433152
+    },
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet",
+     "event_id": "764072696",
+     "public_url": "https://melbet.com/en/line/esports",
+     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+     "league": "CS 2. DraculaN",
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
+     "swapped": true,
+     "alias_notes": [],
+     "raw_a": 1.92,
+     "raw_b": 1.82,
+     "raw_format": "decimal",
+     "decimal_a": 1.92,
+     "decimal_b": 1.82,
+     "start_utc_at_source": "2026-10-23T13:00:00Z",
+     "prob_a": 0.5133689839572192,
+     "overround": 0.07028388278388276
+    }
+   ],
+   "quotes_bookmaker_expired": [],
+   "quotes_exchange": [
+    {
+     "source_key": "kalshi",
+     "source_name": "Kalshi (exchange)",
+     "event_id": "KXCS2GAME-26OCT230900EFJJH",
+     "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct230900efjjh",
+     "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+     "league": "Eternal Fire vs. JiJieHao",
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
+     "swapped": true,
+     "alias_notes": [],
+     "raw_a": 0.545,
+     "raw_b": 0.455,
+     "raw_format": "yes mid ($)",
+     "decimal_a": 1.8349,
+     "decimal_b": 2.1978,
+     "start_utc_at_source": "2026-10-23T13:00:00Z",
+     "prob_a": 0.45499999999999996,
+     "overround": 0.0
+    }
+   ],
+   "exchange_reading": null,
+   "ownership": {
+    "a": 0.9,
+    "b": 0.1,
+    "as_rendered": [
+     90,
+     10
+    ],
+    "total_picks": 14,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
+    "source": "hub lobby capture"
+   },
+   "ownership_rounding_note": null,
+   "vrs": {
+    "snapshot": "2026_10_05",
+    "page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+    "team_a": {
+     "team": "JiJieHao",
+     "standing": 30,
+     "points": 1454,
+     "roster": "0SAMAS, Bibu, CacaNito, m1N1, sinnopsyy",
+     "details_path": "live/2026/details/2026_10_05/0030--jijiehao--0samas-bibu-cacanito-m1n1-sinnopsyy.md"
+    },
+    "team_b": {
+     "team": "Eternal Fire",
+     "standing": 33,
+     "points": 1429,
+     "roster": "jottAAA, Kvem, MisteM, regali, soulfly",
+     "details_path": "live/2026/details/2026_10_05/0033--eternal_fire--jottaaa-kvem-mistem-regali-soulfly.md"
+    }
+   },
+   "model_raw": {
+    "delta_points": 25.0,
+    "k": 0.4848050766043969,
+    "prob_a": 0.5169616902792366,
+    "label": "own calibrated calculation from the official Valve ratings"
+   },
+   "basis": "market",
+   "market_consensus": {
+    "prob_a": 0.5117452493914523,
+    "prob_b": 0.4882547506085477,
+    "n_sources": 2,
+    "sources": [
+     "bovada",
+     "melbet"
+    ],
+    "spread_a": 0.0032474691315339532
+   },
+   "prob": {
+    "a": 0.5117452493914523,
+    "b": 0.4882547506085477
+   },
+   "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
+   "valid_until_utc": "2026-10-23T11:53:59Z",
+   "pick": {
+    "side": "a",
+    "team": "JiJieHao",
+    "prob": 0.5117452493914523,
+    "fair_decimal": 1.954,
+    "confidence": "Toss-up"
+   },
+   "differential_points": -1.1647642518256434,
+   "climb_candidates": [
+    {
+     "side": "a",
+     "team": "JiJieHao",
+     "market_prob": 0.5117452493914523,
+     "ownership": 0.9,
+     "model_prob": 0.5169616902792366,
+     "differential_points": -1.1647642518256434,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "crowd ownership 90% is not a minority position",
+       "ownership gap -38.8% below the 15% minimum",
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    },
+    {
+     "side": "b",
+     "team": "Eternal Fire",
+     "market_prob": 0.4882547506085477,
+     "ownership": 0.1,
+     "model_prob": 0.48303830972076345,
+     "differential_points": 1.1647642518256434,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    }
+   ],
+   "climb": {
+    "team": "Eternal Fire",
+    "side": "b",
+    "activated": false,
+    "kind": "contrarian underdog",
+    "crowd_majority_side": "a",
+    "market_prob": 0.4882547506085477,
+    "ownership": 0.1,
+    "model_prob": 0.48303830972076345,
+    "differential_points": 1.1647642518256434,
+    "gate": {
+     "pass": false,
+     "reasons": [
+      "no dated source-linked fact recorded for this side"
+     ]
+    },
+    "crowd_fade": true
+   }
+  },
+  {
+   "fixture_id": "1082926",
+   "competition": "CCT South America 2026 Series #7",
+   "tier": "C",
+   "tier_label": null,
+   "stage": "waiting for information",
+   "multiplier": null,
+   "points": 2,
+   "best_of": null,
+   "status": "scheduled",
+   "start_utc": "2026-10-23T13:00:00Z",
+   "lock_utc": "2026-10-23T12:54:00Z",
+   "start_display_et": null,
+   "start_source": "no displayed time captured",
+   "team_a": "Isurus",
+   "team_b": "Hacha",
+   "hotspawn_url": "https://www.hotspawn.com/matches/isurus-vs-hacha-cct-south-america-2026-series-7-1082926",
+   "hotspawn_url_kind": "match page",
+   "listed_in": [
+    "automated_capture"
+   ],
+   "flags": [
+    "not_in_vrs:Hacha"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn match page (fixture, points, lock, crowd share)",
+     "url": "https://www.hotspawn.com/matches/isurus-vs-hacha-cct-south-america-2026-series-7-1082926"
+    },
+    {
+     "label": "HotSpawn lobby (fixture discovery)",
+     "url": "https://play.hotspawn.com/lobby"
+    },
+    {
+     "label": "Bovada full-match price (1.153846/5.00 decimal, fetched 2026-10-23T05:53:58Z via collection)",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/isurus-hacha-esports-202610230900"
+    },
+    {
+     "label": "Melbet full-match price (1.13/4.76 decimal, fetched 2026-10-23T05:53:59Z via collection)",
+     "url": "https://melbet.com/en/line/esports"
+    },
+    {
+     "label": "Pinnacle full-match price (-783/376 american, fetched 2026-10-23T05:53:49Z via collection)",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub"
+    }
+   ],
+   "quotes_bookmaker": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "event_id": "32614988",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/isurus-hacha-esports-202610230900",
+     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+     "league": "South America",
+     "fetched_utc": "2026-10-23T05:53:58Z",
+     "age_hours": 0.004574167777777778,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": "1.153846",
+     "raw_b": "5.00",
+     "raw_format": "decimal",
+     "decimal_a": 1.1538,
+     "decimal_b": 5.0,
+     "start_utc_at_source": "2026-10-23T13:00:00Z",
+     "prob_a": 0.8125000203125005,
+     "overround": 0.06666678222223776
+    },
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet",
+     "event_id": "764142985",
+     "public_url": "https://melbet.com/en/line/esports",
+     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+     "league": "CS 2. CCT South America",
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": 1.13,
+     "raw_b": 4.76,
+     "raw_format": "decimal",
+     "decimal_a": 1.13,
+     "decimal_b": 4.76,
+     "start_utc_at_source": "2026-10-23T13:00:00Z",
+     "prob_a": 0.8081494057724958,
+     "overround": 0.09503978582583472
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "event_id": "1639017843",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1639017843/markets/related/straight",
+     "league": "CS2 - CCT South America Series",
+     "fetched_utc": "2026-10-23T05:53:49Z",
+     "age_hours": 0.007074167777777777,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": -783,
+     "raw_b": 376,
+     "raw_format": "american",
+     "decimal_a": 1.1277,
+     "decimal_b": 4.76,
+     "start_utc_at_source": "2026-10-23T13:00:00Z",
+     "prob_a": 0.8084631936972894,
+     "overround": 0.09683375048773768
+    }
+   ],
+   "quotes_bookmaker_expired": [],
+   "quotes_exchange": [],
+   "exchange_reading": null,
+   "ownership": {
+    "a": 0.34,
+    "b": 0.66,
+    "as_rendered": [
+     34,
+     66
+    ],
+    "total_picks": 32,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
+    "source": "hub lobby capture"
+   },
+   "ownership_rounding_note": null,
+   "vrs": null,
+   "model_raw": null,
+   "basis": "market",
+   "market_consensus": {
+    "prob_a": 0.8093939533698937,
+    "prob_b": 0.19060604663010627,
+    "n_sources": 3,
+    "sources": [
+     "bovada",
+     "melbet",
+     "pinnacle"
+    ],
+    "spread_a": 0.004350614540004627
+   },
+   "prob": {
+    "a": 0.8093939533698937,
+    "b": 0.19060604663010627
+   },
+   "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
+   "valid_until_utc": "2026-10-23T11:53:59Z",
+   "pick": {
+    "side": "a",
+    "team": "Isurus",
+    "prob": 0.8093939533698937,
+    "fair_decimal": 1.235,
+    "confidence": "Strong"
+   },
+   "differential_points": 0.9387879067397874,
+   "climb_candidates": [
+    {
+     "side": "a",
+     "team": "Isurus",
+     "market_prob": 0.8093939533698937,
+     "ownership": 0.34,
+     "model_prob": null,
+     "differential_points": 0.9387879067397874,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    },
+    {
+     "side": "b",
+     "team": "Hacha",
+     "market_prob": 0.19060604663010627,
+     "ownership": 0.66,
+     "model_prob": null,
+     "differential_points": -0.9387879067397875,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "market reading 19.1% below the 30% floor",
+       "crowd ownership 66% is not a minority position",
+       "ownership gap -46.9% below the 15% minimum",
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    }
+   ],
+   "climb": {
+    "team": "Isurus",
+    "side": "a",
+    "activated": false,
+    "kind": "fade the crowd",
+    "crowd_majority_side": "b",
+    "market_prob": 0.8093939533698937,
+    "ownership": 0.34,
+    "model_prob": null,
+    "differential_points": 0.9387879067397874,
+    "gate": {
+     "pass": false,
+     "reasons": [
+      "no dated source-linked fact recorded for this side"
+     ]
+    },
+    "crowd_fade": true
+   }
+  },
+  {
+   "fixture_id": "1083014",
+   "competition": "CIS LAN Championship #9",
+   "tier": "C",
+   "tier_label": null,
+   "stage": "waiting for information",
+   "multiplier": null,
+   "points": 2,
+   "best_of": null,
+   "status": "scheduled",
+   "start_utc": "2026-10-23T13:00:00Z",
+   "lock_utc": "2026-10-23T12:54:00Z",
+   "start_display_et": null,
+   "start_source": "no displayed time captured",
+   "team_a": "K27",
+   "team_b": "Virtus.pro",
+   "hotspawn_url": "https://www.hotspawn.com/matches/k27-vs-virtus-pro-cis-lan-championship-9-1083014",
+   "hotspawn_url_kind": "match page",
+   "listed_in": [
+    "automated_capture"
+   ],
+   "flags": [],
+   "sources": [
+    {
+     "label": "HotSpawn match page (fixture, points, lock, crowd share)",
+     "url": "https://www.hotspawn.com/matches/k27-vs-virtus-pro-cis-lan-championship-9-1083014"
+    },
+    {
+     "label": "HotSpawn lobby (fixture discovery)",
+     "url": "https://play.hotspawn.com/lobby"
+    },
+    {
+     "label": "Bovada full-match price (1.769230/2.00 decimal, fetched 2026-10-23T05:53:58Z via collection)",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/cis-lan-championship/k27-virtus-pro-202610230900"
+    },
+    {
+     "label": "Melbet full-match price (1.76/2 decimal, fetched 2026-10-23T05:53:59Z via collection)",
+     "url": "https://melbet.com/en/line/esports"
+    },
+    {
+     "label": "Kalshi (exchange) full-match price (0.45/0.565 yes mid ($), fetched 2026-10-23T05:53:59Z via collection)",
+     "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct230900vpk27"
+    },
+    {
+     "label": "Official Valve standings 2026_10_05 (#32 vs #51)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+    }
+   ],
+   "quotes_bookmaker": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "event_id": "32631764",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/cis-lan-championship/k27-virtus-pro-202610230900",
+     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+     "league": "CIS LAN Championship",
+     "fetched_utc": "2026-10-23T05:53:58Z",
+     "age_hours": 0.004574167777777778,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": "1.769230",
+     "raw_b": "2.00",
+     "raw_format": "decimal",
+     "decimal_a": 1.7692,
+     "decimal_b": 2.0,
+     "start_utc_at_source": "2026-10-23T13:00:00Z",
+     "prob_a": 0.5306123531861945,
+     "overround": 0.06521763705114658
+    },
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet",
+     "event_id": "764109178",
+     "public_url": "https://melbet.com/en/line/esports",
+     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+     "league": "CS 2. CIS LAN Championship",
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": 1.76,
+     "raw_b": 2,
+     "raw_format": "decimal",
+     "decimal_a": 1.76,
+     "decimal_b": 2.0,
+     "start_utc_at_source": "2026-10-23T13:00:00Z",
+     "prob_a": 0.5319148936170213,
+     "overround": 0.06818181818181834
+    }
+   ],
+   "quotes_bookmaker_expired": [],
+   "quotes_exchange": [
+    {
+     "source_key": "kalshi",
+     "source_name": "Kalshi (exchange)",
+     "event_id": "KXCS2GAME-26OCT230900VPK27",
+     "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct230900vpk27",
+     "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+     "league": "Virtus.pro vs. K27",
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
+     "swapped": true,
+     "alias_notes": [],
+     "raw_a": 0.45,
+     "raw_b": 0.565,
+     "raw_format": "yes mid ($)",
+     "decimal_a": 2.2222,
+     "decimal_b": 1.7699,
+     "start_utc_at_source": "2026-10-23T13:00:00Z",
+     "prob_a": 0.5566502463054187,
+     "overround": 0.014999999999999902
+    }
+   ],
+   "exchange_reading": null,
+   "ownership": {
+    "a": 0.25,
+    "b": 0.75,
+    "as_rendered": [
+     25,
+     75
+    ],
+    "total_picks": 16,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
+    "source": "hub lobby capture"
+   },
+   "ownership_rounding_note": null,
+   "vrs": {
+    "snapshot": "2026_10_05",
+    "page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+    "team_a": {
+     "team": "K27",
+     "standing": 32,
+     "points": 1435,
+     "roster": "clax, kashl1d, qw1nk1, X5G7V, xeedo",
+     "details_path": "live/2026/details/2026_10_05/0032--k27--clax-kashl1d-qw1nk1-x5g7v-xeedo.md"
+    },
+    "team_b": {
+     "team": "Virtus.pro",
+     "standing": 51,
+     "points": 1309,
+     "roster": "AquaRS, b1st, F0R3VER, mir, tO0RO",
+     "details_path": "live/2026/details/2026_10_05/0051--virtus_pro--aquars-b1st-f0r3ver-mir-to0ro.md"
+    }
+   },
+   "model_raw": {
+    "delta_points": 126.0,
+    "k": 0.4848050766043969,
+    "prob_a": 0.5846954331107891,
+    "label": "own calibrated calculation from the official Valve ratings"
+   },
+   "basis": "market",
+   "market_consensus": {
+    "prob_a": 0.5312636234016079,
+    "prob_b": 0.46873637659839207,
+    "n_sources": 2,
+    "sources": [
+     "bovada",
+     "melbet"
+    ],
+    "spread_a": 0.0013025404308267818
+   },
+   "prob": {
+    "a": 0.5312636234016079,
+    "b": 0.46873637659839207
+   },
+   "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
+   "valid_until_utc": "2026-10-23T11:53:59Z",
+   "pick": {
+    "side": "a",
+    "team": "K27",
+    "prob": 0.5312636234016079,
+    "fair_decimal": 1.882,
+    "confidence": "Lean"
+   },
+   "differential_points": 0.5625272468032159,
+   "climb_candidates": [
+    {
+     "side": "a",
+     "team": "K27",
+     "market_prob": 0.5312636234016079,
+     "ownership": 0.25,
+     "model_prob": 0.5846954331107891,
+     "differential_points": 0.5625272468032159,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    },
+    {
+     "side": "b",
+     "team": "Virtus.pro",
+     "market_prob": 0.46873637659839207,
+     "ownership": 0.75,
+     "model_prob": 0.4153045668892109,
+     "differential_points": -0.5625272468032159,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "crowd ownership 75% is not a minority position",
+       "ownership gap -28.1% below the 15% minimum",
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    }
+   ],
+   "climb": {
+    "team": "K27",
+    "side": "a",
+    "activated": false,
+    "kind": "fade the crowd",
+    "crowd_majority_side": "b",
+    "market_prob": 0.5312636234016079,
+    "ownership": 0.25,
+    "model_prob": 0.5846954331107891,
+    "differential_points": 0.5625272468032159,
+    "gate": {
+     "pass": false,
+     "reasons": [
+      "no dated source-linked fact recorded for this side"
+     ]
+    },
+    "crowd_fade": true
+   }
   },
   {
    "fixture_id": "1082924",
@@ -1321,8 +1568,20 @@
      "url": "https://play.hotspawn.com/lobby"
     },
     {
-     "label": "Melbet full-match price (1.49/2.47 decimal, fetched 2026-10-22T23:35:35Z via collection)",
+     "label": "Bovada full-match price (1.645161/2.200 decimal, fetched 2026-10-23T05:53:58Z via collection)",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/borracheiros-quintessencia-202610231200"
+    },
+    {
+     "label": "Melbet full-match price (1.64/2.195 decimal, fetched 2026-10-23T05:53:59Z via collection)",
      "url": "https://melbet.com/en/line/esports"
+    },
+    {
+     "label": "Pinnacle full-match price (-162/121 american, fetched 2026-10-23T05:53:49Z via collection)",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub"
+    },
+    {
+     "label": "Kalshi (exchange) full-match price (0.395/0.59 yes mid ($), fetched 2026-10-23T05:53:59Z via collection)",
+     "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct231200quinchama"
     },
     {
      "label": "Official Valve standings 2026_10_05 (#209 vs #203)",
@@ -1331,28 +1590,89 @@
    ],
    "quotes_bookmaker": [
     {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "event_id": "32606587",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/borracheiros-quintessencia-202610231200",
+     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+     "league": "South America",
+     "fetched_utc": "2026-10-23T05:53:58Z",
+     "age_hours": 0.004574167777777778,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": "1.645161",
+     "raw_b": "2.200",
+     "raw_format": "decimal",
+     "decimal_a": 1.6452,
+     "decimal_b": 2.2,
+     "start_utc_at_source": "2026-10-23T16:00:00Z",
+     "prob_a": 0.5721476942057823,
+     "overround": 0.06238869906681144
+    },
+    {
      "source_key": "melbet",
      "source_name": "Melbet",
-     "event_id": "763919440",
+     "event_id": "764142989",
      "public_url": "https://melbet.com/en/line/esports",
      "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "league": "CS 2. CCT South America",
-     "fetched_utc": "2026-10-22T23:35:35Z",
-     "age_hours": 0.003082621666666667,
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
      "swapped": false,
      "alias_notes": [],
-     "raw_a": 1.49,
-     "raw_b": 2.47,
+     "raw_a": 1.64,
+     "raw_b": 2.195,
      "raw_format": "decimal",
-     "decimal_a": 1.49,
-     "decimal_b": 2.47,
+     "decimal_a": 1.64,
+     "decimal_b": 2.195,
      "start_utc_at_source": "2026-10-23T16:00:00Z",
-     "prob_a": 0.6237373737373738,
-     "overround": 0.0759992391924571
+     "prob_a": 0.5723598435462842,
+     "overround": 0.06533696316462034
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "event_id": "1638942963",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638942963/markets/related/straight",
+     "league": "CS2 - CCT South America Series",
+     "fetched_utc": "2026-10-23T05:53:49Z",
+     "age_hours": 0.007074167777777777,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": -162,
+     "raw_b": 121,
+     "raw_format": "american",
+     "decimal_a": 1.6173,
+     "decimal_b": 2.21,
+     "start_utc_at_source": "2026-10-23T16:00:00Z",
+     "prob_a": 0.5774329860327085,
+     "overround": 0.07080929846982831
     }
    ],
    "quotes_bookmaker_expired": [],
-   "quotes_exchange": [],
+   "quotes_exchange": [
+    {
+     "source_key": "kalshi",
+     "source_name": "Kalshi (exchange)",
+     "event_id": "KXCS2GAME-26OCT231200QUINCHAMA",
+     "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct231200quinchama",
+     "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+     "league": "QUINTESSENCIA vs. BORRACHEIROS",
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
+     "swapped": true,
+     "alias_notes": [],
+     "raw_a": 0.395,
+     "raw_b": 0.59,
+     "raw_format": "yes mid ($)",
+     "decimal_a": 2.5316,
+     "decimal_b": 1.6949,
+     "start_utc_at_source": "2026-10-23T16:00:00Z",
+     "prob_a": 0.5989847715736041,
+     "overround": -0.015000000000000013
+    }
+   ],
    "exchange_reading": null,
    "ownership": {
     "a": 0.97,
@@ -1361,9 +1681,9 @@
      97,
      3
     ],
-    "total_picks": 23,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 32,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -1387,49 +1707,50 @@
    },
    "model_raw": {
     "delta_points": -17.0,
-    "k": 1.0,
-    "prob_a": 0.47621792576173494,
+    "k": 0.4848050766043969,
+    "prob_a": 0.48846367091232157,
     "label": "own calibrated calculation from the official Valve ratings"
    },
    "basis": "market",
    "market_consensus": {
-    "prob_a": 0.6237373737373738,
-    "prob_b": 0.3762626262626262,
-    "n_sources": 1,
+    "prob_a": 0.5748433774543709,
+    "prob_b": 0.42515662254562914,
+    "n_sources": 3,
     "sources": [
-     "melbet"
+     "bovada",
+     "melbet",
+     "pinnacle"
     ],
-    "spread_a": null
+    "spread_a": 0.005285291826926275
    },
    "prob": {
-    "a": 0.6237373737373738,
-    "b": 0.3762626262626262
+    "a": 0.5748433774543709,
+    "b": 0.42515662254562914
    },
    "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
-   "valid_until_utc": "2026-10-23T05:35:35Z",
+   "valid_until_utc": "2026-10-23T11:53:59Z",
    "pick": {
     "side": "a",
     "team": "BORRACHEIROS",
-    "prob": 0.6237373737373738,
-    "fair_decimal": 1.603,
-    "confidence": "Solid"
+    "prob": 0.5748433774543709,
+    "fair_decimal": 1.74,
+    "confidence": "Lean"
    },
-   "differential_points": -0.6925252525252523,
+   "differential_points": -0.7903132450912582,
    "climb_candidates": [
     {
      "side": "a",
      "team": "BORRACHEIROS",
-     "market_prob": 0.6237373737373738,
+     "market_prob": 0.5748433774543709,
      "ownership": 0.97,
-     "model_prob": 0.47621792576173494,
-     "differential_points": -0.6925252525252523,
+     "model_prob": 0.48846367091232157,
+     "differential_points": -0.7903132450912582,
      "gate": {
       "pass": false,
       "reasons": [
        "crowd ownership 97% is not a minority position",
-       "ownership gap -34.6% below the 15% minimum",
-       "no dated source-linked fact recorded for this side",
-       "rating model 47.6% sits 14.8% below the market reading (limit 10%)"
+       "ownership gap -39.5% below the 15% minimum",
+       "no dated source-linked fact recorded for this side"
       ]
      },
      "facts": []
@@ -1437,10 +1758,10 @@
     {
      "side": "b",
      "team": "QUINTESSÊNCIA",
-     "market_prob": 0.3762626262626262,
+     "market_prob": 0.42515662254562914,
      "ownership": 0.03,
-     "model_prob": 0.5237820742382651,
-     "differential_points": 0.6925252525252523,
+     "model_prob": 0.5115363290876784,
+     "differential_points": 0.7903132450912582,
      "gate": {
       "pass": false,
       "reasons": [
@@ -1456,10 +1777,10 @@
     "activated": false,
     "kind": "contrarian underdog",
     "crowd_majority_side": "a",
-    "market_prob": 0.3762626262626262,
+    "market_prob": 0.42515662254562914,
     "ownership": 0.03,
-    "model_prob": 0.5237820742382651,
-    "differential_points": 0.6925252525252523,
+    "model_prob": 0.5115363290876784,
+    "differential_points": 0.7903132450912582,
     "gate": {
      "pass": false,
      "reasons": [
@@ -1503,15 +1824,43 @@
      "url": "https://play.hotspawn.com/lobby"
     },
     {
-     "label": "Melbet full-match price (1.8/1.9 decimal, fetched 2026-10-22T23:35:35Z via collection)",
+     "label": "Bovada full-match price (1.833333/1.909091 decimal, fetched 2026-10-23T05:53:58Z via collection)",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/brute-baks-esports-202610231300"
+    },
+    {
+     "label": "Melbet full-match price (1.8/1.9 decimal, fetched 2026-10-23T05:53:59Z via collection)",
      "url": "https://melbet.com/en/line/esports"
     },
     {
-     "label": "Kalshi (exchange) full-match price (0.46/0.54 yes mid ($), fetched 2026-10-22T23:35:36Z via collection)",
+     "label": "Pinnacle full-match price (-106/-118 american, fetched 2026-10-23T05:53:50Z via collection)",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub"
+    },
+    {
+     "label": "Kalshi (exchange) full-match price (0.49/0.48 yes mid ($), fetched 2026-10-23T05:53:59Z via collection)",
      "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct231300baksbrute"
     }
    ],
    "quotes_bookmaker": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "event_id": "32600376",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-11/brute-baks-esports-202610231300",
+     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+     "league": "Series 11",
+     "fetched_utc": "2026-10-23T05:53:58Z",
+     "age_hours": 0.004574167777777778,
+     "swapped": true,
+     "alias_notes": [],
+     "raw_a": "1.833333",
+     "raw_b": "1.909091",
+     "raw_format": "decimal",
+     "decimal_a": 1.8333,
+     "decimal_b": 1.9091,
+     "start_utc_at_source": "2026-10-23T17:00:00Z",
+     "prob_a": 0.48987848517431476,
+     "overround": 0.06926414349433152
+    },
     {
      "source_key": "melbet",
      "source_name": "Melbet",
@@ -1519,8 +1868,8 @@
      "public_url": "https://melbet.com/en/line/esports",
      "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "league": "CS 2. CCT Europe Series 11",
-     "fetched_utc": "2026-10-22T23:35:35Z",
-     "age_hours": 0.003082621666666667,
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
      "swapped": true,
      "alias_notes": [],
      "raw_a": 1.8,
@@ -1531,6 +1880,26 @@
      "start_utc_at_source": "2026-10-23T17:00:00Z",
      "prob_a": 0.4864864864864865,
      "overround": 0.08187134502923987
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "event_id": "1638935519",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638935519/markets/related/straight",
+     "league": "CS2 - CCT European Series 11",
+     "fetched_utc": "2026-10-23T05:53:50Z",
+     "age_hours": 0.006796389999999999,
+     "swapped": true,
+     "alias_notes": [],
+     "raw_a": -106,
+     "raw_b": -118,
+     "raw_format": "american",
+     "decimal_a": 1.9434,
+     "decimal_b": 1.8475,
+     "start_utc_at_source": "2026-10-23T17:00:00Z",
+     "prob_a": 0.5126539564703897,
+     "overround": 0.05584751046584113
     }
    ],
    "quotes_bookmaker_expired": [],
@@ -1542,31 +1911,31 @@
      "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct231300baksbrute",
      "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
      "league": "BakS eSports vs. Brute",
-     "fetched_utc": "2026-10-22T23:35:36Z",
-     "age_hours": 0.002804843888888889,
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
      "swapped": false,
      "alias_notes": [],
-     "raw_a": 0.46,
-     "raw_b": 0.54,
+     "raw_a": 0.49,
+     "raw_b": 0.48,
      "raw_format": "yes mid ($)",
-     "decimal_a": 2.1739,
-     "decimal_b": 1.8519,
+     "decimal_a": 2.0408,
+     "decimal_b": 2.0833,
      "start_utc_at_source": "2026-10-23T17:00:00Z",
-     "prob_a": 0.45999999999999996,
-     "overround": 0.0
+     "prob_a": 0.5051546391752577,
+     "overround": -0.030000000000000027
     }
    ],
    "exchange_reading": null,
    "ownership": {
-    "a": 0.2,
-    "b": 0.8,
+    "a": 0.21,
+    "b": 0.79,
     "as_rendered": [
-     20,
-     80
+     21,
+     79
     ],
-    "total_picks": 26,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 33,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -1574,36 +1943,38 @@
    "model_raw": null,
    "basis": "market",
    "market_consensus": {
-    "prob_a": 0.4864864864864865,
-    "prob_b": 0.5135135135135135,
-    "n_sources": 1,
+    "prob_a": 0.5004182211503951,
+    "prob_b": 0.49958177884960486,
+    "n_sources": 3,
     "sources": [
-     "melbet"
+     "bovada",
+     "melbet",
+     "pinnacle"
     ],
-    "spread_a": null
+    "spread_a": 0.02616746998390318
    },
    "prob": {
-    "a": 0.4864864864864865,
-    "b": 0.5135135135135135
+    "a": 0.5004182211503951,
+    "b": 0.49958177884960486
    },
    "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
-   "valid_until_utc": "2026-10-23T05:35:35Z",
+   "valid_until_utc": "2026-10-23T11:53:59Z",
    "pick": {
-    "side": "b",
-    "team": "BRUTE",
-    "prob": 0.5135135135135135,
-    "fair_decimal": 1.947,
+    "side": "a",
+    "team": "BakS",
+    "prob": 0.5004182211503951,
+    "fair_decimal": 1.998,
     "confidence": "Toss-up"
    },
-   "differential_points": -0.8594594594594597,
+   "differential_points": 0.8712546634511855,
    "climb_candidates": [
     {
      "side": "a",
      "team": "BakS",
-     "market_prob": 0.4864864864864865,
-     "ownership": 0.2,
+     "market_prob": 0.5004182211503951,
+     "ownership": 0.21,
      "model_prob": null,
-     "differential_points": 0.8594594594594596,
+     "differential_points": 0.8712546634511855,
      "gate": {
       "pass": false,
       "reasons": [
@@ -1615,15 +1986,15 @@
     {
      "side": "b",
      "team": "BRUTE",
-     "market_prob": 0.5135135135135135,
-     "ownership": 0.8,
+     "market_prob": 0.49958177884960486,
+     "ownership": 0.79,
      "model_prob": null,
-     "differential_points": -0.8594594594594597,
+     "differential_points": -0.8712546634511855,
      "gate": {
       "pass": false,
       "reasons": [
-       "crowd ownership 80% is not a minority position",
-       "ownership gap -28.6% below the 15% minimum",
+       "crowd ownership 79% is not a minority position",
+       "ownership gap -29.0% below the 15% minimum",
        "no dated source-linked fact recorded for this side"
       ]
      },
@@ -1634,12 +2005,12 @@
     "team": "BakS",
     "side": "a",
     "activated": false,
-    "kind": "contrarian underdog",
+    "kind": "fade the crowd",
     "crowd_majority_side": "b",
-    "market_prob": 0.4864864864864865,
-    "ownership": 0.2,
+    "market_prob": 0.5004182211503951,
+    "ownership": 0.21,
     "model_prob": null,
-    "differential_points": 0.8594594594594596,
+    "differential_points": 0.8712546634511855,
     "gate": {
      "pass": false,
      "reasons": [
@@ -1671,8 +2042,7 @@
     "automated_capture"
    ],
    "flags": [
-    "ambiguous_vrs_name:ex-RUSTEC",
-    "no_line_unverified"
+    "ambiguous_vrs_name:ex-RUSTEC"
    ],
    "sources": [
     {
@@ -1682,9 +2052,34 @@
     {
      "label": "HotSpawn lobby (fixture discovery)",
      "url": "https://play.hotspawn.com/lobby"
+    },
+    {
+     "label": "Bovada full-match price (1.307692/3.300 decimal, fetched 2026-10-23T05:53:58Z via collection)",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-12/ex-rustec-saint-sinners-202610231300"
     }
    ],
-   "quotes_bookmaker": [],
+   "quotes_bookmaker": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "event_id": "32636590",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-europe/series-12/ex-rustec-saint-sinners-202610231300",
+     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+     "league": "Series 12",
+     "fetched_utc": "2026-10-23T05:53:58Z",
+     "age_hours": 0.004574167777777778,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": "1.307692",
+     "raw_b": "3.300",
+     "raw_format": "decimal",
+     "decimal_a": 1.3077,
+     "decimal_b": 3.3,
+     "start_utc_at_source": "2026-10-23T17:00:00Z",
+     "prob_a": 0.716193703919446,
+     "overround": 0.06773636531408234
+    }
+   ],
    "quotes_bookmaker_expired": [],
    "quotes_exchange": [],
    "exchange_reading": null,
@@ -1695,23 +2090,321 @@
      100,
      0
     ],
-    "total_picks": 25,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 31,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
    "vrs": null,
    "model_raw": null,
-   "basis": "unresolved",
-   "prob": {
-    "a": null,
-    "b": null
+   "basis": "market",
+   "market_consensus": {
+    "prob_a": 0.716193703919446,
+    "prob_b": 0.28380629608055397,
+    "n_sources": 1,
+    "sources": [
+     "bovada"
+    ],
+    "spread_a": null
    },
-   "ladder": "4 - no defensible price or rating pair in this capture",
-   "pick_blocked_reason": "ex-RUSTEC: ambiguous_vrs_name",
-   "pick": null,
-   "climb": null
+   "prob": {
+    "a": 0.716193703919446,
+    "b": 0.28380629608055397
+   },
+   "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
+   "valid_until_utc": "2026-10-23T11:53:58Z",
+   "pick": {
+    "side": "a",
+    "team": "ex-RUSTEC",
+    "prob": 0.716193703919446,
+    "fair_decimal": 1.396,
+    "confidence": "Strong"
+   },
+   "differential_points": -0.8514188882416619,
+   "climb_candidates": [
+    {
+     "side": "a",
+     "team": "ex-RUSTEC",
+     "market_prob": 0.716193703919446,
+     "ownership": 1.0,
+     "model_prob": null,
+     "differential_points": -0.8514188882416619,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "crowd ownership 100% is not a minority position",
+       "ownership gap -28.4% below the 15% minimum",
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    },
+    {
+     "side": "b",
+     "team": "Saint Sinners",
+     "market_prob": 0.28380629608055397,
+     "ownership": 0.0,
+     "model_prob": null,
+     "differential_points": 0.8514188882416619,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "market reading 28.4% below the 30% floor",
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    }
+   ],
+   "climb": {
+    "team": "Saint Sinners",
+    "side": "b",
+    "activated": false,
+    "kind": "contrarian underdog",
+    "crowd_majority_side": "a",
+    "market_prob": 0.28380629608055397,
+    "ownership": 0.0,
+    "model_prob": null,
+    "differential_points": 0.8514188882416619,
+    "gate": {
+     "pass": false,
+     "reasons": [
+      "market reading 28.4% below the 30% floor",
+      "no dated source-linked fact recorded for this side"
+     ]
+    },
+    "crowd_fade": true
+   }
+  },
+  {
+   "fixture_id": "1082693",
+   "competition": "Circuit X Curitiba #4",
+   "tier": "C",
+   "tier_label": null,
+   "stage": "waiting for information",
+   "multiplier": null,
+   "points": 2,
+   "best_of": null,
+   "status": "scheduled",
+   "start_utc": "2026-10-23T18:00:00Z",
+   "lock_utc": "2026-10-23T17:54:00Z",
+   "start_display_et": null,
+   "start_source": "no displayed time captured",
+   "team_a": "BESTIA",
+   "team_b": "Galorys",
+   "hotspawn_url": "https://www.hotspawn.com/matches/bestia-vs-galorys-circuit-x-curitiba-4-1082693",
+   "hotspawn_url_kind": "match page",
+   "listed_in": [
+    "automated_capture"
+   ],
+   "flags": [],
+   "sources": [
+    {
+     "label": "HotSpawn match page (fixture, points, lock, crowd share)",
+     "url": "https://www.hotspawn.com/matches/bestia-vs-galorys-circuit-x-curitiba-4-1082693"
+    },
+    {
+     "label": "HotSpawn lobby (fixture discovery)",
+     "url": "https://play.hotspawn.com/lobby"
+    },
+    {
+     "label": "Bovada full-match price (1.769230/2.00 decimal, fetched 2026-10-23T05:53:58Z via collection)",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/bestia-galorys-202610231400"
+    },
+    {
+     "label": "Melbet full-match price (1.74/1.98 decimal, fetched 2026-10-23T05:53:59Z via collection)",
+     "url": "https://melbet.com/en/line/esports"
+    },
+    {
+     "label": "Pinnacle full-match price (-139/110 american, fetched 2026-10-23T05:53:51Z via collection)",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub"
+    },
+    {
+     "label": "Official Valve standings 2026_10_05 (#65 vs #85)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+    }
+   ],
+   "quotes_bookmaker": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "event_id": "32633368",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/circuit-x-curitiba/bestia-galorys-202610231400",
+     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+     "league": "Circuit X Curitiba",
+     "fetched_utc": "2026-10-23T05:53:58Z",
+     "age_hours": 0.004574167777777778,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": "1.769230",
+     "raw_b": "2.00",
+     "raw_format": "decimal",
+     "decimal_a": 1.7692,
+     "decimal_b": 2.0,
+     "start_utc_at_source": "2026-10-23T18:00:00Z",
+     "prob_a": 0.5306123531861945,
+     "overround": 0.06521763705114658
+    },
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet",
+     "event_id": "764134090",
+     "public_url": "https://melbet.com/en/line/esports",
+     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+     "league": "CS 2. Circuit X Curitiba",
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": 1.74,
+     "raw_b": 1.98,
+     "raw_format": "decimal",
+     "decimal_a": 1.74,
+     "decimal_b": 1.98,
+     "start_utc_at_source": "2026-10-23T18:00:00Z",
+     "prob_a": 0.5322580645161289,
+     "overround": 0.07976314872866608
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "event_id": "1639000171",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1639000171/markets/related/straight",
+     "league": "CS2 - Circuit X Curitiba",
+     "fetched_utc": "2026-10-23T05:53:51Z",
+     "age_hours": 0.006518612222222222,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": -139,
+     "raw_b": 110,
+     "raw_format": "american",
+     "decimal_a": 1.7194,
+     "decimal_b": 2.1,
+     "start_utc_at_source": "2026-10-23T18:00:00Z",
+     "prob_a": 0.5498210585797701,
+     "overround": 0.05778043434947211
+    }
+   ],
+   "quotes_bookmaker_expired": [],
+   "quotes_exchange": [],
+   "exchange_reading": null,
+   "ownership": {
+    "a": 1.0,
+    "b": 0.0,
+    "as_rendered": [
+     100,
+     0
+    ],
+    "total_picks": 14,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
+    "source": "hub lobby capture"
+   },
+   "ownership_rounding_note": null,
+   "vrs": {
+    "snapshot": "2026_10_05",
+    "page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+    "team_a": {
+     "team": "BESTIA",
+     "standing": 65,
+     "points": 1189,
+     "roster": "buda, cass1n, drop, kauez, timo",
+     "details_path": "live/2026/details/2026_10_05/0065--bestia--buda-cass1n-drop-kauez-timo.md"
+    },
+    "team_b": {
+     "team": "Galorys",
+     "standing": 85,
+     "points": 1099,
+     "roster": "destiny, detr0ittJ, gbb, PKL, tomate",
+     "details_path": "live/2026/details/2026_10_05/0085--galorys--destiny-detr0ittj-gbb-pkl-tomate.md"
+    }
+   },
+   "model_raw": {
+    "delta_points": 90.0,
+    "k": 0.4848050766043969,
+    "prob_a": 0.5607834120311727,
+    "label": "own calibrated calculation from the official Valve ratings"
+   },
+   "basis": "market",
+   "market_consensus": {
+    "prob_a": 0.5406281337154659,
+    "prob_b": 0.4593718662845341,
+    "n_sources": 3,
+    "sources": [
+     "bovada",
+     "melbet",
+     "pinnacle"
+    ],
+    "spread_a": 0.019208705393575665
+   },
+   "prob": {
+    "a": 0.5406281337154659,
+    "b": 0.4593718662845341
+   },
+   "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
+   "valid_until_utc": "2026-10-23T11:53:59Z",
+   "pick": {
+    "side": "a",
+    "team": "BESTIA",
+    "prob": 0.5406281337154659,
+    "fair_decimal": 1.85,
+    "confidence": "Lean"
+   },
+   "differential_points": -0.9187437325690682,
+   "climb_candidates": [
+    {
+     "side": "a",
+     "team": "BESTIA",
+     "market_prob": 0.5406281337154659,
+     "ownership": 1.0,
+     "model_prob": 0.5607834120311727,
+     "differential_points": -0.9187437325690682,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "crowd ownership 100% is not a minority position",
+       "ownership gap -45.9% below the 15% minimum",
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    },
+    {
+     "side": "b",
+     "team": "Galorys",
+     "market_prob": 0.4593718662845341,
+     "ownership": 0.0,
+     "model_prob": 0.43921658796882734,
+     "differential_points": 0.9187437325690682,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    }
+   ],
+   "climb": {
+    "team": "Galorys",
+    "side": "b",
+    "activated": false,
+    "kind": "contrarian underdog",
+    "crowd_majority_side": "a",
+    "market_prob": 0.4593718662845341,
+    "ownership": 0.0,
+    "model_prob": 0.43921658796882734,
+    "differential_points": 0.9187437325690682,
+    "gate": {
+     "pass": false,
+     "reasons": [
+      "no dated source-linked fact recorded for this side"
+     ]
+    },
+    "crowd_fade": true
+   }
   },
   {
    "fixture_id": "1082925",
@@ -1735,8 +2428,7 @@
     "automated_capture"
    ],
    "flags": [
-    "not_in_vrs:RED Canids Academy",
-    "exchange_midpoints_not_executable_bookmaker_odds"
+    "not_in_vrs:RED Canids Academy"
    ],
    "sources": [
     {
@@ -1748,11 +2440,36 @@
      "url": "https://play.hotspawn.com/lobby"
     },
     {
-     "label": "Kalshi (exchange) full-match price (0.68/0.335 yes mid ($), fetched 2026-10-22T23:35:36Z via collection)",
+     "label": "Pinnacle full-match price (155/-216 american, fetched 2026-10-23T05:53:51Z via collection)",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub"
+    },
+    {
+     "label": "Kalshi (exchange) full-match price (0.64/0.345 yes mid ($), fetched 2026-10-23T05:53:59Z via collection)",
      "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct231500redabsta"
     }
    ],
-   "quotes_bookmaker": [],
+   "quotes_bookmaker": [
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "event_id": "1638951761",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638951761/markets/related/straight",
+     "league": "CS2 - CCT South America Series",
+     "fetched_utc": "2026-10-23T05:53:51Z",
+     "age_hours": 0.006518612222222222,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": 155,
+     "raw_b": -216,
+     "raw_format": "american",
+     "decimal_a": 2.55,
+     "decimal_b": 1.463,
+     "start_utc_at_source": "2026-10-23T19:00:00Z",
+     "prob_a": 0.3645592985694509,
+     "overround": 0.07570116654256642
+    }
+   ],
    "quotes_bookmaker_expired": [],
    "quotes_exchange": [
     {
@@ -1762,68 +2479,68 @@
      "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct231500redabsta",
      "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
      "league": "RED Canids Academy vs. BESTIA Academy",
-     "fetched_utc": "2026-10-22T23:35:36Z",
-     "age_hours": 0.002804843888888889,
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
      "swapped": true,
      "alias_notes": [],
-     "raw_a": 0.68,
-     "raw_b": 0.335,
+     "raw_a": 0.64,
+     "raw_b": 0.345,
      "raw_format": "yes mid ($)",
-     "decimal_a": 1.4706,
-     "decimal_b": 2.9851,
+     "decimal_a": 1.5625,
+     "decimal_b": 2.8986,
      "start_utc_at_source": "2026-10-23T19:00:00Z",
-     "prob_a": 0.3300492610837439,
-     "overround": 0.014999999999999902
+     "prob_a": 0.3502538071065989,
+     "overround": -0.015000000000000013
     }
    ],
    "exchange_reading": null,
    "ownership": {
-    "a": 0.1,
-    "b": 0.9,
+    "a": 0.06,
+    "b": 0.94,
     "as_rendered": [
-     10,
-     90
+     6,
+     94
     ],
-    "total_picks": 24,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 32,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
    "vrs": null,
    "model_raw": null,
-   "basis": "exchange",
+   "basis": "market",
    "market_consensus": {
-    "prob_a": 0.3300492610837439,
-    "prob_b": 0.6699507389162561,
+    "prob_a": 0.3645592985694509,
+    "prob_b": 0.6354407014305491,
     "n_sources": 1,
     "sources": [
-     "kalshi"
+     "pinnacle"
     ],
     "spread_a": null
    },
    "prob": {
-    "a": 0.3300492610837439,
-    "b": 0.6699507389162561
+    "a": 0.3645592985694509,
+    "b": 0.6354407014305491
    },
-   "ladder": "2 - exchange books (Polymarket CLOB with a two-sided book inside 10 cents, Kalshi with explicit full-match rules)",
-   "valid_until_utc": "2026-10-23T05:35:36Z",
+   "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
+   "valid_until_utc": "2026-10-23T11:53:51Z",
    "pick": {
     "side": "b",
     "team": "RED Canids Academy",
-    "prob": 0.6699507389162561,
-    "fair_decimal": 1.493,
+    "prob": 0.6354407014305491,
+    "fair_decimal": 1.574,
     "confidence": "Solid"
    },
-   "differential_points": -0.4600985221674878,
+   "differential_points": -0.6091185971389017,
    "climb_candidates": [
     {
      "side": "a",
      "team": "BESTIA Academy",
-     "market_prob": 0.3300492610837439,
-     "ownership": 0.1,
+     "market_prob": 0.3645592985694509,
+     "ownership": 0.06,
      "model_prob": null,
-     "differential_points": 0.46009852216748776,
+     "differential_points": 0.6091185971389018,
      "gate": {
       "pass": false,
       "reasons": [
@@ -1835,15 +2552,15 @@
     {
      "side": "b",
      "team": "RED Canids Academy",
-     "market_prob": 0.6699507389162561,
-     "ownership": 0.9,
+     "market_prob": 0.6354407014305491,
+     "ownership": 0.94,
      "model_prob": null,
-     "differential_points": -0.4600985221674878,
+     "differential_points": -0.6091185971389017,
      "gate": {
       "pass": false,
       "reasons": [
-       "crowd ownership 90% is not a minority position",
-       "ownership gap -23.0% below the 15% minimum",
+       "crowd ownership 94% is not a minority position",
+       "ownership gap -30.5% below the 15% minimum",
        "no dated source-linked fact recorded for this side"
       ]
      },
@@ -1856,10 +2573,10 @@
     "activated": false,
     "kind": "contrarian underdog",
     "crowd_majority_side": "b",
-    "market_prob": 0.3300492610837439,
-    "ownership": 0.1,
+    "market_prob": 0.3645592985694509,
+    "ownership": 0.06,
     "model_prob": null,
-    "differential_points": 0.46009852216748776,
+    "differential_points": 0.6091185971389018,
     "gate": {
      "pass": false,
      "reasons": [
@@ -1870,7 +2587,7 @@
    }
   },
   {
-   "fixture_id": "1082926",
+   "fixture_id": "1082923",
    "competition": "CCT South America 2026 Series #7",
    "tier": "C",
    "tier_label": null,
@@ -1883,65 +2600,113 @@
    "lock_utc": "2026-10-23T21:54:00Z",
    "start_display_et": null,
    "start_source": "no displayed time captured",
-   "team_a": "Isurus",
-   "team_b": "Hacha",
-   "hotspawn_url": "https://www.hotspawn.com/matches/isurus-vs-hacha-cct-south-america-2026-series-7-1082926",
+   "team_a": "Alka",
+   "team_b": "LOS NINOS",
+   "hotspawn_url": "https://www.hotspawn.com/matches/alka-vs-los-ninos-cct-south-america-2026-series-7-1082923",
    "hotspawn_url_kind": "match page",
    "listed_in": [
     "automated_capture"
    ],
    "flags": [
-    "not_in_vrs:Hacha"
+    "not_in_vrs:LOS NINOS"
    ],
    "sources": [
     {
      "label": "HotSpawn match page (fixture, points, lock, crowd share)",
-     "url": "https://www.hotspawn.com/matches/isurus-vs-hacha-cct-south-america-2026-series-7-1082926"
+     "url": "https://www.hotspawn.com/matches/alka-vs-los-ninos-cct-south-america-2026-series-7-1082923"
     },
     {
      "label": "HotSpawn lobby (fixture discovery)",
      "url": "https://play.hotspawn.com/lobby"
     },
     {
-     "label": "Melbet full-match price (1.1/5.75 decimal, fetched 2026-10-22T23:35:35Z via collection)",
+     "label": "Bovada full-match price (1.322581/3.250 decimal, fetched 2026-10-23T05:53:58Z via collection)",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/alka-los-ninos-202610231800"
+    },
+    {
+     "label": "Melbet full-match price (1.31/3.15 decimal, fetched 2026-10-23T05:53:59Z via collection)",
      "url": "https://melbet.com/en/line/esports"
+    },
+    {
+     "label": "Pinnacle full-match price (-329/214 american, fetched 2026-10-23T05:53:50Z via collection)",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub"
     }
    ],
    "quotes_bookmaker": [
     {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "event_id": "32598978",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/cct-league/south-america/alka-los-ninos-202610231800",
+     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+     "league": "South America",
+     "fetched_utc": "2026-10-23T05:53:58Z",
+     "age_hours": 0.004574167777777778,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": "1.322581",
+     "raw_b": "3.250",
+     "raw_format": "decimal",
+     "decimal_a": 1.3226,
+     "decimal_b": 3.25,
+     "start_utc_at_source": "2026-10-23T22:00:00Z",
+     "prob_a": 0.7107583222691956,
+     "overround": 0.06378966581252854
+    },
+    {
      "source_key": "melbet",
      "source_name": "Melbet",
-     "event_id": "763972256",
+     "event_id": "764142993",
      "public_url": "https://melbet.com/en/line/esports",
      "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "league": "CS 2. CCT South America",
-     "fetched_utc": "2026-10-22T23:35:35Z",
-     "age_hours": 0.003082621666666667,
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
      "swapped": false,
      "alias_notes": [],
-     "raw_a": 1.1,
-     "raw_b": 5.75,
+     "raw_a": 1.31,
+     "raw_b": 3.15,
      "raw_format": "decimal",
-     "decimal_a": 1.1,
-     "decimal_b": 5.75,
+     "decimal_a": 1.31,
+     "decimal_b": 3.15,
      "start_utc_at_source": "2026-10-23T22:00:00Z",
-     "prob_a": 0.8394160583941606,
-     "overround": 0.08300395256916993
+     "prob_a": 0.7062780269058296,
+     "overround": 0.08081909608627158
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "event_id": "1638942962",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1638942962/markets/related/straight",
+     "league": "CS2 - CCT South America Series",
+     "fetched_utc": "2026-10-23T05:53:50Z",
+     "age_hours": 0.006796389999999999,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": -329,
+     "raw_b": 214,
+     "raw_format": "american",
+     "decimal_a": 1.304,
+     "decimal_b": 3.14,
+     "start_utc_at_source": "2026-10-23T22:00:00Z",
+     "prob_a": 0.706578389395784,
+     "overround": 0.08537110447938479
     }
    ],
    "quotes_bookmaker_expired": [],
    "quotes_exchange": [],
    "exchange_reading": null,
    "ownership": {
-    "a": 0.26,
-    "b": 0.74,
+    "a": 0.27,
+    "b": 0.73,
     "as_rendered": [
-     26,
-     74
+     27,
+     73
     ],
-    "total_picks": 23,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 33,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -1949,36 +2714,38 @@
    "model_raw": null,
    "basis": "market",
    "market_consensus": {
-    "prob_a": 0.8394160583941606,
-    "prob_b": 0.16058394160583944,
-    "n_sources": 1,
+    "prob_a": 0.7075482819916483,
+    "prob_b": 0.2924517180083517,
+    "n_sources": 3,
     "sources": [
-     "melbet"
+     "bovada",
+     "melbet",
+     "pinnacle"
     ],
-    "spread_a": null
+    "spread_a": 0.004480295363365916
    },
    "prob": {
-    "a": 0.8394160583941606,
-    "b": 0.16058394160583944
+    "a": 0.7075482819916483,
+    "b": 0.2924517180083517
    },
    "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
-   "valid_until_utc": "2026-10-23T05:35:35Z",
+   "valid_until_utc": "2026-10-23T11:53:59Z",
    "pick": {
     "side": "a",
-    "team": "Isurus",
-    "prob": 0.8394160583941606,
-    "fair_decimal": 1.191,
+    "team": "Alka",
+    "prob": 0.7075482819916483,
+    "fair_decimal": 1.413,
     "confidence": "Strong"
    },
-   "differential_points": 1.158832116788321,
+   "differential_points": 0.8750965639832966,
    "climb_candidates": [
     {
      "side": "a",
-     "team": "Isurus",
-     "market_prob": 0.8394160583941606,
-     "ownership": 0.26,
+     "team": "Alka",
+     "market_prob": 0.7075482819916483,
+     "ownership": 0.27,
      "model_prob": null,
-     "differential_points": 1.158832116788321,
+     "differential_points": 0.8750965639832966,
      "gate": {
       "pass": false,
       "reasons": [
@@ -1989,17 +2756,17 @@
     },
     {
      "side": "b",
-     "team": "Hacha",
-     "market_prob": 0.16058394160583944,
-     "ownership": 0.74,
+     "team": "LOS NINOS",
+     "market_prob": 0.2924517180083517,
+     "ownership": 0.73,
      "model_prob": null,
-     "differential_points": -1.158832116788321,
+     "differential_points": -0.8750965639832966,
      "gate": {
       "pass": false,
       "reasons": [
-       "market reading 16.1% below the 30% floor",
-       "crowd ownership 74% is not a minority position",
-       "ownership gap -57.9% below the 15% minimum",
+       "market reading 29.2% below the 30% floor",
+       "crowd ownership 73% is not a minority position",
+       "ownership gap -43.8% below the 15% minimum",
        "no dated source-linked fact recorded for this side"
       ]
      },
@@ -2007,15 +2774,15 @@
     }
    ],
    "climb": {
-    "team": "Isurus",
+    "team": "Alka",
     "side": "a",
     "activated": false,
     "kind": "fade the crowd",
     "crowd_majority_side": "b",
-    "market_prob": 0.8394160583941606,
-    "ownership": 0.26,
+    "market_prob": 0.7075482819916483,
+    "ownership": 0.27,
     "model_prob": null,
-    "differential_points": 1.158832116788321,
+    "differential_points": 0.8750965639832966,
     "gate": {
      "pass": false,
      "reasons": [
@@ -2023,6 +2790,874 @@
      ]
     },
     "crowd_fade": true
+   }
+  },
+  {
+   "fixture_id": "1079193",
+   "competition": "NODWIN Clutch Series #13",
+   "tier": "B",
+   "tier_label": null,
+   "stage": "waiting for information",
+   "multiplier": null,
+   "points": 3,
+   "best_of": null,
+   "status": "scheduled",
+   "start_utc": "2026-10-24T08:00:00Z",
+   "lock_utc": "2026-10-24T07:54:00Z",
+   "start_display_et": null,
+   "start_source": "no displayed time captured",
+   "team_a": "FOKUS",
+   "team_b": "ex-6666",
+   "hotspawn_url": "https://www.hotspawn.com/matches/fokus-vs-ex-6666-nodwin-clutch-series-13-1079193",
+   "hotspawn_url_kind": "match page",
+   "listed_in": [
+    "automated_capture"
+   ],
+   "flags": [
+    "crowd_shares_rounded_by_source",
+    "not_in_vrs:ex-6666"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn match page (fixture, points, lock, crowd share)",
+     "url": "https://www.hotspawn.com/matches/fokus-vs-ex-6666-nodwin-clutch-series-13-1079193"
+    },
+    {
+     "label": "HotSpawn lobby (fixture discovery)",
+     "url": "https://play.hotspawn.com/lobby"
+    },
+    {
+     "label": "Bovada full-match price (1.190/4.400 decimal, fetched 2026-10-23T05:53:58Z via collection)",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/nodwin-clutch-series/fokus-esports-ex-6666-202610240400"
+    },
+    {
+     "label": "Melbet full-match price (1.192/4.445 decimal, fetched 2026-10-23T05:53:59Z via collection)",
+     "url": "https://melbet.com/en/line/esports"
+    },
+    {
+     "label": "Kalshi (exchange) full-match price (0.205/0.795 yes mid ($), fetched 2026-10-23T05:53:59Z via collection)",
+     "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct240400exfok"
+    }
+   ],
+   "quotes_bookmaker": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "event_id": "32627973",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/nodwin-clutch-series/fokus-esports-ex-6666-202610240400",
+     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+     "league": "Nodwin Clutch Series",
+     "fetched_utc": "2026-10-23T05:53:58Z",
+     "age_hours": 0.004574167777777778,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": "1.190",
+     "raw_b": "4.400",
+     "raw_format": "decimal",
+     "decimal_a": 1.19,
+     "decimal_b": 4.4,
+     "start_utc_at_source": "2026-10-24T08:00:00Z",
+     "prob_a": 0.7871198568872988,
+     "overround": 0.0676088617265087
+    },
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet",
+     "event_id": "764070867",
+     "public_url": "https://melbet.com/en/line/esports",
+     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+     "league": "CS 2. NODWIN Clutch Series",
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": 1.192,
+     "raw_b": 4.445,
+     "raw_format": "decimal",
+     "decimal_a": 1.192,
+     "decimal_b": 4.445,
+     "start_utc_at_source": "2026-10-24T08:00:00Z",
+     "prob_a": 0.7885400035479866,
+     "overround": 0.06389805301182983
+    }
+   ],
+   "quotes_bookmaker_expired": [],
+   "quotes_exchange": [
+    {
+     "source_key": "kalshi",
+     "source_name": "Kalshi (exchange)",
+     "event_id": "KXCS2GAME-26OCT240400EXFOK",
+     "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct240400exfok",
+     "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+     "league": "ex-6666 vs. FOKUS",
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
+     "swapped": true,
+     "alias_notes": [],
+     "raw_a": 0.205,
+     "raw_b": 0.795,
+     "raw_format": "yes mid ($)",
+     "decimal_a": 4.878,
+     "decimal_b": 1.2579,
+     "start_utc_at_source": "2026-10-24T08:00:00Z",
+     "prob_a": 0.7949999999999999,
+     "overround": 0.0
+    }
+   ],
+   "exchange_reading": null,
+   "ownership": {
+    "a": 0.88,
+    "b": 0.13,
+    "as_rendered": [
+     88,
+     13
+    ],
+    "total_picks": 12,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
+    "source": "hub lobby capture"
+   },
+   "ownership_rounding_note": "HotSpawn rounds each side's share independently, so the two published percentages can sum to 101 rather than 100",
+   "vrs": null,
+   "model_raw": null,
+   "basis": "market",
+   "market_consensus": {
+    "prob_a": 0.7878299302176427,
+    "prob_b": 0.2121700697823573,
+    "n_sources": 2,
+    "sources": [
+     "bovada",
+     "melbet"
+    ],
+    "spread_a": 0.0014201466606877933
+   },
+   "prob": {
+    "a": 0.7878299302176427,
+    "b": 0.2121700697823573
+   },
+   "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
+   "valid_until_utc": "2026-10-23T11:53:59Z",
+   "pick": {
+    "side": "a",
+    "team": "FOKUS",
+    "prob": 0.7878299302176427,
+    "fair_decimal": 1.269,
+    "confidence": "Strong"
+   },
+   "differential_points": -0.27651020934707193,
+   "climb_candidates": [
+    {
+     "side": "a",
+     "team": "FOKUS",
+     "market_prob": 0.7878299302176427,
+     "ownership": 0.88,
+     "model_prob": null,
+     "differential_points": -0.27651020934707193,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "crowd ownership 88% is not a minority position",
+       "ownership gap -9.2% below the 15% minimum",
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    },
+    {
+     "side": "b",
+     "team": "ex-6666",
+     "market_prob": 0.2121700697823573,
+     "ownership": 0.13,
+     "model_prob": null,
+     "differential_points": 0.2465102093470719,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "market reading 21.2% below the 30% floor",
+       "ownership gap 8.2% below the 15% minimum",
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    }
+   ],
+   "climb": {
+    "team": "ex-6666",
+    "side": "b",
+    "activated": false,
+    "kind": "contrarian underdog",
+    "crowd_majority_side": "a",
+    "market_prob": 0.2121700697823573,
+    "ownership": 0.13,
+    "model_prob": null,
+    "differential_points": 0.2465102093470719,
+    "gate": {
+     "pass": false,
+     "reasons": [
+      "market reading 21.2% below the 30% floor",
+      "ownership gap 8.2% below the 15% minimum",
+      "no dated source-linked fact recorded for this side"
+     ]
+    },
+    "crowd_fade": true
+   }
+  },
+  {
+   "fixture_id": "1079195",
+   "competition": "NODWIN Clutch Series #13",
+   "tier": "B",
+   "tier_label": null,
+   "stage": "waiting for information",
+   "multiplier": null,
+   "points": 3,
+   "best_of": null,
+   "status": "scheduled",
+   "start_utc": "2026-10-24T14:00:00Z",
+   "lock_utc": "2026-10-24T13:54:00Z",
+   "start_display_et": null,
+   "start_source": "no displayed time captured",
+   "team_a": "Nuclear TigeRES",
+   "team_b": "FORZE Reload",
+   "hotspawn_url": "https://www.hotspawn.com/matches/nuclear-tigeres-vs-forze-reload-nodwin-clutch-series-13-1079195",
+   "hotspawn_url_kind": "match page",
+   "listed_in": [
+    "automated_capture"
+   ],
+   "flags": [],
+   "sources": [
+    {
+     "label": "HotSpawn match page (fixture, points, lock, crowd share)",
+     "url": "https://www.hotspawn.com/matches/nuclear-tigeres-vs-forze-reload-nodwin-clutch-series-13-1079195"
+    },
+    {
+     "label": "HotSpawn lobby (fixture discovery)",
+     "url": "https://play.hotspawn.com/lobby"
+    },
+    {
+     "label": "Bovada full-match price (1.645161/2.200 decimal, fetched 2026-10-23T05:53:58Z via collection)",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/nodwin-clutch-series/nuclear-tigeres-forze-reload-202610241000"
+    },
+    {
+     "label": "Melbet full-match price (1.62/2.191 decimal, fetched 2026-10-23T05:53:59Z via collection)",
+     "url": "https://melbet.com/en/line/esports"
+    },
+    {
+     "label": "Pinnacle full-match price (-166/123 american, fetched 2026-10-23T05:53:48Z via collection)",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub"
+    },
+    {
+     "label": "Official Valve standings 2026_10_05 (#46 vs #84)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+    }
+   ],
+   "quotes_bookmaker": [
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "event_id": "32626991",
+     "public_url": "https://www.bovada.lv/esports/counter-strike-2/nodwin-clutch-series/nuclear-tigeres-forze-reload-202610241000",
+     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+     "league": "Nodwin Clutch Series",
+     "fetched_utc": "2026-10-23T05:53:58Z",
+     "age_hours": 0.004574167777777778,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": "1.645161",
+     "raw_b": "2.200",
+     "raw_format": "decimal",
+     "decimal_a": 1.6452,
+     "decimal_b": 2.2,
+     "start_utc_at_source": "2026-10-24T14:00:00Z",
+     "prob_a": 0.5721476942057823,
+     "overround": 0.06238869906681144
+    },
+    {
+     "source_key": "melbet",
+     "source_name": "Melbet",
+     "event_id": "764070863",
+     "public_url": "https://melbet.com/en/line/esports",
+     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+     "league": "CS 2. NODWIN Clutch Series",
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": 1.62,
+     "raw_b": 2.191,
+     "raw_format": "decimal",
+     "decimal_a": 1.62,
+     "decimal_b": 2.191,
+     "start_utc_at_source": "2026-10-24T14:00:00Z",
+     "prob_a": 0.5749147205457884,
+     "overround": 0.07369654760496092
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "event_id": "1639013903",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1639013903/markets/related/straight",
+     "league": "CS2 - NODWIN Clutch Series Qualifier",
+     "fetched_utc": "2026-10-23T05:53:48Z",
+     "age_hours": 0.007351945555555555,
+     "swapped": false,
+     "alias_notes": [],
+     "raw_a": -166,
+     "raw_b": 123,
+     "raw_format": "american",
+     "decimal_a": 1.6024,
+     "decimal_b": 2.23,
+     "start_utc_at_source": "2026-10-24T14:00:00Z",
+     "prob_a": 0.5818793423244993,
+     "overround": 0.07249064364948254
+    }
+   ],
+   "quotes_bookmaker_expired": [],
+   "quotes_exchange": [],
+   "exchange_reading": null,
+   "ownership": {
+    "a": 0.14,
+    "b": 0.86,
+    "as_rendered": [
+     14,
+     86
+    ],
+    "total_picks": 11,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
+    "source": "hub lobby capture"
+   },
+   "ownership_rounding_note": null,
+   "vrs": {
+    "snapshot": "2026_10_05",
+    "page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+    "team_a": {
+     "team": "Nuclear TigeRES",
+     "standing": 46,
+     "points": 1324,
+     "roster": "ayuki, Djon8, flouzer, senka, tronic",
+     "details_path": "live/2026/details/2026_10_05/0046--nuclear_tigeres--ayuki-djon8-flouzer-senka-tronic.md"
+    },
+    "team_b": {
+     "team": "FORZE Reload",
+     "standing": 84,
+     "points": 1100,
+     "roster": "HeCkBNk, Kaide, KusMe, Lack1, YumsaN",
+     "details_path": "live/2026/details/2026_10_05/0084--forze_reload--heckbnk-kaide-kusme-lack1-yumsan.md"
+    }
+   },
+   "model_raw": {
+    "delta_points": 224.0,
+    "k": 0.4848050766043969,
+    "prob_a": 0.6475164702791456,
+    "label": "own calibrated calculation from the official Valve ratings"
+   },
+   "basis": "market",
+   "market_consensus": {
+    "prob_a": 0.5777052748501423,
+    "prob_b": 0.42229472514985766,
+    "n_sources": 3,
+    "sources": [
+     "bovada",
+     "melbet",
+     "pinnacle"
+    ],
+    "spread_a": 0.009731648118717073
+   },
+   "prob": {
+    "a": 0.5777052748501423,
+    "b": 0.42229472514985766
+   },
+   "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
+   "valid_until_utc": "2026-10-23T11:53:59Z",
+   "pick": {
+    "side": "a",
+    "team": "Nuclear TigeRES",
+    "prob": 0.5777052748501423,
+    "fair_decimal": 1.731,
+    "confidence": "Lean"
+   },
+   "differential_points": 1.3131158245504269,
+   "climb_candidates": [
+    {
+     "side": "a",
+     "team": "Nuclear TigeRES",
+     "market_prob": 0.5777052748501423,
+     "ownership": 0.14,
+     "model_prob": 0.6475164702791456,
+     "differential_points": 1.3131158245504269,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    },
+    {
+     "side": "b",
+     "team": "FORZE Reload",
+     "market_prob": 0.42229472514985766,
+     "ownership": 0.86,
+     "model_prob": 0.3524835297208544,
+     "differential_points": -1.3131158245504269,
+     "gate": {
+      "pass": false,
+      "reasons": [
+       "crowd ownership 86% is not a minority position",
+       "ownership gap -43.8% below the 15% minimum",
+       "no dated source-linked fact recorded for this side"
+      ]
+     },
+     "facts": []
+    }
+   ],
+   "climb": {
+    "team": "Nuclear TigeRES",
+    "side": "a",
+    "activated": false,
+    "kind": "fade the crowd",
+    "crowd_majority_side": "b",
+    "market_prob": 0.5777052748501423,
+    "ownership": 0.14,
+    "model_prob": 0.6475164702791456,
+    "differential_points": 1.3131158245504269,
+    "gate": {
+     "pass": false,
+     "reasons": [
+      "no dated source-linked fact recorded for this side"
+     ]
+    },
+    "crowd_fade": true
+   }
+  },
+  {
+   "fixture_id": "1082996",
+   "competition": "NODWIN Clutch Series #13",
+   "tier": "B",
+   "tier_label": null,
+   "stage": "waiting for information",
+   "multiplier": null,
+   "points": 3,
+   "best_of": null,
+   "status": "scheduled",
+   "start_utc": "2026-10-25T09:00:00Z",
+   "lock_utc": "2026-10-25T08:54:00Z",
+   "start_display_et": null,
+   "start_source": "no displayed time captured",
+   "team_a": "Acend",
+   "team_b": "UNiTY",
+   "hotspawn_url": "https://www.hotspawn.com/matches/acend-vs-unity-nodwin-clutch-series-13-1082996",
+   "hotspawn_url_kind": "match page",
+   "listed_in": [
+    "automated_capture"
+   ],
+   "flags": [
+    "model_estimate_not_verified_win_probability"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn match page (fixture, points, lock, crowd share)",
+     "url": "https://www.hotspawn.com/matches/acend-vs-unity-nodwin-clutch-series-13-1082996"
+    },
+    {
+     "label": "HotSpawn lobby (fixture discovery)",
+     "url": "https://play.hotspawn.com/lobby"
+    },
+    {
+     "label": "Official Valve standings 2026_10_05 (#63 vs #69)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+    }
+   ],
+   "quotes_bookmaker": [],
+   "quotes_bookmaker_expired": [],
+   "quotes_exchange": [],
+   "exchange_reading": null,
+   "ownership": {
+    "a": 0.0,
+    "b": 1.0,
+    "as_rendered": [
+     0,
+     100
+    ],
+    "total_picks": 13,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
+    "source": "hub lobby capture"
+   },
+   "ownership_rounding_note": null,
+   "vrs": {
+    "snapshot": "2026_10_05",
+    "page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+    "team_a": {
+     "team": "Acend",
+     "standing": 63,
+     "points": 1197,
+     "roster": "h4rn, REDSTAR, SHiPZ, Skrimo, SPELLAN",
+     "details_path": "live/2026/details/2026_10_05/0063--acend--h4rn-redstar-shipz-skrimo-spellan.md"
+    },
+    "team_b": {
+     "team": "UNiTY",
+     "standing": 69,
+     "points": 1167,
+     "roster": "2high, Dytor, KWERTZZ, M1key, Sn0w",
+     "details_path": "live/2026/details/2026_10_05/0069--unity--2high-dytor-kwertzz-m1key-sn0w.md"
+    }
+   },
+   "model_raw": {
+    "delta_points": 30.0,
+    "k": 0.4848050766043969,
+    "prob_a": 0.5203505928184035,
+    "label": "own calibrated calculation from the official Valve ratings"
+   },
+   "basis": "model",
+   "model": {
+    "prob_a": 0.5203505928184035,
+    "prob_b": 0.47964940718159654,
+    "delta_points": 30.0,
+    "k": 0.4848050766043969
+   },
+   "prob": {
+    "a": 0.5203505928184035,
+    "b": 0.47964940718159654
+   },
+   "ladder": "3 - own logistic rating-difference line over the official Valve standings",
+   "valid_until_utc": null,
+   "pick": {
+    "side": "a",
+    "team": "Acend",
+    "prob": 0.5203505928184035,
+    "fair_decimal": 1.922,
+    "confidence": "Toss-up"
+   },
+   "differential_points": 1.5610517784552105,
+   "climb_candidates": [],
+   "climb": {
+    "team": "Acend",
+    "side": "a",
+    "activated": false,
+    "kind": "fade the crowd",
+    "crowd_majority_side": "b",
+    "market_prob": null,
+    "ownership": 0.0,
+    "model_prob": 0.5203505928184035,
+    "differential_points": null,
+    "gate": {
+     "pass": false,
+     "reasons": [
+      "no market or exchange reading",
+      "no dated source-linked fact recorded for this side"
+     ]
+    },
+    "crowd_fade": true
+   }
+  },
+  {
+   "fixture_id": "1079198",
+   "competition": "NODWIN Clutch Series #13",
+   "tier": "B",
+   "tier_label": null,
+   "stage": "waiting for information",
+   "multiplier": null,
+   "points": 3,
+   "best_of": null,
+   "status": "scheduled",
+   "start_utc": "2026-10-25T12:00:00Z",
+   "lock_utc": "2026-10-25T11:54:00Z",
+   "start_display_et": null,
+   "start_source": "no displayed time captured",
+   "team_a": "Metizport",
+   "team_b": "BakS",
+   "hotspawn_url": "https://www.hotspawn.com/matches/metizport-vs-baks-nodwin-clutch-series-13-1079198",
+   "hotspawn_url_kind": "match page",
+   "listed_in": [
+    "automated_capture"
+   ],
+   "flags": [
+    "model_estimate_not_verified_win_probability"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn match page (fixture, points, lock, crowd share)",
+     "url": "https://www.hotspawn.com/matches/metizport-vs-baks-nodwin-clutch-series-13-1079198"
+    },
+    {
+     "label": "HotSpawn lobby (fixture discovery)",
+     "url": "https://play.hotspawn.com/lobby"
+    },
+    {
+     "label": "Official Valve standings 2026_10_05 (#53 vs #100)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+    }
+   ],
+   "quotes_bookmaker": [],
+   "quotes_bookmaker_expired": [],
+   "quotes_exchange": [],
+   "exchange_reading": null,
+   "ownership": {
+    "a": 0.86,
+    "b": 0.14,
+    "as_rendered": [
+     86,
+     14
+    ],
+    "total_picks": 11,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
+    "source": "hub lobby capture"
+   },
+   "ownership_rounding_note": null,
+   "vrs": {
+    "snapshot": "2026_10_05",
+    "page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+    "team_a": {
+     "team": "Metizport",
+     "standing": 53,
+     "points": 1290,
+     "roster": "F1KU, forsyy, MaiL09, Plopski, stanislaw",
+     "details_path": "live/2026/details/2026_10_05/0053--metizport--f1ku-forsyy-mail09-plopski-stanislaw.md"
+    },
+    "team_b": {
+     "team": "BAKS",
+     "standing": 100,
+     "points": 1044,
+     "roster": "danistzz, Norwi, turbo, whisper, xdENiSZERA",
+     "details_path": "live/2026/details/2026_10_05/0100--baks--danistzz-norwi-turbo-whisper-xdeniszera.md"
+    }
+   },
+   "model_raw": {
+    "delta_points": 246.0,
+    "k": 0.4848050766043969,
+    "prob_a": 0.6610256944314036,
+    "label": "own calibrated calculation from the official Valve ratings"
+   },
+   "basis": "model",
+   "model": {
+    "prob_a": 0.6610256944314036,
+    "prob_b": 0.3389743055685964,
+    "delta_points": 246.0,
+    "k": 0.4848050766043969
+   },
+   "prob": {
+    "a": 0.6610256944314036,
+    "b": 0.3389743055685964
+   },
+   "ladder": "3 - own logistic rating-difference line over the official Valve standings",
+   "valid_until_utc": null,
+   "pick": {
+    "side": "a",
+    "team": "Metizport",
+    "prob": 0.6610256944314036,
+    "fair_decimal": 1.513,
+    "confidence": "Solid"
+   },
+   "differential_points": -0.5969229167057892,
+   "climb_candidates": [],
+   "climb": {
+    "team": "Metizport",
+    "side": "a",
+    "activated": false,
+    "kind": "fade the crowd",
+    "crowd_majority_side": "a",
+    "market_prob": null,
+    "ownership": 0.86,
+    "model_prob": 0.6610256944314036,
+    "differential_points": null,
+    "gate": {
+     "pass": false,
+     "reasons": [
+      "no market or exchange reading",
+      "crowd ownership 86% is not a minority position",
+      "no dated source-linked fact recorded for this side"
+     ]
+    },
+    "crowd_fade": false
+   }
+  },
+  {
+   "fixture_id": "1079199",
+   "competition": "NODWIN Clutch Series #13",
+   "tier": "B",
+   "tier_label": null,
+   "stage": "waiting for information",
+   "multiplier": null,
+   "points": 3,
+   "best_of": null,
+   "status": "scheduled",
+   "start_utc": "2026-10-25T15:00:00Z",
+   "lock_utc": "2026-10-25T14:54:00Z",
+   "start_display_et": null,
+   "start_source": "no displayed time captured",
+   "team_a": "Infinite",
+   "team_b": "BRUTE",
+   "hotspawn_url": "https://www.hotspawn.com/matches/infinite-vs-brute-nodwin-clutch-series-13-1079199",
+   "hotspawn_url_kind": "match page",
+   "listed_in": [
+    "automated_capture"
+   ],
+   "flags": [
+    "ambiguous_vrs_name:BRUTE",
+    "no_line_unverified"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn match page (fixture, points, lock, crowd share)",
+     "url": "https://www.hotspawn.com/matches/infinite-vs-brute-nodwin-clutch-series-13-1079199"
+    },
+    {
+     "label": "HotSpawn lobby (fixture discovery)",
+     "url": "https://play.hotspawn.com/lobby"
+    }
+   ],
+   "quotes_bookmaker": [],
+   "quotes_bookmaker_expired": [],
+   "quotes_exchange": [],
+   "exchange_reading": null,
+   "ownership": {
+    "a": 0.0,
+    "b": 1.0,
+    "as_rendered": [
+     0,
+     100
+    ],
+    "total_picks": 11,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
+    "source": "hub lobby capture"
+   },
+   "ownership_rounding_note": null,
+   "vrs": null,
+   "model_raw": null,
+   "basis": "unresolved",
+   "prob": {
+    "a": null,
+    "b": null
+   },
+   "ladder": "4 - no defensible price or rating pair in this capture",
+   "pick_blocked_reason": "BRUTE: ambiguous_vrs_name",
+   "pick": null,
+   "climb": null
+  },
+  {
+   "fixture_id": "1079200",
+   "competition": "NODWIN Clutch Series #13",
+   "tier": "B",
+   "tier_label": null,
+   "stage": "waiting for information",
+   "multiplier": null,
+   "points": 3,
+   "best_of": null,
+   "status": "scheduled",
+   "start_utc": "2026-10-25T18:00:00Z",
+   "lock_utc": "2026-10-25T17:54:00Z",
+   "start_display_et": null,
+   "start_source": "no displayed time captured",
+   "team_a": "Color",
+   "team_b": "ex-Zero Tenacity",
+   "hotspawn_url": "https://www.hotspawn.com/matches/color-vs-ex-zero-tenacity-nodwin-clutch-series-13-1079200",
+   "hotspawn_url_kind": "match page",
+   "listed_in": [
+    "automated_capture"
+   ],
+   "flags": [
+    "model_estimate_not_verified_win_probability"
+   ],
+   "sources": [
+    {
+     "label": "HotSpawn match page (fixture, points, lock, crowd share)",
+     "url": "https://www.hotspawn.com/matches/color-vs-ex-zero-tenacity-nodwin-clutch-series-13-1079200"
+    },
+    {
+     "label": "HotSpawn lobby (fixture discovery)",
+     "url": "https://play.hotspawn.com/lobby"
+    },
+    {
+     "label": "Official Valve standings 2026_10_05 (#57 vs #93)",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
+    }
+   ],
+   "quotes_bookmaker": [],
+   "quotes_bookmaker_expired": [],
+   "quotes_exchange": [],
+   "exchange_reading": null,
+   "ownership": {
+    "a": 0.67,
+    "b": 0.33,
+    "as_rendered": [
+     67,
+     33
+    ],
+    "total_picks": 10,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
+    "source": "hub lobby capture"
+   },
+   "ownership_rounding_note": null,
+   "vrs": {
+    "snapshot": "2026_10_05",
+    "page_url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
+    "team_a": {
+     "team": "Color",
+     "standing": 57,
+     "points": 1249,
+     "roster": "cronuss, lattykk, oz1k, Patsi, reyoz",
+     "details_path": "live/2026/details/2026_10_05/0057--color--cronuss-lattykk-oz1k-patsi-reyoz.md"
+    },
+    "team_b": {
+     "team": "ex-Zero Tenacity",
+     "standing": 93,
+     "points": 1066,
+     "roster": "brutmonster, Cjoffo, Dragon, Kind0, VLDN",
+     "details_path": "live/2026/details/2026_10_05/0093--ex-zero_tenacity--brutmonster-cjoffo-dragon-kind0-vldn.md"
+    }
+   },
+   "model_raw": {
+    "delta_points": 183.0,
+    "k": 0.4848050766043969,
+    "prob_a": 0.6217138297581053,
+    "label": "own calibrated calculation from the official Valve ratings"
+   },
+   "basis": "model",
+   "model": {
+    "prob_a": 0.6217138297581053,
+    "prob_b": 0.3782861702418947,
+    "delta_points": 183.0,
+    "k": 0.4848050766043969
+   },
+   "prob": {
+    "a": 0.6217138297581053,
+    "b": 0.3782861702418947
+   },
+   "ladder": "3 - own logistic rating-difference line over the official Valve standings",
+   "valid_until_utc": null,
+   "pick": {
+    "side": "a",
+    "team": "Color",
+    "prob": 0.6217138297581053,
+    "fair_decimal": 1.608,
+    "confidence": "Solid"
+   },
+   "differential_points": -0.14485851072568423,
+   "climb_candidates": [],
+   "climb": {
+    "team": "Color",
+    "side": "a",
+    "activated": false,
+    "kind": "fade the crowd",
+    "crowd_majority_side": "a",
+    "market_prob": null,
+    "ownership": 0.67,
+    "model_prob": 0.6217138297581053,
+    "differential_points": null,
+    "gate": {
+     "pass": false,
+     "reasons": [
+      "no market or exchange reading",
+      "crowd ownership 67% is not a minority position",
+      "no dated source-linked fact recorded for this side"
+     ]
+    },
+    "crowd_fade": false
    }
   },
   {
@@ -2071,9 +3706,9 @@
      92,
      8
     ],
-    "total_picks": 25,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 26,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -2138,9 +3773,9 @@
      96,
      4
     ],
-    "total_picks": 25,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 26,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -2164,31 +3799,31 @@
    },
    "model_raw": {
     "delta_points": 176.0,
-    "k": 1.0,
-    "prob_a": 0.7282182354771827,
+    "k": 0.4848050766043969,
+    "prob_a": 0.6172340418903202,
     "label": "own calibrated calculation from the official Valve ratings"
    },
    "basis": "model",
    "model": {
-    "prob_a": 0.7282182354771827,
-    "prob_b": 0.2717817645228173,
+    "prob_a": 0.6172340418903202,
+    "prob_b": 0.38276595810967984,
     "delta_points": 176.0,
-    "k": 1.0
+    "k": 0.4848050766043969
    },
    "prob": {
-    "a": 0.7282182354771827,
-    "b": 0.2717817645228173
+    "a": 0.6172340418903202,
+    "b": 0.38276595810967984
    },
    "ladder": "3 - own logistic rating-difference line over the official Valve standings",
    "valid_until_utc": null,
    "pick": {
     "side": "a",
     "team": "NEXVOID",
-    "prob": 0.7282182354771827,
-    "fair_decimal": 1.373,
-    "confidence": "Strong"
+    "prob": 0.6172340418903202,
+    "fair_decimal": 1.62,
+    "confidence": "Solid"
    },
-   "differential_points": -0.6953452935684519,
+   "differential_points": -1.0282978743290394,
    "climb_candidates": [],
    "climb": {
     "team": "NEXVOID",
@@ -2198,7 +3833,7 @@
     "crowd_majority_side": "a",
     "market_prob": null,
     "ownership": 0.96,
-    "model_prob": 0.7282182354771827,
+    "model_prob": 0.6172340418903202,
     "differential_points": null,
     "gate": {
      "pass": false,
@@ -2257,9 +3892,9 @@
      96,
      4
     ],
-    "total_picks": 26,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 27,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -2324,9 +3959,9 @@
      12,
      88
     ],
-    "total_picks": 25,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 26,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -2350,31 +3985,31 @@
    },
    "model_raw": {
     "delta_points": -16.0,
-    "k": 1.0,
-    "prob_a": 0.4776149428184875,
+    "k": 0.4848050766043969,
+    "prob_a": 0.4891420584738329,
     "label": "own calibrated calculation from the official Valve ratings"
    },
    "basis": "model",
    "model": {
-    "prob_a": 0.4776149428184875,
-    "prob_b": 0.5223850571815125,
+    "prob_a": 0.4891420584738329,
+    "prob_b": 0.5108579415261671,
     "delta_points": -16.0,
-    "k": 1.0
+    "k": 0.4848050766043969
    },
    "prob": {
-    "a": 0.4776149428184875,
-    "b": 0.5223850571815125
+    "a": 0.4891420584738329,
+    "b": 0.5108579415261671
    },
    "ladder": "3 - own logistic rating-difference line over the official Valve standings",
    "valid_until_utc": null,
    "pick": {
     "side": "b",
     "team": "Abyssal",
-    "prob": 0.5223850571815125,
-    "fair_decimal": 1.914,
+    "prob": 0.5108579415261671,
+    "fair_decimal": 1.957,
     "confidence": "Toss-up"
    },
-   "differential_points": -1.0728448284554624,
+   "differential_points": -1.1074261754214985,
    "climb_candidates": [],
    "climb": {
     "team": "Rooster",
@@ -2384,7 +4019,7 @@
     "crowd_majority_side": "b",
     "market_prob": null,
     "ownership": 0.12,
-    "model_prob": 0.4776149428184875,
+    "model_prob": 0.4891420584738329,
     "differential_points": null,
     "gate": {
      "pass": false,
@@ -2428,7 +4063,7 @@
      "url": "https://play.hotspawn.com/lobby"
     },
     {
-     "label": "Melbet full-match price (1.61/2.21 decimal, fetched 2026-10-22T23:35:35Z via collection)",
+     "label": "Melbet full-match price (1.71/2.02 decimal, fetched 2026-10-23T05:53:59Z via collection)",
      "url": "https://melbet.com/en/line/esports"
     },
     {
@@ -2444,18 +4079,18 @@
      "public_url": "https://melbet.com/en/line/esports",
      "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "league": "CS 2. RLG Tesla Cup",
-     "fetched_utc": "2026-10-22T23:35:35Z",
-     "age_hours": 0.003082621666666667,
+     "fetched_utc": "2026-10-23T05:53:59Z",
+     "age_hours": 0.00429639,
      "swapped": false,
      "alias_notes": [],
-     "raw_a": 1.61,
-     "raw_b": 2.21,
+     "raw_a": 1.71,
+     "raw_b": 2.02,
      "raw_format": "decimal",
-     "decimal_a": 1.61,
-     "decimal_b": 2.21,
+     "decimal_a": 1.71,
+     "decimal_b": 2.02,
      "start_utc_at_source": "2026-10-27T08:00:00Z",
-     "prob_a": 0.5785340314136125,
-     "overround": 0.07360670020516569
+     "prob_a": 0.5415549597855228,
+     "overround": 0.07984482658792191
     }
    ],
    "quotes_bookmaker_expired": [],
@@ -2468,9 +4103,9 @@
      96,
      4
     ],
-    "total_picks": 23,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 25,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -2494,14 +4129,14 @@
    },
    "model_raw": {
     "delta_points": 120.0,
-    "k": 1.0,
-    "prob_a": 0.6619510568294391,
+    "k": 0.4848050766043969,
+    "prob_a": 0.5807345373123427,
     "label": "own calibrated calculation from the official Valve ratings"
    },
    "basis": "market",
    "market_consensus": {
-    "prob_a": 0.5785340314136125,
-    "prob_b": 0.4214659685863875,
+    "prob_a": 0.5415549597855228,
+    "prob_b": 0.4584450402144772,
     "n_sources": 1,
     "sources": [
      "melbet"
@@ -2509,32 +4144,32 @@
     "spread_a": null
    },
    "prob": {
-    "a": 0.5785340314136125,
-    "b": 0.4214659685863875
+    "a": 0.5415549597855228,
+    "b": 0.4584450402144772
    },
    "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
-   "valid_until_utc": "2026-10-23T05:35:35Z",
+   "valid_until_utc": "2026-10-23T11:53:59Z",
    "pick": {
     "side": "a",
     "team": "B8",
-    "prob": 0.5785340314136125,
-    "fair_decimal": 1.729,
+    "prob": 0.5415549597855228,
+    "fair_decimal": 1.847,
     "confidence": "Lean"
    },
-   "differential_points": -1.1443979057591624,
+   "differential_points": -1.2553351206434313,
    "climb_candidates": [
     {
      "side": "a",
      "team": "B8",
-     "market_prob": 0.5785340314136125,
+     "market_prob": 0.5415549597855228,
      "ownership": 0.96,
-     "model_prob": 0.6619510568294391,
-     "differential_points": -1.1443979057591624,
+     "model_prob": 0.5807345373123427,
+     "differential_points": -1.2553351206434313,
      "gate": {
       "pass": false,
       "reasons": [
        "crowd ownership 96% is not a minority position",
-       "ownership gap -38.1% below the 15% minimum",
+       "ownership gap -41.8% below the 15% minimum",
        "no dated source-linked fact recorded for this side"
       ]
      },
@@ -2543,10 +4178,10 @@
     {
      "side": "b",
      "team": "K27",
-     "market_prob": 0.4214659685863875,
+     "market_prob": 0.4584450402144772,
      "ownership": 0.04,
-     "model_prob": 0.3380489431705609,
-     "differential_points": 1.1443979057591627,
+     "model_prob": 0.4192654626876573,
+     "differential_points": 1.2553351206434316,
      "gate": {
       "pass": false,
       "reasons": [
@@ -2562,10 +4197,10 @@
     "activated": false,
     "kind": "contrarian underdog",
     "crowd_majority_side": "a",
-    "market_prob": 0.4214659685863875,
+    "market_prob": 0.4584450402144772,
     "ownership": 0.04,
-    "model_prob": 0.3380489431705609,
-    "differential_points": 1.1443979057591627,
+    "model_prob": 0.4192654626876573,
+    "differential_points": 1.2553351206434316,
     "gate": {
      "pass": false,
      "reasons": [
@@ -2624,9 +4259,9 @@
      12,
      88
     ],
-    "total_picks": 23,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 25,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -2650,31 +4285,31 @@
    },
    "model_raw": {
     "delta_points": 1.0,
-    "k": 1.0,
-    "prob_a": 0.5013999982864173,
+    "k": 0.4848050766043969,
+    "prob_a": 0.5006787276333404,
     "label": "own calibrated calculation from the official Valve ratings"
    },
    "basis": "model",
    "model": {
-    "prob_a": 0.5013999982864173,
-    "prob_b": 0.49860000171358265,
+    "prob_a": 0.5006787276333404,
+    "prob_b": 0.4993212723666596,
     "delta_points": 1.0,
-    "k": 1.0
+    "k": 0.4848050766043969
    },
    "prob": {
-    "a": 0.5013999982864173,
-    "b": 0.49860000171358265
+    "a": 0.5006787276333404,
+    "b": 0.4993212723666596
    },
    "ladder": "3 - own logistic rating-difference line over the official Valve standings",
    "valid_until_utc": null,
    "pick": {
     "side": "a",
     "team": "Alliance",
-    "prob": 0.5013999982864173,
-    "fair_decimal": 1.994,
+    "prob": 0.5006787276333404,
+    "fair_decimal": 1.997,
     "confidence": "Toss-up"
    },
-   "differential_points": 1.144199994859252,
+   "differential_points": 1.1420361829000214,
    "climb_candidates": [],
    "climb": {
     "team": "Alliance",
@@ -2684,7 +4319,7 @@
     "crowd_majority_side": "b",
     "market_prob": null,
     "ownership": 0.12,
-    "model_prob": 0.5013999982864173,
+    "model_prob": 0.5006787276333404,
     "differential_points": null,
     "gate": {
      "pass": false,
@@ -2728,8 +4363,8 @@
      "url": "https://play.hotspawn.com/lobby"
     },
     {
-     "label": "Melbet full-match price (1.71/2.02 decimal, fetched 2026-10-22T23:35:35Z via collection)",
-     "url": "https://melbet.com/en/line/esports"
+     "label": "Pinnacle full-match price (-137/113 american, fetched 2026-10-23T05:53:49Z via collection)",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub"
     },
     {
      "label": "Official Valve standings 2026_10_05 (#16 vs #31)",
@@ -2738,24 +4373,24 @@
    ],
    "quotes_bookmaker": [
     {
-     "source_key": "melbet",
-     "source_name": "Melbet",
-     "event_id": "763630351",
-     "public_url": "https://melbet.com/en/line/esports",
-     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-     "league": "CS 2. RLG Tesla Cup",
-     "fetched_utc": "2026-10-22T23:35:35Z",
-     "age_hours": 0.003082621666666667,
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "event_id": "1639017847",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1639017847/markets/related/straight",
+     "league": "CS2 - RLG Tesla Cup",
+     "fetched_utc": "2026-10-23T05:53:49Z",
+     "age_hours": 0.007074167777777777,
      "swapped": false,
      "alias_notes": [],
-     "raw_a": 1.71,
-     "raw_b": 2.02,
-     "raw_format": "decimal",
-     "decimal_a": 1.71,
-     "decimal_b": 2.02,
+     "raw_a": -137,
+     "raw_b": 113,
+     "raw_format": "american",
+     "decimal_a": 1.7299,
+     "decimal_b": 2.13,
      "start_utc_at_source": "2026-10-27T17:00:00Z",
-     "prob_a": 0.5415549597855228,
-     "overround": 0.07984482658792191
+     "prob_a": 0.5518239065070631,
+     "overround": 0.047542639805075115
     }
    ],
    "quotes_bookmaker_expired": [],
@@ -2768,9 +4403,9 @@
      72,
      28
     ],
-    "total_picks": 23,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 25,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -2794,47 +4429,47 @@
    },
    "model_raw": {
     "delta_points": 110.0,
-    "k": 1.0,
-    "prob_a": 0.6493084601515879,
+    "k": 0.4848050766043969,
+    "prob_a": 0.5741101035432838,
     "label": "own calibrated calculation from the official Valve ratings"
    },
    "basis": "market",
    "market_consensus": {
-    "prob_a": 0.5415549597855228,
-    "prob_b": 0.4584450402144772,
+    "prob_a": 0.5518239065070631,
+    "prob_b": 0.44817609349293686,
     "n_sources": 1,
     "sources": [
-     "melbet"
+     "pinnacle"
     ],
     "spread_a": null
    },
    "prob": {
-    "a": 0.5415549597855228,
-    "b": 0.4584450402144772
+    "a": 0.5518239065070631,
+    "b": 0.44817609349293686
    },
    "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
-   "valid_until_utc": "2026-10-23T05:35:35Z",
+   "valid_until_utc": "2026-10-23T11:53:49Z",
    "pick": {
     "side": "a",
     "team": "Luminosity",
-    "prob": 0.5415549597855228,
-    "fair_decimal": 1.847,
+    "prob": 0.5518239065070631,
+    "fair_decimal": 1.812,
     "confidence": "Lean"
    },
-   "differential_points": -0.5353351206434315,
+   "differential_points": -0.5045282804788105,
    "climb_candidates": [
     {
      "side": "a",
      "team": "Luminosity",
-     "market_prob": 0.5415549597855228,
+     "market_prob": 0.5518239065070631,
      "ownership": 0.72,
-     "model_prob": 0.6493084601515879,
-     "differential_points": -0.5353351206434315,
+     "model_prob": 0.5741101035432838,
+     "differential_points": -0.5045282804788105,
      "gate": {
       "pass": false,
       "reasons": [
        "crowd ownership 72% is not a minority position",
-       "ownership gap -17.8% below the 15% minimum",
+       "ownership gap -16.8% below the 15% minimum",
        "no dated source-linked fact recorded for this side"
       ]
      },
@@ -2843,15 +4478,14 @@
     {
      "side": "b",
      "team": "HOTU",
-     "market_prob": 0.4584450402144772,
+     "market_prob": 0.44817609349293686,
      "ownership": 0.28,
-     "model_prob": 0.35069153984841206,
-     "differential_points": 0.5353351206434315,
+     "model_prob": 0.42588989645671615,
+     "differential_points": 0.5045282804788105,
      "gate": {
       "pass": false,
       "reasons": [
-       "no dated source-linked fact recorded for this side",
-       "rating model 35.1% sits 10.8% below the market reading (limit 10%)"
+       "no dated source-linked fact recorded for this side"
       ]
      },
      "facts": []
@@ -2863,15 +4497,14 @@
     "activated": false,
     "kind": "contrarian underdog",
     "crowd_majority_side": "a",
-    "market_prob": 0.4584450402144772,
+    "market_prob": 0.44817609349293686,
     "ownership": 0.28,
-    "model_prob": 0.35069153984841206,
-    "differential_points": 0.5353351206434315,
+    "model_prob": 0.42588989645671615,
+    "differential_points": 0.5045282804788105,
     "gate": {
      "pass": false,
      "reasons": [
-      "no dated source-linked fact recorded for this side",
-      "rating model 35.1% sits 10.8% below the market reading (limit 10%)"
+      "no dated source-linked fact recorded for this side"
      ]
     },
     "crowd_fade": true
@@ -2911,30 +4544,30 @@
      "url": "https://play.hotspawn.com/lobby"
     },
     {
-     "label": "Melbet full-match price (1.96/1.75 decimal, fetched 2026-10-22T23:35:35Z via collection)",
-     "url": "https://melbet.com/en/line/esports"
+     "label": "Pinnacle full-match price (-122/101 american, fetched 2026-10-23T05:53:52Z via collection)",
+     "url": "https://www.pinnacle.com/en/esports/cs2-hub"
     }
    ],
    "quotes_bookmaker": [
     {
-     "source_key": "melbet",
-     "source_name": "Melbet",
-     "event_id": "763630347",
-     "public_url": "https://melbet.com/en/line/esports",
-     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-     "league": "CS 2. RLG Tesla Cup",
-     "fetched_utc": "2026-10-22T23:35:35Z",
-     "age_hours": 0.003082621666666667,
-     "swapped": false,
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "event_id": "1639017660",
+     "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+     "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1639017660/markets/related/straight",
+     "league": "CS2 - RLG Tesla Cup",
+     "fetched_utc": "2026-10-23T05:53:52Z",
+     "age_hours": 0.006240834444444445,
+     "swapped": true,
      "alias_notes": [],
-     "raw_a": 1.96,
-     "raw_b": 1.75,
-     "raw_format": "decimal",
-     "decimal_a": 1.96,
-     "decimal_b": 1.75,
+     "raw_a": -122,
+     "raw_b": 101,
+     "raw_format": "american",
+     "decimal_a": 1.8197,
+     "decimal_b": 2.01,
      "start_utc_at_source": "2026-10-27T20:00:00Z",
-     "prob_a": 0.4716981132075471,
-     "overround": 0.08163265306122458
+     "prob_a": 0.4751508925131631,
+     "overround": 0.04706198736049494
     }
    ],
    "quotes_bookmaker_expired": [],
@@ -2947,9 +4580,9 @@
      32,
      68
     ],
-    "total_picks": 23,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 25,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -2957,36 +4590,36 @@
    "model_raw": null,
    "basis": "market",
    "market_consensus": {
-    "prob_a": 0.4716981132075471,
-    "prob_b": 0.5283018867924529,
+    "prob_a": 0.4751508925131631,
+    "prob_b": 0.5248491074868369,
     "n_sources": 1,
     "sources": [
-     "melbet"
+     "pinnacle"
     ],
     "spread_a": null
    },
    "prob": {
-    "a": 0.4716981132075471,
-    "b": 0.5283018867924529
+    "a": 0.4751508925131631,
+    "b": 0.5248491074868369
    },
    "ladder": "1 - bookmaker two-way prices (Pinnacle weighted 2, Bovada and Melbet 1)",
-   "valid_until_utc": "2026-10-23T05:35:35Z",
+   "valid_until_utc": "2026-10-23T11:53:52Z",
    "pick": {
     "side": "b",
     "team": "GamerLegion",
-    "prob": 0.5283018867924529,
-    "fair_decimal": 1.893,
+    "prob": 0.5248491074868369,
+    "fair_decimal": 1.905,
     "confidence": "Toss-up"
    },
-   "differential_points": -0.45509433962264134,
+   "differential_points": -0.4654526775394895,
    "climb_candidates": [
     {
      "side": "a",
      "team": "Envy",
-     "market_prob": 0.4716981132075471,
+     "market_prob": 0.4751508925131631,
      "ownership": 0.32,
      "model_prob": null,
-     "differential_points": 0.45509433962264134,
+     "differential_points": 0.4654526775394893,
      "gate": {
       "pass": false,
       "reasons": [
@@ -2998,15 +4631,15 @@
     {
      "side": "b",
      "team": "GamerLegion",
-     "market_prob": 0.5283018867924529,
+     "market_prob": 0.5248491074868369,
      "ownership": 0.68,
      "model_prob": null,
-     "differential_points": -0.45509433962264134,
+     "differential_points": -0.4654526775394895,
      "gate": {
       "pass": false,
       "reasons": [
        "crowd ownership 68% is not a minority position",
-       "ownership gap -15.2% below the 15% minimum",
+       "ownership gap -15.5% below the 15% minimum",
        "no dated source-linked fact recorded for this side"
       ]
      },
@@ -3019,10 +4652,10 @@
     "activated": false,
     "kind": "contrarian underdog",
     "crowd_majority_side": "b",
-    "market_prob": 0.4716981132075471,
+    "market_prob": 0.4751508925131631,
     "ownership": 0.32,
     "model_prob": null,
-    "differential_points": 0.45509433962264134,
+    "differential_points": 0.4654526775394893,
     "gate": {
      "pass": false,
      "reasons": [
@@ -3078,9 +4711,9 @@
      97,
      3
     ],
-    "total_picks": 32,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 33,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -3145,9 +4778,9 @@
      0,
      100
     ],
-    "total_picks": 32,
-    "capture_utc": "2026-10-22T23:35:24Z",
-    "count_capture_utc": "2026-10-22T17:53:59Z",
+    "total_picks": 33,
+    "capture_utc": "2026-10-23T05:53:39Z",
+    "count_capture_utc": "2026-10-23T04:41:53Z",
     "source": "hub lobby capture"
    },
    "ownership_rounding_note": null,
@@ -3171,31 +4804,31 @@
    },
    "model_raw": {
     "delta_points": -273.0,
-    "k": 1.0,
-    "prob_a": 0.17816901694318926,
+    "k": 0.4848050766043969,
+    "prob_a": 0.3227481246491019,
     "label": "own calibrated calculation from the official Valve ratings"
    },
    "basis": "model",
    "model": {
-    "prob_a": 0.17816901694318926,
-    "prob_b": 0.8218309830568107,
+    "prob_a": 0.3227481246491019,
+    "prob_b": 0.677251875350898,
     "delta_points": -273.0,
-    "k": 1.0
+    "k": 0.4848050766043969
    },
    "prob": {
-    "a": 0.17816901694318926,
-    "b": 0.8218309830568107
+    "a": 0.3227481246491019,
+    "b": 0.677251875350898
    },
    "ladder": "3 - own logistic rating-difference line over the official Valve standings",
    "valid_until_utc": null,
    "pick": {
     "side": "b",
     "team": "1WIN",
-    "prob": 0.8218309830568107,
-    "fair_decimal": 1.217,
-    "confidence": "Strong"
+    "prob": 0.677251875350898,
+    "fair_decimal": 1.477,
+    "confidence": "Solid"
    },
-   "differential_points": -0.534507050829568,
+   "differential_points": -0.9682443739473059,
    "climb_candidates": [],
    "climb": {
     "team": "5star",
@@ -3205,7 +4838,7 @@
     "crowd_majority_side": "b",
     "market_prob": null,
     "ownership": 0.0,
-    "model_prob": 0.17816901694318926,
+    "model_prob": 0.3227481246491019,
     "differential_points": null,
     "gate": {
      "pass": false,
@@ -3862,20 +5495,6 @@
    "team_b": "Lavked",
    "competition": "CCT Europe 2026 Series #11",
    "start_utc": "2026-10-14T08:00:00Z"
-  },
-  {
-   "fixture_id": "1082446",
-   "team_a": "Detonate",
-   "team_b": "Kodex",
-   "competition": "NSTLGA Emerald Cup 2026",
-   "start_utc": "2026-10-19T01:15:00Z"
-  },
-  {
-   "fixture_id": "1082581",
-   "team_a": "EMPIRE",
-   "team_b": "LAG",
-   "competition": "NSTLGA Emerald Cup 2026",
-   "start_utc": "2026-10-19T01:15:00Z"
   },
   {
    "fixture_id": "1079178",
@@ -4942,11 +6561,11 @@
    "start_utc": "2026-10-22T14:20:00Z"
   },
   {
-   "fixture_id": "1081603",
-   "team_a": "SinnerS",
-   "team_b": "Eternal Fire",
-   "competition": "DraculaN Season 7",
-   "start_utc": "2026-10-22T16:00:00Z"
+   "fixture_id": "1082768",
+   "team_a": "ex-CYBERSHOKE",
+   "team_b": "Black Phoenix",
+   "competition": "CIS LAN Championship #9",
+   "start_utc": "2026-10-22T14:40:00Z"
   },
   {
    "fixture_id": "1082920",
@@ -4956,11 +6575,25 @@
    "start_utc": "2026-10-22T16:00:00Z"
   },
   {
+   "fixture_id": "1081603",
+   "team_a": "SinnerS",
+   "team_b": "Eternal Fire",
+   "competition": "DraculaN Season 7",
+   "start_utc": "2026-10-22T16:50:00Z"
+  },
+  {
+   "fixture_id": "1081604",
+   "team_a": "BC.Game",
+   "team_b": "JiJieHao",
+   "competition": "DraculaN Season 7",
+   "start_utc": "2026-10-22T16:55:00Z"
+  },
+  {
    "fixture_id": "1082180",
    "team_a": "Sangal",
    "team_b": "Metizport",
    "competition": "Stake Ranked Episode 6: Closed Qualifier",
-   "start_utc": "2026-10-22T16:30:00Z"
+   "start_utc": "2026-10-22T16:55:00Z"
   },
   {
    "fixture_id": "1079653",
@@ -4970,18 +6603,32 @@
    "start_utc": "2026-10-22T17:00:00Z"
   },
   {
-   "fixture_id": "1081146",
-   "team_a": "6yuBoJlbl",
-   "team_b": "ex-6666",
-   "competition": "CCT Europe 2026 Series #12",
-   "start_utc": "2026-10-22T17:00:00Z"
-  },
-  {
    "fixture_id": "1082769",
    "team_a": "K27",
    "team_b": "NEXORA",
    "competition": "CIS LAN Championship #9",
+   "start_utc": "2026-10-22T17:20:00Z"
+  },
+  {
+   "fixture_id": "1081146",
+   "team_a": "6yuBoJlbl",
+   "team_b": "ex-6666",
+   "competition": "CCT Europe 2026 Series #12",
    "start_utc": "2026-10-22T17:30:00Z"
+  },
+  {
+   "fixture_id": "1082691",
+   "team_a": "Turma do Pagode",
+   "team_b": "ShindeN",
+   "competition": "Circuit X Curitiba #4",
+   "start_utc": "2026-10-22T17:45:00Z"
+  },
+  {
+   "fixture_id": "1082983",
+   "team_a": "Imperial",
+   "team_b": "BESTIA",
+   "competition": "Circuit X Curitiba #4",
+   "start_utc": "2026-10-22T17:45:00Z"
   },
   {
    "fixture_id": "1082921",
@@ -4995,7 +6642,14 @@
    "team_a": "UPGRADE",
    "team_b": "Virtus.pro",
    "competition": "CIS LAN Championship #9",
-   "start_utc": "2026-10-22T20:30:00Z"
+   "start_utc": "2026-10-22T19:45:00Z"
+  },
+  {
+   "fixture_id": "1083007",
+   "team_a": "Imperial",
+   "team_b": "ShindeN",
+   "competition": "Circuit X Curitiba #4",
+   "start_utc": "2026-10-22T21:15:00Z"
   },
   {
    "fixture_id": "1082922",
@@ -5003,6 +6657,20 @@
    "team_b": "Grêmio",
    "competition": "CCT South America 2026 Series #7",
    "start_utc": "2026-10-22T22:00:00Z"
+  },
+  {
+   "fixture_id": "1081871",
+   "team_a": "Lynn Vision",
+   "team_b": "Chinggis Warriors",
+   "competition": "VOID Autumn Cup 2026",
+   "start_utc": "2026-10-23T03:00:00Z"
+  },
+  {
+   "fixture_id": "1081872",
+   "team_a": "NEXVOID",
+   "team_b": "Rare Atom",
+   "competition": "VOID Autumn Cup 2026",
+   "start_utc": "2026-10-23T05:00:00Z"
   },
   {
    "fixture_id": "1080200",
@@ -5015,8 +6683,8 @@
  "capture": {
   "read_utc": "2026-10-16T04:30:00Z",
   "rows": 31,
-  "automated_utc": "2026-10-22T23:35:45Z",
-  "automated_rows": 254,
+  "automated_utc": "2026-10-23T05:54:13Z",
+  "automated_rows": 267,
   "display_clock": {
    "rule": "UTC = displayed ET + 4h (lobby renders US Eastern, UTC-4)",
    "checked_against_epoch_starts": 7,
