@@ -55,17 +55,17 @@ code{background:#0a0f18;border:1px solid var(--line);border-radius:6px;padding:1
 </style></head><body>
 <header class="top"><div class="in"><a class="logo" href="index.html">🎯 HotSpawn <b>CS2 Picks</b></a><nav class="tabs"><a class="" href="index.html">🏠 Summary</a><a class="" href="picks.html">📋 All picks</a><a class="" href="unresolved.html">🧩 Unresolved</a><a class="" href="tournaments.html">🏆 By event</a><a class="" href="sources.html">🔎 Sources</a><a class="" href="flagged.html">🚩 Flagged</a><a class="on" href="method.html">⚙ Method</a></nav></div></header>
 <main>
-<div class="ok" id="freshness"><strong>Snapshot 2026-10-23 19:55:32 UTC</strong> · Week 273 ·
-<strong>19/19 open lobby matches have a pick</strong> (0 featured book lines · 12 fallback book/exchange · 6 VRS-model · 1† directional · 0 blank) ·
+<div class="ok" id="freshness"><strong>Snapshot 2026-10-23 21:39:17 UTC</strong> · Week 273 ·
+<strong>18/18 open lobby matches have a pick</strong> (8 featured book lines · 3 fallback book/exchange · 6 VRS-model · 1† directional · 0 blank) ·
 auto-refresh every 4 hours. <span class="small">If this snapshot is &gt;8h old or a match has locked, treat its line as stale.</span></div>
 <h1>⚙ Method — reverse engineering, formulas &amp; 4-hour refresh</h1>
 <h2>1. What 'every match on HotSpawn' means</h2>
-<div class="card"><p>The playable inventory is the CS2 fixtures rendered in <a href="https://play.hotspawn.com/lobby">play.hotspawn.com/lobby</a> single-page app, whose data comes from its public fixtures API (upstream collectors record both the lobby transfer-state and a 12,016-row API pull; CS2 rows filtered by <code>sportAlias=cs2</code> + current week). A match counts as <strong>open</strong> only if <code>seen_in</code> includes <code>lobby_page</code> and its lock is in the future. API-only rows (cancelled/started ghosts) go to Status Conflicts — see F4. This snapshot: week 273, 19 open.</p></div>
+<div class="card"><p>The playable inventory is the CS2 fixtures rendered in <a href="https://play.hotspawn.com/lobby">play.hotspawn.com/lobby</a> single-page app, whose data comes from its public fixtures API (upstream collectors record both the lobby transfer-state and a 12,016-row API pull; CS2 rows filtered by <code>sportAlias=cs2</code> + current week). A match counts as <strong>open</strong> only if <code>seen_in</code> includes <code>lobby_page</code> and its lock is in the future. API-only rows (cancelled/started ghosts) go to Status Conflicts — see F4. This snapshot: week 273, 18 open.</p></div>
 <h2>2. Resolution ladder (featured first; fallback ONLY for gaps)</h2>
 <div class="card"><ol>
 <li><strong>Featured consensus (unchanged):</strong> Pinnacle (×2 weight)/Bovada/Melbet/Kalshi two-way match-winner prices, de-vigged, kickoff-verified. Copied byte-for-byte from <code>data/f7279a54/board.json</code>.</li>
 <li><strong>HLTV:</strong> identity/schedule/roster confirmation. No odds feed exists; 403 bot outcome is logged, dated manual reads are cited.</li>
-<li><strong>Fallback books/exchange:</strong> all captured quotes from both upstream snapshots (this run: 134 usable) re-joined with roster-verified alias groups only. Sponsor aliases require identical 5 starters on an official/registry page.</li>
+<li><strong>Fallback books/exchange:</strong> all captured quotes from both upstream snapshots (this run: 125 usable) re-joined with roster-verified alias groups only. Sponsor aliases require identical 5 starters on an official/registry page.</li>
 <li><strong>Valve VRS model:</strong> official <a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md">standings 2026_10_05</a> (380 teams). <code>P(A)=1/(1+exp(-k·C·(ptsA-ptsB)))</code>, C from Valve's Glicko (RD 75).</li>
 <li><strong>† Floor / blank:</strong> as defined on the Unresolved page.</li></ol></div>
 <h2>3. No-vig + calibration numbers</h2>
@@ -81,5 +81,5 @@ auto-refresh every 4 hours. <span class="small">If this snapshot is &gt;8h old o
 </main><nav class="bottom"><a class="" href="index.html">🏠<br>Summary</a><a class="" href="picks.html">📋<br>All picks</a><a class="" href="unresolved.html">🧩<br>Unresolved</a><a class="" href="tournaments.html">🏆<br>By event</a><a class="" href="sources.html">🔎<br>Sources</a></nav>
 <script>
 document.querySelectorAll('[data-utc]').forEach(function(el){var d=new Date(el.getAttribute('data-utc'));if(!isNaN(d))el.title='Your time: '+d.toLocaleString();});
-(function(){var b=document.getElementById('freshness');var d=new Date("2026-10-23T19:55:32Z");if(!isNaN(d)&&Date.now()-d.getTime()>8*3600*1000){b.className='warn';b.innerHTML='⚠ <strong>STALE SNAPSHOT</strong> — captured '+d.toUTCString()+' (&gt;8h ago). Picks/locks may have changed on HotSpawn; verify before picking. '+b.innerHTML;}})();
+(function(){var b=document.getElementById('freshness');var d=new Date("2026-10-23T21:39:17Z");if(!isNaN(d)&&Date.now()-d.getTime()>8*3600*1000){b.className='warn';b.innerHTML='⚠ <strong>STALE SNAPSHOT</strong> — captured '+d.toUTCString()+' (&gt;8h ago). Picks/locks may have changed on HotSpawn; verify before picking. '+b.innerHTML;}})();
 </script></body></html>
