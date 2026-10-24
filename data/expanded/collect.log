@@ -1,31 +1,41 @@
-fixtures: 1191
-after pinnacle: 28
-after bovada: 52
-after linefeed: 92
-after polymarket: 92
+fixtures: 1187
+after pinnacle: 22
+after bovada: 43
+after linefeed: 80
+after polymarket: 80
 {
- "fixtures_total": 1191,
- "fixtures_future": 200,
- "future_with_external_line": 23,
- "future_without_external_line": 177,
- "future_with_two_or_more_sources": 14,
- "quotes_total": 92,
- "quotes_joined": 40,
- "unused_quotes": 52,
+ "fixtures_total": 1187,
+ "fixtures_future": 180,
+ "future_with_external_line": 18,
+ "future_without_external_line": 162,
+ "future_with_two_or_more_sources": 10,
+ "quotes_total": 80,
+ "quotes_joined": 31,
+ "unused_quotes": 49,
  "by_source": {
-  "bovada": 24,
-  "linefeed_1xbet_platform": 40,
-  "pinnacle": 28
+  "bovada": 21,
+  "linefeed_1xbet_platform": 37,
+  "pinnacle": 22
  }
 }
-originated estimates: 8; without rating: 4; snapshots: {'americas': '2026_10_05', 'asia': '2026_10_05', 'europe': '2026_10_05', 'global': '2026_10_05'}
-R1 discrepancy: data/hotspawn_matches.json matches the live lobby fixture list — 96 snapshot rows vs 205 live window rows; 205 live window fixture(s) missing from the snapshot, 0 snapshot row
+originated estimates: 7; without rating: 2; snapshots: {'americas': '2026_10_05', 'asia': '2026_10_05', 'europe': '2026_10_05', 'global': '2026_10_05'}
+R1 discrepancy: data/hotspawn_matches.json matches the live lobby fixture list — 96 snapshot rows vs 200 live window rows; 200 live window fixture(s) missing from the snapshot, 0 snapshot row
 R2 verified: data/originated_matches.json team VRS points and standings match Valve's official regional standings — 56 team records across 4 Valve VRS files (2026-10-05) checked; 0 mismatch(es)
 R3 verified: each data/originated_matches.json fair probability is what its own documented model produces from the ratings it records — 28 pairings recomputed from the ratings the file itself records; 0 mismatch(es); 21 pairing(s) carry documente
 R4 verified: data/cs2_odds_egamersworld.json rows refer to real lobby fixtures — 32 priced rows joined to the lobby snapshot by fixture id and team name; 0 mismatch(es), 30 row(s) whose fixtu
 R5 verified: data/lines.json summary counters match its own row list — declared fixtures_total=96 vs 96 rows; fixtures_with_external_line=0
-R6 verified: every price published on the board carries a source link, a market label and a retrieval timestamp — 23 priced rows, 16 distinct source pages, 0 row(s) missing provenance; 1 link(s) answered automatically
-R7 verified: where two or more independent sources price the same fixture, their no-vig probabilities agree within 12 points — 14 fixture(s) priced by 2+ sources compared source by source; 0 with a spread wider than 12 points
+R6 verified: every price published on the board carries a source link, a market label and a retrieval timestamp — 20 priced rows, 13 distinct source pages, 0 row(s) missing provenance; 1 link(s) answered automatically
+R7 verified: where two or more independent sources price the same fixture, their no-vig probabilities agree within 12 points — 10 fixture(s) priced by 2+ sources compared source by source; 0 with a spread wider than 12 points
 irregularities: 1 — wrote data/expanded/repo_review.json
-wrote market/ pages from /home/runner/work/MaltaProj2/MaltaProj2/data/expanded/lines.json (1191 fixtures, 23 priced)
-OK: 7 pages, no broken local links, 23 priced rows all source-linked
+Traceback (most recent call last):
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/build_market_site.py", line 640, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/build_market_site.py", line 361, in main
+    top = sorted([r for r in priced], key=lambda r: -(r["consensus"]["prob_a"] if r["consensus"]["prob_a"] else 0))[:6]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MaltaProj2/MaltaProj2/scripts/expanded/build_market_site.py", line 361, in <lambda>
+    top = sorted([r for r in priced], key=lambda r: -(r["consensus"]["prob_a"] if r["consensus"]["prob_a"] else 0))[:6]
+                                                                                  ~~~~~~~~~~~~~~^^^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+OK: 7 pages, no broken local links, 20 priced rows all source-linked
