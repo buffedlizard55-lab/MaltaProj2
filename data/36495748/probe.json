@@ -1,10 +1,16 @@
 {
  "session": "36495748",
- "generated_utc": "2026-10-23T23:13:11Z",
+ "generated_utc": "2026-10-24T04:46:15Z",
  "fixtures_without_strict_market": [
+  "1079658",
+  "1081152",
+  "1081153",
+  "1081154",
   "1082996",
   "1079198",
+  "1081156",
   "1079200",
+  "1081158",
   "1082858",
   "1082859",
   "1082860",
@@ -15,18 +21,44 @@
   "1080200"
  ],
  "kalshi_joins": {
+  "1081152": {
+   "source_name": "Kalshi (exchange, runner probe)",
+   "event_ticker": "KXCS2GAME-26OCT240700AZUHAVU",
+   "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct240700azuhavu",
+   "start_verified": "Kalshi rules state the match was scheduled for 2026-10-24T11:00:00Z (EDT/EST converted); HotSpawn start is 2026-10-24T11:00:00Z",
+   "mid_cents": {
+    "HAVU": 74.0,
+    "Azuolas": 23.5
+   },
+   "note": "Joined by the 36495748 refresher: both names matched after normalisation and the scheduled start stated in the market rules equals the HotSpawn start. Verify on the event page before treating as settled fact.",
+   "read_ref": null,
+   "title_seen": "Azuolas vs. HAVU"
+  },
   "1079200": {
    "source_name": "Kalshi (exchange, runner probe)",
    "event_ticker": "KXCS2GAME-26OCT251400EXZCOL",
    "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct251400exzcol",
    "start_verified": "Kalshi rules state the match was scheduled for 2026-10-25T18:00:00Z (EDT/EST converted); HotSpawn start is 2026-10-25T18:00:00Z",
    "mid_cents": {
-    "Color": 54.0,
-    "ex-Zero Tenacity": 44.5
+    "Color": 55.0,
+    "ex-Zero Tenacity": 45.5
    },
    "note": "Joined by the 36495748 refresher: both names matched after normalisation and the scheduled start stated in the market rules equals the HotSpawn start. Verify on the event page before treating as settled fact.",
    "read_ref": null,
    "title_seen": "ex-Zero Tenacity vs. Color"
+  },
+  "1082859": {
+   "source_name": "Kalshi (exchange, runner probe)",
+   "event_ticker": "KXCS2GAME-26OCT252300AENEX",
+   "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct252300aenex",
+   "start_verified": "Kalshi rules state the match was scheduled for 2026-10-26T03:00:00Z (EDT/EST converted); HotSpawn start is 2026-10-26T03:00:00Z",
+   "mid_cents": {
+    "NEXVOID": 55.0,
+    "Alter Ego": 45.0
+   },
+   "note": "Joined by the 36495748 refresher: both names matched after normalisation and the scheduled start stated in the market rules equals the HotSpawn start. Verify on the event page before treating as settled fact.",
+   "read_ref": null,
+   "title_seen": "Alter Ego vs. NEXVOID"
   }
  },
  "bo3_observations": {
@@ -67,35 +99,46 @@
  "log": {
   "kalshi": {
    "status": 200,
-   "bytes": 267241,
+   "bytes": 392222,
    "error": null,
    "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
    "pages": 1,
-   "events": 47,
-   "distinct_tickers": 47,
+   "events": 69,
+   "distinct_tickers": 69,
    "diagnostics": {
-    "two_market_events": 515,
+    "two_market_events": 1080,
     "name_matches": [
+     "1079658:KXCS2GAME-26OCT241000FORZERACE",
+     "1081152:KXCS2GAME-26OCT240700AZUHAVU",
+     "1081153:KXCS2GAME-26OCT241000SSINSYUB",
+     "1081154:KXCS2GAME-26OCT241300ILLBAKS",
      "1082996:KXCS2GAME-26OCT250500UNITYACE",
      "1079198:KXCS2GAME-26OCT250800BAKSMZP",
-     "1079200:KXCS2GAME-26OCT251400EXZCOL"
+     "1079200:KXCS2GAME-26OCT251400EXZCOL",
+     "1081158:KXCS2GAME-26OCT251400EXRFORZER",
+     "1082858:KXCS2GAME-26OCT252300OFFGRO",
+     "1082859:KXCS2GAME-26OCT252300AENEX"
     ],
-    "start_mismatches": []
+    "start_mismatches": [
+     "1079658:KXCS2GAME-26OCT241000FORZERACE:rules=2026-10-24 14:00:00+00:00 hotspawn=2026-10-24T08:00:00Z"
+    ]
    },
    "sample_tickers": [
-    "KXCS2GAME-26OCT230900LNALKAA",
-    "KXCS2GAME-26OCT231700IMPPAIN",
     "KXCS2GAME-26OCT232300RACW",
     "KXCS2GAME-26OCT240300MGLZAUR",
     "KXCS2GAME-26OCT240300TYLOOFUT",
-    "KXCS2GAME-26OCT2404009INEABRE"
+    "KXCS2GAME-26OCT2404009INEABRE",
+    "KXCS2GAME-26OCT240400DUCDNK",
+    "KXCS2GAME-26OCT240400EXFOK"
    ]
   },
   "kalshi_joins": [
-   "1079200"
+   "1079200",
+   "1081152",
+   "1082859"
   ],
   "bo3gg": {
-   "matches_seen": 280,
+   "matches_seen": 279,
    "priced_observations": [
     "1082859",
     "1082860",
@@ -105,58 +148,58 @@
   "hltv": {
    "1WIN": {
     "status": 200,
-    "bytes": 158747,
+    "bytes": 136855,
     "error": null,
     "url": "https://www.hltv.org/search?query=1WIN",
     "title": "HLTV.org - The home of competitive Counter-Strike"
    },
    "5star": {
     "status": 200,
-    "bytes": 152840,
+    "bytes": 130550,
     "error": null,
     "url": "https://www.hltv.org/search?query=5star",
     "title": "HLTV.org - The home of competitive Counter-Strike"
    },
+   "6yuBoJlbl": {
+    "status": 200,
+    "bytes": 119452,
+    "error": null,
+    "url": "https://www.hltv.org/search?query=6yuBoJlbl",
+    "title": "HLTV.org - The home of competitive Counter-Strike"
+   },
    "Abyssal": {
     "status": 200,
-    "bytes": 143644,
+    "bytes": 121187,
     "error": null,
     "url": "https://www.hltv.org/search?query=Abyssal",
     "title": "HLTV.org - The home of competitive Counter-Strike"
    },
    "Acend": {
     "status": 200,
-    "bytes": 154798,
+    "bytes": 132515,
     "error": null,
     "url": "https://www.hltv.org/search?query=Acend",
     "title": "HLTV.org - The home of competitive Counter-Strike"
    },
    "Alliance": {
     "status": 200,
-    "bytes": 158459,
+    "bytes": 136011,
     "error": null,
     "url": "https://www.hltv.org/search?query=Alliance",
     "title": "HLTV.org - The home of competitive Counter-Strike"
    },
    "Alter Ego": {
     "status": 200,
-    "bytes": 155032,
+    "bytes": 132411,
     "error": null,
     "url": "https://www.hltv.org/search?query=Alter%20Ego",
     "title": "HLTV.org - The home of competitive Counter-Strike"
    },
-   "BakS": {
+   "Azuolas": {
     "status": 200,
-    "bytes": 144192,
+    "bytes": 119789,
     "error": null,
-    "url": "https://www.hltv.org/search?query=BakS",
-    "title": "HLTV.org - The home of competitive Counter-Strike"
-   },
-   "Color": {
-    "status": 200,
-    "bytes": 156739,
-    "error": null,
-    "url": "https://www.hltv.org/search?query=Color",
+    "url": "https://www.hltv.org/search?query=Azuolas",
     "title": "HLTV.org - The home of competitive Counter-Strike"
    }
   },
