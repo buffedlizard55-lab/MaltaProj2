@@ -1,27 +1,27 @@
 {
   "session_id": "5a40690b",
-  "canonical_generated_utc": "2026-10-25T18:29:23Z",
-  "canonical_collected_to_utc": "2026-10-25T18:29:23Z",
+  "canonical_generated_utc": "2026-10-25T19:19:29Z",
+  "canonical_collected_to_utc": "2026-10-25T19:19:28Z",
   "source_observation_utc": null,
   "valve_git_blob_sha": "2aa2805394fbc68f36a5752a5b16026f2ab2fed5",
   "input_sha256": {
-    "board.json": "78f09626e00dd0be27847266b5f77cc79163954dab3a80f7aacc64b148fabaa6",
-    "snapshot.json": "087f86aa4fce3918d14b077a861de7628306a7a7b83aea6896bf3712eee9a74d",
-    "official_inputs.json": "2f645cad4c77fcdbe65e57f7eec7ff0eb249028a7d27392981d56c86d022c4bc",
-    "source_payloads.json": "296e3a34b8f4cdb50b82068ef1434c3ccdbe26bae4f4e3e337a85b5ea7dc603c",
-    "verification.json": "aef52450e64528edbdea45c3da5e431665b151d11c10191ce923b1dc3a37111f"
+    "board.json": "8f0cc8aab0bbc1c894f2a56951aa0c5816b5aa9b56b044a4cb96c023541a1f66",
+    "snapshot.json": "a07177e077181c90f4699db41801bac6eda98a197353ad102ec798d053bdb687",
+    "official_inputs.json": "e6cf1fe0c260ddf3045f79b7eff181849fd838241550f172a7aa6aa02656d647",
+    "source_payloads.json": "410595c414672cf87c5f666916521283271a5100c6631166bf8c5386734d475f",
+    "verification.json": "aa13df9f9162141c6c1a5ebbdcb419b20b0a197796777201faef649515bd4395"
   },
   "summary": {
     "open": 10,
-    "with_line": 6,
-    "market_based": 6,
+    "with_line": 7,
+    "market_based": 7,
     "model_only": 0,
-    "no_line": 4,
+    "no_line": 3,
     "locked_recent": 1,
     "stale_listed": 61,
     "quotes_total": 56,
     "quotes_live_excluded": 0,
-    "quotes_unmatched": 45,
+    "quotes_unmatched": 44,
     "sources_ok": [
       "bovada",
       "hotspawn_api",
@@ -36,13 +36,13 @@
     "sources_failed": [
       "hltv_probe"
     ],
-    "captured_quotes_total": 82,
-    "rule_backed_quotes_excluded_by_gap_policy": 26,
-    "with_pick": 6,
-    "tier_a_market": 6,
+    "captured_quotes_total": 80,
+    "rule_backed_quotes_excluded_by_gap_policy": 24,
+    "with_pick": 7,
+    "tier_a_market": 7,
     "tier_b_model": 0,
     "tier_c_fallback": 0,
-    "tier_d_none": 4,
+    "tier_d_none": 3,
     "listed": 72
   },
   "verification": {
@@ -50,7 +50,7 @@
     "math_failures": [],
     "fixture_rows_checked": 72,
     "rating_rows_checked": 380,
-    "consumed_quotes_checked": 11
+    "consumed_quotes_checked": 12
   },
   "contrarian_policy": {
     "minimum_underdog_probability": 0.35,
@@ -393,7 +393,7 @@
           "decimal_b": 1.87,
           "prob_a": 0.5,
           "start_utc": "2026-10-17T14:00:00Z",
-          "retrieved_utc": "2026-10-25T18:29:23Z",
+          "retrieved_utc": "2026-10-25T19:19:28Z",
           "public_url": "https://melbet.com/en/line/esports",
           "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"
         },
@@ -542,15 +542,30 @@
       "team_a": "Ground Zero",
       "team_b": "Off Chops",
       "hotspawn_url": "https://www.hotspawn.com/matches/ground-zero-vs-off-chops-dfrag-invitational-2026-1082858",
-      "evidence_tier": "D",
-      "basis": null,
-      "prob_a": null,
-      "prob_b": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "quotes_verified": [],
+      "evidence_tier": "A",
+      "basis": "market",
+      "prob_a": 0.2335,
+      "prob_b": 0.7665,
+      "fair_decimal_a": 4.283,
+      "fair_decimal_b": 1.305,
+      "pick_team": "Off Chops",
+      "pick_prob": 0.7665,
+      "quotes_verified": [
+        {
+          "source_key": "kalshi",
+          "source_name": "Kalshi (exchange)",
+          "event_id": "KXCS2GAME-26OCT252300OFFGRO",
+          "raw_a": 0.755,
+          "raw_b": 0.23,
+          "decimal_a": 1.3245033112582782,
+          "decimal_b": 4.3478260869565215,
+          "no_vig_prob_team_a": 0.2335,
+          "recomputed_prob_a": 0.233503,
+          "verified": true,
+          "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct252300offgro",
+          "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200"
+        }
+      ],
       "vrs_team_a": {
         "standing": 136,
         "points": 878,
@@ -561,70 +576,18 @@
       "vrs_team_b": null,
       "vrs_ambiguous": {},
       "flags": [
-        "no_line_unverified",
+        "exchange_midpoints_not_executable_bookmaker_odds",
+        "exchange_volume_may_be_low_or_zero",
         "not_in_vrs:Off Chops",
+        "rule_backed_exchange_fallback",
         "vrs_snapshot_stale_or_unverified"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "Off Chops: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
-        "The official ratings are missing, undated or outside the 14-day eligibility window.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
-      "research_steps": [
-        {
-          "label": "1 · HLTV research",
-          "url": "https://www.hltv.org/matches",
-          "at_utc": "2026-10-25T18:29:21Z",
-          "http_status": 403,
-          "result": "Unavailable or blocked in this capture; this does not prove the source has no odds. Automated access probe only; no HLTV odds or roster join was verified by this capture."
-        },
-        {
-          "label": "2 · Pinnacle",
-          "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups",
-          "at_utc": "2026-10-25T18:29:17Z",
-          "http_status": 200,
-          "candidate_count": 0,
-          "rejected_candidate_count": 0,
-          "result": "Endpoint responded; this alone does not verify fixture coverage. No same-pair usable quote retained. This is capture coverage, not proof of market absence."
-        },
-        {
-          "label": "2 · Bovada",
-          "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-          "at_utc": "2026-10-25T18:29:19Z",
-          "http_status": 200,
-          "candidate_count": 0,
-          "rejected_candidate_count": 0,
-          "result": "Endpoint responded; this alone does not verify fixture coverage. No same-pair usable quote retained. This is capture coverage, not proof of market absence."
-        },
-        {
-          "label": "2 · Melbet esportsbook",
-          "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "at_utc": "2026-10-25T18:29:19Z",
-          "http_status": 200,
-          "candidate_count": 0,
-          "rejected_candidate_count": 0,
-          "result": "Endpoint responded; this alone does not verify fixture coverage. No same-pair usable quote retained. This is capture coverage, not proof of market absence."
-        },
-        {
-          "label": "2 · Kalshi exchange",
-          "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-          "at_utc": "2026-10-25T18:29:20Z",
-          "http_status": 200,
-          "candidate_count": 0,
-          "rejected_candidate_count": 1,
-          "result": "Endpoint responded; this alone does not verify fixture coverage. No same-pair usable quote retained. This is capture coverage, not proof of market absence. Rejected same-pair contract(s): thin or one-sided order book (bid/ask missing or spread > 10c)"
-        },
-        {
-          "label": "3 · Official Valve rating fallback",
-          "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-          "at_utc": "2026-10-25T18:29:22Z",
-          "http_status": 200,
-          "result": "No eligible rating pair can resolve this fixture; missing, duplicate or stale inputs are not inferred."
-        }
-      ],
+      "limitations": [],
+      "research_steps": [],
       "sources": [
         "https://www.hotspawn.com/matches/ground-zero-vs-off-chops-dfrag-invitational-2026-1082858",
+        "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct252300offgro",
+        "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
         "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
       ]
     },
@@ -795,14 +758,14 @@
         {
           "label": "1 · HLTV research",
           "url": "https://www.hltv.org/matches",
-          "at_utc": "2026-10-25T18:29:21Z",
+          "at_utc": "2026-10-25T19:19:26Z",
           "http_status": 403,
           "result": "Unavailable or blocked in this capture; this does not prove the source has no odds. Automated access probe only; no HLTV odds or roster join was verified by this capture."
         },
         {
           "label": "2 · Pinnacle",
           "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups",
-          "at_utc": "2026-10-25T18:29:17Z",
+          "at_utc": "2026-10-25T19:19:21Z",
           "http_status": 200,
           "candidate_count": 0,
           "rejected_candidate_count": 0,
@@ -811,7 +774,7 @@
         {
           "label": "2 · Bovada",
           "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-          "at_utc": "2026-10-25T18:29:19Z",
+          "at_utc": "2026-10-25T19:19:23Z",
           "http_status": 200,
           "candidate_count": 0,
           "rejected_candidate_count": 0,
@@ -820,7 +783,7 @@
         {
           "label": "2 · Melbet esportsbook",
           "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "at_utc": "2026-10-25T18:29:19Z",
+          "at_utc": "2026-10-25T19:19:24Z",
           "http_status": 200,
           "candidate_count": 0,
           "rejected_candidate_count": 0,
@@ -829,7 +792,7 @@
         {
           "label": "2 · Kalshi exchange",
           "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-          "at_utc": "2026-10-25T18:29:20Z",
+          "at_utc": "2026-10-25T19:19:25Z",
           "http_status": 200,
           "candidate_count": 0,
           "rejected_candidate_count": 1,
@@ -838,7 +801,7 @@
         {
           "label": "3 · Official Valve rating fallback",
           "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-          "at_utc": "2026-10-25T18:29:22Z",
+          "at_utc": "2026-10-25T19:19:28Z",
           "http_status": 200,
           "result": "No eligible rating pair can resolve this fixture; missing, duplicate or stale inputs are not inferred."
         }
@@ -937,23 +900,23 @@
       "hotspawn_url": "https://www.hotspawn.com/matches/alliance-vs-faze-tesla-cup-2026-1082898",
       "evidence_tier": "A",
       "basis": "market",
-      "prob_a": 0.3483,
-      "prob_b": 0.6517,
-      "fair_decimal_a": 2.871,
-      "fair_decimal_b": 1.534,
+      "prob_a": 0.3503,
+      "prob_b": 0.6497,
+      "fair_decimal_a": 2.855,
+      "fair_decimal_b": 1.539,
       "pick_team": "FaZe",
-      "pick_prob": 0.6517,
+      "pick_prob": 0.6497,
       "quotes_verified": [
         {
           "source_key": "kalshi",
           "source_name": "Kalshi (exchange)",
           "event_id": "KXCS2GAME-26OCT270700FAZEALL",
-          "raw_a": 0.655,
-          "raw_b": 0.35,
-          "decimal_a": 1.5267175572519083,
-          "decimal_b": 2.857142857142857,
-          "no_vig_prob_team_a": 0.3483,
-          "recomputed_prob_a": 0.348259,
+          "raw_a": 0.64,
+          "raw_b": 0.345,
+          "decimal_a": 1.5625,
+          "decimal_b": 2.8985507246376816,
+          "no_vig_prob_team_a": 0.3503,
+          "recomputed_prob_a": 0.350254,
           "verified": true,
           "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct270700fazeall",
           "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200"
@@ -1213,14 +1176,14 @@
         {
           "label": "1 · HLTV research",
           "url": "https://www.hltv.org/matches",
-          "at_utc": "2026-10-25T18:29:21Z",
+          "at_utc": "2026-10-25T19:19:26Z",
           "http_status": 403,
           "result": "Unavailable or blocked in this capture; this does not prove the source has no odds. Automated access probe only; no HLTV odds or roster join was verified by this capture."
         },
         {
           "label": "2 · Pinnacle",
           "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups",
-          "at_utc": "2026-10-25T18:29:17Z",
+          "at_utc": "2026-10-25T19:19:21Z",
           "http_status": 200,
           "candidate_count": 0,
           "rejected_candidate_count": 0,
@@ -1229,7 +1192,7 @@
         {
           "label": "2 · Bovada",
           "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-          "at_utc": "2026-10-25T18:29:19Z",
+          "at_utc": "2026-10-25T19:19:23Z",
           "http_status": 200,
           "candidate_count": 0,
           "rejected_candidate_count": 0,
@@ -1238,7 +1201,7 @@
         {
           "label": "2 · Melbet esportsbook",
           "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "at_utc": "2026-10-25T18:29:19Z",
+          "at_utc": "2026-10-25T19:19:24Z",
           "http_status": 200,
           "candidate_count": 0,
           "rejected_candidate_count": 0,
@@ -1247,7 +1210,7 @@
         {
           "label": "2 · Kalshi exchange",
           "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-          "at_utc": "2026-10-25T18:29:20Z",
+          "at_utc": "2026-10-25T19:19:25Z",
           "http_status": 200,
           "candidate_count": 0,
           "rejected_candidate_count": 0,
@@ -1256,7 +1219,7 @@
         {
           "label": "3 · Official Valve rating fallback",
           "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-          "at_utc": "2026-10-25T18:29:22Z",
+          "at_utc": "2026-10-25T19:19:28Z",
           "http_status": 200,
           "result": "No eligible rating pair can resolve this fixture; missing, duplicate or stale inputs are not inferred."
         }
@@ -1313,14 +1276,14 @@
         {
           "label": "1 · HLTV research",
           "url": "https://www.hltv.org/matches",
-          "at_utc": "2026-10-25T18:29:21Z",
+          "at_utc": "2026-10-25T19:19:26Z",
           "http_status": 403,
           "result": "Unavailable or blocked in this capture; this does not prove the source has no odds. Automated access probe only; no HLTV odds or roster join was verified by this capture."
         },
         {
           "label": "2 · Pinnacle",
           "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups",
-          "at_utc": "2026-10-25T18:29:17Z",
+          "at_utc": "2026-10-25T19:19:21Z",
           "http_status": 200,
           "candidate_count": 0,
           "rejected_candidate_count": 0,
@@ -1329,7 +1292,7 @@
         {
           "label": "2 · Bovada",
           "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-          "at_utc": "2026-10-25T18:29:19Z",
+          "at_utc": "2026-10-25T19:19:23Z",
           "http_status": 200,
           "candidate_count": 0,
           "rejected_candidate_count": 0,
@@ -1338,7 +1301,7 @@
         {
           "label": "2 · Melbet esportsbook",
           "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-          "at_utc": "2026-10-25T18:29:19Z",
+          "at_utc": "2026-10-25T19:19:24Z",
           "http_status": 200,
           "candidate_count": 0,
           "rejected_candidate_count": 0,
@@ -1347,7 +1310,7 @@
         {
           "label": "2 · Kalshi exchange",
           "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
-          "at_utc": "2026-10-25T18:29:20Z",
+          "at_utc": "2026-10-25T19:19:25Z",
           "http_status": 200,
           "candidate_count": 0,
           "rejected_candidate_count": 0,
@@ -1356,7 +1319,7 @@
         {
           "label": "3 · Official Valve rating fallback",
           "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
-          "at_utc": "2026-10-25T18:29:22Z",
+          "at_utc": "2026-10-25T19:19:28Z",
           "http_status": 200,
           "result": "No eligible rating pair can resolve this fixture; missing, duplicate or stale inputs are not inferred."
         }
@@ -1368,36 +1331,6 @@
     }
   ],
   "unresolved_fixtures": [
-    {
-      "fixture_id": "1082858",
-      "start_utc": "2026-10-26T03:00:00Z",
-      "competition": "DFRAG Invitational 2026",
-      "team_a": "Ground Zero",
-      "team_b": "Off Chops",
-      "flags": [
-        "no_line_unverified",
-        "not_in_vrs:Off Chops",
-        "vrs_snapshot_stale_or_unverified"
-      ],
-      "canonical_limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "Off Chops: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
-        "The official ratings are missing, undated or outside the 14-day eligibility window.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
-      "external_research_lead": "Checked HLTV, Pinnacle, Bovada, Melbet, Kalshi and official Valve VRS; no two-sided price or unique VRS pair found in this capture.",
-      "why_canonical_blank": "Missing external two-sided quote and at least one team lacks a unique official Valve VRS row.",
-      "sources": [
-        [
-          "HotSpawn #1082858",
-          "https://www.hotspawn.com/matches/ground-zero-vs-off-chops-dfrag-invitational-2026-1082858"
-        ],
-        [
-          "Valve VRS (2026-10-05)",
-          "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
-        ]
-      ]
-    },
     {
       "fixture_id": "1082861",
       "start_utc": "2026-10-27T03:00:00Z",
