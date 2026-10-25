@@ -120,7 +120,7 @@ Kick-off times are UTC; each fixture also carries a lock time six minutes before
 <tr><td data-label="Priority">2</td><td data-label="Input">Market consensus + official Valve VRS</td>
 <td data-label="How">The VRS probability is blended with the market at a fixed 0.85 market weight. Used only when both inputs exist.</td><td data-label="Source"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings" rel="noopener">Valve VRS</a></td></tr>
 <tr><td data-label="Priority">3</td><td data-label="Input">Official Valve VRS alone</td>
-<td data-label="How"><code>p = 1 / (1 + e^(-k · C · (pts_a − pts_b)))</code>, with <code>C = 0.0056000078</code> (Valve's own slope with its published rating deviation) and <code>k = 0.25</code> fitted on 11 market/VRS pairs (mean absolute error 0.091).</td><td data-label="Source"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve standings 2026-10-05</a></td></tr>
+<td data-label="How"><code>p = 1 / (1 + e^(-k · C · (pts_a − pts_b)))</code>, with <code>C = 0.0056000078</code> (Valve's own slope with its published rating deviation) and <code>k = 0.25</code> fitted on 10 market/VRS pairs (mean absolute error 0.089).</td><td data-label="Source"><a href="https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md" rel="noopener">Valve standings 2026-10-05</a></td></tr>
 <tr><td data-label="Priority">4</td><td data-label="Input">Researched external price (this session)</td>
 <td data-label="How">Where the automated board finds nothing, a price published by an external bookmaker or an odds board is quoted verbatim, normalised the same way as priority 1, and the URL plus read time are stored on the row.</td><td data-label="Source"><a href="https://kushvsporte.ru/event/6990334-cybershoke-blinkdagger" rel="noopener">kushvsporte.ru odds board</a></td></tr>
 <tr><td data-label="Priority">5</td><td data-label="Input">Valve VRS lower bound (this session)</td>
@@ -160,7 +160,7 @@ input. If the capture is older than 6 hours the summary shows a staleness warnin
 
 </main>
 <footer class="wrap">
-<p>Built <strong>24 Oct 22:43 UTC</strong> from the freshest committed HotSpawn lobby capture and its
+<p>Built <strong>25 Oct 00:04 UTC</strong> from the freshest committed HotSpawn lobby capture and its
 external betting lines. Fixtures come from HotSpawn; every probability comes from an external source linked on
 its row. HotSpawn's crowd pick percentage is never read. Not affiliated with HotSpawn or any bookmaker.
 Estimates are not guarantees — 18+, gamble responsibly.</p>
