@@ -1,19 +1,19 @@
 {
  "schema": "hotspawn-live-board-v1",
  "session": "82a9a0cc",
- "generated_utc": "2026-10-25T22:33:20Z",
+ "generated_utc": "2026-10-26T15:11:58Z",
  "inventory": {
   "source": "HotSpawn lobby open fixtures as strictly normalized by f7279a54",
   "source_path": "data/f7279a54/board.json",
-  "fixture_observation_age_seconds": 8437.0,
+  "fixture_observation_age_seconds": 10314.0,
   "freshness_limit_hours": 4,
   "week": {
-   "weekId": 273,
+   "weekId": 276,
    "sportAlias": "cs2",
    "status": "OPEN",
-   "weekStartUtc": "2026-10-19T00:00:00.000Z",
-   "weekEndUtc": "2026-10-25T23:59:59.999Z",
-   "cutoffUtc": "2026-10-25T23:59:59.999Z"
+   "weekStartUtc": "2026-10-26T00:00:00.000Z",
+   "weekEndUtc": "2026-11-01T23:59:59.999Z",
+   "cutoffUtc": "2026-11-01T23:59:59.999Z"
   },
   "policy": "include lobby-listed open fixtures; exclude API-only/cancelled/started status conflicts",
   "hotspawn_probability_policy": "never use crowd pick ownership as a probability, prior, feature, or tiebreak"
@@ -43,10 +43,10 @@
    "pairs_used": 60
   },
   "vrs_snapshot": "2026_10_05",
-  "vrs_age_days": 20.94,
+  "vrs_age_days": 21.63,
   "vrs_source": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md",
   "vrs_latest_check": {
-   "checked_utc": "2026-10-25T22:33:20Z",
+   "checked_utc": "2026-10-26T15:11:58Z",
    "repository": "ValveSoftware/counter-strike_regional_standings",
    "tree_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/git/trees/main?recursive=1",
    "latest_global_snapshot": "2026_10_05",
@@ -65,36 +65,36 @@
      "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups",
      "status": 200,
      "ok": true,
-     "quotes": 12,
-     "at_utc": "2026-10-25T22:33:15Z"
+     "quotes": 7,
+     "at_utc": "2026-10-26T15:11:52Z"
     },
     "bovada": {
      "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
      "status": 200,
      "ok": true,
-     "quotes": 10,
-     "at_utc": "2026-10-25T22:33:18Z"
+     "quotes": 11,
+     "at_utc": "2026-10-26T15:11:55Z"
     },
     "melbet": {
      "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "status": 200,
      "ok": true,
-     "quotes": 30,
-     "at_utc": "2026-10-25T22:33:18Z"
+     "quotes": 32,
+     "at_utc": "2026-10-26T15:11:55Z"
     },
     "kalshi": {
      "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
      "status": 200,
      "ok": true,
-     "quotes": 32,
-     "at_utc": "2026-10-25T22:33:19Z"
+     "quotes": 33,
+     "at_utc": "2026-10-26T15:11:56Z"
     },
     "polymarket_probe": {
      "url": "https://gamma-api.polymarket.com/events?closed=false&limit=200&tag_slug=counter-strike",
      "status": 200,
      "ok": true,
      "quotes": null,
-     "at_utc": "2026-10-25T22:33:19Z"
+     "at_utc": "2026-10-26T15:11:56Z"
     }
    },
    "hltv": {
@@ -102,25 +102,25 @@
     "status": 403,
     "ok": false,
     "error": "HTTPError 403",
-    "at_utc": "2026-10-25T22:33:19Z"
+    "at_utc": "2026-10-26T15:11:56Z"
    },
    "official_vrs": {
     "url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
     "status": 200,
     "ok": true,
-    "at_utc": "2026-10-25T22:33:20Z"
+    "at_utc": "2026-10-26T15:11:58Z"
    }
   }
  },
  "summary": {
-  "open": 10,
-  "with_pick": 10,
+  "open": 13,
+  "with_pick": 13,
   "unresolved": 0,
-  "featured_market": 4,
+  "featured_market": 7,
   "researched_market": 0,
-  "vrs_pair": 3,
+  "vrs_pair": 4,
   "vrs_robust": 1,
-  "vrs_floor_scenario": 2,
+  "vrs_floor_scenario": 1,
   "featured_gaps_resolved": 6
  },
  "flags": [
@@ -128,7 +128,7 @@
    "id": "F-VRS-STALE",
    "severity": "review",
    "title": "Official VRS is outside the 14-day preferred window",
-   "detail": "Valve's latest global file at capture was 2026_10_05 (20.94 days old). Model rows are labelled, not presented as sportsbook lines.",
+   "detail": "Valve's latest global file at capture was 2026_10_05 (21.63 days old). Model rows are labelled, not presented as sportsbook lines.",
    "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/standings_global_2026_10_05.md"
   },
   {
@@ -163,7 +163,7 @@
    "id": "F-HOTSPAWN-CACHE",
    "severity": "note",
    "title": "HotSpawn lobby response was cached",
-   "detail": "The fixture observation was 8437.0 seconds old but within the collector's 4-hour gate.",
+   "detail": "The fixture observation was 10314.0 seconds old but within the collector's 4-hour gate.",
    "url": "https://play.hotspawn.com/lobby"
   }
  ],
@@ -183,143 +183,57 @@
  ],
  "rows": [
   {
-   "fixture_id": "1082858",
-   "competition": "DFRAG Invitational 2026",
-   "start_utc": "2026-10-26T03:00:00Z",
-   "lock_utc": "2026-10-26T02:54:00Z",
-   "team_a": "Ground Zero",
-   "team_b": "Off Chops",
+   "fixture_id": "1093218",
+   "competition": "NODWIN Clutch Series #13",
+   "start_utc": "2026-10-26T18:00:00Z",
+   "lock_utc": "2026-10-26T17:54:00Z",
+   "team_a": "Nuclear TigeRES",
+   "team_b": "UNiTY",
    "status": "scheduled",
-   "url": "https://www.hotspawn.com/matches/ground-zero-vs-off-chops-dfrag-invitational-2026-1082858",
-   "base_featured_line": false,
-   "flag_ids": [
-    "F-ONE-SIDED-VRS",
-    "F-VRS-STALE"
-   ],
-   "evidence": [
-    {
-     "kind": "fixture",
-     "label": "HotSpawn fixture",
-     "url": "https://www.hotspawn.com/matches/ground-zero-vs-off-chops-dfrag-invitational-2026-1082858",
-     "observed_utc": "2026-10-25T22:33:06Z",
-     "note": "fixture identity, competition, kickoff, and lock only; crowd ownership excluded"
-    },
-    {
-     "kind": "official_vrs",
-     "label": "Valve VRS #136 · Ground Zero",
-     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0136--ground_zero--apocdud-hazr-omichella-sliimey-vision.md",
-     "observed_utc": "2026-10-25T22:33:20Z",
-     "note": "878 points; roster apocdud, hazr, Omichella, sliimey, vision"
-    },
-    {
-     "kind": "official_vrs",
-     "label": "Valve VRS #380 · Fruju",
-     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0380--fruju--camille-elephant-harbor-kezza-lawlkay.md",
-     "observed_utc": "2026-10-25T22:33:20Z",
-     "note": "381 points; roster camille, ElephanT, Harbor, Kezza, lawlkay"
-    }
-   ],
-   "research_before_fallback": {
-    "hltv": {
-     "url": "https://www.hltv.org/matches",
-     "status": 403,
-     "ok": false,
-     "error": "HTTPError 403",
-     "at_utc": "2026-10-25T22:33:19Z"
-    },
-    "result": "no numeric claim used; continue to esportsbooks"
-   },
-   "line": {
-    "basis": "vrs_floor_scenario",
-    "prob_a": 0.7683,
-    "prob_b": 0.2317,
-    "pick_side": "a",
-    "pick_team": "Ground Zero",
-    "pick_prob": 0.7683,
-    "confidence": "Directional",
-    "fair_decimal_a": 1.302,
-    "fair_decimal_b": 4.317,
-    "directional": true,
-    "rated_side": "a",
-    "rated_points": 878,
-    "floor_points": 381,
-    "floor_standing": 380
-   },
-   "resolution": {
-    "method": "vrs_floor_scenario",
-    "k": 0.43077894236569164,
-    "rated_side": "a",
-    "rated_candidate": {
-     "standing": 136,
-     "points": 878,
-     "team": "Ground Zero",
-     "roster": "apocdud, hazr, Omichella, sliimey, vision",
-     "details_path": "live/2026/details/2026_10_05/0136--ground_zero--apocdud-hazr-omichella-sliimey-vision.md"
-    },
-    "rated_candidates": [
-     {
-      "standing": 136,
-      "points": 878,
-      "team": "Ground Zero",
-      "roster": "apocdud, hazr, Omichella, sliimey, vision",
-      "details_path": "live/2026/details/2026_10_05/0136--ground_zero--apocdud-hazr-omichella-sliimey-vision.md"
-     }
-    ],
-    "floor": {
-     "standing": 380,
-     "points": 381,
-     "team": "Fruju",
-     "roster": "camille, ElephanT, Harbor, Kezza, lawlkay",
-     "details_path": "live/2026/details/2026_10_05/0380--fruju--camille-elephant-harbor-kezza-lawlkay.md"
-    },
-    "rule": "unrated opponent is set to the lowest published official VRS points; directional scenario only"
-   }
-  },
-  {
-   "fixture_id": "1082859",
-   "competition": "DFRAG Invitational 2026",
-   "start_utc": "2026-10-26T03:00:00Z",
-   "lock_utc": "2026-10-26T02:54:00Z",
-   "team_a": "NEXVOID",
-   "team_b": "Alter Ego",
-   "status": "scheduled",
-   "url": "https://www.hotspawn.com/matches/nexvoid-vs-alter-ego-dfrag-invitational-2026-1082859",
+   "url": "https://www.hotspawn.com/matches/nuclear-tigeres-vs-unity-nodwin-clutch-series-13-1093218",
    "base_featured_line": true,
    "flag_ids": [],
    "evidence": [
     {
      "kind": "fixture",
      "label": "HotSpawn fixture",
-     "url": "https://www.hotspawn.com/matches/nexvoid-vs-alter-ego-dfrag-invitational-2026-1082859",
-     "observed_utc": "2026-10-25T22:33:06Z",
+     "url": "https://www.hotspawn.com/matches/nuclear-tigeres-vs-unity-nodwin-clutch-series-13-1093218",
+     "observed_utc": "2026-10-26T15:11:44Z",
      "note": "fixture identity, competition, kickoff, and lock only; crowd ownership excluded"
+    },
+    {
+     "kind": "market",
+     "label": "Bovada",
+     "url": "https://www.bovada.lv/esports/counter-strike-2/nodwin-clutch-series/nuclear-tigeres-unity-esports-202610261400",
+     "observed_utc": "2026-10-26T15:11:55Z",
+     "note": "retained two-way quote for None vs None"
     },
     {
      "kind": "market",
      "label": "Melbet",
      "url": "https://melbet.com/en/line/esports",
-     "observed_utc": "2026-10-25T22:33:19Z",
+     "observed_utc": "2026-10-26T15:11:56Z",
      "note": "retained two-way quote for None vs None"
     }
    ],
    "line": {
     "basis": "market",
     "market_weight": 1.0,
-    "prob_a": 0.5703,
-    "prob_b": 0.4297,
+    "prob_a": 0.6238,
+    "prob_b": 0.3762,
     "pick_side": "a",
-    "pick_team": "NEXVOID",
-    "pick_prob": 0.5703,
-    "confidence": "Lean",
-    "fair_decimal_a": 1.753,
-    "fair_decimal_b": 2.327,
-    "fair_american_a": -133,
-    "fair_american_b": 133
+    "pick_team": "Nuclear TigeRES",
+    "pick_prob": 0.6238,
+    "confidence": "Solid",
+    "fair_decimal_a": 1.603,
+    "fair_decimal_b": 2.658,
+    "fair_american_a": -166,
+    "fair_american_b": 166
    },
    "resolution": {
     "method": "featured_market",
     "preserved_from": "data/f7279a54/board.json",
-    "quote_count": 1
+    "quote_count": 2
    }
   },
   {
@@ -331,88 +245,42 @@
    "team_b": "Staqued",
    "status": "scheduled",
    "url": "https://www.hotspawn.com/matches/flyquest-vs-staqued-dfrag-invitational-2026-1082860",
-   "base_featured_line": false,
-   "flag_ids": [
-    "F-ONE-SIDED-VRS",
-    "F-VRS-STALE"
-   ],
+   "base_featured_line": true,
+   "flag_ids": [],
    "evidence": [
     {
      "kind": "fixture",
      "label": "HotSpawn fixture",
      "url": "https://www.hotspawn.com/matches/flyquest-vs-staqued-dfrag-invitational-2026-1082860",
-     "observed_utc": "2026-10-25T22:33:06Z",
+     "observed_utc": "2026-10-26T15:11:44Z",
      "note": "fixture identity, competition, kickoff, and lock only; crowd ownership excluded"
     },
     {
-     "kind": "official_vrs",
-     "label": "Valve VRS #86 · FlyQuest",
-     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0086--flyquest--alistair-ins-jks-nettik-vexite.md",
-     "observed_utc": "2026-10-25T22:33:20Z",
-     "note": "1093 points; roster aliStair, INS, jks, nettik, Vexite"
-    },
-    {
-     "kind": "official_vrs",
-     "label": "Valve VRS #380 · Fruju",
-     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0380--fruju--camille-elephant-harbor-kezza-lawlkay.md",
-     "observed_utc": "2026-10-25T22:33:20Z",
-     "note": "381 points; roster camille, ElephanT, Harbor, Kezza, lawlkay"
+     "kind": "market",
+     "label": "Melbet",
+     "url": "https://melbet.com/en/line/esports",
+     "observed_utc": "2026-10-26T15:11:56Z",
+     "note": "retained two-way quote for None vs None"
     }
    ],
-   "research_before_fallback": {
-    "hltv": {
-     "url": "https://www.hltv.org/matches",
-     "status": 403,
-     "ok": false,
-     "error": "HTTPError 403",
-     "at_utc": "2026-10-25T22:33:19Z"
-    },
-    "result": "no numeric claim used; continue to esportsbooks"
-   },
    "line": {
-    "basis": "vrs_floor_scenario",
-    "prob_a": 0.8478,
-    "prob_b": 0.1522,
+    "basis": "market",
+    "market_weight": 1.0,
+    "prob_a": 0.9159,
+    "prob_b": 0.0841,
     "pick_side": "a",
     "pick_team": "FlyQuest",
-    "pick_prob": 0.8478,
-    "confidence": "Directional",
-    "fair_decimal_a": 1.179,
-    "fair_decimal_b": 6.571,
-    "directional": true,
-    "rated_side": "a",
-    "rated_points": 1093,
-    "floor_points": 381,
-    "floor_standing": 380
+    "pick_prob": 0.9159,
+    "confidence": "Strong",
+    "fair_decimal_a": 1.092,
+    "fair_decimal_b": 11.891,
+    "fair_american_a": -1089,
+    "fair_american_b": 1089
    },
    "resolution": {
-    "method": "vrs_floor_scenario",
-    "k": 0.43077894236569164,
-    "rated_side": "a",
-    "rated_candidate": {
-     "standing": 86,
-     "points": 1093,
-     "team": "FlyQuest",
-     "roster": "aliStair, INS, jks, nettik, Vexite",
-     "details_path": "live/2026/details/2026_10_05/0086--flyquest--alistair-ins-jks-nettik-vexite.md"
-    },
-    "rated_candidates": [
-     {
-      "standing": 86,
-      "points": 1093,
-      "team": "FlyQuest",
-      "roster": "aliStair, INS, jks, nettik, Vexite",
-      "details_path": "live/2026/details/2026_10_05/0086--flyquest--alistair-ins-jks-nettik-vexite.md"
-     }
-    ],
-    "floor": {
-     "standing": 380,
-     "points": 381,
-     "team": "Fruju",
-     "roster": "camille, ElephanT, Harbor, Kezza, lawlkay",
-     "details_path": "live/2026/details/2026_10_05/0380--fruju--camille-elephant-harbor-kezza-lawlkay.md"
-    },
-    "rule": "unrated opponent is set to the lowest published official VRS points; directional scenario only"
+    "method": "featured_market",
+    "preserved_from": "data/f7279a54/board.json",
+    "quote_count": 1
    }
   },
   {
@@ -424,99 +292,42 @@
    "team_b": "Abyssal",
    "status": "scheduled",
    "url": "https://www.hotspawn.com/matches/rooster-vs-abyssal-dfrag-invitational-2026-1082861",
-   "base_featured_line": false,
-   "flag_ids": [
-    "F-VRS-STALE"
-   ],
+   "base_featured_line": true,
+   "flag_ids": [],
    "evidence": [
     {
      "kind": "fixture",
      "label": "HotSpawn fixture",
      "url": "https://www.hotspawn.com/matches/rooster-vs-abyssal-dfrag-invitational-2026-1082861",
-     "observed_utc": "2026-10-25T22:33:06Z",
+     "observed_utc": "2026-10-26T15:11:44Z",
      "note": "fixture identity, competition, kickoff, and lock only; crowd ownership excluded"
     },
     {
-     "kind": "official_vrs",
-     "label": "Valve VRS #205 · Rooster",
-     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0205--rooster--adk-chelleos-damyo-rekonz-skull.md",
-     "observed_utc": "2026-10-25T22:33:20Z",
-     "note": "718 points; roster ADK, chelleos, damyo, rekonz, SkulL"
-    },
-    {
-     "kind": "official_vrs",
-     "label": "Valve VRS #195 · Abyssal",
-     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0195--abyssal--blood-danger-foggers-gump-vinhy.md",
-     "observed_utc": "2026-10-25T22:33:20Z",
-     "note": "734 points; roster blood, dangeR, foggers, gump, vinhy"
+     "kind": "market",
+     "label": "Melbet",
+     "url": "https://melbet.com/en/line/esports",
+     "observed_utc": "2026-10-26T15:11:56Z",
+     "note": "retained two-way quote for None vs None"
     }
    ],
-   "research_before_fallback": {
-    "hltv": {
-     "url": "https://www.hltv.org/matches",
-     "status": 403,
-     "ok": false,
-     "error": "HTTPError 403",
-     "at_utc": "2026-10-25T22:33:19Z"
-    },
-    "result": "no numeric claim used; continue to esportsbooks"
-   },
    "line": {
-    "basis": "vrs_model",
-    "prob_a": 0.4904,
-    "prob_b": 0.5096,
+    "basis": "market",
+    "market_weight": 1.0,
+    "prob_a": 0.4475,
+    "prob_b": 0.5525,
     "pick_side": "b",
     "pick_team": "Abyssal",
-    "pick_prob": 0.5096,
-    "confidence": "Toss-up",
-    "fair_decimal_a": 2.039,
-    "fair_decimal_b": 1.962,
-    "directional": false,
-    "vrs_points_a": 718,
-    "vrs_points_b": 734,
-    "vrs_standing_a": 205,
-    "vrs_standing_b": 195
+    "pick_prob": 0.5525,
+    "confidence": "Lean",
+    "fair_decimal_a": 2.235,
+    "fair_decimal_b": 1.81,
+    "fair_american_a": 123,
+    "fair_american_b": -123
    },
    "resolution": {
-    "method": "vrs_model",
-    "k": 0.43077894236569164,
-    "valve_c": "g(75)*ln(10)/400",
-    "team_a_vrs": {
-     "standing": 205,
-     "points": 718,
-     "team": "Rooster",
-     "roster": "ADK, chelleos, damyo, rekonz, SkulL",
-     "details_path": "live/2026/details/2026_10_05/0205--rooster--adk-chelleos-damyo-rekonz-skull.md"
-    },
-    "team_b_vrs": {
-     "standing": 195,
-     "points": 734,
-     "team": "Abyssal",
-     "roster": "blood, dangeR, foggers, gump, vinhy",
-     "details_path": "live/2026/details/2026_10_05/0195--abyssal--blood-danger-foggers-gump-vinhy.md"
-    },
-    "duplicate_candidates": {
-     "a": [
-      {
-       "standing": 205,
-       "points": 718,
-       "team": "Rooster",
-       "roster": "ADK, chelleos, damyo, rekonz, SkulL",
-       "details_path": "live/2026/details/2026_10_05/0205--rooster--adk-chelleos-damyo-rekonz-skull.md"
-      }
-     ],
-     "b": [
-      {
-       "standing": 195,
-       "points": 734,
-       "team": "Abyssal",
-       "roster": "blood, dangeR, foggers, gump, vinhy",
-       "details_path": "live/2026/details/2026_10_05/0195--abyssal--blood-danger-foggers-gump-vinhy.md"
-      }
-     ]
-    },
-    "disambiguation": [],
-    "secondary_sources": []
+    "method": "featured_market",
+    "preserved_from": "data/f7279a54/board.json",
+    "quote_count": 1
    }
   },
   {
@@ -535,37 +346,37 @@
      "kind": "fixture",
      "label": "HotSpawn fixture",
      "url": "https://www.hotspawn.com/matches/b8-vs-k27-tesla-cup-2026-1082897",
-     "observed_utc": "2026-10-25T22:33:06Z",
+     "observed_utc": "2026-10-26T15:11:44Z",
      "note": "fixture identity, competition, kickoff, and lock only; crowd ownership excluded"
     },
     {
      "kind": "market",
      "label": "Bovada",
      "url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/b8-k27-202610270400",
-     "observed_utc": "2026-10-25T22:33:18Z",
+     "observed_utc": "2026-10-26T15:11:55Z",
      "note": "retained two-way quote for None vs None"
     },
     {
      "kind": "market",
      "label": "Melbet",
      "url": "https://melbet.com/en/line/esports",
-     "observed_utc": "2026-10-25T22:33:19Z",
+     "observed_utc": "2026-10-26T15:11:56Z",
      "note": "retained two-way quote for None vs None"
     }
    ],
    "line": {
     "basis": "market",
     "market_weight": 1.0,
-    "prob_a": 0.5459,
-    "prob_b": 0.4541,
+    "prob_a": 0.5412,
+    "prob_b": 0.4588,
     "pick_side": "a",
     "pick_team": "B8",
-    "pick_prob": 0.5459,
+    "pick_prob": 0.5412,
     "confidence": "Lean",
-    "fair_decimal_a": 1.832,
-    "fair_decimal_b": 2.202,
-    "fair_american_a": -120,
-    "fair_american_b": 120
+    "fair_decimal_a": 1.848,
+    "fair_decimal_b": 2.18,
+    "fair_american_a": -118,
+    "fair_american_b": 118
    },
    "resolution": {
     "method": "featured_market",
@@ -591,21 +402,21 @@
      "kind": "fixture",
      "label": "HotSpawn fixture",
      "url": "https://www.hotspawn.com/matches/alliance-vs-faze-tesla-cup-2026-1082898",
-     "observed_utc": "2026-10-25T22:33:06Z",
+     "observed_utc": "2026-10-26T15:11:44Z",
      "note": "fixture identity, competition, kickoff, and lock only; crowd ownership excluded"
     },
     {
      "kind": "official_vrs",
      "label": "Valve VRS #24 · Alliance",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0024--alliance--avid-bobeksde-eraa-twist-upe.md",
-     "observed_utc": "2026-10-25T22:33:20Z",
+     "observed_utc": "2026-10-26T15:11:58Z",
      "note": "1483 points; roster avid, bobeksde, eraa, twist, upE"
     },
     {
      "kind": "official_vrs",
      "label": "Valve VRS #26 · FaZe",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0026--faze--frozen-jboen-jcobbb-neityu-twistzz.md",
-     "observed_utc": "2026-10-25T22:33:20Z",
+     "observed_utc": "2026-10-26T15:11:58Z",
      "note": "1482 points; roster frozen, JBOEN, jcobbb, Neityu, Twistzz"
     }
    ],
@@ -615,7 +426,7 @@
      "status": 403,
      "ok": false,
      "error": "HTTPError 403",
-     "at_utc": "2026-10-25T22:33:19Z"
+     "at_utc": "2026-10-26T15:11:56Z"
     },
     "result": "no numeric claim used; continue to esportsbooks"
    },
@@ -678,6 +489,157 @@
    }
   },
   {
+   "fixture_id": "1081162",
+   "competition": "CCT Europe 2026 Series #12",
+   "start_utc": "2026-10-27T12:00:00Z",
+   "lock_utc": "2026-10-27T11:54:00Z",
+   "team_a": "ex-RUSTEC",
+   "team_b": "Spirit Academy",
+   "status": "scheduled",
+   "url": "https://www.hotspawn.com/matches/ex-rustec-vs-spirit-academy-cct-europe-2026-series-12-1081162",
+   "base_featured_line": true,
+   "flag_ids": [],
+   "evidence": [
+    {
+     "kind": "fixture",
+     "label": "HotSpawn fixture",
+     "url": "https://www.hotspawn.com/matches/ex-rustec-vs-spirit-academy-cct-europe-2026-series-12-1081162",
+     "observed_utc": "2026-10-26T15:11:44Z",
+     "note": "fixture identity, competition, kickoff, and lock only; crowd ownership excluded"
+    },
+    {
+     "kind": "market",
+     "label": "Melbet",
+     "url": "https://melbet.com/en/line/esports",
+     "observed_utc": "2026-10-26T15:11:56Z",
+     "note": "retained two-way quote for None vs None"
+    }
+   ],
+   "line": {
+    "basis": "market",
+    "market_weight": 1.0,
+    "prob_a": 0.5467,
+    "prob_b": 0.4533,
+    "pick_side": "a",
+    "pick_team": "ex-RUSTEC",
+    "pick_prob": 0.5467,
+    "confidence": "Lean",
+    "fair_decimal_a": 1.829,
+    "fair_decimal_b": 2.206,
+    "fair_american_a": -121,
+    "fair_american_b": 121
+   },
+   "resolution": {
+    "method": "featured_market",
+    "preserved_from": "data/f7279a54/board.json",
+    "quote_count": 1
+   }
+  },
+  {
+   "fixture_id": "1081163",
+   "competition": "CCT Europe 2026 Series #12",
+   "start_utc": "2026-10-27T15:00:00Z",
+   "lock_utc": "2026-10-27T14:54:00Z",
+   "team_a": "BakS",
+   "team_b": "Saint Sinners",
+   "status": "scheduled",
+   "url": "https://www.hotspawn.com/matches/baks-vs-saint-sinners-cct-europe-2026-series-12-1081163",
+   "base_featured_line": false,
+   "flag_ids": [
+    "F-VRS-STALE"
+   ],
+   "evidence": [
+    {
+     "kind": "fixture",
+     "label": "HotSpawn fixture",
+     "url": "https://www.hotspawn.com/matches/baks-vs-saint-sinners-cct-europe-2026-series-12-1081163",
+     "observed_utc": "2026-10-26T15:11:44Z",
+     "note": "fixture identity, competition, kickoff, and lock only; crowd ownership excluded"
+    },
+    {
+     "kind": "official_vrs",
+     "label": "Valve VRS #100 · BAKS",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0100--baks--danistzz-norwi-turbo-whisper-xdeniszera.md",
+     "observed_utc": "2026-10-26T15:11:58Z",
+     "note": "1044 points; roster danistzz, Norwi, turbo, whisper, xdENiSZERA"
+    },
+    {
+     "kind": "official_vrs",
+     "label": "Valve VRS #158 · Saint Sinners",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0158--saint_sinners--caleyy-deb0-irv1ng-pavlysha666-ves111.md",
+     "observed_utc": "2026-10-26T15:11:58Z",
+     "note": "810 points; roster Caleyy, deb0, iRV1NG, pavlysha666, ves111"
+    }
+   ],
+   "research_before_fallback": {
+    "hltv": {
+     "url": "https://www.hltv.org/matches",
+     "status": 403,
+     "ok": false,
+     "error": "HTTPError 403",
+     "at_utc": "2026-10-26T15:11:56Z"
+    },
+    "result": "no numeric claim used; continue to esportsbooks"
+   },
+   "line": {
+    "basis": "vrs_model",
+    "prob_a": 0.6375,
+    "prob_b": 0.3625,
+    "pick_side": "a",
+    "pick_team": "BakS",
+    "pick_prob": 0.6375,
+    "confidence": "Solid",
+    "fair_decimal_a": 1.569,
+    "fair_decimal_b": 2.759,
+    "directional": false,
+    "vrs_points_a": 1044,
+    "vrs_points_b": 810,
+    "vrs_standing_a": 100,
+    "vrs_standing_b": 158
+   },
+   "resolution": {
+    "method": "vrs_model",
+    "k": 0.43077894236569164,
+    "valve_c": "g(75)*ln(10)/400",
+    "team_a_vrs": {
+     "standing": 100,
+     "points": 1044,
+     "team": "BAKS",
+     "roster": "danistzz, Norwi, turbo, whisper, xdENiSZERA",
+     "details_path": "live/2026/details/2026_10_05/0100--baks--danistzz-norwi-turbo-whisper-xdeniszera.md"
+    },
+    "team_b_vrs": {
+     "standing": 158,
+     "points": 810,
+     "team": "Saint Sinners",
+     "roster": "Caleyy, deb0, iRV1NG, pavlysha666, ves111",
+     "details_path": "live/2026/details/2026_10_05/0158--saint_sinners--caleyy-deb0-irv1ng-pavlysha666-ves111.md"
+    },
+    "duplicate_candidates": {
+     "a": [
+      {
+       "standing": 100,
+       "points": 1044,
+       "team": "BAKS",
+       "roster": "danistzz, Norwi, turbo, whisper, xdENiSZERA",
+       "details_path": "live/2026/details/2026_10_05/0100--baks--danistzz-norwi-turbo-whisper-xdeniszera.md"
+      }
+     ],
+     "b": [
+      {
+       "standing": 158,
+       "points": 810,
+       "team": "Saint Sinners",
+       "roster": "Caleyy, deb0, iRV1NG, pavlysha666, ves111",
+       "details_path": "live/2026/details/2026_10_05/0158--saint_sinners--caleyy-deb0-irv1ng-pavlysha666-ves111.md"
+      }
+     ]
+    },
+    "disambiguation": [],
+    "secondary_sources": []
+   }
+  },
+  {
    "fixture_id": "1082900",
    "competition": "Tesla Cup 2026",
    "start_utc": "2026-10-27T17:00:00Z",
@@ -693,42 +655,153 @@
      "kind": "fixture",
      "label": "HotSpawn fixture",
      "url": "https://www.hotspawn.com/matches/luminosity-vs-hotu-tesla-cup-2026-1082900",
-     "observed_utc": "2026-10-25T22:33:06Z",
+     "observed_utc": "2026-10-26T15:11:44Z",
      "note": "fixture identity, competition, kickoff, and lock only; crowd ownership excluded"
     },
     {
      "kind": "market",
      "label": "Bovada",
      "url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/luminosity-hotu-202610271300",
-     "observed_utc": "2026-10-25T22:33:18Z",
+     "observed_utc": "2026-10-26T15:11:55Z",
+     "note": "retained two-way quote for None vs None"
+    },
+    {
+     "kind": "market",
+     "label": "Melbet",
+     "url": "https://melbet.com/en/line/esports",
+     "observed_utc": "2026-10-26T15:11:56Z",
      "note": "retained two-way quote for None vs None"
     },
     {
      "kind": "market",
      "label": "Pinnacle",
      "url": "https://www.pinnacle.com/en/esports/cs2-hub",
-     "observed_utc": "2026-10-25T22:33:16Z",
+     "observed_utc": "2026-10-26T15:11:53Z",
      "note": "retained two-way quote for None vs None"
     }
    ],
    "line": {
     "basis": "market",
     "market_weight": 1.0,
-    "prob_a": 0.5253,
-    "prob_b": 0.4747,
+    "prob_a": 0.5245,
+    "prob_b": 0.4755,
     "pick_side": "a",
     "pick_team": "Luminosity",
-    "pick_prob": 0.5253,
+    "pick_prob": 0.5245,
     "confidence": "Toss-up",
-    "fair_decimal_a": 1.904,
-    "fair_decimal_b": 2.107,
-    "fair_american_a": -111,
-    "fair_american_b": 111
+    "fair_decimal_a": 1.907,
+    "fair_decimal_b": 2.103,
+    "fair_american_a": -110,
+    "fair_american_b": 110
    },
    "resolution": {
     "method": "featured_market",
     "preserved_from": "data/f7279a54/board.json",
-    "quote_count": 2
+    "quote_count": 3
+   }
+  },
+  {
+   "fixture_id": "1081164",
+   "competition": "CCT Europe 2026 Series #12",
+   "start_utc": "2026-10-27T18:00:00Z",
+   "lock_utc": "2026-10-27T17:54:00Z",
+   "team_a": "Inner Circle Academy",
+   "team_b": "Lavked",
+   "status": "scheduled",
+   "url": "https://www.hotspawn.com/matches/inner-circle-academy-vs-lavked-cct-europe-2026-series-12-1081164",
+   "base_featured_line": false,
+   "flag_ids": [
+    "F-VRS-STALE"
+   ],
+   "evidence": [
+    {
+     "kind": "fixture",
+     "label": "HotSpawn fixture",
+     "url": "https://www.hotspawn.com/matches/inner-circle-academy-vs-lavked-cct-europe-2026-series-12-1081164",
+     "observed_utc": "2026-10-26T15:11:44Z",
+     "note": "fixture identity, competition, kickoff, and lock only; crowd ownership excluded"
+    },
+    {
+     "kind": "official_vrs",
+     "label": "Valve VRS #94 · Inner Circle Academy",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0094--inner_circle_academy--3ippoch-flierax-l1seyoung-nayz-tamefear.md",
+     "observed_utc": "2026-10-26T15:11:58Z",
+     "note": "1064 points; roster 3ippoch, Flierax, L1seYoung, NaYz, Tamefear"
+    },
+    {
+     "kind": "official_vrs",
+     "label": "Valve VRS #143 · Lavked",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0143--lavked--1nvisiblee-azukay-k4nfuz-sol-xm1nd.md",
+     "observed_utc": "2026-10-26T15:11:58Z",
+     "note": "862 points; roster 1NVISIBLEE, azukay, k4nfuz, sol, xm1nd"
+    }
+   ],
+   "research_before_fallback": {
+    "hltv": {
+     "url": "https://www.hltv.org/matches",
+     "status": 403,
+     "ok": false,
+     "error": "HTTPError 403",
+     "at_utc": "2026-10-26T15:11:56Z"
+    },
+    "result": "no numeric claim used; continue to esportsbooks"
+   },
+   "line": {
+    "basis": "vrs_model",
+    "prob_a": 0.6195,
+    "prob_b": 0.3805,
+    "pick_side": "a",
+    "pick_team": "Inner Circle Academy",
+    "pick_prob": 0.6195,
+    "confidence": "Solid",
+    "fair_decimal_a": 1.614,
+    "fair_decimal_b": 2.628,
+    "directional": false,
+    "vrs_points_a": 1064,
+    "vrs_points_b": 862,
+    "vrs_standing_a": 94,
+    "vrs_standing_b": 143
+   },
+   "resolution": {
+    "method": "vrs_model",
+    "k": 0.43077894236569164,
+    "valve_c": "g(75)*ln(10)/400",
+    "team_a_vrs": {
+     "standing": 94,
+     "points": 1064,
+     "team": "Inner Circle Academy",
+     "roster": "3ippoch, Flierax, L1seYoung, NaYz, Tamefear",
+     "details_path": "live/2026/details/2026_10_05/0094--inner_circle_academy--3ippoch-flierax-l1seyoung-nayz-tamefear.md"
+    },
+    "team_b_vrs": {
+     "standing": 143,
+     "points": 862,
+     "team": "Lavked",
+     "roster": "1NVISIBLEE, azukay, k4nfuz, sol, xm1nd",
+     "details_path": "live/2026/details/2026_10_05/0143--lavked--1nvisiblee-azukay-k4nfuz-sol-xm1nd.md"
+    },
+    "duplicate_candidates": {
+     "a": [
+      {
+       "standing": 94,
+       "points": 1064,
+       "team": "Inner Circle Academy",
+       "roster": "3ippoch, Flierax, L1seYoung, NaYz, Tamefear",
+       "details_path": "live/2026/details/2026_10_05/0094--inner_circle_academy--3ippoch-flierax-l1seyoung-nayz-tamefear.md"
+      }
+     ],
+     "b": [
+      {
+       "standing": 143,
+       "points": 862,
+       "team": "Lavked",
+       "roster": "1NVISIBLEE, azukay, k4nfuz, sol, xm1nd",
+       "details_path": "live/2026/details/2026_10_05/0143--lavked--1nvisiblee-azukay-k4nfuz-sol-xm1nd.md"
+      }
+     ]
+    },
+    "disambiguation": [],
+    "secondary_sources": []
    }
   },
   {
@@ -747,42 +820,142 @@
      "kind": "fixture",
      "label": "HotSpawn fixture",
      "url": "https://www.hotspawn.com/matches/envy-vs-gamerlegion-tesla-cup-2026-1082901",
-     "observed_utc": "2026-10-25T22:33:06Z",
+     "observed_utc": "2026-10-26T15:11:44Z",
      "note": "fixture identity, competition, kickoff, and lock only; crowd ownership excluded"
     },
     {
      "kind": "market",
      "label": "Bovada",
      "url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/envy-gamerlegion-202610271600",
-     "observed_utc": "2026-10-25T22:33:18Z",
+     "observed_utc": "2026-10-26T15:11:55Z",
+     "note": "retained two-way quote for None vs None"
+    },
+    {
+     "kind": "market",
+     "label": "Melbet",
+     "url": "https://melbet.com/en/line/esports",
+     "observed_utc": "2026-10-26T15:11:56Z",
      "note": "retained two-way quote for None vs None"
     },
     {
      "kind": "market",
      "label": "Pinnacle",
      "url": "https://www.pinnacle.com/en/esports/cs2-hub",
-     "observed_utc": "2026-10-25T22:33:17Z",
+     "observed_utc": "2026-10-26T15:11:53Z",
      "note": "retained two-way quote for None vs None"
     }
    ],
    "line": {
     "basis": "market",
     "market_weight": 1.0,
-    "prob_a": 0.4767,
-    "prob_b": 0.5233,
+    "prob_a": 0.4613,
+    "prob_b": 0.5387,
     "pick_side": "b",
     "pick_team": "GamerLegion",
-    "pick_prob": 0.5233,
-    "confidence": "Toss-up",
-    "fair_decimal_a": 2.098,
-    "fair_decimal_b": 1.911,
-    "fair_american_a": 110,
-    "fair_american_b": -110
+    "pick_prob": 0.5387,
+    "confidence": "Lean",
+    "fair_decimal_a": 2.168,
+    "fair_decimal_b": 1.856,
+    "fair_american_a": 117,
+    "fair_american_b": -117
    },
    "resolution": {
     "method": "featured_market",
     "preserved_from": "data/f7279a54/board.json",
-    "quote_count": 2
+    "quote_count": 3
+   }
+  },
+  {
+   "fixture_id": "1082867",
+   "competition": "DFRAG Invitational 2026",
+   "start_utc": "2026-10-28T03:00:00Z",
+   "lock_utc": "2026-10-28T02:54:00Z",
+   "team_a": "Off Chops",
+   "team_b": "NEXVOID",
+   "status": "scheduled",
+   "url": "https://www.hotspawn.com/matches/off-chops-vs-nexvoid-dfrag-invitational-2026-1082867",
+   "base_featured_line": false,
+   "flag_ids": [
+    "F-ONE-SIDED-VRS",
+    "F-VRS-STALE"
+   ],
+   "evidence": [
+    {
+     "kind": "fixture",
+     "label": "HotSpawn fixture",
+     "url": "https://www.hotspawn.com/matches/off-chops-vs-nexvoid-dfrag-invitational-2026-1082867",
+     "observed_utc": "2026-10-26T15:11:44Z",
+     "note": "fixture identity, competition, kickoff, and lock only; crowd ownership excluded"
+    },
+    {
+     "kind": "official_vrs",
+     "label": "Valve VRS #113 · NEXVOID",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0113--nexvoid--accuracytg-erkast-miq-xerolte-zesta.md",
+     "observed_utc": "2026-10-26T15:11:58Z",
+     "note": "995 points; roster AccuracyTG, erkaSt, MiQ, xerolte, Zesta"
+    },
+    {
+     "kind": "official_vrs",
+     "label": "Valve VRS #380 · Fruju",
+     "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0380--fruju--camille-elephant-harbor-kezza-lawlkay.md",
+     "observed_utc": "2026-10-26T15:11:58Z",
+     "note": "381 points; roster camille, ElephanT, Harbor, Kezza, lawlkay"
+    }
+   ],
+   "research_before_fallback": {
+    "hltv": {
+     "url": "https://www.hltv.org/matches",
+     "status": 403,
+     "ok": false,
+     "error": "HTTPError 403",
+     "at_utc": "2026-10-26T15:11:56Z"
+    },
+    "result": "no numeric claim used; continue to esportsbooks"
+   },
+   "line": {
+    "basis": "vrs_floor_scenario",
+    "prob_a": 0.1852,
+    "prob_b": 0.8148,
+    "pick_side": "b",
+    "pick_team": "NEXVOID",
+    "pick_prob": 0.8148,
+    "confidence": "Directional",
+    "fair_decimal_a": 5.398,
+    "fair_decimal_b": 1.227,
+    "directional": true,
+    "rated_side": "b",
+    "rated_points": 995,
+    "floor_points": 381,
+    "floor_standing": 380
+   },
+   "resolution": {
+    "method": "vrs_floor_scenario",
+    "k": 0.43077894236569164,
+    "rated_side": "b",
+    "rated_candidate": {
+     "standing": 113,
+     "points": 995,
+     "team": "NEXVOID",
+     "roster": "AccuracyTG, erkaSt, MiQ, xerolte, Zesta",
+     "details_path": "live/2026/details/2026_10_05/0113--nexvoid--accuracytg-erkast-miq-xerolte-zesta.md"
+    },
+    "rated_candidates": [
+     {
+      "standing": 113,
+      "points": 995,
+      "team": "NEXVOID",
+      "roster": "AccuracyTG, erkaSt, MiQ, xerolte, Zesta",
+      "details_path": "live/2026/details/2026_10_05/0113--nexvoid--accuracytg-erkast-miq-xerolte-zesta.md"
+     }
+    ],
+    "floor": {
+     "standing": 380,
+     "points": 381,
+     "team": "Fruju",
+     "roster": "camille, ElephanT, Harbor, Kezza, lawlkay",
+     "details_path": "live/2026/details/2026_10_05/0380--fruju--camille-elephant-harbor-kezza-lawlkay.md"
+    },
+    "rule": "unrated opponent is set to the lowest published official VRS points; directional scenario only"
    }
   },
   {
@@ -804,28 +977,28 @@
      "kind": "fixture",
      "label": "HotSpawn fixture",
      "url": "https://www.hotspawn.com/matches/hotu-vs-the-huns-moscow-cyber-games-2026-1082792",
-     "observed_utc": "2026-10-25T22:33:06Z",
+     "observed_utc": "2026-10-26T15:11:44Z",
      "note": "fixture identity, competition, kickoff, and lock only; crowd ownership excluded"
     },
     {
      "kind": "official_vrs",
      "label": "Valve VRS #31 · HOTU",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0031--hotu--dwushka-frontales-kade0-mizu-n0rb3r7.md",
-     "observed_utc": "2026-10-25T22:33:20Z",
+     "observed_utc": "2026-10-26T15:11:58Z",
      "note": "1437 points; roster dwushka, frontales, kade0, mizu, n0rb3r7"
     },
     {
      "kind": "official_vrs",
      "label": "Valve VRS #122 · The Huns",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0122--the_huns--annihilation-bart4k-bexyz-controlez-cozen.md",
-     "observed_utc": "2026-10-25T22:33:20Z",
+     "observed_utc": "2026-10-26T15:11:58Z",
      "note": "944 points; roster Annihilation, Bart4k, bexyz, controlez, Cozen"
     },
     {
      "kind": "official_vrs",
      "label": "Valve VRS #213 · The Huns",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0213--the_huns--bart4k-controlez-nin9-sk0r-xerolte.md",
-     "observed_utc": "2026-10-25T22:33:20Z",
+     "observed_utc": "2026-10-26T15:11:58Z",
      "note": "701 points; roster Bart4k, controlez, nin9, sk0R, xerolte"
     }
    ],
@@ -835,7 +1008,7 @@
      "status": 403,
      "ok": false,
      "error": "HTTPError 403",
-     "at_utc": "2026-10-25T22:33:19Z"
+     "at_utc": "2026-10-26T15:11:56Z"
     },
     "result": "no numeric claim used; continue to esportsbooks"
    },
@@ -929,21 +1102,21 @@
      "kind": "fixture",
      "label": "HotSpawn fixture",
      "url": "https://www.hotspawn.com/matches/5star-vs-1win-moscow-cyber-games-2026-1082793",
-     "observed_utc": "2026-10-25T22:33:06Z",
+     "observed_utc": "2026-10-26T15:11:44Z",
      "note": "fixture identity, competition, kickoff, and lock only; crowd ownership excluded"
     },
     {
      "kind": "official_vrs",
      "label": "Valve VRS #80 · 5star",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0080--5star--ariucle-clouden-hoolig4n-neuz-rate.md",
-     "observed_utc": "2026-10-25T22:33:20Z",
+     "observed_utc": "2026-10-26T15:11:58Z",
      "note": "1110 points; roster ariucle, clouden, hoolig4n, NEUZ, rate"
     },
     {
      "kind": "official_vrs",
      "label": "Valve VRS #38 · 1win",
      "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/details/2026_10_05/0038--1win--artfr0st-ax1le-belchonokk-fame-nafany.md",
-     "observed_utc": "2026-10-25T22:33:20Z",
+     "observed_utc": "2026-10-26T15:11:58Z",
      "note": "1383 points; roster ArtFr0st, Ax1Le, BELCHONOKK, fame, nafany"
     }
    ],
@@ -953,7 +1126,7 @@
      "status": 403,
      "ok": false,
      "error": "HTTPError 403",
-     "at_utc": "2026-10-25T22:33:19Z"
+     "at_utc": "2026-10-26T15:11:56Z"
     },
     "result": "no numeric claim used; continue to esportsbooks"
    },
