@@ -1,5 +1,5 @@
 {
- "generated_at_utc": "2026-10-25T21:18:32Z",
+ "generated_at_utc": "2026-10-26T00:46:55Z",
  "checks": [
   {
    "id": "R1",
@@ -7,34 +7,8 @@
    "source": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
    "snapshot_file": "data/hotspawn_matches.json",
    "snapshot_generated_at_utc": "2026-10-17T09:26:23Z",
-   "live_count_all_sports": 12186,
-   "live_window_rows": 170,
-   "snapshot_count": 96,
-   "window_ids_missing_from_snapshot": [
-    "1074660",
-    "1074663",
-    "1074664",
-    "1074666",
-    "1075734",
-    "1075737",
-    "1075747",
-    "1075748",
-    "1075749",
-    "1075750",
-    "1075751",
-    "1075752",
-    "1075753",
-    "1075754",
-    "1075755",
-    "1075756",
-    "1075758",
-    "1075759",
-    "1075761",
-    "1075762"
-   ],
-   "stale_in_snapshot": [],
-   "status": "discrepancy",
-   "detail": "96 snapshot rows vs 170 live window rows; 170 live window fixture(s) missing from the snapshot, 0 snapshot row(s) no longer served"
+   "status": "unverified",
+   "detail": "live API not reachable from this host: HTTPError: HTTP Error 403: Forbidden"
   },
   {
    "id": "R2",
@@ -215,77 +189,27 @@
   {
    "id": "R6",
    "claim": "every price published on the board carries a source link, a market label and a retrieval timestamp",
-   "priced_rows": 9,
-   "distinct_source_pages": 9,
-   "links_listed_for_manual_review": [
-    "https://melbet.com/en/line/esports/",
-    "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/b8-k27-202610270400",
-    "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/envy-gamerlegion-202610271600",
-    "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/luminosity-hotu-202610271300",
-    "https://www.bovada.lv/esports/league-of-legends/world-championship-26/gen-g-lyon-gaming-202610251655",
-    "https://www.bovada.lv/esports/league-of-legends/world-championship-26/karmine-corp-bilibili-gaming-202610261400",
-    "https://www.bovada.lv/esports/league-of-legends/world-championship-26/t1-ctbc-flying-oyster-202610261300",
-    "https://www.bovada.lv/esports/league-of-legends/world-championship-26/team-liquid-anyone-s-legend-202610261800",
-    "https://www.pinnacle.com/en/esports/"
-   ],
+   "priced_rows": 0,
+   "distinct_source_pages": 0,
+   "links_listed_for_manual_review": [],
    "reachability_from_this_host": {
-    "reachable": 1,
-    "not_reachable": 8,
+    "reachable": 0,
+    "not_reachable": 0,
     "note": "bookmaker pages commonly refuse datacenter clients, so a failure here is not treated as a broken link \u2014 the reviewer clicks them",
-    "not_reachable_examples": [
-     {
-      "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/league-of-legends/world-championship-26/gen-g-lyon-gaming-202610251655"
-     },
-     {
-      "source": "Melbet (1xBet platform, LineFeed)",
-      "url": "https://melbet.com/en/line/esports/"
-     },
-     {
-      "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/league-of-legends/world-championship-26/t1-ctbc-flying-oyster-202610261300"
-     },
-     {
-      "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/league-of-legends/world-championship-26/karmine-corp-bilibili-gaming-202610261400"
-     },
-     {
-      "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/league-of-legends/world-championship-26/team-liquid-anyone-s-legend-202610261800"
-     },
-     {
-      "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/b8-k27-202610270400"
-     },
-     {
-      "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/luminosity-hotu-202610271300"
-     },
-     {
-      "source": "Bovada",
-      "url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/envy-gamerlegion-202610271600"
-     }
-    ]
+    "not_reachable_examples": []
    },
    "status": "verified",
    "mismatches": [],
-   "detail": "9 priced rows, 9 distinct source pages, 0 row(s) missing provenance; 1 link(s) answered automatically"
+   "detail": "0 priced rows, 0 distinct source pages, 0 row(s) missing provenance; 0 link(s) answered automatically"
   },
   {
    "id": "R7",
    "claim": "where two or more independent sources price the same fixture, their no-vig probabilities agree within 12 points",
-   "fixtures_with_two_or_more_sources": 7,
+   "fixtures_with_two_or_more_sources": 0,
    "status": "verified",
    "mismatches": [],
-   "detail": "7 fixture(s) priced by 2+ sources compared source by source; 0 with a spread wider than 12 points"
+   "detail": "0 fixture(s) priced by 2+ sources compared source by source; 0 with a spread wider than 12 points"
   }
  ],
- "irregularities": [
-  {
-   "id": "R1",
-   "severity": "low",
-   "finding": "The committed fixture snapshot is not identical to the live lobby API response (expected: both change continuously). Rows are refreshed every 3 hours by the scheduled workflow.",
-   "evidence": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
-  }
- ]
+ "irregularities": []
 }

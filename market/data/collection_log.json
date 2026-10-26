@@ -1,47 +1,57 @@
 {
- "generated_at_utc": "2026-10-25T21:17:25Z",
+ "generated_at_utc": "2026-10-26T00:46:43Z",
  "hotspawn_permalinks": {
   "url": "https://play.hotspawn.com/lobby",
-  "status": 200,
-  "error": null,
-  "permalinks": 10
+  "status": 403,
+  "error": "HTTPError 403",
+  "permalinks": 0
  },
  "fixtures": {
   "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures",
-  "status": 200,
-  "error": null,
-  "count": 12186,
+  "status": 403,
+  "error": "HTTPError 403",
+  "count": null,
+  "fallback": {
+   "file": "data/hotspawn_matches.json",
+   "generated_at_utc": "2026-10-17T09:26:23Z",
+   "matches": 96
+  },
   "skipped": {
-   "ended": 11017,
-   "other_sport": 1
+   "ended": 0,
+   "other_sport": 0
   },
   "by_game": {
-   "LoL": 296,
-   "CS2": 872
+   "LoL": 0,
+   "CS2": 96
   }
  },
  "pinnacle": {
   "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups",
   "status": 200,
   "error": null,
-  "matchups_total": 20,
-  "matchups_relevant": 20
+  "matchups_total": 26,
+  "matchups_relevant": 17
  },
  "bovada": {
   "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
   "status": 200,
   "error": null,
-  "events_scanned": 13,
+  "events_scanned": 20,
   "moneyline_rows": {
-   "cs2": 8,
-   "lol": 5
+   "cs2": 16,
+   "lol": 4
   }
  },
  "linefeed_sports": {
   "url": "https://melbet.com/service-api/LineFeed/GetSportsShortZip?sports=1&lng=en&country=1&virtualSports=true&groupChamps=true",
-  "status": 0,
-  "error": "URLError: <urlopen error _ssl.c:999: The handshake operation timed out>",
-  "esports_sport_ids": []
+  "status": 200,
+  "error": null,
+  "esports_sport_ids": [
+   [
+    40,
+    "Esports"
+   ]
+  ]
  },
  "linefeed": {
   "sport_ids": [
@@ -58,18 +68,19 @@
     "by_league": {
      "CS 2. Dfrag Invitational": 2,
      "CS 2. PGL Masters Bucharest": 8,
-     "CS 2. European Pro League. Closed Qualifier": 1,
+     "CS 2. European Pro League. Closed Qualifier": 2,
      "CS 2. NODWIN Clutch Series": 4,
      "CS 2. United 21": 2,
      "CS 2. DACH Masters": 2,
      "CS 2. POWER Ligaen": 3,
      "CS 2. Gamers Club Liga Serie A": 3,
-     "CS 2. RLG Tesla Cup": 3,
-     "CS 2. Stake Ranked": 3
+     "CS 2. ESEA Advanced. Europe": 1,
+     "CS 2. RLG Tesla Cup": 2,
+     "CS 2. Stake Ranked": 2
     },
     "errors": [],
     "game_counts": {
-     "cs2": 36
+     "cs2": 35
     },
     "matching_ids": null,
     "price_mismatches": []
@@ -84,18 +95,19 @@
     "by_league": {
      "CS 2. Dfrag Invitational": 2,
      "CS 2. PGL Masters Bucharest": 8,
-     "CS 2. European Pro League. Closed Qualifier": 1,
+     "CS 2. European Pro League. Closed Qualifier": 2,
      "CS 2. NODWIN Clutch Series": 4,
      "CS 2. United 21": 2,
      "CS 2. DACH Masters": 2,
      "CS 2. POWER Ligaen": 3,
      "CS 2. Gamers Club Liga Serie A": 3,
-     "CS 2. RLG Tesla Cup": 3,
-     "CS 2. Stake Ranked": 3
+     "CS 2. ESEA Advanced. Europe": 1,
+     "CS 2. RLG Tesla Cup": 2,
+     "CS 2. Stake Ranked": 2
     },
     "errors": [],
     "game_counts": {
-     "cs2": 36
+     "cs2": 35
     },
     "matching_ids": 31,
     "price_mismatches": []
@@ -110,18 +122,19 @@
     "by_league": {
      "CS 2. Dfrag Invitational": 2,
      "CS 2. PGL Masters Bucharest": 8,
-     "CS 2. European Pro League. Closed Qualifier": 1,
+     "CS 2. European Pro League. Closed Qualifier": 2,
      "CS 2. NODWIN Clutch Series": 4,
      "CS 2. United 21": 2,
      "CS 2. DACH Masters": 2,
      "CS 2. POWER Ligaen": 3,
      "CS 2. Gamers Club Liga Serie A": 3,
-     "CS 2. RLG Tesla Cup": 3,
-     "CS 2. Stake Ranked": 3
+     "CS 2. ESEA Advanced. Europe": 1,
+     "CS 2. RLG Tesla Cup": 2,
+     "CS 2. Stake Ranked": 2
     },
     "errors": [],
     "game_counts": {
-     "cs2": 36
+     "cs2": 35
     },
     "matching_ids": 31,
     "price_mismatches": []
@@ -137,10 +150,147 @@
   "fresh_markets": 0
  },
  "joins": {
-  "quotes_total": 64,
-  "quotes_joined": 18,
-  "unused_quotes": 46,
+  "quotes_total": 68,
+  "quotes_joined": 0,
+  "unused_quotes": 68,
   "diagnostics": [
+   {
+    "source": "pinnacle",
+    "source_league": "League of Legends - World Championship",
+    "teams": "Liquid vs Anyone's Legend",
+    "quote_start_time_utc": "2026-10-26T22:15:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "League of Legends - World Championship",
+    "teams": "LOS vs Secret Whales",
+    "quote_start_time_utc": "2026-10-26T19:15:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "CS2 - RLG Tesla Cup",
+    "teams": "GamerLegion vs Envy",
+    "quote_start_time_utc": "2026-10-27T20:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1081512",
+      "teams": "EYEBALLERS vs GamerLegion",
+      "competition": "PGL Bucharest 2027: Closed Qualifier",
+      "start_time_utc": "2026-10-17T11:00:00Z",
+      "start_time_delta_min": 14940.0
+     }
+    ]
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "CS2 - DACH CS Masters",
+    "teams": "BIG Academy vs Sissi State Punks",
+    "quote_start_time_utc": "2026-10-26T17:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1052357",
+      "teams": "BIG Academy vs BERG",
+      "competition": "DACH CS Masters Season 5",
+      "start_time_utc": "2026-06-27T15:00:00Z",
+      "start_time_delta_min": 174360.0
+     },
+     {
+      "fixture_id": "1052187",
+      "teams": "BIG Academy vs Endless Journey",
+      "competition": "CCT Europe 2026 Challengers #4",
+      "start_time_utc": "2026-06-28T13:45:00Z",
+      "start_time_delta_min": 172995.0
+     }
+    ]
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "League of Legends - World Championship",
+    "teams": "T1 vs CTBC Flying Oyster",
+    "quote_start_time_utc": "2026-10-26T17:15:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "CS2 - STK Ranked",
+    "teams": "Astralis vs fnatic",
+    "quote_start_time_utc": "2026-10-27T16:15:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "CS2 - RLG Tesla Cup",
+    "teams": "Luminosity vs HOTU",
+    "quote_start_time_utc": "2026-10-27T17:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "CS2 - PGL Masters Bucharest",
+    "teams": "9z vs TYLOO",
+    "quote_start_time_utc": "2026-10-26T11:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "CS2 - PGL Masters Bucharest",
+    "teams": "G2 vs DENDELE",
+    "quote_start_time_utc": "2026-10-26T17:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "CS2 - STK Ranked",
+    "teams": "MIBR vs Eternal Fire",
+    "quote_start_time_utc": "2026-10-27T18:45:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1081510",
+      "teams": "Eternal Fire vs Nuclear TigeRES",
+      "competition": "PGL Bucharest 2027: Closed Qualifier",
+      "start_time_utc": "2026-10-17T08:00:00Z",
+      "start_time_delta_min": 15045.0
+     },
+     {
+      "fixture_id": "1079591",
+      "teams": "MIBR vs 100 Thieves",
+      "competition": "Stake Pulse Beat III",
+      "start_time_utc": "2026-10-17T11:00:00Z",
+      "start_time_delta_min": 14865.0
+     }
+    ]
+   },
+   {
+    "source": "pinnacle",
+    "source_league": "CS2 - PGL Masters Bucharest",
+    "teams": "Liquid vs Legacy",
+    "quote_start_time_utc": "2026-10-26T14:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
    {
     "source": "pinnacle",
     "source_league": "CS2 - PGL Masters Bucharest",
@@ -150,25 +300,11 @@
     "full_name_matches": [],
     "partial_name_matches": [
      {
-      "fixture_id": "980727",
-      "teams": "Nemesis vs Nemiga Gaming",
-      "competition": "CCT Season 3 European Series #13",
-      "start_time_utc": "2026-01-22T15:40:00Z",
-      "start_time_delta_min": 398420.0
-     },
-     {
-      "fixture_id": "980841",
-      "teams": "Sangal vs Nemiga Gaming",
-      "competition": "NODWIN Clutch Series #4",
-      "start_time_utc": "2026-02-02T18:00:00Z",
-      "start_time_delta_min": 382440.0
-     },
-     {
-      "fixture_id": "980789",
-      "teams": "Nemiga Gaming vs Eternal Fire",
-      "competition": "A1 Gaming League Season 11",
-      "start_time_utc": "2026-02-15T16:30:00Z",
-      "start_time_delta_min": 363810.0
+      "fixture_id": "1080207",
+      "teams": "FURIA vs Aurora",
+      "competition": "Thunderpick World Championship 2026",
+      "start_time_utc": "2026-10-17T14:00:00Z",
+      "start_time_delta_min": 12600.0
      }
     ]
    },
@@ -186,77 +322,17 @@
     "source_league": "CS2 - PGL Masters Bucharest",
     "teams": "BB Team vs Natus Vincere",
     "quote_start_time_utc": "2026-10-26T17:00:00Z",
-    "reason": "neither team name matches any fixture in the current lobby list",
-    "full_name_matches": [],
-    "partial_name_matches": []
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "CS2 - PGL Masters Bucharest",
-    "teams": "Spirit vs FURIA",
-    "quote_start_time_utc": "2026-10-26T14:00:00Z",
-    "reason": "neither team name matches any fixture in the current lobby list",
-    "full_name_matches": [],
-    "partial_name_matches": []
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "League of Legends - World Championship",
-    "teams": "LOS vs Secret Whales",
-    "quote_start_time_utc": "2026-10-26T19:15:00Z",
     "reason": "no fixture has both team names, even though one team name matches others",
     "full_name_matches": [],
     "partial_name_matches": [
      {
-      "fixture_id": "1075822",
-      "teams": "L\u00d8S vs Team Secret Whales",
-      "competition": "Worlds 2026 Main Event",
-      "start_time_utc": "2026-10-26T19:00:00Z",
-      "start_time_delta_min": 15.0
+      "fixture_id": "1080208",
+      "teams": "Falcons vs BetBoom",
+      "competition": "Thunderpick World Championship 2026",
+      "start_time_utc": "2026-10-17T17:00:00Z",
+      "start_time_delta_min": 12960.0
      }
     ]
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "League of Legends - World Championship",
-    "teams": "Gen.G (Kills) vs LYON (Kills)",
-    "quote_start_time_utc": "2026-10-25T20:59:38Z",
-    "reason": "neither team name matches any fixture in the current lobby list",
-    "full_name_matches": [],
-    "partial_name_matches": []
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "CS2 - PGL Masters Bucharest",
-    "teams": "G2 vs DENDELE",
-    "quote_start_time_utc": "2026-10-26T17:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "1002415",
-      "teams": "CarritoSpain vs G2 Esports",
-      "competition": "Roman Imperium Cup VII",
-      "start_time_utc": "2026-03-29T14:45:00Z",
-      "start_time_delta_min": 303975.0
-     },
-     {
-      "fixture_id": "1080200",
-      "teams": "Wildcard vs DENDELE",
-      "competition": "FRAG University 2026",
-      "start_time_utc": "2026-11-12T00:00:00Z",
-      "start_time_delta_min": 23460.0
-     }
-    ]
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "CS2 - STK Ranked",
-    "teams": "Astralis vs fnatic",
-    "quote_start_time_utc": "2026-10-27T16:15:00Z",
-    "reason": "neither team name matches any fixture in the current lobby list",
-    "full_name_matches": [],
-    "partial_name_matches": []
    },
    {
     "source": "pinnacle",
@@ -269,71 +345,9 @@
    },
    {
     "source": "pinnacle",
-    "source_league": "CS2 - DACH CS Masters",
-    "teams": "BIG Academy vs Sissi State Punks",
-    "quote_start_time_utc": "2026-10-26T17:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "983492",
-      "teams": "Prestige vs BIG Academy",
-      "competition": "United21 Season 43",
-      "start_time_utc": "2026-01-21T11:30:00Z",
-      "start_time_delta_min": 400650.0
-     },
-     {
-      "fixture_id": "998755",
-      "teams": "Megoshort vs BIG Academy",
-      "competition": "ESL Challenger League Season 51: Europe - Cup #2",
-      "start_time_utc": "2026-03-18T18:10:00Z",
-      "start_time_delta_min": 319610.0
-     },
-     {
-      "fixture_id": "1052357",
-      "teams": "BIG Academy vs BERG",
-      "competition": "DACH CS Masters Season 5",
-      "start_time_utc": "2026-06-27T15:00:00Z",
-      "start_time_delta_min": 174360.0
-     }
-    ]
-   },
-   {
-    "source": "pinnacle",
-    "source_league": "CS2 - STK Ranked",
-    "teams": "MIBR vs Eternal Fire",
-    "quote_start_time_utc": "2026-10-27T18:45:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "979103",
-      "teams": "MASONIC vs Eternal Fire",
-      "competition": "European Pro League Series 4",
-      "start_time_utc": "2026-01-22T11:30:00Z",
-      "start_time_delta_min": 400755.0
-     },
-     {
-      "fixture_id": "983992",
-      "teams": "MIBR vs 9z",
-      "competition": "Circuit X Redemption Curitiba",
-      "start_time_utc": "2026-01-22T15:00:00Z",
-      "start_time_delta_min": 400545.0
-     },
-     {
-      "fixture_id": "981663",
-      "teams": "MIBR vs ODDIK",
-      "competition": "CCT Season 3 South American Series #7",
-      "start_time_utc": "2026-01-25T21:00:00Z",
-      "start_time_delta_min": 395865.0
-     }
-    ]
-   },
-   {
-    "source": "pinnacle",
     "source_league": "League of Legends - World Championship",
-    "teams": "Gen.G (Kills) vs LYON (Kills)",
-    "quote_start_time_utc": "2026-10-25T21:00:00Z",
+    "teams": "Karmine Corp vs Bilibili",
+    "quote_start_time_utc": "2026-10-26T18:15:00Z",
     "reason": "neither team name matches any fixture in the current lobby list",
     "full_name_matches": [],
     "partial_name_matches": []
@@ -341,19 +355,37 @@
    {
     "source": "pinnacle",
     "source_league": "CS2 - PGL Masters Bucharest",
-    "teams": "Liquid vs Legacy",
+    "teams": "Spirit vs FURIA",
     "quote_start_time_utc": "2026-10-26T14:00:00Z",
     "reason": "no fixture has both team names, even though one team name matches others",
     "full_name_matches": [],
     "partial_name_matches": [
      {
-      "fixture_id": "1061819",
-      "teams": "Team Liquid vs atputies",
-      "competition": "Stake Pulse Beat I",
-      "start_time_utc": "2026-08-01T10:00:00Z",
-      "start_time_delta_min": 124080.0
+      "fixture_id": "1080207",
+      "teams": "FURIA vs Aurora",
+      "competition": "Thunderpick World Championship 2026",
+      "start_time_utc": "2026-10-17T14:00:00Z",
+      "start_time_delta_min": 12960.0
      }
     ]
+   },
+   {
+    "source": "bovada",
+    "source_league": "World Championship '26",
+    "teams": "T1 vs CTBC Flying Oyster",
+    "quote_start_time_utc": "2026-10-26T17:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "bovada",
+    "source_league": "World Championship '26",
+    "teams": "Karmine Corp vs Bilibili Gaming",
+    "quote_start_time_utc": "2026-10-26T18:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
    },
    {
     "source": "bovada",
@@ -366,34 +398,117 @@
    },
    {
     "source": "bovada",
-    "source_league": "Stake Ranked",
-    "teams": "Magic vs BIG",
-    "quote_start_time_utc": "2026-10-27T11:00:00Z",
+    "source_league": "World Championship '26",
+    "teams": "Team Liquid vs Anyone's Legend",
+    "quote_start_time_utc": "2026-10-26T22:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "bovada",
+    "source_league": "PGL Masters Bucharest '26",
+    "teams": "Nemiga Gaming vs Team AURORA",
+    "quote_start_time_utc": "2026-10-26T08:00:00Z",
     "reason": "no fixture has both team names, even though one team name matches others",
     "full_name_matches": [],
     "partial_name_matches": [
      {
-      "fixture_id": "987965",
-      "teams": "magic vs SIXSEVEN",
-      "competition": "CCT Season 3 European Series #14",
-      "start_time_utc": "2026-01-26T09:30:00Z",
-      "start_time_delta_min": 394650.0
-     },
-     {
-      "fixture_id": "980749",
-      "teams": "BIG vs ARCRED",
-      "competition": "CCT Season 3 European Series #13",
-      "start_time_utc": "2026-01-28T18:00:00Z",
-      "start_time_delta_min": 391260.0
-     },
-     {
-      "fixture_id": "990408",
-      "teams": "Oramond vs magic",
-      "competition": "European Pro League Series 4",
-      "start_time_utc": "2026-02-02T12:20:00Z",
-      "start_time_delta_min": 384400.0
+      "fixture_id": "1080207",
+      "teams": "FURIA vs Aurora",
+      "competition": "Thunderpick World Championship 2026",
+      "start_time_utc": "2026-10-17T14:00:00Z",
+      "start_time_delta_min": 12600.0
      }
     ]
+   },
+   {
+    "source": "bovada",
+    "source_league": "PGL Masters Bucharest '26",
+    "teams": "The MongolZ vs MOUZ",
+    "quote_start_time_utc": "2026-10-26T08:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "bovada",
+    "source_league": "PGL Masters Bucharest '26",
+    "teams": "9Z Globant vs TYLOO",
+    "quote_start_time_utc": "2026-10-26T11:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "bovada",
+    "source_league": "PGL Masters Bucharest '26",
+    "teams": "FUT Esports vs Vitality",
+    "quote_start_time_utc": "2026-10-26T11:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "bovada",
+    "source_league": "PGL Masters Bucharest '26",
+    "teams": "Team Liquid vs Legacy",
+    "quote_start_time_utc": "2026-10-26T14:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "bovada",
+    "source_league": "PGL Masters Bucharest '26",
+    "teams": "Team Spirit vs FURIA Esports",
+    "quote_start_time_utc": "2026-10-26T14:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1080207",
+      "teams": "FURIA vs Aurora",
+      "competition": "Thunderpick World Championship 2026",
+      "start_time_utc": "2026-10-17T14:00:00Z",
+      "start_time_delta_min": 12960.0
+     }
+    ]
+   },
+   {
+    "source": "bovada",
+    "source_league": "PGL Masters Bucharest '26",
+    "teams": "BB Team vs Natus Vincere",
+    "quote_start_time_utc": "2026-10-26T17:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1080208",
+      "teams": "Falcons vs BetBoom",
+      "competition": "Thunderpick World Championship 2026",
+      "start_time_utc": "2026-10-17T17:00:00Z",
+      "start_time_delta_min": 12960.0
+     }
+    ]
+   },
+   {
+    "source": "bovada",
+    "source_league": "PGL Masters Bucharest '26",
+    "teams": "G2 Esports vs Dendele Cs",
+    "quote_start_time_utc": "2026-10-26T17:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "bovada",
+    "source_league": "Stake Ranked",
+    "teams": "Magic vs BIG",
+    "quote_start_time_utc": "2026-10-27T11:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
    },
    {
     "source": "bovada",
@@ -404,25 +519,25 @@
     "full_name_matches": [],
     "partial_name_matches": [
      {
-      "fixture_id": "980727",
-      "teams": "Nemesis vs Nemiga Gaming",
-      "competition": "CCT Season 3 European Series #13",
-      "start_time_utc": "2026-01-22T15:40:00Z",
-      "start_time_delta_min": 400190.0
+      "fixture_id": "1051340",
+      "teams": "Walczaki vs Inner Circle",
+      "competition": "DraculaN Season 7",
+      "start_time_utc": "2026-06-26T15:00:00Z",
+      "start_time_delta_min": 177030.0
      },
      {
-      "fixture_id": "980842",
-      "teams": "Nemesis vs illwill",
-      "competition": "NODWIN Clutch Series #4",
-      "start_time_utc": "2026-02-03T09:00:00Z",
-      "start_time_delta_min": 383310.0
+      "fixture_id": "1051341",
+      "teams": "Sharks vs Inner Circle",
+      "competition": "DraculaN Season 7",
+      "start_time_utc": "2026-06-27T13:50:00Z",
+      "start_time_delta_min": 175660.0
      },
      {
-      "fixture_id": "991635",
-      "teams": "Misa vs Inner Circle",
-      "competition": "IstanbuLAN 2026",
-      "start_time_utc": "2026-02-12T13:00:00Z",
-      "start_time_delta_min": 370110.0
+      "fixture_id": "1051344",
+      "teams": "Inner Circle vs Acend",
+      "competition": "DraculaN Season 7",
+      "start_time_utc": "2026-06-28T17:30:00Z",
+      "start_time_delta_min": 174000.0
      }
     ]
    },
@@ -444,56 +559,95 @@
     "full_name_matches": [],
     "partial_name_matches": [
      {
-      "fixture_id": "979103",
-      "teams": "MASONIC vs Eternal Fire",
-      "competition": "European Pro League Series 4",
-      "start_time_utc": "2026-01-22T11:30:00Z",
-      "start_time_delta_min": 400740.0
+      "fixture_id": "1081510",
+      "teams": "Eternal Fire vs Nuclear TigeRES",
+      "competition": "PGL Bucharest 2027: Closed Qualifier",
+      "start_time_utc": "2026-10-17T08:00:00Z",
+      "start_time_delta_min": 15030.0
      },
      {
-      "fixture_id": "983992",
-      "teams": "MIBR vs 9z",
-      "competition": "Circuit X Redemption Curitiba",
-      "start_time_utc": "2026-01-22T15:00:00Z",
-      "start_time_delta_min": 400530.0
-     },
-     {
-      "fixture_id": "981663",
-      "teams": "MIBR vs ODDIK",
-      "competition": "CCT Season 3 South American Series #7",
-      "start_time_utc": "2026-01-25T21:00:00Z",
-      "start_time_delta_min": 395850.0
+      "fixture_id": "1079591",
+      "teams": "MIBR vs 100 Thieves",
+      "competition": "Stake Pulse Beat III",
+      "start_time_utc": "2026-10-17T11:00:00Z",
+      "start_time_delta_min": 14850.0
      }
     ]
    },
    {
     "source": "bovada",
     "source_league": "RLG Tesla Cup",
+    "teams": "B8 vs K27",
+    "quote_start_time_utc": "2026-10-27T08:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "bovada",
+    "source_league": "RLG Tesla Cup",
     "teams": "Alliance vs FaZe Clan",
     "quote_start_time_utc": "2026-10-27T11:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "bovada",
+    "source_league": "RLG Tesla Cup",
+    "teams": "Luminosity vs HOTU",
+    "quote_start_time_utc": "2026-10-27T17:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "bovada",
+    "source_league": "RLG Tesla Cup",
+    "teams": "Envy vs GamerLegion",
+    "quote_start_time_utc": "2026-10-27T20:00:00Z",
     "reason": "no fixture has both team names, even though one team name matches others",
     "full_name_matches": [],
     "partial_name_matches": [
      {
-      "fixture_id": "991842",
-      "teams": "Alliance vs AaB Elite",
-      "competition": "United21 Season 44",
-      "start_time_utc": "2026-02-11T09:00:00Z",
-      "start_time_delta_min": 371640.0
+      "fixture_id": "1081512",
+      "teams": "EYEBALLERS vs GamerLegion",
+      "competition": "PGL Bucharest 2027: Closed Qualifier",
+      "start_time_utc": "2026-10-17T11:00:00Z",
+      "start_time_delta_min": 14940.0
+     }
+    ]
+   },
+   {
+    "source": "linefeed_1xbet_platform",
+    "source_league": "CS 2. Dfrag Invitational",
+    "teams": "Ground Zero Gaming vs Off Chops",
+    "quote_start_time_utc": "2026-10-26T03:00:00Z",
+    "reason": "neither team name matches any fixture in the current lobby list",
+    "full_name_matches": [],
+    "partial_name_matches": []
+   },
+   {
+    "source": "linefeed_1xbet_platform",
+    "source_league": "CS 2. Dfrag Invitational",
+    "teams": "Nexvoid vs Alter Ego",
+    "quote_start_time_utc": "2026-10-26T03:00:00Z",
+    "reason": "no fixture has both team names, even though one team name matches others",
+    "full_name_matches": [],
+    "partial_name_matches": [
+     {
+      "fixture_id": "1081862",
+      "teams": "Rare Atom vs Alter Ego",
+      "competition": "VOID Autumn Cup 2026",
+      "start_time_utc": "2026-10-20T05:00:00Z",
+      "start_time_delta_min": 8520.0
      },
      {
-      "fixture_id": "991857",
-      "teams": "VP.Prodigy vs Alliance",
-      "competition": "United21 Season 44",
-      "start_time_utc": "2026-02-13T09:00:00Z",
-      "start_time_delta_min": 368760.0
-     },
-     {
-      "fixture_id": "992382",
-      "teams": "Ex-RUBY vs Alliance",
-      "competition": "ESL Challenger League Season 51: Europe - Cup #1",
-      "start_time_utc": "2026-02-20T18:00:00Z",
-      "start_time_delta_min": 358140.0
+      "fixture_id": "1081864",
+      "teams": "NEXVOID vs Vitalem Aerem",
+      "competition": "VOID Autumn Cup 2026",
+      "start_time_utc": "2026-10-20T09:00:00Z",
+      "start_time_delta_min": 8280.0
      }
     ]
    },
@@ -506,458 +660,13 @@
     "full_name_matches": [],
     "partial_name_matches": [
      {
-      "fixture_id": "980727",
-      "teams": "Nemesis vs Nemiga Gaming",
-      "competition": "CCT Season 3 European Series #13",
-      "start_time_utc": "2026-01-22T15:40:00Z",
-      "start_time_delta_min": 398420.0
-     },
-     {
-      "fixture_id": "980841",
-      "teams": "Sangal vs Nemiga Gaming",
-      "competition": "NODWIN Clutch Series #4",
-      "start_time_utc": "2026-02-02T18:00:00Z",
-      "start_time_delta_min": 382440.0
-     },
-     {
-      "fixture_id": "980789",
-      "teams": "Nemiga Gaming vs Eternal Fire",
-      "competition": "A1 Gaming League Season 11",
-      "start_time_utc": "2026-02-15T16:30:00Z",
-      "start_time_delta_min": 363810.0
+      "fixture_id": "1080207",
+      "teams": "FURIA vs Aurora",
+      "competition": "Thunderpick World Championship 2026",
+      "start_time_utc": "2026-10-17T14:00:00Z",
+      "start_time_delta_min": 12600.0
      }
     ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. PGL Masters Bucharest",
-    "teams": "TheMongolz vs MOUZ",
-    "quote_start_time_utc": "2026-10-26T08:00:00Z",
-    "reason": "neither team name matches any fixture in the current lobby list",
-    "full_name_matches": [],
-    "partial_name_matches": []
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. European Pro League. Closed Qualifier",
-    "teams": "Falcons Force vs KUUSAMO",
-    "quote_start_time_utc": "2026-10-26T09:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "1003048",
-      "teams": "Falcons Force vs atputies",
-      "competition": "Parken Challenger Championship #3",
-      "start_time_utc": "2026-03-31T16:00:00Z",
-      "start_time_delta_min": 300540.0
-     },
-     {
-      "fixture_id": "1072406",
-      "teams": "Falcons Force vs Honv\u00e9d",
-      "competition": "Fiesta Series 2",
-      "start_time_utc": "2026-09-18T17:00:00Z",
-      "start_time_delta_min": 54240.0
-     }
-    ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. NODWIN Clutch Series",
-    "teams": "Team Nemesis vs INOX Division",
-    "quote_start_time_utc": "2026-10-26T09:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "980727",
-      "teams": "Nemesis vs Nemiga Gaming",
-      "competition": "CCT Season 3 European Series #13",
-      "start_time_utc": "2026-01-22T15:40:00Z",
-      "start_time_delta_min": 398480.0
-     },
-     {
-      "fixture_id": "980842",
-      "teams": "Nemesis vs illwill",
-      "competition": "NODWIN Clutch Series #4",
-      "start_time_utc": "2026-02-03T09:00:00Z",
-      "start_time_delta_min": 381600.0
-     },
-     {
-      "fixture_id": "1022205",
-      "teams": "Nemesis vs SPARTA",
-      "competition": "ESL Challenger League Season 51: Europe - Cup #4",
-      "start_time_utc": "2026-05-01T17:35:00Z",
-      "start_time_delta_min": 255805.0
-     }
-    ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. United 21",
-    "teams": "gothboiclique vs UNiTY",
-    "quote_start_time_utc": "2026-10-26T09:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "984547",
-      "teams": "UNiTY vs DUNDU",
-      "competition": "European Pro League Series 4",
-      "start_time_utc": "2026-01-23T14:15:00Z",
-      "start_time_delta_min": 397125.0
-     },
-     {
-      "fixture_id": "992539",
-      "teams": "UNiTY vs ex-Zero Tenacity",
-      "competition": "ESL Challenger League Season 51: Europe - Cup #1",
-      "start_time_utc": "2026-02-15T14:00:00Z",
-      "start_time_delta_min": 364020.0
-     },
-     {
-      "fixture_id": "992566",
-      "teams": "UNiTY vs JiJieHao",
-      "competition": "ESL Challenger League Season 51: Europe - Cup #1",
-      "start_time_utc": "2026-02-16T14:00:00Z",
-      "start_time_delta_min": 362580.0
-     }
-    ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. PGL Masters Bucharest",
-    "teams": "9z vs Tyloo",
-    "quote_start_time_utc": "2026-10-26T11:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "984746",
-      "teams": "9z vs Imperial",
-      "competition": "Intel Extreme Masters Rio 2026: American Qualifier",
-      "start_time_utc": "2026-01-21T17:00:00Z",
-      "start_time_delta_min": 399960.0
-     },
-     {
-      "fixture_id": "983992",
-      "teams": "MIBR vs 9z",
-      "competition": "Circuit X Redemption Curitiba",
-      "start_time_utc": "2026-01-22T15:00:00Z",
-      "start_time_delta_min": 398640.0
-     },
-     {
-      "fixture_id": "1004081",
-      "teams": "BMZ vs TyLoo",
-      "competition": "ESL Challenger League Season 51: Asia - Cup #3",
-      "start_time_utc": "2026-04-03T13:00:00Z",
-      "start_time_delta_min": 296520.0
-     }
-    ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. PGL Masters Bucharest",
-    "teams": "FUT Esports vs Team Vitality",
-    "quote_start_time_utc": "2026-10-26T11:00:00Z",
-    "reason": "neither team name matches any fixture in the current lobby list",
-    "full_name_matches": [],
-    "partial_name_matches": []
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. United 21",
-    "teams": "Wonderkids vs Copenhagen Wolves",
-    "quote_start_time_utc": "2026-10-26T11:30:00Z",
-    "reason": "neither team name matches any fixture in the current lobby list",
-    "full_name_matches": [],
-    "partial_name_matches": []
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. NODWIN Clutch Series",
-    "teams": "FOKUS vs ex-Zero Tenacity",
-    "quote_start_time_utc": "2026-10-26T12:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "992539",
-      "teams": "UNiTY vs ex-Zero Tenacity",
-      "competition": "ESL Challenger League Season 51: Europe - Cup #1",
-      "start_time_utc": "2026-02-15T14:00:00Z",
-      "start_time_delta_min": 364200.0
-     },
-     {
-      "fixture_id": "996006",
-      "teams": "WW vs ex-Zero Tenacity",
-      "competition": "BC.Game Masters Season 1",
-      "start_time_utc": "2026-03-03T12:00:00Z",
-      "start_time_delta_min": 341280.0
-     },
-     {
-      "fixture_id": "995776",
-      "teams": "ex-Zero Tenacity vs QWENTRY",
-      "competition": "CCT Season 3 European Series #18 Play-In",
-      "start_time_utc": "2026-03-04T15:00:00Z",
-      "start_time_delta_min": 339660.0
-     }
-    ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. PGL Masters Bucharest",
-    "teams": "Team Liquid vs Legacy",
-    "quote_start_time_utc": "2026-10-26T14:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "1061819",
-      "teams": "Team Liquid vs atputies",
-      "competition": "Stake Pulse Beat I",
-      "start_time_utc": "2026-08-01T10:00:00Z",
-      "start_time_delta_min": 124080.0
-     }
-    ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. PGL Masters Bucharest",
-    "teams": "Team Spirit vs FURIA",
-    "quote_start_time_utc": "2026-10-26T14:00:00Z",
-    "reason": "neither team name matches any fixture in the current lobby list",
-    "full_name_matches": [],
-    "partial_name_matches": []
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. NODWIN Clutch Series",
-    "teams": "Metizport vs Brute",
-    "quote_start_time_utc": "2026-10-26T15:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "980606",
-      "teams": "ex-CPH Wolves vs BRUTE",
-      "competition": "A1 Gaming League Season 11",
-      "start_time_utc": "2026-01-11T16:30:00Z",
-      "start_time_delta_min": 414630.0
-     },
-     {
-      "fixture_id": "980821",
-      "teams": "ALLINNERS vs BRUTE",
-      "competition": "NODWIN Clutch Series #4",
-      "start_time_utc": "2026-01-27T09:00:00Z",
-      "start_time_delta_min": 392040.0
-     },
-     {
-      "fixture_id": "1033806",
-      "teams": "Metizport vs Passion UA",
-      "competition": "BC.Game Masters Championship #2",
-      "start_time_utc": "2026-05-21T08:06:24Z",
-      "start_time_delta_min": 227933.6
-     }
-    ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. DACH Masters",
-    "teams": "BIG Academy vs Sissi State Punks",
-    "quote_start_time_utc": "2026-10-26T17:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "983492",
-      "teams": "Prestige vs BIG Academy",
-      "competition": "United21 Season 43",
-      "start_time_utc": "2026-01-21T11:30:00Z",
-      "start_time_delta_min": 400650.0
-     },
-     {
-      "fixture_id": "998755",
-      "teams": "Megoshort vs BIG Academy",
-      "competition": "ESL Challenger League Season 51: Europe - Cup #2",
-      "start_time_utc": "2026-03-18T18:10:00Z",
-      "start_time_delta_min": 319610.0
-     },
-     {
-      "fixture_id": "1052357",
-      "teams": "BIG Academy vs BERG",
-      "competition": "DACH CS Masters Season 5",
-      "start_time_utc": "2026-06-27T15:00:00Z",
-      "start_time_delta_min": 174360.0
-     }
-    ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. DACH Masters",
-    "teams": "Sissi State Punks vs BIG Academy",
-    "quote_start_time_utc": "2026-10-26T17:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "983492",
-      "teams": "Prestige vs BIG Academy",
-      "competition": "United21 Season 43",
-      "start_time_utc": "2026-01-21T11:30:00Z",
-      "start_time_delta_min": 400650.0
-     },
-     {
-      "fixture_id": "998755",
-      "teams": "Megoshort vs BIG Academy",
-      "competition": "ESL Challenger League Season 51: Europe - Cup #2",
-      "start_time_utc": "2026-03-18T18:10:00Z",
-      "start_time_delta_min": 319610.0
-     },
-     {
-      "fixture_id": "1052357",
-      "teams": "BIG Academy vs BERG",
-      "competition": "DACH CS Masters Season 5",
-      "start_time_utc": "2026-06-27T15:00:00Z",
-      "start_time_delta_min": 174360.0
-     }
-    ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. PGL Masters Bucharest",
-    "teams": "BB Team vs Natus Vincere",
-    "quote_start_time_utc": "2026-10-26T17:00:00Z",
-    "reason": "neither team name matches any fixture in the current lobby list",
-    "full_name_matches": [],
-    "partial_name_matches": []
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. PGL Masters Bucharest",
-    "teams": "G2 Esports vs DENDELE CS",
-    "quote_start_time_utc": "2026-10-26T17:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "1002415",
-      "teams": "CarritoSpain vs G2 Esports",
-      "competition": "Roman Imperium Cup VII",
-      "start_time_utc": "2026-03-29T14:45:00Z",
-      "start_time_delta_min": 303975.0
-     }
-    ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. POWER Ligaen",
-    "teams": "MASQ vs ECSTATIC",
-    "quote_start_time_utc": "2026-10-26T17:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "1016778",
-      "teams": "ESC vs ECSTATIC",
-      "competition": "Intel Extreme Masters Rio 2026",
-      "start_time_utc": "2026-04-19T16:00:00Z",
-      "start_time_delta_min": 273660.0
-     },
-     {
-      "fixture_id": "1006298",
-      "teams": "ECSTATIC vs Walczaki",
-      "competition": "NODWIN Clutch Series #7",
-      "start_time_utc": "2026-04-24T17:00:00Z",
-      "start_time_delta_min": 266400.0
-     },
-     {
-      "fixture_id": "1016790",
-      "teams": "ECSTATIC vs mouz NXT",
-      "competition": "Intel Extreme Masters Rio 2026",
-      "start_time_utc": "2026-04-24T17:30:00Z",
-      "start_time_delta_min": 266370.0
-     }
-    ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. NODWIN Clutch Series",
-    "teams": "Nuclear TigeRES vs UNiTY",
-    "quote_start_time_utc": "2026-10-26T18:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "984547",
-      "teams": "UNiTY vs DUNDU",
-      "competition": "European Pro League Series 4",
-      "start_time_utc": "2026-01-23T14:15:00Z",
-      "start_time_delta_min": 397665.0
-     },
-     {
-      "fixture_id": "992320",
-      "teams": "Nexus vs Nuclear TigeRES",
-      "competition": "ESL Challenger League Season 51: Europe - Cup #1",
-      "start_time_utc": "2026-02-14T18:35:00Z",
-      "start_time_delta_min": 365725.0
-     },
-     {
-      "fixture_id": "992539",
-      "teams": "UNiTY vs ex-Zero Tenacity",
-      "competition": "ESL Challenger League Season 51: Europe - Cup #1",
-      "start_time_utc": "2026-02-15T14:00:00Z",
-      "start_time_delta_min": 364560.0
-     }
-    ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. POWER Ligaen",
-    "teams": "EAC Extra vs XI",
-    "quote_start_time_utc": "2026-10-26T18:00:00Z",
-    "reason": "neither team name matches any fixture in the current lobby list",
-    "full_name_matches": [],
-    "partial_name_matches": []
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. POWER Ligaen",
-    "teams": "ECSTATIC vs MASONIC",
-    "quote_start_time_utc": "2026-10-26T18:00:00Z",
-    "reason": "no fixture has both team names, even though one team name matches others",
-    "full_name_matches": [],
-    "partial_name_matches": [
-     {
-      "fixture_id": "979269",
-      "teams": "MASONIC vs HyperSpirit",
-      "competition": "European Pro League Series 4 Play-In",
-      "start_time_utc": "2026-01-15T11:30:00Z",
-      "start_time_delta_min": 409350.0
-     },
-     {
-      "fixture_id": "980764",
-      "teams": "MASONIC vs STATE",
-      "competition": "A1 Gaming League Season 11",
-      "start_time_utc": "2026-01-17T14:30:00Z",
-      "start_time_delta_min": 406290.0
-     },
-     {
-      "fixture_id": "979103",
-      "teams": "MASONIC vs Eternal Fire",
-      "competition": "European Pro League Series 4",
-      "start_time_utc": "2026-01-22T11:30:00Z",
-      "start_time_delta_min": 399270.0
-     }
-    ]
-   },
-   {
-    "source": "linefeed_1xbet_platform",
-    "source_league": "CS 2. Gamers Club Liga Serie A",
-    "teams": "RUSH Gaming vs Bounty Hunters Rising",
-    "quote_start_time_utc": "2026-10-26T19:00:00Z",
-    "reason": "neither team name matches any fixture in the current lobby list",
-    "full_name_matches": [],
-    "partial_name_matches": []
    }
   ]
  }
