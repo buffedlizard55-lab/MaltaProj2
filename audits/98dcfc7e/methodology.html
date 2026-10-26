@@ -238,7 +238,7 @@ footer.site-footer {
     <section class="hero">
       <p class="eyebrow">Methodology &amp; Automated Refresh Architecture</p>
       <h1>HotSpawn Lobby Reverse-Engineering, Proportional No-Vig Math &amp; Valve VRS Calibration</h1>
-      <p>All 17 raw bookmaker/exchange quotes and all 24 official Valve VRS team
+      <p>All 14 raw bookmaker/exchange quotes and all 21 official Valve VRS team
       citations in the canonical snapshot were independently re-derived with <strong>0 quote mismatches</strong>
       and <strong>0 VRS mismatches</strong>.</p>
     </section>
@@ -302,19 +302,19 @@ footer.site-footer {
             <tr>
               <td data-label="Component"><strong>Proportional No-Vig (Tier A)</strong></td>
               <td data-label="Formula / Rule"><code>p_A = (1/d_A) / ((1/d_A) + (1/d_B))</code>; multi-book consensus weights Pinnacle <code>2.0</code> and Bovada/Melbet/Kalshi <code>1.0</code>.</td>
-              <td data-label="Verification Result">17 quotes checked, 0 mismatches.</td>
+              <td data-label="Verification Result">14 quotes checked, 0 mismatches.</td>
               <td data-label="Official Source"><a href="https://www.pinnacle.com/en/esports/cs2/matchups/" target="_blank" rel="noopener">Pinnacle CS2</a></td>
             </tr>
             <tr>
               <td data-label="Component"><strong>Valve VRS Logistic Fallback (Tier B)</strong></td>
               <td data-label="Formula / Rule"><code>p_A = 1 / (1 + exp(-(pts_A - pts_B) / 400.0))</code> using Valve's 05 Oct 2026 global standings when no bookmaker/exchange line exists.</td>
-              <td data-label="Verification Result">24 VRS citations checked, 0 mismatches.</td>
+              <td data-label="Verification Result">21 VRS citations checked, 0 mismatches.</td>
               <td data-label="Official Source"><a href="https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/live/2026/standings_global_2026_10_05.md" target="_blank" rel="noopener">Valve VRS (05 Oct 2026)</a></td>
             </tr>
             <tr>
               <td data-label="Component"><strong>HotSpawn Crowd Isolation</strong></td>
               <td data-label="Formula / Rule">Crowd pick % is used exclusively for leaderboard leverage (<code>leverage = p_true / crowd_share</code>, <code>diff_edge = pts * (p_true - crowd_share)</code>), never as <code>p_true</code>.</td>
-              <td data-label="Verification Result">0 crowd-probability leaks across 15 open matches.</td>
+              <td data-label="Verification Result">0 crowd-probability leaks across 13 open matches.</td>
               <td data-label="Official Source"><a href="https://play.hotspawn.com/lobby" target="_blank" rel="noopener">HotSpawn Lobby</a></td>
             </tr>
           </tbody>
@@ -324,7 +324,7 @@ footer.site-footer {
     
   </main>
   <footer class="site-footer">
-    <p>Session <code>98dcfc7e</code> · Canonical board evaluated at <code>2026-10-26T14:21:23Z</code> ·
+    <p>Session <code>98dcfc7e</code> · Canonical board evaluated at <code>2026-10-26T15:09:14Z</code> ·
     HotSpawn crowd pick percentages are contest ownership only and are never used as win probabilities.
     Every row is linked to an official <code>https://</code> source; unverified values remain blank (<code>—</code>).</p>
   </footer>
