@@ -1,17 +1,42 @@
 {
  "session": "36495748",
- "generated_utc": "2026-10-28T00:51:25Z",
+ "generated_utc": "2026-10-28T05:53:08Z",
  "fixtures_without_strict_market": [
-  "1101595",
   "1103782",
-  "1103785",
   "1103788",
   "1103791",
   "1082792",
   "1082793",
   "1080200"
  ],
- "kalshi_joins": {},
+ "kalshi_joins": {
+  "1103788": {
+   "source_name": "Kalshi (exchange, runner probe)",
+   "event_ticker": "KXCS2GAME-26OCT300500TTBSBMB",
+   "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct300500ttbsbmb",
+   "start_verified": "Kalshi rules state the match was scheduled for 2026-10-30T09:00:00Z (EDT/EST converted); HotSpawn start is 2026-10-30T09:00:00Z",
+   "mid_cents": {
+    "BASEMENT BOYS": 52.0,
+    "Teletubisie": 48.0
+   },
+   "note": "Joined by the 36495748 refresher: both names matched after normalisation and the scheduled start stated in the market rules equals the HotSpawn start. Verify on the event page before treating as settled fact.",
+   "read_ref": null,
+   "title_seen": "Teletubisie vs. BASEMENT BOYS"
+  },
+  "1103791": {
+   "source_name": "Kalshi (exchange, runner probe)",
+   "event_ticker": "KXCS2GAME-26OCT301215SEMZP",
+   "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct301215semzp",
+   "start_verified": "Kalshi rules state the match was scheduled for 2026-10-30T16:15:00Z (EDT/EST converted); HotSpawn start is 2026-10-30T16:15:00Z",
+   "mid_cents": {
+    "Metizport": 82.0,
+    "SNITKO Esports": 15.5
+   },
+   "note": "Joined by the 36495748 refresher: both names matched after normalisation and the scheduled start stated in the market rules equals the HotSpawn start. Verify on the event page before treating as settled fact.",
+   "read_ref": null,
+   "title_seen": "SNITKO Esports vs. Metizport"
+  }
+ },
  "bo3_observations": {
   "1103788": {
    "slug": "basement-boys-vs-teletubisie-30-10-2026",
@@ -28,17 +53,16 @@
  "log": {
   "kalshi": {
    "status": 200,
-   "bytes": 249075,
+   "bytes": 305713,
    "error": null,
    "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
    "pages": 1,
-   "events": 44,
-   "distinct_tickers": 44,
+   "events": 54,
+   "distinct_tickers": 54,
    "diagnostics": {
-    "two_market_events": 352,
+    "two_market_events": 322,
     "name_matches": [
      "1103782:KXCS2GAME-26OCT290500SAWYWBTA",
-     "1103785:KXCS2GAME-26OCT291000ZOTIXIS",
      "1103788:KXCS2GAME-26OCT300500TTBSBMB",
      "1103791:KXCS2GAME-26OCT301215SEMZP"
     ],
@@ -53,9 +77,12 @@
     "KXCS2GAME-26OCT271200YLSPI"
    ]
   },
-  "kalshi_joins": [],
+  "kalshi_joins": [
+   "1103788",
+   "1103791"
+  ],
   "bo3gg": {
-   "matches_seen": 195,
+   "matches_seen": 203,
    "priced_observations": [
     "1103788"
    ]
@@ -63,58 +90,58 @@
   "hltv": {
    "1WIN": {
     "status": 200,
-    "bytes": 150677,
+    "bytes": 140132,
     "error": null,
     "url": "https://www.hltv.org/search?query=1WIN",
     "title": "HLTV.org - The home of competitive Counter-Strike"
    },
    "5star": {
     "status": 200,
-    "bytes": 144807,
+    "bytes": 134277,
     "error": null,
     "url": "https://www.hltv.org/search?query=5star",
     "title": "HLTV.org - The home of competitive Counter-Strike"
    },
    "BASEMENT BOYS": {
     "status": 200,
-    "bytes": 147177,
+    "bytes": 136637,
     "error": null,
     "url": "https://www.hltv.org/search?query=BASEMENT%20BOYS",
     "title": "HLTV.org - The home of competitive Counter-Strike"
    },
    "DENDELE": {
     "status": 200,
-    "bytes": 147271,
+    "bytes": 136723,
     "error": null,
     "url": "https://www.hltv.org/search?query=DENDELE",
     "title": "HLTV.org - The home of competitive Counter-Strike"
    },
    "HOTU": {
     "status": 200,
-    "bytes": 147443,
+    "bytes": 136890,
     "error": null,
     "url": "https://www.hltv.org/search?query=HOTU",
     "title": "HLTV.org - The home of competitive Counter-Strike"
    },
-   "Iberian Soul": {
-    "status": 200,
-    "bytes": 147129,
-    "error": null,
-    "url": "https://www.hltv.org/search?query=Iberian%20Soul",
-    "title": "HLTV.org - The home of competitive Counter-Strike"
-   },
    "Metizport": {
     "status": 200,
-    "bytes": 146984,
+    "bytes": 136524,
     "error": null,
     "url": "https://www.hltv.org/search?query=Metizport",
     "title": "HLTV.org - The home of competitive Counter-Strike"
    },
    "SAW Youngsters": {
     "status": 200,
-    "bytes": 147330,
+    "bytes": 136886,
     "error": null,
     "url": "https://www.hltv.org/search?query=SAW%20Youngsters",
+    "title": "HLTV.org - The home of competitive Counter-Strike"
+   },
+   "SNITKO": {
+    "status": 200,
+    "bytes": 123188,
+    "error": null,
+    "url": "https://www.hltv.org/search?query=SNITKO",
     "title": "HLTV.org - The home of competitive Counter-Strike"
    }
   },
