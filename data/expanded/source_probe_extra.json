@@ -1,20 +1,25 @@
 {
- "generated_at_utc": "2026-10-28T09:00:05Z",
+ "generated_at_utc": "2026-10-28T16:49:59Z",
  "purpose": "Round-3 reachability/structure probe. A failed row is recorded as unavailable and is never used for prices.",
  "results": [
   {
    "group": "linefeed_variants",
    "key": "champs_a",
    "url": "https://melbet.com/service-api/LineFeed/GetChampsZip?sports=40&lng=en&country=1",
-   "http_status": 0,
-   "content_type": null,
-   "bytes": 0,
-   "error": "URLError: <urlopen error _ssl.c:999: The handshake operation timed out>",
+   "http_status": 406,
+   "content_type": "application/problem+json; charset=utf-8",
+   "bytes": 150,
+   "error": "HTTPError 406",
    "final_url": null,
-   "json": false,
+   "json": true,
    "records": null,
-   "keys": null,
-   "preview": ""
+   "keys": [
+    "detail",
+    "status",
+    "title",
+    "type"
+   ],
+   "preview": "{\"type\":\"feed/NotAcceptableException\",\"title\":\"NotAcceptable\",\"status\":406,\"detail\":\"Error occurred during request execution. Contact the developer.\"}"
   },
   {
    "group": "linefeed_variants",
@@ -58,33 +63,15 @@
    "group": "linefeed_variants",
    "key": "champs_d",
    "url": "https://melbet.com/service-api/LineFeed/GetChampsZip?",
-   "http_status": 200,
-   "content_type": "application/json; charset=utf-8",
-   "bytes": 248179,
-   "error": null,
-   "final_url": "https://melbet.com/service-api/LineFeed/GetChampsZip?",
-   "json": true,
-   "records": 1406,
-   "keys": [
-    "Error",
-    "ErrorCode",
-    "Guid",
-    "Id",
-    "Success",
-    "Value"
-   ],
-   "preview": "{\"Id\":0,\"Success\":true,\"Error\":\"\",\"ErrorCode\":0,\"Guid\":\"\",\"Value\":[{\"SI\":5,\"SN\":\"\u0411\u0435\u0439\u0441\u0431\u043e\u043b\",\"SE\":\"Baseball\",\"L\":\"\u041c\u041b\u0411\",\"LE\":\"USA. MLB\",\"LI\":166775,\"CI\":153,\"T\":1000,\"GC\":1},{\"SI\":3,\"SN\":\"\u0411\u0430\u0441\u043a\u0435\u0442\u0431\u043e\u043b\",\"SE\":\"Basketball\",\"L\":\"NBA\",\"LI\":13589,\"CI\":153,\"T\":300,\"GC\":20},{\"SI\":13,\"SN\":\"\u0410\u043c\u0435\u0440\u0438\u043a\u0430\u043d\u0441\u043a\u0438\u0439 \u0444\u0443\u0442\u0431\u043e\u043b\",\"SE\":\"American Football\",\"L\":\"NFL\",\"LE\":\"USA. NFL\",\"LI\":68315,\"CI\":153,\"T\":300,\"GC\":29},{\"SI\":2,\"SN\":\"\u0425\u043e",
-   "item_keys": [
-    "CI",
-    "GC",
-    "L",
-    "LE",
-    "LI",
-    "SE",
-    "SI",
-    "SN",
-    "T"
-   ]
+   "http_status": 0,
+   "content_type": null,
+   "bytes": 0,
+   "error": "URLError: <urlopen error _ssl.c:999: The handshake operation timed out>",
+   "final_url": null,
+   "json": false,
+   "records": null,
+   "keys": null,
+   "preview": ""
   },
   {
    "group": "linefeed_variants",
@@ -92,11 +79,11 @@
    "url": "https://melbet.com/service-api/LineFeed/GetSportsZip?sports=1&lng=en&country=1",
    "http_status": 200,
    "content_type": "application/json; charset=utf-8",
-   "bytes": 253731,
+   "bytes": 260621,
    "error": null,
    "final_url": "https://melbet.com/service-api/LineFeed/GetSportsZip?sports=1&lng=en&country=1",
    "json": true,
-   "records": 53,
+   "records": 52,
    "keys": [
     "Error",
     "ErrorCode",
@@ -105,7 +92,7 @@
     "Success",
     "Value"
    ],
-   "preview": "{\"Id\":0,\"Success\":true,\"Error\":\"\",\"ErrorCode\":0,\"Guid\":\"\",\"Value\":[{\"L\":[{\"L\":\"Russia. Winner\",\"LR\":\"\u0420\u043e\u0441\u0441\u0438\u044f. \u041f\u043e\u0431\u0435\u0434\u0438\u0442\u0435\u043b\u044c\",\"LI\":1752709,\"CI\":1,\"T\":50,\"GC\":15,\"COIMG\":\"9b195cd711a059755f8c4a699a927694.png\"},{\"L\":\"England. Winner\",\"LR\":\"\u0410\u043d\u0433\u043b\u0438\u044f. \u041f\u043e\u0431\u0435\u0434\u0438\u0442\u0435\u043b\u044c\",\"LI\":819021,\"CI\":231,\"T\":50,\"GC\":42,\"COIMG\":\"4269a9d0d55e0c20e4110ce1a41e1cf7.png\"},{\"L\":\"France. Winner\",\"LR\":\"\u0424\u0440\u0430\u043d\u0446\u0438\u044f. \u041f\u043e\u0431\u0435\u0434\u0438\u0442\u0435\u043b\u044c\",\"LI\":1756209,\"",
+   "preview": "{\"Id\":0,\"Success\":true,\"Error\":\"\",\"ErrorCode\":0,\"Guid\":\"\",\"Value\":[{\"L\":[{\"L\":\"Russia. Winner\",\"LR\":\"\u0420\u043e\u0441\u0441\u0438\u044f. \u041f\u043e\u0431\u0435\u0434\u0438\u0442\u0435\u043b\u044c\",\"LI\":1752709,\"CI\":1,\"T\":50,\"GC\":13,\"COIMG\":\"9b195cd711a059755f8c4a699a927694.png\"},{\"L\":\"England. Winner\",\"LR\":\"\u0410\u043d\u0433\u043b\u0438\u044f. \u041f\u043e\u0431\u0435\u0434\u0438\u0442\u0435\u043b\u044c\",\"LI\":819021,\"CI\":231,\"T\":50,\"GC\":53,\"COIMG\":\"4269a9d0d55e0c20e4110ce1a41e1cf7.png\"},{\"L\":\"France. Winner\",\"LR\":\"\u0424\u0440\u0430\u043d\u0446\u0438\u044f. \u041f\u043e\u0431\u0435\u0434\u0438\u0442\u0435\u043b\u044c\",\"LI\":1756209,\"",
    "item_keys": [
     "C",
     "CC",
@@ -160,7 +147,7 @@
    "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1&getEmpty=true",
    "http_status": 200,
    "content_type": "application/json; charset=utf-8",
-   "bytes": 65885,
+   "bytes": 63268,
    "error": null,
    "final_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1&getEmpty=true",
    "json": true,
@@ -173,7 +160,7 @@
     "Success",
     "Value"
    ],
-   "preview": "{\"Id\":0,\"Success\":true,\"Error\":\"\",\"ErrorCode\":0,\"Guid\":\"\",\"Value\":[{\"B\":39,\"IG\":true,\"I\":765382940,\"N\":164214,\"CI\":384079832,\"T\":3,\"E\":[{\"T\":1,\"C\":1.77,\"CV\":\"1.77\",\"G\":1},{\"T\":3,\"C\":2.05,\"CV\":\"2.05\",\"G\":1}],\"AE\":[{\"G\":2436,\"ME\":[{\"T\":2824,\"P\":2.5,\"C\":1.856,\"CV\":\"1.856\",\"G\":2436},{\"T\":2825,\"P\":2.5,\"C\":1.864,\"CV\":\"1.864\",\"G\":2436}]},{\"G\":2438,\"ME\":[{\"T\":2826,\"P\":-1.5,\"C\":3.025,\"CV\":\"3.025\",\"G\":2438}",
+   "preview": "{\"Id\":0,\"Success\":true,\"Error\":\"\",\"ErrorCode\":0,\"Guid\":\"\",\"Value\":[{\"B\":4222,\"I\":765707469,\"N\":219678,\"CI\":384465534,\"T\":3,\"E\":[{\"T\":1,\"C\":1.85,\"CV\":\"1.85\",\"G\":1},{\"T\":3,\"C\":1.85,\"CV\":\"1.85\",\"G\":1}],\"AE\":[],\"EC\":2,\"TG\":\"\",\"PN\":\"\",\"TN\":\"map\",\"SSI\":46,\"S\":1793210400,\"CHIMG\":\"407e3f43a3627577256dd6545f65adcc.png\",\"O1\":\"ENRAGE\",\"O2\":\"Diamant\",\"O1I\":3265789,\"O2I\":6128369,\"O1IS\":[3265789],\"O2IS\":[612836",
    "item_keys": [
     "AE",
     "B",
@@ -184,9 +171,7 @@
     "COI",
     "E",
     "EC",
-    "HS",
     "I",
-    "IG",
     "KI",
     "L",
     "LE",
@@ -204,22 +189,29 @@
     "O1IS",
     "O1R",
     "O2",
-    "O2C"
+    "O2C",
+    "O2E",
+    "O2I"
    ]
   },
   {
    "group": "linefeed_variants",
    "key": "1x2_b",
    "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=1&country=1&type=1",
-   "http_status": 0,
-   "content_type": null,
-   "bytes": 0,
-   "error": "URLError: <urlopen error _ssl.c:999: The handshake operation timed out>",
+   "http_status": 406,
+   "content_type": "application/problem+json; charset=utf-8",
+   "bytes": 150,
+   "error": "HTTPError 406",
    "final_url": null,
-   "json": false,
+   "json": true,
    "records": null,
-   "keys": null,
-   "preview": ""
+   "keys": [
+    "detail",
+    "status",
+    "title",
+    "type"
+   ],
+   "preview": "{\"type\":\"feed/NotAcceptableException\",\"title\":\"NotAcceptable\",\"status\":406,\"detail\":\"Error occurred during request execution. Contact the developer.\"}"
   },
   {
    "group": "linefeed_variants",
@@ -344,7 +336,7 @@
    "url": "https://www.coolbet.com/api/betoffer/v2/bet-offers?lang=en&sport=counter_strike",
    "http_status": 403,
    "content_type": "text/html",
-   "bytes": 957,
+   "bytes": 960,
    "error": "HTTPError 403",
    "final_url": null,
    "json": false,
@@ -378,7 +370,7 @@
    "json": false,
    "records": null,
    "keys": null,
-   "preview": "<!doctype html>\n<html class=\"vn-26\" lang=\"en\">\n\n<head>\n    <meta charset=\"utf-8\" />\n    <title>bwin</title>\n    <meta name=\"description\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover\" />\n    <script>\n        window.VERSION='26.42.0.12513-g9a86f764';window.SINGLE_DOMAIN='1';\n        <!-- ClientConfig v1 start -->"
+   "preview": "<!doctype html>\n<html class=\"vn-26\" lang=\"en\">\n\n<head>\n    <meta charset=\"utf-8\" />\n    <title>bwin</title>\n    <meta name=\"description\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover\" />\n    <script>\n        window.VERSION='26.43.0.12393-g0d3ac523';window.SINGLE_DOMAIN='1';\n        <!-- ClientConfig v1 start -->"
   },
   {
    "group": "extra_bookmakers",
@@ -398,15 +390,15 @@
    "group": "extra_bookmakers",
    "key": "winamax_esports",
    "url": "https://www.winamax.fr/paris-sportifs/sports/4",
-   "http_status": 403,
-   "content_type": "text/html",
-   "bytes": 919,
-   "error": "HTTPError 403",
-   "final_url": null,
+   "http_status": 200,
+   "content_type": "text/html; charset=utf-8",
+   "bytes": 30501,
+   "error": null,
+   "final_url": "https://www.winamax.fr/paris-sportifs/sports/4",
    "json": false,
    "records": null,
    "keys": null,
-   "preview": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<HTML><HEAD><META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=iso-8859-1\">\n<TITLE>ERROR: The request could not be satisfied</TITLE>\n</HEAD><BODY>\n<H1>403 ERROR</H1>\n<H2>The request could not be satisfied.</H2>\n<HR noshade size=\"1px\">\nRequest blocked.\nWe can't connect to the server for t"
+   "preview": "<!DOCTYPE html>\n<html class=\"app-desktop\" lang=\"fr\">\n    <!--[if lt IE 7]>      <html class=\"no-js lt-ie9 lt-ie8 lt-ie7\"> <![endif]-->\n    <!--[if IE 7]>         <html class=\"no-js lt-ie9 lt-ie8\"> <![endif]-->\n    <!--[if IE 8]>         <html class=\"no-js lt-ie9\"> <![endif]-->\n    <!--[if gt IE 8]><!--> <html class=\"no-js\"> <!--<![endif]-->\n    <head>\n        <title>Paris sportifs | Winamax paris "
   },
   {
    "group": "extra_bookmakers",
@@ -516,15 +508,14 @@
    "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups?withSpecials=false",
    "http_status": 200,
    "content_type": "application/json",
-   "bytes": 91226,
+   "bytes": 67868,
    "error": null,
    "final_url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups?withSpecials=false",
    "json": true,
-   "records": 30,
+   "records": 22,
    "keys": [
     "ageLimit",
     "altTeaser",
-    "bestOfX",
     "featureOrder",
     "hasAltSpread",
     "hasAltTotal",
@@ -546,9 +537,10 @@
     "periods",
     "rotation",
     "startTime",
-    "state"
+    "state",
+    "status"
    ],
-   "preview": "[\n  {\n    \"ageLimit\": 0,\n    \"altTeaser\": false,\n    \"bestOfX\": 3,\n    \"featureOrder\": 5,\n    \"hasAltSpread\": true,\n    \"hasAltTotal\": false,\n    \"hasBetshare\": false,\n    \"hasLive\": true,\n    \"hasMarkets\": true,\n    \"id\": 1639318677,\n    \"isBetshareEnabled\": false,\n    \"isFeatured\": true,\n    \"isHighlighted\": true,\n    \"isLive\": false,\n    \"isPromoted\": false,\n    \"league\": {\n      \"ageLimit\": 0,"
+   "preview": "[\n  {\n    \"ageLimit\": 0,\n    \"altTeaser\": false,\n    \"featureOrder\": -1,\n    \"hasAltSpread\": false,\n    \"hasAltTotal\": false,\n    \"hasBetshare\": false,\n    \"hasLive\": true,\n    \"hasMarkets\": true,\n    \"id\": 1639412855,\n    \"isBetshareEnabled\": false,\n    \"isFeatured\": false,\n    \"isHighlighted\": false,\n    \"isLive\": true,\n    \"isPromoted\": false,\n    \"league\": {\n      \"ageLimit\": 0,\n      \"feature"
   },
   {
    "group": "extra_bookmakers",
@@ -556,11 +548,11 @@
    "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/markets/straight",
    "http_status": 200,
    "content_type": "application/json",
-   "bytes": 538769,
+   "bytes": 306068,
    "error": null,
    "final_url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/markets/straight",
    "json": true,
-   "records": 1006,
+   "records": 582,
    "keys": [
     "cutoffAt",
     "key",
@@ -571,7 +563,7 @@
     "type",
     "version"
    ],
-   "preview": "[\n  {\n    \"cutoffAt\": \"2026-10-29T20:15:00+00:00\",\n    \"key\": \"s;2;m\",\n    \"limits\": [\n      {\n        \"amount\": 100,\n        \"type\": \"maxRiskStake\"\n      }\n    ],\n    \"matchupId\": 1639374392,\n    \"period\": 2,\n    \"prices\": [\n      {\n        \"participantId\": 1639374393,\n        \"price\": 492\n      },\n      {\n        \"participantId\": 1639374394,\n        \"price\": -1300\n      }\n    ],\n    \"type\": \"mon"
+   "preview": "[\n  {\n    \"cutoffAt\": \"2026-10-30T05:15:00+00:00\",\n    \"key\": \"s;1;m\",\n    \"limits\": [\n      {\n        \"amount\": 100,\n        \"type\": \"maxRiskStake\"\n      }\n    ],\n    \"matchupId\": 1639335068,\n    \"period\": 1,\n    \"prices\": [\n      {\n        \"participantId\": 1639335069,\n        \"price\": -110\n      },\n      {\n        \"participantId\": 1639335070,\n        \"price\": -110\n      }\n    ],\n    \"type\": \"mon"
   },
   {
    "group": "extra_bookmakers",
@@ -635,7 +627,7 @@
    "url": "https://www.midnite.com/esports/counter-strike-2",
    "http_status": 200,
    "content_type": "text/html; charset=utf-8",
-   "bytes": 34012,
+   "bytes": 34106,
    "error": null,
    "final_url": "https://www.midnite.com/esports/counter-strike-2",
    "json": false,
@@ -759,7 +751,7 @@
    "url": "https://oddspedia.com/api/v1/getMatchList?language=en&sport=counter_strike&status=all&limit=100",
    "http_status": 403,
    "content_type": "text/html; charset=UTF-8",
-   "bytes": 6056,
+   "bytes": 6034,
    "error": "HTTPError 403",
    "final_url": null,
    "json": false,
