@@ -1,5 +1,5 @@
 {
-  "audit_generated_utc": "2026-10-27T20:29:14Z",
+  "audit_generated_utc": "2026-10-28T00:48:19Z",
   "fixtures": [
     {
       "basis": "External market consensus \u2014 exact ordered team-token and start-time match",
@@ -14,6 +14,7 @@
       "flags": [
         "external_market_rederived_from_raw_snapshot",
         "not_in_vrs:Off Chops",
+        "start_time_mismatch_not_joined:kalshi",
         "vrs_snapshot_stale_or_unverified"
       ],
       "lock_utc": "2026-10-28T02:54:00Z",
@@ -62,7 +63,7 @@
           "raw_a": 2.279,
           "raw_b": 1.57,
           "raw_format": "decimal",
-          "retrieved_utc": "2026-10-27T20:29:11Z",
+          "retrieved_utc": "2026-10-28T00:48:17Z",
           "source_key": "melbet",
           "source_name": "Melbet",
           "source_team_tokens": [
@@ -80,7 +81,21 @@
           "swapped": false
         }
       ],
-      "rejected_candidates": [],
+      "rejected_candidates": [
+        {
+          "event_id": "KXCS2GAME-26OCT272300NEXOFF",
+          "names_at_source": [
+            "NEXVOID",
+            "Off Chops"
+          ],
+          "reason": "Rejected by the source board's strict time/start verification; not used.",
+          "source_key": "kalshi",
+          "source_name": "Kalshi (exchange)",
+          "source_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct272300nexoff",
+          "start_diff_hours": null,
+          "start_utc_at_source": null
+        }
+      ],
       "stage": null,
       "start_utc": "2026-10-28T03:00:00Z",
       "status": "published",
@@ -88,7 +103,7 @@
       "team_b": "NEXVOID",
       "tier": "B",
       "unresolved_reason": null,
-      "valid_until_utc": "2026-10-27T20:33:58Z"
+      "valid_until_utc": "2026-10-28T04:35:06Z"
     },
     {
       "basis": null,
@@ -186,7 +201,7 @@
           "raw_a": 1.87,
           "raw_b": 1.87,
           "raw_format": "decimal",
-          "retrieved_utc": "2026-10-27T20:29:11Z",
+          "retrieved_utc": "2026-10-28T00:48:17Z",
           "source_key": "melbet",
           "source_name": "Melbet",
           "source_team_tokens": [
@@ -225,10 +240,10 @@
       "team_b": "Rooster",
       "tier": "B",
       "unresolved_reason": null,
-      "valid_until_utc": "2026-10-27T20:33:58Z"
+      "valid_until_utc": "2026-10-28T04:35:06Z"
     },
     {
-      "basis": null,
+      "basis": "External market consensus \u2014 exact ordered team-token and start-time match",
       "best_of": null,
       "competition": "MESA Pro Series Halloween Edition 2026",
       "fixture_id": "1101596",
@@ -239,29 +254,602 @@
       },
       "flags": [
         "ambiguous_vrs_name:Chinggis Warriors",
-        "no_line_unverified",
+        "external_market_rederived_from_raw_snapshot",
         "not_in_vrs:The Audacity",
-        "vrs_snapshot_stale_or_unverified",
-        "no_external_market_line_verified"
+        "vrs_snapshot_stale_or_unverified"
       ],
       "lock_utc": "2026-10-28T07:24:00Z",
-      "market": null,
-      "pick_probability": null,
-      "pick_side": null,
-      "pick_team": null,
+      "market": {
+        "n_sources": 1,
+        "prob_a": 0.3927104722792608,
+        "prob_b": 0.6072895277207392,
+        "sources": [
+          "melbet"
+        ],
+        "spread_a": null,
+        "weights": {
+          "melbet": 1.0
+        }
+      },
+      "pick_probability": 0.6072895277207392,
+      "pick_side": "b",
+      "pick_team": "Chinggis Warriors",
       "points": 2,
-      "prob_a": null,
-      "prob_b": null,
-      "quotes": [],
+      "prob_a": 0.3927104722792608,
+      "prob_b": 0.6072895277207392,
+      "quotes": [
+        {
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "decimal_a": 2.366,
+          "decimal_b": 1.53,
+          "event_id": "765671523",
+          "fixture_team_tokens": [
+            [
+              "audacity"
+            ],
+            [
+              "chinggis",
+              "warriors"
+            ]
+          ],
+          "join_rule": "ordered-token exact match",
+          "names_at_source": [
+            "The Audacity",
+            "Chinggis Warriors"
+          ],
+          "overround": 1.076249040049945,
+          "prob_a_at_source": 0.3927104722792608,
+          "prob_b_at_source": 0.6072895277207393,
+          "prob_fixture_a": 0.3927104722792608,
+          "raw_a": 2.366,
+          "raw_b": 1.53,
+          "raw_format": "decimal",
+          "retrieved_utc": "2026-10-28T00:48:17Z",
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "source_team_tokens": [
+            [
+              "audacity"
+            ],
+            [
+              "chinggis",
+              "warriors"
+            ]
+          ],
+          "source_url": "https://melbet.com/en/line/esports",
+          "start_diff_hours": 0.0,
+          "start_utc_at_source": "2026-10-28T07:30:00Z",
+          "swapped": false
+        }
+      ],
       "rejected_candidates": [],
       "stage": null,
       "start_utc": "2026-10-28T07:30:00Z",
-      "status": "unresolved",
+      "status": "published",
       "team_a": "The Audacity",
       "team_b": "Chinggis Warriors",
       "tier": "C",
-      "unresolved_reason": "No captured external market passed the exact-name/start checks. Probabilities and pick are deliberately blank.",
-      "valid_until_utc": null
+      "unresolved_reason": null,
+      "valid_until_utc": "2026-10-28T04:35:06Z"
+    },
+    {
+      "basis": "External market consensus \u2014 exact ordered team-token and start-time match",
+      "best_of": null,
+      "competition": "Tesla Cup 2026",
+      "fixture_id": "1082902",
+      "fixture_source": {
+        "name": "HotSpawn match record (fixture discovery only)",
+        "url": "https://www.hotspawn.com/matches/b8-vs-alliance-tesla-cup-2026-1082902",
+        "url_kind": "match page"
+      },
+      "flags": [
+        "external_market_rederived_from_raw_snapshot",
+        "start_time_mismatch_not_joined:kalshi",
+        "vrs_snapshot_stale_or_unverified"
+      ],
+      "lock_utc": "2026-10-28T07:54:00Z",
+      "market": {
+        "n_sources": 2,
+        "prob_a": 0.6791990178324836,
+        "prob_b": 0.3208009821675164,
+        "sources": [
+          "bovada",
+          "melbet"
+        ],
+        "spread_a": 0.016602078918375618,
+        "weights": {
+          "bovada": 1.0,
+          "melbet": 1.0
+        }
+      },
+      "pick_probability": 0.6791990178324836,
+      "pick_side": "a",
+      "pick_team": "B8",
+      "points": 3,
+      "prob_a": 0.6791990178324836,
+      "prob_b": 0.3208009821675164,
+      "quotes": [
+        {
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "decimal_a": 1.363636,
+          "decimal_b": 3.0,
+          "event_id": "32847764",
+          "fixture_team_tokens": [
+            [
+              "b8"
+            ],
+            [
+              "alliance"
+            ]
+          ],
+          "join_rule": "ordered-token exact match",
+          "names_at_source": [
+            "B8",
+            "Alliance"
+          ],
+          "overround": 1.0666668622222744,
+          "prob_a_at_source": 0.6875000572916714,
+          "prob_b_at_source": 0.31249994270832854,
+          "prob_fixture_a": 0.6875000572916714,
+          "raw_a": "1.363636",
+          "raw_b": "3.00",
+          "raw_format": "decimal",
+          "retrieved_utc": "2026-10-28T00:48:16Z",
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "source_team_tokens": [
+            [
+              "b8"
+            ],
+            [
+              "alliance"
+            ]
+          ],
+          "source_url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/b8-alliance-202610280400",
+          "start_diff_hours": 0.0,
+          "start_utc_at_source": "2026-10-28T08:00:00Z",
+          "swapped": false
+        },
+        {
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "decimal_a": 1.4,
+          "decimal_b": 2.854,
+          "event_id": "765501735",
+          "fixture_team_tokens": [
+            [
+              "b8"
+            ],
+            [
+              "alliance"
+            ]
+          ],
+          "join_rule": "ordered-token exact match",
+          "names_at_source": [
+            "B8",
+            "Alliance"
+          ],
+          "overround": 1.0646711382520773,
+          "prob_a_at_source": 0.6708979783732958,
+          "prob_b_at_source": 0.32910202162670427,
+          "prob_fixture_a": 0.6708979783732958,
+          "raw_a": 1.4,
+          "raw_b": 2.854,
+          "raw_format": "decimal",
+          "retrieved_utc": "2026-10-28T00:48:17Z",
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "source_team_tokens": [
+            [
+              "b8"
+            ],
+            [
+              "alliance"
+            ]
+          ],
+          "source_url": "https://melbet.com/en/line/esports",
+          "start_diff_hours": 0.0,
+          "start_utc_at_source": "2026-10-28T08:00:00Z",
+          "swapped": false
+        }
+      ],
+      "rejected_candidates": [
+        {
+          "event_id": "KXCS2GAME-26OCT280400ALLB8",
+          "names_at_source": [
+            "Alliance",
+            "B8"
+          ],
+          "reason": "Rejected by the source board's strict time/start verification; not used.",
+          "source_key": "kalshi",
+          "source_name": "Kalshi (exchange)",
+          "source_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct280400allb8",
+          "start_diff_hours": null,
+          "start_utc_at_source": null
+        }
+      ],
+      "stage": null,
+      "start_utc": "2026-10-28T08:00:00Z",
+      "status": "published",
+      "team_a": "B8",
+      "team_b": "Alliance",
+      "tier": "B",
+      "unresolved_reason": null,
+      "valid_until_utc": "2026-10-28T04:35:06Z"
+    },
+    {
+      "basis": "External market consensus \u2014 exact ordered team-token and start-time match",
+      "best_of": null,
+      "competition": "Tesla Cup 2026",
+      "fixture_id": "1082904",
+      "fixture_source": {
+        "name": "HotSpawn match record (fixture discovery only)",
+        "url": "https://www.hotspawn.com/matches/hotu-vs-gamerlegion-tesla-cup-2026-1082904",
+        "url_kind": "match page"
+      },
+      "flags": [
+        "external_market_rederived_from_raw_snapshot",
+        "start_time_mismatch_not_joined:kalshi",
+        "vrs_snapshot_stale_or_unverified"
+      ],
+      "lock_utc": "2026-10-28T13:54:00Z",
+      "market": {
+        "n_sources": 3,
+        "prob_a": 0.5513852850869296,
+        "prob_b": 0.44861471491307037,
+        "sources": [
+          "bovada",
+          "melbet",
+          "pinnacle"
+        ],
+        "spread_a": 0.00628609219147358,
+        "weights": {
+          "bovada": 1.0,
+          "melbet": 1.0,
+          "pinnacle": 2.0
+        }
+      },
+      "pick_probability": 0.5513852850869296,
+      "pick_side": "a",
+      "pick_team": "HOTU",
+      "points": 3,
+      "prob_a": 0.5513852850869296,
+      "prob_b": 0.44861471491307037,
+      "quotes": [
+        {
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "decimal_a": 1.69,
+          "decimal_b": 2.1,
+          "event_id": "32861979",
+          "fixture_team_tokens": [
+            [
+              "hotu"
+            ],
+            [
+              "gamerlegion"
+            ]
+          ],
+          "join_rule": "ordered-token exact match",
+          "names_at_source": [
+            "HOTU",
+            "GamerLegion"
+          ],
+          "overround": 1.0679064525218371,
+          "prob_a_at_source": 0.554089709762533,
+          "prob_b_at_source": 0.445910290237467,
+          "prob_fixture_a": 0.554089709762533,
+          "raw_a": "1.690",
+          "raw_b": "2.100",
+          "raw_format": "decimal",
+          "retrieved_utc": "2026-10-28T00:48:16Z",
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "source_team_tokens": [
+            [
+              "hotu"
+            ],
+            [
+              "gamerlegion"
+            ]
+          ],
+          "source_url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/hotu-gamerlegion-202610281000",
+          "start_diff_hours": 0.0,
+          "start_utc_at_source": "2026-10-28T14:00:00Z",
+          "swapped": false
+        },
+        {
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "decimal_a": 1.75,
+          "decimal_b": 2.12,
+          "event_id": "765666845",
+          "fixture_team_tokens": [
+            [
+              "hotu"
+            ],
+            [
+              "gamerlegion"
+            ]
+          ],
+          "join_rule": "ordered-token exact match",
+          "names_at_source": [
+            "HOTU",
+            "GamerLegion"
+          ],
+          "overround": 1.0431266846361185,
+          "prob_a_at_source": 0.5478036175710594,
+          "prob_b_at_source": 0.45219638242894056,
+          "prob_fixture_a": 0.5478036175710594,
+          "raw_a": 1.75,
+          "raw_b": 2.12,
+          "raw_format": "decimal",
+          "retrieved_utc": "2026-10-28T00:48:17Z",
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "source_team_tokens": [
+            [
+              "hotu"
+            ],
+            [
+              "gamerlegion"
+            ]
+          ],
+          "source_url": "https://melbet.com/en/line/esports",
+          "start_diff_hours": 0.0,
+          "start_utc_at_source": "2026-10-28T14:00:00Z",
+          "swapped": false
+        },
+        {
+          "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1639387087/markets/related/straight",
+          "decimal_a": 1.72992700729927,
+          "decimal_b": 2.13,
+          "event_id": "1639387087",
+          "fixture_team_tokens": [
+            [
+              "hotu"
+            ],
+            [
+              "gamerlegion"
+            ]
+          ],
+          "join_rule": "ordered-token exact match",
+          "names_at_source": [
+            "HOTU",
+            "GamerLegion"
+          ],
+          "overround": 1.0475426398050751,
+          "prob_a_at_source": 0.5518239065070631,
+          "prob_b_at_source": 0.448176093492937,
+          "prob_fixture_a": 0.5518239065070631,
+          "raw_a": -137,
+          "raw_b": 113,
+          "raw_format": "american",
+          "retrieved_utc": "2026-10-28T00:48:13Z",
+          "source_key": "pinnacle",
+          "source_name": "Pinnacle",
+          "source_team_tokens": [
+            [
+              "hotu"
+            ],
+            [
+              "gamerlegion"
+            ]
+          ],
+          "source_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+          "start_diff_hours": 0.0,
+          "start_utc_at_source": "2026-10-28T14:00:00Z",
+          "swapped": false
+        }
+      ],
+      "rejected_candidates": [
+        {
+          "event_id": "KXCS2GAME-26OCT281000GLHOTU",
+          "names_at_source": [
+            "GamerLegion",
+            "HOTU"
+          ],
+          "reason": "Rejected by the source board's strict time/start verification; not used.",
+          "source_key": "kalshi",
+          "source_name": "Kalshi (exchange)",
+          "source_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct281000glhotu",
+          "start_diff_hours": null,
+          "start_utc_at_source": null
+        }
+      ],
+      "stage": null,
+      "start_utc": "2026-10-28T14:00:00Z",
+      "status": "published",
+      "team_a": "HOTU",
+      "team_b": "GamerLegion",
+      "tier": "B",
+      "unresolved_reason": null,
+      "valid_until_utc": "2026-10-28T04:35:06Z"
+    },
+    {
+      "basis": "External market consensus \u2014 exact ordered team-token and start-time match",
+      "best_of": null,
+      "competition": "Tesla Cup 2026",
+      "fixture_id": "1082905",
+      "fixture_source": {
+        "name": "HotSpawn match record (fixture discovery only)",
+        "url": "https://www.hotspawn.com/matches/luminosity-vs-envy-tesla-cup-2026-1082905",
+        "url_kind": "match page"
+      },
+      "flags": [
+        "external_market_rederived_from_raw_snapshot",
+        "not_in_vrs:Envy",
+        "start_time_mismatch_not_joined:kalshi",
+        "vrs_snapshot_stale_or_unverified"
+      ],
+      "lock_utc": "2026-10-28T16:54:00Z",
+      "market": {
+        "n_sources": 3,
+        "prob_a": 0.5480514622361143,
+        "prob_b": 0.45194853776388566,
+        "sources": [
+          "bovada",
+          "melbet",
+          "pinnacle"
+        ],
+        "spread_a": 0.011069488147791295,
+        "weights": {
+          "bovada": 1.0,
+          "melbet": 1.0,
+          "pinnacle": 2.0
+        }
+      },
+      "pick_probability": 0.5480514622361143,
+      "pick_side": "a",
+      "pick_team": "Luminosity",
+      "points": 3,
+      "prob_a": 0.5480514622361143,
+      "prob_b": 0.45194853776388566,
+      "quotes": [
+        {
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "decimal_a": 1.741,
+          "decimal_b": 2.05,
+          "event_id": "32860784",
+          "fixture_team_tokens": [
+            [
+              "luminosity"
+            ],
+            [
+              "envy"
+            ]
+          ],
+          "join_rule": "ordered-token exact match",
+          "names_at_source": [
+            "Luminosity",
+            "Envy"
+          ],
+          "overround": 1.062187416819602,
+          "prob_a_at_source": 0.5407544183592718,
+          "prob_b_at_source": 0.45924558164072804,
+          "prob_fixture_a": 0.5407544183592718,
+          "raw_a": "1.741",
+          "raw_b": "2.050",
+          "raw_format": "decimal",
+          "retrieved_utc": "2026-10-28T00:48:16Z",
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "source_team_tokens": [
+            [
+              "luminosity"
+            ],
+            [
+              "envy"
+            ]
+          ],
+          "source_url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/luminosity-envy-202610281300",
+          "start_diff_hours": 0.0,
+          "start_utc_at_source": "2026-10-28T17:00:00Z",
+          "swapped": false
+        },
+        {
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "decimal_a": 1.75,
+          "decimal_b": 2.12,
+          "event_id": "765671453",
+          "fixture_team_tokens": [
+            [
+              "luminosity"
+            ],
+            [
+              "envy"
+            ]
+          ],
+          "join_rule": "ordered-token exact match",
+          "names_at_source": [
+            "Luminosity",
+            "ENVY"
+          ],
+          "overround": 1.0431266846361185,
+          "prob_a_at_source": 0.5478036175710594,
+          "prob_b_at_source": 0.45219638242894056,
+          "prob_fixture_a": 0.5478036175710594,
+          "raw_a": 1.75,
+          "raw_b": 2.12,
+          "raw_format": "decimal",
+          "retrieved_utc": "2026-10-28T00:48:17Z",
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "source_team_tokens": [
+            [
+              "luminosity"
+            ],
+            [
+              "envy"
+            ]
+          ],
+          "source_url": "https://melbet.com/en/line/esports",
+          "start_diff_hours": 0.0,
+          "start_utc_at_source": "2026-10-28T17:00:00Z",
+          "swapped": false
+        },
+        {
+          "api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1639387143/markets/related/straight",
+          "decimal_a": 1.72992700729927,
+          "decimal_b": 2.13,
+          "event_id": "1639387143",
+          "fixture_team_tokens": [
+            [
+              "luminosity"
+            ],
+            [
+              "envy"
+            ]
+          ],
+          "join_rule": "ordered-token exact match",
+          "names_at_source": [
+            "Luminosity",
+            "Envy"
+          ],
+          "overround": 1.0475426398050751,
+          "prob_a_at_source": 0.5518239065070631,
+          "prob_b_at_source": 0.448176093492937,
+          "prob_fixture_a": 0.5518239065070631,
+          "raw_a": -137,
+          "raw_b": 113,
+          "raw_format": "american",
+          "retrieved_utc": "2026-10-28T00:48:13Z",
+          "source_key": "pinnacle",
+          "source_name": "Pinnacle",
+          "source_team_tokens": [
+            [
+              "luminosity"
+            ],
+            [
+              "envy"
+            ]
+          ],
+          "source_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+          "start_diff_hours": 0.0,
+          "start_utc_at_source": "2026-10-28T17:00:00Z",
+          "swapped": false
+        }
+      ],
+      "rejected_candidates": [
+        {
+          "event_id": "KXCS2GAME-26OCT281300ENVYLG",
+          "names_at_source": [
+            "Envy",
+            "Luminosity"
+          ],
+          "reason": "Rejected by the source board's strict time/start verification; not used.",
+          "source_key": "kalshi",
+          "source_name": "Kalshi (exchange)",
+          "source_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct281300envylg",
+          "start_diff_hours": null,
+          "start_utc_at_source": null
+        }
+      ],
+      "stage": null,
+      "start_utc": "2026-10-28T17:00:00Z",
+      "status": "published",
+      "team_a": "Luminosity",
+      "team_b": "Envy",
+      "tier": "B",
+      "unresolved_reason": null,
+      "valid_until_utc": "2026-10-28T04:35:06Z"
     },
     {
       "basis": null,
@@ -461,7 +1049,7 @@
           "raw_a": 1.31,
           "raw_b": 3.2,
           "raw_format": "decimal",
-          "retrieved_utc": "2026-10-27T20:29:11Z",
+          "retrieved_utc": "2026-10-28T00:48:17Z",
           "source_key": "melbet",
           "source_name": "Melbet",
           "source_team_tokens": [
@@ -487,7 +1075,7 @@
       "team_b": "OG",
       "tier": "C",
       "unresolved_reason": null,
-      "valid_until_utc": "2026-10-27T20:33:58Z"
+      "valid_until_utc": "2026-10-28T04:35:06Z"
     },
     {
       "basis": null,
@@ -562,12 +1150,12 @@
   "generator_version": "2026-10-19.1",
   "input": {
     "board_path": "data/f7279a54/board.json",
-    "board_sha256": "02fae0449c60e4611ca147a91ab5407d0dd7e4694fed5b39ee6bf01230cc5ea4",
-    "collected_from_utc": "2026-10-27T20:29:02Z",
-    "collected_to_utc": "2026-10-27T20:29:14Z",
+    "board_sha256": "80907ee9de1623ee9d97e3cd2081a6b2aa02ef2e2ddf73faf1911628d639196f",
+    "collected_from_utc": "2026-10-28T00:48:05Z",
+    "collected_to_utc": "2026-10-28T00:48:19Z",
     "snapshot_path": "data/f7279a54/snapshot.json",
-    "snapshot_sha256": "423d69a3d654a76d9a5a38d4e8212d2e3fdc5f06e06d4be75e8a7af72be92f6a",
-    "source_board_generated_utc": "2026-10-27T20:29:14Z",
+    "snapshot_sha256": "5bef0e4777091abb0103ab897273ce88512d46459c34f9531928e42f7cb00f45",
+    "source_board_generated_utc": "2026-10-28T00:48:19Z",
     "source_policy": "strict-fallback-v2",
     "source_session": "f7279a54"
   },
@@ -590,15 +1178,15 @@
   "schema": "a666cd41.provenance-audit.v1",
   "source_access": {
     "bovada": {
-      "at_utc": "2026-10-27T20:29:10Z",
+      "at_utc": "2026-10-28T00:48:15Z",
       "error": null,
       "ok": true,
-      "quotes": 2,
+      "quotes": 11,
       "status": 200,
       "url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2"
     },
     "hltv_probe": {
-      "at_utc": "2026-10-27T20:29:12Z",
+      "at_utc": "2026-10-28T00:48:17Z",
       "error": "HTTPError 403",
       "ok": false,
       "quotes": null,
@@ -606,7 +1194,7 @@
       "url": "https://www.hltv.org/matches"
     },
     "hotspawn_api": {
-      "at_utc": "2026-10-27T20:29:03Z",
+      "at_utc": "2026-10-28T00:48:06Z",
       "error": null,
       "ok": true,
       "quotes": null,
@@ -614,7 +1202,7 @@
       "url": "https://phpstack-1372681-6459848.cloudwaysapps.com/api/v1/fixtures"
     },
     "hotspawn_lobby_page": {
-      "at_utc": "2026-10-27T20:29:02Z",
+      "at_utc": "2026-10-28T00:48:05Z",
       "error": null,
       "ok": true,
       "quotes": null,
@@ -622,31 +1210,31 @@
       "url": "https://play.hotspawn.com/lobby"
     },
     "kalshi": {
-      "at_utc": "2026-10-27T20:29:11Z",
+      "at_utc": "2026-10-28T00:48:17Z",
       "error": null,
       "ok": true,
-      "quotes": 10,
+      "quotes": 18,
       "status": 200,
       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200"
     },
     "melbet": {
-      "at_utc": "2026-10-27T20:29:10Z",
+      "at_utc": "2026-10-28T00:48:16Z",
       "error": null,
       "ok": true,
-      "quotes": 29,
+      "quotes": 34,
       "status": 200,
       "url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1"
     },
     "pinnacle": {
-      "at_utc": "2026-10-27T20:29:09Z",
+      "at_utc": "2026-10-28T00:48:13Z",
       "error": null,
       "ok": true,
-      "quotes": 0,
+      "quotes": 7,
       "status": 200,
       "url": "https://guest.api.arcadia.pinnacle.com/0.1/sports/12/matchups"
     },
     "polymarket_probe": {
-      "at_utc": "2026-10-27T20:29:11Z",
+      "at_utc": "2026-10-28T00:48:17Z",
       "error": null,
       "ok": true,
       "quotes": null,
@@ -654,7 +1242,7 @@
       "url": "https://gamma-api.polymarket.com/events?closed=false&limit=200&tag_slug=counter-strike"
     },
     "valve_vrs_file": {
-      "at_utc": "2026-10-27T20:29:13Z",
+      "at_utc": "2026-10-28T00:48:19Z",
       "error": null,
       "ok": true,
       "quotes": null,
@@ -662,7 +1250,7 @@
       "url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md"
     },
     "valve_vrs_tree": {
-      "at_utc": "2026-10-27T20:29:12Z",
+      "at_utc": "2026-10-28T00:48:17Z",
       "error": null,
       "ok": true,
       "quotes": null,
@@ -671,13 +1259,13 @@
     }
   },
   "summary": {
-    "open_fixtures": 11,
-    "published_direct_market_picks": 3,
+    "open_fixtures": 14,
+    "published_direct_market_picks": 7,
     "published_exact_token_reorder_picks": 0,
-    "published_external_market_picks": 3,
-    "raw_quotes_examined": 41,
-    "source_board_market_picks": 3,
-    "source_board_unresolved": 8,
-    "unresolved_blank": 8
+    "published_external_market_picks": 7,
+    "raw_quotes_examined": 70,
+    "source_board_market_picks": 7,
+    "source_board_unresolved": 7,
+    "unresolved_blank": 7
   }
 }
