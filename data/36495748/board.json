@@ -1,12 +1,12 @@
 {
  "session": "36495748",
- "built_utc": "2026-10-27T20:48:25Z",
+ "built_utc": "2026-10-28T00:51:55Z",
  "inputs": {
   "strict_board": {
    "path": "data/f7279a54/board.json",
-   "generated_utc": "2026-10-27T20:29:14Z",
-   "sha256": "02fae0449c60e4611ca147a91ab5407d0dd7e4694fed5b39ee6bf01230cc5ea4",
-   "open": 11,
+   "generated_utc": "2026-10-28T00:48:19Z",
+   "sha256": "80907ee9de1623ee9d97e3cd2081a6b2aa02ef2e2ddf73faf1911628d639196f",
+   "open": 14,
    "calibration": {
     "n_pairs": 60,
     "k": 0.43077894236569164,
@@ -25,9 +25,9 @@
   },
   "coverage_board": {
    "path": "data/fe803b80/board.json",
-   "generated_utc": "2026-10-27T20:38:52Z",
-   "sha256": "06760e996a966c2297f750e1e49f76dd2f0fe6c79b94b90ae5461c880001bc16",
-   "open": 13
+   "generated_utc": "2026-10-28T00:25:35Z",
+   "sha256": "4bed2d569f76773e4e5e5da1f8ec1f1e1c4cecea138b79c2687741194f67c4d6",
+   "open": 15
   },
   "official_vrs": {
    "file": "vrs_standings_global_2026_10_05.md",
@@ -44,7 +44,7 @@
    "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/live/2026/vrs_standings_global_2026_10_05.md"
   },
   "overrides_reads": 12,
-  "probe_generated_utc": "2026-10-27T20:46:32Z"
+  "probe_generated_utc": "2026-10-28T00:51:25Z"
  },
  "model": {
   "k": 0.43077894236569164,
@@ -53,13 +53,13 @@
   "formula": "p(a) = 1 / (1 + exp(-k * C * (points_a - points_b))), C = g*ln(10)/400 (RD=75, Valve glicko.js)"
  },
  "summary": {
-  "open": 13,
-  "market": 3,
-  "exchange": 1,
+  "open": 15,
+  "market": 7,
+  "exchange": 0,
   "vrs_model": 5,
   "directional_floor": 2,
-  "unresolved": 2,
-  "with_pick": 11
+  "unresolved": 1,
+  "with_pick": 14
  },
  "rows": [
   {
@@ -131,7 +131,7 @@
         "Off Chops",
         "Nexvoid"
        ],
-       "retrieved_utc": "2026-10-27T20:29:11Z",
+       "retrieved_utc": "2026-10-28T00:48:17Z",
        "start_utc_at_source": "2026-10-28T03:00:00Z",
        "start_diff_h": 0.0,
        "usable": true,
@@ -148,10 +148,10 @@
    },
    "cross_check": {
     "fe803b80": {
-     "prob_a": 0.407898,
+     "prob_a": 0.401449,
      "basis": "market",
      "pick": "NEXVOID",
-     "delta_pp": 0.0,
+     "delta_pp": 0.6,
      "same_pick": true
     }
    }
@@ -311,7 +311,7 @@
         "Abyssal",
         "Rooster"
        ],
-       "retrieved_utc": "2026-10-27T20:29:11Z",
+       "retrieved_utc": "2026-10-28T00:48:17Z",
        "start_utc_at_source": "2026-10-28T06:00:00Z",
        "start_diff_h": 0.0,
        "usable": true,
@@ -328,10 +328,10 @@
    },
    "cross_check": {
     "fe803b80": {
-     "prob_a": 0.4990884904261204,
+     "prob_a": 0.4704323954513016,
      "basis": "market+model",
      "pick": "Rooster",
-     "delta_pp": 0.1,
+     "delta_pp": 3.0,
      "same_pick": false
     }
    }
@@ -355,52 +355,68 @@
    "ladder": [
     {
      "rung": 1,
-     "outcome": "no_price",
-     "detail": "no admissible quote on the strict market board"
+     "outcome": "priced",
+     "detail": "1 book(s) re-derived from raw decimals"
     },
     {
      "rung": 2,
-     "outcome": "no_price",
-     "detail": "no verified Kalshi event for this fixture"
+     "outcome": "not_needed",
+     "detail": "priced at rung 1"
     },
     {
      "rung": 3,
-     "outcome": "not_identifiable",
-     "detail": "The Audacity: absent; Chinggis Warriors: ambiguous_name"
+     "outcome": "not_needed",
+     "detail": "priced at rung 1"
     },
     {
      "rung": 4,
-     "outcome": "not_applicable",
-     "detail": "needs exactly one rated side and a provably unrated opponent"
+     "outcome": "not_needed",
+     "detail": "priced at rung 1"
     },
     {
      "rung": 5,
-     "outcome": "unresolved",
-     "detail": "no book price, no verified exchange price, and no admissible official-rating resolution"
+     "outcome": "not_needed",
+     "detail": "priced at rung 1"
     }
    ],
-   "basis": "unresolved",
-   "prob_a": null,
-   "prob_b": null,
-   "pick": null,
-   "pick_prob": null,
+   "basis": "market",
+   "prob_a": 0.3927104722792608,
+   "prob_b": 0.6072895277207392,
+   "pick": "Chinggis Warriors",
+   "pick_prob": 0.6072895277207392,
    "pick_note": null,
-   "confidence": null,
+   "confidence": "Solid",
    "detail": {
-    "vrs": {
-     "a": null,
-     "b": null,
-     "state_a": {
-      "state": "absent",
-      "detail": "no row under this name (exact or token) in the official file"
-     },
-     "state_b": {
-      "state": "ambiguous_name",
-      "candidates": [
-       87,
-       220
-      ],
-      "detail": "Valve lists more than one row under this name; refusing to pick one without roster evidence"
+    "market": {
+     "n_sources": 1,
+     "sources": [
+      "melbet"
+     ],
+     "min_a": 0.3927104722792608,
+     "max_a": 0.3927104722792608,
+     "quotes": [
+      {
+       "source_key": "melbet",
+       "source_name": "Melbet",
+       "public_url": "https://melbet.com/en/line/esports",
+       "decimal_a": 2.366,
+       "decimal_b": 1.53,
+       "names_at_source": [
+        "The Audacity",
+        "Chinggis Warriors"
+       ],
+       "retrieved_utc": "2026-10-28T00:48:17Z",
+       "start_utc_at_source": "2026-10-28T07:30:00Z",
+       "start_diff_h": 0.0,
+       "usable": true,
+       "prob_a": 0.3927104722792608,
+       "overround": 0.07624904004994493
+      }
+     ],
+     "rederivation_check": {
+      "stored_prob_a": 0.3927,
+      "delta": 1.0472279260820283e-05,
+      "pass": true
      }
     }
    },
@@ -416,63 +432,364 @@
    "points_on_offer": 3,
    "start_utc": "2026-10-28T08:00:00Z",
    "lock_utc": "2026-10-28T07:54:00Z",
-   "hotspawn_url": "https://play.hotspawn.com/lobby",
+   "hotspawn_url": "https://www.hotspawn.com/matches/b8-vs-alliance-tesla-cup-2026-1082902",
    "present_on": [
+    "strict f7279a54",
     "board fe803b80"
    ],
    "fixture_note": null,
    "ladder": [
     {
      "rung": 1,
-     "outcome": "no_price",
-     "detail": "no admissible quote on the strict market board"
+     "outcome": "priced",
+     "detail": "2 book(s) re-derived from raw decimals"
     },
     {
      "rung": 2,
-     "outcome": "priced",
-     "detail": "Kalshi mids 70.5c/34.0c, start proven on the event page"
+     "outcome": "not_needed",
+     "detail": "priced at rung 1"
     },
     {
      "rung": 3,
      "outcome": "not_needed",
-     "detail": "priced at rung 2"
+     "detail": "priced at rung 1"
     },
     {
      "rung": 4,
      "outcome": "not_needed",
-     "detail": "priced at rung 2"
+     "detail": "priced at rung 1"
     },
     {
      "rung": 5,
      "outcome": "not_needed",
-     "detail": "priced at rung 2"
+     "detail": "priced at rung 1"
     }
    ],
-   "basis": "exchange",
-   "prob_a": 0.6746411483253588,
-   "prob_b": 0.3253588516746412,
+   "basis": "market",
+   "prob_a": 0.6791990178324836,
+   "prob_b": 0.3208009821675164,
    "pick": "B8",
-   "pick_prob": 0.6746411483253588,
+   "pick_prob": 0.6791990178324836,
    "pick_note": null,
    "confidence": "Solid",
    "detail": {
-    "exchange": {
-     "source_name": "Kalshi (exchange, runner probe)",
-     "url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct280400allb8",
-     "event_ticker": "KXCS2GAME-26OCT280400ALLB8",
-     "start_verified": "Kalshi rules state the match was scheduled for 2026-10-28T08:00:00Z (EDT/EST converted); HotSpawn start is 2026-10-28T08:00:00Z",
-     "note": "Joined by the 36495748 refresher: both names matched after normalisation and the scheduled start stated in the market rules equals the HotSpawn start. Verify on the event page before treating as settled fact.",
-     "read_ref": null,
-     "mid_cents_a": 70.5,
-     "mid_cents_b": 34.0
+    "market": {
+     "n_sources": 2,
+     "sources": [
+      "bovada",
+      "melbet"
+     ],
+     "min_a": 0.6708979783732958,
+     "max_a": 0.6875000572916714,
+     "quotes": [
+      {
+       "source_key": "bovada",
+       "source_name": "Bovada",
+       "public_url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/b8-alliance-202610280400",
+       "decimal_a": 1.363636,
+       "decimal_b": 3.0,
+       "names_at_source": [
+        "B8",
+        "Alliance"
+       ],
+       "retrieved_utc": "2026-10-28T00:48:16Z",
+       "start_utc_at_source": "2026-10-28T08:00:00Z",
+       "start_diff_h": 0.0,
+       "usable": true,
+       "prob_a": 0.6875000572916714,
+       "overround": 0.06666686222227436
+      },
+      {
+       "source_key": "melbet",
+       "source_name": "Melbet",
+       "public_url": "https://melbet.com/en/line/esports",
+       "decimal_a": 1.4,
+       "decimal_b": 2.854,
+       "names_at_source": [
+        "B8",
+        "Alliance"
+       ],
+       "retrieved_utc": "2026-10-28T00:48:17Z",
+       "start_utc_at_source": "2026-10-28T08:00:00Z",
+       "start_diff_h": 0.0,
+       "usable": true,
+       "prob_a": 0.6708979783732958,
+       "overround": 0.06467113825207726
+      }
+     ],
+     "rederivation_check": {
+      "stored_prob_a": 0.6792,
+      "delta": 9.821675164278787e-07,
+      "pass": true
+     }
     }
    },
    "cross_check": {
     "fe803b80": {
-     "prob_a": 0.6658160109923638,
+     "prob_a": 0.6638835395692867,
      "basis": "market+model",
      "pick": "B8",
-     "delta_pp": 0.9,
+     "delta_pp": 1.5,
+     "same_pick": true
+    }
+   }
+  },
+  {
+   "fixture_id": "1082904",
+   "team_a": "HOTU",
+   "team_b": "GamerLegion",
+   "competition": "Tesla Cup 2026",
+   "tier": "B",
+   "best_of": null,
+   "points_on_offer": 3,
+   "start_utc": "2026-10-28T14:00:00Z",
+   "lock_utc": "2026-10-28T13:54:00Z",
+   "hotspawn_url": "https://www.hotspawn.com/matches/hotu-vs-gamerlegion-tesla-cup-2026-1082904",
+   "present_on": [
+    "strict f7279a54",
+    "board fe803b80"
+   ],
+   "fixture_note": null,
+   "ladder": [
+    {
+     "rung": 1,
+     "outcome": "priced",
+     "detail": "3 book(s) re-derived from raw decimals"
+    },
+    {
+     "rung": 2,
+     "outcome": "not_needed",
+     "detail": "priced at rung 1"
+    },
+    {
+     "rung": 3,
+     "outcome": "not_needed",
+     "detail": "priced at rung 1"
+    },
+    {
+     "rung": 4,
+     "outcome": "not_needed",
+     "detail": "priced at rung 1"
+    },
+    {
+     "rung": 5,
+     "outcome": "not_needed",
+     "detail": "priced at rung 1"
+    }
+   ],
+   "basis": "market",
+   "prob_a": 0.5513852850869296,
+   "prob_b": 0.44861471491307037,
+   "pick": "HOTU",
+   "pick_prob": 0.5513852850869296,
+   "pick_note": null,
+   "confidence": "Lean",
+   "detail": {
+    "market": {
+     "n_sources": 3,
+     "sources": [
+      "bovada",
+      "melbet",
+      "pinnacle"
+     ],
+     "min_a": 0.5478036175710594,
+     "max_a": 0.554089709762533,
+     "quotes": [
+      {
+       "source_key": "bovada",
+       "source_name": "Bovada",
+       "public_url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/hotu-gamerlegion-202610281000",
+       "decimal_a": 1.69,
+       "decimal_b": 2.1,
+       "names_at_source": [
+        "HOTU",
+        "GamerLegion"
+       ],
+       "retrieved_utc": "2026-10-28T00:48:16Z",
+       "start_utc_at_source": "2026-10-28T14:00:00Z",
+       "start_diff_h": 0.0,
+       "usable": true,
+       "prob_a": 0.554089709762533,
+       "overround": 0.06790645252183714
+      },
+      {
+       "source_key": "melbet",
+       "source_name": "Melbet",
+       "public_url": "https://melbet.com/en/line/esports",
+       "decimal_a": 1.75,
+       "decimal_b": 2.12,
+       "names_at_source": [
+        "HOTU",
+        "GamerLegion"
+       ],
+       "retrieved_utc": "2026-10-28T00:48:17Z",
+       "start_utc_at_source": "2026-10-28T14:00:00Z",
+       "start_diff_h": 0.0,
+       "usable": true,
+       "prob_a": 0.5478036175710594,
+       "overround": 0.04312668463611846
+      },
+      {
+       "source_key": "pinnacle",
+       "source_name": "Pinnacle",
+       "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+       "decimal_a": 1.72992700729927,
+       "decimal_b": 2.13,
+       "names_at_source": [
+        "HOTU",
+        "GamerLegion"
+       ],
+       "retrieved_utc": "2026-10-28T00:48:13Z",
+       "start_utc_at_source": "2026-10-28T14:00:00Z",
+       "start_diff_h": 0.0,
+       "usable": true,
+       "prob_a": 0.5518239065070631,
+       "overround": 0.047542639805075115
+      }
+     ],
+     "rederivation_check": {
+      "stored_prob_a": 0.5514,
+      "delta": 1.4714913070368318e-05,
+      "pass": true
+     }
+    }
+   },
+   "cross_check": {
+    "fe803b80": {
+     "prob_a": 0.530871835490665,
+     "basis": "market+model",
+     "pick": "HOTU",
+     "delta_pp": 2.1,
+     "same_pick": true
+    }
+   }
+  },
+  {
+   "fixture_id": "1082905",
+   "team_a": "Luminosity",
+   "team_b": "Envy",
+   "competition": "Tesla Cup 2026",
+   "tier": "B",
+   "best_of": null,
+   "points_on_offer": 3,
+   "start_utc": "2026-10-28T17:00:00Z",
+   "lock_utc": "2026-10-28T16:54:00Z",
+   "hotspawn_url": "https://www.hotspawn.com/matches/luminosity-vs-envy-tesla-cup-2026-1082905",
+   "present_on": [
+    "strict f7279a54",
+    "board fe803b80"
+   ],
+   "fixture_note": null,
+   "ladder": [
+    {
+     "rung": 1,
+     "outcome": "priced",
+     "detail": "3 book(s) re-derived from raw decimals"
+    },
+    {
+     "rung": 2,
+     "outcome": "not_needed",
+     "detail": "priced at rung 1"
+    },
+    {
+     "rung": 3,
+     "outcome": "not_needed",
+     "detail": "priced at rung 1"
+    },
+    {
+     "rung": 4,
+     "outcome": "not_needed",
+     "detail": "priced at rung 1"
+    },
+    {
+     "rung": 5,
+     "outcome": "not_needed",
+     "detail": "priced at rung 1"
+    }
+   ],
+   "basis": "market",
+   "prob_a": 0.5480514622361143,
+   "prob_b": 0.45194853776388566,
+   "pick": "Luminosity",
+   "pick_prob": 0.5480514622361143,
+   "pick_note": null,
+   "confidence": "Lean",
+   "detail": {
+    "market": {
+     "n_sources": 3,
+     "sources": [
+      "bovada",
+      "melbet",
+      "pinnacle"
+     ],
+     "min_a": 0.5407544183592718,
+     "max_a": 0.5518239065070631,
+     "quotes": [
+      {
+       "source_key": "bovada",
+       "source_name": "Bovada",
+       "public_url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/luminosity-envy-202610281300",
+       "decimal_a": 1.741,
+       "decimal_b": 2.05,
+       "names_at_source": [
+        "Luminosity",
+        "Envy"
+       ],
+       "retrieved_utc": "2026-10-28T00:48:16Z",
+       "start_utc_at_source": "2026-10-28T17:00:00Z",
+       "start_diff_h": 0.0,
+       "usable": true,
+       "prob_a": 0.5407544183592718,
+       "overround": 0.06218741681960194
+      },
+      {
+       "source_key": "melbet",
+       "source_name": "Melbet",
+       "public_url": "https://melbet.com/en/line/esports",
+       "decimal_a": 1.75,
+       "decimal_b": 2.12,
+       "names_at_source": [
+        "Luminosity",
+        "ENVY"
+       ],
+       "retrieved_utc": "2026-10-28T00:48:17Z",
+       "start_utc_at_source": "2026-10-28T17:00:00Z",
+       "start_diff_h": 0.0,
+       "usable": true,
+       "prob_a": 0.5478036175710594,
+       "overround": 0.04312668463611846
+      },
+      {
+       "source_key": "pinnacle",
+       "source_name": "Pinnacle",
+       "public_url": "https://www.pinnacle.com/en/esports/cs2-hub",
+       "decimal_a": 1.72992700729927,
+       "decimal_b": 2.13,
+       "names_at_source": [
+        "Luminosity",
+        "Envy"
+       ],
+       "retrieved_utc": "2026-10-28T00:48:13Z",
+       "start_utc_at_source": "2026-10-28T17:00:00Z",
+       "start_diff_h": 0.0,
+       "usable": true,
+       "prob_a": 0.5518239065070631,
+       "overround": 0.047542639805075115
+      }
+     ],
+     "rederivation_check": {
+      "stored_prob_a": 0.5481,
+      "delta": 4.853776388569209e-05,
+      "pass": true
+     }
+    }
+   },
+   "cross_check": {
+    "fe803b80": {
+     "prob_a": 0.5508393999999999,
+     "basis": "market",
+     "pick": "Luminosity",
+     "delta_pp": -0.3,
      "same_pick": true
     }
    }
@@ -824,7 +1141,7 @@
    },
    "cross_check": {
     "fe803b80": {
-     "prob_a": 0.992785186032029,
+     "prob_a": 0.9927851961708944,
      "basis": "model",
      "pick": "Metizport",
      "delta_pp": -9.3,
@@ -901,7 +1218,7 @@
         "BC.Game",
         "OG"
        ],
-       "retrieved_utc": "2026-10-27T20:29:11Z",
+       "retrieved_utc": "2026-10-28T00:48:17Z",
        "start_utc_at_source": "2026-10-30T16:15:00Z",
        "start_diff_h": 0.0,
        "usable": true,
