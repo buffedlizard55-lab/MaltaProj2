@@ -1,23 +1,23 @@
 {
   "session_id": "5468b0ba",
-  "canonical_generated_utc": "2026-10-28T19:56:22Z",
-  "canonical_collected_to_utc": "2026-10-28T19:56:22Z",
+  "canonical_generated_utc": "2026-10-28T21:01:02Z",
+  "canonical_collected_to_utc": "2026-10-28T21:01:02Z",
   "source_observation_utc": null,
   "valve_git_blob_sha": "2aa2805394fbc68f36a5752a5b16026f2ab2fed5",
   "summary": {
-    "open": 20,
-    "with_line": 0,
-    "market_based": 0,
+    "open": 22,
+    "with_line": 13,
+    "market_based": 13,
     "model_only": 0,
-    "no_line": 20,
-    "locked_recent": 3,
+    "no_line": 9,
+    "locked_recent": 0,
     "stale_listed": 61,
     "quotes_total": 55,
     "quotes_live_excluded": 0,
-    "quotes_unmatched": 55,
+    "quotes_unmatched": 40,
     "sources_ok": [
       "bovada",
-      "hotspawn_failed_refresh",
+      "hotspawn_api",
       "hotspawn_lobby_page",
       "kalshi",
       "melbet",
@@ -27,23 +27,22 @@
       "valve_vrs_tree"
     ],
     "sources_failed": [
-      "hltv_probe",
-      "hotspawn_api"
+      "hltv_probe"
     ],
-    "captured_quotes_total": 63,
-    "rule_backed_quotes_excluded_by_gap_policy": 8,
-    "with_pick": 0,
-    "tier_a_market": 0,
+    "captured_quotes_total": 72,
+    "rule_backed_quotes_excluded_by_gap_policy": 17,
+    "with_pick": 13,
+    "tier_a_market": 13,
     "tier_b_model": 0,
     "tier_c_fallback": 0,
-    "tier_d_none": 20,
-    "listed": 84
+    "tier_d_none": 9,
+    "listed": 83
   },
   "verification_summary": {
     "failures": [],
-    "fixture_rows_checked": 84,
+    "fixture_rows_checked": 83,
     "rating_rows_checked": 380,
-    "consumed_quotes_checked": 0,
+    "consumed_quotes_checked": 15,
     "all_quotes_math_verified": true
   },
   "twc_results": [
@@ -313,7 +312,7 @@
       "quotes": [],
       "lock_utc": null,
       "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "valid_until_utc": "2026-10-28T19:56:22Z",
+      "valid_until_utc": "2026-10-28T21:01:04Z",
       "flags": [
         "tournament_preview_not_a_hotspawn_pick"
       ],
@@ -349,7 +348,7 @@
       "quotes": [],
       "lock_utc": null,
       "hotspawn_url": "https://play.hotspawn.com/lobby",
-      "valid_until_utc": "2026-10-28T19:56:22Z",
+      "valid_until_utc": "2026-10-28T21:01:04Z",
       "flags": [
         "tournament_preview_not_a_hotspawn_pick"
       ],
@@ -408,14 +407,14 @@
               "standing": 87,
               "points": 1084,
               "roster": "cool4st, fury5k, ROUX, sk0R, yAmi",
-              "latest_match_date": null,
+              "latest_match_date": "2026-10-04",
               "details_path": "live/2026/details/2026_10_05/0087--chinggis_warriors--cool4st-fury5k-roux-sk0r-yami.md"
             },
             {
               "standing": 220,
               "points": 685,
               "roster": "Aceari, hasteka, ROUX, sk0R, yAmi",
-              "latest_match_date": null,
+              "latest_match_date": "2026-08-29",
               "details_path": "live/2026/details/2026_10_05/0220--chinggis_warriors--aceari-hasteka-roux-sk0r-yami.md"
             }
           ]
@@ -423,16 +422,14 @@
       },
       "flags": [
         "ambiguous_vrs_name:Chinggis Warriors",
-        "fixture_observation_stale_or_unverified",
         "no_line_unverified",
-        "stale_or_unverified_quote:melbet",
+        "start_time_mismatch_not_joined:melbet",
         "vrs_snapshot_stale_or_unverified"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
         "Chinggis Warriors: multiple official rating rows; the fixture’s current roster is not confirmed.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "melbet: price or fixture freshness could not be established.",
+        "melbet: a candidate price has a missing, approximate or mismatched kickoff; it is not joined.",
         "The official ratings are missing, undated or outside the 14-day eligibility window.",
         "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
       ],
@@ -448,15 +445,29 @@
       "tier": "C",
       "team_a": "WBT Academy",
       "team_b": "SAW Youngsters",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.5423,
+      "prob_b": 0.4577,
+      "pick_team": "WBT Academy",
+      "pick_prob": 0.5423,
+      "fair_decimal_a": 1.844,
+      "fair_decimal_b": 2.185,
+      "quotes_verified": [
+        {
+          "source_key": "kalshi",
+          "source_name": "Kalshi (exchange)",
+          "event_id": "KXCS2GAME-26OCT290500SAWYWBTA",
+          "decimal_a": 2.1739130434782608,
+          "decimal_b": 1.8348623853211008,
+          "recomputed_prob_a": 0.5423,
+          "stored_prob_a": 0.5423,
+          "verified": true,
+          "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct290500sawywbta",
+          "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+          "retrieved_utc": "2026-10-28T21:01:00Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 130,
         "points": 911,
@@ -473,20 +484,15 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:kalshi",
+        "exchange_midpoints_not_executable_bookmaker_odds",
+        "exchange_volume_may_be_low_or_zero",
+        "rule_backed_exchange_fallback",
         "vrs_snapshot_stale_or_unverified"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "kalshi: price or fixture freshness could not be established.",
-        "The official ratings are missing, undated or outside the 14-day eligibility window.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/wbt-academy-vs-saw-youngsters-circuito-retake-season-13-1103782"
+        "https://www.hotspawn.com/matches/wbt-academy-vs-saw-youngsters-circuito-retake-season-13-1103782",
+        "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct290500sawywbta"
       ]
     },
     {
@@ -497,15 +503,29 @@
       "tier": "B",
       "team_a": "Imperial",
       "team_b": "QUINTESSÊNCIA",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.8874,
+      "prob_b": 0.1126,
+      "pick_team": "Imperial",
+      "pick_prob": 0.8874,
+      "fair_decimal_a": 1.127,
+      "fair_decimal_b": 8.881,
+      "quotes_verified": [
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "765784380",
+          "decimal_a": 1.04,
+          "decimal_b": 8.2,
+          "recomputed_prob_a": 0.8874,
+          "stored_prob_a": 0.8874,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-28T21:01:00Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 52,
         "points": 1297,
@@ -522,22 +542,12 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:kalshi",
-        "stale_or_unverified_quote:melbet",
         "vrs_snapshot_stale_or_unverified"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "kalshi: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "The official ratings are missing, undated or outside the 14-day eligibility window.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/imperial-vs-quintessencia-gamers-club-masters-vii-1117315"
+        "https://www.hotspawn.com/matches/imperial-vs-quintessencia-gamers-club-masters-vii-1117315",
+        "https://melbet.com/en/line/esports"
       ]
     },
     {
@@ -548,15 +558,29 @@
       "tier": "B",
       "team_a": "Arena Pro",
       "team_b": "100 Thieves",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.0446,
+      "prob_b": 0.9554,
+      "pick_team": "100 Thieves",
+      "pick_prob": 0.9554,
+      "fair_decimal_a": 22.422,
+      "fair_decimal_b": 1.047,
+      "quotes_verified": [
+        {
+          "source_key": "kalshi",
+          "source_name": "Kalshi (exchange)",
+          "event_id": "KXCS2GAME-26OCT290900ARE100T",
+          "decimal_a": 22.22222222222222,
+          "decimal_b": 1.0362694300518136,
+          "recomputed_prob_a": 0.0446,
+          "stored_prob_a": 0.0446,
+          "verified": true,
+          "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct290900are100t",
+          "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+          "retrieved_utc": "2026-10-28T21:01:00Z"
+        }
+      ],
       "vrs_team_a": null,
       "vrs_team_b": {
         "standing": 28,
@@ -567,22 +591,16 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
+        "exchange_midpoints_not_executable_bookmaker_odds",
+        "exchange_volume_may_be_low_or_zero",
         "not_in_vrs:Arena Pro",
-        "stale_or_unverified_quote:kalshi",
+        "rule_backed_exchange_fallback",
         "vrs_snapshot_stale_or_unverified"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "Arena Pro: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
-        "kalshi: price or fixture freshness could not be established.",
-        "The official ratings are missing, undated or outside the 14-day eligibility window.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/arena-pro-vs-100-thieves-firesports-last-chance-2026-1117316"
+        "https://www.hotspawn.com/matches/arena-pro-vs-100-thieves-firesports-last-chance-2026-1117316",
+        "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct290900are100t"
       ]
     },
     {
@@ -593,15 +611,29 @@
       "tier": "B",
       "team_a": "BARCA",
       "team_b": "Bounty Hunters",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.5921,
+      "prob_b": 0.4079,
+      "pick_team": "BARCA",
+      "pick_prob": 0.5921,
+      "fair_decimal_a": 1.689,
+      "fair_decimal_b": 2.452,
+      "quotes_verified": [
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "765773130",
+          "decimal_a": 1.57,
+          "decimal_b": 2.279,
+          "recomputed_prob_a": 0.5921,
+          "stored_prob_a": 0.5921,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-28T21:01:00Z"
+        }
+      ],
       "vrs_team_a": null,
       "vrs_team_b": {
         "standing": 96,
@@ -612,24 +644,13 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
         "not_in_vrs:BARCA",
-        "stale_or_unverified_quote:kalshi",
-        "stale_or_unverified_quote:melbet",
         "vrs_snapshot_stale_or_unverified"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "BARCA: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
-        "kalshi: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "The official ratings are missing, undated or outside the 14-day eligibility window.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/barca-vs-bounty-hunters-firesports-last-chance-2026-1117317"
+        "https://www.hotspawn.com/matches/barca-vs-bounty-hunters-firesports-last-chance-2026-1117317",
+        "https://melbet.com/en/line/esports"
       ]
     },
     {
@@ -640,15 +661,42 @@
       "tier": "C",
       "team_a": "Iberian Soul",
       "team_b": "ZOTIX",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.8158,
+      "prob_b": 0.1842,
+      "pick_team": "Iberian Soul",
+      "pick_prob": 0.8158,
+      "fair_decimal_a": 1.226,
+      "fair_decimal_b": 5.429,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32881768",
+          "decimal_a": 1.133333,
+          "decimal_b": 5.5,
+          "recomputed_prob_a": 0.8291,
+          "stored_prob_a": 0.8291,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/hyperx-retake/iberian-soul-zotix-202610291000",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-28T21:00:59Z"
+        },
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "765713945",
+          "decimal_a": 1.15,
+          "decimal_b": 4.67,
+          "recomputed_prob_a": 0.8024,
+          "stored_prob_a": 0.8024,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-28T21:01:00Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 59,
         "points": 1218,
@@ -664,14 +712,14 @@
               "standing": 275,
               "points": 604,
               "roster": "byr9, EsD, kalyambys, xeNji",
-              "latest_match_date": null,
+              "latest_match_date": "2026-05-31",
               "details_path": "live/2026/details/2026_10_05/0275--zotix--byr9-esd-kalyambys-xenji.md"
             },
             {
               "standing": 305,
               "points": 555,
               "roster": "byr9, certa1n, EsD, flee, shen",
-              "latest_match_date": null,
+              "latest_match_date": "2026-09-16",
               "details_path": "live/2026/details/2026_10_05/0305--zotix--byr9-certa1n-esd-flee-shen.md"
             }
           ]
@@ -679,25 +727,13 @@
       },
       "flags": [
         "ambiguous_vrs_name:ZOTIX",
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:bovada",
-        "stale_or_unverified_quote:kalshi",
-        "stale_or_unverified_quote:melbet",
         "vrs_snapshot_stale_or_unverified"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "ZOTIX: multiple official rating rows; the fixture’s current roster is not confirmed.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "bovada: price or fixture freshness could not be established.",
-        "kalshi: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "The official ratings are missing, undated or outside the 14-day eligibility window.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/iberian-soul-vs-zotix-circuito-retake-season-13-1103785"
+        "https://www.hotspawn.com/matches/iberian-soul-vs-zotix-circuito-retake-season-13-1103785",
+        "https://www.bovada.lv/esports/counter-strike-2/hyperx-retake/iberian-soul-zotix-202610291000",
+        "https://melbet.com/en/line/esports"
       ]
     },
     {
@@ -708,15 +744,29 @@
       "tier": "B",
       "team_a": "NAOCOPULAS",
       "team_b": "paiN",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.08,
+      "prob_b": 0.92,
+      "pick_team": "paiN",
+      "pick_prob": 0.92,
+      "fair_decimal_a": 12.5,
+      "fair_decimal_b": 1.087,
+      "quotes_verified": [
+        {
+          "source_key": "kalshi",
+          "source_name": "Kalshi (exchange)",
+          "event_id": "KXCS2GAME-26OCT291230NCPPAIN",
+          "decimal_a": 12.5,
+          "decimal_b": 1.0869565217391304,
+          "recomputed_prob_a": 0.08,
+          "stored_prob_a": 0.08,
+          "verified": true,
+          "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct291230ncppain",
+          "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+          "retrieved_utc": "2026-10-28T21:01:00Z"
+        }
+      ],
       "vrs_team_a": null,
       "vrs_team_b": {
         "standing": 54,
@@ -727,22 +777,16 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
+        "exchange_midpoints_not_executable_bookmaker_odds",
+        "exchange_volume_may_be_low_or_zero",
         "not_in_vrs:NAOCOPULAS",
-        "stale_or_unverified_quote:kalshi",
+        "rule_backed_exchange_fallback",
         "vrs_snapshot_stale_or_unverified"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "NAOCOPULAS: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
-        "kalshi: price or fixture freshness could not be established.",
-        "The official ratings are missing, undated or outside the 14-day eligibility window.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/naocopulas-vs-pain-gamers-club-masters-vii-1117320"
+        "https://www.hotspawn.com/matches/naocopulas-vs-pain-gamers-club-masters-vii-1117320",
+        "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct291230ncppain"
       ]
     },
     {
@@ -753,15 +797,29 @@
       "tier": "B",
       "team_a": "Tactical Chaos",
       "team_b": "NRG eSports",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.0545,
+      "prob_b": 0.9455,
+      "pick_team": "NRG eSports",
+      "pick_prob": 0.9455,
+      "fair_decimal_a": 18.349,
+      "fair_decimal_b": 1.058,
+      "quotes_verified": [
+        {
+          "source_key": "kalshi",
+          "source_name": "Kalshi (exchange)",
+          "event_id": "KXCS2GAME-26OCT291530TACNRG",
+          "decimal_a": 18.181818181818183,
+          "decimal_b": 1.0471204188481675,
+          "recomputed_prob_a": 0.0545,
+          "stored_prob_a": 0.0545,
+          "verified": true,
+          "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct291530tacnrg",
+          "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+          "retrieved_utc": "2026-10-28T21:01:00Z"
+        }
+      ],
       "vrs_team_a": null,
       "vrs_team_b": {
         "standing": 47,
@@ -772,22 +830,16 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
+        "exchange_midpoints_not_executable_bookmaker_odds",
+        "exchange_volume_may_be_low_or_zero",
         "not_in_vrs:Tactical Chaos",
-        "stale_or_unverified_quote:kalshi",
+        "rule_backed_exchange_fallback",
         "vrs_snapshot_stale_or_unverified"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "Tactical Chaos: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
-        "kalshi: price or fixture freshness could not be established.",
-        "The official ratings are missing, undated or outside the 14-day eligibility window.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/tactical-chaos-vs-nrg-esports-firesports-last-chance-2026-1117321"
+        "https://www.hotspawn.com/matches/tactical-chaos-vs-nrg-esports-firesports-last-chance-2026-1117321",
+        "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct291530tacnrg"
       ]
     },
     {
@@ -798,15 +850,29 @@
       "tier": "B",
       "team_a": "Procyon",
       "team_b": "Galorys",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.2508,
+      "prob_b": 0.7492,
+      "pick_team": "Galorys",
+      "pick_prob": 0.7492,
+      "fair_decimal_a": 3.987,
+      "fair_decimal_b": 1.335,
+      "quotes_verified": [
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "765773134",
+          "decimal_a": 1.24,
+          "decimal_b": 3.705,
+          "recomputed_prob_a": 0.2508,
+          "stored_prob_a": 0.2508,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-28T21:01:00Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 149,
         "points": 842,
@@ -823,22 +889,12 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:kalshi",
-        "stale_or_unverified_quote:melbet",
         "vrs_snapshot_stale_or_unverified"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "kalshi: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "The official ratings are missing, undated or outside the 14-day eligibility window.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/procyon-vs-galorys-firesports-last-chance-2026-1117322"
+        "https://www.hotspawn.com/matches/procyon-vs-galorys-firesports-last-chance-2026-1117322",
+        "https://melbet.com/en/line/esports"
       ]
     },
     {
@@ -874,13 +930,11 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
         "no_line_unverified",
         "vrs_snapshot_stale_or_unverified"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
         "The official ratings are missing, undated or outside the 14-day eligibility window.",
         "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
       ],
@@ -896,15 +950,29 @@
       "tier": "B",
       "team_a": "Alka",
       "team_b": "Turma do Pagode",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.2508,
+      "prob_b": 0.7492,
+      "pick_team": "Turma do Pagode",
+      "pick_prob": 0.7492,
+      "fair_decimal_a": 3.987,
+      "fair_decimal_b": 1.335,
+      "quotes_verified": [
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "765778331",
+          "decimal_a": 1.24,
+          "decimal_b": 3.705,
+          "recomputed_prob_a": 0.2508,
+          "stored_prob_a": 0.2508,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-28T21:01:00Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 163,
         "points": 802,
@@ -921,22 +989,104 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
+        "vrs_snapshot_stale_or_unverified"
+      ],
+      "limitations": [],
+      "sources": [
+        "https://www.hotspawn.com/matches/alka-vs-turma-do-pagode-gamers-club-masters-vii-1117326",
+        "https://melbet.com/en/line/esports"
+      ]
+    },
+    {
+      "fixture_id": "1082869",
+      "start_utc": "2026-10-30T03:00:00Z",
+      "lock_utc": "2026-10-30T02:54:00Z",
+      "competition": "DFRAG Invitational 2026",
+      "tier": "B",
+      "team_a": "Alter Ego",
+      "team_b": "Abyssal",
+      "basis": null,
+      "evidence_tier": "D",
+      "prob_a": null,
+      "prob_b": null,
+      "pick_team": null,
+      "pick_prob": null,
+      "fair_decimal_a": null,
+      "fair_decimal_b": null,
+      "quotes_verified": [],
+      "vrs_team_a": {
+        "standing": 155,
+        "points": 819,
+        "team": "Alter Ego",
+        "roster": "adeX, BnTeT, Gratisfaction, laxiee, PokemoN",
+        "details_path": "live/2026/details/2026_10_05/0155--alter_ego--adex-bntet-gratisfaction-laxiee-pokemon.md"
+      },
+      "vrs_team_b": {
+        "standing": 195,
+        "points": 734,
+        "team": "Abyssal",
+        "roster": "blood, dangeR, foggers, gump, vinhy",
+        "details_path": "live/2026/details/2026_10_05/0195--abyssal--blood-danger-foggers-gump-vinhy.md"
+      },
+      "vrs_ambiguous": {},
+      "flags": [
         "no_line_unverified",
-        "stale_or_unverified_quote:kalshi",
-        "stale_or_unverified_quote:melbet",
+        "start_time_mismatch_not_joined:melbet",
         "vrs_snapshot_stale_or_unverified"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "kalshi: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
+        "melbet: a candidate price has a missing, approximate or mismatched kickoff; it is not joined.",
         "The official ratings are missing, undated or outside the 14-day eligibility window.",
         "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
       ],
       "sources": [
-        "https://www.hotspawn.com/matches/alka-vs-turma-do-pagode-gamers-club-masters-vii-1117326"
+        "https://www.hotspawn.com/matches/alter-ego-vs-abyssal-dfrag-invitational-2026-1082869"
+      ]
+    },
+    {
+      "fixture_id": "1082870",
+      "start_utc": "2026-10-30T03:00:00Z",
+      "lock_utc": "2026-10-30T02:54:00Z",
+      "competition": "DFRAG Invitational 2026",
+      "tier": "B",
+      "team_a": "NEXVOID",
+      "team_b": "FlyQuest",
+      "basis": null,
+      "evidence_tier": "D",
+      "prob_a": null,
+      "prob_b": null,
+      "pick_team": null,
+      "pick_prob": null,
+      "fair_decimal_a": null,
+      "fair_decimal_b": null,
+      "quotes_verified": [],
+      "vrs_team_a": {
+        "standing": 113,
+        "points": 995,
+        "team": "NEXVOID",
+        "roster": "AccuracyTG, erkaSt, MiQ, xerolte, Zesta",
+        "details_path": "live/2026/details/2026_10_05/0113--nexvoid--accuracytg-erkast-miq-xerolte-zesta.md"
+      },
+      "vrs_team_b": {
+        "standing": 86,
+        "points": 1093,
+        "team": "FlyQuest",
+        "roster": "aliStair, INS, jks, nettik, Vexite",
+        "details_path": "live/2026/details/2026_10_05/0086--flyquest--alistair-ins-jks-nettik-vexite.md"
+      },
+      "vrs_ambiguous": {},
+      "flags": [
+        "no_line_unverified",
+        "vrs_snapshot_stale_or_unverified"
+      ],
+      "limitations": [
+        "No eligible two-sided external market price joined to both teams and the published kickoff.",
+        "The official ratings are missing, undated or outside the 14-day eligibility window.",
+        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
+      ],
+      "sources": [
+        "https://www.hotspawn.com/matches/nexvoid-vs-flyquest-dfrag-invitational-2026-1082870"
       ]
     },
     {
@@ -947,15 +1097,29 @@
       "tier": "C",
       "team_a": "BASEMENT BOYS",
       "team_b": "Teletubisie",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.54,
+      "prob_b": 0.46,
+      "pick_team": "BASEMENT BOYS",
+      "pick_prob": 0.54,
+      "fair_decimal_a": 1.852,
+      "fair_decimal_b": 2.174,
+      "quotes_verified": [
+        {
+          "source_key": "kalshi",
+          "source_name": "Kalshi (exchange)",
+          "event_id": "KXCS2GAME-26OCT300500TTBSBMB",
+          "decimal_a": 2.1739130434782608,
+          "decimal_b": 1.8518518518518516,
+          "recomputed_prob_a": 0.54,
+          "stored_prob_a": 0.54,
+          "verified": true,
+          "public_url": "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct300500ttbsbmb",
+          "api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&with_nested_markets=true&limit=200",
+          "retrieved_utc": "2026-10-28T21:01:00Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 102,
         "points": 1036,
@@ -972,20 +1136,15 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:kalshi",
+        "exchange_midpoints_not_executable_bookmaker_odds",
+        "exchange_volume_may_be_low_or_zero",
+        "rule_backed_exchange_fallback",
         "vrs_snapshot_stale_or_unverified"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "kalshi: price or fixture freshness could not be established.",
-        "The official ratings are missing, undated or outside the 14-day eligibility window.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/basement-boys-vs-teletubisie-circuito-retake-season-13-1103788"
+        "https://www.hotspawn.com/matches/basement-boys-vs-teletubisie-circuito-retake-season-13-1103788",
+        "https://kalshi.com/markets/kxcs2game/kxcs2game-26oct300500ttbsbmb"
       ]
     },
     {
@@ -1015,14 +1174,12 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
         "no_line_unverified",
         "not_in_vrs:Signatus",
         "vrs_snapshot_stale_or_unverified"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
         "Signatus: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
         "The official ratings are missing, undated or outside the 14-day eligibility window.",
         "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
@@ -1039,15 +1196,29 @@
       "tier": "B",
       "team_a": "ShindeN",
       "team_b": "Isurus",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.817,
+      "prob_b": 0.183,
+      "pick_team": "ShindeN",
+      "pick_prob": 0.817,
+      "fair_decimal_a": 1.224,
+      "fair_decimal_b": 5.464,
+      "quotes_verified": [
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "765829317",
+          "decimal_a": 1.12,
+          "decimal_b": 5.0,
+          "recomputed_prob_a": 0.817,
+          "stored_prob_a": 0.817,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-28T21:01:00Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 74,
         "points": 1121,
@@ -1064,22 +1235,12 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:kalshi",
-        "stale_or_unverified_quote:melbet",
         "vrs_snapshot_stale_or_unverified"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "kalshi: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "The official ratings are missing, undated or outside the 14-day eligibility window.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/shinden-vs-isurus-firesports-last-chance-2026-1117329"
+        "https://www.hotspawn.com/matches/shinden-vs-isurus-firesports-last-chance-2026-1117329",
+        "https://melbet.com/en/line/esports"
       ]
     },
     {
@@ -1109,14 +1270,12 @@
       "vrs_team_b": null,
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
         "no_line_unverified",
         "not_in_vrs:SNITKO",
         "vrs_snapshot_stale_or_unverified"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
         "SNITKO: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
         "The official ratings are missing, undated or outside the 14-day eligibility window.",
         "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
@@ -1133,15 +1292,42 @@
       "tier": "C",
       "team_a": "BC.Game",
       "team_b": "OG",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.6852,
+      "prob_b": 0.3148,
+      "pick_team": "BC.Game",
+      "pick_prob": 0.6852,
+      "fair_decimal_a": 1.459,
+      "fair_decimal_b": 3.177,
+      "quotes_verified": [
+        {
+          "source_key": "bovada",
+          "source_name": "Bovada",
+          "event_id": "32873965",
+          "decimal_a": 1.363636,
+          "decimal_b": 3.0,
+          "recomputed_prob_a": 0.6875,
+          "stored_prob_a": 0.6875,
+          "verified": true,
+          "public_url": "https://www.bovada.lv/esports/counter-strike-2/hyperx-retake/bc-game-og-202610301215",
+          "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
+          "retrieved_utc": "2026-10-28T21:00:59Z"
+        },
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "765781889",
+          "decimal_a": 1.36,
+          "decimal_b": 2.928,
+          "recomputed_prob_a": 0.6828,
+          "stored_prob_a": 0.6828,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-28T21:01:00Z"
+        }
+      ],
       "vrs_team_a": {
         "standing": 50,
         "points": 1318,
@@ -1158,24 +1344,13 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
-        "stale_or_unverified_quote:bovada",
-        "stale_or_unverified_quote:kalshi",
-        "stale_or_unverified_quote:melbet",
         "vrs_snapshot_stale_or_unverified"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "bovada: price or fixture freshness could not be established.",
-        "kalshi: price or fixture freshness could not be established.",
-        "melbet: price or fixture freshness could not be established.",
-        "The official ratings are missing, undated or outside the 14-day eligibility window.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/bc-game-vs-og-circuito-retake-season-13-1103792"
+        "https://www.hotspawn.com/matches/bc-game-vs-og-circuito-retake-season-13-1103792",
+        "https://www.bovada.lv/esports/counter-strike-2/hyperx-retake/bc-game-og-202610301215",
+        "https://melbet.com/en/line/esports"
       ]
     },
     {
@@ -1205,14 +1380,12 @@
       "vrs_team_b": null,
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
         "no_line_unverified",
         "not_in_vrs:Hacha",
         "vrs_snapshot_stale_or_unverified"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
         "Hacha: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
         "The official ratings are missing, undated or outside the 14-day eligibility window.",
         "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
@@ -1229,15 +1402,29 @@
       "tier": "B",
       "team_a": "BTH",
       "team_b": "BESTIA",
-      "basis": null,
-      "evidence_tier": "D",
-      "prob_a": null,
-      "prob_b": null,
-      "pick_team": null,
-      "pick_prob": null,
-      "fair_decimal_a": null,
-      "fair_decimal_b": null,
-      "quotes_verified": [],
+      "basis": "market",
+      "evidence_tier": "A",
+      "prob_a": 0.0926,
+      "prob_b": 0.9074,
+      "pick_team": "BESTIA",
+      "pick_prob": 0.9074,
+      "fair_decimal_a": 10.799,
+      "fair_decimal_b": 1.102,
+      "quotes_verified": [
+        {
+          "source_key": "melbet",
+          "source_name": "Melbet",
+          "event_id": "765829307",
+          "decimal_a": 1.02,
+          "decimal_b": 10.0,
+          "recomputed_prob_a": 0.0926,
+          "stored_prob_a": 0.0926,
+          "verified": true,
+          "public_url": "https://melbet.com/en/line/esports",
+          "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+          "retrieved_utc": "2026-10-28T21:01:00Z"
+        }
+      ],
       "vrs_team_a": null,
       "vrs_team_b": {
         "standing": 65,
@@ -1248,22 +1435,13 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
-        "no_line_unverified",
         "not_in_vrs:BTH",
-        "stale_or_unverified_quote:melbet",
         "vrs_snapshot_stale_or_unverified"
       ],
-      "limitations": [
-        "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
-        "BTH: no uniquely identified rating under this name. A different roster’s rating is not a substitute.",
-        "melbet: price or fixture freshness could not be established.",
-        "The official ratings are missing, undated or outside the 14-day eligibility window.",
-        "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
-      ],
+      "limitations": [],
       "sources": [
-        "https://www.hotspawn.com/matches/bth-vs-bestia-firesports-last-chance-2026-1117334"
+        "https://www.hotspawn.com/matches/bth-vs-bestia-firesports-last-chance-2026-1117334",
+        "https://melbet.com/en/line/esports"
       ]
     },
     {
@@ -1298,14 +1476,14 @@
               "standing": 122,
               "points": 944,
               "roster": "Annihilation, Bart4k, bexyz, controlez, Cozen",
-              "latest_match_date": null,
+              "latest_match_date": "2026-10-04",
               "details_path": "live/2026/details/2026_10_05/0122--the_huns--annihilation-bart4k-bexyz-controlez-cozen.md"
             },
             {
               "standing": 213,
               "points": 701,
               "roster": "Bart4k, controlez, nin9, sk0R, xerolte",
-              "latest_match_date": null,
+              "latest_match_date": "2026-05-12",
               "details_path": "live/2026/details/2026_10_05/0213--the_huns--bart4k-controlez-nin9-sk0r-xerolte.md"
             }
           ]
@@ -1313,14 +1491,12 @@
       },
       "flags": [
         "ambiguous_vrs_name:The Huns",
-        "fixture_observation_stale_or_unverified",
         "no_line_unverified",
         "vrs_snapshot_stale_or_unverified"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
         "The Huns: multiple official rating rows; the fixture’s current roster is not confirmed.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
         "The official ratings are missing, undated or outside the 14-day eligibility window.",
         "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
       ],
@@ -1361,13 +1537,11 @@
       },
       "vrs_ambiguous": {},
       "flags": [
-        "fixture_observation_stale_or_unverified",
         "no_line_unverified",
         "vrs_snapshot_stale_or_unverified"
       ],
       "limitations": [
         "No eligible two-sided external market price joined to both teams and the published kickoff.",
-        "The lobby evidence has expired or its observation time is unverified. Wait for a fresh capture.",
         "The official ratings are missing, undated or outside the 14-day eligibility window.",
         "Pick and win probabilities remain blank. New source captures automatically retry this fixture."
       ],
