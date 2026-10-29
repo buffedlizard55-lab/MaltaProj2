@@ -1,5 +1,5 @@
 {
- "generated_at_utc": "2026-10-29T01:14:24Z",
+ "generated_at_utc": "2026-10-29T07:40:22Z",
  "rules": {
   "fixture_source": "HotSpawn Pick'ems public fixtures endpoint (discovery only)",
   "probability_sources": "external bookmakers / exchanges / fitted models — never HotSpawn",
@@ -12,19 +12,19 @@
   "hotspawn_crowd_pct": "never read by any probability function"
  },
  "summary": {
-  "cs2_fixtures_in_window": 124,
+  "cs2_fixtures_in_window": 133,
   "listed_by_lobby": 83,
-  "picks_open": 22,
-  "open_with_probability": 18,
-  "open_market": 12,
+  "picks_open": 30,
+  "open_with_probability": 24,
+  "open_market": 13,
   "open_exchange": 2,
-  "open_estimate": 4,
-  "open_blank": 4,
-  "with_probability": 82,
-  "market": 12,
+  "open_estimate": 9,
+  "open_blank": 6,
+  "with_probability": 88,
+  "market": 14,
   "exchange": 2,
-  "estimate": 68,
-  "blank": 42
+  "estimate": 72,
+  "blank": 45
  },
  "model": {
   "preference": "bt",
@@ -379,20 +379,20 @@
   },
   "evaluation": {
    "evaluation_window_days": 14,
-   "matches_in_window": 176,
-   "matches_with_book_price": 81,
+   "matches_in_window": 174,
+   "matches_with_book_price": 80,
    "note": "Out-of-sample window: the Bradley-Terry model used here is refitted with every match inside the window excluded, and the Valve VRS snapshot used predates the window. The book price pair bo3.gg keeps for a finished match is the last price it held (updated in-play), so it is deliberately NOT scored here as a benchmark - on 2026-10-14 it implied the eventual winner in 100% of 4,000 settled matches. Fewer model rows than matches in the window means the model had no rating for both teams.",
    "bt": {
-    "n": 23,
-    "brier": 0.23044,
-    "log_loss": 0.64389,
-    "accuracy": 0.6087
+    "n": 24,
+    "brier": 0.22188,
+    "log_loss": 0.62484,
+    "accuracy": 0.625
    },
    "vrs": {
-    "n": 85,
-    "brier": 0.236,
-    "log_loss": 0.71032,
-    "accuracy": 0.6824
+    "n": 83,
+    "brier": 0.23885,
+    "log_loss": 0.71789,
+    "accuracy": 0.6747
    },
    "baseline_coin_flip_brier": 0.25
   }
@@ -453,8 +453,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -1.171556805947311,
-     "rating_b": -3.3982507834525895,
+     "rating_a": -1.1728373215481176,
+     "rating_b": -3.3963048421247675,
      "appearances_a": 13.0,
      "appearances_b": 1.0
     },
@@ -529,8 +529,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.870633348871013,
-     "rating_b": 2.934682721084578,
+     "rating_a": 2.869190466777799,
+     "rating_b": 2.9332441428654583,
      "appearances_a": 7.0,
      "appearances_b": 5.0
     },
@@ -680,7 +680,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": -0.10778851912627274,
+     "rating_b": -0.10908020444960335,
      "appearances_a": 0.0,
      "appearances_b": 6.0
     },
@@ -792,8 +792,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 3.832643796072996,
-     "rating_b": 6.850913898295131,
+     "rating_a": 3.8310946887391597,
+     "rating_b": 6.84936768773025,
      "appearances_a": 3.0,
      "appearances_b": 3.0
     },
@@ -944,8 +944,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -6.6960695875727785,
-     "rating_b": -1.5008530922217014,
+     "rating_a": -6.691561661458749,
+     "rating_b": -1.5017533000229661,
      "appearances_a": 1.0,
      "appearances_b": 5.0
     },
@@ -1021,7 +1021,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": -0.527980165030426,
+     "rating_b": -0.5289502112054967,
      "appearances_a": 0.0,
      "appearances_b": 8.0
     },
@@ -1149,18 +1149,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.49441005013589273,
-    "prob_b": 0.5055899498641072,
+    "prob_a": 0.4944188138943782,
+    "prob_b": 0.5055811861056219,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "b",
     "pick_team": "sAw",
-    "pick_probability": 0.5055899498641072
+    "pick_probability": 0.5055811861056219
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.49441005013589273,
+     "prob_a": 0.4944188138943782,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -1170,8 +1170,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.0806355280308932,
-     "rating_b": 2.102996259142147,
+     "rating_a": 2.079293241807486,
+     "rating_b": 2.1016189135095833,
      "appearances_a": 13.0,
      "appearances_b": 11.0
     },
@@ -1246,7 +1246,7 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.092157708582642,
+     "rating_a": 6.090598989223232,
      "rating_b": null,
      "appearances_a": 4.0,
      "appearances_b": 0.0
@@ -1359,7 +1359,7 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.447157035297379,
+     "rating_a": 2.4457850976168656,
      "rating_b": null,
      "appearances_a": 4.0,
      "appearances_b": 0.0
@@ -1435,7 +1435,7 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.459677915798445,
+     "rating_a": 1.4583322270460533,
      "rating_b": null,
      "appearances_a": 12.0,
      "appearances_b": 0.0
@@ -1511,7 +1511,7 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.389778593292764,
+     "rating_a": 2.3887461404989274,
      "rating_b": null,
      "appearances_a": 6.0,
      "appearances_b": 0.0
@@ -1699,7 +1699,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": 0.5579302819273748,
+     "rating_b": 0.5566022469653582,
      "appearances_a": 0.0,
      "appearances_b": 11.0
     },
@@ -1850,8 +1850,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -2.374574454848421,
-     "rating_b": 0.307559118254996,
+     "rating_a": -2.375540782596608,
+     "rating_b": 0.30624709391693244,
      "appearances_a": 6.0,
      "appearances_b": 7.0
     },
@@ -1926,8 +1926,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.792020716436769,
-     "rating_b": 3.0876676180237137,
+     "rating_a": 1.7909918719865472,
+     "rating_b": 3.0859747402459536,
      "appearances_a": 11.0,
      "appearances_b": 1.0
     },
@@ -2152,8 +2152,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -8.342897842555121,
-     "rating_b": 0.9403489934976921,
+     "rating_a": -8.340770557652299,
+     "rating_b": 0.9393634303406437,
      "appearances_a": 5.0,
      "appearances_b": 11.0
     },
@@ -2229,7 +2229,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": 5.525325206893695,
+     "rating_b": 5.5239702857260005,
      "appearances_a": 0.0,
      "appearances_b": 8.0
     },
@@ -2320,18 +2320,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.9552507237154708,
-    "prob_b": 0.04474927628452918,
+    "prob_a": 0.9552467179614715,
+    "prob_b": 0.044753282038528464,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "Procyon",
-    "pick_probability": 0.9552507237154708
+    "pick_probability": 0.9552467179614715
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.9552507237154708,
+     "prob_a": 0.9552467179614715,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -2341,8 +2341,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 0.7544722097215651,
-     "rating_b": -2.306426362046742,
+     "rating_a": 0.7534933519017601,
+     "rating_b": -2.30731151495462,
      "appearances_a": 13.0,
      "appearances_b": 11.0
     },
@@ -2417,7 +2417,7 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.1122522427076276,
+     "rating_a": 2.1109134116893333,
      "rating_b": null,
      "appearances_a": 11.0,
      "appearances_b": 0.0
@@ -2530,7 +2530,7 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.102996259142147,
+     "rating_a": 2.1016189135095833,
      "rating_b": null,
      "appearances_a": 11.0,
      "appearances_b": 0.0
@@ -2643,7 +2643,7 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.6216629712316144,
+     "rating_a": 1.6203224668707084,
      "rating_b": null,
      "appearances_a": 12.0,
      "appearances_b": 0.0
@@ -2756,7 +2756,7 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.6216629712316144,
+     "rating_a": 1.6203224668707084,
      "rating_b": null,
      "appearances_a": 12.0,
      "appearances_b": 0.0
@@ -3019,7 +3019,7 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.0718864499759901,
+     "rating_a": 1.0705228221004826,
      "rating_b": null,
      "appearances_a": 3.0,
      "appearances_b": 0.0
@@ -3095,8 +3095,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -2.374574454848421,
-     "rating_b": -3.3982507834525895,
+     "rating_a": -2.375540782596608,
+     "rating_b": -3.3963048421247675,
      "appearances_a": 6.0,
      "appearances_b": 1.0
     },
@@ -3245,8 +3245,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 0.5983624912657594,
-     "rating_b": 1.5050613949985745,
+     "rating_a": 0.5970392851014988,
+     "rating_b": 1.5036365955636746,
      "appearances_a": 9.0,
      "appearances_b": 4.0
     },
@@ -3358,8 +3358,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.5050613949985745,
-     "rating_b": 0.307559118254996,
+     "rating_a": 1.5036365955636746,
+     "rating_b": 0.30624709391693244,
      "appearances_a": 4.0,
      "appearances_b": 7.0
     },
@@ -3471,8 +3471,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.850913898295131,
-     "rating_b": 2.870633348871013,
+     "rating_a": 6.84936768773025,
+     "rating_b": 2.869190466777799,
      "appearances_a": 3.0,
      "appearances_b": 7.0
     },
@@ -3547,8 +3547,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 7.685425569546907,
-     "rating_b": 3.0876676180237137,
+     "rating_a": 7.682574034811713,
+     "rating_b": 3.0859747402459536,
      "appearances_a": 1.0,
      "appearances_b": 1.0
     },
@@ -3623,8 +3623,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 0.5983624912657594,
-     "rating_b": 0.307559118254996,
+     "rating_a": 0.5970392851014988,
+     "rating_b": 0.30624709391693244,
      "appearances_a": 9.0,
      "appearances_b": 7.0
     },
@@ -3736,7 +3736,7 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -0.04201670312262708,
+     "rating_a": -0.042985623366260224,
      "rating_b": null,
      "appearances_a": 7.0,
      "appearances_b": 0.0
@@ -3812,8 +3812,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.389778593292764,
-     "rating_b": 5.525325206893695,
+     "rating_a": 2.3887461404989274,
+     "rating_b": 5.5239702857260005,
      "appearances_a": 6.0,
      "appearances_b": 8.0
     },
@@ -3926,7 +3926,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": 1.6502857895764094,
+     "rating_b": 1.6489821850678985,
      "appearances_a": 0.0,
      "appearances_b": 17.0
     },
@@ -4038,8 +4038,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -6.856144458899076,
-     "rating_b": 1.6502857895764094,
+     "rating_a": -6.854211083395527,
+     "rating_b": 1.6489821850678985,
      "appearances_a": 2.0,
      "appearances_b": 17.0
     },
@@ -4056,82 +4056,6 @@
      "team_b_source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
      "team_a_standing": 211,
      "team_b_standing": 143
-    }
-   }
-  },
-  {
-   "fixture_id": "1086938",
-   "game": "CS2",
-   "competition": "Circuit X Curitiba #4",
-   "tier": "c",
-   "stage": null,
-   "status": "ended",
-   "start_time_utc": "2026-10-25T22:25:00Z",
-   "lock_time_utc": "2026-10-25T22:19:00Z",
-   "team_a": "Imperial",
-   "team_b": "paiN",
-   "listed_in_lobby": false,
-   "picks_open": false,
-   "sources": {
-    "hotspawn_match": "https://play.hotspawn.com/lobby",
-    "hotspawn_lobby": "https://play.hotspawn.com/lobby"
-   },
-   "hotspawn_crowd_pct_reference_only": {
-    "team_a": 0,
-    "team_b": 0,
-    "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
-   },
-   "market_quotes": [],
-   "exchange": null,
-   "exchange_usable": false,
-   "exchange_reasons": [
-    "no two-sided Kalshi book matched"
-   ],
-   "flags": [
-    "picks_locked_or_past"
-   ],
-   "published": {
-    "basis": "vrs",
-    "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.5143871841659987,
-    "prob_b": 0.4856128158340013,
-    "source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
-    "source_api_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
-    "pick_side": "a",
-    "pick_team": "Imperial",
-    "pick_probability": 0.5143871841659987
-   },
-   "estimate_inputs": {
-    "model_preference": "bt",
-    "bt": {
-     "prob_a": null,
-     "note": "fewer than 8 corpus matches for team B (8 / 4)",
-     "matches_used": 1146,
-     "teams": 456,
-     "half_life_days": 60.0,
-     "ridge": 0.02,
-     "min_matches": 8,
-     "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
-     "source_public": "https://bo3.gg/matches/finished",
-     "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 3.938647221760295,
-     "rating_b": 5.2178021293879135,
-     "appearances_a": 8.0,
-     "appearances_b": 4.0
-    },
-    "vrs": {
-     "prob_a": 0.5143871841659987,
-     "note": "ok",
-     "rating_diff": 10.0,
-     "scale": 400.0,
-     "team_a_points": 1297,
-     "team_b_points": 1287,
-     "team_a_snapshot": "2026_10_05",
-     "team_b_snapshot": "2026_10_05",
-     "source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
-     "team_b_source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
-     "team_a_standing": 52,
-     "team_b_standing": 54
     }
    }
   },
@@ -4227,8 +4151,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.2359273519594476,
-     "rating_b": 7.216419462107942,
+     "rating_a": 2.235282385889838,
+     "rating_b": 7.214356630808175,
      "appearances_a": 10.0,
      "appearances_b": 3.0
     },
@@ -4340,8 +4264,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -0.9645651847320437,
-     "rating_b": 2.2359273519594476,
+     "rating_a": -0.9635296682816384,
+     "rating_b": 2.235282385889838,
      "appearances_a": 4.0,
      "appearances_b": 10.0
     },
@@ -4416,8 +4340,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.866853466291403,
-     "rating_b": 5.294408113936395,
+     "rating_a": 2.865466611540934,
+     "rating_b": 5.2928954481086965,
      "appearances_a": 12.0,
      "appearances_b": 6.0
     },
@@ -4471,18 +4395,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.9531716044667137,
-    "prob_b": 0.04682839553328633,
+    "prob_a": 0.953164092000481,
+    "prob_b": 0.04683590799951898,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "FOKUS",
-    "pick_probability": 0.9531716044667137
+    "pick_probability": 0.953164092000481
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.9531716044667137,
+     "prob_a": 0.953164092000481,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -4492,8 +4416,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.024678937568284,
-     "rating_b": 3.011373743572466,
+     "rating_a": 6.0231302243469464,
+     "rating_b": 3.0099933245076755,
      "appearances_a": 8.0,
      "appearances_b": 19.0
     },
@@ -4584,18 +4508,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.9693905009953392,
-    "prob_b": 0.030609499004660812,
+    "prob_a": 0.9693862732058773,
+    "prob_b": 0.030613726794122664,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "Metizport",
-    "pick_probability": 0.9693905009953392
+    "pick_probability": 0.9693862732058773
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.9693905009953392,
+     "prob_a": 0.9693862732058773,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -4605,8 +4529,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.900922882455901,
-     "rating_b": 2.4455657437174727,
+     "rating_a": 5.899371802060028,
+     "rating_b": 2.4441571352579965,
      "appearances_a": 12.0,
      "appearances_b": 12.0
     },
@@ -4681,7 +4605,7 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 1.987574197900424,
+     "rating_a": 1.9866222323729588,
      "rating_b": null,
      "appearances_a": 7.0,
      "appearances_b": 0.0
@@ -4758,7 +4682,7 @@
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
      "rating_a": null,
-     "rating_b": 1.5481905092412462,
+     "rating_b": 1.5468335817197132,
      "appearances_a": 0.0,
      "appearances_b": 16.0
     },
@@ -4812,18 +4736,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.9720807576666194,
-    "prob_b": 0.02791924233338061,
+    "prob_a": 0.9720753578262357,
+    "prob_b": 0.027924642173764336,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "Nuclear TigeRES",
-    "pick_probability": 0.9720807576666194
+    "pick_probability": 0.9720753578262357
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.9720807576666194,
+     "prob_a": 0.9720753578262357,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -4833,8 +4757,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.756527945752309,
-     "rating_b": 3.206405201193389,
+     "rating_a": 6.754947630172013,
+     "rating_b": 3.2050238311309407,
      "appearances_a": 13.0,
      "appearances_b": 12.0
     },
@@ -4946,8 +4870,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -4.455961661662212,
-     "rating_b": -2.6494952174525843,
+     "rating_a": -4.45309616035434,
+     "rating_b": -2.6476793662950784,
      "appearances_a": 7.0,
      "appearances_b": 5.0
     },
@@ -5096,8 +5020,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 4.276102463999394,
-     "rating_b": -4.455961661662212,
+     "rating_a": 4.274932832522488,
+     "rating_b": -4.45309616035434,
      "appearances_a": 6.0,
      "appearances_b": 7.0
     },
@@ -5209,8 +5133,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.335434659914962,
-     "rating_b": 6.340291748426181,
+     "rating_a": 6.33386070984945,
+     "rating_b": 6.338706181410603,
      "appearances_a": 7.0,
      "appearances_b": 8.0
     },
@@ -5285,8 +5209,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.294408113936395,
-     "rating_b": 2.4455657437174727,
+     "rating_a": 5.2928954481086965,
+     "rating_b": 2.4441571352579965,
      "appearances_a": 6.0,
      "appearances_b": 12.0
     },
@@ -5362,8 +5286,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 0.7791156789688212,
-     "rating_b": 2.6694433396333554,
+     "rating_a": 0.7779219257759934,
+     "rating_b": 2.6679868045089465,
      "appearances_a": 5.0,
      "appearances_b": 4.0
     },
@@ -5417,18 +5341,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.6752108934820968,
-    "prob_b": 0.32478910651790316,
+    "prob_a": 0.6752039630102878,
+    "prob_b": 0.32479603698971216,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "Nuclear TigeRES",
-    "pick_probability": 0.6752108934820968
+    "pick_probability": 0.6752039630102878
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.6752108934820968,
+     "prob_a": 0.6752039630102878,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -5438,8 +5362,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.756527945752309,
-     "rating_b": 6.024678937568284,
+     "rating_a": 6.754947630172013,
+     "rating_b": 6.0231302243469464,
      "appearances_a": 13.0,
      "appearances_b": 8.0
     },
@@ -5493,18 +5417,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.6769337118772231,
-    "prob_b": 0.32306628812277693,
+    "prob_a": 0.6769198492259942,
+    "prob_b": 0.32308015077400576,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "ex-RUSTEC",
-    "pick_probability": 0.6769337118772231
+    "pick_probability": 0.6769198492259942
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.6769337118772231,
+     "prob_a": 0.6769198492259942,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -5514,8 +5438,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.9358272230464446,
-     "rating_b": 2.196111397990289,
+     "rating_a": 2.9344392878250294,
+     "rating_b": 2.194786850271497,
      "appearances_a": 14.0,
      "appearances_b": 15.0
     },
@@ -5590,8 +5514,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.6694433396333554,
-     "rating_b": 6.340291748426181,
+     "rating_a": 2.6679868045089465,
+     "rating_b": 6.338706181410603,
      "appearances_a": 4.0,
      "appearances_b": 8.0
     },
@@ -5666,7 +5590,7 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.57771756251634,
+     "rating_a": 2.5763485274806985,
      "rating_b": null,
      "appearances_a": 7.0,
      "appearances_b": 0.0
@@ -5742,8 +5666,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -3.036208400201668,
-     "rating_b": 5.479243833019131,
+     "rating_a": -3.0355351607297836,
+     "rating_b": 5.4777113889700635,
      "appearances_a": 4.0,
      "appearances_b": 8.0
     },
@@ -5797,18 +5721,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.02714312472087051,
-    "prob_b": 0.9728568752791295,
+    "prob_a": 0.027146824624932477,
+    "prob_b": 0.9728531753750675,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "b",
     "pick_team": "FOKUS",
-    "pick_probability": 0.9728568752791295
+    "pick_probability": 0.9728531753750675
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.02714312472087051,
+     "prob_a": 0.027146824624932477,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -5818,8 +5742,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.4455657437174727,
-     "rating_b": 6.024678937568284,
+     "rating_a": 2.4441571352579965,
+     "rating_b": 6.0231302243469464,
      "appearances_a": 12.0,
      "appearances_b": 8.0
     },
@@ -5910,18 +5834,18 @@
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.6059571796522103,
-    "prob_b": 0.3940428203477897,
+    "prob_a": 0.6059479434623021,
+    "prob_b": 0.3940520565376979,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "Inner Circle Academy",
-    "pick_probability": 0.6059571796522103
+    "pick_probability": 0.6059479434623021
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.6059571796522103,
+     "prob_a": 0.6059479434623021,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -5931,8 +5855,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.0806355280308932,
-     "rating_b": 1.6502857895764094,
+     "rating_a": 2.079293241807486,
+     "rating_b": 1.6489821850678985,
      "appearances_a": 13.0,
      "appearances_b": 17.0
     },
@@ -6081,8 +6005,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": -2.6494952174525843,
-     "rating_b": -4.455961661662212,
+     "rating_a": -2.6476793662950784,
+     "rating_b": -4.45309616035434,
      "appearances_a": 5.0,
      "appearances_b": 7.0
     },
@@ -6194,8 +6118,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.335434659914962,
-     "rating_b": 0.7791156789688212,
+     "rating_a": 6.33386070984945,
+     "rating_b": 0.7779219257759934,
      "appearances_a": 7.0,
      "appearances_b": 5.0
     },
@@ -6270,8 +6194,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.340291748426181,
-     "rating_b": 6.335434659914962,
+     "rating_a": 6.338706181410603,
+     "rating_b": 6.33386070984945,
      "appearances_a": 8.0,
      "appearances_b": 7.0
     },
@@ -6346,7 +6270,7 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.0806355280308932,
+     "rating_a": 2.079293241807486,
      "rating_b": null,
      "appearances_a": 13.0,
      "appearances_b": 0.0
@@ -6422,8 +6346,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.479243833019131,
-     "rating_b": 6.073421976137815,
+     "rating_a": 5.4777113889700635,
+     "rating_b": 6.071813877326914,
      "appearances_a": 8.0,
      "appearances_b": 5.0
     },
@@ -6487,8 +6411,8 @@
    "tier": "b",
    "stage": null,
    "status": "ended",
-   "start_time_utc": "2026-10-28T17:00:00Z",
-   "lock_time_utc": "2026-10-28T16:54:00Z",
+   "start_time_utc": "2026-10-28T16:40:00Z",
+   "lock_time_utc": "2026-10-28T16:34:00Z",
    "team_a": "Luminosity",
    "team_b": "Envy",
    "listed_in_lobby": false,
@@ -6572,7 +6496,7 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.9358272230464446,
+     "rating_a": 2.9344392878250294,
      "rating_b": null,
      "appearances_a": 14.0,
      "appearances_b": 0.0
@@ -6594,6 +6518,43 @@
    }
   },
   {
+   "fixture_id": "1082906",
+   "game": "CS2",
+   "competition": "Tesla Cup 2026",
+   "tier": "b",
+   "stage": null,
+   "status": "ended",
+   "start_time_utc": "2026-10-28T19:55:00Z",
+   "lock_time_utc": "2026-10-28T19:49:00Z",
+   "team_a": "GamerLegion",
+   "team_b": "Envy",
+   "listed_in_lobby": false,
+   "picks_open": false,
+   "sources": {
+    "hotspawn_match": "https://play.hotspawn.com/lobby",
+    "hotspawn_lobby": "https://play.hotspawn.com/lobby"
+   },
+   "hotspawn_crowd_pct_reference_only": {
+    "team_a": 0,
+    "team_b": 0,
+    "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
+   },
+   "market_quotes": [],
+   "exchange": null,
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "no two-sided Kalshi book matched"
+   ],
+   "flags": [
+    "no_probability_available",
+    "no official Valve CS2 Regional Standings entry for: Envy",
+    "blank_no_published_probability",
+    "picks_locked_or_past"
+   ],
+   "published": null,
+   "estimate_inputs": {}
+  },
+  {
    "fixture_id": "1101597",
    "game": "CS2",
    "competition": "MESA Pro Series Halloween Edition 2026",
@@ -6605,14 +6566,14 @@
    "team_a": "5star",
    "team_b": "Chinggis Warriors",
    "listed_in_lobby": true,
-   "picks_open": true,
+   "picks_open": false,
    "sources": {
     "hotspawn_match": "https://www.hotspawn.com/matches/5star-vs-chinggis-warriors-mesa-pro-series-halloween-edition-2026-1101597",
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
    },
    "hotspawn_crowd_pct_reference_only": {
-    "team_a": 22,
-    "team_b": 78,
+    "team_a": 13,
+    "team_b": 87,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [
@@ -6624,8 +6585,8 @@
      "source_public_url": "https://melbet.com/en/line/esports/",
      "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "provider_market_url": null,
-     "retrieved_at_utc": "2026-10-28T21:40:22Z",
-     "age_hours": 3.57,
+     "retrieved_at_utc": "2026-10-29T01:48:36Z",
+     "age_hours": 5.86,
      "start_delta_min": 120,
      "decimal_odds_a": 1.87,
      "decimal_odds_b": 1.87,
@@ -6643,7 +6604,8 @@
    ],
    "flags": [
     "source and HotSpawn publish different start times (see quote detail)",
-    "coin_flip_inside_band"
+    "coin_flip_inside_band",
+    "picks_locked_or_past"
    ],
    "published": {
     "basis": "market",
@@ -6655,7 +6617,7 @@
       "source_key": "linefeed_melbet",
       "source_name": "Melbet (1xBet platform)",
       "source_public_url": "https://melbet.com/en/line/esports/",
-      "retrieved_at_utc": "2026-10-28T21:40:22Z",
+      "retrieved_at_utc": "2026-10-29T01:48:36Z",
       "decimal_odds_a": 1.87,
       "decimal_odds_b": 1.87,
       "overround": 1.0695,
@@ -6668,6 +6630,386 @@
     "pick_side": "coin_flip",
     "pick_team": null,
     "pick_probability": null
+   },
+   "estimate_inputs": {}
+  },
+  {
+   "fixture_id": "1081169",
+   "game": "CS2",
+   "competition": "CCT Europe 2026 Series #12",
+   "tier": "b",
+   "stage": null,
+   "status": "scheduled",
+   "start_time_utc": "2026-10-29T09:00:00Z",
+   "lock_time_utc": "2026-10-29T08:54:00Z",
+   "team_a": "FORZE Reload",
+   "team_b": "Butterfly",
+   "listed_in_lobby": false,
+   "picks_open": true,
+   "sources": {
+    "hotspawn_match": "https://play.hotspawn.com/lobby",
+    "hotspawn_lobby": "https://play.hotspawn.com/lobby"
+   },
+   "hotspawn_crowd_pct_reference_only": {
+    "team_a": 75,
+    "team_b": 25,
+    "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
+   },
+   "market_quotes": [],
+   "exchange": {
+    "event_ticker": "KXCS2GAME-26OCT290500FORZERBTF",
+    "title": "FORZE Reload vs. Butterfly",
+    "sub_title": "FORZE Reload vs. Butterfly (Oct 29)",
+    "source_public_url": "https://kalshi.com/markets/kxcs2game",
+    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
+    "rules_primary": "If FORZE Reload wins the CCT Europe Series #12 2026: FORZE Reload vs. Butterfly CS2 match originally scheduled for Oct 29, 2026 at 5:00 AM EDT, then the market resolves to Yes.",
+    "stated_start_utc": "2026-10-29T09:00:00Z",
+    "stated_start_raw": "Oct 29, 2026 at 5:00 AM EDT",
+    "expected_end_utc": null,
+    "start_time_source": "market rule text",
+    "start_delta_min": 0,
+    "sides": [
+     {
+      "ticker": "KXCS2GAME-26OCT290500FORZERBTF-FORZER",
+      "team": "FORZE Reload",
+      "yes_bid": 0.45,
+      "yes_ask": 0.72,
+      "last_price": 0.62,
+      "bid_size": 1.0,
+      "ask_size": 0.69,
+      "volume": 7.75,
+      "open_interest": 7.71,
+      "status": "active",
+      "mid": 0.585,
+      "spread": 0.27
+     },
+     {
+      "ticker": "KXCS2GAME-26OCT290500FORZERBTF-BTF",
+      "team": "Butterfly",
+      "yes_bid": 0.22,
+      "yes_ask": 0.59,
+      "last_price": 0.29,
+      "bid_size": 1.0,
+      "ask_size": 3.0,
+      "volume": 48.79,
+      "open_interest": 38.79,
+      "status": "active",
+      "mid": 0.405,
+      "spread": 0.37
+     }
+    ],
+    "orientation": "ab"
+   },
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "spread 0.27 wider than 0.2",
+    "spread 0.37 wider than 0.2"
+   ],
+   "flags": [],
+   "published": {
+    "basis": "bt",
+    "label": "originated estimate — model output, not a market price",
+    "prob_a": 0.9184338318824599,
+    "prob_b": 0.08156616811754014,
+    "source_url": "https://bo3.gg/matches/finished",
+    "source_api_url": "https://bo3.gg/api/v1/matches",
+    "pick_side": "a",
+    "pick_team": "FORZE Reload",
+    "pick_probability": 0.9184338318824599
+   },
+   "estimate_inputs": {
+    "model_preference": "bt",
+    "bt": {
+     "prob_a": 0.9184338318824599,
+     "note": "ok",
+     "matches_used": 1146,
+     "teams": 456,
+     "half_life_days": 60.0,
+     "ridge": 0.02,
+     "min_matches": 8,
+     "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
+     "source_public": "https://bo3.gg/matches/finished",
+     "source_api": "https://bo3.gg/api/v1/matches",
+     "rating_a": 3.420459751602744,
+     "rating_b": 0.9992044584591981,
+     "appearances_a": 10.0,
+     "appearances_b": 12.0
+    },
+    "vrs": {
+     "prob_a": 0.525880930891169,
+     "note": "ok",
+     "rating_diff": 18.0,
+     "scale": 400.0,
+     "team_a_points": 1100,
+     "team_b_points": 1082,
+     "team_a_snapshot": "2026_10_05",
+     "team_b_snapshot": "2026_10_05",
+     "source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+     "team_b_source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+     "team_a_standing": 84,
+     "team_b_standing": 88
+    }
+   }
+  },
+  {
+   "fixture_id": "1082907",
+   "game": "CS2",
+   "competition": "Tesla Cup 2026",
+   "tier": "b",
+   "stage": null,
+   "status": "scheduled",
+   "start_time_utc": "2026-10-29T09:00:00Z",
+   "lock_time_utc": "2026-10-29T08:54:00Z",
+   "team_a": "B8",
+   "team_b": "HOTU",
+   "listed_in_lobby": false,
+   "picks_open": true,
+   "sources": {
+    "hotspawn_match": "https://play.hotspawn.com/lobby",
+    "hotspawn_lobby": "https://play.hotspawn.com/lobby"
+   },
+   "hotspawn_crowd_pct_reference_only": {
+    "team_a": 0,
+    "team_b": 100,
+    "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
+   },
+   "market_quotes": [
+    {
+     "source_key": "bo3gg_thunderpick",
+     "source_name": "Thunderpick prices via bo3.gg",
+     "source_kind": "licensed bookmaker price republished by an esports results site",
+     "market_type": "match winner (moneyline, full match)",
+     "source_public_url": "https://bo3.gg/matches/b8-vs-hotu-29-10-2026",
+     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132627",
+     "provider_market_url": "https://thunderpick.io/match/2906793",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
+     "age_hours": 0.0,
+     "start_delta_min": 0,
+     "decimal_odds_a": 1.62,
+     "decimal_odds_b": 2.15,
+     "prob_a": 0.5702917771883289,
+     "prob_b": 0.4297082228116711,
+     "overround": 1.0824002296870514,
+     "via": null,
+     "orientation": "ab"
+    },
+    {
+     "source_key": "bo3gg_thunderpick",
+     "source_name": "Thunderpick prices via bo3.gg",
+     "source_kind": "licensed bookmaker price republished by an esports results site",
+     "market_type": "match winner (moneyline, full match)",
+     "source_public_url": "https://bo3.gg/matches/b8-vs-hotu-29-10-2026",
+     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132627",
+     "provider_market_url": "https://thunderpick.io/match/2906793",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
+     "age_hours": 0.0,
+     "start_delta_min": 0,
+     "decimal_odds_a": 1.62,
+     "decimal_odds_b": 2.15,
+     "prob_a": 0.5702917771883289,
+     "prob_b": 0.4297082228116711,
+     "overround": 1.0824002296870514,
+     "via": null,
+     "orientation": "ab"
+    },
+    {
+     "source_key": "bo3gg_thunderpick",
+     "source_name": "Thunderpick prices via bo3.gg",
+     "source_kind": "licensed bookmaker price republished by an esports results site",
+     "market_type": "match winner (moneyline, full match)",
+     "source_public_url": "https://bo3.gg/matches/b8-vs-hotu-29-10-2026",
+     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132627",
+     "provider_market_url": "https://thunderpick.io/match/2906793",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
+     "age_hours": 0.0,
+     "start_delta_min": 0,
+     "decimal_odds_a": 1.62,
+     "decimal_odds_b": 2.15,
+     "prob_a": 0.5702917771883289,
+     "prob_b": 0.4297082228116711,
+     "overround": 1.0824002296870514,
+     "via": null,
+     "orientation": "ab"
+    },
+    {
+     "source_key": "bo3gg_thunderpick",
+     "source_name": "Thunderpick prices via bo3.gg",
+     "source_kind": "licensed bookmaker price republished by an esports results site",
+     "market_type": "match winner (moneyline, full match)",
+     "source_public_url": "https://bo3.gg/matches/b8-vs-hotu-29-10-2026",
+     "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132627",
+     "provider_market_url": "https://thunderpick.io/match/2906793",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
+     "age_hours": 0.0,
+     "start_delta_min": 0,
+     "decimal_odds_a": 1.62,
+     "decimal_odds_b": 2.15,
+     "prob_a": 0.5702917771883289,
+     "prob_b": 0.4297082228116711,
+     "overround": 1.0824002296870514,
+     "via": null,
+     "orientation": "ab"
+    },
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "source_kind": "licensed bookmaker",
+     "market_type": "match winner (moneyline, full match)",
+     "source_public_url": "https://www.pinnacle.com/en/esports/",
+     "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1639465995/markets/related/straight",
+     "provider_market_url": null,
+     "retrieved_at_utc": "2026-10-29T01:48:29Z",
+     "age_hours": 5.86,
+     "start_delta_min": 0,
+     "decimal_odds_a": 1.826446,
+     "decimal_odds_b": 2.0,
+     "prob_a": 0.5226782241275586,
+     "prob_b": 0.4773217758724414,
+     "overround": 1.0475113964497171,
+     "via": "data/live/quotes.json (session 3cd9787c, read-only)",
+     "orientation": "ab"
+    },
+    {
+     "source_key": "bovada",
+     "source_name": "Bovada",
+     "source_kind": "licensed bookmaker",
+     "market_type": "match winner (moneyline, full match)",
+     "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/b8-hotu-202610290500",
+     "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
+     "provider_market_url": null,
+     "retrieved_at_utc": "2026-10-29T01:48:31Z",
+     "age_hours": 5.86,
+     "start_delta_min": null,
+     "decimal_odds_a": 1.8,
+     "decimal_odds_b": 1.952381,
+     "prob_a": 0.5203045746154242,
+     "prob_b": 0.4796954253845758,
+     "overround": 1.0677506650142115,
+     "via": "data/live/quotes.json (session 3cd9787c, read-only)",
+     "orientation": "ab"
+    },
+    {
+     "source_key": "linefeed_melbet",
+     "source_name": "Melbet (1xBet platform)",
+     "source_kind": "licensed bookmaker (public LineFeed JSON)",
+     "market_type": "match winner (moneyline, full match)",
+     "source_public_url": "https://melbet.com/en/line/esports/",
+     "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
+     "provider_market_url": null,
+     "retrieved_at_utc": "2026-10-29T01:48:36Z",
+     "age_hours": 5.86,
+     "start_delta_min": 0,
+     "decimal_odds_a": 1.89,
+     "decimal_odds_b": 1.93,
+     "prob_a": 0.5052356020942408,
+     "prob_b": 0.4947643979057591,
+     "overround": 1.047235244126436,
+     "via": "data/live/quotes.json (session 3cd9787c, read-only)",
+     "orientation": "ab"
+    }
+   ],
+   "exchange": {
+    "event_ticker": "KXCS2GAME-26OCT290500HOTUB8",
+    "title": "HOTU vs. B8",
+    "sub_title": "HOTU vs. B8 (Oct 29)",
+    "source_public_url": "https://kalshi.com/markets/kxcs2game",
+    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
+    "rules_primary": "If HOTU wins the Tesla Cup 2026: HOTU vs. B8 CS2 match originally scheduled for Oct 29, 2026 at 5:00 AM EDT, then the market resolves to Yes.",
+    "stated_start_utc": "2026-10-29T09:00:00Z",
+    "stated_start_raw": "Oct 29, 2026 at 5:00 AM EDT",
+    "expected_end_utc": null,
+    "start_time_source": "market rule text",
+    "start_delta_min": 0,
+    "sides": [
+     {
+      "ticker": "KXCS2GAME-26OCT290500HOTUB8-HOTU",
+      "team": "HOTU",
+      "yes_bid": 0.41,
+      "yes_ask": 0.55,
+      "last_price": 0.42,
+      "bid_size": 5948.11,
+      "ask_size": 1.0,
+      "volume": 21037.47,
+      "open_interest": 20684.1,
+      "status": "active",
+      "mid": 0.48,
+      "spread": 0.14
+     },
+     {
+      "ticker": "KXCS2GAME-26OCT290500HOTUB8-B8",
+      "team": "B8",
+      "yes_bid": 0.58,
+      "yes_ask": 0.59,
+      "last_price": 0.59,
+      "bid_size": 1100.0,
+      "ask_size": 3624.17,
+      "volume": 6812.47,
+      "open_interest": 6550.88,
+      "status": "active",
+      "mid": 0.585,
+      "spread": 0.01
+     }
+    ],
+    "orientation": "ba"
+   },
+   "exchange_usable": true,
+   "exchange_reasons": [],
+   "flags": [],
+   "published": {
+    "basis": "market",
+    "label": "market consensus of 4 external source(s), proportional no-vig",
+    "prob_a": 0.5296275445063882,
+    "prob_b": 0.47037245549361184,
+    "sources": [
+     {
+      "source_key": "bo3gg_thunderpick",
+      "source_name": "Thunderpick prices via bo3.gg",
+      "source_public_url": "https://bo3.gg/matches/b8-vs-hotu-29-10-2026",
+      "retrieved_at_utc": "2026-10-29T07:40:17Z",
+      "decimal_odds_a": 1.62,
+      "decimal_odds_b": 2.15,
+      "overround": 1.0824,
+      "prob_a": 0.5702917771883289
+     },
+     {
+      "source_key": "pinnacle",
+      "source_name": "Pinnacle",
+      "source_public_url": "https://www.pinnacle.com/en/esports/",
+      "retrieved_at_utc": "2026-10-29T01:48:29Z",
+      "decimal_odds_a": 1.826446,
+      "decimal_odds_b": 2.0,
+      "overround": 1.0475,
+      "prob_a": 0.5226782241275586
+     },
+     {
+      "source_key": "bovada",
+      "source_name": "Bovada",
+      "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/b8-hotu-202610290500",
+      "retrieved_at_utc": "2026-10-29T01:48:31Z",
+      "decimal_odds_a": 1.8,
+      "decimal_odds_b": 1.952381,
+      "overround": 1.0678,
+      "prob_a": 0.5203045746154242
+     },
+     {
+      "source_key": "linefeed_melbet",
+      "source_name": "Melbet (1xBet platform)",
+      "source_public_url": "https://melbet.com/en/line/esports/",
+      "retrieved_at_utc": "2026-10-29T01:48:36Z",
+      "decimal_odds_a": 1.89,
+      "decimal_odds_b": 1.93,
+      "overround": 1.0472,
+      "prob_a": 0.5052356020942408
+     }
+    ],
+    "via": [
+     "data/live/quotes.json (session 3cd9787c, read-only)"
+    ],
+    "pick_side": "a",
+    "pick_team": "B8",
+    "pick_probability": 0.5296275445063882
    },
    "estimate_inputs": {}
   },
@@ -6689,8 +7031,8 @@
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
    },
    "hotspawn_crowd_pct_reference_only": {
-    "team_a": 94,
-    "team_b": 6,
+    "team_a": 89,
+    "team_b": 11,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [],
@@ -6700,7 +7042,7 @@
     "sub_title": "SAW Youngsters vs. WBT Academy (Oct 29)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If SAW Youngsters wins the Circuito Retake 2026: SAW Youngsters vs. WBT Academy CS2 match originally scheduled for Oct 29, 2026 at 5:00 AM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-29T09:00:00Z",
     "stated_start_raw": "Oct 29, 2026 at 5:00 AM EDT",
@@ -6711,37 +7053,38 @@
      {
       "ticker": "KXCS2GAME-26OCT290500SAWYWBTA-SAWY",
       "team": "SAW Youngsters",
-      "yes_bid": 0.43,
-      "yes_ask": 0.45,
-      "last_price": 0.46,
-      "bid_size": 325.0,
-      "ask_size": 477.0,
-      "volume": 201.52,
-      "open_interest": 201.52,
+      "yes_bid": 0.08,
+      "yes_ask": 0.44,
+      "last_price": 0.4,
+      "bid_size": 1.0,
+      "ask_size": 1.0,
+      "volume": 403.24,
+      "open_interest": 403.24,
       "status": "active",
-      "mid": 0.44,
-      "spread": 0.02
+      "mid": 0.26,
+      "spread": 0.36
      },
      {
       "ticker": "KXCS2GAME-26OCT290500SAWYWBTA-WBTA",
       "team": "WBT Academy",
-      "yes_bid": 0.53,
-      "yes_ask": 0.57,
-      "last_price": 0.0,
-      "bid_size": 775.0,
-      "ask_size": 325.0,
-      "volume": 0.0,
-      "open_interest": 0.0,
+      "yes_bid": 0.32,
+      "yes_ask": 0.64,
+      "last_price": 0.61,
+      "bid_size": 2.0,
+      "ask_size": 4.0,
+      "volume": 12.0,
+      "open_interest": 12.0,
       "status": "active",
-      "mid": 0.55,
-      "spread": 0.04
+      "mid": 0.48,
+      "spread": 0.32
      }
     ],
     "orientation": "ba"
    },
    "exchange_usable": false,
    "exchange_reasons": [
-    "no traded volume or open interest"
+    "spread 0.36 wider than 0.2",
+    "spread 0.32 wider than 0.2"
    ],
    "flags": [],
    "published": {
@@ -6768,8 +7111,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 0.346232583797232,
-     "rating_b": 1.5595184570812077,
+     "rating_a": 0.3449334723141631,
+     "rating_b": 1.5581682152307046,
      "appearances_a": 7.0,
      "appearances_b": 7.0
     },
@@ -6788,6 +7131,159 @@
      "team_b_standing": 150
     }
    }
+  },
+  {
+   "fixture_id": "1081170",
+   "game": "CS2",
+   "competition": "CCT Europe 2026 Series #12",
+   "tier": "b",
+   "stage": null,
+   "status": "scheduled",
+   "start_time_utc": "2026-10-29T12:00:00Z",
+   "lock_time_utc": "2026-10-29T11:54:00Z",
+   "team_a": "ex-INOX",
+   "team_b": "Spirit Academy",
+   "listed_in_lobby": false,
+   "picks_open": true,
+   "sources": {
+    "hotspawn_match": "https://play.hotspawn.com/lobby",
+    "hotspawn_lobby": "https://play.hotspawn.com/lobby"
+   },
+   "hotspawn_crowd_pct_reference_only": {
+    "team_a": 25,
+    "team_b": 75,
+    "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
+   },
+   "market_quotes": [],
+   "exchange": null,
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "no two-sided Kalshi book matched"
+   ],
+   "flags": [
+    "no_probability_available",
+    "no official Valve CS2 Regional Standings entry for: ex-INOX",
+    "blank_no_published_probability"
+   ],
+   "published": null,
+   "estimate_inputs": {}
+  },
+  {
+   "fixture_id": "1082908",
+   "game": "CS2",
+   "competition": "Tesla Cup 2026",
+   "tier": "b",
+   "stage": null,
+   "status": "scheduled",
+   "start_time_utc": "2026-10-29T12:00:00Z",
+   "lock_time_utc": "2026-10-29T11:54:00Z",
+   "team_a": "FaZe",
+   "team_b": "GamerLegion",
+   "listed_in_lobby": false,
+   "picks_open": true,
+   "sources": {
+    "hotspawn_match": "https://play.hotspawn.com/lobby",
+    "hotspawn_lobby": "https://play.hotspawn.com/lobby"
+   },
+   "hotspawn_crowd_pct_reference_only": {
+    "team_a": 75,
+    "team_b": 25,
+    "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
+   },
+   "market_quotes": [
+    {
+     "source_key": "pinnacle",
+     "source_name": "Pinnacle",
+     "source_kind": "licensed bookmaker",
+     "market_type": "match winner (moneyline, full match)",
+     "source_public_url": "https://www.pinnacle.com/en/esports/",
+     "source_api_url": "https://guest.api.arcadia.pinnacle.com/0.1/matchups/1639471937/markets/related/straight",
+     "provider_market_url": null,
+     "retrieved_at_utc": "2026-10-29T01:48:29Z",
+     "age_hours": 5.86,
+     "start_delta_min": 0,
+     "decimal_odds_a": 1.606061,
+     "decimal_odds_b": 2.35,
+     "prob_a": 0.594025218519128,
+     "prob_b": 0.405974781480872,
+     "overround": 1.0481732716042276,
+     "via": "data/live/quotes.json (session 3cd9787c, read-only)",
+     "orientation": "ab"
+    }
+   ],
+   "exchange": {
+    "event_ticker": "KXCS2GAME-26OCT290800GLFAZE",
+    "title": "GamerLegion vs. FaZe",
+    "sub_title": "GamerLegion vs. FaZe (Oct 29)",
+    "source_public_url": "https://kalshi.com/markets/kxcs2game",
+    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
+    "rules_primary": "If GamerLegion wins the Tesla Cup 2026: GamerLegion vs. FaZe CS2 match originally scheduled for Oct 29, 2026 at 8:00 AM EDT, then the market resolves to Yes.",
+    "stated_start_utc": "2026-10-29T12:00:00Z",
+    "stated_start_raw": "Oct 29, 2026 at 8:00 AM EDT",
+    "expected_end_utc": null,
+    "start_time_source": "market rule text",
+    "start_delta_min": 0,
+    "sides": [
+     {
+      "ticker": "KXCS2GAME-26OCT290800GLFAZE-GL",
+      "team": "GamerLegion",
+      "yes_bid": 0.4,
+      "yes_ask": 0.41,
+      "last_price": 0.41,
+      "bid_size": 1000.0,
+      "ask_size": 2272.0,
+      "volume": 1392.67,
+      "open_interest": 1390.33,
+      "status": "active",
+      "mid": 0.405,
+      "spread": 0.01
+     },
+     {
+      "ticker": "KXCS2GAME-26OCT290800GLFAZE-FAZE",
+      "team": "FaZe",
+      "yes_bid": 0.58,
+      "yes_ask": 0.59,
+      "last_price": 0.59,
+      "bid_size": 8000.0,
+      "ask_size": 49010.23,
+      "volume": 2364.92,
+      "open_interest": 2113.38,
+      "status": "active",
+      "mid": 0.585,
+      "spread": 0.01
+     }
+    ],
+    "orientation": "ba"
+   },
+   "exchange_usable": true,
+   "exchange_reasons": [],
+   "flags": [],
+   "published": {
+    "basis": "market",
+    "label": "market consensus of 1 external source(s), proportional no-vig",
+    "prob_a": 0.594025218519128,
+    "prob_b": 0.40597478148087196,
+    "sources": [
+     {
+      "source_key": "pinnacle",
+      "source_name": "Pinnacle",
+      "source_public_url": "https://www.pinnacle.com/en/esports/",
+      "retrieved_at_utc": "2026-10-29T01:48:29Z",
+      "decimal_odds_a": 1.606061,
+      "decimal_odds_b": 2.35,
+      "overround": 1.0482,
+      "prob_a": 0.594025218519128
+     }
+    ],
+    "via": [
+     "data/live/quotes.json (session 3cd9787c, read-only)"
+    ],
+    "pick_side": "a",
+    "pick_team": "FaZe",
+    "pick_probability": 0.594025218519128
+   },
+   "estimate_inputs": {}
   },
   {
    "fixture_id": "1117315",
@@ -6820,14 +7316,14 @@
      "source_public_url": "https://melbet.com/en/line/esports/",
      "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "provider_market_url": null,
-     "retrieved_at_utc": "2026-10-28T21:40:22Z",
-     "age_hours": 3.57,
+     "retrieved_at_utc": "2026-10-29T01:48:36Z",
+     "age_hours": 5.86,
      "start_delta_min": 0,
-     "decimal_odds_a": 1.04,
-     "decimal_odds_b": 8.2,
-     "prob_a": 0.8874458874458874,
-     "prob_b": 0.11255411255411256,
-     "overround": 1.0834896810506567,
+     "decimal_odds_a": 1.05,
+     "decimal_odds_b": 8.8,
+     "prob_a": 0.8934010152284265,
+     "prob_b": 0.10659898477157362,
+     "overround": 1.0660173160173159,
      "via": "data/live/quotes.json (session 3cd9787c, read-only)",
      "orientation": "ab"
     }
@@ -6838,7 +7334,7 @@
     "sub_title": "QUINTESSENCIA vs. Imperial (Oct 29)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If QUINTESSENCIA wins the Gamers Club Masters 2026: QUINTESSENCIA vs. Imperial CS2 match originally scheduled for Oct 29, 2026 at 9:00 AM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-29T13:00:00Z",
     "stated_start_raw": "Oct 29, 2026 at 9:00 AM EDT",
@@ -6849,54 +7345,54 @@
      {
       "ticker": "KXCS2GAME-26OCT290900QUINIMP-QUIN",
       "team": "QUINTESSENCIA",
-      "yes_bid": 0.06,
-      "yes_ask": 0.07,
-      "last_price": 0.07,
-      "bid_size": 1.0,
-      "ask_size": 2565.0,
-      "volume": 14.41,
-      "open_interest": 14.41,
+      "yes_bid": 0.05,
+      "yes_ask": 0.09,
+      "last_price": 0.06,
+      "bid_size": 185.66,
+      "ask_size": 120.0,
+      "volume": 315.1,
+      "open_interest": 248.94,
       "status": "active",
-      "mid": 0.065,
-      "spread": 0.01
+      "mid": 0.07,
+      "spread": 0.04
      },
      {
       "ticker": "KXCS2GAME-26OCT290900QUINIMP-IMP",
       "team": "Imperial",
-      "yes_bid": 0.94,
+      "yes_bid": 0.55,
       "yes_ask": 0.95,
-      "last_price": 0.0,
-      "bid_size": 1180.0,
-      "ask_size": 429.0,
-      "volume": 0.0,
-      "open_interest": 0.0,
+      "last_price": 0.95,
+      "bid_size": 150.0,
+      "ask_size": 132.62,
+      "volume": 46.38,
+      "open_interest": 46.38,
       "status": "active",
-      "mid": 0.945,
-      "spread": 0.01
+      "mid": 0.75,
+      "spread": 0.4
      }
     ],
     "orientation": "ba"
    },
    "exchange_usable": false,
    "exchange_reasons": [
-    "no traded volume or open interest"
+    "spread 0.4 wider than 0.2"
    ],
    "flags": [],
    "published": {
     "basis": "market",
     "label": "market consensus of 1 external source(s), proportional no-vig",
-    "prob_a": 0.8874458874458874,
-    "prob_b": 0.11255411255411263,
+    "prob_a": 0.8934010152284265,
+    "prob_b": 0.10659898477157348,
     "sources": [
      {
       "source_key": "linefeed_melbet",
       "source_name": "Melbet (1xBet platform)",
       "source_public_url": "https://melbet.com/en/line/esports/",
-      "retrieved_at_utc": "2026-10-28T21:40:22Z",
-      "decimal_odds_a": 1.04,
-      "decimal_odds_b": 8.2,
-      "overround": 1.0835,
-      "prob_a": 0.8874458874458874
+      "retrieved_at_utc": "2026-10-29T01:48:36Z",
+      "decimal_odds_a": 1.05,
+      "decimal_odds_b": 8.8,
+      "overround": 1.066,
+      "prob_a": 0.8934010152284265
      }
     ],
     "via": [
@@ -6904,7 +7400,7 @@
     ],
     "pick_side": "a",
     "pick_team": "Imperial",
-    "pick_probability": 0.8874458874458874
+    "pick_probability": 0.8934010152284265
    },
    "estimate_inputs": {}
   },
@@ -6926,8 +7422,8 @@
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
    },
    "hotspawn_crowd_pct_reference_only": {
-    "team_a": 0,
-    "team_b": 100,
+    "team_a": 3,
+    "team_b": 97,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [],
@@ -6937,7 +7433,7 @@
     "sub_title": "Arena Pro vs. 100 Thieves (Oct 29)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If Arena Pro wins the FiReSPORTS Last Chance 2026: Arena Pro vs. 100 Thieves CS2 match originally scheduled for Oct 29, 2026 at 9:00 AM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-29T13:00:00Z",
     "stated_start_raw": "Oct 29, 2026 at 9:00 AM EDT",
@@ -6948,30 +7444,30 @@
      {
       "ticker": "KXCS2GAME-26OCT290900ARE100T-ARE",
       "team": "Arena Pro",
-      "yes_bid": 0.04,
+      "yes_bid": 0.03,
       "yes_ask": 0.05,
-      "last_price": 0.05,
-      "bid_size": 389.0,
-      "ask_size": 624.69,
-      "volume": 1144.73,
-      "open_interest": 1111.73,
+      "last_price": 0.03,
+      "bid_size": 225.36,
+      "ask_size": 384.95,
+      "volume": 5659.16,
+      "open_interest": 4190.78,
       "status": "active",
-      "mid": 0.045,
-      "spread": 0.01
+      "mid": 0.04,
+      "spread": 0.02
      },
      {
       "ticker": "KXCS2GAME-26OCT290900ARE100T-100T",
       "team": "100 Thieves",
       "yes_bid": 0.96,
-      "yes_ask": 0.97,
-      "last_price": 0.96,
-      "bid_size": 782.94,
-      "ask_size": 911.0,
-      "volume": 3634.16,
-      "open_interest": 3074.14,
+      "yes_ask": 0.98,
+      "last_price": 0.98,
+      "bid_size": 598.86,
+      "ask_size": 211.14,
+      "volume": 7783.55,
+      "open_interest": 6233.54,
       "status": "active",
-      "mid": 0.965,
-      "spread": 0.01
+      "mid": 0.97,
+      "spread": 0.02
      }
     ],
     "orientation": "ab"
@@ -6982,15 +7478,15 @@
    "published": {
     "basis": "exchange",
     "label": "Kalshi exchange mid price (two-sided book inside the published spread limit)",
-    "prob_a": 0.045,
-    "prob_b": 0.955,
+    "prob_a": 0.04,
+    "prob_b": 0.96,
     "source_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "spread": 0.01,
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "spread": 0.02,
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "pick_side": "b",
     "pick_team": "100 Thieves",
-    "pick_probability": 0.955
+    "pick_probability": 0.96
    },
    "estimate_inputs": {}
   },
@@ -7012,8 +7508,8 @@
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
    },
    "hotspawn_crowd_pct_reference_only": {
-    "team_a": 9,
-    "team_b": 91,
+    "team_a": 14,
+    "team_b": 86,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [
@@ -7025,14 +7521,14 @@
      "source_public_url": "https://melbet.com/en/line/esports/",
      "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "provider_market_url": null,
-     "retrieved_at_utc": "2026-10-28T21:40:22Z",
-     "age_hours": 3.57,
+     "retrieved_at_utc": "2026-10-29T01:48:36Z",
+     "age_hours": 5.86,
      "start_delta_min": 0,
-     "decimal_odds_a": 1.57,
-     "decimal_odds_b": 2.279,
-     "prob_a": 0.5921018446349701,
-     "prob_b": 0.4078981553650299,
-     "overround": 1.0757316176778842,
+     "decimal_odds_a": 1.58,
+     "decimal_odds_b": 2.302,
+     "prob_a": 0.5929933024214322,
+     "prob_b": 0.4070066975785678,
+     "overround": 1.067316257739555,
      "via": "data/live/quotes.json (session 3cd9787c, read-only)",
      "orientation": "ab"
     }
@@ -7043,7 +7539,7 @@
     "sub_title": "Bounty Hunters Esports vs. BARCA (Oct 29)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If Bounty Hunters Esports wins the FiReSPORTS Last Chance 2026: Bounty Hunters Esports vs. BARCA CS2 match originally scheduled for Oct 29, 2026 at 9:00 AM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-29T13:00:00Z",
     "stated_start_raw": "Oct 29, 2026 at 9:00 AM EDT",
@@ -7054,30 +7550,30 @@
      {
       "ticker": "KXCS2GAME-26OCT290900BHEBAR-BHE",
       "team": "Bounty Hunters Esports",
-      "yes_bid": 0.39,
-      "yes_ask": 0.43,
-      "last_price": 0.43,
-      "bid_size": 365.0,
-      "ask_size": 601.06,
-      "volume": 468.36,
-      "open_interest": 468.36,
+      "yes_bid": 0.38,
+      "yes_ask": 0.44,
+      "last_price": 0.41,
+      "bid_size": 1.0,
+      "ask_size": 2.0,
+      "volume": 515.18,
+      "open_interest": 515.18,
       "status": "active",
       "mid": 0.41,
-      "spread": 0.04
+      "spread": 0.06
      },
      {
       "ticker": "KXCS2GAME-26OCT290900BHEBAR-BAR",
       "team": "BARCA",
-      "yes_bid": 0.58,
-      "yes_ask": 0.61,
+      "yes_bid": 0.39,
+      "yes_ask": 0.59,
       "last_price": 0.0,
-      "bid_size": 0.82,
-      "ask_size": 365.0,
+      "bid_size": 10.0,
+      "ask_size": 1.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.595,
-      "spread": 0.03
+      "mid": 0.49,
+      "spread": 0.2
      }
     ],
     "orientation": "ba"
@@ -7090,18 +7586,18 @@
    "published": {
     "basis": "market",
     "label": "market consensus of 1 external source(s), proportional no-vig",
-    "prob_a": 0.5921018446349701,
-    "prob_b": 0.40789815536502994,
+    "prob_a": 0.5929933024214322,
+    "prob_b": 0.4070066975785678,
     "sources": [
      {
       "source_key": "linefeed_melbet",
       "source_name": "Melbet (1xBet platform)",
       "source_public_url": "https://melbet.com/en/line/esports/",
-      "retrieved_at_utc": "2026-10-28T21:40:22Z",
-      "decimal_odds_a": 1.57,
-      "decimal_odds_b": 2.279,
-      "overround": 1.0757,
-      "prob_a": 0.5921018446349701
+      "retrieved_at_utc": "2026-10-29T01:48:36Z",
+      "decimal_odds_a": 1.58,
+      "decimal_odds_b": 2.302,
+      "overround": 1.0673,
+      "prob_a": 0.5929933024214322
      }
     ],
     "via": [
@@ -7109,7 +7605,7 @@
     ],
     "pick_side": "a",
     "pick_team": "BARCA",
-    "pick_probability": 0.5921018446349701
+    "pick_probability": 0.5929933024214322
    },
    "estimate_inputs": {}
   },
@@ -7131,8 +7627,8 @@
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
    },
    "hotspawn_crowd_pct_reference_only": {
-    "team_a": 100,
-    "team_b": 0,
+    "team_a": 97,
+    "team_b": 3,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [
@@ -7144,8 +7640,8 @@
      "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/hyperx-retake/iberian-soul-zotix-202610291000",
      "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
      "provider_market_url": null,
-     "retrieved_at_utc": "2026-10-28T21:40:16Z",
-     "age_hours": 3.57,
+     "retrieved_at_utc": "2026-10-29T01:48:31Z",
+     "age_hours": 5.86,
      "start_delta_min": null,
      "decimal_odds_a": 1.142857,
      "decimal_odds_b": 5.25,
@@ -7163,8 +7659,8 @@
      "source_public_url": "https://melbet.com/en/line/esports/",
      "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "provider_market_url": null,
-     "retrieved_at_utc": "2026-10-28T21:40:22Z",
-     "age_hours": 3.57,
+     "retrieved_at_utc": "2026-10-29T01:48:36Z",
+     "age_hours": 5.86,
      "start_delta_min": 0,
      "decimal_odds_a": 1.15,
      "decimal_odds_b": 4.67,
@@ -7181,7 +7677,7 @@
     "sub_title": "ZOTIX vs. Iberian Soul (Oct 29)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If ZOTIX wins the Circuito Retake 2026: ZOTIX vs. Iberian Soul CS2 match originally scheduled for Oct 29, 2026 at 10:00 AM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-29T14:00:00Z",
     "stated_start_raw": "Oct 29, 2026 at 10:00 AM EDT",
@@ -7192,36 +7688,39 @@
      {
       "ticker": "KXCS2GAME-26OCT291000ZOTIXIS-ZOTIX",
       "team": "ZOTIX",
-      "yes_bid": 0.16,
-      "yes_ask": 0.2,
+      "yes_bid": 0.08,
+      "yes_ask": 0.53,
       "last_price": 0.17,
-      "bid_size": 548.0,
-      "ask_size": 10.7,
+      "bid_size": 29.0,
+      "ask_size": 10.0,
       "volume": 37.5,
       "open_interest": 36.5,
       "status": "active",
-      "mid": 0.18,
-      "spread": 0.04
+      "mid": 0.305,
+      "spread": 0.45
      },
      {
       "ticker": "KXCS2GAME-26OCT291000ZOTIXIS-IS",
       "team": "Iberian Soul",
-      "yes_bid": 0.8,
-      "yes_ask": 0.84,
+      "yes_bid": 0.62,
+      "yes_ask": 0.92,
       "last_price": 0.76,
-      "bid_size": 27.0,
-      "ask_size": 672.0,
+      "bid_size": 15.0,
+      "ask_size": 25.0,
       "volume": 24.8,
       "open_interest": 24.8,
       "status": "active",
-      "mid": 0.82,
-      "spread": 0.04
+      "mid": 0.77,
+      "spread": 0.3
      }
     ],
     "orientation": "ba"
    },
-   "exchange_usable": true,
-   "exchange_reasons": [],
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "spread 0.45 wider than 0.2",
+    "spread 0.3 wider than 0.2"
+   ],
    "flags": [],
    "published": {
     "basis": "market",
@@ -7233,7 +7732,7 @@
       "source_key": "bovada",
       "source_name": "Bovada",
       "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/hyperx-retake/iberian-soul-zotix-202610291000",
-      "retrieved_at_utc": "2026-10-28T21:40:16Z",
+      "retrieved_at_utc": "2026-10-29T01:48:31Z",
       "decimal_odds_a": 1.142857,
       "decimal_odds_b": 5.25,
       "overround": 1.0655,
@@ -7243,7 +7742,7 @@
       "source_key": "linefeed_melbet",
       "source_name": "Melbet (1xBet platform)",
       "source_public_url": "https://melbet.com/en/line/esports/",
-      "retrieved_at_utc": "2026-10-28T21:40:22Z",
+      "retrieved_at_utc": "2026-10-29T01:48:36Z",
       "decimal_odds_a": 1.15,
       "decimal_odds_b": 4.67,
       "overround": 1.0837,
@@ -7258,6 +7757,127 @@
     "pick_probability": 0.811817283456302
    },
    "estimate_inputs": {}
+  },
+  {
+   "fixture_id": "1081171",
+   "game": "CS2",
+   "competition": "CCT Europe 2026 Series #12",
+   "tier": "b",
+   "stage": null,
+   "status": "scheduled",
+   "start_time_utc": "2026-10-29T15:00:00Z",
+   "lock_time_utc": "2026-10-29T14:54:00Z",
+   "team_a": "Acend",
+   "team_b": "Saint Sinners",
+   "listed_in_lobby": false,
+   "picks_open": true,
+   "sources": {
+    "hotspawn_match": "https://play.hotspawn.com/lobby",
+    "hotspawn_lobby": "https://play.hotspawn.com/lobby"
+   },
+   "hotspawn_crowd_pct_reference_only": {
+    "team_a": 25,
+    "team_b": 75,
+    "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
+   },
+   "market_quotes": [],
+   "exchange": {
+    "event_ticker": "KXCS2GAME-26OCT291100SSINSACE",
+    "title": "Saint Sinners vs. Acend",
+    "sub_title": "Saint Sinners vs. Acend (Oct 29)",
+    "source_public_url": "https://kalshi.com/markets/kxcs2game",
+    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
+    "rules_primary": "If Saint Sinners wins the CCT Europe Series #12 2026: Saint Sinners vs. Acend CS2 match originally scheduled for Oct 29, 2026 at 11:00 AM EDT, then the market resolves to Yes.",
+    "stated_start_utc": "2026-10-29T15:00:00Z",
+    "stated_start_raw": "Oct 29, 2026 at 11:00 AM EDT",
+    "expected_end_utc": null,
+    "start_time_source": "market rule text",
+    "start_delta_min": 0,
+    "sides": [
+     {
+      "ticker": "KXCS2GAME-26OCT291100SSINSACE-SSINS",
+      "team": "Saint Sinners",
+      "yes_bid": 0.1,
+      "yes_ask": 0.84,
+      "last_price": 0.0,
+      "bid_size": 40.0,
+      "ask_size": 24.0,
+      "volume": 0.0,
+      "open_interest": 0.0,
+      "status": "active",
+      "mid": 0.47,
+      "spread": 0.74
+     },
+     {
+      "ticker": "KXCS2GAME-26OCT291100SSINSACE-ACE",
+      "team": "Acend",
+      "yes_bid": 0.14,
+      "yes_ask": 0.84,
+      "last_price": 0.0,
+      "bid_size": 48.0,
+      "ask_size": 22.0,
+      "volume": 0.0,
+      "open_interest": 0.0,
+      "status": "active",
+      "mid": 0.49,
+      "spread": 0.7
+     }
+    ],
+    "orientation": "ba"
+   },
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "spread 0.74 wider than 0.2",
+    "no traded volume or open interest",
+    "spread 0.7 wider than 0.2",
+    "no traded volume or open interest"
+   ],
+   "flags": [],
+   "published": {
+    "basis": "vrs",
+    "label": "originated estimate — model output, not a market price",
+    "prob_a": 0.9027140342685218,
+    "prob_b": 0.09728596573147819,
+    "source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+    "source_api_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+    "pick_side": "a",
+    "pick_team": "Acend",
+    "pick_probability": 0.9027140342685218
+   },
+   "estimate_inputs": {
+    "model_preference": "bt",
+    "bt": {
+     "prob_a": null,
+     "note": "team not present in the fitted corpus",
+     "matches_used": 1146,
+     "teams": 456,
+     "half_life_days": 60.0,
+     "ridge": 0.02,
+     "min_matches": 8,
+     "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
+     "source_public": "https://bo3.gg/matches/finished",
+     "source_api": "https://bo3.gg/api/v1/matches",
+     "rating_a": 2.869190466777799,
+     "rating_b": null,
+     "appearances_a": 7.0,
+     "appearances_b": 0.0
+    },
+    "vrs": {
+     "prob_a": 0.9027140342685218,
+     "note": "ok",
+     "rating_diff": 387.0,
+     "scale": 400.0,
+     "team_a_points": 1197,
+     "team_b_points": 810,
+     "team_a_snapshot": "2026_10_05",
+     "team_b_snapshot": "2026_10_05",
+     "source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+     "team_b_source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+     "team_a_standing": 63,
+     "team_b_standing": 158
+    }
+   }
   },
   {
    "fixture_id": "1117320",
@@ -7277,8 +7897,8 @@
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
    },
    "hotspawn_crowd_pct_reference_only": {
-    "team_a": 0,
-    "team_b": 100,
+    "team_a": 4,
+    "team_b": 96,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [],
@@ -7288,7 +7908,7 @@
     "sub_title": "naocopulas vs. paiN (Oct 29)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If naocopulas wins the Gamers Club Masters 2026: naocopulas vs. paiN CS2 match originally scheduled for Oct 29, 2026 at 12:30 PM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-29T16:30:00Z",
     "stated_start_raw": "Oct 29, 2026 at 12:30 PM EDT",
@@ -7300,43 +7920,49 @@
       "ticker": "KXCS2GAME-26OCT291230NCPPAIN-NCP",
       "team": "naocopulas",
       "yes_bid": 0.07,
-      "yes_ask": 0.09,
-      "last_price": 0.09,
-      "bid_size": 337.0,
-      "ask_size": 469.0,
-      "volume": 630.0,
-      "open_interest": 630.0,
+      "yes_ask": 0.17,
+      "last_price": 0.12,
+      "bid_size": 29.0,
+      "ask_size": 1.0,
+      "volume": 908.12,
+      "open_interest": 848.86,
       "status": "active",
-      "mid": 0.08,
-      "spread": 0.02
+      "mid": 0.12,
+      "spread": 0.1
      },
      {
       "ticker": "KXCS2GAME-26OCT291230NCPPAIN-PAIN",
       "team": "paiN",
-      "yes_bid": 0.9,
-      "yes_ask": 0.94,
-      "last_price": 0.0,
-      "bid_size": 453.0,
-      "ask_size": 673.0,
-      "volume": 0.0,
-      "open_interest": 0.0,
+      "yes_bid": 0.86,
+      "yes_ask": 0.91,
+      "last_price": 0.89,
+      "bid_size": 1.0,
+      "ask_size": 1.0,
+      "volume": 2.57,
+      "open_interest": 2.57,
       "status": "active",
-      "mid": 0.92,
-      "spread": 0.04
+      "mid": 0.885,
+      "spread": 0.05
      }
     ],
     "orientation": "ab"
    },
-   "exchange_usable": false,
-   "exchange_reasons": [
-    "no traded volume or open interest"
-   ],
-   "flags": [
-    "no_probability_available",
-    "no official Valve CS2 Regional Standings entry for: NAOCOPULAS",
-    "blank_no_published_probability"
-   ],
-   "published": null,
+   "exchange_usable": true,
+   "exchange_reasons": [],
+   "flags": [],
+   "published": {
+    "basis": "exchange",
+    "label": "Kalshi exchange mid price (two-sided book inside the published spread limit)",
+    "prob_a": 0.12,
+    "prob_b": 0.88,
+    "source_url": "https://kalshi.com/markets/kxcs2game",
+    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
+    "spread": 0.1,
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
+    "pick_side": "b",
+    "pick_team": "paiN",
+    "pick_probability": 0.88
+   },
    "estimate_inputs": {}
   },
   {
@@ -7357,8 +7983,8 @@
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
    },
    "hotspawn_crowd_pct_reference_only": {
-    "team_a": 0,
-    "team_b": 100,
+    "team_a": 4,
+    "team_b": 96,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [
@@ -7370,7 +7996,7 @@
      "source_public_url": "https://bo3.gg/matches/nrg-vs-tactical-chaos-29-10-2026",
      "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132917",
      "provider_market_url": "https://thunderpick.io/match/2905298",
-     "retrieved_at_utc": "2026-10-29T01:14:20Z",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
      "age_hours": 0.0,
      "start_delta_min": 0,
      "decimal_odds_a": 12.0,
@@ -7389,7 +8015,7 @@
      "source_public_url": "https://bo3.gg/matches/nrg-vs-tactical-chaos-29-10-2026",
      "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132917",
      "provider_market_url": "https://thunderpick.io/match/2905298",
-     "retrieved_at_utc": "2026-10-29T01:14:20Z",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
      "age_hours": 0.0,
      "start_delta_min": 0,
      "decimal_odds_a": 12.0,
@@ -7407,7 +8033,7 @@
     "sub_title": "Tactical Chaos vs. NRG (Oct 29)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If Tactical Chaos wins the FiReSPORTS Last Chance 2026: Tactical Chaos vs. NRG CS2 match originally scheduled for Oct 29, 2026 at 3:30 PM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-29T19:30:00Z",
     "stated_start_raw": "Oct 29, 2026 at 3:30 PM EDT",
@@ -7422,9 +8048,9 @@
       "yes_ask": 0.06,
       "last_price": 0.06,
       "bid_size": 24.0,
-      "ask_size": 1243.69,
-      "volume": 1115.69,
-      "open_interest": 978.69,
+      "ask_size": 185.69,
+      "volume": 2310.87,
+      "open_interest": 2101.87,
       "status": "active",
       "mid": 0.055,
       "spread": 0.01
@@ -7433,15 +8059,15 @@
       "ticker": "KXCS2GAME-26OCT291530TACNRG-NRG",
       "team": "NRG",
       "yes_bid": 0.95,
-      "yes_ask": 0.96,
-      "last_price": 0.95,
-      "bid_size": 1233.75,
-      "ask_size": 249.0,
-      "volume": 2067.44,
-      "open_interest": 2052.44,
+      "yes_ask": 0.99,
+      "last_price": 0.96,
+      "bid_size": 678.75,
+      "ask_size": 843.0,
+      "volume": 2653.44,
+      "open_interest": 2083.44,
       "status": "active",
-      "mid": 0.955,
-      "spread": 0.01
+      "mid": 0.97,
+      "spread": 0.04
      }
     ],
     "orientation": "ab"
@@ -7459,7 +8085,7 @@
       "source_key": "bo3gg_thunderpick",
       "source_name": "Thunderpick prices via bo3.gg",
       "source_public_url": "https://bo3.gg/matches/nrg-vs-tactical-chaos-29-10-2026",
-      "retrieved_at_utc": "2026-10-29T01:14:20Z",
+      "retrieved_at_utc": "2026-10-29T07:40:17Z",
       "decimal_odds_a": 12.0,
       "decimal_odds_b": 1.003,
       "overround": 1.0803,
@@ -7491,8 +8117,8 @@
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
    },
    "hotspawn_crowd_pct_reference_only": {
-    "team_a": 16,
-    "team_b": 84,
+    "team_a": 13,
+    "team_b": 88,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [
@@ -7504,8 +8130,8 @@
      "source_public_url": "https://melbet.com/en/line/esports/",
      "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "provider_market_url": null,
-     "retrieved_at_utc": "2026-10-28T21:40:22Z",
-     "age_hours": 3.57,
+     "retrieved_at_utc": "2026-10-29T01:48:36Z",
+     "age_hours": 5.86,
      "start_delta_min": 0,
      "decimal_odds_a": 3.705,
      "decimal_odds_b": 1.24,
@@ -7522,7 +8148,7 @@
     "sub_title": "Procyon Gaming vs. Galorys (Oct 29)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If Procyon Gaming wins the FiReSPORTS Last Chance 2026: Procyon Gaming vs. Galorys CS2 match originally scheduled for Oct 29, 2026 at 3:30 PM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-29T19:30:00Z",
     "stated_start_raw": "Oct 29, 2026 at 3:30 PM EDT",
@@ -7533,36 +8159,37 @@
      {
       "ticker": "KXCS2GAME-26OCT291530PROGLS-PRO",
       "team": "Procyon Gaming",
-      "yes_bid": 0.21,
-      "yes_ask": 0.25,
+      "yes_bid": 0.15,
+      "yes_ask": 0.3,
       "last_price": 0.24,
-      "bid_size": 562.0,
-      "ask_size": 343.0,
+      "bid_size": 13.0,
+      "ask_size": 60.0,
       "volume": 208.0,
       "open_interest": 208.0,
       "status": "active",
-      "mid": 0.23,
-      "spread": 0.04
+      "mid": 0.225,
+      "spread": 0.15
      },
      {
       "ticker": "KXCS2GAME-26OCT291530PROGLS-GLS",
       "team": "Galorys",
-      "yes_bid": 0.75,
-      "yes_ask": 0.78,
+      "yes_bid": 0.38,
+      "yes_ask": 0.85,
       "last_price": 0.0,
-      "bid_size": 343.0,
-      "ask_size": 463.0,
+      "bid_size": 1.0,
+      "ask_size": 13.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.765,
-      "spread": 0.03
+      "mid": 0.615,
+      "spread": 0.47
      }
     ],
     "orientation": "ab"
    },
    "exchange_usable": false,
    "exchange_reasons": [
+    "spread 0.47 wider than 0.2",
     "no traded volume or open interest"
    ],
    "flags": [],
@@ -7576,7 +8203,7 @@
       "source_key": "linefeed_melbet",
       "source_name": "Melbet (1xBet platform)",
       "source_public_url": "https://melbet.com/en/line/esports/",
-      "retrieved_at_utc": "2026-10-28T21:40:22Z",
+      "retrieved_at_utc": "2026-10-29T01:48:36Z",
       "decimal_odds_a": 3.705,
       "decimal_odds_b": 1.24,
       "overround": 1.0764,
@@ -7610,8 +8237,8 @@
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
    },
    "hotspawn_crowd_pct_reference_only": {
-    "team_a": 100,
-    "team_b": 0,
+    "team_a": 96,
+    "team_b": 4,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [
@@ -7623,14 +8250,14 @@
      "source_public_url": "https://bo3.gg/matches/dendele-cs-vs-low-cortisol-br-29-10-2026",
      "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132902",
      "provider_market_url": "https://thunderpick.io/match/2905700",
-     "retrieved_at_utc": "2026-10-29T01:14:20Z",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
      "age_hours": 0.0,
      "start_delta_min": 0,
      "decimal_odds_a": 1.03,
-     "decimal_odds_b": 8.7,
-     "prob_a": 0.8941418293936279,
-     "prob_b": 0.10585817060637205,
-     "overround": 1.0858163151433993,
+     "decimal_odds_b": 9.0,
+     "prob_a": 0.8973080757726819,
+     "prob_b": 0.10269192422731803,
+     "overround": 1.0819848975188782,
      "via": null,
      "orientation": "ab"
     },
@@ -7642,14 +8269,14 @@
      "source_public_url": "https://bo3.gg/matches/dendele-cs-vs-low-cortisol-br-29-10-2026",
      "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132902",
      "provider_market_url": "https://thunderpick.io/match/2905700",
-     "retrieved_at_utc": "2026-10-29T01:14:20Z",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
      "age_hours": 0.0,
      "start_delta_min": 0,
      "decimal_odds_a": 1.03,
-     "decimal_odds_b": 8.7,
-     "prob_a": 0.8941418293936279,
-     "prob_b": 0.10585817060637205,
-     "overround": 1.0858163151433993,
+     "decimal_odds_b": 9.0,
+     "prob_a": 0.8973080757726819,
+     "prob_b": 0.10269192422731803,
+     "overround": 1.0819848975188782,
      "via": null,
      "orientation": "ab"
     },
@@ -7661,14 +8288,14 @@
      "source_public_url": "https://bo3.gg/matches/dendele-cs-vs-low-cortisol-br-29-10-2026",
      "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132902",
      "provider_market_url": "https://thunderpick.io/match/2905700",
-     "retrieved_at_utc": "2026-10-29T01:14:20Z",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
      "age_hours": 0.0,
      "start_delta_min": 0,
      "decimal_odds_a": 1.03,
-     "decimal_odds_b": 8.7,
-     "prob_a": 0.8941418293936279,
-     "prob_b": 0.10585817060637205,
-     "overround": 1.0858163151433993,
+     "decimal_odds_b": 9.0,
+     "prob_a": 0.8973080757726819,
+     "prob_b": 0.10269192422731803,
+     "overround": 1.0819848975188782,
      "via": null,
      "orientation": "ab"
     },
@@ -7680,14 +8307,14 @@
      "source_public_url": "https://bo3.gg/matches/dendele-cs-vs-low-cortisol-br-29-10-2026",
      "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132902",
      "provider_market_url": "https://thunderpick.io/match/2905700",
-     "retrieved_at_utc": "2026-10-29T01:14:20Z",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
      "age_hours": 0.0,
      "start_delta_min": 0,
      "decimal_odds_a": 1.03,
-     "decimal_odds_b": 8.7,
-     "prob_a": 0.8941418293936279,
-     "prob_b": 0.10585817060637205,
-     "overround": 1.0858163151433993,
+     "decimal_odds_b": 9.0,
+     "prob_a": 0.8973080757726819,
+     "prob_b": 0.10269192422731803,
+     "overround": 1.0819848975188782,
      "via": null,
      "orientation": "ab"
     },
@@ -7699,14 +8326,14 @@
      "source_public_url": "https://bo3.gg/matches/dendele-cs-vs-low-cortisol-br-29-10-2026",
      "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132902",
      "provider_market_url": "https://thunderpick.io/match/2905700",
-     "retrieved_at_utc": "2026-10-29T01:14:20Z",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
      "age_hours": 0.0,
      "start_delta_min": 0,
      "decimal_odds_a": 1.03,
-     "decimal_odds_b": 8.7,
-     "prob_a": 0.8941418293936279,
-     "prob_b": 0.10585817060637205,
-     "overround": 1.0858163151433993,
+     "decimal_odds_b": 9.0,
+     "prob_a": 0.8973080757726819,
+     "prob_b": 0.10269192422731803,
+     "overround": 1.0819848975188782,
      "via": null,
      "orientation": "ab"
     }
@@ -7720,24 +8347,24 @@
    "published": {
     "basis": "market",
     "label": "market consensus of 1 external source(s), proportional no-vig",
-    "prob_a": 0.8941418293936279,
-    "prob_b": 0.10585817060637215,
+    "prob_a": 0.8973080757726819,
+    "prob_b": 0.1026919242273181,
     "sources": [
      {
       "source_key": "bo3gg_thunderpick",
       "source_name": "Thunderpick prices via bo3.gg",
       "source_public_url": "https://bo3.gg/matches/dendele-cs-vs-low-cortisol-br-29-10-2026",
-      "retrieved_at_utc": "2026-10-29T01:14:20Z",
+      "retrieved_at_utc": "2026-10-29T07:40:17Z",
       "decimal_odds_a": 1.03,
-      "decimal_odds_b": 8.7,
-      "overround": 1.0858,
-      "prob_a": 0.8941418293936279
+      "decimal_odds_b": 9.0,
+      "overround": 1.082,
+      "prob_a": 0.8973080757726819
      }
     ],
     "via": [],
     "pick_side": "a",
     "pick_team": "DENDELE",
-    "pick_probability": 0.8941418293936279
+    "pick_probability": 0.8973080757726819
    },
    "estimate_inputs": {}
   },
@@ -7759,8 +8386,8 @@
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
    },
    "hotspawn_crowd_pct_reference_only": {
-    "team_a": 0,
-    "team_b": 100,
+    "team_a": 4,
+    "team_b": 96,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [
@@ -7772,14 +8399,14 @@
      "source_public_url": "https://bo3.gg/matches/turma-do-pagode-vs-alka-29-10-2026",
      "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132903",
      "provider_market_url": "https://thunderpick.io/match/2905701",
-     "retrieved_at_utc": "2026-10-29T01:14:20Z",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
      "age_hours": 0.0,
      "start_delta_min": 0,
-     "decimal_odds_a": 3.68,
-     "decimal_odds_b": 1.23,
-     "prob_a": 0.2505091649694501,
-     "prob_b": 0.7494908350305498,
-     "overround": 1.0847472605160835,
+     "decimal_odds_a": 3.35,
+     "decimal_odds_b": 1.28,
+     "prob_a": 0.2764578833693304,
+     "prob_b": 0.7235421166306696,
+     "overround": 1.0797574626865671,
      "via": null,
      "orientation": "ba"
     },
@@ -7791,14 +8418,14 @@
      "source_public_url": "https://bo3.gg/matches/turma-do-pagode-vs-alka-29-10-2026",
      "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132903",
      "provider_market_url": "https://thunderpick.io/match/2905701",
-     "retrieved_at_utc": "2026-10-29T01:14:20Z",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
      "age_hours": 0.0,
      "start_delta_min": 0,
-     "decimal_odds_a": 3.68,
-     "decimal_odds_b": 1.23,
-     "prob_a": 0.2505091649694501,
-     "prob_b": 0.7494908350305498,
-     "overround": 1.0847472605160835,
+     "decimal_odds_a": 3.35,
+     "decimal_odds_b": 1.28,
+     "prob_a": 0.2764578833693304,
+     "prob_b": 0.7235421166306696,
+     "overround": 1.0797574626865671,
      "via": null,
      "orientation": "ba"
     },
@@ -7810,14 +8437,14 @@
      "source_public_url": "https://bo3.gg/matches/turma-do-pagode-vs-alka-29-10-2026",
      "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132903",
      "provider_market_url": "https://thunderpick.io/match/2905701",
-     "retrieved_at_utc": "2026-10-29T01:14:20Z",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
      "age_hours": 0.0,
      "start_delta_min": 0,
-     "decimal_odds_a": 3.68,
-     "decimal_odds_b": 1.23,
-     "prob_a": 0.2505091649694501,
-     "prob_b": 0.7494908350305498,
-     "overround": 1.0847472605160835,
+     "decimal_odds_a": 3.35,
+     "decimal_odds_b": 1.28,
+     "prob_a": 0.2764578833693304,
+     "prob_b": 0.7235421166306696,
+     "overround": 1.0797574626865671,
      "via": null,
      "orientation": "ba"
     },
@@ -7829,14 +8456,14 @@
      "source_public_url": "https://bo3.gg/matches/turma-do-pagode-vs-alka-29-10-2026",
      "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132903",
      "provider_market_url": "https://thunderpick.io/match/2905701",
-     "retrieved_at_utc": "2026-10-29T01:14:20Z",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
      "age_hours": 0.0,
      "start_delta_min": 0,
-     "decimal_odds_a": 3.68,
-     "decimal_odds_b": 1.23,
-     "prob_a": 0.2505091649694501,
-     "prob_b": 0.7494908350305498,
-     "overround": 1.0847472605160835,
+     "decimal_odds_a": 3.35,
+     "decimal_odds_b": 1.28,
+     "prob_a": 0.2764578833693304,
+     "prob_b": 0.7235421166306696,
+     "overround": 1.0797574626865671,
      "via": null,
      "orientation": "ba"
     },
@@ -7848,14 +8475,14 @@
      "source_public_url": "https://bo3.gg/matches/turma-do-pagode-vs-alka-29-10-2026",
      "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132903",
      "provider_market_url": "https://thunderpick.io/match/2905701",
-     "retrieved_at_utc": "2026-10-29T01:14:20Z",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
      "age_hours": 0.0,
      "start_delta_min": 0,
-     "decimal_odds_a": 3.68,
-     "decimal_odds_b": 1.23,
-     "prob_a": 0.2505091649694501,
-     "prob_b": 0.7494908350305498,
-     "overround": 1.0847472605160835,
+     "decimal_odds_a": 3.35,
+     "decimal_odds_b": 1.28,
+     "prob_a": 0.2764578833693304,
+     "prob_b": 0.7235421166306696,
+     "overround": 1.0797574626865671,
      "via": null,
      "orientation": "ba"
     },
@@ -7867,8 +8494,8 @@
      "source_public_url": "https://melbet.com/en/line/esports/",
      "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "provider_market_url": null,
-     "retrieved_at_utc": "2026-10-28T21:40:22Z",
-     "age_hours": 3.57,
+     "retrieved_at_utc": "2026-10-29T01:48:36Z",
+     "age_hours": 5.86,
      "start_delta_min": 0,
      "decimal_odds_a": 3.705,
      "decimal_odds_b": 1.24,
@@ -7885,7 +8512,7 @@
     "sub_title": "ALKA vs. Turma do Pagode (Oct 29)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If ALKA wins the Gamers Club Masters 2026: ALKA vs. Turma do Pagode CS2 match originally scheduled for Oct 29, 2026 at 7:30 PM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-29T23:30:00Z",
     "stated_start_raw": "Oct 29, 2026 at 7:30 PM EDT",
@@ -7896,60 +8523,62 @@
      {
       "ticker": "KXCS2GAME-26OCT291930ALKAATDP-ALKAA",
       "team": "ALKA",
-      "yes_bid": 0.22,
-      "yes_ask": 0.24,
+      "yes_bid": 0.12,
+      "yes_ask": 0.44,
       "last_price": 0.23,
-      "bid_size": 1.0,
-      "ask_size": 138.03,
+      "bid_size": 3.0,
+      "ask_size": 206.0,
       "volume": 222.03,
       "open_interest": 222.03,
       "status": "active",
-      "mid": 0.23,
-      "spread": 0.02
+      "mid": 0.28,
+      "spread": 0.32
      },
      {
       "ticker": "KXCS2GAME-26OCT291930ALKAATDP-TDP",
       "team": "Turma do Pagode",
-      "yes_bid": 0.75,
-      "yes_ask": 0.79,
+      "yes_bid": 0.43,
+      "yes_ask": 0.88,
       "last_price": 0.0,
-      "bid_size": 344.0,
-      "ask_size": 343.0,
+      "bid_size": 10.0,
+      "ask_size": 16.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.77,
-      "spread": 0.04
+      "mid": 0.655,
+      "spread": 0.45
      }
     ],
     "orientation": "ab"
    },
    "exchange_usable": false,
    "exchange_reasons": [
+    "spread 0.32 wider than 0.2",
+    "spread 0.45 wider than 0.2",
     "no traded volume or open interest"
    ],
    "flags": [],
    "published": {
     "basis": "market",
     "label": "market consensus of 2 external source(s), proportional no-vig",
-    "prob_a": 0.25063375336440147,
-    "prob_b": 0.7493662466355986,
+    "prob_a": 0.26360811256434163,
+    "prob_b": 0.7363918874356583,
     "sources": [
      {
       "source_key": "bo3gg_thunderpick",
       "source_name": "Thunderpick prices via bo3.gg",
       "source_public_url": "https://bo3.gg/matches/turma-do-pagode-vs-alka-29-10-2026",
-      "retrieved_at_utc": "2026-10-29T01:14:20Z",
-      "decimal_odds_a": 3.68,
-      "decimal_odds_b": 1.23,
-      "overround": 1.0847,
-      "prob_a": 0.2505091649694501
+      "retrieved_at_utc": "2026-10-29T07:40:17Z",
+      "decimal_odds_a": 3.35,
+      "decimal_odds_b": 1.28,
+      "overround": 1.0798,
+      "prob_a": 0.2764578833693304
      },
      {
       "source_key": "linefeed_melbet",
       "source_name": "Melbet (1xBet platform)",
       "source_public_url": "https://melbet.com/en/line/esports/",
-      "retrieved_at_utc": "2026-10-28T21:40:22Z",
+      "retrieved_at_utc": "2026-10-29T01:48:36Z",
       "decimal_odds_a": 3.705,
       "decimal_odds_b": 1.24,
       "overround": 1.0764,
@@ -7961,7 +8590,7 @@
     ],
     "pick_side": "b",
     "pick_team": "Turma do Pagode",
-    "pick_probability": 0.7493662466355986
+    "pick_probability": 0.7363918874356583
    },
    "estimate_inputs": {}
   },
@@ -7983,8 +8612,8 @@
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
    },
    "hotspawn_crowd_pct_reference_only": {
-    "team_a": 75,
-    "team_b": 25,
+    "team_a": 86,
+    "team_b": 14,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [
@@ -7996,14 +8625,14 @@
      "source_public_url": "https://bo3.gg/matches/alter-ego-vs-abyssal-30-10-2026",
      "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132611",
      "provider_market_url": "https://thunderpick.io/match/2905279",
-     "retrieved_at_utc": "2026-10-29T01:14:20Z",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
      "age_hours": 0.0,
      "start_delta_min": 0,
-     "decimal_odds_a": 1.22,
-     "decimal_odds_b": 3.8,
-     "prob_a": 0.756972111553785,
-     "prob_b": 0.24302788844621515,
-     "overround": 1.082830025884383,
+     "decimal_odds_a": 1.2,
+     "decimal_odds_b": 4.0,
+     "prob_a": 0.7692307692307692,
+     "prob_b": 0.23076923076923073,
+     "overround": 1.0833333333333335,
      "via": null,
      "orientation": "ab"
     },
@@ -8015,14 +8644,14 @@
      "source_public_url": "https://bo3.gg/matches/alter-ego-vs-abyssal-30-10-2026",
      "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132611",
      "provider_market_url": "https://thunderpick.io/match/2905279",
-     "retrieved_at_utc": "2026-10-29T01:14:20Z",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
      "age_hours": 0.0,
      "start_delta_min": 0,
-     "decimal_odds_a": 1.22,
-     "decimal_odds_b": 3.8,
-     "prob_a": 0.756972111553785,
-     "prob_b": 0.24302788844621515,
-     "overround": 1.082830025884383,
+     "decimal_odds_a": 1.2,
+     "decimal_odds_b": 4.0,
+     "prob_a": 0.7692307692307692,
+     "prob_b": 0.23076923076923073,
+     "overround": 1.0833333333333335,
      "via": null,
      "orientation": "ab"
     },
@@ -8034,14 +8663,14 @@
      "source_public_url": "https://bo3.gg/matches/alter-ego-vs-abyssal-30-10-2026",
      "source_api_url": "https://bo3.gg/api/v1/matches?filter[matches.id][in]=132611",
      "provider_market_url": "https://thunderpick.io/match/2905279",
-     "retrieved_at_utc": "2026-10-29T01:14:20Z",
+     "retrieved_at_utc": "2026-10-29T07:40:17Z",
      "age_hours": 0.0,
      "start_delta_min": 0,
-     "decimal_odds_a": 1.22,
-     "decimal_odds_b": 3.8,
-     "prob_a": 0.756972111553785,
-     "prob_b": 0.24302788844621515,
-     "overround": 1.082830025884383,
+     "decimal_odds_a": 1.2,
+     "decimal_odds_b": 4.0,
+     "prob_a": 0.7692307692307692,
+     "prob_b": 0.23076923076923073,
+     "overround": 1.0833333333333335,
      "via": null,
      "orientation": "ab"
     },
@@ -8053,9 +8682,9 @@
      "source_public_url": "https://melbet.com/en/line/esports/",
      "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "provider_market_url": null,
-     "retrieved_at_utc": "2026-10-28T21:40:22Z",
-     "age_hours": 3.57,
-     "start_delta_min": -180,
+     "retrieved_at_utc": "2026-10-29T01:48:36Z",
+     "age_hours": 5.86,
+     "start_delta_min": 0,
      "decimal_odds_a": 1.232,
      "decimal_odds_b": 3.79,
      "prob_a": 0.754679410593389,
@@ -8071,7 +8700,7 @@
     "sub_title": "Abyssal vs. Alter Ego (Oct 29)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If Abyssal wins the DFRAG Invitational 2026: Abyssal vs. Alter Ego CS2 match originally scheduled for Oct 29, 2026 at 11:00 PM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-30T03:00:00Z",
     "stated_start_raw": "Oct 29, 2026 at 11:00 PM EDT",
@@ -8082,65 +8711,62 @@
      {
       "ticker": "KXCS2GAME-26OCT292300ABYAE-ABY",
       "team": "Abyssal",
-      "yes_bid": 0.08,
-      "yes_ask": 0.44,
+      "yes_bid": 0.11,
+      "yes_ask": 0.6,
       "last_price": 0.0,
-      "bid_size": 71.0,
-      "ask_size": 152.55,
+      "bid_size": 19.0,
+      "ask_size": 10.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.26,
-      "spread": 0.36
+      "mid": 0.355,
+      "spread": 0.49
      },
      {
       "ticker": "KXCS2GAME-26OCT292300ABYAE-AE",
       "team": "Alter Ego",
-      "yes_bid": 0.55,
-      "yes_ask": 0.92,
-      "last_price": 0.0,
-      "bid_size": 25.0,
-      "ask_size": 24.0,
-      "volume": 0.0,
-      "open_interest": 0.0,
+      "yes_bid": 0.51,
+      "yes_ask": 0.87,
+      "last_price": 0.83,
+      "bid_size": 125.0,
+      "ask_size": 15.0,
+      "volume": 60.0,
+      "open_interest": 60.0,
       "status": "active",
-      "mid": 0.735,
-      "spread": 0.37
+      "mid": 0.69,
+      "spread": 0.36
      }
     ],
     "orientation": "ba"
    },
    "exchange_usable": false,
    "exchange_reasons": [
-    "spread 0.36 wider than 0.2",
+    "spread 0.49 wider than 0.2",
     "no traded volume or open interest",
-    "spread 0.37 wider than 0.2",
-    "no traded volume or open interest"
+    "spread 0.36 wider than 0.2"
    ],
-   "flags": [
-    "source and HotSpawn publish different start times (see quote detail)"
-   ],
+   "flags": [],
    "published": {
     "basis": "market",
     "label": "market consensus of 2 external source(s), proportional no-vig",
-    "prob_a": 0.755825761073587,
-    "prob_b": 0.244174238926413,
+    "prob_a": 0.761955089912079,
+    "prob_b": 0.23804491008792095,
     "sources": [
      {
       "source_key": "bo3gg_thunderpick",
       "source_name": "Thunderpick prices via bo3.gg",
       "source_public_url": "https://bo3.gg/matches/alter-ego-vs-abyssal-30-10-2026",
-      "retrieved_at_utc": "2026-10-29T01:14:20Z",
-      "decimal_odds_a": 1.22,
-      "decimal_odds_b": 3.8,
-      "overround": 1.0828,
-      "prob_a": 0.756972111553785
+      "retrieved_at_utc": "2026-10-29T07:40:17Z",
+      "decimal_odds_a": 1.2,
+      "decimal_odds_b": 4.0,
+      "overround": 1.0833,
+      "prob_a": 0.7692307692307692
      },
      {
       "source_key": "linefeed_melbet",
       "source_name": "Melbet (1xBet platform)",
       "source_public_url": "https://melbet.com/en/line/esports/",
-      "retrieved_at_utc": "2026-10-28T21:40:22Z",
+      "retrieved_at_utc": "2026-10-29T01:48:36Z",
       "decimal_odds_a": 1.232,
       "decimal_odds_b": 3.79,
       "overround": 1.0755,
@@ -8152,7 +8778,7 @@
     ],
     "pick_side": "a",
     "pick_team": "Alter Ego",
-    "pick_probability": 0.755825761073587
+    "pick_probability": 0.761955089912079
    },
    "estimate_inputs": {}
   },
@@ -8174,8 +8800,8 @@
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
    },
    "hotspawn_crowd_pct_reference_only": {
-    "team_a": 0,
-    "team_b": 100,
+    "team_a": 7,
+    "team_b": 93,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [],
@@ -8185,7 +8811,7 @@
     "sub_title": "FlyQuest vs. NEXVOID (Oct 29)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If FlyQuest wins the DFRAG Invitational 2026: FlyQuest vs. NEXVOID CS2 match originally scheduled for Oct 29, 2026 at 11:00 PM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-30T03:00:00Z",
     "stated_start_raw": "Oct 29, 2026 at 11:00 PM EDT",
@@ -8196,39 +8822,39 @@
      {
       "ticker": "KXCS2GAME-26OCT292300FLYNEX-FLY",
       "team": "FlyQuest",
-      "yes_bid": 0.63,
-      "yes_ask": 0.85,
+      "yes_bid": 0.38,
+      "yes_ask": 0.87,
       "last_price": 0.0,
-      "bid_size": 19.0,
-      "ask_size": 19.0,
+      "bid_size": 1.0,
+      "ask_size": 15.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.74,
-      "spread": 0.22
+      "mid": 0.625,
+      "spread": 0.49
      },
      {
       "ticker": "KXCS2GAME-26OCT292300FLYNEX-NEX",
       "team": "NEXVOID",
-      "yes_bid": 0.15,
-      "yes_ask": 0.38,
+      "yes_bid": 0.11,
+      "yes_ask": 0.63,
       "last_price": 0.0,
-      "bid_size": 39.0,
-      "ask_size": 378.0,
+      "bid_size": 54.0,
+      "ask_size": 10.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.265,
-      "spread": 0.23
+      "mid": 0.37,
+      "spread": 0.52
      }
     ],
     "orientation": "ba"
    },
    "exchange_usable": false,
    "exchange_reasons": [
-    "spread 0.22 wider than 0.2",
+    "spread 0.49 wider than 0.2",
     "no traded volume or open interest",
-    "spread 0.23 wider than 0.2",
+    "spread 0.52 wider than 0.2",
     "no traded volume or open interest"
    ],
    "flags": [],
@@ -8256,8 +8882,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 2.2359273519594476,
-     "rating_b": 4.276102463999394,
+     "rating_a": 2.235282385889838,
+     "rating_b": 4.274932832522488,
      "appearances_a": 10.0,
      "appearances_b": 6.0
     },
@@ -8274,6 +8900,127 @@
      "team_b_source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
      "team_a_standing": 113,
      "team_b_standing": 86
+    }
+   }
+  },
+  {
+   "fixture_id": "1081173",
+   "game": "CS2",
+   "competition": "CCT Europe 2026 Series #12",
+   "tier": "b",
+   "stage": null,
+   "status": "scheduled",
+   "start_time_utc": "2026-10-30T09:00:00Z",
+   "lock_time_utc": "2026-10-30T08:54:00Z",
+   "team_a": "GenOne",
+   "team_b": "BakS",
+   "listed_in_lobby": false,
+   "picks_open": true,
+   "sources": {
+    "hotspawn_match": "https://play.hotspawn.com/lobby",
+    "hotspawn_lobby": "https://play.hotspawn.com/lobby"
+   },
+   "hotspawn_crowd_pct_reference_only": {
+    "team_a": 100,
+    "team_b": 0,
+    "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
+   },
+   "market_quotes": [],
+   "exchange": {
+    "event_ticker": "KXCS2GAME-26OCT300500BAKSG1",
+    "title": "BakS eSports vs. GenOne",
+    "sub_title": "BakS eSports vs. GenOne (Oct 30)",
+    "source_public_url": "https://kalshi.com/markets/kxcs2game",
+    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
+    "rules_primary": "If BakS eSports wins the CCT Europe Series #12 2026: BakS eSports vs. GenOne CS2 match originally scheduled for Oct 30, 2026 at 5:00 AM EDT, then the market resolves to Yes.",
+    "stated_start_utc": "2026-10-30T09:00:00Z",
+    "stated_start_raw": "Oct 30, 2026 at 5:00 AM EDT",
+    "expected_end_utc": null,
+    "start_time_source": "market rule text",
+    "start_delta_min": 0,
+    "sides": [
+     {
+      "ticker": "KXCS2GAME-26OCT300500BAKSG1-BAKS",
+      "team": "BakS eSports",
+      "yes_bid": 0.37,
+      "yes_ask": 0.88,
+      "last_price": 0.0,
+      "bid_size": 10.0,
+      "ask_size": 22.0,
+      "volume": 0.0,
+      "open_interest": 0.0,
+      "status": "active",
+      "mid": 0.625,
+      "spread": 0.51
+     },
+     {
+      "ticker": "KXCS2GAME-26OCT300500BAKSG1-G1",
+      "team": "GenOne",
+      "yes_bid": 0.09,
+      "yes_ask": 0.73,
+      "last_price": 0.0,
+      "bid_size": 4.0,
+      "ask_size": 30.0,
+      "volume": 0.0,
+      "open_interest": 0.0,
+      "status": "active",
+      "mid": 0.41,
+      "spread": 0.64
+     }
+    ],
+    "orientation": "ba"
+   },
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "spread 0.51 wider than 0.2",
+    "no traded volume or open interest",
+    "spread 0.64 wider than 0.2",
+    "no traded volume or open interest"
+   ],
+   "flags": [],
+   "published": {
+    "basis": "vrs",
+    "label": "originated estimate — model output, not a market price",
+    "prob_a": 0.6924633925795177,
+    "prob_b": 0.3075366074204823,
+    "source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+    "source_api_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+    "pick_side": "a",
+    "pick_team": "GenOne",
+    "pick_probability": 0.6924633925795177
+   },
+   "estimate_inputs": {
+    "model_preference": "bt",
+    "bt": {
+     "prob_a": null,
+     "note": "fewer than 8 corpus matches for team B (12 / 7)",
+     "matches_used": 1146,
+     "teams": 456,
+     "half_life_days": 60.0,
+     "ridge": 0.02,
+     "min_matches": 8,
+     "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
+     "source_public": "https://bo3.gg/matches/finished",
+     "source_api": "https://bo3.gg/api/v1/matches",
+     "rating_a": 2.5032958498305002,
+     "rating_b": 2.5763485274806985,
+     "appearances_a": 12.0,
+     "appearances_b": 7.0
+    },
+    "vrs": {
+     "prob_a": 0.6924633925795177,
+     "note": "ok",
+     "rating_diff": 141.0,
+     "scale": 400.0,
+     "team_a_points": 1185,
+     "team_b_points": 1044,
+     "team_a_snapshot": "2026_10_05",
+     "team_b_snapshot": "2026_10_05",
+     "source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+     "team_b_source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+     "team_a_standing": 66,
+     "team_b_standing": 100
     }
    }
   },
@@ -8295,8 +9042,8 @@
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
    },
    "hotspawn_crowd_pct_reference_only": {
-    "team_a": 93,
-    "team_b": 7,
+    "team_a": 91,
+    "team_b": 9,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [],
@@ -8306,7 +9053,7 @@
     "sub_title": "Teletubisie vs. BASEMENT BOYS (Oct 30)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If Teletubisie wins the Circuito Retake 2026: Teletubisie vs. BASEMENT BOYS CS2 match originally scheduled for Oct 30, 2026 at 5:00 AM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-30T09:00:00Z",
     "stated_start_raw": "Oct 30, 2026 at 5:00 AM EDT",
@@ -8317,50 +9064,119 @@
      {
       "ticker": "KXCS2GAME-26OCT300500TTBSBMB-TTBS",
       "team": "Teletubisie",
-      "yes_bid": 0.44,
-      "yes_ask": 0.47,
+      "yes_bid": 0.27,
+      "yes_ask": 0.67,
       "last_price": 0.48,
-      "bid_size": 363.0,
-      "ask_size": 350.0,
+      "bid_size": 10.0,
+      "ask_size": 174.0,
       "volume": 131.0,
       "open_interest": 131.0,
       "status": "active",
-      "mid": 0.455,
-      "spread": 0.03
+      "mid": 0.47,
+      "spread": 0.4
      },
      {
       "ticker": "KXCS2GAME-26OCT300500TTBSBMB-BMB",
       "team": "BASEMENT BOYS",
-      "yes_bid": 0.52,
-      "yes_ask": 0.56,
+      "yes_bid": 0.34,
+      "yes_ask": 0.74,
       "last_price": 0.54,
-      "bid_size": 500.0,
-      "ask_size": 400.0,
+      "bid_size": 50.0,
+      "ask_size": 72.0,
       "volume": 92.0,
       "open_interest": 92.0,
       "status": "active",
       "mid": 0.54,
-      "spread": 0.04
+      "spread": 0.4
      }
     ],
     "orientation": "ba"
    },
-   "exchange_usable": true,
-   "exchange_reasons": [],
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "spread 0.4 wider than 0.2",
+    "spread 0.4 wider than 0.2"
+   ],
    "flags": [],
    "published": {
-    "basis": "exchange",
-    "label": "Kalshi exchange mid price (two-sided book inside the published spread limit)",
-    "prob_a": 0.54,
-    "prob_b": 0.45999999999999996,
-    "source_url": "https://kalshi.com/markets/kxcs2game",
-    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "spread": 0.04,
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
-    "pick_side": "a",
-    "pick_team": "BASEMENT BOYS",
-    "pick_probability": 0.54
+    "basis": "bt",
+    "label": "originated estimate — model output, not a market price",
+    "prob_a": 0.44285119778715365,
+    "prob_b": 0.5571488022128464,
+    "source_url": "https://bo3.gg/matches/finished",
+    "source_api_url": "https://bo3.gg/api/v1/matches",
+    "pick_side": "b",
+    "pick_team": "Teletubisie",
+    "pick_probability": 0.5571488022128464
    },
+   "estimate_inputs": {
+    "model_preference": "bt",
+    "bt": {
+     "prob_a": 0.44285119778715365,
+     "note": "ok",
+     "matches_used": 1146,
+     "teams": 456,
+     "half_life_days": 60.0,
+     "ridge": 0.02,
+     "min_matches": 8,
+     "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
+     "source_public": "https://bo3.gg/matches/finished",
+     "source_api": "https://bo3.gg/api/v1/matches",
+     "rating_a": 1.3062169949068099,
+     "rating_b": 1.535815531574517,
+     "appearances_a": 10.0,
+     "appearances_b": 10.0
+    },
+    "vrs": {
+     "prob_a": 0.9128258117454132,
+     "note": "ok",
+     "rating_diff": 408.0,
+     "scale": 400.0,
+     "team_a_points": 1036,
+     "team_b_points": 628,
+     "team_a_snapshot": "2026_10_05",
+     "team_b_snapshot": "2026_10_05",
+     "source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+     "team_b_source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+     "team_a_standing": 102,
+     "team_b_standing": 262
+    }
+   }
+  },
+  {
+   "fixture_id": "1081174",
+   "game": "CS2",
+   "competition": "CCT Europe 2026 Series #12",
+   "tier": "b",
+   "stage": null,
+   "status": "scheduled",
+   "start_time_utc": "2026-10-30T12:00:00Z",
+   "lock_time_utc": "2026-10-30T11:54:00Z",
+   "team_a": "FOKUS",
+   "team_b": "LFO 10",
+   "listed_in_lobby": false,
+   "picks_open": true,
+   "sources": {
+    "hotspawn_match": "https://play.hotspawn.com/lobby",
+    "hotspawn_lobby": "https://play.hotspawn.com/lobby"
+   },
+   "hotspawn_crowd_pct_reference_only": {
+    "team_a": 67,
+    "team_b": 33,
+    "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
+   },
+   "market_quotes": [],
+   "exchange": null,
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "no two-sided Kalshi book matched"
+   ],
+   "flags": [
+    "no_probability_available",
+    "no official Valve CS2 Regional Standings entry for: LFO 10",
+    "blank_no_published_probability"
+   ],
+   "published": null,
    "estimate_inputs": {}
   },
   {
@@ -8430,8 +9246,8 @@
      "source_public_url": "https://melbet.com/en/line/esports/",
      "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "provider_market_url": null,
-     "retrieved_at_utc": "2026-10-28T21:40:22Z",
-     "age_hours": 3.57,
+     "retrieved_at_utc": "2026-10-29T01:48:36Z",
+     "age_hours": 5.86,
      "start_delta_min": 0,
      "decimal_odds_a": 1.12,
      "decimal_odds_b": 5.0,
@@ -8448,7 +9264,7 @@
     "sub_title": "Isurus vs. ShindeN (Oct 30)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If Isurus wins the FiReSPORTS Last Chance 2026: Isurus vs. ShindeN CS2 match originally scheduled for Oct 30, 2026 at 9:00 AM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-30T13:00:00Z",
     "stated_start_raw": "Oct 30, 2026 at 9:00 AM EDT",
@@ -8459,36 +9275,38 @@
      {
       "ticker": "KXCS2GAME-26OCT300900ISGSHIN-ISG",
       "team": "Isurus",
-      "yes_bid": 0.16,
-      "yes_ask": 0.2,
+      "yes_bid": 0.11,
+      "yes_ask": 0.47,
       "last_price": 0.2,
-      "bid_size": 356.0,
-      "ask_size": 250.0,
+      "bid_size": 18.0,
+      "ask_size": 150.0,
       "volume": 250.0,
       "open_interest": 250.0,
       "status": "active",
-      "mid": 0.18,
-      "spread": 0.04
+      "mid": 0.29,
+      "spread": 0.36
      },
      {
       "ticker": "KXCS2GAME-26OCT300900ISGSHIN-SHIN",
       "team": "ShindeN",
-      "yes_bid": 0.8,
-      "yes_ask": 0.84,
+      "yes_bid": 0.44,
+      "yes_ask": 0.9,
       "last_price": 0.0,
-      "bid_size": 250.0,
-      "ask_size": 353.0,
+      "bid_size": 1.0,
+      "ask_size": 20.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.82,
-      "spread": 0.04
+      "mid": 0.67,
+      "spread": 0.46
      }
     ],
     "orientation": "ba"
    },
    "exchange_usable": false,
    "exchange_reasons": [
+    "spread 0.36 wider than 0.2",
+    "spread 0.46 wider than 0.2",
     "no traded volume or open interest"
    ],
    "flags": [],
@@ -8502,7 +9320,7 @@
       "source_key": "linefeed_melbet",
       "source_name": "Melbet (1xBet platform)",
       "source_public_url": "https://melbet.com/en/line/esports/",
-      "retrieved_at_utc": "2026-10-28T21:40:22Z",
+      "retrieved_at_utc": "2026-10-29T01:48:36Z",
       "decimal_odds_a": 1.12,
       "decimal_odds_b": 5.0,
       "overround": 1.0929,
@@ -8516,6 +9334,42 @@
     "pick_team": "ShindeN",
     "pick_probability": 0.8169934640522876
    },
+   "estimate_inputs": {}
+  },
+  {
+   "fixture_id": "1081175",
+   "game": "CS2",
+   "competition": "CCT Europe 2026 Series #12",
+   "tier": "b",
+   "stage": null,
+   "status": "scheduled",
+   "start_time_utc": "2026-10-30T15:00:00Z",
+   "lock_time_utc": "2026-10-30T14:54:00Z",
+   "team_a": "Apogee Betclic",
+   "team_b": "ILLYRIANS",
+   "listed_in_lobby": false,
+   "picks_open": true,
+   "sources": {
+    "hotspawn_match": "https://play.hotspawn.com/lobby",
+    "hotspawn_lobby": "https://play.hotspawn.com/lobby"
+   },
+   "hotspawn_crowd_pct_reference_only": {
+    "team_a": 100,
+    "team_b": 0,
+    "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
+   },
+   "market_quotes": [],
+   "exchange": null,
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "no two-sided Kalshi book matched"
+   ],
+   "flags": [
+    "no_probability_available",
+    "no official Valve CS2 Regional Standings entry for: Apogee Betclic",
+    "blank_no_published_probability"
+   ],
+   "published": null,
    "estimate_inputs": {}
   },
   {
@@ -8536,8 +9390,8 @@
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
    },
    "hotspawn_crowd_pct_reference_only": {
-    "team_a": 100,
-    "team_b": 0,
+    "team_a": 97,
+    "team_b": 3,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [],
@@ -8547,7 +9401,7 @@
     "sub_title": "SNITKO Esports vs. Metizport (Oct 30)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If SNITKO Esports wins the Circuito Retake 2026: SNITKO Esports vs. Metizport CS2 match originally scheduled for Oct 30, 2026 at 12:15 PM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-30T16:15:00Z",
     "stated_start_raw": "Oct 30, 2026 at 12:15 PM EDT",
@@ -8558,39 +9412,39 @@
      {
       "ticker": "KXCS2GAME-26OCT301215SEMZP-SE",
       "team": "SNITKO Esports",
-      "yes_bid": 0.06,
-      "yes_ask": 0.34,
+      "yes_bid": 0.05,
+      "yes_ask": 0.53,
       "last_price": 0.0,
-      "bid_size": 103.0,
-      "ask_size": 1.0,
+      "bid_size": 126.0,
+      "ask_size": 10.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.2,
-      "spread": 0.28
+      "mid": 0.29,
+      "spread": 0.48
      },
      {
       "ticker": "KXCS2GAME-26OCT301215SEMZP-MZP",
       "team": "Metizport",
-      "yes_bid": 0.69,
-      "yes_ask": 0.94,
+      "yes_bid": 0.37,
+      "yes_ask": 0.95,
       "last_price": 0.0,
-      "bid_size": 60.0,
-      "ask_size": 128.0,
+      "bid_size": 1.0,
+      "ask_size": 101.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.815,
-      "spread": 0.25
+      "mid": 0.66,
+      "spread": 0.58
      }
     ],
     "orientation": "ba"
    },
    "exchange_usable": false,
    "exchange_reasons": [
-    "spread 0.28 wider than 0.2",
+    "spread 0.48 wider than 0.2",
     "no traded volume or open interest",
-    "spread 0.25 wider than 0.2",
+    "spread 0.58 wider than 0.2",
     "no traded volume or open interest"
    ],
    "flags": [
@@ -8619,8 +9473,8 @@
     "hotspawn_lobby": "https://play.hotspawn.com/lobby"
    },
    "hotspawn_crowd_pct_reference_only": {
-    "team_a": 100,
-    "team_b": 0,
+    "team_a": 97,
+    "team_b": 3,
     "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
    },
    "market_quotes": [
@@ -8632,8 +9486,8 @@
      "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/hyperx-retake/bc-game-og-202610301215",
      "source_api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports",
      "provider_market_url": null,
-     "retrieved_at_utc": "2026-10-28T21:40:16Z",
-     "age_hours": 3.57,
+     "retrieved_at_utc": "2026-10-29T01:48:31Z",
+     "age_hours": 5.86,
      "start_delta_min": null,
      "decimal_odds_a": 1.363636,
      "decimal_odds_b": 3.0,
@@ -8651,8 +9505,8 @@
      "source_public_url": "https://melbet.com/en/line/esports/",
      "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "provider_market_url": null,
-     "retrieved_at_utc": "2026-10-28T21:40:22Z",
-     "age_hours": 3.57,
+     "retrieved_at_utc": "2026-10-29T01:48:36Z",
+     "age_hours": 5.86,
      "start_delta_min": 0,
      "decimal_odds_a": 1.36,
      "decimal_odds_b": 2.928,
@@ -8669,7 +9523,7 @@
     "sub_title": "OG vs. BC.Game Esports (Oct 30)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If OG wins the Circuito Retake 2026: OG vs. BC.Game Esports CS2 match originally scheduled for Oct 30, 2026 at 12:15 PM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-30T16:15:00Z",
     "stated_start_raw": "Oct 30, 2026 at 12:15 PM EDT",
@@ -8680,36 +9534,38 @@
      {
       "ticker": "KXCS2GAME-26OCT301215OGBCG-OG",
       "team": "OG",
-      "yes_bid": 0.27,
-      "yes_ask": 0.32,
+      "yes_bid": 0.16,
+      "yes_ask": 0.51,
       "last_price": 0.32,
-      "bid_size": 335.0,
-      "ask_size": 335.0,
-      "volume": 406.0,
-      "open_interest": 406.0,
+      "bid_size": 14.0,
+      "ask_size": 212.0,
+      "volume": 420.9,
+      "open_interest": 420.9,
       "status": "active",
-      "mid": 0.295,
-      "spread": 0.05
+      "mid": 0.335,
+      "spread": 0.35
      },
      {
       "ticker": "KXCS2GAME-26OCT301215OGBCG-BCG",
       "team": "BC.Game Esports",
-      "yes_bid": 0.69,
-      "yes_ask": 0.73,
+      "yes_bid": 0.68,
+      "yes_ask": 0.72,
       "last_price": 0.74,
-      "bid_size": 0.68,
-      "ask_size": 342.0,
+      "bid_size": 71.0,
+      "ask_size": 7.0,
       "volume": 1.0,
       "open_interest": 1.0,
       "status": "active",
-      "mid": 0.71,
+      "mid": 0.7,
       "spread": 0.04
      }
     ],
     "orientation": "ba"
    },
-   "exchange_usable": true,
-   "exchange_reasons": [],
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "spread 0.35 wider than 0.2"
+   ],
    "flags": [],
    "published": {
     "basis": "market",
@@ -8721,7 +9577,7 @@
       "source_key": "bovada",
       "source_name": "Bovada",
       "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/hyperx-retake/bc-game-og-202610301215",
-      "retrieved_at_utc": "2026-10-28T21:40:16Z",
+      "retrieved_at_utc": "2026-10-29T01:48:31Z",
       "decimal_odds_a": 1.363636,
       "decimal_odds_b": 3.0,
       "overround": 1.0667,
@@ -8731,7 +9587,7 @@
       "source_key": "linefeed_melbet",
       "source_name": "Melbet (1xBet platform)",
       "source_public_url": "https://melbet.com/en/line/esports/",
-      "retrieved_at_utc": "2026-10-28T21:40:22Z",
+      "retrieved_at_utc": "2026-10-29T01:48:36Z",
       "decimal_odds_a": 1.36,
       "decimal_odds_b": 2.928,
       "overround": 1.0768,
@@ -8746,6 +9602,127 @@
     "pick_probability": 0.685167939093597
    },
    "estimate_inputs": {}
+  },
+  {
+   "fixture_id": "1081176",
+   "game": "CS2",
+   "competition": "CCT Europe 2026 Series #12",
+   "tier": "b",
+   "stage": null,
+   "status": "scheduled",
+   "start_time_utc": "2026-10-30T18:00:00Z",
+   "lock_time_utc": "2026-10-30T17:54:00Z",
+   "team_a": "Phantom",
+   "team_b": "Lavked",
+   "listed_in_lobby": false,
+   "picks_open": true,
+   "sources": {
+    "hotspawn_match": "https://play.hotspawn.com/lobby",
+    "hotspawn_lobby": "https://play.hotspawn.com/lobby"
+   },
+   "hotspawn_crowd_pct_reference_only": {
+    "team_a": 100,
+    "team_b": 0,
+    "note": "HotSpawn crowd Pick'ems percentage, published for reference only. It is never read by any probability or estimate function in this pipeline."
+   },
+   "market_quotes": [],
+   "exchange": {
+    "event_ticker": "KXCS2GAME-26OCT301400LAVPHA",
+    "title": "Lavked vs. Phantom",
+    "sub_title": "Lavked vs. Phantom (Oct 30)",
+    "source_public_url": "https://kalshi.com/markets/kxcs2game",
+    "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
+    "rules_primary": "If Lavked wins the CCT Europe Series #12 2026: Lavked vs. Phantom CS2 match originally scheduled for Oct 30, 2026 at 2:00 PM EDT, then the market resolves to Yes.",
+    "stated_start_utc": "2026-10-30T18:00:00Z",
+    "stated_start_raw": "Oct 30, 2026 at 2:00 PM EDT",
+    "expected_end_utc": null,
+    "start_time_source": "market rule text",
+    "start_delta_min": 0,
+    "sides": [
+     {
+      "ticker": "KXCS2GAME-26OCT301400LAVPHA-LAV",
+      "team": "Lavked",
+      "yes_bid": 0.05,
+      "yes_ask": 0.91,
+      "last_price": 0.0,
+      "bid_size": 248.0,
+      "ask_size": 22.0,
+      "volume": 0.0,
+      "open_interest": 0.0,
+      "status": "active",
+      "mid": 0.48,
+      "spread": 0.86
+     },
+     {
+      "ticker": "KXCS2GAME-26OCT301400LAVPHA-PHA",
+      "team": "Phantom",
+      "yes_bid": 0.05,
+      "yes_ask": 0.95,
+      "last_price": 0.0,
+      "bid_size": 226.0,
+      "ask_size": 179.0,
+      "volume": 0.0,
+      "open_interest": 0.0,
+      "status": "active",
+      "mid": 0.5,
+      "spread": 0.9
+     }
+    ],
+    "orientation": "ba"
+   },
+   "exchange_usable": false,
+   "exchange_reasons": [
+    "spread 0.86 wider than 0.2",
+    "no traded volume or open interest",
+    "spread 0.9 wider than 0.2",
+    "no traded volume or open interest"
+   ],
+   "flags": [],
+   "published": {
+    "basis": "bt",
+    "label": "originated estimate — model output, not a market price",
+    "prob_a": 0.737439059892764,
+    "prob_b": 0.26256094010723596,
+    "source_url": "https://bo3.gg/matches/finished",
+    "source_api_url": "https://bo3.gg/api/v1/matches",
+    "pick_side": "a",
+    "pick_team": "Phantom",
+    "pick_probability": 0.737439059892764
+   },
+   "estimate_inputs": {
+    "model_preference": "bt",
+    "bt": {
+     "prob_a": 0.737439059892764,
+     "note": "ok",
+     "matches_used": 1146,
+     "teams": 456,
+     "half_life_days": 60.0,
+     "ridge": 0.02,
+     "min_matches": 8,
+     "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
+     "source_public": "https://bo3.gg/matches/finished",
+     "source_api": "https://bo3.gg/api/v1/matches",
+     "rating_a": 2.6816824313360335,
+     "rating_b": 1.6489821850678985,
+     "appearances_a": 9.0,
+     "appearances_b": 17.0
+    },
+    "vrs": {
+     "prob_a": 0.8376154583713974,
+     "note": "ok",
+     "rating_diff": 285.0,
+     "scale": 400.0,
+     "team_a_points": 1147,
+     "team_b_points": 862,
+     "team_a_snapshot": "2026_10_05",
+     "team_b_snapshot": "2026_10_05",
+     "source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+     "team_b_source_url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/live/2026/standings_global_2026_10_05.md",
+     "team_a_standing": 72,
+     "team_b_standing": 143
+    }
+   }
   },
   {
    "fixture_id": "1117333",
@@ -8776,7 +9753,7 @@
     "sub_title": "Hacha Esports vs. Wildcard (Oct 30)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If Hacha Esports wins the FiReSPORTS Last Chance 2026: Hacha Esports vs. Wildcard CS2 match originally scheduled for Oct 30, 2026 at 3:30 PM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-30T19:30:00Z",
     "stated_start_raw": "Oct 30, 2026 at 3:30 PM EDT",
@@ -8787,37 +9764,39 @@
      {
       "ticker": "KXCS2GAME-26OCT301530HACWC-HAC",
       "team": "Hacha Esports",
-      "yes_bid": 0.07,
-      "yes_ask": 0.2,
+      "yes_bid": 0.06,
+      "yes_ask": 0.69,
       "last_price": 0.0,
-      "bid_size": 29.0,
-      "ask_size": 29.0,
+      "bid_size": 22.0,
+      "ask_size": 22.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.135,
-      "spread": 0.13
+      "mid": 0.375,
+      "spread": 0.63
      },
      {
       "ticker": "KXCS2GAME-26OCT301530HACWC-WC",
       "team": "Wildcard",
-      "yes_bid": 0.79,
-      "yes_ask": 0.94,
+      "yes_bid": 0.38,
+      "yes_ask": 0.95,
       "last_price": 0.0,
-      "bid_size": 369.0,
-      "ask_size": 104.0,
+      "bid_size": 1.0,
+      "ask_size": 79.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.865,
-      "spread": 0.15
+      "mid": 0.665,
+      "spread": 0.57
      }
     ],
     "orientation": "ba"
    },
    "exchange_usable": false,
    "exchange_reasons": [
+    "spread 0.63 wider than 0.2",
     "no traded volume or open interest",
+    "spread 0.57 wider than 0.2",
     "no traded volume or open interest"
    ],
    "flags": [
@@ -8859,8 +9838,8 @@
      "source_public_url": "https://melbet.com/en/line/esports/",
      "source_api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
      "provider_market_url": null,
-     "retrieved_at_utc": "2026-10-28T21:40:22Z",
-     "age_hours": 3.57,
+     "retrieved_at_utc": "2026-10-29T01:48:36Z",
+     "age_hours": 5.86,
      "start_delta_min": 0,
      "decimal_odds_a": 10.0,
      "decimal_odds_b": 1.02,
@@ -8887,7 +9866,7 @@
       "source_key": "linefeed_melbet",
       "source_name": "Melbet (1xBet platform)",
       "source_public_url": "https://melbet.com/en/line/esports/",
-      "retrieved_at_utc": "2026-10-28T21:40:22Z",
+      "retrieved_at_utc": "2026-10-29T01:48:36Z",
       "decimal_odds_a": 10.0,
       "decimal_odds_b": 1.02,
       "overround": 1.0804,
@@ -8932,7 +9911,7 @@
     "sub_title": "The Huns Esports vs. HOTU (Oct 31)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If The Huns Esports wins the Moscow Cyber Games 2026: The Huns Esports vs. HOTU CS2 match originally scheduled for Oct 31, 2026 at 5:00 AM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-31T09:00:00Z",
     "stated_start_raw": "Oct 31, 2026 at 5:00 AM EDT",
@@ -8943,57 +9922,57 @@
      {
       "ticker": "KXCS2GAME-26OCT310500THEHOTU-THE",
       "team": "The Huns Esports",
-      "yes_bid": 0.06,
-      "yes_ask": 0.86,
+      "yes_bid": 0.05,
+      "yes_ask": 0.6,
       "last_price": 0.0,
-      "bid_size": 14.0,
-      "ask_size": 14.0,
+      "bid_size": 206.0,
+      "ask_size": 10.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.46,
-      "spread": 0.8
+      "mid": 0.325,
+      "spread": 0.55
      },
      {
       "ticker": "KXCS2GAME-26OCT310500THEHOTU-HOTU",
       "team": "HOTU",
-      "yes_bid": 0.05,
+      "yes_bid": 0.51,
       "yes_ask": 0.95,
       "last_price": 0.0,
-      "bid_size": 158.0,
+      "bid_size": 10.0,
       "ask_size": 101.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.5,
-      "spread": 0.9
+      "mid": 0.73,
+      "spread": 0.44
      }
     ],
     "orientation": "ba"
    },
    "exchange_usable": false,
    "exchange_reasons": [
-    "spread 0.8 wider than 0.2",
+    "spread 0.55 wider than 0.2",
     "no traded volume or open interest",
-    "spread 0.9 wider than 0.2",
+    "spread 0.44 wider than 0.2",
     "no traded volume or open interest"
    ],
    "flags": [],
    "published": {
     "basis": "bt",
     "label": "originated estimate — model output, not a market price",
-    "prob_a": 0.9997122913121651,
-    "prob_b": 0.0002877086878348978,
+    "prob_a": 0.999711812158192,
+    "prob_b": 0.000288187841807952,
     "source_url": "https://bo3.gg/matches/finished",
     "source_api_url": "https://bo3.gg/api/v1/matches",
     "pick_side": "a",
     "pick_team": "HOTU",
-    "pick_probability": 0.9997122913121651
+    "pick_probability": 0.999711812158192
    },
    "estimate_inputs": {
     "model_preference": "bt",
     "bt": {
-     "prob_a": 0.9997122913121651,
+     "prob_a": 0.999711812158192,
      "note": "ok",
      "matches_used": 1146,
      "teams": 456,
@@ -9003,8 +9982,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.479243833019131,
-     "rating_b": -2.6740305072108486,
+     "rating_a": 5.4777113889700635,
+     "rating_b": -2.6738984435911655,
      "appearances_a": 8.0,
      "appearances_b": 10.0
     },
@@ -9053,7 +10032,7 @@
     "sub_title": "5star vs. 1WIN (Oct 31)",
     "source_public_url": "https://kalshi.com/markets/kxcs2game",
     "source_api_url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200&with_nested_markets=true",
-    "retrieved_at_utc": "2026-10-29T01:14:20Z",
+    "retrieved_at_utc": "2026-10-29T07:40:17Z",
     "rules_primary": "If 5star wins the Moscow Cyber Games 2026: 5star vs. 1WIN CS2 match originally scheduled for Oct 31, 2026 at 9:00 AM EDT, then the market resolves to Yes.",
     "stated_start_utc": "2026-10-31T13:00:00Z",
     "stated_start_raw": "Oct 31, 2026 at 9:00 AM EDT",
@@ -9064,39 +10043,39 @@
      {
       "ticker": "KXCS2GAME-26OCT310900STA1WIN-STA",
       "team": "5star",
-      "yes_bid": 0.06,
-      "yes_ask": 0.86,
+      "yes_bid": 0.1,
+      "yes_ask": 0.58,
       "last_price": 0.0,
-      "bid_size": 19.0,
-      "ask_size": 19.0,
+      "bid_size": 40.0,
+      "ask_size": 10.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.46,
-      "spread": 0.8
+      "mid": 0.34,
+      "spread": 0.48
      },
      {
       "ticker": "KXCS2GAME-26OCT310900STA1WIN-1WIN",
       "team": "1WIN",
-      "yes_bid": 0.06,
-      "yes_ask": 0.94,
+      "yes_bid": 0.42,
+      "yes_ask": 0.86,
       "last_price": 0.0,
-      "bid_size": 14.0,
-      "ask_size": 14.0,
+      "bid_size": 10.0,
+      "ask_size": 22.0,
       "volume": 0.0,
       "open_interest": 0.0,
       "status": "active",
-      "mid": 0.5,
-      "spread": 0.88
+      "mid": 0.64,
+      "spread": 0.44
      }
     ],
     "orientation": "ab"
    },
    "exchange_usable": false,
    "exchange_reasons": [
-    "spread 0.8 wider than 0.2",
+    "spread 0.48 wider than 0.2",
     "no traded volume or open interest",
-    "spread 0.88 wider than 0.2",
+    "spread 0.44 wider than 0.2",
     "no traded volume or open interest"
    ],
    "flags": [],
@@ -9124,8 +10103,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 5.7722451763090925,
-     "rating_b": 5.372550392493501,
+     "rating_a": 5.770802394712964,
+     "rating_b": 5.370985939406046,
      "appearances_a": 7.0,
      "appearances_b": 9.0
     },
@@ -9200,8 +10179,8 @@
      "corpus_generated_at_utc": "2026-10-28T09:03:54Z",
      "source_public": "https://bo3.gg/matches/finished",
      "source_api": "https://bo3.gg/api/v1/matches",
-     "rating_a": 6.131923124309024,
-     "rating_b": 2.259057076549003,
+     "rating_a": 6.130416118469342,
+     "rating_b": 2.2582900467254268,
      "appearances_a": 8.0,
      "appearances_b": 6.0
     },
@@ -9229,8 +10208,8 @@
    "team_a": "FUT",
    "team_b": "Nemiga",
    "start_time_utc": "2026-10-29T08:00:00Z",
-   "decimal_odds_a": 1.28,
-   "decimal_odds_b": 3.3,
+   "decimal_odds_a": 1.32,
+   "decimal_odds_b": 3.1,
    "source_public_url": "https://bo3.gg/matches/fut-cs2-vs-nemiga-29-10-2026",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9238,12 +10217,24 @@
   {
    "source_key": "bo3gg_thunderpick",
    "source_name": "Thunderpick prices via bo3.gg",
-   "team_a": "B8",
-   "team_b": "HOTU",
-   "start_time_utc": "2026-10-29T09:00:00Z",
-   "decimal_odds_a": 1.72,
-   "decimal_odds_b": 2.0,
-   "source_public_url": "https://bo3.gg/matches/b8-vs-hotu-29-10-2026",
+   "team_a": "Vitality",
+   "team_b": "Natus Vincere",
+   "start_time_utc": "2026-10-29T11:00:00Z",
+   "decimal_odds_a": 1.3,
+   "decimal_odds_b": 3.2,
+   "source_public_url": "https://bo3.gg/matches/vitality-vs-natus-vincere-29-10-2026",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "bo3gg_thunderpick",
+   "source_name": "Thunderpick prices via bo3.gg",
+   "team_a": "BIG",
+   "team_b": "Eternal Fire",
+   "start_time_utc": "2026-10-29T11:00:00Z",
+   "decimal_odds_a": 1.52,
+   "decimal_odds_b": 2.35,
+   "source_public_url": "https://bo3.gg/matches/big-vs-eternal-fire-29-10-2026",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
   },
@@ -9265,21 +10256,9 @@
    "team_a": "BIG",
    "team_b": "Eternal Fire",
    "start_time_utc": "2026-10-29T11:00:00Z",
-   "decimal_odds_a": 1.65,
-   "decimal_odds_b": 2.1,
+   "decimal_odds_a": 1.52,
+   "decimal_odds_b": 2.35,
    "source_public_url": "https://bo3.gg/matches/big-vs-eternal-fire-29-10-2026",
-   "fixture_id": null,
-   "reason": "no lobby fixture matched both team labels"
-  },
-  {
-   "source_key": "bo3gg_thunderpick",
-   "source_name": "Thunderpick prices via bo3.gg",
-   "team_a": "B8",
-   "team_b": "HOTU",
-   "start_time_utc": "2026-10-29T09:00:00Z",
-   "decimal_odds_a": 1.72,
-   "decimal_odds_b": 2.0,
-   "source_public_url": "https://bo3.gg/matches/b8-vs-hotu-29-10-2026",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
   },
@@ -9301,21 +10280,9 @@
    "team_a": "BIG",
    "team_b": "Eternal Fire",
    "start_time_utc": "2026-10-29T11:00:00Z",
-   "decimal_odds_a": 1.65,
-   "decimal_odds_b": 2.1,
+   "decimal_odds_a": 1.52,
+   "decimal_odds_b": 2.35,
    "source_public_url": "https://bo3.gg/matches/big-vs-eternal-fire-29-10-2026",
-   "fixture_id": null,
-   "reason": "no lobby fixture matched both team labels"
-  },
-  {
-   "source_key": "bo3gg_thunderpick",
-   "source_name": "Thunderpick prices via bo3.gg",
-   "team_a": "B8",
-   "team_b": "HOTU",
-   "start_time_utc": "2026-10-29T09:00:00Z",
-   "decimal_odds_a": 1.72,
-   "decimal_odds_b": 2.0,
-   "source_public_url": "https://bo3.gg/matches/b8-vs-hotu-29-10-2026",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
   },
@@ -9337,8 +10304,8 @@
    "team_a": "BIG",
    "team_b": "Eternal Fire",
    "start_time_utc": "2026-10-29T11:00:00Z",
-   "decimal_odds_a": 1.65,
-   "decimal_odds_b": 2.1,
+   "decimal_odds_a": 1.52,
+   "decimal_odds_b": 2.35,
    "source_public_url": "https://bo3.gg/matches/big-vs-eternal-fire-29-10-2026",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9346,12 +10313,12 @@
   {
    "source_key": "bo3gg_thunderpick",
    "source_name": "Thunderpick prices via bo3.gg",
-   "team_a": "B8",
-   "team_b": "HOTU",
-   "start_time_utc": "2026-10-29T09:00:00Z",
-   "decimal_odds_a": 1.72,
-   "decimal_odds_b": 2.0,
-   "source_public_url": "https://bo3.gg/matches/b8-vs-hotu-29-10-2026",
+   "team_a": "BIG",
+   "team_b": "Eternal Fire",
+   "start_time_utc": "2026-10-29T11:00:00Z",
+   "decimal_odds_a": 1.52,
+   "decimal_odds_b": 2.35,
+   "source_public_url": "https://bo3.gg/matches/big-vs-eternal-fire-29-10-2026",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
   },
@@ -9370,47 +10337,95 @@
   {
    "source_key": "bo3gg_thunderpick",
    "source_name": "Thunderpick prices via bo3.gg",
-   "team_a": "BIG",
-   "team_b": "Eternal Fire",
-   "start_time_utc": "2026-10-29T11:00:00Z",
-   "decimal_odds_a": 1.65,
-   "decimal_odds_b": 2.1,
-   "source_public_url": "https://bo3.gg/matches/big-vs-eternal-fire-29-10-2026",
+   "team_a": "eSuba",
+   "team_b": "ROUNDS",
+   "start_time_utc": "2026-10-29T19:30:00Z",
+   "decimal_odds_a": 1.46,
+   "decimal_odds_b": 2.48,
+   "source_public_url": "https://bo3.gg/matches/esuba-cs-go-vs-roundsgg-29-10-2026",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
   },
   {
    "source_key": "bo3gg_thunderpick",
    "source_name": "Thunderpick prices via bo3.gg",
-   "team_a": "BIG",
-   "team_b": "Eternal Fire",
-   "start_time_utc": "2026-10-29T11:00:00Z",
-   "decimal_odds_a": 1.65,
-   "decimal_odds_b": 2.1,
-   "source_public_url": "https://bo3.gg/matches/big-vs-eternal-fire-29-10-2026",
-   "fixture_id": null,
-   "reason": "no lobby fixture matched both team labels"
-  },
-  {
-   "source_key": "bo3gg_thunderpick",
-   "source_name": "Thunderpick prices via bo3.gg",
-   "team_a": "Vitality",
-   "team_b": "Natus Vincere",
-   "start_time_utc": "2026-10-29T11:00:00Z",
-   "decimal_odds_a": 1.3,
-   "decimal_odds_b": 3.2,
-   "source_public_url": "https://bo3.gg/matches/vitality-vs-natus-vincere-29-10-2026",
+   "team_a": "eSuba",
+   "team_b": "ROUNDS",
+   "start_time_utc": "2026-10-29T19:30:00Z",
+   "decimal_odds_a": 1.46,
+   "decimal_odds_b": 2.48,
+   "source_public_url": "https://bo3.gg/matches/esuba-cs-go-vs-roundsgg-29-10-2026",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
   },
   {
    "source_key": "pinnacle",
    "source_name": "Pinnacle",
-   "team_a": "Invictus",
-   "team_b": "LYON",
-   "start_time_utc": "2026-10-28T23:15:00Z",
-   "decimal_odds_a": 1.473934,
-   "decimal_odds_b": 2.75,
+   "team_a": "Top Esports",
+   "team_b": "Bilibili",
+   "start_time_utc": "2026-10-29T23:15:00Z",
+   "decimal_odds_a": 3.92,
+   "decimal_odds_b": 1.261097,
+   "source_public_url": "https://www.pinnacle.com/en/esports/",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "pinnacle",
+   "source_name": "Pinnacle",
+   "team_a": "BB Team",
+   "team_b": "FURIA",
+   "start_time_utc": "2026-10-29T17:00:00Z",
+   "decimal_odds_a": 2.36,
+   "decimal_odds_b": 1.60241,
+   "source_public_url": "https://www.pinnacle.com/en/esports/",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "pinnacle",
+   "source_name": "Pinnacle",
+   "team_a": "CPH Wolves",
+   "team_b": "Prestige",
+   "start_time_utc": "2026-10-29T09:00:00Z",
+   "decimal_odds_a": 2.07,
+   "decimal_odds_b": 1.704225,
+   "source_public_url": "https://www.pinnacle.com/en/esports/",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "pinnacle",
+   "source_name": "Pinnacle",
+   "team_a": "Eternal Fire",
+   "team_b": "BIG",
+   "start_time_utc": "2026-10-29T11:00:00Z",
+   "decimal_odds_a": 2.23,
+   "decimal_odds_b": 1.666667,
+   "source_public_url": "https://www.pinnacle.com/en/esports/",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "pinnacle",
+   "source_name": "Pinnacle",
+   "team_a": "MOUZ NXT",
+   "team_b": "eSuba",
+   "start_time_utc": "2026-10-29T11:30:00Z",
+   "decimal_odds_a": 1.452489,
+   "decimal_odds_b": 2.67,
+   "source_public_url": "https://www.pinnacle.com/en/esports/",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "pinnacle",
+   "source_name": "Pinnacle",
+   "team_a": "FUT",
+   "team_b": "Nemiga",
+   "start_time_utc": "2026-10-29T08:00:00Z",
+   "decimal_odds_a": 1.350877,
+   "decimal_odds_b": 3.25,
    "source_public_url": "https://www.pinnacle.com/en/esports/",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9430,11 +10445,35 @@
   {
    "source_key": "pinnacle",
    "source_name": "Pinnacle",
-   "team_a": "Eternal Fire",
-   "team_b": "BIG",
+   "team_a": "Liquid",
+   "team_b": "LOS",
+   "start_time_utc": "2026-10-30T20:15:00Z",
+   "decimal_odds_a": 1.181159,
+   "decimal_odds_b": 4.9,
+   "source_public_url": "https://www.pinnacle.com/en/esports/",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "pinnacle",
+   "source_name": "Pinnacle",
+   "team_a": "Vitality",
+   "team_b": "Natus Vincere",
    "start_time_utc": "2026-10-29T11:00:00Z",
-   "decimal_odds_a": 2.13,
-   "decimal_odds_b": 1.729927,
+   "decimal_odds_a": 1.337838,
+   "decimal_odds_b": 3.33,
+   "source_public_url": "https://www.pinnacle.com/en/esports/",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "pinnacle",
+   "source_name": "Pinnacle",
+   "team_a": "Revenge",
+   "team_b": "gothboiclique",
+   "start_time_utc": "2026-10-29T11:30:00Z",
+   "decimal_odds_a": 2.32,
+   "decimal_odds_b": 1.555556,
    "source_public_url": "https://www.pinnacle.com/en/esports/",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9445,8 +10484,8 @@
    "team_a": "Aurora",
    "team_b": "MOUZ",
    "start_time_utc": "2026-10-29T14:00:00Z",
-   "decimal_odds_a": 2.51,
-   "decimal_odds_b": 1.540541,
+   "decimal_odds_a": 2.5,
+   "decimal_odds_b": 1.543478,
    "source_public_url": "https://www.pinnacle.com/en/esports/",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9460,90 +10499,6 @@
    "decimal_odds_a": 1.200803,
    "decimal_odds_b": 4.6,
    "source_public_url": "https://www.pinnacle.com/en/esports/",
-   "fixture_id": null,
-   "reason": "no lobby fixture matched both team labels"
-  },
-  {
-   "source_key": "pinnacle",
-   "source_name": "Pinnacle",
-   "team_a": "Top Esports",
-   "team_b": "Bilibili",
-   "start_time_utc": "2026-10-29T23:15:00Z",
-   "decimal_odds_a": 4.07,
-   "decimal_odds_b": 1.244499,
-   "source_public_url": "https://www.pinnacle.com/en/esports/",
-   "fixture_id": null,
-   "reason": "no lobby fixture matched both team labels"
-  },
-  {
-   "source_key": "pinnacle",
-   "source_name": "Pinnacle",
-   "team_a": "BB Team",
-   "team_b": "FURIA",
-   "start_time_utc": "2026-10-29T17:00:00Z",
-   "decimal_odds_a": 2.37,
-   "decimal_odds_b": 1.598802,
-   "source_public_url": "https://www.pinnacle.com/en/esports/",
-   "fixture_id": null,
-   "reason": "no lobby fixture matched both team labels"
-  },
-  {
-   "source_key": "pinnacle",
-   "source_name": "Pinnacle",
-   "team_a": "FUT",
-   "team_b": "Nemiga",
-   "start_time_utc": "2026-10-29T08:00:00Z",
-   "decimal_odds_a": 1.35461,
-   "decimal_odds_b": 3.23,
-   "source_public_url": "https://www.pinnacle.com/en/esports/",
-   "fixture_id": null,
-   "reason": "no lobby fixture matched both team labels"
-  },
-  {
-   "source_key": "pinnacle",
-   "source_name": "Pinnacle",
-   "team_a": "Vitality",
-   "team_b": "Natus Vincere",
-   "start_time_utc": "2026-10-29T11:00:00Z",
-   "decimal_odds_a": 1.33557,
-   "decimal_odds_b": 3.35,
-   "source_public_url": "https://www.pinnacle.com/en/esports/",
-   "fixture_id": null,
-   "reason": "no lobby fixture matched both team labels"
-  },
-  {
-   "source_key": "pinnacle",
-   "source_name": "Pinnacle",
-   "team_a": "Liquid",
-   "team_b": "LOS",
-   "start_time_utc": "2026-10-30T20:15:00Z",
-   "decimal_odds_a": 1.196464,
-   "decimal_odds_b": 4.66,
-   "source_public_url": "https://www.pinnacle.com/en/esports/",
-   "fixture_id": null,
-   "reason": "no lobby fixture matched both team labels"
-  },
-  {
-   "source_key": "bovada",
-   "source_name": "Bovada",
-   "team_a": "Movistar KOI",
-   "team_b": "T1",
-   "start_time_utc": null,
-   "decimal_odds_a": 25.0,
-   "decimal_odds_b": 1.03,
-   "source_public_url": "https://www.bovada.lv/esports/league-of-legends/world-championship-26/movistar-koi-t1-202610281600",
-   "fixture_id": null,
-   "reason": "no lobby fixture matched both team labels"
-  },
-  {
-   "source_key": "bovada",
-   "source_name": "Bovada",
-   "team_a": "Invictus Gaming",
-   "team_b": "Lyon Gaming",
-   "start_time_utc": null,
-   "decimal_odds_a": 1.47619,
-   "decimal_odds_b": 2.6,
-   "source_public_url": "https://www.bovada.lv/esports/league-of-legends/world-championship-26/invictus-gaming-lyon-gaming-202610281900",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
   },
@@ -9565,8 +10520,8 @@
    "team_a": "Top Esports",
    "team_b": "Bilibili Gaming",
    "start_time_utc": null,
-   "decimal_odds_a": 3.9,
-   "decimal_odds_b": 1.229885,
+   "decimal_odds_a": 4.05,
+   "decimal_odds_b": 1.217391,
    "source_public_url": "https://www.bovada.lv/esports/league-of-legends/world-championship-26/top-esports-bilibili-gaming-202610291900",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9577,8 +10532,8 @@
    "team_a": "Team Liquid",
    "team_b": "LOS",
    "start_time_utc": null,
-   "decimal_odds_a": 1.19,
-   "decimal_odds_b": 4.4,
+   "decimal_odds_a": 1.181818,
+   "decimal_odds_b": 4.5,
    "source_public_url": "https://www.bovada.lv/esports/league-of-legends/world-championship-26/team-liquid-los-grandes-202610301600",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9601,8 +10556,8 @@
    "team_a": "FUT Esports",
    "team_b": "Nemiga Gaming",
    "start_time_utc": null,
-   "decimal_odds_a": 1.333333,
-   "decimal_odds_b": 3.2,
+   "decimal_odds_a": 1.322581,
+   "decimal_odds_b": 3.25,
    "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/pgl-masters-bucharest-26/fut-esports-nemiga-gaming-202610290400",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9646,36 +10601,48 @@
   {
    "source_key": "bovada",
    "source_name": "Bovada",
-   "team_a": "GamerLegion",
-   "team_b": "Envy",
+   "team_a": "FaZe Clan",
+   "team_b": "GamerLegion",
    "start_time_utc": null,
-   "decimal_odds_a": 1.02,
-   "decimal_odds_b": 15.0,
-   "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/gamerlegion-envy-202610281600",
-   "fixture_id": "1082901",
-   "reason": "quote is an in-play (live) price"
-  },
-  {
-   "source_key": "bovada",
-   "source_name": "Bovada",
-   "team_a": "GamerLegion",
-   "team_b": "Envy",
-   "start_time_utc": null,
-   "decimal_odds_a": 1.02,
-   "decimal_odds_b": 15.0,
-   "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/gamerlegion-envy-202610281600",
+   "decimal_odds_a": 1.588235,
+   "decimal_odds_b": 2.3,
+   "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/faze-clan-gamerlegion-202610290800",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
   },
   {
    "source_key": "bovada",
    "source_name": "Bovada",
-   "team_a": "B8",
-   "team_b": "HOTU",
+   "team_a": "Eternal Fire",
+   "team_b": "BIG",
    "start_time_utc": null,
-   "decimal_odds_a": 1.741,
-   "decimal_odds_b": 2.05,
-   "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/rlg-tesla-cup/b8-hotu-202610290500",
+   "decimal_odds_a": 2.1,
+   "decimal_odds_b": 1.69,
+   "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/stake-ranked/eternal-fire-big-202610290700",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "bovada",
+   "source_name": "Bovada",
+   "team_a": "Astralis",
+   "team_b": "Inner Circle",
+   "start_time_utc": null,
+   "decimal_odds_a": 1.666667,
+   "decimal_odds_b": 2.15,
+   "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/stake-ranked/astralis-inner-circle-202610290930",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "bovada",
+   "source_name": "Bovada",
+   "team_a": "Fnatic",
+   "team_b": "MIBR",
+   "start_time_utc": null,
+   "decimal_odds_a": 2.4,
+   "decimal_odds_b": 1.540541,
+   "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/stake-ranked/fnatic-mibr-202610291200",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
   },
@@ -9685,8 +10652,8 @@
    "team_a": "Mouz NXT",
    "team_b": "Esuba",
    "start_time_utc": null,
-   "decimal_odds_a": 1.210526,
-   "decimal_odds_b": 4.15,
+   "decimal_odds_a": 1.384615,
+   "decimal_odds_b": 2.9,
    "source_public_url": "https://www.bovada.lv/esports/counter-strike-2/european-pro-league/mouz-nxt-esuba-202610290730",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9722,7 +10689,7 @@
    "team_b": "Nemiga Gaming",
    "start_time_utc": "2026-10-29T08:00:00Z",
    "decimal_odds_a": 1.36,
-   "decimal_odds_b": 3.24,
+   "decimal_odds_b": 3.225,
    "source_public_url": "https://melbet.com/en/line/esports/",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9754,23 +10721,11 @@
   {
    "source_key": "linefeed_melbet",
    "source_name": "Melbet (1xBet platform)",
-   "team_a": "B8",
-   "team_b": "HOTU",
-   "start_time_utc": "2026-10-29T09:00:00Z",
-   "decimal_odds_a": 1.72,
-   "decimal_odds_b": 2.04,
-   "source_public_url": "https://melbet.com/en/line/esports/",
-   "fixture_id": null,
-   "reason": "no lobby fixture matched both team labels"
-  },
-  {
-   "source_key": "linefeed_melbet",
-   "source_name": "Melbet (1xBet platform)",
    "team_a": "Prestige",
    "team_b": "Copenhagen Wolves",
    "start_time_utc": "2026-10-29T09:00:00Z",
-   "decimal_odds_a": 1.9,
-   "decimal_odds_b": 1.8,
+   "decimal_odds_a": 1.7,
+   "decimal_odds_b": 2.07,
    "source_public_url": "https://melbet.com/en/line/esports/",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9782,7 +10737,7 @@
    "team_b": "Natus Vincere",
    "start_time_utc": "2026-10-29T11:00:00Z",
    "decimal_odds_a": 1.35,
-   "decimal_odds_b": 3.32,
+   "decimal_odds_b": 3.3,
    "source_public_url": "https://melbet.com/en/line/esports/",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9793,8 +10748,8 @@
    "team_a": "BIG",
    "team_b": "Eternal Fire",
    "start_time_utc": "2026-10-29T11:00:00Z",
-   "decimal_odds_a": 1.75,
-   "decimal_odds_b": 2.12,
+   "decimal_odds_a": 1.69,
+   "decimal_odds_b": 2.216,
    "source_public_url": "https://melbet.com/en/line/esports/",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9817,8 +10772,20 @@
    "team_a": "Revenge Kyrgyz",
    "team_b": "gothboiclique",
    "start_time_utc": "2026-10-29T11:30:00Z",
-   "decimal_odds_a": 2.279,
-   "decimal_odds_b": 1.57,
+   "decimal_odds_a": 2.302,
+   "decimal_odds_b": 1.58,
+   "source_public_url": "https://melbet.com/en/line/esports/",
+   "fixture_id": null,
+   "reason": "no lobby fixture matched both team labels"
+  },
+  {
+   "source_key": "linefeed_melbet",
+   "source_name": "Melbet (1xBet platform)",
+   "team_a": "FaZe Clan",
+   "team_b": "GamerLegion",
+   "start_time_utc": "2026-10-29T12:00:00Z",
+   "decimal_odds_a": 1.63,
+   "decimal_odds_b": 2.33,
    "source_public_url": "https://melbet.com/en/line/esports/",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9841,8 +10808,8 @@
    "team_a": "Inner Circle",
    "team_b": "Astralis",
    "start_time_utc": "2026-10-29T13:30:00Z",
-   "decimal_odds_a": 2.21,
-   "decimal_odds_b": 1.61,
+   "decimal_odds_a": 2.138,
+   "decimal_odds_b": 1.67,
    "source_public_url": "https://melbet.com/en/line/esports/",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9854,7 +10821,7 @@
    "team_b": "Aurora Gaming",
    "start_time_utc": "2026-10-29T14:00:00Z",
    "decimal_odds_a": 1.56,
-   "decimal_odds_b": 2.482,
+   "decimal_odds_b": 2.463,
    "source_public_url": "https://melbet.com/en/line/esports/",
    "fixture_id": null,
    "reason": "no lobby fixture matched both team labels"
@@ -9877,7 +10844,7 @@
    "team_a": "BB Team",
    "team_b": "FURIA",
    "start_time_utc": "2026-10-29T17:00:00Z",
-   "decimal_odds_a": 2.349,
+   "decimal_odds_a": 2.33,
    "decimal_odds_b": 1.62,
    "source_public_url": "https://melbet.com/en/line/esports/",
    "fixture_id": null,
@@ -10029,7 +10996,7 @@
   }
  ],
  "inputs": {
-  "quotes_total": 93,
+  "quotes_total": 101,
   "lobby_listed_ids": [],
   "lobby_counters": {},
   "vrs_snapshots": {
