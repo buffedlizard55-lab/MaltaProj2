@@ -1016,14 +1016,14 @@
   "with_pick": 18,
   "featured_market": 11,
   "fallback_resolved": 7,
-  "esportsbook_exchange": 5,
-  "vrs_model": 1,
-  "floor_estimate": 1,
+  "esportsbook_exchange": 3,
+  "vrs_model": 2,
+  "floor_estimate": 2,
   "unresolved": 0,
   "api_status_conflicts": 1,
   "locked_recent_24h": 18,
   "base_generated_utc": "2026-10-30T20:05:58Z",
-  "fe80_generated_utc": "2026-10-30T19:55:02Z"
+  "fe80_generated_utc": "2026-10-30T20:21:53Z"
  },
  "open": [
   {
@@ -2494,7 +2494,7 @@
      "start_utc_at_source": "2026-11-02T07:00:00Z",
      "start_time_source": "provider_timestamp",
      "start_diff_h": 0.0,
-     "retrieved_utc": "2026-10-30T19:54:41Z",
+     "retrieved_utc": "2026-10-30T20:21:38Z",
      "alias_notes": []
     }
    ],
@@ -2662,7 +2662,7 @@
    "hotspawn_url_kind": "match page",
    "flags": [
     "no_line_unverified",
-    "resolved_via_esportsbook_ex_prefix_join",
+    "resolved_via_valve_vrs_model",
     "start_time_mismatch_not_joined:melbet",
     "vrs_snapshot_stale_or_unverified"
    ],
@@ -2684,41 +2684,8 @@
      ]
     }
    ],
-   "quotes": [
-    {
-     "source_key": "bovada",
-     "source_name": "Bovada",
-     "public_url": "https://www.bovada.lv/esports/counter-strike-2/iem-beijing-26/natus-vincere-team-falcons-202611020200",
-     "api_url": "https://www.bovada.lv/services/sports/event/v2/events/A/description/esports/counter-strike-2",
-     "event_id": "32549610",
-     "names_at_source": [
-      "Natus Vincere",
-      "Team Falcons"
-     ],
-     "raw_format": "decimal",
-     "raw_a": "2.250",
-     "raw_b": "1.606061",
-     "decimal_a": 2.25,
-     "decimal_b": 1.6061,
-     "no_vig_prob_team_a": 0.4165,
-     "overround": 0.0671,
-     "swapped": false,
-     "start_utc_at_source": "2026-11-02T07:00:00Z",
-     "start_time_source": "provider_timestamp",
-     "start_diff_h": 0.0,
-     "retrieved_utc": "2026-10-30T19:53:40Z",
-     "alias_notes": []
-    }
-   ],
-   "market": {
-    "prob_a": 0.4165,
-    "prob_b": 0.5835,
-    "n_sources": 1,
-    "sources": [
-     "bovada"
-    ],
-    "spread_a": null
-   },
+   "quotes": [],
+   "market": null,
    "vrs": {
     "team_a": {
      "standing": 34,
@@ -2739,20 +2706,20 @@
    },
    "model": null,
    "line": {
-    "basis": "esportsbook",
-    "market_weight": 1.0,
-    "prob_a": 0.4165,
-    "prob_b": 0.5835,
+    "basis": "model",
+    "market_weight": 0.0,
+    "prob_a": 0.2682,
+    "prob_b": 0.7318,
     "pick_side": "b",
     "pick_team": "Falcons",
-    "pick_prob": 0.5835,
-    "confidence": "Lean",
-    "fair_decimal_a": 2.401,
-    "fair_decimal_b": 1.714,
-    "fair_american_a": 140,
-    "fair_american_b": -140,
-    "resolution_tier": "tier_2_esportsbook_exchange",
-    "resolution_note": "Resolved from 1 external betting/exchange source(s) (Bovada) after ex-prefix team normalisation, verified by exact opponent (Falcons) and exact UTC kickoff (2026-11-02T07:00:00Z)."
+    "pick_prob": 0.7318,
+    "confidence": "Strong",
+    "fair_decimal_a": 3.728,
+    "fair_decimal_b": 1.367,
+    "fair_american_a": 273,
+    "fair_american_b": -273,
+    "resolution_tier": "tier_3_valve_vrs_model",
+    "resolution_note": "Originated from Official Valve VRS (2026_10_05): Natus Vincere #34 (1427 pts) vs Falcons #6 (1843 pts), Δ = -416 pts, market-calibrated slope k = 0.4308."
    },
    "valid_until_utc": "2026-10-30T23:02:22Z",
    "resolution": {
@@ -2817,11 +2784,11 @@
      },
      {
       "step": 2,
-      "source": "Licensed Esportsbooks & Kalshi Exchange",
-      "url": "https://www.bovada.lv/esports/counter-strike-2/iem-beijing-26/natus-vincere-team-falcons-202611020200",
-      "status": "1 quote(s) matched",
-      "outcome": "matched",
-      "detail": "Found 1 external price(s): Bovada (Natus Vincere vs Team Falcons, dec 2.25/1.6061 -> 41.6%/58.4%)."
+      "source": "Licensed Esportsbooks & Kalshi Exchange (Pinnacle, Bovada, Melbet, Thunderpick, Kalshi)",
+      "url": "https://www.pinnacle.com/en/esports/cs2-hub",
+      "status": "0 quotes for this pairing",
+      "outcome": "no_quote",
+      "detail": "Checked all 163 captured pre-match quotes across Pinnacle, Bovada, Melbet, Thunderpick (bo3.gg), and Kalshi KXCS2GAME; no open market prices this fixture."
      },
      {
       "step": 3,
@@ -2841,7 +2808,7 @@
      }
     ],
     "limitations": [
-     "HotSpawn lists 'Natus Vincere' with the 'ex-' prefix while Bovada, Melbet, and Kalshi list the team as 'CYBERSHOKE' / 'CYBERSHOKE Esports' in the same CIS LAN Championship #9 slot at 2026-11-02T07:00:00Z."
+     "No primary bookmaker two-way line was open at capture time; line is originated from Official Valve Regional Standings (2026_10_05, published 2026-10-05) with fitted slope k = 0.4308."
     ]
    }
   },
@@ -3318,9 +3285,9 @@
    "hotspawn_url": "https://www.hotspawn.com/matches/themongolz-vs-legacy-intel-extreme-masters-beijing-2026-1128848",
    "hotspawn_url_kind": "match page",
    "flags": [
+    "directional_vrs_floor_estimate",
     "no_line_unverified",
     "not_in_vrs:TheMongolz",
-    "resolved_via_esportsbook_ex_prefix_join",
     "start_time_mismatch_not_joined:melbet",
     "vrs_snapshot_stale_or_unverified"
    ],
@@ -3342,41 +3309,8 @@
      ]
     }
    ],
-   "quotes": [
-    {
-     "source_key": "melbet",
-     "source_name": "Melbet (1xBet platform)",
-     "public_url": "https://melbet.com/en/line/esports",
-     "api_url": "https://melbet.com/service-api/LineFeed/Get1x2_VZip?sports=40&count=1000&lng=en&mode=4&country=1",
-     "event_id": "764607332",
-     "names_at_source": [
-      "Legacy",
-      "TheMongolz"
-     ],
-     "raw_format": "decimal",
-     "raw_a": "1.93",
-     "raw_b": "1.77",
-     "decimal_a": 1.93,
-     "decimal_b": 1.77,
-     "no_vig_prob_team_a": 0.4784,
-     "overround": 0.0831,
-     "swapped": true,
-     "start_utc_at_source": "2026-11-02T07:00:00Z",
-     "start_time_source": "provider_timestamp",
-     "start_diff_h": 0.0,
-     "retrieved_utc": "2026-10-30T19:53:40Z",
-     "alias_notes": []
-    }
-   ],
-   "market": {
-    "prob_a": 0.4784,
-    "prob_b": 0.5216,
-    "n_sources": 1,
-    "sources": [
-     "melbet"
-    ],
-    "spread_a": null
-   },
+   "quotes": [],
+   "market": null,
    "vrs": {
     "team_a": null,
     "team_b": {
@@ -3391,20 +3325,21 @@
    },
    "model": null,
    "line": {
-    "basis": "esportsbook",
-    "market_weight": 1.0,
-    "prob_a": 0.4784,
-    "prob_b": 0.5216,
+    "basis": "floor_estimate",
+    "market_weight": 0.0,
+    "prob_a": 0.0232,
+    "prob_b": 0.9768,
     "pick_side": "b",
     "pick_team": "Legacy",
-    "pick_prob": 0.5216,
-    "confidence": "Toss-up",
-    "fair_decimal_a": 2.09,
-    "fair_decimal_b": 1.917,
-    "fair_american_a": 109,
-    "fair_american_b": -109,
-    "resolution_tier": "tier_2_esportsbook_exchange",
-    "resolution_note": "Resolved from 1 external betting/exchange source(s) (Melbet (1xBet platform)) after ex-prefix team normalisation, verified by exact opponent (Legacy) and exact UTC kickoff (2026-11-02T07:00:00Z)."
+    "pick_prob": 0.9768,
+    "confidence": "Directional",
+    "fair_decimal_a": 43.063,
+    "fair_decimal_b": 1.024,
+    "fair_american_a": 4206,
+    "fair_american_b": -4206,
+    "directional": true,
+    "resolution_tier": "tier_4_vrs_floor_directional",
+    "resolution_note": "Originated directional lower bound from Official Valve VRS (2026_10_05): Legacy is #2 (1931 pts); unrated 'TheMongolz' is benchmarked at the official VRS floor (#380 Fruju, 381 pts)."
    },
    "valid_until_utc": "2026-10-30T23:02:22Z",
    "resolution": {
@@ -3452,11 +3387,11 @@
      },
      {
       "step": 2,
-      "source": "Licensed Esportsbooks & Kalshi Exchange",
-      "url": "https://melbet.com/en/line/esports",
-      "status": "1 quote(s) matched",
-      "outcome": "matched",
-      "detail": "Found 1 external price(s): Melbet (1xBet platform) (Legacy vs TheMongolz, dec 1.93/1.77 -> 47.8%/52.2%)."
+      "source": "Licensed Esportsbooks & Kalshi Exchange (Pinnacle, Bovada, Melbet, Thunderpick, Kalshi)",
+      "url": "https://www.pinnacle.com/en/esports/cs2-hub",
+      "status": "0 quotes for this pairing",
+      "outcome": "no_quote",
+      "detail": "Checked all 163 captured pre-match quotes across Pinnacle, Bovada, Melbet, Thunderpick (bo3.gg), and Kalshi KXCS2GAME; no open market prices this fixture."
      },
      {
       "step": 3,
@@ -3476,7 +3411,7 @@
      }
     ],
     "limitations": [
-     "HotSpawn lists 'TheMongolz' with the 'ex-' prefix while Bovada, Melbet, and Kalshi list the team as 'CYBERSHOKE' / 'CYBERSHOKE Esports' in the same CIS LAN Championship #9 slot at 2026-11-02T07:00:00Z."
+     "'TheMongolz' is not rated in Official Valve VRS (2026_10_05), and no sportsbook or exchange offered a valid two-way market. The probability (97.7%) benchmarks Legacy (#2, 1931 pts) against the VRS floor (#380, 381 pts) and is a directional estimate."
     ]
    }
   },
@@ -3664,7 +3599,16 @@
      "team": "Fruju"
     },
     "bo3gg": {
-     "team_a": null,
+     "team_a": {
+      "bo3_id": "6062",
+      "name": "Wildcard",
+      "slug": "wildcard-gaming",
+      "url": "https://bo3.gg/teams/wildcard-gaming",
+      "rank": 58,
+      "matches_recorded": 0,
+      "wins_in_sample": 0,
+      "recent_matches": []
+     },
      "team_b": {
       "bo3_id": "24956",
       "name": "DENDELE",
@@ -3709,7 +3653,7 @@
       "url": "https://bo3.gg/matches",
       "status": "checked",
       "outcome": "context_recorded",
-      "detail": "DENDELE (bo3.gg #24956, rank=39, recorded matches=0)"
+      "detail": "Wildcard (bo3.gg #6062, rank=58, recorded matches=0); DENDELE (bo3.gg #24956, rank=39, recorded matches=0)"
      }
     ],
     "limitations": [
@@ -4265,12 +4209,12 @@
    "flags": [],
    "last_open_line": null,
    "fallback_reference_line": {
-    "prob_a": 0.4113337124663109,
-    "prob_b": 0.5886662875336891,
+    "prob_a": 0.4271774954413151,
+    "prob_b": 0.5728225045586849,
     "basis": "model",
     "market_weight": 0.0,
     "pick": "mellren",
-    "pick_probability": 0.5886662875336891,
+    "pick_probability": 0.5728225045586849,
     "confidence": "Lean",
     "directional": false
    }
@@ -4342,12 +4286,12 @@
    "flags": [],
    "last_open_line": null,
    "fallback_reference_line": {
-    "prob_a": 0.6744296346111502,
-    "prob_b": 0.32557036538884976,
+    "prob_a": 0.6447557830742489,
+    "prob_b": 0.35524421692575114,
     "basis": "model",
     "market_weight": 0.0,
     "pick": "MAYBE",
-    "pick_probability": 0.6744296346111502,
+    "pick_probability": 0.6447557830742489,
     "confidence": "Solid",
     "directional": false
    }
